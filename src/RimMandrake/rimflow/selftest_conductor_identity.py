@@ -239,8 +239,7 @@ def test_tile():
           "the session --name and --remote-control name are CONDUCTOR (what the phone / claude.ai list shows)")
     check("AGENT BENCH" not in prof["commandline"] and "AGENT CONDUCTOR" not in prof["commandline"],
           "the BENCH launch line names neither AGENT BENCH nor the hold's AGENT CONDUCTOR")
-    f, _ = W.build("FOUNDRY")
-    check("--name 'AGENT FOUNDRY'" in f["commandline"], "FOUNDRY's --name is unchanged")
+    # FOUNDRY retired (owner by card 2026-11-02): the schedule has no FOUNDRY seat, so no tile is built for it
     check(prof["guid"] == W.seat_guid("BENCH"), "the profile guid still derives from the seat key (updates in place)")
     ps1 = read(os.path.join(ROOT, "src", "RimMandrake", "Utils", "launch_fleet.ps1"))
     check("BENCH     = 'CONDUCTOR'" in ps1, "launch_fleet.ps1 opens and waits for the CONDUCTOR tile")

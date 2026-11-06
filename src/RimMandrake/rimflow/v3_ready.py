@@ -44,13 +44,11 @@ SCHEDULE_REL = "src/RimMandrake/rimflow/dispatcher_schedule.json"
 GOALS_REL = "infrastructure/state/CONDUCTOR_GOALS.md"
 CUTOVER_REL = "src/RimMandrake/rimflow/v3_cutover.py"
 CUTOVER_RECORD_REL = "infrastructure/state/v3_cutover/record.json"
-FOUNDRY_SHARD_REL = "infrastructure/state/ledger/events/FOUNDRY.jsonl"
 DEADMAN_REL = "src/RimMandrake/Utils/deadman_check.py"
 RUNNER_REL = "src/RimMandrake/Utils/run_selftests.py"
 
 TICK_STALE_S = 600          # 5 ticks of 120 s
 OPS_STALE_S = 2700          # the schedule's ops_stale_s
-LEDGER_STALE_S = 6 * 3600   # FOUNDRY's shard published within 6 h
 RING_RECENT_S = 3600        # a ring this recent proves the doorbell worked
 MIN_INSTR_BYTES = 200
 RUNWAY_WARN = 0.8           # account_pick's switch line
@@ -533,31 +531,6 @@ def role_rows(ctx, sch, state, st_res, st_why):
     return out
 
 
-def ledger_rows(ctx, sch):
-    C = "FOUNDRY ledger"
-    out = []
-    rc, o = git(ctx, ctx.repo, "log", "-1", "--format=%ct", "origin/main", "--", FOUNDRY_SHARD_REL)
-    try:
-        t = int(o.strip()) if rc == 0 else None
-    except ValueError:
-        t = None
-    if t is None:
-        out.append(row(C, "published recently", "UNMEASURED", "git log failed (rc %s): %s" % (rc, o.strip()[:60])))
-    else:
-        age = ctx.now - t
-        out.append(row(C, "published recently", "GO" if age <= LEDGER_STALE_S else "NO-GO",
-                       "last on origin/main %s ago (limit %s; as of this clone's last fetch)" % (
-                           ago(max(age, 0)), ago(LEDGER_STALE_S))))
-    clone = ((sch or {}).get("seats", {}).get("FOUNDRY") or {}).get("clone")
-    if clone:
-        rc, o = git(ctx, clone, "diff", "--numstat", "HEAD", "--", FOUNDRY_SHARD_REL)
-        if rc == 0:
-            add = sum(int(ln.split()[0]) for ln in o.splitlines() if ln.split() and ln.split()[0].isdigit())
-            out.append(row(C, "uncommitted lines in FOUNDRY clone", "INFO" if add == 0 else "WARN",
-                           "%d line(s) not committed in %s" % (add, clone)))
-    return out
-
-
 def cutover_rows(ctx, st_res, st_why):
     C = "Cutover"
     p = os.path.join(ctx.repo, CUTOVER_REL)
@@ -693,7 +666,6 @@ def collect(ctx):
     rows += doorbell_rows(ctx, sch, state, journal)
     rows += window_rows(ctx, sch)
     rows += role_rows(ctx, sch, state, st_res, st_why)
-    rows += ledger_rows(ctx, sch)
     rows += cutover_rows(ctx, st_res, st_why)
     rows += seat_restart_rows(ctx, sch, st_res, st_why)
     rows += goals_rows(ctx)

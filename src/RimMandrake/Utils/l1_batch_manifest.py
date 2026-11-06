@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """L1 batch manifest generator.
 
-Reads `rimflow next --acceptance --seat FOUNDRY`, takes every L1 criterion, and maps it to the
+Reads `rimflow next --acceptance --seat BENCH` (the shared key; FOUNDRY is retired), takes every L1 criterion, and maps it to the
 "DefType/DefName" strings jawa/get_defs should resolve (get_defs takes `defs` as a STRING, never a
 list). Names come from the criterion text (confidence NAMED) and, failing that, from the item prose
 (confidence PROSE). Each name is cross-checked offline against src/ XML parsed as elements.
@@ -193,7 +193,7 @@ def resolve_override(spec, idx):
 
 def acceptance():
     out = subprocess.run([sys.executable, str(ROOT / "src/RimMandrake/rimflow/cli.py"), "next",
-                          "--acceptance", "--seat", "FOUNDRY"], capture_output=True, text=True, cwd=ROOT).stdout
+                          "--acceptance", "--seat", "BENCH"], capture_output=True, text=True, cwd=ROOT).stdout
     cur, rows, sec = None, [], None
     for line in out.splitlines():
         if line.startswith("## "):

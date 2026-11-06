@@ -24,8 +24,8 @@ What it does (the seat clone is only READ — never reset, stashed, checked out 
 
 Dry run by default (steps 1-3, prints the count and the lines' verbs). `--apply` does 4.
 
-    python3 src/RimMandrake/Utils/ledger_sync.py --seat FOUNDRY --clone <scratch dir>
-    python3 src/RimMandrake/Utils/ledger_sync.py --seat FOUNDRY --clone <scratch dir> --apply
+    python3 src/RimMandrake/Utils/ledger_sync.py --seat BENCH --clone <scratch dir>
+    python3 src/RimMandrake/Utils/ledger_sync.py --seat BENCH --clone <scratch dir> --apply
 
 Selftest: `selftest_ledger_sync.py` (temp git repos, no network).
 """
@@ -164,7 +164,7 @@ def run(seat, seat_clone, clone, apply=False, lint=LINT, out=print, temp=False):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--seat", default="FOUNDRY")
+    ap.add_argument("--seat", default="BENCH")
     ap.add_argument("--seat-clone", default=None, help="default: /home/mandrake/rm/<seat>")
     ap.add_argument("--clone", default=None, help="fresh clone path (default: a temp dir)")
     ap.add_argument("--apply", action="store_true", help="append, commit and push")

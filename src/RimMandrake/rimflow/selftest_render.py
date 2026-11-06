@@ -77,7 +77,7 @@ def prose(iid, spec="build the thing.", extra=""):
     render.item_index(refresh=True)
 
 
-def file_item(iid, for_="FOUNDRY", row=None, needs=None, title="t", with_prose=True):
+def file_item(iid, for_="BENCH", row=None, needs=None, title="t", with_prose=True):
     d = {"seat": "BENCH", "event": "file", "id": iid, "title": title, "kind": "task"}
     d["for"] = for_
     if row is not None:
@@ -90,7 +90,7 @@ def file_item(iid, for_="FOUNDRY", row=None, needs=None, title="t", with_prose=T
     emit(seat=for_, event="claim", id=iid)
 
 
-def view(seat="FOUNDRY"):
+def view(seat="BENCH"):
     return open(os.path.join(render.PREVIEW, "%s.md" % seat), encoding="utf-8").read()
 
 
@@ -126,7 +126,7 @@ def t_order_is_priority_rank_not_a_copy_of_it():
     file_item("NO_ROW_AT_ALL_1")             # unrowed sorts LAST, not first
     render.render(quiet=True)
     world, _ = render.build()
-    want = [i.id for i in priority.rank(world, "FOUNDRY")]
+    want = [i.id for i in priority.rank(world, "BENCH")]
     got = headings(view(), "NEXT")
     assert want == got, (
         "the file and `rimflow next` disagree.\n  rank(): %s\n  file  : %s" % (want, got))
@@ -140,10 +140,10 @@ def t_this_deployment_wins_the_tie():
     # every non-ITEMLESS verb, and _apply refuses an id that was never filed — so a
     # spawn off a bare FINDING name, which is what the plan's §4 example does, cannot
     # be emitted at all. Reported to BUILD, not fixed here.
-    emit(seat="FOUNDRY", event="spawn",
-         **{"from": "ORDINARY_ROW_ONE_1", "for": "FOUNDRY",
+    emit(seat="BENCH", event="spawn",
+         **{"from": "ORDINARY_ROW_ONE_1", "for": "BENCH",
             "name": "URGENT_LIVE_WINDOW_1", "this_deployment": True})
-    emit(seat="FOUNDRY", event="claim", id="URGENT_LIVE_WINDOW_1")
+    emit(seat="BENCH", event="claim", id="URGENT_LIVE_WINDOW_1")
     render.render(quiet=True)
     got = headings(view(), "NEXT")
     assert got[0] == "URGENT_LIVE_WINDOW_1", (
@@ -152,7 +152,7 @@ def t_this_deployment_wins_the_tie():
 
 def t_blocked_item_appears_with_its_reason():
     file_item("WAITING_ON_PILLOW_1", row=2)
-    emit(seat="FOUNDRY", event="block", id="WAITING_ON_PILLOW_1",
+    emit(seat="BENCH", event="block", id="WAITING_ON_PILLOW_1",
          reason="Pillow is not installed", on="INSTALL_PILLOW_FIRST_1")
     file_item("INSTALL_PILLOW_FIRST_1", row=3)
     render.render(quiet=True)
@@ -203,7 +203,7 @@ def t_generated_marker_and_regen_command():
 # ---- the refusal ---------------------------------------------------------
 def t_overwrite_refuses_against_an_empty_ledger():
     """The guard that stands between one command and 827 KB of hand-written prose."""
-    real = os.path.join(render.QUEUE, "FOUNDRY.md")
+    real = os.path.join(render.QUEUE, "BENCH.md")
     with open(real, "w", encoding="utf-8") as fh:
         fh.write("## HAND_WRITTEN_ITEM_1 t\nstate: ready\n\n"
                  "## ANOTHER_HAND_ITEM_1 t\nstate: ready\n\n"
@@ -220,7 +220,7 @@ def t_overwrite_refuses_against_an_empty_ledger():
 
 
 def t_overwrite_allowed_once_the_ledger_is_at_least_as_full():
-    real = os.path.join(render.QUEUE, "FOUNDRY.md")
+    real = os.path.join(render.QUEUE, "BENCH.md")
     with open(real, "w", encoding="utf-8") as fh:
         fh.write("## ONE_HAND_ITEM_1 t\nstate: ready\n")
     file_item("ONE_HAND_ITEM_1", row=1)
@@ -235,7 +235,7 @@ def t_overwrite_allowed_once_the_ledger_is_at_least_as_full():
 def t_reindex_verify_is_identical_after_a_clean_render():
     file_item("STABLE_ITEM_HERE_1", row=1)
     file_item("SECOND_STABLE_ITEM_1", row=2)
-    emit(seat="FOUNDRY", event="block", id="SECOND_STABLE_ITEM_1", reason="waiting")
+    emit(seat="BENCH", event="block", id="SECOND_STABLE_ITEM_1", reason="waiting")
     render.render(quiet=True)
     rc, out = quiet(lambda: render.reindex(verify=True))
     assert rc == 0, out
@@ -248,10 +248,10 @@ def t_reindex_verify_sees_a_hand_edit():
     """A generated file somebody edited must be VISIBLE, not silently re-flattened."""
     file_item("STABLE_ITEM_HERE_1", row=1)
     render.render(quiet=True)
-    with open(os.path.join(render.PREVIEW, "FOUNDRY.md"), "a", encoding="utf-8") as fh:
+    with open(os.path.join(render.PREVIEW, "BENCH.md"), "a", encoding="utf-8") as fh:
         fh.write("\n<- somebody hand-edited this\n")
     rc, out = quiet(lambda: render.reindex(verify=True))
-    assert rc == 1 and "DIFFERS" in out and "FOUNDRY.md" in out, out
+    assert rc == 1 and "DIFFERS" in out and "BENCH.md" in out, out
 
 
 def t_render_is_deterministic():
@@ -270,7 +270,7 @@ def t_replay_refusals_are_surfaced_not_swallowed():
     file_item("GOOD_ITEM_HERE_1", row=1)
     # A refusal that is ALREADY in an append-only file: CHECK may not set game state.
     with open(model.EVENTS, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps({"ts": "2026-08-20T00:00:00Z", "seat": "FOUNDRY",
+        fh.write(json.dumps({"ts": "2026-08-20T00:00:00Z", "seat": "BENCH",
                              "event": "game", "state": "UP"}) + "\n")
     render.render(quiet=True)
     world, _ = render.build()
@@ -279,11 +279,11 @@ def t_replay_refusals_are_surfaced_not_swallowed():
 
 
 def t_diff_summary_names_what_only_the_queue_has():
-    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(render.QUEUE, "BENCH.md"), "w", encoding="utf-8") as fh:
         fh.write("## ONLY_IN_THE_QUEUE_1 t\nstate: ready\n")
     file_item("ONLY_IN_THE_LEDGER_1", row=1)
     s = render.render(quiet=True)
-    d = [x for x in s["diffs"] if x["seat"] == "FOUNDRY"][0]
+    d = [x for x in s["diffs"] if x["seat"] == "BENCH"][0]
     assert d["in_queue_only"] == ["ONLY_IN_THE_QUEUE_1"], d
     assert d["in_ledger_only"] == ["ONLY_IN_THE_LEDGER_1"], d
 
@@ -298,19 +298,19 @@ def t_view_ids_is_exactly_what_the_file_holds():
     """
     file_item("RANKED_AND_OFFERED_1", row=1)
     file_item("STARTED_AND_RUNNING_1", row=2)
-    emit(seat="FOUNDRY", event="start", id="STARTED_AND_RUNNING_1")
+    emit(seat="BENCH", event="start", id="STARTED_AND_RUNNING_1")
     file_item("BLOCKED_ON_SOMETHING_1", row=3)
-    emit(seat="FOUNDRY", event="block", id="BLOCKED_ON_SOMETHING_1", reason="stuck")
+    emit(seat="BENCH", event="block", id="BLOCKED_ON_SOMETHING_1", reason="stuck")
     file_item("WAITING_FOR_THE_GAME_1", row=4, needs="game-up")
     file_item("AIMED_AT_VERSION_TWO_1", row=5)
-    emit(seat="FOUNDRY", event="retarget", id="AIMED_AT_VERSION_TWO_1", to="v2")
+    emit(seat="BENCH", event="retarget", id="AIMED_AT_VERSION_TWO_1", to="v2")
     prose("NEVER_CLAIMED_AT_ALL_1")
     emit(seat="BENCH", event="file", id="NEVER_CLAIMED_AT_ALL_1", title="t",
-         kind="task", **{"for": "FOUNDRY"})
+         kind="task", **{"for": "BENCH"})
     render.render(quiet=True)
     world, _ = render.build()
-    got = render.view_ids(world, "FOUNDRY")
-    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "FOUNDRY.md"))
+    got = render.view_ids(world, "BENCH")
+    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "BENCH.md"))
     assert got == on_disk, (
         "view_ids() and the rendered file disagree — the second partition is back.\n"
         "  view_ids only: %s\n  file only    : %s"
@@ -326,21 +326,21 @@ def t_the_drift_table_counts_the_preview_not_every_item_ever_owned():
     `preview`, and the view carries no closed items at all (owner's ruling
     2026-08-26: "anything done is GONE"). On the live 709-item ledger that printed
     "BENCH preview 67 | queue 2" about two files holding the same two items, and
-    "FOUNDRY preview 193 | queue 39" where 154 of the 193 had closed. `_print_render`'s
+    "BENCH preview 193 | queue 39" where 154 of the 193 had closed. `_print_render`'s
     own comment warned against exactly this and the code below it did it anyway.
     """
     file_item("STILL_OPEN_AND_READY_1", row=1)
     file_item("LONG_SINCE_FINISHED_1", row=2)
-    emit(seat="FOUNDRY", event="close", id="LONG_SINCE_FINISHED_1", sha="abc1234")
+    emit(seat="BENCH", event="close", id="LONG_SINCE_FINISHED_1", sha="abc1234")
     # The published queue holds exactly what a view of this ledger holds: no drift.
-    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(render.QUEUE, "BENCH.md"), "w", encoding="utf-8") as fh:
         fh.write("## STILL_OPEN_AND_READY_1 t\nstate: ready\n")
     s = render.render(quiet=True)
-    d = [x for x in s["diffs"] if x["seat"] == "FOUNDRY"][0]
+    d = [x for x in s["diffs"] if x["seat"] == "BENCH"][0]
     assert d["in_ledger_only"] == [] and d["in_queue_only"] == [], (
         "a closed item was reported as drift between two files that agree: %s" % d)
     assert d["both"] == 1, d
-    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "FOUNDRY.md"))
+    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "BENCH.md"))
     assert len(d["in_ledger_only"]) + d["both"] == len(on_disk), (
         "the `preview` column does not count the preview: %d vs %d headings"
         % (len(d["in_ledger_only"]) + d["both"], len(on_disk)))
@@ -384,11 +384,11 @@ def t_bench_actually_renders_items_into_the_views():
 
 def t_prose_headings_are_not_counted_as_items():
     """`## 🔴 OWNER RULINGS…` is a section, not an item, and must not gate the guard."""
-    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(render.QUEUE, "BENCH.md"), "w", encoding="utf-8") as fh:
         fh.write("## 🔴 OWNER RULINGS, 2026-08-19 — the queue triage\nprose\n\n"
                  "## REAL_ITEM_HERE_1 t\nstate: ready\n")
     total, per = render.queue_census(render.QUEUE)
-    assert total == 1 and per["FOUNDRY.md"] == 1, (total, per)
+    assert total == 1 and per["BENCH.md"] == 1, (total, per)
 
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]

@@ -24,7 +24,7 @@ RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=Tru
              same_failure_limit=3, max_approach_changes=None, account_settle_s=0)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
 STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
              launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2,
-             foreign_retired=False)  # the tree-reading machinery, live; the shipped FOUNDRY retirement: t_foreign_retired. Mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
+             foreign_retired=False, foreign_seat="FOUNDRY")  # the tree-reading machinery, live, on a test-pinned foreign seat (the shipped rules name none since FOUNDRY_LITERALS_EXCISE_FROM_CODE); the shipped FOUNDRY retirement: t_foreign_retired. Mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
 FAILS = []
 
 
@@ -2093,8 +2093,10 @@ def t_foreign_tomb():
 def t_foreign_retired():
     """FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS: a retired seat's tree never hears; nothing waits on it."""
     shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"]
-    ok(shipped["foreign_seat"] == "FOUNDRY" and shipped["foreign_retired"] is True, "the shipped rules retire FOUNDRY")
-    ok(R.Effects.seat_words(type("F", (), {"r": {"staffing": dict(shipped, foreign_tree="/nonexistent")}})()) == set(),
+    ok(shipped["foreign_seat"] is None and shipped["foreign_retired"] is True,
+       "the shipped rules name no foreign seat and retire it (FOUNDRY_LITERALS_EXCISE_FROM_CODE)")
+    ok(R.Effects.seat_words(type("F", (), {"r": {"staffing": dict(shipped, foreign_seat="FOUNDRY",
+                                                                  foreign_tree="/nonexistent")}})()) == set(),
        "a retired seat's tree, even gone, holds no word")
     x = foreign_rig(foreign_retired=True)
     x.tick(1)

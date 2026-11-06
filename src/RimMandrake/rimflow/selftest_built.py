@@ -366,9 +366,9 @@ def t_unknown_field_on_known_verb_is_tolerated_in_replay_only():
 # ---------------------------------------------------------------------------
 def t_cli_implemented_from_prose_then_acceptance_then_verify_to_done():
     fresh("full_path")
-    file_ready()
+    file_ready(seat="BENCH")   # FOUNDRY retired: its queue view is no longer rendered (FOUNDRY_LITERALS_EXCISE_FROM_CODE)
     write_prose(IID, "- O1 L0: compiles\n- A1 L1: defs resolve\n- A4 L4: fun to use\n")
-    out = ok("implemented", IID, "--sha", sha(1)[:9])
+    out = ok("implemented", IID, "--sha", sha(1)[:9], seat="BENCH")
     assert "-> built" in out and "needs bridge" in out, out
     imp = [e for e in ledger_events() if e["event"] == "implemented"]
     assert len(imp) == 1 and imp[0]["needs"] == "bridge" and imp[0]["sha"] == sha(1)[:12], imp
@@ -381,7 +381,7 @@ def t_cli_implemented_from_prose_then_acceptance_then_verify_to_done():
     assert "## L1" in acc and IID in acc and "A1 L1" in acc, acc
     assert IID not in ok("next", "--acceptance"), "FOUNDRY sits no level any more"
     assert IID in ok("queue", "BENCH", "--acceptance", seat="BENCH")
-    q = ok("queue", "FOUNDRY")
+    q = ok("queue", "BENCH", seat="BENCH")
     assert "# BUILT" in q and IID in q.split("# BUILT", 1)[1], q
     out = ok("verify", IID, "--criterion", "A1", "--result", "pass", "--config", "min-13")
     assert "built -> validated" in out, out

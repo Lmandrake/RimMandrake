@@ -271,12 +271,13 @@ def t_expired_claim_comes_back_as_reconcile_when_git_names_it():
 
 def t_claim_hides_the_item_and_the_view_shows_it_active():
     fresh("claim_hides")
-    ok("file", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
-    ok("file", "SECOND_IN_LINE_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
-    ok("claim", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE")
-    out = ok("next")
+    # BENCH: FOUNDRY is retired and its queue view is no longer rendered (FOUNDRY_LITERALS_EXCISE_FROM_CODE)
+    ok("file", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE", "--for", "BENCH", "--title", "t", seat="BENCH")
+    ok("file", "SECOND_IN_LINE_PROBE_FIXTURE", "--for", "BENCH", "--title", "t", seat="BENCH")
+    ok("claim", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE", seat="BENCH")
+    out = ok("next", seat="BENCH")
     assert reserved(out)[0] == "SECOND_IN_LINE_PROBE_FIXTURE", out
-    view = ok("queue", "FOUNDRY")
+    view = ok("queue", "BENCH", seat="BENCH")
     prog = view[view.index("# IN PROGRESS"):view.index("# BLOCKED")]
     assert "## CLAIMED_AND_HIDDEN_PROBE_FIXTURE" in prog and "## SECOND_IN_LINE_PROBE_FIXTURE" in prog, prog
     assert prog.count("lease:    LIVE") == 2, prog

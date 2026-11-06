@@ -20,7 +20,7 @@ and a fake command runner, so nothing here touches the live system. What must ho
       NO-GO; runway under 0.8 is WARN (not blocking).
   R13 --expect-account names an account that is not live: NO-GO.
   R14 the cutover tool not on origin/main (untracked or differing) is NO-GO.
-  R15 FOUNDRY's shard last published 10 h ago is NO-GO; a git error is UNMEASURED.
+  R15 (removed 2026-11-06: the retired seat's ledger row went with it, FOUNDRY_LITERALS_EXCISE_FROM_CODE).
   R16 overall: any blocking NO-GO -> NO-GO; else any blocking UNMEASURED -> UNMEASURED; WARN/INFO never block.
   R19 (review 2026-10-28) an unreadable or empty dispatch-clone schedule is UNMEASURED and never replaced by the repo
       copy; a fresh tick with apply=false is NO-GO; a NaN or future ops_watch timestamp is UNMEASURED; a week-left under
@@ -184,7 +184,6 @@ def build(root):
         (("deadman_check.py", "run"), (0, "deadman: all arms alive\n")),
         (("claude-account", "status"), (0, json.dumps({"ok": True, "live": "acct_a", "accounts": [
             {"name": "acct_a", "state": "ok"}]}))),
-        (("log", "-1", "--format=%ct", "FOUNDRY.jsonl"), (0, "%d\n" % int(NOW - 1800))),
         (("diff", "--numstat"), (0, "")),
         (("cat-file", "-e"), (0, "")),
         (("diff", "--quiet", "origin/main"), (0, "")),
@@ -237,7 +236,7 @@ try:
     check(not bad, "R1 healthy fixture: every blocking row GO (got %r)" % bad[:4])
     check(V.overall(rows) == "GO", "R1 healthy fixture overall GO (got %s)" % V.overall(rows))
     for comp in ("Dispatcher", "Deadman", "Doorbell FOUNDRY", "Window FOUNDRY", "Window CONDUCTOR",
-                 "FOUNDRY ledger", "Cutover", "Goals", "Account HOLD", "Runway") + tuple(ROLES):
+                 "Cutover", "Goals", "Account HOLD", "Runway") + tuple(ROLES):
         check(any(r.comp == comp for r in rows), "R1 a row for %s exists" % comp)
     check(before == after, "R18 the checker wrote nothing in the fixture tree")
     check(V.render(rows).count("\n") >= len(rows), "R1 render prints one line per row")
@@ -398,13 +397,6 @@ try:
     root, ctx, fake = fresh(); roots.append(root)
     fake.put(("diff", "--quiet", "origin/main", V.CUTOVER_REL), (1, ""))
     check(verdict(rows_of(ctx), "Cutover", "tool on origin/main") == "NO-GO", "R14 cutover differs from origin: NO-GO")
-
-    # R15
-    root, ctx, fake = fresh(); roots.append(root)
-    fake.put(("log", "-1", "--format=%ct", "FOUNDRY.jsonl"), (0, "%d\n" % int(NOW - 36000)))
-    check(verdict(rows_of(ctx), "FOUNDRY ledger", "published recently") == "NO-GO", "R15 10 h old: NO-GO")
-    fake.put(("log", "-1", "--format=%ct", "FOUNDRY.jsonl"), (128, "fatal"))
-    check(verdict(rows_of(ctx), "FOUNDRY ledger", "published recently") == "UNMEASURED", "R15 git error: UNMEASURED")
 
     # R16
     R = V.Row

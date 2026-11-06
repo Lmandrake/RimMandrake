@@ -1924,11 +1924,12 @@ def tt_roles_dir() -> Path:
 def tt_texts(now, rules, ctx):
     """-> (texts {group: [str]}, bad {group: why}). Groups: a ledger seat (its note/close text; Operations' own OPS_* items
     are left out), 'commits.<seat>' (commit messages; no commit names its seat, so the seat is the path owner: a commit
-    touching any process path is BENCH's, else FOUNDRY's; 'ledger:' commits are skipped, the ledger is read directly),
+    touching any process path is BENCH's, else RELENTLESS's (the content builder since FOUNDRY retired, owner by card
+    2026-11-02); 'ledger:' commits are skipped, the ledger is read directly),
     'role.<name>' (a finished run's result text; Operations excluded). A group in `bad` could not be read."""
     cfg = rules.get("token_talk") or {}
     since = now - cfg.get("window_days", 7) * DAY
-    seats = cfg.get("seats") or ["FOUNDRY"]
+    seats = cfg.get("seats") or []
     texts, bad = {}, {}
     try:
         events = ctx.get("events")
@@ -1962,7 +1963,7 @@ def tt_texts(now, rules, ctx):
             msg, files = parts[1].strip(), [f for f in parts[2].split("\n") if f.strip()]
             if not msg or msg.startswith("ledger:"):
                 continue
-            seat = "BENCH" if any(rx.match(f) for f in files) else "FOUNDRY"
+            seat = "BENCH" if any(rx.match(f) for f in files) else "RELENTLESS"
             if seat in seats:
                 texts.setdefault("commits." + seat, []).append(msg)
     except Exception as e:  # noqa: BLE001
@@ -2016,7 +2017,7 @@ def tt_point(group, items, rx, cfg):
 def tt_groups(rules):
     """-> the groups token_talk measures now: each seat, its commits, each role."""
     cfg = rules.get("token_talk") or {}
-    seats = cfg.get("seats") or ["FOUNDRY"]
+    seats = cfg.get("seats") or []
     return list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
             ["producer", "auditor", "innovator"])]
 

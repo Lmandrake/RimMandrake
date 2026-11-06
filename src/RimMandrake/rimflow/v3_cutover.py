@@ -17,8 +17,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 RECORD = os.path.join(ROOT, "infrastructure", "state", "v3_cutover", "record.json")
-RETIRED = ("RETIRED: v3_cutover %s would re-assert FOUNDRY ownership, and FOUNDRY is retired (owner, by card "
-           "2026-11-02). Ownership moves through `rimflow reassign`; see CLAUDE.md 'FOUNDRY is retired' and "
+RETIRED = ("RETIRED: v3_cutover %s would re-assert ownership by a retired seat (owner, by card 2026-11-02). "
+           "Ownership moves through `rimflow reassign`; see CLAUDE.md 'Relentless builds and accepts everything' and "
            "item V3_CUTOVER_REVERT_RETIRE_NOW_HARMFUL. History: %s")
 
 

@@ -834,13 +834,13 @@ def ev(seat, i, text, kind="note", ago=H):
 
 
 evs = [ev("BENCH", "X_A", "fixed the thing %d" % n) for n in range(8)] + [ev("BENCH", "X_A", "we are over budget, save tokens")] * 2 \
-    + [ev("BENCH", "OPS_X", "the token burn is high")] * 20 + [ev("FOUNDRY", "Y", "plain note %d" % n) for n in range(3)] \
+    + [ev("BENCH", "OPS_X", "the token burn is high")] * 20 + [ev("RELENTLESS", "Y", "plain note %d" % n) for n in range(3)] \
     + [ev("BENCH", "X_A", "old token talk", ago=9 * DAY)] * 50
 R = rules()
 check("tokentalk: the live rules measure neither seat BENCH nor the conductor role (owner 2026-10-31: the Conductor has no closed sources)",
       "BENCH" not in R["token_talk"]["seats"] and "conductor" not in R["token_talk"]["roles"], R["token_talk"]["seats"])
 # the mechanism below is exercised on a fixture word-list config, seats and roles as named here, not the live ones
-R = dict(R, token_talk=dict(R["token_talk"], seats=["BENCH", "FOUNDRY"],
+R = dict(R, token_talk=dict(R["token_talk"], seats=["BENCH", "RELENTLESS"],
                             roles=["conductor", "producer", "arbiter", "auditor", "innovator"]))
 rx = OW.tt_regex(R)
 check("tokentalk: the word list matches whole words only (a bare cap and 'tokenizer' do not)",
@@ -851,7 +851,7 @@ b = out["tokentalk.BENCH.share"]
 check("tokentalk: BENCH share counts 2 of 10 reports, Operations' OPS_ items and the 9-day-old ones left out",
       b["m"] == "MEASURED" and b["v"] == 20.0 and b["x"]["reports"] == 10, b)
 check("tokentalk: a seat with 3 reports (under min_reports) is UNMEASURED, never 0",
-      out["tokentalk.FOUNDRY.share"]["m"] == "UNMEASURED" and out["tokentalk.FOUNDRY.share"]["v"] is None)
+      out["tokentalk.RELENTLESS.share"]["m"] == "UNMEASURED" and out["tokentalk.RELENTLESS.share"]["v"] is None)
 check("tokentalk: a repo that cannot be read makes the commit series UNMEASURED, not 0",
       out["tokentalk.commits.BENCH.share"]["m"] == "UNMEASURED" and "git log" in out["tokentalk.commits.BENCH.share"]["why"],
       out["tokentalk.commits.BENCH.share"])
@@ -892,8 +892,8 @@ texts, bad = OW.tt_texts(time.time(), R, {"events": evs})
 check("tokentalk: commits are split by path owner and ledger: commits skipped (no repo yet -> bad)", "commits.BENCH" in bad)
 os.environ["RM_STREAMS_BENCH"] = str(GIT)
 texts, bad = OW.tt_texts(time.time(), R, {"events": evs})
-check("tokentalk: Utils commit is BENCH's, mod commit FOUNDRY's, 'ledger:' commit left out",
-      texts.get("commits.BENCH") == ["plain"] and texts.get("commits.FOUNDRY") == ["tokens spent here"], texts)
+check("tokentalk: Utils commit is BENCH's, mod commit RELENTLESS's, 'ledger:' commit left out",
+      texts.get("commits.BENCH") == ["plain"] and texts.get("commits.RELENTLESS") == ["tokens spent here"], texts)
 if old_bench is None:
     del os.environ["RM_STREAMS_BENCH"]
 else:

@@ -79,7 +79,7 @@ def write_fixture(commits):
         json.dump({"ref": "origin/main", "head": "f" * 40, "commits": commits}, fh)
 
 
-def env(seat="FOUNDRY", fixture=True):
+def env(seat="BENCH", fixture=True):
     e = {k: v for k, v in os.environ.items()
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX")}
     e["RIMFLOW_LEDGER"] = os.path.join(_TMP["dir"], "events.jsonl")
@@ -95,7 +95,7 @@ def env(seat="FOUNDRY", fixture=True):
 def run(*args, **kw):
     p = subprocess.Popen([sys.executable, CLI] + list(args), stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, cwd=REPO,
-                         env=env(kw.get("seat", "FOUNDRY"), kw.get("fixture", True)))
+                         env=env(kw.get("seat", "BENCH"), kw.get("fixture", True)))
     out, err = p.communicate()
     return p.returncode, out.decode("utf-8", "replace"), err.decode("utf-8", "replace")
 
@@ -132,7 +132,7 @@ def ledger_events():
     return evs
 
 
-def file_ready(iid, seat="FOUNDRY"):
+def file_ready(iid, seat="BENCH"):
     """Filed and in plain `ready`. Step 3: `claim` now leases and STARTS the item, so the
     route to an unleased `ready` item is claim + the owning seat's own `reclaim`."""
     ok("file", iid, "--for", seat, "--title", "test item %s" % iid, seat=seat)
@@ -140,7 +140,7 @@ def file_ready(iid, seat="FOUNDRY"):
     ok("reclaim", iid, seat=seat)
 
 
-def release_offer(out, iid, seat="FOUNDRY"):
+def release_offer(out, iid, seat="BENCH"):
     """Give back the lease a non-peek `next` took (step 3), so the next call sees it."""
     import re as _re
     m = _re.search(r"lease token (\S+)", out)
@@ -184,7 +184,7 @@ def t_index_reads_subjects_and_both_trailers():
 def t_index_skips_bookkeeping_and_commits_before_creation():
     idx = _fixture_index([
         commit(1, "ledger: WRECK_FIELD_BUILD_PROBE_FIXTURE noted",
-               files=["infrastructure/state/ledger/events/FOUNDRY.jsonl"]),
+               files=["infrastructure/state/ledger/events/BENCH.jsonl"]),
         commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE: an old mention", t=EARLIER),
         commit(3, "WRECK_FIELD_BUILD_PROBE_FIXTURE: the build"),
     ])
@@ -206,7 +206,7 @@ def t_real_git_log_format_parses():
 
 def _item(iid="WRECK_FIELD_BUILD_PROBE_FIXTURE", created="2026-01-01T00:00:00Z"):
     it = model.Item(iid, 0)
-    it.created_at, it.state, it.owner = created, "ready", "FOUNDRY"
+    it.created_at, it.state, it.owner = created, "ready", "BENCH"
     return it
 
 
@@ -216,16 +216,16 @@ def t_assess_kinds_and_verdict_suppression():
     it = _item()
     assert reconcile.assess(it, idx).kind == "reconcile"
     assert reconcile.assess(it, None).kind == "build", "no git must never trigger"
-    it.reconciles.append({"ts": "t1", "seat": "FOUNDRY", "verdict": "partial",
+    it.reconciles.append({"ts": "t1", "seat": "BENCH", "verdict": "partial",
                           "shas": [short(1)], "remaining": "art"})
     a = reconcile.assess(it, idx)
     assert a.kind == "reconcile" and [m.short for m in a.unjudged] == [short(2)], a
-    it.reconciles.append({"ts": "t2", "seat": "FOUNDRY", "verdict": "unrelated",
+    it.reconciles.append({"ts": "t2", "seat": "BENCH", "verdict": "unrelated",
                           "shas": [short(2)], "remaining": None})
     a = reconcile.assess(it, idx)
     assert a.kind == "partial" and a.standing["remaining"] == "art", \
         "`unrelated` must not revoke the standing `partial`: %r" % a
-    it.reconciles.append({"ts": "t3", "seat": "FOUNDRY", "verdict": "complete",
+    it.reconciles.append({"ts": "t3", "seat": "BENCH", "verdict": "complete",
                           "shas": [sha(1)], "remaining": None})
     assert reconcile.assess(it, idx).kind == "complete"
     offers, skipped = reconcile.guard([it, _item("OTHER_THING_BUILD_PROBE_FIXTURE")], idx)
@@ -245,11 +245,11 @@ def t_note_cited_sha_triggers_only_when_published():
 
 
 def t_model_reconcile_validates_and_changes_no_state():
-    base = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "FOUNDRY",
+    base = [{"seat": "BENCH", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "BENCH",
              "title": "t", "kind": "task", "ts": "2026-01-01T00:00:00Z"},
-            {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
+            {"seat": "BENCH", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
              "ts": "2026-01-01T00:00:01Z"},
-            {"seat": "FOUNDRY", "event": "note", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
+            {"seat": "BENCH", "event": "note", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
              "ts": "2026-01-01T00:00:02Z", "text": "built at 598dec613; defaced is a word"}]
     good = {"seat": "BENCH", "event": "reconcile", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "verdict": "partial", "sha": "598dec613 a10000001", "remaining": "art install",
@@ -257,7 +257,7 @@ def t_model_reconcile_validates_and_changes_no_state():
     w = model.replay(base + [good])
     it = w.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"]
     assert not w.errors, w.errors
-    assert it.state == "ready" and it.owner == "FOUNDRY", "reconcile moved state/owner"
+    assert it.state == "ready" and it.owner == "BENCH", "reconcile moved state/owner"
     assert it.cited_shas == ["598dec613"], it.cited_shas
     assert it.reconciles[0]["shas"] == ["598dec613", "a10000001"]
     for bad, why in ((dict(good, verdict="done"), "verdict"),
@@ -274,11 +274,11 @@ def t_model_reconcile_validates_and_changes_no_state():
 def t_old_readers_ignore_reconcile():
     """A clone whose model predates the verb collects it into `world.errors` and
     projects every item exactly as before — never fatal, never a state change."""
-    evs = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "FOUNDRY",
+    evs = [{"seat": "BENCH", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "BENCH",
             "title": "t", "kind": "task", "ts": "2026-01-01T00:00:00Z"},
-           {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
+           {"seat": "BENCH", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "ts": "2026-01-01T00:00:01Z"},
-           {"seat": "FOUNDRY", "event": "reconcile", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
+           {"seat": "BENCH", "event": "reconcile", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "verdict": "complete", "sha": "598dec613", "ts": "2026-01-01T00:00:02Z"}]
     saved = model.VERBS.pop("reconcile")
     try:
@@ -289,7 +289,7 @@ def t_old_readers_ignore_reconcile():
     assert len(old.errors) == 1 and "unknown verb" in old.errors[0][2], old.errors
     o, n = old.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"], new.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"]
     assert (o.state, o.owner, o.blocked) == (n.state, n.owner, n.blocked) == \
-        ("ready", "FOUNDRY", False)
+        ("ready", "BENCH", False)
     assert [e["event"] for e in model.canonical_order(list(reversed(evs)))] == \
         ["file", "claim", "reconcile"]
 
@@ -310,7 +310,7 @@ def t_same_item_built_twice_yet_offered():
     ok("reclaim", "WRECK_FIELD_BUILD_PROBE_FIXTURE")
     # the rendered queue's top entry says the same thing (render-on-read). Read BEFORE the
     # non-peek `next`, which reserves the item and so moves it to IN PROGRESS.
-    view = ok("queue", "FOUNDRY")
+    view = ok("queue", "BENCH")
     top = view[view.index("# NEXT"):]
     assert "action:   RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE" in top, top[:1500]
     out = ok("next")
@@ -319,7 +319,7 @@ def t_same_item_built_twice_yet_offered():
         "a built item was offered as build work:\n" + out
     assert "rimflow reconcile WRECK_FIELD_BUILD_PROBE_FIXTURE --verdict" in out
     assert state_of("WRECK_FIELD_BUILD_PROBE_FIXTURE") == "ready", "next changed the state"
-    view = ok("queue", "FOUNDRY")
+    view = ok("queue", "BENCH")
     assert "lease:    LIVE" in view, "the reserved item must show as active:\n" + view[:2000]
 
 
@@ -373,7 +373,7 @@ def t_complete_is_not_offered_but_stays_open():
     assert "-> rimflow claim YET_UNBUILT_THING_PROBE_FIXTURE" in out, out
     assert "NOT offered as build work" in out and "WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out
     assert state_of("WRECK_FIELD_BUILD_PROBE_FIXTURE") == "ready", "complete must not close or move it"
-    view = ok("queue", "FOUNDRY")
+    view = ok("queue", "BENCH")
     assert "# RECONCILED COMPLETE" in view and "## WRECK_FIELD_BUILD_PROBE_FIXTURE" in view, view
 
 
@@ -403,7 +403,7 @@ def t_bookkeeping_and_preexisting_commits_do_not_trigger():
     fresh("noise")
     file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
     write_fixture([commit(1, "ledger: WRECK_FIELD_BUILD_PROBE_FIXTURE claimed",
-                          files=["infrastructure/state/ledger/events/FOUNDRY.jsonl"]),
+                          files=["infrastructure/state/ledger/events/BENCH.jsonl"]),
                    commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE named before it was filed", t=EARLIER)])
     out = ok("next")
     assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out

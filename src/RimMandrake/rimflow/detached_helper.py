@@ -39,7 +39,7 @@ CAP_MAX_S = 4 * 3600
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 DEFAULT_BUDGET_USD = 15.0
 MODELS = ("opus", "sonnet", "haiku")
-SEATS = ("BENCH", "FOUNDRY", "STEVE", "RUNNER")
+SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
 
 FOOTER = """
