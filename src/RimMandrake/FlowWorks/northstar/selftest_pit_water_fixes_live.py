@@ -78,6 +78,20 @@ check("godmode: nothing placed", W.v_godmode([])[0], "FAIL")
 check("sluice: fixed (closed blocks)", W.v_sluice(False, True)[0], "PASS")
 check("sluice: old (walks through like a door)", W.v_sluice(True, True)[0], "FAIL")
 check("sluice: door control failed -> site", W.v_sluice(False, False)[0], "UNMEASURED")
+# a swimmer left in a wet pit drowns during the next row and the governor stops the run (WET_PROOF_FIX_SWIMMER_LEFT_TO_DROWN)
+_src = open(W.__file__, encoding="utf-8").read()
+
+
+def _at(needle):
+    return _src.find(needle)
+
+
+check("vanish(): uses pawn_force_incapacitate action=vanish",
+      'B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")' in _src, True)
+_r5, _v5, _ds = _at('row("PWF_swim_5m_surface"'), _at('vanish(sw, "PWF_swim_5m_surface")'), _at("ds = spawn(")
+check("5m swimmer vanished after its row, before the next spawn", 0 < _r5 < _v5 < _ds, True)
+_rc, _vc, _wp = _at('row("PWF_drafted_swimmer_all_cells"'), _at('vanish(ds, "PWF_drafted_swimmer_all_cells")'), _at("wp = spawn(")
+check("drafted swimmer vanished after its row, before the next spawn", 0 < _rc < _vc < _wp, True)
 # every row is mapped to an item
 check("every row names an item", sorted(k for k, v in W.ITEMS.items() if not v), [])
 

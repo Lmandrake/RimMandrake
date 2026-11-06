@@ -19,6 +19,9 @@ Rows (item -> PROVE / EXPECT / LIES):
   PWF_swim_5m_surface            DEEP_PIT_SWIM_FIX_FIVE_METRES_WALKS. A colonist in a brim-full 5 m pit (dig 10, fill 10):
                                  SwimsAt True and ProofPawnSink sink <= 0.15 (drawn at the surface). Old: walking on the
                                  floor, sink at the cap (2.4 = 8 x 0.3, "jump in").
+                                 The swimmer is vanished once read: in the 3x3 centre of a brim-full pit no exit is in
+                                 cardinal reach, so it drowned by rule during the next row and the governor stopped the
+                                 run (live 2026-10-29; WET_PROOF_FIX_SWIMMER_LEFT_TO_DROWN). Same for the drafted swimmer.
   PWF_drafted_swimmer_all_cells  DRAFTED_SWIMMER_FIX_PIT_BOTTOM_ROW. A 3x4 pit, 3 m water (dig 6, fill 6): the colonist is
                                  ordered to EVERY square drafted, then every square undrafted; each order arrives, SwimsAt
                                  is True there and the sink <= 0.15 (floating at the surface on every row). Old: drafted
@@ -317,6 +320,17 @@ def main():
     def sink(pid):
         return fnum(kv(sc(PROMO, "ProofPawnSink", pid) or "").get("sink"))
 
+    def vanish(pid, why):
+        """Take a test colonist off the map (no death, no corpse) once its row is read. A swimmer left in a pit with no
+        exit in reach drowns by rule (RM_PitDrowning), and that death stops the governor for every later row
+        (WET_PROOF_FIX_SWIMMER_LEFT_TO_DROWN, live 2026-10-29). jawa/destroy_batch never removes pawns."""
+        if not pid:
+            return None
+        r = B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}
+        gone = bool(r) and r.get("success") is not False and r.get("destroyedAfter", True) is not False   # no answer is not gone
+        res.setdefault("vanished", []).append({"pawn": pid, "after": why, "gone": gone})
+        return gone
+
     def things_in(rect):
         lt = B.call("jawa/list_things", rect="%d,%d,%d,%d" % rect, limit=80) or {}
         return [str(t.get("def") or t.get("defName") or "") for t in lt.get("things") or []]
@@ -386,6 +400,8 @@ def main():
         B.ticks(30)
         st, det = v_float(swims(sw, c5) if a5 else None, sink(sw) if a5 else None)
         row("PWF_swim_5m_surface", st, dict(det, arrived=a5, proof=sc(PROMO, "ProofPawnSink", sw) if a5 else None))
+        if vanish(sw, "PWF_swim_5m_surface"):
+            sw = None
         # ---- drafted + undrafted swimmer, every square
         ds = spawn(P(6, 16))
         cells = []
@@ -399,6 +415,8 @@ def main():
                     cells.append({"cell": c, "mode": "drafted" if draft else "undrafted", "arrived": arr,
                                   "swims": swims(ds, c) if arr else None, "sink": sink(ds) if arr else None})
         row("PWF_drafted_swimmer_all_cells", *v_all_cells(cells))
+        if vanish(ds, "PWF_drafted_swimmer_all_cells"):
+            ds = None
         # ---- wet pit enterable
         wp = spawn((W[0] + 1, W[1] + 5))
         a_in, _ = order(wp, (W[0] + 1, W[1] + 1), wait=600)
