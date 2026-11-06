@@ -14,8 +14,7 @@
 
   Art: every animal's east/north/south renders are wired under
   Textures/Things/Pawn/Animal/RM_<Name>/ (LEANINGSCRUB_ART_WIRING_1). Zellik
-  flies on a 4-frame cut-out flip-book of its static; Dustflutter has no
-  flying flip-book frames yet and flies with the grounded sprite.
+  and Dustflutter fly on 4-frame cut-out flip-books of their statics.
 
   One home each (owner law 2026-09-21): every species here is wired into
   RM_LeaningScrub and nowhere else.
@@ -889,6 +888,15 @@
     <combatPower>4</combatPower>
     <wildGroupSize>4~10</wildGroupSize>
     <ecoSystemWeight>0.02</ecoSystemWeight>
+    <!-- 4-frame wing-beat flip-book cut out of his kept static by flyer_cutout.py (body pixel-identical in every frame;
+         config src/RimMandrake/Utils/art/flyer_cutout_sets/Dustflutter.json). Frames are 320 px: the 256 px static padded 32 px a side,
+         so 1.25 x the life stage drawSize keeps the body at its grounded scale. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>

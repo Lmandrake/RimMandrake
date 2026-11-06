@@ -61,10 +61,12 @@
    "frames": ""
   },
   "RM_Dustflutter": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "none",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Dustflutter"
+   ],
    "tex": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
    "static": {
     "g1": 0.944,
@@ -72,8 +74,8 @@
     "g4": 0.766
    },
    "static_fails": [],
-   "provenance": "no flip-book",
-   "frames": ""
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RM_Dustveil": {
    "tier": 4,
@@ -466,10 +468,12 @@
    "frames": ""
   },
   "RM_Soorrak": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "unannotated",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Soorrak"
+   ],
    "tex": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "static": {
     "g1": 0.755,
@@ -477,7 +481,7 @@
     "g4": 0.685
    },
    "static_fails": [],
-   "provenance": "vanilla Core frames (borrowed)",
+   "provenance": "generated/ours",
    "frames": "4"
   },
   "RM_Sparkleech": {

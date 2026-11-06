@@ -92,8 +92,7 @@
       <lifeExpectancy>40</lifeExpectancy>
       <!-- Real core flight, the Locust/Chicken shape. canLeaveMapFlying is the
            sheet's own mechanism: it drinks hundreds of kilometres away and
-           leaves the map to do it. No flying flip-book frames yet, so it flies
-           without a wing-beat; frames never block flight. -->
+           leaves the map to do it. -->
       <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
       <flightSpeedFactor>2.5</flightSpeedFactor>
       <canFlyIntoMap>true</canFlyIntoMap>
@@ -128,6 +127,15 @@
     <combatPower>220</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <canArriveManhunter>false</canArriveManhunter>
+    <!-- 4-frame wing-beat flip-book cut out of his kept static by flyer_cutout.py (body pixel-identical in every frame;
+         config src/RimMandrake/Utils/art/flyer_cutout_sets/Soorrak.json). Frames are 640 px: the 1024 px static halved to 512 and padded 64 px a side,
+         so 1.25 x the life stage drawSize keeps the body at its grounded scale. FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Soorrak/RM_Soorrak_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
