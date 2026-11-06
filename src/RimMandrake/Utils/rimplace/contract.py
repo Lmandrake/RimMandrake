@@ -127,7 +127,10 @@ def tool_parameters(source_dir: Path | None = None) -> dict[str, set[str]] | Non
     # C# is ever restructured past this parser, it must read UNMEASURED rather
     # than quietly returning a short list that passes everything.
     known = {
-        "jawa/set_terrain_batch": {"ops", "terrainDef", "layer", "refresh"},
+        # `clearOverlays` added 2026-11-05 (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK);
+        # missing here, it turned the nightly rimplace selftest red.
+        "jawa/set_terrain_batch": {"ops", "terrainDef", "layer", "refresh",
+                                   "clearOverlays"},
         # ⚠️ This set must track the SOURCE. `refuseIfDisplaces` was added to
         # build_batch on 2026-08-27 (BUILD_BATCH_OVERWRITES_SILENTLY_1) and this
         # calibration then failed silently for a day - every contract check read

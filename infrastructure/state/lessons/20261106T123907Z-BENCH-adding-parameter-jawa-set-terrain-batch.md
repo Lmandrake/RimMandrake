@@ -1,0 +1,1 @@
+Adding a parameter to jawa/set_terrain_batch or jawa/build_batch in the JawaBench companion C# must also update the 'known' calibration set in src/RimMandrake/Utils/rimplace/contract.py, or tool_parameters() returns None and the rimplace selftest goes red (refuseIfDisplaces 2026-08-27; clearOverlays 2026-11-05, SELFTEST_FIX_RIMPLACE_JLWJ).
