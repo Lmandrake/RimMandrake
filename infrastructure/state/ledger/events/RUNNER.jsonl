@@ -4516,3 +4516,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T07:32:33Z","tsn":1793950353037800999}
 {"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"kept","detail":"sweep: running again","ts":"2026-11-06T07:33:18Z","tsn":1793950398616385138}
 {"seat":"RUNNER","event":"note","id":"OPS_RELENTLESS_READING_RESTORE_IUUR","text":"ops_watch: cleared at 2026-11-06T07:42:39Z (relentless.blind now 0)","ts":"2026-11-06T07:42:45Z","tsn":1793950965057280659}
+{"seat":"RUNNER","event":"live","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","result":"broken","detail":"Ops alarm CHURN_OR_BLIND: infra_share 25.0 (line < 40) -- health.incident_slis = 1 incident SLIs reading bad now (MEASURED), line > 0","ts":"2026-11-06T07:46:30Z","tsn":1793951190512972762}
+{"seat":"RUNNER","event":"raise","id":"OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-06T07:46:33Z","tsn":1793951193705503928}
