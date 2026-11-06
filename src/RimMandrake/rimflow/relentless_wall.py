@@ -129,6 +129,24 @@ def skill_targets(prof):
     return sorted({os.path.realpath(os.path.join(root, n)) for n in os.listdir(root)} - {os.path.realpath(root)})
 
 
+# CHECKER_REACH_FIX_OTHER_STILL_DARK gen 5: walls.marker.deny holds /mnt/d/Luke/dev, so the D: mirror's untracked game
+# inventory (observed/inventory/bundle_textures, read by gametex/backfill/donor_standins/scale_panel as BUNDLES) was EACCES in
+# every box: selftest_facing_scale_lint and selftest_art_eval crashed with PermissionError, ART_LEDGER_VET_PURGE_BAN_REVIEW_
+# OWED's and NIGHTLY_COP_FIX_RED_AQJSGV_CFVH's Judges stayed blind, and no repair could open it (a read path is bound only
+# under a read_through root; a BindReadOnlyPaths under an InaccessiblePaths parent is still EACCES, measured 2026-11-06). A
+# `read_always` path is carved out of the deny list like a skill target and made read only: the same path, every box.
+# Prefixes only (no filesystem read), so relentless_reach.hidden answers the same inside a box.
+def read_always(prof):
+    """-> the profile's read_always paths: plain absolute paths, normalised, in order."""
+    out = []
+    for x in prof.get("read_always") or ():
+        if isinstance(x, str) and _SAFE.match(x):
+            q = os.path.normpath(x)
+            if q not in out and q != "/":
+                out.append(q)
+    return out
+
+
 def _carve(p, targets):
     """-> the paths to deny in place of p so that every target stays reachable: p itself when no target is in it or under it,
     nothing when p is inside a target, else p's children, each carved in turn."""
@@ -145,11 +163,12 @@ def _carve(p, targets):
 
 def denied(prof, extra=()):
     """Every path the unit may not see. deny_children: each thing under a root, so a clone made tomorrow is walled too.
-    Skill symlink targets (allow_read_skills) are carved out of the deny list; readonly() makes them read only."""
+    Skill symlink targets (allow_read_skills) and read_always paths are carved out of the deny list; readonly() makes them
+    read only."""
     out = list(prof["deny"]) + list(extra)
     for root in prof.get("deny_children", ()):
         out += [str(p) for p in sorted(Path(root).iterdir()) if str(p) not in prof.get("tmpfs", ())]
-    targets = skill_targets(prof)
+    targets = skill_targets(prof) + [t for t in read_always(prof) if os.path.isdir(t) or os.path.isfile(t)]
     if targets:
         out = [q for p in out for q in _carve(p, targets)]
     return sorted(set(out))
@@ -159,7 +178,8 @@ def readonly(prof):
     """The paths the unit may read and not write: the skill targets that sit inside a walled root (the ones the deny list
     was carved around). A target elsewhere, such as under ~/.claude, is left as the host has it."""
     roots = [os.path.realpath(r) for r in list(prof["deny"]) + list(prof.get("deny_children", ()))]
-    return [t for t in skill_targets(prof) if any(t == r or t.startswith(r + "/") for r in roots)]
+    held = skill_targets(prof) + [t for t in read_always(prof) if os.path.exists(t)]
+    return [t for t in dict.fromkeys(held) if any(t == r or t.startswith(r + "/") for r in roots)]
 
 
 def unit_path(p):

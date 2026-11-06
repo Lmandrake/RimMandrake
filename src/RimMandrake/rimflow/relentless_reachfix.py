@@ -299,6 +299,7 @@ def uncovered(r, prop, texts):
     masks = [m.rstrip("/") for m in list(prof.get("deny_children") or []) + list(prof.get("deny") or [])]
     cover = [c.rstrip("/") for a in ads for c in a.get("covers") or [] if isinstance(c, str)]
     cover += [p.rstrip("/") for p in prop.get("paths") or [] if relentless_wall.through_reachable(p, prof)]
+    cover += relentless_wall.read_always(prof)     # every box shows them (gen 5: the D: mirror's game inventory)
     out = []
     for p in _paths_of(texts):
         if not any(p == m or p.startswith(m + "/") for m in masks):

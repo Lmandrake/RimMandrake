@@ -244,8 +244,9 @@ def t_real_box():
     if not os.path.isdir(store_root):
         print("skip 7. no store root %s to bind" % store_root)
         return
-    try:
-        got = REAL_RUN("python3 src/RimMandrake/rimflow/selftest_x.py && test ! -e /mnt/d/Luke/dev/RimMandrake/CLAUDE.md", sha, d, store_root,
+    try:    # the mirror's files stay unreadable; since read_always carves its game inventory out, their names show
+        got = REAL_RUN("python3 src/RimMandrake/rimflow/selftest_x.py && ! head -c 1 /mnt/d/Luke/dev/RimMandrake/CLAUDE.md "
+                       "2>/dev/null", sha, d, store_root,
                        R.rules(), 120)
     except Exception as e:      # noqa: BLE001
         got = {"box_error": repr(e)}
