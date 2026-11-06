@@ -2537,7 +2537,8 @@ class Effects(relentless_game.GameFx):
         dirty = [x for x in shards if x in got] + moved
         a = ["./publish"] + (["-m", "ledger: relentless supervisor", *dirty] if dirty else [])
         try:
-            r = subprocess.run(a, cwd=self.books, capture_output=True, text=True, timeout=90, stdin=subprocess.DEVNULL)
+            r = subprocess.run(a, cwd=self.books, capture_output=True, text=True, timeout=90, stdin=subprocess.DEVNULL,
+                               env=dict(os.environ, RELENTLESS_NO_WAKE="1"))  # its own landing wakes nobody
         except subprocess.TimeoutExpired:       # a slow push is a retry next tick, not a failed unit (OPS_TIMER_REPAIR_PRXC)
             return "publish timed out after 90 s"
         return None if r.returncode == 0 else "publish exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
@@ -7163,6 +7164,8 @@ def _tick(store, fx, r, now, prof):
             """A state change poked this tick (relentless_wake): the dependents of a close enrol now, not at the end."""
             t = time.time()
             why = fx.sync()
+            if why and "not landed" in why:     # this tick's own ledger lines (measured live 2026-11-06: every serve
+                why = fx.flush() or fx.sync()   # refused so): land them (flush p50 10 s), then level
             if why:         # the tick's own sync stands: books_alarm says a frozen books at the next tick
                 return {"why": why}
             synced[0] = t

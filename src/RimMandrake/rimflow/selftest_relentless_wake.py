@@ -61,6 +61,16 @@ def t_poke():
     shutil.rmtree(root)
 
 
+def t_no_wake_env():
+    root, sdir = rig()
+    os.environ["RELENTLESS_NO_WAKE"] = "1"
+    try:
+        ok(W.poke("publish", root=root) is None and listing(sdir) == [], "poke: the supervisor's own flush wakes nobody")
+    finally:
+        del os.environ["RELENTLESS_NO_WAKE"]
+    shutil.rmtree(root)
+
+
 def t_fire_coalesce():
     root, sdir = rig()
     starts = []
@@ -197,6 +207,25 @@ def t_tick_serves():
     acts2 = x.tick()
     ok(not [a for a in acts2 if a.get("do") == "wake_serve"], "tick: a served poke is not served again")
     x.done()
+    # live 2026-11-06: mid-tick, books holds the tick's own ledger lines and sync refuses; the serve lands them first
+    x = T.Rig(n=0, share=1.0, max_workers=10)
+    syncs, flushes = [], []
+
+    def sync2():
+        syncs.append(1)
+        if len(syncs) == 2 and not flushes:
+            return "books 2 behind: 3 lines of infrastructure/state/ledger/events/BENCH.jsonl not landed"
+        if flushes:
+            x.w.items["DEP"] = "proposed"
+        return None
+    x.w.sync = sync2
+    x.w.flush = lambda: flushes.append(1)
+    W.poke("publish", "close of BLOCKER", root=x.d, now=x.now)
+    acts = x.tick()
+    serve = [a for a in acts if a.get("do") == "wake_serve"]
+    ok(len(serve) == 1 and serve[0].get("enrolled") == ["DEP"] and flushes,
+       "tick: a sync refused for the tick's own unlanded lines flushes them and enrols anyway: %s" % serve)
+    x.done()
 
 
 def t_units():
@@ -238,7 +267,7 @@ def t_cli_poke():
 
 
 def main():
-    for t in (t_poke, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_mark, t_tick_serves, t_units,
+    for t in (t_poke, t_no_wake_env, t_fire_coalesce, t_fire_absorbed, t_fire_rate_cap, t_serve, t_mark, t_tick_serves, t_units,
               t_config, t_cli_poke):
         t()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL PASS")

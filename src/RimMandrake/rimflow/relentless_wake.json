@@ -7,7 +7,7 @@
  "fire_max_per_hour": 60,
  "_serve_min_gap_s": "Floor between two in-tick serves. A serve costs a books sync (measured 1.5 s, py_calls relentless:sync) plus an enrol with a fresh ledger read (measured 11.2 s, relentless:enrol): 20 s keeps a burst of landings to at most ~40% of a tick's time while a close still enrols its dependents within ~35 s.",
  "serve_min_gap_s": 20,
- "_serve_max_per_tick": "Ceiling on in-tick serves, from the measured serve cost above: 6 x ~13 s = ~80 s, bounded inside the 1200 s unit timeout even on a tick already slow.",
+ "_serve_max_per_tick": "Ceiling on in-tick serves. Measured serve cost: books sync 1.5 s + enrol 11.2 s (py_calls), plus a flush of the tick's own ledger lines when sync refuses for them (live 2026-11-06: every mid-tick serve did; flush phase p50 10 s, max 90 s over 25 ticks): ~23 s, so 6 serves add at most ~140 s typical, bounded inside the 1200 s unit timeout.",
  "serve_max_per_tick": 6,
  "_clock_keys": "Every relentless_rules.json key that is still a clock after RELENTLESS_WIRE_WAKE_ON_STATE_CHANGE, with the measured reason it stays one. Kept here, not in relentless_rules.json, because that file is edited only by each key's owning package. selftest_relentless_wake checks every name resolves to a live key. kind: ceiling (bounds a process or worker that emits no event), throttle (cost or attention), window (a measurement span), backoff_owed (should wake on its cause closing: RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE), wp11 (game lane, owned by RELENTLESS_LIVE_BUILD_ONE_AGENT_TWO_MODES).",
  "clock_keys": {

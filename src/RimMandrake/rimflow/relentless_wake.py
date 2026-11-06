@@ -59,6 +59,8 @@ def store_dir(root=None):
 
 def poke(source, why="", root=None, now=None):
     """-> the poke's path, or None when there is no Relentless store on this host. Never raises."""
+    if os.environ.get("RELENTLESS_NO_WAKE"):     # the supervisor's own flush: it already holds what it landed
+        return None
     try:
         d = store_dir(root)
         if not os.path.isdir(d):        # a laptop or a clone with no supervisor: nothing to wake
