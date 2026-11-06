@@ -83,3 +83,6 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 - 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** — it calls `modlist_swap` and
   swaps to MINIMAL. It reads like a query verb and is a Charter expensive-list action. On the
   Mac it dies on the Windows path; on the Desktop it swaps his list unasked (2026-09-17).
+- 🔴 **`daemon-reload` restarts the count of a `systemd-run --on-active` timer** (measured 2026-11-06,
+  OPS_TIMERS_REVIVE_115F: a 30 s timer with a reload at +20 s fired at +50 s; an `--on-calendar` one fired at +30 s).
+  Selftests and deploys reload often here, so a delay beyond a few minutes needs `--on-calendar`.

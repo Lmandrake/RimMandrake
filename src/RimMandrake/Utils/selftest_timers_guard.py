@@ -112,7 +112,7 @@ def main():
     kinds = ["run" if a[0] == "systemd-run" else a[2] for a in cmds]
     check(kinds[0] == "run" and "stop" in kinds and kinds.index("stop") > 0, "restart armed before the stop")
     run = cmds[0]
-    check(any(x.startswith("--on-active=") for x in run) and "start" in run and "rm-x.timer" in run, "restart covers the list")
+    check(any(x.startswith("--on-calendar=") for x in run) and "start" in run and "rm-x.timer" in run, "restart covers the list")
     for bad_h in (0, -1, float("nan"), float("inf")):
         try:
             TG.pause(["rm-x.timer"], bad_h, runner=lambda *a, **k: SP.CompletedProcess(a, 0, "", ""))
@@ -133,18 +133,23 @@ def main():
     try:
         SP.run(["systemctl", "--user", "daemon-reload"], timeout=60)
         SP.run(["systemctl", "--user", "start", name + ".timer"], timeout=60)
-        r = TG.pause([name + ".timer"], 0.02)   # 72 s
+        t0 = time.time()
+        r = TG.pause([name + ".timer"], 0.01)   # 36 s
         st1 = SP.run(["systemctl", "--user", "is-active", name + ".timer"], capture_output=True, text=True).stdout.strip()
         armed = SP.run(["systemctl", "--user", "list-timers", "--all", "--no-legend", TG.RESUME_PREFIX + "*"],
                        capture_output=True, text=True).stdout
         check(st1 == "inactive", "throwaway timer stopped (is %s)" % st1)
         check(r["unit"] in armed, "restart timer %s is pending" % r["unit"])
-        t0 = time.time()
+        # A daemon-reload at +25 s moves an OnActiveSec due time to +61 s; a wall-clock due time stays at +36 s.
+        time.sleep(max(0, t0 + 25 - time.time()))
+        SP.run(["systemctl", "--user", "daemon-reload"], timeout=60)
         st2 = "inactive"
-        while time.time() - t0 < 110 and st2 != "active":
-            time.sleep(3)
+        while time.time() - t0 < 90 and st2 != "active":
+            time.sleep(2)
             st2 = SP.run(["systemctl", "--user", "is-active", name + ".timer"], capture_output=True, text=True).stdout.strip()
+        took = time.time() - t0
         check(st2 == "active", "throwaway timer restarted by its own armed resume")
+        check(took < 54, "a daemon-reload does not delay the restart (came back at +%.0f s, due +36 s)" % took)
     finally:
         SP.run(["systemctl", "--user", "stop", name + ".timer"], timeout=60)
         for s in (".timer", ".service"):

@@ -11,7 +11,7 @@ tolerated while that restart is pending; if the restart is gone and timers are s
 
     timers_guard.py run [--file-alarms]
     timers_guard.py install [--apply]
-    timers_guard.py pause --hours H TIMER [TIMER...]     arm restart (systemd-run --on-active) THEN stop, one step
+    timers_guard.py pause --hours H TIMER [TIMER...]     arm restart (systemd-run --on-calendar) THEN stop, one step
     timers_guard.py pause --hours H --all                every enabled watched timer
 """
 import argparse
@@ -177,10 +177,14 @@ def pause(names, hours, runner=subprocess.run):
         raise ValueError("pause takes rm-*/testq-* .timer names, got %r" % names)
     if not (hours > 0 and hours < 24 * 366):
         raise ValueError("pause --hours must be > 0 and finite, got %r" % hours)
-    secs = max(1, int(hours * 3600))
+    secs = max(5, int(hours * 3600))   # a due time already past when systemd reads it would never elapse
     unit = RESUME_PREFIX + time.strftime("%Y%m%d-%H%M%S")
-    r = runner(["systemd-run", "--user", "--on-active=%ds" % secs, "--unit=" + unit, "--collect",
-                "systemctl", "--user", "start"] + names, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    # A wall-clock due time, never --on-active: every daemon-reload restarts an OnActiveSec count (measured 2026-11-06,
+    # OPS_TIMERS_REVIVE_115F), so at this host's reload rate a pause of more than minutes would never come back.
+    due = datetime.fromtimestamp(time.time() + secs, timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    r = runner(["systemd-run", "--user", "--on-calendar=" + due, "--timer-property=AccuracySec=1s", "--unit=" + unit,
+                "--collect", "systemctl", "--user", "start"] + names,
+               capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     if r.returncode:
         raise RuntimeError("could not arm the restart, NOTHING stopped: %s" % (r.stderr or "")[:200])
     from ops_watch import atomic_json
