@@ -1371,3 +1371,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:26:10Z","tsn":1794003970959826953}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A2 (L2), read-only proof","ts":"2026-11-06T22:28:03Z","tsn":1794004083553554167}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T22:37:48Z","tsn":1794004668024034423}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLAYER_HOVER_PROBE_TOOLTIP_DRAWN A3 (L2), read-only proof","ts":"2026-11-06T22:39:22Z","tsn":1794004762046088900}
