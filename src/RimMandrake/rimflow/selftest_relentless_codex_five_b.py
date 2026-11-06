@@ -6,7 +6,8 @@ relentless_game.py
   #1  green_stands: a contract row in the same whole second as a fractional offline_green.at (no fingerprint) follows it.
   #2  not_measuring: "the proof exited -11: it did not measure" (killed by a signal) is a dud and counts to the limit.
   #3  stage phase: an unread game ({"state": None}) is a harness wait, never a launch or a deploy.
-  #4  _env: an environment row older than `since` (read before this staging) neither routes nor holds; at `since` it acts.
+  #4  _env: an environment row older than `since` (read before this staging) neither routes nor waits; at `since` it routes
+      (blocked on its repair item, SG.routed: ENV_HOLDS_FIX_ROUTE_TO_BUILDERS).
 relentless.py
   #19 help_step: a help whose clone an unreaped quarantine holds is never resumed (help_account_lost); a fresh try.
   #20 game_pass(began=): a wake spends the tick's remaining game budget, never a fresh one; tick passes its loop's began.
@@ -73,10 +74,10 @@ def t_env_row_before_since_ignored():
     rows = {"A3": SE.row(SE.WHYS["proof_call"], x.now - 100, criterion="A3", defect=True)}
     acts = []
     acted = G._env(x.s, x.w, x.r, "I0", rows, x.now - 50, x.now, acts)
-    ok(not acted and x.st("I0")["status"] != "held", "#4 a row read before this staging: no route, no hold: %s %s"
+    ok(not acted and SG.routed(x.st("I0")) is None, "#4 a row read before this staging: no route, no wait: %s %s"
        % (acted, [a.get("do") for a in acts]))
     acted = G._env(x.s, x.w, x.r, "I0", rows, x.now - 100, x.now, acts)
-    ok(acted and x.st("I0")["status"] == "held", "#4 the same row at since: it routes: %s" % acted)
+    ok(acted and SG.routed(x.st("I0")) is not None, "#4 the same row at since: it routes: %s" % acted)
     x.done()
 
 
