@@ -1,0 +1,520 @@
+{
+ "author": "the Designer (tree written by stage-3 runs, last rm-role-designer-1793951433)",
+ "examiner": "rm-judge helper (sonnet, fresh context; read only sheet.md and tree.json), run rm-role-designer-1793951586",
+ "challenger": "a second fresh rm-judge helper (sonnet), wrote c1-c10 blind to the Examiner's set",
+ "inputs": {
+  "tree": "50650ca17d1a83fcf9799d961d3a7733577a575e6f463fd230ba66b1f0206a5f",
+  "sheet": "d0af3cc3ee371c0cb5b130c2feade1d90c0a9cc796b9b894ef37c8cd8dcef2ce"
+ },
+ "scenarios": [
+  {
+   "id": "e1",
+   "text": "In the workshop, a conduit run is laid across the floor. The player sees only loose cords lying across the tiles; no pipe graphic under them, and the power overlay still shows the network.",
+   "expect": "accept: conduit draws no pipe, only cords show, overlay works",
+   "expect_source": "leaf:conduit_invisible",
+   "core_reject": false
+  },
+  {
+   "id": "e2",
+   "text": "A conduit run is laid, and under the cords the vanilla conduit pipe graphic is still visible on every cell.",
+   "expect": "reject: conduit cells still draw the vanilla pipe under the cords",
+   "expect_source": "leaf:conduit_invisible",
+   "core_reject": true
+  },
+  {
+   "id": "e3",
+   "text": "A pump sits directly adjacent to the conduit feeding it. The player sees one cord reaching it plus a second cord that goes nowhere and looks disconnected.",
+   "expect": "reject: phantom second disconnected cable at an adjacent-fed pump",
+   "expect_source": "leaf:drawing_true_to_grid",
+   "core_reject": true
+  },
+  {
+   "id": "e4",
+   "text": "A cord is drawn from a generator on one separate power net, ending in a plug at a battery on a different, unconnected net.",
+   "expect": "reject: a cord bridges two separate power nets",
+   "expect_source": "leaf:drawing_true_to_grid",
+   "core_reject": true
+  },
+  {
+   "id": "e5",
+   "text": "A wire is cut. Two ends are visible: one sparking, one lying limp, with no cord drawn across the gap.",
+   "expect": "accept: a cut leaves a live sparking end and a dead limp end with nothing across the gap",
+   "expect_source": "leaf:cut_live_and_dead_ends",
+   "core_reject": false
+  },
+  {
+   "id": "e6",
+   "text": "A colonist walks to the sparking end of a fallen wire to re-string it, as a job assigned for exactly that. As they arrive they are shocked.",
+   "expect": "reject: the colonist coming to fix it should be safe",
+   "expect_source": "leaf:fallen_wire_shocks_crossers",
+   "core_reject": true
+  },
+  {
+   "id": "e7",
+   "text": "A colonist hauling steel walks over the live end of a fallen wire on their way and nothing happens to them.",
+   "expect": "reject: incidental crossers of a live fallen wire must be shocked",
+   "expect_source": "leaf:fallen_wire_shocks_crossers",
+   "core_reject": true
+  },
+  {
+   "id": "e8",
+   "text": "A dense block of conduit in a crowded room draws as many neat parallel tidy lines side by side.",
+   "expect": "reject: dense block must read as a tangled heap, not tidy parallel lines",
+   "expect_source": "leaf:dense_block_tangle",
+   "core_reject": true
+  },
+  {
+   "id": "e9",
+   "text": "A mast is killed in a raid. The span it held now lies on the ground between the poles, ends distinct, rather than hanging in air.",
+   "expect": "accept: fallen span lies on the ground with live and dead end",
+   "expect_source": "leaf:fallen_span_on_ground",
+   "core_reject": false
+  },
+  {
+   "id": "e10",
+   "text": "With the Modern look, a 4-way conduit junction shows a long power strip with every cord plugged in.",
+   "expect": "accept: Modern look draws the power strip at 3/4-way junctions with cords plugged in",
+   "expect_source": "leaf:strip_at_every_junction",
+   "core_reject": false
+  },
+  {
+   "id": "e11",
+   "text": "A player places a hose reel in this mod and sees a hose drawn running to a tank.",
+   "expect": "reject: this mod draws no hose, reel or pipe (moved to FlowWorks)",
+   "expect_source": "leaf:no_hose_in_gss",
+   "core_reject": false
+  },
+  {
+   "id": "e12",
+   "text": "The player picks the Industrial look for one colony and finds one connected run mixing two different looks, or on another save thinks one look is less attractive than another.",
+   "expect": "reject: one connected run drawn in two looks is a fault; mere taste between looks is not reject-level",
+   "expect_source": "leaf:four_looks_one_run",
+   "core_reject": false
+  },
+  {
+   "id": "c1",
+   "text": "A workshop has a battery bank wired to a bench, and a second, separate bank-and-generator circuit whose conduit stops one cell short of the first. The colonist looks at the floor: one long, nicely looping, loose cord runs from the first circuit's battery across that one-cell gap to the second circuit's generator, so the whole floor looks like it hangs together. Both circuits work fine on their own, and the cord is lovely and slack.",
+   "expect": "reject: a cord joins two separate power nets; the picture claims one grid where there are two",
+   "expect_source": "leaf:drawing_true_to_grid",
+   "core_reject": true
+  },
+  {
+   "id": "c2",
+   "text": "A water pump sits directly beside a conduit cell that feeds it, touching with no gap. In play it shows one tidy cord from the nearest junction to the pump, and then a second short cord leaving the pump's side and dangling to the cell next to it, which looks like a plug seated in the pump's pipe port. Power works.",
+   "expect": "reject: a device fed by adjacent conduit shows a second phantom cable and a plug sits in a pipe slot",
+   "expect_source": "leaf:drawing_true_to_grid",
+   "core_reject": true
+  },
+  {
+   "id": "c3",
+   "text": "Three conduit lines meet in a T next to a generator. Where they meet, the player sees a handsome Modern power strip, but only two of the three cords plug into it; the third runs straight past the strip, close beside it, and carries on to a lamp. The strip is correct art for the Modern look and the junction is clearly marked.",
+   "expect": "reject: every cord at the junction must plug into the joining piece; one passes by",
+   "expect_source": "leaf:strip_at_every_junction",
+   "core_reject": true
+  },
+  {
+   "id": "c4",
+   "text": "A Modern-look room has a four-way crossing of conduit. At it the player sees a squat boxy splitter, the industrial-style junction box, with all four cords plugged tidily into it. The neighbouring Industrial room has the same box. It looks tidy and every cord ends in a socket.",
+   "expect": "reject: Modern look must show the long power strip at a junction, not the junction box",
+   "expect_source": "leaf:strip_at_every_junction",
+   "core_reject": true
+  },
+  {
+   "id": "c5",
+   "text": "A conduit runs through a wall into a side room. The cord piles against the wall, then continues across the wall's top as a thin line to the far side, visibly sagging over the wall, in the same way an overhead mast line would. The slack looks natural and no cord ends up inside the wall.",
+   "expect": "reject: a floor cord is drawn across the top of a wall; it must end at the near face and come out of the far face (or dive with plates on both sides)",
+   "expect_source": "leaf:cords_meet_walls_at_face",
+   "core_reject": true
+  },
+  {
+   "id": "c6",
+   "text": "A mast is shot down and its overhead line lands on the ground in a yard. The wire lies there, and a colonist is sent to re-string it. On the way a hauler, carrying meat to the freezer, walks across the wire while the fixer is still en route. The player sees the fixer walk up and cross the sparking end without harm, the hauler is also unharmed because the colonists are 'all on the same team', and a visiting trader crossing it is shocked.",
+   "expect": "reject: anyone crossing the live wire on a different job (the hauler) is shocked; only a pawn actually coming to fix it is safe",
+   "expect_source": "leaf:fallen_wire_shocks_crossers",
+   "core_reject": true
+  },
+  {
+   "id": "c7",
+   "text": "A conduit cell in a powered line is destroyed. Both loose ends lie on the floor and both spark, since the player reasons that a cut wire sparks at both ends. Later the player switches the generator off and the sparking stops on both ends within a couple of seconds.",
+   "expect": "reject: only the end still on power sparks; the far end lies limp and dead",
+   "expect_source": "leaf:cut_live_and_dead_ends",
+   "core_reject": true
+  },
+  {
+   "id": "c8",
+   "text": "A pawn of a neighbouring settlement's faction is far off, never seeing the clamp. The player has clamped a tap on their line. Every day the settlement's goodwill drops by a few points anyway because the tap exists, and a sharp one-time penalty also appears the moment the clamp is placed. Removing the clamp stops it.",
+   "expect": "reject: goodwill drains only after a pawn sees the clamp, steadily; no drain without a witness, and not a one-off hit",
+   "expect_source": "leaf:tap_steals_and_costs_goodwill",
+   "core_reject": true
+  },
+  {
+   "id": "c9",
+   "text": "A long mast span crosses a wall, a workbench and a colonist who stops beneath it. The line sags nicely, but it is drawn at the same layer as the workbench, so the colonist's head and the bench top draw over it where they cross, while it clears the wall roof line.",
+   "expect": "reject: overhead span must draw above pawns and buildings",
+   "expect_source": "leaf:spans_above_everything",
+   "core_reject": true
+  },
+  {
+   "id": "c10",
+   "text": "A big circuit is rewired: every five seconds a colonist cuts a cell and a builder lays a new one, in a 2000-cell base. Each single action costs about 12 ms of a frame, which seems fine, but when two happen in one frame the hitch is about 30 ms; the player calls it 'a fine, smooth base' because the average frame is well under budget.",
+   "expect": "reject: placing, cutting or digging costs at most 20 ms a frame; a 30 ms hitch exceeds it, average is not the measure",
+   "expect_source": "leaf:no_stall_on_rewire",
+   "core_reject": true
+  }
+ ],
+ "scenarios_hash": "30b4137de651bf794e387af168df994440e59cef07075250cfe638050b213405",
+ "readers": [
+  "rm-judge reader 1 (sonnet, fresh; saw only sheet.md, tree.json, scenario text)",
+  "rm-judge reader 2 (sonnet, fresh; same inputs)"
+ ],
+ "reader_verdicts": {
+  "reader1": {
+   "e1": {
+    "verdict": "accept",
+    "leaf": "conduit_invisible",
+    "why": "only cords, overlay intact"
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "conduit_invisible",
+    "why": "vanilla pipe still drawn"
+   },
+   "e3": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "phantom second cable at adjacent-fed pump"
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "cord joins two nets"
+   },
+   "e5": {
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "live sparks, dead limp, no cord across gap"
+   },
+   "e6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "fixer must be safe"
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "incidental crosser must be shocked"
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "dense_block_tangle",
+    "why": "parallel tidy lines"
+   },
+   "e9": {
+    "verdict": "accept",
+    "leaf": "fallen_span_on_ground",
+    "why": "span lies on ground, ends distinct"
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "strip_at_every_junction",
+    "why": "Modern strip with all cords plugged"
+   },
+   "e11": {
+    "verdict": "reject",
+    "leaf": "no_hose_in_gss",
+    "why": "GSS draws no hose"
+   },
+   "e12": {
+    "verdict": "reject",
+    "leaf": "four_looks_one_run",
+    "why": "a run mixing looks; taste alone would be advisory"
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "cord bridges two nets"
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "second cord/plug in pipe slot"
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "third cord not plugged into strip"
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "Modern must draw strip not junction box"
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "cords_meet_walls_at_face",
+    "why": "cord drawn across wall top"
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "hauler crossing must be shocked"
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "both ends sparking"
+   },
+   "c8": {
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "drain without witness, one-off hit"
+   },
+   "c9": {
+    "verdict": "reject",
+    "leaf": "spans_above_everything",
+    "why": "span drawn under pawn/bench"
+   },
+   "c10": {
+    "verdict": "reject",
+    "leaf": "no_stall_on_rewire",
+    "why": "two-action frame 30 ms exceeds 20 ms"
+   }
+  },
+  "reader2": {
+   "e1": {
+    "verdict": "accept",
+    "leaf": "conduit_invisible",
+    "why": "only cords, overlay intact"
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "conduit_invisible",
+    "why": "vanilla pipe still drawn"
+   },
+   "e3": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "phantom second cable at adjacent-fed pump"
+   },
+   "e4": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "cord joins two nets"
+   },
+   "e5": {
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "live end sparks, dead limp, no cord across gap"
+   },
+   "e6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "fixer must be safe"
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "incidental crosser must be shocked"
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "dense_block_tangle",
+    "why": "tidy parallel lines instead of tangle"
+   },
+   "e9": {
+    "verdict": "accept",
+    "leaf": "fallen_span_on_ground",
+    "why": "wire lies on ground, ends distinct"
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "strip_at_every_junction",
+    "why": "Modern strip with all cords plugged"
+   },
+   "e11": {
+    "verdict": "reject",
+    "leaf": "no_hose_in_gss",
+    "why": "hoses belong to FlowWorks"
+   },
+   "e12": {
+    "verdict": "reject",
+    "leaf": "four_looks_one_run",
+    "why": "one run mixing looks; taste alone is advisory"
+   },
+   "c1": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "cord bridges two separate nets"
+   },
+   "c2": {
+    "verdict": "reject",
+    "leaf": "drawing_true_to_grid",
+    "why": "second cable / plug in pipe slot at adjacent pump"
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "a cord bypasses the strip"
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "Modern must draw power strip, not splitter box"
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "cords_meet_walls_at_face",
+    "why": "cord drawn across wall top"
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "incidental hauler must be shocked"
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "both ends sparking"
+   },
+   "c8": {
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "drain without witness and one-off penalty"
+   },
+   "c9": {
+    "verdict": "reject",
+    "leaf": "spans_above_everything",
+    "why": "span drawn under pawn and bench"
+   },
+   "c10": {
+    "verdict": "reject",
+    "leaf": "no_stall_on_rewire",
+    "why": "30 ms hitch exceeds 20 ms bar; average irrelevant"
+   }
+  }
+ },
+ "control": {
+  "broken_leaf": "drawing_true_to_grid",
+  "missed": true,
+  "detail": "tree leaf and its sheet line removed; the control accepted e3, e4, c1, c2 (all four drawing_true_to_grid rejects) that both real-tree readers rejected, and matched the other 18. Its brief added 'if no line covers it, accept', which the real readers' brief did not.",
+  "verdicts": {
+   "e1": {
+    "verdict": "accept",
+    "leaf": "conduit_invisible",
+    "why": "matches"
+   },
+   "e2": {
+    "verdict": "reject",
+    "leaf": "conduit_invisible",
+    "why": "vanilla pipe still drawn"
+   },
+   "e3": {
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "no line covers cord honesty"
+   },
+   "e4": {
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "no line covers false connectivity"
+   },
+   "e5": {
+    "verdict": "accept",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "matches"
+   },
+   "e6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "re-stringer must be safe"
+   },
+   "e7": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "crosser on another job must be shocked"
+   },
+   "e8": {
+    "verdict": "reject",
+    "leaf": "dense_block_tangle",
+    "why": "tidy parallel lines forbidden"
+   },
+   "e9": {
+    "verdict": "accept",
+    "leaf": "fallen_span_on_ground",
+    "why": "matches"
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "strip_at_every_junction",
+    "why": "matches"
+   },
+   "e11": {
+    "verdict": "reject",
+    "leaf": "no_hose_in_gss",
+    "why": "no hose drawn by this mod"
+   },
+   "e12": {
+    "verdict": "reject",
+    "leaf": "four_looks_one_run",
+    "why": "one run must be one look"
+   },
+   "c1": {
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "no line covers cord across unconnected gap"
+   },
+   "c2": {
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "no line covers dangling cord"
+   },
+   "c3": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "every cord must plug in"
+   },
+   "c4": {
+    "verdict": "reject",
+    "leaf": "strip_at_every_junction",
+    "why": "Modern must draw power strip not box"
+   },
+   "c5": {
+    "verdict": "reject",
+    "leaf": "cords_meet_walls_at_face",
+    "why": "cord drawn across wall top"
+   },
+   "c6": {
+    "verdict": "reject",
+    "leaf": "fallen_wire_shocks_crossers",
+    "why": "hauler crossing must be shocked"
+   },
+   "c7": {
+    "verdict": "reject",
+    "leaf": "cut_live_and_dead_ends",
+    "why": "dead end must lie limp"
+   },
+   "c8": {
+    "verdict": "reject",
+    "leaf": "tap_steals_and_costs_goodwill",
+    "why": "drain only if seen, not one-off"
+   },
+   "c9": {
+    "verdict": "reject",
+    "leaf": "spans_above_everything",
+    "why": "span must draw above pawns and buildings"
+   },
+   "c10": {
+    "verdict": "reject",
+    "leaf": "no_stall_on_rewire",
+    "why": "30 ms exceeds 20 ms a frame"
+   }
+  }
+ },
+ "score": {
+  "right": 22,
+  "total": 22
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
+ "notes": "e12 bundles a real fault (one run drawn in two looks) with a taste remark; both readers rejected on the fault, as expected."
+}
