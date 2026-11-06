@@ -165,3 +165,96 @@ def report(store, private=None, set_name="E1", arm=None):
             attempts.append([json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip()])
     c = compute(results, reads, keys)
     return c, render(c, live_rates(states, attempts), "accepted by Judge at " + set_name + (", arm " + arm if arm else ""), frame)
+
+
+def _load_results(private, keys, name):
+    d = private / name
+    out = []
+    for k in keys:
+        p = d / (k["item"] + ".json")
+        if p.exists():
+            out.append(json.loads(p.read_text(encoding="utf-8")))
+    return out
+
+
+def _median(xs):
+    xs = sorted(x for x in xs if isinstance(x, (int, float)))
+    return xs[len(xs) // 2] if xs else None
+
+
+def compare(base, arm, second_reads=None, keys=None, arm_print=None):
+    """Step 3 (design §13): the same set run twice, `base` unwalled (step 0) and `arm` behind the wall. Pure.
+    Per class, each side's own counted rate under the counting rules; then the cases with a counted verdict on BOTH sides,
+    paired, so a flip is the same case read two ways. Contamination is split: a real read (counted out under the rules)
+    against `unscanned`, which is a harness fault, not a read."""
+    c0, c1 = compute(base, second_reads, keys), compute(arm, second_reads, keys)
+    ok0 = {r["item"]: r for r in base if r["item"] not in c0["contaminated"] + c0["lost"] and r.get("verdict")}
+    ok1 = {r["item"]: r for r in arm if r["item"] not in c1["contaminated"] + c1["lost"] and r.get("verdict")}
+    removed = set(c0["removed_equivalent"])
+    pairs, flips = {}, []
+    for k in keys if keys is not None else base:
+        i = k["item"]
+        if i in removed or i not in ok0 or i not in ok1:
+            continue
+        a, b = ok0[i]["verdict"], ok1[i]["verdict"]
+        pairs.setdefault(k["cls"], {}).setdefault("%s>%s" % (a, b), 0)
+        pairs[k["cls"]]["%s>%s" % (a, b)] += 1
+        if a != b:
+            flips.append((i, k["cls"], a, b))
+
+    def contam(rs):
+        real = [r["item"] for r in rs if r.get("contaminated") and r["contaminated"] != ["unscanned"]]
+        uns = [r["item"] for r in rs if r.get("contaminated") == ["unscanned"]]
+        return real, uns
+
+    return {"base": c0, "arm": c1, "pairs": pairs, "flips": sorted(flips),
+            "contam_base": contam(base), "contam_arm": contam(arm),
+            "walled_arm": sum(bool(r.get("walled")) for r in arm), "walled_base": sum(bool(r.get("walled")) for r in base),
+            "runs": (len(base), len(arm)),
+            "secs": (_median(r.get("secs") for r in base), _median(r.get("secs") for r in arm)),
+            # a walled run's token count reads 0: the counter cannot see into the box, so 0 is no measurement
+            "tokens": (_median(r.get("tokens") or None for r in base), _median(r.get("tokens") or None for r in arm)),
+            # a result carries its KEY's fingerprint (the Marker the set was picked under); an arm's own Marker is in arm.json
+            "fingerprints": (sorted({r.get("fingerprint", "")[:12] for r in base}), [arm_print[:12]] if arm_print else
+                             sorted({r.get("fingerprint", "")[:12] for r in arm}))}
+
+
+def render_compare(x, arm_name):
+    def side(c, cls):
+        if cls == "control":
+            y = c["control"]
+            return "false fail %s, WEAK %d" % (fmt(y["false_fail"], y["n"], y["ci"]), y["weak"])
+        y = c["classes"][cls]
+        return "%s, WEAK %d" % (fmt(y["caught"], y["n"], y["ci"]), y["weak"])
+    lines = ["| Class | Step 0, unwalled | Arm %s, walled | Paired (same case, both counted) |" % arm_name, "|---|---|---|---|"]
+    for cls in CLASSES + ("control",):
+        p = x["pairs"].get(cls, {})
+        lines.append("| %s | %s | %s | %s |" % (cls, side(x["base"], cls), side(x["arm"], cls),
+                                               ", ".join("%s %d" % kv for kv in sorted(p.items())) or "none"))
+    (r0, u0), (r1, u1) = x["contam_base"], x["contam_arm"]
+    lines += ["", "| Measure | Step 0 | Arm %s |" % arm_name, "|---|---|---|",
+              "| Runs with a result | %d | %d |" % x["runs"],
+              "| Runs behind the wall | %d | %d |" % (x["walled_base"], x["walled_arm"]),
+              "| Contaminated: a real read of the books or a seat clone | %d | %d |" % (len(r0), len(r1)),
+              "| Contaminated: unscanned (harness fault, not a read) | %d | %d |" % (len(u0), len(u1)),
+              "| Lost (no verdict) | %d | %d |" % (len(x["base"]["lost"]), len(x["arm"]["lost"])),
+              "| Median seconds to verdict | %s | %s |" % tuple("%.0f" % s if s is not None else UNMEASURED for s in x["secs"]),
+              "| Median tokens | %s | %s |" % tuple(str(t) if t is not None else UNMEASURED for t in x["tokens"]),
+              "| Marker fingerprint | %s | %s |" % tuple(", ".join(f) or UNMEASURED for f in x["fingerprints"])]
+    notes = ["flip %s (%s): %s -> %s" % f for f in x["flips"]]
+    if r1:
+        notes.append("arm real reads: " + ", ".join(r1))
+    return "\n".join(lines) + "\n" + "".join("\n%s\n" % n for n in notes)
+
+
+def compare_report(private=None, set_name="E1", arm="S03"):
+    private = Path(private or PRIVATE)
+    keys = json.loads((private / "keys" / (set_name + ".json")).read_text(encoding="utf-8"))
+    reads = {}
+    p = private / "second_reads.json"
+    if p.exists():
+        reads = {k: v["read"] for k, v in json.loads(p.read_text(encoding="utf-8")).items()}
+    ap = private / ("results_" + arm) / "arm.json"
+    arm_print = json.loads(ap.read_text(encoding="utf-8")).get("fingerprint") if ap.exists() else None
+    x = compare(_load_results(private, keys, "results"), _load_results(private, keys, "results_" + arm), reads, keys, arm_print)
+    return x, render_compare(x, arm)

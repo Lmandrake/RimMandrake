@@ -410,11 +410,36 @@ def test_verdict_and_journal():
     check("a verdict written before the Marker exits is taken on the reread", S.poll_verdict(Rl(), st, "I", "n", box) == "FAIL")
 
 
+def test_compare_against_step0():
+    """Step 3: the same set read twice. Pairs only cases counted on both sides; a real read is apart from `unscanned`."""
+    keys = [dict(item=i, cls=c) for i, c in (("a", "hunk_green"), ("b", "hunk_green"), ("c", "control"), ("d", "control"),
+                                              ("e", "hunk_red"), ("q", "hunk_green"))]
+    base = [r("a", "hunk_green", "FAIL", secs=10, tokens=5), r("b", "hunk_green", "PASS", secs=30, tokens=7),
+            r("c", "control", "FAIL", reasons="x"), dict(r("d", "control", "PASS"), contaminated=["books"]),
+            r("e", "hunk_red", "FAIL"), r("q", "hunk_green", "PASS")]
+    arm = [dict(r("a", "hunk_green", "PASS", secs=20, tokens=0), walled=True), dict(r("b", "hunk_green", "PASS"), walled=True),
+           dict(r("c", "control", "WEAK"), walled=True), dict(r("d", "control", "PASS"), walled=True),
+           dict(r("e", "hunk_red", "FAIL"), walled=True, contaminated=["unscanned"])]
+    x = T.compare(base, arm, {"a": "observable", "b": "observable", "q": "equivalent"}, keys, arm_print="f" * 64)
+    check("pairs: a flips, b holds, c flips; d and e not paired (one side out)",
+          x["pairs"] == {"hunk_green": {"FAIL>PASS": 1, "PASS>PASS": 1}, "control": {"FAIL>WEAK": 1}}, x["pairs"])
+    check("flips name the case", x["flips"] == [("a", "hunk_green", "FAIL", "PASS"), ("c", "control", "FAIL", "WEAK")], x["flips"])
+    check("an equivalent-removed case is never paired", "q" not in str(x["flips"]))
+    check("real read vs unscanned kept apart", x["contam_base"] == (["d"], []) and x["contam_arm"] == ([], ["e"]),
+          (x["contam_base"], x["contam_arm"]))
+    check("a walled token count of 0 is no measurement", x["tokens"] == (7, None) and x["secs"] == (30, 20), (x["tokens"], x["secs"]))
+    check("the arm's Marker comes from arm.json", x["fingerprints"][1] == ["f" * 12])
+    text = T.render_compare(x, "S")
+    check("render: paired column, UNMEASURED tokens, flips listed",
+          "FAIL>PASS 1" in text and "| Median tokens | 7 | UNMEASURED |" in text and "flip a (hunk_green): FAIL -> PASS" in text, text)
+
+
 def main():
     test_hunks_and_candidates()
     test_one_path_all_classes()
     test_counting()
     test_counting_weak()
+    test_compare_against_step0()
     test_arm_pins_one_marker()
     test_box_transcripts_need_no_session()
     test_contamination_scan()

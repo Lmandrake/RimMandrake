@@ -7111,6 +7111,8 @@ def main(argv=None):
     p = sub.add_parser("trust")
     p.add_argument("--set", default="E1")
     p.add_argument("--arm", help="read results_<arm>, a changed Marker's run of the same set")
+    p.add_argument("--against-step0", action="store_true",
+                   help="step 3: the arm beside step 0's unwalled results, per class and paired (needs --arm)")
     sub.add_parser("shadow", help="report only: live verdicts beside what the narrower WEAK would have said")
     p = sub.add_parser("verdict")
     p.add_argument("--item", required=True)
@@ -7286,7 +7288,12 @@ def main(argv=None):
             print(json.dumps(relentless_wall.audit(store, rules(), session, relentless_seeds.tool_inputs), indent=1))
         elif a.cmd == "trust":
             import relentless_trust
-            print(relentless_trust.report(store, set_name=a.set, arm=a.arm)[1], end="")
+            if a.against_step0:
+                if not a.arm:
+                    raise SystemExit("--against-step0 compares an arm with step 0: name the arm")
+                print(relentless_trust.compare_report(set_name=a.set, arm=a.arm)[1], end="")
+            else:
+                print(relentless_trust.report(store, set_name=a.set, arm=a.arm)[1], end="")
         elif a.cmd == "shadow":
             print(json.dumps(shadow_tally(store), indent=1))
         elif a.cmd == "verdict":

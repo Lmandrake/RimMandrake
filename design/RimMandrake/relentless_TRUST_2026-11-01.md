@@ -74,3 +74,31 @@ Item: SEED_CHECK_FIX_WEAK_NAMES_BAD_WORK. The three seeds called "work holds" (S
 - **Stability.** One model, one prompt, one day. Intervals are wide: every class has 10 cases or fewer.
 - **A clean frame.** Six `hunk_green` cases were removed by the blind second read before any run. `escaped` lost 2 of 3 to contamination. One case, SD_72198B7507B7, went red under the Marker though the census read it green, so a class label can depend on the machine (it is one of the six dropped).
 - **Readiness.** Bars are his and stay unset. A rate on E1 after tuning measures adaptation, so E2 replaces it as the evaluation at step 4.
+
+## Step 3: the evaluation seeds behind the wall, 2026-11-06
+
+Item: RA_S03_WALL_MEASURE_DID_IT_HELP. All 36 E1 cases from step 0 were run again, as arm `S03`, behind today's wall (enforced, with the skills and ledger carve-outs). Printed by `relentless.py trust --set E1 --arm S03 --against-step0`. Per case: `D:\ClaudeWork\rimmandrake\relentless_agent\seeds\results_S03\`. Copies of the tables: `D:\ClaudeWork\rimmandrake\relentless_agent\s03\compare_S03.md` and `compare_wall.md`.
+
+**In short:** the wall did what it was built for. Behind it, 36 of 36 runs gave a verdict and none read the books or a seat clone. At step 0, 6 of 36 did (MEASURED). The catch rate did not get worse where the Marker only reruns a red proof: 14 of 14 both times. The other changes in the rates cannot be credited to the wall. The Marker's prompt changed between the two runs (fingerprint `ae7278d0ac1b` → `da9e7ca6fb22`), and the old prompt cannot be run again.
+
+| Class | Step 0, unwalled | S03, walled | Paired (same case, counted both times) |
+|---|---|---|---|
+| all_red | 4 of 4 (95% 51-100%), WEAK 0 | 4 of 4 (95% 51-100%), WEAK 0 | FAIL>FAIL 4 |
+| hunk_red | 10 of 10 (95% 72-100%), WEAK 0 | 10 of 10 (95% 72-100%), WEAK 0 | FAIL>FAIL 10 |
+| hunk_green | 5 of 6 (95% 44-97%), WEAK 0 | 5 of 8 (95% 31-86%), WEAK 1 | FAIL>FAIL 4, FAIL>PASS 1, PASS>PASS 1 |
+| escaped | 1 of 1 (95% 21-100%), WEAK 0 | 2 of 3 (95% 21-94%), WEAK 1 | FAIL>FAIL 1 |
+| control | false fail 4 of 9 (95% 19-73%), WEAK 0 | false fail 0 of 11 (95% 0-26%), WEAK 2 | FAIL>PASS 3, FAIL>WEAK 1, PASS>PASS 5 |
+
+| Measure | Step 0 | S03 |
+|---|---|---|
+| Runs with a verdict | 36 of 36 | 36 of 36 |
+| Contaminated (a real read of the books or a seat clone) | 6 | 0 |
+| Unscanned, lost | 0, 0 | 0, 0 |
+| Median seconds / tokens | 34 / 126k | 39 / 138k |
+
+**Wall alone, with the same Marker.** `results_wall` holds 22 of these cases. They were run with step 0's Marker (`ae7278d0ac1b`) behind the first wall, before it was fixed (`relentless.py trust --set E1 --arm wall --against-step0`). Nine of them can be paired with step 0: 4 `hunk_green` FAIL, 1 `escaped` FAIL, 2 control FAIL and 2 control PASS. **The wall changed none of those 9 verdicts.** It also left no real read in any of its 22 runs, but 12 of them were `unscanned`, so it had only 10 clean reads. This is the only test that separates the wall from the prompt.
+
+- **The prompt, not the wall:** control false fails fell from 4 of 9 to 0 of 11, and the same-Marker walled arm still had 3 of 5. Seed SD_FB1AFAA887FD went from FAIL to PASS, but the old Marker still caught it behind the first wall. So both the control gain and this new miss belong to the prompt change.
+- **Back in the count:** the 6 step-0 runs dropped for reading the books now count. Behind the wall, their four seeds read 2 FAIL and 2 WEAK, with none PASS. Their two controls read 1 PASS and 1 WEAK.
+- **What this does not show:** E1 is spent for tuning. These rates are not a fresh evaluation, and step 4 uses new seeds. There is one run per case. Step 1 proved the wall with a probe and one walled verdict. This is the first full set behind it, and every case reached a verdict. It does not show that the wall caught anything worth catching: no run behind it tried to read the books.
+- **Instrument note:** walled runs used to record 0 tokens (the smoke case at first). The comparison counts a 0 as no reading, never as zero.
