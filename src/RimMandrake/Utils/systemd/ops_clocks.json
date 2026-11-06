@@ -38,6 +38,7 @@
     "rm-telemetry-health": "telemetry",
     "rm-agent-improve": "a role's job, not an Operations clock",
     "rm-findings-judge": "a role's job, not an Operations clock",
+    "rm-store-ledger-diff": "Relentless's nightly store/ledger reading: runs from its books clone on purpose, the ledger its supervisor reads, not the deploy",
     "rm-codebase-health": "codebase health publish, not an Operations clock",
     "rm-mirror": "the D: mirror export, not an Operations clock",
     "rm-harness": "slice",

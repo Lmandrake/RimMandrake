@@ -1,0 +1,17 @@
+# One nightly reading of where the Relentless store's `blocked` copy and the ledger disagree (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE
+# step 1, scheduled by RIMFLOW_SYNC_STORE_LEDGER_DIFF_NIGHTLY); step 2, deleting the store field, waits on
+# `relentless_block.py ready`. Runs from the books clone: the ledger the supervisor itself reads. Writes no ledger line.
+# Reading: D:\ClaudeWork\rimmandrake\relentless_agent\store_ledger_diff.jsonl (a disagreement is a recorded reading, not
+# a failed unit; a failed unit is a reading not taken).
+# Install:  cp src/RimMandrake/Utils/systemd/rm-store-ledger-diff.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-store-ledger-diff.timer
+[Unit]
+Description=RimFlow store/ledger block diff, one nightly reading (RIMFLOW_SYNC_STORE_LEDGER_DIFF_NIGHTLY)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/relentless/books
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Nice=15
+TimeoutStartSec=10min
+ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless_block.py diff --by rm-store-ledger-diff.timer

@@ -312,7 +312,8 @@ BLOCK_UNTIL = ("built", "validated", "done")
 # `block --kind`: WHAT an item waits on, as data (PLAN_BUILD_BLOCKED_BY_IS_TEXT_ONLY, owner 2026-11-02: "queued items
 # correctly state what they are blocked on and ... not ever be offered to Relentless if blocked"). `item` waits on
 # --on ids (lifts at read time when they reach --until), `time` on --lift-at; the rest hold until `unblock`.
-# Unset: `item` with --on, else `other` (priority.block_kind).
+# Unset: `item` with --on, else `other` (priority.block_kind). `other` survives here so old events replay; a new one is
+# refused at `rimflow block` (it names no lift event).
 BLOCK_KINDS = ("item", "owner", "judge", "live", "time", "external", "other")
 
 # The validation ladder, cheapest first (addendum §"The levels that exist today").

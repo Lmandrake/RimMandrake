@@ -322,6 +322,26 @@ def t_cli_refuses_self_cycle_unfiled_and_dead_targets():
     refused("give --on", "block", "FRONTIER_WAITER_A_PROBE_FIXTURE", "--reason", "r", "--until", "built")
 
 
+def t_cli_kind_other_names_no_lift_event_and_is_refused():
+    """RIMFLOW_SYNC_STORE_LEDGER_DIFF_NIGHTLY: a block that names no lift event is refused at write, written or implied;
+    each way of naming one is taken; an old `other` block still replays, holds, and lifts by `unblock`."""
+    fix = "FRONTIER_WAITER_A_PROBE_FIXTURE"
+    before = len(ledger_events())
+    refused("names no lift event", "block", fix, "--reason", "r")
+    refused("names no lift event", "block", fix, "--reason", "r", "--kind", "other")
+    assert len(ledger_events()) == before, "a refused block still wrote an event"
+    for extra in (("--kind", "owner"), ("--kind", "judge"), ("--kind", "live"), ("--kind", "external"),
+                  ("--kind", "time", "--lift-at", "2099-01-01"), ("--on", "FRONTIER_BLOCKER_B_PROBE_FIXTURE")):
+        ok("block", fix, "--reason", "r", *extra)
+        ok("unblock", fix)
+    w = world(ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="old bare block"))
+    it = w.items["WAITER_A"]
+    assert priority.block_kind(it) == "other" and priority.block_holds(w, it, time.time()), "an old `other` block must still hold"
+    w = world(ev(seat="FOUNDRY", event="block", id="WAITER_A", reason="old bare block"),
+              ev(seat="FOUNDRY", event="unblock", id="WAITER_A"))
+    assert not w.items["WAITER_A"].blocked, "`unblock` must still lift an old `other` block"
+
+
 def t_cli_default_block_writes_no_until_field():
     ok("block", "FRONTIER_WAITER_A_PROBE_FIXTURE", "--reason", "waits", "--on", "FRONTIER_BLOCKER_B_PROBE_FIXTURE")
     ok("block", "FRONTIER_WAITER_D_PROBE_FIXTURE", "--reason", "waits", "--on", "FRONTIER_BLOCKER_C_PROBE_FIXTURE",
@@ -448,6 +468,7 @@ if __name__ == "__main__":
     try:
         setup_cli()
         for fn in (t_cli_refuses_self_cycle_unfiled_and_dead_targets,
+                   t_cli_kind_other_names_no_lift_event_and_is_refused,
                    t_cli_default_block_writes_no_until_field,
                    t_cli_drop_with_dependents_is_refused_until_the_dropper_answers,
                    t_cli_drop_names_confirm_and_next_repeats_it,

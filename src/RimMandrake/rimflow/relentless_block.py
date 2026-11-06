@@ -24,7 +24,9 @@ The moves, all here so relentless.py carries hooks only:
   - `diff` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE, step 1 of 2): the store's `blocked` status is a COPY of the ledger block.
     `python3 relentless_block.py diff` appends one reading of where the two disagree; the store field may be deleted
     only once `ready_to_delete` sees a measured 0 (rows compared, none unreadable) on 3 distinct UTC days. Until then
-    it stays, read-only in spirit.
+    it stays, read-only in spirit. rm-store-ledger-diff.timer takes the nightly reading; `fired` counts the nights it did.
+  - `stale`: an open item's item-block that has ended on the books or can never end (a blocker done or dropped, one
+    never filed); `stale --ids` is the reading RIMFLOW_SYNC_STORE_LEDGER_DIFF_NIGHTLY closed its 12 stale blocks on.
 """
 import datetime
 import glob
@@ -34,7 +36,7 @@ import re
 import sys
 
 ID_RX = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+\b")
-KINDS = ("item", "owner", "judge", "live", "time", "external", "other")
+KINDS = ("item", "owner", "judge", "live", "time", "external")     # `rimflow block` refuses `other`: it names no lift event
 LEDGER_DEAD = ("done", "dropped", "superseded")
 LEDGER_OPEN = ("proposed", "ready", "doing", "built", "validated")
 
@@ -196,6 +198,7 @@ def sweep(store, fx, now, acts, iso):
 DIFF_LOG = os.environ.get("RM_STORE_LEDGER_DIFF",
                           "/mnt/d/ClaudeWork/rimmandrake/relentless_agent/store_ledger_diff.jsonl")
 DIFF_RUNS = 3
+DIFF_TIMER = "rm-store-ledger-diff.timer"
 
 
 def diff(states, item_state, unreadable=0):
@@ -261,11 +264,66 @@ def ready_to_delete(path=None, runs=DIFF_RUNS):
     return True, "a measured 0 on every reading of %s" % ", ".join(days)
 
 
+def timer_fired(path=None, by=DIFF_TIMER):
+    """-> (sorted UTC days the timer recorded a reading, None), or (None, why) when the log cannot be read. A reading
+    without `by`, taken by hand, is not a firing; a line that does not parse makes the whole log unreadable."""
+    try:
+        with open(path or DIFF_LOG, encoding="utf-8") as f:
+            rows = [json.loads(ln) for ln in f if ln.strip()]
+    except (OSError, ValueError) as e:
+        return None, "no readable diff log: %s" % e
+    return sorted({str(r.get("at") or "")[:10] for r in rows if isinstance(r, dict) and r.get("by") == by}), None
+
+
+def stale_block(world, it, now):
+    """-> why `it`'s item-block is stale, else None (no block, the item is closed, another kind, or a real wait). Stale:
+    the books keep a block that has ended, or one that no close can end: a dropped blocker nobody answered, one never
+    filed. The other kinds lift by `unblock` alone, so nothing here can call them ended."""
+    from rimflow import priority
+    if not it.blocked or it.state not in LEDGER_OPEN or priority.block_kind(it) != "item":
+        return None
+    if not priority.block_holds(world, it, now):
+        return "ended, still on the books: %s" % (priority.release_reason(world, it, now) or "no longer holds")
+    for on in priority.block_ons(it):
+        b, _why = priority.follow(world, on)
+        if b is None:
+            return "waits on %s, which can never deliver (%s)" % (on, _why or "never filed")
+        if b.state in priority.DEAD and not priority.ended_by_drop(b):
+            return "waits on %s, %s with no one answering for the wait" % (on, b.state)
+    return None
+
+
+def _world():
+    here = os.path.dirname(os.path.abspath(__file__))
+    sys.path.insert(0, os.path.dirname(here))
+    from rimflow import model
+    return model.replay(model.read())
+
+
+def stale_report(world, ids, now):
+    """-> (exit code, lines). `ids` empty: every open item. A named id the ledger has never seen is UNMEASURED (2): this
+    world cannot speak for it. Pure over `world`."""
+    rows, rc = [], 0
+    for iid in ids or sorted(i for i, it in world.items.items() if it.state in LEDGER_OPEN):
+        it = world.items.get(iid)
+        if it is None:
+            rows.append("UNMEASURED: %s has never been filed in this ledger" % iid)
+            rc = 2
+            continue
+        why = stale_block(world, it, now)
+        if why:
+            rc = rc or 1
+            rows.append("STALE %s (%s): %s" % (iid, it.state, why))
+        elif ids:
+            rows.append("ok    %s (%s): %s" % (iid, it.state, "block holds, a real wait" if it.blocked else "no block"))
+    return rc, rows
+
+
 def _live_item_state():
     here = os.path.dirname(os.path.abspath(__file__))
     sys.path.insert(0, os.path.dirname(here))
-    from rimflow import model, priority
-    w = model.replay(model.read())
+    from rimflow import priority
+    w = _world()
     now = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
 
     def item_state(iid):
@@ -283,13 +341,31 @@ def main(argv):
     d = sub.add_parser("diff", help="append one reading")
     d.add_argument("--root", default=os.environ.get("RELENTLESS_ROOT", os.path.expanduser("~/rm/relentless")))
     d.add_argument("--log", default=DIFF_LOG)
+    d.add_argument("--by", help="the unit taking this reading (rm-store-ledger-diff.service); by hand: leave it off")
     r = sub.add_parser("ready", help="may the store field be deleted? (0 on %d runs, distinct days)" % DIFF_RUNS)
     r.add_argument("--log", default=DIFF_LOG)
+    f = sub.add_parser("fired", help="did %s record a reading on --need distinct UTC days? 0 yes, 1 no, 2 UNMEASURED" % DIFF_TIMER)
+    f.add_argument("--log", default=DIFF_LOG)
+    f.add_argument("--need", type=int, default=DIFF_RUNS)
+    t = sub.add_parser("stale", help="stale item-blocks in the ledger: 0 none, 1 some, 2 a named id is unknown")
+    t.add_argument("--ids", default="", help="comma-separated; default every open item")
     a = ap.parse_args(argv)
     if a.cmd == "ready":
         okay, why = ready_to_delete(a.log)
         print(("READY: " if okay else "NOT READY: ") + why)
         return 0 if okay else 1
+    if a.cmd == "fired":
+        days, why = timer_fired(a.log)
+        if why:
+            print("UNMEASURED: " + why)
+            return 2
+        print("%s recorded a reading on %d day(s), %d needed: %s" % (DIFF_TIMER, len(days), a.need, ", ".join(days) or "none"))
+        return 0 if len(days) >= a.need else 1
+    if a.cmd == "stale":
+        rc, rows = stale_report(_world(), [x for x in a.ids.split(",") if x],
+                                int(datetime.datetime.now(datetime.timezone.utc).timestamp()))
+        print("\n".join(rows) if rows else "no stale item-block on any open item")
+        return rc
     states, bad = [], []
     for p in sorted(glob.glob(os.path.join(a.root, "store", "items", "*", "state.json"))):
         try:
@@ -306,6 +382,8 @@ def main(argv):
     rec = dict(diff(states, _live_item_state(), unreadable=len(bad)),
                at=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                rows=len(states) + len(bad), root=a.root, unreadable_rows=[p for p, _ in bad[:20]])
+    if a.by:
+        rec["by"] = a.by
     with open(a.log, "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, sort_keys=True) + "\n")
     print("store/ledger diff: %d of %d compared (%d in transit, %d unreadable, %d store rows) -> %s"

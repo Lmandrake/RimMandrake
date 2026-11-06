@@ -2082,6 +2082,13 @@ def cmd_block(args, seat):
         lift_at = datetime.datetime.fromtimestamp(e, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     if until and not on:
         die("`block --until` is a level OF the --on item; give --on <ITEM>.")
+    # a block must name the event that lifts it (redesign_2026-11-06 §3.4, RIMFLOW_SYNC_STORE_LEDGER_DIFF_NIGHTLY): kind
+    # other, written or implied, names none and nothing would ever release it (180 of them were standing). Refused here,
+    # on the writing path: the old events still replay and `unblock` still lifts them.
+    if (kind or ("item" if ons else "other")) == "other":
+        die("`block` refused: kind other names no lift event, so nothing would ever release it. Say what lifts it: "
+            "--on <ITEM> (a predecessor), --kind time --lift-at <date>, --kind owner (he decides), or --kind "
+            "judge|live|external.")
     cur = w.items.get(args.id)
     if cur is not None and cur.blocked:
         print("replaces the current block: on %s (until %s): %s"
@@ -4349,8 +4356,8 @@ def build_parser():
                    help="the level of --on that ends the wait (default done). Reaching it makes the "
                         "item offerable again at once; the next claim writes the unblock")
     s.add_argument("--kind", choices=model.BLOCK_KINDS,
-                   help="what it waits on: item (--on), owner, judge, live (game/bridge), time (--lift-at), "
-                        "external, other. Default: item with --on, else other")
+                   help="what it waits on: item (--on), owner, judge, live (game/bridge), time (--lift-at), external. "
+                        "Default: item with --on. `other` (and no --on, no --kind) is refused: it names no lift event")
     s.add_argument("--lift-at", dest="lift_at", help="--kind time: when the wait ends (YYYY-MM-DD or ISO time)")
 
     s = add("wait", "a dated wait on a slow external: out of focus until the date (RO2)", cmd_wait)

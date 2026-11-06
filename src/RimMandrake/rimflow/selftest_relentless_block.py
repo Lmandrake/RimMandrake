@@ -522,10 +522,94 @@ def t_diff_cli_counts_unreadable_rows():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_timer_fired_counts_timer_nights_only():
+    tmp = tempfile.mkdtemp(prefix="rb_fired_")
+    try:
+        log = os.path.join(tmp, "d.jsonl")
+        by = relentless_block.DIFF_TIMER
+
+        def write(*rows):
+            with open(log, "w") as f:
+                f.write("".join(json.dumps(r) + "\n" for r in rows))
+
+        def fired(need=3):
+            import contextlib
+            import io
+            with contextlib.redirect_stdout(io.StringIO()):
+                return relentless_block.main(["fired", "--log", log, "--need", str(need)])
+        ok(fired() == 2, "no log is UNMEASURED, never a 0")
+        write({"at": "2026-11-05T01:00:00Z", "count": 8}, {"at": "2026-11-06T01:00:00Z", "count": 8, "by": "by hand"})
+        ok(relentless_block.timer_fired(log) == ([], None) and fired() == 1, "readings not taken by the timer do not count")
+        write({"at": "2026-11-07T12:10:00Z", "by": by}, {"at": "2026-11-07T12:11:00Z", "by": by},
+              {"at": "2026-11-08T12:10:00Z", "by": by})
+        ok(fired() == 1 and fired(2) == 0, "two nights are two firings, however many readings a night holds")
+        write({"at": "2026-11-07T12:10:00Z", "by": by}, {"at": "2026-11-08T12:10:00Z", "by": by},
+              {"at": "2026-11-09T12:10:00Z", "by": by})
+        ok(fired() == 0, "three nights by the timer pass")
+        with open(log, "a") as f:
+            f.write("{torn\n")
+        ok(fired() == 2, "a torn line makes the log unreadable, it is not skipped")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_diff_cli_records_who_took_the_reading():
+    tmp = tempfile.mkdtemp(prefix="rb_by_")
+    try:
+        os.makedirs(os.path.join(tmp, "store", "items", "Q_FREE_A"))
+        with open(os.path.join(tmp, "store", "items", "Q_FREE_A", "state.json"), "w") as f:
+            json.dump({"item": "Q_FREE_A", "status": "queued"}, f)
+        log = os.path.join(tmp, "d.jsonl")
+        real = relentless_block._live_item_state
+        relentless_block._live_item_state = lambda: (lambda iid: {"state": "ready", "block_holds": False})
+        try:
+            import contextlib
+            import io
+            with contextlib.redirect_stdout(io.StringIO()):
+                relentless_block.main(["diff", "--root", tmp, "--log", log, "--by", relentless_block.DIFF_TIMER])
+                relentless_block.main(["diff", "--root", tmp, "--log", log])
+        finally:
+            relentless_block._live_item_state = real
+        rows = [json.loads(x) for x in open(log).read().splitlines()]
+        ok(rows[0].get("by") == relentless_block.DIFF_TIMER and "by" not in rows[1], "only the timer's reading carries by: %s" % rows)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_stale_block_tells_a_real_wait_from_an_ended_one():
+    fx = [
+        ("a real wait on an open item is not stale", False,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", on="PRED_C", kind="item")]),
+        ("a blocker that closed, the block still on the books, is stale", True,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", on="PRED_B", kind="item"), done("PRED_B")]),
+        ("a dropped blocker nobody answered is stale", True,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", on="PRED_B", kind="item"),
+          ev(seat="BENCH", event="drop", id="PRED_B", reason="x")]),
+        ("a blocker never filed is stale", True,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", on="NEVER_FILED_Z", kind="item")]),
+        ("a wait on one closed and one open blocker is real", False,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", on="PRED_B", also_on=["PRED_C"], kind="item"), done("PRED_B")]),
+        ("an owner block lifts by unblock alone, so it is not this check's", False,
+         [ev(seat="BUILD", event="block", id="WAITER_A", reason="r", kind="owner")]),
+    ]
+    for what, want, evs in fx:
+        w = world(*evs)
+        ok(bool(relentless_block.stale_block(w, w.items["WAITER_A"], NOW)) == want,
+           "%s: %s" % (what, relentless_block.stale_block(w, w.items["WAITER_A"], NOW)))
+    w = world(*fx[1][2])
+    rc, rows = relentless_block.stale_report(w, ["WAITER_A", "NEVER_HEARD_OF"], NOW)
+    ok(rc == 2 and rows[0].startswith("STALE WAITER_A") and rows[1].startswith("UNMEASURED"), "an unknown id is UNMEASURED: %s" % rows)
+    w = world(*fx[0][2])
+    ok(relentless_block.stale_report(w, ["WAITER_A"], NOW)[0] == 0, "a real wait exits 0 when named")
+    ok(relentless_block.stale_report(world(*fx[1][2]), [], NOW)[0] == 1, "the whole-ledger census sees it too")
+
+
 def main():
     for t in (t_fields_and_schema, t_holds_and_lifts, t_relentless_eligible, t_cli, t_snag_blocks,
               t_ledger_block_leaves_line, t_returned_run_not_restaffed, t_strikes, t_scope_snag_blocks,
-              t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate, t_diff_cli_counts_unreadable_rows):
+              t_unfiled_wait_refused_at_write, t_store_ledger_diff_and_three_day_gate, t_diff_cli_counts_unreadable_rows,
+              t_timer_fired_counts_timer_nights_only, t_diff_cli_records_who_took_the_reading,
+              t_stale_block_tells_a_real_wait_from_an_ended_one):
         print("--", t.__name__)
         try:
             t()
