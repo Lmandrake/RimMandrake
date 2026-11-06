@@ -967,5 +967,100 @@ for flag in ("--dry-run", "--mock"):
                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, timeout=600)
     check(r.returncode == 0 and "Traceback" not in r.stdout, "%s exits 0 with no traceback" % flag)
 
+# 10. The live proof's binding (LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW, 2026-11-06). Its first live run took the 317-mod
+# game it found: units ran 7-20x slower than UNIT_EST_S (calibrated on the small list), so three chunks were killed at
+# 540 s and the run could not say whether the chunks fit the list they were built for. Read through the parsers the
+# supervisor and the SteveDesktop worker use, never by string search, so a line they would not honour reads red.
+import re as _re  # noqa: E402
+_REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+for _d in (os.path.join(_REPO, "src", "RimMandrake", "rimflow"), os.path.join(_REPO, "src", "RimMandrake", "Utils", "testq"),
+           os.path.join(_REPO, "src", "RimMandrake", "Utils")):
+    if _d not in sys.path:
+        sys.path.insert(0, _d)
+import relentless_live_round as _LR
+import schema as _TS
+import modset_builder as _MB
+
+_PROOFS = os.path.join(_REPO, "infrastructure", "state", "live_proofs", "LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW.txt")
+_SITE = "src/RimMandrake/Utils/live_site.py"
+_NEEDS = "--needs " + L.MOD_ID
+
+
+def binding_faults(text, watchdog_s, est_s, big=40):
+    """A live_proofs text -> why its A1 line cannot judge the session, [] when it can. Pure, so every fault is shown red below."""
+    bad = []
+    try:
+        tier = _LR.clause_tier(text, "A1")
+    except ValueError as ex:
+        return ["live-tier unreadable: %s" % ex]
+    if tier != "flowworks":
+        bad.append("A1 runs on %r, not the exact flowworks tier" % tier)
+    want = (_MB.TIERS.get("flowworks") or {}).get("want") or []
+    if L.MOD_ID not in want:
+        bad.append("the flowworks tier does not load FlowWorks")
+    if len(want) >= big:
+        bad.append("the flowworks tier reads over B0_tier_truth's %d mods" % big)
+    if any(_LR.SITE_LINE.match(x) for x in text.splitlines()):
+        bad.append("a live-site line: a tier job never runs it, so the map it promises is not there")
+    cmd = _TS.proof_lines(text).get("A1") or ""
+    steps = [x.strip() for x in cmd.split("&&")]
+    session = [i for i, x in enumerate(steps) if "live_session.py" in x]
+    if len(session) != 1 or session[0] != len(steps) - 1:
+        bad.append("the session is not the line's one last step, so its exit is not the line's")
+        return bad
+    if ";" in cmd or "||" in cmd:
+        bad.append("the line can go on after a step failed: NOT READY must reach the verdict as its exit 2")
+    run = steps[-1]
+    for flag in ("--chunks", "--no-owner-save"):
+        if flag not in run.split():
+            bad.append("the session runs without %s" % flag)
+    sites = steps[:-1]
+    if not any(_SITE in x and "--game" in x.split() for x in sites):
+        bad.append("no step makes a map: a tier job starts at the main menu with none")
+    fresh = [i for i, x in enumerate(sites) if _SITE in x and "--menu-dwell" in x.split()]
+    if not fresh or fresh[-1] != len(sites) - 1:
+        bad.append("the session does not start on a fresh map: a kept game holds an old one")
+    if not sites or not all(_NEEDS in x for x in sites):
+        bad.append("a site step does not check the running load holds FlowWorks")
+    m = _re.search(r"--max-seconds[ =](\d+)", run)
+    budget = int(m.group(1)) if m else None
+    if budget is None:
+        bad.append("no --max-seconds: the default outruns the job")
+    else:
+        if budget >= watchdog_s:
+            bad.append("--max-seconds %d is not inside the job's %d s watchdog, so check-state may never run" % (budget, watchdog_s))
+        if budget < est_s:
+            bad.append("--max-seconds %d is under the session's estimated %d s" % (budget, est_s))
+    return bad
+
+
+with open(_PROOFS, encoding="utf-8") as _f:
+    _txt = _f.read()
+_watch = _TS.DEFAULTS["timeout_s"]     # relentless_game.testq_submit passes no --timeout: the worker's limit for the one clause
+_units = L.units_of([b["id"] for b in L.BLOCKS])
+_est = sum(L.UNIT_EST_S.get(u[0], 60) for u in _units)
+check(len(_units) >= len(L.UNIT_EST_S) and _est >= 1000, "the session's estimate reads every unit (%d units, %d s)" % (len(_units), _est))
+_got = binding_faults(_txt, _watch, _est)
+check(not _got, "the live proof binds A1 to the flowworks tier, stages a fresh map, ends inside the job's watchdog: %s" % _got)
+_line = next(x for x in _txt.splitlines() if x.startswith("live-proof A1:"))
+_tier = "live-tier A1: flowworks\n"
+_mut = [
+    ("the tier line gone (the 317-mod run)", _txt.replace(_tier, ""), "not the exact flowworks tier"),
+    ("another tier", _txt.replace(_tier, "live-tier A1: bridge\n"), "not the exact flowworks tier"),
+    ("a live-site line back", _txt + "live-site A1: python.exe %s --game\n" % _SITE, "a live-site line"),
+    ("no map step", _txt.replace("--game --needs", "--menu-dwell 5 --needs"), "no step makes a map"),
+    ("no fresh map", _txt.replace("--menu-dwell 5 --needs", "--game --needs"), "fresh map"),
+    ("no --needs", _txt.replace(" --menu-dwell 5 " + _NEEDS, " --menu-dwell 5"), "holds FlowWorks"),
+    ("not --chunks", _txt.replace(" --chunks", ""), "without --chunks"),
+    ("the old 3000 s budget", _txt.replace("--max-seconds 2500", "--max-seconds 3000"), "watchdog"),
+    ("a budget under the estimate", _txt.replace("--max-seconds 2500", "--max-seconds 900"), "under the session's estimated"),
+    ("no budget", _txt.replace(" --max-seconds 2500", ""), "no --max-seconds"),
+    ("a site failure swallowed", _txt.replace(" && ", " ; ", 1), "go on after a step failed"),
+    ("the session not last", _txt.replace(_line, _line + " && echo done"), "one last step"),
+]
+for _what, _t, _says in _mut:
+    check(_t != _txt, "the mutant changes the file: %s" % _what)
+    check(any(_says in x for x in binding_faults(_t, _watch, _est)), "the binding reads red on: %s" % _what)
+
 print("PASS: 0 failure(s)" if not FAILS else "FAIL: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

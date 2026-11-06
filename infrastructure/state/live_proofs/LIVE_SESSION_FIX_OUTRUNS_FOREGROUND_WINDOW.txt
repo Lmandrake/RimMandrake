@@ -1,7 +1,11 @@
 # A whole FlowWorks live_session (B0-B10) run as resumable --state chunk processes, each killed at 540 s; it ends with
 # --check-state: exit 0 only when every unit ran, every chunk ended inside 540 s, B4_dehydration_rate is PASS or FAIL
-# (measured, not UNMEASURED) and thirst_live was handed this load's Player.log; 1 otherwise. ~30 min wall (--max-seconds).
+# (measured, not UNMEASURED) and thirst_live was handed this load's Player.log; 1 otherwise. Budget --max-seconds 2500: it ends before the testq job's 2700 s watchdog.
 # It drives the map (digs, weather, one save+reload) on a fresh quicktest map: --no-owner-save keeps it to that one save.
 live-mods: FlowWorks
-live-site A1: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 5 --needs mandrake.rm.flowworks
-live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --chunks --max-seconds 3000 --no-owner-save --out-dir D:/ClaudeWork/rimmandrake/scratch/LSFIX/live < /dev/null
+# The exact flowworks tier, on SteveDesktop through testq: UNIT_EST_S is calibrated on that small list, and the 317-mod
+# game of the first run (units 7-20x slower, three chunks killed at 540 s) could not judge the chunks. A tier job runs no
+# live-site line and starts at the main menu with no map, so the line stages its own: --game makes a map if there is none,
+# then --menu-dwell replaces whatever map the kept game held with a fresh one. NOT READY exits 2 (UNMEASURED) through &&.
+live-tier A1: flowworks
+live-proof A1: python.exe src/RimMandrake/Utils/live_site.py --game --needs mandrake.rm.flowworks < /dev/null && python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 5 --needs mandrake.rm.flowworks < /dev/null && python.exe src/RimMandrake/FlowWorks/northstar/live_session.py --chunks --max-seconds 2500 --no-owner-save --out-dir D:/ClaudeWork/rimmandrake/scratch/LSFIX/live < /dev/null
