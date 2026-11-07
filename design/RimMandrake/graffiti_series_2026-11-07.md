@@ -22,9 +22,9 @@ The three tiers each repaint the one below. RimMandrake is graffiti for any RimW
 
 ### What loop 1 is right now
 
-Its newest code is branch `ralph/graffiti` in clone `/home/mandrake/rm/scratch/BENCH/ralph_graffiti`, with its prompt at `ralph/PROMPT.md` there. Its current brief is option D for wall paint (bolder paint in the wall face, marks climbing onto the wall top) and the social side. MEASURED on that clone today: 49 mark designs (22 in `ThingDefs_Graffiti.xml`, 27 in `ThingDefs_GraffitiMemeGlyphs.xml`), 80 PNGs, 1 ThoughtDef on disk (`RM_Graffiti_ViewedHostileMark`). The clone holds a `ralph/NEED_GAME` file, so it is waiting its turn at the game.
+Its newest code is branch `ralph/graffiti` in clone `/home/mandrake/rm/scratch/BENCH/ralph_graffiti`, with its prompt at `ralph/PROMPT.md` there. Its current brief is option D for wall paint (bolder paint in the wall face, marks climbing onto the wall top) and the social side. MEASURED on commit cdf0b7c43a, 2026-11-07: 54 ThingDefs and 96 PNGs (up from 49 designs and 80 PNGs before that commit, so "49" below means the set that existed when this page was written; count again at the start), and 42 ThoughtDefs.
 
-The social side is in the middle of being written. The working tree has an uncommitted `GraffitiSocial.cs` of 598 lines (MEASURED) and a `JobDrivers_AnswerMark.cs`, and they name defs that are not yet on disk: thoughts such as `RM_Graffiti_Humiliated` and `RM_Graffiti_PaintedMe`, jobs `RM_ScrubMark`, `RM_DefaceMark`, `RM_ConfrontPainter`, and history events `RM_Graffiti_WallInsult`, `RM_Graffiti_SharedSign`. No field or name in that code is settled, which is why nothing below may be started against it.
+The social side was first written in that commit, offline and not yet seen in the game: `GraffitiSocial.cs` (598 lines, MEASURED), `JobDrivers_AnswerMark.cs`, thoughts such as `RM_Graffiti_Humiliated` and `RM_Graffiti_PaintedMe`, jobs `RM_ScrubMark`, `RM_DefaceMark`, `RM_ConfrontPainter`, and history events `RM_Graffiti_WallInsult`, `RM_Graffiti_SharedSign`. No field or name in that code is settled, which is why nothing below may be started against it.
 
 ### What the next two inherit
 
