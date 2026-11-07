@@ -118,8 +118,8 @@ M Transient/biome_ffar/scale_ground_measured.json   not mine; seen dirty at wrap
  M infrastructure/state/art_eval/briefs/SWPotF_RaceDef_ysalamir.json   the art auto-judge's, still running
  M src/RimMandrake/FlowWorks/Tools/native_water_audit.md   not mine; seen dirty at wrap, not touched
  M src/RimMandrake/FlowWorks/northstar/review/scenarios/map_r_placed.json   not mine; seen dirty at wrap, not touched
- M src/RimMandrake/rimflow/detached_helper.py   the pool helper's, mid-work on RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES
- M src/RimMandrake/rimflow/relentless.py   the pool helper's, mid-work on RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES
+ M src/RimMandrake/rimflow/detached_helper.py   the pool helper's, since published
+ M src/RimMandrake/rimflow/relentless.py   the pool helper's, since published
 ?? cards.json   not mine; seen dirty at wrap, not touched
 ?? deployed/config/ModsConfig.before-tier-weepingstones_solo.xml   not mine; seen dirty at wrap, not touched
 ?? design/RimMandrake/designer_drawing_out.md   not mine; seen dirty at wrap, not touched
@@ -127,6 +127,6 @@ M Transient/biome_ffar/scale_ground_measured.json   not mine; seen dirty at wrap
 ?? infrastructure/state/art_eval/runs/audit_auto_20261107_1236/   the art auto-judge's, still running
 ?? infrastructure/state/lessons/20261105T024235Z-CONDUCTOR-tmp-full-alarm-2026-11-05.md   not mine; seen dirty at wrap, not touched
 ?? shortcuts.ps1.txt   not mine; seen dirty at wrap, not touched
-?? src/RimMandrake/rimflow/selftest_relentless_park_stopped.py   the pool helper's, mid-work on RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES
+?? src/RimMandrake/rimflow/selftest_relentless_park_stopped.py   the pool helper's, since published
 ```
 
