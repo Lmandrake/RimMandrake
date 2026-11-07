@@ -282,31 +282,6 @@ namespace RimMandrake.FlowWorks
 			public bool disposed;
 		}
 
-		/// <summary>One cell's 3×3 depths and the structural-join probe AllowedBits asks, reused across a derive (no int[9] and no
-		/// closure per cell).</summary>
-		private sealed class CellProbe
-		{
-			public readonly int[] d9 = new int[9];
-			public readonly Func<int, bool> joins;
-			private readonly Map map;
-			private readonly RM_MapComponent_Excavation eng;
-			public IntVec3 c;
-
-			public CellProbe(Map map, RM_MapComponent_Excavation eng)
-			{
-				this.map = map;
-				this.eng = eng;
-				joins = Joins;
-			}
-
-			private bool Joins(int b)
-			{
-				int dx = RM_CliffMaskMath.Dx[b], dz = RM_CliffMaskMath.Dz[b];
-				var o = new IntVec3(c.x + dx, 0, c.z + dz);
-				return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(dx, dz)]);
-			}
-		}
-
 		private static readonly Dictionary<Map, StrideMasks> masks = new Dictionary<Map, StrideMasks>();
 
 		/// <summary>Full stride re-derives, for the bridge proof.</summary>
@@ -398,7 +373,7 @@ namespace RimMandrake.FlowWorks
 			}
 			StrideMasks m = MasksFor(map, true);
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			if (m.seenFullDerives != RM_CliffMask.FullDerives || m.seenGeneration != (eng?.ClimbGeneration ?? 0))
+			if (RM_TrenchStrideMath.NeedsFullDerive(m.seenFullDerives, RM_CliffMask.FullDerivesOn(map), m.seenGeneration, eng?.ClimbGeneration ?? 0))
 			{
 				FullDerive(map, m, vanilla);
 				return;
@@ -408,7 +383,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			CellIndices ci = map.cellIndices;
-			var probe = new CellProbe(map, eng);
+			var probe = new RM_CliffCellProbe(map, eng);
 			var done = new HashSet<int>();
 			for (int v = 0; v < Views; v++)
 			{
@@ -444,7 +419,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			m.seenFullDerives = RM_CliffMask.FullDerives;
+			m.seenFullDerives = RM_CliffMask.FullDerivesOn(map);
 			m.seenGeneration = eng?.ClimbGeneration ?? 0;
 			m.floorDerived = false;
 			for (int v = 0; v < Views; v++)
@@ -460,7 +435,7 @@ namespace RimMandrake.FlowWorks
 			}
 			int w = map.Size.x, h = map.Size.z, n = map.cellIndices.NumGridCells;
 			CellIndices ci = map.cellIndices;
-			var probe = new CellProbe(map, eng);
+			var probe = new RM_CliffCellProbe(map, eng);
 			var done = new HashSet<int>();
 			byte[] deckDepth = null;
 			for (int v = 0; v < Views; v++)
@@ -537,7 +512,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>RM_CliffMask.DeriveCell over a given depth (kept in step with it: vanilla's byte AND the band's AllowedBits, ramp
 		/// and structural-ladder edges restored).</summary>
-		private static void DeriveCell(Map map, CellProbe probe, NativeArray<CellConnection>[] bands,
+		private static void DeriveCell(Map map, RM_CliffCellProbe probe, NativeArray<CellConnection>[] bands,
 			NativeArray<CellConnection>.ReadOnly vanilla, IntVec3 c, byte[] depth)
 		{
 			int w = map.Size.x, h = map.Size.z;

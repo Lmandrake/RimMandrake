@@ -78,11 +78,12 @@ namespace RimMandrake.FlowWorks.Pits
                     if (n != null && n.thingIDNumber < self.thingIDNumber) return;
                 }
                 // One flood-fill per scan: the lead test and the cell list come from the same deck
-                // (IsDeckLead would walk it a second time, on every cover, every scan).
-                List<Building_PitCover> deck = RM_PitCoverUtility.Deck(self);
+                // (IsDeckLead would walk it a second time, on every cover, every scan). A local id minimum that is
+                // not the lead stops at the first lower id it meets (COVER_SCAN_TAME_QUADRATIC_ID_MINIMA).
+                List<Building_PitCover> deck = RM_PitCoverUtility.DeckIfLead(self);
+                if (deck == null) return;
                 foreach (Building_PitCover c in deck)
                 {
-                    if (c.thingIDNumber < self.thingIDNumber) return;
                     cells.Add(c.Position);
                     // GPT C4-F5: a mixed deck gives way at its WEAKEST cover's rating, not at whichever cover is the lead.
                     float kg = c.CoverTier.TriggerMassKg();

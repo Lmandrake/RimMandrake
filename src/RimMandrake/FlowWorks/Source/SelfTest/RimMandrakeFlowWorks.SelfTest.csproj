@@ -74,6 +74,7 @@
     <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
     <Compile Include="WallClimbChecks.cs" />
     <Compile Include="TrenchStrideChecks.cs" />
+    <Compile Include="PitDeckChecks.cs" />
     <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="RaiderTrenchChecks.cs" />
     <Compile Include="..\Superdeep\RM_LadderParityMath.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />
     <Compile Include="..\Pits\RM_PitCoverLookMath.cs" />
+    <Compile Include="..\Pits\RM_PitDeckMath.cs" />
     <Compile Include="..\Drilling\RM_DrillSurveyMath.cs" />
     <Compile Include="PitCoverBeneathChecks.cs" />
     <Compile Include="PitCoverLookChecks.cs" />

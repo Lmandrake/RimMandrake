@@ -62,31 +62,21 @@ namespace RimMandrake.FlowWorks.Pits
                 return deck;
             }
             Map map = start.Map;
-            HashSet<IntVec3> seen = new HashSet<IntVec3> { start.Position };
-            Queue<IntVec3> open = new Queue<IntVec3>();
-            open.Enqueue(start.Position);
-            // COVER_DECK_TUNE_QUADRATIC_CENSUS (GPT C4-F6): no size cap. A cap cut big decks into partial ones that each found
-            // a different lead and collapsed in pieces; the flood is bounded by the covers built, and the trigger floods only
-            // from a deck's local-minimum ids (CompPitCoverTrigger.RunScan).
-            while (open.Count > 0)
+            return RM_PitDeckMath.Flood(start.Position, c => CoverAt(map, c), (c, d) => c + GenAdj.CardinalDirections[d], 4);
+        }
+
+        /// <summary>The deck when this cover is its lead (lowest id); null as soon as the flood meets a lower id, so a cover that
+        /// is not the lead pays for the ground to its nearest lower id, not for the whole deck
+        /// (COVER_SCAN_TAME_QUADRATIC_ID_MINIMA: decks with many local id minima).</summary>
+        public static List<Building_PitCover> DeckIfLead(Building_PitCover start)
+        {
+            if (start == null || !start.Spawned)
             {
-                IntVec3 c = open.Dequeue();
-                Building_PitCover cover = CoverAt(map, c);
-                if (cover == null)
-                {
-                    continue;
-                }
-                deck.Add(cover);
-                for (int i = 0; i < 4; i++)
-                {
-                    IntVec3 n = c + GenAdj.CardinalDirections[i];
-                    if (seen.Add(n) && CoverAt(map, n) != null)
-                    {
-                        open.Enqueue(n);
-                    }
-                }
+                return new List<Building_PitCover>();
             }
-            return deck;
+            Map map = start.Map;
+            int id = start.thingIDNumber;
+            return RM_PitDeckMath.Flood(start.Position, c => CoverAt(map, c), (c, d) => c + GenAdj.CardinalDirections[d], 4, c => c.thingIDNumber < id);
         }
 
         /// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: does the lid on <paramref name="c"/> draw its own art (an open

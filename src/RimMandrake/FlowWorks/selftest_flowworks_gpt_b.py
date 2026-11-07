@@ -74,7 +74,7 @@ CASES = [
     ("COVER_DECK_TUNE_QUADRATIC_CENSUS C4-F3: a cover beside a lower-id cover is not the lead and floods nothing",
      "Pits/Trigger/CompPitCoverTrigger.cs",
      ["Building_PitCover n = RM_PitCoverUtility.CoverAt(map, self.Position + GenAdj.CardinalDirections[i]); "
-      "if (n != null && n.thingIDNumber < self.thingIDNumber) return; } List<Building_PitCover> deck = RM_PitCoverUtility.Deck(self);"],
+      "if (n != null && n.thingIDNumber < self.thingIDNumber) return; } List<Building_PitCover> deck = RM_PitCoverUtility.DeckIfLead(self);"],
      ("if (n != null && n.thingIDNumber < self.thingIDNumber) return;", "")),
     ("COVER_DECK_TUNE_QUADRATIC_CENSUS C4-F5: a mixed deck gives way at its weakest cover",
      "Pits/Trigger/CompPitCoverTrigger.cs",
@@ -82,7 +82,7 @@ CASES = [
       "float threshold = tierKg * RimMandrakeFlowWorksSettings.trapSensitivityMultiplier;"],
      ("float threshold = tierKg *", "float threshold = Pit.CoverTier.TriggerMassKg() *")),
     ("COVER_DECK_TUNE_QUADRATIC_CENSUS C4-F6: the deck flood has no size cap",
-     "Pits/Building_PitCover.cs",
+     "Pits/RM_PitDeckMath.cs",
      ["while (open.Count > 0) {"],
      ("while (open.Count > 0) {", "while (open.Count > 0 && deck.Count < 400) {")),
     ("FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS C5-F11: a wet DUG cell is left to the engine, not refused at the gate",

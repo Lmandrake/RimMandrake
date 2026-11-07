@@ -82,6 +82,50 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("CliffMask_full_derive_reuses_one_probe_per_derive", () =>
+            {
+                // AllowedBits may share one d9 across cells: it neither keeps nor changes it, and the answers match fresh arrays.
+                var rng = new Random(4242);
+                var d9 = new int[9];
+                Func<int, bool> joins = b => d9[4] > 2 && (b & 1) == 0;   // reads the shared d9, as the probe does
+                for (int n = 0; n < 2000; n++)
+                {
+                    var fresh = new int[9];
+                    for (int i = 0; i < 9; i++) d9[i] = fresh[i] = rng.Next(0, 6);
+                    int k = rng.Next(1, 4);
+                    byte got = RM_CliffMaskMath.AllowedBits(d9, k, joins);
+                    int[] f = fresh;
+                    byte want = RM_CliffMaskMath.AllowedBits(f, k, b => f[4] > 2 && (b & 1) == 0);
+                    Assert(got == want, "a reused d9 gives the same bits as a fresh one");
+                    for (int i = 0; i < 9; i++) Assert(d9[i] == fresh[i], "AllowedBits does not change d9");
+                }
+                // The reuse is what saves the garbage: this loop allocates nothing, the per-cell form it replaced does.
+                long before = GC.GetAllocatedBytesForCurrentThread();
+                for (int n = 0; n < 5000; n++) RM_CliffMaskMath.AllowedBits(d9, 1, joins);
+                long reused = GC.GetAllocatedBytesForCurrentThread() - before;
+                before = GC.GetAllocatedBytesForCurrentThread();
+                for (int n = 0; n < 5000; n++)
+                {
+                    var perCell = new int[9];
+                    RM_CliffMaskMath.AllowedBits(perCell, 1, b => perCell[4] > 2);
+                }
+                long old = GC.GetAllocatedBytesForCurrentThread() - before;
+                Assert(reused == 0, "reused probe allocates nothing, got " + reused);
+                Assert(old >= 5000 * 60, "the instrument sees the old per-cell allocation, got " + old);
+                // The Verse side really uses it.
+                string src = Src("Superdeep", "RM_CliffMask.cs");
+                int at = src.IndexOf("private static void DeriveCell(", StringComparison.Ordinal);
+                Assert(at > 0, "DeriveCell found");
+                int end = src.IndexOf("/// <summary>", at, StringComparison.Ordinal);   // Src squashes whitespace; the next doc comment ends the method
+                Assert(end > at, "DeriveCell's end found");
+                string cell = src.Substring(at, end - at);
+                Assert(cell.Contains("int[] d9 = probe.d9;") && cell.Contains("probe.c = c;"), "DeriveCell fills the probe");
+                Assert(cell.Contains("AllowedBits(d9, k, probe.joins)"), "DeriveCell asks through the probe's one delegate");
+                Assert(!cell.Contains("new int[") && !cell.Contains("=>"), "no array and no closure per cell");
+                Assert(src.Split(new[] { "new RM_CliffCellProbe(map, eng)" }, StringSplitOptions.None).Length == 3, "one probe in Derive, one in AfterIncremental");
+                Assert(Src("Superdeep", "RM_TrenchStride.cs").Contains("new RM_CliffCellProbe(map, eng)"), "the stride masks share it");
+            });
+
             Case("Cliff_mask_bits_follow_the_step_rule", () =>
             {
                 // a person at the D 4 core of a dried pond: D 2 ring all round, gentle

@@ -281,6 +281,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(src, @"public static class RM_Patch_ReturnedPrisonerLost", "the lost-prisoner letter patch exists");
             });
 
+            Case("TAKEN_returned_prisoner_grace_survives_a_save", () =>
+            {
+                int guardT = RM_TakenByLandKernel.ReturnGuardTicks, watchT = RM_TakenByLandKernel.ReturnWatchTicks;
+                const int now = 200000;
+                var live = new RM_TakenReturnGuard();
+                live.Mark(7, now - 100);          // in the escape guard and the letter's watch
+                live.Mark(8, now - guardT - 10);  // past the guard, still watched
+                live.Mark(9, now - watchT);       // past both: not worth saving
+                Dictionary<int, int> saved = live.Snapshot(now);
+                Assert(live.Count == 3, "saving does not change the live set");
+                Assert(saved.Count == 2 && saved[7] == now - 100 && saved.ContainsKey(8) && !saved.ContainsKey(9), "the save holds what is still in the window");
+
+                var loaded = new RM_TakenReturnGuard();   // what every load used to leave
+                Assert(!loaded.InGuard(7, now), "a fresh guard has lost the grace: the failure this fixes");
+                loaded.Mark(99, now);
+                loaded.Restore(saved);
+                Assert(loaded.Count == 2 && !loaded.Recent(99, now), "restore replaces");
+                Assert(loaded.InGuard(7, now) && loaded.Recent(7, now), "the grace and the watch come back");
+                Assert(!loaded.InGuard(7, now - 100 + guardT) && loaded.Recent(7, now - 100 + guardT), "the guard ends when it would have, from the same tick");
+                Assert(!loaded.InGuard(8, now) && loaded.Recent(8, now), "a return past its guard stays past it");
+                loaded.Restore(null);
+                Assert(loaded.Count == 0, "a save from before this writes nothing and loads empty");
+
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("TakenByLand", "RM_TakenByLand.cs"));
+                int iSnap = src.IndexOf("returnedTicks = RM_TakenByLand.Returned.Snapshot(Find.TickManager.TicksGame);", StringComparison.Ordinal);
+                int iLook = src.IndexOf("Scribe_Collections.Look(ref returnedTicks, \"rmReturnedTicks\", LookMode.Value, LookMode.Value,", StringComparison.Ordinal);
+                int iLoad = src.IndexOf("RM_TakenByLand.Returned.Restore(returnedTicks);", StringComparison.Ordinal);
+                Assert(iSnap > 0 && iSnap < iLook && iLook < iLoad, "ExposeData: snapshot, scribe, restore in that order: " + iSnap + "," + iLook + "," + iLoad);
+            });
+
             Case("RIVER_SWEEP_kernel_rules", () =>
             {
                 Assert(RM_TakenByLandKernel.VanillaReassignsOnPassToWorld(false, true, false, true, false, true), "free colonist: swapped");
