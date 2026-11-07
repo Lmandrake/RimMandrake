@@ -29,6 +29,7 @@ A modcheck run that dies "exit 5, no sheet" is python.exe killed by an access vi
 A cold load can die in the mono JIT (`0xE0000001`, RaiseException under `mono_unity_jit_cleanup`) before the monitor
 reads bad: 11-03 and 11-06, each 6-7 min before first_bad and outside the window as recorded, so ingest files a repair
 item. Table and odds: `infrastructure/state/evidence/HARNESS_REPAIR_CAUSE_4F477502.md`.
+A cold-load death is not always the CPU fault. A job that died INVALID/LOAD on a native `RaiseException` in the mono JIT under HugsLib's Harmony `PatchAll`, before any JawaBench code ran, loaded fine when resubmitted: read `Player.log`'s stack before blaming the last thing deployed. For a mono JIT abort (`0xE0000001`) that precedes the monitor's first_bad by 6-7 min, `mono_profiler_init_etw` in the note is only the thread-start tail: read `crash.dmp` and first_bad before touching the harness.
 
 ## Hypothesis under test: vendor software holding CPU state
 

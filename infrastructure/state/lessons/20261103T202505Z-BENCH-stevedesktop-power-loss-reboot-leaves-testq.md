@@ -1,2 +1,0 @@
-A SteveDesktop power-loss reboot leaves the testq runner clone ~/rm/runner with empty git objects and zero-length tracked files, so every job is REFUSED SYNC and the lane pauses. Fix: delete empty objects (find .git/objects -type f -empty -delete), git fetch, fsck, restore dirty files path-wise (git diff --name-only -z | xargs -0 git checkout --; the house hook refuses reset --hard even over ssh), pull --ff-only, then testq.py resume. The findings_fold table must be rerun (findings_fold.py run) before flow.untriaged_findings drops.
-home: infrastructure/stevedesktop

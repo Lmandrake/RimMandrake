@@ -1,2 +1,0 @@
-The Steve worker's outer copy took the worker and schema files from disk after the pull, but took contracts/models.py from bytes it had loaded before the pull. So the first job after any landing that added a result field broke its own contract: the new worker wrote the field and the old contract refused it, giving INVALID HARNESS 'Extra inputs are not permitted'. The contract is now reloaded after the pull (7ff9de03cd). When code ships as a set of copied files, take every file from the same moment.
-home: infrastructure/stevedesktop/worker.py

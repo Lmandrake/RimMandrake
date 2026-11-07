@@ -1,1 +1,0 @@
-testq attempts keep no game log: Player.log rotates to -prev at the next cold start and is overwritten by the one after, so read a no_game HARNESS failure within one job. Since OPS_STEVE_DIAGNOSE_INVALID_MBTX worker.py keeps it in attempts/<id>/Player.log for no_game only; other HARNESS deaths still lose it.

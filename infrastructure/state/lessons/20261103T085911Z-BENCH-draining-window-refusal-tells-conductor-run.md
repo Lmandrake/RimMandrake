@@ -1,1 +1,0 @@
-The draining-window refusal tells the Conductor to run 'detached_helper.py launch --seat CONDUCTOR ...', but detached_helper refuses seat CONDUCTOR (accepts BENCH/FOUNDRY/STEVE/RUNNER): use --seat BENCH. Fix the refusal text or accept CONDUCTOR (see CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE).

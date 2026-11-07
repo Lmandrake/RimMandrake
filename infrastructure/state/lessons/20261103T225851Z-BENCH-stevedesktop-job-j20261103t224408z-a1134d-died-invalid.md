@@ -1,1 +1,0 @@
-SteveDesktop job J20261103T224408Z-a1134d died INVALID/LOAD on a native RaiseException in the mono JIT under HugsLib's Harmony PatchAll, before any JawaBench code ran; the same job resubmitted loaded fine. Read Player.log's stack before blaming the last thing deployed (the companion had just been installed).

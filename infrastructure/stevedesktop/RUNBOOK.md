@@ -293,6 +293,9 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 **Push access (owner card 2026-10-25: "Push to RimMandrake only"):** the runner's `origin` pushurl is the ssh alias `github-rimmandrake-write` (`~/.ssh/deploy_rimmandrake_write`, passphrase-less, write deploy key on RimMandrake only; the fetch key stays read-only); identity is the public-repo noreply. `verify_from_archmagi.sh` check `push_dryrun`.
 
 ---
+- **Identify SteveDesktop by MAC or a bootstrap report, never by NetBIOS name.** It once answered NetBIOS as `SLEWI147465` before its computer name read `STEVEDESKTOP`. It is 192.168.86.87 (Wi-Fi, MAC 04-33-C2-68-51-5A); Tailscale `stevedesktop` 100.118.241.96, `stevedesktop-wsl` 100.115.10.14.
+- **SSH to SteveDesktop lands in cmd.exe/PowerShell, not bash.** cmd mangles quotes, `$`, `|` and `;` in an inline `powershell -Command`: send scripts as `-EncodedCommand` (UTF-16LE base64), as `sps.sh` does; over cmd's 8191-char line cap it dies with exit 2 and empty output, which is why `sps.sh` scps long scripts and runs `-File`. A bash snippet in `wsl.exe -- bash -c "..."` inside a PowerShell double-quoted string loses every `$var`: send it base64 and `base64 -d | bash`. Processes started from OpenSSH run in session 0 with no desktop (a Unity game started there never shows). `ssh stevedesktop true` exits nonzero when the machine is up (it lands in PowerShell), so a wait loop on it never fires: use `ssh stevedesktop hostname`. One GitHub deploy key per repo: give each clone its own key via `core.sshCommand -i ... -o IdentitiesOnly=yes`, keeping the canonical origin URL.
+- **Scripting Windows on SteveDesktop over ssh has three more traps.** `scp` can hang past 120 s and a PowerShell `-Command` reading `$input` from ssh stdin writes nothing: put a script there with `ssh 'powershell -EncodedCommand <b64>'` doing `[IO.File]::WriteAllBytes` from base64, and run long jobs as a SYSTEM scheduled task (`Start-Process` from ssh dies with the session). `Get-ChildItem -Recurse` under `C:\Users` loops through `Application Data` junctions: walk with .NET and skip `ReparsePoint`. In PowerShell 5, `ConvertFrom-Json` on a file holding an array, piped to `ForEach-Object`, hands over the whole array as one object: use `-Raw` and `foreach($x in @($a))`. `Get-WinEvent -FilterHashtable` reads a UTC DateTime's digits as local time, so on a west-of-Greenwich machine a recent UTC StartTime asks for the future and returns 'no events' with no error: pass local time and print a probe count beside any empty event section.
 
 ## Test centre: running a modcheck there (proved 2026-10-25)
 
@@ -339,6 +342,13 @@ First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archma
 
 Switch lists with `modlist_swap.py --minimal|--restore --apply` on the runner (game down).
 The runner is not a seat, so record the printed `rimflow verify` line from a seat clone.
+- **WSL interop reached over Tailscale SSH starts Windows processes in session 1, the logged-in desktop,** so the game is launched from there (`rw_game.sh`). That SSH session has no Windows dirs on PATH: call `powershell.exe`/`taskkill.exe` by full `/mnt/c` path or source `testcentre_env.sh`.
+- **Recovering a dead test colony means re-queuing its work in the same step.** After all pawns die, a SteveDesktop lane sat unnoticed for hours and its four FlowWorks tests were not re-run for 10-15 h. A canary RED 'no live colonist' means the long-running colony died on a still-Playing map and `runner.py` will not start a new quicktest: run `rw_game.sh down` on the runner first, then `testq.py resume`; resuming without stopping the game reloads the same dead colony and re-pauses.
+- **A composed ModsConfig may name only mods whose folder is on THAT host.** RimWorld drops a folderless id silently and the runner's exact load check then calls the run `stale_load` (`compose_test_list` once added `ray1203.simplecamerasetting` unconditionally and SteveDesktop lacked it). Probe the host (`zoom_guard.zoom_installed`) before naming a donor.
+- **A deploy closure that adds a tier member must also add that member's own hard `modDependencies`.** RimWorld still loads a mod whose dependency folder is absent, so defs referencing the missing mod's types fail to load and the launch gate refuses every job on the kept game (UtinniPatches without WeatherSuite).
+- **SteveDesktop holds only 100 mods, 56 of them on the 316-mod full list,** so an exact-tier job there can never approach the full list: a tier that resolves on Archmagi at 61 mods resolves there at 23 with 33 missing. Read `resolve_tier` on Steve before planning a tier bisect.
+- **A test-site save missing on a machine makes `rimworld/load_game` do nothing and `proof_all` poll its 420 s budget with no error.** On SteveDesktop check Saves for `RM_TestSite_<site>_v3` first.
+- **On a two-RimWorld machine, `-screen-fullscreen 0` does not hold unless the instance's `Prefs.xml` has `screenWidth` and `screenHeight`** (B ran fullscreen at 3840x1600 without them). PowerShell `Set-Content` wrote no file in that instance folder and raised no error: use `[IO.File]::WriteAllText` and confirm the file exists. A working bridge is no proof of Steam on SteveDesktop, since the bridge has a local copy in Mods: count SteamWorkshop sources from `rimworld/list_mods`.
 
 ## Full-automation audit (2026-10-25)
 
@@ -365,6 +375,7 @@ or token expiry (Steam UI plus the account's phone); anything before Windows sta
 BitLocker recovery, disk check), because every door runs inside Windows; the browser half of a
 Claude `/login` (phone). An RDP connection would take the console session that the game needs;
 `tscon <id> /dest:console` should hand it back (not measured), so use CRD, not RDP.
+- **Read 'UNREACHABLE' or 'no route' on SteveDesktop by pinging the Windows node `stevedesktop` first.** Windows up with WSL down means WSL stopped (`wsl --export`/`--terminate`/`--shutdown` take down the distro and the lane's ssh door, `100.115.10.14`, the WSL Tailscale node; the Keepalive sleep dies with it): `\Steve Seats Watch` returns keepalive, door and both seats within about 6 min, or `Start-ScheduledTask 'WSL Keepalive'` does it at once. An offline Steve is not evidence of drive failure either: it may be a deliberate reboot, so read the Windows event log (1074, 41, 6008) and the controller's journal before theorising.
 
 ## Claude support kit (WSL, 2026-10-25)
 
@@ -378,6 +389,8 @@ Claude `/login` (phone). An RDP connection would take the console session that t
   `claudeconf.py skills --apply` links the skills whose repos are present.
 - Git identity: `sh ~/dev/Machinist/tools/install-git-identity.sh`.
 - Claude logins belong to the claude-remote-control account switcher; never edit them by hand.
+- **A full WSL disk on SteveDesktop (ENOSPC on the volume holding `/tmp/claude-1001`) silently stops every Claude Bash call and subagent there; nothing runs, not even `df`.** When agents on that machine seem dead, check `df -h / /tmp` first.
+- **A live process is not a live seat.** Steve's Server ran alive at a `[y/N]` trust prompt, unconnected, and `pgrep` also matched a leftover tmux client: test the seat's own screen (`tmux capture-pane`). `testq pause` must run where the queue lives (Archmagi); run on Steve it paused a phantom queue and reported success.
 
 ## Mutation testing (agents, 2026-10-28; owner: "Authorized get those new tests running now at the same time.")
 
@@ -426,6 +439,7 @@ Archmagi copies them back with
 | **A self-upgrade breaks something** | Daily `git pull --ff-only` never forces. apt runs `--force-confold`. Everything logs (`/var/log/runner-selfupgrade.log`, `C:\SteveDesktop\selfupgrade.log`) | `winget upgrade --all` may restart Tailscale or CRD for a few seconds. A bad Claude Code release: rerun `claude update` or pin it over SSH |
 
 | **No more security updates** | Bootstrap records `display_version` and `build` in the report. Agents keep the machine off untrusted inbound paths: SSH from LAN + Tailscale only, CRD dials out | Windows 10 left support on 2025-10-14. Consumer Extended Security Updates were published to run to 2026-10-13, which is before this week. So unless the machine is on a paid commercial ESU, Windows Update brings little or nothing now (Microsoft's published dates; not measured on this machine). That means fewer surprise reboots but no new patches. The machine must be on 22H2 (`display_version` 22H2, build 19045) for WSL to update |
+- **A power-loss reboot can leave the runner clone `~/rm/runner` with empty git objects and zero-length tracked files,** so every testq job is REFUSED SYNC and the lane pauses. Fix: `find .git/objects -type f -empty -delete`, `git fetch`, fsck, restore dirty files path-wise (`git diff --name-only -z | xargs -0 git checkout --`; the house hook refuses `reset --hard` even over ssh), `git pull --ff-only`, then `testq.py resume`. Rerun `findings_fold.py run` before `flow.untriaged_findings` drops.
 
 ## Lockout safety (what the bootstrap never does)
 
@@ -438,6 +452,7 @@ Archmagi copies them back with
   never `wsl --shutdown`) only when systemd is not yet PID 1.
 - It reboots at most twice by itself, and only after you press Enter. After that it stops and reports.
 - Each step is logged and failure-isolated. Re-running it is safe.
+- **A rerunnable remote bootstrap needs three more guards.** A `-Resume` path must not skip the reboot gate, and the resume task must not be removed while WSL steps failed, or nothing retries. `NoAutoRebootWithLoggedOnUsers` is honoured only with `AUOptions=4`, and Windows Home ignores these policy keys. `-AllowComputerToTurnOffDevice` is not a `Set-NetAdapterPowerManagement` parameter (an empty `catch` once hid that), so never swallow errors silently.
 
 ## Open questions only you can answer
 

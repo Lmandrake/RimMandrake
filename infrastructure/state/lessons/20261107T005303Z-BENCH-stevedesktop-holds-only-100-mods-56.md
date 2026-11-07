@@ -1,1 +1,0 @@
-SteveDesktop holds only 100 mods, 56 of them on the 316-mod full list (read 2026-11-06, modset_builder scan run on the runner), so an exact-tier job there can never approach the full list: a tier name that resolves on Archmagi at 61 mods resolves there at 23 with 33 missing. Read resolve_tier on Steve before planning a tier bisect.

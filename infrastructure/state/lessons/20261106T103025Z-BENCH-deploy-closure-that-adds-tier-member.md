@@ -1,1 +1,0 @@
-A deploy closure that adds a tier member must also add that member's own hard modDependencies: RimWorld still loads a mod whose dependency folder is absent, so the defs referencing the missing mod's types fail to load and the launch gate refuses every job on the kept game (STEVE_LANE_UNSTICK_BRAKED_UNOWNED_D283, UtinniPatches without WeatherSuite, 2026-11-06).

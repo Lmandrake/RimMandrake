@@ -1,1 +1,0 @@
-PowerShell 5 ConvertFrom-Json on a file holding a JSON array, piped to ForEach-Object, hands over the WHOLE array as one object: a revert script built like that reports 'System.Object[] -> System.Object[]' and changes nothing. Read with -Raw and loop with foreach($x in @($a)). Seen 2026-11-04, Steve driver A/B revert (STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO).

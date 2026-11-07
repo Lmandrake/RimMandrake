@@ -1,1 +1,0 @@
-A default live-site (live_site.py --game, GAMEENV_FIX_PROOFSITE_FB127191_ITEMS_WAIT) puts a quicktest in front of every clause without its own site: a build that breaks map generation now reads 'site not prepared' (routed as harness, not a mod defect), and SteveDesktop-inferred clauses still get no site.

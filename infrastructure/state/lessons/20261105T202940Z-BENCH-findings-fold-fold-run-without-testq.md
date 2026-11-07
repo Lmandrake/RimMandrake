@@ -1,1 +1,0 @@
-A findings_fold.fold run without the testq done records (read_done) cuts DIFFERENT signatures, so every findings_fold decide (keyed on sig) misses and decide-routed findings read untriaged; a walled proof of flow.untriaged_findings must read /mnt/d/ClaudeWork/rimmandrake/testq/done (OPS_FINDINGS_DIAGNOSE_XZLM gen 15)
