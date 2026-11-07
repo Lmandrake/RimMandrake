@@ -365,7 +365,7 @@ complete `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`); map
 presenter. **Unchanged:** who decides (`delegation_policy.md`), the scaled-review gate, a grader's score as evidence
 only. The 2026-10-19 card *"Python command, no agent before you see it"* now means no agent COMPOSES the page; one
 still reads it. Incident: 2026-10-22 FlowWorks walkthrough (hoses missing reels, under buildings, unreadable
-connectors, a pawn over a pit cover), `infrastructure/state/lessons/20261023T014915Z-BENCH-walk-shown-owner-2026-10-22.md`.
+connectors, a pawn over a pit cover), `skills/rimworld-live-review/references/traps.md`.
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
 

@@ -38,7 +38,7 @@ What matters in the terms, for one licensed owner on his own machine. This is my
 
 ### What separates cleanly (read in `D:\ClaudeWork\rimmandrake\decomp\rw16\all\Verse\GenFilePaths.cs`)
 
-`SAVEDATAFOLDER_SPLITS_CONFIG_NOT_MODS`. `-savedatafolder=<dir>` moves Config, ModsConfig.xml, Prefs.xml, KeyPrefs.xml, Knowledge.xml, Saves, Scenarios, ModLists, Ideos, Xenotypes, Xenogerms, CameraConfigs, External, Screenshots and DevOutput. Each game can therefore hold its own mod list over one Mods folder. The companion writes `JawaBench`, tps and DefDump under the save-data folder, so those split too. The lesson `D:\Luke\dev\RimMandrake\infrastructure\state\lessons\20261025T230159Z-BENCH-rimworld-launched-directly-as-rimworldwin64-exe.md` records this on a real direct launch.
+`SAVEDATAFOLDER_SPLITS_CONFIG_NOT_MODS`. `-savedatafolder=<dir>` moves Config, ModsConfig.xml, Prefs.xml, KeyPrefs.xml, Knowledge.xml, Saves, Scenarios, ModLists, Ideos, Xenotypes, Xenogerms, CameraConfigs, External, Screenshots and DevOutput. Each game can therefore hold its own mod list over one Mods folder. The companion writes `JawaBench`, tps and DefDump under the save-data folder, so those split too. The lesson `D:\Luke\dev\RimMandrake\infrastructure\state\lessons\skills/rimworld-load-round/references/traps.md` records this on a real direct launch.
 
 Still shared with `-savedatafolder`:
 
