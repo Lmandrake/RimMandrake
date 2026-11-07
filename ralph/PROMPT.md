@@ -4,6 +4,28 @@ Read the owner's own words and the north star in `design/validation_walks/RimMan
 
 BE CREATIVE. Figure out the problems and solve them. Don't just work to a checklist. Play the mod, look at what a player would actually see, work out what's really wrong, and fix it. We trust you. Impress us.
 
+## What the owner decided on the social layer
+
+He read an outside review of your social layer, written before anything of it ran in the game, and chose these by card on 2026-11-07. Full review, with the reasoning and code references: `D:\ClaudeWork\rimmandrake\ralph_graffiti\gpt_review\gameplay_review.md`. Treat its claims as things to check, and these choices as his. Do them along with what you'd do anyway, and keep them small.
+
+- **Walls:** paint dies with its wall. Keep marks on the wall tile. Nothing floats when a wall goes.
+- **Rereads:** the first read gives the full effect. Later reads add no opinion or grudges, and only the subject keeps a small mood reminder while the mockery stands.
+- **Answers:** they wait their turn (refused when hungry, tired, enemies near or the target far). A failed or blocked answer stays open, and one whose mark is gone is dropped. Artists obey the normal table and `PainterMayPaint`, including Artistic-disabled pawns. Gossip stacks once per person.
+- **The base:** measure a mark's real width before painting, so nobody erases a neighbour by accident. Autonomous painters skip hospitals and kitchens; orders may still paint there. Only enemy tags in the Home area count against colony mood.
+- **Lures:** leave them working when crossed out; full cleaning ends them. His words: "Crossing out a lure shouldn't stop it, but totally cleaning it would. A raider wouldn't be fooled because someone crossed out instructions."
+- **Settings tell the truth:** the painting switch also stops replies, the tooltip is corrected, and reset and search cover the social switches.
+- **Visitors:** charge only for your own faction's marks, capped per visit.
+- **Messages:** they point at the wall.
+- **Cleaning a mockery bonds subject and cleaner**, and his words: "if a person hates the subject, they will refuse to clean the insult". Check a cleaner on an ordinary filth job as well as one answering.
+
+And one thing he added, which matters as much as any of them:
+
+> "Please ensure that a person's art skill goes into the art's effect. A poor artist will paint such a bad graffiti mark that it is ugly, harms a room's beauty, and gives mood debuffs. But a highly skilled artist is actually making art. It is beautiful, improves a room and people's moods. And this combines with slanderous art: it can actually make you really angry as well as improve your mood from the beauty of it. Emotions are complicated."
+
+He also said Luminous Pigments will later make graffiti luminous, shimmering, more beautiful and permanent. Don't build that. Don't make it hard either.
+
+Prove the social layer live: `readers_feel_the_wall`, then answers finishing with fights that have causes, then the mod standing alone, from the tests section of that review, are the first to try. They're proposals, so improve them.
+
 ## What the owner just decided
 
 His words, 2026-11-07, on the contrast sheet and on what this mod is for:
