@@ -58,6 +58,8 @@ A loop's unit and agent run on Archmagi; only the game and its tools run on Stev
 - 🔴 **Never reboot that machine for a game problem** (owner): *"Even with CPU faults, rebooting the game often clears any damage caused sufficient
   for this kind of testing. Don't keep rebooting it. It's slow and hard on the machine."* `ralph/steve.sh reboot` is the last resort, only when the
   game won't come up at all after a retry.
+  The machine hosts two games, and a reboot drops both: a copied `steve.sh` either drops `reboot` or keeps the guard (`ralph/reboot_guard.sh`,
+  which refuses while another instance runs, fails closed, `STEVE_REBOOT_BOTH=1` overrides; test `bash ralph/reboot_guard_test.sh`). Restart your own game by pid.
 - It has a CPU fault nobody has cured, showing some minutes after boot. If `ralph/steve.sh status` shows `bad_cpus` other than `[]`, or a result
   surprises you, restart the game and rerun before acting on it. Uptime alone isn't a reason to do anything.
 - A dead game or a dropped ssh there is weather, not the mod's bug. Log how often.
