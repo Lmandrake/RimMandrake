@@ -117,6 +117,7 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
 - **Say what happened and how you know in the first clause of a status line.** 'No longer in the running list' reads as lost or dropped to the owner; v3 had simply finished.
 - **More than ~10 concurrent helpers closes the fewest items per token.** Burn days with 10-22 helpers spent 99.5M cache-read tokens per closed item (30 closes), against 5.2M on the framework-guided day at 4-7 concurrent and 11.2M in ALMOST_OUT. Spend surplus tokens on durable no-review work (harnesses, instruments, wiring), not on more parallel helpers or review waves.
 - **Delegation did not stop the owner's card load.** After `delegation_policy.md` he still answered 207 card questions in 4.1 days (~50/day vs ~76/day before); 144 were in classes already delegated (design 57, process 58, art picks 29). Agreement with the agent's Recommended option there was only 50-61%, so most were real choices; ordering/helper-count cards (81% agree) and twin-apply cards (86%) are pure leak. On his own sheet marks, agents' 'wait/keep' recommendations matched him 39%, while a 'newest mark wins, x acts now' rule predicts 83%.
+- **No subagent type can reach Artifact/ArtifactData** (rm-fixer lacks ToolSearch; rm-builder's ToolSearch finds neither; general-purpose is hook-blocked). A helper gathers the data into a file and the write goes through a headless `claude -p` with `CLAUDE_CODE_ARTIFACT=1` (`src/RimMandrake/Utils/fleet_refresh.py`). Helper types need `SendMessage` in their tools list to report mid-run (added to rm-builder, rm-fixer, rm-bridge): a brief must not tell a running helper to message anyone unless its type has the tool.
 
 ## Subagents — this is where the saving is
 
@@ -136,6 +137,7 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
 A subagent's return is EVIDENCE, never a finding — it carries CONFIRMED/UNCERTAIN
 and the window decides what is true. Never spawn a duplicate for "reliability".
 - **A subagent report ending `HANDOFF READY` is the agent's own artifact, not a handoff.** Only the seat's handoff ritual (`handoff.py --check`) licenses that line. Parallel helpers must not share one stage folder: `selftest_winstage` once staged every clone in one shared folder so agents tested each other's source (now a per-clone hash).
+- **Never run heavy ML from a subagent inside a seat.** Model downloads, torch, ComfyUI, mesh generators and big numpy rasterizers inherit the seat's cgroup; one 7 GB child pushed the 10 GB scope to its limit with swap full, the kernel killed it, and the window died anyway (`OOMPolicy=continue` only stops systemd tearing the scope down). Run such a job in its own bounded systemd scope so a balloon kills only itself. Local generation is parked; do not relaunch it without the owner's word.
 
 ## Four places a cheaper tier is forbidden outright
 
@@ -163,3 +165,11 @@ and the window decides what is true. Never spawn a duplicate for "reliability".
 
 Escalating is a success; record it. Stamp the model on closes (`model=sonnet-5.5` in
 the `note`) so the ledger can answer accepted-work rate per model.
+
+## Hooks and Claude Code session quirks
+- **A `PreToolUse` hook added to `.claude/settings.json` mid-session does not fire** — not for this window's Bash calls and not for its subagents' — until a new session starts; a hook already present at session start does fire for subagents. Test a new hook in a fresh window, never by exercising it in the one that added it.
+- **A Claude Code hook marked `asyncRewake` survives its session's kill** (re-parented to /init, would wait its full 23 h timeout; measured on Claude Code 2.1.308). Any long-waiting async hook must find its claude ancestor at start and exit when that pid dies (`doorbell.claude_ancestor` + `owner_pid` guard).
+- **A Claude Code transcript (`~/.claude/projects/<cwd>/<session>.jsonl`) logs one line per content block of an API message, each repeating the SAME usage:** sum usage once per `message.id` (last line wins) or a run is overcounted 2-3x; deduped it reproduces the `claude -p` result json exactly. A role run's `--name` is not in the jsonl: find it by session id (pin with `--session-id`) or by the "role launch <unit>" text in the first user line (`role_launch.transcript_usage`).
+- **The Claude Code `WorktreeCreate` hook's real stdin is `cwd, name, prompt_id, session_id, transcript_path`** (the docs say `base_path`/`worktree_name`, which is wrong). `WorktreeRemove` never fires (0 of 11 runs). The hook's parent pid is a dying `sh -c`: walk `/proc` up to the `claude` process to find the session.
+- **A PreToolUse Bash hook matches its trigger word anywhere in the command text, even inside a heredoc that only mentions it,** and a refusal rejects the whole compound command so its other steps do not run. Two seen: the art-push hook refuses any command containing the repo's push-script word while HEAD carries art events whose PNGs are not committed (for example after a sibling helper swept your art-shard lines into its commit); the registry-write hook refuses a heredoc patch that merely names the modcheck status file. Keep the word out of the command: write prose with Write/Edit, put the patch in a scratch file, and run it.
+- **Replaying hook payloads is not read-only:** an allowed `Agent` call makes `block_agent_over_slots.py` reserve a real helper slot for 90 s (`spawn_reservations.json`). Any tool that feeds hooks synthetic Agent calls must set `RM_SPAWN_RESERVE_S=0`, as `hook_latency.py` does.
