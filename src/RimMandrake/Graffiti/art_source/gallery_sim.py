@@ -34,8 +34,8 @@ def run(baked, prefix):
                 a = np.asarray(t).astype(float)
                 a[..., :3] *= pig
                 t = Image.fromarray(a.astype(np.uint8), "RGBA")
-            through = .12 if m["mode"] == "paste" else (0 if m["mode"] == "scratch" else .28)
-            sc.mark(t, (x + int(np.ceil(m["width"])) // 2, 2), G.FRONT, H, m["width"], H * .92 * min(1, m["height"]), through=through, **hand(j))
+            through = 0 if m["mode"] == "scratch" else .18
+            sc.mark(t, (x + int(np.ceil(m["width"])) // 2, 2), G.FRONT, H, m["width"], 1.2 * min(1, m["height"]), through=through, **hand(j))
         im = sc.image().crop((0, 0, 27 * 64, 96))
         d = ImageDraw.Draw(im)
         for n, x in row:

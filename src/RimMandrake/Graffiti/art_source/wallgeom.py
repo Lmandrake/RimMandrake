@@ -141,22 +141,80 @@ def plane_to_cell(face, s, t, g, H):
     raise ValueError(face)
 
 
-def mark_polys(wall, anchor, face, g, H, width, height, slide=0.0, slope=0.0, lift=0.5):
-    """One mark as cell-clipped polygons: list of [(screen_x, screen_z, u, v)...] in absolute cell coords.
-    `slope` shears the baseline (rise per cell along the wall) so a hand's tilt never bends a run off the vertical.
-    The mark runs along the wall cell by cell and stops at the first cell with no such face (corner, door, wall end)."""
+CAP_RATE = 1.0     # the top of a wall faces the camera: a world cell of it is a screen cell. The face is foreshortened, the top is not.
+CAP_LIP = 0.08     # bare wall top the paint leaves at the far edge.
+FOOT = 0.04        # world cells of bare face under the lowest mark.
+
+
+def cap_poly(links, g):
+    """The top of a wall cell, convex and counter-clockwise, in cell coords: above the crease, or the cell's whole depth where no
+    front shows; inside the side faces; to the far edge where the wall runs on north."""
+    c, m = g["crease"], g["side"]
+    x0 = 0.0 if links & W else m
+    x1 = 1.0 if links & E else 1 - m
+    z0 = 0.0 if links & S else c
+    z1 = 1.0 if links & N else 0.95
+    return [(x0, z0), (x1, z0), (x1, z1), (x0, z1)]
+
+
+def climb_max(face, g, H):
+    """World height a mark can reach on this face: its whole face, then the top as far as the lip (front) or the cap's middle (side,
+    the other half belongs to the wall's other side)."""
+    return H + (0.95 - CAP_LIP - g["crease"] if face == FRONT else 0.5 - g["side"]) / CAP_RATE
+
+
+def plane_to_screen(face, s, t, g, H):
+    """Plane -> screen, relative to the anchor cell. Below t = H on the foreshortened face, above it on the top: one surface, bent."""
+    if t <= H:
+        return plane_to_cell(face, s, t, g, H)
+    over = (t - H) * CAP_RATE
+    if face == FRONT:
+        return (0.5 + s, g["crease"] + over)
+    if face == EAST_FACE:
+        return (1 - g["side"] - over, 0.5 + s)
+    return (g["side"] + over, 0.5 - s)
+
+
+def split_t(poly, H):
+    """A polygon in plane coords (s, t, u, v) cut at the crease: the part on the face, the part on the top."""
+    low, high = [], []
+    for j, p in enumerate(poly):
+        q = poly[j - 1]
+        if (p[1] <= H) != (q[1] <= H):
+            f = (H - q[1]) / (p[1] - q[1])
+            x = tuple(q[k] + (p[k] - q[k]) * f for k in range(4))
+            low.append(x); high.append(x)
+        (low if p[1] <= H else high).append(p)
+    return low, high
+
+
+def mark_polys(wall, anchor, face, g, H, width, height, slide=0.0, slope=0.0, lift=0.5, climb=True):
+    """One mark as cell-clipped polygons, [(screen_x, screen_z, u, v)...] in absolute cell coords, on its face and bent onto the top."""
     along = (1, 0) if face == FRONT else ((0, 1) if face == EAST_FACE else (0, -1))
     halfw = width / 2
-    # t of the mark's centre: `lift` of the free height of the face, baseline shear kept inside by `room`
     room = abs(slope) * halfw
-    hh = min(height, H - 2 * room)
-    tc = hh / 2 + room + (H - hh - 2 * room) * lift
+    top = climb_max(face, g, H) if climb else H
+    hh = min(height, top - FOOT - 2 * room)
+    t0 = FOOT + room + (top - FOOT - hh - 2 * room) * lift
+    plane = []
+    for u, v in ((0, 0), (1, 0), (1, 1), (0, 1)):
+        s = slide + (u - 0.5) * width
+        plane.append((s, t0 + v * hh + slope * (s - slide), u, v))
+    low, high = split_t(plane, H)
+
+    def screen(poly):
+        out = []
+        for s, t, u, v in poly:
+            x, z = plane_to_screen(face, s, t, g, H)
+            out.append((anchor[0] + x, anchor[1] + z, u, v))
+        return out
+
+    low, high = screen(low), screen(high)
     out = []
     for k in range(-5, 6):
         s0 = k - 0.5
         if s0 + 1 < slide - halfw or s0 > slide + halfw:
             continue
-        # walk outward from the anchor: every cell between must carry the face
         ok = True
         for j in (range(0, k + 1) if k >= 0 else range(0, k - 1, -1)):
             c = (anchor[0] + along[0] * j, anchor[1] + along[1] * j)
@@ -165,17 +223,17 @@ def mark_polys(wall, anchor, face, g, H, width, height, slide=0.0, slope=0.0, li
         if not ok:
             continue
         cell = (anchor[0] + along[0] * k, anchor[1] + along[1] * k)
-        conv = ccw(face_poly(wall.links(cell), g, face))
-        conv_abs = [(cell[0] + x, cell[1] + z) for x, z in conv]
-        quad = []
-        for u, v in ((0, 0), (1, 0), (1, 1), (0, 1)):
-            s = slide + (u - 0.5) * width
-            t = tc + (v - 0.5) * hh + slope * (s - slide)
-            x, z = plane_to_cell(face, s, t, g, H)
-            quad.append((anchor[0] + x, anchor[1] + z, u, v))
-        p = clip(quad, conv_abs)
-        if len(p) >= 3:
-            out.append(p)
+        l = wall.links(cell)
+        fp = [(cell[0] + x, cell[1] + z) for x, z in ccw(face_poly(l, g, face))]
+        cp = [(cell[0] + x, cell[1] + z) for x, z in cap_poly(l, g)]
+        if low:
+            p = clip(low, fp)
+            if len(p) >= 3:
+                out.append(p)
+        if high:
+            p = clip(high, cp)
+            if len(p) >= 3:
+                out.append(p)
     return out
 
 

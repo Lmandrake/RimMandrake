@@ -44,6 +44,8 @@ namespace RimMandrake.Graffiti
         public static bool breachBiasEnabled = true;
         public static bool raidExitTaggingEnabled = true;
         public static bool autoCleanProtectionEnabled = true;
+        public static bool socialEnabled = true;
+        public static bool socialMessagesEnabled = true;
 
         public override void ExposeData()
         {
@@ -54,6 +56,8 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref breachBiasEnabled, "breachBiasEnabled", true);
             Scribe_Values.Look(ref raidExitTaggingEnabled, "raidExitTaggingEnabled", true);
             Scribe_Values.Look(ref autoCleanProtectionEnabled, "autoCleanProtectionEnabled", true);
+            Scribe_Values.Look(ref socialEnabled, "socialEnabled", true);
+            Scribe_Values.Look(ref socialMessagesEnabled, "socialMessagesEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -78,6 +82,10 @@ namespace RimMandrake.Graffiti
 
             if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "viewerReactionEnabled" }))
             {
+                list.CheckboxLabeled("Marks matter between people", ref socialEnabled,
+                    "Colonists read the walls: a mockery humiliates its subject and turns friends against its painter, a tribute or memorial moves people, and they scrub, cross out, paint back or go and confront whoever did it.");
+                list.CheckboxLabeled("Say so when it happens", ref socialMessagesEnabled,
+                    "Lines over a pawn's head when they read a mark, and a message when something starts between people. The thoughts and social log still happen with this off.");
                 list.CheckboxLabeled("Viewer reactions to marks", ref viewerReactionEnabled,
                     "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them: "
                   + "colonists are unsettled by a tag a hostile faction left behind, and the RimMandrake "

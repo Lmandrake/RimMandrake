@@ -85,7 +85,9 @@ namespace RimMandrake.Graffiti
         {
             ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
             if (ext == null || !ext.designatorEligible) return false;
-            return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.poolWeight);
+            if (RM_GraffitiKernel.RefusesToPaint(ext.meaning, painter?.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false)) return false;
+            // A mark about someone never rolls out of a pool (weight 0), but it can be ordered by name.
+            return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.hasSubject || ext.meaning == RM_Meaning.Insult ? 1f : ext.poolWeight);
         }
 
         public static IEnumerable<ThingDef> AllDesignatorEligible()

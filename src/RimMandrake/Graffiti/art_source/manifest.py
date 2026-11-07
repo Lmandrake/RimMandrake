@@ -107,6 +107,23 @@ for name, t, tool, c in G:
     add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"))
 
 
+# ------ marks about somebody: the subject's own head goes in the gap, painted at runtime (WallPlane.PaintedPortrait).
+GAP = "The top centre of the picture is left completely empty, a clear round gap about a third of the picture's width, because a head is painted there later. "
+for i, t in enumerate(["a fat crude donkey's body on stumpy legs seen from the side, a flicking tail, its neck ending in the empty gap where its head should be",
+                       "two huge curling devil horns rising either side of the gap, a forked beard hanging under it, jagged stink lines coming off",
+                       "a tall crooked dunce cap on top, a row of little pointing hands from both sides aimed in at the gap",
+                       "a crude gallows and a headless stick body hanging from it, the rope going into the gap"]):
+    add(f"mock_{i}", F + "Mockery", 1.25, "brush", 0.15, "A cruel joke about someone, drawn on a wall by somebody who hates them: " + t + ". " + GAP + BRUSH + PIG.format(c="oxblood and soot black") + SQ)
+for i, t in enumerate(["a rough ring of thick laurel leaves around the gap", "a big lopsided heart outline around the gap with little flicks of love around it", "a burst of thick sun rays around the gap and two crude wings at its sides"]):
+    add(f"tribute_{i}", F + "Tribute", 1.25, "brush", 0.15, "A loving tribute to someone, painted carefully on a wall by a friend: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="ochre and chalk white") + SQ)
+for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude folded wings either side of the gap, a ring of small dots around it, drips falling"]):
+    add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="chalk white and ash grey") + SQ)
+for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",
+                       "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a little man with a bucket stuck on his head walking into nothing, wobble lines around him"]):
+    add(f"rude_{i}", F + "RudeLittleMan", 1, "brush", 0.2, "A silly rude doodle, the kind bored people draw on any wall anywhere: " + t + ". Childish, funny, thick wobbly lines. " + BRUSH + PALE + SQ, True)
+for i, t in enumerate(["two heavy slashes crossed over the gap, a wet gob of spit falling through it, a row of sneering teeth under it", "a ring of jagged angry scrawl around the gap and one long strike diagonally across it"]):
+    add(f"insult_{i}", F + "FactionInsult", 1.3, "brush", 0.15, "An insult to a hated faction, defacing their emblem: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="soot black and rust red") + SQ)
+
 def gen(workers):
     q = queue.Queue()
     for n, m in M.items():

@@ -31,6 +31,56 @@ namespace RimMandrake.Graffiti.SelfTest
             return fails;
         }
 
+        // ════════════════════════ social ════════════════════════
+        // Reading a mark and answering it: every viewer standing against what the tables promise.
+        private static List<string> Social(int n, int seed)
+        {
+            return Loop("social", n, seed, r =>
+            {
+                Steps++;
+                var v = new RM_Viewer
+                {
+                    isMaker = r.Next(4) == 0, isSubject = r.Next(3) == 0, ownFaction = r.Next(2) == 0, hostileMaker = r.Next(4) == 0,
+                    loverOfSubject = r.Next(4) == 0, loverOfMaker = r.Next(4) == 0, opinionOfMaker = r.Next(-100, 101), opinionOfSubject = r.Next(-100, 101),
+                    kind = r.Next(3) == 0, hot = r.Next(3) == 0, psychopath = r.Next(4) == 0, hasIdeo = r.Next(2) == 0, makerHasIdeo = r.Next(2) == 0, sameIdeoAsMaker = r.Next(2) == 0,
+                };
+                var meaning = (RM_Meaning)r.Next(8);
+                RM_Reaction react = RM_GraffitiKernel.ReactionOf(meaning, v);
+                if (v.isMaker) Check(react == RM_Reaction.None, "a painter doesn't react to their own mark");
+                if (!v.isMaker && v.hostileMaker) Check(react == RM_Reaction.Uneasy || react == RM_Reaction.Defiant, "an enemy's mark is an enemy's mark, whatever it says");
+                if (!v.isMaker && !v.hostileMaker)
+                {
+                    if (meaning == RM_Meaning.Mockery && v.isSubject) Check(react == (v.kind ? RM_Reaction.ShrugsOff : RM_Reaction.Humiliated), "the subject of a mockery");
+                    if (meaning == RM_Meaning.Mockery && !v.isSubject && v.opinionOfSubject >= 20) Check(react == RM_Reaction.FriendDefends, "a friend of the mocked");
+                    if (meaning == RM_Meaning.Tribute && v.isSubject) Check(react == RM_Reaction.Honored, "the subject of a tribute");
+                    if (meaning == RM_Meaning.Devotion) Check(react != RM_Reaction.Offended || (v.hasIdeo && v.makerHasIdeo && !v.sameIdeoAsMaker), "only another creed offends");
+                    if (meaning == RM_Meaning.Memorial && v.psychopath) Check(react == RM_Reaction.None, "a psychopath mourns nobody");
+                }
+                if (meaning == RM_Meaning.None && !v.isMaker && !v.hostileMaker && !v.ownFaction) Check(react == RM_Reaction.None, "a stranger's plain tag means nothing");
+                bool canFight = r.Next(2) == 0, here = r.Next(2) == 0, good = r.Next(2) == 0;
+                float roll = (float)r.NextDouble();
+                var reaction = (RM_Reaction)r.Next(21);
+                RM_Answer answer = RM_GraffitiKernel.AnswerOf(reaction, v.hot, canFight, here, good, roll);
+                if (answer == RM_Answer.Confront) Check(canFight && here, "nobody confronts a painter who isn't here, or who can't fight");
+                if (answer == RM_Answer.Reply) Check(good && here, "a reply needs a good hand and someone to reply to");
+                bool gentle = reaction == RM_Reaction.Amused || reaction == RM_Reaction.Moved || reaction == RM_Reaction.Honored || reaction == RM_Reaction.Uplifted || reaction == RM_Reaction.Warmed || reaction == RM_Reaction.Gleeful;
+                if (gentle) Check(answer == RM_Answer.None, "nobody answers a mark they enjoyed");
+                int worst = r.Next(-100, 101);
+                bool enemy = r.Next(2) == 0, spree = r.Next(2) == 0, kind = r.Next(2) == 0, beloved = r.Next(2) == 0, mourned = r.Next(2) == 0;
+                RM_Meaning wants = RM_GraffitiKernel.WantsToPaint(spree, kind, worst, enemy, beloved, mourned, roll);
+                if (wants == RM_Meaning.Mockery) Check(!kind && enemy && worst <= RM_GraffitiKernel.EnemyOpinion, "cruelty needs an enemy and an unkind hand");
+                if (wants == RM_Meaning.Tribute) Check(beloved && !spree, "a broken hand paints no valentines");
+                if (wants == RM_Meaning.Memorial) Check(mourned, "a memorial needs someone mourned");
+                if (!enemy && !beloved && !mourned) Check(wants == RM_Meaning.None, "a colony at peace paints nothing about anyone");
+                Check(RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Mockery, true) && !RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Mockery, false) && !RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Tribute, true), "who refuses what");
+                int id = r.Next(), count = r.Next(1, 12);
+                int hand = RM_GraffitiKernel.HandChoice(id, count, 3);
+                Check(hand >= 0 && hand < count && hand == RM_GraffitiKernel.HandChoice(id, count, 3), "a painter's hand is stable and in range");
+                Check(RM_GraffitiKernel.TerritoryStage(0) == -1 && RM_GraffitiKernel.TerritoryStage(1) == 0 && RM_GraffitiKernel.TerritoryStage(3) == 1 && RM_GraffitiKernel.TerritoryStage(9) == 2, "territory stages");
+                Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, true, false, false) < RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, true, false), "a named insult costs more than a taunt");
+            });
+        }
+
         // ════════════════════════ pick ════════════════════════
         private static List<string> Pick(int n, int seed)
         {
@@ -306,15 +356,19 @@ namespace RimMandrake.Graffiti.SelfTest
                                             Cases++; Steps++;
                                             int la = linksA, lb = linksB;
                                             Func<int, int> linksAt = k => k == 0 ? la : (k > 0 ? lb : (la & 8) != 0 ? 10 : -1);
-                                            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(linksAt, face, g[0], g[1], width, 0.74f, 0f, slope, lift, false);
+                                            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(linksAt, face, g[0], g[1], width, RM_GraffitiKernel.ClimbHeight, 0f, slope, lift, false);
+                                            if (RM_GraffitiKernel.FaceExists(la, face))
+                                            {
+                                                Check(pieces.Exists(p => p.k == 0 && !p.onTop) && pieces.Exists(p => p.k == 0 && p.onTop), $"face {face} links {la}: a full mark must lie on its face and climb onto the top");
+                                            }
                                             if (!RM_GraffitiKernel.FaceExists(la, face))
                                             {
                                                 Check(pieces.Count == 0 || pieces.TrueForAll(p => p.k != 0), $"face {face} links {la}: drew on a cell with no such face");
                                             }
                                             foreach (RM_MarkPiece p in pieces)
                                             {
-                                                List<RM_PlaneVert> edge = RM_GraffitiKernel.FacePoly(linksAt(p.k), face, g[0], g[1]);
-                                                Check(edge != null, $"face {face}: a piece on a cell with no face");
+                                                List<RM_PlaneVert> edge = p.onTop ? RM_GraffitiKernel.TopPoly(linksAt(p.k), g[0], g[1]) : RM_GraffitiKernel.FacePoly(linksAt(p.k), face, g[0], g[1]);
+                                                Check(edge != null && RM_GraffitiKernel.FaceExists(linksAt(p.k), face), $"face {face}: a piece on a cell with no face");
                                                 if (edge == null) continue;
                                                 foreach (RM_PlaneVert v in p.poly)
                                                 {
@@ -388,6 +442,7 @@ namespace RimMandrake.Graffiti.SelfTest
             int S(int baseSeed) { return oneSeed ?? baseSeed; }
             var fam = new (string name, Func<List<string>> run)[]
             {
+                ("social", () => Social(N(20000), S(1))),
                 ("pick", () => Pick(N(3000), S(1))),
                 ("gates", () => Gates()),
                 ("react", () => React()),

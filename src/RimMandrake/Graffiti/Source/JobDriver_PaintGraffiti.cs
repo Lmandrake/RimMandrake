@@ -28,6 +28,8 @@ namespace RimMandrake.Graffiti
         private int paintTotal;
         private int paintLeft;
         private int marksThisSitting;
+        private Pawn subject;
+        private Faction targetFaction;
 
         public override void ExposeData()
         {
@@ -36,11 +38,28 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref paintTotal, "rmPaintTotal");
             Scribe_Values.Look(ref paintLeft, "rmPaintLeft");
             Scribe_Values.Look(ref marksThisSitting, "rmMarksThisSitting");
+            Scribe_References.Look(ref subject, "rmPaintSubject");
+            Scribe_References.Look(ref targetFaction, "rmPaintTargetFaction");
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return pawn.Reserve(job.GetTarget(MarkCellInd), job, errorOnFailed: errorOnFailed);
+        }
+
+        /// <summary>Someone this job answers, painting back at them (JobGiver_AnswerMark): a single mark, not a sitting.</summary>
+        private Pawn ReplyTo => job.GetTarget(TargetIndex.B).Thing as Pawn;
+
+        public override string GetReport()
+        {
+            if (subject != null && markDef != null)
+            {
+                RM_Meaning meaning = markDef.GetModExtension<ModExtension_Graffiti>()?.meaning ?? RM_Meaning.None;
+                if (meaning == RM_Meaning.Mockery) return "painting a mockery of " + subject.LabelShort + ".";
+                if (meaning == RM_Meaning.Tribute) return "painting a tribute to " + subject.LabelShort + ".";
+                if (meaning == RM_Meaning.Memorial) return "painting a memorial to " + subject.LabelShort + ".";
+            }
+            return base.GetReport();
         }
 
         private bool Designated(IntVec3 cell) => Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
@@ -108,18 +127,32 @@ namespace RimMandrake.Graffiti
         private ThingDef ChooseMark(IntVec3 cell)
         {
             float room = GraffitiJobUtility.WallRoom(cell, Map);
+            subject = null;
+            targetFaction = null;
             if (!Designated(cell))
             {
                 if (job.workGiverDef != null)
                 {
                     return null;
                 }
+                if (ReplyTo != null)
+                {
+                    subject = ReplyTo;
+                    return RMGraffitiDefOf.RM_Graffiti_Mockery;
+                }
+                ThingDef said = GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject);
+                if (said != null) return said;
                 return pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
             }
-            ThingDef ordered = MapComponent_GraffitiOrders.For(Map)?.OrderAt(cell);
-            return ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) && GraffitiPool.WidthOf(ordered) <= room
-                ? ordered
-                : GraffitiPool.PickForDesignator(pawn, room, cell);
+            MapComponent_GraffitiOrders orders = MapComponent_GraffitiOrders.For(Map);
+            ThingDef ordered = orders?.OrderAt(cell);
+            if (ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) && GraffitiPool.WidthOf(ordered) <= room + 0.3f)
+            {
+                subject = orders.SubjectAt(cell);
+                targetFaction = orders.FactionAt(cell);
+                return ordered;
+            }
+            return GraffitiPool.PickForDesignator(pawn, room, cell);
         }
 
         private void FinishMark(IntVec3 cell, Toil walk)
@@ -130,8 +163,10 @@ namespace RimMandrake.Graffiti
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }
-            Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn);
+            Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction);
             markDef = null;
+            subject = null;
+            targetFaction = null;
             paintLeft = paintTotal = 0;
             if (designated)
             {
@@ -144,6 +179,11 @@ namespace RimMandrake.Graffiti
                 // A designated job is one mark, not a sitting.
                 Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
                 MapComponent_GraffitiOrders.For(Map)?.Clear(cell);
+                EndJobWith(JobCondition.Succeeded);
+                return;
+            }
+            if (ReplyTo != null)
+            {
                 EndJobWith(JobCondition.Succeeded);
                 return;
             }

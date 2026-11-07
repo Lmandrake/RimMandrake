@@ -111,6 +111,14 @@ namespace RimMandrake.Graffiti
         // like art)."
         public bool tracksMaker = true;
 
+        // What the mark says (RM_GraffitiKernel.ReactionOf). None and unset: Filth_Mark.Meaning works it out from category and form.
+        public RM_Meaning meaning;
+
+        // A mark about someone or some faction: their head or emblem is painted at runtime into the gap the art leaves, drawn under the art.
+        // gapV is where the gap's middle is, up the mark's height; gapSize is the head's size against the mark's height.
+        public float gapV = 0.5f;
+        public float gapSize = 0.55f;
+
         // ThoughtDef the viewer ThoughtWorker grants on sighting this mark
         // when none of the relation-keyed thoughts below apply to the
         // viewer (or none are set at all) - the flat, "everyone reacts the

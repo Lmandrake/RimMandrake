@@ -35,6 +35,18 @@
     </thinkRoot>
   </ThinkTreeDef>
 
+  <!-- Somebody has something to answer on a wall: seen to at the next free moment (JobGiver_AnswerMark). -->
+  <ThinkTreeDef>
+    <defName>RM_GraffitiAnswerMarkThinkTree</defName>
+    <insertTag>Humanlike_PreMain</insertTag>
+    <insertPriority>1</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalColonist">
+      <subNodes>
+        <li Class="RimMandrake.Graffiti.JobGiver_AnswerMark" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
   <!-- An idle hand tags the wall (JobGiver_IdleTag): after work, before the idle wander. -->
   <ThinkTreeDef>
     <defName>RM_GraffitiIdleTagThinkTree</defName>

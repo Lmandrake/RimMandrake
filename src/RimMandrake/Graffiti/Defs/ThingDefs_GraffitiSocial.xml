@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Marks about somebody. Nobody rolls these out of a pool: a pawn with something to say chooses them (GraffitiSocial.SocialMark), or the player orders one against a name.
+       The subject's own head, or the insulted faction's emblem, goes into the gap the art leaves (WallPlane.PaintedPortrait). -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Mockery</defName>
+    <label>mockery</label>
+    <description>A cruel picture of somebody, painted for everyone to read. Whoever it's about will find it.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Mockery</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Tag</form>
+        <meaning>Mockery</meaning>
+        <poolWeight>0</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <hasSubject>true</hasSubject>
+        <gapV>0.7</gapV>
+        <gapSize>0.58</gapSize>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Tribute</defName>
+    <label>tribute</label>
+    <description>Somebody's face in a ring of careful paint, put there by someone who thinks the world of them.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Tribute</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
+    </graphicData>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Mural</category>
+        <form>Tag</form>
+        <meaning>Tribute</meaning>
+        <poolWeight>0</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <hasSubject>true</hasSubject>
+        <gapV>0.54</gapV>
+        <gapSize>0.55</gapSize>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Memorial</defName>
+    <label>memorial</label>
+    <description>The face of someone who died, painted by someone who misses them.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Memorial</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
+    </graphicData>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Devotional</category>
+        <form>Tag</form>
+        <meaning>Memorial</meaning>
+        <poolWeight>0</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <hasSubject>true</hasSubject>
+        <gapV>0.56</gapV>
+        <gapSize>0.55</gapSize>
+        <protectedFromAutoClean>true</protectedFromAutoClean>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_FactionInsult</defName>
+    <label>faction insult</label>
+    <description>A faction's emblem, defaced. Their people will take it the way it's meant, and it will cost you with them. Order one against a name.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_FactionInsult</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Taunt</category>
+        <form>Stencil</form>
+        <meaning>Insult</meaning>
+        <poolWeight>0</poolWeight>
+        <designatorEligible>true</designatorEligible>
+        <gapV>0.54</gapV>
+        <gapSize>0.6</gapSize>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The universal doodle: cheap, common, cleanable, and funny the first time. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_RudeLittleMan</defName>
+    <label>rude little man</label>
+    <description>A stupid little man drawn on the wall by someone with nothing better to do. It's funny the first time.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_RudeLittleMan</texPath>
+      <drawSize>(1, 1)</drawSize>
+      <shaderType>Mote</shaderType>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <filth>
+      <rainWashes>false</rainWashes>
+    </filth>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Scrawl</form>
+        <meaning>Jest</meaning>
+        <poolWeight>2.5</poolWeight>
+        <pigmented>true</pigmented>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

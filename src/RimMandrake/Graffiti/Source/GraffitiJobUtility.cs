@@ -42,6 +42,27 @@ namespace RimMandrake.Graffiti
             return PickFrom(cells, states, map, out result);
         }
 
+        /// <summary>Where a hand answers a mark in paint: as near as it can get on bare wall, in the mark's own sight; failing that, over the top of it.</summary>
+        internal static bool TryFindReplyCell(Pawn pawn, IntVec3 near, out IntVec3 result)
+        {
+            Map map = pawn.Map;
+            IntVec3 fallback = IntVec3.Invalid;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(near, ReplyRadius, useCenter: true))
+            {
+                if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
+                if (!AlreadyMarked(c, map))
+                {
+                    result = c;
+                    return true;
+                }
+                if (!fallback.IsValid) fallback = c;
+            }
+            result = fallback;
+            return fallback.IsValid;
+        }
+
+        private const float ReplyRadius = 7f;
+
         private static Dictionary<Room, int> CountMarksByRoom(Map map)
         {
             var counts = new Dictionary<Room, int>();

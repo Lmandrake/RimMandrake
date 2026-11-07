@@ -8,9 +8,11 @@
   </supportedVersions>
   <description>Your colony gets written on. Bored colonists tag the walls, broken ones go on painting sprees, raiders leave their crew's mark on the way out, and your artists put up whole wall pieces.
 
-Tags, throw-ups, stencils, wheat-paste posters, scrawls, tallies and big multi-colour pieces, all in invented lettering from no real alphabet, painted on the walls themselves. Sigils come from your world: a sigil in your ideoligion's own icon and colour, and a glyph for every meme, each only painted by people who hold it.
+Tags, throw-ups, stencils, wheat-paste posters, scrawls, tallies and big multi-colour pieces, all in invented lettering from no real alphabet, painted on the walls themselves, up the face and over the top. Sigils come from your world: a sigil in your ideoligion's own icon and colour, and a glyph for every meme, each only painted by people who hold it.
 
-Marks matter a little. They carry who made them, and colonists react to a rival's tag differently from a friend's. Own-faction and devotional marks are left alone by the cleaners; order one scrubbed and it goes. Paint a mark yourself with the "Paint graffiti here" order in the Orders tab.
+Marks matter between people. They carry who made them and who they're about. A colonist with a grudge paints the person they hate with horns on, and everyone reads it: the subject is humiliated, friends turn on the painter, enemies grin, the rest think a little less of whoever's up there. Someone in love paints a tribute. Someone grieving paints a memorial. Then they answer: scrub it, cross it out, paint back, or walk up to the painter and have it out. A raid's tag left standing wears on the whole colony until someone takes the wall back. Paint a faction's emblem defaced and their visitors will read it. Click a wall to see what's painted on it, who by, and how it landed; every pawn's reasons are in their mood and social tabs.
+
+Own-faction and devotional marks are left alone by the cleaners; order one scrubbed and it goes. Paint a mark yourself with the "Paint graffiti here" order in the Orders tab, including one about a name.
 
 A framework too: any mod can add marks with a ModExtension_Graffiti on a ThingDef, no C# needed. The spree mechanic began as an idea from Graffiti Mod (Continued) by Mlie; this mod replaces it and should not be run beside it. All DLCs are supported and none is required.</description>
 

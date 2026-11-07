@@ -7,7 +7,7 @@ import manifest as MF
 import paintify as P
 
 TEX = os.path.join(MF.REPO, "src/RimMandrake/Graffiti/Textures/Things/Filth/Art")
-PPC, TALL = 256, 192
+PPC, TALL = 256, 256
 
 
 def bleed(rgb, alpha, passes=4):
@@ -31,7 +31,7 @@ def bake(name, m):
     box = (max(0, xs.min() - pad), max(0, ys.min() - pad), min(src.width, xs.max() + pad + 1), min(src.height, ys.max() + pad + 1))
     src = src.crop(box)
     W, H = int(PPC * m["width"]), int(TALL * m["height"])
-    # Fill the canvas: a mark's proportions are loose, and every pixel of height counts on a face 25 px tall at play zoom.
+    # Fill the canvas: a mark's proportions are loose, and it has its wall's face and the wall's top to fill (option D).
     aspect_art, aspect_can = src.width / src.height, W / H
     if aspect_art > aspect_can * 1.45:
         w, h = W, int(W / (aspect_can * 1.45))
@@ -51,33 +51,56 @@ def bake(name, m):
     can[y0:y0 + h, x0:x0 + w] = s
     rgb, alpha = can[..., :3], can[..., 3] / 255
     rng = np.random.default_rng(abs(hash_name(name)) % 2 ** 31)
-    # Reads at 25 px: strengthen what's there before weathering takes some of it.
-    alpha = np.clip(alpha, 0, 1) ** 0.62
+    # Option D: loaded paint. Strengthen what's there before weathering takes some of it.
+    alpha = np.clip(alpha, 0, 1) ** 0.42
     if not m["pigmented"] and m["mode"] != "scratch":
         rgb = P.to_pigment(rgb, 0.25)
     if m["pigmented"]:
         # A pale drawing tinted later: keep the variation in its value only, and high.
         l = rgb.mean(2, keepdims=True)
         rgb = np.clip(235 + (l - l[alpha > 0.3].mean() if (alpha > 0.3).any() else 0) * 0.4, 150, 255) * np.ones(3)
+    if not m["pigmented"] and m["mode"] != "scratch":
+        rgb = bolder(rgb, alpha)
     if m["mode"] == "paste":
-        # Cheap paper in a dim room: printed inks gone dull, so a poster is not the brightest thing on the wall.
-        grey = rgb.mean(2, keepdims=True)
-        rgb = (grey + (rgb - grey) * 0.62) * 0.84
+        # Option D has no paper: a poster is what its inks left on the wall, the paper gone.
+        rgb, alpha = paste_to_paint(rgb, alpha, rng)
     if m["mode"] not in ("paste", "scratch"):
         alpha = break_rim(rgb, alpha, rng)
         # The brush runs out: long level streaks through every fill, so no area of colour stays flat.
         streak = P.fractal((H, W), (W / 2.5, 5), rng, 3)
         load = P.fractal((H, W), (W / 4, H / 2.2), rng, 2)
-        alpha = alpha * np.clip(0.62 + 0.8 * streak * (0.55 + 0.75 * load), 0, 1)
+        alpha = alpha * np.clip(0.76 + 0.7 * streak * (0.55 + 0.75 * load), 0, 1)
     # Weather: patches gone and some fading, varied per mark. A coarse wide patch and a fine horizontal scuff.
     wear = m["wear"]
     if wear > 0:
         patch = P.fractal((H, W), (W / 3.3, H / 2.5), rng, 3)
-        alpha = alpha * np.clip((patch - wear * 0.36) / 0.14, 0, 1)
+        alpha = alpha * np.clip((patch - wear * 0.24) / 0.14, 0, 1)
         scuff = P.fractal((H, W), (70, 9), rng, 3)
-        alpha = alpha * (1 - 0.3 * wear * (1 - scuff))
+        alpha = alpha * (1 - 0.22 * wear * (1 - scuff))
     rgb = bleed(rgb, alpha)
     return Image.fromarray(np.dstack((np.clip(rgb, 0, 255), np.clip(alpha, 0, 1) * 255)).astype(np.uint8), "RGBA")
+
+
+def bolder(rgb, alpha):
+    """Loaded paint: the drawing's colours pulled apart, saturation and value, around its own middle. The pigments stay this
+    world's; there is just more of them on the wall."""
+    grey = rgb.mean(2, keepdims=True)
+    painted = alpha > 0.3
+    mid = grey[painted].mean() if painted.any() else 128.0
+    out = mid + (grey - mid) * 1.3 + (rgb - grey) * 1.35
+    return np.clip(out, 0, 255)
+
+
+def paste_to_paint(rgb, alpha, rng):
+    """The paper's ground goes (the palest, most common value of the sheet); what was printed on it stays as a heavy hand's paint."""
+    l = rgb.mean(2)
+    painted = alpha > 0.3
+    if not painted.any():
+        return rgb, alpha
+    ground = np.quantile(l[painted], 0.62)
+    keep = np.clip((ground - l) / 34 + 0.12, 0, 1)
+    ragged = P.fractal(alpha.shape, (16, 16), rng, 2)
+    return rgb * 0.92, alpha * np.clip(keep * 1.3 + 0.28 * (ragged > 0.72), 0, 1)
 
 
 def break_rim(rgb, alpha, rng):

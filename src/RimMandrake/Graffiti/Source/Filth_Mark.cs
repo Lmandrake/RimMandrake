@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -40,12 +41,25 @@ namespace RimMandrake.Graffiti
         public int variant = -1;
         public int pigment;
 
+        // The faction a mark insults; the name of who it's about, for when their body is long gone; who crossed it out.
+        public Faction targetFaction;
+        public string subjectName;
+        public bool defaced;
+        public Pawn defacedBy;
+
+        // Who has read this mark and when; which factions' visitors have; how it landed, for anyone who inspects the wall.
+        private Dictionary<int, int> readBy = new Dictionary<int, int>();
+        private List<int> factionsRead = new List<int>();
+        private int angered, amused, moved;
+        private bool skipCleanNotice;
+
         // Tier-A rendering cache (design §3.1): built lazily from
         // ModExtension_Graffiti.sigilTierA + sigilFrameTexPath + makerIdeo.
         // Never Scribed - rebuilt from the (Scribed) fields above every
         // load, same as any other Material/Graphic cache in vanilla.
         private Material cachedFrameMat;
         private Material cachedIconMat;
+        private Material cachedHeadMat;
         private bool sigilMatsBuilt;
 
         /// <summary>Test reads (RM_GraffitiProof, GRAFFITI_V1_LIVE_PROOF_1 A3): the tier-A composite's two materials, null when absent.</summary>
@@ -64,7 +78,100 @@ namespace RimMandrake.Graffiti
             {
                 placedTick = Find.TickManager.TicksGame;
             }
-            RebuildSigilMats();
+            // Materials wait for Print: this can run on the loading thread, and painting an icon needs the main one.
+            sigilMatsBuilt = false;
+            MapComponent_GraffitiSocial.For(map)?.marks.Add(this);
+        }
+
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            MapComponent_GraffitiSocial.For(Map)?.marks.Remove(this);
+            base.DeSpawn(mode);
+        }
+
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (Spawned && !skipCleanNotice)
+            {
+                GraffitiSocial.Notify_Cleaned(this);
+            }
+            base.Destroy(mode);
+        }
+
+        /// <summary>This mark is going by another hand than the cleaning job, and that hand tells the story itself.</summary>
+        internal void SkipCleanNotice() { skipCleanNotice = true; }
+
+        /// <summary>What this mark says, from its def, or worked out from the kind of mark it is.</summary>
+        public RM_Meaning Meaning
+        {
+            get
+            {
+                ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                if (ext == null) return RM_Meaning.None;
+                if (ext.meaning != RM_Meaning.None) return ext.meaning;
+                if (ext.sigilTierA || !ext.requiresAnyMeme.NullOrEmpty()) return RM_Meaning.Devotion;
+                if (ext.category == GraffitiCategory.Mural) return RM_Meaning.Beauty;
+                if (ext.category == GraffitiCategory.Jest && ext.form != GraffitiForm.Scrawl) return RM_Meaning.Jest;
+                return RM_Meaning.None;
+            }
+        }
+
+        public string SubjectName => subject?.LabelShort ?? subjectName ?? "someone";
+
+        internal bool ReadyToBeRead(Pawn viewer, int now)
+        {
+            return !readBy.TryGetValue(viewer.thingIDNumber, out int last) || now - last >= RM_GraffitiKernel.ReadAgainTicks;
+        }
+
+        internal void NoteRead(Pawn viewer, int now) { readBy[viewer.thingIDNumber] = now; }
+
+        internal bool FactionHasRead(Faction f) { return factionsRead.Contains(f.loadID); }
+
+        internal void NoteFactionRead(Faction f) { factionsRead.Add(f.loadID); }
+
+        internal void NoteReaction(RM_Reaction r)
+        {
+            switch (r)
+            {
+                case RM_Reaction.Humiliated: case RM_Reaction.FriendDefends: case RM_Reaction.Jealous: case RM_Reaction.Offended: case RM_Reaction.RivalTag:
+                case RM_Reaction.Disapproves: case RM_Reaction.Scoffs: case RM_Reaction.Defiant: case RM_Reaction.Uneasy:
+                    angered++;
+                    break;
+                case RM_Reaction.Amused: case RM_Reaction.Gleeful: case RM_Reaction.ShrugsOff:
+                    amused++;
+                    break;
+                case RM_Reaction.Moved: case RM_Reaction.Honored: case RM_Reaction.Mourning: case RM_Reaction.Uplifted: case RM_Reaction.Warmed: case RM_Reaction.FriendTag:
+                    moved++;
+                    break;
+            }
+        }
+
+        /// <summary>A brush through it: it stays on the wall, crossed out, and has lost its power over anyone but its maker.</summary>
+        internal void CrossOut(Pawn by)
+        {
+            defaced = true;
+            defacedBy = by;
+            if (Spawned) Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);
+        }
+
+        /// <summary>The story of this mark, for whoever inspects its wall.</summary>
+        internal string StoryLines()
+        {
+            string line = LabelCap;
+            if (maker != null) line += ", by " + maker.LabelShort;
+            else if (makerFaction != null) line += ", by " + makerFaction.Name;
+            if (subject != null || !subjectName.NullOrEmpty()) line += ", about " + SubjectName;
+            if (targetFaction != null) line += ", insulting " + targetFaction.Name;
+            if (defaced) line += defacedBy != null ? ". Crossed out by " + defacedBy.LabelShort : ". Crossed out";
+            if (angered + amused + moved > 0)
+            {
+                var felt = new List<string>();
+                if (angered > 0) felt.Add(angered + " angered");
+                if (amused > 0) felt.Add(amused + " amused");
+                if (moved > 0) felt.Add(moved + " moved");
+                line += " (" + string.Join(", ", felt) + ")";
+            }
+            return line;
         }
 
         public override void ExposeData()
@@ -78,9 +185,20 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
             Scribe_Values.Look(ref pigment, "rmMarkPigment", 0);
+            Scribe_References.Look(ref targetFaction, "rmMarkTargetFaction");
+            Scribe_Values.Look(ref subjectName, "rmMarkSubjectName");
+            Scribe_Values.Look(ref defaced, "rmMarkDefaced");
+            Scribe_References.Look(ref defacedBy, "rmMarkDefacedBy");
+            Scribe_Collections.Look(ref readBy, "rmMarkReadBy", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref factionsRead, "rmMarkFactionsRead", LookMode.Value);
+            Scribe_Values.Look(ref angered, "rmMarkAngered");
+            Scribe_Values.Look(ref amused, "rmMarkAmused");
+            Scribe_Values.Look(ref moved, "rmMarkMoved");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 sigilMatsBuilt = false;
+                readBy = readBy ?? new Dictionary<int, int>();
+                factionsRead = factionsRead ?? new List<int>();
             }
         }
 
@@ -95,7 +213,7 @@ namespace RimMandrake.Graffiti
         // other, not one filth pile growing. "Rival" = any other
         // Filth_Mark whose def differs from markDef; thickening the SAME
         // def (the vanilla FilthMaker behaviour) is left alone.
-        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null)
+        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null)
         {
             // GPT deep review 2026-10-22 #6: rivals are collected first and destroyed only once the new mark exists, so a
             // refused placement no longer erases the old mark and leaves the wall bare
@@ -132,7 +250,10 @@ namespace RimMandrake.Graffiti
             }
             foreach (Filth_Mark rival in rivals)
             {
-                if (!rival.Destroyed) rival.Destroy();
+                if (rival.Destroyed) continue;
+                GraffitiSocial.Notify_WentOver(rival, maker);
+                rival.SkipCleanNotice();
+                rival.Destroy();
             }
             if (!(outFilth is Filth_Mark mark))
             {
@@ -142,6 +263,8 @@ namespace RimMandrake.Graffiti
             mark.makerFaction = maker?.Faction;
             mark.makerIdeo = maker?.Ideo;
             mark.subject = subject;
+            mark.subjectName = subject?.LabelShort;
+            mark.targetFaction = targetFaction;
             if (mark.placedTick < 0)
             {
                 mark.placedTick = Find.TickManager.TicksGame;
@@ -150,6 +273,7 @@ namespace RimMandrake.Graffiti
             mark.RebuildSigilMats();
             mark.ChooseLook(cell, map);
             map.mapDrawer.MapMeshDirty(cell, MapMeshFlagDefOf.Things);
+            GraffitiSocial.Notify_Painted(mark, maker);
             return mark;
         }
 
@@ -180,6 +304,16 @@ namespace RimMandrake.Graffiti
                 if (!RM_GraffitiKernel.PigmentReads(i, wallColor.r, wallColor.g, wallColor.b)) usedPigments.Add(i);
             }
             pigment = RM_GraffitiKernel.PickFree(RM_GraffitiKernel.PigmentCount, usedPigments, Rand.Value);
+            // A tag is its writer's: the same hand in the same colour, wherever they go, and one crew's raiders in one colour. So a wall shows
+            // whose it is. A colour the wall would swallow falls through to the pick above.
+            bool tag = def.GetModExtension<ModExtension_Graffiti>()?.form == GraffitiForm.Tag;
+            int who = maker != null && maker.Faction == Faction.OfPlayer ? maker.thingIDNumber : (makerFaction?.loadID ?? -1);
+            if (tag && who >= 0)
+            {
+                variant = RM_GraffitiKernel.HandChoice(who, count, 1);
+                int own = RM_GraffitiKernel.HandChoice(who, RM_GraffitiKernel.PigmentCount, 2);
+                if (RM_GraffitiKernel.PigmentReads(own, wallColor.r, wallColor.g, wallColor.b)) pigment = own;
+            }
         }
 
         private const float LookRadius = 9f;
@@ -194,7 +328,7 @@ namespace RimMandrake.Graffiti
         {
             string baseText = base.GetInspectString();
             float beauty = this.GetStatValue(StatDefOf.Beauty);
-            string line = "Beauty " + beauty.ToString("+0;-0;0") + ": " + RM_GraffitiKernel.BeautyWord(beauty);
+            string line = StoryLines() + "\nBeauty " + beauty.ToString("+0;-0;0") + ": " + RM_GraffitiKernel.BeautyWord(beauty);
             return string.IsNullOrEmpty(baseText) ? line : baseText + "\n" + line;
         }
 
@@ -203,7 +337,18 @@ namespace RimMandrake.Graffiti
             sigilMatsBuilt = true;
             cachedFrameMat = null;
             cachedIconMat = null;
+            cachedHeadMat = null;
             ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+            if (ext != null && subject != null && ext.hasSubject)
+            {
+                Texture2D head = WallPlane.PaintedPortrait(subject);
+                if (head != null) cachedHeadMat = MaterialPool.MatFrom(head, ShaderDatabase.Mote, Color.white);
+            }
+            else if (ext != null && targetFaction != null)
+            {
+                Texture2D emblem = WallPlane.PaintedIcon(targetFaction.def.FactionIcon);
+                if (emblem != null) cachedHeadMat = MaterialPool.MatFrom(emblem, ShaderDatabase.Mote, Color.Lerp(targetFaction.Color, new Color(0.45f, 0.42f, 0.38f), 0.3f));
+            }
             if (ext == null || !ext.sigilTierA || makerIdeo == null)
             {
                 return;
@@ -244,10 +389,17 @@ namespace RimMandrake.Graffiti
                 scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
             }
             float width = size.x * scale;
-            float height = RM_GraffitiKernel.WallWorldHeight * RM_GraffitiKernel.MarkFillOfFace * Mathf.Min(1f, size.y) * scale;
+            float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
             float through = ThroughOf(ext);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
+                if (cachedHeadMat != null)
+                {
+                    // Their head in the gap the art leaves, under the art: the horns go over the hair.
+                    float tc = WallPlane.CenterT(this, width, height, slope, lift);
+                    float headH = height * ext.gapSize;
+                    WallPlane.Print(layer, this, cachedHeadMat, headH * 0.92f, headH, slide, slope, lift, false, 0f, 0f, tc + (ext.gapV - 0.5f) * height);
+                }
                 Graphic g = Graphic;
                 if (g is Graphic_Random random)
                 {
@@ -259,7 +411,9 @@ namespace RimMandrake.Graffiti
                 {
                     mat = MaterialPool.MatFrom(g.path, g.Shader, PigmentOf(pigment));
                 }
-                WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip, through);
+                // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
+                WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);
+                PrintCrossOut(layer, width, height, slide, slope, lift);
                 return;
             }
             if (cachedFrameMat != null)
@@ -268,10 +422,18 @@ namespace RimMandrake.Graffiti
             }
             if (cachedIconMat != null)
             {
-                // The icon's square in the wall's plane, as tall as the frame leaves room for. An icon may have text-like symmetry, so no flip.
-                float iconH = height * 0.86f;
-                WallPlane.Print(layer, this, cachedIconMat, iconH, iconH, slide, slope, lift, false, through, 0.001f);
+                // The icon's square in the wall's plane, centred in its frame. An icon may have text-like symmetry, so no flip.
+                float iconH = height * 0.78f;
+                WallPlane.Print(layer, this, cachedIconMat, iconH * 0.8f, iconH, slide, slope, lift, false, through, 0.001f, WallPlane.CenterT(this, width, height, slope, lift));
             }
+            PrintCrossOut(layer, width, height, slide, slope, lift);
+        }
+
+        private void PrintCrossOut(SectionLayer layer, float width, float height, float slide, float slope, float lift)
+        {
+            if (!defaced) return;
+            Material strike = MaterialPool.MatFrom("Things/Filth/Art/RM_Graffiti_CrossOut/crossout_" + (thingIDNumber & 1), ShaderDatabase.Mote);
+            WallPlane.Print(layer, this, strike, Mathf.Min(width * 1.05f, 3f), height, slide, slope, lift, (thingIDNumber & 2) != 0, 0f, 0.0015f, WallPlane.CenterT(this, width, height, slope, lift));
         }
 
         /// <summary>How much of the wall stays visible through paint: paper hides most of it, a gouge is the wall, spray and a dry brush let it through.</summary>

@@ -107,10 +107,7 @@ class Scene:
         polys = G.mark_polys(self.wall, anchor, face, self.g, H, width, height, slide, slope, lift)
         p = self.ppc
         # GPU would pick a mip by the larger shrink; give it a texture at about 2x the final footprint in its own plane.
-        if face == G.FRONT:
-            sz = (max(4, int(width * p * 2)), max(4, int(height * (self.g["crease"] / H) * p * 2)))
-        else:
-            sz = (max(4, int(width * p * 2)), max(4, int(height * (self.g["side"] / H) * p * 2)))
+        sz = (max(4, int(width * p * 2)), max(4, int(height * p * 1.5)))
         tex2 = premul_resize(tex, sz)
         self.draw(tex2, polys, through, opacity)
         return polys

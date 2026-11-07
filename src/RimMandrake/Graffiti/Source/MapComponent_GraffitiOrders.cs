@@ -1,3 +1,4 @@
+using RimWorld;
 using System.Collections.Generic;
 using Verse;
 
@@ -15,6 +16,12 @@ namespace RimMandrake.Graffiti
         private Dictionary<IntVec3, ThingDef> orders = new Dictionary<IntVec3, ThingDef>();
         private List<IntVec3> tmpCells;
         private List<ThingDef> tmpDefs;
+        // Who or which faction an ordered mark is about (the designator's second menu).
+        private Dictionary<IntVec3, Pawn> subjects = new Dictionary<IntVec3, Pawn>();
+        private Dictionary<IntVec3, Faction> factions = new Dictionary<IntVec3, Faction>();
+        private List<IntVec3> tmpSubjectCells, tmpFactionCells;
+        private List<Pawn> tmpSubjects;
+        private List<Faction> tmpFactions;
 
         public MapComponent_GraffitiOrders(Map map) : base(map)
         {
@@ -25,8 +32,16 @@ namespace RimMandrake.Graffiti
             return map?.GetComponent<MapComponent_GraffitiOrders>();
         }
 
-        public void SetOrder(IntVec3 cell, ThingDef markDef)
+        public Pawn SubjectAt(IntVec3 cell) { return subjects.TryGetValue(cell, out Pawn p) ? p : null; }
+
+        public Faction FactionAt(IntVec3 cell) { return factions.TryGetValue(cell, out Faction f) ? f : null; }
+
+        public void SetOrder(IntVec3 cell, ThingDef markDef, Pawn subject = null, Faction faction = null)
         {
+            subjects.Remove(cell);
+            factions.Remove(cell);
+            if (subject != null) subjects[cell] = subject;
+            if (faction != null) factions[cell] = faction;
             if (markDef == null)
             {
                 orders.Remove(cell);
@@ -55,6 +70,8 @@ namespace RimMandrake.Graffiti
         public void Clear(IntVec3 cell)
         {
             orders.Remove(cell);
+            subjects.Remove(cell);
+            factions.Remove(cell);
         }
 
         public override void ExposeData()
@@ -72,13 +89,17 @@ namespace RimMandrake.Graffiti
                 }
                 foreach (IntVec3 c in stale)
                 {
-                    orders.Remove(c);
+                    Clear(c);
                 }
             }
             Scribe_Collections.Look(ref orders, "rmGraffitiOrders", LookMode.Value, LookMode.Def, ref tmpCells, ref tmpDefs);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && orders == null)
+            Scribe_Collections.Look(ref subjects, "rmGraffitiOrderSubjects", LookMode.Value, LookMode.Reference, ref tmpSubjectCells, ref tmpSubjects);
+            Scribe_Collections.Look(ref factions, "rmGraffitiOrderFactions", LookMode.Value, LookMode.Reference, ref tmpFactionCells, ref tmpFactions);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                orders = new Dictionary<IntVec3, ThingDef>();
+                orders = orders ?? new Dictionary<IntVec3, ThingDef>();
+                subjects = subjects ?? new Dictionary<IntVec3, Pawn>();
+                factions = factions ?? new Dictionary<IntVec3, Faction>();
             }
         }
     }

@@ -1,4 +1,4 @@
-// Verse-free kernel of Graffiti: the weighted mark pick and its three eligibility gates, the relation-keyed reaction priority, the
+// Verse-free kernel of Graffiti: the social tables (who paints what, who reacts how, what they do), the weighted mark pick and its three eligibility gates, the relation-keyed reaction priority, the
 // clan-only veto, scrub protection, the raid-exit gate, the wall-cell candidate gathering, the paint cadence clamp, the breach-lure
 // choice and the wall-plane draw (which face, its polygons, the hand). GraffitiPool, ThoughtWorker_ViewedGraffitiMark, AutoCleanProtection, RaidExitTagger, GraffitiJobUtility, JobDriver_PaintGraffiti,
 // Filth_Mark and BreachBiasHook call these with the same expressions; SelfTest/GraffitiFuzz.cs compiles this file (and the two plain enum
@@ -11,6 +11,24 @@ namespace RimMandrake.Graffiti
 {
     /// <summary>Which of a mark's reaction ThoughtDefs a viewer gets, in priority order (first match wins).</summary>
     public enum RM_ReactionSlot { Subject, OwnFaction, SameIdeo, HostileMaker, OtherIdeo, Flat }
+
+    /// <summary>What a mark says about somebody or something. None is a plain tag: it says only who was here.</summary>
+    public enum RM_Meaning { None, Mockery, Tribute, Memorial, Jest, Beauty, Devotion, Insult }
+
+    /// <summary>What reading a mark does to one pawn.</summary>
+    public enum RM_Reaction { None, Humiliated, ShrugsOff, FriendDefends, Gleeful, LostFace, Disapproves, Honored, Jealous, Scoffs, Warmed, Mourning, Amused, Moved, Uplifted, Offended, RivalTag, FriendTag, Uneasy, Defiant, WorkDestroyed }
+
+    /// <summary>What a pawn does about a mark: wipe it, cross it out, paint back at the painter, or go and have it out.</summary>
+    public enum RM_Answer { None, Scrub, Deface, Reply, Confront }
+
+    /// <summary>A viewer's standing to a mark, read off the pawns by GraffitiSocial.</summary>
+    public struct RM_Viewer
+    {
+        public bool isMaker, isSubject, ownFaction, hostileMaker, loverOfSubject, loverOfMaker;
+        public int opinionOfMaker, opinionOfSubject;
+        public bool kind, hot, psychopath;
+        public bool hasIdeo, makerHasIdeo, sameIdeoAsMaker;
+    }
 
     /// <summary>A plain colour, here where UnityEngine isn't.</summary>
     public struct RM_Rgb
@@ -30,12 +48,13 @@ namespace RimMandrake.Graffiti
         }
     }
 
-    /// <summary>The part of a mark on one wall cell, k cells along from its anchor: a convex counter-clockwise polygon.</summary>
+    /// <summary>The part of a mark on one surface of one wall cell, k cells along from its anchor: a convex counter-clockwise polygon, on the face or bent over onto the wall's top.</summary>
     public struct RM_MarkPiece
     {
         public int k;
         public List<RM_PlaneVert> poly;
-        public RM_MarkPiece(int k, List<RM_PlaneVert> poly) { this.k = k; this.poly = poly; }
+        public bool onTop;
+        public RM_MarkPiece(int k, List<RM_PlaneVert> poly, bool onTop = false) { this.k = k; this.poly = poly; this.onTop = onTop; }
     }
 
     /// <summary>One scanned wall-adjacent cell for the mark finder: usable (in the map, standable, walled, reservable) and whether it already carries a mark.</summary>
@@ -276,8 +295,12 @@ namespace RimMandrake.Graffiti
         /// <summary>A wall's height in cells, on the wall's own plane: the visible band of a face is this tall foreshortened. It
         /// sets how squashed a mark is: at a 0.4-cell band a square mark comes out half as tall as it is wide.</summary>
         public const float WallWorldHeight = 0.8f;
-        /// <summary>A plain painted mark fills this much of the face's height at full size.</summary>
-        public const float MarkFillOfFace = 0.92f;
+        /// <summary>Owner's option D, 2026-11-07: a full-size mark is this many world cells tall, its whole face and then over the crease onto the wall's top.</summary>
+        public const float ClimbHeight = 1.2f;
+        /// <summary>A wall's top faces the camera, so a world cell of it is a screen cell. The face is foreshortened, the top is not: that kink at the crease is the bend.</summary>
+        public const float TopRate = 1f;
+        /// <summary>Bare wall top the paint leaves at the far edge, screen cells; bare face under the lowest mark, world cells.</summary>
+        public const float TopLip = 0.08f, MarkFoot = 0.04f;
         /// <summary>Atlas outline: the art stops this far short of the cell's edge.</summary>
         public const float RimX = 0.03f, RimZ = 0.02f;
         /// <summary>The Core atlases measured (crease 0.40, side 0.22), for a wall whose atlas can't be read.</summary>
@@ -418,27 +441,74 @@ namespace RimMandrake.Graffiti
             return output;
         }
 
-        /// <summary>One mark laid in its wall's plane and cut to what the wall shows, cell by cell. `linksAt(k)` gives the links of the
-        /// wall k cells along from the anchor (negative for no wall). The walk stops at the first cell without this face, so a corner,
-        /// door or wall end ends the mark there. Polygon coordinates are relative to the anchor cell's south-west corner.
-        /// `slope` shears the baseline (rise per cell along the wall): the hand's tilt, which leaves every run hanging straight down.</summary>
-        public static List<RM_MarkPiece> MarkPieces(Func<int, int> linksAt, int face, float crease, float sideW, float width, float height, float slide, float slope, float lift, bool flip)
+        /// <summary>The top of a wall cell in cell coordinates, convex and counter-clockwise: above the crease (the whole depth where
+        /// no front shows), inside the side faces, to the far edge where the wall runs on north. Null with no wall.</summary>
+        public static List<RM_PlaneVert> TopPoly(int links, float crease, float sideW)
+        {
+            if (links < 0) return null;
+            float x0 = (links & LinkW) != 0 ? 0f : sideW;
+            float x1 = (links & LinkE) != 0 ? 1f : 1f - sideW;
+            float z0 = (links & LinkS) != 0 ? 0f : crease;
+            float z1 = (links & LinkN) != 0 ? 1f : 1f - RimX - RimZ;
+            return new List<RM_PlaneVert> { new RM_PlaneVert(x0, z0), new RM_PlaneVert(x1, z0), new RM_PlaneVert(x1, z1), new RM_PlaneVert(x0, z1) };
+        }
+
+        /// <summary>How high a mark can reach in world cells: its whole face, then the top up to the lip. A side face takes the cap only
+        /// to its middle: the other half belongs to the wall's other side.</summary>
+        public static float ClimbMax(int face, float crease, float sideW)
+        {
+            float over = face == FaceFront ? 1f - RimX - RimZ - TopLip - crease : 0.5f - sideW;
+            return WallWorldHeight + over / TopRate;
+        }
+
+        /// <summary>The wall's plane -> screen cell coordinates: below the crease on the foreshortened face (PlaneToCell), above it on the top.</summary>
+        public static void BentToCell(int face, float s, float t, float crease, float sideW, out float x, out float z)
+        {
+            if (t <= WallWorldHeight)
+            {
+                PlaneToCell(face, s, t, crease, sideW, out x, out z);
+                return;
+            }
+            float over = (t - WallWorldHeight) * TopRate;
+            if (face == FaceFront) { x = 0.5f + s; z = crease + over; }
+            else if (face == FaceEast) { x = 1f - sideW - over; z = 0.5f + s; }
+            else { x = sideW + over; z = 0.5f - s; }
+        }
+
+        /// <summary>Where a mark's middle sits on the wall's plane (world cells up from the foot) for its size and hand. A sigil's emblem and
+        /// a caricature's head are placed against this so they stay inside their frame.</summary>
+        public static float MarkCenterT(int face, float crease, float sideW, float width, float height, float slope, float lift)
+        {
+            float room = Math.Abs(slope) * width / 2f;
+            float top = ClimbMax(face, crease, sideW);
+            float hh = Math.Min(height, top - MarkFoot - 2f * room);
+            return MarkFoot + room + hh / 2f + (top - MarkFoot - hh - 2f * room) * lift;
+        }
+
+        /// <summary>One mark laid in its wall's plane, bent at the crease onto the wall's top, and cut to what the wall shows, cell by cell.
+        /// `linksAt(k)` gives the links of the wall k cells along from the anchor (negative for no wall). The walk stops at the first cell
+        /// without this face, so a corner, door or wall end ends the mark there, on the face and on the top alike. Polygon coordinates are
+        /// relative to the anchor cell's south-west corner. `slope` shears the baseline (rise per cell along the wall): the hand's tilt,
+        /// which leaves every run hanging straight down. `centerT` places the middle of the mark: negative for the hand's own lift.</summary>
+        public static List<RM_MarkPiece> MarkPieces(Func<int, int> linksAt, int face, float crease, float sideW, float width, float height, float slide, float slope, float lift, bool flip, float centerT = -1f)
         {
             var pieces = new List<RM_MarkPiece>();
             if (face != FaceFront && face != FaceEast && face != FaceWest) return pieces;
             AlongOf(face, out int ax, out int az);
             float halfW = width / 2f;
             float room = Math.Abs(slope) * halfW;
-            float hh = Math.Min(height, WallWorldHeight - 2f * room);
-            float tc = hh / 2f + room + (WallWorldHeight - hh - 2f * room) * lift;
-            var quad = new List<RM_PlaneVert>(4);
+            float top = ClimbMax(face, crease, sideW);
+            float hh = Math.Min(height, top - MarkFoot - 2f * room);
+            float tc = centerT >= 0f ? centerT : MarkCenterT(face, crease, sideW, width, height, slope, lift);
+            // In the plane: x = s, z = t. Cut at the crease there, where the map from plane to screen bends.
+            var plane = new List<RM_PlaneVert>(4);
             foreach (float[] c in QuadCorners)
             {
                 float s = slide + (c[0] - 0.5f) * width;
-                float t = tc + (c[1] - 0.5f) * hh + slope * (s - slide);
-                PlaneToCell(face, s, t, crease, sideW, out float x, out float z);
-                quad.Add(new RM_PlaneVert(x, z, flip ? 1f - c[0] : c[0], c[1]));
+                plane.Add(new RM_PlaneVert(s, tc + (c[1] - 0.5f) * hh + slope * (s - slide), flip ? 1f - c[0] : c[0], c[1]));
             }
+            List<RM_PlaneVert> below = ToScreen(ClipT(plane, WallWorldHeight, true), face, crease, sideW);
+            List<RM_PlaneVert> above = ToScreen(ClipT(plane, WallWorldHeight, false), face, crease, sideW);
             foreach (int dir in new[] { 1, -1 })
             {
                 for (int k = dir > 0 ? 0 : -1; Math.Abs(k) <= MaxReachCells; k += dir)
@@ -448,13 +518,61 @@ namespace RimMandrake.Graffiti
                     int links = linksAt(k);
                     List<RM_PlaneVert> edge = FacePoly(links, face, crease, sideW);
                     if (edge == null) break;
-                    var shifted = new List<RM_PlaneVert>(edge.Count);
-                    foreach (RM_PlaneVert e in edge) shifted.Add(new RM_PlaneVert(e.x + ax * k, e.z + az * k));
-                    List<RM_PlaneVert> poly = ClipConvex(quad, shifted);
-                    if (poly.Count >= 3) pieces.Add(new RM_MarkPiece(k, poly));
+                    if (below.Count >= 3)
+                    {
+                        List<RM_PlaneVert> poly = ClipConvex(below, Shifted(edge, ax * k, az * k));
+                        if (poly.Count >= 3) pieces.Add(new RM_MarkPiece(k, poly));
+                    }
+                    if (above.Count >= 3)
+                    {
+                        List<RM_PlaneVert> poly = ClipConvex(above, Shifted(TopPoly(links, crease, sideW), ax * k, az * k));
+                        if (poly.Count >= 3) pieces.Add(new RM_MarkPiece(k, poly, true));
+                    }
                 }
             }
             return pieces;
+        }
+
+        private static List<RM_PlaneVert> Shifted(List<RM_PlaneVert> poly, int dx, int dz)
+        {
+            var shifted = new List<RM_PlaneVert>(poly.Count);
+            foreach (RM_PlaneVert e in poly) shifted.Add(new RM_PlaneVert(e.x + dx, e.z + dz));
+            return shifted;
+        }
+
+        /// <summary>A polygon whose z is the plane's t, cut at t = limit: the part below it, or the part above it.</summary>
+        private static List<RM_PlaneVert> ClipT(List<RM_PlaneVert> poly, float limit, bool keepBelow)
+        {
+            var output = new List<RM_PlaneVert>(poly.Count + 2);
+            for (int j = 0; j < poly.Count; j++)
+            {
+                RM_PlaneVert p = poly[j], q = poly[(j + poly.Count - 1) % poly.Count];
+                bool pIn = keepBelow ? p.z <= limit : p.z > limit;
+                bool qIn = keepBelow ? q.z <= limit : q.z > limit;
+                if (pIn != qIn) output.Add(RM_PlaneVert.Lerp(q, p, (limit - q.z) / (p.z - q.z)));
+                if (pIn) output.Add(p);
+            }
+            return output;
+        }
+
+        /// <summary>Plane polygon -> screen, kept counter-clockwise: a side face runs its plane mirrored.</summary>
+        private static List<RM_PlaneVert> ToScreen(List<RM_PlaneVert> poly, int face, float crease, float sideW)
+        {
+            var output = new List<RM_PlaneVert>(poly.Count);
+            float area = 0f;
+            foreach (RM_PlaneVert v in poly)
+            {
+                // A point exactly on the crease belongs to either map: both give the same screen point.
+                BentToCell(face, v.x, v.z, crease, sideW, out float x, out float z);
+                output.Add(new RM_PlaneVert(x, z, v.u, v.v));
+            }
+            for (int i = 0; i < output.Count; i++)
+            {
+                RM_PlaneVert a = output[i], b = output[(i + 1) % output.Count];
+                area += a.x * b.z - b.x * a.z;
+            }
+            if (area < 0f) output.Reverse();
+            return output;
         }
 
         private const int MaxReachCells = 5;
@@ -555,6 +673,138 @@ namespace RimMandrake.Graffiti
                 if (best < 0 || distSqToFallback[i] < distSqToFallback[best] || (distSqToFallback[i] == distSqToFallback[best] && tieKey[i] < tieKey[best])) best = i;
             }
             return best;
+        }
+
+        // ---------------------------------------------------------------- what a mark does between people
+        // Owner, 2026-11-07: "did you test the social implications of the mod? It's more than just art display." Every decision the social
+        // layer takes is here as a table, so it can be fuzzed without the game. GraffitiSocial.cs reads the pawns and acts on the answers.
+
+        public const int SightRadiusSq = 49;
+        /// <summary>A pawn who has read a mark reads it again after this long while it still stands: a mockery goes on working until someone answers it.</summary>
+        public const int ReadAgainTicks = 90000;
+        /// <summary>A pawn answers one mark at a time, and has cooled off this long before taking on another.</summary>
+        public const int AnswerCooldownTicks = 60000;
+        /// <summary>A grudge not answered in this long is borne.</summary>
+        public const int GrudgeExpiryTicks = 120000;
+
+        public const int EnemyOpinion = -15, FriendOpinion = 20, CloseOpinion = 50, HatedOpinion = -30, HeldDearOpinion = 40;
+
+        /// <summary>What a pawn's hand wants to say when it picks up the brush.</summary>
+        public static RM_Meaning WantsToPaint(bool spree, bool kind, int worstOpinion, bool hasEnemy, bool hasBeloved, bool hasMourned, float roll)
+        {
+            float mock = 0f, mourn = 0f, love = 0f;
+            if (hasEnemy && worstOpinion <= EnemyOpinion && !kind)
+            {
+                mock = spree ? 0.65f : (worstOpinion <= HatedOpinion ? 0.4f : 0.2f);
+            }
+            if (hasMourned) mourn = spree ? 0.15f : 0.35f;
+            if (hasBeloved && !spree) love = 0.2f;
+            if (roll < mock) return RM_Meaning.Mockery;
+            if (roll < mock + mourn) return RM_Meaning.Memorial;
+            if (roll < mock + mourn + love) return RM_Meaning.Tribute;
+            return RM_Meaning.None;
+        }
+
+        /// <summary>A kind hand won't paint cruelty, ordered or not.</summary>
+        public static bool RefusesToPaint(RM_Meaning meaning, bool kind) { return kind && (meaning == RM_Meaning.Mockery || meaning == RM_Meaning.Insult); }
+
+        /// <summary>What this viewer feels on reading this mark. First match wins, top to bottom.</summary>
+        public static RM_Reaction ReactionOf(RM_Meaning meaning, RM_Viewer v)
+        {
+            if (v.isMaker) return RM_Reaction.None;
+            if (v.hostileMaker)
+            {
+                return v.hot ? RM_Reaction.Defiant : RM_Reaction.Uneasy;
+            }
+            switch (meaning)
+            {
+                case RM_Meaning.Mockery:
+                    if (v.isSubject) return v.kind ? RM_Reaction.ShrugsOff : RM_Reaction.Humiliated;
+                    if (v.loverOfSubject || v.opinionOfSubject >= FriendOpinion) return RM_Reaction.FriendDefends;
+                    if (v.opinionOfSubject <= EnemyOpinion) return RM_Reaction.Gleeful;
+                    if (v.kind) return RM_Reaction.Disapproves;
+                    return RM_Reaction.LostFace;
+                case RM_Meaning.Tribute:
+                    if (v.isSubject) return RM_Reaction.Honored;
+                    if (v.loverOfMaker) return RM_Reaction.Jealous;
+                    if (v.opinionOfSubject <= HatedOpinion) return RM_Reaction.Scoffs;
+                    return v.opinionOfSubject >= FriendOpinion ? RM_Reaction.Warmed : RM_Reaction.None;
+                case RM_Meaning.Memorial:
+                    if (v.psychopath) return RM_Reaction.None;
+                    return v.loverOfSubject || v.opinionOfSubject >= FriendOpinion ? RM_Reaction.Mourning : RM_Reaction.None;
+                case RM_Meaning.Jest:
+                    if (v.psychopath || v.opinionOfMaker <= HatedOpinion) return RM_Reaction.None;
+                    return RM_Reaction.Amused;
+                case RM_Meaning.Beauty:
+                    return v.psychopath ? RM_Reaction.None : RM_Reaction.Moved;
+                case RM_Meaning.Devotion:
+                    if (!v.hasIdeo || !v.makerHasIdeo) return RM_Reaction.None;
+                    return v.sameIdeoAsMaker ? RM_Reaction.Uplifted : RM_Reaction.Offended;
+                case RM_Meaning.Insult:
+                    return v.kind ? RM_Reaction.Disapproves : RM_Reaction.Gleeful;
+                default:
+                    if (!v.ownFaction) return RM_Reaction.None;
+                    if (v.opinionOfMaker <= HatedOpinion) return RM_Reaction.RivalTag;
+                    return v.loverOfMaker || v.opinionOfMaker >= HeldDearOpinion ? RM_Reaction.FriendTag : RM_Reaction.None;
+            }
+        }
+
+        /// <summary>What they do about it. The roll is in 0..1. A hot head goes for the painter; a good hand answers in paint; anyone can wipe a wall.</summary>
+        public static RM_Answer AnswerOf(RM_Reaction reaction, bool hot, bool canFight, bool makerHere, bool goodHand, float roll)
+        {
+            bool confront = canFight && makerHere;
+            switch (reaction)
+            {
+                case RM_Reaction.Humiliated:
+                    if (hot && confront && roll < 0.6f) return RM_Answer.Confront;
+                    if (goodHand && makerHere && roll < 0.55f) return RM_Answer.Reply;
+                    if (confront && roll < 0.3f) return RM_Answer.Confront;
+                    return roll < 0.7f ? RM_Answer.Scrub : RM_Answer.Deface;
+                case RM_Reaction.FriendDefends:
+                    if (hot && confront && roll < 0.25f) return RM_Answer.Confront;
+                    return roll < 0.45f ? RM_Answer.Scrub : (roll < 0.65f ? RM_Answer.Deface : RM_Answer.None);
+                case RM_Reaction.Defiant:
+                    return roll < 0.6f ? RM_Answer.Deface : RM_Answer.Scrub;
+                case RM_Reaction.Uneasy:
+                    return roll < 0.2f ? RM_Answer.Scrub : RM_Answer.None;
+                case RM_Reaction.RivalTag:
+                case RM_Reaction.WorkDestroyed:
+                    if (hot && confront && roll < 0.2f) return RM_Answer.Confront;
+                    return roll < 0.4f ? RM_Answer.Deface : RM_Answer.None;
+                case RM_Reaction.Offended:
+                    return hot && roll < 0.35f ? RM_Answer.Deface : RM_Answer.None;
+                default:
+                    return RM_Answer.None;
+            }
+        }
+
+        /// <summary>Is this reaction said out loud, so the player's told? The ones that start something between people.</summary>
+        public static bool Announces(RM_Reaction reaction)
+        {
+            return reaction == RM_Reaction.Humiliated || reaction == RM_Reaction.Honored || reaction == RM_Reaction.Mourning || reaction == RM_Reaction.Jealous || reaction == RM_Reaction.WorkDestroyed;
+        }
+
+        /// <summary>Stage of the colony's unease at enemy marks standing on its walls: none, then -1, -2, -4 by how many.</summary>
+        public static int TerritoryStage(int standing) { return standing <= 0 ? -1 : (standing <= 2 ? 0 : (standing <= 5 ? 1 : 2)); }
+
+        /// <summary>A crossed-out mark has lost its power: only its maker still cares.</summary>
+        public static bool StillSpeaks(bool defaced, bool viewerIsMaker) { return !defaced || viewerIsMaker; }
+
+        /// <summary>A visitor reads a mark on a host's wall: the faction's goodwill moves by this much. The named insult is the lever the player pulls on purpose.</summary>
+        public static int GoodwillOf(RM_Meaning meaning, bool namesViewersFaction, bool isTaunt, bool sameIdeo)
+        {
+            if (meaning == RM_Meaning.Insult && namesViewersFaction) return -12;
+            if (isTaunt) return -1;
+            if (meaning == RM_Meaning.Devotion && sameIdeo) return 1;
+            return 0;
+        }
+
+        /// <summary>A painter's own tag: the same drawing and pigment each time, from the pawn's id, so a wall shows whose hand is whose.</summary>
+        public static int HandChoice(int id, int count, int salt)
+        {
+            if (count <= 0) return 0;
+            uint h = ((uint)id + (uint)salt * 40503u) * 2654435761u;
+            return (int)((h >> 11) % (uint)count);
         }
     }
 }

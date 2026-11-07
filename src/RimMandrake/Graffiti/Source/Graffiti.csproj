@@ -56,6 +56,10 @@
     <Compile Include="WallPlane.cs" />
     <Compile Include="RM_GraffitiStage.cs" />
     <Compile Include="WallLossPatch.cs" />
+    <Compile Include="WallInspectPatch.cs" />
+    <Compile Include="GraffitiSocial.cs" />
+    <Compile Include="JobDrivers_AnswerMark.cs" />
+    <Compile Include="RM_GraffitiSocialProof.cs" />
     <Compile Include="JobGiver_IdleTag.cs" />
     <Compile Include="JobDriver_PaintGraffiti.cs" />
     <Compile Include="JoyGiver_PaintGraffiti.cs" />

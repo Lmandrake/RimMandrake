@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -14,6 +15,7 @@ namespace RimMandrake.Graffiti
         private static readonly Dictionary<Texture, Geom> Geoms = new Dictionary<Texture, Geom>();
         private static readonly Dictionary<long, Material> ThroughMats = new Dictionary<long, Material>();
         private static readonly Color32 White = new Color32(255, 255, 255, 255);
+        private const float TopThrough = 0.45f;
 
         /// <summary>The wall's link bits as its own graphic computes them; negative where no paintable wall stands.</summary>
         internal static int LinksAt(IntVec3 c, Map map)
@@ -138,8 +140,16 @@ namespace RimMandrake.Graffiti
             return mat;
         }
 
-        /// <summary>Print a mark on its wall. width and height are world cells on the wall's plane; through is the wall's show-through.</summary>
-        internal static void Print(SectionLayer layer, Filth_Mark mark, Material mat, float width, float height, float slide, float slope, float lift, bool flip, float through, float bump = 0f)
+        /// <summary>Where the middle of this mark sits on its wall's plane, so a head or an emblem can be placed against it.</summary>
+        internal static float CenterT(Filth_Mark mark, float width, float height, float slope, float lift)
+        {
+            int face = RM_GraffitiKernel.FaceOfSide(mark.wallSide);
+            Geom geom = GeomOf(AtlasOf(mark.Position + new Rot4(mark.wallSide).FacingCell, mark.Map));
+            return RM_GraffitiKernel.MarkCenterT(face, geom.crease, geom.side, width, height, slope, lift);
+        }
+
+        /// <summary>Print a mark on its wall, on the face and bent over onto the top. width and height are world cells on the wall's plane; through is the wall's show-through.</summary>
+        internal static void Print(SectionLayer layer, Filth_Mark mark, Material mat, float width, float height, float slide, float slope, float lift, bool flip, float through, float bump = 0f, float centerT = -1f)
         {
             Map map = mark.Map;
             int side = mark.wallSide;
@@ -154,7 +164,7 @@ namespace RimMandrake.Graffiti
                 return;
             }
             RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
-            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(k => LinksAt(anchor + new IntVec3(ax * k, 0, az * k), map), face, geom.crease, geom.side, width, height, slide, slope, lift, flip);
+            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(k => LinksAt(anchor + new IntVec3(ax * k, 0, az * k), map), face, geom.crease, geom.side, width, height, slide, slope, lift, flip, centerT);
             foreach (RM_MarkPiece piece in pieces)
             {
                 Emit(layer.GetSubMesh(mat), piece.poly, anchor.x, anchor.z, y, null);
@@ -166,7 +176,8 @@ namespace RimMandrake.Graffiti
                 Material wallAtlas = AtlasOf(cell, map);
                 if (wallAtlas == null) continue;
                 int links = LinksAt(cell, map);
-                Material over = ThroughMat(wallAtlas, through, mat.renderQueue + 1);
+                // The top is a dark surface with no grain: less of it comes back, so the paint up there stays the same paint.
+                Material over = ThroughMat(wallAtlas, piece.onTop ? through * TopThrough : through, mat.renderQueue + 1);
                 Vector2 off = new Vector2((links % 4) * 0.25f + 1f / 32f, (links / 4) * 0.25f + 1f / 32f);
                 Emit(layer.GetSubMesh(over), piece.poly, anchor.x, anchor.z, y + 0.002f, v => new Vector2(off.x + (v.x - ax * piece.k) * 0.1875f, off.y + (v.z - az * piece.k) * 0.1875f));
             }
@@ -203,6 +214,53 @@ namespace RimMandrake.Graffiti
                 sm.tris.Add(start + i);
             }
         }
+
+        // ---------------------------------------------------------------- someone's head, painted
+
+        private static readonly Dictionary<int, Texture2D> Portraits = new Dictionary<int, Texture2D>();
+
+        /// <summary>A colonist's head as a hand would put it on a wall: the game's own portrait, its colours flattened to a few broad values and dragged through
+        /// a dry brush. Their hair and their face's shape are what a wall can show, and enough to say who it is. Null if it can't be had.</summary>
+        internal static Texture2D PaintedPortrait(Pawn pawn)
+        {
+            if (pawn == null) return null;
+            if (Portraits.TryGetValue(pawn.thingIDNumber, out Texture2D done)) return done;
+            Texture2D made = null;
+            try
+            {
+                RenderTexture rt = PortraitsCache.Get(pawn, new Vector2(PortraitPx, PortraitPx), Rot4.South, new Vector3(0f, 0f, 0.3f), 1.28205f, supersample: false, compensateForUIScale: false, healthStateOverride: PawnHealthState.Mobile);
+                Color32[] px = ReadTexture(rt, out int size);
+                float seed = (pawn.thingIDNumber & 1023) * 0.37f;
+                for (int i = 0; i < px.Length; i++)
+                {
+                    Color32 c = px[i];
+                    if (c.a < 40) { px[i] = new Color32(c.r, c.g, c.b, 0); continue; }
+                    int x = i % size, y = i / size;
+                    float lum = (c.r + c.g + c.b) / 765f;
+                    float band = Mathf.Round(lum * 3.4f) / 3.4f / Mathf.Max(lum, 0.08f);
+                    float streak = Mathf.PerlinNoise(seed + x * 0.012f, seed + y * 0.34f);
+                    float patch = Mathf.PerlinNoise(seed * 2f + x * 0.045f, seed + y * 0.05f);
+                    float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.5f) / 0.3f);
+                    float grey = (c.r + c.g + c.b) / 3f;
+                    px[i] = new Color32(
+                        (byte)Mathf.Clamp((grey + (c.r - grey) * 1.15f) * band * 0.92f, 0f, 255f),
+                        (byte)Mathf.Clamp((grey + (c.g - grey) * 1.15f) * band * 0.92f, 0f, 255f),
+                        (byte)Mathf.Clamp((grey + (c.b - grey) * 1.15f) * band * 0.92f, 0f, 255f),
+                        (byte)(255f * (0.55f + 0.45f * keep)));
+                }
+                made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = "RM_Graffiti_Portrait_" + pawn.thingIDNumber, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+                made.SetPixels32(px);
+                made.Apply(true, false);
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[Graffiti] couldn't paint a portrait of " + pawn.LabelShort + ": " + e.Message, pawn.thingIDNumber ^ 0x48454144);
+            }
+            Portraits[pawn.thingIDNumber] = made;
+            return made;
+        }
+
+        private const int PortraitPx = 128;
 
         // ---------------------------------------------------------------- a clean ideoligion icon, painted
 

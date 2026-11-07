@@ -285,6 +285,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Mural</category>
+        <onViewOwnFaction>RM_Graffiti_NearOurPiece</onViewOwnFaction>
         <form>Piece</form>
         <poolWeight>2</poolWeight>
         <minArtistic>4</minArtistic>
@@ -643,6 +644,8 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -676,6 +679,8 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -708,6 +713,8 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
