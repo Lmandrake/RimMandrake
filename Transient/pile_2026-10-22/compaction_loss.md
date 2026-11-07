@@ -29,7 +29,7 @@ These are carried verbatim into the handoff written with this report, so they no
 
 ## 2. Lessons / traps learned but not filed
 **Count: 1 learned in-segment and left uncommitted; 2 newly measured by this audit.**
-- `infrastructure/state/lessons/20261022T160123Z-BENCH-pushing-from-side-clone-bench-when.md` (helper pushed
+- `design/RimMandrake/GIT_WORKFLOW.md` (helper pushed
   2b85094eb0 to the PUBLIC repo with the gmail committer from a side clone) was WRITTEN but never committed —
   `??` in git status 9 h later. An untracked file lives only in this clone. Committed with this report.
 - NEW (filed 20261023T010455Z): the transcript extractors (`compaction_check.py --extract`,

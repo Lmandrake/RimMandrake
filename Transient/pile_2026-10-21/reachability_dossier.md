@@ -136,7 +136,7 @@ setting ladders. (In PassAllDestroyable modes walls are passable in both graphs,
   change**; it was a build convenience whose premise ("ANDing is enough") the drawbridge site falsified.
 - **2026-10-21**: drawbridge pair diagnosis (`Transient/pile_2026-10-21/drawbridge_pair_diagnosis.md`) found the mechanism;
   winch gate shipped; options memo (`Transient/pile_2026-10-21/relativeveto_options.md`, commit `adff09af28`);
-  lesson `infrastructure/state/lessons/20261022T024230Z-BENCH-relativeveto-ands-vanilla-regions-walls-no.md`.
+  lesson `skills/rimworld-modding/references/csharp-and-loading.md`.
 
 ## 4. Solutions already considered (from the memo)
 

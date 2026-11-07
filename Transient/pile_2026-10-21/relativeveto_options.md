@@ -18,7 +18,7 @@ No code edited, nothing built, no game.
   `PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP` repeats it. **I found no owner ruling behind that change**; it was a build
   convenience (no invalidation on wall changes), and its premise ("ANDing is enough") is what the drawbridge pair falsified.
 - No item, design note or lesson proposes a fix beyond the diagnosis's two one-line ideas. The lesson
-  `infrastructure/state/lessons/20261022T024230Z-BENCH-relativeveto-ands-vanilla-regions-walls-no.md` records the defect.
+  `skills/rimworld-modding/references/csharp-and-loading.md` records the defect.
 - Owner constraint that bounds every option: `PIT_SUPERDEEP_COLLAPSE_1` ruling 1 (owner, 2026-10-12): a pawn is trapped
   *"when every N/S/E/W step out of its pocket is taller than it can climb"*. **Trapping is a depth fact.** Pocket-ness
   (held, trapped, pit rooms, capture-down) must stay on depth. Only *reachability* needs walls.
