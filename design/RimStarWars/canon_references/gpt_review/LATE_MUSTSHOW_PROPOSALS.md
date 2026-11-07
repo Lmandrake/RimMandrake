@@ -29,7 +29,7 @@ Not applied; each rests on a verified row of LATE_VERIFICATION_LOG.md.
 ### leaftail
 - Puffy cheeks in BODY PLAN are Legends only (Leaf-tail/Legends: "they had expandable cheeks used to gather food"); mark optional.
 ### maalraas
-- COLOUR LAYOUT bullet says either colour is "canon-attested": the page text gives no colour at all (Maalraas), only the two images; soften to "as pictured".
+- COLOUR LAYOUT bullet says either colour is attested on the Legends page: the page text gives no colour at all (Maalraas), only the two images and an infobox saying it varies; soften to "as pictured".
 ### mastiffphalone
 - Blue bare face/throat patch (Visual brief and any Must show item) is not in either Mastiff phalone text; it rests on images only (page: Mastiff phalone, Mastiff phalone/Legends).
 

@@ -38,10 +38,10 @@ Page resolved is `Spice spider/Legends` ("energy spider or spice spider", Legend
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Spice_spider/Legends (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Spice_spider/Legends (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Spice spider/Legends`; wiki caption: infobox image. File: `EnergySpider-wosfg.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a1/EnergySpider-wosfg.jpg/revision/latest?cb=20070116184844
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Spice spider/Legends`; wiki caption: infobox image. File: `EnergySpider-wosfg.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a1/EnergySpider-wosfg.jpg/revision/latest?cb=20070116184844
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

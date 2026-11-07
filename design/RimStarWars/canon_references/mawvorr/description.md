@@ -7,14 +7,14 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Mawvorr
+### Legends — https://starwars.fandom.com/wiki/Mawvorr
 
 Mawvorr were a hostile, non-sentient group of species found throughout the Galaxy. The group included crysfangs, native to Voss, felshades, also known as bog mawvorrs, native to Zakuul and Dxun, and multiple subspecies of mewvorr, which were smaller in size and often kept as pets during the wars between the reconstituted Sith Empire and the Galactic Republic.
 
 Mawvorr were four-legged, typically carnivorous creatures. They had distinctive four-eyed heads with multiple rows of teeth, high nostrils, two spiky appendages on the both sides and, with an exception of Stunning mawvorrs, two big plates, in addition to four on their backs. The plates of several mawvorr species were glowing, revealing the vessels inside; such were called chromatophore plates. All limbs of a mawvorr had three digits ending with big claws, and their tails and bellies were covered in plates.
 
 ## Visual brief
-Text only: the canon page `Mawvorr` had no downloadable image (canon_gapfill: "page found, no usable image"). Viewed
+Text only: the Legends page `Mawvorr` had no downloadable image (canon_gapfill: "page found, no usable image"). Viewed
 2026-10-14: `donor_current_sprite.png` (donor sprite, our stand-in). The brief below is from the sourced text plus the
 donor sprite, and is weaker evidence than an image-grounded brief.
 
@@ -27,6 +27,7 @@ donor sprite, and is weaker evidence than an image-grounded brief.
 - **Donor sprite:** a purple-mauve quadruped with glowing cyan-blue back plates, a spiked tail and a toothy head:
   agrees with the text's glowing plates; the four eyes are not readable at sprite size.
 - **Limbs and underside (text):** every limb has three digits ending in big claws; the tail and belly are also covered in plates; the two big head plates are absent on stunning mawvorrs and only some species glow.
+- **Continuity (late review):** the page `Mawvorr` is a Legends article (header `{{Top|leg}}`, no `/Legends` suffix), so nothing in this entry is current canon; its colour is listed only as "Various", so the purple and cyan come from the donor sprite alone.
 
 ## Must show
 - [ ] BODY PLAN: a four-legged chitin-plated carnivore with large plates on the back
@@ -39,7 +40,7 @@ donor sprite, and is weaker evidence than an image-grounded brief.
 none known. (A true glow would need an emissive/second graphic layer; a painted glow is the achievable target.)
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Mawvorr (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Mawvorr (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
 (none downloadable from either page)

@@ -36,10 +36,10 @@ indigenous to Dxun.
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Devourer (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Devourer (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Devourer`; wiki caption: infobox image. File: `Devourer JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/0/06/Devourer_JATM.jpg/revision/latest?cb=20100528130815
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Devourer`; wiki caption: infobox image. File: `Devourer JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/0/06/Devourer_JATM.jpg/revision/latest?cb=20100528130815
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

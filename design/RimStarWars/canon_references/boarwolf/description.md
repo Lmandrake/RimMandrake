@@ -27,7 +27,7 @@ the moon, too dark for detail), and `donor_current_sprite.png` (the donor's adul
 
 - **Overall shape:** a massive, heavy quadruped carried low at the front, with a pronounced HUMP over the shoulders
   and back; bristly, shaggy hair along the spine (Legends film creature, and the canon text: "bristle-backed", "humped
-  backs"). Legends text gives up to three metres tall.
+  backs"). The Legends text and the canon infobox both give three metres tall.
 - **Head:** long, wolf-like snout with a mouth full of large uneven fangs; two TUSKS (both texts). The canon comic
   draws it as a pig-pink hog with a gaping red mouth; the Legends film creature is grey-blue and wolf-headed. The two
   images disagree on colour and on how pig-like the face is; both agree on bulk, hump, fangs and tusks.
@@ -37,7 +37,7 @@ the moon, too dark for detail), and `donor_current_sprite.png` (the donor's adul
 - **Donor sprite:** a dark grey-brown wild boar with tusks and a short dark crest: it reads as an ordinary boar and
   misses the hump, the size and the wolf head. Its juvenile is a striped piglet; canon says nothing of young.
 - **Size:** big predator, hunts Ewoks and blurrgs in pairs (Legends text). Contradiction to flag: the donor def
-  is sized and labelled like a farm boar, while the Legends text gives a three-metre predator (the canon page states no height).
+  is sized and labelled like a farm boar, while the Legends text and the canon page's infobox both give a three-metre animal.
 - **Canon (Boar-wolf):** domesticated by the semi-sentient Gorax, who raise the young after killing the mother; not livestock.
 - **Legends only (Boar-wolf/Legends):** hunts in pairs for blurrgs and Ewoks, large hooked claws that tear holes in trees, howls at the gas giant Endor.
 

@@ -24,6 +24,7 @@ inflated gullipuds), and `donor_current_sprite.png` (donor adult sprite, our sta
 - **Colour:** orange to peach-orange skin, paler belly.
 - **Donor sprite:** an orange, peach-bellied blob with red markings, and an inflated ball version: agrees.
 - **Continuity and ecology (late review):** the Gullipud page is a Legends article (header Top leg); native to Naboo swamps, small easy prey for pikobis, bounces when inflated, and the Gungans used it in gullipud ball games.
+- **Infobox (late review):** Legends page Gullipud: skin Orange/Yellow.
 
 ## Must show
 - [ ] BODY PLAN: a bulky, loose-skinned amphibian with stubby legs that can inflate into a round ball
@@ -36,11 +37,11 @@ inflated gullipuds), and `donor_current_sprite.png` (donor adult sprite, our sta
 none known. (Inflation is a separate graphic in the def.)
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Gullipud (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Gullipud (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Gullipud`; wiki caption: infobox image. File: `Gullipud.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f5/Gullipud.jpg/revision/latest?cb=20070117194202
-- `wookieepedia_canon_2.webp` — CANON page `Gullipud`; wiki caption: A group of gullipuds.. File: `Gullipud-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5d/Gullipud-woswfg.jpg/revision/latest?cb=20070117194338
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Gullipud`; wiki caption: infobox image. File: `Gullipud.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f5/Gullipud.jpg/revision/latest?cb=20070117194202
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Gullipud`; wiki caption: A group of gullipuds.. File: `Gullipud-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5d/Gullipud-woswfg.jpg/revision/latest?cb=20070117194338
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

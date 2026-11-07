@@ -36,6 +36,7 @@ and `donor_current_sprite.png` (donor sprite, our stand-in).
 - **Fur:** woolly dark brown fur on back and arms; the lower body hairless (canon text); grey bare skin on the face
   and lower body in the Legends paintings.
 - **Donor sprite:** a grey-faced ape with a shaggy dark striped back and bare grey lower body: agrees.
+- **Infobox (late review):** Legends page Veermok/Legends: skin Gray; hair Dark gray to black; eyes Yellow.
 
 ## Must show
 - [ ] BODY PLAN: a primate with broad upper torso, long powerful arms and thin hind legs, knuckle-walking

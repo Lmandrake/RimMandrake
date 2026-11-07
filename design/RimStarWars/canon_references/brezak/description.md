@@ -30,6 +30,7 @@ Wars renders, ridden, gliding with skin flaps spread), and `donor_current_sprite
   tan with darker veining and spots.
 - **Donor sprite:** a top-down tan lizard with spread veined pink flaps: agrees.
 - **Legends detail:** the skin flaps attach to the ribcage and dangle loosely between fore and hind legs when retracted; the flat tail acts as a rudder; tan undersides with dark brown backs; the head is horned (Legends). Canon: bred as transport for Zygerrian royal guards and the high class.
+- **Infobox (late review):** canon page Brezak: height 9.3 meters; length 10.2 meters · Legends page Brezak/Legends: height 9.3 meters; length 10.2 meters; eyes Yellow.
 
 ## Must show
 - [ ] BODY PLAN: a lean giant lizard with four long splayed limbs and long grasping fingers

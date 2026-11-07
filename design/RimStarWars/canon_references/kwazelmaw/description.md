@@ -35,6 +35,7 @@ stand-in; the def also draws a swimming graphic).
   images), dark blue-grey along the back.
 - **Donor sprite:** a tan head with dark crest seen top-down: agrees on colour but omits the glowing lines.
 - **Canon text (late review):** a large aquatic predator of the swamps of Rodia that lurks on the bottom; its skin deflects blaster bolts and even some missiles, and its eyelids close when it sleeps underwater. Legends only: lifespan up to 100 years.
+- **Infobox (late review):** Legends page Kwazel Maw/Legends: length 88 meters.
 
 ## Must show
 - [ ] BODY PLAN: a giant segmented slug/caterpillar body with many short stubby legs and a large flat finned tail

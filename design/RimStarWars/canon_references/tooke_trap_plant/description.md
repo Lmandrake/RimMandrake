@@ -5,9 +5,9 @@ It is cast in the Webwork (`RUT_Webwork`, 0.3) and the Greentide (`RUT_Greentide
 No owned `RSW_` port exists yet.
 
 ## Sourced text (Wookieepedia)
-The plant has two articles. The canon one is thin and non-canon-tagged (LEGO). Most of the biology comes from the Legends one.
+The plant has two articles. The unsuffixed one is thin and tagged non-canon (LEGO). Most of the biology comes from the Legends one.
 
-**Canon** (`Tooke-trap plant`, tagged non-canon: *LEGO Star Wars: The Skywalker Saga*, 2022). A carnivorous plant
+**Non-canon** (`Tooke-trap plant`, tagged non-canon: *LEGO Star Wars: The Skywalker Saga*, 2022). A carnivorous plant
 native to Naboo, grown by Gungans. *"Tooke-trap plants were grown from seeds which would sprout into four-leafed
 seedlings. Fully grown tooke-trap plants possessed a long stalk with a 'mouth' on the end, that protruded from a bush
 that contained eight leaves. They would occasionally hiss."*
@@ -67,7 +67,7 @@ The images:
   a mechanic, for example a small-creature trap comp.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Tooke-trap_plant (canon/LEGO; text via MediaWiki API `action=parse`, 2026-10-07)
+- https://starwars.fandom.com/wiki/Tooke-trap_plant (non-canon/LEGO; text via MediaWiki API `action=parse`, 2026-10-07)
 - https://starwars.fandom.com/wiki/Tooke-trap_plant/Legends (Legends; same API, 2026-10-07)
 - File:Tooke-trap_plant.jpg (Legends infobox painting), File:TookeTrapPlant-TGF.jpg (*Gungan Frontier*),
   File:TookeTrapPlant-LEGOTSS.png (LEGO)
@@ -84,7 +84,7 @@ The images:
 - Its Legends ecology fits a predator-flora roster: it lures small prey with a fake mating scent, rides shiros, and is
   eaten by clodhoppers. Check which of tooke, shiro and clodhopper are cast in the Webwork before claiming the
   ecology in its description.
-- Canon is thin. The main text is Legends, and the canon article is LEGO-tagged non-canon. Per Q11 it is a genuine
+- The main text is Legends, and the unsuffixed article is LEGO-tagged non-canon. Per Q11 it is a genuine
   Star Wars name, so an owned port routes through the Utinni or RimStarWars layer, never the free `RM_` tier.
 
 ## ruling

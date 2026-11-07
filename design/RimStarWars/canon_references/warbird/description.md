@@ -35,12 +35,12 @@ stand-in).
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Sith_warbird (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Sith_warbird (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Sith warbird`; wiki caption: infobox image. File: `SithWarbird-BoS.png` — https://static.wikia.nocookie.net/starwars/images/5/5d/SithWarbird-BoS.png/revision/latest?cb=20241010035210
-- `wookieepedia_canon_2.webp` — CANON page `Sith warbird`; wiki caption: A warbird being approached by a humanoid being. File: `SithWarbird-JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1a/SithWarbird-JATM.jpg/revision/latest?cb=20100529041444
-- `wookieepedia_canon_3.webp` — CANON page `Sith warbird`; wiki caption: A Sith warbird wearing a battle harness. File: `SithWarbird.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c6/SithWarbird.jpg/revision/latest?cb=20080926154218
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Sith warbird`; wiki caption: infobox image. File: `SithWarbird-BoS.png` — https://static.wikia.nocookie.net/starwars/images/5/5d/SithWarbird-BoS.png/revision/latest?cb=20241010035210
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Sith warbird`; wiki caption: A warbird being approached by a humanoid being. File: `SithWarbird-JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1a/SithWarbird-JATM.jpg/revision/latest?cb=20100529041444
+- `wookieepedia_canon_3.webp` — LEGENDS page (non-canon continuity) `Sith warbird`; wiki caption: A Sith warbird wearing a battle harness. File: `SithWarbird.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c6/SithWarbird.jpg/revision/latest?cb=20080926154218
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

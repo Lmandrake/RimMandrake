@@ -34,18 +34,18 @@ sketch labelled "TORTON"), and `donor_current_sprite.png` (donor sprite, our sta
 - [ ] BODY PLAN: a massive turtle on long, thick pillar legs, standing tall
 - [ ] A big ridged, plated shell over the back
 - [ ] A turtle head on a thick neck with a horn on the snout
-- [ ] COLOUR LAYOUT: brown shell and tan-brown skin (images); red-and-green is also canon (text): either passes
+- [ ] COLOUR LAYOUT: brown shell and tan-brown skin (images); red-and-green is also sourced (Legends text): either passes
 - [ ] NEGATIVE: not a short-legged tortoise
 
 ## Engine limits
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Torton (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Torton (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Torton`; wiki caption: infobox image. File: `Torton.png` — https://static.wikia.nocookie.net/starwars/images/5/56/Torton.png/revision/latest?cb=20071216155424
-- `wookieepedia_canon_2.webp` — CANON page `Torton`; wiki caption: Concept art for Star Wars Galaxies.. File: `Torton concept art 2.jpg` — https://static.wikia.nocookie.net/starwars/images/0/03/Torton_concept_art_2.jpg/revision/latest?cb=20220109140217
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Torton`; wiki caption: infobox image. File: `Torton.png` — https://static.wikia.nocookie.net/starwars/images/5/56/Torton.png/revision/latest?cb=20071216155424
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Torton`; wiki caption: Concept art for Star Wars Galaxies.. File: `Torton concept art 2.jpg` — https://static.wikia.nocookie.net/starwars/images/0/03/Torton_concept_art_2.jpg/revision/latest?cb=20220109140217
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

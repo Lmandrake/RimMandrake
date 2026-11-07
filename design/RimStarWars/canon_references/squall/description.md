@@ -38,12 +38,12 @@ drawing of a sitting squall), and `donor_current_sprite.png` (donor sprite, our 
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Squall_%28species%29 (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Squall_%28species%29 (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Squall (species)`; wiki caption: infobox image. File: `SquallSWG2.png` — https://static.wikia.nocookie.net/starwars/images/4/48/SquallSWG2.png/revision/latest?cb=20071202023104
-- `wookieepedia_canon_2.webp` — CANON page `Squall (species)`; wiki caption: A group of squalls on Chandrila. File: `Squall pack SoR.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/Squall_pack_SoR.png/revision/latest?cb=20170517034205
-- `wookieepedia_canon_3.webp` — CANON page `Squall (species)`; wiki caption: A squall. File: `Squall.jpg` — https://static.wikia.nocookie.net/starwars/images/4/41/Squall.jpg/revision/latest?cb=20060717215957
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Squall (species)`; wiki caption: infobox image. File: `SquallSWG2.png` — https://static.wikia.nocookie.net/starwars/images/4/48/SquallSWG2.png/revision/latest?cb=20071202023104
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Squall (species)`; wiki caption: A group of squalls on Chandrila. File: `Squall pack SoR.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/Squall_pack_SoR.png/revision/latest?cb=20170517034205
+- `wookieepedia_canon_3.webp` — LEGENDS page (non-canon continuity) `Squall (species)`; wiki caption: A squall. File: `Squall.jpg` — https://static.wikia.nocookie.net/starwars/images/4/41/Squall.jpg/revision/latest?cb=20060717215957
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

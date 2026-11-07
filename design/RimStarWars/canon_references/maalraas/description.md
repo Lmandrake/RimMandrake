@@ -7,7 +7,7 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Maalraas
+### Legends — https://starwars.fandom.com/wiki/Maalraas
 
 Maalraas or Nighthunters were a non-sentient species of predatory quadrupeds. Nighthunters hunted in packs, using long claws and powerful fanged jaws to disable their victims. Using the Force to cloak themselves, they made themselves nearly indistinguishable from the darkest shadows; only extremely well-trained Jedi or Sith could recognize their silhouettes. Their hides and bones were heavily resistant to lightsabers as well as intense heat. A population existed on the forest moon of Dxun in the Onderon system and possibly Onderon itself. Maalraas had huge fangs that protruded from their round heads, and were possibly the ancestors of nighthunters. Maalraas hunted in packs, primarily preying upon cannoks, although if there were too many of them the cannoks could drive the predator away or even kill it. Maalraas were in turn preyed upon by the zakkeg. In 3951 BBY, Mandalorian warriors living on the moon found maalraas to be harsh prey to such a degree that having to clear out a number of them was almost considered a true challenge.
 
@@ -27,23 +27,24 @@ concept art, brown), and `donor_current_sprite.png` (donor sprite, our stand-in)
 - **Donor sprite:** a brown-and-cream arch-backed beast with fangs and a tufted tail: agrees with the concept art.
 - **Ability:** cloaks itself with the Force (text), matching the donor's `SW_ForceInvisibility`.
 - **Habitat and kin (page text):** Dxun packs prey mainly on cannoks and are in turn preyed on by the zakkeg; maalraas are only "possibly the ancestors of nighthunters", which are the trainable guard-beast form.
+- **Continuity (late review):** the page `Maalraas` is the Legends article (header `{{Top|canon=Nighthunter}}`); its canon counterpart is the page `Nighthunter` (header `{{Top|legends=Maalraas}}`), which covers nests and hunting and no appearance. The Legends infobox gives length 2 meters and says colour varies.
 
 ## Must show
 - [ ] BODY PLAN: a gaunt, arch-backed, long-legged quadruped with a long thin tail
 - [ ] Small head with a huge jaw of large protruding curved fangs
 - [ ] Ridge of small dark spines along the back; long hooked claws
-- [ ] COLOUR LAYOUT: grey-brown with darker spots (concept art) or blood-red (render): either is canon-attested
+- [ ] COLOUR LAYOUT: grey-brown with darker spots (concept art) or blood-red (render): either is attested on the Legends page
 - [ ] NEGATIVE: not a furry wolf or big cat
 
 ## Engine limits
 none known. (Force cloaking is an ability, not a sprite.)
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Maalraas (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Maalraas (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Maalraas`; wiki caption: infobox image. File: `Nighthunter.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b2/Nighthunter.jpg/revision/latest?cb=20071203183541
-- `wookieepedia_canon_2.webp` — CANON page `Maalraas`; wiki caption: Concept art of a Maalraas made for Knights of the Old Republic II: The Sith Lords. File: `NightHunter-K2promo.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1e/NightHunter-K2promo.jpg/revision/latest?cb=20090227110152
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Maalraas`; wiki caption: infobox image. File: `Nighthunter.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b2/Nighthunter.jpg/revision/latest?cb=20071203183541
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Maalraas`; wiki caption: Concept art of a Maalraas made for Knights of the Old Republic II: The Sith Lords. File: `NightHunter-K2promo.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1e/NightHunter-K2promo.jpg/revision/latest?cb=20090227110152
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

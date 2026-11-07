@@ -26,6 +26,7 @@ detail), and `donor_current_sprite.png` (the donor's male sprite, our stand-in).
   an ordinary animal. Reported only; no def change made.
 - **Donor sprite:** a grey-white wolf with a shaggy ruff and yellow eyes: agrees with the white form.
 - **Scale and speech (canon):** the single wolf Dume is abnormally large even for Loth-wolves, so ordinary pack members are smaller; they are sentient but speak Galactic Basic only rarely.
+- **Infobox (late review):** canon page Loth-wolf: height 2.6 meters; length 5.85 meters.
 
 ## Must show
 - [ ] BODY PLAN: a very large, long-legged wolf with a deep chest and a bushy tail

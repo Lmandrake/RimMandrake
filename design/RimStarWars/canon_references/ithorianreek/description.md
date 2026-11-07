@@ -23,6 +23,7 @@ images) modified by the three sourced differences: **yellow skin**, **larger and
 Viewed 2026-10-14: `donor_current_sprite.png` (the donor sprite, our stand-in): a mustard-yellow reek with a
 yellow head and a small pale nose horn. It agrees with the text (yellow, small horn).
 - **Origin and use (late review, Legends):** not an independent species: a reek subspecies exported to Ithor, yellow because of a diet of yellow flora and bafforr trees, used by the Ithorians as plow animals, and wiped out in the Yuuzhan Vong War. Keep the parent reek's cheek horns plus nose horn, only smaller.
+- **Infobox (late review):** Legends page Reek/Legends: height 2.24 meters; length 4.04 meters; mass 1,100 kilograms; skin Mainly brown with secondary color decided by diet.
 
 ## Must show
 - [ ] BODY PLAN: the reek's massive rhino-like quadruped with heavy sprawling legs, built larger and heavier than a Ylesian reek

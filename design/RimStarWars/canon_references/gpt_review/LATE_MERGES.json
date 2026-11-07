@@ -45,7 +45,7 @@
   },
   {
    "entry": "boarwolf",
-   "text": "while the Legends text gives a three-metre predator (the canon page states no height).",
+   "text": "while the Legends text and the canon page's infobox both give a three-metre animal.",
    "claim": "the three-metre height comes from the Legends page, not the canon text",
    "ruled": false
   },
@@ -297,7 +297,7 @@
   },
   {
    "entry": "paintedspat",
-   "text": "a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: canon text)",
+   "text": "a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: Legends text)",
    "claim": "the protruding mandible structure is not a true beak and the jaw resembles a reptilian jaw",
    "ruled": false
   },
@@ -473,6 +473,192 @@
    "entry": "warbird",
    "text": "yellow to yellowish-green (Legends text; the tan sketch is only a drawing, no text gives a tan-brown variant)",
    "claim": "feathers yellow to yellowish-green so tan-brown is not attested",
+   "ruled": false
+  },
+  {
+   "entry": "aiwha",
+   "text": "- **Infobox (late review):** canon page Aiwha: mass 1200 kilograms · Legends page Aiwha/Legends: mass 1,200 kilograms.",
+   "claim": "Aiwha infobox gives mass 1200 kilograms",
+   "ruled": false
+  },
+  {
+   "entry": "behemoth",
+   "text": "- **Infobox (late review):** Legends page Sith war behemoth: hair Orange.",
+   "claim": "Sith war behemoth infobox gives hair Orange",
+   "ruled": false
+  },
+  {
+   "entry": "brezak",
+   "text": "- **Infobox (late review):** canon page Brezak: height 9.3 meters; length 10.2 meters · Legends page Brezak/Legends: height 9.3 meters; length 10.2 meters; eyes Yellow.",
+   "claim": "Brezak infobox gives height 9.3 meters",
+   "ruled": false
+  },
+  {
+   "entry": "corellianhound",
+   "text": "- **Infobox (late review):** canon page Corellian hound: mass Up to 100 kilograms; skin Gray.",
+   "claim": "Corellian hound infobox gives mass Up to 100 kilograms",
+   "ruled": false
+  },
+  {
+   "entry": "dragonsnake_albino",
+   "text": "- **Infobox (late review):** canon page Dragonsnake: mass Up to 200 kilograms.",
+   "claim": "Dragonsnake infobox gives mass Up to 200 kilograms",
+   "ruled": true
+  },
+  {
+   "entry": "frogdog",
+   "text": "- **Infobox (late review):** canon page Frog-dog: eyes Black · Legends page Frog-dog/Legends: skin Brown, green, orange-red, purple, yellowish dun; eyes Purple, red, yellow.",
+   "claim": "Frog-dog infobox gives eyes Black",
+   "ruled": false
+  },
+  {
+   "entry": "gullipud",
+   "text": "- **Infobox (late review):** Legends page Gullipud: skin Orange/Yellow.",
+   "claim": "Gullipud infobox gives skin Orange/Yellow",
+   "ruled": false
+  },
+  {
+   "entry": "gundark",
+   "text": "- **Infobox (late review):** canon page Gundark: eyes Yellow.",
+   "claim": "Gundark infobox gives eyes Yellow",
+   "ruled": false
+  },
+  {
+   "entry": "ithorianreek",
+   "text": "- **Infobox (late review):** Legends page Reek/Legends: height 2.24 meters; length 4.04 meters; mass 1,100 kilograms; skin Mainly brown with secondary color decided by diet.",
+   "claim": "Reek/Legends infobox gives height 2.24 meters",
+   "ruled": false
+  },
+  {
+   "entry": "kaadu",
+   "text": "- **Infobox (late review):** Legends page Kaadu/Legends: height 2.24 meters.",
+   "claim": "Kaadu/Legends infobox gives height 2.24 meters",
+   "ruled": false
+  },
+  {
+   "entry": "kelldragon",
+   "text": "- **Infobox (late review):** Legends page Kell dragon/Legends: skin Dark gray/black.",
+   "claim": "Kell dragon/Legends infobox gives skin Dark gray/black",
+   "ruled": false
+  },
+  {
+   "entry": "kwazelmaw",
+   "text": "- **Infobox (late review):** Legends page Kwazel Maw/Legends: length 88 meters.",
+   "claim": "Kwazel Maw/Legends infobox gives length 88 meters",
+   "ruled": false
+  },
+  {
+   "entry": "leaftail",
+   "text": "- **Infobox (late review):** Legends page Leaf-tail/Legends: eyes Orange.",
+   "claim": "Leaf-tail/Legends infobox gives eyes Orange",
+   "ruled": false
+  },
+  {
+   "entry": "lothwolf",
+   "text": "- **Infobox (late review):** canon page Loth-wolf: height 2.6 meters; length 5.85 meters.",
+   "claim": "Loth-wolf infobox gives height 2.6 meters",
+   "ruled": false
+  },
+  {
+   "entry": "mastmot",
+   "text": "- **Infobox (late review):** Legends page Mastmot/Legends: length 15 meters.",
+   "claim": "Mastmot/Legends infobox gives length 15 meters",
+   "ruled": false
+  },
+  {
+   "entry": "narglatch",
+   "text": "- **Infobox (late review):** Legends page Narglatch/Legends: length 6.23 meters.",
+   "claim": "Narglatch/Legends infobox gives length 6.23 meters",
+   "ruled": false
+  },
+  {
+   "entry": "nexu",
+   "text": "- **Infobox (late review):** canon page Nexu: mass 225 Kilograms · Legends page Nexu/Legends: mass 225 kilograms.",
+   "claim": "Nexu infobox gives mass 225 Kilograms",
+   "ruled": false
+  },
+  {
+   "entry": "rancor",
+   "text": "- **Infobox (late review):** canon page Rancor: mass 1,650kg (3,638 lbs); eyes Black · Legends page Rancor/Legends: height 5-10 meters / 5-19 meters; mass 1,650 kilograms (5-meter specimen).",
+   "claim": "Rancor infobox gives mass 1,650kg (3,638 lbs)",
+   "ruled": true
+  },
+  {
+   "entry": "reek",
+   "text": "- **Infobox (late review):** Legends page Reek/Legends: length 4.04 meters; mass 1,100 kilograms.",
+   "claim": "Reek/Legends infobox gives length 4.04 meters",
+   "ruled": false
+  },
+  {
+   "entry": "roggwart",
+   "text": "- **Infobox (late review):** canon page Roggwart: skin Gray; eyes Yellow · Legends page Roggwart/Legends: skin Brown.",
+   "claim": "Roggwart infobox gives skin Gray",
+   "ruled": false
+  },
+  {
+   "entry": "stintaril",
+   "text": "- **Infobox (late review):** Legends page Stintaril/Legends: length 1-1.2 meters.",
+   "claim": "Stintaril/Legends infobox gives length 1-1.2 meters",
+   "ruled": false
+  },
+  {
+   "entry": "taozin",
+   "text": "- **Infobox (late review):** Legends page Taozin/Legends: skin Incandescent; eyes Black.",
+   "claim": "Taozin/Legends infobox gives skin Incandescent",
+   "ruled": true
+  },
+  {
+   "entry": "veermok",
+   "text": "- **Infobox (late review):** Legends page Veermok/Legends: skin Gray; hair Dark gray to black; eyes Yellow.",
+   "claim": "Veermok/Legends infobox gives skin Gray",
+   "ruled": false
+  },
+  {
+   "entry": "mawvorr",
+   "text": "the page `Mawvorr` is a Legends article (header `{{Top|leg}}`",
+   "claim": "mawvorr are Legends only (SWTOR)",
+   "ruled": false
+  },
+  {
+   "entry": "mawvorr",
+   "text": "its colour is listed only as \"Various\"",
+   "claim": "purple skin with cyan plates is the species colour",
+   "ruled": false
+  },
+  {
+   "entry": "paintedspat",
+   "text": "the page `Painted spat` is a Legends article (header `{{Top|leg}}`",
+   "claim": "painted spat is Legends (Star Wars Galaxies), not canon",
+   "ruled": false
+  },
+  {
+   "entry": "maalraas",
+   "text": "the page `Maalraas` is the Legends article (header `{{Top|canon=Nighthunter}}`)",
+   "claim": "the page is Legends material (KOTOR II)",
+   "ruled": false
+  },
+  {
+   "entry": "maalraas",
+   "text": "The Legends infobox gives length 2 meters and says colour varies.",
+   "claim": "maalraas exact length lifespan white variant dimorphism reproduction",
+   "ruled": false
+  },
+  {
+   "entry": "tuskcat",
+   "text": "fur ranging from browns to grays to almost red, toes ending in hoof-like appendages",
+   "claim": "Legends tusk cat coats ranged from browns to grays to almost red",
+   "ruled": false
+  },
+  {
+   "entry": "tuskcat",
+   "text": "tusk-like facial wattles that vary in number between subspecies",
+   "claim": "Legends tusk cat subspecies varied in the number of tusk-like facial wattles",
+   "ruled": false
+  },
+  {
+   "entry": "kaadu",
+   "text": "**Decoration (late review, canon):** Gungans decorate their kaadu with giant feathers.",
+   "claim": "gungans decorate their kaadu with giant feathers",
    "ruled": false
   }
  ],

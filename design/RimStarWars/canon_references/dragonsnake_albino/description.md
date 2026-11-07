@@ -31,6 +31,7 @@ This entry holds "the two pale versions".
 
 The two images agree: pale, limbless, a long narrow skull-like head, many long fangs, ringed glossy coils.
 - **Canon behaviour (film):** large serpentlike beast of murky swamp water with sharp fangs and a lethal toxin; the Hutt twins' dragonsnake wounded Din Djarin through his armour and injected venom, and later ate the twins. Voracious but unable to digest metal.
+- **Infobox (late review):** canon page Dragonsnake: mass Up to 200 kilograms.
 
 ## Must show
 *Generated 2026-10-17 from the owner's split ruling: the two pale images are the spec.*

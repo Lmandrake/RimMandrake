@@ -23,7 +23,7 @@ The Wookieepedia page is `Sith war behemoth`, a Legends article (no canon page e
 panel, a herd with riders), and `donor_current_sprite.png` (the sprite we ship: `swanimals/Behemoth/JawaBehemoth_m`,
 our own up-res carried over from `BehemothArtUpres_StarWarsAnimalCollection.xml`).
 
-- **Overall shape:** a massive, high-shouldered quadruped (troop carrier and siege beast: canon text), thick pillar
+- **Overall shape:** a massive, high-shouldered quadruped (troop carrier and siege beast: Legends text), thick pillar
   legs, heavy body sloping down to the hindquarters.
 - **Head:** a heavy beaked/hooked face with a bony crest or frill of horns at the back of the skull, and two very
   long, curving TUSKS sweeping forward and up from the lower jaw (canon_1, comic).
@@ -32,6 +32,7 @@ our own up-res carried over from `BehemothArtUpres_StarWarsAnimalCollection.xml`
   grey-white wrinkled hide elsewhere.
 - **Donor/ours sprite:** cream-white hide, shaggy tan lower coat, back plates, horned crest and two long tusks: agrees.
 - **History (Legends):** peaceful herd beasts of icy Khar Delba that used their long tusks only against predators; the Sith brought them to Ziost and made them part of their army. A hard shell protects the back.
+- **Infobox (late review):** Legends page Sith war behemoth: hair Orange.
 
 ## Must show
 - [ ] BODY PLAN: a massive high-shouldered quadruped on thick pillar legs
@@ -44,12 +45,12 @@ our own up-res carried over from `BehemothArtUpres_StarWarsAnimalCollection.xml`
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Sith_war_behemoth (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Sith_war_behemoth (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Sith war behemoth`; wiki caption: infobox image. File: `WarBehemoth-BoS.png` — https://static.wikia.nocookie.net/starwars/images/f/f5/WarBehemoth-BoS.png/revision/latest?cb=20241010033733
-- `wookieepedia_canon_2.webp` — CANON page `Sith war behemoth`; wiki caption: War behemoth amongst other Sithspawn.. File: `Sith monsters.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8c/Sith_monsters.jpg/revision/latest?cb=20081206050350
-- `wookieepedia_canon_3.webp` — CANON page `Sith war behemoth`; wiki caption: A war behemoth.. File: `SithWarBehemoth.jpg` — https://static.wikia.nocookie.net/starwars/images/9/90/SithWarBehemoth.jpg/revision/latest?cb=20051116140848
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Sith war behemoth`; wiki caption: infobox image. File: `WarBehemoth-BoS.png` — https://static.wikia.nocookie.net/starwars/images/f/f5/WarBehemoth-BoS.png/revision/latest?cb=20241010033733
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Sith war behemoth`; wiki caption: War behemoth amongst other Sithspawn.. File: `Sith monsters.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8c/Sith_monsters.jpg/revision/latest?cb=20081206050350
+- `wookieepedia_canon_3.webp` — LEGENDS page (non-canon continuity) `Sith war behemoth`; wiki caption: A war behemoth.. File: `SithWarBehemoth.jpg` — https://static.wikia.nocookie.net/starwars/images/9/90/SithWarBehemoth.jpg/revision/latest?cb=20051116140848
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

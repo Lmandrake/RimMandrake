@@ -43,6 +43,7 @@ A canon page `Kell dragon` exists but gives no anatomy (only Lourna Dee's armore
 - **Donor sprite:** a dark olive squat reptile with dorsal spikes and a toothy pink mouth: agrees.
 
 - **Viewed 2026-10-17 (bloggathehutt, fan blog):** Blog image `bloggathehutt_kelldragon_dark_forces.png` (640x396, Dark Forces FPS screenshot, 1995): a low heavy reptile with a mottled dark green-grey scaly hide, triangular head with pale teeth jutting from a closed jaw and yellow eyes, small dark spikes on the head and back. Matches Must show (squat, mottled grey-green); low-poly pixel art.
+- **Infobox (late review):** Legends page Kell dragon/Legends: skin Dark gray/black.
 
 ## Must show
 - [ ] BODY PLAN: a squat, low, heavy four-legged reptile with three-clawed feet

@@ -31,15 +31,15 @@ sprite, our stand-in).
 - [ ] NEGATIVE: not a feathered bird; not wingless
 
 ## Engine limits
-Flight: canon says it flies; real flight is MaxFlightTime + a whole-body flip-book (standing flyer rule), owed; never live-test without the owner.
+Flight: the Legends text says it flies; real flight is MaxFlightTime + a whole-body flip-book (standing flyer rule), owed; never live-test without the owner.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Drexl (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Drexl (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Drexl`; wiki caption: infobox image. File: `Warbeast.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f2/Warbeast.jpg/revision/latest?cb=20190325232237
-- `wookieepedia_canon_2.webp` — CANON page `Drexl`; wiki caption: Beast Riders astride their drexl mounts. File: `BeastRiders-GAW.jpg` — https://static.wikia.nocookie.net/starwars/images/7/73/BeastRiders-GAW.jpg/revision/latest?cb=20110112150411
-- `wookieepedia_canon_3.webp` — CANON page `Drexl`; wiki caption: The Iziz castaways taming the beasts for the first time.. File: `BeastRidersearly.jpg` — https://static.wikia.nocookie.net/starwars/images/d/dc/BeastRidersearly.jpg/revision/latest?cb=20190325231928
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Drexl`; wiki caption: infobox image. File: `Warbeast.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f2/Warbeast.jpg/revision/latest?cb=20190325232237
+- `wookieepedia_canon_2.webp` — LEGENDS page (non-canon continuity) `Drexl`; wiki caption: Beast Riders astride their drexl mounts. File: `BeastRiders-GAW.jpg` — https://static.wikia.nocookie.net/starwars/images/7/73/BeastRiders-GAW.jpg/revision/latest?cb=20110112150411
+- `wookieepedia_canon_3.webp` — LEGENDS page (non-canon continuity) `Drexl`; wiki caption: The Iziz castaways taming the beasts for the first time.. File: `BeastRidersearly.jpg` — https://static.wikia.nocookie.net/starwars/images/d/dc/BeastRidersearly.jpg/revision/latest?cb=20190325231928
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

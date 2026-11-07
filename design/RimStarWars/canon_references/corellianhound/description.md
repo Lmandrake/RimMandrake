@@ -29,6 +29,7 @@ profile, wearing a harness), `wookieepedia_canon_3.webp` (a hound skull hung in 
 - **Donor sprite:** a pale white hairless hound with a scaled crest and a fanged underbite: agrees with the renders.
 - **Behaviour:** fast, nimble trackers with a keen nose and a vicious bite; used by gangs for attack and guard.
 - **Breed and variants:** the depicted Sibian is one breed, not the whole species; a grey-skinned Sibian variation also existed; some hounds stood 0.7 m tall; Sibians often lost regenerating teeth in fights, so uneven or missing fangs are right.
+- **Infobox (late review):** canon page Corellian hound: mass Up to 100 kilograms; skin Gray.
 
 ## Must show
 - [ ] BODY PLAN: a large hairless dog with deep chest and heavy shoulders tapering to slimmer hindquarters, thin whip tail

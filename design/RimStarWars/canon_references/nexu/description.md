@@ -39,6 +39,7 @@ sprite `swanimals/Nexu/NexuW`, our stand-in; drawn greyscale and tinted by the d
 - **Donor sprite:** a pale, greyscale (tint-masked) cat-thing with dark stripes, a quill crest, a toothy split mouth
   and a long thin tail: agrees on shape; colour depends on the tint.
 - **Size and tail (page text):** the canon infobox lists two lengths, 1.83 m and 4.51 m (the page does not say which includes the tail), height 0.94 m; the hide could withstand blaster fire. Legends only: the tail splits into two equal halves for swinging between branches, and cubs are born pure white.
+- **Infobox (late review):** canon page Nexu: mass 225 Kilograms · Legends page Nexu/Legends: mass 225 kilograms.
 
 ## Must show
 - [ ] BODY PLAN: a long, low, agile cat-like predator with clawed climbing feet and a long whip tail forked at the tip

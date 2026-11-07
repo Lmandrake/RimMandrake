@@ -23,6 +23,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (the only image: a grey pencil-st
 - **Markings:** dark stripes/bands along the spine and tail in the drawing.
 - **Colour:** the drawing is grey monochrome; no colour is sourced.
 - **Donor sprite:** a tan, striped, long-tailed beast with downward tusks: shape agrees; colour (tan) is the donor's choice.
+- **Legends only (page `Tusk cat`, header `{{Top|canon=Tusk-cat}}`, late review):** fur ranging from browns to grays to almost red, toes ending in hoof-like appendages, a long tail ending in a leaf-shaped spur, tusk-like facial wattles that vary in number between subspecies; human riders worked as livestock shepherds.
 
 ## Must show
 - [ ] BODY PLAN: a large long-bodied quadruped with heavy chest/shoulders and long legs
@@ -36,6 +37,7 @@ none known. (Colour is unsourced: any natural tone is acceptable.)
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Tusk-cat (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Tusk_cat (Legends; wikitext pulled via the API for the late review)
 
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Tusk-cat`; wiki caption: infobox image. File: `Tusk cat-SWGA.jpg` — https://static.wikia.nocookie.net/starwars/images/0/02/Tusk_cat-SWGA.jpg/revision/latest?cb=20170103110830

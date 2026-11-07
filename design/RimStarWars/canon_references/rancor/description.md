@@ -53,6 +53,7 @@ of a rancor with young on its back), and `donor_current_sprite.png` (donor sprit
 - **Donor sprite:** a tan-brown knuckle-walking rancor with long arms and a wide toothy mouth: agrees.
 - **Bloggathehutt image (viewed 2026-10-17, `bloggathehutt_post_image.jpg`):** the Return of the Jedi rancor in Jabba's pit: hunched, thickly muscled grey-brown warty body, huge head with a wide fanged mouth, short bony spurs on the back, long clawed hands. Fan-blog card image; compare against the existing Wookieepedia images before trusting any colour or proportion difference.
 - **Posture, tail, size (late review):** Legends text: rancors walked on two relatively stubby legs with longer forelimbs, sometimes on all fours, and had a short tail (Legends only); the canon infobox gives height 4.2 meters and 5 meters, skin colour brown and dark blue gray, and a canon rancor killed prospectors on Koboh.
+- **Infobox (late review):** canon page Rancor: mass 1,650kg (3,638 lbs); eyes Black · Legends page Rancor/Legends: height 5-10 meters / 5-19 meters; mass 1,650 kilograms (5-meter specimen).
 
 ## Must show
 - [ ] BODY PLAN: a huge hunched creature with enormously long thick arms and long clawed fingers, short thick legs

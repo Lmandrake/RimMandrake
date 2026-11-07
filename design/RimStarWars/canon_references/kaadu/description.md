@@ -40,6 +40,8 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars: Card Trader image `Ka
   images); the sketch also shows a purple-tinted male/female.
 - **Donor sprite:** an orange-and-cream striped biped with a blue eye patch: agrees.
 - **Size and capability (late review, canon):** about 2 m tall and 35 kg, orange skin with feathers and black eyes; strong legs and sleek hide for speed on land and in water, can breathe underwater for long periods; the clutch is 6 to 8 eggs (Legends: 10 to 12, up to two hours underwater).
+- **Infobox (late review):** Legends page Kaadu/Legends: height 2.24 meters.
+- **Decoration (late review, canon):** Gungans decorate their kaadu with giant feathers.
 
 ## Must show
 - [ ] BODY PLAN: a tall two-legged flightless reptavian with very long thin legs, heavy forward body, long curved neck, short tail

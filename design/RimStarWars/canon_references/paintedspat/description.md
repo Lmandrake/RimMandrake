@@ -7,7 +7,7 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Painted_spat
+### Legends — https://starwars.fandom.com/wiki/Painted_spat
 
 The painted spat was a subtype of carrion spat, an avian creature native to the Corellian system. A mutated variant, this creature was larger, stronger and more resistant to average carrion spat. Somewhat similar in appearance to the carrion spats of Corellia, the painted spat differed: The coloration of the skin was much darker with pronounced horizontal stripes along the back; the bony structure protruding from the mandible was not, from appearance, a true beak (the jaw did not resemble a beak at all, rather, resembling a reptilian jaw).
 
@@ -15,12 +15,13 @@ The painted spat was a subtype of carrion spat, an avian creature native to the 
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars Galaxies-style model in grass) and
 `donor_current_sprite.png` (donor sprite, our stand-in).
 
-- **Overall shape:** a large, flightless, two-legged avian (canon text: a mutated variant of the carrion spat,
+- **Overall shape:** a large, flightless, two-legged avian (Legends text: a mutated variant of the carrion spat,
   larger and stronger), hunched forward on long scaly legs with big clawed feet; long neck.
-- **Head:** a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: canon text); the model image shows it as a long, heavy, downward-curving tan-cream bony projection sweeping back over the head; small eye.
+- **Head:** a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: Legends text); the model image shows it as a long, heavy, downward-curving tan-cream bony projection sweeping back over the head; small eye.
 - **Colour:** much darker skin than the carrion spat, grey-brown, with pronounced horizontal stripes along the back
-  (canon text); the model's legs are pale orange-tan.
+  (Legends text); the model's legs are pale orange-tan.
 - **Donor sprite:** a grey-brown striped hunched bird with a big cream beak: agrees.
+- **Continuity (late review):** the page `Painted spat` is a Legends article (header `{{Top|leg}}`, no `/Legends` suffix), so nothing in this entry is current canon.
 
 ## Must show
 - [ ] BODY PLAN: a large hunched two-legged flightless avian with long scaly legs and big clawed feet
@@ -32,10 +33,10 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars Galaxies-style model i
 none known.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Painted_spat (canon; wikitext pulled via the API 2026-10-14)
+- https://starwars.fandom.com/wiki/Painted_spat (Legends; wikitext pulled via the API 2026-10-14)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Painted spat`; wiki caption: infobox image. File: `Painted spat.png` — https://static.wikia.nocookie.net/starwars/images/1/1e/Painted_spat.png/revision/latest?cb=20220605184558
+- `wookieepedia_canon_1.webp` — LEGENDS page (non-canon continuity) `Painted spat`; wiki caption: infobox image. File: `Painted spat.png` — https://static.wikia.nocookie.net/starwars/images/1/1e/Painted_spat.png/revision/latest?cb=20220605184558
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
