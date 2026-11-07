@@ -109,14 +109,22 @@ namespace RimMandrake.FlowWorks
 			return z1 > z0 + 0.001f;
 		}
 
-		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1. The near-lip cover is drawn above every pawn, so it must never cover a
-		/// pawn that is NOT sunk as deep as the one it hides (one standing on ground or the lip south of the pit,
-		/// whose sprite the band overlaps). True when a cover piece [left,right]x[a,b] intersects the drawn rect of
-		/// another pawn whose own depth is shallower than the sunk pawn's: that piece must be skipped.</summary>
+		/// <summary>PIT_SINK_FIX_LIP_PAWN_UNHIDES_OCCUPANT (Artisan, live 2026-11-07: a raider fallen into a 2-row pit stood
+		/// in plain view over the south lip because two raiders waited ON the lip, and the band that hides his legs was
+		/// skipped so as not to paint ground over them). A pawn drawn sunk is drawn SunkAltitudeDrop below the Pawn layer and
+		/// the near-lip cover CoverAboveSunk above that: under every pawn on the ground (whose seeded y offset is at most one
+		/// AltInc either way, its render-tree layers one more), over every sunk one (the same two AltIncs above its own y).</summary>
+		public const float SunkAltitudeDrop = 0.18f;
+		public const float CoverAboveSunk = 0.10f;
+
+		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1. The near-lip cover must never cover a pawn that is NOT sunk as deep as the one
+		/// it hides. A pawn at ground level (depth 0) is drawn above the cover (SunkAltitudeDrop), so it needs no skip; a
+		/// shallower SUNK pawn shares the sunk altitude and does. True when a cover piece [left,right]x[a,b] intersects the
+		/// drawn rect of another sunk pawn whose own depth is shallower than the sunk pawn's: that piece must be skipped.</summary>
 		public static bool CoverPieceHitsShallowerPawn(float left, float right, float a, float b,
 			float otherLeft, float otherRight, float otherBottom, float otherTop, int otherDepth, int sunkDepth)
 		{
-			if (otherDepth >= sunkDepth) return false;
+			if (otherDepth >= sunkDepth || otherDepth <= 0) return false;
 			return right > otherLeft && left < otherRight && b > otherBottom && a < otherTop;
 		}
 

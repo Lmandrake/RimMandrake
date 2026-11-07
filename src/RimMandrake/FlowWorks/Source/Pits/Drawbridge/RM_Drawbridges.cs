@@ -312,6 +312,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			int full = FullTicks(r, l);
 			List<IntVec3> changed = null;
+			RM_MapComponent_SuspensionBridges bridges = RM_MapComponent_SuspensionBridges.Of(map);
 			for (int lane = 0; lane < r.width; lane++)
 			{
 				for (int i = l.first; i <= l.last; i++)
@@ -327,6 +328,12 @@ namespace RimMandrake.FlowWorks.Pits
 					{
 						d.leafRaised = up;
 						(changed ?? (changed = new List<IntVec3>())).Add(c);
+						if (!up)
+						{
+							// DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH: whoever walked the floor under the raised square is under
+							// the deck now, not lifted onto it (as a deck completed over them, Notify_DeckBuilt)
+							bridges?.TakeUnder(d);
+						}
 					}
 				}
 			}
@@ -478,6 +485,10 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			// SUNKEN_DRAWBRIDGE_FIX_REJECTS_HINGE_BANK: the hinge bank is ground at the deck's height: the surface, or on a sunken
+			// bridge the ledge its anchors stand on (RM_SuspensionMath.GroundFor: an end square sits at exactly the deck's height),
+			// which read as hole here, so every rider of a sunken leaf fell
+			int bankDepth = System.Math.Max(0, r.deckNotches);
 			System.Func<int, IEnumerable<int>> neighbours = idx => Cardinals(map, ci.IndexToCell(idx));
 			System.Func<int, bool> passable = idx =>
 			{
@@ -490,7 +501,7 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					return false;   // never through a closed gate or door
 				}
-				return eng == null || eng.ClimbDepthAt(c) == 0 || RM_SpanUtility.DeckedAt(map, c);
+				return eng == null || eng.ClimbDepthAt(c) == bankDepth || RM_SpanUtility.DeckedAt(map, c);
 			};
 			System.Func<int, bool> free = idx =>
 			{

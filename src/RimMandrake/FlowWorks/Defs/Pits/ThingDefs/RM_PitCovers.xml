@@ -16,7 +16,7 @@
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_WovenScrap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <drawerType>MapMeshOnly</drawerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0</fillPercent>
@@ -64,7 +64,7 @@
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <drawerType>MapMeshOnly</drawerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0</fillPercent>
@@ -111,7 +111,7 @@
       <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_ReinforcedFrame</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <drawerType>MapMeshOnly</drawerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0</fillPercent>

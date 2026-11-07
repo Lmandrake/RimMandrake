@@ -92,9 +92,12 @@ def source_pins(swim_text: str, pit_text: str) -> list[str]:
     need("bool joined = RM_ClimbJoins.ForPawn(map, ex, c, n, fromD, toD, p, out _, out _);" in cs,
          "CanStep: joins not read for this pawn between c and n")
     need("return RM_PitTrapMath.StepAllowed(fromD, toD, k, joined);" in cs, "CanStep: StepAllowed not fed (fromD, toD, k, joined)")
-    # the drowning rule's exit reads the same inputs (if it ever drifts, the two rules disagree on what is climbable)
-    need("int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, c);" in ex and "int k = RM_PocketGrid.ClimbLimitOf(p);" in ex
-         and "int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, n);" in ex
+    # the drowning rule's exit reads the same inputs (if it ever drifts, the two rules disagree on what is climbable);
+    # DROWNING_ESCAPE_FIX_READS_DECK_ABOVE: a pawn in the floor view (under a bridge) reads the floor, not the deck above it
+    need("int fromD = floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, c) : "
+         "RM_SuperdeepTrap.StepDepthAt(map, eng, c);" in ex and "int k = RM_PocketGrid.ClimbLimitOf(p);" in ex
+         and "int toD = floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, n) : "
+         "RM_SuperdeepTrap.StepDepthAt(map, eng, n);" in ex
          and "RM_ClimbJoins.ForPawn(map, eng, c, n, fromD, toD, p, out _, out _)" in ex,
          "RM_Drowning.ExitInReach no longer reads the inputs the shore search mirrors")
     return fails

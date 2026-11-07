@@ -1166,10 +1166,17 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				PlaceRailing(d.Position);
 			}
-			// SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN: a deck completed over the hole has whoever stands on its floor UNDER it
-			// (the band was entered only by a walked step: live 2026-10-19 a timber span read 816 kg with one rider, 13 pawns in
-			// the trench below counted on top) and what lies there slides out to open floor, or is marked under.
-			if (!d.FloorBandPassesUnder)
+			TakeUnder(d);
+		}
+
+		/// <summary>SUSPENSION_LIVE_DIAGNOSE_FIRST_REAL_RUN: a deck square that has just become ground over the hole has whoever
+		/// stands on its floor UNDER it (the band was entered only by a walked step: live 2026-10-19 a timber span read 816 kg
+		/// with one rider, 13 pawns in the trench below counted on top) and what lies there slides out to open floor, or is
+		/// marked under. DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH: a drawbridge leaf square coming down (RM_Drawbridges.Apply)
+		/// is such a square too, as much as a completed one.</summary>
+		public void TakeUnder(Building_SuspensionDeck d)
+		{
+			if (d == null || !d.Spawned || !d.FloorBandPassesUnder)
 			{
 				return;
 			}
@@ -1243,8 +1250,20 @@ namespace RimMandrake.FlowWorks.Pits
 		private void PlaceRailing(IntVec3 c)
 		{
 			ThingDef rail = RM_SuspensionDefOf.RM_SuspensionRailing;
-			if (rail == null || RailedAt(map, c))
+			if (rail == null)
 			{
+				return;
+			}
+			Building_SuspensionRailing standing = BuiltAt<Building_SuspensionRailing>(map, c);
+			if (standing != null)
+			{
+				// RAILING_TOGGLE_FIX_KEEPS_DECONSTRUCT: railings off then on again: the railing still standing keeps its place, so
+				// the deconstruct order the "off" gave it (RemoveRailing) is taken back
+				Designation des = map.designationManager.DesignationOn(standing, DesignationDefOf.Deconstruct);
+				if (des != null)
+				{
+					map.designationManager.RemoveDesignation(des);
+				}
 				return;
 			}
 			foreach (Thing t in c.GetThingList(map))

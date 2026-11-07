@@ -29,6 +29,39 @@ namespace RimMandrake.FlowWorks.Pits
 			return false;
 		}
 
+		/// <summary>PIT_COVER_BUILD_SEAM_AT_MAX_ZOOM (Artisan 2026-11-07; bars pit_covered_invisible + pit_covered_seam_at_max_zoom,
+		/// "a slight seam/discoloration at high zoom for the player's own eye"): how strongly a ground-printing lid shows its
+		/// seam, 0..1, from the camera. Pixels per cell rule it: none up to SeamFromPx (the play-zoom bar, ~64 px a cell, where
+		/// the lid must pass for ground), full by SeamFullPx. A player whose screen cannot reach those pixels still finds it at
+		/// their own closest zooms (root size from the camera's minimum up to SeamClosestSpan above it, and at least up to
+		/// SeamClosestTop, so a smooth-zoom minimum of 8.2 still counts 11): SeamAtClosest. The cut is drawn at least
+		/// SeamMinPx screen pixels wide (SeamWidthCells). A root size below the
+		/// camera's minimum is no player's view (a scripted capture) and earns no floor.</summary>
+		public const float SeamFromPx = 66f;
+		public const float SeamFullPx = 96f;
+		public const float SeamAtClosest = 0.9f;
+		public const float SeamClosestSpan = 2.5f;
+		public const float SeamClosestTop = 13f;
+		public const float SeamMinPx = 2.2f;
+
+		public static float SeamStrength(float pxPerCell, float rootSize, float minRootSize)
+		{
+			float s = pxPerCell <= SeamFromPx ? 0f : pxPerCell >= SeamFullPx ? 1f : (pxPerCell - SeamFromPx) / (SeamFullPx - SeamFromPx);
+			float top = minRootSize + SeamClosestSpan > SeamClosestTop ? minRootSize + SeamClosestSpan : SeamClosestTop;
+			if (rootSize >= minRootSize - 0.01f && rootSize <= top && s < SeamAtClosest)
+			{
+				s = SeamAtClosest;
+			}
+			return s;
+		}
+
+		/// <summary>A seam line's width in cells: its own width, or SeamMinPx screen pixels where that is wider.</summary>
+		public static float SeamWidthCells(float widthCells, float pxPerCell)
+		{
+			float min = pxPerCell > 0.01f ? SeamMinPx / pxPerCell : widthCells;
+			return min > widthCells ? min : widthCells;
+		}
+
 		/// <summary>Did a change of a square's shown depth from <paramref name="before"/> to <paramref name="after"/> flip
 		/// whether it betrays the lids round it (open hole vs not)? Only then do they re-print.</summary>
 		public static bool FlipsNeighbourLids(int before, int after)

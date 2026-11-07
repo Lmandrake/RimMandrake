@@ -1136,8 +1136,38 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			return RM_PocketGridMath.Trapped(ComponentIsPocket(k, component), UsableLadderIn(k, component, p),
-				WideEverywhere(k, component, RM_SuperdeepTrap.RequiredWidth(p)));
+			int w = RM_SuperdeepTrap.RequiredWidth(p);
+			return RM_PocketGridMath.Trapped(ComponentIsPocket(k, component),
+				UsableLadderIn(k, component, p) && LaddersLeadFree(k, component, p, w), WideEverywhere(k, component, w));
+		}
+
+		/// <summary>POCKET_TRAP_FIX_LADDER_TO_SEALED_POCKET: a ladder out of this pocket is a way out only if the ladders this
+		/// query may use (any number of hops, each both ways: JoinedByLadders' graph) reach a component that holds nobody: the
+		/// surface, or a pocket too narrow to hold the pawn. One into another sealed pocket only moves the trap.</summary>
+		private bool LaddersLeadFree(int k, int component, Pawn p, int w)
+		{
+			List<(int a, int b)> edges = LadderEdges(k, p);
+			var seen = new HashSet<int> { component };
+			var open = new Queue<int>();
+			open.Enqueue(component);
+			while (open.Count > 0)
+			{
+				int c = open.Dequeue();
+				for (int i = 0; i < edges.Count; i++)
+				{
+					int n = edges[i].a == c ? edges[i].b : edges[i].b == c ? edges[i].a : -1;
+					if (n < 0 || !seen.Add(n))
+					{
+						continue;
+					}
+					if (!ComponentIsPocket(k, n) || !WideEverywhere(k, n, w))
+					{
+						return true;
+					}
+					open.Enqueue(n);
+				}
+			}
+			return false;
 		}
 
 		/// <summary>Rooms (§8.5 step 7): a pit room is a person-band pocket. Pawn-independent (GPT #11). Never rebuilds (region

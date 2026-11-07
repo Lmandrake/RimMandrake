@@ -40,6 +40,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PitCoverLookMath.ShowsArt(null), "can-fail: no reading, no art");
             });
 
+            Case("PitCoverLook_seam_only_close_up", () =>
+            {
+                // a 2160 px screen: play zoom (root 17) is ~64 px a cell, the closest zoom (root 11) ~98
+                Assert(RM_PitCoverLookMath.SeamStrength(2160f / 34f, 17f, 11f) == 0f, "can-fail: at play zoom the lid is ground, no seam");
+                Assert(RM_PitCoverLookMath.SeamStrength(2160f / 22f, 11f, 11f) == 1f, "at the closest zoom of a 4K screen the seam is full");
+                // a 1080 px screen never reaches 66 px a cell: its own closest zoom still shows the seam
+                Assert(RM_PitCoverLookMath.SeamStrength(1080f / 22f, 11f, 11f) == RM_PitCoverLookMath.SeamAtClosest, "closest zoom of a 1080 screen shows it");
+                Assert(RM_PitCoverLookMath.SeamStrength(916f / 22f, 11f, 11f) == RM_PitCoverLookMath.SeamAtClosest, "Steve's 916 px window at root 11 shows it");
+                Assert(RM_PitCoverLookMath.SeamStrength(916f / 22f, 11f, 8.2f) == RM_PitCoverLookMath.SeamAtClosest, "smooth zoom (min 8.2) still counts root 11");
+                Assert(RM_PitCoverLookMath.SeamStrength(1080f / 30f, 15f, 11f) == 0f, "can-fail: a 1080 screen backed off from closest shows none");
+                Assert(System.Math.Abs(RM_PitCoverLookMath.SeamWidthCells(0.035f, 41.6f) - 2.2f / 41.6f) < 1e-4f, "a 42 px cell draws the cut 2.2 px wide");
+                Assert(RM_PitCoverLookMath.SeamWidthCells(0.035f, 100f) == 0.035f, "a 100 px cell keeps the cut's own width");
+                // a scripted capture below the camera's minimum root size gets the pixel rule only
+                Assert(RM_PitCoverLookMath.SeamStrength(916f / 14.4f, 7.2f, 11f) == 0f, "can-fail: a 64 px capture below the minimum root shows none");
+                float mid = RM_PitCoverLookMath.SeamStrength(81f, 20f, 11f);
+                Assert(mid > 0.4f && mid < 0.6f, "half way up the ramp at 81 px: " + mid);
+            });
+
             Case("PitCoverLook_reprint_only_on_open_close", () =>
             {
                 Assert(RM_PitCoverLookMath.FlipsNeighbourLids(0, 1), "the first cut beside a lid re-prints it");

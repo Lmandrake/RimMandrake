@@ -235,6 +235,11 @@ namespace RimMandrake.FlowWorks
 			}
 			IntVec3 c = Position;
 			int d = eng != null ? eng.HollowDepthAt(c) : 0;
+			// PIT_COVER_FIX_FACES_SHOW_THROUGH: stakes under an intact lid are hidden by it (they drew over the lid's ground)
+			if (d > 0 && Pits.RM_PitCoverUtility.CoverAt(Map, c) != null)
+			{
+				return;
+			}
 			if (variant < 0 || d <= 0)
 			{
 				base.DrawAt(drawLoc, flip);

@@ -113,7 +113,7 @@ namespace RimMandrake.FlowWorks
 				return RM_PitAccessMath.RescueLadder.None;
 			}
 			int reach = RimMandrakeFlowWorksSettings.portableLadderMaxLevels;
-			MinifiedThing spare = SparePortable(p);
+			MinifiedThing spare = SparePortable(p, cell);
 			RM_PitAccessMath.RescueLadder choice = RM_PitAccessMath.ChooseRescueLadder(true, false, pending, drop, reach,
 				spare != null, RimMandrakeFlowWorksSettings.portableLadderEnabled && RimMandrakeFlowWorks_DefOf.RM_LadderPortable != null);
 			bool placed = false;
@@ -266,8 +266,10 @@ namespace RimMandrake.FlowWorks
 			return haveAny;
 		}
 
-		/// <summary>A portable ladder lying about (minified), not forbidden and not already promised to an install job.</summary>
-		private MinifiedThing SparePortable(Pawn forPawn)
+		/// <summary>A portable ladder lying about (minified), not forbidden and not already promised to an install job.
+		/// PIT_RESCUE_FIX_UNREACHABLE_SPARE_LADDER: and one a colonist on its feet can fetch and carry to the wall square
+		/// <paramref name="site"/>; a spare nobody can reach (across the pit, in another pocket) is no spare, so a ladder is built.</summary>
+		private MinifiedThing SparePortable(Pawn forPawn, IntVec3 site)
 		{
 			ThingDef portable = RimMandrakeFlowWorks_DefOf.RM_LadderPortable;
 			if (portable == null)
@@ -277,12 +279,26 @@ namespace RimMandrake.FlowWorks
 			foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.MinifiedThing))
 			{
 				if (t is MinifiedThing m && m.InnerThing?.def == portable && m.Spawned && !m.IsForbidden(Faction.OfPlayer)
-					&& InstallBlueprintUtility.ExistingBlueprintFor(m) == null)
+					&& InstallBlueprintUtility.ExistingBlueprintFor(m) == null && SomeoneFetches(m, site))
 				{
 					return m;
 				}
 			}
 			return null;
+		}
+
+		/// <summary>A colonist on its feet (the stuck one too: a spare in its own pocket is in reach) reaches the spare and the site.</summary>
+		private bool SomeoneFetches(MinifiedThing spare, IntVec3 site)
+		{
+			foreach (Pawn c in map.mapPawns.FreeColonistsSpawned)
+			{
+				if (!c.Downed && !c.Dead && c.CanReach(spare, PathEndMode.ClosestTouch, Danger.Deadly)
+					&& c.CanReach(site, PathEndMode.Touch, Danger.Deadly))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

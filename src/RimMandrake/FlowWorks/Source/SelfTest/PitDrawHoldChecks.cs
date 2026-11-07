@@ -128,8 +128,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 float half = RM_PitDrawMath.BodyEstimateHalf(1f);
                 float colL = 135.5f - half, colR = 135.5f + half;
                 Assert(colR > 136f, "precondition: the colonist's box reaches column 136, " + colR);
-                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 0, 4),
-                    "the colonist's east piece over the ground muffalo is skipped");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 0, 4),
+                    "the ground muffalo draws above the colonist's east piece (PIT_SINK_FIX_LIP_PAWN_UNHIDES_OCCUPANT): no skip");
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 2, 4),
+                    "a shallower sunk muffalo shares the sunk altitude: that piece is skipped");
                 Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(136f, colR, 113.25f, 114f, 136f, 139f, 112f, 115f, 4, 4),
                     "can-fail: a pawn as deep as the occupant is covered like it");
                 // the in-pit muffalo's cover (x 131..134) never reaches the outside muffalo's box (x >= 136)

@@ -59,6 +59,12 @@ namespace RimMandrake.FlowWorks
 			{
 				int d = eng.HollowDepthAt(c);
 				float sc = scorch != null ? scorch.StrengthAt(c) : 0f;
+				// PIT_COVER_FIX_FACES_SHOW_THROUGH (Artisan, live 2026-11-07): an intact lid is ground; the pit under it draws no
+				// face, outline or floor of its own, or the lid's square shows as a framed box at play zoom
+				if (d > 0 && Pits.RM_PitCoverUtility.CoverAt(map, c) != null)
+				{
+					continue;
+				}
 				if (d == 0)
 				{
 					if (material && BordersCut(map, eng, c))
@@ -238,7 +244,7 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < 8; i++)
 			{
 				IntVec3 n = c + GenAdj.AdjacentCells[i];
-				if (n.InBounds(map) && eng.HollowDepthAt(n) > 0)
+				if (n.InBounds(map) && eng.HollowDepthAt(n) > 0)   // a lid's square too: the collar keeps the cut's terrain fringe off the bank
 				{
 					return true;
 				}
@@ -561,7 +567,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return myDepth;
 			}
-			return eng.HollowDepthAt(n);
+			return SeenLevel(map, eng, n);
+		}
+
+		/// <summary>The depth a square shows from above: its hollow depth, or the lid's own (ground) where an intact pit lid
+		/// covers it (PIT_COVER_FIX_FACES_SHOW_THROUGH), so an open square beside a lid draws its wall up to the lid.</summary>
+		internal static int SeenLevel(Map map, RM_MapComponent_Excavation eng, IntVec3 n)
+		{
+			int h = eng.HollowDepthAt(n);
+			return h > 0 && Pits.RM_PitCoverUtility.CoverAt(map, n) != null ? 0 : h;
 		}
 
 		// ── mesh helpers ─────────────────────────────────────────────────────

@@ -263,7 +263,9 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Worth asking CanClimbAt for this pawn at all (the seams' cheap gate): climbing gear, or the ladder setting on
-		/// and either the player's pawn (it may find a ladder leaning there) or a pawn carrying one.</summary>
+		/// and either the player's pawn (it may find a ladder leaning there) or a pawn carrying one.
+		/// LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING: or any pawn while a portable ladder stands on its map, since one leaning on
+		/// a wall carries anyone over (full parity: a raider uses the colony's leaning ladder as a colonist uses theirs).</summary>
 		public static bool MightClimb(Pawn p)
 		{
 			if (RM_WallClimb.CanClimb(p))
@@ -274,7 +276,14 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			return p.Faction == Faction.OfPlayer || CarriedLadder(p) != null;
+			return p.Faction == Faction.OfPlayer || CarriedLadder(p) != null || AnyPortableLadderOn(p.Map);
+		}
+
+		/// <summary>A portable ladder stands somewhere on this map (the only kind that leans on a wall, LeansOnWall).</summary>
+		private static bool AnyPortableLadderOn(Map map)
+		{
+			ThingDef d = RimMandrakeFlowWorks_DefOf.RM_LadderPortable;
+			return d != null && map?.listerThings != null && map.listerThings.ThingsOfDef(d).Count > 0;
 		}
 
 		/// <summary>May this pawn go over the wall at <paramref name="wallCell"/> from <paramref name="foot"/>, a crossing

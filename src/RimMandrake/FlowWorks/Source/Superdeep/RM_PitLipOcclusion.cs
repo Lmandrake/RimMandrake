@@ -341,7 +341,8 @@ namespace RimMandrake.FlowWorks
 			bool edgeShadows = DebugViewSettings.drawShadows && map.Biome?.disableShadows != true;
 			frameEdgeShadows = edgeShadows;
 			ReadSunShadow(edgeShadows);   // SectionLayer_SunShadows.Visible's test; its Regenerate also needs SunShadow.shader.isSupported
-			frameY = AltitudeLayer.Pawn.AltitudeFor() + Altitudes.AltInc * 0.9f;
+			// PIT_SINK_FIX_LIP_PAWN_UNHIDES_OCCUPANT: over the sunk (RM_WallFaceMath.SunkAltitudeDrop), under the ground-level pawns
+			frameY = AltitudeLayer.Pawn.AltitudeFor() - RM_WallFaceMath.SunkAltitudeDrop + RM_WallFaceMath.CoverAboveSunk;
 			rectsBuilt = false;
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{

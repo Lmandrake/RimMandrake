@@ -798,7 +798,9 @@ namespace RimMandrake.FlowWorks
 		{
 			if (!RM_PocketGrid.Relative)
 			{
-				return RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos));
+				// ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: off a deck the step starts at the deck's walking height, not the floor
+				// under it, so a shove off a cover into the open part of the same pit is a descent (as StepDepthFor reads it below)
+				return RM_PitTrapMath.IsPitDescent(Pits.RM_SpanUtility.WalkingDepth(map, prev, eng.ExcavatedDepthAt(prev)), eng.ExcavatedDepthAt(pos));
 			}
 			int to = eng.ClimbDepthAt(pos);
 			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: a trench this creature steps over is ground to it: no fall, walked or shoved

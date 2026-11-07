@@ -53,6 +53,8 @@ namespace RimMandrake.FlowWorks
 			if (sink > 0f)
 			{
 				__result.z -= sink;
+				// PIT_SINK_FIX_LIP_PAWN_UNHIDES_OCCUPANT: below the near-lip cover, which is below everyone on the ground
+				__result.y -= RM_WallFaceMath.SunkAltitudeDrop;
 			}
 		}
 

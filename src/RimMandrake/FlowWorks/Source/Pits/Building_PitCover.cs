@@ -105,6 +105,11 @@ namespace RimMandrake.FlowWorks.Pits
             {
                 return;
             }
+            // PIT_COVER_FIX_FACES_SHOW_THROUGH: the wall faces (a Terrain-flag layer) of the square and round it read the lid too
+            if (c.InBounds(map))
+            {
+                map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Terrain, true, false);
+            }
             for (int i = 0; i < 8; i++)
             {
                 IntVec3 n = c + GenAdj.AdjacentCells[i];
@@ -281,6 +286,73 @@ namespace RimMandrake.FlowWorks.Pits
             Printer_Plane.PrintPlane(layer, center, Vector2.one, mat);
         }
 
+        /// <summary>PIT_COVER_BUILD_SEAM_AT_MAX_ZOOM (bar pit_covered_seam_at_max_zoom): a lid that prints ground draws, close up
+        /// only (RM_PitCoverLookMath.SeamStrength), a hairline cut along every edge where it meets the bank and a faint
+        /// discoloration over itself, so the player who laid it can find it; at play zoom it draws nothing and is ground.
+        /// drawerType MapMeshAndRealTime: Thing.DrawAt draws no Graphic for a spawned map-mesh thing, so the print stays the lid.</summary>
+        protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+        {
+            base.DrawAt(drawLoc, flip);
+            Map map = Map;
+            if (map == null || PrintedArt != null || !Covered || Find.CameraDriver == null || Find.CurrentMap != map)
+            {
+                return;
+            }
+            CameraDriver cam = Find.CameraDriver;
+            float px = Screen.height / (cam.RootSize * 2f);
+            float s = RM_PitCoverLookMath.SeamStrength(px, cam.RootSize, cam.config.sizeRange.min);
+            if (s <= 0f)
+            {
+                return;
+            }
+            int q = Mathf.Clamp(Mathf.RoundToInt(s * SeamSteps), 1, SeamSteps);
+            Vector3 c = Position.ToVector3Shifted();
+            c.y = AltitudeLayer.FloorEmplacement.AltitudeFor() + 0.01f;
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(c, Quaternion.identity, Vector3.one), SeamMat(q, 0), 0);
+            for (int i = 0; i < 4; i++)
+            {
+                IntVec3 n = Position + GenAdj.CardinalDirections[i];
+                if (RM_PitCoverUtility.CoverAt(map, n) != null)
+                {
+                    continue;
+                }
+                // the cut: a dark hairline on the lid's side of the edge, a lighter lip just inside it
+                IntVec3 dir = GenAdj.CardinalDirections[i];
+                bool alongX = dir.z != 0;
+                for (int k = 0; k < 2; k++)
+                {
+                    float dw = RM_PitCoverLookMath.SeamWidthCells(SeamDarkWidth, px);
+                    float lw = RM_PitCoverLookMath.SeamWidthCells(SeamLightWidth, px);
+                    float w = k == 0 ? dw : lw;
+                    float off = 0.5f - (k == 0 ? dw * 0.5f : dw + lw * 0.5f);
+                    Vector3 at = c + new Vector3(dir.x * off, 0.001f * (k + 1), dir.z * off);
+                    Vector3 size = alongX ? new Vector3(1f, 1f, w) : new Vector3(w, 1f, 1f);
+                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(at, Quaternion.identity, size), SeamMat(q, k + 1), 0);
+                }
+            }
+        }
+
+        private const int SeamSteps = 16;
+        private const float SeamDarkWidth = 0.035f;
+        private const float SeamLightWidth = 0.025f;
+        private static readonly Material[,] seamMats = new Material[SeamSteps + 1, 3];
+
+        /// <summary>The seam's three materials (0 the discoloration, 1 the dark cut, 2 the light lip) at strength step q.</summary>
+        private static Material SeamMat(int q, int part)
+        {
+            Material m = seamMats[q, part];
+            if (m == null)
+            {
+                float s = q / (float)SeamSteps;
+                Color col = part == 0 ? new Color(0.20f, 0.17f, 0.13f, 0.07f * s)
+                    : part == 1 ? new Color(0.08f, 0.06f, 0.04f, 0.42f * s)
+                    : new Color(0.85f, 0.78f, 0.66f, 0.16f * s);
+                m = MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.Transparent, col);
+                seamMats[q, part] = m;
+            }
+            return m;
+        }
+
         /// <summary>The whole cover deck gives way (Building_SpanDeck.Collapse: covers gone before anyone descends).</summary>
         public void Spring(List<Pawn> fallers)
         {
@@ -320,30 +392,58 @@ namespace RimMandrake.FlowWorks.Pits
     [RimMandrake.Shared.PatchFeature("Blasts break concealed pits", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "blastsBreakPitCovers")]
     public static class RM_Patch_ExplosionBreaksPitCover
     {
-        public static void Postfix(Explosion explosion, IntVec3 c)
+        /// <summary>COVER_BLAST_FIX_DECK_LEFT_INTACT: the cover on the cell before the blast, so the postfix still knows the
+        /// deck when the blast killed that cover outright (its DeSpawn drops only its own riders).</summary>
+        public static void Prefix(Explosion explosion, IntVec3 c, out Building_PitCover __state)
+        {
+            __state = RimMandrakeFlowWorksSettings.blastsBreakPitCovers ? RM_PitCoverUtility.CoverAt(explosion?.Map, c) : null;
+        }
+
+        public static void Postfix(Explosion explosion, IntVec3 c, Building_PitCover __state)
         {
             Map map = explosion?.Map;
             if (!RimMandrakeFlowWorksSettings.blastsBreakPitCovers || map == null || explosion.damType == null || !explosion.damType.harmsHealth)
             {
                 return;
             }
+            var starts = new List<Building_PitCover>();
             Building_PitCover cover = RM_PitCoverUtility.CoverAt(map, c);
-            if (cover == null)
+            if (cover != null)
             {
-                return;
+                starts.Add(cover);
             }
-            var fallers = new List<Pawn>();
-            foreach (Building_PitCover d in RM_PitCoverUtility.Deck(cover))
+            else if (__state != null && __state.Destroyed && !__state.Sprung)
             {
-                foreach (Thing t in d.Position.GetThingList(map))
+                // COVER_BLAST_FIX_DECK_LEFT_INTACT: the blast killed this square's cover; the rest of its deck (now perhaps in
+                // up to four pieces, one per side) gives way too, with everyone on it
+                for (int i = 0; i < 4; i++)
                 {
-                    if (t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p))
+                    Building_PitCover n = RM_PitCoverUtility.CoverAt(map, c + GenAdj.CardinalDirections[i]);
+                    if (n != null)
                     {
-                        fallers.Add(p);
+                        starts.Add(n);
                     }
                 }
             }
-            cover.Spring(fallers);
+            foreach (Building_PitCover start in starts)
+            {
+                if (!start.Covered)
+                {
+                    continue; // one piece sprung with an earlier side
+                }
+                var fallers = new List<Pawn>();
+                foreach (Building_PitCover d in RM_PitCoverUtility.Deck(start))
+                {
+                    foreach (Thing t in d.Position.GetThingList(map))
+                    {
+                        if (t is Pawn p && !RM_PitCoverBeneath.IsBeneath(p))
+                        {
+                            fallers.Add(p);
+                        }
+                    }
+                }
+                start.Spring(fallers);
+            }
         }
     }
 

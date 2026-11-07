@@ -221,7 +221,10 @@ namespace RimMandrake.FlowWorks
 		/// water is under its head standing. A downed pawn reaches nothing (PerCheck ignores this for lying pawns).</summary>
 		public static bool ExitInReach(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 c)
 		{
-			int fromD = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+			// DROWNING_ESCAPE_FIX_READS_DECK_ABOVE: a pawn on the floor under a bridge (or using the floor view) is at the floor,
+			// not on the deck above it: its squares read in the floor view, as its steps are judged (RM_Patch_SuspensionUnderStepFloor)
+			bool floorView = Pits.RM_SuspensionUnderpass.UsesFloorView(p);
+			int fromD = floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, c) : RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 			int k = RM_PocketGrid.ClimbLimitOf(p);
 			float h = HeightOf(p);
 			for (int i = 0; i < 4; i++)
@@ -231,7 +234,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				int toD = RM_SuperdeepTrap.StepDepthAt(map, eng, n);
+				int toD = floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, n) : RM_SuperdeepTrap.StepDepthAt(map, eng, n);
 				bool joined = RM_ClimbJoins.ForPawn(map, eng, c, n, fromD, toD, p, out _, out _);
 				// DEEP_WATER_BUILD_SWIM_OR_SINK: natural water counts too (a deep lake square beside you is not footing).
 				float w = Swimming.RM_SwimWater.WaterMetresAt(map, eng, n);

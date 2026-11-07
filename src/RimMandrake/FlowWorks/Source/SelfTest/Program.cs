@@ -1817,7 +1817,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("LipOcclusion_skips_shallower_pawn", () =>
             {
-                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 0, 4), "ground pawn under the band is not covered");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 0, 4), "a ground pawn draws above the band: no skip needed");
+                // the altitude arithmetic behind it: a ground pawn's lowest draw is over the band, a sunk pawn's highest under it
+                float pawnAlt = 28 * 0.36585367f, inc = 0.03658537f, band = pawnAlt - RM_WallFaceMath.SunkAltitudeDrop + RM_WallFaceMath.CoverAboveSunk;
+                Assert(pawnAlt - inc - 0.0037f > band, "the lowest ground pawn layer is over the band");
+                Assert(pawnAlt - RM_WallFaceMath.SunkAltitudeDrop + inc + 100 * 0.0003658537f < band, "the highest sunk pawn layer is under it");
                 Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 8f, 9f, 9.5f, 11.2f, 0, 4), "no overlap, still covered");
                 Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 4, 4), "a pawn as deep is never exempt");
                 Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 2, 4), "a shallower pawn is exempt");
