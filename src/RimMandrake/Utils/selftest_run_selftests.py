@@ -91,6 +91,8 @@ eq(C(1, "Traceback (most recent call last):\n  File x\nAssertionError: no")[0], 
 eq(C(1, "Traceback (most recent call last):\n  File x\nmodule.SomeError: no")[0], "CRASH", "other exception is CRASH")
 eq(C(134, UNMEASURED_PHRASE, {"rc": -6})[0], "CRASH", "a SIGABRT the wrapper reports as 134 is CRASH, never UNMEASURED")
 eq(C(134, UNMEASURED_PHRASE)[0], "CRASH", "rc 134 (128+SIGABRT) is a signal CRASH")
+eq(C(143, UNMEASURED_PHRASE)[0], "CRASH", "rc 143 (128+SIGTERM) is a signal CRASH, never UNMEASURED")
+eq((rs._signal_code(141), rs._signal_code(128), rs._signal_code(250)), (True, False, False), "128+N only for a real signal N")
 
 # report(): green iff FAIL+CRASH == 0, per-state N/N, UNMEASURED never green-washes a FAIL.
 import contextlib, io
@@ -129,6 +131,11 @@ with _tf.TemporaryDirectory() as _d:
     (_root / "pkg" / "sub.py").write_text("thing = 1\n")
     _deps = rs._direct_deps(_root / "pkg" / "__init__.py", _root)
     eq({p.name for p in _deps} >= {"helper.py", "sub.py"}, True, "relative imports are hashed as deps (%s)" % sorted(p.name for p in _deps))
+    (_root / "pkg" / "child.py").write_text("Y = 2\n")
+    (_root / "t").mkdir()
+    (_root / "t" / "selftest_x.py").write_text("import pkg.child\n")
+    _deps2 = {p.relative_to(_root).as_posix() for p in rs._direct_deps(_root / "t" / "selftest_x.py", _root)}
+    eq({"pkg/child.py", "pkg/__init__.py"} <= _deps2, True, "a dotted import hashes its package __init__ too (%s)" % sorted(_deps2))
 
 # A bare stem names the one discovered test; a stem that matches nothing stays a refusal.
 _tests = [Path("/r/a/selftest_one.py"), Path("/r/b/selftest_two.py"), Path("/r/c/selftest_two.py")]

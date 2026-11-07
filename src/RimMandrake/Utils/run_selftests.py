@@ -542,6 +542,15 @@ STATES = ("PASS", "FAIL", "UNMEASURED", "CRASH", "SKIPPED")
 _EXC_LINE = re.compile(r"^(?:[\w.]+\.)?(\w+(?:Error|Exception|Interrupt|Exit|Warning)|KeyboardInterrupt)\b(?::|$)", re.M)
 
 
+def _signal_code(rc: int) -> bool:
+    """128+N for a real signal N: a shell's (or the pen wrapper's) report of a signal death."""
+    import signal
+    try:
+        return 128 < rc <= 192 and bool(signal.Signals(rc - 128))
+    except ValueError:
+        return False
+
+
 def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
     """(state, reason) for a finished child. Pure: no I/O, so the runner's own selftest
     can pin every branch. `out` is stdout+stderr; `rep` the memory-pen wrapper report."""
@@ -551,10 +560,10 @@ def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
     wrapped = rep.get("rc") if rep is not None else None     # the test's own rc, as the memory-pen wrapper saw it
     if isinstance(wrapped, int) and wrapped < 0 and rc >= 0:
         rc = wrapped                    # the wrapper turned a signal death into 128+N: read the death, not the code
-    if rc < 0 or rc in (132, 134, 135, 136, 137, 139):
+    if rc < 0 or _signal_code(rc):
         # A signal death is never a verdict — not even when the child had already
         # printed the unmeasured phrase (it used to fall through into UNMEASURED).
-        # 128+N for SIGILL/SIGABRT/SIGBUS/SIGFPE/SIGKILL/SIGSEGV: a shell's report of the same deaths.
+        # 128+N for any real signal (SIGABRT 134, SIGKILL 137, SIGPIPE 141, SIGTERM 143 …): the same deaths, reported.
         sig = -rc if rc < 0 else rc - 128
         return "CRASH", (f"signal {sig} (rc={rc}) - SIGKILL(9) is almost always the OOM killer; "
                          "rerun this test alone before believing it is a real failure")
@@ -611,6 +620,8 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
         r = _run_one(path, cap, est, env=env)
         if kn:
             _known_record(kn, rel, r, tdir, began)
+        elif cov and _KNOWN and rel:
+            _known_false_hit(_KNOWN, rel, r)    # traced runs record nothing there, but a contradiction still counts
         if cov:
             _note_covers(path, cov, tdir)
         if not skip_ev:
@@ -769,6 +780,9 @@ def _direct_deps(f: Path, root: Path) -> set:
             base = f.parents[n.level - 1] if n.level - 1 < len(f.parents) else None
             if base is not None:
                 mod = base.joinpath(*n.module.split(".")) if n.module else base
+                if n.module:                                    # from .a.b import x runs a/__init__ first
+                    mp = n.module.split(".")
+                    rel_cands += [base.joinpath(*mp[:i]) / "__init__.py" for i in range(1, len(mp))]
                 rel_cands.append(mod.with_suffix(".py") if n.module else mod / "__init__.py")
                 rel_cands.append(mod / "__init__.py")
                 for a in n.names:
@@ -779,9 +793,11 @@ def _direct_deps(f: Path, root: Path) -> set:
     dirs = [f.parent, f.parent.parent] + [root / d for d in _IMPORT_DIRS]
     cands = list(rel_cands)
     for nm in names:
-        rel = Path(*nm.split("."))
+        parts = nm.split(".")
+        rel = Path(*parts)
         for d in dirs:
             cands += [d / (str(rel) + ".py"), d / rel / "__init__.py"]
+            cands += [d.joinpath(*parts[:i]) / "__init__.py" for i in range(1, len(parts))]   # pkg/__init__ of pkg.child
     for m in _PY_PATH_RE.findall(src):
         cands += [root / m, f.parent / m]
     for c in cands:
@@ -996,16 +1012,30 @@ def _known_start():
         return None
 
 
+def _known_false_hit(kn, rel, r) -> bool:
+    """A run that contradicts the ledger's stored answer (or its PASS on the same inputs): forget it, quarantine it."""
+    K, led, state = kn["mod"], kn["led"], r[1]
+    stored = kn["expected"].get(rel)
+    if stored is None and state != "PASS":
+        try:
+            rec, _ = led.lookup(rel)
+            stored = rec["state"] if rec else None
+        except Exception:  # noqa: BLE001 - no reading: nothing to contradict
+            stored = None
+    if stored and K.false_hit(stored, state):
+        why = f"stored {stored}, ran {state}: {str(r[3]).splitlines()[0] if r[3] else ''}"[:300]
+        kn["false_hits"].append((rel, why))
+        led.forget(rel)
+        led.quarantine(rel, why)
+        return True
+    return False
+
+
 def _known_record(kn, rel, r, tdir, began) -> None:
     """After a real run: write down what it measured, and compare it with what the ledger said it would be."""
     K, led, state = kn["mod"], kn["led"], r[1]
     try:
-        stored = kn["expected"].get(rel)
-        if stored and K.false_hit(stored, state):
-            why = f"stored {stored}, ran {state}: {str(r[3]).splitlines()[0] if r[3] else ''}"[:300]
-            kn["false_hits"].append((rel, why))
-            led.forget(rel)
-            led.quarantine(rel, why)
+        if _known_false_hit(kn, rel, r):
             return
         own = Path(tdir, "own_tmp").read_text() if Path(tdir, "own_tmp").is_file() else ""
         ok, why = led.record(rel, state, r[2], Path(tdir), own, began, r[0])
@@ -1162,7 +1192,10 @@ def _suite(args) -> int:
         if args.only:
             print("--quick and --only do not mix: --only already names exactly what runs")
             return 1
-        tests, quick_skipped = quick_select(tests, load_quick(), quick_s())
+        if args.no_cache or args.full:  # a forced rerun skips nothing on a stored answer, the quick state included
+            quick_skipped = []
+        else:
+            tests, quick_skipped = quick_select(tests, load_quick(), quick_s())
         print(f"--quick: {len(quick_skipped)} test(s) SKIPPED(quick) (last run PASS, slower than {quick_s():g}s, "
               f"source unchanged); a green quick run is a pre-check, not a full-suite green", flush=True)
     else:
@@ -1192,11 +1225,15 @@ def _suite(args) -> int:
     _KNOWN = kn = _known_start()
     if kn and (args.no_cache or args.full):
         kn["led"].note_forced(args.because, len(tests), sys.argv[1:])
+    try:        # a quarantined test runs until a passing --because run clears it: no earlier layer may skip it either
+        jail = set(kn["led"].quarantined()) if kn else set()
+    except Exception:  # noqa: BLE001 - _known_select reads it again and says why
+        jail = set()
     if not (args.full or args.no_cache):        # --no-cache ignores every stored answer, evidence records included
         keep = []
         day = time.strftime("%Y-%m-%d")
         for t in tests:
-            ok, why = store.unchanged(_rel(t)) if t in elig else (False, "")
+            ok, why = store.unchanged(_rel(t)) if (t in elig and _rel(t) not in jail) else (False, "")
             if ok and kn and args.nightly and kn["mod"].audit_sample(_rel(t), day):   # the sample covers this layer too
                 kn["expected"][_rel(t)] = "PASS"
                 ok = False
@@ -1217,7 +1254,7 @@ def _suite(args) -> int:
             rel = _rel(t)
             try:
                 ck = SC.compute_key(rel, REPO_ROOT) if rel and rel in SC.DECLS else None
-                rec = SC.lookup(rel, ck[0]) if (ck and use) else None
+                rec = SC.lookup(rel, ck[0]) if (ck and use and rel not in jail) else None
             except Exception as exc:
                 print(f"selftest cache: {rel}: {type(exc).__name__}: {exc} - running it", file=sys.stderr)
                 ck = rec = None

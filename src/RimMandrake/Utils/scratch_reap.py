@@ -67,7 +67,9 @@ as written; staging alone (`git rm --cached`) changes only .git/index, which the
 that points straight at a blob or tree (`git replace` of a blob) is not a commit and is not preserved. Fixtures named selftest_* are disposable by design: a test's own scratch is removed
 without a bundle, and a reader that starts inside one within the 20 s of a snapshot is not seen (a bind-mount alias of
 a scratch dir likewise). A tmpXXXXXXXX dir with no repo or save in it is Python tempfile residue and goes unpreserved.
-An exited thread leader's own cmdline/environ read empty; its workers' copies are not consulted.
+An exited thread leader's own cmdline/environ read empty; its workers' copies are not consulted. A clone whose
+.git/config points core.worktree elsewhere is judged by git's view of that worktree (nothing here sets one). A ledger
+reservation filed in the CORPUS_REFRESH_S before the last look is not seen.
 
 Every run: runs.jsonl (rows), alarms.log (each new refusal once), last_run.json (apply runs: the record ops_watch
 alarms on). An unexpected failure exits non-zero, which fails the unit, which reaches the Conductor (signal_watch).
@@ -1328,7 +1330,10 @@ def corpus() -> list[tuple[str, str]]:
             files += listed(st / "ledger" / "events", ".jsonl", True) + listed(st / "items", ".md", True)
             files += listed(st / "items" / "closed", ".md") + listed(st / "handoffs", ".md")
         if not os.environ.get("SCRATCH_REAP_CORPUS"):
-            files += listed(HOME / ".config" / "systemd" / "user", ".service", True)
+            units = HOME / ".config" / "systemd" / "user"
+            files += listed(units, ".service", True)
+            for dropin in sorted(glob.glob(str(units / "*.service.d"))):      # WorkingDirectory= may live in a drop-in
+                files += listed(Path(dropin), ".conf")
         for f in files:
             try:
                 _CORPUS.append((f, open(f, encoding="utf-8", errors="replace").read()))
@@ -1435,7 +1440,7 @@ class Ctx:
         self.live = Live(self.now)
         if self.now - self.borrows.taken > BORROW_REFRESH_S:
             self.borrows = Borrows()
-        if _CORPUS is not None and self.now - _CORPUS_AT > CORPUS_REFRESH_S:
+        if _CORPUS is not None and time.time() - _CORPUS_AT > CORPUS_REFRESH_S:     # after the scans: they take minutes
             _CORPUS = _VOCAB = None     # read again at the next ledger_mentions: the reservation evidence is current
 
     def global_holds(self) -> list[str]:

@@ -1903,6 +1903,42 @@ check("rerun: a tracked edit is not origin/main: unmeasured, never green", _v[0]
 (_rw / "src/new.py").write_text("y = 1\n")
 _v = OW.rerun_at_main(["src/t.py"], 30, root=_rw)
 check("rerun: an untracked file under src is not origin/main either", _v[0] == "unmeasured" and "src/new.py" in _v[1], _v)
+(_rw / "src/new.py").unlink()
+# CD3 #1: an untracked *.py anywhere (a skill selftest's untracked sibling) runs too
+(_rw / "skills/x").mkdir(parents=True)
+(_rw / "skills/x/helper.py").write_text("z = 1\n")
+_v = OW.rerun_at_main(["src/t.py"], 30, root=_rw)
+check("rerun: an untracked .py outside src is not origin/main either", _v[0] == "unmeasured" and "helper.py" in _v[1], _v)
+(_rw / "skills/x/helper.py").unlink()
+# CD3 #2: a stand-in run_selftests.py; quiet it is green (the instrument can see green), moving HEAD mid-run it is not
+_rsp = _rw / "src/RimMandrake/Utils/run_selftests.py"
+_rsp.parent.mkdir(parents=True)
+_rsp.write_text("print('RESULT: GREEN 1 passed')\n")
+_g("add", str(_rsp.relative_to(_rw)), cwd=_rw)
+_g("commit", "-q", "-m", "rs", cwd=_rw)
+_g("push", "-q", "origin", "HEAD:main", cwd=_rw)
+_v = OW.rerun_at_main(["src/t.py"], 60, root=_rw)
+check("rerun: a clean checkout whose run prints GREEN is green (control)", _v[0] == "green", _v)
+_rsp.write_text("import subprocess\nsubprocess.run(['git', '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-q', "
+                "'--allow-empty', '-m', 'moved'], check=True)\nprint('RESULT: GREEN 1 passed')\n")
+_g("commit", "-q", "-am", "rs2", cwd=_rw)
+_g("push", "-q", "origin", "HEAD:main", cwd=_rw)
+_v = OW.rerun_at_main(["src/t.py"], 60, root=_rw)
+check("rerun: HEAD moving during the run is unmeasured, never green", _v[0] == "unmeasured" and "moved" in _v[1], _v)
+# CD3 #3: an attempts.jsonl that is there and unreadable is blind, never a counted 0; a missing one is no attempts
+# (the real store holds started items without one: 44 of 1089 with gen > 0 on 2026-11-06)
+_cs = TMP / "churn_unread_store"
+(_cs / "items" / "STARTED_B").mkdir(parents=True, exist_ok=True)
+(_cs / "items" / "STARTED_B" / "state.json").write_text(json.dumps({"item": "STARTED_B", "status": "queued", "gen": 2,
+                                                                     "returns": 3, "spent": 0}))
+_c = OW.rl_churn(_cs, NOW, {})
+check("churn: a started item with no attempts.jsonl reads a measured count (control)",
+      _c["relentless.churn_items"]["m"] == "MEASURED", _c.get("relentless.churn_items"))
+(_cs / "items" / "STARTED_B" / "attempts.jsonl").mkdir()          # there, and no file can be read from it
+_c = OW.rl_churn(_cs, NOW, {})
+check("churn: an unreadable attempts.jsonl is UNMEASURED and reads 'unreadable' (relentless.blind counts it)",
+      _c["relentless.churn_items"]["m"] == "UNMEASURED" and "unreadable" in _c["relentless.churn_items"].get("why", "")
+      and "STARTED_B" in _c["relentless.churn_items"]["why"], _c.get("relentless.churn_items"))
 # OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED: the ledger filing succeeds but the Conductor log cannot be written. The alarm is
 # OPEN (signal_watch skips OPEN), so a later pass must retry the line once the log can be written again
 _cdir = TMP / "clog_missing_dir"

@@ -1127,6 +1127,21 @@ def rerun_root() -> Path:
     return Path(os.environ.get("RM_OPS_RERUN_ROOT", "/home/mandrake/rm/dispatch"))
 
 
+def rerun_tree_dirty(root):
+    """-> why this checkout is not origin/main's code (None when it is). HEAD == origin/main is not the code that runs:
+    a tracked edit anywhere, an untracked file under src/, or an untracked *.py anywhere (a skill's selftest imports its
+    untracked sibling: CD3 #1) reruns the working tree, and a green from it would hide a red main. Other untracked
+    files (the ledger's item stubs the dispatch clone always carries) run nothing and do not count."""
+    try:
+        dirty = (_git(root, "status", "--porcelain", "--untracked-files=no") + "\n"
+                 + _git(root, "status", "--porcelain", "--untracked-files=all", "--", "src", ":(glob)**/*.py")
+                 ).split("\n")
+    except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+        return "git status: %s" % str(e)[:160]
+    dirty = sorted({ln.split(None, 1)[-1] for ln in dirty if ln.strip()})    # _git strips the first " M"
+    return "working tree differs from origin/main: %s" % ", ".join(dirty[:3]) if dirty else None
+
+
 def rerun_at_main(tests, timeout, root=None):
     """NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: one plain rerun (run_selftests --only, no LLM) of a red group's tests in
     this checkout, brought to origin/main first by a fast-forward pull (as testq-tick/testq-sweep already do to the
@@ -1145,17 +1160,9 @@ def rerun_at_main(tests, timeout, root=None):
         return "unmeasured", "git: %s" % str(e)[:160], None
     if head != main:
         return "unmeasured", "checkout at %s, origin/main at %s" % (head[:10], main[:10]), None
-    # HEAD == origin/main is not the code that runs: a tracked edit anywhere, or an untracked file under src/ (a test
-    # or module origin/main lacks), reruns the working tree, and a green from it would hide a red main. Untracked
-    # files elsewhere (the ledger's item stubs the dispatch clone always carries) run nothing and do not count.
-    try:
-        dirty = (_git(root, "status", "--porcelain", "--untracked-files=no") + "\n"
-                 + _git(root, "status", "--porcelain", "--untracked-files=all", "--", "src")).split("\n")
-    except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
-        return "unmeasured", "git status: %s" % str(e)[:160], head
-    dirty = sorted({ln.split(None, 1)[-1] for ln in dirty if ln.strip()})    # _git strips the first " M"
+    dirty = rerun_tree_dirty(root)
     if dirty:
-        return "unmeasured", "working tree differs from origin/main: %s" % ", ".join(dirty[:3]), head
+        return "unmeasured", dirty, head
     missing = [t for t in tests if not (root / t).is_file()]
     deleted = {}
     for t in missing:
@@ -1181,6 +1188,17 @@ def rerun_at_main(tests, timeout, root=None):
     res = next((ln for ln in reversed(out.splitlines()) if ln.startswith("RESULT:")), "")
     if not res:
         return "unmeasured", "rerun printed no RESULT line (rc %d)" % r.returncode, head
+    # the checks above held when the run began, not through it: a testq pull (or an edit) mid-run mixes two revisions
+    # into one verdict (CD3 #2), so the same checks again, and a moved or dirtied checkout is never green
+    try:
+        after = _git(root, "rev-parse", "HEAD")
+    except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+        return "unmeasured", "git after the rerun: %s" % str(e)[:140], head
+    if after != head:
+        return "unmeasured", "checkout moved during the rerun: %s -> %s" % (head[:10], after[:10]), head
+    dirty = rerun_tree_dirty(root)
+    if dirty:
+        return "unmeasured", "after the rerun: " + dirty, head
     if r.returncode == 0 and res.startswith("RESULT: GREEN") and "UNMEASURED (" not in out and "DROPPED:" not in out:
         return "green", res[:160], head
     if res.startswith("RESULT: GREEN"):
@@ -2713,7 +2731,8 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
                                        said="%s: %s" % (n, "; ".join(why))[:400], reasons=why)
     for n in sorted(held - {f[1] for f in flagged}):
         if n in torn:
-            out[CHURN_ITEM_PREFIX + n] = U("state.json of %s torn: whether it still churns is unknown" % n, CHURN_ITEM_UNIT)
+            out[CHURN_ITEM_PREFIX + n] = U("state.json or attempts.jsonl of %s unreadable: whether it still churns is "
+                                           "unknown" % n, CHURN_ITEM_UNIT)
         elif spend_known or n not in per:
             out[CHURN_ITEM_PREFIX + n] = M(0, CHURN_ITEM_UNIT, item=n, said="%s: no longer churning" % n)
         else:
@@ -2751,6 +2770,7 @@ def rl_churn(store, now, cfg):
         return churn_blind(why)
     import hashlib
     by_hash, gen_end, started, churn, classes, torn, per = {}, {}, {}, [], {}, 0, {}
+    unread = []         # items whose attempts.jsonl should exist and could not be read: blind, never a counted 0
     ended_at = {}       # (item, gen) -> epoch of its latest ending row: a gen ended before the window spent nothing in it
     waited = set()      # (item, gen) whose last ending is a wait (attempt_waited): time, not work, so no returned spend
     for n in names:
@@ -2788,8 +2808,11 @@ def rl_churn(store, now, cfg):
                     if attempt_failed(r, ok_ends) and not blind_again(r, blind_seen):
                         t, end = attempt_failed(r, ok_ends)
                         fails.append((t or 0, end))
-        except OSError:
-            pass        # an item never started has no attempts file
+        except FileNotFoundError:
+            pass    # no attempt written: started items have this shape too (44 of 1089 with gen > 0, 2026-11-06)
+        except OSError:                             # there and unreadable: its failures are unknown, never none
+            unread.append(n)
+            st = None
         if not isinstance(st, dict):
             torn += 1
             per[n] = [None, fails, 0, waits, attempts_resumed(rows)]      # torn: a held alarm on it holds, never clears on a state it cannot read
@@ -2808,6 +2831,9 @@ def rl_churn(store, now, cfg):
     pts = {"relentless.churn_items": M(len(churn), CHURN_UNITS[0], first=[n for _, n in churn[:5]], window_h=win_h,
                                        last_fail=cause, torn_states=torn,
                                        spent=sum(-s for s, _ in churn))}
+    if unread:
+        pts["relentless.churn_items"] = U("attempts.jsonl unreadable for %d item(s): %s" % (
+            len(unread), ", ".join(unread[:3])), CHURN_UNITS[0])
     tot = ret = unmapped = 0
     by_end = {}
     rx = re.compile(r"rm-relentless-(?:work|check)-([0-9a-f]{10})-g(\d+)")
