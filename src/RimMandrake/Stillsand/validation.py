@@ -386,6 +386,14 @@ def _colonist(t, x, z):
     return _spawn(t, "Colonist", x, z, faction="player")
 
 
+def _vanish_spawned(t):
+    """Remove every pawn this run spawned that still stands: an arm must not inherit another arm's hunters."""
+    alive = _rows(t)
+    for pid in _STATE.pop("spawned", []):
+        if pid in alive and alive[pid].get("x") is not None:
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+
+
 def _ensure_colonist(t):
     """The planted home colonists die of the sun on a long run; a map with nobody home ends the game.
     Keep one alive at the map centre between chains."""
@@ -1156,19 +1164,37 @@ def sandswim_chain(t):
     # LIVE 2026-10-08 (acc_biomes): the old 10x6 gravel patch let the gravel vekka wander onto the surrounding sand
     # inside the 300-tick wait and submerge there (IsSwimTerrain reads only Sand/SoftSand/RM_DeepSand, so the mod
     # was right). The patch is now the whole north half of the pad and the vekka starts in its middle.
-    sand, grav = (x - 10, z - 6), (x, z + 6)
+    # LIVE 2026-11-04/06 (three games): the sand vekka, spawned 2 cells from the pad's edge, wandered out of a rect-filtered
+    # read inside the wait, and every game read A1 UNMEASURED. The read now covers the whole map and judges the terrain
+    # the pawn stands on: it starts mid-half, the wait is the 30-tick poll with slack, and a vekka caught away from its
+    # half (3 cells of margin: a poll may lag a crossing) voids that attempt, never the clause.
+    sand, grav = (x, z - 8), (x, z + 6)
+
+    def _in_sand(c):
+        return c is not None and x - 13 <= c[0] <= x + 12 and z - 13 <= c[1] <= z - 3
+
+    def _in_gravel(c):
+        return c is not None and x - 9 <= c[0] <= x + 8 and z + 3 <= c[1] <= z + 8
+
     with _comp(t, "vekka_submerges_on_sand"):
         if _live(t):
             t.bridge_call("jawa/set_terrain_batch", ops="Gravel:%d,%d,24,12" % (x - 12, z),
                           layer="top")
-            on_sand = _spawn(t, "RM_Vekka", sand[0], sand[1])
-            on_grav = _spawn(t, "RM_Vekka", grav[0], grav[1])
-            t.wait_ticks(300)
-            rows = _rows(t, rect=_rs(rect), health=True)
-            _note(t, "vekka hediffs (sand / gravel)", [[h.get("def") for h in _hediffs(rows.get(on_sand))],
-                                                       [h.get("def") for h in _hediffs(rows.get(on_grav))]])
-            if on_sand not in rows or on_grav not in rows:
-                _unmeasured(t, "a vekka left the pad before it could be read")
+            rows = None
+            for _attempt in range(3):
+                on_sand = _spawn(t, "RM_Vekka", sand[0], sand[1])
+                on_grav = _spawn(t, "RM_Vekka", grav[0], grav[1])
+                t.wait_ticks(150)
+                rows = _rows(t, health=True)
+                _note(t, "vekka hediffs (sand / gravel), cells", [[h.get("def") for h in _hediffs(rows.get(on_sand))],
+                                                                  [h.get("def") for h in _hediffs(rows.get(on_grav))],
+                                                                  _xz(rows.get(on_sand)), _xz(rows.get(on_grav))])
+                if _in_sand(_xz(rows.get(on_sand))) and _in_gravel(_xz(rows.get(on_grav))):
+                    break
+                rows = None
+                _vanish_spawned(t)
+            if rows is None:
+                _unmeasured(t, "in 3 attempts a vekka never stayed on its own half of the pad for the wait")
             if not _has(rows[on_sand], "RM_SandSubmerged"):
                 _fail("a vekka standing on Sand is not RM_SandSubmerged (RM_SandSwimExtension not applied?)")
             if _has(rows[on_grav], "RM_SandSubmerged"):
@@ -1277,9 +1303,10 @@ def sandswim_chain(t):
     with _comp(t, "stillsand_catch"):
         if _live(t):
             _prep(t, "sandswim")
-            t.bridge_call("jawa/set_terrain_batch", ops="RM_DeepSand:%d,%d,16,12" % (x - 8, z - 6), layer="top")
-            fisher = _colonist(t, x - 10, z - 8)
-            r = t.bridge_call("jawa/fishing", action="read", x=x, z=z, pawn=fisher)
+            _vanish_spawned(t)                          # the arms' vekkas would hunt the fisher through a job this long
+            deep = "%d,%d,16,12" % (x - 8, z - 6)
+            t.bridge_call("jawa/set_terrain_batch", ops="RM_DeepSand:%s" % deep, layer="top")
+            r = t.bridge_call("jawa/fishing", action="read", x=x, z=z)
             body = (r or {}).get("body") or {}
             _note(t, "deep-sand water body", body)
             if not (r or {}).get("success") or not body.get("hasBody"):
@@ -1288,19 +1315,48 @@ def sandswim_chain(t):
             fish = set(body.get("commonFish") or []) | set(body.get("uncommonFish") or [])
             if "RM_DuneCrawler" not in fish:
                 _fail("the deep-sand water body's catch list is %s, not the dune crawler" % sorted(fish))
+            # JobDriver_Fish FailOn: a target cell outside an allowed Zone_Fishing ends the job at once. LIVE 2026-11-06:
+            # ordered with no zone, it died unseen and this arm read a false FAIL (decompiled 1.6, RimWorld.JobDriver_Fish).
+            zr = t.bridge_call("jawa/map_zones", action="createZone", zoneType="fishing", rect=deep) or {}
+            if not zr.get("success"):
+                det = zr.get("details") if isinstance(zr.get("details"), dict) else {}
+                whys = sorted(set(str(c.get("why")) for c in (zr.get("refusedCells") or det.get("refusedCells") or [])))
+                if any("no fish" in w or "no water-body type" in w or "impassable" in w for w in whys):
+                    _fail("the game refuses a fishing zone on RM_DeepSand: %s" % whys[:4])
+                _unmeasured(t, "createZone fishing did not answer: %s" % str(zr)[:240])
+            label = zr.get("created")
+            fisher = _colonist(t, x - 10, z - 8)
+            r = t.bridge_call("jawa/fishing", action="read", zone=label, pawn=fisher) or {}
             fc, ss = r.get("fishCell") or {}, r.get("standSpot") or {}
             if "x" not in fc or "x" not in ss:
                 _unmeasured(t, "no fishCell/standSpot for the fisher: %s" % str(r)[:240])
-            had = dict((f.get("def"), f.get("count", 0)) for f in (r.get("fishOnMap") or []))
-            t.bridge_call("jawa/ordered_job", pawnId=fisher, jobDef="Fish", targetAX=fc["x"], targetAZ=fc["z"],
-                          targetBX=ss["x"], targetBZ=ss["z"])
-            t.wait_ticks(int(r.get("jobTicks") or 7500) + 900)
-            r2 = t.bridge_call("jawa/fishing", action="read", x=x, z=z)
-            now = dict((f.get("def"), f.get("count", 0)) for f in ((r2 or {}).get("fishOnMap") or []))
-            gained = dict((d, n - had.get(d, 0)) for d, n in now.items() if n > had.get(d, 0))
-            _note(t, "fish gained by one Fish job on deep sand", gained)
+            gained, whyno = {}, "no Fish job ran"
+            for _attempt in range(2):                   # 2 tries: the job's 2% negative outcome and a rare catch land no fish
+                now = t.bridge_call("jawa/fishing", action="read", zone=label) or {}
+                had = dict((f.get("def"), f.get("count", 0)) for f in (now.get("fishOnMap") or []))
+                oj = t.bridge_call("jawa/ordered_job", pawnId=fisher, jobDef="Fish", targetAX=fc["x"], targetAZ=fc["z"],
+                                   targetBX=ss["x"], targetBZ=ss["z"]) or {}
+                if not oj.get("accepted") or (oj.get("nowRunningRequested") is False and not oj.get("pausedDuringWait")):
+                    whyno = "the Fish job did not start: %s" % str(oj)[:240]
+                    continue
+                whyno = None
+                for _chunk in range(int((int(r.get("jobTicks") or 7500) + 900) // 1000) + 1):
+                    t.wait_ticks(1000)
+                    now = t.bridge_call("jawa/fishing", action="read", zone=label) or {}
+                    cur = dict((f.get("def"), f.get("count", 0)) for f in (now.get("fishOnMap") or []))
+                    gained = dict((d, n - had.get(d, 0)) for d, n in cur.items() if n > had.get(d, 0))
+                    if gained:
+                        break
+                if gained:
+                    break
+            _note(t, "fish gained by a Fish job on deep sand", gained)
+            if whyno:
+                _unmeasured(t, whyno)
+            row = _rows(t, health=True).get(fisher)
+            if not gained and (row is None or row.get("dead") or row.get("downed")):
+                _unmeasured(t, "the fisher died, went down or left the map before a catch could land")
             if not gained:
-                _fail("a Fish job on RM_DeepSand landed no catch")
+                _fail("two Fish jobs in a fishing zone on RM_DeepSand landed no catch")
             if not (set(gained) & (fish | {"RM_GlassPearl"})):
                 _fail("the deep-sand catch %s is not the Stillsand family %s" % (gained, sorted(fish)))
 

@@ -181,6 +181,11 @@ class Fake(object):
             if p["dead"]:
                 continue
             k = p["kind"]
+            # the wander that voids a sandswim attempt: off the pad by mid-wait, once or always
+            if k == "RM_Vekka" and self.ticks - p["born"] >= 50 and not p.get("wandered") and (
+                    "wander_always" in b or ("wander_once" in b and not getattr(self, "wandered_once", False))):
+                p["wandered"], self.wandered_once = True, True
+                p["x"] += 40
             # sand swimmer submerges on sand (never on gravel), surfaces when hurt
             if k == "RM_Vekka" and "no_submerge" not in b and self.ticks - p["born"] >= 100:
                 if self.ticks < p.get("surf_until", -1):
@@ -795,7 +800,15 @@ class Fake(object):
             p["h"].pop("RM_SandSubmerged", None)
         return {"success": True}
 
-    def t_fishing(self, action="read", x=-1, z=-1, pawn=None, **k):
+    def t_map_zones(self, action=None, zoneType=None, rect=None, **k):
+        if "zone_refused" in self.b:
+            return {"success": False, "details": {"refusedCells": [{"why": "water body has no fish"}]}}
+        self.fish_zone = globals()["rect"](rect)
+        return {"success": True, "created": "Fishing zone 1"}
+
+    def t_fishing(self, action="read", x=-1, z=-1, pawn=None, zone=None, **k):
+        if zone:
+            x, z = self.fish_zone[0], self.fish_zone[1]
         deep = self.terr(x, z) == "RM_DeepSand"
         body = {"hasBody": deep, "type": "Freshwater"} if deep else {"hasBody": False}
         if deep:
@@ -818,8 +831,9 @@ class Fake(object):
                 p["x"], p["z"] = k.get("targetAX", p["x"]), k.get("targetAZ", p["z"])
             return {"success": True, "accepted": True}
         if jobDef == "Fish":
-            def land():
-                if "no_catch" not in b:
+            def land(cell=(k.get("targetAX"), k.get("targetAZ"))):
+                # JobDriver_Fish FailOn: no allowed Zone_Fishing on the target cell, no job, no catch
+                if "no_catch" not in b and inrect(cell[0], cell[1], getattr(self, "fish_zone", (0, 0, 0, 0))):
                     self.fish = getattr(self, "fish", {})
                     d = "Fish_Tilapia" if "wrong_fish" in b else "RM_DuneCrawler"
                     self.fish[d] = self.fish.get(d, 0) + 3
@@ -1082,6 +1096,7 @@ BREAKS = {
     "no_trough": ["sandswim.vekka_wake_trough_record"],
     "no_catch": ["sandswim.stillsand_catch"],
     "wrong_fish": ["sandswim.stillsand_catch"],
+    "zone_refused": ["sandswim.stillsand_catch"],
     "wakes_below_threshold": ["zuurrik.zuurrik_below_threshold_dormant"],
     "no_wake": ["zuurrik.zuurrik_wakes_on_blood"],
     "no_strip": ["zuurrik.zuurrik_strips_blood"],

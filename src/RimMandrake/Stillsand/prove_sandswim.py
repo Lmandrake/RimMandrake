@@ -18,7 +18,8 @@ read through validation.py's sandswim chain (never a screenshot hunt).
 
 Exit 0 = the clause holds, 1 = it does not, 2 = UNMEASURED (no game, a tool missing, an arm that could not be read).
 The clauses share one run of the site, sandswim and log chains, cached 30 min beside validation.py's hash
-(agent storage scratch/prove_sandswim.json).
+(agent storage scratch/prove_sandswim.json). A run a surprise ended (a wild hostile's arrival, a mental break: the
+safe_advance latch) says nothing about the mod, so it is run again, up to RUNS times, and never cached.
 """
 import argparse
 import hashlib
@@ -42,6 +43,7 @@ CLAUSES = {
     "A5": ("sandswim.vekka_wake_trough_record",),
 }
 CACHE_S = 30 * 60
+RUNS = 3
 
 
 def _load_validation():
@@ -87,6 +89,22 @@ def judge(res, clause):
     return 0, "%s holds: %s PASS" % (clause, ", ".join(k.split(".")[1] for k in keys))
 
 
+def surprised(res):
+    """True when a clause's component read UNMEASURED because a surprise ended the chain."""
+    return any(res.get(k, ("", ""))[0] == "UNMEASURED" and "surprise" in str(res.get(k, ("", ""))[1])
+               for keys in CLAUSES.values() for k in keys)
+
+
+def run_past_surprises(run, runs=RUNS):
+    """run() until a run no surprise ended, at most `runs` times -> the last result."""
+    res = {}
+    for _ in range(runs):
+        res = run()
+        if not surprised(res):
+            break
+    return res
+
+
 def _vhash():
     h = hashlib.sha256()
     for f in ("validation.py", "prove_sandswim.py"):
@@ -111,7 +129,9 @@ def live_result():
     from rimdrive import Session
     runner.ensure_playing_map()
     with Session(lock=None, focus=False) as s:
-        res = run_chains(V, s, runner._default_anchor(s))
+        res = run_past_surprises(lambda: run_chains(V, s, runner._default_anchor(s)))
+    if surprised(res):
+        return res
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         json.dump({"vhash": _vhash(), "at": time.time(), "res": res}, fh, indent=1, default=str)
@@ -133,7 +153,7 @@ def selftest():
         if got[0] != 0:
             bad.append("healthy %s: %s" % (c, got[1]))
     breaks = {"A1": ("no_surface", "submerge_on_rock"), "A2": ("no_funnel",), "A3": ("mech_hurt",),
-              "A4": ("no_catch", "wrong_fish"), "A5": ("no_trough",)}
+              "A4": ("no_catch", "wrong_fish", "zone_refused"), "A5": ("no_trough",)}
     for c, bs in sorted(breaks.items()):
         for b in bs:
             res = run([b])
@@ -147,6 +167,17 @@ def selftest():
         bad.append("a vekka that never submerges must leave A3/A5 UNMEASURED, not red or green")
     if judge({}, "A4")[0] != 2 or judge({"sandswim.<CRASH>": ["CRASH", "x"]}, "A1")[0] != 2:
         bad.append("a missing or crashed run did not read 2")
+    if judge(run(["wander_once"]), "A1")[0] != 0:
+        bad.append("a vekka wandering off its half once must void that attempt, not the clause")
+    if judge(run(["wander_always"]), "A1")[0] != 2:
+        bad.append("a vekka that never holds its half must leave A1 UNMEASURED")
+    hit = {"sandswim.vekka_spares_a_mech": ["UNMEASURED", "a surprise ended this chain earlier: surprise: x"]}
+    clean = {"sandswim.vekka_spares_a_mech": ["PASS", ""]}
+    runs = [hit, clean]
+    if run_past_surprises(lambda: runs.pop(0)) is not clean or runs:
+        bad.append("a surprise-ended run was not run again")
+    if not surprised(run_past_surprises(lambda: hit)):
+        bad.append("run_past_surprises hid a surprise that never cleared")
     for b in bad:
         print("  BAD:", b)
     print("prove_sandswim selftest: %d clauses, %s" % (len(CLAUSES), "FAIL" if bad else "ok"))
