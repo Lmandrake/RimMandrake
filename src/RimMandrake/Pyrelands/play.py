@@ -11,6 +11,7 @@ Bridge holder only, python.exe from the repo root (pipe through `tr -d '\\r'`):
   python.exe src/RimMandrake/Pyrelands/play.py step 2500 ...         # run N ticks, census after each N given
   python.exe src/RimMandrake/Pyrelands/play.py shot NAME x z w h [px]  # play-zoom capture copied to shots/
   python.exe src/RimMandrake/Pyrelands/play.py overview NAME         # the widest crop the tool can frame
+  python.exe src/RimMandrake/Pyrelands/play.py skies x z w h TAG       # one rect under each sky at noon
   python.exe src/RimMandrake/Pyrelands/play.py call jawa/map_info k=v  # any one tool, json result
 """
 import argparse
@@ -159,9 +160,31 @@ def overview(s, name):
     return str(r)[:300]
 
 
+def to_hour(s, hour):
+    """Advance to the next local `hour`, in slices the populated-map budget allows."""
+    clk = NS._call(s, "jawa/time_clock")
+    lon = NS._call(s, "jawa/map_info").get("longitude") or 0.0
+    now = (int(clk["ticksAbs"]) + int(round(lon / 15.0)) * 2500) % 60000
+    left = (hour * 2500 - now) % 60000
+    while left > 0:
+        n = min(left, 25000)
+        s.call("jawa/safe_advance", ticks=n, stopOn="cancel", timeoutMs=230000)
+        left -= n
+
+
+def skies(s, x, z, w, h, tag):
+    """The same ground under each sky between 08:00 and 17:00, each held long enough to finish its transition."""
+    to_hour(s, 8)
+    for wx in ("Clear", "RM_FE_Weather_AshDrift", "RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain"):
+        NS._call(s, "jawa/weather_set", weather=wx, lockWeather=True)
+        s.call("jawa/safe_advance", ticks=4500, stopOn="cancel", timeoutMs=120000)
+        print(wx, shot(s, "sky_%s_%s" % (tag, wx), x, z, w, h), NS._call(s, "jawa/weather_get").get("weather"))
+    NS._call(s, "jawa/weather_set", weather="RM_FE_Weather_AshDrift", lockWeather=False)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "call"])
+    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "skies", "call"])
     ap.add_argument("rest", nargs="*")
     ap.add_argument("--tag", default="a")
     ap.add_argument("--temp", type=float, default=TEMP)
@@ -188,6 +211,8 @@ def main():
             print(shot(s, a.rest[0], *[int(v) for v in a.rest[1:]]))
         elif a.verb == "overview":
             print(overview(s, a.rest[0]))
+        elif a.verb == "skies":
+            skies(s, *[int(v) for v in a.rest[:4]], a.rest[4])
         elif a.verb == "call":
             kw = {}
             for kv in a.rest[1:]:

@@ -1,41 +1,31 @@
 # Pyrelands progress
 
-**Nothing here has been seen in the game.** GSS held it for this whole pass. All fixes are built and pushed but not deployed.
-The count below is therefore all `unseen`, whatever the code says.
+First pass with the game. The game is on the `pyrelands` list; `Transient/cycle.sh` (untracked) stops it, deploys and relaunches.
+**The newest ExplosiveGrowth DLL is built and committed but not deployed.** Its only change since the deployed one is where the guards sit, so behaviour should match.
 
-## Done offline (commits 186b8cd2ed, e67699e204)
-- Plan's owed changes: rain no longer touches the burn bonus (grid and both settings gone); firebreak deleted, pads use
-  vanilla concrete; biome text says engineered, and the migration promise is gone from About and the furnace-beast.
-  `ProbeCell` now also reads base, watered fertility and the rain flag. It covers the plan's `ash_fertility_probe` except burn age, which needs `burnTick` and `now`.
-- `wildPlantRegrowDays` 9 -> 3. It is an MTB per empty cell, so 9 left only 43% of a scar with grown grass after a week.
-- Fire-born pods spawn at growth 1 with no lifespan limit, so the 1.1-day rot alone ends them. Before, they started at 0.15
-  against a 0.65 harvest line, rested at night and stopped growing above 58C.
-- Ruin buildings get a charred paint (`RM_FE_Charred`, vanilla paint slot) and 35-80% HP.
-- Foreign arrivals closed: `Patches/RM_Pyrelands_NoForeignArrivals.xml` (incidents), `Source/PyrelandsForeignArrivals.cs` (herd
-  and manhunter fallbacks), `preventGenSteps` (anima, polux, harbinger). Trade-off is in `ralph/QUESTIONS.md`.
+## What I saw (`src/RimMandrake/Pyrelands/play.py`, an un-isolated site: `build --tag x`, `load`, `step`, `census`, `shot`, `overview`, `skies`)
+The biome already looks strong. The fire ring crosses the map in about 4 days, and grass holds near 49,000 plants (about 80% of cells) across repeated burns over 5 days. So last pass's fear that fire would strip the map did not happen in that span.
 
-Selftests: 7 Pyrelands ones ran after the first commit: 6 passed, and the review-map one failed until I fixed it (it then passed run directly). After the second commit
-I re-ran only fuzz, lint and site, all green. `mutate_pyrelands_fuzz.py` was edited (two mutants removed) but not run.
-`fresh_burn_bonus` and `_firebreak` in `validation.py` were rewritten and have never run live.
+## Fixed (the Explosive Growth roster and code are outside Pyrelands, but they caused these Pyrelands bugs)
+- Grass bursts left 11,039 hay stacks in 3 days, added 44,000 to colony wealth, and bruised colonists until they went down. New row flag `gentleBurst`. Items now stay about 87.
+- Pods burst within hours, so none could be harvested. New row flag `noCycle`. Pods now stand; the map sits at its cap of 40.
+- `Alphabeavers`, `AmbrosiaSprout`, `BoomshroomSprout` config errors came from my own patch: they already have whitelists. Removed.
+- Both trade-offs are in `ralph/QUESTIONS.md`.
 
-## First things to look at when the game is free
-1. Composed deploy, small list, fresh map on the site in `northstar_site.py`. Does the new patch file and `RM_FE_Charred` load with a clean log? Save the 3-4 `first_look_*.png` and write `ralph/LOOK.md`.
-2. **Fire pacing, my biggest worry.** A code audit estimated (unverified, from memory of vanilla): 96% cover should let a front burn map-wide, a front comes every 2-4 days,
-   and rain can't come before day 8 because black rain is VeryBad. Does the map keep any carpet over 2-3 weeks of ordinary play? 3-day regrowth helps but may not be enough, and it also refuels fires faster. Watch a real burn at real pace.
-3. Opening front: the audit found it checks buildings and Home but not colonists, and both are empty at landing. Can it light beside the landing party?
-4. Regrow pace at shipped settings. The suite tests at an override of 0.1 days (90x), so shipped pace was never measured.
-5. Ruins: does charred paint read on walls, does it look wrong on anything else in the sweep (caskets, ancient junk, realtime drawers)? Does a player's own building ever get it? `validation.py`'s ruin row only measures filth, so make it read paint.
-6. Pod: is it harvestable right after fire, does it rot at 1.1 days, does a colonist get it?
-7. Census on a real map: audit's estimates (from memory) were about 15.5 animals, about 21% of maps with zero small grazers, ashwallow on only about 0.5 per map. If real, the burrowers bar is rarely visible in play. Roster weights are owner-ruled, so write the trade-off in `QUESTIONS.md` before changing them. Force herd migration and manhunter incidents to prove the postfixes.
-8. Not audited at all: fire-hawk, furnace-beast, burrowers, mapgen log. Weather look: black rain sky 0.22 may be darker than night; ash drifts land on only ~2.4% of cells per day, mostly under grass.
-9. Firebreak save outcome (plan's `save_compat`) is not established. Read `TerrainGrid` load or test it, then state it.
+## Not a problem
+The 38 ticks/s scare was my own overview camera. At play zoom: 100-175 ticks/s with 550-1000 fires, rain or not, Explosive Growth on or off.
 
-## Still open and untouched
-`modcheck status Pyrelands` still RED (no run recorded since these changes). The plan's foils, scenes and showcases are not built. Open `PYRE*` items not re-checked beyond their first lines; `infrastructure/state/` is off limits for edits, so report them in `DONE.md`.
+## Next, in order
+1. **Pod lifetime.** Log: one `Exception ticking RM_FE_Plant_ScorchFruit`, NRE in `Plant.CheckMakeLeafless` from `TickLong`, map null. Theory, untested: the rot destroys the pod inside `TickLong`. Only one in 5 days of pods, and the count always reads 40, so pods may not be rotting on time at all. Track pod ids over 2 days. Then harvest one with a colonist, eat it, and time the fruit's rot.
+2. **`RM_VolcanicAsh` was the current weather once on map `a`.** It is not in the biome's table, the tile had no mutators, and no condition was active a little later. Find out how it got there. It may bear on `pyre_cannot_ordinary_rain`. Log weather per slice.
+3. **Run the suite for the mechanism lines:** `python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp> --tag <t>`, then `cli.py run` per `northstar_plan.py`. Hawk, furnace-beast, burrowers and fertility are all unread. `modcheck status` is still RED. Use `jawa/safe_advance` (about 1000 ticks/s on a calm map, 30,000 per call at most on a populated one, `stopOn=cancel`); keep the shell below 240 s per call.
+4. **Look properly:** ruins charred (close-up at (135,120) on map `c`); pond ring; cinderfall and ash fall. My sky sheet was ruined by a fire crossing the frame and by dusk, so rerun `skies` on quiet ground. `play.py shot` at 30x17 stitches two bands with a visible seam; use 30x16. Pods look small at play zoom next to the old swollen ones; consider a larger draw size.
+5. **Census** several fresh maps. Seen so far: a Ullai 9, Zeer 4, Flamefang 2; b Gizka 6, Zeer 3, Orray, Flamefang, Dalgo; c Iriaz 9, FireWasp 4, Zeer 4, Barbslinger 2, Flamefang, Orray. No burrower seen yet. Check every kind against the live roster.
+6. **Play a real colony:** my colonists sat unmanaged and died, partly from starving and burning. Build a base and see what a burn does to it. Does `RM_Dehydration` belong in this play?
+7. Plan's foils, scenes and showcases: not built. Open `PYRE*` items not re-checked. Firebreak save outcome still not stated.
 
 ## Handy
-- Vanilla source: no local tree. The project's rimsage service answers JSON-RPC over HTTP at `https://mcp.rimsage.com/mcp` (`initialize`, then `tools/call` `search_source` or `read_file`, paths like `Source/RimWorld/Plant.cs`). Correct a memory-based claim with it first: it disproved the audit's "pod never ticks". The local decompile route is refused by the gate while another loop runs, because its path matches a game pattern.
-- The gate matches command text, so a Bash command naming `human_review.py` or `northstar_site` is refused while another loop runs, even for grep. Use Read and Edit on those files.
+`jawa/list_things` with `group=` and `limit=1` gives `perDef`, a cheap census. Don't `pkill -f play.py` from a command containing that text: it kills your own shell. Selftest `top_donors` fails on uncommitted C# by design, so read it after committing.
 
 ## Count
 - pyre_plant_distribution_correct: unseen
@@ -44,9 +34,9 @@ I re-ran only fuzz, lint and site, all green. `mutate_pyrelands_fuzz.py` was edi
 - pyre_ground_deep_ash: unseen
 - pyre_ash_fertile_when_watered: unseen
 - pyre_fresh_burn_feeds_the_field: unseen
-- pyre_grass_chokes_ground: unseen
+- pyre_grass_chokes_ground: true
 - pyre_embergrass_regrows: unseen
-- pyre_burn_line_present: unseen
+- pyre_burn_line_present: true
 - pyre_scorchfruit_fire_born: unseen
 - pyre_scorchfruit_produces: unseen
 - pyre_scorchfruit_spoils_fast: unseen
@@ -57,5 +47,5 @@ I re-ran only fuzz, lint and site, all green. `mutate_pyrelands_fuzz.py` was edi
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: unseen
 - pyre_cinderfall_distinct: unseen
-- pyre_blackrain_reads: unseen
+- pyre_blackrain_reads: true
 - pyre_cannot_ordinary_rain: unseen

@@ -198,18 +198,15 @@ namespace RimMandrake.ExplosiveGrowth
             RM_ExplosiveGrowthDefOf.RM_EG_Pop?.PlayOneShot(new TargetInfo(c, map));
             for (int i = 0; i < 6; i++) FleckMaker.ThrowDustPuff(c.ToVector3Shifted() + Gen.RandomHorizontalVector(1.2f), map, 1.4f);
 
-            if (!prof.gentleBurst)
+            // Chaff and husk: hay is vanilla's own dry, flammable plant matter
+            // — low-grade fuel, exactly the ruled husk. TINDER leaves more.
+            if (!prof.gentleBurst) SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
+            foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
             {
-                // Chaff and husk: hay is vanilla's own dry, flammable plant matter
-                // — low-grade fuel, exactly the ruled husk. TINDER leaves more.
-                SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
-                foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
-                {
-                    if (f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
-                }
-
-                if (ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
+                if (!prof.gentleBurst && f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
             }
+
+            if (!prof.gentleBurst && ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
 
             SplitAndDie(plant);
 

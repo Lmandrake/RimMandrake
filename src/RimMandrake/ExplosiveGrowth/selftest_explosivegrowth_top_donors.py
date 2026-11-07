@@ -247,8 +247,9 @@ HAY_CALL = "SpawnNear(ThingDefOf.Hay,"
 
 
 def burst_body_errors(flat):
-    """The hay spawn must RUN on every Burst: a statement at the method body's own level (brace depth 1, not the
-    unbraced arm of an if/for/else), with no return before it (GPT review 2026-11-02: text presence is not execution)."""
+    """The hay spawn must RUN on every Burst but a gentleBurst row's: a statement at the method body's own level (brace
+    depth 1, not the unbraced arm of an if/for/else other than that one guard), with no return before it (GPT review
+    2026-11-02: text presence is not execution). A carpet groundcover's burst leaves no husk (Pyrelands grass, live 2026-11-07)."""
     m = re.search(r"private static void Burst\(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp, "
                   r"bool tinder\) \{", flat)
     if not m:
@@ -256,7 +257,7 @@ def burst_body_errors(flat):
     i = flat.find(HAY_CALL, m.end())
     if i < 0:
         return ["Burst has no hay SpawnNear"]
-    pre = flat[m.end():i]
+    pre = re.sub(r"\s*if \(!prof\.gentleBurst\)\s*$", "", flat[m.end():i])
     depth = 1 + pre.count("{") - pre.count("}")
     errs = []
     if depth != 1:
