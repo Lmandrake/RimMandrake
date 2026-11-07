@@ -18983,3 +18983,4 @@
 {"seat":"CONDUCTOR","event":"needs","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D87C","to":"owner","reason":"lane cannot run until the Steve CPU fault is dealt with; see the NOT RESTORED note","why":"steward wake could not restore the lane","ts":"2026-11-07T13:33:50Z","tsn":1794058430829131158}
 {"seat":"CONDUCTOR","event":"bridge","state":"released","override":"released the bridge out from under RELENTLESS","ts":"2026-11-07T13:34:17Z","tsn":1794058457532648839}
 {"seat":"CONDUCTOR","event":"drop","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D87C","reason":"steward: SteveDesktop lane RUNNING again (running J20261107T021728Z-1079de)","why":"steward: the lane recovered by itself","ts":"2026-11-07T15:52:42Z","tsn":1794066762987880562}
+{"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-07T16:01:01Z","tsn":1794067261939466167}
