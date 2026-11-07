@@ -46,7 +46,10 @@ namespace RimMandrake.Pyrelands
         public static bool pyrelandsEnabled = true;
 
         public static bool ashDustingEnabled = true;
-        public static float ashDustingChance = 0.02f;
+        // Per fire tick. At 0.02 every burned cell reached loose ash's cap (x4) and a scar read as one grey sheet; this leaves a
+        // scatter of drifts with the dark ground between them (owner 2026-11-07, "the ground reads crisp").
+        public const float AshDustingDefault = 0.004f;
+        public static float ashDustingChance = AshDustingDefault;
 
         public static bool scorchFruitEnabled = true;
         // Per-burned-cell probability (one roll per Fire instance), NOT
@@ -137,7 +140,7 @@ namespace RimMandrake.Pyrelands
             base.ExposeData();
             Scribe_Values.Look(ref pyrelandsEnabled, "pyrelandsEnabled", true);
             Scribe_Values.Look(ref ashDustingEnabled, "ashDustingEnabled", true);
-            Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", 0.02f);
+            Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", AshDustingDefault);
             Scribe_Values.Look(ref scorchFruitEnabled, "scorchFruitEnabled", true);
             // Key renamed with the semantics change (per-tick -> per-cell,
             // 2026-09-16): a settings file saved under the old key holds a
@@ -329,11 +332,11 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Fire dusts loose ash", ref ashDustingEnabled,
                     "A burning cell on scorchable ground has a small chance, per tick batch, to "
                   + "drop loose ash filth. Off: fire still burns, no extra ash from this. Rides "
-                  + "alongside vanilla's own unconditional scorch mark — that is unaffected either way.");
+                  + "alongside nothing on open ground: vanilla's own ash is kept off natural Pyrelands ground, so this is the scar's ash.");
                 using (Dependent(list, "ashDustingChance"))
                 {
-                    list.Label("Rate: " + (ashDustingChance / 0.02f).ToString("0.00") + "x default");
-                    ashDustingChance = list.Slider(ashDustingChance, 0.02f * 0.25f, 0.02f * 3f);
+                    list.Label("Rate: " + (ashDustingChance / AshDustingDefault).ToString("0.00") + "x default");
+                    ashDustingChance = list.Slider(ashDustingChance, AshDustingDefault * 0.25f, AshDustingDefault * 5f);
                 }
                 list.Gap();
 

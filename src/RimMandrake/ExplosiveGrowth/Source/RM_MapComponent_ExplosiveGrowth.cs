@@ -285,6 +285,23 @@ namespace RimMandrake.ExplosiveGrowth
         public bool Sealed(Plant plant)
             => ExplosiveGrowthSettings.sealedGrowersVanilla && plant.Position.GetEdifice(map) is Building_PlantGrower;
 
+        // 0 unread, 1 vanilla crops need water on this map, 2 the biome opted out (RM_ExplosiveGrowthBiomeExtension).
+        private byte cropsNeedWaterHere;
+
+        /// <summary>The vanilla-crop water rule runs on this map: the Mod Setting, unless the biome opted out.</summary>
+        public bool VanillaCropsNeedWaterHere
+        {
+            get
+            {
+                if (cropsNeedWaterHere == 0)
+                {
+                    var ext = map.Biome?.GetModExtension<RM_ExplosiveGrowthBiomeExtension>();
+                    cropsNeedWaterHere = (byte)(ext != null && !ext.vanillaCropsNeedWater ? 2 : 1);
+                }
+                return cropsNeedWaterHere == 1 && ExplosiveGrowthSettings.Rates.vanillaNeedsWater;
+            }
+        }
+
         /// <summary>The §2.5 factor r for a spawned plant on this map. Pure: no writes, no allocation (§7).</summary>
         public float MoistureFactorFor(Plant plant, RM_PlantProfile prof)
         {
@@ -299,6 +316,7 @@ namespace RimMandrake.ExplosiveGrowth
             IntVec3 c = plant.Position;
             if (prof.archetype == RM_Archetype.Vanilla)
             {
+                if (!VanillaCropsNeedWaterHere) return 1f;
                 // Fresh ash feeds a crop as water would (Pyrelands' burn-and-sow field; AshFresh is false on every other biome).
                 bool near = s.vanillaNeedsWater && (AshFresh(c, now) || RM_WetSources.WaterNearby(this, c, RM_ExplosiveGrowthRegistry.CleanWaterSet, ExplosiveGrowthSettings.nearbyRadius, now));
                 return RM_ExplosiveGrowthKernel.MoistureFactor(prof.archetype, true, false, false, false, false, prof.woody, near, s);
@@ -319,7 +337,7 @@ namespace RimMandrake.ExplosiveGrowth
                 return "Too dry: grows at " + ExplosiveGrowthSettings.vanillaDryMultiplier.ToStringPercent() + " without water within "
                     + ExplosiveGrowthSettings.nearbyRadius + " cells";
             int now = Find.TickManager.TicksGame;
-            if (!ExplosiveGrowthSettings.Rates.vanillaNeedsWater || !RM_ExplosiveGrowthRegistry.PlantInScope(prof, map.Biome)
+            if (!VanillaCropsNeedWaterHere || !RM_ExplosiveGrowthRegistry.PlantInScope(prof, map.Biome)
                 || Sealed(plant) || !AshFresh(plant.Position, now)
                 || RM_WetSources.WaterNearby(this, plant.Position, RM_ExplosiveGrowthRegistry.CleanWaterSet, ExplosiveGrowthSettings.nearbyRadius, now))
                 return null;

@@ -96,6 +96,14 @@ namespace RimMandrake.ExplosiveGrowth
         public bool fireAdapted;
     }
 
+    /// <summary>A biome's own say over the vanilla-crop water rule. A biome whose ground already carries its own water rule for
+    /// crops (Pyrelands' ash field: dry deep ash 70%, watered 140%, owner 2026-11-07 "Dry deep ash stays at 70%, sowable")
+    /// opts out, so the two rules do not multiply into a crop that crawls at 7%. Absent = the Mod Setting decides.</summary>
+    public class RM_ExplosiveGrowthBiomeExtension : DefModExtension
+    {
+        public bool vanillaCropsNeedWater = true;
+    }
+
     /// <summary>A sheet row's archetype decision; Auto = the seed.</summary>
     public enum RM_ArchetypeChoice : byte { Auto = 0, DryNative = 1, WetNative = 2, FireAdapted = 3, Exempt = 4 }
 

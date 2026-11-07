@@ -112,6 +112,12 @@
         <letterLabel>The Pyrelands</letterLabel>
         <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It greens over within days of a burn and dries out soon after, and the first dry storm sets it off. Keep bare paving between the grass and your walls. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
       </li>
+      <!-- The ash field (PyrelandsAshField.cs) already makes water matter to a crop here: dry deep ash 70%, watered 140%, rich
+           soil by the ponds its own 140%. Explosive Growth's vanilla-crop rule (x0.1 beyond 2 cells of water) would multiply on
+           top and crawl a dry-ash crop at 7% (owner 2026-11-07: "Dry deep ash stays at 70%, sowable"). Pyrelands only. -->
+      <li Class="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthBiomeExtension" MayRequire="mandrake.rm.biomes">
+        <vanillaCropsNeedWater>false</vanillaCropsNeedWater>
+      </li>
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>

@@ -43,12 +43,18 @@
       here to a pale warm-grey and near-opaque so the drift actually stands out
       rather than blending into the dirt it is meant to be visible on top of.
     -->
+    <!--
+      Owner 2026-11-07 on the grey ground: "blurry grey stuff ... looks low-res and ugly". Measured by rebuilding a burned patch one
+      layer at a time: vanilla's Things/Filth/Ash blob at 3.3 cells, one splotch per point of thickness (Graphic_Cluster), laid
+      a soft grey fog over every cell. Our own crisp drifts instead (Textures/Things/Filth/RM_FE_LooseAsh, 256 px for 1.5 cells),
+      so a thin scatter shows the dark ground between them and a deep drift reads as heaped ash, not haze.
+    -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
-      <texPath>Things/Filth/Ash</texPath>
-      <color>(205, 200, 190, 235)</color>
-      <drawSize>3.3</drawSize>
+      <texPath>Things/Filth/RM_FE_LooseAsh</texPath>
+      <color>(255, 255, 255, 230)</color>
+      <drawSize>1.5</drawSize>
     </graphicData>
     <statBases>
       <!-- Under open sky ash is the ground's own colour here: a burn must not read as an ugly environment for days. Indoors it is dirt. -->
