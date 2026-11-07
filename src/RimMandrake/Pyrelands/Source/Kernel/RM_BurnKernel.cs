@@ -266,6 +266,21 @@ namespace RimMandrake.Pyrelands
         /// <summary>The switches every Tribes incident that answers the burn obeys (FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH): its own
         /// toggle, the mechanics gate, the burn line it reads (frozen when off) and the "Fire clock" setting, whose tooltip promises
         /// flame harvest, fire raid and fire rite never fire when it is off.</summary>
+        /// <summary>Warn about the burn nearing home: inside the range, not already on it, and not warned lately.</summary>
+        public static bool ApproachWarnDue(int nearestCells, int warnCells, int now, int lastWarnTick, int cooldownTicks)
+        {
+            return nearestCells > 0 && nearestCells <= warnCells && now - lastWarnTick >= cooldownTicks;
+        }
+
+        /// <summary>Which of the 8 compass words (0 north, clockwise) lies from home toward the fire; z grows north.</summary>
+        public static int CompassIndex(int dx, int dz)
+        {
+            if (dx == 0 && dz == 0) return 0;
+            double deg = System.Math.Atan2(dx, dz) * 180.0 / System.Math.PI;
+            if (deg < 0) deg += 360.0;
+            return (int)((deg + 22.5) / 45.0) % 8;
+        }
+
         public static bool TribesIncidentSwitchesOn(bool ownEnabled, bool mechanicsGateOn, bool burnLineEnabled, bool fireClockEnabled)
         {
             return ownEnabled && mechanicsGateOn && burnLineEnabled && fireClockEnabled;

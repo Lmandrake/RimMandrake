@@ -143,6 +143,14 @@ namespace RimMandrake.Pyrelands
         // event." The range below IS that sentence; do not widen it into
         // "occasionally" without a ruling.
         // ---------------------------------------------------------------
+        // The burn approaching home. A front walks about 60 cells a day (measured 2026-11-07, 250x250 map, day 1 of a
+        // real colony), and a player watching their base got no word of it until vanilla's Fire! alert, with flames
+        // already on the home area and the food stacked outside lost. 30 cells is about half a day. [INVENTED, played once]
+        public const int BurnApproachWarnCells = 30;
+        public const int BurnApproachCheckTicks = 600;
+        public const int BurnApproachCooldownTicks = 90000;
+        public const int BurnApproachHomeResampleTicks = 2500;
+
         public const float FireFrontMinDays = 2f;
         public const float FireFrontMaxDays = 4f;
 

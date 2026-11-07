@@ -51,6 +51,8 @@
       <drawSize>3.3</drawSize>
     </graphicData>
     <statBases>
+      <!-- Under open sky ash is the ground's own colour here: a burn must not read as an ugly environment for days. Indoors it is dirt. -->
+      <BeautyOutdoors>0</BeautyOutdoors>
       <Beauty>-8</Beauty>
       <Cleanliness>-10</Cleanliness>
     </statBases>

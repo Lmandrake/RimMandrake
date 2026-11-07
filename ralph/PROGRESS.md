@@ -1,50 +1,57 @@
 # Pyrelands progress
 
-Maps `i` (35 C) and `j` (50 C) with plain test colonists, playing at top speed. `ralph/QUESTIONS.md` is empty: he answered all three.
+This pass played a real colony for the first time: map `m` (`play.py build --tag m --temp 38`, save `NS_Pyrelands_play_m`), base by the east pond at (186,38), built by real blueprints and orders (`Transient/pyre_play/col.py setup|run|watch|fruit|hunt|status`). The record is in `Transient/pyre_play/col.json`. A burn-cycle watch to day 16 (`long1.py`, log `long_m.log`, shots `m_base_dNN`/`m_over_dNN`) ran on the OLD build and was stopped at retire, so read what it got.
 
-## Next, first: play a real colony for 15 days (GPT leads, below)
-Build a fresh 35 C landing (`play.py build --tag k`, check `--help` for the temperature), `Transient/pyre_play/base.py build`, arm the colonists, let them work unassisted, sample jobs per slice. This is what no pass has done, and every lead below needs it.
+## Next, first: deploy what is built, then play map `m` again from its save
+Built and compiled (`FireEcologyHook.dll`), **not deployed and never seen**; the game was running:
+1. **Warning when the burn nears home** (`MapComponent_BurnLine.WatchApproach`): a letter the first time any free-standing fire comes within 30 cells of the home area (what burns, what stops it, what it leaves), then a message, at most once every 1.5 days. Check: it fires about half a day before the "Fire!" alert, the compass word is right, and it stays quiet otherwise.
+2. **No vanilla `Filth_Ash` on natural ground on Pyrelands** (postfix on `FilthMaker.CanMakeFilth`; floors still get it). One burn had laid 50,119 `Filth_Ash` plus 50,741 loose ash on 62,500 cells. Check the scar still reads as burned (loose ash alone), the filth count halves, and loose ash no longer piles up 2x per cell.
+3. **Loose ash `BeautyOutdoors 0`** (indoors still -8). Colonists sat at "Ugly environment -10" and Beauty 0 from day 1.8, and cleaned all day.
+Then re-run `col.py` on a fresh `m`-style landing with a better player: stores indoors and the grass cut round the base. Watch days 0 to 15 and read the letter and message cadence.
 
-## Fixed this pass, deployed, seen
-- **The stall (his note):** telemetry worst tick about 780 ms, profile says Explosive Growth's `MapComponentTick` (max 492 ms in my sample; he saw about 1 s). Stepping a charge is about 1 us; destroying a plant is about 1.8 ms and a soaked map popped hundreds on one tick. The O(n) lister removal is my inference, not proven. Now: charges stepped per tick (`StepSweep`, 120 a tick), at most 3 pops a tick, gentle grass restarts in place instead of dying. Worst Explosive Growth tick 23 ms before the in-place restart; **not re-profiled under black rain since it went in**. Clear-weather telemetry after: tick 0.84 ms at Superfast, 4.3 ms at Ultrafast, odd single worst ticks 140-160 ms not attributed. New suite row `soaked_map_stays_smooth`, written but **never run**.
-- **Crops at a tenth (solved, not a bug):** Explosive Growth's rule for every Baroque biome: a vanilla plant with no water within 2 cells grows and ages x0.1. Light was fine: glow 1.0 half the day. Nothing told the player, so plants now show "Too dry: grows at 10% without water within 2 cells". I also made fresh ash count as water for crops for its 3 days, which is **my call, not his**: tell him. Same rice, same map, 3 days at 50 C: dry ash 5 to 6%, scar 5 to 23%, beside water 5 to 23%. Staged plots with concrete rings, placed by the bridge, not sown by colonists.
-- **Grey ground (his note):** removing layers on a patch settled it: `Filth_LooseGround` is the blur. Gone from grass pops, scoped by `gentleBurst` so other biomes keep theirs. Deep ash was tinted (48,46,43) over an already dark texture; now white tint, reads as charcoal. Ash and ground terrain gained `FadeRough`: edge softness not re-shot closely.
-- **Grass bursts only when wet (his card):** fresh ash feeds growth, not the cycle. Real scar on dry ground, plants of 520 cells: d0 37, d1 180, d2 291, d3 367, d4 507, d7 517. Read as his "re-greening in days, green in a week". It fills fast at d4 with small plants; green by eye at d7. Scar 1 of 2 was a partial burn, so only this one counts. Effect on front spread over weeks not watched.
-- **Slow thirst (his card):** `RM_ThirstGrassWateredExtension` in FlowWorks, replaces the exemption: falls x0.04, search radius 150, never dehydrates. Compiled and deployed, **never observed**. Use `jawa/pawn_need` to drop a herd's level and watch them walk to a pond; then a map with no water. Level starts 0.8 for all so a herd should go together around day 10. Check the fall rate is actually slow in 50 C heat.
+## What the colony showed (old build)
+- The opening front grows into a ring and crosses the whole 250 map in about 3 days at about 60 cells a day. It looks superb (`first_look_6`, `first_look_2`). Fronts then keep walking in from the edges (day 5: 270 to 430 fires).
+- No warning reached a player at home until the fire stood on the home area (vanilla alert). Everything in the outdoor stockpile burned: all 60 meals, wood and a rifle. By day 3 the colony was starving. Fix 1 above.
+- Firefighters beat flames for 0.3 days without eating (vanilla priority). A colonist hauling slag walked through the front and was burned.
+- Rice: on fresh ash it was 57% grown at day 4, "Fresh ash: feeds it as water would". On rich soil 3 cells from mud, "Too dry: 10%". The rule is consistent (mud counts, radius 2), but the pond's mud ring is about 5 cells wide, so most "richer ground" by water is dry for crops. Not changed yet: decide whether 2 cells is right when banks are this wide.
+- Scorch-fruit is capped at 40 on the map (`scorchFruitMapCap`) and spoils in about a day. The 40 always sit wherever the front is now, so a fixed base sees 2 or 3 pods for one day as the front passes. A pod yields 5 berries' worth, a snack. My 12 harvest orders were all far away and withered before anyone went.
+- Grass is back to full cover about 2 days after the burn (plants recovered from 25k to 30k by day 4.7).
+- Grass inside a newly walled room stays until cut. Colonists slept among it, and it burned indoors on day 2.9 (room 51 C).
+- Performance: 270 to 550 tps, mean tick 1.3 to 4 ms during map-wide burns. No stall seen.
+- Weak quicktest colonists (shooting 0, mental fragility), a kidnap raid on day 4 and a mad gizka are vanilla noise. Give the next colony a real start.
 
-## GPT broaden call (made this pass, `gpt_help_pass006.md` in the ralph_pyrelands folder)
-Asked: what does a first-15-days stranger hit that my staged tests miss. I chose three and have **not yet played any**, so the DONE requirement to act on it is still open: (1) busy building when a front comes: does orange-tinted grass hide fire, is there warning; (3) scorch-fruit from discovery to a meal by ordinary work priorities, does it rot before anyone reaches it; (7) by day 10-15, do cleaning, firefighting and clearing eat the colony's day. Others worth a go: (2) trust in a firebreak with hawk embers; (5) black rain and pond bank during fire; (6) deliberately farming burns as a loop, which my fresh-ash change makes stronger.
+## The Conductor's note (in LOOK.md)
+Brown patches: rich soil or mud, and they fade on this build (`first_look_8`). The pale squares in `first_look_1` are not identified; read that save's terrain. Cinderfall is not re-shot.
 
-## Then
-Scorch-fruit rot timing; warmth appearing and leaving; burrower on a real front; hawk `hawk2.py X Z` in dry weather; drifts growing in long ash fall; black rain and ash fall shots (`scenes2.py skies X Z`); black rain compounding on a crop; census 3 more fresh maps; run the suite for `modcheck status` (still RED, not run). Foils and showcases from the plan not built; `PYRE*` items not re-checked.
+## GPT broaden (pass006, last pass)
+Acted on lead 1 (busy building when a front comes: no warning; fixed, unseen), lead 3 (scorch-fruit to a meal: capped and far away; not changed) and lead 7 (cleaning eats the day: true; fixed, unseen). Leads 2, 5 and 6 are not tried.
+
+## Still owed
+Plan owed changes: firebreak def gone, but `Firebreak` is still referenced in `RM_FireEcoKernel.cs`, `validation.py`, `human_review.py` and the fuzz. Rain budget gone. The biome text says engineered. Suite not run (modcheck RED). Not seen: thirst herds at the pond, hawk ember, burrower dive on a front, ash fall drifts, black rain. Add a fuzz row for `RM_BurnKernel.ApproachWarnDue` and `CompassIndex`.
 
 ## Practical
-- Long bridge scripts: `python.exe -u ... > log` with `run_in_background` and a long timeout; piping through `cut` hides everything. A killed script leaves the game running: pause it.
-- `Transient/pyre_play/r2.py` restarts with both the composed mod and FlowWorks; `restart.py` omits FlowWorks.
+- `col.py` needs `base` coordinates X,Z=186,38 for map `m`. `inspect_string` takes `defName`+`rect`, not `thing`. `jawa/ordered_job` takes `pawnId`, `jobDef`, `targetAId`.
 - Pre-push guard: commit source first, rebuild, then commit the DLLs.
-- `inspect_string` returns far fewer plants than asked, so its "mean grown" is a sample.
-- A 50 C tile runs 55-58 C at noon, where crops drop to 2-19% for temperature and colonists collapse. Leave it unless he asks; the planet paint decides how common it is.
-- `selftest_natives_drink_own_water.py` fails 3 rows on Miasma and The Chill water, not from this pass's change as far as I can see (not run before it).
 
 ## Count
 - pyre_plant_distribution_correct: true
 - pyre_animal_distribution_correct: unseen
 - pyre_mapgen_log_clean: true
 - pyre_ground_deep_ash: true
-- pyre_ash_fertile_when_watered: true
+- pyre_ash_fertile_when_watered: unseen
 - pyre_fresh_burn_feeds_the_field: unseen
 - pyre_grass_chokes_ground: true
 - pyre_embergrass_regrows: true
-- pyre_burn_line_present: unseen
+- pyre_burn_line_present: true
 - pyre_scorchfruit_fire_born: true
 - pyre_scorchfruit_produces: true
 - pyre_scorchfruit_spoils_fast: unseen
-- pyre_ruins_scorched: true
+- pyre_ruins_scorched: unseen
 - pyre_firehawk_carries_ember: unseen
 - pyre_furnacebeast_warmth: unseen
 - pyre_furnacebeast_heats_room: true
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: unseen
-- pyre_cinderfall_distinct: true
 - pyre_blackrain_reads: unseen
+- pyre_cinderfall_distinct: true
 - pyre_cannot_ordinary_rain: true

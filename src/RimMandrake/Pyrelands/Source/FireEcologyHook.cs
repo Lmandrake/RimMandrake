@@ -36,6 +36,9 @@ namespace RimMandrake.Pyrelands
                   typeof(Patch_FireTick_AshAndScorchFruit), "fire-tick-ash-scorchfruit",
                   "armed; burning cells on scorchable ground may dust loose ash "
                   + "and rarely seed a scorch-fruit pod");
+            Apply(h, AccessTools.Method(typeof(FilthMaker), nameof(FilthMaker.CanMakeFilth)),
+                  typeof(Patch_FilthMaker_NoAshOnAsh), "no-vanilla-ash-on-natural-ground",
+                  "armed; flame leaves no Filth_Ash on natural ground here, the biome's own loose ash marks a burn");
         }
 
         private static void Apply(Harmony h, MethodBase target, Type patchClass,
@@ -160,6 +163,21 @@ namespace RimMandrake.Pyrelands
         private static bool ForBiomeWith(BiomeDef biome, bool crossApplies)
         {
             return RM_FireEcoKernel.FireEcologyOnMap(biome != null && biome.defName == NativeBiomeDefName, crossApplies);
+        }
+    }
+
+    /// <summary>Vanilla's flame drops Filth_Ash (beauty -12) on all it destroys. Here that is every grass plant, so one burn laid
+    /// 50,000 of them over 62,500 cells beside our 50,000 loose ash (live, 2026-11-07): ash on deep ash, a cell reading "Ash,
+    /// Loose ash, Deep ash", colonists at "Ugly environment" and cleaning for days after every front. Natural ground takes
+    /// only the biome's loose ash; a floor still gets vanilla's.</summary>
+    public static class Patch_FilthMaker_NoAshOnAsh
+    {
+        public static void Postfix(ref bool __result, IntVec3 cell, Map map, ThingDef filthDef)
+        {
+            if (!__result || filthDef != ThingDefOf.Filth_Ash || map == null || !PyrelandsMechanicsGate.On) return;
+            MapComponent_BurnLine line = MapComponent_BurnLine.For(map);
+            if (line == null || !line.IsPyrelandsMap || !cell.InBounds(map)) return;
+            if (!map.terrainGrid.TerrainAt(cell).IsFloor) __result = false;
         }
     }
 

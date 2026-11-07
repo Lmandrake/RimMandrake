@@ -202,6 +202,8 @@ namespace RimMandrake.Pyrelands
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref lastApproachWarnTick, "lastApproachWarnTick", -999999);
+            Scribe_Values.Look(ref approachLetterSent, "approachLetterSent", false);
             Scribe_Values.Look(ref arsonDebt, "arsonDebt", 0f);
             Scribe_Values.Look(ref ticksSinceAnyFire, "ticksSinceAnyFire", 0);
             Scribe_Values.Look(ref lastReseedAttemptTick, "lastReseedAttemptTick", -99999);
@@ -252,6 +254,7 @@ namespace RimMandrake.Pyrelands
             Measure();
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
+                WatchApproach();
                 NudgeBurrowers();
                 AccrueArsonDebt();
                 KeepTheBurnAlive();
@@ -327,6 +330,77 @@ namespace RimMandrake.Pyrelands
         {
             return def == JobDefOf.GotoWander || def == JobDefOf.Wait_Wander || def == JobDefOf.Wait_MaintainPosture
                 || def == JobDefOf.Wait;
+        }
+
+        // The burn nearing home. Saved, so a reload does not repeat the first letter or the last warning.
+        private int lastApproachWarnTick = -999999;
+        private bool approachLetterSent;
+        // Unsaved: rebuilt within BurnApproachHomeResampleTicks of a load.
+        private int lastApproachCheckTick = -999999;
+        private int homeSampleTick = -999999;
+        private readonly List<IntVec3> homeSample = new List<IntVec3>();
+
+        /// <summary>A front gave no sign to a player watching their base until flames stood on the home area. Say so about
+        /// half a day out: the first time as a letter that says what a burn takes and what stops it, then as a message.</summary>
+        private void WatchApproach()
+        {
+            int now = Find.TickManager.TicksGame;
+            if (!AnyBurn || now - lastApproachCheckTick < PyrelandsTuning.BurnApproachCheckTicks
+                || now - lastApproachWarnTick < PyrelandsTuning.BurnApproachCooldownTicks)
+            {
+                return;
+            }
+            lastApproachCheckTick = now;
+            if (now - homeSampleTick >= PyrelandsTuning.BurnApproachHomeResampleTicks)
+            {
+                homeSampleTick = now;
+                homeSample.Clear();
+                foreach (IntVec3 c in map.areaManager.Home.ActiveCells)
+                {
+                    if (c.x % 4 == 0 && c.z % 4 == 0) homeSample.Add(c);
+                }
+            }
+            if (homeSample.Count == 0)
+            {
+                return;
+            }
+            List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            int nearest = int.MaxValue;
+            IntVec3 nearestFire = IntVec3.Invalid;
+            IntVec3 nearestHome = IntVec3.Invalid;
+            for (int i = 0; i < fires.Count; i += 3)    // a front is continuous; every third flame finds it
+            {
+                if (!(fires[i] is Fire { parent: null } fire) || !fire.Spawned) continue;
+                IntVec3 f = fire.Position;
+                for (int j = 0; j < homeSample.Count; j++)
+                {
+                    IntVec3 h = homeSample[j];
+                    int d = Mathf.Max(Mathf.Abs(f.x - h.x), Mathf.Abs(f.z - h.z));
+                    if (d < nearest)
+                    {
+                        nearest = d;
+                        nearestFire = f;
+                        nearestHome = h;
+                    }
+                }
+            }
+            if (!nearestFire.IsValid || !RM_BurnKernel.ApproachWarnDue(nearest, PyrelandsTuning.BurnApproachWarnCells, now, lastApproachWarnTick,
+                    PyrelandsTuning.BurnApproachCooldownTicks))
+            {
+                return;
+            }
+            lastApproachWarnTick = now;
+            string from = ("RM_Compass" + RM_BurnKernel.CompassIndex(nearestFire.x - nearestHome.x, nearestFire.z - nearestHome.z)).Translate();
+            if (!approachLetterSent)
+            {
+                approachLetterSent = true;
+                Find.LetterStack.ReceiveLetter("RM_BurnApproachLabel".Translate(), "RM_BurnApproachLetter".Translate(nearest, from),
+                    LetterDefOf.ThreatSmall, new TargetInfo(nearestFire, map));
+            }
+            else
+            {
+                Messages.Message("RM_BurnApproachMessage".Translate(nearest, from), new TargetInfo(nearestFire, map), MessageTypeDefOf.ThreatSmall);
+            }
         }
 
         private void Measure()
