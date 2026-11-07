@@ -2,7 +2,7 @@
 """RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS. A supervisor tick stamps its readings with the WRITE time and names its slow
 steps; the tick's mod gap reads a --gate plan (headers and DLLs), never the 260 s full plan; one game reading serves
 several items; and the tick_age_s rule is back at 10 min with the budgets that keep a tick inside it. The Conductor's two
-clauses: a round's end starts the next proof with no tick and no timer, and RUNNING_NOW shows the game's idle share.
+clauses: a round's end starts the next proof with no tick and no timer, and RELENTLESS_NOW shows the game's idle share.
 
     python3 src/RimMandrake/rimflow/selftest_relentless_tick_stamp.py
 """
@@ -576,7 +576,7 @@ def t_idle_share():
     page = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "Utils", "selftest_running_now.py")],
                           capture_output=True, text=True, timeout=200, stdin=subprocess.DEVNULL)
     ok(page.returncode == 0 and "PASS the page shows the game's idle share" in page.stdout,
-       "RUNNING_NOW's page carries it: selftest_running_now exit %d %s" % (page.returncode, page.stdout[-300:]))
+       "RELENTLESS_NOW's page carries it: selftest_running_now exit %d %s" % (page.returncode, page.stdout[-300:]))
 
 
 def RN_iso(t):

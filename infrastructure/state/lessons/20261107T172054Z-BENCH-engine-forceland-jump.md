@@ -1,0 +1,2 @@
+COMPUTED from decompiled 1.6, not seen running: Pawn_FlightTracker.ForceLand starts Landing at lerpTick 25, where LandingCurve is 0.4, from Flying factor 1; with Pawn_DrawTracker's 0.6-cell offset that is a 0.36-cell drop in one tick on any forced landing, for every flyer. Also AnimationDefGenerator_Flying sets durationTicks to (frames+1)*ticksPerFrame, so the last pose appears to hold double. A 'no jump at landing' bar or an offline playback must baseline vanilla Chicken rather than assume smoothness.
+home: skills/rimworld-modding/references/flight.md

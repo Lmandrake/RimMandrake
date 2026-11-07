@@ -49,8 +49,8 @@ RULES_FILE = os.path.join(HERE, "..", "rimflow", "relentless_rules.json")     # 
 PAUSE_WORDS = "Relentless starts no new content work. System items, expedited items, live-failure fixes, checks of finished builds and the game phase go on."
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"
-OUT = OUT_DIR + "/RUNNING_NOW.md"
-PHONE_OUT = OUT_DIR + "/RUNNING_NOW_PHONE.md"
+OUT = OUT_DIR + "/RELENTLESS_NOW.md"
+PHONE_OUT = OUT_DIR + "/RELENTLESS_NOW_PHONE.md"
 HIST = OUT_DIR + "/running_history.jsonl"
 STATE = OUT_DIR + "/running_state.json"
 STEVE_CACHE = OUT_DIR + "/running_steve.json"
@@ -2655,6 +2655,7 @@ def phone_copy(p, chips):
         out.append("TOKEN PAUSE ON: " + PAUSE_WORDS)
     elif p["pause"] is None:
         out.append("TOKEN PAUSE UNMEASURED")
+    out += owner_stop_words()
     out += [" · ".join(t for t, _ in chips), ""] + fuel_phone(p) + [""]
     if f:
         n = f["needs"]
@@ -2823,6 +2824,33 @@ def collect_pause(env):
     return bool(rules.get("only_system_and_live"))
 
 
+def owner_stop_words(root=AGENT):
+    """The owner's stop as plain lines, or []: the Dispatcher's PAUSE file, then the Ralph loop's last event. While stopped
+    nothing reaps Relentless's records, so a row reading running or checking is what the store last said (owner 2026-11-06)."""
+    out = []
+    try:
+        with open(os.path.join(root, "dispatcher", "PAUSE"), encoding="utf-8", errors="replace") as f:
+            why = f.read().strip() or "no reason given"
+        out.append("PIPELINE STOPPED. %s Rows below reading running, checking or judging are leftover records, not live work." % why)
+    except OSError:
+        return []
+    try:
+        with open(os.path.join(root, "ralph_graffiti", "events.log"), encoding="utf-8", errors="replace") as f:
+            lines = f.read().splitlines()
+        if lines:
+            out.append("Ralph loop on Graffiti, last event: " + lines[-1])
+    except OSError:
+        pass
+    return out
+
+
+def stop_banner():
+    stop = owner_stop_words()
+    if not stop:
+        return []
+    return ['<div style="max-width:1040px;background:%s;color:#14171c;border-radius:6px;padding:6px 12px;font-weight:600">%s</div>' % (WARN, "<br>".join(hesc(s) for s in stop)), ""]
+
+
 def pause_banner(p):
     """Top of the page while the pause is on; one line saying so when it cannot be read; nothing while it is off."""
     if p["pause"]:
@@ -2989,7 +3017,7 @@ def build(env, state, hist, write=True):
     p["roots"] = roots
 
     head = [strip + ' <span style="color:#98a1af;font-size:85%%;white-space:nowrap">at %s, new every minute</span>' % time.strftime("%H:%M:%S %Z", time.localtime(now)), ""]
-    head += pause_banner(p)
+    head += pause_banner(p) + stop_banner()
     ok_t, fail = state.get("ok_t"), state.get("fail_since")
     if fail or (ok_t and now - ok_t > STALE_AFTER):
         head += ["> **STALE since %s**%s" % (stamp(ok_t or fail), (": last failed refresh said " + state["last_error"]) if state.get("last_error") else ""), ""]
@@ -3100,9 +3128,9 @@ def check():
     try:
         age = time.time() - os.stat(OUT).st_mtime
     except OSError as e:
-        print("RUNNING_NOW.md: UNMEASURED (%s)" % e)
+        print("RELENTLESS_NOW.md: UNMEASURED (%s)" % e)
         return 1
-    print("RUNNING_NOW.md is %s old%s" % (ago(age), "" if age <= STALE_AFTER else " - STALE (limit 3 min)"))
+    print("RELENTLESS_NOW.md is %s old%s" % (ago(age), "" if age <= STALE_AFTER else " - STALE (limit 3 min)"))
     return 0 if age <= STALE_AFTER else 1
 
 

@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 183.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.7881222
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 62.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1434742
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_TunnelSnake",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_EARTHLY', 'DESC_MISS', 'STYLE_CARTOON', 'STYLE_OFF']; polish ['LEGIB_32']; unreadable ['SCALE']",
+  "gpt regen: unsettled ['K1', 'K2', 'K4'], own blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'DESC_MISS']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ee24be908ed0ab334c3b3ec43266dbd1dd06ad9de4e26d1791d9c0aab2333f05",
+  "east.png": "0667987449edff043ba28112d4ee87b4f6ff0025b74fb055dce1854298efc9a8",
+  "north.png": "8d76b3d547847735f1a94015cd14169e8c47339c4d13ad0a166bda1a98a891aa",
+  "scale.png": "a7644980540f2967b5d2c47fe656c128102a6077586bfe8c36397b42d1f5bfab",
+  "facings.png": "a738758e96ad2ba3a07f6f55165584013afbd8d5185931ef374bfc9b1a6e9357"
+ }
+}

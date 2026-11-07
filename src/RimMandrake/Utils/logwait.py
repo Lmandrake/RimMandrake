@@ -14,6 +14,9 @@ it, and a wait that reads the whole file returns at once on that stale line. In 
     launch()
     cur.wait("Bridge token:", 900)    # {"ok": True, "line": ..., "waited_s": ...} or {"ok": False, "why": ...}
 
+A wait for "Bridge token:" also takes the port line: a game started with its own port and token (game_instance.py) logs
+that and no token line. No other text is widened, and game a never logs that wording.
+
 Rotation shows up as the file shrinking below the cursor, or a new inode, and rereads from 0. Keep polling from before the
 launch: a new log that outgrew the old offset between two polls on the same inode would go unnoticed.
 
@@ -23,6 +26,8 @@ import argparse
 import os
 import sys
 import time
+
+BRIDGE_LINES = ("Bridge token:", "GABP server connected to GABS on port")
 
 
 class LogCursor:
@@ -43,7 +48,7 @@ class LogCursor:
 
     def poll(self, token):
         """The first line holding `token` since the cursor, or None. A missing log is 'not yet', never an error."""
-        needle = token.encode("utf-8")
+        needles = [t.encode("utf-8") for t in (BRIDGE_LINES if token == BRIDGE_LINES[0] else (token,))]
         st = self._stat()
         if st is None:
             return None
@@ -55,7 +60,7 @@ class LogCursor:
             new = f.read()
         self.pos += len(new)
         buf = self.tail + new                              # the tail catches a token split across two reads
-        at = buf.find(needle)
+        at = min([i for i in (buf.find(n) for n in needles) if i >= 0], default=-1)
         if at < 0:
             nl = buf.rfind(b"\n")                          # keep the unfinished line: it may become the match
             self.tail = buf[nl + 1:] if nl >= 0 else buf

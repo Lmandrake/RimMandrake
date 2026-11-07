@@ -3,13 +3,14 @@
 set -u
 BATCH="$1"
 DIR="$(cd "$(dirname "$0")" && pwd)"
+[ "${RM_GAME_INSTANCE:-a}" = a ] || { echo "REFUSED: this launches through Steam, which can only start game a"; exit 2; }
 LOGDIR="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LOGDIR/Player.log"
 CFG="$LOGDIR/Config/ModsConfig.xml"
 
 python3 "$DIR/gen_config.py" "$BATCH" || exit 2
 
-taskkill.exe /F /IM RimWorldWin64.exe >/dev/null 2>&1
+python3 "$DIR/../game_instance.py" stop --force >/dev/null
 sleep 8
 mv -f "$LOG" "$LOG.prev" 2>/dev/null
 

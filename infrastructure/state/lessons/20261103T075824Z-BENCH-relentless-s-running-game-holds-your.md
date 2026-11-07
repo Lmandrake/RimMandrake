@@ -1,1 +1,0 @@
-Relentless's 'the running game holds your build' can be false: on 2026-11-03 the game the supervisor ran GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS A1 against had a 28-mod list with no mandrake.rm.gimmesomeslack. A live proof should preflight that its mod's type is loaded and fail by name (gss_slice_window_proof.py now does).

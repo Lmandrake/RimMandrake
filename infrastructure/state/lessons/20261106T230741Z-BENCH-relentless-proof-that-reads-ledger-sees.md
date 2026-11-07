@@ -1,1 +1,0 @@
-A Relentless proof that reads the ledger sees it as of the candidate's PARENT (relentless_wall.make_box tree_from_parent): a rimflow file event committed in the same commit that finish names is invisible in the box, RED while the clone's own run is green. Land the ledger shard one commit earlier. Found on RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT, 2026-11-06.

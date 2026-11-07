@@ -7,11 +7,11 @@ Run from WSL (python3), repo root as cwd, bridge HELD (`rimflow bridge who`):
       --plan src/RimMandrake/Warcasket/northstar_plan.py [--deploy-mod Warcasket ...] [--compose]
 
 Steps (each prints one line; any failure stops with the step name):
-  1 stop the game (graceful taskkill, wait for exit)
+  1 stop this process's game (graceful taskkill by pid, wait for exit): RM_GAME_INSTANCE says which, nothing set is game a
   2 modset_builder --tier <tier> --apply            (backs ModsConfig up itself; the pre-session list is also
                                                      copied to deployed/config/ModsConfig.pre-session.<ts>.xml)
   3 deploy_custom_mods --compose biomes / --mod X --apply   (only what you name)
-  4 launch via Steam, wait for `Bridge token:` in Player.log
+  4 launch via Steam (a named game starts directly), wait for `Bridge token:` or its port line in Player.log
   5 start a quicktest world (rimworld/start_debug_game_ready) unless --no-quicktest (the plan's own site prep,
     e.g. Pyrelands' northstar_site.py, builds its own)
   6 northstar_driver cli run (Windows python) -> Transient/northstar/<Mod>_<ts>.json, summary printed
@@ -34,6 +34,7 @@ _UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
 import bridge_holder  # noqa: E402
+import game_instance  # noqa: E402
 from game_paths import MODS_CONFIG as MODSCONFIG, PLAYER_LOG  # noqa: E402
 
 
@@ -48,14 +49,20 @@ def sh(argv, timeout=600, cwd=ROOT):
 
 
 def running():
-    rc, out = sh(["tasklist.exe"], timeout=60)
-    return "RimWorldWin64" in out
+    try:
+        return game_instance.running()
+    except game_instance.Blind as e:    # no answer is no exit: the stop keeps waiting, a load keeps loading
+        say("game", "cannot tell: %s" % e)
+        return True
 
 
 def stop_game():
     if not running():
         return say("1 stop", "game not running")
-    sh(["taskkill.exe", "/IM", "RimWorldWin64.exe"], timeout=60)
+    try:
+        game_instance.stop()
+    except game_instance.Blind as e:
+        sys.exit("[1 stop] %s (nothing stopped)" % e)
     t0 = time.time()
     while running() and time.time() - t0 < 90:
         time.sleep(2)
@@ -72,7 +79,15 @@ def launch_and_wait(budget=None):
         budget = load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"]
     import logwait
     cursor = logwait.LogCursor(PLAYER_LOG)     # before the launch, so the last session's token cannot answer
-    sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
+    if game_instance.current() != game_instance.DEFAULT:        # Steam's launch can only ever start game a
+        try:
+            rc, out = game_instance.launch()
+        except (game_instance.Refused, game_instance.Blind) as e:
+            sys.exit("[4 launch] %s" % e)
+        if rc != 0:
+            sys.exit("[4 launch] %s" % out)
+    else:
+        sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
     time.sleep(20)
     r = cursor.wait("Bridge token:", budget - 20, abort=lambda: None if running() else "game process gone")
     if r["ok"]:

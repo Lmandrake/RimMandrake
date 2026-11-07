@@ -1,1 +1,0 @@
-A relentless blind checker's box excludes infrastructure/state/items/ (relentless_rules.json tree_exclude) but ships infrastructure/state/ledger and code_review from the parent commit: a proof that asks whether an item is live must read the ledger events, never items/*.md (GEO_LANDMARKS_SKETCH_BEFORE_THE_PAINT_DRIES failed blind twice on this).

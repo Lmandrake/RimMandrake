@@ -112,7 +112,10 @@ DEFAULT_TOKEN = ""
 # RM_GAME_LOGDIR names this machine's Player.log folder (game_paths, GAME_PATHS_REWIRE_ONE_ENV_PER_MACHINE); when it
 # is set it is the ONLY place looked, so a stale log of another Windows user never hands out a dead token
 # (RIMBRIDGE_LOGDIR_FIX_ENV_VAR_IGNORED). Unset keeps the old default and the WSL fallback below.
-LOGDIR_FROM_ENV = bool(os.environ.get("RM_GAME_LOGDIR", "").strip())
+# A named game (RM_GAME_INSTANCE=b, game_instance.py) is the same: its own log only, and with no endpoint in that log and
+# none in the environment, its own port and token. It must never fall through to 5174, which is game a's bridge.
+NAMED_GAME = os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a")
+LOGDIR_FROM_ENV = NAMED_GAME or bool(os.environ.get("RM_GAME_LOGDIR", "").strip())
 if LOGDIR_FROM_ENV:
     from game_paths import PLAYER_LOG as DEFAULT_PLAYER_LOG  # noqa: E402
 else:
@@ -886,9 +889,12 @@ def discover_from_log(path=None):
 
 
 def resolve_endpoint(host=None, port=None, token=None, log_path=None):
-    """CLI arg > env > Player.log > module default, per field independently."""
+    """CLI arg > env > a named game's own > Player.log > module default, per field independently."""
     log_host = log_port = log_token = None
-    if host is None or port is None or token is None:
+    if NAMED_GAME:
+        import game_instance
+        log_port, log_token = game_instance.port(), game_instance.read_token()
+    elif host is None or port is None or token is None:
         log_host, log_port, log_token = discover_from_log(log_path)
 
     host = host or os.environ.get("RIMBRIDGE_HOST") or log_host or DEFAULT_HOST

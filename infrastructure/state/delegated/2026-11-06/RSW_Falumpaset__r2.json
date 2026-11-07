@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 85.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5382788000000001
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 39.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1361562
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Falumpaset",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'CANON_MISS', 'F_INCONSISTENT']; polish ['SCALE_WRONG']; unreadable ['SCALE']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking ['F_INCONSISTENT', 'CANON_MISS', 'F_INCONSISTENT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e3fd513a0b02378ad605023264b9677c9d1d9d759efaaed3fc03c36125823201",
+  "east.png": "cb583100c582284f91957883f202ffb491d6195cf9038ea649e543575d234fb5",
+  "north.png": "416ca6a5de7860e2333b43964a77e0bce32137bc0e81ba531ce3e6dea738d0eb",
+  "scale.png": "31745377c880a2d0dc831d7bdc1af3fb7667a52c486b91787d44e6ab7252c209",
+  "facings.png": "479e41b22d27e40fd0cebd256f3ecc0612bdbd35f692c1522f048b7f01ab978f"
+ }
+}

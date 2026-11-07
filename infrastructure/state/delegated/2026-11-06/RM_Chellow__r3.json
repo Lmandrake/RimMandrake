@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 77.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5150428
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.13256420000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Chellow",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said good); blocking ['F_INCONSISTENT', 'X_CROP']; polish ['LEGIB_32']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "29ac31602b01d23883a34638fdb0f357afced13a422c347951eac6ea9cfaa7a8",
+  "east.png": "b492a660b45b30c2ceadb745fb45c748bacdaab9c657859f3f588d774c56932f",
+  "north.png": "ba6a5337a27c877cafbfeb9fa38ab3b792d5554320cd1b299df83286d3a199a0",
+  "scale.png": "f3ed501d48a555b125bddca0e7b8558448098010347e26f89bdcfacce3dbaa41",
+  "facings.png": "33761cfc1f692baa9e3238bde8759fd82f1124a1757a6cc0425240f86e4bd3c8"
+ }
+}

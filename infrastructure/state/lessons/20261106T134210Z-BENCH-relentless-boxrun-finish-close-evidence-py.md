@@ -1,1 +1,0 @@
-relentless boxrun/finish: close_evidence.py inside the walled box cannot run ~/dev/Lodestar/bin/lib/agent_storage.py (Permission denied), so every boxrun prints CLOSE-EVIDENCE WRITE FAILED; the proof verdict is unaffected but no gate sees the run (seen 2026-11-06 on GAMEENV_FIX_PROOFSITE_9E77C59D_ITEMS_WAIT)

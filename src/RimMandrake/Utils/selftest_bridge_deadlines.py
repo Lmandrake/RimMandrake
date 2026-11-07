@@ -285,7 +285,8 @@ def t_policy():
 
 
 # ---------------------------------------------------------------- 7. no clock-only game kill
-GAME_KILL = re.compile(r"taskkill[^\n]*RimWorld|Stop-Process[^\n]*RimWorld|kill_pid\(|RimWorldWin64[^\n]*\.kill\(", re.I)
+GAME_KILL = re.compile(r"taskkill[^\n]*RimWorld|Stop-Process[^\n]*RimWorld|kill_pid\(|RimWorldWin64[^\n]*\.kill\("
+                       r"|game_instance\.py[^\n]* stop\b|game_instance\.stop\(|instance\(\)\.stop\(", re.I)   # stopping now goes through this
 CLOCK_GUARD = re.compile(r"time\.time\(\)\s*-|monotonic\(\)\s*-|\belapsed\b|\bdeadline\b|\bage\s*[<>]|-gt\s+\d{3}|\bbound\b")
 # Every site that kills RimWorld, and why it is not a clock: each kills a game BEFORE a launch it was asked to make.
 ALLOW = {
@@ -294,6 +295,8 @@ ALLOW = {
     "src/RimMandrake/Utils/loadsweep/sweep_load.sh": "kills before each batch's launch",
     "src/RimMandrake/Utils/loadsweep/biome_load_proof.sh": "kills before each biome's tier write and launch",
     "src/RimMandrake/Utils/rimbench/gl_sheet_run.sh": "kills before each record's launch",
+    "src/RimMandrake/rimflow/relentless_stage.py": "game_down() before the staging's deploy and launch",
+    "src/RimMandrake/Utils/game_instance.py": "the stopping tool itself: acts when asked, by pid, on no clock",
 }
 
 

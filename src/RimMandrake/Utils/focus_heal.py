@@ -36,11 +36,20 @@ def is_game(title):
 
 
 _GET_RW = r'''
-$p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1
+$p = @GAME@
 if (-not $p) { "ERR|no RimWorldWin64 process"; exit }
 $h = $p.MainWindowHandle
 if ($h -eq 0) { "ERR|RimWorld has no main window handle"; exit }
 '''
+
+
+def get_rw_script():
+    """_GET_RW aimed at this process's game (game_instance.py). Its Blind is a RuntimeError, so fatal to the ladder: no
+    retry can tell the games apart."""
+    import game_instance
+    return _GET_RW.replace("@GAME@", game_instance.ps_process())
+
+
 LADDER = [
     ("minimise_blocker", r'''
 $fgH = [Fg]::GetForegroundWindow()
@@ -98,7 +107,7 @@ def heal(gentle_error, rounds=2):
             gentle_error, game_focus.OPT_IN_ENV), [("refused", "minimise not opted in")])
 
     def run(body):
-        res = game_focus._ps(game_focus._PS_HELPER + _GET_RW + body)
+        res = game_focus._ps(game_focus._PS_HELPER + get_rw_script() + body)
         if res.startswith("ERR|"):
             raise RuntimeError(res[4:])
 

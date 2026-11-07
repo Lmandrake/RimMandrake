@@ -70,7 +70,7 @@ Still not proven / real gaps:
      FROZEN save's own world.name is a full-campaign-load check, out of
      this suite's quicktest shape (see `rimworld-debug-testing` skill: a
      quicktest is not evidence about the real campaign).
-  3. The Conditional-guarded third-party reflavors (`GalacticEmpire.xml`,
+  3. The Conditional-guarded third-party reflavors (`GalacticEmpire_Campaign.xml`,
      `ForgottenArsenal.xml`, and every other `MayRequire`-guarded patch
      among the ~150 in `Patches/`) are NOT swept here -- whether
      `Neronix17.OuterRim.GalacticEmpire` etc. are actually active on

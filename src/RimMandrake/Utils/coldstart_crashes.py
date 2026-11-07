@@ -121,15 +121,15 @@ def crash_folders(since, root=CRASHES):
 
 
 def process_start():
-    """Start time (epoch) of the running RimWorldWin64, or None when it is not running."""
-    ps = ("$p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1; "
-          "if ($p) { $p.StartTime.ToUniversalTime().ToString('o') }")
+    """Start time (epoch) of this process's RimWorldWin64 (game_instance.py), or None when it is not running."""
+    import game_instance
     try:
+        ps = ("$p = %s; if ($p) { $p.StartTime.ToUniversalTime().ToString('o') }" % game_instance.ps_process())
         out = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", ps],
                              capture_output=True, text=True, timeout=60)
         s = (out.stdout or "").replace("\r", "").strip()
         return epoch(s) if s else None
-    except (OSError, ValueError, subprocess.TimeoutExpired) as e:
+    except (OSError, ValueError, subprocess.TimeoutExpired, game_instance.Blind) as e:
         print("FAIL process: start time unreadable: %s (UNMEASURED)" % e)
         return None
 

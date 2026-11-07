@@ -197,8 +197,9 @@ namespace RimMandrake.FlowWorks.TakenByLand
         }
     }
 
-    /// <summary>SWEEP_PRISONER_RETURN: the tick each pawn was given back (thingIDNumber -> tick). Session-only: the guard is an
-    /// hour, and a loaded save's prisoner is already standing where the return put it. Verse-free for the SelfTest.</summary>
+    /// <summary>SWEEP_PRISONER_RETURN: the tick each pawn was given back (thingIDNumber -> tick). Saved with the service's world
+    /// component (RETURNED_PRISONER_FIX_GRACE_LOST_ON_LOAD: a reload inside the hour used to end the grace and the escape
+    /// letter's watch). Verse-free for the SelfTest.</summary>
     public sealed class RM_TakenReturnGuard
     {
         private readonly Dictionary<int, int> returned = new Dictionary<int, int>();
@@ -206,6 +207,22 @@ namespace RimMandrake.FlowWorks.TakenByLand
         public int Count => returned.Count;
         public void Mark(int id, int tick) { if (id >= 0) returned[id] = tick; }
         public void Clear() { returned.Clear(); }
+
+        /// <summary>The returns still inside the watch window, for the save.</summary>
+        public Dictionary<int, int> Snapshot(int now)
+        {
+            var live = new Dictionary<int, int>();
+            foreach (var kv in returned) if (Recent(kv.Key, now)) live[kv.Key] = kv.Value;
+            return live;
+        }
+
+        /// <summary>The returns a save held; null is a save from before they were written.</summary>
+        public void Restore(IDictionary<int, int> saved)
+        {
+            returned.Clear();
+            if (saved == null) return;
+            foreach (var kv in saved) Mark(kv.Key, kv.Value);
+        }
 
         /// <summary>Returned within <paramref name="window"/> ticks of <paramref name="now"/>.</summary>
         public bool Within(int id, int now, int window) =>

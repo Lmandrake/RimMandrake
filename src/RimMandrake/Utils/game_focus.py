@@ -152,10 +152,16 @@ def focus_game(timeout_s=5, attempts=4, pause_s=3):
     return None
 
 
-def _focus_game_once():
-    script = _PS_HELPER + r'''
+def focus_script():
+    """The foreground script aimed at this process's game (game_instance.py); with two games up, Get-Process by name
+    gives an array and $p.MainWindowHandle two handles. Its Blind is a RuntimeError, as the caller's other refusals are."""
+    import game_instance
+    return _FOCUS_PS.replace("@GAME@", game_instance.ps_process())
+
+
+_FOCUS_PS = _PS_HELPER + r'''
 $prev = Get-Fg
-$p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue
+$p = @GAME@
 if (-not $p) { "ERR|no RimWorldWin64 process"; exit }
 $h = $p.MainWindowHandle
 if ($h -eq 0) { "ERR|RimWorld has no main window handle"; exit }
@@ -172,7 +178,10 @@ Start-Sleep -Milliseconds 350
 $now = Get-Fg
 "{0}|{1}|{2}" -f $prev.handle, $now.handle, $now.title
 '''
-    res = _ps(script)
+
+
+def _focus_game_once():
+    res = _ps(focus_script())
     if res.startswith("ERR|"):
         raise RuntimeError(res[4:])
     parts = res.split("|")

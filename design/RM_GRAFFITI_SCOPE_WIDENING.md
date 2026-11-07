@@ -31,7 +31,7 @@ GRAFFITI_GENERIC_MARKS_1 shipped — those are treated as a starting subset
 | Spree | `JobDriver_PaintGraffiti`, `JoyGiver_PaintGraffiti`, `JobGiver_GraffitiPaintingSpree`, the MentalState/ThinkTree defs | colonist joy job + mental break; **spawns `RMGraffitiDefOf.RM_Graffiti_Vandal` by hard reference** (`JobDriver_PaintGraffiti.cs:70`) — the spawn loop is still closed around one defName, exactly the defect the 2026-08-30 assessment found in the donor mod |
 | Viewer reaction | `ThoughtWorker_ViewedGraffitiMark.cs` | one situational ThoughtDef per mark, 8-cell radius, room-gated; `ClanOnly` withholds it from non-player pawns |
 | Breach bias | `BreachBiasHook.cs` | Harmony postfix on `BreachingGrid.FindBuildingToBreach`: raiders breach beside a `breachLure` mark — the only faction-aware behaviour in the mod, and it READS marks, it never places one |
-| Ritual placement | `src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs` | `RitualOutcomeEffectWorker_PlaceSacredMark` spawns `filthDefToSpawn` on a positive ritual outcome; no ritual references it yet; MOD_CONSOLIDATION_PLAN moves this C# into Graffiti |
+| Ritual placement | `src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs` | `RitualOutcomeEffectWorker_PlaceSacredMark` spawns `filthDefToSpawn` on a positive ritual outcome; no ritual references it yet; it names a god, so it goes to RimUtinni with the SacredGraffiti mod (`mandrake.rut.sacredgraffiti`, planned; see `design/RimMandrake/graffiti_series_2026-11-07.md`) |
 
 **Three honest gaps in the declared data layer**, found reading the code, not
 the item history:
@@ -170,7 +170,7 @@ Placers, and what is new about each:
 |---|---|---|---|
 | Spree / Joy | yes | `JobDriver_PaintGraffiti` | becomes pool-driven; skill and mood select Scrawl vs Tag vs ThrowUp |
 | Designator + bill | **new** | ordinary `Designator` + `WorkGiver` + `JobDef`, the same shape as vanilla floor-drawing (`JobDriver_Floordrawing`, the model this driver already cites) | the player verb: pick a mark, pick a wall cell, an Artistic pawn paints it. Murals/Pieces get a bill with `WorkToBuild`-style duration |
-| Ritual outcome | yes (SacredGraffiti) | `RitualOutcomeEffectWorker_PlaceSacredMark` | moves into Graffiti per the consolidation plan; unchanged |
+| Ritual outcome | yes (SacredGraffiti) | `RitualOutcomeEffectWorker_PlaceSacredMark` | moves to RimUtinni with the mod (planned, loop 3 of `design/RimMandrake/graffiti_series_2026-11-07.md`); unchanged |
 | **Raid tagging** | **new** | a lord-toil hook on the assault lord's exit/flee transition (`LordToil_ExitMap`, `Verse/AI/Group/LordToil_ExitMap.cs:5`) — the exact transition point is **to be verified in the build**, not assumed here | raiders leave their faction's tag or sigil on an exterior wall on the way out (fork F3 ruled: on the way out only; visitors v2). This is where "graffiti as seen in urban settlements" becomes a live system: your walls accumulate the marks of everyone who has hit you |
 | **Settlement generation** | **new** | a `GenStep` in the settlement map-gen (this project's Inhabited already ships `GenStep_RimplacePlan`) | an enemy or friendly settlement map is born already tagged in its own ideo's sigils, territorial tags on the approach, warnings at its defences. v2 (fork F9) |
 | **Visitor / trader** | **new, optional** | on caravan/visitor lord departure | a friendly ideo leaves a small Paste or Tag; pool weight low. Gives the Proselytizer meme something to DO on your walls (§3.2) |
@@ -398,20 +398,20 @@ The rule (NAMING_SCHEME_PLAN §1, engine-vs-content): the engine takes the
 highest tier it honestly passes; content takes its own. Everything RUT does
 must be expressible as XML plus the fields above, so the follow-on is cheap.
 
-| Stays in RM (`mandrake.rm.graffiti`) | RUT fills in (`mandrake.rut.salvation` / `.marks`) | RSW (note only) |
+| Stays in RM (`mandrake.rm.graffiti`) | RUT fills in (`mandrake.rut.salvation` / `mandrake.rut.sacredgraffiti`) | RSW (note only) |
 |---|---|---|
-| `Filth_Mark`, pools, placers, relation reactions, going-over, scrub semantics, designator, sigil rendering (A), style-row registration for the 11 vanilla categories (B), the meme-affinity fields (C) | the nine god marks as `Sigil`/`Devotional` ThingDefs pointing `godSatiationHook` at Ninefold; they OVERRIDE the deity-sigil fallback for Salvation's deities by pool weight | Aurebesh letterform variants of Tag/ThrowUp (a style row, RSW-tier art) |
+| `Filth_Mark`, pools, placers, relation reactions, going-over, scrub semantics, designator, sigil rendering (A), style-row registration for the 11 vanilla categories (B), the meme-affinity fields (C) | the nine god marks as `Sigil`/`Devotional` ThingDefs pointing `godSatiationHook` at the gods' engine (`mandrake.rut.rites`); they OVERRIDE the deity-sigil fallback for Salvation's deities by pool weight | Aurebesh marks that replace the generic ones (RSW-tier art; see `design/RimMandrake/graffiti_series_2026-11-07.md`) |
 | ~14 punk marks (§2.2) + 3 sigil frames + the 8-meme v1 slice of §3.2 | Cant glyph set (Cache Cross, Water-Below, Teeth, Way Home) as `Glyph`/`Code` with `ClanOnly` visibility; the Jawa-xenotype visibility check layered via `JawaRules` | |
-| `ClanOnly` = player faction (the generic stand-in already in the worker) | taunt theology rows: ThoughtDefs and Ninefold deltas on the relation table | |
-| `RitualOutcomeEffectWorker_PlaceSacredMark` (moved in per the consolidation plan) | the rituals that invoke it (Matrix engine, separate pass) | |
+| `ClanOnly` = player faction (the generic stand-in already in the worker) | taunt theology rows: ThoughtDefs and gods'-engine deltas on the relation table | |
+| | `RitualOutcomeEffectWorker_PlaceSacredMark` (it names a god, so it lives in RimUtinni) and the rituals that invoke it (Matrix engine, separate pass) | |
 | generic ThoughtDef text ("someone left their mark here") | owner-voice ThoughtDef text for every campaign reaction | |
-| Salvation's own `StyleCategoryDef` is NOT here | a Salvation style category with `thingDefStyles` rows for RM's mark defs — Salvation's dialect of every generic mark, pure XML | |
+| Salvation's own `StyleCategoryDef` is NOT here | Salvation's dialect of the generic marks by patches or gated marks (a style cannot act on filth) | |
 
 **The seam test**: RUT adds ThingDefs carrying `ModExtension_Graffiti`, adds
-`StyleCategoryDef`/`thingDefStyles` rows, adds ThoughtDefs whose
-`workerClass` is the RM worker, and adds pool weights — and never a C# class.
-If the follow-on needs C#, the engine surface here was drawn wrong; that is
-the criterion to review the build against.
+patches and gated marks, adds ThoughtDefs whose `workerClass` is the RM
+worker, and adds pool weights. C# is allowed in the RimUtinni mod (the god
+hook needs a reader, which RimMandrake may not contain); RimMandrake itself
+names no god. Plan: `design/RimMandrake/graffiti_series_2026-11-07.md`.
 
 ---
 

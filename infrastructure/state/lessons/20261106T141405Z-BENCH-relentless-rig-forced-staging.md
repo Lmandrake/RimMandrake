@@ -1,2 +1,0 @@
-In the relentless_game selftest rig, forcing another item's phase to 'staging' with G._save does not make the game busy: that item's own step releases a staging with no unit (game_staged released) in the same tick, before any later check runs. To hold the game in a test, write a showings.json build row with bridge=true (showing_live), or hold live/round.lock. Found building WP-11 (relentless_broker, d11a30da7884).
-home: src/RimMandrake/rimflow/selftest_relentless_game.py

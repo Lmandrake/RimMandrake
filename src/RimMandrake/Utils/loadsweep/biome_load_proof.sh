@@ -31,6 +31,7 @@
 set -u
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../../.." && pwd)"
+[ "${RM_GAME_INSTANCE:-a}" = a ] || { echo "REFUSED: this launches through Steam, which can only start game a"; exit 2; }
 DIR="$(cd "$(dirname "$0")" && pwd)"
 LOGDIR="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LOGDIR/Player.log"
@@ -80,7 +81,7 @@ for BIOME in "$@"; do
   # ModsConfig on exit — that is false, measured 2026-08-13; the guard is still
   # right, because a running game holds its list in memory and an in-game change
   # would clobber the write.)
-  taskkill.exe /F /IM RimWorldWin64.exe >/dev/null 2>&1
+  python3 "$REPO/src/RimMandrake/Utils/game_instance.py" stop --force >/dev/null
   sleep 10
   mv -f "$LOG" "$LOG.prev" 2>/dev/null
   # Player.log is now rotated away, so the liveness heuristic sees no fresh log.

@@ -1,0 +1,1 @@
+A subagent's Write tool refuses a report .md (Subagents should return findings as text) even when the brief asks for that exact file, as with the FireHawk replay's REPORT.md. A brief wanting a report file from a helper should expect the text back in its return, and its short-return limit will not hold.

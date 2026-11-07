@@ -9,6 +9,10 @@
 #   rw_game.sh init           renew the test companion profile; seed Prefs.xml if it lacks
 #                             runInBackground True (game must be stopped for that half)
 #
+# Every verb acts on one game: RM_GAME_INSTANCE=b rw_game.sh down stops b and only b; nothing set is
+# game a, as ever (src/RimMandrake/Utils/game_instance.py finds a game by its command line and stops
+# it by pid). A named game's `up` starts it directly, its `init` seeds it even with game a up.
+#
 # STEVEDESKTOP_LAUNCH_WIRE_DESKTOP_SESSION (2026-10-25). Why it looks like this:
 #  - The game on SteveDesktop is ours outright (owner, 2026-10-25: "Steve no longer plays
 #    Rimworld ... this game is ours to play with"). It runs with its normal save-data folder
@@ -23,8 +27,13 @@
 set -uo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
 [ -n "${RM_STEAMAPPS:-}" ] || . "$HERE/testcentre_env.sh"
-PS=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
-TK=/mnt/c/Windows/System32/taskkill.exe
+GI="$HERE/../../src/RimMandrake/Utils/game_instance.py"
+NAMED=
+case "${RM_GAME_INSTANCE:-a}" in
+    a|A) ;;
+    *) _env=$(python3 "$GI" env) || exit 2; eval "$_env"; NAMED=$RM_GAME_INSTANCE ;;   # after testcentre_env.sh: b's folders win
+esac
+PS=$(command -v powershell.exe || echo /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe)
 winpath() { echo "$1" | sed -E 's#^/mnt/([a-z])/#\U\1:/#; s#/#\\#g'; }
 GAME_WSL="$RM_STEAMAPPS/common/RimWorld"
 EXE_WIN=$(winpath "$GAME_WSL/RimWorldWin64.exe")
@@ -34,11 +43,12 @@ STEAM_EXE_WIN=$(winpath "$(dirname "$RM_STEAMAPPS")")\\steam.exe
 LOG="$RM_GAME_LOGDIR/Player.log"
 
 ps_q() { "$PS" -NoProfile -NonInteractive -Command "\$ProgressPreference='SilentlyContinue'; $1" 2>/dev/null | tr -d '\r'; }
-pid_of() { ps_q "(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1).Id"; }
+pid_of() { python3 "$GI" pid; }   # this game's pid, nothing when it is down, non-zero when the list could not be read
+gone() { local p; p=$(pid_of) && [ -z "$p" ]; }
 port_in_log() { [ -f "$LOG" ] && grep -a -o '\[RimBridge\].*on port *[0-9]*' "$LOG" | tail -1 | grep -o '[0-9]*$'; }
 
 status() {
-    local pid; pid=$(pid_of)
+    local pid; pid=$(pid_of) || return 2
     if [ -n "$pid" ]; then
         local info; info=$(ps_q "\$p=Get-Process -Id $pid; '{0} session={1} started={2:yyyy-MM-dd HH:mm:ss} age_s={3}' -f \$p.Id,\$p.SessionId,\$p.StartTime,[int]((Get-Date)-\$p.StartTime).TotalSeconds")
         local args; args=$(ps_q "(Get-CimInstance Win32_Process -Filter 'ProcessId=$pid').CommandLine")
@@ -67,9 +77,10 @@ steam_up() {
 }
 
 up() {
-    local pid; pid=$(pid_of)
+    local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; not starting a game on a guess"; return 2; }
     if [ -n "$pid" ]; then echo "already running (pid $pid)"; status; return 0; fi
     steam_up || return 2
+    if [ -n "$NAMED" ]; then python3 "$GI" launch ${1:+"$1"}; return $?; fi
     local t0; t0=$(date +%s)
     ps_q "Start-Process -FilePath '$EXE_WIN' -WorkingDirectory '$DIR_WIN'"
     sleep 5
@@ -98,6 +109,7 @@ up() {
 #    clean exit only, and rewrites it from memory then, so it can be seeded only while the
 #    game is stopped. Prefs.template.xml is Archmagi's Prefs minus the screen size.
 init() {
+    if [ -n "$NAMED" ]; then python3 "$GI" prepare; return $?; fi
     mkdir -p "$RM_GAME_USERDATA/JawaBench" "$RM_GAME_USERDATA/Config"
     local exp; exp=$(date -u -d '+30 days' +%Y-%m-%dT%H:%M:%SZ)
     local esc; esc=$(printf '%s' "$DATA_WIN" | sed 's/\\/\\\\/g')   # JSON-escape the backslashes
@@ -121,12 +133,12 @@ EOF
 }
 
 down() {
-    local pid; pid=$(pid_of)
+    local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; nothing stopped"; return 2; }
     [ -n "$pid" ] || { echo "already stopped"; return 0; }
-    "$TK" /PID "$pid" >/dev/null 2>&1
-    for _ in $(seq 18); do sleep 5; [ -n "$(pid_of)" ] || { echo "stopped (graceful)"; return 0; }; done
-    "$TK" /F /PID "$pid" >/dev/null 2>&1; sleep 3
-    [ -n "$(pid_of)" ] && { echo "FAILED: pid $pid survives taskkill /F"; return 1; }
+    python3 "$GI" stop "$pid" >/dev/null
+    for _ in $(seq 18); do sleep 5; gone && { echo "stopped (graceful)"; return 0; }; done
+    python3 "$GI" stop "$pid" --force >/dev/null; sleep 3
+    gone || { echo "FAILED: pid $pid survives taskkill /F"; return 1; }
     echo "stopped (forced after 90 s)"
 }
 

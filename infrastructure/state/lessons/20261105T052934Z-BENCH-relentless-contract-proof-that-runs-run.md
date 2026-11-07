@@ -1,1 +1,0 @@
-A Relentless contract --proof that runs run_selftests.py with --no-cache is refused (exit 2, needs --because) and the contract freezes at gen 1: never put --no-cache in a contract proof; plain --only is enough (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN)

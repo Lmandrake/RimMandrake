@@ -81,6 +81,7 @@ import fcntl
 import json
 import os
 import re
+import socket
 import sys
 import time
 
@@ -675,17 +676,58 @@ BANNED_NAME_WORDS = frozenset("""
     MISC STUFF THINGS ETC LOL WIP TODO TBD IDK WHATEVER MAYBE FOO
     STUPID DUMB IDIOT MORON LAZY INCOMPETENT PATHETIC
 """.split())
-NAME_MAX_LEN = 44
-NAME_MIN_WORDS, NAME_MAX_WORDS = 3, 7
+# Owner 2026-11-05 (~/.claude/CLAUDE.md "EVERY ITEM IS NAMED"): a NEW name is PROJECT_VERB_INTENTION_TWIST.
+# Slot 1 is a registry Id (Lodestar sync/registry.md), slot 2 any verb (no bank), 4-9 words, <= 64 chars.
+# Rules mirror ~/dev/Lodestar/bin/lib/ticketname.py. The OLD bank above (INTENT_WORDS) is retired for
+# minting and survives only so parse_name/is_new_name still read the names filed under it.
+NAME_MAX_LEN = 64
+NAME_MIN_WORDS, NAME_MAX_WORDS = 4, 9
 _NEW_SHAPE = re.compile(r"^[A-Z0-9]+(?:_[A-Z0-9]+)*$")
+THROWAWAY_SLOTS = ("PROJNOW", "PROJTEMP")
+_SLOT_CACHE = {}
+
+
+def registry_path():
+    """Lodestar's registry: $LODESTAR_ROOT/sync/registry.md, else ~/dev/Lodestar. Named in every error."""
+    root = os.environ.get("LODESTAR_ROOT") or os.path.expanduser("~/dev/Lodestar")
+    return os.path.join(root, "sync", "registry.md")
+
+
+def project_slots():
+    """-> (slots frozenset, error or None). Slot-1 values: the registry Id column squashed to A-Z0-9, upper,
+    plus the throwaway slots. An unreadable registry is an ERROR the caller must show, never a silent pass."""
+    path = registry_path()
+    try:
+        st = os.stat(path)
+        key = (path, st.st_mtime_ns, st.st_size)
+    except OSError as e:
+        return frozenset(THROWAWAY_SLOTS), "cannot read %s (%s); set LODESTAR_ROOT" % (path, e.strerror)
+    if _SLOT_CACHE.get("key") != key:
+        ids, col = set(), None
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                if not line.startswith("|"):
+                    continue
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                if col is None:
+                    if "Id" in cells and "Name" in cells:
+                        col = cells.index("Id")
+                    continue
+                if col < len(cells) and cells[col] and not set(cells[col]) <= set("-: "):
+                    ids.add(re.sub(r"[^A-Z0-9]", "", cells[col].upper()))
+        _SLOT_CACHE["key"], _SLOT_CACHE["slots"] = key, frozenset(ids - {""})
+    return _SLOT_CACHE["slots"] | frozenset(THROWAWAY_SLOTS), (
+        None if _SLOT_CACHE["slots"] else "no Id column rows found in %s" % path)
 
 
 def parse_name(iid):
-    """-> (subject_words, intent, twist_words), or None when there is no hinge.
+    """-> (subject_words, intent, twist_words), or None.
 
-    The hinge is the first INTENT_WORDS word at position >= 1 with at least one word
-    after it."""
+    New form (slot 1 a registry Id): ([PROJECT], VERB, rest). Old form: the first INTENT_WORDS word at
+    position >= 1 with at least one word after it is the hinge."""
     words = str(iid or "").split("_")
+    if len(words) >= NAME_MIN_WORDS and words[0] in project_slots()[0] and words[0] not in THROWAWAY_SLOTS:
+        return words[:1], words[1], words[2:]
     for i in range(1, len(words) - 1):
         if words[i] in INTENT_WORDS:
             return words[:i], words[i], words[i + 1:]
@@ -699,45 +741,73 @@ def is_new_name(iid):
 
 
 def is_named_id(iid):
-    """Is this token a named item id in either form (legacy `_N`, or SUBJECT_INTENT_TWIST)?"""
+    """Is this token a named item id in either form (legacy `_N`, or a hinge form)?"""
     return bool(NAMED_ID.match(str(iid or ""))) or is_new_name(iid)
 
 
-def mint_problems(iid, known_ids):
+PROJECT_SLOT = "RIMMASTER"      # this project's registry Id, slot 1 of every name the machines mint
+
+
+def with_project_slot(name):
+    """A machine-minted name gets slot 1 if it lacks one: OPS_FIX_X -> RIMMASTER_OPS_FIX_X. Idempotent."""
+    return name if str(name).split("_")[0] in project_slots()[0] else PROJECT_SLOT + "_" + name
+
+
+# Machine-generated id families whose FORMAT other code parses (ops_health.CAUSE_REPAIR_ID, first_touch.SUFFIX, owner_queue):
+# the machines that mint them predate the owner's 2026-11-05 grammar and their regexes would all have to move with a rename.
+# Closed list, each entry a whole shape; a human-chosen name never matches one. Move a family out by changing its minter
+# and its parsers together, then delete its line here.
+MACHINE_FAMILIES = (
+    re.compile(r"^GAMEENV_FIX_[A-Z]+_[0-9A-F]{8}_ITEMS_WAIT$"),     # relentless_game.REPAIR_FMT
+    re.compile(r"^[A-Z0-9]+_DESIGN_FIRST_TOUCH$"),                  # first_touch.SUFFIX
+    re.compile(r"^(OPS|LIVE_RESTORE|STEVE_LANE_UNSTICK)_[A-Z0-9_]+$"),  # ops_watch / steward alarms
+    re.compile(r"^AUDIT_HARDFLAG_FIX_[A-Z0-9]+$"),                  # audit_hardflag_file
+)
+
+
+def mint_problems(iid, known_ids, strict=None):
     """-> [reason, ...] why `iid` may not be minted as a NEW item; [] means it may.
 
-    Mint-time only. Replay never calls this — every id already in the ledger stays valid."""
+    Mint-time only. Replay never calls this: every id already in the ledger, of every older form, stays
+    valid forever. The verb in slot 2 is never checked against a list.
+
+    `strict` defaults to True; a MACHINE minter (ops_watch alarms, steward, audit_hardflag_file: ~60 fixed alarm
+    prefixes, minted by code, not written by an agent) declares itself with RIMFLOW_MACHINE_MINT=1 and gets the
+    same relaxed mode; under a TEST ledger (RIMFLOW_LEDGER set, never the real one) it defaults to False,
+    which skips only slot 1 and the 4-word floor so the ~40 selftests that file fixture ids like CODE_FIX_ALPHA keep
+    working. Length, charset, trailing digits and banned words always apply."""
+    if strict is None:
+        strict = not (os.environ.get("RIMFLOW_LEDGER") or os.environ.get("RIMFLOW_MACHINE_MINT"))
     s = str(iid or "")
-    probs = []
+    if s not in known_ids and len(s) <= NAME_MAX_LEN and any(f.match(s) for f in MACHINE_FAMILIES):
+        return []
     if s in known_ids:
         return ["%s already exists — give the new item its own name" % s]
     if not _NEW_SHAPE.match(s):
-        probs.append("only UPPER_SNAKE ASCII: A-Z, 0-9 and single underscores")
-        return probs
-    if NAMED_ID.match(s):
-        probs.append("ends in a number (`_1`): that is the retired legacy form — drop the "
-                     "number and add an intent word and a twist")
+        return ["only UPPER_SNAKE ASCII: A-Z, 0-9 and single underscores"]
+    probs = []
     words = s.split("_")
-    if not NAME_MIN_WORDS <= len(words) <= NAME_MAX_WORDS:
-        probs.append("%d words; a name has %d-%d words"
+    if not (NAME_MIN_WORDS if strict else 3) <= len(words) <= NAME_MAX_WORDS:
+        probs.append("%d words; a name has %d-%d words: PROJECT_VERB_INTENTION_TWIST"
                      % (len(words), NAME_MIN_WORDS, NAME_MAX_WORDS))
     if len(s) > NAME_MAX_LEN:
         probs.append("%d chars; too long, the cap is %d" % (len(s), NAME_MAX_LEN))
     if not re.search(r"[A-Z]", words[-1]):
-        probs.append("last word is a bare number, which reads as the legacy `_N` form")
+        probs.append("last word is a bare number: numbered ids are the retired form")
     banned = sorted(set(words) & BANNED_NAME_WORDS)
     if banned:
-        probs.append("vague or mean word(s) %s: a twist must be specific and kind"
-                     % ", ".join(banned))
-    parts = parse_name(s)
-    if parts is None:
-        if words and words[0] in INTENT_WORDS:
-            probs.append("starts with the intent: put the SUBJECT first, then the intent")
-        elif words and words[-1] in INTENT_WORDS:
-            probs.append("ends on the intent: add a twist after it")
-        else:
-            probs.append("no intent word: the name needs SUBJECT_INTENT_TWIST, with the "
-                         "intent from the word bank (rimflow namecheck --bank)")
+        probs.append("vague or mean word(s) %s: a twist must be specific and kind" % ", ".join(banned))
+    slots, err = project_slots()
+    if not strict:
+        pass
+    elif err:
+        probs.append("cannot check slot 1: " + err)
+    elif words[0] not in slots:
+        near = sorted(p for p in slots if p.startswith(words[0][:4]) and p not in THROWAWAY_SLOTS)
+        probs.append("slot 1 %r is not a project: it must be a registry Id%s (this project is RIMMASTER), "
+                     "or %s for something that belongs to no project"
+                     % (words[0], " (did you mean %s?)" % ", ".join(near[:3]) if near else "",
+                        " / ".join(THROWAWAY_SLOTS)))
     return probs
 
 
@@ -1146,7 +1216,8 @@ BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
 
 # ── one bridge per HOST (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25) ───────────────────────────
 # Two machines each run a game: Archmagi (interactive) and SteveDesktop (the batch test centre). A take names its
-# host; absent means Archmagi, the only game there was before. Keys are lower-case machine names.
+# host; absent means Archmagi, the only game there was before. Keys are lower-case machine names. A second game on one
+# machine is a key of its own, machine.instance ('stevedesktop.b'; game_instance.py): same lock rules, separate lock.
 DEFAULT_BRIDGE_HOST = "archmagi"
 BRIDGE_HOSTS = ("archmagi", "stevedesktop")
 
@@ -1155,9 +1226,26 @@ def bridge_host_key(host):
     """Normalise a host name to its key ('SteveDesktop' -> 'stevedesktop'); None/'' -> the default host.
     An unknown name raises, so a typo can never open a third, imaginary lock."""
     k = (host or DEFAULT_BRIDGE_HOST).strip().lower()
-    if k not in BRIDGE_HOSTS:
-        raise SchemaError("unknown bridge host %r (known: %s)" % (host, ", ".join(BRIDGE_HOSTS)))
-    return k
+    machine, dot, inst = k.partition(".")
+    if machine not in BRIDGE_HOSTS or (dot and not re.fullmatch("[a-z]", inst)):
+        raise SchemaError("unknown bridge host %r (known: %s, each optionally .<instance letter>)"
+                          % (host, ", ".join(BRIDGE_HOSTS)))
+    return machine if inst == "a" else k        # .a is today's game, so the same lock as no suffix
+
+
+def split_bridge_host(hk):
+    """'stevedesktop.b' -> ('stevedesktop', 'b'); 'stevedesktop' -> ('stevedesktop', None)."""
+    machine, _dot, inst = bridge_host_key(hk).partition(".")
+    return machine, inst or None
+
+
+def ambient_bridge_host():
+    """The bridge key RM_GAME_INSTANCE names on this machine, or None with today's game: a process told which game it
+    drives must not take Archmagi's bridge by leaving out --host. Never read during replay, which must not vary."""
+    inst = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
+    if inst in ("", "a"):
+        return None
+    return "%s.%s" % ((os.environ.get("RM_HOST") or socket.gethostname()).strip().lower(), inst)
 
 # How long a holder may be silent before another window may simply take the bridge.
 # 🔑 The number exists to prevent MUTUAL LOCKOUT, which is the failure mode the owner
@@ -1265,7 +1353,7 @@ def shared_bridge_age_seconds(d):
         return None
 
 
-def bridge_body(holder, actor, purpose=None, since=None, note=None):
+def bridge_body(holder, actor, purpose=None, since=None, note=None, others=None):
     """The exact bytes the mirror should hold. Pure, so it is testable without a disk."""
     if holder:
         line = "HELD    %s    since %s" % (holder, since or now())
@@ -1277,6 +1365,9 @@ def bridge_body(holder, actor, purpose=None, since=None, note=None):
             line += "    (released by %s)" % actor
     if note:
         line += "\nnote    %s" % note
+    for key, ent in sorted((others or {}).items()):     # another game's holder, one line each; a free one adds nothing
+        line += "\nother   %s  %s  since %s%s" % (key, ent["holder"], ent.get("since") or "?",
+                                               "  for: %s" % ent["purpose"] if ent.get("purpose") else "")
     return BRIDGE_HEADER + line + "\n"
 
 
@@ -1324,7 +1415,7 @@ def _write_atomically(target, body):
     return body
 
 
-def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
+def write_bridge_file(holder, actor, purpose=None, since=None, note=None, others=None):
     """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
 
     🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
@@ -1335,7 +1426,7 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
     through the module that owns the 9p lock discipline.
     """
     target = bridge_mirror_path()
-    body = bridge_body(holder, actor, purpose, since, note)
+    body = bridge_body(holder, actor, purpose, since, note, others)
     os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
     return _write_atomically(target, body)
 

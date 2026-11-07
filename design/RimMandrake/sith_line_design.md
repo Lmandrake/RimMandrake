@@ -29,7 +29,7 @@ from RimSage (decompiled 1.6 + Biotech/Royalty defs) on 2026-10-09, not guessed.
   (`infrastructure/state/items/closed/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md` §2). **So the Sith line IS
   the `Sanguophage` def, relabelled.** No new XenotypeDef.
 - All DLCs are assumed present. The Galactic Empire is vanilla `Empire` reskinned by
-  `src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml`.
+  `src/RimStarWars/StarWarsPatches/Patches/GalacticEmpire.xml`.
 
 ### Already in the repo (read before building)
 
@@ -291,7 +291,7 @@ Deconstructing the buildings yields resources. They can't be minified (S8).
 | weapon | `Force_Lightsaber_Inquisitor` (MayRequire on its `<li>`; defining mod to be measured) |
 | label | "inquisitor" |
 
-**How they enter groups:** not through `pawnGroupMakers` options. The campaign's `GalacticEmpire.xml`
+**How they enter groups:** not through `pawnGroupMakers` options. The campaign's `GalacticEmpire_Campaign.xml`
 **replaces** both Empire `Combat` option lists wholesale (`[commonality="100"]` and `[commonality="10"]`), so
 an option added by this RSW-tier mod would be erased whenever the campaign loads after it. Use a Harmony
 postfix on pawn-group generation instead (FOUNDRY reads the exact `PawnGroupMakerUtility` method in RimSage).

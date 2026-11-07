@@ -3,7 +3,7 @@
 Item `RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED`. Conductor's order with the owner's authority
 (`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`). Why: three GPT review rounds on each of relentless_live.py,
 live_def_check.py, relentless.py and their selftests kept finding new wrong-verdict and bypass cases of the same few
-kinds (lesson `20261102T042108Z-BENCH-review-pattern-relentless-live-tier-3`; rounds r1, r2b, r3a, r6a, r8a). Patching
+kinds (live-tier review pattern, `skills/relentless/references/traps.md`; rounds r1, r2b, r3a, r6a, r8a). Patching
 case by case does not converge. This pass replaces the mechanisms those cases came through.
 
 Rule 6 was built by `RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED` (relentless.py, `selftest_relentless_verdict_rule6.py`).

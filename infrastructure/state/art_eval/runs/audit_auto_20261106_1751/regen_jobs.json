@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RM_Ysvaltha_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ysvaltha",
+  "prompt": "A creature sprite for RimWorld: the ysvaltha. Something bred for killing rather than born to it: a long, low, sinuous body in near-black hide, a whip of a tail fringed with crimson barbs, and a narrow, needle-pointed head set with four glowing yellow eyes. Along its shoulders it carries curved, crimson-edged blades folded back like swept wings. Visible features it must show: a long, low, sinuous body in near-black hide; a narrow needle-pointed head with four glowing yellow eyes; curved crimson-edged blades folded back along the shoulders like swept wings; a whip-like tail fringed with crimson barbs. One shared body scale in every view: the shoulder height, torso girth, limb length and the span of the shoulder blades are identical in the front, side and rear views, so the creature has the same bulk whichever way it faces. Eye arrangement, identical in every view: four glowing yellow eyes in fixed positions on the head, two larger eyes set low toward the front of the head and two smaller eyes directly above them, one such pair on each side of the needle-pointed head. In the front view, eyes toward the viewer, all four eyes show as two stacked pairs, one pair left and one pair right of the needle point. In the side view, the two eyes of the near side show as a vertical pair on the side of the head, the larger eye below and the smaller above, with the far-side pair hidden behind the snout. In the rear view, seen from behind, the eyes are hidden. Tail pose, rotated with the body: the tail sweeps back low from the rump, trails close above the ground in one smooth curve, and ends in a small returning hook at the tip, with the crimson barbs fringing the outer edge of the whole curve. In the front view the tail shows as a short low curve of barbs beside and behind the haunches, hooked tip visible. In the side view the full low sweep and the hooked tip are shown in profile. In the rear view, seen from behind, the back, haunches and tail are shown: the shoulders, torso, limbs and blade span are drawn at the same size as in the front view, and the tail curls in a compact S close beside the haunches with the hooked tip resting next to the hind leg, so the body fills the frame and sets the scale. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha"
+ },
+ {
+  "id": "arteval_SWPotF_RaceDef_ysalamir__ysalamiri_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "SWPotF_RaceDef_ysalamir__ysalamiri",
+  "prompt": "A creature sprite for RimWorld: the ysalamir, the canon ysalamir of Myrkr. A slow, claw-footed tree lizard whose living body nullifies psychic sensitivity in everything near it. One slender, elongated lizard with a long narrow head ending in a tapering pointed snout, a slim raised neck, a lean body no wider than it is deep, a long thin tail, and claw feet built for gripping a branch; calm, sluggish posture. The same slender lizard, with the same skull shape, neck, limb thickness, body width, proportions and palette, appears in every view, drawn at one shared scale with feet of equal size. Side view (east): the full slender profile, long narrow head with tapering pointed snout forward, slim raised neck, lean body, slender limbs and long tail trailing behind. Front view (south): that same animal seen head-on at the game's angled camera, eyes toward the viewer, the same long narrow skull with the tapering pointed snout toward the camera, the same slim raised neck, slender forelegs of the same thickness as in the side view, shoulders no wider than the body is deep, large claw feet gripping on either side and spanning about nine tenths of the sprite height. Rear view (north): that same animal seen from behind at the game's slightly raised three-quarter-down camera, the haunches and trunk as full and as deep as the front view's shoulders and body, the two hind legs of the same thickness as the forelegs planted as far apart as the front feet, with large gripping claw feet of the same size, the base of the long tail trailing toward the viewer, the arched back rising away with visible body depth and shading; the head is tucked forward and hidden behind the shoulders, so the rear of the body fills the sprite and the eyes stay out of sight. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with alpha 0 everywhere outside the creature's outline: a crisp clean edge, empty canvas, no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, ALPHA_HALO, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "ysalamiri/ysalamiri"
+ },
+ {
+  "id": "arteval_RM_Chellow_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chellow",
+  "prompt": "A creature sprite for RimWorld: the chellow, an alien squat flying animal shaped like a near-spherical ball of dense, short, downy plumage in cool slate-blue and dusky teal with pale silvery feather edging. The neck is very short and the head sits low, nestled into the shoulder feathers, at the same height in every view, its crown just below the top outline of the round plumage. Two very short, thin legs with two toes are set far under the round body, so the body rests low to the ground. A pair of small wings is folded neatly against its sides, symmetric and clearly readable, the feather tips reaching toward a tiny tucked tail. The head is entirely bare: wrinkled pink skin with no feathers at all, with a smooth, rounded, blunt facial contour. The face ends flat: below the eyes is a short, broad, soft membrane of wrinkled skin stretched across the mouth area like a drum-skin, continuous with the skin of the head. The mouth is a broad, flexible, lipless flap of skin lying flat against that blunt face, softly rippled as it vibrates to whistle, its outer edge a smooth natural curve. Below the head hangs a wide, thin, translucent throat-fan it inflates to carry the call, veined and lit faintly from behind, spreading over the chest and joined to the head and chest as part of one body; the fan is a full teardrop whose lower curve is smooth and complete. Front view: eyes toward the viewer, the flat drum-skin face, the throat-fan hanging below the chin, both folded wings visible at the sides. Side view: one folded wing along the flank, the bare head in profile with a smooth rounded blunt face and the skin flap lying flat against it, the throat-fan hanging below, the tail behind; the whole flap and the whole throat-fan are shown with their natural rounded outer edges, with a clear band of transparent margin in front of them before the edge of the image. Rear view, seen from behind: the folded wings, the plumage of the back and tail covering the head, with only a low narrow rim of bare wrinkled skin showing at the body's upper edge at the same height as the head in the other views, the eyes hidden, and the top outline of the body unbroken. Painterly vanilla RimWorld sprite style, realistic, with a clean dark outline and soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.65,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+ },
+ {
+  "id": "arteval_RM_Wuum_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Wuum",
+  "prompt": "A creature sprite for RimWorld: the wuum. Countless small bodies that all belong to one vast, spreading thing \u2014 every wuum is a cell of the same superorganism, working toward the same single purpose: grow, and keep growing. A wuum buds off a copy of itself every few days and needs almost nothing to eat. It bursts when it dies, and what bursts out burns like acid. It is a small, soft, blob-like body that looks like one cell of something larger, limbless and faceless, made of a lower main mass and one budding lobe rising from the top of it where it copies itself. The budding lobe is a two-chamber structure about one third as wide as the body, with a fixed bulk and height relative to the lower mass; the two chambers overlap naturally and the lobe always reads as the same full, round, substantial form. Acid-bright fluid glows in chambers under a thin skin, held inside a firmly defined, more opaque membrane edge, so the contour is stronger than the interior glow. The membrane is matte and layered, with visible brush texture and painted shading, and highlights are small and localized to a few spots. Style: realistic, hand-painted vanilla RimWorld sprite with a thin, dark, painterly rim outline in a deep shade of the body colour running continuously around the whole silhouette and the budding lobe, so the shape reads clearly at standard zoom. Keep the same palette, body plan and lobe proportions as the previous render. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1751",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Wuum/RM_Wuum"
+ }
+]

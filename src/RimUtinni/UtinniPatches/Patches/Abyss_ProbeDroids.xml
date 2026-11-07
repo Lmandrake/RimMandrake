@@ -4,7 +4,7 @@
   The free Abyss (RM_Abyss, mandrake.rm.biomes) ships RM_AbyssProbeExtension with an EMPTY probeKinds list, which
   sends a vanilla light mech (Mech_Militor, mechanoid faction) to test a hidden gravship. The campaign sends the
   Empire's own KX-12 probe droid instead, the same kind the Empire search ladder's probe rung uses
-  (RUT_EmpireRung_Probe), under the Empire (made permanently hostile to the player by GalacticEmpire.xml).
+  (RUT_EmpireRung_Probe), under the Empire (made permanently hostile to the player by GalacticEmpire_Campaign.xml).
   Only the plain probe droid: the assassin and saboteur probes are combat kinds, not scouts that can be avoided.
   Gated by an outer Conditional on the probe droid's PawnKindDef being in the combined XML, so without Droidworks
   neither the kind nor the Empire faction is set and the free fallback (militor, mechanoids) stands intact.

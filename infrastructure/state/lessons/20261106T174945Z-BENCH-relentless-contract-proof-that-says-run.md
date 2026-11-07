@@ -1,1 +1,0 @@
-A Relentless contract proof that says run_selftests.py --no-cache without --because "<what could differ>" is refused (exit 2) in the box and never runs a test; write --because in the proof or omit --no-cache (EXAM_SETTER_FIX_DEMANDS_ITS_OWN_MECHANISM)

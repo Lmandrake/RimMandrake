@@ -1,1 +1,0 @@
-relentless_boxrun reads a hyphenated subcommand (art.py card-said) as prose: _WORD_OK wants [/._=0-9] or snake_case, so a proof 'x.py card-said && y.py' is refused unrunnable and, as the LAST part, the subcommand is silently dropped (art.py runs bare). Spell proof subcommands without hyphens (art.py card_said alias added, CARD_PARAPHRASE_AUDIT_SAID_IN_DISGUISE).

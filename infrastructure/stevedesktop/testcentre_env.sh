@@ -16,8 +16,9 @@ export RM_STEAMAPPS=/mnt/d/SteamLibrary/steamapps
 export RM_GAME_USERDATA="/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 export RM_GAME_LOGDIR="$RM_GAME_USERDATA"
 export RM_DATA_ROOT=/mnt/d/RimTest/data
+export RM_INSTANCES_ROOT=/mnt/d/ClaudeWork/rimmandrake/instances   # game_instance.py: where game b's data folder lives
 
-for _v in RM_STEAMAPPS/p RM_GAME_USERDATA/p RM_GAME_LOGDIR/p RM_DATA_ROOT/p; do
+for _v in RM_STEAMAPPS/p RM_GAME_USERDATA/p RM_GAME_LOGDIR/p RM_DATA_ROOT/p RM_INSTANCES_ROOT/p; do
     case ":${WSLENV:-}:" in *":$_v:"*) ;; *) WSLENV=${WSLENV:+$WSLENV:}$_v ;; esac
 done
 export WSLENV

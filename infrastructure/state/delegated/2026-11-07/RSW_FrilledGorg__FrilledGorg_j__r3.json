@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3901724
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 16.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1310682
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FrilledGorg__FrilledGorg_j",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['STYLE_EARTHLY']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['STYLE_EARTHLY']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1f43b486b411ee93ebbc9da0c4135308b1dcc9c25bac5b08e325fd9a6269d578",
+  "east.png": "920a866772106ec14082095a023f726a1605e1cccbb1be4e183325c29927751c",
+  "north.png": "867db57b66d24cb40045f3a59c28693f56b37c2487d85c346a06da7f53441e6b",
+  "scale.png": "a46d55f0b961c5980ab17d78081a9ac2f0ee219d950c0b6e193792fe83049bf7",
+  "facings.png": "318161657a4eefa351ca2a37264fd200bc9735304e06408919508d4a517501b3"
+ }
+}

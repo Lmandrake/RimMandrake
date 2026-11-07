@@ -1,0 +1,93 @@
+[
+ {
+  "id": "arteval_RM_Gloomcast_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gloomcast",
+  "prompt": "A creature sprite for RimWorld: the gloomcast. A colossal grazer that strains buried vegetation and small animals from the sand during long crossings of the open dayside. It sheds the stored heat fiercely when it reaches shade. Body plan, built fresh from this description: a long, low, slab-sided barrel of a body carried on six thick pillar legs in three pairs, a land animal. The torso, shoulders and head form one continuous wedge sloping down to the ground, with no separate domed back and no distinct neck. The head is dominated by a broad, flat, scoop-shaped sieve mouth of fine comb plates held close to the ground across the full width of the front, with small eyes set high and far back on the sides of the head. The hide is smooth and close-grained, overlapped in broad heat-shedding scale-plates with darker seams between them. The tail is a short, thick, blunt counterweight. The spine carries exactly five dorsal plates in one midline row, each a broad, thin, fan-shaped radiator vane with a visible vein pattern, attached to the centre line of the back and standing upright and edge-on to the sides. Keep the same five plates at the same spine positions in every facing: in side view they show as five thin vanes in a row along the spine in profile; in front view, seen with the eyes toward the viewer, the row is seen end-on, the vanes overlapping one behind another in a narrow column rising behind the head, with the shoulders free of plates; in rear view, seen from behind with the eyes hidden, the same row overlaps into the same narrow column above the back and haunches. Only the overlap and the visible vane edges change as the body turns. Colour: one coherent muted palette, dusky grey-brown hide with slightly warmer vane edges, with no red or yellow anywhere. Style: realistic painterly vanilla RimWorld sprite, painted with visible brushwork and strong value variation, flat painted value shapes with a lit top and a darker belly, selective detail, inside a clean, continuous dark outline about two pixels wide that reads at standard zoom. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with a clean antialiased cut-out edge in which every edge pixel matches the adjacent hide or its deeper outline shade: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, STYLE_OFF, ALPHA_HALO, STYLE_EARTHLY, STYLE_OFF, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_2236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 13.2,
+  "module": "walker",
+  "target_texpath": "swanimals/Gloomcast/Gloomcast"
+ },
+ {
+  "id": "arteval_RM_Borehulk_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Borehulk",
+  "prompt": "A creature sprite for RimWorld: the borehulk. A colossal old mining machine, more a digging tank than a robot: a long low hull on two broad tracks, slabs of riveted armour bolted over everything, a heavy boom ending in a drill, a bucket scoop slung beneath, and a tiny sensor head almost lost on top. It trundles the deck plate slowly and harms nothing. Its plating is thicker than anything else that walks. Visible features it must show: a colossal mining machine on two broad tracks, a digging tank not an animal; slabs of riveted armour bolted over everything; a heavy boom ending in a conical drill and a bucket scoop slung beneath the front of the hull; a tiny sensor head almost lost on top. One fixed layout in every facing: the working front end carries the boom, drill and bucket; the opposite rear end carries a flat armoured back plate with the engine deck, vents and two exhaust stacks. The two exhaust stacks are one transversely mounted pair: they sit side by side across the width of the rear deck, close together, and this arrangement is the same in every facing. Chassis proportions are identical in every facing: a broad, long, low hull carried on two wide tracks with a generous gap of hull between them, the track gauge and overall hull width the same whether the machine is seen from the front or from behind. The front view, eyes toward the viewer, shows the working front with the drill and bucket nearest the camera between the tracks. The side view shows the same long hull with the same track width, the boom, drill and bucket projecting from the front end at one side and the rear deck at the other; the transverse exhaust pair seen edge-on projects as one pair of stacks, the far stack almost entirely overlapping the near stack, so a single stack outline with a slightly offset second top shows at the rear end, standing upright on the rear deck. The rear view, seen from behind, shows the rear end of the hull nearest the camera: a flat armoured back plate with the engine deck, vents and the two exhaust stacks side by side across the deck, the two tracks at the sides as far apart as in the front view, the rear armour slabs spanning the full width between and over the tracks, and the tiny sensor head small on top. In the rear view the boom, drill and bucket lie on the far side of the hull, pointing away from the viewer and hidden behind the hull, with only the drill tip and the boom elbow peeking over the top edge. The rear view is the side view turned so the exhaust end is nearest the camera. All views share one scale. Realistic painterly vanilla RimWorld sprite style in a muted palette of rust brown, steel grey and dark iron, soft painted edges in a deeper shade of the neighbouring metal, clean dark outline. The cut-out edge is clean metal running directly into full transparency: a continuous dark brown-grey outline, with antialiasing along the rear deck, exhaust bases, vents and bucket lip blending only the adjacent metal colours. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, ALPHA_HALO, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_2236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 5.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Borehulk/RM_Borehulk"
+ },
+ {
+  "id": "arteval_RSW_Blixus__Blixus_Swimming_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus__Blixus_Swimming",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were deadly in the swamps and lagoons they inhabit. They periodically shed their exoskeleton when it is broken or damaged, and the shed shell is harvested for useful chitin. The canon Sljee blixus is a half-shelled crustapod with the shell covering only part of the body, the rest soft and armoured with plates. The body is very large and fills nearly the whole frame, drawn at the largest size the game's scale allows. One wide carapace of broad, flared, overlapping plate points covers the back; its plate points sweep rearward and overhang and largely cover the rear of the body and haunches in every view, rotated to suit the view. The creature has six blade legs in every view, three attachment points per side; in profile the three near-side legs stand in a row with the three far-side legs partly visible behind them, and in front and rear views three legs show on each side. The exposed underbelly, mouth region and rear folds are a soft pinkish-tan, with darker shading only in the folds and recesses. Exactly five very long feeler tentacles emerge from the upper front of the body, just ahead of the shell, each from its own root. They rise and arc upward and forward, then sweep back and trail in varied curves. The five differ in length and bend, and each makes a clearly visible returning loop where it doubles back on itself. Each ends in a distinct flattened paddle tip, so five paddle tips are visible in total. The tentacles keep this one 3D pose in every view, foreshortened to suit the view, and the count of five holds in every view. Front view, eyes toward the viewer: the five arcs rise above the shell and lean toward the viewer. Rear view, seen from behind: the wide carapace with its flared plate points overhanging the rear, the back, tail and haunches facing the viewer with the eyes hidden, and the same five arcs rising from the far side of the shell. Side view: the five arcs are seen in profile, rising and sweeping forward, then curving back in loops; they stay separated from one another, each individually traceable from its root to its paddle tip, five roots, five arcs, five paddle tips. Keep the palette, body plan and shell shape of the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature on it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_2236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Falumpaset_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled hide with large irregular spots, and a low-hung head. Spots: large irregular blotches of mixed sizes with a few smaller spots between them, scattered asymmetrically, with different patterns on the left and right flanks and no matching pairs or rows; the same blotch sizes and one continuous spot map in the front, side and rear views. Tail: one short, thin tail, a slender cord attached high on the hindquarters, reaching only a short way down the upper hind legs and ending in one small tuft; the same thin tail, at the same height and with the same tuft, in every view. A little coarse hair at the neck and at the leg joints. Front view, eyes toward the viewer: the low-hung head, the broad chest and the two front legs, with the belly line closing cleanly beneath the chest and open space between the front legs; the tail is hidden behind the body. Side view: the head hangs low in front of the chest with the muzzle above the lowest belly contour, and the short thin tail sits against the upper hind legs. Rear view, seen from behind: the barrel body and heavy rump fill the frame, showing the back, haunches and the short slender tail with its small tuft; the neck and head are hidden behind the body, and between the hind legs there is clear open space with the belly line closing cleanly above it. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, F_INCONSISTENT, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_2236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ }
+]

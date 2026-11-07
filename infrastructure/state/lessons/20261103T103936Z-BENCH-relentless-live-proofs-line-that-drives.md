@@ -1,1 +1,0 @@
-A relentless live_proofs line that drives the bridge must start python.exe (and < /dev/null): under WSL python3 the bridge (Windows loopback 127.0.0.1:5174) is unreachable, so every clause FAILs without touching the game. PIT_LIP_OCCLUDER_FIX_GHOSTED_HALVES lost a live round to this 2026-11-03.

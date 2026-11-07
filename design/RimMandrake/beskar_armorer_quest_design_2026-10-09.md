@@ -189,7 +189,7 @@ root QuestNode_Sequence
   QuestNode_SubScript Util_AdjustPointsForDistantFight
   QuestNode_GetMap                          canBeSpace true
   QuestNode_GetSiteTile  storeAs siteTile   preferCloserTiles true
-  QuestNode_GetFaction (Empire)             -> siteFaction       (vanilla Empire, reskinned: Patches/GalacticEmpire.xml)
+  QuestNode_GetFaction (Empire)             -> siteFaction       (vanilla Empire, reskinned: StarWarsPatches/Patches/GalacticEmpire.xml)
   QuestNode_Set  sitePartDefs = [RM_ImperialDetentionPost]
   QuestNode_GetDefaultSitePartsParams  tile $siteTile  faction $siteFaction  -> sitePartsParams
   QuestNode_SubScript Util_GenerateSite

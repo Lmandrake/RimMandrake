@@ -77,7 +77,7 @@ def lost_ids(tx_path, now, root=None):
 
 
 def known_items(repo=REPO):
-    """Every id the ledger has a `file` event for, read from the shards (the instrument; a set of 0 means blind)."""
+    """Every id the ledger has a `file` or `spawn` event for, read from the shards (the instrument; a set of 0 means blind)."""
     ids = set()
     d = os.path.join(repo, "infrastructure", "state", "ledger", "events")
     try:
@@ -90,7 +90,8 @@ def known_items(repo=REPO):
         try:
             with open(os.path.join(d, n), encoding="utf-8", errors="replace") as f:
                 for line in f:
-                    if '"event":"file"' not in line.replace(" ", ""):
+                    squeezed = line.replace(" ", "")
+                    if '"event":"file"' not in squeezed and '"event":"spawn"' not in squeezed:
                         continue
                     try:
                         ev = json.loads(line)
@@ -98,6 +99,8 @@ def known_items(repo=REPO):
                         continue
                     if ev.get("event") == "file" and ev.get("id"):
                         ids.add(ev["id"])
+                    elif ev.get("event") == "spawn" and ev.get("name"):
+                        ids.add(ev["name"])
         except OSError:
             continue
     return ids

@@ -24,6 +24,7 @@ publishes that shard before it stops (auditor.md "Before you stop").
     python3 src/RimMandrake/rimflow/audit_hardflag_file.py [--prescreen P] [--out P] [--seat S] [--dry-run]
 """
 import argparse, datetime, hashlib, json, os, subprocess, sys, time
+os.environ.setdefault("RIMFLOW_MACHINE_MINT", "1")  # machine minter: fixed alarm prefixes, see rimflow/model.py mint_problems
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))

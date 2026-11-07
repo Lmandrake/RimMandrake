@@ -1,0 +1,12 @@
+{
+ "run_id": "audit_auto_20261106_1836",
+ "test": false,
+ "started": "2026-11-06T18:36:23-08:00",
+ "subjects": [
+  "RM_Gembug__Green_Jewelbug",
+  "RM_Gembug__Red_Jewelbug",
+  "RM_Gembug__Yellow_Jewelbug",
+  "RM_Dakkra"
+ ],
+ "versions_key": "departures_brief@v3#4e4c26+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v3#2337d2+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

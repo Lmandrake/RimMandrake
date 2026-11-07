@@ -45,7 +45,7 @@ BAN_CASES = [
     ("alias", {"model": "haiku"}, True),
     ("mixed case with spaces", {"model": " Haiku "}, True),
     ("full id", {"model": "us.anthropic.claude-haiku-5-5"}, True),
-    ("on a named agent", {"subagent_type": "rm-search", "model": "haiku"}, True),
+    ("on a named agent", {"subagent_type": "rm-fixer", "model": "haiku"}, True),
     ("on fork", {"subagent_type": "fork", "model": "haiku"}, True),
     ("sonnet", {"model": "sonnet"}, False),
     ("opus", {"model": "opus"}, False),

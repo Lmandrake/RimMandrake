@@ -1,1 +1,0 @@
-relentless boxrun 2026-11-06: in the walled box close_evidence.py fails with 'agent_storage.py rimmandrake failed: ... /home/mandrake/dev/Lodestar/bin/lib/agent_storage.py: Permission denied'. The selftest's result still counts, but no gate sees the box run's close evidence.

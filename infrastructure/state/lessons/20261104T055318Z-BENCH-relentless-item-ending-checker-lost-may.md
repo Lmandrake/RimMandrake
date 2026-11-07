@@ -1,1 +1,0 @@
-A Relentless item ending checker_lost may never have been judged: read store/runs/roles/rm-relentless-check-<short>-g<N>-c<k>.err first. On 2026-11-03 13:35-14:00 PST both checkers of PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF died at launch (EACCES mkdir ~/.seat-tmp/runs/<unit>/claude-1000, empty .json); the fix is a re-check, not rework.

@@ -1,1 +1,0 @@
-relentless boxrun/finish: close_evidence.py inside the walled box fails (agent_storage.py under ~/dev/Lodestar is Errno 13 to the checkbox venv), so no gate sees the boxrun's selftest result; verdict unaffected. Seen 2026-11-06 on GAMEENV_FIX_HARNESS_678B1B18_ITEMS_WAIT.

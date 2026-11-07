@@ -1,1 +1,0 @@
-A walled Relentless judge's transcript is NOT under ~/.claude/projects: its config dir is inside the box, so it lands in <box>/projects/<munged <box>/tree>/ (box = /home/mandrake/walled/<id>). Anything reading run transcripts (pipeline_watch.py project_dirs) must look in both.

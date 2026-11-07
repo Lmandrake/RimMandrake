@@ -1,6 +1,6 @@
 # What is running on this machine, as a plain markdown page (RUNNING_PAGE_BUILD_WHO_IS_AWAKE). No AI, no bridge, no ssh.
 # Runs from the dispatch clone and deliberately NOT through the Dispatcher, so the page still says so when the Dispatcher is dead.
-# Reading: D:\ClaudeWork\rimmandrake\conductor\RUNNING_NOW.md (WSL /mnt/d/ClaudeWork/rimmandrake/conductor/RUNNING_NOW.md)
+# Reading: D:\ClaudeWork\rimmandrake\conductor\RELENTLESS_NOW.md (WSL /mnt/d/ClaudeWork/rimmandrake/conductor/RELENTLESS_NOW.md)
 # Install:  cp src/RimMandrake/Utils/systemd/rm-running.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-running.timer
 # Remove:   systemctl --user disable --now rm-running.timer; rm ~/.config/systemd/user/rm-running.{service,timer}; systemctl --user daemon-reload

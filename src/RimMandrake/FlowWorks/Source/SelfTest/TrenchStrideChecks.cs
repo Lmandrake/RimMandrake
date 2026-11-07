@@ -55,6 +55,24 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("TrenchStride_a_dig_on_one_map_leaves_the_other_maps_masks_alone", () =>
+            {
+                // Two maps, each with its own derive count and what its masks last saw; the rule is production.
+                int ownA = 0, ownB = 0, seenA = 0, seenB = 0;
+                Assert(!RM_TrenchStrideMath.NeedsFullDerive(seenA, ownA, 5, 5) && !RM_TrenchStrideMath.NeedsFullDerive(seenB, ownB, 5, 5), "both current");
+                ownA++;   // map A's cliff masks fully re-derived
+                Assert(RM_TrenchStrideMath.NeedsFullDerive(seenA, ownA, 5, 5), "map A's stride masks follow map A's derive");
+                Assert(!RM_TrenchStrideMath.NeedsFullDerive(seenB, ownB, 5, 5), "map B is not rebuilt by map A's derive");
+                Assert(RM_TrenchStrideMath.NeedsFullDerive(seenB, ownB, 5, 6), "map B's own climb generation still rebuilds it");
+                // The Verse side compares the per-map count; the global one stays for the proofs only.
+                string stride = Src("Superdeep", "RM_TrenchStride.cs"), cliff = Src("Superdeep", "RM_CliffMask.cs");
+                Assert(!stride.Contains("RM_CliffMask.FullDerives "), "the stride masks do not read the global FullDerives count");
+                Assert(!stride.Contains("RM_CliffMask.FullDerives;"), "the stride masks do not record the global FullDerives count");
+                Assert(stride.Contains("NeedsFullDerive(m.seenFullDerives, RM_CliffMask.FullDerivesOn(map),"), "the test compares this map's count");
+                Assert(stride.Contains("m.seenFullDerives = RM_CliffMask.FullDerivesOn(map);"), "and records this map's count");
+                Assert(cliff.Contains("m.fullDerives++;") && cliff.Contains("For(map)?.fullDerives"), "RM_CliffMask counts per map");
+            });
+
             Case("TrenchStride_run_widths", () =>
             {
                 byte[] g = Trench(1, out int w, out int h);

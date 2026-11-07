@@ -510,8 +510,8 @@ check("empty history says no history yet", "no history yet" in R.window_stats([]
 
 # 11. writes, in a private directory
 with tempfile.TemporaryDirectory() as d:
-    R.OUT_DIR, R.OUT, R.HIST, R.STATE, R.STEVE_CACHE = d, d + "/RUNNING_NOW.md", d + "/h.jsonl", d + "/s.json", d + "/steve.json"
-    R.PHONE_OUT, R.FLEET_CACHE = d + "/RUNNING_NOW_PHONE.md", d + "/fleet.json"
+    R.OUT_DIR, R.OUT, R.HIST, R.STATE, R.STEVE_CACHE = d, d + "/RELENTLESS_NOW.md", d + "/h.jsonl", d + "/s.json", d + "/steve.json"
+    R.PHONE_OUT, R.FLEET_CACHE = d + "/RELENTLESS_NOW_PHONE.md", d + "/fleet.json"
     env = Fake(ps=PS)
     rc, _ = R.run(env)
     first = open(R.OUT).read()
@@ -1430,7 +1430,7 @@ import os, sys
 sys.path.insert(0, sys.argv[1])
 import running_now as R
 out = sys.argv[2]
-R.OUT_DIR, R.OUT, R.PHONE_OUT, R.STATE = out, out + "/RUNNING_NOW.md", out + "/RUNNING_NOW_PHONE.md", out + "/state.json"
+R.OUT_DIR, R.OUT, R.PHONE_OUT, R.STATE = out, out + "/RELENTLESS_NOW.md", out + "/RELENTLESS_NOW_PHONE.md", out + "/state.json"
 real_write = R.Env.write_atomic
 def inside(self, path, text):
     assert path.startswith(out), "a fixture run tried to write " + path
@@ -1486,12 +1486,12 @@ out = tmp.name + "/out"
 os.makedirs(out)
 wrote = subprocess.run([sys.executable, "-c", REAL_WRITE, HERE, out], env=child, capture_output=True, text=True, timeout=120)
 disk = {}
-for leaf in ("RUNNING_NOW.md", "RUNNING_NOW_PHONE.md"):
+for leaf in ("RELENTLESS_NOW.md", "RELENTLESS_NOW_PHONE.md"):
     if os.path.exists(out + "/" + leaf):
         with open(out + "/" + leaf) as f:
             disk[leaf] = f.read()
-check("fuel real: a real write puts the three readings in RUNNING_NOW.md", wrote.returncode == 0 and all(w in disk.get("RUNNING_NOW.md", "") for w in ("41% left", "AHEAD", "EQUAL", "BEHIND")))
-check("fuel real: a real write puts the three rows in RUNNING_NOW_PHONE.md", len(accounts_block(disk.get("RUNNING_NOW_PHONE.md", ""))) == 3)
+check("fuel real: a real write puts the three readings in RELENTLESS_NOW.md", wrote.returncode == 0 and all(w in disk.get("RELENTLESS_NOW.md", "") for w in ("41% left", "AHEAD", "EQUAL", "BEHIND")))
+check("fuel real: a real write puts the three rows in RELENTLESS_NOW_PHONE.md", len(accounts_block(disk.get("RELENTLESS_NOW_PHONE.md", ""))) == 3)
 tmp.cleanup()
 
 # an account in the registry with no reading must show as UNMEASURED, not vanish
