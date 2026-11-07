@@ -4,7 +4,7 @@
 
   miasma_kit_spec.md M4, "The lock": "reuse ruled RM_GameCondition_EnvironmentalWeather
   as a permanent biomeMapConditions entry ... forced RM_MiasmaWeather, no
-  damage fields." Attached in RUT_Miasma.xml's own biomeMapConditions list
+  damage fields." Attached in the deleted Miasma twin's def's own biomeMapConditions list
   (BiomeConditionMapComponent.MapGenerated -> GameConditionMaker.
   MakeConditionPermanent, confirmed against the live 1.6 decompile - no
   extra Def field needed to make a biomeMapConditions entry permanent).

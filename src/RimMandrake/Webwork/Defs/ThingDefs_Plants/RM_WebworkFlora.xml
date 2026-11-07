@@ -13,7 +13,7 @@
      (AB_JungleTree/RG_Plant_TropicalChokevine/AB_TangleTea/AB_Gomphoeria/
      AB_RedBugloss/AB_Aaklac cut; Plant_TookeTrap_Wild moved to the Utinni
      layer, sitting record §6 rulings 8/9) live ONLY on the FROZEN
-     `RUT_Webwork.xml` twin, which this build does not touch (Phase A rule:
+     `the deleted Webwork twin's def` twin, which this build does not touch (Phase A rule:
      the frozen def is carried byte-for-byte until the terminal paint). They
      were never copied into RM_Webwork, so there is nothing to physically cut
      here — the disposition is satisfied by RM_Webwork simply never carrying

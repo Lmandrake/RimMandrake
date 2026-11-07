@@ -232,7 +232,7 @@
          jungle fish to catch, not base game fish." Weights/species copied
          verbatim from the campaign's ratified table
          (fish_bestiary_commission_2026-09-10.md §2C,
-         src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml, frozen)
+         the deleted Greentide twin's def, frozen)
          with the two Star Wars-canon scalefish entries (Faa/Laa) left out —
          they are added by UtinniPatches/Patches/WildAnimals_Greentide.xml
          under MayRequire="mandrake.rsw.swbestiary" so this base file, and

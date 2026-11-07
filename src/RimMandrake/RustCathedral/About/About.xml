@@ -38,9 +38,7 @@ design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1
 A flat mechanoid-garrisoned plateau of deck plate and mathematical walls at
 the foot of an eternal noon, almost lifeless, and under everything, always,
 a hum. Fully generalized: it names no other franchise or campaign. A
-separate frozen campaign world's own Rust Cathedral instance
-(RUT_RustCathedral, src/RimUtinni/UtinniPatches) is unaffected and
-unrelated; this is a new sibling biome for everyone else's worlds, not a
+sibling biome for everyone's worlds, not a
 rename of that one.
 
 RM tier: nothing here knows what campaign or planet uses it.

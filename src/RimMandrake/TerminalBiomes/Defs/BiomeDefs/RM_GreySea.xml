@@ -4,7 +4,7 @@
   RM_GreySea.xml                          TerminalBiomes · moved 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml (now frozen,
+  the deleted GreySea twin's def (was frozen then,
   same folder) — see that file's own header for the full authorship history.
 
   ONE substantive change from the original build: the one `RSW_` wildAnimals
@@ -271,7 +271,7 @@
       </saltwater_Common>
       <!-- GREYSEA_RULED_CONTENT_1 housekeeping: migrated off the RUT_
            campaign-layer table (RUT_RareGreyCatches, still frozen for
-           RUT_GreySea's own use) onto the free-tier RM_RareGreyCatches
+           the deleted GreySea twin's own use) onto the free-tier RM_RareGreyCatches
            (RM_GreySeaRareCatch.xml) — RM_GreySea is TerminalBiomes' own
            mod and must not cross-reference RimUtinni. -->
       <rareCatchesSetMaker>RM_RareGreyCatches</rareCatchesSetMaker>

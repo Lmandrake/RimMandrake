@@ -8,9 +8,9 @@
   </supportedVersions>
   <description>STAGED_LORE_BUILD_1, content half — the Scarlands reveal ladder as data for mandrake.rm.lorestages.
 
-Five rungs, matching design/Jawa/worldbuilding/biomes/the_scarlands.md §GM 1-5: the last stand, the Sentinels, the Cathedral, the Rakata, the pilgrims. Each rung rewrites RUT_Scarlands' description and settleWarning so the biome reads as an inexplicable wasteland until the player has earned the truth.
+Five rungs, matching design/Jawa/worldbuilding/biomes/the_scarlands.md §GM 1-5: the last stand, the Sentinels, the Cathedral, the Rakata, the pilgrims. Each rung rewrites RM_Warscar's description and settleWarning so the biome reads as an inexplicable wasteland until the player has earned the truth.
 
-The five description rungs are the ruled text (cast bible section 6B, card 2026-09-30); the two settleWarning rungs are still placeholder and marked as such. The gate is the pilgrim camps: a cold fire, a bedroll, the pilgrim who never left and a journal, placed on RUT_Scarlands maps; cataloguing a journal at the Antiquities Reading Station (it is an Antiquities artifact) moves the ladder one rung (setting: Scarlands Ladder).
+The five description rungs are the ruled text (cast bible section 6B, card 2026-09-30); the two settleWarning rungs are still placeholder and marked as such. The gate is the pilgrim camps: a cold fire, a bedroll, the pilgrim who never left and a journal, placed on RM_Warscar maps; cataloguing a journal at the Antiquities Reading Station (it is an Antiquities artifact) moves the ladder one rung (setting: Scarlands Ladder).
 R25 (freeze ruling): even the top rung never names the Assailants, the Rakata, scaria's authorship or the Cathedral's nature in a def description. Staged text advances from absence to geometry the player reads, never to a name they are handed. That ban is a property of THIS table, not of the engine, and applies to the real text when it lands.
 
 The engine and the split: the mechanism is mandrake.rm.lorestages (RimMandrake tier — it names no campaign); this mod is the RimUtinni half, per the engine/content rule in design/NAMING_SCHEME_PLAN.md §2.</description>
@@ -37,6 +37,7 @@ The engine and the split: the mechanism is mandrake.rm.lorestages (RimMandrake t
        Antiquities is HARD too: the journal carries its CompProperties_Antiquity and the
        journal comp implements its IAntiquityCatalogueListener (WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1). -->
   <loadAfter>
+    <li>mandrake.rm.biomes</li>
     <li>Ludeon.RimWorld</li>
     <li>mandrake.rm.lorestages</li>
     <li>mandrake.rut.antiquities</li>

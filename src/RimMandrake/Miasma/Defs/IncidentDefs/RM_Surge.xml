@@ -45,7 +45,7 @@
   ramp-in duration RM_GameCondition_GradientSurge.Init() reads back via its
   own inherited Duration property; not re-picked or duplicated there.
 
-  allowedBiomes=[RUT_Miasma]: "weighted only into this biome" (spec's own
+  allowedBiomes=[the deleted Miasma twin]: "weighted only into this biome" (spec's own
   words) - and IncidentWorker.CanFireNow enforces this even on a manually
   built IncidentParms (verified against the live decompile).
 
@@ -69,9 +69,8 @@
     <gameCondition>RM_GradientSurge</gameCondition>
     <durationDays>0.1667~0.3333</durationDays>
     <allowedBiomes>
-      <li MayRequire="mandrake.rut.patches">RUT_Miasma</li>
       <!-- MIASMA_RM_MOD_BUILD_1: second op alongside the frozen twin above -
-           the live campaign world still carries RUT_Miasma-painted tiles
+           the live campaign world carried the deleted Miasma twin-painted tiles
            until the terminal paint, and this def now physically lives in
            mandrake.rm.miasma, so both defNames must stay listed for the
            surge to keep firing on the live save AND on a freshly generated

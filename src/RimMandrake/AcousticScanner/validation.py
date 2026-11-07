@@ -36,7 +36,7 @@ ALT = {"enabled": False, "requireLandedShip": False, "cooldownHours": 3.0, "over
        "bandSize": 9, "rangeCells": 80.0, "pulseEffects": False}
 DEFS = ["ThingDef/RM_AcousticSounder", "ResearchProjectDef/RM_AcousticSounding"]
 CONTROL_ABSENT = "ThingDef/RM_AcousticSounder_NoSuchDef_Control"
-PAYLOAD_BIOMES = ["RM_FloodedCanyon", "RM_Stillsand", "RUT_CrackedLands"]    # the criteria's live-probe biomes; every owned BiomeDef carries a payload (owned_biomes)
+PAYLOAD_BIOMES = ["RM_FloodedCanyon", "RM_Stillsand"]    # the criteria's live-probe biomes; every owned BiomeDef carries a payload (owned_biomes)
 SOUNDER = "RM_AcousticSounder"
 ENGINE = "GravEngine"
 PULSE_LABEL = "Sound the ground"

@@ -5,7 +5,7 @@
   SCARLANDS_STANDALONE_MOD_1. mandrake.rm.warscar's own copy of the Scarlands
   biome, generalized (franchise-free, campaign-free) per
   biome_mod_architecture.md Section 5 Phase A, row 20. Source: the FROZEN
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml (unchanged,
+  the deleted Scarlands twin's def (unchanged,
   still carrying the campaign world's own 90 tiles until the terminal repaint
   — see its own header for the freeze notice).
 
@@ -45,7 +45,7 @@
     - wildPlants: RM_Glower/RM_ScorchedStars are OWN DUPLICATES (own defNames,
       Defs/ThingDefs_Plants/RM_WarscarFlora.xml) of the frozen twin's own
       RUT_Glower and RUT_ScorchedStars — duplicated rather than moved because
-      RUT_ScorchedStars is also shared with the frozen twin's own RUT_Wastes
+      RUT_ScorchedStars is also shared with the frozen twin's own the deleted Wastes twin
       sibling (moving it would make Wasteland depend on this mod) and
       RUT_Glower had to stay live for the frozen twin. RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): both
       originals are gone and the frozen twins name these RM_ defs.

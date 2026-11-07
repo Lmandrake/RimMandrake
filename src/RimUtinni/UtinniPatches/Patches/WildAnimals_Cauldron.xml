@@ -9,13 +9,13 @@
   defs now; the former Genetic Rim/Alpha Animals/Alpha Memes/Horrors donor
   rows are our ports). Per §7 Q11 ("RimMandrake should not name star wars ever"),
   RM_Cauldron may not carry any Star Wars creature inline, so the frozen
-  RUT_Cauldron.xml's (renamed from RUT_PoisonForest, CAULDRON_FULL_RENAME_1,
+  the deleted Cauldron twin's def's (renamed from RUT_PoisonForest, CAULDRON_FULL_RENAME_1,
   2026-09-30) Star Wars/campaign-tier rows ride HERE instead (all but
   RSW_Screecher, cut 2026-10-09, below). Shape: WildAnimals_LeaningScrub.xml /
   WildAnimals_Pyrelands.xml.
 
   🔑 SOURCE OF TRUTH: every defName and weight below is copied verbatim from
-  the LIVE RUT_Cauldron.xml wildAnimals block as of COMMISSION_LEDGER_
+  the LIVE the deleted Cauldron twin's def wildAnimals block as of COMMISSION_LEDGER_
   CLEANUP_1's 2026-09-24/25 pass (18 rows total) — not from the stale
   POISONFOREST_RM_MOD_BUILD_1 item table (written 2026-09-23, before
   RSW_VentStalker was added).
@@ -33,7 +33,7 @@
   RSW_Screecher is NOT a row here: the owner cut it from the Cauldron roster
   on the Cauldron sheet 2026-10-09 ("cut: no longer needed.", enacted by
   9fb3504f22). It stays in WildAnimals_Wastes.xml and in the frozen
-  RUT_Cauldron.xml twin. The rows below are the whole Star Wars set
+  the deleted Cauldron twin. The rows below are the whole Star Wars set
   RM_Cauldron gets; RM_Cauldron.xml's header and the mod's About.xml name
   the same seven (selftest_cauldron_roster_boundary.py checks it).
 

@@ -14,7 +14,7 @@
   exactly the swamps its canon parent RSW_Dragonsnake already holds — no new biome, no roster eviction. Canon gives
   it no separate habitat (it is a dragonsnake of Nal Hutta's swamps, kept captive by the Hutts), so it follows the
   parent: race.wildBiomes below mirror the parent's vanilla swamp rows at one sixth, and its Greentide rows
-  (RUT_Greentide + RM_Greentide, 0.02 against the parent's 0.12) are patch-added by
+  (the deleted Greentide twin + RM_Greentide, 0.02 against the parent's 0.12) are patch-added by
   RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml, guarded on this def existing.
 
   Body: its own limbless BodyDef below (the serpent plan the donor's dragonsnake body had, minus the hood the film

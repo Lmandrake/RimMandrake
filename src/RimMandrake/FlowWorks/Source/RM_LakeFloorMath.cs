@@ -119,30 +119,30 @@ namespace RimMandrake.FlowWorks
 		public static readonly Dictionary<string, float> BiomeBias = new Dictionary<string, float>
 		{
 			// deeper: canyons, craters, ridges, voids, mountains
-			{ "RM_Abyss", 0.25f }, { "RUT_Abyss", 0.25f },                   // obsidian twisted into shapes no wind carved
-			{ "RM_FloodedCanyon", 0.20f }, { "RUT_CrackedLands", 0.20f },    // mesas, hoodoos, slot canyons
-			{ "RM_TheScald", 0.25f }, { "RUT_TheScald", 0.25f },             // a perched ocean in a vast crater
-			{ "RM_TheForge", 0.20f }, { "RUT_TheForge", 0.20f },             // one mountain
-			{ "RM_Contagion", 0.15f }, { "RUT_Contagion", 0.15f },           // a valley on a scalded mountain
-			{ "RM_WeepingStones", 0.15f }, { "RUT_WeepingStones", 0.15f },   // high stone, ridge and shoulder
+			{ "RM_Abyss", 0.25f },                   // obsidian twisted into shapes no wind carved
+			{ "RM_FloodedCanyon", 0.20f },    // mesas, hoodoos, slot canyons
+			{ "RM_TheScald", 0.25f },             // a perched ocean in a vast crater
+			{ "RM_TheForge", 0.20f },             // one mountain
+			{ "RM_Contagion", 0.15f },           // a valley on a scalded mountain
+			{ "RM_WeepingStones", 0.15f },   // high stone, ridge and shoulder
 			{ "RM_LanternDeeps", 0.20f },                                     // voids under the thickest crust
 			{ "RM_ChillCrater", 0.10f },                                      // a basin of black glass
-			{ "RM_SleepingIce", 0.10f }, { "RUT_SleepingIce", 0.10f },     // ice that flows and fractures
-			{ "RM_Warscar", 0.10f }, { "RUT_Scarlands", 0.10f },             // crater fields
+			{ "RM_SleepingIce", 0.10f },     // ice that flows and fractures
+			{ "RM_Warscar", 0.10f },             // crater fields
 			// shallower: swamps, sumps, plains, pans, mud
-			{ "RM_TheSump", -0.25f }, { "RUT_Sump", -0.25f },                // flat black pools, the lowest basin
-			{ "RM_FeverWood", -0.25f }, { "RUT_FeverWood", -0.25f },         // shallow surface pools, deep mud beneath
-			{ "RM_Miasma", -0.20f }, { "RUT_Miasma", -0.20f },               // brackish channels
-			{ "RM_Wastes", -0.20f }, { "RUT_Wastes", -0.20f },         // salt and brine where rivers die
-			{ "RM_Stillsand", -0.20f }, { "RUT_ExtremeDesert", -0.20f },     // a corrugated plain to every horizon
-			{ "RM_LeaningScrub", -0.20f }, { "RUT_AridShrubland", -0.20f },  // fuzz to every horizon
-			{ "RM_Greentide", -0.15f }, { "RUT_Greentide", -0.15f },         // mud deep enough to swallow a boot
+			{ "RM_TheSump", -0.25f },                // flat black pools, the lowest basin
+			{ "RM_FeverWood", -0.25f },         // shallow surface pools, deep mud beneath
+			{ "RM_Miasma", -0.20f },               // brackish channels
+			{ "RM_Wastes", -0.20f },         // salt and brine where rivers die
+			{ "RM_Stillsand", -0.20f },     // a corrugated plain to every horizon
+			{ "RM_LeaningScrub", -0.20f },  // fuzz to every horizon
+			{ "RM_Greentide", -0.15f },         // mud deep enough to swallow a boot
 			{ "RM_Pyrelands", -0.15f },                                       // savanna
-			{ "RM_RustCathedral", -0.15f }, { "RUT_RustCathedral", -0.15f }, // a flat plateau of deck plate
-			{ "RM_GreySea", -0.10f }, { "RUT_GreySea", -0.10f },             // a shrinking terminal sea
-			{ "RM_TwilightSea", -0.10f }, { "RUT_TwilightSea", -0.10f },
-			{ "RM_BlueDesert", -0.10f }, { "RUT_BlueDesert", -0.10f },       // an ice plateau
-			{ "RM_Cauldron", -0.10f }, { "RUT_Cauldron", -0.10f },           // a low wet forest
+			{ "RM_RustCathedral", -0.15f }, // a flat plateau of deck plate
+			{ "RM_GreySea", -0.10f },             // a shrinking terminal sea
+			{ "RM_TwilightSea", -0.10f },
+			{ "RM_BlueDesert", -0.10f },       // an ice plateau
+			{ "RM_Cauldron", -0.10f },           // a low wet forest
 			// vanilla and DLC
 			{ "TemperateSwamp", -0.20f }, { "TropicalSwamp", -0.20f }, { "ColdBog", -0.20f },
 			{ "Grasslands", -0.15f }, { "GlacialPlain", -0.10f },

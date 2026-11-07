@@ -87,7 +87,7 @@ OVERRIDES = {
              "VEE_* only exist if that donor is loaded."),
     ("GRAVSHIP_ACOUSTIC_SCANNER_1", "A1"): dict(
         defs=["ThingDef/RM_AcousticSounder", "ResearchProjectDef/RM_AcousticSounding",
-              "BiomeDef/RM_FloodedCanyon", "BiomeDef/RM_Stillsand", "BiomeDef/RUT_CrackedLands"],
+              "BiomeDef/RM_FloodedCanyon", "BiomeDef/RM_Stillsand"],
         note="Every BiomeDef defined in src/ (62) carries the payload extension by a FindMod-guarded patch; "
              "AcousticScanner/validation.py static_checks fails on any owned BiomeDef without one. The three listed are the live-probe biomes."),
     ("THE_SUMP_FIRST_SCRIPT_1", "A2"): dict(
@@ -164,7 +164,7 @@ OVERRIDES = {
              "The lie-down 'giver' is a JobGiver C# class reached via the think tree (ThinkTreeDef RM_Totchak, file RM_ThinkTree_Totchak.xml); the def is JobDef RM_TotchakLieDown."),
     ("RUST_CATHEDRAL_MECHANICS_1", "A1"): dict(
         dirs=["src/RimMandrake/RustCathedral/Defs"],
-        note="CORRECTED: the shipping mod is src/RimMandrake/RustCathedral (RM_ tier); the prose-derived RUT_CathedralRoach/RUT_ScarRoach/RUT_RustCathedral "
+        note="CORRECTED: the shipping mod is src/RimMandrake/RustCathedral (RM_ tier); the prose-derived RUT_CathedralRoach/RUT_ScarRoach/Rust Cathedral twin "
              "are the RimUtinni twins and not what 'all RustCathedral defs' means. The twin roaches live in src/RimUtinni/RustCathedralRoaches."),
     ("FOOTPRINT_TRACK_GRID_1", "A2"): dict(
         patch_targets="src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml",

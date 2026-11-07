@@ -8,7 +8,6 @@ RSW_SandLion (SWBestiary) was a twin of RM_Vekka (Stillsand, mandrake.rm.biomes)
      PawnKindDef) and Corpse_RSW_SandLion;
   4. no XML outside that alias file names RSW_SandLion in an element, attribute or text (comments are history and
      are stripped), and no C# names it;
-  5. the frozen RUT_ExtremeDesert row names RM_Vekka behind MayRequire="mandrake.rm.biomes";
   6. the Utinni stat patches were REPOINTED, not just stripped: AnimalTolerances_Ashkarr.xml targets
      ThingDef[defName="RM_Vekka"]/statBases/ComfyTemperatureMin and Max and writes -1.1 and 100;
      Doctrine/MegafaunaYield.xml targets RM_Vekka's statBases/MeatAmount and RM_BoneAmount and writes 280 and 100.
@@ -32,7 +31,6 @@ SRC = os.path.join(ROOT, "src")
 ALIASES = os.path.join(SRC, "RimMandrake", "LeaningScrub", "Defs", "Misc", "RM_SWBRehome_Aliases.xml")
 TOLER = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Patches", "AnimalTolerances_Ashkarr.xml")
 MEGA = os.path.join(SRC, "RimUtinni", "Doctrine", "Patches", "MegafaunaYield.xml")
-EXTREME = os.path.join(SRC, "RimUtinni", "UtinniPatches", "Defs", "BiomeDefs", "RUT_ExtremeDesert.xml")
 OLD, NEW = "RSW_SandLion", "RM_Vekka"
 SKIP = {"obj", "bin", "Textures", ".git", "node_modules"}
 COMMENT = re.compile(r"<!--.*?-->", re.S)
@@ -154,18 +152,6 @@ def main():
         if n:
             hits.append("%s x%d" % (os.path.relpath(p, ROOT), n))
     check("4. no live XML/C# reference to RSW_SandLion outside the alias file", not hits, "; ".join(hits))
-
-    # 5. the frozen Extreme Desert row
-    root = ET.parse(EXTREME).getroot()
-    rows = {}
-    for b in root.iter("BiomeDef"):
-        if (b.findtext("defName") or "").strip() == "RUT_ExtremeDesert":
-            wa = b.find("wildAnimals")
-            for el in (list(wa) if wa is not None else []):
-                rows[el.tag] = (el.text, el.get("MayRequire"))
-    check("5a. RUT_ExtremeDesert has no RSW_SandLion row", OLD not in rows)
-    check("5b. RUT_ExtremeDesert names RM_Vekka 0.5 behind mandrake.rm.biomes",
-          rows.get(NEW) == ("0.5", "mandrake.rm.biomes"), repr(rows.get(NEW)))
 
     # 6. the Utinni stat patches point at RM_Vekka (probe first: the extractor sees a planted op)
     px, pw = patch_ops('<Patch><!-- <xpath>/Defs/ThingDef[defName="RM_Vekka"]/statBases/Fake</xpath> -->'

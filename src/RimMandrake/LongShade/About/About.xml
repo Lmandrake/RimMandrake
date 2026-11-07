@@ -24,7 +24,7 @@ Long Shade — RM_LongShade — is a dayside desert band at a sun so low every s
 throws a shadow four times its own height: nothing lives in the light and nothing
 survives leaving shelter, so life here is a sprint between islands of shade. Name
 ruled 2026-09-21 (biome_mod_architecture.md §7 Q2, the owner's own recommended
-row): "the Long Shade", off `RUT_Desert`'s sheet identity, design/Jawa/worldbuilding/
+row): "the Long Shade", off the old desert sheet's identity, design/Jawa/worldbuilding/
 biomes/desert.md (FROZEN, BIOME_FREEZE_FABLE_REVIEW_1).
 
 RM tier: this def names no other franchise or campaign and is playable standalone
@@ -71,7 +71,6 @@ contact-venom kits (mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhaza
 — loadAfter only, no hard dependency; both already ship their own global toggles
 for those mechanics) and this mod's own new dewfringe rim-gate toggle.
 
-The `RUT_Desert` twin in mandrake.rut.patches is FROZEN, not deleted — it carries
-the player's saved campaign world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1).
+
 Every content fix for the Long Shade lands here from now on.</description>
 </ModMetaData>

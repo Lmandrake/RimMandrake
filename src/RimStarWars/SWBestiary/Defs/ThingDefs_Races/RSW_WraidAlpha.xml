@@ -12,7 +12,7 @@
 
   RESKIN, not a new species from scratch, per the item's own "the work":
   candidates were the two creatures already standing in as "burst-predator"
-  in RUT_Desert.xml's wildAnimals comments — RSW_Wraid (combatPower 400,
+  in the deleted Desert twin's def's wildAnimals comments — RSW_Wraid (combatPower 400,
   baseBodySize 3.0, ComfyTemperatureMax 80, canon description "relying on
   scavenging and AMBUSH to find their prey") and RSW_Gutkurr (combatPower
   450, baseBodySize 2.0, ComfyTemperatureMax 70, canon description "worked
@@ -41,7 +41,7 @@
   Solitary, not herdAnimal, unlike the donor: desert.md §4 "predator and
   prey solve different problems" frames the burst predator as a lone
   ambusher owning a shadow, not a pack. wildBiomes narrowed to Desert only
-  (this sheet's own biome) at a low, rare-apex commonality — RUT_Desert.xml
+  (this sheet's own biome) at a low, rare-apex commonality — the deleted Desert twin's def
   wires it in alongside (not replacing) RSW_Wraid/RSW_Gutkurr, which stay
   as the item's own "Watch out" says not to remove without certainty.
 

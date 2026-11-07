@@ -51,7 +51,7 @@
 
   No MayRequire: every def named above (AncientFortifiedWall, ChunkSlagSteel,
   AncientBarrel, the three Filth_* defs) is vanilla/Odyssey, already
-  MayRequire-gated once at the BiomeDef level (RUT_Scarlands.xml's own
+  MayRequire-gated once at the BiomeDef level (the deleted Scarlands twin's def's own
   MayRequire="Ludeon.RimWorld.Odyssey").
 -->
 <Defs>

@@ -5,7 +5,7 @@
     RM_TheRot_Biome.xml    RimMandrake: The Rot
 
     THEROT_RM_MOD_BUILD_1 step 2. Derived from the frozen campaign twin
-    (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml) with:
+    (the deleted TheRot twin's def) with:
       - own workerClass (RimMandrake.TheRot.RM_BiomeWorker_TheRot, not the
         donor AlphaBiomes.BiomeWorker_MycoticJungle) plus an own
         RM_TheRotBiomeRanges modExtension so the biome can win tiles on any

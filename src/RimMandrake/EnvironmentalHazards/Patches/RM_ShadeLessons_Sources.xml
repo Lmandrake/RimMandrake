@@ -10,7 +10,7 @@
   parent's list).
 
   RUT_ twin rows: added only where the twin's cast holds no source above (measured from the twins' wildPlants,
-  2026-11-05). RUT_TheScald and RUT_RustCathedral have no plant cast and get no row; crossings still teach portable
+  2026-11-05). the deleted TheScald twin and the deleted RustCathedral twin have no plant cast and get no row; crossings still teach portable
   shade there. frequencyTicks 15000 and knowledgeToReveal 12 are PROVISIONAL, the Stellock/Spunstone scale.
 -->
 <Patch>
@@ -585,7 +585,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_CrackedLands: RM_GargantuanLithops teaches keeping dew off -->
+  <!-- the deleted CrackedLands twin: RM_GargantuanLithops teaches keeping dew off -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThingDef[defName="RM_GargantuanLithops"]/comps</xpath>
     <match Class="PatchOperationAdd">
@@ -623,7 +623,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_Contagion: RM_GlobularPlant teaches keeping dew off -->
+  <!-- the deleted Contagion twin: RM_GlobularPlant teaches keeping dew off -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThingDef[defName="RM_GlobularPlant"]/comps</xpath>
     <match Class="PatchOperationAdd">
@@ -661,7 +661,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_WeepingStones: RM_Shadefern teaches deeper shade cloth -->
+  <!-- the deleted WeepingStones twin: RM_Shadefern teaches deeper shade cloth -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThingDef[defName="RM_Shadefern"]/comps</xpath>
     <match Class="PatchOperationAdd">
@@ -699,7 +699,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_Miasma: RM_MangrovePalm teaches deeper shade cloth -->
+  <!-- the deleted Miasma twin: RM_MangrovePalm teaches deeper shade cloth -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThingDef[defName="RM_MangrovePalm"]/comps</xpath>
     <match Class="PatchOperationAdd">
@@ -737,7 +737,7 @@
     </nomatch>
   </Operation>
 
-  <!-- RUT_Webwork: RM_Aaklac teaches deeper shade cloth -->
+  <!-- the deleted Webwork twin: RM_Aaklac teaches deeper shade cloth -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ThingDef[defName="RM_Aaklac"]/comps</xpath>
     <match Class="PatchOperationAdd">

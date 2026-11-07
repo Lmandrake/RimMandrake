@@ -659,7 +659,7 @@ def defs_static(t):
                 xp = o.find(".//xpath")
                 removed.add(re.sub(r"\s+", "", xp.text or ""))
         want = ['/Defs/BiomeDef[defName="%s"]/baseWeatherCommonalities/%s' % (b, w)
-                for b, w in (("RM_GelatinousSlime", "Rain"), ("RM_GelatinousSlime", "FoggyRain"), ("RUT_Slime", "Rain"))]
+                for b, w in (("RM_GelatinousSlime", "Rain"), ("RM_GelatinousSlime", "FoggyRain"))]
         miss = [w for w in want if w not in removed]
         if miss:
             _fail("campaign patch does not remove: %s" % miss)

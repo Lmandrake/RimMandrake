@@ -355,7 +355,7 @@ def coverage_defs_load(t):
 def war_lab_crater_gate(t):
     """warLabCraterEnabled: with it OFF, WarLabCraterMutation.Ignite() must
     return false (CompIgniteCraterOnDestroy.PostDestroy calls exactly that).
-    The positive arm needs a live world carrying RUT_PropaneLake/RM_TheChill
+    The positive arm needs a live world carrying RM_TheChill
     tiles, which a quicktest world does not have."""
     with t.component("war_lab_ignite_respects_toggle", toggle="warLabCraterEnabled"):
         t.set_setting(RUT_SETTINGS_TYPE, {"warLabCraterEnabled": False})
@@ -367,7 +367,7 @@ def war_lab_crater_gate(t):
     with t.component("war_lab_ignite_mutates_propane_lake_tiles_once", beyond_toggle=True):
         raise ExpectationFailed(
             "UNMEASURED: no instrument -- the positive arm needs a live world with "
-            "RUT_PropaneLake/RM_TheChill tiles and a read of GameComponent_WarLabCrater."
+            "RM_TheChill tiles and a read of GameComponent_WarLabCrater."
             "Triggered/CrateredTileIds; no jawa tool exposes that GameComponent and the "
             "quicktest world has none of those tiles (add a ProofIgnite static to the mod)")
 

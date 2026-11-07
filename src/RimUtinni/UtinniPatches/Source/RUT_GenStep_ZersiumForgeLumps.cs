@@ -93,7 +93,7 @@ namespace RimMandrake.Utinni.UtinniPatches
     }
 
     // ASTEROID_DESERT_ORES_1 — phrikite's only placement: a few small lumps of RSW_MineablePhrikite in the natural
-    // rock of ONE desert biome (RM_Stillsand and its twin RUT_ExtremeDesert; PROVISIONAL, owner question open).
+    // rock of ONE desert biome (RM_Stillsand and its twin the deleted ExtremeDesert twin; PROVISIONAL, owner question open).
     // Same gate-and-guarantee logic as the zersium step, own seed and own Mod Settings switch.
     public class RUT_GenStep_PhrikiteDesertLumps : RUT_GenStep_ZersiumForgeLumps
     {

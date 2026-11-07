@@ -21,8 +21,8 @@
   (`swanimals/Whisperbird/Whisperbird_Flying_*`) and the shared
   `RSW_FlyingAvian` BodyDef. Checked BEFORE reusing anything:
   `design/Jawa/fauna/cast_assignment.csv` assigns the *species* `Whisperbird`
-  to RUT_AridShrubland (row 34), RUT_FeverWood (149), RUT_Greentide (171) and
-  RUT_Miasma (209), all status keep - so this def does NOT place a whisperbird
+  to the deleted AridShrubland twin (row 34), the deleted FeverWood twin (149), the deleted Greentide twin (171) and
+  the deleted Miasma twin (209), all status keep - so this def does NOT place a whisperbird
   a fifth time. It reuses the body/art ASSET the way RSW_TunnelSnake reused
   RSW_Klorslug's and RSW_ShadeWhale reused RSW_Horax's: a new defName, no
   double-booked species identity. Grounded art is its OWN painted render
@@ -31,7 +31,7 @@
   own (swanimals/ScrapNestBird/, a body-locked cut-out of these statics,
   flyer_cutout_sets/ScrapNestBird.json, FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST). The four other
   flier-interface birds the sheet already places (Whisperbird, Convor, Porg,
-  Nuna) all stay wired in RUT_AridShrubland.xml unchanged.
+  Nuna) all stayed wired in the deleted AridShrubland twin's def unchanged.
 
   Art: the three base facings of `RSW_Whisperbird` live at
   Textures/RimStarWars/SWBestiary/Whisperbird/ (folded from the retired
@@ -159,7 +159,7 @@
       <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <!--
-        Donor metadata only. RUT_AridShrubland.xml's own <wildAnimals> fully
+        Donor metadata only. the deleted AridShrubland twin's def's own <wildAnimals> fully
         replaces this per-biome, so a number here is not a placement.
       -->
       <wildBiomes>

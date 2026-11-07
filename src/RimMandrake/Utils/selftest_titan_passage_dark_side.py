@@ -27,7 +27,7 @@ PATCH = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Patches", "RM_Ti
 EXT_CS = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Source", "Titanic", "Events", "RM_TitanPassageExtension.cs")
 ITEMS = os.path.join(ROOT, "infrastructure", "state", "items")
 
-NO_PASSAGE = ["RM_SleepingIce", "RUT_SleepingIce"]
+NO_PASSAGE = ["RM_SleepingIce"]
 GIANT_HOMES = {"RUT_Umbra": "UMBRA_TITAN_POPULATE_BURNS_TO_WALK",
                "RM_TheChill": "CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL"}
 

@@ -33,7 +33,7 @@ Binding: a file that exists in src/ gets an exact `install_to` (a StandIn/<p> fi
 past art); a vanilla/donor texPath gets target_def + target_texpath (bulk_accept_renders repoints it to a path of
 our own). Dedupe: a target whose def already has a pending/active job, or a done job the installer can still place,
 is skipped; job ids are `dregen_<def>[_<file>]_v1` so a re-run never re-files (fill_queue/registry dedupe too).
-Order (lower priority claims sooner): creatures of the arid start region (the Utinni lands on RUT_ExtremeDesert,
+Order (lower priority claims sooner): creatures of the arid start region (the Utinni lands on RM_Stillsand,
 tile 17007), other creatures, plants, terrain, buildings, items, icons.
 Never runs image generation itself.
 """
@@ -62,9 +62,9 @@ ITEM = "DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO"
 SW_ITEM = "TEXREGEN_SWBESTIARY_DECIDE_NO_ROSTER_OWNS_IT"
 HOUSE = ("Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a "
          "transparent background, no ground, no props, no baked shadow.")
-# The arid region the colony starts in (canonical start tile 17007 is RUT_ExtremeDesert, region The Breaks) and the
+# The arid region the colony starts in (canonical start tile 17007 is RM_Stillsand, region The Breaks) and the
 # desert biomes of ours that share its register. A judgment for ORDERING only, never a tile count.
-START = ["RUT_ExtremeDesert", "RM_Stillsand", "RM_LeaningScrub", "RM_LongShade", "RM_Wastes", "RM_BlueDesert",
+START = ["RM_Stillsand", "RM_LeaningScrub", "RM_LongShade", "RM_Wastes", "RM_BlueDesert",
          "RM_FloodedCanyon", "RM_Pyrelands"]
 KIND_PRIO = {"creature_start": 20, "creature": 30, "plant_start": 40, "plant": 45, "terrain": 55, "building": 65,
              "item": 75, "icon": 85}

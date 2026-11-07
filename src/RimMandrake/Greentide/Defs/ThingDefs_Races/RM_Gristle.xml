@@ -7,7 +7,7 @@
      (was RM_MediumChitin; insect flesh). Comfy temperatures are the values AnimalTolerances_Ashkarr.xml
      pinned on RSW_Diggerpede (-25/75.8). Art is a byte copy of the in-game diggerpede art until the
      realistic regen (regen_gt_gristle_v2) is reviewed. RSW_Diggerpede stays only for the frozen
-     RUT_Greentide twin. -->
+     the deleted Greentide twin. -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Gristle</defName>

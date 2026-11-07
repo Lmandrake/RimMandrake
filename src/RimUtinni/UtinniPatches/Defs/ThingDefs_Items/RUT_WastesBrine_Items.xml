@@ -31,8 +31,8 @@
 
   🔴 wave 2 correction (2026-09-18): the analysis above is about the DONOR
   `Wasteland` BiomeDef (Mlie.AdvancedBiomes) — the live campaign map does not
-  use it. MEASURED via world/ASHKARR_WORLDMAP_tiles.csv: `RUT_Wastes`
-  covers all 1853 Wasteland tiles, bare "Wasteland" covers zero. `RUT_Wastes`
+  use it. MEASURED via world/ASHKARR_WORLDMAP_tiles.csv: the deleted Wastes twin
+  covers all 1853 Wasteland tiles, bare "Wasteland" covers zero. the deleted Wastes twin
   left its own water terrain fields unset, so any water it generated fell
   back to vanilla FRESHWATER (Verse/MapGenUtility.cs:182) — fishing there
   would in fact have worked, before wave 2. This does not undo the owner's

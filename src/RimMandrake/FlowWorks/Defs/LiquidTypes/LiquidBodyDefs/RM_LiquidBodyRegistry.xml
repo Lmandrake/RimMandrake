@@ -17,10 +17,10 @@
   MEASURED against world/ASHKARR_WORLDMAP_tiles.csv (21,872 rows, the frozen
   record, 2026-09-19):
 
-      RUT_TwilightSea    607 tiles    all water
-      RUT_GreySea        472 tiles    all water
-      RUT_TheScald       312 tiles    all water
-      RUT_PropaneLake     57 tiles    all water
+      the deleted TwilightSea twin    607 tiles    all water
+      the deleted GreySea twin        472 tiles    all water
+      the deleted TheScald twin       312 tiles    all water
+      the deleted PropaneLake twin     57 tiles    all water
                        =======
                        1,448 tiles = EVERY water tile on the planet
 
@@ -51,7 +51,6 @@
     <label>the Scald</label>
     <liquid>RM_Liquid_BoilingWater</liquid>
     <biomes>
-      <li>RUT_TheScald</li>
       <!-- TERMINALBIOMES_RM_MOD_BUILD_1 step 4 (§7b): second entry for the
            RimMandrake-tier twin, so this stays true after the move too. -->
       <li>RM_TheScald</li>
@@ -67,7 +66,6 @@
     <label>the Twilight Sea</label>
     <liquid>RM_Liquid_Brine</liquid>
     <biomes>
-      <li>RUT_TwilightSea</li>
       <li>RM_TwilightSea</li>
     </biomes>
   </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
@@ -78,7 +76,6 @@
     <label>the Grey Sea</label>
     <liquid>RM_Liquid_Brine</liquid>
     <biomes>
-      <li>RUT_GreySea</li>
       <li>RM_GreySea</li>
     </biomes>
   </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
@@ -93,7 +90,6 @@
     <label>the Chill</label>
     <liquid>RM_Liquid_Propane</liquid>
     <biomes>
-      <li>RUT_PropaneLake</li>
       <li>RM_TheChill</li>
     </biomes>
   </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>

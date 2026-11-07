@@ -9,7 +9,7 @@
   RM_SumpDuskLock (GameConditionDefs/, same pass) through
   GameCondition.ForcedWeather() — vanilla's own override for exactly this
   (GameCondition_EnvironmentalWeather.cs:198-202, ALPHA_MECHANICS_KIT_1,
-  already shipped). RUT_Sump.xml's own baseWeatherCommonalities table
+  already shipped). the deleted Sump twin's def's own baseWeatherCommonalities table
   (Fog/Clear/DryThunderstorm/SnowGentle/SnowHard) is therefore pre-mod-load
   documentation once the lock is active on a map — it never actually gets
   rolled — same structural point RM_MiasmaWeather.xml's own header already
@@ -17,7 +17,7 @@
 
   MayRequire on the whole Def, matching RM_ScaldSteam.xml's own precedent
   (this same folder, SCALD_MECHANICS_1, today): this weather is never named
-  in RUT_Sump.xml's baseWeatherCommonalities (unlike RM_MiasmaWeather, which
+  in the deleted Sump twin's def's baseWeatherCommonalities (unlike RM_MiasmaWeather, which
   is left ungated because nothing else references it either), so it exists
   only to be the lock's forcedWeather target — a true no-op def when
   mandrake.rm.environmentalhazards is inactive is strictly better than an
@@ -31,7 +31,7 @@
   specifically (RM_SumpDuskLock's forced-weather override is the structural
   half that makes rain unreachable at all once a map is generated).
 
-  overlayClasses -> vanilla WeatherOverlay_Fog, reused as-is (RUT_Sump.xml's
+  overlayClasses -> vanilla WeatherOverlay_Fog, reused as-is (the deleted Sump twin's def's
   own header already reasons "the sun a glow below the horizon... reads as
   fog-dim, not desert-clear" — same call, no new art commissioned this pass).
   Sky colours are this pass's own INVENTED-BUILD tuning toward the sheet's

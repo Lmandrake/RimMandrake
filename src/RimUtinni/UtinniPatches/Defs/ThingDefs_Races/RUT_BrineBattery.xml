@@ -14,7 +14,7 @@
   (right look)").
 
   Checked cast_assignment.csv/animal_census.csv first (per this item's own
-  "watch out"): `SW_Electrictick` is cast to `RUT_Scarlands` already (row
+  "watch out"): `SW_Electrictick` is cast to the deleted Scarlands twin already (row
   255, "weapon-descendant", keep) AND its owning mod
   (`who.vfee.isopodageneline`) is `dormant` in animal_census.csv — not in
   the active ModsConfig.xml list — so per the GR_Paraceramuffalo precedent

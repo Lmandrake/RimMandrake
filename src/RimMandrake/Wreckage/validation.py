@@ -305,7 +305,7 @@ def _field_checks(bad, weathers):
     if gs.findtext("countPer10kCellsRange") != "1.2~1.8" or gs.findtext("allowInWaterBiome") != "true":
         bad.append("RM_WreckField_Scald changed the shipped ceiling (3 x 0.4~0.6) or dropped allowInWaterBiome")
     reg = ET.parse(SCALD_REGISTER_XML).getroot()
-    for biome in ("RM_TheScald", "RUT_TheScald"):
+    for biome in ("RM_TheScald",):
         ops = [op for op in reg if biome in (op.findtext("xpath") or "")]
         got = [li.text for op in ops for li in op.iter("li")]
         if got.count("RM_WreckField_Scald") != 2:  # the match and the nomatch arms

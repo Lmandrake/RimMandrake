@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.Utinni.FungalSoilTrade
 {
 	// FUNGAL_SOIL_TRADE_1: scatters RUT_MineableFungalGround knots onto Rot
-	// (RM_TheRot / RUT_TheRot, see FungalSoilDefOf.RotBiomeDefNames) maps only. Pattern copied from
+	// (RM_TheRot, see FungalSoilDefOf.RotBiomeDefNames) maps only. Pattern copied from
 	// src/RimUtinni/LanternDeeps/Source/GenStep_ScatterCavePortal.cs (a plain
 	// GenStep_ScatterGroup subclass, self-gated by map.Biome.defName, discovered
 	// by RimWorld's own GenStepDef the moment the XML names it in genStep Class -

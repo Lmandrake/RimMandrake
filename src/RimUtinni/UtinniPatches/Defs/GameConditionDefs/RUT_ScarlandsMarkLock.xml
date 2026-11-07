@@ -8,11 +8,11 @@
   <canBePermanent>true</canBePermanent> in a biome's own
   <biomeMapConditions> is enough (BiomeConditionMapComponent.MapGenerated ->
   GameConditionMaker.MakeConditionPermanent, decompile-confirmed that pass).
-  This file copies that shape verbatim onto RUT_Scarlands.xml's own
+  This file copies that shape verbatim onto the deleted Scarlands twin's def's own
   biomeMapConditions (see that file's own header for the wiring).
 
   No forcedWeather here — unlike the Miasma's lock, the Scarlands mark isn't
-  a weather effect; RUT_Scarlands.xml keeps its own baseWeatherCommonalities
+  a weather effect; the deleted Scarlands twin's def kept its own baseWeatherCommonalities
   untouched. onlyUnroofed=false is deliberate and the one field this pass
   changed from RC4's own default (true): the mark is "every colonist who
   walks the Scarlands" (kit spec's own words) — a roof over your head doesn't

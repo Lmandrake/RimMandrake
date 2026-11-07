@@ -237,14 +237,8 @@ namespace RimMandrake.Minerals.SelfTest
                 Check(RM_MineralPolicyKernel.RegistryValue(num, "RM_NoSuchBiomeColumn") == 0f, "an RM_ biome without a cell is 0");
             }
             // --- RUT_ twins resolve through the painted map (MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP), never "RM_" + suffix
-            var renamed = new Dictionary<string, string> {
-                { "RUT_AridShrubland", "RM_LeaningScrub" }, { "RUT_Desert", "RM_LongShade" }, { "RUT_ExtremeDesert", "RM_Stillsand" },
-                { "RUT_CrackedLands", "RM_FloodedCanyon" }, { "RUT_Slime", "RM_GelatinousSlime" }, { "RUT_Sump", "RM_TheSump" },
-                { "RUT_PropaneLake", "RM_TheChill" }, { "RUT_Scarlands", "RM_Warscar" }, { "RUT_ForsakenCrags", "RM_Abyss" } };
-            foreach (var kv in renamed)
-                Check(RM_MineralTwinMap.Resolve(kv.Key) == kv.Value, "renamed twin " + kv.Key + " must resolve to " + kv.Value);
             Check(RM_MineralTwinMap.Resolve("RUT_Umbra") == "RUT_Umbra", "RUT_Umbra resolves to itself");
-            Check(RM_MineralTwinMap.Pairs.Count >= 25, "twin table holds the painted map's pairs: " + RM_MineralTwinMap.Pairs.Count);
+            Check(RM_MineralTwinMap.Pairs.Count >= 1, "twin table holds the kept RUT_ biomes: " + RM_MineralTwinMap.Pairs.Count);
             int twinChecks = 0;
             foreach (var pair in RM_MineralTwinMap.Pairs)
             {
@@ -326,7 +320,7 @@ namespace RimMandrake.Minerals.SelfTest
             Check(RM_QuarryKernel.Plan(rows, "RM_RustCathedral", null, qdict, false).Local.All(e => e.MaterialId != "live_pattern_metal"),
                   "a deep-share/token row never enters the quarry pool");
             int localRows = 0;
-            var biomesSeen = new HashSet<string>(rows.SelectMany(r => r.Cells.Keys)) { "TemperateForest", "RUT_GreySea" };
+            var biomesSeen = new HashSet<string>(rows.SelectMany(r => r.Cells.Keys)) { "TemperateForest", "RUT_Umbra" };
             foreach (string bm in biomesSeen)
                 foreach (QuarryEntry e in RM_QuarryKernel.Plan(rows, bm, null, qdict, false).Local)
                 {

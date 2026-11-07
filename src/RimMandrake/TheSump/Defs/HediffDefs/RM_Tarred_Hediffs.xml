@@ -7,7 +7,7 @@
   from exposure; removal is not free."
 
   Given out by RM_MapComponent_CarriedFilthHediffLink the moment a pawn's
-  own Pawn_FilthTracker starts carrying RM_Filth_Tar (RUT_Sump.xml's own
+  own Pawn_FilthTracker starts carrying RM_Filth_Tar (the deleted Sump twin's def's own
   RM_CarriedFilthHediffExtension wiring), and its severity is then driven
   entirely by whether that pawn is STILL carrying it — the comp below,
   RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure

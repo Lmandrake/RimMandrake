@@ -62,7 +62,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 	// checked against the table directly, not assumed from a paraphrase. Every
 	// row's argument column says the same thing in different words:
 	//
-	//   RM_TheSump, RUT_Sump  "nothing in the tar is active until dug"
+	//   RM_TheSump, the deleted Sump twin  "nothing in the tar is active until dug"
 	//   ZBiome_DesertOasis  "guardian-light ... its machines are dead — no
 	//                        active mechanoids, no violence"
 	//   ZBiome_Badlands     "no machine residents, only road traffic"
@@ -155,7 +155,6 @@ namespace RimMandrake.Utinni.UtinniPatches
 		private static readonly HashSet<string> AmbientDenyShrineBiomes = new HashSet<string>
 		{
 			"RM_TheSump",
-			"RUT_Sump",
 			"ZBiome_DesertOasis",
 			"ZBiome_Badlands",
 			"Desert",

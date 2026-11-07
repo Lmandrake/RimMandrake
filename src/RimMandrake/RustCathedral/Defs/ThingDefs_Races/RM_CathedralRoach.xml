@@ -3,7 +3,7 @@
   RUSTCATHEDRAL_RM_MOD_BUILD_1 §3/§6. A DUPLICATE of
   src/RimUtinni/RustCathedralRoaches/Defs/ThingDefs_Races/RUT_CathedralRoach.xml,
   not a rename/move — the frozen twin's own line
-  (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml:103,
+  (the deleted RustCathedral twin's def:103,
   after this item's freeze header lands) still needs the ORIGINAL
   RUT_CathedralRoach to keep working until Phase B, per the item's own §3
   "third option": ship RM_CathedralRoach here, leave RUT_CathedralRoach (and

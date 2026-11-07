@@ -5,7 +5,7 @@
     RM_Abyss                    FORSAKENCRAGS_RM_MOD_BUILD_1, new 2026-09-25
 
     Copied verbatim from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
-    RUT_Abyss.xml (150 lines, authored 2026-09-09) per
+    the deleted Abyss twin's def (150 lines, authored 2026-09-09) per
     design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every field
     below is the twin's own content, unchanged, EXCEPT:
 

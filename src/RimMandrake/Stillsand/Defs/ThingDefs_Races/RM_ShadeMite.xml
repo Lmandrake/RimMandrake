@@ -25,7 +25,7 @@
   Q11a — belongs franchise-free in mandrake.rm.stillsand directly (same
   reasoning as RM_MirrorGiant/RM_DustHusk, authored this same wave), wired
   into RM_Stillsand_Biome.xml's own wildAnimals, not the frozen
-  RUT_ExtremeDesert.xml twin and not WildAnimals_Stillsand.xml (that file
+  the deleted ExtremeDesert twin and not WildAnimals_Stillsand.xml (that file
   only replays Star-Wars-named content copied off the twin).
 
   Body: grain-scale per dune_sea.md §4's bimodal law ("giants on the
@@ -34,7 +34,7 @@
   RM_DustHusk (0.15, this same mod). Checked cast_assignment.csv/
   animal_census.csv first for an existing unclaimed grain-scale candidate
   before authoring from scratch (this item's own instruction); every
-  grain-scale row there is already cast to RUT_ExtremeDesert (the frozen,
+  grain-scale row there is already cast to the deleted ExtremeDesert twin (the frozen,
   Star-Wars-named twin) and none is free to reuse directly in the RM_
   tier without re-routing it through the IP patch layer, which this slug
   does not call for — so a new invented species is correct here, not a

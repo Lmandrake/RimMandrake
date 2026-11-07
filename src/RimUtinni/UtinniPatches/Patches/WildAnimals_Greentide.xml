@@ -117,15 +117,6 @@
             </value>
           </match>
         </li>
-        <li Class="PatchOperationConditional">
-          <xpath>Defs/BiomeDef[defName="RUT_Greentide"]/wildAnimals</xpath>
-          <match Class="PatchOperationAdd">
-            <xpath>Defs/BiomeDef[defName="RUT_Greentide"]/wildAnimals</xpath>
-            <value>
-              <RSW_DragonsnakeAlbino>0.02</RSW_DragonsnakeAlbino>
-            </value>
-          </match>
-        </li>
       </operations>
     </match>
   </Operation>

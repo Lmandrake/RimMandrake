@@ -96,7 +96,7 @@ def painted_defs():
 
     🔑 The CSV wins over any doc (canon.yml rule 1) - it is the paint. The rosters add
     one name the paint no longer carries: `BiomeGRimond`, which `the_blue_desert.json`
-    still binds alongside `RUT_BlueDesert` while the world switch settles. Including it
+    still binds alongside the BlueDesert twin while the world switch settles. Including it
     costs nothing (an unpainted biome cannot appear in this world) and stops the
     eviction silently lapsing if the switch is rolled back.
     """

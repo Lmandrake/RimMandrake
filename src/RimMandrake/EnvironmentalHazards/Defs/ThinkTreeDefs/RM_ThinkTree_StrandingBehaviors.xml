@@ -8,7 +8,7 @@
      already uses, and required for the identical reason: RM_JobGiver_
      ReturnToWater must reach a stranded pawn spawned from whatever EXISTING
      PawnKindDef RM_StrandingPoolsExtension.strandedSpawnList names, without
-     this item touching that kind's own ThinkTreeDef (RUT_Miasma.xml's own
+     this item touching that kind's own ThinkTreeDef (the deleted Miasma twin's def's own
      placeholder wiring is an unmodified shipped kind, not Miasma-specific
      content). RM_JobGiver_ReturnToWater itself no-ops instantly for any pawn
      RM_MapComponent_StrandingPools does not recognize as a tracked stranded

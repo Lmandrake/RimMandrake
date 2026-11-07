@@ -5,7 +5,7 @@
   "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended."
   Stats, body, tools and life stages copied from Odyssey's ColossusToad (Races_Animal.xml); the comfort
   ceiling carries the 74.3 the Ash'karr tolerance pass pinned on the toad. The vanilla toad itself is untouched
-  (it still lives in the Glowforest and on the frozen RUT_WeepingStones twin).
+  (it still lives in the Glowforest and on the deleted WeepingStones twin).
   Body art: Things/Pawn/Animal/RM_Colossia/ (pick (b) installed as the interim; the "more alien, extended"
   redraw is queued in artpipe with (b) as its reference). No swimming graphic: with none the engine draws
   the body graphic in water. Desiccated: the vanilla toad's, until our own is drawn.

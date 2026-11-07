@@ -399,11 +399,11 @@ TIERS = {
     "desertplants": {
         "why": "Live-verify the desert shade plants and the SWBestiary body-part "
                "repoint in one load: DESERT_LEACHMOSS_LIVE_VERIFY_1 (RM_Leachmoss "
-               "spawn competition on RUT_Desert), VENOMVINE_LIVE_VERIFY_1 "
+               "spawn competition on the desert), VENOMVINE_LIVE_VERIFY_1 "
                "(CompContactVenom / MapComponent_ContactVenom), and "
                "SWBESTIARY_BODYPART_LIVE_VERIFY_1 (zero 'BodyPartRecord with null "
                "def' / RSW_ body-part cross-reference lines). All three subjects "
-               "meet in RUT_Desert's wildPlants, which names RM_Leachmoss and "
+               "met in the old desert twin's wildPlants, which names RM_Leachmoss and "
                "RM_Venomvine (mandrake.rm.environmentalhazards), RSW_Ultracactus "
                "and four more SWBestiary plants, and RUT_Vorrel "
                "-- a MayRequire that does not resolve "

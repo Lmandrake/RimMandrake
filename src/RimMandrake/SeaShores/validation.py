@@ -37,7 +37,7 @@ WHAT THIS MOD ACTUALLY IS AT RUNTIME, four separable pieces:
   (4) The catch. A postfix on `WaterBody.SetFishTypes` refills
       `commonFish`/`uncommonFish` from the SEA's `fishTypes` when the water
       body's root cell carries that sea's water, with an empty band falling
-      back to the other salt/fresh pair (RUT_TheScald keeps its catches in
+      back to the other salt/fresh pair (RM_TheScald keeps its catches in
       `freshwater_*` while its terrain declares `waterBodyType Saltwater`).
       A transpiler on `FishingUtility.GetCatchesFor` redirects the two
       `pawn.Map.Biome` loads that feed `fishTypes.rareCatchesSetMaker` to

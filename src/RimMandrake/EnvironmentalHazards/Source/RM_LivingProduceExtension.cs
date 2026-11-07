@@ -5,7 +5,7 @@ namespace RimMandrake.EnvironmentalHazards
     // ROT_DECAY_HARVEST_1. A ThingDef carries this to tell
     // RM_MapComponent_LivingProduce it is "living produce" — a stack of it
     // sitting in an enclosed room pushes ambient heat into that room, same
-    // biological-warmth read RUT_TheRot's own flavor text gives everything
+    // biological-warmth read the deleted TheRot twin's own flavor text gives everything
     // from that biome ("everything is warm from the inside").
     //
     //   <ThingDef>

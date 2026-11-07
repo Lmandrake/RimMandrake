@@ -41,7 +41,7 @@
 
   PAINTED as of the FEVER_WOOD_MECHANICS_1 F1 build pass, 2026-09-18: a
   GenStep, not a terrainsByFertility band (the correct route this header
-  originally named) — RUT_FeverWood.xml's BiomeDef now carries
+  originally named) — the deleted FeverWood twin's def's BiomeDef now carried
   RM_MirrorPoolBiomeExtension pointing poolTerrain at this def;
   RM_GenStep_ScatterPools (RimMandrake.EnvironmentalHazards) scatters 3-6
   small pools per generated map per the owner's 2026-09-18 ruling on this

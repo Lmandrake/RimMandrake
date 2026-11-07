@@ -12,7 +12,7 @@
   §2 does not exist yet, so the sounder hears (a) water terrain the player has not yet
   uncovered and (b) the veqma, whose taproot "finds the hidden water". When that score
   lands, a C# RM_AcousticTarget subclass can read it and replace (b).
-  The Utinni twin RUT_CrackedLands carries the same payload from
+  The Utinni twin the deleted CrackedLands twin carried the same payload from
   src/RimUtinni/UtinniPatches/Patches/AcousticPayload_CrackedLands.xml.
 -->
 <Patch>

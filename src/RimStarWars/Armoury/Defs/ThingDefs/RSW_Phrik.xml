@@ -3,7 +3,7 @@
   ASTEROID_DESERT_ORES_1 + CANON_MATERIALS_BUILD_1 L6 (partial: phrik) — RSW_Phrik, the canon lightsaber-resistant alloy
   (design/RimMandrake/canon_materials_design_2026-10-09.md §3.5). RSW tier (mandrake.rsw.armoury).
 
-  Sources: rare trade, and a rare phrikite deposit in ONE desert biome (RM_Stillsand and its twin RUT_ExtremeDesert; the biome
+  Sources: rare trade, and a rare phrikite deposit in ONE desert biome (RM_Stillsand and its twin the deleted ExtremeDesert twin; the biome
   is PROVISIONAL, owner question open) placed by RUT_PhrikiteDesertLumps (src/RimUtinni/UtinniPatches). RSW_MineablePhrikite
   has scatter 0 and deep 0, so that GenStep is its only placement. Phrikite smelts aboard into RSW_Phrik
   (Patches/RSW_Smelter_Alloys.xml).

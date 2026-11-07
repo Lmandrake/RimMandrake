@@ -10,7 +10,7 @@
   own") and lands directly in RM_Greentide_Biome.xml's own <wildPlants> — the
   design doc's §6a MEASURED that file has no GENERATED header and
   biome_flora.py never names RM_Greentide, so it is hand-owned and takes the
-  roster directly (never the campaign twin, RUT_Greentide, which IS generator
+  roster directly (never the campaign twin, the deleted Greentide twin, which IS generator
   -owned and untouched here).
 
   Scope: this file is the TREE roster only (item title: "ten-plus jungle

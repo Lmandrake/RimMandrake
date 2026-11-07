@@ -4,7 +4,7 @@
      — low pathCost, raised sprite, affordance Medium (INVENTED affordance
      tier per §7b: platforms yes, bunkers no — heavy goes on F5's stilts or
      in F7's bore-caves)". Painted entirely by RM_GenStep_RootCauseways
-     (RUT_FeverWood.xml's own RM_RootCausewayBiomeExtension, primary
+     (the deleted FeverWood twin's def's own RM_RootCausewayBiomeExtension, primary
      profile) — not buildable, not in any construction designation
      category, same posture RM_RootCauseway's own header already
      established for the sibling kit's ground lane.
@@ -21,9 +21,9 @@
      there is no real "Bridgeable-style replacement" mechanism to reuse in
      the first place — the simpler and more honest route, taken here, is
      to never paint a boughway cell over a registered pool at all: the
-     RM_RootCausewayBiomeExtension wired onto RUT_FeverWood sets
+     RM_RootCausewayBiomeExtension wired onto the deleted FeverWood twin sets
      basinTerrains to the biome's own two buildable ground terrains
-     (Soil/SoilRich, RUT_FeverWood.xml's own terrainsByFertility list) as
+     (Soil/SoilRich, the deleted FeverWood twin's def's own terrainsByFertility list) as
      an ALLOWLIST — RM_GenStep_RootCauseways.PaintFootprint's existing
      "restricted to basinTerrains" check (built for Greentide's opposite
      use, painting ONLY over its churnmud basin) doubles as an EXCLUDE of

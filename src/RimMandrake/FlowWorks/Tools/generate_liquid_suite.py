@@ -127,10 +127,10 @@ LIQUID_ROWS = {
     # RM_ScaldWater.xml — that file's six-variant suite (it also ships
     # Ocean/Moving variants this generator's shallow+deep-only shape does not
     # cover, per this module's own docstring on why ocean/moving depth is
-    # explicitly out of scope) still serves RUT_TheScald AND RM_TheScald
+    # explicitly out of scope) serves RM_TheScald
     # directly and stays hand-authored in the RUT layer — deleting or renaming
     # those defNames would break both live BiomeDefs, one of which
-    # (RUT_TheScald) is a frozen save-compat twin. The fork this item closes
+    # (the deleted TheScald twin) was a frozen save-compat twin. The fork this item closes
     # is the NUMBER disagreement, not the file split; RM_WaterBoilingShallow/
     # Deep has no biome consumer of its own (confirmed by search) so no
     # repoint was needed on that side either.

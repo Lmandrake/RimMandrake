@@ -17,12 +17,12 @@
   scatters that could otherwise claim its cell first.
 
   A plain GenStepDef, not a Patch: campaign-mechanic content wired directly
-  onto the frozen RUT_Scarlands twin, same precedent RUT_ScarlandsSprungDangers
+  onto the deleted Scarlands twin, same precedent RUT_ScarlandsSprungDangers
   already set in this same folder. Not wired into RM_Warscar
   (SCARLANDS_STANDALONE_MOD_1's franchise-free mod) — that mod's own header
   states this class of content stays UtinniPatches-only.
 
-  Wired into RUT_Scarlands.xml's own extraGenSteps by this pass — see that
+  Wired into the deleted Scarlands twin's def's own extraGenSteps by this pass — see that
   file's own header for the added <li>.
 -->
 <Defs>

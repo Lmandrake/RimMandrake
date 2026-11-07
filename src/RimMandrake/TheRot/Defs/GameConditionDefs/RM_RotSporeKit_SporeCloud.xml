@@ -79,12 +79,11 @@
     <minRefireDays>90</minRefireDays>
     <disallowedBiomes>
       <li>RM_TheRot</li>
-      <!-- THEROT_RM_MOD_BUILD_1 §7(b)(3): RUT_TheRot still carries the player's
+      <!-- THEROT_RM_MOD_BUILD_1 §7(b)(3): the deleted TheRot twin carried the player's
            live world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) —
            without this second entry the spore-cloud incident would start firing
            on its own home biome the moment this mod loads alongside the frozen
-           twin. Drop this line only when Phase B repaints RUT_TheRot away. -->
-      <li MayRequire="mandrake.rut.patches">RUT_TheRot</li>
+           twin. Drop this line only when Phase B repaints the deleted TheRot twin away. -->
     </disallowedBiomes>
     <disabledWhen>
       <extremeWeatherIncidentsDisabled>true</extremeWeatherIncidentsDisabled>

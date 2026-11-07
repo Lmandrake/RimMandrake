@@ -17,7 +17,7 @@
   only; no stat says "heat" so nothing mechanical needed changing.
 
   `design/Jawa/fauna/cast_assignment.csv` checked before reusing anything:
-  RSW_Kinrath itself is cast to RUT_Greentide ("canopy-ambush", row 184,
+  RSW_Kinrath itself is cast to the deleted Greentide twin ("canopy-ambush", row 184,
   status keep). This def does NOT place Kinrath in a second biome — same
   asset-reuse-without-species-reuse pattern RSW_TunnelSnake used on
   RSW_Klorslug and RSW_ShadeWhale used on RSW_Horax: new defName, no
@@ -118,7 +118,7 @@
       <nameGeneratorFemale>RSW_SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>10</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
-      <!-- No <wildBiomes>: RUT_Cauldron's wildAnimals already lists this kind, and a kind
+      <!-- No <wildBiomes>: the deleted Cauldron twin's wildAnimals already lists this kind, and a kind
            registered both ways makes BiomeDef.CommonalityOfAnimal throw "same key" (Player.log). -->
       <lifeStageAges>
         <li>

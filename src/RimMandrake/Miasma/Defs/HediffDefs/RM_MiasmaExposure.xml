@@ -29,7 +29,7 @@
 
   immuneThingDefs/immunePawnKinds intentionally empty: the spec's "native
   fauna and listed races immune (XML)" needs an actual roster of which
-  RUT_Miasma wildAnimals entries count as native/immune, a content judgement
+  the deleted Miasma twin wildAnimals entries count as native/immune, a content judgement
   this item does not own (no such roster exists anywhere in src/ yet) -
   left empty and flagged, not guessed at.
 

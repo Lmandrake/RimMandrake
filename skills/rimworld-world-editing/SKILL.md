@@ -284,7 +284,7 @@ actually reads.
 The paint script chose tiles like this:
 
 ```python
-SELECTORS = [('Scald','Lake','RUT_TheScald'), ('Twilight Sea','Ocean','RUT_TwilightSea'), ...]
+SELECTORS = [('Scald','Lake','RM_TheScald'), ('Twilight Sea','Ocean','RM_TwilightSea'), ...]
 moved = [r for r in rows if r['region']==region and r['biome']==from_biome]
 ```
 

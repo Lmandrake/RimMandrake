@@ -9,8 +9,7 @@ Source of the repair: design/RimMandrake/biome_name_provenance_audit_2026-10-28.
 1. No file names RUT_FuelSnows unless it is a historic record (dated archive trees below) or one of the
    HISTORIC files, each of which names it only as the retired name. A new mention fails: either it is
    live text (rewrite it to RUT_Umbra) or a record (add it here with the reason).
-2. infrastructure/state/facts/biome_paint_list.md: the RUT_Desert row is NO PAINT with a frozen-twin
-   note naming its successor RM_LongShade, and every row's label equals its BiomeDef's label in src/.
+2. infrastructure/state/facts/biome_paint_list.md: every row's label equals its BiomeDef's label in src/.
 """
 import re
 import sys
@@ -111,11 +110,6 @@ def main():
     labels = src_labels()
     if len(rows) < 30 or len(labels) < 30:  # sanity: the instrument can see the table and the defs
         fails.append(f"instrument blind: {len(rows)} paint rows, {len(labels)} src BiomeDefs")
-    d = rows.get("RUT_Desert")
-    if not d:
-        fails.append("paint list has no RUT_Desert row")
-    elif d[-1] != "NO PAINT" or "frozen twin" not in d[-2] or "RM_LongShade" not in d[-2]:
-        fails.append(f"RUT_Desert row not NO PAINT / frozen twin of RM_LongShade: {d[-2:]}")
     for name, cells in rows.items():
         if name not in labels:
             fails.append(f"paint row {name}: no BiomeDef in src/")

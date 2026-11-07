@@ -30,10 +30,10 @@
   named the sheet's own "still day" beat, this is an engineering route to
   it that didn't exist as a reusable generic on 2026-09-13 but does now.
 
-  Wired onto RUT_TheScald via a MayRequire-gated PatchOperationAdd
+  Wired onto the deleted TheScald twin via a MayRequire-gated PatchOperationAdd
   (Patches/RUT_ScaldSteamLock_BiomeWiring.xml, unchanged), not a direct XML
   edit to the BiomeDef — a plain <li>RM_ScaldSteamLock</li> baked into
-  RUT_TheScald.xml's biomeMapConditions would be a dangling cross-reference
+  the deleted TheScald twin's def's biomeMapConditions would be a dangling cross-reference
   if mandrake.rm.environmentalhazards is ever absent from the active mod
   list (same caution FEVER_WOOD_MECHANICS_1's continuation pass already
   applied to this exact file family, for the same reason).
@@ -48,7 +48,7 @@
   long enough to actually show the wrecks per §9's own framing, short
   enough that the boil's breath is still the norm). flashWindowHours
   AfterBurstStart is required >0 by WeatherPulseExtension's own
-  ConfigErrors but is INERT here: RUT_TheScald carries no
+  ConfigErrors but was INERT here: the deleted TheScald twin carried no
   RM_MapComponent_FlashCycle (that's Forge's own flash-growth mechanic),
   so `StartBurst`'s `GetComponent<RM_MapComponent_FlashCycle>()` lookup
   no-ops every time (confirmed by reading RM_GameCondition_WeatherPulse.

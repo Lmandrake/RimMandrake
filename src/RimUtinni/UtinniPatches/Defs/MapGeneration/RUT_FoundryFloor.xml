@@ -14,7 +14,7 @@
   (read in full before writing this) — same MapGeneratorDef/genSteps-list
   posture, content differs (an industrial floor, not a cave).
 
-  pocketMapProperties.biome: RUT_TheForge (this mod's own already-shipped,
+  pocketMapProperties.biome: the deleted TheForge twin (this mod's own already-shipped,
   always-active merged Forge BiomeDef — BIOME_OWNERSHIP_WAVE_1), not
   vanilla LavaField. Deliberate: LavaField.xml lives under Data/Odyssey/,
   DLC-folder-gated (FORGE_MECHANICS_1.md's own spike-pass finding), so
@@ -60,7 +60,7 @@
     <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
     <disableCallAid>true</disableCallAid>
     <pocketMapProperties>
-      <biome>RUT_TheForge</biome>
+      <biome>RM_TheForge</biome>
       <temperature>70</temperature>
     </pocketMapProperties>
     <genSteps>

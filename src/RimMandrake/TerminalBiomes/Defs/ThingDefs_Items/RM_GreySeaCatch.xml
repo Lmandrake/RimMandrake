@@ -43,7 +43,7 @@
   RM_RareGreyCatches (RM_GreySeaRareCatch.xml, ThingSetMakerDefs/) are the
   RM_-tier twins; RM_GreySea.xml's <rareCatchesSetMaker> now points at
   RM_RareGreyCatches. The RUT_ originals are untouched, same reason as the
-  seven catch species above: RUT_GreySea.xml is frozen and still names them.
+  seven catch species above: the deleted GreySea twin's def was frozen and named them.
 -->
 <Defs>
 

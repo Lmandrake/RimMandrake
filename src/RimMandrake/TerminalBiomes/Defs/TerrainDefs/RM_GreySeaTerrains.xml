@@ -24,7 +24,7 @@
   RM_BrinePoolShallow/Deep and FlowWorks' RM_WaterBrineShallow/Deep share the
   English words "brine pool" but are NOT the same content forked twice —
   RM_WaterBrine* is RM_GreySea's own live shore/coastal water (RM_GreySea.xml,
-  RM_Miasma.xml, RUT_Miasma.xml all reference it directly) while these two are
+  RM_Miasma.xml, the deleted Miasma twin's def all reference it directly) while these two are
   a rarer, deliberately harsher floor grade with their own encasement hazard
   mechanism, not wired into any biome's default water fields at all. No
   numbers disagree because none are shared; nothing here was folded into the

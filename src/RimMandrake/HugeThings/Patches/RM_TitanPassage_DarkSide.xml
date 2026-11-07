@@ -26,16 +26,4 @@
     </match>
   </Operation>
 
-  <!-- Its Utinni twin (mandrake.rut.patches): the same sheet, the same ban. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
-      <value>
-        <li Class="RimMandrake.TitanicCreatures.RM_TitanPassageExtension">
-          <none>true</none>
-        </li>
-      </value>
-    </match>
-  </Operation>
 </Patch>

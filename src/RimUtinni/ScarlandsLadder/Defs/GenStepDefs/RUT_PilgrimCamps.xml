@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- WARSCAR_PILGRIM_CAMPS_1: camps on RUT_Scarlands maps (patched into that biome's extraGenSteps by
+<!-- WARSCAR_PILGRIM_CAMPS_1: camps on the deleted Scarlands twin maps (patched into that biome's extraGenSteps by
      Patches/RUT_PilgrimCamps_Scarlands.xml). Count is the campsPerMap setting. -->
 <Defs>
   <GenStepDef>

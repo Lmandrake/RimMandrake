@@ -13,7 +13,7 @@
   this paints a contiguous patchy band, a different shape entirely. See that
   class's own header for the full reasoning.
 
-  biomes lists RUT_TheForge only — the ONE merged BiomeDef per
+  biomes lists the deleted TheForge twin only — the ONE merged BiomeDef per
   BIOME_OWNERSHIP_WAVE_1 (the sheet's three donor zones, including the
   "Pyroclastic" skirts this spec names, are now one def), so there is no
   separate Pyroclastic-only BiomeDef to gate against; the class-level
@@ -37,7 +37,7 @@
            retired packageId nothing provides), which made this scatter step never run. -->
       <filthDef>RM_DeadCreep</filthDef>
       <biomes>
-        <li>RUT_TheForge</li>
+        <li>RM_TheForge</li>
       </biomes>
       <cellsFromEdgeRange>8~15</cellsFromEdgeRange>
       <chancePerCell>0.35</chancePerCell>

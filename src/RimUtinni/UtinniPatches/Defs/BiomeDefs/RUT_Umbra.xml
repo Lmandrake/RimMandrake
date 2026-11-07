@@ -13,7 +13,7 @@
 
     Sheet: design/Jawa/worldbuilding/biomes/the_propane_lakes.md (FROZEN; its "not dark, starlit"
     and "it snows fuel" lines are overruled by the two rulings above). The lake is NOT this biome: it
-    is RM_TheChill (campaign twin RUT_PropaneLake). The canonical save already carries this defName
+    is RM_TheChill (campaign twin the deleted PropaneLake twin). The canonical save already carried this defName
     on 2,531 land tiles (census 2026-10-20, tileBiomeDeflate hash 15270), so no repaint is owed for it.
     A save holding the retired name RUT_FuelSnows by NAME resolves here through RUT_UmbraRenameAliases
     (Defs/Misc/RUT_UmbraRename_Aliases.xml); world tiles are saved by shortHash and are not covered,

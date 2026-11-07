@@ -17,7 +17,7 @@ namespace RimMandrake.EnvironmentalHazards
     // correct crèche-site gating for free, with zero Miasma-specific
     // coupling anywhere in this file. On a map whose biome carries no such
     // extension (i.e. every non-Miasma map in the game, since only
-    // RUT_Miasma.xml carries RM_GradientAxisExtension today), every cell
+    // the deleted Miasma twin's def carried RM_GradientAxisExtension until its deletion (2026-11-06)), every cell
     // fails outright — RM_GenStep_CrecheScatterer is registered globally
     // onto Base_Player (same "safe for every biome, gate internally"
     // pattern RM_GenStep_GradientAxis's own header already established),

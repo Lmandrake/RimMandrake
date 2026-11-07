@@ -26,12 +26,12 @@
     fingerprint: 577/577 active mods, matches live ModsConfig.xml exactly).
 
   ALLOWED (RULED, from the table):
-    AB_MechanoidIntrusion, AB_PropaneLakes, RUT_PropaneLake - the two RULED
+    AB_MechanoidIntrusion, AB_PropaneLakes, the deleted PropaneLake twin - the two RULED
       poles (Rust Cathedral; the propane-lakes approach to the ancient war lab).
     Scarlands       - ALLOW (Forgotten Sentinels, resident emplaced defenders).
     AB_PyroclasticConflagration, LavaField, Volcano - "the Forge" (one sheet,
       one massif; native old-mechanoid-type machines only).
-    RUT_TheScald    - the dark tower's own defenders (sheet: "tower only";
+    the deleted TheScald twin    - the dark tower's own defenders (sheet: "tower only";
       MechCluster's biome-level filter cannot express "near the tower", only
       "on this biome" - accepted at this granularity, matching every other
       row in this column).
@@ -60,7 +60,7 @@
   of PatchOperation execution order. Alpha Biomes / Advanced Biomes
   (Continued) blocks are gated with PatchOperationFindMod matching this
   repo's established convention (FishTypesStrip_NoFishBiomes.xml); Odyssey
-  core biomes get a bare MayRequire; RUT_-tier and RUT_TheScald need neither -
+  core biomes get a bare MayRequire; RUT_-tier and the deleted TheScald twin need neither -
   they ship with this campaign's own always-loaded UtinniPatches mod.
   ============================================================================
 -->
@@ -74,8 +74,6 @@
       <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
       <value>
         <allowedBiomes>
-          <li>RUT_PropaneLake</li>
-          <li>RUT_TheScald</li>
           <!-- TERMINALBIOMES_RM_MOD_BUILD_1 step 4 (§7b): second entries for
                the RimMandrake-tier twins. -->
           <li>RM_TheChill</li>
@@ -85,9 +83,7 @@
                AB_Pyroclastic*); these are their RM_/RUT_ twins.
                mechanoid_biome_presence_draft.md rows: Rust Cathedral and the Forge, AMBIENT ALLOW. -->
           <li>RM_RustCathedral</li>
-          <li>RUT_RustCathedral</li>
           <li>RM_TheForge</li>
-          <li>RUT_TheForge</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
         </allowedBiomes>
@@ -97,14 +93,10 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
       <value>
-        <li>RUT_PropaneLake</li>
-        <li>RUT_TheScald</li>
         <li>RM_TheChill</li>
         <li>RM_TheScald</li>
         <li>RM_RustCathedral</li>
-        <li>RUT_RustCathedral</li>
         <li>RM_TheForge</li>
-        <li>RUT_TheForge</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
       </value>

@@ -500,7 +500,7 @@ def webwork_egg_market(t):
 def zersium_forge(t):
     """ZERSIUM_FORGE_BIOME_1: zersium (RSW_Zersium, mandrake.rsw.armoury) is mined only in the Forge. Its ore has
     scatter/deep commonality 0 and its one placement is RUT_ZersiumForgeLumps, registered on Base_Player and gated
-    on RM_TheForge/RUT_TheForge plus the zersiumForgeEnabled setting. Live half: run on ANY map; on a Forge map
+    on RM_TheForge plus the zersiumForgeEnabled setting. Live half: run on ANY map; on a Forge map
     the probe must report ore cells > 0, on any other map exactly 0 (the home-biome rule's guard). Not proven
     here: that mining a cell yields RSW_Zersium (vanilla mineableThing), and stated vs placed amounts across seeds."""
     import xml.etree.ElementTree as ET
@@ -517,7 +517,7 @@ def zersium_forge(t):
             raise ExpectationFailed("ore must have no deep-drill route")
         gs = ET.parse(os.path.join(_MOD_DIR, "Defs", "MapGeneration", "RUT_ZersiumForgeLumps.xml")).getroot().find("GenStepDef/genStep")
         biomes = sorted(li.text for li in gs.find("allowedBiomes"))
-        if gs.findtext("forcedDefToScatter") != "RSW_MineableZersium" or biomes != ["RM_TheForge", "RUT_TheForge"]:
+        if gs.findtext("forcedDefToScatter") != "RSW_MineableZersium" or biomes != ["RM_TheForge"]:
             raise ExpectationFailed("GenStep must force RSW_MineableZersium on exactly the Forge pair, got %r" % biomes)
         reg = ET.parse(os.path.join(_MOD_DIR, "Patches", "RUT_ZersiumForgeLumps_Register.xml")).getroot()
         if "RUT_ZersiumForgeLumps" not in [li.text for li in reg.iter("li")]:
@@ -557,7 +557,7 @@ def zersium_forge(t):
 def phrikite_desert(t):
     """ASTEROID_DESERT_ORES_1: phrikite (RSW_Phrikite -> RSW_Phrik, mandrake.rsw.armoury) is mined only in the extreme desert.
     Ore scatter/deep commonality 0; its one placement is RUT_PhrikiteDesertLumps, registered on Base_Player and gated on
-    RM_Stillsand/RUT_ExtremeDesert plus phrikiteDesertEnabled. The desert choice is PROVISIONAL (owner question open).
+    RM_Stillsand plus phrikiteDesertEnabled. The desert choice is PROVISIONAL (owner question open).
     Live half like zersium: ore cells > 0 on an allowed map, exactly 0 elsewhere. Not proven here: that the smelt aboard runs
     (Armoury's chain), and stated vs placed amounts across seeds."""
     import xml.etree.ElementTree as ET
@@ -574,7 +574,7 @@ def phrikite_desert(t):
             raise ExpectationFailed("ore must have no deep-drill route")
         gs = ET.parse(os.path.join(_MOD_DIR, "Defs", "MapGeneration", "RUT_PhrikiteDesertLumps.xml")).getroot().find("GenStepDef/genStep")
         biomes = sorted(li.text for li in gs.find("allowedBiomes"))
-        if gs.findtext("forcedDefToScatter") != "RSW_MineablePhrikite" or biomes != ["RM_Stillsand", "RUT_ExtremeDesert"]:
+        if gs.findtext("forcedDefToScatter") != "RSW_MineablePhrikite" or biomes != ["RM_Stillsand"]:
             raise ExpectationFailed("GenStep must force RSW_MineablePhrikite on exactly the desert pair, got %r" % biomes)
         if int(gs.findtext("minLumps") or 0) < 1:
             raise ExpectationFailed("GenStep must declare minLumps >= 1")

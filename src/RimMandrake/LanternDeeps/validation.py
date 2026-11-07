@@ -83,14 +83,14 @@ suite.toggles = ["lanternDeepsEnabled",
                  "darknessThresholdMultiplier", "safeLanternEnabled"]
 
 SETTINGS_TYPE = "RimMandrake.LanternDeeps.LanternDeepsSettings"
-# FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1): RUT_SleepingIce/RUT_PropaneLake
+# FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1): the SleepingIce/PropaneLake twins
 # restored alongside their RM_ twins. Those RUT_ defs are FROZEN, not deleted --
 # the planet is painted ONCE at the end (BIOME_PAINT_ONCE_AT_THE_END_1) -- and
 # still carry every live Ash'karr tile today; the RM_ twins sit at 0 tiles. A
 # QUALIFYING_BIOMES set missing the RUT_ names would read every real-world
 # entrance as non-qualifying.
-QUALIFYING_BIOMES = {"BiomeGRimond", "RUT_SleepingIce", "RM_SleepingIce",
-                      "RUT_PropaneLake", "RM_TheChill"}
+QUALIFYING_BIOMES = {"BiomeGRimond", "RM_SleepingIce",
+                      "RM_TheChill"}
 EMERGENCE_SCATTER = "RM_LanternDeepEmergence_Scatter"
 MINESHAFT_SCATTER = "RM_LanternDeepMineshaft_Scatter"
 EMERGENCE_THING = "RM_LanternDeepEmergence"

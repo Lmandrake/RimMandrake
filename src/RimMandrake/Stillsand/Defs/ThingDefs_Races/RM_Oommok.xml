@@ -15,7 +15,7 @@
   for the giant itself.
 
   Design record: EXTREME_DESERT_GIANT_COMMENSALS_1 (closed) raised this
-  exact creature as an open question — "an existing RUT_ExtremeDesert
+  exact creature as an open question — "an existing the deleted ExtremeDesert twin
   giant (reskin/verify) or a new mirror-plated chassis authored to the
   letter of SS4's sun-face/shade-face split?" — and left it undecided.
   Resolved here as a NEW chassis: none of the biome's three existing
@@ -39,7 +39,7 @@
   "indifferent to the intelligent races" law this mod family already uses
   for other extreme-biome giants).
 
-  Per RUT_ExtremeDesert.xml's own 2026-09-24 freeze banner ("every CONTENT
+  Per the deleted ExtremeDesert twin's def's own 2026-09-24 freeze banner ("every CONTENT
   fix for the Extreme Desert lands in mandrake.rm.stillsand only, never
   here"), this new species is authored directly in RM_Stillsand and wired
   into RM_Stillsand_Biome.xml's own (until now empty) wildAnimals node —
@@ -47,7 +47,7 @@
   WildAnimals_Stillsand.xml (that file exists only to replay
   ALREADY-EXISTING Star-Wars-named content copied off the frozen twin; a
   brand new RM_-tier def owned by this mod needs no patch at all). The
-  live world (still running on frozen RUT_ExtremeDesert.xml until Phase
+  live world (running on the deleted ExtremeDesert twin until Phase
   B's repaint) does not carry this giant yet, by design — same posture
   the yearning fruit used for the Greentide (now RM_YearningFruit).
 

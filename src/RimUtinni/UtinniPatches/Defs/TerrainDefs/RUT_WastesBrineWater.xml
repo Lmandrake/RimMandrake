@@ -6,7 +6,7 @@
   FISH_BESTIARY_BUILD_1 wave 2 — the Wasteland's "hypersaline pools" (§2G,
   wastes.md §4/§10: "sealed dead-river termini... three hypersaline
   pools"). Same crib shape as RUT_ScaldWater.xml (this same folder): four
-  TerrainDefs standing in for the water RUT_Wastes actually generates, so
+  TerrainDefs standing in for the water the deleted Wastes twin actually generates, so
   the biome's own def can point at them instead of falling back to a vanilla
   default.
 
@@ -16,12 +16,12 @@
   to Odyssey's ToxicWater* family (waterBodyType Other, fishing dead per
   Verse.WaterBody.SetFishTypes()). That donor def is NOT what the live
   campaign map paints: MEASURED via world/ASHKARR_WORLDMAP_tiles.csv (proper
-  csv.DictReader column read, not a scan) — `RUT_Wastes` covers all 1853
-  Wasteland-region tiles, defName "Wasteland" (bare) covers ZERO. `RUT_Wastes`
-  itself (RUT_Wastes.xml, this folder) sets NONE of waterDeepTerrain/
+  csv.DictReader column read, not a scan) — the deleted Wastes twin covers all 1853
+  Wasteland-region tiles, defName "Wasteland" (bare) covers ZERO. the deleted Wastes twin
+  itself (the deleted Wastes twin's def, this folder) sets NONE of waterDeepTerrain/
   waterShallowTerrain/waterMovingShallowTerrain/waterMovingChestDeepTerrain,
   so per Verse/MapGenUtility.cs:182 (`map.BiomeAt(cell).waterDeepTerrain ??
-  TerrainDefOf.WaterDeep`) any water on a live RUT_Wastes map before this
+  TerrainDefOf.WaterDeep`) any water on a live the deleted Wastes twin map before this
   file was plain vanilla FRESHWATER — fishing there would in fact have
   worked. The "engine-dead" finding was real, just for a def nothing on the
   planet uses.
@@ -30,7 +30,7 @@
   brine-battery archetype's mechanism regardless — "the pool you want to
   mine has one, and it is a capacitor" is the spec's OWN flavor line
   (§4.3), not a workaround invented to route around the engine bug. This
-  file exists so RUT_Wastes's water has a terrain of its own to mine INTO
+  file exists so the deleted Wastes twin's water has a terrain of its own to mine INTO
   (see RUT_WastesBrineDeposits.xml) and to carry the hypersaline flavor
   (water_taxonomy.csv "waste_brine": "dead-river concentrate;
   radiologically live") the biome's own description already claims for
@@ -40,17 +40,17 @@
   Based on Odyssey's ToxicWater*Base family (not vanilla WaterBase, unlike
   the Scald): matches the donor's own choice for this archetype and the
   water_taxonomy.csv flavor ("radiologically live"), and NOT wiring
-  fishTypes onto RUT_Wastes means the ToxicWater* waterBodyType=Other
+  fishTypes onto the deleted Wastes twin means the ToxicWater* waterBodyType=Other
   "no fish" trait is inert here rather than a second copy of wave 1's bug.
   MayRequire="Ludeon.RimWorld.Odyssey" throughout, matching RUT_Tekk/
   RUT_Drazz's own gating (wave 1).
 
-  Scope: RUT_Wastes is "one def, by ruling" (RUT_Wastes.xml's own
+  Scope: the deleted Wastes twin is "one def, by ruling" (the deleted Wastes twin's def's own
   header) for the whole biome family (dayside basins/margin/dark scour), so
-  wiring these onto it applies to ANY water RUT_Wastes generates on ANY
+  wiring these onto it applies to ANY water the deleted Wastes twin generates on ANY
   of its 1853 tiles, not narrowly to three hand-placed tiles — the SS8
   mutator/injection palette that would scope "hypersaline pool" to specific
-  tiles is its own future authoring pass (RUT_Wastes.xml's own "NOT this
+  tiles is its own future authoring pass (the deleted Wastes twin's def's own "NOT this
   pass's scope" list) and is not built here. This is the same scope wave 1
   already accepted for the (never-wired) fishTypes plan.
 

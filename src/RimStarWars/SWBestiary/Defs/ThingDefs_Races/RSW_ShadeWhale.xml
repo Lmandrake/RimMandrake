@@ -19,7 +19,7 @@
   differentiate, zero new PNGs). `desert.json`'s fauna roster already carries
   `Horax` as the desert's own placeholder for this megafauna band ("interim
   ... positional megafauna until the shade-whale def lands") — RSW_Horax
-  stays wired in RUT_Desert.xml as its own entry (not removed, same
+  stayed wired in the deleted Desert twin's def as its own entry (not removed, same
   precedent), this def is the flagship it was standing in for.
 
   Re-purposed from Horax's predator profile to the sheet's actual megafauna

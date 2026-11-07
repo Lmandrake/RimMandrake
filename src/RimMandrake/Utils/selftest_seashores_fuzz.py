@@ -3,7 +3,7 @@
 """Approach B fuzz of the SeaShores kernel (src/RimMandrake/SeaShores/Source/Kernel/RM_SeaKernel.cs), no game.
 
 Seeded fuzz against brute-force restatements: the terrain -> sea key map (exclusive terrain only, order independent), the sea a tile faces
-(most neighbours, lowest ordinal on a tie, order independent), which sea a cell's water is, the empty-band fallback that keeps RUT_TheScald
+(most neighbours, lowest ordinal on a tie, order independent), which sea a cell's water is, the empty-band fallback that keeps RM_TheScald
 fishable, the frozen-world healer (exhaustive, with its safety properties), distinct coast directions and the setting / catch predicates.
 Built through winbuild.stage_build (dotnet.exe is Windows-native), then run. The older def-typed check is selftest_seashores.py (net472) and
 the static / mirror proof is SeaShores/selftest_seashores_proofs.py.

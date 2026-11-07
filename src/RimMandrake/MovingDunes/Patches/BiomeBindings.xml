@@ -40,11 +40,11 @@
     mandrake.rm.movingdunes"). Neither vanilla Desert nor vanilla ExtremeDesert is
     actually used on Ash'karr, so the two bindings above are inert on the live world —
     this engine has been wired to NO Ash'karr biome until now (measured this pass,
-    matching the item's own finding). RUT_ExtremeDesert itself is NOT touched anywhere
+    matching the item's own finding). the deleted ExtremeDesert twin itself is NOT touched anywhere
     else — it stays frozen (R22) until Phase B's repaint retires it; this is purely an
     additive binding on top.
 
-    Unlike the two vanilla operations above, RM_Stillsand and RUT_ExtremeDesert are
+    Unlike the two vanilla operations above, RM_Stillsand and the deleted ExtremeDesert twin are
     NOT guaranteed present in every mod list this engine mod could load into on its
     own (this file's own header: "the engine mod itself binds vanilla... campaign
     biomes are bound by the RUT data pack, not here" — Q12 deliberately overrides
@@ -79,16 +79,5 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RUT_ExtremeDesert"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>Defs/BiomeDef[defName="RUT_ExtremeDesert"]</xpath>
-      <value>
-        <li Class="RimMandrake.MovingDunes.DuneFieldExtension">
-          <material>RM_Dunes_Sand</material>
-        </li>
-      </value>
-    </match>
-  </Operation>
 
 </Patch>

@@ -15,7 +15,7 @@
   wave's VentStalker slug used.
 
   Fireweed itself needs no new def: `Plant_Fireweed` (Odyssey vanilla) is
-  already wired into RUT_TheForge.xml's own wildPlants at 0.9 — the "eat
+  already wired into the deleted TheForge twin's def's own wildPlants at 0.9 — the "eat
   fireweed" half of this slug was already built long before this pass; only
   the creature was owed.
 

@@ -23,12 +23,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/baseWeatherCommonalities/Rain</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/baseWeatherCommonalities/Rain</xpath>
-    </match>
-  </Operation>
 
   <!-- Shrine denial retargeted onto our def (the donor op stays). -->
   <Operation Class="PatchOperationConditional">

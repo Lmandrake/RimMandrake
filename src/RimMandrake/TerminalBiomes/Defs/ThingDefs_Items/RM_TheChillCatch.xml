@@ -60,7 +60,7 @@
 
   <!-- CHILL_FREE_TIER_CATCH_1 (sitting 2026-10-02 Q2a): the seven species that lived only in
        UtinniPatches (RUT_Fessu..RUT_Zhiil) now ship here as RM_*Catch, text and stats copied
-       from the originals (which stay, frozen, with the RUT_PropaneLake twin). Every fuel-born
+       from the originals (which stayed, frozen, with the deleted PropaneLake twin). Every fuel-born
        catch is Flammability 1.0 and none is kyber (ban 2). Art: each catch draws its creature's
        own free-mod pawn sprite until real item icons are made. -->
 

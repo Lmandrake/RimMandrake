@@ -40,27 +40,5 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/extraGenSteps</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/extraGenSteps</xpath>
-        <value>
-          <li>RM_WreckField_Scald</li>
-          <li>RM_ScaldThurlspongeWrecks</li>
-        </value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
-        <value>
-          <extraGenSteps>
-            <li>RM_WreckField_Scald</li>
-            <li>RM_ScaldThurlspongeWrecks</li>
-          </extraGenSteps>
-        </value>
-      </nomatch>
-    </match>
-  </Operation>
 
 </Patch>

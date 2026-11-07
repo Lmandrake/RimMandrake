@@ -27,7 +27,7 @@
   These are CEILINGS on attempts (JawaScrapfields.xml's own documented
   arithmetic, cited by RUT_ScaldWreckScatter.xml too), not a promised count:
   terrainValidationAllowed rejects every cell outside RUT_WastesBrineShallow,
-  and that terrain only exists at all where RUT_Wastes generates a
+  and that terrain only exists at all where the deleted Wastes twin generates a
   lake/river feature on a given map — most Wasteland maps have none.
 
   minSpacing 4/5/6 (rising with rarity, same direction Scald's own three
@@ -38,7 +38,7 @@
   terrainValidationRadius 1 — each deposit is a 1x1 footprint (RockBase
   default), so radius 1 covers the origin cell plus one ring, same margin
   logic as the Scald wreck's radius-2-for-a-2x2-footprint.
-  allowInWaterBiome true — matches the Scald wreck precedent; RUT_Wastes
+  allowInWaterBiome true — matches the Scald wreck precedent; the deleted Wastes twin
   itself is not water-typed (isWaterBiome unset), so this is defensive
   parity rather than a load-bearing requirement here.
 

@@ -12,7 +12,7 @@
 
   WHY THIS FILE HAS TO EXIST. §7 Q11 (owner, 2026-09-22): "RimMandrake should not
   name star wars ever." So RM_LongShade may not carry this cast, and at Phase B of
-  design/RimMandrake/biome_mod_architecture.md the RUT_Desert def that currently
+  design/RimMandrake/biome_mod_architecture.md the the deleted Desert twin def that currently
   carries it dies and RM_LongShade takes the tiles.
 
   🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting) REWROTE this file's Add
@@ -47,7 +47,7 @@
 
   🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-24, since amended above): every
   surviving weight below is a verbatim copy of the original transplant off
-  Defs/BiomeDefs/RUT_Desert.xml's own wildAnimals block — nothing rescaled.
+  Defs/BiomeDefs/the deleted Desert twin's def's own wildAnimals block — nothing rescaled.
 
   Unlike WildAnimals_Greentide.xml, there is NO PatchOperationReplace here:
   RM_LongShade does not ship a Core-only placeholder roster to swap out — its

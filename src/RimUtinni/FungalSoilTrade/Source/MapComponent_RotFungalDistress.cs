@@ -98,9 +98,9 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 	{
 		public const string MineableFungalGroundDefName = "RUT_MineableFungalGround";
 		// The Rot's biome defNames: the free-tier RM_TheRot and its frozen twin
-		// RUT_TheRot (a save on the twin keeps working). One shared set, used by
+		// the deleted TheRot twin (a save on the twin kept working). One shared set, used by
 		// the scatter GenStep and the distress component.
-		public static readonly string[] RotBiomeDefNames = { "RM_TheRot", "RUT_TheRot" };
+		public static readonly string[] RotBiomeDefNames = { "RM_TheRot" };
 
 		public static bool IsRotBiome(RimWorld.BiomeDef biome)
 		{

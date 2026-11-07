@@ -20,7 +20,7 @@
   metadata our BiomeDef never reads, since wildAnimals fully replaces it
   per-biome; not itself a placement). Checked BEFORE reusing anything:
   `design/Jawa/fauna/cast_assignment.csv` already assigns the *species*
-  `Klorslug` itself to `RUT_Greentide` ("the Gnawers", row 177, status keep)
+  `Klorslug` itself to the deleted Greentide twin ("the Gnawers", row 177, status keep)
   - so this def does NOT place Klorslug in a second biome. It only reuses
   the body/art ASSET the same way RSW_ShadeWhale reused RSW_Horax's while
   Horax stayed placed in the desert: a new defName, no double-booked species
@@ -48,7 +48,7 @@
   inside arid_shrubland.md's ratified LARGE-band void (1.5-3.5, numeric table
   now in that doc's "size ladder" section). Note this is NOT the donor
   Klorslug's own bodySize 1.5 noted above - that line describes Klorslug
-  (whose home biome is RUT_Greentide, a different ladder), not this def.
+  (whose home biome is the deleted Greentide twin, a different ladder), not this def.
   Brought into MEDIUM at baseBodySize 1.2 - comfortably under the 1.5 ceiling,
   not gaming the boundary, and in line with this biome's other medium
   interface-killers (Anooba 0.95, Massiff 0.85, Grank/Cannok 0.85, up to

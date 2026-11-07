@@ -13,7 +13,7 @@ Waves 1-5 of this item deferred a live bridge quicktest five times; the
     TerrainDefs and nulling every land BiomeDef's water fields).
 
 That bug is now CLOSED (`fe3b2be2c`), live-reverified on the campaign world
-(RUT_Greentide tile 8501: check A+B both pass, 9629 water-family cells).
+(RM_Greentide tile 8501: check A+B both pass, 9629 water-family cells).
 This script re-runs the SAME live fishing/mining pass across the waters that
 were UNABLE TO VERIFY, now that the blocker is gone, plus a Twilight spot
 check (TWILIGHT_DEEP_WATER_LAYER_1 closed 2026-09-20, hold lifted, deployed,
@@ -37,19 +37,19 @@ FISHING_DESIGNATOR = "architect-designator:zone:highlight-designator-zoneadd-fis
 
 # (label, biome defName, candidate tiles, mode)
 #   mode "fish"  -> look for water, try a Fishing-zone placement
-#   mode "brine" -> look for RUT_WastesBrine* terrain + list_things for deposits
+#   mode "brine" -> look for RM_WastesBrine* terrain + list_things for deposits
 WATERS = [
-    ("Greentide",     "RUT_Greentide",     [256, 635, 776, 781, 1174], "fish"),
-    ("Cracked Lands", "RUT_CrackedLands",  [9225, 14, 20, 107, 110],   "fish"),
-    ("Weeping Stones","RUT_WeepingStones", [7344, 10, 83, 142, 144],   "fish"),
-    ("Wasteland",     "RUT_Wastes",     [224, 0, 23, 36, 47],       "brine"),
+    ("Greentide",     "RM_Greentide",     [256, 635, 776, 781, 1174], "fish"),
+    ("Cracked Lands", "RM_FloodedCanyon",  [9225, 14, 20, 107, 110],   "fish"),
+    ("Weeping Stones","RM_WeepingStones", [7344, 10, 83, 142, 144],   "fish"),
+    ("Wasteland",     "RM_Wastes",     [224, 0, 23, 36, 47],       "brine"),
     # The sea tile itself is impassable and canBuildBase false (its generated map is 100% deep brine, where vanilla
     # refuses a fishing zone: Designator_ZoneAdd_Fishing needs a passable cell). Its catch is fished FROM THE SHORE: a land
     # tile beside the sea, whose salt water SeaShores' SetFishTypes postfix stocks from the sea's own table. So Twilight
     # is a "shore" row: tiles are found from the live grid, not listed.
-    ("Twilight",      "RUT_TwilightSea",   [],                          "shore"),
+    ("Twilight",      "RM_TwilightSea",   [],                          "shore"),
 ]
-SHORE_SEAS = {"Twilight": ("RUT_TwilightSea", "RM_TwilightSea")}
+SHORE_SEAS = {"Twilight": ("RM_TwilightSea",)}
 
 
 def connect():
@@ -205,7 +205,7 @@ def try_tile(call, label, biome, tile, mode):
 
 
 def sea_catches(label):
-    """The sea's catch defNames, read from the shipped RM_ BiomeDef (RUT_TwilightSea's patch names the same species)."""
+    """The sea's catch defNames, read from the shipped RM_ BiomeDef ."""
     import xml.etree.ElementTree as ET
     f = _RM_ROOT / "src" / "RimMandrake" / "TerminalBiomes" / "Defs" / "BiomeDefs" / ("RM_%sSea.xml" % label)
     ft = ET.parse(str(f)).getroot().find("BiomeDef/fishTypes")

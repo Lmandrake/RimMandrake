@@ -4,7 +4,7 @@
   MapCommonBase by Patches/RM_CathedralFinish_MapGenPatch.xml. Both are map-generation toggles in Mod Settings.
 
   RM_CathedralStrays: sheet §4 "the desiccated dead are map dressing, not spawns". Kinds come from the neighbouring
-  biomes' rosters: the Scarlands (RM_Warscar, and the frozen twin RUT_Scarlands). The sheet's "the Scorch" has no
+  biomes' rosters: the Scarlands (RM_Warscar, and the deleted Scarlands twin). The sheet's "the Scorch" has no
   BiomeDef of that name in src/ (measured 2026-10-07), so it is not listed; add its defName here when one exists.
   The fallback kinds (vanilla desert animals) apply only when no source biome resolves. edgeBand 8 is the item's
   "within 8 cells of the map edge".
@@ -23,7 +23,6 @@
     <genStep Class="RimMandrake.RustCathedral.RM_GenStep_CathedralStrays">
       <sourceBiomes>
         <li>RM_Warscar</li>
-        <li>RUT_Scarlands</li>
       </sourceBiomes>
       <fallbackKinds>
         <li>Iguana</li>

@@ -66,7 +66,7 @@
                                                                    instead of ten. See those items for the individual
                                                                    provenance (RUT_LanternDeepGateKyber.xml,
                                                                    RUT_SlimeGeneArchive.xml, 83 EnvironmentalHazards
-                                                                   MayRequire sites, RUT_ToxinSealant.xml, RUT_BlueDesert.xml's
+                                                                   MayRequire sites, RUT_ToxinSealant.xml, the deleted BlueDesert twin's def's
                                                                    roster, RUT_SeaShoreExtension, BiomeCast_Ashkarr.xml,
                                                                    WildAnimals_LeaningScrub.xml, BiomeArrivalLetters_TheSump.xml). -->
 
@@ -97,7 +97,7 @@
     <li>vanillaquestsexpanded.ancients</li>                 <!-- BiomeCast_Ashkarr.xml, VQEPatients_AreRakata.xml -->
     <li>vanillaquestsexpanded.cryptoforge</li>              <!-- BiomeCast_Ashkarr.xml -->
     <li>vanillaquestsexpanded.generator</li>                <!-- DeepDesertTribes.xml -->
-    <li>mandrake.rm.flowworks</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_PropaneLake.xml names FlowWorks' RM_PropaneShallow / RM_PropaneDeep as its shore -->
+    <li>mandrake.rm.flowworks</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/the deleted PropaneLake twin's def names FlowWorks' RM_PropaneShallow / RM_PropaneDeep as its shore -->
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.anomaly</li>
     <li>ludeon.rimworld.biotech</li>

@@ -12,27 +12,9 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
-      <value>
-        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_TheForge"]</xpath>
     <match Class="PatchOperationAddModExtension">
       <xpath>Defs/BiomeDef[defName="RM_TheForge"]</xpath>
-      <value>
-        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
-      </value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
-    <match Class="PatchOperationAddModExtension">
-      <xpath>Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
       <value>
         <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
       </value>

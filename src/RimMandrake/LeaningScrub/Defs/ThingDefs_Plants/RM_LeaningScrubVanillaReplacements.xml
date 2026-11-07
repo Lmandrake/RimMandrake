@@ -11,7 +11,7 @@
   2026-09-21).
 
   RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): the original RUT_Grellbush/
-  RUT_Grellspine/RUT_WildHealroot and the whole mandrake.rut.ashkarrflora mod are gone; RUT_AridShrubland.xml
+  RUT_Grellspine/RUT_WildHealroot and the whole mandrake.rut.ashkarrflora mod are gone; the deleted AridShrubland twin's def
   names these defs, and saved RUT_ names load as them through RM_PlantTierReconcile_Aliases.xml.
 
   Art: the finished rut_grellbush, rut_grellspine and rut_wildhealroot

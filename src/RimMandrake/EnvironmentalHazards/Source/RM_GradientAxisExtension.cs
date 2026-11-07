@@ -9,7 +9,7 @@ namespace RimMandrake.EnvironmentalHazards
     // Webwork/Scald never need it, but any future two-water biome does."
     //
     //   <BiomeDef>
-    //     <defName>RUT_Miasma</defName>
+    //     <defName>the deleted Miasma twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">

@@ -52,7 +52,7 @@ invent, confirm at build time" per the item's own build-spec note):
     SymbolDefs_Vaults.xml - no redefinition needed, same convention
     gen_spire_layout.py already used for this exact pair. Roster
     choice matches MECHANOID_BIOME_PRESENCE_REVIEW_1's own 2026-09-09 draft
-    table, which already reads AB_PropaneLakes/RUT_PropaneLake as
+    table, which already reads AB_PropaneLakes/the Propane Lake twin as
     "RULED ALLOW... the lab IS the danger" - not an invented placement.
   - Shielding/hull walls: Wall_Plasteel, matching BOTH siblings' own
     convention for "ancient Rakatan tech" walls (a real stuff-based Core

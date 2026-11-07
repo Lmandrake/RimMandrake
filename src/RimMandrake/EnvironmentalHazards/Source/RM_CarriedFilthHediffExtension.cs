@@ -14,7 +14,7 @@ namespace RimMandrake.EnvironmentalHazards
     // it.
     //
     //   <BiomeDef>
-    //     <defName>RUT_Sump</defName>
+    //     <defName>the deleted Sump twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.environmentalhazards">

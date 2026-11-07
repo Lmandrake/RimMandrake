@@ -14,7 +14,7 @@ namespace RimMandrake.EnvironmentalHazards
     //
     // Hardcodes the Forge biome defName directly rather than an XML-settable
     // biome list: the kit spec's own gate is singular ("weighted only into
-    // Forge biomes" — RUT_TheForge is the ONE merged BiomeDef per
+    // Forge biomes" — the deleted TheForge twin is the ONE merged BiomeDef per
     // BIOME_OWNERSHIP_WAVE_1, not three separate zone defs), so there is
     // nothing to generalize the way RM_GenStep_EdgeBandFilth's biome list
     // is (that class is built to be reused by a future biome; this worker
@@ -33,7 +33,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
 
-            return map.Biome != null && map.Biome.defName == "RUT_TheForge";
+            return map.Biome != null && map.Biome.defName == "RM_TheForge";
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)

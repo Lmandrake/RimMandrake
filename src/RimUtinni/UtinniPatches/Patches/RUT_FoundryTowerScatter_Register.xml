@@ -13,7 +13,7 @@
   cannot dangle if mandrake.rm.environmentalhazards is absent from the
   active mod list. Safe to register globally: RUT_FoundryTowerScatter's own
   RM_ScattererValidator_Biome gate makes it a no-op on every map that isn't
-  RUT_TheForge.
+  the deleted TheForge twin.
 -->
 <Patch>
 

@@ -8,11 +8,11 @@
   scratch rows that mod ships inline (RM_ColossalAerofleet, RM_Metallovore,
   RM_Dhoggur, RM_FleetFlier and the rest of its own roster). Per §7 Q11 ("RimMandrake should not name
   star wars ever"), RM_TheForge may not carry any Star Wars creature by any
-  route, so every Star Wars row the frozen RUT_TheForge.xml carries rides
+  route, so every Star Wars row the deleted TheForge twin carried rides
   HERE instead. Shape: WildAnimals_Pyrelands.xml / WildAnimals_LeaningScrub.xml.
 
   🔑 SOURCE OF TRUTH: defNames and weights copied verbatim from the LIVE
-  RUT_TheForge.xml wildAnimals block (read directly, not from
+  the deleted TheForge twin's def wildAnimals block (read directly, not from
   rosters/the_forge.json, which THEFORGE_RM_MOD_BUILD_1's own analysis
   already found stale/incomplete against the live def).
 
@@ -23,7 +23,7 @@
       FORGE_MECHANICS_1's own tibanna-tap patch
       (Patches/RUT_TibannaTap_BeldonWiring.xml) has ALWAYS targeted
       RSW_Beldon, a defName that has never actually spawned on the frozen
-      RUT_TheForge (whose own wildAnimals lists only the donor's bare
+      the deleted TheForge twin (whose own wildAnimals lists only the donor's bare
       Beldon). This op is the first place the tap's real target actually
       lives in a Forge wildAnimals list.
   RSW_Maguana (mandrake.rsw.swbestiary, 0.5) is already RSW_-tier and just

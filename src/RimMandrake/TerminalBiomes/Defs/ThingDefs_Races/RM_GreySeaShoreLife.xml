@@ -3,7 +3,7 @@
   RM_GreySeaShoreLife.xml                TerminalBiomes — authored 2026-09-26
   ==========================================================================
   GREYSEA_ANCHOR_CREATURES_1, ruling 2: AA_Aerofleet is CUT from the Grey Sea
-  (already applied in RM_GreySea.xml/RUT_GreySea.xml's own commit) and
+  (already applied in RM_GreySea.xml/the deleted GreySea twin's def's own commit) and
   replaced by a new creature of ours, never by re-using a neighbour's — per
   the standing biome-specific fauna law. RM_TwilightSea and RM_TheForge keep
   casting AA_Aerofleet deliberately; this cut and its replacement are scoped

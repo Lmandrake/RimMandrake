@@ -1,0 +1,247 @@
+{
+ "item": "BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN",
+ "scanned": "2026-11-06",
+ "method": "tileBiomeDeflate of every *.rws in the live Saves folder, before the deletion; a tile hash counts as a twin only when it is that twin's ShortHash and no other known biome holds it",
+ "saves_scanned": 228,
+ "live_start": {
+  "save": "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
+  "tiles": 46176,
+  "twin_tiles": 0,
+  "twin_base_hash_held_by_rm": {
+   "RM_FloodedCanyon": 970,
+   "RM_RustCathedral": 236
+  },
+  "other_hashes_by_name": {
+   "RM_Wasteland": 1853,
+   "RM_NightsideIce": 1506,
+   "Orbit": 2432,
+   "RM_SeabedFloor": 6304,
+   "RM_SeabedUnavailable": 15568
+  }
+ },
+ "frozen_record": 14035,
+ "saves_with_twin_tiles": [
+  {
+   "save": "JointSession_20261103_pits3.rws",
+   "twin_tiles": 31421
+  },
+  {
+   "save": "JointSession_20261103_pits.rws",
+   "twin_tiles": 31421
+  },
+  {
+   "save": "PM_chain_start_20261025T225410.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "PM_chain_start_20261025T225407.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "PM_chain_start_20261025T225326.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "PM_chain_start_20261025T225324.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "PM_chain_start_20261025T225251.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "PM_chain_start_20261025T225249.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "BENCH_r17_midrain.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "BENCH_leaf_scenes_20261026.rws",
+   "twin_tiles": 28905
+  },
+  {
+   "save": "Showing_CHILL_AIR_PUMP_1.rws",
+   "twin_tiles": 24552
+  },
+  {
+   "save": "Showing_WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED.rws",
+   "twin_tiles": 24517
+  },
+  {
+   "save": "Review_Drawbridges_20261105.rws",
+   "twin_tiles": 17688
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED_AREAFIX2.rws",
+   "twin_tiles": 15170
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED_AREAFIX.rws",
+   "twin_tiles": 15170
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED.rws",
+   "twin_tiles": 15170
+  },
+  {
+   "save": "SCALD_REVIEW.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "REHEARSAL_R2_COPY_2026-10-19.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_AREAFIX2.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_AREAFIX.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree_p6b_AREAFIX2.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree_p6b_AREAFIX.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree_p6b.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree_AREAFIX2.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree_AREAFIX.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_donorfree.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_AREAFIX2.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12_AREAFIX.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12.DONORFREE_CANDIDATE_2026-10-18_AREAFIX2.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12.DONORFREE_CANDIDATE_2026-10-18_AREAFIX.rws",
+   "twin_tiles": 14035
+  },
+  {
+   "save": "CANONICAL_ASHKARR_START_2026-09-12.DONORFREE_CANDIDATE_2026-10-18.rws",
+   "twin_tiles": 14035
+  }
+ ],
+ "biome_names_for_hash_sim": [
+  "AridShrubland",
+  "BorealForest",
+  "ColdBog",
+  "Desert",
+  "ExtremeDesert",
+  "GlacialPlain",
+  "Glowforest",
+  "Grasslands",
+  "IceSheet",
+  "Labyrinth",
+  "Lake",
+  "LavaField",
+  "MetalHell",
+  "Ocean",
+  "Orbit",
+  "RM_Abyss",
+  "RM_BlueDesert",
+  "RM_Cauldron",
+  "RM_ChillCrater",
+  "RM_Contagion",
+  "RM_FeverWood",
+  "RM_FloodedCanyon",
+  "RM_GelatinousSlime",
+  "RM_Greentide",
+  "RM_GreySea",
+  "RM_LanternDeeps",
+  "RM_LeaningScrub",
+  "RM_LongShade",
+  "RM_Miasma",
+  "RM_NightsideIce",
+  "RM_Pyrelands",
+  "RM_RustCathedral",
+  "RM_SeabedFloor",
+  "RM_SeabedFloor_GreySea",
+  "RM_SeabedFloor_TheChill",
+  "RM_SeabedFloor_TheScald",
+  "RM_SeabedFloor_TwilightSea",
+  "RM_SeabedUnavailable",
+  "RM_SleepingIce",
+  "RM_Stillsand",
+  "RM_TheChill",
+  "RM_TheForge",
+  "RM_TheRot",
+  "RM_TheScald",
+  "RM_TheSump",
+  "RM_TwilightSea",
+  "RM_Warscar",
+  "RM_Wasteland",
+  "RM_Wastes",
+  "RM_Webwork",
+  "RM_WeepingStones",
+  "RUT_Abyss",
+  "RUT_AridShrubland",
+  "RUT_BlueDesert",
+  "RUT_Cauldron",
+  "RUT_Contagion",
+  "RUT_CrackedLands",
+  "RUT_Desert",
+  "RUT_ExtremeDesert",
+  "RUT_FeverWood",
+  "RUT_Greentide",
+  "RUT_GreySea",
+  "RUT_Jawa_BackgroundWater",
+  "RUT_Miasma",
+  "RUT_PropaneLake",
+  "RUT_RustCathedral",
+  "RUT_Scarlands",
+  "RUT_SleepingIce",
+  "RUT_Slime",
+  "RUT_Sump",
+  "RUT_TheForge",
+  "RUT_TheRot",
+  "RUT_TheScald",
+  "RUT_TwilightSea",
+  "RUT_Umbra",
+  "RUT_Wastes",
+  "RUT_Webwork",
+  "RUT_WeepingStones",
+  "Scarlands",
+  "SeaIce",
+  "Space",
+  "TemperateForest",
+  "TemperateSwamp",
+  "TropicalRainforest",
+  "TropicalSwamp",
+  "Tundra",
+  "Undercave",
+  "Underground"
+ ]
+}

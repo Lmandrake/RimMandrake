@@ -4,7 +4,7 @@
   <!--
     RM_Stillsand                             RimMandrake — STILLSAND_RM_MOD_BUILD_1
     Phase A row 1 of design/RimMandrake/biome_mod_architecture.md. Content copied from
-    src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ExtremeDesert.xml (frozen the same
+    the deleted ExtremeDesert twin's def (was frozen the same
     pass), minus every RSW_-prefixed row and JOE_Cephalope — see below.
 
     workerClass stays vanilla RimWorld.BiomeWorker_ExtremeDesert, unchanged: the donor
@@ -29,7 +29,7 @@
     rows (kudda and pikkut/truffle mole then CUT — their one home is the Long Shade,
     LONGSHADE_RULED_CONTENT_1) leave the Utinni patch for native RM_-tier copies here:
     drageye (ikee), vozzik, vekka, drazzik, light-pipe nub, ollim(+wood). The frozen twin
-    RUT_ExtremeDesert.xml (R22, untouched here) keeps its own original RSW_-named
+    the deleted ExtremeDesert twin's def (R22, untouched here) kept its own original RSW_-named
     copies of all of them — this is a native duplicate for the free tier, not a
     delete-and-move, since the live world still runs on the frozen twin until Phase
     B's repaint. Q11 also ratified names: RM_MirrorGiant -> RM_Oommok ("oommok"),

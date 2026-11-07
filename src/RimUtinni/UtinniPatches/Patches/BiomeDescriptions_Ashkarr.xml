@@ -27,15 +27,15 @@
          asserted a machine-industrial history of a gated biome ("turning its mass
          into computronium... nefarious purposes") — a near-miss on the mind's true
          nature, which is plot-only, gate-kept (ban 6.1). Its patch was removed
-         2026-10-26 with Alpha Biomes' retirement; RUT_RustCathedral and
+         2026-10-26 with Alpha Biomes' retirement; the deleted RustCathedral twin and
          RM_RustCathedral carry the SSP-clean description (the_rust_cathedral.md).
       2. Scarlands (vanilla Odyssey's def; relabeled in BiomeNames_Ashkarr.xml. The
-         90 live tiles SCARLANDS_RENAME_OURS_1 measured are RUT_Scarlands', the
+         90 live tiles SCARLANDS_RENAME_OURS_1 measured are the deleted Scarlands twin', the
          Warscar, not this def's): donor text
          invented a bombed city and mechanoids "waiting to awaken and kill again" —
          contradicts ban 6.6 (the Forgotten Sentinels defend only, never pursue) and
          the sheet's own "every ancient danger here has already been opened and
-         destroyed." Fixed below with RUT_Scarlands' description AND settleWarning
+         destroyed." Fixed below with the deleted Scarlands twin' description AND settleWarning
          (the_scarlands.md).
       3. (AB_PropaneLakes - its patch was removed 2026-10-20: Alpha Biomes is retired so
          it matched nothing, and the land is our own RUT_Umbra, the Auroral Umbra,
@@ -43,7 +43,7 @@
       4. AB_RockyCrags ("the Abyss", 1,135 tiles): donor text invented a
          rival ancient race ("Forsakens... a mysterious humanoid alien race"),
          corrupting the campaign's one reveal ladder. Its patch was removed
-         2026-10-26 with Alpha Biomes' retirement; RUT_Abyss and RM_Abyss carry
+         2026-10-26 with Alpha Biomes' retirement; the deleted Abyss twin and RM_Abyss carried
          the description (abyss.md).
 
     ALPHA BIOMES (2026-10-26, ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR): the donor is
@@ -56,9 +56,9 @@
     Every RUT_ text below is placed verbatim (never edited here).
 
     NOT PORTED (deliberately, not an oversight):
-      - RUT_SleepingIce, RUT_BlueDesert (it owns its own tiles directly; the
+      - the deleted SleepingIce twin, the deleted BlueDesert twin (it owns its own tiles directly; the
         BiomeGRimond port that once sat below was deleted with grimterra.biomesmod's
-        retirement, f880d0a6c0), RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra (the Auroral
+        retirement, f880d0a6c0), the deleted TwilightSea twin, the deleted GreySea twin, the deleted TheScald twin, RUT_Umbra (the Auroral
         Umbra): these already run under their OWN RUT_
         defName on (almost) all their tiles — nothing to port onto, they ARE the
         source.
@@ -78,11 +78,11 @@
         the donor's "stormy savanna" text until the repaint; known, accepted.
   -->
 
-   <!-- "the Cracked Lands" - RUT_CrackedLands -->
+   <!-- "the Cracked Lands" - the deleted CrackedLands twin -->
 
-   <!-- "the Cauldron" - RUT_Cauldron (drops the donor's Earth poplars) -->
+   <!-- "the Cauldron" - the deleted Cauldron twin (drops the donor's Earth poplars) -->
 
-   <!-- "the Weeping Stones" - RUT_WeepingStones (drops the donor's "few small islands of life") -->
+   <!-- "the Weeping Stones" - the deleted WeepingStones twin (drops the donor's "few small islands of life") -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/description</xpath>
@@ -90,7 +90,7 @@
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/description</xpath>
       <value><description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description></value>
     </match>
-  </Operation>   <!-- "the Fever Wood" - RUT_FeverWood -->
+  </Operation>   <!-- "the Fever Wood" - the deleted FeverWood twin -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Desert"]/description</xpath>
@@ -98,7 +98,7 @@
       <xpath>/Defs/BiomeDef[defName="Desert"]/description</xpath>
       <value><description>A dayside band of scattered rock at a sun so low every stone throws a shadow four times its own height. Nothing lives in the light and nothing survives leaving shelter, so life here is a sprint between islands of shade -- rest, dash, rest -- and the gaps between them are the only geography that matters. Cooler and steadier than the deep dune beyond it: the numbers are small, but they hold.</description></value>
     </match>
-  </Operation>   <!-- "the Desert" - RUT_Desert -->
+  </Operation>   <!-- "the Desert" - the deleted Desert twin -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/description</xpath>
@@ -106,7 +106,7 @@
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/description</xpath>
       <value><description>A corrugated ochre plain under a star that has not moved since the world began, running unbroken to every horizon. Nothing here tracks the sun because the sun does not go anywhere; everything owns a shadow instead, or is buried, or is a giant carrying its own moving shade across a thousand kilometres of nothing. It ends, without a gradient, at a hard green line of river or sea -- and until then, this is the ocean of nothing that line is drawn against.</description></value>
     </match>
-  </Operation>   <!-- "the Deep Desert" label / RUT_ExtremeDesert's own description text -->
+  </Operation>   <!-- "the Deep Desert" label / the deleted ExtremeDesert twin's own description text -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Scarlands"]/description</xpath>
@@ -114,7 +114,7 @@
       <xpath>/Defs/BiomeDef[defName="Scarlands"]/description</xpath>
       <value><description>Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shield emplacements that all tell the same story, still perfectly legible -- a defense, layered and desperate, facing outward. The ground is poisoned in a way that does not fade and never will, the wildlife is mad, machines defend the place for reasons they do not give, and it is, by every Jawa's flat testimony, cursed.</description></value>
     </match>
-  </Operation>   <!-- "the Scarlands" [PLOT LEAK 2] - RUT_Scarlands, first-ever relabel+description -->
+  </Operation>   <!-- "the Scarlands" [PLOT LEAK 2] - the deleted Scarlands twin, first-ever relabel+description -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Scarlands"]/settleWarning</xpath>
@@ -123,7 +123,7 @@
       <value><settleWarning>Scarlands are inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines, and they do not explain.</settleWarning></value>
     </match>
   </Operation>   <!-- Scarlands settleWarning [part of PLOT LEAK 2] - donor's "waiting to awaken and
-                      kill again" contradicted ban 6.6; replaced with RUT_Scarlands' own -->
+                      kill again" contradicted ban 6.6; replaced with the deleted Scarlands twin' own -->
 
 
   <Operation Class="PatchOperationConditional">
@@ -132,6 +132,6 @@
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/description</xpath>
       <value><description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description></value>
     </match>
-  </Operation>   <!-- "the arid shrubland" - RUT_AridShrubland, first-ever relabel+description -->
+  </Operation>   <!-- "the arid shrubland" - the deleted AridShrubland twin, first-ever relabel+description -->
 
 </Patch>

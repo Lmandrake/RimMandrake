@@ -60,7 +60,7 @@ namespace RimMandrake.Biomes
         //    (at the mean of its tile centres), so the swirls run continuously across the whole biome with no tile seams and
         //    no pole stretch. Vertex alpha = swirlStrength x share of that biome among the tiles meeting at the corner, so
         //    the layer fades out across the biome border instead of stopping on a hex line.
-        public static string swirlBiomes = "RM_Abyss=Abyss,RUT_Abyss=Abyss,RM_TheRot=TheRot,RUT_TheRot=TheRot";
+        public static string swirlBiomes = "RM_Abyss=Abyss,RM_TheRot=TheRot";
         public static float swirlStrength = 1f;
         public static float swirlUvScale = 0.035f;  // texture repeats per world unit (radius 100 planet): ~25 units per repeat
         public static float swirlLift = 0.004f;     // over the border blend (+0.003), under hills (+0.005) and rivers (+0.01)

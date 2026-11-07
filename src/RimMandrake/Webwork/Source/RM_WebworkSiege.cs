@@ -46,7 +46,7 @@ namespace RimMandrake.Webwork
     public static class RM_WebworkSiegeUtility
     {
         // The Webwork's own biome and its campaign twin (retired by the end paint; a missing def is simply skipped).
-        public static readonly string[] WebworkBiomeDefNames = { "RM_Webwork", "RUT_Webwork" };
+        public static readonly string[] WebworkBiomeDefNames = { "RM_Webwork" };
 
         // Silk already on a cell: a spider never spins over it.
         private static readonly string[] WebDefNames = { "RM_Webwork_SiegeWeb", "RM_Webwork_Strand", "RM_Webwork_Cable", "RM_Webwork_Web", "RM_Webwork_Anchor" };

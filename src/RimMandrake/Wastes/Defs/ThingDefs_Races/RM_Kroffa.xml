@@ -10,7 +10,7 @@
        Textures/Things/Pawn/Animal/RM_Kroffa/. The SW-tier abstract parent
        RSW_PollutedLands_AnimalThingBase is inlined (its ToxicResistance 0.4; its
        BMT_PollutedLands_AllAnimals / RSW_PollutedAnimalCommon trade tags dropped). RSW_Maligoat
-       stays in SWBestiary only because the frozen RUT_Wastes twin still names it;
+       stayed in SWBestiary only because the deleted Wastes twin named it;
        RM_Wastes casts RM_Kroffa. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Kroffa</defName>

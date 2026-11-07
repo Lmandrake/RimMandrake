@@ -533,7 +533,7 @@ def main() -> int:
     faults += more
     lines, blocked, biomes = audit()
     # sanity probes: the instrument must see the known Baroque water
-    if len(biomes) < 40:
+    if len(biomes) < 30:
         faults.append(f"instrument blind: only {len(biomes)} of our BiomeDefs seen")
     scald = [l for l in lines if l.startswith("| RM_TheScald |") and "RM_Liquid_BoilingWater" in l]
     if len(scald) < 6:

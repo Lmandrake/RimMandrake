@@ -18,7 +18,7 @@
        Source/GenStep_ScatterCathedralWallTiers.cs.
 
        isNaturalRock stays true and this def is also added to
-       RUT_RustCathedral's forceRockTypes (Patches/
+       the deleted RustCathedral twin's forceRockTypes (Patches/
        RUT_RustCathedral_ForceRockTypes.xml) so any OTHER vanilla system
        that asks "what is this map's natural rock" (mountain generation,
        DeepDrillUtility's exhausted-drill fallback, ancient-danger vault
@@ -32,7 +32,7 @@
 
        PLACEHOLDER ART: vanilla's own RockFlecked_Atlas (MineableSteel's own
        texture), tinted toward the biome's own metal-floor grey
-       (RUT_RustCathedral.xml's GU_MetalFloor1/AB_SoilOnCrackedMetal
+       (the deleted RustCathedral twin's def's GU_MetalFloor1/AB_SoilOnCrackedMetal
        palette) rather than MineableSteel's brown. Real bespoke wall art is
        owed (rides the art pipe, per §2's own "deferred: wall-linked art
        atlases"). -->

@@ -12,7 +12,7 @@ namespace RimMandrake.EnvironmentalHazards
     // posture as every other multiplier in RM_EnvironmentalHazardsMod.cs.
     //
     //   <BiomeDef>
-    //     <defName>RUT_TheRot</defName>
+    //     <defName>the deleted TheRot twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />

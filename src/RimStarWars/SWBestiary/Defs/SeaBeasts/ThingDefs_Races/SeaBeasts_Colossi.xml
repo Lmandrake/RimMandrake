@@ -19,7 +19,7 @@
      RM_SeaBeasts_Invented.xml, art copied from this file's own texture
      folders), wired inline into RM_GreySea.xml/RM_TwilightSea.xml. The RSW_
      trio below is left UNTOUCHED rather than renamed: the frozen
-     RUT_GreySea.xml/RUT_TwilightSea.xml twins still reference
+     the deleted GreySea twin's def/the deleted TwilightSea twin's def twins still reference
      RSW_Reefback/RSW_Lanternwhale directly in their own inline wildAnimals
      ("stays as it is, byte-for-byte... do not edit here"), and
      MegafaunaYield.xml (Doctrine/Patches, generated) keys its meat/bone

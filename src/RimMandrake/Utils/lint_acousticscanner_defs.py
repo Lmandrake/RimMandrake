@@ -159,8 +159,8 @@ def payload_errors(mod):
     stats = {}
     errs = check_payloads(payload_files(src_root), defnames(src_root), about_name(), stats)
     print("as-payload: %d payloads, %d targets checked" % (stats.get("payloads", 0), stats.get("targets", 0)))
-    if stats.get("payloads", 0) < 50:
-        errs.append("ERROR as-payload: only %d payloads found; 62 owned BiomeDefs carried one at 27962f76b (sanity probe)" % stats.get("payloads", 0))
+    if stats.get("payloads", 0) < 30:
+        errs.append("ERROR as-payload: only %d payloads found; 36 owned BiomeDefs carried one after BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN (sanity probe)" % stats.get("payloads", 0))
     return errs
 
 

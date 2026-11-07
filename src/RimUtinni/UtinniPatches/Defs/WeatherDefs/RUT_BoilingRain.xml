@@ -7,7 +7,7 @@
   WeatherDef.rainRate is a native field - the burst renders as real
   driving rain." Only ever reached via RUT_ForgePulse's own
   RM_GameCondition_WeatherPulse.ForcedWeather() while a burst is running
-  (RUT_TheForge.xml's baseWeatherCommonalities does not list it either) -
+  (the deleted TheForge twin's def's baseWeatherCommonalities does not list it either) -
   never a natural-rotation pick, matching ban #6.
 
   rainRate 1 (matches vanilla RainyThunderstorm's own value - real, dense,

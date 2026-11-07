@@ -6,7 +6,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // MIASMA_MECHANICS_1 M3 build (miasma_kit_spec.md M3: "stranding pools
     // and the stranded"). Generic on purpose, same reasoning as M1/M2's own
-    // extensions — attached to the SAME BiomeDef (RUT_Miasma today; any
+    // extensions — attached to the SAME BiomeDef (the deleted Miasma twin until its deletion (2026-11-06); any
     // future biome with a two-water axis and a recede could adopt this
     // unchanged). Parameterizes RM_MapComponent_StrandingPools end to end:
     // what spawns into a freshly-detected pool, how the weighted roll is
@@ -34,7 +34,7 @@ namespace RimMandrake.EnvironmentalHazards
     // roster (the sheet's actual gill-going-leathery, fin-splaying-to-feet
     // creatures) is not authored here. This field is a generic
     // List<PawnKindDef> so the roster pass can point it at real content
-    // later without touching a line of C#; RUT_Miasma.xml wires exactly ONE
+    // later without touching a line of C#; the deleted Miasma twin's def wires exactly ONE
     // existing shipped PawnKindDef into it as a loudly-commented PLACEHOLDER
     // so the spawner/lifecycle below compiles and could run end-to-end
     // today, not a real roster decision.

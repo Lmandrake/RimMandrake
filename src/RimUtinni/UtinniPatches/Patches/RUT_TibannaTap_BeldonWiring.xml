@@ -19,7 +19,7 @@
   (§8's Empire monopoly) — baking a Forge-specific comp straight into the
   shared SWBestiary file would leak campaign content into the generic tier,
   same discipline RUT_ForgePulse_BiomeWiring.xml (F1, this same item)
-  already applied to RUT_TheForge itself. PatchOperationAdd targets
+  already applied to the deleted TheForge twin itself. PatchOperationAdd targets
   RSW_Beldon's own existing <comps> node (already carries EggLayer +
   Milkable) rather than replacing it.
 

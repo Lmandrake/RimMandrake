@@ -13,7 +13,7 @@
   regardless of anything else. Ban #5 is fully closed this pass by
   RM_MiasmaWeatherLock.xml (GameConditionDefs/) forcing this weather
   permanently via GameCondition.ForcedWeather(), which overrides vanilla's
-  WeatherDecider outright - see that file and RUT_Miasma.xml's own updated
+  WeatherDecider outright - see that file and the deleted Miasma twin's def's own updated
   header note for why the biome's kept Rain/RainyThunderstorm
   baseWeatherCommonalities entries are now inert.
 

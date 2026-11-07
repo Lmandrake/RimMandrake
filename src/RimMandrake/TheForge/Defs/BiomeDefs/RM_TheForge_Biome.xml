@@ -6,14 +6,14 @@
 
     Phase A row 21 of design/RimMandrake/biome_mod_architecture.md — the
     RimMandrake-tier twin of the frozen src/RimUtinni/UtinniPatches/Defs/
-    BiomeDefs/RUT_TheForge.xml, generalized to zero campaign-specific content
+    BiomeDefs/the deleted TheForge twin's def, generalized to zero campaign-specific content
     per §3a's test. Full sheet (campaign-side):
     design/Jawa/worldbuilding/biomes/the_forge.md (FROZEN).
 
     Copied from the frozen def, MEASURED 2026-09-25: diseases, terrain
     thresholds, animalDensity/plantDensity/forageability/movementDifficulty/
     diseaseMtbDays/wildPlantRegrowDays are all byte-identical to
-    RUT_TheForge.xml's own values — nothing here is re-derived except the
+    the deleted TheForge twin's def's own values — nothing here is re-derived except the
     three fields the item's own analysis flagged as owing a change:
 
       - workerClass: the frozen twin's AlphaBiomes.BiomeWorker_PyroclasticConflagration
@@ -47,7 +47,7 @@
     bare LavaFlea/Beldon defNames the frozen twin uses, which also fixes a
     latent defName mismatch: FORGE_MECHANICS_1's own tibanna-tap patch
     (RUT_TibannaTap_BeldonWiring.xml) has always targeted RSW_Beldon, a
-    defName that has never actually spawned on the frozen RUT_TheForge (its
+    defName that has never actually spawned on the deleted TheForge twin (its
     own wildAnimals spawns only the donor's bare Beldon). This mod is the
     first place the tap's real target actually lives in a Forge wildAnimals
     list. Inline here: the 4 non-Star-Wars donor rows the frozen def already
@@ -61,7 +61,7 @@
     the RimMandrake mod... renamed RM_", applied one biome sitting late).
     RUT_Sagecrust is NOT renamed to RM_Sagecrust here — that defName is
     already claimed by THEROT_RM_MOD_BUILD_1 for the SAME shared donor plant
-    (RUT_Sagecrust is wired into both RUT_TheRot.xml and RUT_TheForge.xml).
+    (RUT_Sagecrust is wired into both the deleted TheRot twin's def and the deleted TheForge twin's def).
     Per biome_mod_architecture.md §7 Q13 ("content wired into TWO biome
     mods: DUPLICATE, THEN DIVERGE... each mod carries its own copy under its
     own defName"), this biome's copy is RM_CinderCrust — same mechanical

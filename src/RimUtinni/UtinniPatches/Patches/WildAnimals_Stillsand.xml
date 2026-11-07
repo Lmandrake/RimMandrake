@@ -13,14 +13,14 @@
   layer, never the franchise-free RimMandrake tier — "the top mod without
   star wars will look precisely the same as the star wars enhanced one save
   for any star wars beasts we populate it with." So RM_Stillsand may not
-  carry this cast inline, and at Phase B the RUT_ExtremeDesert twin that
+  carried this cast inline, and at the 2026-11-06 deletion the deleted ExtremeDesert twin that
   currently carries it dies and RM_Stillsand takes the tiles. Without this
   patch in place by then, the Extreme Desert would lose all 13 of its fauna
   rows, all 3 of its flora rows and all 5 of its pack-animal rows on the
   live world.
 
   🔑 SOURCE OF TRUTH: every defName and weight below is copied from
-  RUT_ExtremeDesert.xml's own wildAnimals/wildPlants/allowedPackAnimals
+  the deleted ExtremeDesert twin's def's own wildAnimals/wildPlants/allowedPackAnimals
   (frozen 2026-09-24), the roster the world runs on today. STILLSAND_RM_MOD_BUILD_1's
   own written §3 table (dated 2026-09-23) names three of these rows under
   STALE pre-rename defNames — RSW_Spineroller, RSW_Stareling, RSW_Voltmaw — a
@@ -46,8 +46,8 @@
   authored directly in RM_Stillsand_Biome.xml's own wildAnimals/wildPlants
   (RM_Ikee, RM_Vozzik, RM_Vekka, RM_Drazzik, RM_LightPipeNub, RM_Ollim/
   RM_OllimWood — see that file's own header). (SWB_TWINS_DEDUPE_STILLSAND, 2026-11-03:
-  RSW_SandLion is retired and RUT_ExtremeDesert names RM_Vekka.) The other RSW_ source defs below are
-  UNCHANGED and still live: RUT_ExtremeDesert.xml (the frozen twin, R22,
+  RSW_SandLion is retired and the deleted ExtremeDesert twin names RM_Vekka.) The other RSW_ source defs below are
+  UNCHANGED and live: the deleted ExtremeDesert twin's def (the frozen twin, R22,
   untouched by this item) keeps its own original wiring of all six by name,
   so nothing on the currently-running world changes. Only this patch file's
   own Add block — which targets RM_Stillsand, the free tier — drops the six
@@ -80,7 +80,7 @@
   5 allowedPackAnimals rows, all mandrake.rsw.swbestiary:
     RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset
     (DESERT_PACK_ANIMALS_FOR_TRADERS_1 — without this list, no trader
-    caravan ever generates here; RUT_ExtremeDesert.xml's own comment).
+    caravan ever generates here; the deleted ExtremeDesert twin's def's own comment).
 
   ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
   returns true on no match) — validate with

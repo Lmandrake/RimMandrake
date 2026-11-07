@@ -8,7 +8,7 @@
      RSW_Leather_Insectile (SNAKEBODY_DECIDE_NONFISH_HIDES 2026-10-26).
      Size-ladder numbers from TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 are kept (MEDIUM band, bodySize 1.2).
      Art is a ledger copy of the in-game RSW_TunnelSnake art (owner pick A). RSW_TunnelSnake stays in SWBestiary only
-     because the frozen RUT_AridShrubland and the RSW_ScrapNestBird/Excretor/VentStalker comments name it. -->
+     because the deleted AridShrubland twin and the RSW_ScrapNestBird/Excretor/VentStalker comments name it. -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_TunnelSnake</defName>

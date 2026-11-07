@@ -136,7 +136,7 @@ ok(text.count("2026-09-12 export") == 0, "no '2026-09-12 export' in the file")
 
 # 6 defs exist; the machine reader agrees
 defs = src_defnames()
-ok(len(defs) > 50, "src BiomeDef scan sees defs (%d)" % len(defs))
+ok(len(defs) > 40, "src BiomeDef scan sees defs (%d)" % len(defs))
 missing = [d for d, _, _ in rows if d not in defs]
 ok(not missing, "every table defName is a BiomeDef <defName> in src/ (missing %s)" % missing)
 import paint_inputs_build as B  # noqa: E402
@@ -150,7 +150,7 @@ def first_row(d):
     return next(line for x, _, line in rows if x == d)
 
 
-still, wastes, rut = first_row("RM_Stillsand"), first_row("RM_Wastes"), first_row("RUT_Abyss")
+still, wastes, rut = first_row("RM_Stillsand"), first_row("RM_Wastes"), first_row("RUT_Umbra")
 mutants = {
     "count changed": text.replace(still, still.replace("| 3,969 |", "| 3,000 |")),
     "stale note on an RM_ row": text.replace(wastes, wastes.replace(
@@ -159,7 +159,7 @@ mutants = {
         "carries the home tile", "2026-09-12 export; carries the home tile")),
     "row dropped": text.replace(still + "\n", ""),
     "wrong package": text.replace(still, still.replace("`mandrake.rm.biomes`", "`mlie.advancedbiomes`")),
-    "verdict flipped": text.replace(rut, rut.replace("| NO PAINT |", "| PAINT |")),
+    "verdict flipped": text.replace(rut, rut.replace("| PAINT |", "| NO PAINT |")),
     "September row": text.replace(still, "| `RM_Stillsand` | the Stillsand | `src/RimMandrake/Stillsand` / "
                                   "`mandrake.rm.biomes` | 0 | not active | PAINT |"),
     "old-name note lost": text.replace(wastes, wastes.replace(" (as `RM_Wasteland`)", "")),
@@ -174,7 +174,7 @@ with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-
 saved = B.PAINTLIST
 try:
     B.PAINTLIST = tf.name
-    ok(B.paint_verdicts().get("RUT_Abyss") == "PAINT", "probe: paint_verdicts() reads a flipped verdict")
+    ok(B.paint_verdicts().get("RUT_Umbra") == "NO PAINT", "probe: paint_verdicts() reads a flipped verdict")
 finally:
     B.PAINTLIST = saved
     os.unlink(tf.name)

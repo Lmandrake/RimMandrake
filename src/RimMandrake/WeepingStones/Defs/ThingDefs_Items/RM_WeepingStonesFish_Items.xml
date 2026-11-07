@@ -4,7 +4,7 @@
   src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml
   (FISH_BESTIARY_BUILD_1 wave 3), renamed RUT_ -> RM_, so this mod's own
   RM_WeepingStones BiomeDef has a self-contained fishTypes table. The RUT_
-  originals are left untouched — the frozen RUT_WeepingStones twin still
+  originals were left untouched — the deleted WeepingStones twin still
   carries the live Ash'karr world and must keep resolving its own items
   independently until the terminal paint (arch §5 step 4: duplicate content
   the live world still needs, never move it out from under the twin).

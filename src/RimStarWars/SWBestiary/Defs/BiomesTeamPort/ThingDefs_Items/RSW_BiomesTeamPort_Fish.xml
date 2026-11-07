@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 BMT_FAUNA_ABSORPTION_1 — the two Biomes! Caverns catch items the Cracked Lands
-fishes (RUT_CrackedLands fishTypes/freshwater_Uncommon, mirrored onto
+fishes (the deleted CrackedLands twin fishTypes/freshwater_Uncommon, mirrored onto
 RM_FloodedCanyon by SandFishing_CrackedLands.xml). Ported so that biome keeps
 both species when biomesteam.biomescaverns retires.
 

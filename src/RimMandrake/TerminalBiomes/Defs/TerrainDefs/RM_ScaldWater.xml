@@ -31,7 +31,7 @@
   Terrain_Water.xml: WaterDeepBase, WaterChestDeepBase and WaterShallowBase
   all carry a real Name="..." attribute on their own <TerrainDef> tag (lines
   41, 73, 103), so ParentName against them resolves — unlike Lake/Ocean/
-  IceSheet (see RUT_TheScald.xml / RUT_SleepingIce.xml in this same folder
+  IceSheet (see the deleted TheScald twin's def / the deleted SleepingIce twin's def in this same folder
   for the trap this is NOT hitting).
 
   Field-by-field provenance, copied from the vanilla leaf each RUT_ScaldWater*
@@ -103,7 +103,7 @@
       (LIQUID_BIOMES_MAP_1_RECONCILIATION.md), not decided unilaterally.
 
   What this file does NOT do: assign these terrains to the Scald's world
-  tiles. That is RUT_TheScald.xml's job (a BiomeDef, painted onto the 312
+  tiles. That is the deleted TheScald twin's def's job (a BiomeDef, painted onto the 312
   Scald tiles only via the LIVE, owner-gated half of this item) — these are
   just the terrain defs themselves, which parse and validate standalone.
 
@@ -122,7 +122,7 @@
   suite only ever covers two variants (Shallow/Deep); it has no Ocean,
   Moving-shallow or Moving-chest-deep rows at all (the generator's own
   declared scope). The Scald genuinely needs all six — RM_TheScald.xml and
-  the frozen save-compat twin RUT_TheScald.xml both pin all six defNames by
+  the frozen save-compat twin the deleted TheScald twin's def both pin all six defNames by
   name across waterDeepTerrain/waterShallowTerrain/waterMovingShallowTerrain/
   waterMovingChestDeepTerrain/<coastal> — plus per-variant tuning FlowWorks'
   generic suite does not carry at all: gravshipReplacementTerrain routing,

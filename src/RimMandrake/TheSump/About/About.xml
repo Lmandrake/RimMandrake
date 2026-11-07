@@ -32,9 +32,7 @@ design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1
 The planet's oil sump: a flat, permanently-dusky black basin filled by every slow
 flow off the twilight slopes for geological time, ringed with low waxy plants that
 glow faintly wherever a lamp-garden keeps them alight. Fully generalized: it names
-no other franchise or campaign. A separate frozen campaign world's own Sump instance
-(RUT_Sump, src/RimUtinni/UtinniPatches) is unaffected and unrelated; this is a new
-sibling biome for everyone else's worlds, not a rename of that one.
+no other franchise or campaign. 
 
 RM tier: nothing here knows what campaign or planet uses it.
 

@@ -46,7 +46,7 @@ for _p in (UTILS, HERE):
         sys.path.insert(0, _p)
 
 DONOR = "mlie.starwarsanimalcollection"
-BIOMES = ("RUT_AridShrubland", "RM_TheRot", "RM_Webwork")
+BIOMES = ("RM_LeaningScrub", "RM_TheRot", "RM_Webwork")
 DLC = ("ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")   # core + all five expansions (every DLC is assumed)
 TIMEOUT = 570         # relentless_live proof_max_s is 600; derive takes the rest

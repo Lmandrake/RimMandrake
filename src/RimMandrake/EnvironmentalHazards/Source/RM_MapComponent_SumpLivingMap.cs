@@ -25,7 +25,7 @@ namespace RimMandrake.EnvironmentalHazards
     // (sumpLivingMapPace); its tooltip says PROVISIONAL too.
     //
     // Gate: the map's biome must carry RM_Soffeth or RM_Mirrelin as a wild plant (data-driven, so any biome that adopts
-    // the Sump flora gets the responders; RUT_Sump, which carries neither today, gets none). Toggle:
+    // the Sump flora gets the responders; the deleted Sump twin, which carried neither until its deletion (2026-11-06), gets none). Toggle:
     // sumpLivingMapEnabled. Off: no scan, nothing new is queued, queued responders wait; already-grown plants stay.
     //
     // Save: responders and fresh-crust cells are Scribed. The terrain snapshot is not — the first scan after a load

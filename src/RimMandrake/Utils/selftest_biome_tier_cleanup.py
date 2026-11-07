@@ -60,10 +60,8 @@ RUT_WeatherEvent_VentFlash RUT_WeatherOverlay_ScaldSteam
 
 # Free C# that names a campaign-layer def or key on purpose (read only when that layer is loaded).
 CROSS_TIER_LITERALS = {
-    "RUT_TheForge": "ContagionProbe fires only on the campaign Forge twin (RM_IncidentWorker_ContagionProbe)",
     "RUT_ContagionProbe": "its letter keys live in UtinniPatches' RUT_Forge_Mechanics.xml",
     "RUT_ContagionProbeDesc": "its letter keys live in UtinniPatches' RUT_Forge_Mechanics.xml",
-    "RUT_Scarlands": "the grave-ward genstep gates on the campaign Scarlands twin",
     "RUT_SentinelDefend": "the DutyDef is UtinniPatches' (RUT_SentinelDefend.xml)",
     "RUT_": "RM_DefAliases.RenamedClassName maps a saved RUT_ class name to its RM_ rename",
 }

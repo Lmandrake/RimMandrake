@@ -26,7 +26,7 @@ PLANTS = [
     ("rung above maxStage", "xml", LAD, "<stage>5</stage>", "<stage>6</stage>", "ERROR ls-rules"),
     ("rung with no text", "xml", LAD, "<stage>3</stage>\n            <text>", "<stage>3</stage>\n            <txt>", "ERROR ls-fields"),
     ("no defType", "xml", LAD, "<defType>BiomeDef</defType>", "<defType></defType>", "ERROR ls-rules"),
-    ("target names a def that does not exist", "xml", LAD, "<defName>RUT_Scarlands</defName>\n        <field>description</field>", "<defName>RUT_Scarland</defName>\n        <field>description</field>", "ERROR ls-target"),
+    ("target names a def that does not exist", "xml", LAD, "<defName>RM_Warscar</defName>\n        <field>description</field>", "<defName>RM_Warsca</defName>\n        <field>description</field>", "ERROR ls-target"),
     ("field typo", "xml", LAD, "<field>settleWarning</field>", "<field>settleWarnin</field>", "ERROR ls-target"),
     ("field is not a string", "xml", LAD, "<field>description</field>", "<field>workerClass</field>", "ERROR ls-target"),
     ("R25: names the Rakata", "xml", LAD, "<stage>5</stage>\n            <text>", "<stage>5</stage>\n            <text>The Rakata built this. ", "ERROR ls-r25"),

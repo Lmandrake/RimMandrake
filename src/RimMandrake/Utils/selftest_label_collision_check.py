@@ -28,7 +28,7 @@ UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
 
 def t_no_collision_when_every_cast_defname_has_a_unique_label():
     labels = {"RSW_Gizka": "gizka", "RSW_Kreetle": "kreetle"}
-    cast = {"RSW_Gizka": ["RUT_Desert"], "RSW_Kreetle": ["RUT_Desert"]}
+    cast = {"RSW_Gizka": ["RM_LongShade"], "RSW_Kreetle": ["RM_LongShade"]}
     out = lcc.find_collisions(labels, cast)
     assert out == [], out
 
@@ -37,15 +37,15 @@ def t_donor_and_port_cast_under_the_same_label_is_a_collision():
     # The actual DUPLICATE_CANON_DEFNAME_PAIRS_1 shape: two defNames, one
     # label, both cast in different biomes.
     labels = {"Gizka": "gizka", "RSW_Gizka": "gizka"}
-    cast = {"Gizka": ["RUT_AridShrubland", "RUT_Greentide"],
-            "RSW_Gizka": ["RUT_Desert", "RUT_ExtremeDesert"]}
+    cast = {"Gizka": ["RM_LeaningScrub", "RM_Greentide"],
+            "RSW_Gizka": ["RM_LongShade", "RM_Stillsand"]}
     out = lcc.find_collisions(labels, cast)
     assert len(out) == 1, out
     c = out[0]
     assert c.label == "gizka", c
     assert c.defnames == ["Gizka", "RSW_Gizka"], c
-    assert c.cast_in["Gizka"] == ["RUT_AridShrubland", "RUT_Greentide"], c
-    assert c.cast_in["RSW_Gizka"] == ["RUT_Desert", "RUT_ExtremeDesert"], c
+    assert c.cast_in["Gizka"] == ["RM_LeaningScrub", "RM_Greentide"], c
+    assert c.cast_in["RSW_Gizka"] == ["RM_LongShade", "RM_Stillsand"], c
 
 
 def t_installed_but_uncast_donor_def_is_not_a_collision():
@@ -54,7 +54,7 @@ def t_installed_but_uncast_donor_def_is_not_a_collision():
     # the post-fix state DUPLICATE_CANON_DEFNAME_PAIRS_1 leaves behind
     # ("Mlie's mod stays installed; its defs simply stop being cast by us").
     labels = {"Gizka": "gizka", "RSW_Gizka": "gizka"}
-    cast = {"RSW_Gizka": ["RUT_Desert", "RUT_AridShrubland"]}
+    cast = {"RSW_Gizka": ["RM_LongShade", "RM_LeaningScrub"]}
     out = lcc.find_collisions(labels, cast)
     assert out == [], out
 
@@ -64,7 +64,7 @@ def t_unresolved_defname_excluded_not_guessed():
     # not be silently grouped with anything — same "never guess" posture as
     # ecosystem_pyramid_check.py's unresolved handling.
     labels = {"RSW_Gizka": "gizka"}
-    cast = {"RSW_Gizka": ["RUT_Desert"], "Ghost_Thing": ["RUT_Desert"]}
+    cast = {"RSW_Gizka": ["RM_LongShade"], "Ghost_Thing": ["RM_LongShade"]}
     out = lcc.find_collisions(labels, cast)
     assert out == [], out
 
@@ -81,7 +81,7 @@ def t_same_defname_two_biomes_is_not_itself_a_collision():
     # One defName cast in multiple biomes is normal and not the defect this
     # checker exists for (that's what wildAnimals is for).
     labels = {"RSW_Gizka": "gizka"}
-    cast = {"RSW_Gizka": ["RUT_Desert", "RUT_ExtremeDesert", "RUT_AridShrubland"]}
+    cast = {"RSW_Gizka": ["RM_LongShade", "RM_Stillsand", "RM_LeaningScrub"]}
     out = lcc.find_collisions(labels, cast)
     assert out == [], out
 

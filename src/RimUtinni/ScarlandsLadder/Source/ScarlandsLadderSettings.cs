@@ -8,7 +8,7 @@ namespace RimMandrake.Utinni.ScarlandsLadder
     // MOD_OPTIONS_RETROFIT_1 settings for the Scarlands ladder (moved out of PilgrimCamps.cs so the screen check reads one file).
     public class ScarlandsLadderSettings : ModSettings
     {
-        public static bool campsEnabled = true;             // camps generate on new RUT_Scarlands maps
+        public static bool campsEnabled = true;             // camps generate on new the deleted Scarlands twin maps
         public static float campsPerMap = 1f;               // 0-3, new maps
         public static bool journalsAdvanceLadder = true;    // reading a journal moves the Scarlands ladder
 

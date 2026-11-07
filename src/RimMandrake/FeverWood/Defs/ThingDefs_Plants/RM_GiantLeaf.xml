@@ -5,9 +5,9 @@
      TWO biome mods: DUPLICATE, THEN DIVERGE" — owner, 2026-09-23, names
      "root causeways Greentide + Fever Wood" as a worked example; the giant
      leaf is the same shape, since RUT_GiantLeaf is ALSO an unconditional row
-     in RUT_Greentide.xml's own wildPlants, line 250, and cannot be
+     in the deleted Greentide twin's def's own wildPlants, line 250, and cannot be
      renamed/moved out from under that still-live twin). The donor-file
-     original is untouched and keeps serving RUT_Greentide/RUT_FeverWood
+     original is untouched and kept serving the deleted Greentide twin/the deleted FeverWood twin
      until Phase B; these are real second defs under their own defNames,
      texture copied (not shared) so this mod can be removed without touching
      UtinniPatches' own art. Fields copied verbatim from the source defs.

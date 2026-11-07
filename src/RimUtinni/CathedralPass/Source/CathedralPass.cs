@@ -21,7 +21,7 @@ namespace RimMandrake.Utinni.CathedralPass
     // relabelled vanilla Mechanoid faction, Faction.OfMechanoids — droid_ruling.md /
     // FACTION_SPEC.md §13), Cathedral ground only. "Cathedral ground" is a map whose
     // biome is one of the two Rust Cathedral BiomeDefs: RM_RustCathedral (the RM-tier
-    // biome mod) or RUT_RustCathedral (the frozen UtinniPatches twin still carrying the
+    // biome mod) or the deleted RustCathedral twin (the frozen UtinniPatches twin still carrying the
     // world until the terminal paint). Both are looked up by name so neither mod is a
     // hard dependency.
     //
@@ -32,7 +32,7 @@ namespace RimMandrake.Utinni.CathedralPass
     // CATHEDRAL_REGARD_BLACKBOARD_1 exists; that wiring is not built here.
     public static class CathedralPass
     {
-        public static readonly string[] CathedralBiomeDefNames = { "RM_RustCathedral", "RUT_RustCathedral" };
+        public static readonly string[] CathedralBiomeDefNames = { "RM_RustCathedral" };
 
         private static HashSet<BiomeDef> cathedralBiomes;
 

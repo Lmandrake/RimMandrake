@@ -19,8 +19,8 @@
   These are NEW ThingDef/PawnKindDef pairs, not renames of the originals.
   The original RSW_ pairs (SeaBeasts_Opee.xml/Colo.xml/Sando.xml/Swarm.xml/
   Colossi.xml, mandrake.rsw.swbestiary) are UNTOUCHED and stay live: the
-  frozen 🔴-marked campaign twins RUT_GreySea.xml/RUT_TheScald.xml/
-  RUT_TwilightSea.xml (UtinniPatches, "stays as it is, byte-for-byte... do
+  frozen 🔴-marked campaign twins the deleted GreySea twin's def/the deleted TheScald twin's def/
+  the deleted TwilightSea twin's def (UtinniPatches, "stays as it is, byte-for-byte... do
   not edit here") still reference RSW_Reefback/RSW_ElderSando/
   RSW_Lanternwhale directly in their own inline wildAnimals, and two
   generated balance files (AnimalTolerances_Ashkarr.xml,

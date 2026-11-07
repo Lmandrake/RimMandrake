@@ -1544,7 +1544,7 @@ def probe_rules(t):
 # when stalled). RULED OUT: "a mod bug keeps the Cauldron dry" - the rate law is the ruled one. The "never cycles" half was
 # unobserved; probe_stalled reads it: a forced charge on a mature plant of ours is dropped by one real ledger pass.
 
-STALLED_BIOMES = ("RM_Cauldron", "RUT_Cauldron")   # terminatorBiomes: Cauldron/Defs/ExplosiveGrowth + the RUT roster
+STALLED_BIOMES = ("RM_Cauldron",)   # terminatorBiomes: Cauldron/Defs/ExplosiveGrowth + the RUT roster
 
 
 @suite.chain("probe_stalled")

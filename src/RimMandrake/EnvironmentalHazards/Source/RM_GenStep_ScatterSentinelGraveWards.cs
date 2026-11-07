@@ -28,7 +28,7 @@ namespace RimMandrake.EnvironmentalHazards
     // countRange below copy GenStep_ScatterSacredWalls' own figures verbatim
     // (same sparse-density intent, same lore family, no new number invented).
     //
-    // Targets RUT_Scarlands only (the frozen campaign twin), never
+    // Targets the deleted Scarlands twin only (the frozen campaign twin), never
     // RM_Warscar (SCARLANDS_STANDALONE_MOD_1's franchise-free mod) — that
     // mod's own header states outright that this kit's campaign-mechanic
     // content ("the frozen twin's scaria-mark mechanic and pre-sprung ruin
@@ -36,7 +36,7 @@ namespace RimMandrake.EnvironmentalHazards
     // the same class of content, never carried into RM_Warscar's extraGenSteps.
     public class RM_GenStep_ScatterSentinelGraveWards : GenStep
     {
-        public const string ScarlandsBiomeDefName = "RUT_Scarlands";
+        public const string ScarlandsBiomeDefName = "RM_Warscar";
 
         public ThingDef thingDef;
 

@@ -3,7 +3,7 @@
      band"): the Cauldron is a STALLED biome for Explosive Growth. Our plants there run the stunted rate
      (stuntedMultiplier), never take water and never cycle (RM_MapComponent_ExplosiveGrowth: stalled => no wet, no cycle).
      A roster def of our own, like LeaningScrub's venomvine exemption: the engine (RM_ExplosiveGrowthRegistry.cs) unions
-     terminatorBiomes across EVERY RM_ExplosiveGrowthRosterDef loaded. The campaign twin RUT_Cauldron is listed in
+     terminatorBiomes across EVERY RM_ExplosiveGrowthRosterDef loaded. The campaign twin the deleted Cauldron twin is listed in
      src/RimUtinni/UtinniPatches/Defs/ExplosiveGrowth/RUT_ExplosiveGrowthRoster.xml. Guarded by MayRequire: deploy
      rewrites the folded id to the composed Baroque Biomes id. -->
 <Defs>

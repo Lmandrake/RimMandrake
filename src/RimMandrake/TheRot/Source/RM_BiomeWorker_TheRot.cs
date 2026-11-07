@@ -13,7 +13,7 @@ namespace RimMandrake.TheRot
 	// worldgen feature" is about that world specifically; this mod ships for
 	// everyone else's generated planets).
 	//
-	// The Rot's own header (RUT_TheRot.xml) measures the live campaign tiles at
+	// The Rot's own header (the deleted TheRot twin's def) measures the live campaign tiles at
 	// arc 74-135 (night side of the stormwall) with temp p10/median/p90
 	// -35.5/-18.8/+12.9 C — a COLD, low-light band, the opposite end of the
 	// spectrum from Greentide's hot/very-wet corridor. Scored against vanilla

@@ -11,7 +11,7 @@
   world-map tile AND the sea-dive floor pocket map, which sets
   pocketMapProperties.biome to the same defName (RM_SeaDiveGenerators.xml,
   mandrake.rm.divinginteraction) — the same shape RM_WalkerSurfacing already
-  relies on for RM_TheScald/RUT_TheScald.
+  relies on for RM_TheScald.
 
   minRefireDays 5 (INVENTED, "several-day" per the spec's own words) —
   RM_IncidentWorker_SuulkArrival.CanFireNowSub layers the frequency-scaling

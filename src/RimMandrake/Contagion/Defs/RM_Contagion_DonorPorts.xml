@@ -2,7 +2,7 @@
 <Defs>
   <!--
     DONOR RETIREMENT (owner, 2026-10-18: "Just put in placeholder art for now or donor copies and retire these
-    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the frozen campaign twin of the Contagion (RUT_Contagion)
+    mods!!! Just get it done."). Alpha Biomes (sarg.alphabiomes) defs the deleted campaign twin of the Contagion (the deleted Contagion twin)
     (src/RimUtinni/UtinniPatches/Defs/BiomeDefs) still named, ported as RM_ defs with the donor's own values so the
     painted planet keeps its ground and flora. Art: StandIn/<donor texPath> marked stand-in copies (art ledger,
     provenance kind=donor standin=true) until regenerated; texPaths not served by Alpha Biomes are left as they were
@@ -371,7 +371,7 @@
   </ThingDef>
 
   <!-- Ground terrains: ports of GU_AlienSand / GU_RichAlienSand / GU_AlienSandFine (Alpha Biomes 1.6/Defs/TerrainDefs/
-       Terrain_OcularForest.xml), plain XML copies 2026-10-18 for donor retirement; RM_Contagion and RUT_Contagion name them. -->
+       Terrain_OcularForest.xml), plain XML copies 2026-10-18 for donor retirement; RM_Contagion and the deleted Contagion twin name them. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_AlienSand</defName>
     <label>red-tinged ground</label>

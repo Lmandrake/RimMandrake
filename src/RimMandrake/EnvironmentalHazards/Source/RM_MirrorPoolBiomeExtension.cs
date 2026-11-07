@@ -29,7 +29,7 @@ namespace RimMandrake.EnvironmentalHazards
     // else to wire.
     //
     //   <BiomeDef>
-    //     <defName>RUT_FeverWood</defName>
+    //     <defName>the deleted FeverWood twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">

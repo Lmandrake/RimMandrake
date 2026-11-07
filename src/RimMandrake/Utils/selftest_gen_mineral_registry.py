@@ -129,26 +129,15 @@ def test_analyse_and_registry():
 
 
 def test_twins():
-    """MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP: kernel and generator resolve RUT_ twins through the painted map's pairs."""
+    """Kept RUT_ biomes resolve to themselves; deleted twins (BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN) are not in the table."""
     pairs = g.twin_pairs()
-    import json
-    d = json.load(open(g.PAINT_REMAP, encoding="utf-8"))
-    want = {k: v for k, v in d["biome"].items() if k.startswith("RUT_")}
-    ok(len(want) >= 25 and all(pairs.get(k) == v for k, v in want.items()),
-       "every RUT_ row of paint_inputs_remap.json biome is a pair (%d)" % len(want))
-    renamed = {"RUT_AridShrubland": "RM_LeaningScrub", "RUT_Desert": "RM_LongShade", "RUT_ExtremeDesert": "RM_Stillsand",
-               "RUT_CrackedLands": "RM_FloodedCanyon", "RUT_Slime": "RM_GelatinousSlime", "RUT_Sump": "RM_TheSump",
-               "RUT_PropaneLake": "RM_TheChill", "RUT_Scarlands": "RM_Warscar", "RUT_ForsakenCrags": "RM_Abyss"}
-    for k, v in renamed.items():
-        ok(g.twin_of(k, pairs) == v, "renamed twin %s resolves to %s (got %s)" % (k, v, g.twin_of(k, pairs)))
-    measured = sorted(k for k, v in pairs.items() if v != k and v != "RM_" + k[4:])
-    ok(measured == sorted(renamed), "the renamed set is exactly the suffix rule's misses: %s" % measured)
+    ok(all(k == v for k, v in pairs.items()), "every pair is a kept RUT_ biome mapped to itself: %s" % pairs)
     ok(g.twin_of("RUT_Umbra", pairs) == "RUT_Umbra" and pairs.get("RUT_Umbra") == "RUT_Umbra", "RUT_Umbra resolves to itself")
     ok(g.twin_of("RUT_NoSuch", pairs) == "RUT_NoSuch", "an unnamed RUT_ biome resolves to itself")
     ok(all(k.startswith("RUT_") for k in pairs) and "ZBiome_Grasslands" not in pairs, "only RUT_ keys enter the kernel table")
     committed = open(g.TWIN_CS, encoding="utf-8").read()
     ok(committed == g.emit_twin_cs(pairs), "committed RM_MineralTwinMap.cs == --write-twins output (regenerate after a remap change)")
-    ok(committed != g.emit_twin_cs(dict(pairs, RUT_Desert="RM_Desert")), "a changed pair breaks the table check (probe)")
+    ok(committed != g.emit_twin_cs(dict(pairs, RUT_NoSuch="RM_NoSuch")), "a changed pair breaks the table check (probe)")
     for k, v in pairs.items():
         ok(('{ "%s", "%s" },' % (k, v)) in committed, "C# table carries %s -> %s" % (k, v))
     kern = open(os.path.join(os.path.dirname(g.TWIN_CS), "RM_MineralPolicyKernel.cs"), encoding="utf-8").read()
@@ -160,8 +149,7 @@ def test_twins():
     for cp in ("RimMandrake_Minerals.csproj", os.path.join("SelfTest", "RimMandrakeMinerals.SelfTest.csproj")):
         ok("RM_MineralTwinMap.cs" in open(os.path.join(src, cp), encoding="utf-8").read(), "%s compiles the twin table" % cp)
     prog = open(os.path.join(src, "SelfTest", "Program.cs"), encoding="utf-8").read()
-    ok("foreach (var pair in RM_MineralTwinMap.Pairs)" in prog and all(k in prog for k in renamed),
-       "C# SelfTest asserts RegistryValue for every pair and names every renamed twin")
+    ok("foreach (var pair in RM_MineralTwinMap.Pairs)" in prog, "C# SelfTest asserts RegistryValue for every pair")
 
 
 def test_meteorites():

@@ -4,7 +4,7 @@
   <!--
     RM_SleepingIce                       RimMandrake tier · NIGHTSIDEICE_RM_MOD_BUILD_1 step 2
 
-    `git mv`'d from src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_SleepingIce.xml
+    `git mv`'d from the deleted SleepingIce twin's def
     (now frozen there — see that file's own header) with the defName renamed and one
     row dropped: `RSW_CaveLemming` is Star Wars canon (Q11a, owner ruling 2026-09-22) and
     may not ship in the franchise-free RimMandrake tier, so it rides
@@ -15,12 +15,12 @@
     `RM_BiomeWorker_SleepingIce` of its own.
 
     The comment block immediately below is the twin's own original authoring note,
-    carried over unedited for provenance; "RUT_SleepingIce" in it refers to history,
+    carried over unedited for provenance; "the deleted SleepingIce twin" in it refers to history,
     not to this def.
 
     ────────────────────────────────────────────────────────────────────────────────
 
-    RUT_SleepingIce                             UtinniPatches · authored 2026-09-07
+    the deleted SleepingIce twin                             UtinniPatches · authored 2026-09-07
     NIGHTSIDE_ICE_DEF_1. Full sheet: design/Jawa/worldbuilding/biomes/sleeping_ice.md.
 
     Own def, not a patch (owner's ruling, §0 of the sheet). Vanilla IceSheet carries an
@@ -91,7 +91,7 @@
     <description>Dirty white ice, geologically young and impure, on the highest ground of the deep night. It flows, it fractures, and what it swallowed it eventually gives back. There is no soil for plants to grow in. The only animals here are migrating to somewhere else -- or badly lost.</description>
     <workerClass>BiomeWorker_IceSheet</workerClass>
     <settleWarning>The nightside ice is extremely inhospitable. There is no soil for plants, almost no animal life, and no warmth anywhere but what you bring. Long-term survival is a challenge.</settleWarning>
-    <!-- allowRoads TRUE by owner ruling 2026-09-07: "All of our biomes should allow roads." 91 authored road links crossed RUT_SleepingIce and were invisible - the links were structurally valid (asymmetric 0, nonAdjacent 0), the biome simply refused to draw them. -->
+    <!-- allowRoads TRUE by owner ruling 2026-09-07: "All of our biomes should allow roads." 91 authored road links crossed the deleted SleepingIce twin and were invisible - the links were structurally valid (asymmetric 0, nonAdjacent 0), the biome simply refused to draw them. -->
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <allowFarmingCamps>false</allowFarmingCamps>

@@ -112,7 +112,7 @@ DAY = 60000
 # The six sites - RULED (dungeons_arc_spec.md SS3.2, VAULT_DUNGEON_BUILD_1).
 #
 # V1's tile was RE-SITED 2026-09-18 (VAULT_THAW_FIXED_TILES_UNFIREABLE_1):
-# the originally ruled tile=678 read biome=RUT_RustCathedral/water=0 (land)
+# the originally ruled tile=678 read biome=Rust Cathedral/water=0 (land)
 # in world/ASHKARR_WORLDMAP_tiles.csv (the 2026-09-12 frozen export, same day
 # as the frozen start save) but jawa/world_tile_get against the live
 # campaign confirmed it biome=Ocean, waterCovered=true on 2026-09-18 - a
@@ -122,7 +122,7 @@ DAY = 60000
 # session that day had a different world loaded (not the Ash'karr campaign),
 # so the live water state of a REPLACEMENT could not be re-confirmed in that
 # same pass either. Replacement tile=11353: the nearest tile in the CSV's
-# own 236-tile RUT_RustCathedral cluster to the original 678 (dist 1.45 deg
+# own 236-tile Rust Cathedral cluster to the original 678 (dist 1.45 deg
 # in lat/lon; elev 625m/temp 60.6C, essentially identical to 678's 624m/
 # 60.7C), confirmed settlement-free against ASHKARR_WORLDMAP_settlements.csv.
 # ⚠️ OWED, not yet done: live-reconfirm 11353 is still land before treating

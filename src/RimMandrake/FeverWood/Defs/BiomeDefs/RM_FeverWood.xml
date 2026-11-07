@@ -4,7 +4,7 @@
 
   RimMandrake-tier standalone build of the Fever Wood, derived from the
   frozen campaign twin src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
-  RUT_FeverWood.xml (232 lines, FROZEN — see that file's own header). This
+  the deleted FeverWood twin's def (232 lines, FROZEN — see that file's own header). This
   copy carries: vanilla terrainsByFertility/diseases/baseWeatherCommonalities
   unchanged; the 3 modExtensions (already mandrake.rm.environmentalhazards-
   tier, so they need only be present here, not re-authored) re-pointed at
@@ -19,7 +19,7 @@
   VFEI2_Megathrips, 2026-10-18) stays inline per Q9. RUT_GiantLeaf is duplicated as this mod's own RM_GiantLeaf
   (Q13 — see Defs/ThingDefs_Plants/RM_GiantLeaf.xml for why this is a
   duplicate, not a move: the donor def is also an unconditional row in
-  RUT_Greentide.xml). FEVERWOOD_FLORA_ROSTER_1 cut the 3 AB_* donor
+  the deleted Greentide twin's def). FEVERWOOD_FLORA_ROSTER_1 cut the 3 AB_* donor
   placeholder rows (AB_KeeningCordax/AB_Iashiphus/AB_Gomphoeria,
   sarg.alphabiomes) that used to stay inline here and replaced them with
   18 RM_-tier invented rows (RM_FeverWoodFlora.xml).
@@ -110,7 +110,7 @@
     </terrainsByFertility>
     <!-- The 3 hazard modExtensions, unchanged from the twin — all already
          mandrake.rm.environmentalhazards-tier, re-pointed at this def
-         simply by being nested here. See RUT_FeverWood.xml's own comments
+         simply by being nested here. See the deleted FeverWood twin's def's own comments
          for the full field-by-field rationale; not repeated here. -->
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">

@@ -14,7 +14,7 @@ data), `HarmonyPatches.cs` (the single postfix on
 investigation's switches and dials) -- plus the
 mod's own `Defs/Scenarios/ScenParts_EmpirePursuit.xml` (the shipped
 `RUT_RuthlessPursuingMechanoids` def: `surveyShadowMultiplier=4`,
-`surveyShadowBiomes=[RUT_Abyss, RM_Abyss, AB_RockyCrags]`) and `About.xml` (Odyssey +
+`surveyShadowBiomes=[RM_Abyss, AB_RockyCrags]`) and `About.xml` (Odyssey +
 brrainz.harmony deps, `incompatibleWith matathias.ruthlessmechanoids` --
 the upstream mod this REPLACES via an identical namespace/defName/
 scenPartClass, per that file's own header comment).
@@ -145,11 +145,11 @@ def scen_part_def_readback(t):
                 "%s.surveyShadowMultiplier = %r, expected 4" % (SCEN_DEF, got_mult))
 
         got_biomes = fields.get("surveyShadowBiomes", "")
-        ok_biomes = all(b in str(got_biomes) for b in ("RUT_Abyss", "RM_Abyss", "AB_RockyCrags"))
+        ok_biomes = all(b in str(got_biomes) for b in ("RM_Abyss", "AB_RockyCrags"))
         t._record("surveyShadowBiomes -> %r" % got_biomes, ok_biomes)
         if not ok_biomes:
             raise ExpectationFailed(
-                "%s.surveyShadowBiomes = %r, expected to contain RUT_Abyss, RM_Abyss and AB_RockyCrags"
+                "%s.surveyShadowBiomes = %r, expected to contain RM_Abyss and AB_RockyCrags"
                 % (SCEN_DEF, got_biomes))
 
 

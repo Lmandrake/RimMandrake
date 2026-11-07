@@ -9,7 +9,7 @@
   <!-- Ash'karr biome names. Owner 2026-09-07, on reading the world map: "I see
        'Cypre Jungle' - I thought we were renaming all of this?" 30 distinct
        biomes are painted on the planet; only 4 carry our own defNames
-       (RUT_TwilightSea, RUT_GreySea, RUT_SleepingIce, RUT_TheScald). The other
+       (the deleted TwilightSea twin, the deleted GreySea twin, the deleted SleepingIce twin, the deleted TheScald twin). The other
        26 show a donor's label even though every one of them already has a
        campaign name from its own biome sheet under
        design/Jawa/worldbuilding/biomes/ - see BIOME_LABEL_CAMPAIGN_NAMES_1.
@@ -42,7 +42,7 @@
        (not an oversight of THIS list — they simply were not on the original
        30-biome sheet-name census) and so still showed lowercase donor labels
        ("scarlands", "wastes", "arid shrubland") to the player. Their own
-       RUT_ BiomeDefs (RUT_Scarlands, RUT_Wastes, RUT_AridShrubland) already
+       RUT_ BiomeDefs (the deleted Scarlands twin, the deleted Wastes twin, the deleted AridShrubland twin) already
        carry the correct campaign label; this only copies each onto the donor
        defName the tiles actually use, same conditional convention as every
        other row here. See BiomeDescriptions_Ashkarr.xml (same commit) for the
@@ -104,7 +104,7 @@
       <value><label>the arid shrubland</label></value>
     </match>
   </Operation>   <!-- was "arid shrubland" (vanilla Core) - lowercase kept verbatim to
-                      match RUT_AridShrubland's own <label>, not re-cased here -
+                      match the deleted AridShrubland twin's own <label>, not re-cased here -
                       BIOME_TEXT_PORT_1 -->
 
 </Patch>

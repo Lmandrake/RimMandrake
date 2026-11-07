@@ -13,14 +13,14 @@
   WHY THIS FILE HAS TO EXIST. §7 Q11/Q12: "RimMandrake should not name star
   wars ever," and Q12's own carve-out for invented-name RSW_ ports still
   routes them here until their biome's own sitting decides a rename. At
-  Phase B of design/RimMandrake/biome_mod_architecture.md the RUT_Wastes
+  Phase B of design/RimMandrake/biome_mod_architecture.md the the deleted Wastes twin
   def that currently carries this cast dies and RM_Wastes takes the
   tiles. Without this patch in place by then, the Wasteland would lose 9 of
   its 17 live fauna rows on the live world. WildAnimals_Pyrelands.xml /
   WildAnimals_Greentide.xml are the shape this copies.
 
   🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-24): every weight below is a
-  verbatim copy of Defs/BiomeDefs/RUT_Wastes.xml's own wildAnimals block
+  verbatim copy of Defs/BiomeDefs/the deleted Wastes twin's def's own wildAnimals block
   (frozen this same pass, 192 lines) for the rows that do NOT stay in
   RM_Wastes's own def — WASTELAND_RM_MOD_BUILD_1's own §3 forensics table,
   re-measured against the live file (which had grown 2 rows since that table
@@ -85,7 +85,7 @@
 
   <!-- The Star Wars cast, all as OUR OWN RSW_ ports plus the one Mlie bare
        defName Q12's own carve-out still permits pre-sitting. Weights
-       verbatim from RUT_Wastes.xml.
+       verbatim from the deleted Wastes twin's def.
        Wasteland sheet 2026-10-09: RSW_FleeceSpider and RSW_Maligoat removed —
        owner moved both to the RimMandrake tier as RM_Frethik and RM_Kroffa,
        cast inline in RM_Wastes_Biome.xml. 2026-10-24: RSW_Excretor likewise
@@ -97,11 +97,11 @@
       <match Class="PatchOperationAdd">
         <xpath>Defs/BiomeDef[defName="RM_Wastes"]/wildAnimals</xpath>
         <value>
-          <RSW_Sacapillar>0.5</RSW_Sacapillar>  <!-- sacapillar (bodySize 2.40) - placed by the homeless-disposition sitting (frozen 2026-09-10); see RUT_Wastes.xml's own row comment for the pyramid-law bound this weight sits inside -->
+          <RSW_Sacapillar>0.5</RSW_Sacapillar>  <!-- sacapillar (bodySize 2.40) - placed by the homeless-disposition sitting (was frozen 2026-09-10); see the deleted Wastes twin's def's own row comment for the pyramid-law bound this weight sits inside -->
           <RSW_BloodletterPetrel>0.7</RSW_BloodletterPetrel>  <!-- bloodletter petrel - wretched-small, keep -->
           <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
                the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the
-               wetter RUT_Cauldron to lay in the heat. Do not "fix" it by cutting either
+               wetter the deleted Cauldron twin to lay in the heat. Do not "fix" it by cutting either
                home. -->
           <RSW_Screecher>0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
           <RSW_Borcatu>0.7</RSW_Borcatu>  <!-- Borcatu - wretched-small, keep; retargeted from the bare donor name to our own RSW_ port (MLIE_ABSORPTION_BIOME_WIRING_1, 2026-09-25) -->

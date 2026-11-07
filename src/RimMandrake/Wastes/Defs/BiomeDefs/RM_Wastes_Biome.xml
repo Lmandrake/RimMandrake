@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   WASTELAND_RM_MOD_BUILD_1. Generic sibling of a frozen campaign world's own
-  biome instance (RUT_Wastes, src/RimUtinni) — same fictional idea (a
+  biome instance (the deleted Wastes twin, src/RimUtinni) — same fictional idea (a
   bone-dry, radiologically-live wasteland where nothing recycles), rebuilt
   with zero campaign-specific content so it can generate on any player's own
-  world. Content copied from RUT_Wastes.xml's own values (188-line def,
+  world. Content copied from the deleted Wastes twin's def's own values (188-line def,
   measured 2026-09-23) with three changes:
     1. workerClass is this mod's own RM_BiomeWorker_Wastes, never the
        donor's BiomesPlus.BiomeWorker_Wasteland.

@@ -5,7 +5,7 @@
     RM_Contagion                        CONTAGION_RM_MOD_BUILD_1, new 2026-09-25
 
     Copied verbatim from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
-    RUT_Contagion.xml (156 lines, authored 2026-09-09) per
+    the deleted Contagion twin's def (156 lines, authored 2026-09-09) per
     design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every field
     below is the twin's own content, unchanged, EXCEPT:
 

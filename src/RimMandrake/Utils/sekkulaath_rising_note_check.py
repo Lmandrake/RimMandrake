@@ -25,7 +25,7 @@ EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "RM_ChillCrate
             "Notify_DisplayTankFreed", "DisplayTankFreed", "RM_GenStep_DisplayTank", "BoldnessMultiplier",
             "RestlessnessLine", "RM_TenantEmergenceSpawner", "RM_MapComponent_TentacleWatch",
             "RM_MapComponent_TheTenant", "RM_FeverWoodMirrorPool", "RM_FeverWoodSettings", "EmpireLadder",
-            "RuthlessPursuingMechanoids", "RM_FeverWood", "RUT_FeverWood", "warLabCraterEnabled"]
+            "RuthlessPursuingMechanoids", "RM_FeverWood", "warLabCraterEnabled"]
 NEW = {"RUT_SekkulaathRising", "IncidentWorker_SekkulaathRising", "SekkulaathRisingExtension", "RM_SunkenGround",
        "GameComponent_SekkulaathRising", "RUT_Trader_WildsteamRuined",
        "RaidThreatPointsNow"}                               # F12's owed method, colony_visibility_stat.md 4.3

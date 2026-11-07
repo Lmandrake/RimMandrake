@@ -4,7 +4,7 @@
   (fish_bestiary_commission_2026-09-10.md §2A.rare), parented on vanilla's
   own `RareFishingCatchesBase` the same way RUT_RareScaldCatches/
   RSW_RareSandCatches are, so it plugs straight into
-  BiomeDef.fishTypes.rareCatchesSetMaker (RUT_WeepingStones.xml).
+  BiomeDef.fishTypes.rareCatchesSetMaker (the deleted WeepingStones twin's def).
 
   Both of the doc's two options ship, thin on purpose per the doc's own
   instruction: (weight 4) RUT_SeepStone x1-2, the headline mineral prize;

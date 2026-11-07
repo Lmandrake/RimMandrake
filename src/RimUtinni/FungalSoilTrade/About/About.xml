@@ -22,7 +22,7 @@ response, scaling with how much has been torn out and decaying if the diggers st
 
 Ships: RUT_MineableFungalGround (a mineable rock knot, mined with the vanilla Mine job -
 no new job system), RUT_FungalSoil (the resource it yields), a biome-gated GenStep that
-scatters knots only on RM_TheRot / RUT_TheRot maps, a MapComponent + one Harmony patch on
+scatters knots only on RM_TheRot maps, a MapComponent + one Harmony patch on
 Mineable.DestroyMined that tracks dig distress and calls in the response, and
 RUT_FungalSoilTradeRequest (a QuestScriptDef built on vanilla's own
 QuestNode_TradeRequest_Initiate/TradeRequestComp - the same system Core's own

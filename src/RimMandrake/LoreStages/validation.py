@@ -26,7 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS = "RimMandrake.LoreStages.RM_LoreStagesSettings"
 CONTROL_ABSENT = "ThingDef/RM_LoreStagesNoSuchDef_ZZ"
 LADDER = "RM_LoreStageTableDef/RUT_ScarlandsLadder"
-LADDER_TARGET = "BiomeDef/RUT_Scarlands"
+LADDER_TARGET = "BiomeDef/RM_Warscar"
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 
 

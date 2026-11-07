@@ -99,7 +99,7 @@ namespace RimMandrake.DeepDrill.SelfTest
             var rng = new Random(12345);
             // A biome that is nobody's home: only steel, ever.
             var seen = new HashSet<string>();
-            for (int i = 0; i < 20000; i++) seen.Add(Pick(rng, "RUT_AridShrubland", homes, true));
+            for (int i = 0; i < 20000; i++) seen.Add(Pick(rng, "RM_LeaningScrub", homes, true));
             Check(seen.Count == 1 && seen.Contains("Steel"), "non-home biome yielded: " + string.Join(",", seen));
             // Every home biome: steel plus exactly the deposits listing that biome; and each such deposit can be chosen.
             var biomes = homes.Values.SelectMany(x => x).Distinct().ToList();
@@ -113,7 +113,7 @@ namespace RimMandrake.DeepDrill.SelfTest
             }
             // Setting off: vanilla, every carrier reachable on a plain biome.
             var all = new HashSet<string>();
-            for (int i = 0; i < 200000; i++) all.Add(Pick(rng, "RUT_AridShrubland", homes, false));
+            for (int i = 0; i < 200000; i++) all.Add(Pick(rng, "RM_LeaningScrub", homes, false));
             Check(all.Count == Weights.Count, "filter off reached " + all.Count + " of " + Weights.Count);
             // Edges: unlisted def and null biome pass through.
             Check(!RM_DeepDrillKernel.ShouldReplace(true, "SomethingElse", "X", homes), "unlisted def replaced");

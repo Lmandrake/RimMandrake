@@ -4,8 +4,8 @@
   RM_Saluksis: owned RM_ port of the swarmling (VFEI2_Swarmling, oskarpotocki.vfe.insectoid2
   1.6/Defs/ThingDefs_Races/Races_Swarmling.xml; its parent VFEI2_BaseInsect inlined), plain XML copy 2026-10-18 for
   donor retirement (owner: "Just put in placeholder art for now or donor copies and retire these mods!!! Just get it
-  done."). Free RM_ tier, home mod Greentide. Cast by RM_Greentide 0.4 and RUT_Greentide 0.4 (floor-vermin), and by
-  RM_Miasma / RUT_Miasma 0.7 (vermin), the rows the donor def held; evictions are stopped, so the Miasma rows stay.
+  done."). Free RM_ tier, home mod Greentide. Cast by RM_Greentide 0.4 and the deleted Greentide twin 0.4 (floor-vermin), and by
+  RM_Miasma 0.7 (vermin), the rows the donor def held; evictions are stopped, so the Miasma rows stay.
   Name and description are the Greentide sheet's (2026-10-08, "redo description. Rename it to Saluksis, make it yet
   more alien"), formerly applied to the donor def by UtinniPatches/Patches/Greentide_Rename.xml.
   Departures, all to make it plain XML with no VFE Insectoids reference:

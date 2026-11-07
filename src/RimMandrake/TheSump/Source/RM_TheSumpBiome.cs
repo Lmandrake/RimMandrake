@@ -17,7 +17,7 @@ namespace RimMandrake.TheSump
     // RimMandrake tier may not assume").
     //
     // ⚠️ RANGES ARE INVENTED, same footing as every sibling worker. The
-    // frozen campaign sheet (RUT_Sump.xml header, the_sump.md SS0) measures
+    // frozen campaign sheet (the deleted Sump twin's def header, the_sump.md SS0) measures
     // this biome on the campaign world at elevation median 1 m (dead flat,
     // the lowest ground on the planet), temperature p10/median/p90
     // -4.3/1.2/14.9 C, permanent deep twilight (sun median -10.6 deg — not a

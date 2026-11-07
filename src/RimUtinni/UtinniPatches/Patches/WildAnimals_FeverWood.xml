@@ -16,14 +16,14 @@
   layer, never the franchise-free RimMandrake tier — "the top mod without
   star wars will look precisely the same as the star wars enhanced one save
   for any star wars beasts we populate it with." So RM_FeverWood may not
-  carry this cast inline, and at Phase B the RUT_FeverWood twin that
+  carried this cast inline, and at the 2026-11-06 deletion the deleted FeverWood twin that
   currently carries it dies and RM_FeverWood takes the tiles. Without this
   patch in place by then, the Fever Wood would lose 10 of its 11 fauna rows
   and 3 of its 7 flora rows on the live world.
 
   🔑 SOURCE OF TRUTH: every defName and weight below is copied from
-  RUT_FeverWood.xml's own wildAnimals/wildPlants (frozen 2026-09-24), the
-  roster the world runs on today, with ONE live correction: RUT_FeverWood.xml
+  the deleted FeverWood twin's def's own wildAnimals/wildPlants (was frozen 2026-09-24), the
+  roster the world runs on until its deletion (2026-11-06), with ONE live correction: the deleted FeverWood twin's def
   now casts `RSW_Nuna` (MayRequire mandrake.rsw.swbestiary), not the bare
   donor `Nuna` (MayRequire mlie.starwarsanimalcollection) that
   FEVERWOOD_RM_MOD_BUILD_1's own written table still names — that row was

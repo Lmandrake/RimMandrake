@@ -10,7 +10,7 @@
   a mossy-green recolor (distinct from SumpMouse's near-black tint on the
   same base sprite). No new art, no DEPLOY_HOLD needed.
 
-  NOT added to RUT_Greentide's own wildAnimals list and not wired into any
+  NOT added to the deleted Greentide twin's own wildAnimals list and not wired into any
   GenStep — this pass's own scope is proving RM_JobGiver_GnawTreeBase /
   RM_JobDriver_GnawTreeBase compile and are reachable, not populating the
   Greentide biome with live wildlife (roster-pass content authoring, same

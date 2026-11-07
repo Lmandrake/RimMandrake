@@ -152,8 +152,8 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
    - port `PoisonShrub` for `RUT_Umbra` and retire the three donor biome mods
      (`DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT`).
 
-   Both are safe for the dev world (0 of its tiles). They break only the canonical save, which carries the twins,
-   and that is an owner card (§4). If the card is not answered by the deploy window, ship the renames alone.
+   Both are safe for the dev world (0 of its tiles). They break only the 09-12 frozen record, which carries the twins;
+   the owner made that a record only (card 2026-11-06, §4).
 
 **Phase B: game down (whoever holds the bridge; BENCH holds it today)**
 
@@ -227,7 +227,7 @@ or a variant.
 | The renames are in flight (another helper); `CRACKEDLANDS_FULL_RENAME_1` is still `BLOCKED` on the ledger | offline | the commits land; the block is lifted on the owner's 2026-10-21 words |
 | Game down for the deploy; game up and the bridge for steps 6–8 | game-down, bridge | BENCH releases the bridge or the driver (`rimflow bridge who`) |
 | A new dump after the deploy, for step 9's census | game-up | `dump_request.txt` armed at the cold load |
-| The canonical save. Deleting the twins makes `CANONICAL_ASHKARR_START_2026-09-12.rws` load 19,969 tiles as the default biome. Its world stays recorded in `world/ASHKARR_WORLDMAP_*.csv` and `world/rescue_2026-10-19/` | **owner card** | he retires it as a loadable reference, or keeps the twins one more cycle |
+| The canonical save | answered 2026-11-06 (card) | the 25 twins are deleted; `CANONICAL_ASHKARR_START_2026-09-12.rws` stays on disk as a record only, no longer expected to load correctly; scan: `design/Jawa/worldbuilding/twin_save_scan_2026-11-06.json` |
 | The Scald placement | answered 2026-10-22 (card) | tiles stay at arc ~35; sheet corrected; temperature stamped in step 6 |
 | The VEE mutators and landmarks (14,413 + 805), including 8,262 solar-power entries | **owner card** | port, drop, or keep |
 | Content still owed a biome-mod migration | none | MEASURED 0 donor references on the painted `RM_` defs |

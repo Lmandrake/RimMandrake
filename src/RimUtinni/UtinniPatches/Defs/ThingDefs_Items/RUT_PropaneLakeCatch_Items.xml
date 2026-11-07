@@ -16,7 +16,7 @@
   this explicitly.
 
   This table binds on FlowWorks' RM_PropaneShallow (mandrake.rm.flowworks),
-  which RUT_PropaneLake.xml's RM_SeaShoreExtension lays as the shore and
+  which the deleted PropaneLake twin's def's RM_SeaShoreExtension lays as the shore and
   which carries waterBodyType Saltwater since the owner's card of
   2026-09-24 - the donor AB_PropaneLake/AB_SolidPropane pair is
   waterBodyType None / a non-water solid, so no fishing zone can ever form

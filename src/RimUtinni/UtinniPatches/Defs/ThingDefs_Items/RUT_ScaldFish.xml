@@ -11,7 +11,7 @@
   and is NOT built here — only the fishing-table item.
 
   MEASURED, not the doc's own "UNMEASURED" flag: the Scald's actual world-map
-  fishing water is FRESHWATER. RUT_TheScald.xml wires waterDeepTerrain/
+  fishing water is FRESHWATER. the deleted TheScald twin's def wires waterDeepTerrain/
   waterShallowTerrain/waterMovingShallowTerrain/waterMovingChestDeepTerrain to
   RM_ScaldWaterDeep/Shallow/MovingShallow/MovingChestDeep
   (RUT_ScaldWater.xml), none of which override `waterBodyType` off their

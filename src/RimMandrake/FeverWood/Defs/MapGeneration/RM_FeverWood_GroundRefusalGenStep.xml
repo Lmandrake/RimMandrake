@@ -18,7 +18,7 @@
   header for the full ordering rationale.
 
   The class is a no-op on any biome without RM_GroundRefusalBiomeExtension
-  (only RUT_FeverWood carries it this pass), so registering globally on
+  (only the deleted FeverWood twin carried it this pass), so registering globally on
   Base_Player is safe for every other biome too — same posture as every
   other biome-gated GenStep in this assembly.
 -->

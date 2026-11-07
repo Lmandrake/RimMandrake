@@ -8,7 +8,7 @@
      1. Every trader group gains the OWNED pack beasts our biomes already allow (the union of the non-official
         allowedPackAnimals across our BiomeDefs, measured by vanilla_beast_carriers.py, not chosen here). Which
         one shows up where stays decided by each biome's own allowedPackAnimals. This alone opens trade
-        caravans into RM_LongShade, RM_Stillsand, RUT_Desert and RUT_ExtremeDesert, whose allowed lists named
+        caravans into RM_LongShade, RM_Stillsand, the deleted Desert twin and the deleted ExtremeDesert twin, whose allowed lists named
         only owned beasts that no faction carried, so no caravan could generate there at all.
         [not(RSW_Bantha)] keeps it idempotent against the two Utinni patches that ADD whole trader groups
         (DeepDesertTribes.xml, HomesteadDefenseLeague.xml): patch files load in directory order, so those groups

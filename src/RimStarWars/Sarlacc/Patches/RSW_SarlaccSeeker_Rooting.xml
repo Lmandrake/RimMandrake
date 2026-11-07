@@ -21,8 +21,8 @@
               <rootingBiomes>
                 <li>Desert</li>
                 <li>ExtremeDesert</li>
-                <li>RUT_Desert</li>
-                <li>RUT_ExtremeDesert</li>
+                <li MayRequire="mandrake.rm.biomes">RM_LongShade</li>
+                <li MayRequire="mandrake.rm.biomes">RM_Stillsand</li>
               </rootingBiomes>
               <seepDetectRadius>4</seepDetectRadius>
               <seepDetectChancePerCheck>0.15</seepDetectChancePerCheck>

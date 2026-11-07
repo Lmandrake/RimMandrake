@@ -46,11 +46,10 @@ Every `BiomeDef` we own — `defName` starting `RUT_` (RimUtinni tier; see
 NAMING_SCHEME_PLAN.md). This is exactly the set the item's own sweep covered
 (as RUT_*), re-derived live rather than pinned to the 24 names the sweep
 happened to see — biomes get added (4 more exist today than the item's sweep
-saw: RUT_BlueDesert, RUT_Jawa_BackgroundWater, RUT_LanternDeeps,
-RUT_PropaneLake) and a pinned list would silently stop covering them.
+saw: RUT_Jawa_BackgroundWater, RUT_LanternDeeps) and a pinned list would silently stop covering them.
 
 ⚠️ ZERO ROWS IS A FAILURE, NOT A FOOTNOTE. A biome with an empty wildAnimals
-list (RUT_BlueDesert, RUT_Jawa_BackgroundWater today) has no small-fauna share
+list (RUT_Jawa_BackgroundWater today) has no small-fauna share
 to report — 0/0 is undefined, not 100% and not "skip". The owner explicitly
 ruled OUT an exemption for near-empty rosters ("a habitat with 1-6 animals is
 judged by the same 50% bar as any other"), so an EMPTY roster is reported

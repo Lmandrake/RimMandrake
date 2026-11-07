@@ -16,21 +16,21 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     // cannot fire itself from an in-game trigger.
     //
     // The tile set is derived at fire time -- every SurfaceTile currently on the
-    // frozen RUT_PropaneLake biome -- never a hardcoded list. The footprint was
-    // owner-ruled and painted 2026-09-08 (commit a5020486e, "RUT_PropaneLake
+    // the deleted PropaneLake twin biome -- never a hardcoded list. The footprint was
+    // owner-ruled and painted 2026-09-08 (commit a5020486e, "the deleted PropaneLake twin
     // paint recorded DONE"), but this class must track wherever that def
     // currently sits on the live world, not a snapshot of it.
     public static class WarLabCraterMutation
     {
         // TERMINALBIOMES_RM_MOD_BUILD_1 step 4 (§7b): a second name for the
         // RimMandrake-tier twin, added alongside the RUT_ one rather than
-        // substituted -- the frozen RUT_PropaneLake def still carries the
+        // substituted -- the deleted PropaneLake twin def carried the
         // world until Phase B repaints it, so both must be matched for the
         // tile scan below to keep working through the move.
-        private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_TheChill" };
+        private static readonly string[] SourceBiomeDefNames = { "RM_TheChill" };
 
         // CHILL_WORLD_CRATER_1, 2026-09-28: retargeted from the placeholder
-        // RUT_Wastes (a stand-in from before the real aftermath biome
+        // the deleted Wastes twin (a stand-in from before the real aftermath biome
         // existed) to RM_ChillCrater, the biome actually built for this
         // mutation (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml).
         private const string CraterBiomeDefName = "RM_ChillCrater";

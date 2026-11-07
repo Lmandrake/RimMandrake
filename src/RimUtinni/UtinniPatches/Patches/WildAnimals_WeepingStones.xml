@@ -5,14 +5,14 @@
   ============================================================================
 
   WEEPINGSTONES_RM_MOD_BUILD_1, Phase A. Wires the 8 Star Wars donor
-  fauna the campaign twin (RUT_WeepingStones.xml) carried inline into
+  fauna the campaign twin (the deleted WeepingStones twin's def) carried inline into
   RM_WeepingStones' own wildAnimals — same shape as WildAnimals_Pyrelands.xml's
   RSW_ block. Per Q11 (SW_FAUNA_NEVER_IN_RM_TIER_1), the RimMandrake tier may
   never carry Star Wars content directly, so these 8 rows live HERE instead of
   in src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml.
 
   Every defName and commonality is copied verbatim from the campaign twin's own
-  live wildAnimals block (RUT_WeepingStones.xml, MEASURED 2026-09-23/24) —
+  live wildAnimals block (the deleted WeepingStones twin's def, MEASURED 2026-09-23/24) —
   including Ollopom at 1.3, the ECOSYSTEM_PYRAMID_LAW_1 2026-09-20 boost applied
   directly in-file, which is ahead of rosters/weeping_stones.json's stale 0.7 and
   is what actually ships (that JSON was corrected separately by

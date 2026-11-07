@@ -5,7 +5,7 @@
   MIASMA_RM_MOD_BUILD_1 (Phase A): this file and its 15 siblings physically
   moved from src/RimUtinni/UtinniPatches into src/RimMandrake/Miasma/Patches
   unchanged (same defNames — nothing referencing them by name needed to
-  change). Each onlyInBiomes list below now names BOTH RUT_Miasma (the
+  change). Each onlyInBiomes list below now names BOTH the deleted Miasma twin (the
   frozen twin, still carrying the live campaign world's painted tiles) and
   RM_Miasma (the new standalone mod's own def) — the "second op" the split's
   own spec calls for, so this mechanic keeps firing on the live save AND on
@@ -37,7 +37,7 @@
 
   onlyInBiomes gates by the pawn's CURRENT map biome at removal time (the
   comp's own runtime check), not by where the disease was caught — so this
-  is deliberately biome-scoped to RUT_Miasma alone, exactly matching the
+  is deliberately biome-scoped to the deleted Miasma twin alone, exactly matching the
   sheet's "the Miasma, uniquely."
 
   Each disease gets its OWN boon table, not a shared one across all seven:
@@ -71,7 +71,7 @@
       <xpath>/Defs/HediffDef[defName="Flu"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -96,7 +96,7 @@
       <xpath>/Defs/HediffDef[defName="Animal_Flu"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -121,7 +121,7 @@
       <xpath>/Defs/HediffDef[defName="Plague"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -146,7 +146,7 @@
       <xpath>/Defs/HediffDef[defName="Animal_Plague"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -171,7 +171,7 @@
       <xpath>/Defs/HediffDef[defName="Malaria"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -196,7 +196,7 @@
       <xpath>/Defs/HediffDef[defName="SleepingSickness"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>
@@ -221,7 +221,7 @@
       <xpath>/Defs/HediffDef[defName="WoundInfection"]/comps</xpath>
       <value>
         <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-          <onlyInBiomes><li MayRequire="mandrake.rut.patches">RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
+          <onlyInBiomes><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
           <boonOptions>

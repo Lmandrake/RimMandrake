@@ -22,7 +22,7 @@
 
   A clan pawn carrying the RUT_CathedralPass flag is read as non-hostile by the
   mechanoid faction (faction 13, the Forgotten Arsenal) — but only on a Rust Cathedral
-  map (RM_RustCathedral or RUT_RustCathedral). Other mechanoid factions are not
+  map (RM_RustCathedral). Other mechanoid factions are not
   covered, and off Cathedral ground the pass does nothing. One scoped Harmony
   postfix on GenHostility.HostileTo(Thing, Thing) carries the whole mechanism.
 

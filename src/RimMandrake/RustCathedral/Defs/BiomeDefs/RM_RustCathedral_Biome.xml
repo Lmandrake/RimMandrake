@@ -3,7 +3,7 @@
   RUSTCATHEDRAL_RM_MOD_BUILD_1. mandrake.rm.rustcathedral's own copy of the
   Rust Cathedral biome, generalized (franchise-free, campaign-free) per
   biome_mod_architecture.md §5 Phase A. Source: the FROZEN
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml (113
+  the deleted RustCathedral twin's def (113
   lines, unchanged, still carrying the campaign world's own 236 tiles until
   the terminal repaint — see its own header for the freeze notice).
 

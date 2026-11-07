@@ -8,24 +8,24 @@
   terrain-tag validator to no-op elsewhere; that ran the step on every player
   map and logged "could not find cell" (or "no filthDef configured") on each.
   extraGenSteps applies to every map generator on that biome, not only
-  Base_Player; the class also checks its own <biomes> list (RUT_TheForge).
+  Base_Player; the class also checks its own <biomes> list (RM_TheForge).
   Nested Conditionals: skip if the biome is not loaded; append to an existing
   extraGenSteps node, else create one.
 -->
 <Patch>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+    <xpath>/Defs/BiomeDef[defName="RM_TheForge"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/extraGenSteps</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_TheForge"]/extraGenSteps</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/extraGenSteps</xpath>
+        <xpath>/Defs/BiomeDef[defName="RM_TheForge"]/extraGenSteps</xpath>
         <value>
           <li MayRequire="mandrake.rm.biomes">RUT_ContagionRingScatter</li>
         </value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+        <xpath>/Defs/BiomeDef[defName="RM_TheForge"]</xpath>
         <value>
           <extraGenSteps>
             <li MayRequire="mandrake.rm.biomes">RUT_ContagionRingScatter</li>

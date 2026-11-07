@@ -5,7 +5,7 @@
   ============================================================================
 
   Wires the remaining live-roster rows of the frozen twin's own
-  RUT_Scarlands.xml (see that file's <wildAnimals>, MEASURED fresh this pass —
+  the deleted Scarlands twin's def (see that file's <wildAnimals>, MEASURED fresh this pass —
   it has moved on since SCARLANDS_STANDALONE_MOD_1's own analysis, which
   predates COMMISSION_LEDGER_CLEANUP_1's RUT_MortuaryCrawler wiring) into
   src/RimMandrake/Scarlands' RM_Warscar.xml. Its non-Star-Wars rows ship

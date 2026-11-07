@@ -8,7 +8,7 @@
     def is expected to carry 0 tiles until the terminal repaint; that is not a
     defect.
 
-    Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml
+    Copied from the deleted Miasma twin's def
     (kept, unchanged except a header comment, still carrying the live campaign
     world's painted tiles). This is a NEW, franchise-free sibling for any other
     generated RimWorld planet, not a rename of that one.
@@ -73,7 +73,7 @@
     both mods are expected to load together going forward. The two onlyInBiomes/
     allowedBiomes lists inside that moved content (the breath-tide surge
     incident, the seven ForgeOnSurvival disease patches) now name BOTH
-    RUT_Miasma and RM_Miasma, so the mechanics keep firing on the live save.
+    the deleted Miasma twin and RM_Miasma, so the mechanics kept firing on the live save.
 
     texture (Biomes/AB_MiasmicMangrove) is inherited unchanged from the twin,
     same posture as RM_Cauldron's own donor world-map texture - not this

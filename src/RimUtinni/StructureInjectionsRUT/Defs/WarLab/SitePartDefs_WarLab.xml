@@ -18,7 +18,7 @@
   site (item criteria: "Reachable only via the submerged route ... no
   ordinary overland entrance"). No WorldObjectDef, no world-tile write, no
   world_commit are done here, deliberately - siting this SitePartDef on an
-  actual tile inside RUT_PropaneLake/AB_PropaneLakes over the Impact Site is
+  actual tile inside the deleted PropaneLake twin/AB_PropaneLakes over the Impact Site is
   a separate bridge/world-editing pass, and per this task's own brief it is
   explicitly out of scope while two other agents are mid-transition from the
   main menu to Playing (no bridge calls made or attempted this pass).

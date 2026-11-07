@@ -58,7 +58,7 @@ with tempfile.TemporaryDirectory(prefix="seafaces_mut_") as tmp:
     if code != 0:
         print("FAIL baseline copy is not green; the probe proves nothing"); sys.exit(1)
     for rmd, rmp, rutd, rutp in S.PAIRS:
-        for sub, d in ((S.DEPLOYED["RM"], rmd), (S.DEPLOYED["RUT"], rutd)):
+        for sub, d in ((S.DEPLOYED["RM"], rmd),):
             p = def_file(tmp, sub, d)
             if p is None:
                 print(f"FAIL cannot find deployed {d} in the copy"); fails += 1; continue

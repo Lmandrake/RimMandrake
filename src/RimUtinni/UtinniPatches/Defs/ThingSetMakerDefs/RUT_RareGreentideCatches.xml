@@ -4,7 +4,7 @@
   (fish_bestiary_commission_2026-09-10.md §2C.rare), parented on vanilla's
   own `RareFishingCatchesBase` the same way RUT_RareOasisCatches/
   RUT_RareScaldCatches are, so it plugs straight into
-  BiomeDef.fishTypes.rareCatchesSetMaker (RUT_Greentide.xml).
+  BiomeDef.fishTypes.rareCatchesSetMaker (the deleted Greentide twin's def).
 
   All three of the doc's options ship: (weight 4) RUT_LungerFry x1, the
   headline prize fish (sibling item, RUT_GreentideFish_Items.xml); (weight 2)

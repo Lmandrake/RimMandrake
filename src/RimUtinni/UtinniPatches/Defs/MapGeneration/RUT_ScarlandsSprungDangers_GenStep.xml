@@ -5,7 +5,7 @@
   scarlands_kit_spec.md §5. Scatters the three RUT_Sprung* prefabs
   (PrefabDefs/RUT_ScarlandsSprungDangers.xml) via vanilla Verse.GenStep_
   ScatterGroupPrefabs — the SAME class ScarlandsJunkPrefabs (this biome's
-  own donor genstep, still listed in RUT_Scarlands.xml's extraGenSteps)
+  own donor genstep, still listed in the deleted Scarlands twin's def's extraGenSteps)
   already uses; raw XML for that def pulled via RimSage this pass to match
   its field shape exactly (order/allowInWaterBiome/isJunk/minSpacing/
   countPer10kCellsRange/spotMustBeStandable/allowRoofed/groups).
@@ -24,7 +24,7 @@
   category (spent, stripped, already-triggered), not a live danger the
   isJunk flag would be dishonest about.
 
-  Not wired into RUT_Scarlands.xml's own extraGenSteps by this file alone —
+  Not wired into the deleted Scarlands twin's def's own extraGenSteps by this file alone —
   see that file's own header for the added <li>.
 -->
 <Defs>

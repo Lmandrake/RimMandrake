@@ -100,8 +100,8 @@ namespace RimMandrake.Utinni.WasteRun
         public const int EmpireReachTiles = 6;
         public const int LabReachTiles = 6;
         public const float ColdSideMaxTileTemp = -25f; // a tile's own yearly mean, so no biome paint is needed
-        public static readonly string[] PropaneBiomes = { "RUT_PropaneLake", "RM_TheChill", "RM_ChillCrater" };
-        public static readonly string[] StenchlandsBiomes = { "RM_Wastes", "RUT_Wastes" };
+        public static readonly string[] PropaneBiomes = { "RM_TheChill", "RM_ChillCrater" };
+        public static readonly string[] StenchlandsBiomes = { "RM_Wastes" };
         public const string WarLabSitePart = "RUT_WarLabSite";
 
         // Allowed: fly-off satisfied or switched off. Uncharted: this planet has no such place yet, so

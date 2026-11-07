@@ -1,0 +1,1 @@
+A RUT_ twin's own BiomeDef can carry wiring its RM_ partner never got: comparing extraGenSteps and biomeMapConditions against the partner before deleting found four on the Scarlands twin. Separately, a plain string replace of a def name also hits longer names (RUT_Scarlands inside RUT_ScarlandsLadder): use word boundaries.

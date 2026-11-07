@@ -34,7 +34,7 @@
   all, so per Q11a it belongs franchise-free in `mandrake.rm.stillsand`
   directly (same reasoning as `RM_MirrorGiant`, authored this same pass) —
   not routed through `WildAnimals_Stillsand.xml`, which exists only to
-  replay content copied off the frozen `RUT_ExtremeDesert.xml` twin.
+  replay content copied off the deleted ExtremeDesert twin.
 
   `wakeUpOnDamage=true` only (blood — one of dune_sea.md's own three named
   triggers, "free water, a vibration, a temperature anomaly, blood").

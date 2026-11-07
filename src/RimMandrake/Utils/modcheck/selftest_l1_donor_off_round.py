@@ -555,9 +555,9 @@ def test_derive_real_repo():
     check(not any(s["flyer"] for s in man["species"] if s["kind"] in ("RSW_Bantha", "RM_Bulloo")),
           "a ground animal and a VEF floater are not flyers")
     names = {b["biome"] for b in man["biomes"]}
-    check({"RM_TheRot", "RM_Webwork", "RUT_AridShrubland", "RM_Contagion"} <= names,
+    check({"RM_TheRot", "RM_Webwork", "RM_LeaningScrub", "RM_Contagion"} <= names,
           "the W4 handoff's three biomes and the Contagion are mapgen subjects", sorted(names))
-    check(not any(b.startswith("RUT_") and b != "RUT_AridShrubland" for b in names),
+    check(not any(b.startswith("RUT_") for b in names),
           "frozen RUT_ twins are not mapgen subjects by default")
     check(all(r["id"].startswith("O0") for r in L.offline_rows(man)), "offline gate rows are produced")
     check(man["donorNames"]["old"] and "sw_Sarlacc" in man["donorNames"]["old"], "donor rename names read for the save row")

@@ -47,14 +47,14 @@
   NOT touched here, and why: `AB_MechanoidIntrusion` (the_rust_cathedral) and
   `Wasteland`/`Scarlands` (already `maxFishPopulation 0`, no `fishTypes` tag —
   already the no-fish state this patch is establishing everywhere else); the
-  5 `RUT_`-tier own-authored defs (RUT_TheScald/RUT_TwilightSea/RUT_GreySea/
-  RUT_PropaneLake/RUT_SleepingIce) are NOT stripped here and carry whatever their
+  5 `RUT_`-tier own-authored defs (the deleted TheScald twin/the deleted TwilightSea twin/the deleted GreySea twin/
+  the deleted PropaneLake twin/the deleted SleepingIce twin) are NOT stripped here and carried whatever their
   own defs/patches say — as of 2026-09-24 the Scald ships 8 `fishTypes` on its def and the
-  Twilight Sea 10 via patch (recounted directly from `RUT_TheScald.xml` and
+  Twilight Sea 10 via patch (recounted directly from `the deleted TheScald twin's def` and
   `BiomeFishTypes_TwilightDeep.xml`; the prior "5"/"8" figures here were wrong) (owner
   2026-09-20: "Just make the surface fishable"); the other
-  three carry none; `RUT_BlueDesert`/`BiomeCypreJungle`'s
-  `RUT_Greentide` sibling defs are not this world's live paint (see
+  three carried none; the deleted BlueDesert twin/`BiomeCypreJungle`'s
+  the deleted Greentide twin sibling defs are not this world's live paint (see
   BiomeFishTypes_Greentide.xml's own note) so nothing to strip there beyond
   what that file already does; `fall_line`/`the_lantern_deeps`/`wreck_fields`
   bind to no painted def at all (§3's own text). `AB_MiasmicMangrove`

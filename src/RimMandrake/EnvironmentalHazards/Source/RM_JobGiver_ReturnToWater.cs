@@ -20,7 +20,7 @@ namespace RimMandrake.EnvironmentalHazards
     // already verifies the mechanism) rather than wired into any specific
     // PawnKindDef's own ThinkTreeDef — required here specifically because
     // M3's placeholder spawn uses an EXISTING, unmodified shipped
-    // PawnKindDef (see RUT_Miasma.xml's own comment) whose ThinkTreeDef this
+    // PawnKindDef (see the deleted Miasma twin's def's own comment) whose ThinkTreeDef this
     // item must not touch. TryGiveJob below no-ops instantly for the
     // overwhelming majority of pawns — anyone RM_MapComponent_
     // StrandingPools.TryGetPoolFor does not recognize as a tracked stranded

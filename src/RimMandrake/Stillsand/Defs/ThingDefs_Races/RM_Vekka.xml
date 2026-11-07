@@ -5,7 +5,7 @@
   Q1 tier move (2026-09-27 sitting, RATIFIED): leaves the Utinni patch (RSW_SandLion in
   SWBestiary) for a native, franchise-free copy here — invented content per Q11a.
   SWB_TWINS_DEDUPE_STILLSAND (2026-11-03) retired the RSW_SandLion copy: the frozen
-  RUT_ExtremeDesert.xml twin names RM_Vekka, and a save holding RSW_SandLion loads it as
+  the deleted ExtremeDesert twin names RM_Vekka, and a save holding RSW_SandLion loads it as
   RM_Vekka (LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml).
 
   Q6 name ruling: VEKKA KEPT (the owner's own call). The flag that this name was

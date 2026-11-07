@@ -2,7 +2,7 @@
 <!--
   ZERSIUM_FORGE_BIOME_1. Zersium's only source: a few small lumps of RSW_MineableZersium in the
   natural rock of Forge maps (owner, question cards 2026-10-09: a rare local ore in ONE home biome,
-  The Forge). Gated on RM_TheForge and its frozen twin RUT_TheForge (twins read their RM column,
+  The Forge). Gated on RM_TheForge and its the deleted TheForge twin (twins read their RM column,
   mineral_abundance_registry_design §5), and on Mod Settings "Zersium ore in the Forge".
   Registered on Base_Player by Patches/RUT_ZersiumForgeLumps_Register.xml; gates itself.
 
@@ -22,7 +22,6 @@
       <minLumps>2</minLumps><!-- PROVISIONAL: floor so no Forge map reads 0 -->
       <allowedBiomes>
         <li MayRequire="mandrake.rm.biomes">RM_TheForge</li>
-        <li>RUT_TheForge</li>
       </allowedBiomes>
     </genStep>
   </GenStepDef>

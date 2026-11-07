@@ -9,7 +9,7 @@
   quiet death."
 
   workerClass -> RM_IncidentWorker_ContagionProbe (new this pass,
-  src/RimMandrake/EnvironmentalHazards/Source/) hardcodes the RUT_TheForge
+  src/RimMandrake/EnvironmentalHazards/Source/) hardcodes the the deleted TheForge twin
   biome check in CanFireNowSub — see that class's own header for why this
   is a direct check rather than an XML-settable biome list.
 

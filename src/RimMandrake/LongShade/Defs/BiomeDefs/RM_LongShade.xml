@@ -4,14 +4,14 @@
   <!--
     RM_LongShade                                   LONGSHADE_RM_MOD_BUILD_1 step 2
 
-    Copied from src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml (frozen
+    Copied from the deleted Desert twin's def (was frozen
     the same pass this file was created, see that file's own header) — the source
     of truth being copied, not corrected. Full authoring history (sheet SS0-SS10,
     every ruling behind every field below) stays in that file; do not duplicate it
     here, read it there.
 
     Changed from the twin, and ONLY this:
-      - defName RUT_Desert -> RM_LongShade.
+      - defName the deleted Desert twin -> RM_LongShade.
       - label "the Desert" -> "the Long Shade" (biome_mod_architecture.md §7 Q2,
         RULED 2026-09-21 — the owner's own recommended row; the twin keeps its old
         label unchanged, frozen).

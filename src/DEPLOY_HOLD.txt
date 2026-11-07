@@ -220,7 +220,7 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # SeaBeasts_Scalefish.xml/_Swarm.xml/_Opee.xml (defName unchanged); this
 # file's 7 `<PawnKindDef ParentName="RSW_X">` updated to `RSW_X_Kind`.
 # validate_patch.py: 0 errors on all 4 files. Live re-verify (AlphaGenes
-# sweep clean, RUT_Miasma's 9 dangling wildAnimals refs resolve again) owed
+# sweep clean, the old Miasma twin's 9 dangling wildAnimals refs resolve again) owed
 # on the next full load — this hold is lifted, not superseded.
 
 # --- Pyrelands dev script: a shell harness for burrow trials, never game content (RELEASE_PACKAGING 2026-10-15) ---

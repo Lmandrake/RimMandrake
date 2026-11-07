@@ -274,7 +274,7 @@ def extract_species_refs(xml_path):
 
     🔴 Comments are stripped from the WHOLE FILE before the block regex runs,
     not from inside each matched block. Stripping inside the block is not
-    enough and was a real defect: RUT_PropaneLake.xml carries a 92-line
+    enough and was a real defect: the Propane Lake twin carried a 92-line
     comment that mentions `<wildAnimals />`, the block regex matched from
     that mention to the REAL closing tag 55 lines later, and the per-block
     strip found no opening `<!--` to anchor on. Every tag in between --

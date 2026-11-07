@@ -28,10 +28,9 @@
     <li>vanillaexpanded.vplantsemore</li>
   </loadAfter>
   <description>THEROT_RM_MOD_BUILD_1 — absorbs mandrake.rut.rotsporekit (151 files, the Rot's
-biome mechanics kit) and the RUT_TheRot BiomeDef into their own standalone RimMandrake-tier
+biome mechanics kit) and the old campaign BiomeDef into their own standalone RimMandrake-tier
 mod: a pale fungal night-side biome, fully generalized so it names no campaign or franchise
-and is playable on any generated RimWorld planet. The frozen campaign world's own RUT_TheRot
-instance is unaffected and unrelated; this is a new sibling biome for everyone else's worlds.
+and is playable on any generated RimWorld planet.
 
 RM tier: nothing here knows what campaign or planet uses it. The ten invented residents
 (thozzik, illoth, brullith, brogg, plobbum, skerrith and their hive forms) are owned here as `RM_`

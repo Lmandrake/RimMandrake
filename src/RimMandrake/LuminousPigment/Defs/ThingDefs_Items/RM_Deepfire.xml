@@ -5,7 +5,7 @@
   ============================================================================
   Spec §2.4. Replaces TerminalBiomes' RM_RainbowPigment (deleted there, moved
   here as RM_Deepfire — nothing else referenced the old defName besides the
-  plant, this mod's own showcase script and the frozen RUT_TheScald.xml twin,
+  plant, this mod's own showcase script and the deleted TheScald twin,
   which already waits on the terminal repaint per its own header).
 
   Refined Deepfire keeps forever (no rot, no clock) — that is the whole point

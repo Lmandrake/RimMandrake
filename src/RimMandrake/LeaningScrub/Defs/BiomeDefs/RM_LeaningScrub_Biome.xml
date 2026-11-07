@@ -6,14 +6,14 @@
 
     Phase A row 9 of design/RimMandrake/biome_mod_architecture.md — the
     RimMandrake-tier twin of the frozen src/RimUtinni/UtinniPatches/Defs/
-    BiomeDefs/RUT_AridShrubland.xml, generalized to zero campaign-specific
+    BiomeDefs/the deleted AridShrubland twin's def, generalized to zero campaign-specific
     content per §3a's test. Full sheet (campaign-side):
     design/Jawa/worldbuilding/biomes/arid_shrubland.md (FROZEN).
 
     Copied from the frozen def, MEASURED 2026-09-25: terrain thresholds,
     weather commonalities, disease table and animalDensity/plantDensity/
     forageability/movementDifficulty/diseaseMtbDays/wildPlantRegrowDays are
-    all byte-identical to RUT_AridShrubland.xml's own values — nothing here
+    all byte-identical to the deleted AridShrubland twin's def's own values — nothing here
     is re-derived. workerClass stays RimWorld.BiomeWorker_AridShrubland
     (vanilla Core, confirmed via the installed game's own
     Biomes_WarmArid.xml) — a donor type in workerClass would be a hard
@@ -38,16 +38,16 @@
     into the RimMandrake mod of the biome whose wildPlants lists it,
     renamed RM_"). 🔑 The ORIGINAL RUT_-prefixed defs are left standing,
     UNTOUCHED, inside mandrake.rut.ashkarrflora: the frozen
-    RUT_AridShrubland.xml's own wildPlants block still names them under
+    the deleted AridShrubland twin's def's own wildPlants block named them under
     MayRequire="mandrake.rut.ashkarrflora", and that mod carries the
-    player's live world until Phase B deletes RUT_AridShrubland.xml
+    player's live world until Phase B deletes the deleted AridShrubland twin's def
     outright (biome_mod_architecture.md §5's hazard section — a defName a
     frozen def depends on cannot be pulled out from under it before then).
     So mandrake.rut.ashkarrflora is not literally dissolved THIS pass; it
     is frozen alongside its biome, exactly the same bounded-duplication
     pattern §5 step 3 already uses for the biome def itself, and its real
     deletion is scheduled for Phase B step 4 together with
-    RUT_AridShrubland.xml. This is the one deliberate deviation from the
+    the deleted AridShrubland twin's def. This is the one deliberate deviation from the
     item's literal "move" wording, made to avoid the exact hazard §5
     documents for biome defs, applied one level down to a def a frozen
     biome depends on.

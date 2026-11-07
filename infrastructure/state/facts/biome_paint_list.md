@@ -65,32 +65,7 @@ deleting the 25 frozen `RUT_` twins, which carry 0 dev-world tiles.
 | `RM_SeabedFloor_TheScald` | the Scald floor | `src/RimMandrake/DivingInteraction` / `mandrake.rm.biomes` | 0 | never paints the surface: a biome of the seabed planet layer `RM_SeabedLayer` | NO PAINT |
 | `RM_SeabedFloor_TwilightSea` | Twilight Sea floor | `src/RimMandrake/DivingInteraction` / `mandrake.rm.biomes` | 0 | never paints the surface: a biome of the seabed planet layer `RM_SeabedLayer` | NO PAINT |
 | `RM_SeabedUnavailable` | bedrock | `src/RimMandrake/DivingInteraction` / `mandrake.rm.biomes` | 0 | never paints the surface: a biome of the seabed planet layer `RM_SeabedLayer` | NO PAINT |
-| `RUT_Abyss` | the Abyss | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Abyss`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_AridShrubland` | the arid shrubland | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_LeaningScrub`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_BlueDesert` | the Blue Desert | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_BlueDesert`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Cauldron` | the Cauldron | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Cauldron`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Contagion` | the Contagion | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Contagion`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_CrackedLands` | the Cracked Lands | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_FloodedCanyon`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Desert` | the Desert | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_LongShade`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_ExtremeDesert` | the Extreme Desert | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Stillsand`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_FeverWood` | the Fever Wood | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_FeverWood`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Greentide` | the Greentide | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Greentide`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_GreySea` | the Grey Sea | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_GreySea`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
 | `RUT_Jawa_BackgroundWater` | mineral water | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | never paints, by design: the background texture `WorldDrawLayer_Terrain` needs for TerrainMask landmarks | NO PAINT |
-| `RUT_Miasma` | the Miasma | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Miasma`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_PropaneLake` | the Chill | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TheChill`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_RustCathedral` | the Rust Cathedral | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_RustCathedral`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Scarlands` | the Warscar | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Warscar`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_SleepingIce` | the Sleeping Ice | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_SleepingIce`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Slime` | the Slime | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_GelatinousSlime`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Sump` | the Sump | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TheSump`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_TheForge` | the Forge | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TheForge`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_TheRot` | the Rot | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TheRot`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_TheScald` | the Scald | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TheScald`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_TwilightSea` | the Twilight Sea | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_TwilightSea`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Wastes` | the Wastes | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Wastes`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_Webwork` | the Webwork | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_Webwork`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
-| `RUT_WeepingStones` | the Weeping Stones | `src/RimUtinni/UtinniPatches` / `mandrake.rut.patches` | 0 | frozen twin of `RM_WeepingStones`; deleted with every reference by `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN` | NO PAINT |
 
 ## Counts
 
@@ -108,9 +83,7 @@ Counted from the table, 2026-11-01:
   `CRACKEDLANDS_FULL_RENAME_1`. Until it lands, those 3,359 tiles decode as unknown hashes on today's list.
 - **No biome placement edits are ruled.** The Scald stays put (card 2026-10-22). The Warscar pilgrim camps and the six
   geological landmarks are world objects, not biome edits.
-- **The twins' deletion**: `BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`. It breaks only the canonical keeper
-  `CANONICAL_ASHKARR_START_2026-09-12.rws`, which still carries 19,969 tiles on the twins. Retiring that save as a
-  loadable reference waits on an owner card (plan §4).
+- **The twins are deleted** (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`, owner card 2026-11-06). `CANONICAL_ASHKARR_START_2026-09-12.rws` stays on disk as a record only and is no longer expected to load correctly.
 - **Donor biome mods on 0 tiles**: `DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT`.
 
 ## Roster hole-filling policy — owner, 2026-09-22
@@ -123,8 +96,7 @@ scoped when that happens:
 > needed: deep desert, desert, rot, pyrelands, lantern deeps. Others we will work
 > individually."*
 
-- ✅ **Fill now, as needed — the mostly-finished five:** the deep desert (`RUT_ExtremeDesert` /
-  `RM_Stillsand`), the desert (`RUT_Desert` / `RM_LongShade`), the Rot, the Pyrelands, the
+- ✅ **Fill now, as needed — the mostly-finished five:** the deep desert (`RM_Stillsand`), the desert (`RM_LongShade`), the Rot, the Pyrelands, the
   Lantern Deeps.
 - ⛔ **Do NOT file fill work for any other biome** on the strength of a hole alone — those are
   worked individually as their own per-biome pass reaches them. A withdrawn *admission* that

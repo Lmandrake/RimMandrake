@@ -4,7 +4,7 @@
   RM_TwilightSea.xml                     TerminalBiomes · moved 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml (now frozen,
+  the deleted TwilightSea twin's def (was frozen then,
   same folder) — see that file's own header for the full authorship history.
 
   Two changes from the twin:
@@ -17,7 +17,7 @@
      stays.
   2. `fishTypes`/`maxFishPopulation` are FOLDED IN from
      src/RimUtinni/UtinniPatches/Patches/BiomeFishTypes_TwilightDeep.xml
-     (a PatchOperationAdd onto RUT_TwilightSea, hold lifted 2026-09-20) per
+     (a PatchOperationAdd onto the deleted TwilightSea twin, hold lifted 2026-09-20) per
      item §6/§11 step 2's explicit instruction — that patch keeps targeting
      the frozen twin unchanged; this def carries the same 10 species
      natively instead of via a patch, since this mod owns the def outright.

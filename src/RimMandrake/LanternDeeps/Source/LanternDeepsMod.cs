@@ -105,7 +105,7 @@ namespace RimMandrake.LanternDeeps
         // dropped here on the belief that "both host biomes completed their
         // RM_ tier moves" made them stale. False — per
         // BIOME_PAINT_ONCE_AT_THE_END_1 the planet is painted ONCE, at the
-        // end; RUT_SleepingIce/RUT_PropaneLake are FROZEN, not deleted, and
+        // end; the deleted SleepingIce twin/the deleted PropaneLake twin were frozen, not deleted, and
         // still carry every tile on the live Ash'karr world today (their
         // RM_ twins sit at 0 tiles, mid-migration — see
         // infrastructure/state/facts/biome_paint_list.md). Dropping the
@@ -115,9 +115,7 @@ namespace RimMandrake.LanternDeeps
         public static readonly string[] UtinniDefaultEntranceBiomes =
         {
             "BiomeGRimond",
-            "RUT_SleepingIce",
             "RM_SleepingIce",
-            "RUT_PropaneLake",
             "RM_TheChill",
         };
 

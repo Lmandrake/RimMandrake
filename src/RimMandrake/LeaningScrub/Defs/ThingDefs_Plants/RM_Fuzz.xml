@@ -11,7 +11,7 @@
   arid_shrubland.md §4 "The giants").
 
   RETIRED 2026-10-16 (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE): the original RUT_Fuzz and the whole
-  mandrake.rut.ashkarrflora mod are gone; RUT_AridShrubland.xml names this def, and a saved RUT_Fuzz loads as
+  mandrake.rut.ashkarrflora mod are gone; the deleted AridShrubland twin's def names this def, and a saved RUT_Fuzz loads as
   it through RM_PlantTierReconcile_Aliases.xml (EnvironmentalHazards).
 
   Art: the finished rutfuzz_v1 render is wired at Textures/Things/Plant/

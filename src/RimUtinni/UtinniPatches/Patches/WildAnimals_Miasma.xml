@@ -4,14 +4,14 @@
   WildAnimals_Miasma.xml                    UtinniPatches - new file 2026-09-25
   ============================================================================
   MIASMA_RM_MOD_BUILD_1 (Phase A). Wires the 17 Star Wars-layer wildAnimals
-  rows the frozen RUT_Miasma.xml still carries inline onto the new standalone
+  rows the deleted Miasma twin carried inline onto the new standalone
   RM_Miasma def instead, per the Q11a naming-tier ruling (invented exotic
   names stay in the franchise-free RM_ tier; genuine canon IP routes through
   this Utinni patch layer). Shape copied from this same folder's own
   WildAnimals_Pyrelands.xml precedent.
 
   Every defName and commonality weight below is copied verbatim from
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml's own <wildAnimals>
+  the deleted Miasma twin's def's own <wildAnimals>
   (frozen, unchanged) - not re-derived or rescaled here. Two groups, split by
   their real source mod so each PatchOperationConditional/Add block gates on
   the mod that actually owns the defNames it adds - a patch gated on the
@@ -60,7 +60,7 @@
 
   LEFT OUT (roster eviction, not carried into either mod - rosters/
   the_miasma.json's own evictions[]): RSW_Kreetle (-> AridShrubland),
-  Yobshrimp (-> RUT_TwilightSea), RSW_Gembug (-> the_lantern_deeps),
+  Yobshrimp (-> the deleted TwilightSea twin), RSW_Gembug (-> the_lantern_deeps),
   AA_BloodShrimp (-> AB_OcularForest), AA_Plasmorph (-> PoisonForest).
   ============================================================================
 -->

@@ -21,9 +21,7 @@
   </loadAfter>
   <description>WEEPINGSTONES_RM_MOD_BUILD_1 Phase A (biome_mod_architecture.md §5) — this
 mod now carries `RM_WeepingStones`, the franchise-free BiomeDef itself, as its own
-standalone RimMandrake mod. The campaign twin `RUT_WeepingStones` (src/RimUtinni/
-UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml) is FROZEN and keeps carrying the live
-Ash'karr world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) — this mod's own
+standalone RimMandrake mod. This mod's own
 copy is not yet on any live tile, which is the expected mid-migration state, not a defect.
 
 The BiomeDef ships with its franchise-free content only: `RM_Colossia` (ours; was vanilla Odyssey's ColossusToad until 2026-10-10),

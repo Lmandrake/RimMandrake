@@ -12,7 +12,7 @@
   RSW_Wampa; the tauntaun has no port yet and names the donor's own def.
 
   Weight (0.03) and MayRequire copied verbatim from the twin's own row,
-  RUT_SleepingIce.xml (frozen): RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary"
+  the deleted SleepingIce twin's def (was frozen): RSW_CaveLemming MayRequire="mandrake.rsw.swbestiary"
   0.03. Per NIGHTSIDEICE_RM_MOD_BUILD_1's own MEASURED reading, this row is a
   deliberate 2026-09-21 owner override of ECOSYSTEM_PYRAMID_LAW_1's small/giant
   ratio (a LARGE-bodySize visitor at 0.03, chosen over a compensating 0.003) —

@@ -43,7 +43,7 @@
   literal rather than merely narrated. MayRequire now sits on the whole
   RecipeDef (it did not before) — correctly, since RM_Tarred itself is
   only ever GIVEN to a pawn when mandrake.rm.environmentalhazards is active
-  (RUT_Sump.xml's own RM_CarriedFilthHediffExtension <li> is individually
+  (the deleted Sump twin's def's own RM_CarriedFilthHediffExtension <li> is individually
   MayRequire-gated on the same packageId), so a cure recipe is meaningless
   without it — there is no "byproduct-free fallback" case to preserve here.
 -->

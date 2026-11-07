@@ -3,7 +3,7 @@
   RM_UltracactusPad.xml                     LONGSHADE_RULED_CONTENT_1, Q3
 
   Closes the standalone-inert-forage hole DESERT_FORAGEDFOOD_INERT_1 found
-  and fixed one tier down: RUT_Desert.xml set forageability 0.25 with no
+  and fixed one tier down: the deleted Desert twin's def set forageability 0.25 with no
   foragedFood, and MEASURED (engine) GetForagedFoodCountPerInterval returns 0
   whenever foragedFood is unset regardless of the forageability value — the
   mechanic silently does nothing. That item's fix was pointing foragedFood at

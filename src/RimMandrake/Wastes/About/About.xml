@@ -9,9 +9,7 @@
   <description>WASTELAND_RM_MOD_BUILD_1 (Phase A row 4 of design/RimMandrake/biome_mod_architecture.md,
 parent BIOME_MOD_SPLIT_EXECUTION_1). A bone-dry, radiologically-live wasteland
 biome, generalized: it names no other franchise or campaign and is playable
-standalone on any generated RimWorld planet. A separate frozen campaign
-world's own Wasteland instance (RUT_Wastes, src/RimUtinni) is unaffected
-and unrelated; this is a new sibling biome for everyone else's worlds, not a
+standalone on any generated RimWorld planet. This is a biome for everyone's worlds, not a
 rename of that one.
 
 RM tier: nothing here knows what campaign or planet uses it.

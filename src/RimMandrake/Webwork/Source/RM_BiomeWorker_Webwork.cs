@@ -18,7 +18,7 @@ namespace RimMandrake.Webwork
 	// dependency this RM-tier mod may not assume — reimplemented generically
 	// against a hot, very wet, low-elevation jungle band instead (its measured
 	// live tile stats: sun median +51 deg, temp p10/median/p90 38.6/49.2/58.2
-	// C, per RUT_Webwork.xml's own header). Competes only inside that band;
+	// C, per the deleted Webwork twin's def's own header). Competes only inside that band;
 	// returns 0 (or a hard -100 on water) everywhere else so it never fights
 	// vanilla biomes anywhere it doesn't belong.
 	public class RM_BiomeWorker_Webwork : BiomeWorker

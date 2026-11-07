@@ -18,9 +18,9 @@
       4  the Rakata          gate: late; the educated factions or the bastion record
       5  the pilgrims        gate: found piecemeal at the pilgrim ends
     Stage 0 is "nothing learned" and has NO entry: the engine snapshots
-    RUT_Scarlands' shipped description and settleWarning before its first write
+    the deleted Scarlands twin' shipped description and settleWarning before its first write
     and restores them, so the shipped text stays single-sourced in
-    src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml and is not
+    the deleted Scarlands twin's def and is not
     duplicated here to rot.
 
     🔴 R25 (freeze ruling _freeze_rulings_2026-09-07.md:512-522): the player may
@@ -32,7 +32,7 @@
     That constraint binds the real text; the placeholders below name the RUNG,
     not the truth, precisely so nobody mistakes a fixture for authored prose.
 
-    THE GATE: reading a RUT_PilgrimJournal (camps on RUT_Scarlands maps, this
+    THE GATE: reading a RUT_PilgrimJournal (camps on the deleted Scarlands twin maps, this
     mod's GenStep_RUT_PilgrimCamps) calls AdvanceStage("Scarlands") once per
     journal; the dev-mode "Lore stages" menu still moves it too.
   -->
@@ -48,7 +48,7 @@
 
       <li>
         <defType>BiomeDef</defType>
-        <defName>RUT_Scarlands</defName>
+        <defName>RM_Warscar</defName>
         <field>description</field>
         <stages>
           <li>
@@ -76,7 +76,7 @@
 
       <li>
         <defType>BiomeDef</defType>
-        <defName>RUT_Scarlands</defName>
+        <defName>RM_Warscar</defName>
         <field>settleWarning</field>
         <stages>
           <!-- Deliberately sparse: a rung with no entry means "this field does

@@ -14,7 +14,7 @@
   product; borrow the dormant comp (107-row family)").
 
   Checked cast_assignment.csv first, per this item's own "watch out":
-  RUT_CrackedLands.xml's wildAnimals block already tags TWO existing
+  the deleted CrackedLands twin's def's wildAnimals block already tags TWO existing
   species against the-Sealed SORT — `RSW_MutagenicNorphea` ("the-Sealed,
   keep") and `AA_SandSquid` ("the-Sealed, adjust-keep"). Those fill the
   bestiary SORT (dormant-fauna category); neither is the roster's own

@@ -10,9 +10,9 @@
 
   conditionClass = RimMandrake.EnvironmentalHazards.
   RM_GameCondition_WeatherPulse (this same build pass - see that class and
-  WeatherPulseExtension for the engine mapping). Wired onto RUT_TheForge
+  WeatherPulseExtension for the engine mapping). Wired onto the deleted TheForge twin
   via a PatchOperationAdd (Patches/RUT_ForgePulse_BiomeWiring.xml), not a
-  direct edit to RUT_TheForge.xml's own biomeMapConditions field - same
+  direct edit to the deleted TheForge twin's def's own biomeMapConditions field - same
   caution SCALD_MECHANICS_1's RUT_ScaldSteamLock_BiomeWiring.xml already
   applied to this exact file family: a bare <li> baked directly into the
   BiomeDef would be a dangling cross-reference the moment

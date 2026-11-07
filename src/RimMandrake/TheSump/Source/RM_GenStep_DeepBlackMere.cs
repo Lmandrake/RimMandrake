@@ -48,7 +48,7 @@ namespace RimMandrake.TheSump
         // string-not-hard-reference posture RM_LiquidBodyDef.biomes already
         // uses for this exact RM/RUT twin pair — a bare string can never
         // dangle if either def is absent from the active mod set.
-        private static readonly string[] SumpBiomeDefNames = { "RM_TheSump", "RUT_Sump" };
+        private static readonly string[] SumpBiomeDefNames = { "RM_TheSump" };
 
         // INVENTED-BUILD tuning: no owner number was given for the mere's own
         // size. Deliberately generous — smaller than this and "landmark-

@@ -5,7 +5,7 @@ converts light desert into extreme desert by absorbing all the water. So either 
 
 Offline, no game. Checks:
   1. the patch adds CompProperties_SarlaccSwimmer to RM_Gulloth with a kill top-up by body size, a fed threshold,
-     seep seeking, dry rooting on, and rootingBiomes == {Desert, ExtremeDesert, RUT_Desert, RUT_ExtremeDesert};
+     seep seeking, dry rooting on, and rootingBiomes == {Desert, ExtremeDesert, RM_LongShade, RM_Stillsand};
   2. every named biome is a real BiomeDef (vanilla by the Utinni label patch, RUT_ by its own def);
   3. CompSarlaccSwimmer.cs declares each field the patch sets, the biome gate sits before both rooting paths, and the
      bodies of Notify_KilledPawn, KillGain, RootingAllowedHere and SeepRootingAllowed are pinned token for token;
@@ -27,7 +27,7 @@ PATCH = os.path.join(HERE, "Patches", "RSW_SarlaccSeeker_Rooting.xml")
 CS = os.path.join(HERE, "Source", "CompSarlaccSwimmer.cs")
 SRCHASH = os.path.join(HERE, "Assemblies", "Sarlacc.dll.srchash")
 COMP_CLASS = "RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccSwimmer"
-DESERTS = {"Desert", "ExtremeDesert", "RUT_Desert", "RUT_ExtremeDesert"}
+DESERTS = {"Desert", "ExtremeDesert", "RM_LongShade", "RM_Stillsand"}
 
 FAILS = []
 
@@ -106,9 +106,9 @@ def main():
     names = open(os.path.join(REPO, "src/RimUtinni/UtinniPatches/Patches/BiomeNames_Ashkarr.xml"), encoding="utf-8").read()
     for b in ("Desert", "ExtremeDesert"):
         check("vanilla biome %s is named by the Utinni label patch" % b, 'BiomeDef[defName="%s"]' % b in names)
-    for b in ("RUT_Desert", "RUT_ExtremeDesert"):
-        p = os.path.join(REPO, "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/%s.xml" % b)
-        check("%s is a BiomeDef" % b, os.path.isfile(p) and "<defName>%s</defName>" % b in open(p, encoding="utf-8").read())
+    for b, d_ in (("RM_LongShade", "src/RimMandrake/LongShade/Defs/BiomeDefs"), ("RM_Stillsand", "src/RimMandrake/Stillsand/Defs/BiomeDefs")):
+        p = os.path.join(REPO, d_)
+        check("%s is a BiomeDef" % b, any("<defName>%s</defName>" % b in open(os.path.join(p, x), encoding="utf-8").read() for x in os.listdir(p)))
 
     # 3. C# fields and gate order
     cs = open(CS, encoding="utf-8").read()
@@ -165,9 +165,9 @@ def main():
     for _ in range(100000):
         r = max(0.0, r - 1.0 / 60000 * 1.5 * 100)
     check("drain floors at 0, never the -1 re-roll sentinel", r == 0.0)
-    for b in ("Desert", "ExtremeDesert", "RUT_Desert", "RUT_ExtremeDesert"):
+    for b in ("Desert", "ExtremeDesert", "RM_LongShade", "RM_Stillsand"):
         check("roots in %s" % b, root_ok(b))
-    for b in ("RM_LongShade", "RM_Stillsand", "TemperateForest", "AridShrubland", "RUT_BlueDesert"):
+    for b in ("TemperateForest", "AridShrubland", "RM_BlueDesert"):
         check("never roots in %s" % b, not root_ok(b))
 
     # 6. the mod's validation static checks

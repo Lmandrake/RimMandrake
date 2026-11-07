@@ -8,7 +8,7 @@
     def is expected to carry 0 tiles until the terminal repaint; that is not a
     defect.
 
-    Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml
+    Copied from the deleted Sump twin's def
     (kept, unchanged except a header comment, still carrying the live campaign
     world's painted tiles). This is a NEW, franchise-free sibling for any other
     generated RimWorld planet, not a rename of that one.
@@ -44,7 +44,7 @@
     biomeMapConditions: RM_SumpDuskLock (permanent dusk, no precipitation at all: owner 2026-10-18, by card
     "Sump rain -> No precipitation at all"), baked in directly (not via a second patch
     op) - it lives in this SAME mod (Patches/RUT_SumpDuskLock_BiomeWiring.xml
-    wires it onto RUT_Sump alone; this def references it natively), matching the
+    wires it onto the deleted Sump twin alone; this def references it natively), matching the
     precedent RM_Miasma.xml actually shipped for RM_MiasmaWeatherLock.
 
     modExtensions: unchanged in shape from the twin - BiomeGlowMultiplierExtension
@@ -57,10 +57,10 @@
     forageability corrected 0.0 -> 0.8. Both values contradicted the frozen
     sheet's own ruling (design/Jawa/worldbuilding/biomes/the_sump.md SS0:
     "forageability 0.8 re-pointed at the edge-flora... plantDensity 0.25 fits
-    the edge-ring pattern") AND the RUT_Sump twin's OWN header comment two
+    the edge-ring pattern") AND the the deleted Sump twin's OWN header comment two
     lines above its fields, which already states the correct numbers; the
     twin's fields themselves were wrong at authoring time and this copy
-    inherited the error verbatim. The frozen RUT_Sump.xml twin is NOT touched
+    inherited the error verbatim. the deleted Sump twin is NOT touched
     (carries the live campaign world; do not edit); this fix lands only on
     this def, which still carries 0 tiles pending the terminal repaint.
     forageability 0.8 now has a real referent: RM_Skelver (RM_SumpFlora.xml,

@@ -20,9 +20,9 @@ namespace RimMandrake.EnvironmentalHazards
     // this pass rechecked) that BIOME_OWNERSHIP_WAVE_1 merged all three
     // donor biomes the kit spec names (Volcano/Advanced Biomes,
     // LavaField/Odyssey, AB_PyroclasticConflagration/Alpha Biomes) into one
-    // owned BiomeDef, RUT_TheForge — the three donor defNames no longer
+    // owned BiomeDef, the deleted TheForge twin — the three donor defNames no longer
     // back any biome this campaign's maps can actually generate on. So this
-    // validator is configured with RUT_TheForge only, and the spec's own
+    // validator is configured with the deleted TheForge twin only, and the spec's own
     // "0-2 Volcano/LavaField vs 0-1 Pyroclastic" split collapses to one
     // uniform count for the whole (now single) biome, same collapse F5's
     // own edge-band ring already made for the identical reason — flagged in

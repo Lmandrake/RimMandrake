@@ -13,7 +13,7 @@
   It lives in mandrake.rm.environmentalhazards, not beside RSW_Ultracactus in
   SWBestiary, because the defName has to carry the tier prefix of the mod it
   ships in (NAMING_SCHEME_PLAN.md SS6, checked by naming_lint.py) and nothing
-  about this plant is Star Wars content. RUT_Desert wires it in with
+  about this plant is Star Wars content. the deleted Desert twin wires it in with
   MayRequire, the same pattern that file already uses for every SWBestiary
   plant.
 

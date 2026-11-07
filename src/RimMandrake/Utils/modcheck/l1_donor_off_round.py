@@ -13,7 +13,7 @@ Two halves, two interpreters (live-debugging-proof-harness: WSL cannot reach the
               + every race / plant ThingDef defined in a Def file the Phase 0 commits touched (PHASE0_COMMITS);
               each name must resolve to a race ThingDef in src with a PawnKindDef, or it is listed `unresolved`.
      biomes   = every RM_ BiomeDef (direct or patch-added roster row) that still carries a donor-guarded row or names a
-              Phase 0 port, plus RUT_AridShrubland (the W4 handoff's list); frozen RUT_ twins only with --include-frozen.
+              Phase 0 port, plus RM_LeaningScrub (the W4 handoff's list).
      flyers   = subjects whose race carries MaxFlightTime > 0 (statBases or a patch) -- the flight rows.
      It also reports, per subject, the defining packageId (composed-biome folds resolved) against the tier closure, and
      texPaths with no PNG in src (art owed) -- both are OFFLINE gate rows the runbook reads before taking the bridge.
@@ -69,8 +69,8 @@ P6_CENSUS = os.path.join(REPO, "Transient", "phase0_p6_save_census.md")
 SARLACC_RENAMES = os.path.join(HERE, "donor_off_sarlacc_renames.md")   # tracked: Transient is per-clone
 TRACKER_KEEP = ("PORTED", "DONE_ALREADY_OWNED")
 # W4 handoff (FOUNDRY_HANDOFF_202610151923, DONOR_OFF_LOAD_PROVE_AFTER_BENCH): "generate AridShrubland, TheRot, Webwork".
-# TheRot and Webwork are derived (RM_ rows); AridShrubland has only the frozen twin, named here with its source.
-EXTRA_BIOMES = {"RUT_AridShrubland": "W4 handoff FOUNDRY_HANDOFF_202610151923 (RSW_Plant_Nysyllin_Wild row, W4a)"}
+# TheRot and Webwork are derived (RM_ rows); RM_LeaningScrub is named here with its source.
+EXTRA_BIOMES = {"RM_LeaningScrub": "W4 handoff FOUNDRY_HANDOFF_202610151923 (RSW_Plant_Nysyllin_Wild row, W4a)"}
 
 # Mechanism subjects. Every defName here is checked against the derived defs by `derive` (a missing one is a manifest
 # error, never a guess carried into the live run).

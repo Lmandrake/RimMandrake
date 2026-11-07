@@ -187,7 +187,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // the biome moves it: a swamp is shallower than its hilliness alone, a canyon deeper
                 Assert(RM_LakeFloorMath.Roughness(3, "TemperateSwamp") < RM_LakeFloorMath.Roughness(3, null)
                     && RM_LakeFloorMath.Roughness(3, "RM_FloodedCanyon") > RM_LakeFloorMath.Roughness(3, null)
-                    && RM_LakeFloorMath.Roughness(4, "RUT_TheScald") <= 1f, "biome bias, clamped");
+                    && RM_LakeFloorMath.Roughness(4, "RM_TheScald") <= 1f, "biome bias, clamped");
             });
 
             Case("Lake_floors_are_irregular_not_a_radial_crater", () =>

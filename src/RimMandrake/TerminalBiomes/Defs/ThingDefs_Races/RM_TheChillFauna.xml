@@ -313,7 +313,7 @@
   <!-- RM_Vaunoom — THE V-wake creature, name RULED at the 2026-09-25 sitting
   (terminal_seas_cast_proposal_2026-09-25.md, all 14 approved). Q13 duplicate of
   the campaign RUT_VWake (UtinniPatches), which stays until Phase B because the
-  frozen RUT_PropaneLake twin references it; the two diverge from here.
+  the deleted PropaneLake twin references it; the two diverge from here.
   Utinni-assembly modExtension stripped for standalone-ness, same as the other
   three propane creatures. -->
   <ThingDef ParentName="AnimalThingBase">
@@ -374,7 +374,7 @@
       <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
       <!-- the mechanism RSW_SandoAquaMonster already uses to live on an
-           impassable water biome (SeaBeasts_Sando.xml, RUT_TheScald's own
+           impassable water biome (SeaBeasts_Sando.xml, the deleted TheScald twin's own
            floor resident): treats liquid propane as passable, cost 1, for
            this race only. -->
       <waterSeeker>true</waterSeeker>

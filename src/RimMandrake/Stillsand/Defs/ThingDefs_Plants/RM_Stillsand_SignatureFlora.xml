@@ -5,7 +5,7 @@
   Q1 tier move (2026-09-27 sitting, RATIFIED): the light-pipe nub and the ollim
   (+ its harvested wood) leave the Utinni patch
   (RSW_ExtremeDesertSignatureFlora.xml, itself unchanged and still wired into the
-  frozen RUT_ExtremeDesert.xml twin) for native, franchise-free copies here —
+  the deleted ExtremeDesert twin) for native, franchise-free copies here —
   invented signature flora, no Star Wars IP (Q11a). Stats/description/plant
   fields copied verbatim from the RSW_ originals; only defNames, internal
   cross-references (descriptionHyperlinks) and texPaths are renamed.
@@ -19,8 +19,8 @@
   item only asks for the harvest item itself; "one harvest item + 1-2 recipes is
   pure XML once the harvest item exists" names the recipes as separate, later
   work. Scoped to this new RM_-tier copy only: the original RSW_LightPipeNub
-  (still live on the frozen RUT_ExtremeDesert.xml twin) is left untouched, per
-  R22's freeze and this item's own explicit "do not touch RUT_ExtremeDesert"
+  (live on the deleted ExtremeDesert twin) was left untouched, per
+  R22's freeze and this item's own explicit "do not touch the deleted ExtremeDesert twin"
   instruction.
 
   Art: the real renders (rslpn_v1/rswollim_v1/rswollimwood_v1) are copied into this mod

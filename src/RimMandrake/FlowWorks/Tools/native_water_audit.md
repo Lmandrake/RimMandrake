@@ -33,47 +33,4 @@ Each row is a Water terrain the biome paints (its BiomeDef's terrains, or a Wate
 | RM_Wastes | 15 | RUT_WastesBrineMovingChestDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_Wastes | 15 | RUT_WastesBrineMovingShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_Wastes | 15 | RUT_WastesBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_FeverWood | 8 | RM_FeverWoodMirrorPool | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
-| RUT_GreySea | 1 | WaterOceanDeep | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_PropaneLake | 1 | RM_TheChillDeep | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
-| RUT_Slime | 3 | RM_Fill_SlimeGreen_Brim | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeGreen_Half | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeGreen_Superdeep | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeGreen_Trace | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeRed_Brim | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeRed_Half | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeRed_Superdeep | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeRed_Trace | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeWhite_Brim | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeWhite_Half | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeWhite_Superdeep | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeWhite_Trace | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeYellow_Brim | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeYellow_Half | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeYellow_Superdeep | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_Fill_SlimeYellow_Trace | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeGreenDeep | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeGreenShallow | RM_Liquid_SlimeGreen | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeRedDeep | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeRedShallow | RM_Liquid_SlimeRed | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeWhiteDeep | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeWhiteShallow | RM_Liquid_SlimeWhite | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeYellowDeep | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_Slime | 3 | RM_SlimeYellowShallow | RM_Liquid_SlimeYellow | LastResort | drinks (Q12 native rule, LastResort) |
-| RUT_TheScald | 2 | RM_ScaldMargin | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterDeep | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterMovingChestDeep | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterMovingShallow | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterOceanDeep | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterOceanShallow | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TheScald | 2 | RM_ScaldWaterShallow | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
-| RUT_TwilightSea | 1 | WaterOceanDeep | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RUT_Umbra | 1 | RM_PropaneShallow | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
-| RUT_Wastes | 16 | RM_WastesBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RM_WastesBrineMovingChestDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RM_WastesBrineMovingShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RM_WastesBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RUT_WastesBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RUT_WastesBrineMovingChestDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RUT_WastesBrineMovingShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
-| RUT_Wastes | 16 | RUT_WastesBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |

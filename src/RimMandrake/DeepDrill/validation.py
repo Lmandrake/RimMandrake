@@ -5,7 +5,7 @@ design/RimMandrake/mineral_abundance_registry_2026-10-03.csv) the pick becomes s
 
 STATIC (no game): `python3 validation.py` -> `STATIC: PASS (0 findings)`.
 LIVE CHAIN (owed, needs the bridge; recorded here so the next poking session fills it in rather than inventing one):
-  1. new map on a biome that is nobody's home (e.g. RUT_AridShrubland): call CompDeepScanner.ChooseLumpThingDef 200x on a scanner
+  1. new map on a biome that is nobody's home (e.g. RM_LeaningScrub): call CompDeepScanner.ChooseLumpThingDef 200x on a scanner
      building; every result is Steel.      [UNMEASURED: no live run yet]
   2. map on RM_LanternDeeps: results include Diamond/Ruby/Sapphire/DV_Pyrinth/RM_Lanternstone over 400 picks.   [UNMEASURED]
   3. homeFilterEnabled off: step 1 returns non-steel lumps again.                                              [UNMEASURED]

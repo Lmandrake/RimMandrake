@@ -12,7 +12,7 @@ namespace RimMandrake.Utinni.ScarlandsLadder
     // WARSCAR_PILGRIM_CAMPS_1 (design warscar_turn3_development_2026-09-30.md section 2.10; texts are
     // warscar_bedazzle_cast_2026-09-30.md section 6B, ruled final by card 2026-09-30). The missing caller
     // of GameComponent_LoreStage.AdvanceStage("Scarlands"): a pilgrim's journal, found at a camp on a
-    // RUT_Scarlands map beside the body of the one who wrote it. Reading it (once per journal) moves the
+    // the deleted Scarlands twin map beside the body of the one who wrote it. Reading it (once per journal) moves the
     // Scarlands ladder up one rung, and the letter quotes the journal page that belongs to the new rung.
     // A sixth journal, past the top rung, says nothing new. The body stays: pilgrims never vanish, they
     // are found.
@@ -130,8 +130,8 @@ namespace RimMandrake.Utinni.ScarlandsLadder
                 stages.Append(i == 0 ? "" : ",").Append(s);
                 moved.Append(i == 0 ? "" : ",").Append(r.Contains("moved=True") ? "T" : "F");
             }
-            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RUT_Scarlands");
-            string desc = biome?.description ?? "(no RUT_Scarlands)";
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Warscar");
+            string desc = biome?.description ?? "(no RM_Warscar)";
             return "STAGES " + stages + " moved " + moved + " | desc " + desc.Substring(0, Mathf.Min(120, desc.Length));
         }
 

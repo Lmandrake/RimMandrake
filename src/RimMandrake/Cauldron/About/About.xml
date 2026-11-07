@@ -51,9 +51,7 @@ workerClass is a hard dependency the RimMandrake tier may not assume), two
 new terrain defs (RM_CauldronSoil / RM_CauldronSoilRich, replacing the donor
 BiomesPlus terrain names the twin used with no def backing them anywhere in
 this repo), two renamed-and-duplicated flora ThingDefs (RM_TwistingThornwood,
-RM_DarkCrust; a third, RM_TreeMartyr, was cut 2026-10-18) — the frozen twin's own RUT_-prefixed copies stay
-in place unchanged, serving the live campaign world and RUT_CrackedLands,
-which still shares RM_TwistingThornwood's species; this mod's copies are its
+RM_DarkCrust; a third, RM_TreeMartyr, was cut 2026-10-18) — this mod's copies are its
 own, per the "duplicate, then diverge" rule for content wired into two biome
 mods), 21 non-Star-Wars fauna rows inline, and a Mod Settings screen with the
 standard worldgen-rarity master toggle (MOD_OPTIONS_RETROFIT_1 doctrine —

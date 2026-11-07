@@ -22,7 +22,7 @@
        AA_DarkVandal, AA_DuskProwler, AA_Darkbeast) are deleted; the owner's sheet superseded
        those labels and the Abyss no longer casts the donors. AA_Murkling's block is KEPT:
        the Abyss casts its port RM_Lirrith instead, but the donor itself still ships in
-       RUT_CrackedLands and RM_FloodedCanyon (WildAnimals_CrackedLands.xml), which keep
+       the deleted CrackedLands twin and RM_FloodedCanyon (WildAnimals_CrackedLands.xml), which kept
        showing it as "kessik".
        Not drafted here: AA_DuskRat (owner ruled the name IS the joke, kept),
        AA_SandProwler (already port-named RSW_Vosska "vosska"). -->

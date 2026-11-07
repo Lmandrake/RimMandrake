@@ -20,7 +20,7 @@
   "import" action copied verbatim from the roster
   (design/Jawa/worldbuilding/biomes/rosters/the_blue_desert.json "fauna").
 
-  🔑 CORRECTION: the frozen RUT_BlueDesert.xml's own authoring comment called
+  🔑 CORRECTION: the deleted BlueDesert twin's own authoring comment called
   BOTH `Vapaad` and `AA_Thunderbeast` "the roster's two owner-ruled Star Wars
   rows." Only `Vapaad` is Star Wars IP — `AA_Thunderbeast` is a plain Alpha
   Animals import with no franchise content (same source doc, line 244, gives

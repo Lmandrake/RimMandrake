@@ -70,7 +70,7 @@
       </li>
       <li>
         <!-- FLOODEDCANYON_RM_MOD_BUILD_1: ported from the campaign twin
-             (RUT_CrackedLands.xml) — plain vanilla-Core disease incidents
+             (the deleted CrackedLands twin's def) — plain vanilla-Core disease incidents
              (Core/Defs/Storyteller/Incidents_Map_Disease.xml), not campaign
              flavor, so they belong on the generic RM_ tier body rather than
              behind a Utinni patch. The twin's own value (40) is used. -->

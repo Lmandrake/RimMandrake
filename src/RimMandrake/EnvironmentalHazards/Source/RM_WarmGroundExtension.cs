@@ -17,7 +17,7 @@ namespace RimMandrake.EnvironmentalHazards
     // warmGroundOffsetCelsius), not a per-biome field.
     //
     //   <BiomeDef>
-    //     <defName>RUT_TheRot</defName>
+    //     <defName>the deleted TheRot twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">

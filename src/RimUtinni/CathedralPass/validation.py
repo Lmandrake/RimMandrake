@@ -5,7 +5,7 @@ CATHEDRAL_MECHANOID_PASS_VERBS_1. Run:
     python.exe src/RimMandrake/Utils/modcheck/cli.py run CathedralPass
 
 INTENDED FUNCTION (About.xml): a clan pawn carrying RUT_CathedralPass is read as non-hostile by faction-13
-(Faction.OfMechanoids) machines, on Rust Cathedral maps (RM_RustCathedral / RUT_RustCathedral) only, gated by
+(Faction.OfMechanoids) machines, on Rust Cathedral maps (RM_RustCathedral) only, gated by
 the cathedralPassEnabled setting.
 
 WHAT IT PROVES (live, through existing bridge tools):

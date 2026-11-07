@@ -70,7 +70,7 @@ def pxhash(a):
 deployed = "--deployed" in sys.argv
 for sea, (rmd, rmp, rutd, rutp, key, want) in SEAS.items():
     faces = {}
-    for mod, d, png in ((RM, rmd, rmp), (RUT, rutd, rutp)):
+    for mod, d, png in ((RM, rmd, rmp),):
         t = texture(mod, d)
         if t != "World/Biomes/" + png: bad(f"{sea}: {d} texture {t!r} != World/Biomes/{png}"); continue
         f = os.path.join(mod, "Textures/World/Biomes", png + ".png")
@@ -84,9 +84,8 @@ for sea, (rmd, rmp, rutd, rutp, key, want) in SEAS.items():
             g = os.path.join(gmod, os.path.relpath(f, mod))
             if not os.path.isfile(g): bad(f"{sea}: no game copy {g}")
             elif not np.array_equal(pixels(g), faces[d]): bad(f"{sea}: game copy {g} differs")
-    if len(faces) != 2: continue
-    a, b = faces.values()
-    if a.shape != b.shape or not np.array_equal(a, b): bad(f"{sea}: twins {rmp} / {rutp} differ in pixels")
+    if len(faces) != 1: continue
+    a = next(iter(faces.values()))
     h = pxhash(a)
     if h != want: bad(f"{sea}: face pixels {h} != picked {want} (a regenerated face needs his pick again)")
     st = W.stats(a)
@@ -101,5 +100,5 @@ for sea, (rmd, rmp, rutd, rutp, key, want) in SEAS.items():
         if o is None: bad("Chill: no owner exception in biome_worldfaces.OVERRIDE")
 missing = {"GreySea", "TwilightSea", "Chill"} - set(W.PICKED_ELSEWHERE)
 if missing: bad(f"biome_worldfaces install would overwrite picked faces: {sorted(missing)} not in PICKED_ELSEWHERE")
-print(("OK" if not fails else f"{fails} FAIL") + f": {len(SEAS)} seas, both twins" + (" + game copies" if deployed else ""))
+print(("OK" if not fails else f"{fails} FAIL") + f": {len(SEAS)} seas" + (" + game copies" if deployed else ""))
 sys.exit(1 if fails else 0)

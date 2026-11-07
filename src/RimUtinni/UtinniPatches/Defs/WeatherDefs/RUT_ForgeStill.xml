@@ -6,14 +6,14 @@
   (hot haze, vent-steam ambient, zero rain)." The Forge's calm state -
   forced permanently by RUT_ForgePulse (Defs/GameConditionDefs/
   RUT_ForgePulse.xml) whenever no burst is running. Never reachable via
-  natural weather-commonality rolls (RUT_TheForge.xml's own
+  natural weather-commonality rolls (the deleted TheForge twin's def's own
   baseWeatherCommonalities does not list it) - only ForcedWeather() ever
   selects it, matching ban #6's "no ordinary rain reachable" structure.
 
   rainRate 0 (the spec's own line). accuracyMultiplier/windSpeedFactor
   cribbed from AB_VolcanicAsh (vendor/mod_sources/AlphaBiomes_src/1.6/Defs/
   WeatherDefs/Weathers.xml), the donor stand-in this build supersedes per
-  RUT_TheForge.xml's own header note - closest existing "thick hot haze"
+  the deleted TheForge twin's def's own header note - closest existing "thick hot haze"
   precedent. skyColors likewise cribbed from AB_VolcanicAsh's dark-ash
   palette with a warmer red-shifted tint (sky reds bumped) for "hot haze"
   over "volcanic ash cloud".

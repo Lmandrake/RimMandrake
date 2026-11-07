@@ -4,7 +4,7 @@
   RM_Miasma's gradient landTerrain and stranding dryTerrain name this, so the biome's signature mechanic
   (brine receding and leaving crust) paints without the campaign. Authored here rather than reusing
   RM_SaltCrustShore: that def lives in mandrake.rm.terminalbiomes (Miasma does not depend on it) and its
-  description is the Grey Sea's. The campaign twin RUT_Miasma keeps RUT_Jawa_SaltCrust.
+  description is the Grey Sea's. The campaign twin the deleted Miasma twin kept RUT_Jawa_SaltCrust.
   Cosmetic only: fertility 0, no yield. Fields mirror RUT_Jawa_SaltCrust; texture is Odyssey's DryLakeBed.
 -->
 <Defs>

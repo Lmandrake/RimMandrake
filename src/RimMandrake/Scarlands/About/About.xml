@@ -41,9 +41,7 @@ A crater-scarred plateau of shattered megastructure floors and slag hills, still
 laid out like a defense nobody won -- bunkers, embankments, ruined turret rings
 and burnt shield emplacements all facing outward, poisoned ground that never
 clears, and machines still patrolling lines that lead nowhere. Fully generalized:
-it names no other franchise or campaign. A separate frozen campaign world's own
-Scarlands instance (RUT_Scarlands, src/RimUtinni/UtinniPatches, labelled
-"Warscar" per the owner's naming ruling) is unaffected and unrelated; this is a
+it names no other franchise or campaign. This is a
 new sibling biome for everyone else's worlds, not a rename of that one.
 
 RM tier: nothing here knows what campaign or planet uses it.
@@ -76,7 +74,7 @@ NOT absorbed here, on inspection: `mandrake.rut.scarlandsladder` (the reveal
 lore-stage table). Its own About.xml already states it correctly:
 "this mod is the RimUtinni half, per the engine/content rule in
 NAMING_SCHEME_PLAN.md Section 2" -- its `RM_LoreStageTableDef` hard-targets the
-frozen twin's own `RUT_Scarlands` defName by name, and even its placeholder
+`RM_Warscar` defName by name, and even its placeholder
 stage-5 text already names an Ash'karr place (the Ashfall Road). Moving that
 content into a franchise/campaign-free RM mod would put campaign lore inside a
 mod whose whole contract is "nothing here knows what campaign or planet uses
@@ -101,8 +99,7 @@ mechanic yet (the frozen twin's own `RUT_Glower` harvest loop is still owed to
 `SCARLANDS_MECHANICS_2`), so there is no mechanic-specific toggle to add this
 pass.
 
-Live-tile safety: the frozen `RUT_Scarlands` keeps its 90 live tiles on the
-canonical save untouched -- this build changes nothing about it, matching the
+Matching the
 compatibility-duplicate half of the item's own spec (it is frozen with a header
 notice, never deleted or repointed).
 WARSCAR_FREE_TIER_BODY_1: the free tier owns its cast inline -- `RM_Chatrak`

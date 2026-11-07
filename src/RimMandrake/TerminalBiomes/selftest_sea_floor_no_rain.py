@@ -19,10 +19,6 @@ FILES = [
     "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml",
     "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml",
     "src/RimMandrake/LanternDeeps/Defs/Biomes/RM_LanternDeeps.xml",
-    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TwilightSea.xml",
-    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml",
-    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml",
-    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml",
     "src/RimMandrake/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedFloorBiomes.xml",
     "src/RimMandrake/DivingInteraction/Patches/RM_SeabedFloor_GreyWeather.xml",
 ]
@@ -57,7 +53,7 @@ def main():
         bad = precip_in(root)
         print("%s  %s %s" % ("FAIL" if bad else "ok  ", rel, bad or ""))
         fails += bool(bad)
-    if seen < 9:
+    if seen < 5:
         print("FAIL  only %d weather lists seen; instrument is blind" % seen); fails += 1
     print("%s: %d file(s), %d weather list(s)" % ("FAIL" if fails else "PASS", len(FILES), seen))
     return 1 if fails else 0

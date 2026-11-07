@@ -44,11 +44,11 @@
   (Defs/MapGeneration/RUT_ScatterShrinesRare.xml, this same commit) - a clone
   with a quartered `countPer10kCellsRange`, documented there.
 
-  ANCIENT=ALLOW rows (the two poles, Scarlands, the Forge, RUT_TheScald,
-  Wasteland, RM_TheSump, RUT_Sump, ZBiome_DesertOasis, ZBiome_Badlands, Desert) get NO
+  ANCIENT=ALLOW rows (the two poles, Scarlands, the Forge, the deleted TheScald twin,
+  Wasteland, RM_TheSump, the deleted Sump twin, ZBiome_DesertOasis, ZBiome_Badlands, Desert) get NO
   patch here - default vanilla behaviour already allows the stock genstep,
   and this item's spec does not ask for anything tighter on those rows.
-  RUT_TwilightSea/RUT_GreySea (ANCIENT=DENY) are confirmed `isWaterBiome:
+  the deleted TwilightSea twin/the deleted GreySea twin (ANCIENT=DENY) are confirmed `isWaterBiome:
   true` in the live def dump - `ScatterShrines`'s own `allowInWaterBiome:
   false` already excludes them, matching the ratified table's own text
   ("the engine already refuses shrine scatter in water biomes...so DENY
@@ -72,18 +72,6 @@
   <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
 
-  <!-- RimUtinni own tier: RUT_SleepingIce, ANCIENT-DENY. No FindMod needed. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]/preventGenSteps</xpath>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]</xpath>
-      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
-    </nomatch>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_SleepingIce"]/preventGenSteps</xpath>
-      <value><li>ScatterShrines</li></value>
-    </match>
-  </Operation>
 
   <!-- Twin op for RM_SleepingIce (NIGHTSIDEICE_RM_MOD_BUILD_1 step 4, §7(b)): the live
        world still carries 100% RUT_ tiles, so the RUT_ op above stays; this op keeps
@@ -175,38 +163,7 @@
     </match>
   </Operation>
 
-  <!-- POISONFOREST_RM_MOD_BUILD_1, 2026-09-25: an "Advanced Biomes (Continued)"
-       block targeting that donor's own "PoisonForest" biome stood above until the
-       donor was retired 2026-11-01 (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT).
-       These two unconditional ops (no PatchOperationFindMod gate needed — both
-       targets are our own defs, always present once their mod is active) give
-       RUT_Cauldron and its RimMandrake successor RM_Cauldron the same
-       ScatterShrines suppression/replacement every other Ash'karr biome gets,
-       per biome_mod_architecture.md §5 step 4 ("anything that must keep working
-       on the live world gets a second op for RM_<Biome> beside the RUT_ one"). -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]/preventGenSteps</xpath>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
-      <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
-    </nomatch>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]/preventGenSteps</xpath>
-      <value><li>ScatterShrines</li></value>
-    </match>
-  </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]/extraGenSteps</xpath>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
-      <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
-    </nomatch>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RUT_Cauldron"]/extraGenSteps</xpath>
-      <value><li>RUT_ScatterShrinesRare</li></value>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/preventGenSteps</xpath>

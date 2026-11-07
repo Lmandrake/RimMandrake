@@ -5,7 +5,7 @@
 
     THEROT_RM_MOD_BUILD_1 §6/§7: the biome's own NATURAL ground, replacing the
     donor Alpha Biomes terrains (AB_MycoticGrass / AB_MycoticSoilRich) the
-    RUT_TheRot twin used in <terrainsByFertility>. Field values (pathCost,
+    the deleted TheRot twin used in <terrainsByFertility>. Field values (pathCost,
     fertility, affordances, statBases) are copied from the donor's own source
     (vendor/mod_sources/AlphaBiomes_src/1.6/Defs/TerrainDefs/Terrain_MycoticJungle.xml,
     AB_MycoticGrass/AB_MycoticSoilRich) — measured, not guessed — so the biome

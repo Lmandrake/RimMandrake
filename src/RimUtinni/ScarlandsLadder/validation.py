@@ -4,16 +4,16 @@ WARSCAR_PILGRIM_CAMPS_1: the pilgrim camps are the gate of the Scarlands lore la
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run ScarlandsLadder
 
-Environment: minimal + every DLC + mandrake.rm.lorestages + mandrake.rut.patches (RUT_Scarlands) + mandrake.rut.antiquities
+Environment: minimal + every DLC + mandrake.rm.lorestages + mandrake.rm.biomes (RM_Warscar) + mandrake.rut.antiquities
 (hard dependency since WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1) + this mod.
 
 WHAT IT PROVES (state reads through jawa/static_call proofs):
   * reading_walks_the_ladder: five journals read in sequence walk rungs 1-5, a sixth moves nothing, and
-    RUT_Scarlands' live description is rung 5's ruled text.
+    RM_Warscar's live description is rung 5's ruled text.
   * reading_off_teaches_nothing: with journalsAdvanceLadder off a read leaves the ladder where it was.
   * camps_place: the camp genstep places a cold fire, the pilgrim's body and a journal per camp.
-NOT PROVEN HERE: a camp generating on a real RUT_Scarlands map through the biome's extraGenSteps (first
-poke: generate a RUT_Scarlands quicktest and list RUT_PilgrimJournal), the read JOB itself (since
+NOT PROVEN HERE: a camp generating on a real RM_Warscar map through the biome's extraGenSteps (first
+poke: generate a RM_Warscar quicktest and list RUT_PilgrimJournal), the read JOB itself (since
 WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1 the only read is RUT_ExamineAntiquity at the Antiquities Reading Station,
 which calls the journal comp's Notify_Catalogued -> RUT_PilgrimJournals.Read; first poke: jawa/ordered_job
 RUT_ExamineAntiquity on a journal + RUT_AntiquityReadingStation, then the ladder stage and the journal's
@@ -124,7 +124,7 @@ def _build_suite():
                 if not txt.startswith("STAGES 1,2,3,4,5,5 moved T,T,T,T,T,F"):
                     raise ExpectationFailed("six reads did not walk rungs 1-5 then stop: %s" % txt)
                 if "Along the Ashfall Road" not in txt and "Crater fields" not in txt:
-                    raise ExpectationFailed("RUT_Scarlands description not rewritten: %s" % txt)
+                    raise ExpectationFailed("RM_Warscar description not rewritten: %s" % txt)
         with t.component("reading_off_teaches_nothing", toggle="journalsAdvanceLadder"):
             _set(t, "journalsAdvanceLadder", False)
             try:

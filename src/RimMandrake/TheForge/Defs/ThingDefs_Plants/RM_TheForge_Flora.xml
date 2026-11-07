@@ -13,11 +13,11 @@
 
   RM_FireLavender / RM_HeatsinkFungus: fields and art copied byte-identical
   from RUT_FireLavender / RUT_HeatsinkFungus (only reference in the repo was
-  RUT_TheForge.xml's own wildPlants, confirmed via grep before this move —
+  the deleted TheForge twin's def's own wildPlants, confirmed via grep before this move —
   no other biome shares them, so a straight rename is correct).
 
   RM_CinderCrust: NOT a straight rename of RUT_Sagecrust. That def is SHARED
-  between two biomes (RUT_TheForge.xml AND RUT_TheRot.xml both list it), and
+  between two biomes (the deleted TheForge twin's def AND the deleted TheRot twin's def both list it), and
   THEROT_RM_MOD_BUILD_1 already claimed the straight-rename copy as
   RM_Sagecrust (src/RimMandrake/TheRot/Defs/ThingDefs_Plants/
   RM_RotSporeKit_Flora.xml) — a second ThingDef with the same defName

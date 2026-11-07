@@ -4,7 +4,7 @@
   RM_Kasselith: owned RM_ port of the megathrips (VFEI2_Megathrips, oskarpotocki.vfe.insectoid2
   1.6/Defs/ThingDefs_Races/Races_Megathrips.xml; its parent VFEI2_BaseInsect inlined), plain XML copy 2026-10-18 for
   donor retirement (owner: "Just put in placeholder art for now or donor copies and retire these mods!!! Just get it
-  done."). Free RM_ tier, home mod Fever Wood (RM_FeverWood 0.5 and its campaign twin RUT_FeverWood 0.5, wood-borer).
+  done."). Free RM_ tier, home mod Fever Wood (RM_FeverWood 0.5 and its campaign twin the deleted FeverWood twin 0.5, wood-borer).
   Name and description are the Feverwood sheet's (2026-10-08, "Redo name and description."), formerly applied to the
   donor def by UtinniPatches/Patches/FeverWood_Rename.xml; the Ashkarr tolerance pin 0..78.1 is folded in.
   Departures, all to make it plain XML with no VFE Insectoids reference:

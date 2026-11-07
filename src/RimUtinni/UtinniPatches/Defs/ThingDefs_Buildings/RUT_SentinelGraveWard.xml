@@ -45,7 +45,7 @@
   GenStep was the only route. `RM_GenStep_ScatterSentinelGraveWards`
   (src/RimMandrake/EnvironmentalHazards/Source/, wired via
   Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml into
-  RUT_Scarlands.xml's own extraGenSteps) is the plain GenStep this needed —
+  the deleted Scarlands twin's def's own extraGenSteps) is the plain GenStep this needed —
   same shape as RM_SacredWall_Conduit.xml's own precedent
   (RustCathedralWalls, same "Forgotten"/Cathedral lore family):
   `.SetFaction(Faction.OfMechanoids)` at placement time, the SAME faction

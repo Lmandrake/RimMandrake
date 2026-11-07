@@ -21,7 +21,7 @@
   RM_WebworkFlora.xml. `WildAnimals_Pyrelands.xml` / `WildAnimals_Webwork.xml`
   are the shape this copies, applied here to a plant instead of an animal.
 
-  Commonality kept at 0.3 — the same value the frozen `RUT_Webwork.xml` twin
+  Commonality kept at 0.3 — the same value the deleted Webwork twin
   has always carried this row at (its own wildPlants block, unedited, frozen
   2026-09-25) — matching the ruling's "kept low," not raised or lowered by
   this patch. `RM_Kessaroth` (RM_WebworkFlora.xml) ships in RM_Webwork itself

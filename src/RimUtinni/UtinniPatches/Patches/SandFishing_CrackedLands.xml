@@ -4,20 +4,20 @@
   this file (everything below that used to target `ZBiome_Badlands`'s own
   fishTypes/maxFishPopulation) is REMOVED — it was dead on the live map. The
   donor `ZBiome_Badlands` is not the biome Ash'karr's Cracked Lands actually
-  uses; `RUT_CrackedLands` (BIOME_OWNERSHIP_WAVE_1, a standalone BiomeDef
+  uses; the deleted CrackedLands twin (BIOME_OWNERSHIP_WAVE_1, a standalone BiomeDef
   with no ParentName) is, and nothing ever patched IT. MEASURED via
-  `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12): RUT_CrackedLands covers
+  `world/ASHKARR_WORLDMAP_tiles.csv` (2026-09-12): the deleted CrackedLands twin covers
   970 tiles, ZBiome_Badlands covers zero. The fishTypes/maxFishPopulation
   values that used to live here are now wired DIRECTLY onto
-  `Defs/BiomeDefs/RUT_CrackedLands.xml` (see its own header for the full
-  finding, which also covers RUT_WeepingStones — same bug, same fix, same
+  `Defs/BiomeDefs/the deleted CrackedLands twin's def` (see its own header for the full
+  finding, which also covers the deleted WeepingStones twin — same bug, same fix, same
   wave). Only the OTHER operation in this file survives: the §2B.rare
   addition to `RSW_RareSandCatches`, a different mod's ThingSetMakerDef,
   entirely unaffected by this bug (it patches a ThingSetMakerDef by
   defName, not a BiomeDef whose identity turned out to be wrong).
 
   Below this note is the ORIGINAL header, kept for provenance of the numbers
-  now living in RUT_CrackedLands.xml — SAND_SWIMMERS_MOD_1's original
+  now living in the deleted CrackedLands twin's def — SAND_SWIMMERS_MOD_1's original
   framing: biome wiring that put the sand-swimmer fish family (RimStarWars:
   SWBestiary — RM_DuneCrawler / RSW_SandStalker / RM_GlassPearl /
   RSW_RareSandCatches) into `ZBiome_Badlands` (the Cracked Lands, More
@@ -79,7 +79,7 @@
 <Patch>
 
   <!-- FLOODEDCANYON_RM_MOD_BUILD_1 (2026-09-21), §5 Phase A step 4 — a
-       SECOND, PARALLEL op mirroring RUT_CrackedLands.xml's own inline
+       SECOND, PARALLEL op mirroring the deleted CrackedLands twin's def's own inline
        fishTypes/maxFishPopulation (see that def's header for the wave-3
        finding) onto the surviving twin, RM_FloodedCanyon, which ships no
        fishTypes of its own. RM_FloodedCanyon has no existing fishTypes node

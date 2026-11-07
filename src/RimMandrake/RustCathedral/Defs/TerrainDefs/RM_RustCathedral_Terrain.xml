@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUSTCATHEDRAL_RM_MOD_BUILD_1 step 2. The frozen RUT_RustCathedral.xml
+  RUSTCATHEDRAL_RM_MOD_BUILD_1 step 2. the deleted RustCathedral twin
   borrowed two Alpha Biomes donor TerrainDefs outright (AB_SoilOnCrackedMetal
   for lakeBeachTerrain/mudTerrain/riverbankTerrain, GU_MetalFloor1 for its
   sole terrainsByFertility row) — a donor DEF is a hard dependency the

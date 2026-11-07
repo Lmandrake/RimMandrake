@@ -18,7 +18,7 @@ namespace RimMandrake.EnvironmentalHazards
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
-    //         <onlyInBiomes><li>RUT_Miasma</li></onlyInBiomes>
+    //         <onlyInBiomes><li>the deleted Miasma twin</li></onlyInBiomes>
     //         <minPeakSeverity>0.6</minPeakSeverity>
     //         <noBoonWeight>55</noBoonWeight>
     //         <boonOptions>

@@ -6,11 +6,11 @@
   ArmLatentHazard, extended this spike pass with pawnKindFilter/
   requiredHediff (both BUILT, compiling, 0 warnings/errors) specifically for
   this mechanic: arm ONLY the plated grazers that already rolled vanilla
-  Scaria (biome's own wildAnimalScariaChance, see RUT_Scarlands.xml) — never
+  Scaria (biome's own wildAnimalScariaChance, see the deleted Scarlands twin's def) — never
   every animal on the map, never a grazer that never carried the disease at
   all.
 
-  pawnKindFilter: the two PawnKindDefs RUT_Scarlands.xml's own wildAnimals
+  pawnKindFilter: the two PawnKindDefs the deleted Scarlands twin's def's own wildAnimals
   list already comments "plated-grazer, keep" — RSW_FoundryBeetle (our own
   clone, mandrake.rsw.swbestiary). The original second entry, AA_SpinedGow
   (Alpha Animals, retired 2026-10-18), is no longer in the filter. AA_Helixien is commented "mortuary-guild,
@@ -35,14 +35,14 @@
   colony from waiting out a full day before any grazer already on the map
   can be swept.
 
-  🔴 BUG FOUND AND FIXED THIS PASS: RUT_Scarlands.xml (a fresh BiomeDef with
+  🔴 BUG FOUND AND FIXED THIS PASS: the deleted Scarlands twin's def (a fresh BiomeDef with
   no ParentName) never carried <wildAnimalScariaChance> at all — the donor
   vanilla Scarlands.xml sets 0.5, but our own biome def silently defaulted
   to BiomeDef's own field default of 0 (decompile-confirmed,
   RimWorld/BiomeDef.cs:101). Without that field this mechanic's own arming
   gate (requiredHediff=Scaria) would have nothing to ever find — zero wild
   animals would ever carry vanilla Scaria to begin with. Fixed in
-  RUT_Scarlands.xml this same pass (see that file's own header note).
+  the deleted Scarlands twin's def this same pass (see that file's own header note).
 
   MayRequire is load-bearing: conditionClass and the modExtension both live
   in mandrake.rm.environmentalhazards.

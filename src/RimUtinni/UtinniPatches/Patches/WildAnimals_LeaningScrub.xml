@@ -12,12 +12,12 @@
   (Terrorworm, AA_Cactipine, AA_Wildpawn, AA_Wildpod — Q9
   permits those directly on a RM_ def). Per §7 Q11 ("RimMandrake should not
   name star wars ever"), RM_LeaningScrub may not carry any Star Wars
-  creature by any route, so every one of the frozen RUT_AridShrubland.xml's
+  creature by any route, so every one of the deleted AridShrubland twin's
   40 Star Wars rows rides HERE instead. Shape: WildAnimals_Pyrelands.xml /
   WildAnimals_Greentide.xml.
 
   🔑 SOURCE OF TRUTH: every defName and weight below is copied verbatim from
-  the LIVE RUT_AridShrubland.xml wildAnimals block, parsed 2026-09-25 (45
+  the LIVE the deleted AridShrubland twin's def wildAnimals block, parsed 2026-09-25 (45
   rows total, MEASURED via len(list(node)), not grep) — not from
   arid_shrubland.json (stale, see LEANINGSCRUB_RM_MOD_BUILD_1's own §3,
   which found the roster JSON undercounts the Star Wars rows 35 vs the

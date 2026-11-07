@@ -15,7 +15,7 @@
   is one of the sallik family, removed from the Grey Sea only. Two options
   remain: the salt cameo and the silver.
 
-  RUT_RareGreyCatches is left untouched — RUT_GreySea.xml is frozen and
+  RUT_RareGreyCatches was left untouched — the deleted GreySea twin's def was frozen and
   still points at it; both retire together at the Phase B repaint.
   ============================================================================
 -->

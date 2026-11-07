@@ -312,7 +312,7 @@ REVIEWED = {
     "RimMandrake/Scarlands/Source/RM_WarscarMod.cs": ("04432e3fd8a690cf", "RM_Warscar only, settings-off species"),
     "RimMandrake/Scarlands/Source/RM_WarscarPatches.cs": ("b7e7cfb45db31290", "CommonalityOfAnimalNow postfix returns at once unless "
         "def is RM_Tetchik"),
-    "RimMandrake/TheRot/Source/RM_TheRotMod.cs": ("b4be10c77fcee8f0", "RM_TheRot only, removes RM_Hwelgrue"),
+    "RimMandrake/TheRot/Source/RM_TheRotMod.cs": ("8303425c6afb163c", "RM_TheRot only, removes RM_Hwelgrue"),
     "RimMandrake/TheSump/Source/RM_KethrelStartup.cs": ("4ad9eba0dbfbf322", "RM_TheSump only, RM_Kethrel rows"),
     "RimMandrake/TileFeatures/Source/RM_TileFeatureApplier.cs": ("480a08ceb14ac4ec", "snapshots/restores TileMutatorDef factors; "
         "site maps have their centre's mutators stripped"),

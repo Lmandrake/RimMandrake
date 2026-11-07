@@ -13,7 +13,7 @@
   IncidentDef XML and its cooldown tuning" owed to the full build. This file
   ships it — completing the bottom-walker half of S5.
 
-  category Misc, allowedBiomes RUT_TheScald — same shape RM_Surge.xml
+  category Misc, allowedBiomes the deleted TheScald twin — same shape RM_Surge.xml
   (MIASMA_MECHANICS_1 M2, this same folder) already established for "an
   incident weighted only into one biome": Misc keeps it out of the vanilla
   Storyteller's ThreatSmall/ThreatBig queues (this is atmosphere, not a
@@ -44,7 +44,7 @@
 
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2, 2026-09-25: moved into this mod from
   UtinniPatches (frozen twin, same folder there). allowedBiomes retargeted
-  RUT_TheScald -> RM_TheScald — this file physically relocated with the rest
+  the deleted TheScald twin -> RM_TheScald — this file physically relocated with the rest
   of the S5 kit, so it now names this mod's own biome defName.
   ============================================================================
 -->
@@ -64,7 +64,6 @@
       <li>RM_TheScald</li>
       <!-- The world-carrying frozen twin keeps this incident until the
            terminal repaint; gated so a standalone install never dangles. -->
-      <li MayRequire="mandrake.rut.patches">RUT_TheScald</li>
     </allowedBiomes>
     <modExtensions>
       <!-- Mod Settings gate: Terminal Biomes' S5 sail + walker toggle. -->

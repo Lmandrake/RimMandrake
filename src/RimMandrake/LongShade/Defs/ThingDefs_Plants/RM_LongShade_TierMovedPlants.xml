@@ -4,7 +4,7 @@
   anyway"): surra grass and vellara bloom are invented, not Star Wars canon, so they leave SWBestiary's
   DesertPort (RSW_DesertPortMisc_Plants.xml) for this mod under RM_ names. Fields carried verbatim; textures moved
   through the art ledger. A saved RSW_ name loads as the RM_ def through RM_PlantTierReconcile_Aliases.xml
-  (EnvironmentalHazards). Wild in RM_LongShade (inline, this mod) and RUT_Desert.
+  (EnvironmentalHazards). Wild in RM_LongShade (inline, this mod) and the deleted Desert twin.
 -->
 <Defs>
 

@@ -176,7 +176,7 @@ PLANTS = [
     ("thresholds out of order", "Source/RM_Kethrel.cs", "{ 3f, 10f, 22f }", "{ 3f, 22f, 10f }"),
     ("molt default under the top stage", "Source/RM_TheSumpMod.cs", "public static float kethrelMoltLoadKg = 30f;", "public static float kethrelMoltLoadKg = 20f;"),
     ("vault never ticks", "Defs/ThingDefs_Buildings/RM_TarVault.xml", "<tickerType>Normal</tickerType>", ""),
-    ("biome gate names a ghost", "Source/RM_GenStep_DeepBlackMere.cs", '"RM_TheSump", "RUT_Sump"', '"RM_TheSump", "RUT_Sumpp"'),
+    ("biome gate names a ghost", "Source/RM_GenStep_DeepBlackMere.cs", '{ "RM_TheSump" }', '{ "RM_TheSumpp" }'),
     ("stale mere constant", "Source/RM_GenStep_DeepBlackMere.cs", "private const int MinMereCells = RM_MereKernel.MinMereCells;", "private const int MinMereCells = 180;"),
     ("kernel imports Verse", "Source/Kernel/RM_SumpKernel.cs", "using System;", "using System;\nusing Verse;"),
     ("kernel missing from csproj", "Source/RM_TheSump.csproj", '<Compile Include="Kernel\\RM_SumpKernel.cs" />', ""),

@@ -4,7 +4,7 @@
   RM_TheChillTerrains.xml             TerminalBiomes · authored 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 §2/§11 step 2 — this mod's ONE genuinely new
-  authoring task. RUT_PropaneLake.xml's own waterDeepTerrain/
+  authoring task. the deleted PropaneLake twin's def's own waterDeepTerrain/
   waterShallowTerrain/terrainsByFertility point at AB_PropaneLake /
   AB_SolidPropane (Alpha Biomes, sarg.alphabiomes) — MEASURED: neither
   defName is defined anywhere under src/, so a donor TerrainDef sitting in a

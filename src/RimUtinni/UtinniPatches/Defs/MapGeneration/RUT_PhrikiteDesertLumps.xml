@@ -2,9 +2,9 @@
 <!--
   ASTEROID_DESERT_ORES_1. Phrikite's only placement: a few small lumps of RSW_MineablePhrikite in the natural rock of
   extreme-desert maps (owner, question card 2026-10-09, typed "Both": trade AND a rare desert deposit). Gated on
-  RM_Stillsand (the extreme desert) and its frozen twin RUT_ExtremeDesert, and on Mod Settings "Phrikite ore in the
+  RM_Stillsand (the extreme desert) and its the deleted ExtremeDesert twin, and on Mod Settings "Phrikite ore in the
   extreme desert". Registered on Base_Player by Patches/RUT_PhrikiteDesertLumps_Register.xml; gates itself.
-  ⚠️ WHICH desert is PROVISIONAL: the registry named RM_Stillsand, RM_BlueDesert and RUT_ExtremeDesert as candidates and
+  ⚠️ WHICH desert is PROVISIONAL: the registry named RM_Stillsand, RM_BlueDesert and the deleted ExtremeDesert twin as candidates and
   no ruling picked one (owner question open); change allowedBiomes here and in the registry row to move it.
 
   PROVISIONAL numbers (no calibration, no owner ruling): 0.15~0.3 lumps per 10k cells, floor 1 lump per map; lump 3~6 cells
@@ -24,7 +24,6 @@
         <!-- AnyOf: stillsand is composed into mandrake.rm.biomes and has no runtime packageId, so MayRequire on it
              alone never loaded this entry (effective_def_lint.py member_mayrequire, 2026-10-10) -->
         <li MayRequireAnyOf="mandrake.rm.stillsand,mandrake.rm.biomes">RM_Stillsand</li>
-        <li>RUT_ExtremeDesert</li>
       </allowedBiomes>
     </genStep>
   </GenStepDef>

@@ -4,7 +4,7 @@
   <!-- RUST_CATHEDRAL_MECHANICS_1 §2, Tier 2. Same shape and same reasoning
        as RM_CathedralDeckPlate.xml (RockBase, veinMineable=false,
        mineableScatterCommonality=0, placed by the dedicated scatter step,
-       also carried in RUT_RustCathedral's forceRockTypes) — sparser
+       also carried in the deleted RustCathedral twin's forceRockTypes) — sparser
        (Defs/MapGeneration/RM_CathedralWallScatter.xml gives this a much
        lower coveredCellsPer10Cells than Tier 1) and yields the new
        RM_DeadSmartsteel resource (../ThingDefs_Items/RM_DeadSmartsteel.xml)

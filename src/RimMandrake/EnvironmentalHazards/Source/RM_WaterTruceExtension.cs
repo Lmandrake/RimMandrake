@@ -17,7 +17,7 @@ namespace RimMandrake.EnvironmentalHazards
     // could drift from this one.
     //
     //   <BiomeDef>
-    //     <defName>RUT_WeepingStones</defName>
+    //     <defName>the deleted WeepingStones twin</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_WaterTruceExtension">

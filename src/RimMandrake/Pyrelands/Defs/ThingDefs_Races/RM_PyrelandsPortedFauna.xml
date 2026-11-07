@@ -243,7 +243,7 @@
   <!-- ======================================================================
        RM_Sytheclaw — was AA_Razorjack (Alpha Animals).
        Fire-follower band, Pyrelands commonality 0.20; also the floor-predator /
-       "the-pickers" rows in RUT_Greentide, RUT_Contagion, BiomeCypreJungle and
+       "the-pickers" rows in the deleted Greentide twin, the deleted Contagion twin, BiomeCypreJungle and
        AB_OcularForest, all repointed here in the same change.
        Body: the donor's AA_DualJawedQuadruped is an Alpha Animals BodyDef, so
        this uses Core's QuadrupedAnimalWithPawsAndTail instead — MEASURED to

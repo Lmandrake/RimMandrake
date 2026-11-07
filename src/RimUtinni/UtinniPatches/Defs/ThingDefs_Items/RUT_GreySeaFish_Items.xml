@@ -37,14 +37,14 @@
 
   The RUT_ originals below are NOT deleted, because two things in this same
   mod still resolve against them by name and cannot be edited:
-  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml is explicitly
+  the deleted GreySea twin's def is explicitly
   FROZEN ("stays as it is, byte-for-byte... deleting it before then destroys
   the save" — its own header, 2026-09-25) and its fishTypes still name
   RUT_Sallik/Karrud/Hessal/Oomal/Maalu/Immu/Haarn; and this mod's own
   RUT_RareGreyCatches.xml (a separate copy from the TerminalBiomes one)
   still names RUT_Hessal. Deleting these ThingDefs would leave both of those
   with unresolvable cross-references. They retire together at the Phase B
-  planet repaint, when RUT_GreySea is replaced by RM_GreySea wholesale —
+  planet repaint, when the deleted GreySea twin is replaced by RM_GreySea wholesale —
   not before.
 -->
 <Defs>

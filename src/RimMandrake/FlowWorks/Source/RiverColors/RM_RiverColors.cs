@@ -36,12 +36,12 @@ namespace RimMandrake.FlowWorks.RiverColors
     // otherwise-unmodified original method receives for a value-type parameter.
     //
     // OUT OF SCOPE, confirmed by source, not guessed: the propane lake's world-map
-    // tint (RUT_PropaneLake) and any other biome's world colour is NOT this
+    // tint (the deleted PropaneLake twin) and any other biome's world colour is NOT this
     // mechanism. WorldDrawLayer_Terrain.Regenerate() (RimWorld/Planet/
     // WorldDrawLayer_Terrain.cs) picks `tile.PrimaryBiome.DrawMaterial` per tile --
     // DrawMaterial is built from the BiomeDef's own <texture> field (Source/RimWorld/
     // BiomeDef.cs), which is already a live lever
-    // (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml currently points
+    // (the deleted PropaneLake twin's def currently points
     // it at World/Biomes/RUT_Chill). Retinting the lake is a texture-art task on
     // that field, not a C# patch, and is left undone here.
     // RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (owner 2026-10-16: "Add river colors into flowworks as part of
