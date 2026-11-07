@@ -114,17 +114,18 @@ def joints(B, V, rows):
     V.row(rows, "SC_bend_draws_no_joint_tee_draws_one", "PASS" if ok else "FAIL", "MOD",
           {"bend": {"decals": bend.get("decals"), "nodes": bend_n}, "tee": {"decals": tee.get("decals"), "nodes": tee_n}})
     # the sparse room: three separated lines side by side; the block: 5 x 5
-    t0 = B.probe("census").get("tangles", 0)
+    tangles = lambda: B.probe("motion").get("tangles", 0)   # noqa: E731
+    t0 = tangles()
     x3, z3 = x + 40, z
     B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x3, z3, x3 + 10, z3) + _line(x3, z3 + 4, x3 + 10, z3 + 4) + _line(x3, z3 + 8, x3 + 10, z3 + 8)),
            faction="player", wipeExisting=False)
     B.ticks(3)
     B.probe("rebuild")
-    t1 = B.probe("census").get("tangles", 0)
+    t1 = tangles()
     B.call("jawa/build_batch", ops=V.ops("PowerConduit", [(x3 + i, z3 + 14 + j) for i in range(5) for j in range(5)]), faction="player", wipeExisting=False)
     B.ticks(3)
     B.probe("rebuild")
-    t2 = B.probe("census").get("tangles", 0)
+    t2 = tangles()
     V.row(rows, "SC_sparse_room_no_tangle", "PASS" if t1 == t0 and t2 == t1 + 1 else "FAIL", "MOD", {"before": t0, "afterSparse": t1, "afterBlock": t2})
 
 
@@ -144,18 +145,21 @@ def slack_and_shapes(B, V, rows):
     else:
         alike = sum(c.get("tooAlike") or 0 for c in cl)
         pairs = sum(c.get("pairs") or 0 for c in cl)
-        V.row(rows, "SC_no_two_cords_alike", "PASS" if alike == 0 and pairs > 0 else "FAIL", "MOD", {"tooAlike": alike, "pairs": pairs, "classes": cl})
+        V.row(rows, "SC_no_two_cords_alike", "UNMEASURED" if not pairs else ("PASS" if alike == 0 else "FAIL"), "MOD", {"tooAlike": alike, "pairs": pairs, "classes": cl})
 
 
 def _span(B, V, a, b, batt):
-    """Two masts and a charged battery beside the first, linked and then cut. -> (id a, id b, live half of a's fallen, its tip cell)"""
+    """Two masts (and a charged battery on conduit from the first, if asked), linked and then cut. -> (id a, id b, live half of a's fallen, its tip cell)"""
     from validation_aerial import anchors_by_pos
     B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [a, b]), faction="player", wipeExisting=False)
-    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % batt, faction="player", wipeExisting=False)
+    if batt:
+        B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(a[0], a[1] + 1, a[0], batt[1] - 1)), faction="player", wipeExisting=False)
+        B.call("jawa/build_batch", ops="Battery:%d,%d,0" % batt, faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(3)
-    _fill(B, (batt[0] - 2, batt[1] - 2, 5, 5))
-    B.ticks(3)
+    if batt:
+        _fill(B, (batt[0] - 2, batt[1] - 2, 5, 5))
+        B.ticks(3)
     ap = anchors_by_pos(B.ap("census"))
     ia, ib = ap[a]["id"], ap[b]["id"]
     if not any(l.get("state") == "Up" for l in ap[a].get("links") or []):
@@ -176,7 +180,7 @@ def restring(B, V, rows):
     _site(B, V)
     from validation_aerial import _wire_trial
     home = {p["id"]: p.get("pos") for p in B.probe("colonists").get("pawns") or []}
-    ia, ib, live, tip = _span(B, V, (x + 2, z + 4), (x + 16, z + 4), (x + 1, z + 7))
+    ia, ib, live, tip = _span(B, V, (x + 2, z + 4), (x + 16, z + 4), None)
     for pid in home:
         B.probe("pawn:%d=draft" % pid)
     o = B.ap("restringorder:%d" % ia)
@@ -186,23 +190,37 @@ def restring(B, V, rows):
     ok = o.get("designated") and st.get("cut", 0) >= 1 and al.get("down", 0) >= 1
     V.row(rows, "SC_restring_drafted_no_job", "PASS" if ok else "FAIL", "MOD", {"order": o, "after600": st, "alert": al.get("down"),
                                                                               "meaning": "PASS = every colonist drafted, the order stands and nobody splices"})
-    # the one nearest it free to work, standing by, others held
-    pid = next(iter(home))
-    B.probe("pawn:%d=tp:%d,%d" % (pid, x + 8, z + 12))
-    B.probe("pawn:%d=undraft" % pid)
-    B.call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=1.0)
-    B.call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+    # the builders free to work, standing by: which of them has Construction switched on is the quicktest's roll. The wire is dead for this, so a
+    # free pawn who wanders across it is safe; the live wire comes next.
+    def builds(i):
+        sk = (B.call("jawa/pawn_get", pawn=i).get("pawns") or [{}])[0].get("skills") or []
+        return any(q.get("skill") == "Construction" and not q.get("disabled") for q in sk)
+    free = [i for i in home if builds(i)]
+    B.hold_off = True
+    for i in free:
+        B.probe("pawn:%d=tp:%d,%d" % (i, x + 8, z + 12))
+        B.probe("pawn:%d=undraft" % i)
+        B.call("jawa/pawn_need", pawn=i, action="need", need="Rest", level=1.0)
+        B.call("jawa/pawn_need", pawn=i, action="need", need="Food", level=1.0)
     played, st1 = 0, st
-    while played < 3000 and st1.get("cut", 0) >= 1:
+    while free and played < 3000 and st1.get("cut", 0) >= 1:
         B.ticks(250)
         played += 250
         st1 = B.ap("restringstate:%d" % ia)
     ok = st1.get("cut") == 0 and st1.get("jobsDone", 0) > st.get("jobsDone", 0)
-    V.row(rows, "SC_restring_work_scheduler_takes_it", "PASS" if ok else "FAIL", "MOD", {"played": played, "before": st, "after": st1})
+    V.row(rows, "SC_restring_work_scheduler_takes_it", "UNMEASURED" if not free else ("PASS" if ok else "FAIL"), "MOD",
+          {"freed": free, "played": played, "before": st, "after": st1})
+    B.hold_off = False
     for p, pos in home.items():
         if pos:
             B.probe("pawn:%d=tp:%d,%d" % (p, pos[0], pos[1]))
         B.probe("pawn:%d=draft" % p)
+
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x + 2, z + 5, x + 2, z + 7)), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x + 2, z + 8), faction="player", wipeExisting=False)
+    B.ticks(3)
+    _fill(B, (x, z + 6, 5, 5))
+    B.ticks(3)
 
     # sc_shock_restring: the splicer on the job stands on the live wire of that cut, unharmed; an animal on the same cell is down
     B.ap("cut:%d,%d" % (ia, ib))
@@ -215,9 +233,11 @@ def restring(B, V, rows):
         V.row(rows, "SC_splicer_spared_bystander_shocked", "UNMEASURED", "SITE", f)
     else:
         tp = (int(half["tip"][0] // 1), int(half["tip"][1] // 1))
+        # stood on the wire FIRST: the tp verb stops all jobs. The job goes to whoever is nearest the anchor, now that colonist.
+        moved = bool(free) and B.probe("pawn:%d=tp:%d,%d" % (free[0], tp[0], tp[1])).get("success")
         j = B.ap("restringjob:%d" % ia)
         by = "".join(ch for ch in str(j.get("by")) if ch.isdigit())
-        moved = B.probe("pawn:%s=tp:%d,%d" % (by, tp[0], tp[1])).get("success") if by else False
+        moved = moved and by == str(free[0])
         a = _wire_trial(B, tp, settle=8)
         hed = (B.call("jawa/pawn_get", pawn=int(by)).get("pawns") or [{}])[0].get("hediffs") or [] if by else []
         spared = not any(h.get("def") == "RM_FallenWireShock" for h in hed)
@@ -241,7 +261,7 @@ def dead_wire(B, V, rows):
     from validation_aerial import _wire_trial
     for k, v in (("fallenWireShock", "True"), ("fallenWireIgnites", "True"), ("fallenWireKnockback", "0")):
         B.ap("set:%s=%s" % (k, v))
-    batt = (x + 1, z + 7)
+    batt = (x + 2, z + 8)
     _, _, live, tip = _span(B, V, (x + 2, z + 4), (x + 16, z + 4), batt)
     if not live or not tip:
         V.row(rows, "SC_dead_wire_shocks_nobody", "UNMEASURED", "SITE", {"live": live, "tip": tip})

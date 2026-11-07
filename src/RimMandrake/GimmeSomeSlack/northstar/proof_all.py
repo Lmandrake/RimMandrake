@@ -333,6 +333,32 @@ def install_no_shots():
     VA.A.shot = a_shot
 
 
+def install_draft_hold():
+    """HARNESS (the "downed (health 1)" stops, 2026-11-06/07: RM_FallenWireShock on a colonist who had walked onto the M20 site). P3 drafts every
+    colonist, but vanilla's AutoUndrafter frees a drafted pawn idle for 6,000 ticks, so a run past that length had colonists wandering across
+    live test wires, and where it stopped moved with the row count. The draft is renewed on the run's own clock, before it can lapse, and a
+    pawn on a job is left to it. A Bridge with hold_off set is staging a colonist on purpose."""
+    base = V.VC._BridgeBase
+    if getattr(base, "draft_hold", False):
+        return
+    base.draft_hold = True
+    orig = base.ticks
+    state = {"since": 0}
+
+    def ticks(self, n):
+        state["since"] += int(n)
+        if state["since"] >= 3000 and not getattr(self, "hold_off", False):
+            state["since"] = 0
+            for p in self.probe("colonists").get("pawns") or []:
+                if p.get("downed") or p.get("job") not in (None, "Wait_Combat", "Wait_Wander", "GotoWander", "Wait"):
+                    continue
+                if p.get("drafted"):
+                    self.probe("pawn:%d=undraft" % p["id"])
+                self.probe("pawn:%d=draft" % p["id"])
+        return orig(self, n)
+    base.ticks = ticks
+
+
 def _RI():
     """Utils/modcheck/run_identity.py: the deploy fingerprint at start and end of the run."""
     d = os.path.join(V.UTILS, "modcheck")
@@ -947,6 +973,7 @@ class Proof(object):
                 import reduced as RD
                 sp = RD.reduce_spec(sp)
             boards = RL.make_boards(_no_hose(sp["scenes"]))
+        install_draft_hold()
         self.block("preflight", lambda: (self.p1_fresh_map(), self.p2_tier_and_startup_log(), self.p2c_control_noise(),
                                           self.p3_probes_and_site(boards)))
         if any(r["status"] != "PASS" for r in self.rows if r.get("block") == "preflight"):
