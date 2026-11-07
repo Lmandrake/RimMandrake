@@ -1,41 +1,37 @@
 # Pyrelands progress
 
-The test-tools grant is renewed to 2026-11-14 and the owner answered the three old questions (kept as they were). One new question is in `ralph/QUESTIONS.md`: how fast scars carpet over.
+Two maps of the 50 C and 35 C kind, each with a plain walled base (`base.py build`), played on normal speed. Questions for him are in `ralph/QUESTIONS.md` (dry ash at 70%, native thirst, scar speed).
 
-## What I saw (landing `e` for 8 days on normal speed controls, then `d`)
-- **Furnace-beast never heated a room on its home ground.** 47.31 C against 47.21 C. Its 24 C cap sits under the biome's 50 C; the suite row passed only by chilling both rooms to 10 C. Fixed and seen live: 84 C against 58 C, about 25 C over outdoors. The row now reads the map's own heat.
-- **Scars carpet in about 1.5 days,** not the line's week. A 40x26 burn: 35 plants after the fire, 303 at day 1, 351 at day 1.5 (unburned is about 410). `wildPlantRegrowDays` 9 fills as fast as 3, so bursts do it, not the spawner. Last pass's 9-to-3 change was theory. Left alone: it matches his "spread itself super-fast".
-- **Crops:** on map `e`, rice beside water reached 58% where dry ash reached 14%, in 5 days. Noon can read "out of temperature growth range", so crops grow in the morning and evening.
-- **Burrowers,** staged fire, real grass: 2 of 3 dived at once and read "Burrowed: sealed under the ash until the fire passes". The one I read after had no hediffs; all three alive. The third fled instead of diving.
-- **Warmth:** a colonist near a beast read "Warmed by furnace-beast (13F)". Not yet seen disappearing: the walk-away order did not move him (he was drinking).
-- **Tick rate:** 350 ticks/s with no fire, 130-160 during ordinary burns on `e`. The one burn this size was 80. Map `e` never reached last pass's 3,900 fires, so that peak is still unsolved.
-- The opening front on `e` was small, and black rain put it out by about 15,000 ticks. Fronts after that burned about 1,000 plants each, so burns are smaller than map `d`'s.
+## Next, first: crops barely grow (unsolved, may be the biggest thing left)
+Map `i`, 27-43 C, rice on paved-ring plots: about 1.5% a day, where 3-day rice should do roughly 13%. Readings: "Growth rate: 0% (needs light level 51%)" at my hours 7, 10 and 12 under `RM_VolcanicAsh`; 13% at hour 15; only 7% at "noon" with Clear locked, no temperature note. So light looks barely over 51%, even on Clear. Map `e` last pass reached 58% in 5 days, so something differs. Suspects, none tested: my `to_hour` labels are off (longitude); a sun or planet model on the test tile; ash weather or a game condition lowering glow. Read `GenCelestial` and `SkyManager` and the actual glow at a cell through the day, on Clear and on ash. Don't trust the hour labels. `Transient/pyre_play/noon.py` and `field_f.py` are the probes; plots are in `field_f.json` on map `i` (save `NS_Pyrelands_play_i` is from before them).
+`pyre_fresh_burn_feeds_the_field` cannot be judged until that is solved. Scar plot leads by 1% at day 2 (9 against 8), fertility 0.99 against 0.70, and in black rain 1.8 against 1.4, so the compounding exists in the numbers and not yet in a crop.
 
-## Fixed, deployed
-- Furnace room heat (above). Hawk embers: pick standing grass away from the burn's centre, fire size 0.35 instead of 0.1, sparks on the carry. **Built and deployed, the ember never watched.**
-- Roster: map `e` had 7 big predators to 4 small grazers. Commonalities changed (Flamefang, Anooba, Orray, Dalgo down, Nuna up). **New maps not censused yet.** Suite now asserts it.
-- Suite: regrow row now uses the real clock at shipped settings (was compressed and could never pass). Offline only, not run.
-- Deploy trap: `deploy_custom_mods --with UtinniPatches --apply` would prune other seats' patches from the game. I copied only `WildAnimals_Pyrelands.xml` by hand. Do the same.
+## Fixed this pass, deployed
+- **Dry ash refused every crop** (0.40 under the game's 0.70 minimum). Now 0.70. Live: 0.700 read, sows. Its setting, text and preflight follow. See the question.
+- **Fire peak:** grass HP 70/85 to 28/32. Each flame lasts about a third as long. Peak 3,350 fires to about 790, and the line is thin and crisp (`first_look_2`). Keep watching that fronts don't fizzle: map `i` took until day 4 to get going after black rain killed its opening front at day 0.2.
+- **50,000 puddles per rain:** every grass cell's "armed" tell laid `Filth_Water`; destroying them took ticks to 9-50 ms. Gentle-burst plants now skip the tell (`RM_MapComponent_ExplosiveGrowth.cs`, outside Pyrelands, the direct cause). Live: zero puddles, 0.7-1.7 ms.
+- **The cast died of thirst:** natives exempt from FlowWorks thirst (`Patches/RM_Pyrelands_NativesNoThirst.xml`). Not re-read after the patch: confirm no `RM_Dehydration` on a wild animal at day 4.
+- **Cast missing from fresh maps:** `GenStep_PyrelandsFireCast` tops up to 2 hawks and 4 ashwallows. Map `i` had both; the one map is the only census.
+- **Skies:** ash fall flakes were dark and invisible, now pale; black rain was near black and its dark streaks did not draw at all (a dark overlay is invisible, so don't try that). Last values, **deployed but never looked at:** black rain sky 0.30, overlay 0.55; ash fall uses `SnowHard`. Run `scenes2.py skies X Z` and look. Clear and ash drift still look almost the same.
+- Hawk, state reads only: 3 hawks beside a fire all took `RM_FireHawkCarryEmber` by tick 61, flying; by tick 195 new fires at their landing cells, 4+ cells from any other fire. That was in rain's tail and most fires died: re-run `hawk2.py X Z` in dry weather and check the ember spreads. Natural hawks in that window fled or dashed for shade; I saw no natural sortie.
 
-## Next, in order
-1. `pyre_fresh_burn_feeds_the_field` is unmeasured. My plots died: ordinary fronts burned the rice by day 2, on both plots. Re-run `scenes2.py field` with a paved ring round each plot. Read growth %, not noon rates. `Transient` is untracked, so check the scripts are still there.
-2. Skies: `scenes2.py skies 100 110` (never ran; I stopped it). It writes `sky_*.png` and prints ash-drift counts per sky. Have a judge look at them. Ashfall and cinderfall are still unseen.
-3. Hawk: spawn beside a burn, sample `RM_FireHawkCarryEmber` and new Fire at the target. State reads only, never watch or photograph flight.
-4. Real base: `Transient/pyre_play/base.py build` (written, never run), then a front through it and a raid. Still no real base has been played. Worth seeing: does a player lose every open crop to fronts by day 2?
-5. Scorch-fruit rot in play: harvested fruit and ripe pods timed. The suite's `save_holds_no_furnace_herds` still reads an old save: drop it. Then a full suite for `modcheck status`, which is still RED.
-6. Census 3+ fresh maps, for the roster and `pyre_mapgen_log_clean`. No `GetColoredVersion` error in this session's log, but no fresh generation either.
-7. Refresh `first_look_*` and `ralph/LOOK.md` once a base stands. Plan's foils and showcases not built; `PYRE*` items not re-checked beyond reading.
+## Also seen
+- Colonists: map `i` all dead by day 4 from a raid (Ohnaka Gang corpse beside them). Unarmed wounded test pawns, so not the biome. Colonists at 50 C get heatstroke when they stay out. Still no armed colony has been played: give them guns and see a raid and a front together.
+- `tps` from `play.advance` also falls when the frame rate falls (100-180 with 0.7 ms ticks), so read `meanTickTime` from `jawa/time_perf`.
+- A front burned across the base's surroundings and the concrete apron held. Colonists fight fires at the edge.
+- `RM_VolcanicAsh` ("ash storm") comes from `UtinniPatches/AshStorms_Pyrelands.xml`: it is meant to be here.
+- Long bridge scripts: run with `python.exe -u ... > log` in the background; a piped `cut` buffers until the end, and backgrounded commands are stopped at their timeout.
 
-## Handy
-`play.py run N...` runs at speed 3 with the normal controls. `scar.py` samples a rect but needs something else driving the clock. Never `pkill -f` from a shell whose command text contains the pattern: it killed my own shell twice, `[x]` brackets don't help if the literal appears elsewhere.
+## Then
+Pod rot and fruit rot timing (`pyre_scorchfruit_spoils_fast`), watched warmth appearing and disappearing, drifts visibly growing on a scar during a long ash fall (15 deposits per 250 ticks may be too thin), census 3 more fresh maps, then drop the suite's `save_holds_no_furnace_herds` row and run the suite for `modcheck status` (still RED, not run this pass). The plan's owed changes are done (commit 186b8cd2ed); foils and showcases not built; `PYRE*` items not re-checked beyond reading. Offline selftests not run this pass; the fuzz test passes 0.4 as a parameter, so it should not care.
 
 ## Count
 - pyre_plant_distribution_correct: true
 - pyre_animal_distribution_correct: unseen
 - pyre_mapgen_log_clean: unseen
 - pyre_ground_deep_ash: true
-- pyre_ash_fertile_when_watered: true
-- pyre_fresh_burn_feeds_the_field: unseen
+- pyre_ash_fertile_when_watered: false
+- pyre_fresh_burn_feeds_the_field: false
 - pyre_grass_chokes_ground: true
 - pyre_embergrass_regrows: true
 - pyre_burn_line_present: true
@@ -48,6 +44,6 @@ The test-tools grant is renewed to 2026-11-14 and the owner answered the three o
 - pyre_furnacebeast_heats_room: true
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: unseen
-- pyre_cinderfall_distinct: unseen
-- pyre_blackrain_reads: true
+- pyre_cinderfall_distinct: true
+- pyre_blackrain_reads: unseen
 - pyre_cannot_ordinary_rain: true
