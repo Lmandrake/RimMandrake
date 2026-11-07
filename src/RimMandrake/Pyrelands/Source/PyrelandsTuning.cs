@@ -234,6 +234,9 @@ namespace RimMandrake.Pyrelands
         /// cadence: this is a weeks-long cycle, not a combat stat.</summary>
         public const int FurnaceChargeIntervalTicks = 250;
 
+        /// <summary>How far above outdoors a furnace-beast can heat an enclosed room.</summary>
+        public const float FurnaceRoomAboveOutdoorC = 25f;
+
         /// <summary>Above this ambient temperature the beast charges. Chosen at
         /// the Deep Desert's daytime floor, so basking genuinely works out there
         /// and an ordinary temperate map never charges one at all. [INVENTED]</summary>

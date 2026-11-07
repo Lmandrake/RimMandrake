@@ -134,10 +134,22 @@ namespace RimMandrake.Pyrelands
         /// circuit off the beast is "an ordinary heat-immune grazer" and warms no room either.</summary>
         public static void Postfix_ShouldPushHeatNow(CompHeatPusher __instance, ref bool __result)
         {
-            if (__result && __instance.parent is Pawn p && (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
-                && p.TryGetComp<CompFurnaceWarmthAura>() != null)
+            if (!(__instance.parent is Pawn p) || p.TryGetComp<CompFurnaceWarmthAura>() == null)
+            {
+                return;
+            }
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 __result = false;
+                return;
+            }
+            // The def's 24 C cap keeps a barn comfortable in a cold biome, but at the Pyrelands' own 50 C the room is always over
+            // it, so the beast never heated a room on its home ground. The cap follows the weather: it holds above outdoors too.
+            if (!__result && p.Spawned && p.Map != null && __instance.Props.heatPerSecond > 0f)
+            {
+                float room = p.Position.GetTemperature(p.Map);
+                __result = room < FurnaceWarmthMath.RoomHeatCap(__instance.Props.heatPushMaxTemperature, p.Map.mapTemperature.OutdoorTemp,
+                    PyrelandsTuning.FurnaceRoomAboveOutdoorC);
             }
         }
 

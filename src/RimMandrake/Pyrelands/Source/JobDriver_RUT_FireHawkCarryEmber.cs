@@ -70,7 +70,15 @@ namespace RimMandrake.Pyrelands
             };
             yield return takeEmber;
 
-            yield return Toils_Goto.GotoCell(IgniteCellInd, PathEndMode.OnCell);
+            Toil carry = Toils_Goto.GotoCell(IgniteCellInd, PathEndMode.OnCell);
+            carry.AddPreTickAction(delegate
+            {
+                if (pawn.IsHashIntervalTick(20) && pawn.Map != null)
+                {
+                    FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);
+                }
+            });
+            yield return carry;
 
             Toil dropEmber = ToilMaker.MakeToil("RUT_FireHawkDropEmber");
             dropEmber.defaultCompleteMode = ToilCompleteMode.Instant;

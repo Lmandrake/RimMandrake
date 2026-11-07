@@ -13,6 +13,7 @@ Bridge holder only, python.exe from the repo root (pipe through `tr -d '\\r'`):
   python.exe src/RimMandrake/Pyrelands/play.py overview NAME         # the widest crop the tool can frame
   python.exe src/RimMandrake/Pyrelands/play.py skies x z w h TAG       # one rect under each sky at noon
   python.exe src/RimMandrake/Pyrelands/play.py track SLICES TICKS    # pod lifetimes and weather per slice
+  python.exe src/RimMandrake/Pyrelands/play.py run 2500 ...          # the same with the normal speed controls: no test tools
   python.exe src/RimMandrake/Pyrelands/play.py call jawa/map_info k=v  # any one tool, json result
 """
 import argparse
@@ -161,6 +162,25 @@ def overview(s, name):
     return str(r)[:300]
 
 
+def advance(s, ticks, speed="Superfast", limit_s=None):
+    """Run about `ticks` with the normal speed controls, the way a player does, and pause. -> (ticks run, seconds)."""
+    t0 = time.time()
+    start = int(NS._call(s, "jawa/time_clock")["ticksGame"])
+    limit_s = limit_s or max(60, ticks / 15)
+    s.call("rimworld/set_time_speed", speed=speed)
+    now = start
+    try:
+        while now - start < ticks and time.time() - t0 < limit_s:
+            time.sleep(min(2.0, max(0.25, (ticks - (now - start)) / 400.0)))
+            st = s.call("rimworld/get_game_info") or {}
+            now = int(st.get("ticksGame", now))
+            if (st.get("state") or {}).get("paused"):     # a forced pause or a letter's stop: carry on as a player would
+                s.call("rimworld/set_time_speed", speed=speed)
+    finally:
+        s.call("rimworld/set_time_speed", speed="Paused")
+    return now - start, time.time() - t0
+
+
 def to_hour(s, hour):
     """Advance to the next local `hour`, in slices the populated-map budget allows."""
     clk = NS._call(s, "jawa/time_clock")
@@ -224,7 +244,7 @@ def track(s, slices, ticks):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "skies", "call", "track", "fireshot", "hour"])
+    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "skies", "call", "track", "fireshot", "hour", "run"])
     ap.add_argument("rest", nargs="*")
     ap.add_argument("--tag", default="a")
     ap.add_argument("--temp", type=float, default=TEMP)
@@ -246,6 +266,11 @@ def main():
                 t0 = time.time()
                 r = s.call("jawa/safe_advance", ticks=int(n), stopOn="cancel", timeoutMs=max(60000, int(n) * 100)) or {}
                 print("advanced %s of %s in %.0fs %s" % (r.get("executed"), n, time.time() - t0, r.get("stopBy") or r.get("message") or ""))
+                census(s, terrain=False)
+        elif a.verb == "run":
+            for n in a.rest:
+                ran, secs = advance(s, int(n))
+                print("ran %d of %s in %.0fs (%.0f ticks/s)" % (ran, n, secs, ran / max(secs, 0.1)), flush=True)
                 census(s, terrain=False)
         elif a.verb == "shot":
             print(shot(s, a.rest[0], *[int(v) for v in a.rest[1:]]))

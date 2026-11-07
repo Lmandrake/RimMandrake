@@ -1890,13 +1890,9 @@ def furnace_room(t):
         rooms = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
         beast = _pawn_row(t, bid) or {}
         amb = [tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c)) for c in (ca, cb)]
-        heat = [t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
-                for c in (ca, cb)]
-        if _live(t):
-            _note(t, "room_heat set 10 C (A, B)", heat)
         series = []
-        for _ in range(10):
-            _wait(t, 250)
+        for _ in range(12):
+            _wait(t, 1000)
             series.append([tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c))
                            for c in (ca, cb)])
         after = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
@@ -1905,7 +1901,7 @@ def furnace_room(t):
                                                             if k not in ("operation", "state")) for r in after])
             inside = (beast.get("x") is not None and a[0] < beast["x"] < a[0] + 6
                       and a[1] < beast["z"] < a[1] + 6)
-            _note(t, "room temperatures", {"ambient": amb, "coldStartSeries": series,
+            _note(t, "room temperatures", {"ambient": amb, "series": series,
                                            "beastAt": (beast.get("x"), beast.get("z")),
                                            "beastInsideRoomA": inside,
                                            "roomsFound": [(r or {}).get("roomsFound") for r in rooms]})
@@ -1914,12 +1910,13 @@ def furnace_room(t):
             if not inside:
                 _unmeasured(t, "spawn_pawn scattered the beast out of room A (at %r)"
                             % ((beast.get("x"), beast.get("z")),))
-            cold = [sa - sb for sa, sb in series if None not in (sa, sb) and sb < 24.0]
-            if not cold:
-                _unmeasured(t, "the control room never sat below the pusher's 24 C cap: %r" % series)
-            if sum(cold) / len(cold) <= 0.5:
-                _fail("beast room is not warmer than the matched control while below 24 C: "
-                      "mean delta %.2f C over %r" % (sum(cold) / len(cold), series))
+            # Both rooms stay at the map's own temperature: the first version chilled them to 10 C, under the pusher's old
+            # 24 C cap, and so passed while the beast heated nothing at the biome's real 50 C.
+            end = series[-1]
+            if None in end:
+                _unmeasured(t, "no temperature read at the end of the series: %r" % (series,))
+            if end[0] - end[1] < 5.0:
+                _fail("beast room is not clearly hotter than the matched control: %r" % (series,))
         t.screenshot(rect=(a[0], a[1], 18, 7))
 
 

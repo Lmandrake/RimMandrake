@@ -39,7 +39,7 @@
               <li Class="RimMandrake.Pyrelands.CompProperties_FireHawkSpread">
                 <scanRadius>18</scanRadius>
                 <spreadDistance>6</spreadDistance>
-                <startFireSize>0.1</startFireSize>
+                <startFireSize>0.35</startFireSize>
               </li>
             </comps>
           </value>
