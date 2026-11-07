@@ -276,6 +276,19 @@ with tempfile.TemporaryDirectory() as tmp:
                                                                               "kinds": ["REPAIR"]}, got)
     ok, why = A.apply_change(dict(row), ent, out, repo=repo, pk_level=2)
     check("L2 gate refuses with no checker", not ok and "generalization" in why, why)
+    # AGENT_IMPROVE_HARDEN_GATE_EMPTY_SOURCE_KINDS: no kinds means nothing is excluded, so nothing is held out
+    for label, r, e in (("a cited piece names no item id", row, {"pieces": [{"text": "a lesson with no item in it"}]}),
+                        ("the row cites nothing", dict(row, cites=[]), ent)):
+        got.clear()
+        ok, why = A.apply_change(dict(r), e, out, repo=repo, pk_level=2, general=stub_general("general"),
+                                 changes_dir=gchanges)
+        check("L2 gate refuses, whatever the check would read: %s" % label, not ok and "no source kinds" in why, why)
+        check("L2 gate spends no model call on it: %s" % label, got == {}, got)
+    mixed = {"pieces": [{"text": "no item here"}, {"text": "lesson about THING0_REPAIR_CASE_NUMBER_A"}]}
+    ok, why = A.apply_change(dict(row, cites=[0, 1]), mixed, out, repo=repo, pk_level=2,
+                             general=stub_general("overfit"), changes_dir=gchanges)
+    check("one cited piece with a kind is enough to reach the check", "overfit" in why and got.get("kinds") == ["REPAIR"],
+          (why, got))
     for label, held in (("leaning to harm, 2-3-1 and 12 pairs", {"win": 2, "loss": 3, "tie": 7}),
                         ("under the judged floor", {"win": 3, "loss": 0, "tie": 2}), ("with no tallies", None)):
         ok, why = A.apply_change(dict(row), ent, out, repo=repo, pk_level=2, general=stub_general("no_signal", held),

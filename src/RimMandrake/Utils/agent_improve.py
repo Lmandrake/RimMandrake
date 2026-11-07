@@ -721,9 +721,12 @@ def general_gate(row, entry, res, outdir, repo, general, changes_dir=None):
         return False, "this level needs a generalization check before apply; no checker was given"
     if not row.get("new_text"):
         return False, "generalization check: the row carries no proposed text"
+    kinds = source_kinds(row, entry)
+    if not kinds:   # nothing would be excluded from the sample: its "held-out" pairs are not held out
+        return False, "generalization check: the cited pieces yield no source kinds, so nothing can be held out"
     old = open(os.path.join(repo, res["path"]), encoding="utf-8").read()
     try:
-        g = general(row["target"], old, row["new_text"], source_kinds(row, entry))
+        g = general(row["target"], old, row["new_text"], kinds)
     except Exception as e:   # a crashed check is not a pass
         return False, "generalization check crashed: %s" % str(e)[:300]
     refs = {"old": "HEAD", "new": "proposed"}

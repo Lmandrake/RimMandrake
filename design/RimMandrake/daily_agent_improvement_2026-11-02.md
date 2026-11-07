@@ -107,7 +107,7 @@ current level lives in `D:\ClaudeWork\rimmandrake\agent_improve\state.json`; gat
 |---|---|---|---|---|
 | L0 | daily | 2 | 7 days | none (gross bugs) |
 | L1 | every 3 days | 3, from 2 or more task kinds | 14 days | the recheck of the target's last change has passed |
-| L2 | weekly | 5, from 3 or more task kinds | 28 days | L1 plus the generalization check before apply: refused if it reads overfit, unmeasured, or leans to harm (4.3) |
+| L2 | weekly | 5, from 3 or more task kinds | 28 days | L1 plus the generalization check before apply: refused if it reads overfit, unmeasured, or leans to harm, or if its cited pieces yield no source kinds (4.3) |
 
 Step up one level when the rate over the last 10 passes falls below 0.3; step back down when it rises above 0.6 (a
 new crop of bugs). At most one step per 10 passes, so the rate is measured on the level that produced it.
@@ -140,7 +140,7 @@ the newest version of each target:
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with
   two noise-floor checks on record, both no_signal, so mostly from computation: 2 of 2 is no rate). It applies what reads general,
   and a narrow or no_signal that does not lean to harm (wins >= losses on 6 or more judged held-out pairs); it refuses overfit,
-  unmeasured, and a narrow or no_signal that leans to harm: a source gain never buys off held-out losses. The verdict stays as read in the change record. Why not only a proven keep, the first
+  unmeasured, and a narrow or no_signal that leans to harm: a source gain never buys off held-out losses. It also refuses, before any model runs, a change whose cited pieces yield no source kinds (`AGENT_IMPROVE_HARDEN_GATE_EMPTY_SOURCE_KINDS`): the recurrence bar counts gathered pieces, not cited ones, and with no kinds nothing is excluded, so the held-out sample is not held out. The verdict stays as read in the change record. Why not only a proven keep, the first
   rule here: exact power through the live rule, 20% real ties and 50% null ties (`selftest_agent_improve_general.py`):
 
   | true win rate of decided pairs | general at 6 / 12 / 24 pairs | overfit at 6 / 12 / 24 | through this gate at 6 / 12 |
