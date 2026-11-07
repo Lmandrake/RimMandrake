@@ -1,1 +1,0 @@
-A server a Relentless worker starts with setsid/nohup dies when the worker ends: workers run in a claude-seat-*.scope cgroup that is killed whole. A sheet server or other long-lived process must be its own unit: systemd-run --user --unit=<name> --collect -p WorkingDirectory=... (DESSICATED_CORPSES_JUDGE_THE_ONES_HE_MISSED, 2026-11-05)

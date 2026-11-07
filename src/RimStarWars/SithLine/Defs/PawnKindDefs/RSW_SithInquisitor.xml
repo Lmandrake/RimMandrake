@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SANGUOPHAGE_KEPT_UNREACHABLE_1 design §4: the Galactic Empire's rare Sith inquisitor. It never enters a
-     pawnGroupMaker option list (the campaign's GalacticEmpire.xml replaces the Empire Combat lists wholesale); it is
+     pawnGroupMaker option list (the campaign's GalacticEmpire_Campaign.xml replaces the Empire Combat lists wholesale); it is
      appended to Empire raids and settlement defenders by Patch_PawnGroupMakerUtility_GeneratePawns. All values
      PROVISIONAL. Referenced defs measured in the 2026-10-04 def dump: the namers, hood and apparel tag are
      mandrake.rsw.armoury (a hard dependency); the weapon tag Force_InquisitorLightsaber is lee.theforce.lightsaber's

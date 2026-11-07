@@ -1,1 +1,0 @@
-Inside the relentless boxrun wall, close_evidence.py cannot read ~/dev/Lodestar/bin/lib/agent_storage.py (Errno 13), so a boxrun selftest PASS writes no close evidence ('CLOSE-EVIDENCE WRITE FAILED'); the proof verdict itself is unaffected. Seen 2026-11-06 on SELFTEST_FIX_SLIME_SUITE_YTWW finish.

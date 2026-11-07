@@ -61,10 +61,44 @@ def _model():
     return model
 
 
-def local_host():
-    """This machine's bridge-host key (RM_HOST overrides the hostname), or None when it is not a known game host."""
+def local_machine():
+    """This machine's key (RM_HOST overrides the hostname), or None when it is not a known game host."""
     name = (os.environ.get("RM_HOST") or socket.gethostname()).strip().lower()
     return name if name in _model().BRIDGE_HOSTS else None
+
+
+def local_host():
+    """This process's bridge key: the machine, plus RM_GAME_INSTANCE when that names a second game ('stevedesktop.b')."""
+    machine = local_machine()
+    inst = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
+    return "%s.%s" % (machine, inst) if machine and inst not in ("", "a") else machine
+
+
+@contextlib.contextmanager
+def instance_env(inst):
+    """Aim lock_path() at game `inst` (None: today's) for the block; a shell on one game may take another's lock by name.
+    The game this process already means changes nothing, so a lock path a selftest pinned stays pinned."""
+    have = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
+    if (have if have != "a" else "") == (inst or ""):
+        yield
+        return
+    saved = {k: os.environ.get(k) for k in ("RM_GAME_INSTANCE", "RIMFLOW_DRIVER_LOCK")}
+    try:
+        if inst:
+            import game_instance
+            os.environ["RM_GAME_INSTANCE"] = inst
+            os.environ["RIMFLOW_DRIVER_LOCK"] = game_instance.lock_path(inst)
+            os.makedirs(os.path.dirname(os.environ["RIMFLOW_DRIVER_LOCK"]), exist_ok=True)
+        else:
+            os.environ.pop("RM_GAME_INSTANCE", None)
+            os.environ.pop("RIMFLOW_DRIVER_LOCK", None)
+        yield
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
 
 def lock_path():
@@ -202,12 +236,17 @@ def status(path=None):
 
 
 def remote_argv(host, args):
-    """The ssh argv that runs `host_guard.py <args>` in the runner clone on HOST."""
-    target = SSH_TARGETS.get(host)
+    """The ssh argv that runs `host_guard.py <args>` in the runner clone on HOST (a key like stevedesktop.b: that game's
+    lock there)."""
+    machine, inst = _model().split_bridge_host(host)
+    target = SSH_TARGETS.get(machine)
     if not target:
         raise SystemExit("host_guard: %s is not a remote host from here (known: %s)" % (host, ", ".join(SSH_TARGETS)))
-    cmd = "cd %s && python3 src/RimMandrake/rimflow/host_guard.py %s" % (
-        RUNNER_DIR, " ".join(shlex.quote(a) for a in args))
+    # a far clone older than game_instance.py would ignore the name and take game a's lock on b's behalf
+    older = ('test -f src/RimMandrake/Utils/game_instance.py || { echo "%s on %s has no game_instance.py: update it"; exit 2; }; '
+             % (RUNNER_DIR, machine)) if inst else ""
+    cmd = "cd %s && %s%spython3 src/RimMandrake/rimflow/host_guard.py %s" % (
+        RUNNER_DIR, older, "RM_GAME_INSTANCE=%s " % inst if inst else "", " ".join(shlex.quote(a) for a in args))
     return ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "LogLevel=ERROR", target, cmd]
 
 

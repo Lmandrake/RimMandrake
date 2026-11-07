@@ -126,6 +126,9 @@ def sweeps():
     # a fixed id answers for its baseline line whatever it closed with
     p = DM.promises({"LIVE_RESTORE_RM_DEAD": It(live=GOOD)}, [DEAD])
     check(p == [{"item": "LIVE_RESTORE_RM_DEAD", "line": DEAD}], "a ledger line cannot hide a baseline line")
+    OLD = "unit=rm-x.timer reading=/mnt/d/ClaudeWork/rimmandrake/conductor/RUNNING_NOW.md max_age=5m"
+    p = DM.promises({"I": It(live=OLD)}, [])
+    check(p == [{"item": "I", "line": OLD.replace("RUNNING_NOW", "RELENTLESS_NOW")}], "a moved reading= path is swept at its new home")
     # an old pause record excuses nothing; a pending restart does
     (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-1.timer": ["rm-dead.timer"]}))
     import subprocess as SP

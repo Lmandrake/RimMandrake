@@ -1,1 +1,0 @@
-relentless boxrun on the mark-clean commit reads DIRTY: the box replays code_review and the ledger from the candidate's PARENT (walls.marker.tree_from_parent). A proof with code_review_status check needs the marks in an earlier commit and finish on a later one outside those paths (a lesson, a test). Seen on REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL.

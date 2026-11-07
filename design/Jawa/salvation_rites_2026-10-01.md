@@ -31,7 +31,7 @@ The Salvation suite, as it now stands:
 | Piece | Tier | packageId / path | Holds | Exists? |
 |---|---|---|---|---|
 | The ideoligion | RUT | `src/Jawa/ideoligion/The Salvation.rid` | the 103 precepts, 23 rituals, of the owner's approved ideo | yes |
-| The gods' engine | RM | `mandrake.rm.ninefold` (`src/RimMandrake/Ninefold/`) | satiation/mood vector, bands, `ApplyDelta(God, float, reason)`; names no faith | yes |
+| The gods' engine | RUT | `mandrake.rut.rites` (planned home; see `design/RimMandrake/graffiti_series_2026-11-07.md`) | satiation/mood vector, bands, `ApplyDelta(God, float, reason)`; names no faith | yes |
 | **The rites** | RUT | **`mandrake.rut.rites`** (`src/RimUtinni/Rites/`) | **every Salvation rite: the liturgy tab, found rites, their precepts, patterns, outcomes, discovery inscriptions, the darkness gate** | yes (tab and 5 research projects only) |
 | The Salvation pack | RUT | `mandrake.rut.salvation` (does not exist) | non-rite sacredness: relic veneration precept, the grade-change subscriber (`ancient_machines_design.md` §5) | no |
 | The lore record | RUT | `mandrake.rut.antiquities` | the stages that gate the liturgy tab's tiers | yes |
@@ -48,7 +48,8 @@ the gate moves down to RM then, not now.
 - `RM_Ishko_RitualOutcome_PlaceSacredMark` and its worker
   (`src/RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml`) name a god inside an RM mod,
   which the tier grammar forbids. It moves into `mandrake.rut.rites` with the Dark Vigil, its one
-  caller. The marks themselves (`SacredMarks.xml`) stay in SacredGraffiti.
+  caller. The marks themselves (`SacredMarks.xml`) belong to RimUtinni's mod
+  `mandrake.rut.sacredgraffiti`, which takes the whole SacredGraffiti mod over (planned, loop 3 of `design/RimMandrake/graffiti_series_2026-11-07.md`; not yet built).
 - Any new Salvation `PreceptDef`/`RitualPatternDef`/`RitualOutcomeEffectDef` is authored here,
   never in `UtinniPatches` and never in a biome mod.
 - The `.rid`'s own 23 rituals stay in the `.rid` (they are the owner's approved artifact); they are

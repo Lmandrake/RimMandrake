@@ -104,7 +104,7 @@ the item's next verdict). Its cause is UNMEASURED.
 - **An idle game phase.** Over half the game wait passed with the game idle: `GAMEPHASE_UNBLOCK_HELD_GAME_SITS_IDLE`.
 - **Dead runs.** `LIVEROUND_SHRINK_PROOFS_ARE_THE_SHORT_PART` ends a round at the first bridge-wide dud.
 - **Staging.** It held 37% of the game wait.
-- The tick latency lesson (`infrastructure/state/lessons/20261103T202609Z-BENCH-relentless-tick-live-bottleneck.md`)
+- The tick latency lesson (`skills/relentless/references/traps.md`, folded 2026-11-07)
   is part of the "nothing" row.
 
 **Evidence strength:**

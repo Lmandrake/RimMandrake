@@ -114,7 +114,7 @@ the price is theology:
   edge: the next raid arriving reads it; raid anger flavor + a Visibility
   bump + `↓Ishko` (his matrix DEEDS− "challenge broadcasts" row, now a
   placeable) + `▲Sh'kaar` small. Why do it? Pride (Ozzik drip), and:
-- **Come And Take It** — the taunt placed over the kill-zone mouth. The
+- **Come And Take It** (working name; to be renamed from Jawa words, e.g. "Mombay M'bwa", before it is built) — the taunt placed over the kill-zone mouth. The
   lure-layer made paint: raiders bias toward breaching AT the taunt — a
   deliberate funnel into the prepared dark. Taunt + traps = the Jawa way of
   inviting you to dinner.
@@ -211,14 +211,14 @@ rows — the marks ARE the livery, painted.
 | Piece | Tier | Working id |
 |---|---|---|
 | Framework (`ModExtension_Graffiti`, jobs, pool, viewer comp, devotional/mural/jest/taunt/code concepts, tier-A ideo-icon sigils, tier-C meme-affinity glyphs) | RimMandrake | `mandrake.rm.graffiti` |
-| The nine sacred marks + Jawa cant glyph set + taunt theology | RimUtinni | `mandrake.rut.marks` |
-| Aurebesh-lettered taunt/jest art variants (built: the Imperial-cog stencil, `GRAFFITI_PUNK_IDEOLIGION_SCOPE_1`) | RimStarWars | `src/RimStarWars/GraffitiImperial`, `mandrake.rsw.graffitiimperial` |
+| The nine sacred marks + Jawa cant glyph set + taunt theology: the whole SacredGraffiti mod, taken over by RimUtinni (planned, loop 3; not yet built) | RimUtinni | `mandrake.rut.sacredgraffiti` |
+| Star Wars graffiti: Aurebesh lettering and in-world motifs that REPLACE every generic mark, not variants added beside them (planned, loop 2; not yet built) | RimStarWars | `mandrake.rsw.graffiti` |
 
-Migration note: the existing `SacredGraffiti` mod folder (old id
-`mandrake.sacredgraffiti`, the shipped Ishko mark) still needs folding into
-`mandrake.rut.marks` — ordinary owed work (`NAMING_SCHEME_EXECUTION_1` closed
-2026-08-31, no gate remains), not yet done as of this sweep (2026-09-17:
-`src/RimMandrake/SacredGraffiti` still exists under the old name).
+Migration note: the existing `SacredGraffiti` mod (old id
+`mandrake.sacredgraffiti`, the shipped Ishko mark) moves whole to RimUtinni as
+`mandrake.rut.sacredgraffiti`; it is not a content pack. Not yet done:
+`src/RimMandrake/SacredGraffiti` still exists under the old name. The series
+plan is `design/RimMandrake/graffiti_series_2026-11-07.md`.
 
 ## 6. V1 slice vs the dream
 
@@ -244,7 +244,7 @@ tag YOUR walls on the way out — and scrubbing THEIRS is a devotion).
    all), the base mod's six vandal textures are replaced or re-licensed
    (VERIFY the mod's license before any asset reuse — flag in the build
    item), and the whole family ships as one mod: `mandrake.rm.graffiti`
-   plus the `mandrake.rut.marks` content pack.
+   plus RimUtinni's `mandrake.rut.sacredgraffiti` mod.
 3. Taunt funneling is V1 — breach-at-the-taunt ships with the family; the
    raid-AI breach-bias hook is built once and shared with the engine's
    Ishko-delivers work.

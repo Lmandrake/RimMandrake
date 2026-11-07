@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RSW_HarvesterBeetle__HarvesterBeetle_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_HarvesterBeetle__HarvesterBeetle_j",
+  "prompt": "A creature sprite for RimWorld: the harvester beetle, a large domesticated herbivorous insectoid beast of burden, the size of a large pack animal, with a broad swept-back carrying shell, sturdy jointed legs and a calm, docile bearing. The beetle has exactly six legs, three on each side of the body, each attached to the body side. The shell carries teal bands in one continuous layout: diagonal bands sweep from the front shoulder up and back across the dome, so the front view shows them rising diagonally from each side toward the centre of the shell, and the rear view shows the same bands descending diagonally down both sides of the shell, mirroring the front. Every view shows the same physical body: identical shell width, shell height and leg length, so the beetle has the same bulk from every side, with the two feelers rising above the dome and counted separately from the body height. In the rear view, seen from behind, the shell fills the same width as in the front view, the six legs appear as three on the left and three on the right with open ground on the centre line between them, and a short rounded abdominal tip sits under the swept-back shell edge between the two leg groups, clearly part of the body and distinct from the legs; the eyes are hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with only the creature present.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/HarvesterBeetle/HarvesterBeetle"
+ },
+ {
+  "id": "arteval_RSW_IridonianReek__Reek_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_IridonianReek__Reek_j",
+  "prompt": "The iridonian reek: a massive, territorial herbivore, about 2.24 m tall and 4 m long, towering over a human, with thick, knobbly brown hide, a tall central horn rising from the brow and two forward-curving cheek horns. Its head and shoulders are red, marking the meat-fed arena form whose handlers deliberately encouraged aggression, while the knobbly brown hide covers the rest of the body, including the massive haunches and flanks. It is a broad, heavy, wide-bodied animal with a long, deep torso, a deep chest, and thick, widely planted columnar legs. In every facing the body fills the same width, height and mass. The front view, eyes toward the viewer, shows the red head with three horns above a broad chest and shoulders. The rear view, seen from behind, is as wide as the front view and fills the frame width: a broad, wide-hipped rump, thick haunches swelling out to the full width of the front view's shoulders, flanks bulging past the ribcage on both sides, and the base of the tail low between the thighs; the red head and shoulders are hidden behind the brown haunches, with only the tips of the horns rising above the back line. Four thick columnar legs stand wide apart, the hind legs as far apart as the forelegs, in the same stance as the front view. The side view shows the same deep torso and the same heavy mass. The silhouette carries the same weight at the same height in every facing. The expression is fierce and watchful. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, CANON_MISS, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/IridonianReek/IridonianReek"
+ },
+ {
+  "id": "arteval_RSW_Klorslug__Klorslug_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Klorslug__Klorslug_j",
+  "prompt": "A creature sprite for RimWorld: the k'lor'slug, a poisonous vermiform native to the swamps of Noe'ha'on, an aggressive and deadly species that lurks in the darkest spots of starships (the holomonster of the dejarik game). Body plan and volume, identical in every facing: a long, thick, segmented worm body with a heavy girth. The front section is reared high in a broad hunched arch, and the trunk is as wide as it is tall, about two-thirds of the figure's height. The reared section carries a thick head tube ending in a toothed circular sucker maw ringed with mandibles. Exactly four pairs of substantial clawed limbs, eight in total, project outward from both sides of the trunk and run down the reared front section, evenly spaced at four fixed stations: the first pair just below the head tube, the second at the top of the arch, the third at mid-trunk, the fourth at the lower trunk. Exactly one continuous tapering tail, the same length and thickness in every facing, trails along the ground behind the lower body. Front view, seen from the front with the eyes and maw toward the viewer: the maw is held high at the top of the figure, the broad hunched front curves toward the camera, four clawed limb pairs splay down both sides of the body at the four stations, the smooth lower trunk sits centred on the ground, and the single tail passes behind the body with at most one tail tip showing beside the base on one side, seen under the angled game camera. Rear view, seen from behind: the same thick head tube, bulky raised trunk and four pairs of widely projecting clawed limbs as the front view, at exactly the same width, height and mass. The back of the hunched arch, the segmented dorsal ridge and the single trailing tail are shown, the eyes and maw are hidden on the far side of the head, and the limbs show their outer surfaces along both flanks. Side view: the same heavy girth and the same reared posture in profile, the four limbs of the near side at the four stations and the single tapering tail trailing behind. Keep the same colouring, skin texture and palette in every view. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with no ground, water, shadow, text or border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Klorslug/Klorslug"
+ },
+ {
+  "id": "arteval_RSW_Manka_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Manka",
+  "prompt": "A creature sprite for RimWorld: the manka. Manka (or 'manka cats') were a large predatory feline species native to the planets Tython and Alderaan. Fur-covered quad-tusked quadrupeds, 'manka cats' were considered dangerous by most sentients who encountered them and were often hunted for safety reasons as well as for resources (their tusks were known to have unusual curative properties). Visible features it must show: the canon manka cat; four ivory tusks; a fur-covered large feline predator. Build and proportions: one heavy, broad-chested, thick-necked cat with a full ruff of fur around the neck and shoulders, wide shoulder mass and sturdy, widely spread forelegs. This same bulk appears in every view. Front view, eyes toward the viewer: the broad chest, ruff and four tusks are shown. Rear view, seen from behind: the haunches are broad and heavy, nearly as wide as the chest in the front view (body about 180 px across, the same as the front), the tail hangs between the haunches, and the ruff and shoulder mass spread just as broad above them, eyes hidden. The forelegs run straight down and forward along the body's long axis, their back surfaces and heel pads visible beside the haunches, with the paws planted directly under the shoulders and claws pointing down toward the ground, in the same alignment as in the front and side views. Front and rear views stand at the same height and the same body width. Side view: the whole silhouette, including the foremost ivory tusk, fits fully inside the transparent canvas with clear empty space beyond every tusk tip; the body is scaled slightly smaller and set a little away from the facing edge so all four complete tusk tips are visible. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, keeping the palette and fur colouring of the previous render. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Manka/Manka"
+ }
+]

@@ -42,6 +42,17 @@ def game_pid():
     fake = os.environ.get("TESTQ_ARCHMAGI_PID")
     if fake is not None:
         return fake.strip()
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+    try:
+        import game_instance
+    except ImportError:             # this file runs from a job's clone, which may be pinned to an sha older than it
+        game_instance = None
+    if game_instance:
+        try:
+            mine = game_instance.pid()
+        except game_instance.Blind:
+            return None
+        return str(mine) if mine else ""
     try:
         r = subprocess.run([PS, "-NoProfile", "-NonInteractive", "-Command",
                             "(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1).Id"],

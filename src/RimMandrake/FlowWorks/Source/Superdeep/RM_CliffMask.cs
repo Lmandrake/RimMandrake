@@ -42,6 +42,7 @@ namespace RimMandrake.FlowWorks
 			public NativeArray<CellConnection>[] under;
 			public bool underDerived;
 			public long key = long.MinValue;
+			public int fullDerives;  // this map's FullDerive count: what its stride masks compare (TRENCH_STRIDE_FIX_CROSS_MAP_INVALIDATION)
 			public bool disposed;
 		}
 
@@ -53,6 +54,12 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Full re-derive count, for the bridge proof.</summary>
 		public static int FullDerives { get; private set; }
+
+		/// <summary>This map's full re-derive count (a dig on another map leaves it alone).</summary>
+		internal static int FullDerivesOn(Map map)
+		{
+			return For(map)?.fullDerives ?? 0;
+		}
 
 		public static bool On => RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && RM_PocketGrid.Relative && RM_SuperdeepTrap.RuleOn;
 
@@ -167,6 +174,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			CellIndices ci = map.cellIndices;
+			var probe = new RM_CliffCellProbe(map, eng);
 			var done = new HashSet<int>();
 			foreach (IntVec3 d in deltas)
 			{
@@ -177,10 +185,10 @@ namespace RimMandrake.FlowWorks
 						var c = new IntVec3(d.x + dx, 0, d.z + dz);
 						if (c.InBounds(map) && done.Add(ci.CellToIndex(c)))
 						{
-							DeriveCell(map, eng, m.band, vanilla, c, null, false);
+							DeriveCell(map, eng, probe, m.band, vanilla, c, null, false);
 							if (m.underDerived)
 							{
-								DeriveCell(map, eng, m.under, vanilla, c, null, true);
+								DeriveCell(map, eng, probe, m.under, vanilla, c, null, true);
 							}
 						}
 					}
@@ -193,6 +201,7 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
 			m.key = KeyFor(eng);
 			FullDerives++;
+			m.fullDerives++;
 			if (!On || eng == null || eng.ClimbCellCount == 0)
 			{
 				m.derived = false; // no hole (or the rule is off): vanilla's array is the answer, the swap hands it out
@@ -230,6 +239,7 @@ namespace RimMandrake.FlowWorks
 			}
 			CellIndices ci = map.cellIndices;
 			int w = map.Size.x, h = map.Size.z;
+			var probe = new RM_CliffCellProbe(map, eng);
 			var done = new HashSet<int>();
 			for (int i = 0; i < n; i++)
 			{
@@ -250,18 +260,19 @@ namespace RimMandrake.FlowWorks
 						int j = z * w + x;
 						if (done.Add(j))
 						{
-							DeriveCell(map, eng, bands, vanilla, new IntVec3(x, 0, z), depth, floorView);
+							DeriveCell(map, eng, probe, bands, vanilla, new IntVec3(x, 0, z), depth, floorView);
 						}
 					}
 				}
 			}
 		}
 
-		private static void DeriveCell(Map map, RM_MapComponent_Excavation eng, NativeArray<CellConnection>[] bands,
+		private static void DeriveCell(Map map, RM_MapComponent_Excavation eng, RM_CliffCellProbe probe, NativeArray<CellConnection>[] bands,
 			NativeArray<CellConnection>.ReadOnly vanilla, IntVec3 c, byte[] depth, bool floorView)
 		{
 			int w = map.Size.x, h = map.Size.z;
-			var d9 = new int[9];
+			int[] d9 = probe.d9;
+			probe.c = c;
 			for (int dz = -1; dz <= 1; dz++)
 			{
 				for (int dx = -1; dx <= 1; dx++)
@@ -281,12 +292,7 @@ namespace RimMandrake.FlowWorks
 			byte van = (byte)vanilla[idx];
 			for (int k = 1; k < bands.Length; k++)
 			{
-				byte allowed = RM_CliffMaskMath.AllowedBits(d9, k, b =>
-				{
-					var o = new IntVec3(c.x + RM_CliffMaskMath.Dx[b], 0, c.z + RM_CliffMaskMath.Dz[b]);
-					return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(RM_CliffMaskMath.Dx[b], RM_CliffMaskMath.Dz[b])]);
-				});
-				bands[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, allowed);
+				bands[k][idx] = (CellConnection)RM_CliffMaskMath.Derive(van, RM_CliffMaskMath.AllowedBits(d9, k, probe.joins));
 			}
 		}
 
@@ -355,6 +361,31 @@ namespace RimMandrake.FlowWorks
 			byte bits = band > 0 && band < m.band.Length && m.derived ? (byte)m.band[band][i] : van;
 			return "CLIFF k=" + k + " bits=0x" + bits.ToString("X2") + " vanilla=0x" + van.ToString("X2") + " derived=" + m.derived
 				+ " derives=" + FullDerives;
+		}
+	}
+
+	/// <summary>One cell's 3×3 depths and the structural-join probe AllowedBits asks, made once per derive (no int[9] and no
+	/// closure per cell: CLIFF_MASK_TAME_PER_CELL_SCRATCH). Every derive owns its own, so a worker-thread GatherData shares nothing.</summary>
+	internal sealed class RM_CliffCellProbe
+	{
+		public readonly int[] d9 = new int[9];
+		public readonly System.Func<int, bool> joins;
+		private readonly Map map;
+		private readonly RM_MapComponent_Excavation eng;
+		public IntVec3 c;
+
+		public RM_CliffCellProbe(Map map, RM_MapComponent_Excavation eng)
+		{
+			this.map = map;
+			this.eng = eng;
+			joins = Joins;
+		}
+
+		private bool Joins(int b)
+		{
+			int dx = RM_CliffMaskMath.Dx[b], dz = RM_CliffMaskMath.Dz[b];
+			var o = new IntVec3(c.x + dx, 0, c.z + dz);
+			return o.InBounds(map) && RM_ClimbJoins.Structural(map, eng, c, o, d9[4], d9[RM_CliffMaskMath.N9(dx, dz)]);
 		}
 	}
 

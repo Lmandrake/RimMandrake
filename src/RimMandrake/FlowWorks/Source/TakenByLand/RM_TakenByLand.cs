@@ -309,6 +309,8 @@ namespace RimMandrake.FlowWorks.TakenByLand
     {
         public const int ScanInterval = 250;
         private List<RM_TakenRecord> records = new List<RM_TakenRecord>();
+        private Dictionary<int, int> returnedTicks;      // only across a save or a load; RM_TakenByLand.Returned is the live set
+        private List<int> returnedIdsWork, returnedTicksWork;
 
         public RM_WorldComponent_TakenByLand(World world) : base(world) { RM_TakenByLand.Held.Clear(); RM_TakenByLand.Returned.Clear(); }
 
@@ -344,11 +346,16 @@ namespace RimMandrake.FlowWorks.TakenByLand
         {
             base.ExposeData();
             Scribe_Collections.Look(ref records, "rmTakenByLand", LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.Saving) returnedTicks = RM_TakenByLand.Returned.Snapshot(Find.TickManager.TicksGame);
+            Scribe_Collections.Look(ref returnedTicks, "rmReturnedTicks", LookMode.Value, LookMode.Value, ref returnedIdsWork, ref returnedTicksWork);
+            if (Scribe.mode == LoadSaveMode.Saving) returnedTicks = null;
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 records = records ?? new List<RM_TakenRecord>();
                 records.RemoveAll(r => r == null);
                 RebuildHeld();
+                RM_TakenByLand.Returned.Restore(returnedTicks);
+                returnedTicks = null;
             }
         }
 

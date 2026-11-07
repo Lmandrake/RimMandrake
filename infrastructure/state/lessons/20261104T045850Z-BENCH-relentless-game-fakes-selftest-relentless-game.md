@@ -1,1 +1,0 @@
-relentless_game fakes (selftest_relentless_game GW) use full shas everywhere, but the real ledger keeps a 12-char built_sha and relentless_live_round stamps runs.jsonl rows with it; outcomes() keys on exact (item, crit, sha), so a test row with the full sha is silently unseen. Fixture rows must carry sha[:12] when the ledger is real (selftest_relentless_reimplement.py).

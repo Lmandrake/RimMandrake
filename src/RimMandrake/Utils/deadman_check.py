@@ -223,6 +223,20 @@ def load_retired(path=None):
     return parse_retired(p.read_text(encoding="utf-8").splitlines()) if p.exists() else set()
 
 
+# A closed item cannot be re-closed to change its `live` line, so a file that moved on purpose is listed here: the
+# ledger's old reading= path is swept as the new one. (RUNNING_NOW.md -> RELENTLESS_NOW.md, owner 2026-11-07.)
+MOVED_READINGS = {
+    "/mnt/d/ClaudeWork/rimmandrake/conductor/RUNNING_NOW.md": "/mnt/d/ClaudeWork/rimmandrake/conductor/RELENTLESS_NOW.md",
+}
+
+
+def moved(line):
+    """A ledger promise line with any moved reading= path replaced by its new home. Pure."""
+    for old, new in MOVED_READINGS.items():
+        line = (line or "").replace("reading=" + old, "reading=" + new)
+    return line
+
+
 EXCUSED = "(excused)"   # paused on purpose: not broken, and no proof it recovered either
 
 
@@ -244,7 +258,7 @@ def promises(items, baseline, retired=()):
         if not line or line.startswith("once:") or it.state in RETIRED or iid in seen or subject(line) in retired:
             continue
         if it.state in SETTLED or it.live_broken:
-            out.append({"item": iid, "line": line})
+            out.append({"item": iid, "line": moved(line)})
     return out
 
 

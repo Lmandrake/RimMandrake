@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_owner_queue.py — RUNNING_NOW's "Needs you" and the mods' "waits on you" are one test (offline, fake items).
+"""selftest_owner_queue.py — RELENTLESS_NOW's "Needs you" and the mods' "waits on you" are one test (offline, fake items).
 
 FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT: the header said "Nothing." while ten mods said "waits on you".
 Covers: which routings count as his (Relentless tooling holds do not; owner_call and a flyer game hold do), the

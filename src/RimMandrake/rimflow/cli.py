@@ -1718,20 +1718,19 @@ def _mint_or_die(iid, w):
     probs = model.mint_problems(iid, set(w.items))
     if probs:
         die("%s is not a new-style item name:\n  - %s\n\n"
-            "New items are SUBJECT_INTENT_TWIST: what it is, what it sets out to do (one word "
-            "from the bank), then a TRUE comic aside on how it is going.\n"
-            "  e.g. BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY, GREATBOLE_CORE_RESKIN_NOT_A_DRILL\n"
-            "Check a name first:  rimflow namecheck <NAME>   (the bank: rimflow namecheck --bank)"
+            "New items are PROJECT_VERB_INTENTION_TWIST (owner 2026-11-05): slot 1 the registry Id "
+            "(this project: RIMMASTER), slot 2 any verb, 4-9 words, <= 64 chars, then a TRUE aside.\n"
+            "  e.g. RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY\n"
+            "Check a name first:  rimflow namecheck <NAME>   (no word bank any more)"
             % (iid, "\n  - ".join(probs)))
 
 
 def cmd_namecheck(args, seat):
     """Show how a proposed item name parses and whether it may be minted."""
     if args.bank or not args.name:
-        print("intent words (the hinge between SUBJECT and TWIST):")
-        words = sorted(model.INTENT_WORDS)
-        for i in range(0, len(words), 10):
-            print("  " + " ".join(words[i:i + 10]))
+        print("the intent-word bank is RETIRED (owner 2026-11-05): slot 2 takes any verb. A new name is "
+              "PROJECT_VERB_INTENTION_TWIST, slot 1 a registry Id (this project: RIMMASTER), 4-9 words, "
+              "<= %d chars. Older names stay valid forever." % model.NAME_MAX_LEN)
         if not args.name:
             return 0
     _, w = load()
@@ -1744,7 +1743,7 @@ def cmd_namecheck(args, seat):
         return 0
     parts = model.parse_name(iid)
     if parts:
-        print("subject %s · intent %s · twist %s"
+        print("project %s · verb %s · rest %s"
               % ("_".join(parts[0]), parts[1], "_".join(parts[2])))
     probs = model.mint_problems(iid, set(w.items))
     if probs:
@@ -3108,8 +3107,9 @@ def _mirror_from_ledger(actor, note=None):
     race is told who won; it is not told no.
     """
     _, w3 = load()
+    others = {k: v for k, v in w3.bridge_hosts.items() if k != model.DEFAULT_BRIDGE_HOST and v.get("holder")}
     model.write_bridge_file(w3.bridge_holder, actor, w3.bridge_purpose,
-                            w3.bridge_since, note=note)
+                            w3.bridge_since, note=note, others=others)
     return w3.bridge_holder
 
 
@@ -3641,11 +3641,12 @@ def _refuse_before_lock(ev):
 def _guard_call(hk, args_list):
     """Run a host_guard verb against host `hk`'s own driver lock: in-process when this IS that machine, else over
     ssh in its runner clone. -> (exit code, output)."""
-    if host_guard.local_host() == hk:
+    machine, inst = model.split_bridge_host(hk)
+    if host_guard.local_machine() == machine:
         import io
         import contextlib as _cl
         buf = io.StringIO()
-        with _cl.redirect_stdout(buf):
+        with _cl.redirect_stdout(buf), host_guard.instance_env(inst):
             rc = host_guard.main(args_list)
         return rc, buf.getvalue().strip()
     return host_guard.remote(hk, args_list)
@@ -3708,6 +3709,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
         if rc != 0:
             print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
         _emit(ev, w, quiet=True)
+        _mirror_from_ledger(None)
         print("%s bridge released by %s" % (hk, seat))
         return 0
     holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
@@ -3757,6 +3759,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
             "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     _emit(ev, w, quiet=True)
+    _mirror_from_ledger(None)
     print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)
@@ -3825,7 +3828,7 @@ def cmd_bridge(args, seat):
             % (args.action, args.to, args.action))
 
     try:
-        hk = model.bridge_host_key(getattr(args, "host", None))
+        hk = model.bridge_host_key(getattr(args, "host", None) or model.ambient_bridge_host())
     except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
         die(str(e))
     if getattr(args, "mine", False):
@@ -4308,10 +4311,10 @@ def build_parser():
     s = add("why", "why is this item not being offered", cmd_why)
     s.add_argument("id")
 
-    s = add("namecheck", "does a proposed item name follow SUBJECT_INTENT_TWIST?",
+    s = add("namecheck", "does a proposed item name follow PROJECT_VERB_INTENTION_TWIST?",
             cmd_namecheck)
     s.add_argument("name", nargs="?")
-    s.add_argument("--bank", action="store_true", help="list the intent words")
+    s.add_argument("--bank", action="store_true", help="retired: prints that the bank is gone")
 
     s = add("ack", "take ownership of an incident; a ring or a read is not one", cmd_ack)
     s.add_argument("id")
@@ -4537,7 +4540,8 @@ def build_parser():
                    help="the purpose is a flyer's flight: --idle-ok refuses (flight needs a human present). "
                         "`bridge idle` alone reports whether a delegated take would succeed, taking nothing.")
     s.add_argument("--host", default=None,
-                   help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
+                   help="which game: archmagi (default) | stevedesktop, or a second game on a machine, stevedesktop.b. "
+                        "Each has its own lock. RM_GAME_INSTANCE=b with no --host means this machine's b.")
     s.add_argument("--mine", action="store_true",
                    help="release only: free the bridge only if THIS seat holds it; another's hold is left alone "
                         "and nothing is written (exit 0). For loops that release after every pass")

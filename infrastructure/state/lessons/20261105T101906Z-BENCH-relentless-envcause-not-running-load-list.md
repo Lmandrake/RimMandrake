@@ -1,1 +1,0 @@
-relentless_envcause: a 'not in the running load:' list comes in two shapes, 'Name (pkgId)' (modlist gate) and 'pkgId (reason)' (art_fold_live); parse dotted packageIds anywhere, never the first \w+ word (it read 'mandrake' and churned ART_OVERRIDE_FAMILY_SCRIPT_1 through 4 stagings, OPS_CHURN_DIAGNOSE_ART_XODX_FYLS)

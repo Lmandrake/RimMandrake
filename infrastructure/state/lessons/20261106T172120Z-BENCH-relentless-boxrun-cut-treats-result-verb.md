@@ -1,1 +1,0 @@
-relentless_boxrun._CUT treats a result verb as prose even inside a script path: 'python3 fail.py' is cut at ' fail' because \b matches before '.py', so a proof naming fail.py/pass-like scripts extracts the wrong head (found by RELENTLESS_BOXRUN_HARDEN_PARTIAL_PROOF, 2026-11-06)

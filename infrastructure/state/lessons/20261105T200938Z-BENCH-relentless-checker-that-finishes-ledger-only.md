@@ -1,2 +1,0 @@
-A Relentless checker that finishes on a LEDGER-ONLY commit always reads 'change.diff is empty, still BLOCKED': relentless_wall.make_box leaves infrastructure/state/ledger out of change.diff and replays it from the candidate's PARENT (walls.marker.tree_from_parent). That is the wall's design, not a lost commit. Two blind fails on a8d05bca (STALE_BLOCKS_UNBLOCK_GATES_ALREADY_OPEN gen 1, 3) were this. Land the rimflow events first, then finish on a later commit that names the item (a lesson or other non-ledger file, so its diff is not empty).
-home: skills/clone-landing-commits

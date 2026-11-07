@@ -45,7 +45,7 @@
     <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
     <li>mandrake.rsw.trophycraft</li>                           <!-- RSW_TrophyCraft_ObserverBraveFang: WyyyschokkFangPendantFactions.xml -->
     <li>Neronix17.OuterRim.Core</li>
-    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
+    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire_Campaign.xml -->
     <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->
     <li>Neronix17.OuterRim.GalacticDiversity</li>           <!-- OuterRim_Jawa, OuterRim_WookieeHead -->
     <li>Neronix17.OuterRim.DroidDepot</li>                  <!-- OuterRim_*Droid              DroidFemaleTexture_Fix.xml -->
@@ -87,12 +87,12 @@
          which MayRequire-gates against ~20 biome/animal mods individually. -->
     <li>Arcjc007.GravshipCrashes</li>                       <!-- JawaGroundHulk_Register.xml -->
     <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
-    <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire.xml, HomesteadDefenseLeague.xml -->
+    <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire_Campaign.xml, HomesteadDefenseLeague.xml -->
     <li>mandrake.rsw.swbestiary</li>                        <!-- SandFishing_CrackedLands.xml: RM_DuneCrawler, RSW_SandStalker, RM_GlassPearl, RSW_RareSandCatches -->
     <li>Mlie.SpaceWorms</li>                                <!-- BiomeCast_Ashkarr.xml -->
     <li>RedMattis.BigSmall.Core</li>                        <!-- GiantWeaponWielders_Ashkarr.xml -->
     <li>Sarg.AlphaMemes</li>                                <!-- BiomeCast_Ashkarr.xml, HomesteadDefenseLeague.xml -->
-    <li>VanillaExpanded.VMemesE</li>                        <!-- BlackstarCompany.xml, GalacticEmpire.xml -->
+    <li>VanillaExpanded.VMemesE</li>                        <!-- BlackstarCompany.xml -->
     <li>vanillaexpanded.vaewaste</li>                       <!-- BiomeCast_Ashkarr.xml: VAEWaste_Megatardi -->
     <li>vanillaquestsexpanded.ancients</li>                 <!-- BiomeCast_Ashkarr.xml, VQEPatients_AreRakata.xml -->
     <li>vanillaquestsexpanded.cryptoforge</li>              <!-- BiomeCast_Ashkarr.xml -->

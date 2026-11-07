@@ -98,7 +98,13 @@ class Deadline:
 
 def game_alive(image=GAME_IMAGE, timeout=15):
     """True/False when tasklist answered about the game image, None (UNKNOWN) when it could not be asked. Read-only:
-    this never signals, kills or focuses anything."""
+    this never signals, kills or focuses anything. The game image means this process's game (game_instance.py)."""
+    if image == GAME_IMAGE:
+        import game_instance
+        try:
+            return game_instance.running()
+        except game_instance.Blind:
+            return None
     exe = "tasklist" if os.name == "nt" else "tasklist.exe"
     try:
         out = subprocess.run([exe, "/FI", "IMAGENAME eq %s" % image, "/FO", "CSV", "/NH"], capture_output=True,

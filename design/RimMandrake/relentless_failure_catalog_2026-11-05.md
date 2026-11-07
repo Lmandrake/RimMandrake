@@ -1,5 +1,7 @@
 # Relentless failure catalog, 2026-11-05
 
+Lessons cited below by timestamp with `relentless` in their slug were folded into `skills/relentless/references/traps.md` on 2026-11-07; their full text is in git history.
+
 Owner, 2026-11-05 ~05:00Z: "Please document all of these strange error conditions we're having: stale items, judges
 unable to judge throwing things back to "fix" without fixing the measurement, all of these edge cases. [...] How can we
 make this system much more robust, sane, and self-recovering after a major event?"

@@ -39,7 +39,7 @@ No owner north-star bars are drafted for this mod yet.
 ## anti-guessing notes
 RULED OUT: a top-level `<Operation MayRequire>` gating anything — the engine ignores it. Guard: the static check goes red on MayRequire in Patches.
 RULED OUT: `MayRequire="mandrake.rm.abyss"` — Abyss is folded into `mandrake.rm.biomes`.
-RULED OUT: adding the inquisitor to Empire `Combat` options — the campaign's GalacticEmpire.xml replaces them; the inquisitor is appended by a postfix on `PawnGroupMakerUtility.GeneratePawns`.
+RULED OUT: adding the inquisitor to Empire `Combat` options — the campaign's GalacticEmpire_Campaign.xml replaces them; the inquisitor is appended by a postfix on `PawnGroupMakerUtility.GeneratePawns`.
 RULED OUT: removing the casket's `designationCategory`/`minifiedDef` by XML — both are inherited from vanilla `FurnitureBase`, so removal on the casket's node changes nothing; the build command is closed with `canGenerateDefaultDesignator` false and the casket's `minifiedDef` is nulled in C# at startup.
 RULED OUT: `Recruitable = false` alone as permanence — the getter answers true early under several conditions and brainwipe/quest joins set it; the guard is a getter postfix plus SetFaction/Recruit/Enslave refusals.
 RULED OUT: relabelling the deathrest need, hediffs, thoughts, room role, job, research, hemogen pack and serum — the Anzati share them, and the 2026-10-09 card ruling keeps the Sith renames off the Anzati.

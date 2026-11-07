@@ -293,7 +293,7 @@ groups — including **Trader, Peaceful and Settlement** — and the roster has 
 role** to replace them with. A faction that cannot send a caravan or defend its own
 settlement is a worse bug than the one being fixed.
 
-✅ **The sanctioned shape is the one `GalacticEmpire.xml` already ships and proves:**
+✅ **The sanctioned shape is the one `GalacticEmpire_Campaign.xml` already ships and proves:**
 rewrite the `options` **inside the Combat groups**, and leave every non-combat group
 vanilla. That is why three of four Empire kinds field today and the other two factions'
 field none.

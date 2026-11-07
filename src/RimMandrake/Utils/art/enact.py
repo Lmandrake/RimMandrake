@@ -2236,6 +2236,7 @@ def deploy(mods: set[str], dry_run: bool) -> list[str]:
 
 
 def game_running() -> bool:
+    """ANY game on this machine, on purpose: this guards a DLL write, and every game loads the one Mods folder."""
     try:
         r = subprocess.run(["tasklist.exe", "/FI", "IMAGENAME eq RimWorldWin64.exe"], capture_output=True,
                            text=True, timeout=20)

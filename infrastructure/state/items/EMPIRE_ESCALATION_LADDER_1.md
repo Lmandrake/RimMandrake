@@ -62,7 +62,7 @@ Not built / owed: the world-map tile inspect line (§2 item 4); `mlie.factionrai
 siege stands in); the 11-3K viper probe def; callers of RaiseFloor/LowerRung (Route 6, droid line,
 Ishko) live in other items. Vanilla's own raid letter also shows beside each raid rung's letter.
 Siege eligibility is not a blocker: Royalty's `Empire` FactionDef declares `canSiege true`
-(`Data/Royalty/Defs/FactionDefs/Faction_Empire.xml`), our reskin `UtinniPatches/Patches/GalacticEmpire.xml`
+(`Data/Royalty/Defs/FactionDefs/Faction_Empire.xml`), our patches `StarWarsPatches/Patches/GalacticEmpire.xml` and `UtinniPatches/Patches/GalacticEmpire_Campaign.xml`
 only adds fields, and no installed mod patches `canSiege` (checked 2026-10-06; the def dump does not
 capture the field, so the runtime value is read from source, not measured). No patch is owed.
 Risk for L2: the camp only gets built if the raid holds a pawn with Construction AND Firefighting

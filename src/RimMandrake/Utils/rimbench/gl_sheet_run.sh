@@ -7,6 +7,7 @@
 set -uo pipefail
 REC="$1"; OUT="$2"; MC_GL="$3"; RUNLOG="$4"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../../.." && pwd)"
+[ "${RM_GAME_INSTANCE:-a}" = a ] || { echo "REFUSED: this launches through Steam, which can only start game a"; exit 2; }
 LL="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LL/Player.log"; CFG="$LL/Config/ModsConfig.xml"; CL="$LL/Config/CustomLandforms-v1"
 SS="$LL/Screenshots"
@@ -20,7 +21,7 @@ cp -f "$MC_GL" "$CFG"; say "ModsConfig <- minimal+GL ($(grep -o '<li>' "$CFG" | 
 for rec in "$REC"/RUT_Gen_*.xml; do
   id=$(basename "$rec" .xml)
   rm -f "$CL"/*.xml; cp -f "$rec" "$CL/$id.xml"; say "[$id] placed as the only custom landform"
-  taskkill.exe /F /IM RimWorldWin64.exe >/dev/null 2>&1; sleep 8; [ -f "$LOG" ] && cp -f "$LOG" "$OUT/prev_${id}_before.log" 2>/dev/null; mv -f "$LOG" "$LOG.prev_glsheet" 2>/dev/null
+  python3 "$REPO/src/RimMandrake/Utils/game_instance.py" stop --force >/dev/null; sleep 8; [ -f "$LOG" ] && cp -f "$LOG" "$OUT/prev_${id}_before.log" 2>/dev/null; mv -f "$LOG" "$LOG.prev_glsheet" 2>/dev/null
   "/mnt/c/Program Files (x86)/Steam/steam.exe" -applaunch 294100 & disown
   up=0; for i in $(seq 1 100); do sleep 3; [ -f "$LOG" ] && grep -q "Bridge token:" "$LOG" 2>/dev/null && { up=1; break; }; done
   if [ $up = 0 ]; then say "[$id] BRIDGE NOT UP after 300s — skipping"; continue; fi

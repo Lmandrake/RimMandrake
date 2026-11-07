@@ -1,0 +1,1 @@
+flyer_lock.py check is recipe-shaped (256 px canvas, ping-pong last frame): red on all 28 replay entries, including kept Porg and vanilla Chicken, so its exit is not a flyer verdict outside the Sketto recipe.

@@ -1,1 +1,0 @@
-A relentless attempts.jsonl row with "gated" (relentless_attrib.withhold) is a WITHHELD ending, not a failed attempt: the attribution writes the gen's real row later, so any counter over attempts.jsonl that does not skip gated rows counts one live fail twice (OPS_CHURN_DIAGNOSE_PACK_HMAO_RAYY: 'game_fail failed it 2 times' off one A5 fail).

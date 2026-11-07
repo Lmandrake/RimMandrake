@@ -1,0 +1,17 @@
+# What every Artisan loop is doing, as a plain markdown page. No model, no bridge writes; reads the machines through timeouts.
+# Runs from the dispatch clone, which stays. The generator never touches a loop's clone or the game.
+# Reading: D:\ClaudeWork\rimmandrake\conductor\ARTISAN_NOW.md and ARTISAN_NOW_PHONE.md (WSL /mnt/d/ClaudeWork/rimmandrake/conductor/)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-artisan-now.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-artisan-now.timer
+# Remove:   systemctl --user disable --now rm-artisan-now.timer; rm ~/.config/systemd/user/rm-artisan-now.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake Artisan-now page (what every Artisan loop is doing), every minute
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/artisan_now.py
+Nice=10
+MemoryMax=512M
+TimeoutStartSec=50

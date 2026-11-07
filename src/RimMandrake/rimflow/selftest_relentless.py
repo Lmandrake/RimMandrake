@@ -308,7 +308,7 @@ def t_worker_dies():
     x.w.up[u] = False
     x.tick()
     with open(x.s.p("queue_next.json"), encoding="utf-8") as f:
-        ok(json.load(f)["t"] == x.now, "the tick writes the line's next names for RUNNING_NOW")
+        ok(json.load(f)["t"] == x.now, "the tick writes the line's next names for RELENTLESS_NOW")
     st = x.st("I0")
     ok(st["gen"] > g, "worker dies: fenced at once")
     x.run_one("I0")
@@ -4677,7 +4677,7 @@ def t_hold_routing():
     fx.fail = "ledger down"
     ok(fx.ledger_hold_to_seat("I", hold) == "ledger down", "a failure says so and the tick retries")
 
-    # The two readers of a hold cannot disagree: RUNNING_NOW's owner_queue and this supervisor's routing. Both sides of the
+    # The two readers of a hold cannot disagree: RELENTLESS_NOW's owner_queue and this supervisor's routing. Both sides of the
     # word trap are pinned on real wrapped text (blind check: a bare "flyer" in a why made a hold that was nobody's).
     sys.path.insert(0, os.path.join(os.path.dirname(R.HERE), "Utils"))
     import owner_queue as Q

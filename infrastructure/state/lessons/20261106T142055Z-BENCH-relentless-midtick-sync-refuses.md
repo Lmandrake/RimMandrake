@@ -1,2 +1,0 @@
-Mid-tick, relentless books holds the tick's own unlanded ledger lines, so fx.sync() refuses ('books N behind: K lines of BENCH.jsonl not landed') at every step boundary: any mid-tick work that needs fresh books must fx.flush() first (p50 10 s). Found live 2026-11-06: the first WP-10b wake serves all fired in 7-19 s but enrolled nothing. And the supervisor's own flush must not poke the wake (RELENTLESS_NO_WAKE=1).
-home: src/RimMandrake/rimflow/relentless_wake.py

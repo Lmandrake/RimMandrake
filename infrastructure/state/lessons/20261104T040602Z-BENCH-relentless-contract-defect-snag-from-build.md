@@ -1,1 +1,0 @@
-relentless: a contract_defect snag from a build worker does not route the next gen to proof_only/redesign; contract() (relentless.py:451) refuses the build worker again, so each wrong contract costs same_failure_limit extra build gens (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH gens 4 and 6).

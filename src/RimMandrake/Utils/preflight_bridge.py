@@ -47,6 +47,7 @@ sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 import bridge_holder  # noqa: E402
 import game_paths as gp  # noqa: E402
+import game_instance  # noqa: E402
 
 MODLISTS = os.path.join(REPO, 'infrastructure', 'state', 'modlists')
 TIER_FILES = {'full': 'ModsConfig.FULL.LATEST.xml', 'minimal': 'ModsConfig.MINIMAL.xml'}
@@ -158,37 +159,12 @@ def intended(ctx):
     return active_ids(os.path.join(MODLISTS, f)), 'snapshot %s' % f
 
 
-def win_processes(name='RimWorldWin64.exe'):
-    """[(pid, start_utc_epoch|None)] or None when the OS cannot be asked. tasklist answers presence (exit 0 with or
-    without a match); powershell adds the start time only when there is a process (Get-Process with no match exits 1,
-    which read as 'could not ask')."""
+def win_processes():
+    """[(pid, start_utc_epoch|None)] of this process's game (game_instance.py), or None when the OS cannot be asked."""
     try:
-        t = subprocess.run(['tasklist.exe', '/FI', 'IMAGENAME eq %s' % name, '/FO', 'CSV', '/NH'], capture_output=True,
-                           text=True, timeout=30)
-    except (OSError, subprocess.SubprocessError):
+        return [(p['pid'], int(p['start']) if p['start'] else None) for p in game_instance.procs()]
+    except game_instance.Blind:
         return None
-    if t.returncode != 0:
-        return None
-    pids = [int(c[1]) for c in (ln.replace('"', '').split(',') for ln in t.stdout.replace('\r', '').splitlines())
-            if len(c) > 1 and c[0].lower() == name.lower() and c[1].isdigit()]
-    if not pids:
-        return []
-    try:
-        out = subprocess.run(['powershell.exe', '-NoProfile', '-Command',
-                              "Get-Process -Name %s -ErrorAction SilentlyContinue | ForEach-Object { \"$($_.Id) "
-                              "$([int][double]::Parse((Get-Date $_.StartTime.ToUniversalTime() -UFormat %%s)))\" }"
-                              % name.replace('.exe', '')],
-                             capture_output=True, text=True, timeout=30)
-    except (OSError, subprocess.SubprocessError):
-        return None
-    if out.returncode != 0:
-        return [(p, None) for p in pids]
-    procs = []
-    for ln in out.stdout.replace('\r', '').splitlines():
-        parts = ln.split()
-        if parts and parts[0].isdigit():
-            procs.append((int(parts[0]), int(parts[1]) if len(parts) > 1 and parts[1].lstrip('-').isdigit() else None))
-    return procs
 
 
 def read_log(path=None):
@@ -508,7 +484,7 @@ def c_live_identity(ctx):
     except OSError as e:
         return UNM('cannot read Player.log: %s' % e)
     ctx['log'] = log
-    tok = re.search(r'\[RimBridge\]\s*Bridge token:', log)
+    tok = re.search(r'\[RimBridge\]\s*Bridge token:', log) or game_instance.PORT_LINE in log   # env mode logs no token line
     port = re.search(r'\[RimBridge\].*?on port\s+(\d+)', log)
     if start and mtime < start:
         return FAIL('Player.log last written before pid %s started: it is the PREVIOUS run (row 39)' % pid)

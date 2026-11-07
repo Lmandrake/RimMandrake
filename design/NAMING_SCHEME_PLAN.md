@@ -51,8 +51,7 @@ mod and the owner signs the exceptions.
 ## 3. Tier assignment — all 32 mods (from the MEASURED census)
 
 **RimMandrake (14):** RimMandrake_Pits (27 `RM_`, already clean — the
-exemplar) · SacredGraffiti (core; the nine mark-styles extract to a RimUtinni
-content pack) · WreckedMachines (core; Rekko-relic hooks extract to
+exemplar) · WreckedMachines (core; Rekko-relic hooks extract to
 RimUtinni) · StrandedQuest (**VERIFY in Phase 1**: read its 2 defs' quest
 text — campaign flavor would make it RimUtinni) · Inhabited (297 defs) ·
 PlanetPresetPrime · RimDefDump · DesertVehicleReskin (**re-assigned by review
@@ -182,9 +181,10 @@ verification dominates; executable by Opus 5 — the judgment lives in the
 map, which Phase 1 fixes.
 
 **Phase 3 — content splits (per-item):** Jawa_Patches triage; extract the
-straddle packs (SacredGraffiti marks, WreckedMachines relics, Droidworks
-campaign layer, Armoury doctrine patches). Each is a small FOUNDRY item off
-this plan.
+straddle packs (WreckedMachines relics, Droidworks campaign layer, Armoury
+doctrine patches). Each is a small item off this plan. SacredGraffiti is not a
+straddle pack: the whole mod becomes RimUtinni's (`mandrake.rut.sacredgraffiti`,
+loop 3, not yet built; see `design/RimMandrake/graffiti_series_2026-11-07.md`).
 
 **Phase 4 — deliberately NOT planned:** tooling renames/moves and `design/`
 tree restructuring. Exempt (§1) and stable paths are worth more than purity;

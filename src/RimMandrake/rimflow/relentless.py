@@ -5183,22 +5183,29 @@ def pool_rows(store, fx, r):
             continue
         kind, st = own.get(os.path.abspath(c), (None, None))
         status = st["status"] if st else None
+        pin = None      # what holds a live row: "unit" a unit is up, "status" only the item's status (a stop can park it)
         if st is None:
             rank = 0 if fx.clone_idle_s(c) >= POOL_ORPHAN_IDLE_S else 2
+            pin = "orphan"
         elif kind == "quarantine" or uncharged_alive(fx, run_of(st, "run" if kind == "work" else kind)):
-            rank = 2
+            rank, pin = 2, "unit"
         elif kind == "help":
             rank = 2 if help_pending(st) else 0
+            pin = "help"
         elif status in ENDED:
             rank = 0
         elif kind == "check":
             rank = 0 if status in ("queued", "held", "blocked", "candidate") else 2
+            pin = "status"
         elif status == relentless_game.GAME:     # waiting on the game, the bridge or the owner: parked; a stage re-prepares
             g = st.get("game") or {}    # a broker batch runs in the books checkout: its clone is not in use
             rank = 2 if g.get("phase") in relentless_game.ACTIVE and not g.get("broker") else 1
+            pin = "status"
         else:
             rank = 1 if status in ("queued", "held", "blocked", "candidate") else 2
-        rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
+            pin = "status"
+        rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank,
+                     "pin": pin if rank == 2 else None})
     return rows
 
 
@@ -5271,6 +5278,37 @@ def release_parked(store, fx, r, now, acts):
         if not wip["kept"] or (put_down and wip.get("carry_real")):
             evict(store, fx, row, now, acts, "parked: %s %s" % (row["kind"], row["status"]),
                   bundle_pointer(store, row, (wip["real"] or wip.get("carry") or wip.get("carry_real")) and row["kind"] == "work"))
+
+
+PARK_ON_STOP = ("running", "stopping", "checking", relentless_game.GAME)      # what a stop parks: nothing of theirs is live
+
+
+def park_stopped(store, fx, r, now, acts, force=False):
+    """A stopped pipeline gives its clones back (RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES). Under the owner's PAUSE
+    (or `force`, for a stop that left the timer off and no tick to run this) an item that was running, stopping, checking or in
+    the game's active phases keeps its place on the books but not its clone: those rows read rank 2 by status alone, so
+    release_parked and make_room never touched them and, with the tick stopped, nothing ever did. 2026-11-07: 10 frozen
+    items held 10 of 16 places and 41 GB. WIP, commits and stashes travel in the bundle (evict -> remove_clone), the item's
+    pointer names it, and its next lease restores it. A row with a unit up, a process in it, an unreadable look or a
+    bundle that fails stays. -> [(item, clone name, bundle dir or None)] released."""
+    if not (force or fx.paused()):
+        return []
+    out = []
+    for row in pool_rows(store, fx, r):
+        if row["rank"] != 2 or row.get("pin") != "status" or row["kind"] not in ("work", "check") \
+                or row["status"] not in PARK_ON_STOP or fx.clone_busy(row["clone"]):
+            continue
+        st = store.load(row["item"]) or {}
+        run = (st.get("check") or {}).get("run") if row["kind"] == "check" else st.get("run")
+        if run and fx.alive(run):       # alive() keeps the clone when its look fails
+            continue
+        wip = fx.clone_wip(row["clone"])
+        gone, bundle = evict(store, fx, row, now, acts, "stopped: %s %s" % (row["kind"], row["status"]),
+                             bundle_pointer(store, row, (wip["real"] or wip.get("carry") or wip.get("carry_real"))
+                                            and row["kind"] == "work"))
+        if gone:
+            out.append((row["item"], os.path.basename(row["clone"]), bundle))
+    return out
 
 
 def make_room(store, fx, r, now, acts, reserve=0):
@@ -5419,7 +5457,7 @@ def owner_hold(r, item, first, st=None):
 
 
 def write_queue_next(store, fx, r, now, shown=8):
-    """The next names in the line, for RUNNING_NOW: the order needs this tick's plan and Operations' verdict, so the page
+    """The next names in the line, for RELENTLESS_NOW: the order needs this tick's plan and Operations' verdict, so the page
     reads it here instead of recomputing it. `free` may start at the next room; `waiting` are next but stopped by the token
     pause, a degraded verdict or their own not_before (the same tests lease applies). A reading: nothing acts on it."""
     states = store.states()
@@ -7900,6 +7938,7 @@ def _tick(store, fx, r, now, prof):
         relentless_reachfix.sweep(store, fx, r, now, acts, iso, back=reach_back)    # a blind Judge's repair: probe, apply, ticket or back
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
+        park_stopped(store, fx, r, now, acts)       # a PAUSE parks what is frozen: no clone sits on a stopped line
         run_tmp_sweep(store, fx, now, acts, "start")
         try:        # a detached job killed mid-run is marked lost and launched again (RELENTLESS_SHRINK_TICK_SLOW_PHASES_DETACHED)
             import relentless_jobs
@@ -8226,6 +8265,9 @@ def main(argv=None):
     p.add_argument("--owner-said")
     p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
     p.add_argument("--why")
+    p = sub.add_parser("park-pool", help="a stop that left no tick running: bundle and release the clones of frozen items "
+                       "(running, stopping, checking, in the game's active phases) whose unit is down; "
+                       "nothing unbundled leaves, a live unit or a process in a clone keeps it")
     p = sub.add_parser("hold", help="take an item out of the line until unhold: no worker, no re-check; a candidate "
                        "keeps its sha and unhold checks it again; a running worker is fenced")
     p.add_argument("item")
@@ -8414,6 +8456,18 @@ def main(argv=None):
                 raise ValueError("rediagnose needs --owner-said or " + _conductor_authority().ROUTE)
             rediagnose(store, a.item, said)
             print("%s: a diagnostic consult is wanted again" % a.item)
+        elif a.cmd == "park-pool":
+            fx = Effects(rules(), store)
+            before = set(fx.pool_clones())
+            got = park_stopped(store, fx, fx.r, time.time(), [], force=True)
+            for item, name, bundle in got:
+                print("%s: released %s; bundle %s" % (item, name, bundle or "none (nothing unpushed)"))
+            release_parked(store, fx, fx.r, time.time(), [])    # the put-down items' clones (held, blocked, waiting): no tick will
+            for c in sorted(before - set(fx.pool_clones())):
+                if c not in {os.path.join(os.path.dirname(c), n) for _, n, _ in got}:
+                    it = clone_item(c)
+                    print("%s: released %s (put down); bundle %s" % (it, os.path.basename(c), (store.load(it) or {}).get("bundle") or "none"))
+            print("park-pool: %d clone(s) released" % len(before - set(fx.pool_clones())))
         elif a.cmd == "hold":
             said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
             if not said:

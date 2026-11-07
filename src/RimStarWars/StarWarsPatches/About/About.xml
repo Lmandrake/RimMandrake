@@ -10,7 +10,8 @@
 <loadAfter>
     <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
     <li>Neronix17.OuterRim.Core</li>
-    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
+    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp*, stormtrooper gear  DroidFemaleTexture_Fix.xml, WeaponTags_Renormalise.xml -->
+    <li>VanillaExpanded.VMemesE</li>                        <!-- VME_GodEmperor, VME_Authoritarian  GalacticEmpire.xml -->
     <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->
     <li>Neronix17.OuterRim.GalacticDiversity</li>           <!-- OuterRim_Jawa, OuterRim_WookieeHead -->
     <li>Neronix17.OuterRim.DroidDepot</li>                  <!-- OuterRim_*Droid              DroidFemaleTexture_Fix.xml -->

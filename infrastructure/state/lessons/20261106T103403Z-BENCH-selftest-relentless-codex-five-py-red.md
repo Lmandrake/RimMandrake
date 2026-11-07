@@ -1,1 +1,0 @@
-selftest_relentless_codex_five.py is red at 73760d1e3d before any GAMELANE_LAND_FIX_SEVEN_STRANDINGS change: rows #16 (saved patch raw bytes, --no-textconv) and codex_five_b #4 (the same row at since routes). Measured in a git-archive copy of HEAD, 2026-11-06; not caused by the finish/fence change.

@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RSW_Falumpaset__FalumpasetE_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset__FalumpasetE",
+  "prompt": "A creature sprite for RimWorld: the falumpaset. A huge, long-legged herbivore from Naboo, with a heavy rump, wrinkled spotted hide and a low-hung head. Gungans and Naboo domesticate falumpasets to pull carts and haul heavy loads. They are strong swimmers. Visible features it must show: the canon Naboo falumpaset (see canon entry falumpaset); very long legs under a heavy rump; wrinkled spotted hide and a low-hung head with a drooping muzzle. The legs grade from the body colour to a darker grey-brown from the lower joint down to the feet. The tail is short and thin, a slim cord that hangs from the lower rump only as far as the hock, ending in a small tuft at hock height, well above the belly line; it takes up a small fraction of the animal's height and is identical in length and tuft height in every facing. The south view shows the front of the head, eyes toward the viewer, with a continuous drooping muzzle, a clean pendulous lip, a clean chin and throat, and open empty space between the front legs; the tail is hidden behind the body. The north view shows the rear, seen from behind: heavy rump, haunches, and the short thin tail hanging down the centre of the rump to hock height with its small tuft level with the hocks, the rear legs extending below it, head hidden. The east view shows the same short tail in profile, hanging from the lower rump to hock height, its tuft level with the hock and clearly above the underside of the belly. Keep the palette, body plan, spotted wrinkled hide and low-hung head exactly as in the previous render. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "arteval_RSW_Fambaa_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Fambaa",
+  "prompt": "A creature sprite for RimWorld: the fambaa. Fambaas were large herbivorous amphibians most often found in swamps. Fambaas were technically amphibians but had the scaly hide of reptiles. The creature's size and usefulness when domesticated meant they were exported to many worlds as beasts of burden. Body: a huge, broad, low-slung, iguana-like quadruped with reptile-scaled hide and a wide flat back built for hauling loads. The short, thick neck juts forward at shoulder height, and the heavy head is carried low in front of the chest. The head is broad and blunt with heavy brows, a wide lipless mouth, small upper front fangs, a short upward tusk on each side of the lower jaw, and a yellow-amber eye. Tail: a long, thick, muscular tail roots at the centre of the rump, low and in line with the spine, and tapers to a rounded tip, reaching about two-thirds of the body length behind the animal. The same tail appears on every facing with the same root position, thickness and hide: in the side view it extends horizontally behind the rump, clearly visible beyond the hind legs, so the side silhouette reads head, broad back, hind legs, long tapering tail; in the rear view the thick tail base comes toward the viewer at the rump centre, foreshortened, curving slightly to one side; in the front view a short glimpse of the tail tip shows past the body edge. The tail is olive-khaki on top with a pale grey-cream underside, and the dorsal ridge continues faintly onto its upper surface. Colour: the back and flanks are olive-khaki to greenish-tan with darker olive mottling; the underside, throat and inner legs are pale grey-cream. Feet: each leg ends in a broad, round, elephant-like foot with short, blunt, dark claws along the front edge. Crest: a low dorsal ridge runs along the back of the neck and head, with the same 3D shape on every facing; it reads as a narrow edge in front and rear views and as a ridge line along the neck in side view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Edges: the silhouette is crisp and fully transparent outside the body; every edge pixel is antialiased in the adjacent hide colour (olive, khaki or grey-cream), and the dark outline closes cleanly and unbroken around the rear legs, rump and tail. Exactly ONE creature, centred, the whole body including the full tail visible with nothing cut off. Fully transparent background: clean transparent pixels everywhere outside the creature, no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, F_INCONSISTENT, ALPHA_HALO, CANON_MISS, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 8.0,
+  "module": "swimmer",
+  "target_texpath": "RimStarWars/SWBestiary/Fambaa/Fambaa"
+ },
+ {
+  "id": "arteval_RSW_FeralGrazer_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FeralGrazer",
+  "prompt": "A creature sprite for RimWorld: the feral grazer, a slow-moving Alderaanian herbivore. Build the body from this description, with no earlier render as a reference. Body: lean and wild, long-legged and narrow-chested, with a high shoulder ridge sloping down to lower haunches and a thin tail. The skin is bare, pebbled, leathery hide in a muted earth tone, marked with irregular darker blotches and mottled patches that merge and break up unevenly across the flanks and back, with no ring or rosette shapes. A row of small, bony scutes runs along the spine from the neck to the base of the tail. Head: a long, low, wedge-shaped skull with a narrow beaked muzzle, a short blunt nose boss, and a pair of horns sweeping back from the brow ridge. The ears are small, flat and set low on the sides of the skull. The same head, horn arrangement, blotched hide and spine scutes appear in every facing. Front view: eyes toward the viewer. Side view: full profile. Rear view: seen from behind, showing the back, scutes, haunches and tail, with the eyes hidden. Colour and edges: the whole creature is painted in muted earth tones only, hide browns and tans, darker brown blotches, and bone-coloured scutes and horns. The clean dark outline and every soft edge pixel are a deeper shade of the neighbouring part: earth-brown at the hide and legs, dark horn-brown at the horns, dull bone-brown at the scutes along the spine. The silhouette is cleanly cut against the transparent background, with crisp edges around each leg, the spine scutes, the horns and the tail, so that every visible edge pixel matches the adjacent hide, horn or scute colour. Realistic painterly vanilla RimWorld sprite style with soft painted interior shading. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background, showing only the creature itself.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/FeralGrazer/FeralGrazer"
+ },
+ {
+  "id": "arteval_RSW_FrilledGorg__FrilledGorg_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FrilledGorg__FrilledGorg_j",
+  "prompt": "A creature sprite for RimWorld: the frilled gorg, a small, aggressive alien amphibian. Its body is a short, soft, plump trunk, about one and a half times as long as it is tall, in a squat, compact crouch, with a thick rounded tail that tapers gently. The skin is smooth, moist and glossy, in olive green with soft mottled blotches of darker green; it has no scales, plates or armour. The head is short, broad and blunt and rounded, with a wide, downturned amphibian mouth, and two large, wide-set, bulging eyes on top of the head. Four short, stubby limbs with webbed, rounded toes are tucked close beneath the body. A continuous row of tall, translucent red frills grows directly out of the skin along the whole back and the full length of the tail, tallest over the shoulders and hips and tapering toward the tail tip; it is the most prominent feature of the creature, and with the wide mouth and bulging eyes it gives the small body an aggressive, bristling look. Front view, eyes toward the viewer: the broad blunt head with its wide mouth and bulging eyes, the plump body behind it, and the frill row rising from the centre line of the back. Side view: the short plump body in its squat crouch, the frill row along the top line, and the tail trailing behind. Rear view, seen from behind: the creature shows its back, the frilled tail and its haunches, with the eyes hidden; the hind legs are bent outward and the hind feet planted wide apart to either side of the tail base. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_0036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.75,
+  "module": "swimmer",
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorg"
+ }
+]

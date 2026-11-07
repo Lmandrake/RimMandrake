@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ============================================================================
+  ImperialVocabulary.xml                 StarWarsPatches · IMPERIAL_VOCABULARY_KEYED_1
+                                         written 2026-08-21, moved here 2026-11-07
+                                         🔴 CORRECTED the same day, see below
+  ============================================================================
+
+  The Galactic Empire's vessel is Royalty's `Empire`, and Royalty's VOCABULARY
+  came with it. `royalFavorLabel` was literally "honor"; 178 of Royalty's 319
+  English Keyed strings say royal, title, bestowing, throne, permit or stellarch.
+  This file is the second half of the fix === the first half is two ops in
+  `Patches/GalacticEmpire.xml` that re-point `royalFavorLabel` to
+  "Imperial favor" and `royalFavorIconPath` off Royalty's crown.
+
+  🔑 WHY A GLOBAL KEY OVERRIDE IS SAFE HERE. `Empire` is the ONLY def in the
+  entire 578-mod load set carrying
+  `royalFavorLabel` or `royalTitleTags` === counted against
+  DefDump/defs/FactionDef.json, 86 FactionDefs, not assumed. Every
+  `{FACTION_name}` these strings splice therefore resolves to the Galactic
+  Empire. If a mod is ever added that gives a SECOND faction royal titles,
+  re-check this file before shipping.
+
+  ============================================================================
+  🔴 CORRECTION, 2026-08-21, and it is the reason to read this header
+  ============================================================================
+  The first version of this file shipped 17 keys, and EIGHT OF THEM WERE DEAD ===
+  they can never render in this load set at all. They were the "Imperial law"
+  family: the `MinimumRoyalTitle` stat lines, the implant inspect string, the
+  illegal-use warning and the law-violation letter. The reasoning behind them
+  was that a colony which loots a psychic amplifier gets caught by Imperial law
+  precisely because it holds no rank. That story is good and the mechanism does
+  not exist.
+
+  MEASURED, not argued === against DefDump under the live 578-mod list:
+
+      FactionDefs carrying `royalImplantRules`        0  of 86
+      ThingDefs  using `CompProperties_RoyalImplant`  0
+      HediffDefs using `CompProperties_RoyalImplant`  0
+
+  `MinimumRoyalTitle` is computed FROM `royalImplantRules`. With no faction
+  declaring any rule, there is no minimum rank on anything, no stat line, no
+  inspect line, no warning dialog and no law-violation letter, in vanilla or
+  under any mod in this stack. ⭐ `EMPIRE_GAP_AUDIT.md` row 9 had already
+  recorded `royalImplantRules` as "absent from every shipped FactionDef" ===
+  the finding was in the audit that commissioned this item, and the first pass
+  did not connect it. The eight keys are REMOVED rather than kept "just in
+  case": a key that overrides nothing reachable is drift waiting to happen.
+
+  ⚠️ The same pass also got the PAWN ROUTE wrong. It said `Empire_Royal_*`
+  kinds "still raid us". They do not raid anyone: read from the vessel,
+  `Empire_Royal_*` appears in NO pawnGroupMaker at all. The only titled kind
+  in a group is `Empire_Fighter_Cataphract` (`titleSelectOne` Freeholder /
+  Yeoman) === and `IMPERIAL_RAID_ROSTER_1` has since replaced both COMBAT
+  groups with our own untitled kinds, so the cataphract no longer raids either.
+  🔑 The surface SURVIVES anyway, by the untouched groups: cataphracts still
+  garrison Imperial settlements and still escort Imperial caravans, because the
+  Trader and Settlement group makers are left alone by design. So a titled
+  Imperial is still met === just at a base, not in a drop pod.
+
+  ============================================================================
+  🔴 THIS IS A BOUNDED LIST, AND THE BOUND IS THE POINT
+  ============================================================================
+  `EMPIRE_GAP_AUDIT.md` section 3: the Empire is the player's PERMANENT ENEMY,
+  so all 11 `RoyalTitleDef`s, all 13 `RoyalTitlePermitDef`s and the ~25
+  bestowing, decree, hospitality and RoyalAscent quests are DARK. The player
+  cannot earn favour, cannot hold a rank, cannot spend a permit, and never meets
+  a bestower. ⛔ So the strings covering bestowing ceremonies, heirs, permits,
+  "call royal aid", throne-room requirements the player must satisfy and the
+  tribute collector are DELIBERATELY NOT TRANSLATED === no screen reaches them,
+  and translating them would be ~150 strings of maintenance liability nobody
+  reads.
+
+  ✅ What is left is the 20 keys below, in four groups, and each group carries
+  the mechanism that makes it reachable.
+
+  VOCABULARY, applied consistently: "title" -> "rank" · "royal title" ->
+  "Imperial rank" · "honor" -> "Imperial favor" (that one lives on the def).
+
+  ⚠️ WHAT NO KEYED FILE CAN REACH, recorded so it is not re-discovered as a bug.
+  `{TITLE}` splices a `RoyalTitleDef`'s own LABEL === freeholder, yeoman,
+  acolyte, knight, praetor, baron, count, duke, consul, archon, stellarch. Those
+  are DEF LABELS, so a captured Imperial still reads "holds the Imperial rank of
+  count". Renaming 11 titles into an Imperial ladder is a DESIGN call about what
+  an Imperial officer is called, not a build call, and is left open.
+  ============================================================================
+-->
+<LanguageData>
+
+  <!-- ==================================================================
+       1. THE CHARACTER CARD OF A TITLED IMPERIAL
+       Reached by selecting or capturing an `Empire_Fighter_Cataphract`, which
+       carries Freeholder or Yeoman of its own. It garrisons Imperial
+       settlements and escorts Imperial caravans === the Settlement and Trader
+       group makers are untouched by design (FACTION_SPEC.md:130).
+       ================================================================== -->
+  <RoyalTitleTooltipHasTitle>{PAWN_labelShort} holds the Imperial rank of {TITLE}, granted by {FACTION_name}.</RoyalTitleTooltipHasTitle>
+  <RoyalTitleTooltipConceited>{PAWN_labelShort} will demand that this rank's privileges be fully respected.</RoyalTitleTooltipConceited>
+  <CurrentTitle>Current rank</CurrentTitle>
+
+  <!-- The progression block is appended to EVERY rank tooltip unconditionally,
+       so it renders on an enemy's card even though the player earns nothing. -->
+  <RoyalTitleTooltipNextTitle>Next rank</RoyalTitleTooltipNextTitle>
+  <RoyalTitleTooltipNextTitleFavorCost>costs {0} {FACTION_royalFavorLabel}</RoyalTitleTooltipNextTitleFavorCost>
+  <RoyalTitleTooltipTitlesEarnable>Earnable ranks of {FACTION_name}</RoyalTitleTooltipTitlesEarnable>
+  <RoyalTitleTooltipTitlesNonEarnable>Other ranks of {FACTION_name}</RoyalTitleTooltipTitlesNonEarnable>
+
+  <!-- Freeholder and Yeoman are both non-inheritable, so these two are the
+       branch a captured cataphract's card actually prints. -->
+  <LetterRoyalTitleCantBeInherited>The Imperial rank of {TITLE} cannot be inherited.</LetterRoyalTitleCantBeInherited>
+  <LetterRoyalTitleNoHeir>If {PAWN_pronoun} dies, no one will inherit this rank.</LetterRoyalTitleNoHeir>
+
+  <!-- ⚠️ These two are kept as UNSURE, not as proven. Freeholder and Yeoman
+       carry no `recruitmentResistanceOffset`, and every non-player pawn is
+       generated conceited, so neither line may ever print on an obtainable
+       prisoner. They cost nothing if dark and are wrong if they render. -->
+  <RoyalTitleTooltipNonConceited>{PAWN_labelShort} is flexible about this rank's privileges.</RoyalTitleTooltipNonConceited>
+  <RecruitmentResistanceRoyalTitleOffset>{0} rank</RecruitmentResistanceRoyalTitleOffset>
+
+  <!-- ==================================================================
+       2. THE STAT CARD OF GEAR THE PLAYER LOOTS OR CRAFTS
+       Driven by `RoyalTitleDef.requiredApparel` and `.foodRequirement`, which
+       exist and are read per-DEF === no faction, relation or player rank is
+       consulted. Prestige and cataphract armour and fine meals all hit this.
+       ⛔ NOT the `MinimumRoyalTitle` family: see the CORRECTION above.
+       ================================================================== -->
+  <Stat_Thing_Apparel_MaxSatisfiedTitle>Max satisfied Imperial rank</Stat_Thing_Apparel_MaxSatisfiedTitle>
+  <Stat_Thing_Apparel_MaxSatisfiedTitle_Desc>Highest Imperial rank whose apparel requirements are satisfied by this.</Stat_Thing_Apparel_MaxSatisfiedTitle_Desc>
+  <Stat_Thing_Ingestible_MaxSatisfiedTitle>Max satisfied Imperial rank</Stat_Thing_Ingestible_MaxSatisfiedTitle>
+  <Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc>The highest Imperial rank whose food requirements are satisfied by this.</Stat_Thing_Ingestible_MaxSatisfiedTitle_Desc>
+
+  <!-- ==================================================================
+       3. THE RANK'S OWN INFO CARD
+       Reached by hyperlink from the stat card above === any apparel that
+       satisfies a rank links to the RoyalTitleDef that requires it.
+       ================================================================== -->
+  <RoyalTitleTooltipPermits>Rank privileges</RoyalTitleTooltipPermits>
+  <RoyalTitleRequiredApparelStatDescription>Holders of this Imperial rank must be covered in some combination of</RoyalTitleRequiredApparelStatDescription>
+  <RoyalTitleRequiredMealsDesc>A holder of this Imperial rank will only eat these foods, unless they are starving or on a caravan.</RoyalTitleRequiredMealsDesc>
+
+  <!-- ==================================================================
+       4. TWO STRINGS ON THINGS THE PLAYER LOOKS AT ANYWAY
+       The Imperial settlement's world-map inspect line carries no hostility
+       check, so the player reads it every time a base is selected. The throne's
+       inspect line is appended unconditionally to any throne that is built.
+       ================================================================== -->
+  <RequiresTradePermission>Trading here requires Imperial rank: {0}</RequiresTradePermission>
+  <ThroneMaxSatisfiedTitle>Satisfies Imperial rank</ThroneMaxSatisfiedTitle>
+
+</LanguageData>

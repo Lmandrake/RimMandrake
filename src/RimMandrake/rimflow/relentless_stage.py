@@ -41,7 +41,6 @@ REPO = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".g
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 DEPLOY = os.path.join(UTILS, "deploy_custom_mods.py")
 SWAP = os.path.join(UTILS, "modlist_swap.py")
-GAME_EXE = "RimWorldWin64.exe"
 STOP_GRACE_S = 90           # live_session.stop_game's graceful wait, then /F
 LAUNCH_SETTLE_S = 20        # live_session.launch_and_wait: Steam's own hand-off before the log is read
 MARGIN_S = 120              # left of stage_max_s for game-ready and the remedies' own bound
@@ -124,14 +123,17 @@ class Ops(object):
             return 124, "timed out after %d s: %s" % (timeout, " ".join(argv)[:200])
         return p.returncode, (p.stdout or "") + (p.stderr or "")
 
+    def instance(self):
+        if UTILS not in sys.path:
+            sys.path.insert(0, UTILS)
+        import game_instance
+        return game_instance
+
     def running(self):
-        rc, out = self.sh(["tasklist.exe", "/FI", "IMAGENAME eq %s" % GAME_EXE], timeout=60)
-        if rc != 0:
-            raise RuntimeError("tasklist.exe exit %d: %s" % (rc, out[-200:]))     # blind: unhandled, never "down"
-        return GAME_EXE.lower() in out.lower()
+        return self.instance().running()     # this process's game; Blind is a RuntimeError: unhandled, never "down"
 
     def kill(self, force=False):
-        return self.sh(["taskkill.exe"] + (["/F"] if force else []) + ["/IM", GAME_EXE], timeout=60)
+        return self.instance().stop(force=force)     # by pid: never another game on this machine
 
     def stamp(self, state):
         return self.sh(["./game", "--idle-ok", "--why", "relentless staging %s (python stager)" % self.plan["item"],
@@ -145,6 +147,9 @@ class Ops(object):
         return logwait.LogCursor(PLAYER_LOG)
 
     def launch(self):
+        gi = self.instance()
+        if gi.current() != gi.DEFAULT:      # a named game starts directly; Steam's launch can only ever start game a
+            return gi.launch()
         # through Steam, never the bare .exe (rimworld-load-round §10: the bare exe corrupts assembly loading)
         return self.sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
 

@@ -1,1 +1,0 @@
-Relentless staging (relentless_live_round live-deploy) deploys only mod trees; the JawaBench companion DLL goes to <RimWorld>/BridgeTools via bridgetools/build.py --gm --apply with the game down, and no supervisor lane runs that. A DLL-deploy item cannot finish through live-deploy (found on BRIDGETOOLS_DLL_REBUILD_THREE_TOOLS_MISSING 2026-11-04).

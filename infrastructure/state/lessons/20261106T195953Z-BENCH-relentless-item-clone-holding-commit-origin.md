@@ -1,1 +1,0 @@
-A Relentless item clone holding a commit origin/main lacks makes ~37 selftest_relentless_* suites CRASH (ValueError from relentless.finish's unlanded-commit guard, which the fixtures reach through the real clone): publish first, then run the suite; the red is not your code.

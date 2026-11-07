@@ -1,0 +1,2 @@
+On 2026-11-07 the owner ordered every frozen Relentless item shut down, recorded and released. relentless.py hold refuses checking and game items by design (hold it after its verdict / let the phase settle), so for 23 of 27 items the only lever that frees the clone is park-pool (bundle + release; the status stays). Decision for the Conductor: leave it so (a PAUSE parks; the items resume from their bundles) or teach hold to take a checking/game item once its unit is down. Ledger notes for all 27 are on OWNER.jsonl.
+home: NONE

@@ -57,9 +57,12 @@ def read(p):
         return ""
 
 
+ROLE = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "roles", "conductor.md")
+
+
 def test_identity():
-    t = read(CONDUCTOR)
-    check(bool(t), "CONDUCTOR.md exists")
+    t = read(CONDUCTOR) + "\n" + read(ROLE)   # CONDUCTOR.md is a pointer; the role file is the one source (owner card 2026-11-07)
+    check(bool(read(CONDUCTOR)), "CONDUCTOR.md exists")
     low = " ".join(t.lower().split())             # prose wraps: match across line breaks
     for needle, what in (("you absorb the old workshop seat", "absorbs the old workshop seat"),
                          ("quick mode", "quick mode"),

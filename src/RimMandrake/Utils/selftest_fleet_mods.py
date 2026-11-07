@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_fleet_mods.py — RUNNING_NOW's mods/receipts derivations, offline (no git, no ledger, no store).
+"""selftest_fleet_mods.py — RELENTLESS_NOW's mods/receipts derivations, offline (no git, no ledger, no store).
 
 Covers: title_short (prefixes, tags, ids, word cut), real_count (ledger-only commits excluded), mod grouping
 (mod_of_path, attribute dropping infra when a mod was touched, mod_by_name longest match), outcome (main commit, marks
@@ -122,7 +122,7 @@ GONE = ["src/RimMandrake/Utils/fleet_watch.py", "src/RimMandrake/Utils/fleet_ref
         "src/RimMandrake/Utils/fleetwatch_page.html", "src/RimMandrake/Utils/selftest_fleet_refresh.py",
         "src/RimMandrake/Utils/systemd/rm-fleetwatch.service", "src/RimMandrake/Utils/systemd/rm-fleetwatch.timer"]
 check("retired: Fleet Watch files are gone", [g for g in GONE if os.path.exists(os.path.join(REPO, g))] == [])
-check("retired: fleet_mods.py and owner_queue.py, which RUNNING_NOW reads, remain",
+check("retired: fleet_mods.py and owner_queue.py, which RELENTLESS_NOW reads, remain",
       all(os.path.exists(os.path.join(UTILS, f)) for f in ("fleet_mods.py", "owner_queue.py")))
 NAMES = re.compile(r"\bfleet_watch\b|\bfleet_refresh\b|fleetwatch_page|rm-fleetwatch")
 named = []

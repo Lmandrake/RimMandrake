@@ -1171,20 +1171,16 @@ def game_running():
     owner's time: for three minutes after a clean exit it refuses to do work
     that is perfectly safe. A closed game is closed, immediately.
 
-    When the process list is unavailable (tasklist missing, timed out, or
+    When the process list is unavailable (powershell missing, timed out, or
     exiting non-zero) we cannot ask, so we assume live and refuse. The old
     Player.log mtime fallback read a missing or quiet log as "stopped", so a
     failed tasklist let a swap write under a running game (Codex cd905b).
     """
+    import game_instance
     try:
-        out = subprocess.run(
-            ["tasklist.exe", "/FI", "IMAGENAME eq RimWorldWin64.exe", "/NH"],
-            capture_output=True, text=True, timeout=15)
-        if out.returncode == 0:
-            return "RimWorldWin64" in out.stdout
-        why = "tasklist exited %s: %s" % (out.returncode, (out.stderr or out.stdout or "").strip()[:200])
-    except (OSError, subprocess.SubprocessError) as e:
-        why = "%s: %s" % (type(e).__name__, e)
+        return game_instance.running()      # this list's game: another game has its own data folder and its own list
+    except game_instance.Blind as e:
+        why = str(e)
     print("  ! could not ask the OS whether RimWorld runs (%s) -- assuming it is live" % why, file=sys.stderr)
     return True
 
@@ -1312,7 +1308,7 @@ def bridge_ok(override):
         print("  (bridge gate skipped: rimflow not importable: %s)" % e)
         return True
     seat = rfmodel.ambient_window_seat()
-    why = rfmodel.bridge_gate(seat)
+    why = rfmodel.bridge_gate(seat, rfmodel.ambient_bridge_host())     # a named game's list: that game's bridge
     if why is None:
         return True
     if override:

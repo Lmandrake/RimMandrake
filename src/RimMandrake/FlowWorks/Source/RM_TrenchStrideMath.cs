@@ -18,6 +18,13 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_TrenchStrideMath
 	{
+		/// <summary>Must a map's stride masks re-derive? Only for THAT map's own full cliff derive or its own climb generation:
+		/// the count compared is per map, so a dig on another map rebuilds nothing here (TRENCH_STRIDE_FIX_CROSS_MAP_INVALIDATION).</summary>
+		public static bool NeedsFullDerive(int seenOwnDerives, int ownDerives, int seenGeneration, int generation)
+		{
+			return seenOwnDerives != ownDerives || seenGeneration != generation;
+		}
+
 		/// <summary>The widest stride any creature is given (B 13+ is body size 156+). StrideOf clamps to this.</summary>
 		public const int MaxStride = 3;
 

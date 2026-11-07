@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_TunnelSnake_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_TunnelSnake",
+  "prompt": "A creature sprite for RimWorld: the yanker, an invented alien corridor predator. A long, low ambush hunter built for a tunnel: it lies dormant in a flat, sprawling coil, two low overlapping loops spread side by side, wedged into one narrow gap, and it wakes only when prey comes within touching distance. The coil is a broad flat mound about 340 px wide and about 150 px tall, roughly 2.3 times wider than tall, with a wide base and a gently rounded crown. Its width, thickness and bulk are identical in every facing. The plated segments wrap visibly around the pile and run on into one another, so a single long, low, continuous serpentine body is legible. Anatomy: a heavy blunt wedge of a head with a wide hinged mouth ringed by thick pouchy lip-flaps and short hooked grasping palps at the jaw corners, small recessed eyes under bony brow ridges. The head is held close to the ground, resting low on the front edge of the coil with the jaw near the floor line. The long limbless body is built from broad overlapping armoured plates like a segmented carapace, dark mottled leathery hide with pale rubbery seams and a velvety sheen, and a ridge of short gripping spurs along each flank that brace against corridor walls. One continuous body with exactly one head end and one tail end. The tail ends in a single thick blunt anchoring paddle with a cluster of hooked grip-spurs, trailing from the lower rear of the coil. Colour: deep olive-brown hide, pale rubbery seams, darker plates. Front view (south), eyes toward the viewer: the low head rests at the front of the broad flat coil, and the tail paddle is tucked behind the coil with only its tip showing at lower centre. Side view (east), profile: the low head at the front of the coil with the spur ridge visible along the flank, and the single tail paddle trailing from the rear lower left. Rear view (north), seen from behind: the plated back and spur ridge face the viewer in the same broad flat mound, with the same width at every tier and the same rounded outline as the front view; the head is hidden behind the coil and the single tail paddle sits centred at the bottom of the coil, toward the viewer. Realistic painterly vanilla RimWorld sprite style, clean dark outline with soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_SIZE_JUMP, DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake"
+ },
+ {
+  "id": "arteval_RSW_WompRat_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_WompRat",
+  "prompt": "A creature sprite for RimWorld: the womp rat. Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Visible features it must show: the canon Tatooine womp rat (see canon entry womprat); a large, heavy-bodied rodent with a thick broad torso; a predator-scavenger's teeth; and a very long, thin, naked, pale-grey tail with darker rings along its length. The tail is as long as the body from rump to nose. It is a slender cord much thinner than the hind leg, and it leaves the centre of the rump and trails out behind the body in a long, gently curving taper. Body scale is identical in every facing: the front view's broad shoulders and chest, the side view's substantial rump, and the rear view's wide hunched haunches, thick rump and substantial dark paws planted wide all carry equal bulk, fill the same width at the same height, and show ears and paws of the same size. The tail appears on every facing and always sweeps toward the animal's own right flank. In the side view the tail trails fully behind the rump in a graceful S-curve, so its whole length and rings are readable. In the front view, with eyes toward the viewer, the pale ringed tail tip appears past the animal's right hip, on the image-left side. The rear view is seen from behind, showing back, tail and haunches, with eyes hidden; its haunches are as wide as the front view's shoulders and chest, and the pale ringed tail runs back from the centre of the rump and sweeps toward the animal's right flank, which is the image-right side in this view. The creature is drawn with a wide margin of empty canvas on every side, with the body somewhat smaller in the frame so the whole body and the full-length tail sit inside the canvas at the same scale in every facing. Keep the palette, fur colouring and body plan identical to the previous render. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body and tail visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: CANON_MISS, CANON_MISS, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1236",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/WompRat/WompRat"
+ }
+]
