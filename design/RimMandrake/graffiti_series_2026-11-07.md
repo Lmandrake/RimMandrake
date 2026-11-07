@@ -364,12 +364,12 @@ Then the same "Taking turns" and "How to work" sections, with its own shots fold
 1. **A frozen north star.** Artisan needs the owner's words on the experience. His words at the top of this page are those words for loops 2 and 3. Someone who may touch the walks must add them, and the bars he accepts, to the two walks. The Sacred Graffiti walk still says "not yet dictated".
 2. **The clone and branch**, own how-to-run of about 60 lines, token review point and blind judge, per the Artisan `README.md`.
 
-## Open questions for Mandrake
+## Answered questions (owner cards, 2026-11-07)
 
 Answered by card 2026-11-07: a god appears as both his Form (his symbol) and the idol figure (his depiction), so the idols are canon for the wall. Plain Jawa marks live in RimStarWars; RimUtinni holds this clan's own marks and extends them. Sort the two mark by mark when loop 2 starts, and this changes the "Utinni takes over" scope of loop 3 for plain marks.
 
-3. **Is the Dark Vigil part of loop 3?** The mark's only named caller does not exist as a rite. *Recommend yes, and let the loop also have other existing rites leave marks, since "rites leave marks" is much of what makes it shine.*
-4. **Ta'Baa's name.** The pantheon says his name is a pun on Jawaese "Taa baa" meaning goodbye. Wookieepedia's Jawaese page today gives "Taa baa" as "Thank you". The name is locked. *Recommend keeping the name, dropping "goodbye" as a canon claim, and calling it the clan's own reading. Thanks for leaving is arguably the better joke.*
+3. **Is the Dark Vigil part of loop 3?** Answered by card 2026-11-07: yes. The Dark Vigil is part of loop 3 with its rite built, and other existing rites leave marks too.
+4. **Ta'Baa's name.** Answered by card 2026-11-07: the name stays. "Goodbye" is no longer a canon claim; it is the clan's own reading of the name. Wookieepedia's Jawaese page gives "Taa baa" as "Thank you". The pantheon text (`design/Jawa/divine_satiation_engine.md:816`) is corrected to say so.
 
 ## Conflicts with his words and with facts
 
@@ -390,7 +390,7 @@ Reported, not edited.
 | `src/RimMandrake/SacredGraffiti/About/About.xml` | "RimMandrake Sacred Marks"; the Salvation Matrix is "design prose only" | Wrong tier; the engine has shipped | Goes with the mod |
 | `src/RimMandrake/SacredGraffiti/Defs/SacredMarks.xml:62` and `src/RimMandrake/Graffiti/Source/ModExtension_Graffiti.cs` | Name `RimMandrake.Ninefold.God` | Stale | `RimMandrake.Utinni.Rites.God`, or no god name in the framework |
 | `design/validation_walks/RimMandrake/SacredGraffiti.md` | RimMandrake subject, RimMandrake packageId | Wrong tier | Move the walk with the mod |
-| `design/Jawa/divine_satiation_engine.md:816` | "canon Jawaese 'Taa baa' = goodbye" | Wookieepedia says "Thank you" | See question 4 |
+| `design/Jawa/divine_satiation_engine.md:816` | "canon Jawaese 'Taa baa' = goodbye" | Wookieepedia says "Thank you" | Corrected 2026-11-07 (question 4) |
 | `infrastructure/state/ledger/events/BENCH.jsonl:18994` | Note uses the refused name `SACRED_GRAFFITI_TAKEOVER_NINE_GODS_WAIT_TURN` | Item is `SACRED_GRAFFITI_FINISH_NINE_GODS_WAIT_TURN` | Append-only, so leave; a new note can correct it |
 
 ## Sources

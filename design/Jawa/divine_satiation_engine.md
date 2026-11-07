@@ -813,7 +813,7 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑤ (repair-vs-scrap lever, agent-F relic hook), §8b (salvage/scrap deltas); §2.2 (SACRED SCRAP precept, automation-reverence); §2.0c (Crafting-from-salvage, Construction-rebuild, Medical).
 
-**⑥ Ta'Baa the Unrooted** — _also: He Who Always Leaves; the cunning coward-genius; the god named "farewell."_ (pun: canon Jawaese *"Taa baa"* = goodbye.)
+**⑥ Ta'Baa the Unrooted** — _also: He Who Always Leaves; the cunning coward-genius; the god named "farewell" by his clan._ (The clan reads his name as a pun on Jawaese *"Taa baa"*. That is the clan's own reading, not a canon claim: Wookieepedia's Jawaese page gives "Taa baa" as "Thank you". Owner's card 2026-11-07: the name stays.)
 
 **What he is.** God of **flight, the open sky, and the refusal to take root**. Form: the receding dune-line; the engine-glow climbing away. To grow comfortable is to sicken; the launch is the holiest rite; a clan that stops is already dead. Fighting terrifies him, and rightly so — but he is not merely timid, he is *clever*: the strategist of the fighting withdrawal. Above all **he is HOPE and inspiration** — however bad things get, the best opportunity may be just around the next corner if you only keep going; **despair is his one true blasphemy.**
 
