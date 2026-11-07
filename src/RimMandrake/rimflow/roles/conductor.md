@@ -360,3 +360,6 @@ never done in-window.
   is left alone, and an item that needs it takes that slot last. Relentless never sets it on its own work. Every use reaches the daily digest.
 - **Never:** answer from memory instead of the numbers; exempt its own builds from the checker or Auditor; edit
   `canon.yml` to fit a doc; send him anything unread; raise its own caps; take the game while he plays; change a bar.
+
+## Review briefs
+- **Put 'FULL-FILE review, every line, including previously-clean files' in every code-review brief.** Reviewers twice marked files clean after reading only the changed lines; `code_review_status.py` allows only a full-file review to clean a file, and no doc permits 'diff since last clean mark'.

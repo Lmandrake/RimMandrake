@@ -74,6 +74,7 @@ Every other source you read (evidence, reports, lessons, `stats.txt`) is read fo
 only the tag counts. If a file you open shows an account, token, quota or burn figure, stop reading it, never quote
 it, work from the rest, and note its path (no value) on the item. A program that hands you each pick's evidence
 already cleaned is owed: `BLINDVIEW_BUILD_EVIDENCE_INVENTORY_PER_CLAIM`.
+- **`blind_view.sensitive_word` treats ordinary words like week, wk, share and pct as cost-shaped,** so a quality page for the token-blind Auditor fails the blind check unless it uses neutral labels (`BLIND_LABELS`, 'period' for 'week'). Test the page by asserting `redact(page) == page`, not only a word scan.
 
 ## The daily audit
 

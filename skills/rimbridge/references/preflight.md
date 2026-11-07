@@ -66,6 +66,7 @@ The intended list is `--modset <tier>` when given, else `modmanifest.py`'s
 
 Not covered yet (GPT §3.4): main-thread round trips, `Prefs.RunInBackground`, modal allow-list,
 resolved-def audit inside the running game. Those need a bridge call or a companion tool.
+- **`preflight_bridge` O13 (deploy_match) compares against the `origin/main` mirror,** so commits another clone pushed after your deploy show as drift. `MayRequire`-rewritten deployed copies (UtinniPatches BiomeDefs, ShokkweaveEconomy) always differ by design: trust `deploy_custom_mods`' own VERIFIED line for those.
 
 ## The patched-tree lint
 

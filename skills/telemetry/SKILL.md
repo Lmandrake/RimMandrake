@@ -24,6 +24,8 @@ Alarms are coarse (very low memory or TPS, disk filling) and every firing is log
 `telemetry label <id> tp|fp` and retune `analysis.RULES` until the noninformative ones are gone.
 
 **Query history before re-measuring live.** A bridge call to read a number telemetry already holds is waste.
+- **The friction census `events.jsonl` truncates AskUserQuestion input at 300 chars,** so the '(Recommended)' option and most options are lost. Any agreement-with-recommendation measure must re-extract cards from the transcripts (extractor: `orch_record/delegation/extract_cards.py` under the agent storage root).
+- **A noise band built from week-to-week spread across a ramping period is trend, not noise** (v2 ran 267, 279, 773 done a week, so that band would call a fourfold drop SAME). For v3 vs v2 the band is a seeded bootstrap of the tag week's 7 daily windows (`v3_vs_v2_rules.json` band). The bands are still wide (done_wk 1.25 on the log scale; days run 5..398 done), so one reference week is a weak baseline.
 
 ## Shape
 
@@ -42,6 +44,7 @@ producers (unchanged)                      Windows, E:\telemetry  (survives wsl 
 Everything runs on the Windows side **with no window** (see traps). WSL only exports its own sources and
 watches the heartbeat (`rm-telemetry-health.timer`); it never reads `\\wsl.localhost` from Windows, because
 touching that path boots the distro.
+- **The RimPulse widget window hangs off the desktop's right edge** (logical x 1544-2124 on a 1920-wide desktop): anything at the right end of its title bar is invisible to the owner, and in the overflowing flex bar an `overflow:hidden` span shrinks to 0 width. Put controls and status at the LEFT, give status text `flex:none`, let the source lights shrink. Verify with a Windows desktop capture (`python.exe system_screenshot.py`) cropped to the window, not by reading the HTML.
 
 ## Verbs
 

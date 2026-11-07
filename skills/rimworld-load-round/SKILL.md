@@ -404,6 +404,7 @@ def/content change) via `steam.exe -applaunch 294100`, never the bare
 and reliable route.
 
 More traps for this section: [references/traps.md](references/traps.md) § 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading.
+- **Launching `RimWorldWin64.exe -savedatafolder=<dir>` directly (Steam already running)** keeps Config, ModsConfig, Saves and DefDump in `<dir>`, but Unity still writes Player.log to the Windows user's LocalLow. A fresh savedatafolder lacks `JawaBench/companion_profile.json` (companion reports 'campaign', modcheck refuses) and Prefs.xml `runInBackground True` (game_focus preflight `FocusRefused`); `rw_game.sh init` seeds both. Prefs.xml is written only on a clean game exit, so seed it while the game is down.
 
 ## An idle main menu is not a load hang
 

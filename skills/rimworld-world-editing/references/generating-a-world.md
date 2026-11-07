@@ -276,3 +276,6 @@ zero world objects in water, zero unresolved biome hashes.
 
 ⚠️ **Re-run the world-object water mask after EVERY paint.** Landmarks sit where the source
 put them, and a repaint that moves the sea drowns some — 3 the first time, 2 the second.
+
+## Landmark icons vs hill decals
+- **White mid-zoom speckle on a hilly biome can be Odyssey landmark icons, not hill decals.** A landmark tile draws no hill (155 of 236 tiles of one biome carried a landmark). Count landmarks on the tiles before redrawing hills.

@@ -18,6 +18,7 @@ What goes in, and what does not: `references/traps.md`.
 
 ---
 - **A defect a PatchOperation CREATES is invisible to any reader of mod XML; ask the def dump capture, and treat its list as a floor.** Two mods' patches can each look fine on disk (one adds a biome to `race/wildBiomes`, ours adds the animal to the biome's `wildAnimals`) while the post-patch game collides. `DefDump/captures/<id>/defs/*.json` carries the post-patch fields; `src/RimMandrake/Utils/biome_animal_conflicts.py` is the worked example. The log undercounts structurally: `BiomeDef.CommonalityOfAnimal` throws at the first duplicate key per biome (the log named 12, the capture 27). The capture reports the engine's answer, not the field: `DefDumper.cs` serialises `CommonalityOfAnimal` inside a bare `catch { }`, the throw leaves a partial cache, and every animal never reached reads a plausible 0f (181 of 744 weights), so a computed zero can mean the computation died. The capture is also self-erasing: it is taken after every patch, so a defect a shipped patch already cured is invisible (56 found vs 61 shipped). Never ship a capture-derived list as the fix file; the shipped set stays the union of every pair ever found.
+- **Check three defects at every biome review before scoring it.** Seen in 5 of 7 grandfathered biomes: ratified creatures never built (art already done in artpipe); invented-name content stranded in the campaign tier (it belongs in the free tier); campaign patches that wholesale-Replace an `RM_` list or gate on a donor/`RUT_` twin def.
 
 ### `Inherit="False"` makes a correct patch a silent no-op
 **Symptom:** a rebalance patch aimed at an abstract base applied cleanly — zero errors in `Player.log` — yet only 7 of 15 lightsabers went to power 99 / AP 0, and 8 stayed at 26 / AP −1.
@@ -191,6 +192,7 @@ parser. And when a def "has nothing", **print the raw block before believing it*
 def was fine every single time; the pattern was not.
 
 ---
+- **A `Plant` ThingDef cannot block line of sight at any `fillPercent`.** `GenSight`/`CanBeSeenOver` consult only the Building-only edifice grid, so a ruling that a plant 'cannot be seen over or past' has no def-only answer; it needs a Harmony hook or a comp.
 
 ## A `PatchOperationSequence` aborts at the first failure, taking the rest with it
 
@@ -343,6 +345,7 @@ job. (2026-09-14)
 ---
 Also grep the OWNING MOD'S DLL strings for the defName before cutting a def: a Cherry Picker removal of a def that C# looks up with `DefDatabase.GetNamed` turns into an NRE in that mod on every new/loaded game (`RimFridge_PowerFactorSetting` broke `RimFridgeComponent.StartedOrLoadedGame`). Read the FIRST error (the GetNamed miss), not the NRE under it. After a label rename, grep the old words across the whole def file and its Keyed strings too: comp letter labels/texts and death messages keep the old name.
 - **Sunless plants need BOTH `growMinGlow 0` AND `growOptimalGlow 0`** (vanilla Glowstool). The light factor is `InverseLerp(growMinGlow, growOptimalGlow, glow)`, 0 at glow 0 while `growOptimalGlow` stays 1.0, so a plant with only `growMinGlow 0` is unlit and dies at 7.5 days. The selftest refuses the half-set.
+- **A FlowWorks Mod Settings section can drive a building class no def uses** (`RM_SluiceGateSettings` -> `Building_RM_SluiceGate`; the player's sluice is `RM_Sluice`, a door). Before reviewing a setting's wording, grep Defs for a `thingClass` that uses the class it gates.
 
 ## `wildPlants`/`wildAnimals` use the `<DefName>commonality</DefName>` shorthand — not `<li>`
 

@@ -117,6 +117,7 @@ features with all-None names and sizes — reading as "the save has no data" —
 because the children carrying the name/size text had already been cleared by
 the time the parent's own handler ran. Clear only the element you just finished
 reading, never a parent while its children are still in flight.
+- **`Scribe_Collections` writes a Dictionary as `<name><keys><li>K</li></keys><values><li>V</li></values></name>` (parallel lists), never `<key>/<value>` pairs.** A regex for `<key>K</key><value>V</value>` never matches and reads every toggle as absent; parse with ElementTree.
 
 ## 4. Map grids: base64 + raw DEFLATE arrays of 2-byte shortHashes
 

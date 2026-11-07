@@ -24,6 +24,7 @@ conversation mod did on 2026-10-11 ("Reached max messages limit" in Player.log).
 - Proven live: a `Log.Warning` via `jawa/static_call` did not reach the journal, and
   after `Verse.Log.Clear` the next one did.
 - **A count that falls or an error that "then almost stops" may be the cap, not the mod.** Check the log for the "Reached max messages limit" line and for a `Log.Clear` (`log_revive`) before reading a falling count as a stop: one session logged 3200 repeated lines that ended near line 15218 while the cap line at 15852 hid all later Verse.Log output. Separately: a Cherry Picker cut of a drug sets drugCategory=None and strips DrugPolicyDefs but not a save's own DrugPolicy.
+- **Player.log can stop growing for minutes while the game runs normally** (seen at the main menu after a tier load). Before calling the log dead or the game hung, emit a sentinel (`validation_core.log_alive`) and take an OS screenshot; read errors from `rimbridge/list_logs` meanwhile.
 
 ## Blind way 2: the bridge journal is a 1,000-entry ring
 

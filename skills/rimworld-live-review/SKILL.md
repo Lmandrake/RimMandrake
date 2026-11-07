@@ -469,6 +469,7 @@ Before concluding the subject looks bad, rule out the frame:
 Only when all of those are clean is what you see the subject's real appearance.
 
 More traps for this section: [references/traps.md](references/traps.md) § 9. When a shot still comes out wrong — the checklist.
+- **A walk preview shown to the owner must include a zoomed capture of every connection point and every hose path,** each judged against 'does this connect / does it cross anything' (hoses meet reels, joints line up, hoses avoid buildings and walls). Per-stop framing judged 'lands on subject, lit, nothing dead' misses this: "Obviously not even checked before showing us." (owner)
 
 ## Keeping this skill honest
 
