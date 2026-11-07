@@ -10,7 +10,7 @@ REVIEW_AT=${REVIEW_AT:-20000000}
 OFFLINE_AT=${OFFLINE_AT:-10000000}
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
 
-game_busy() { systemctl --user is-active --quiet rm-ralph-pyrelands || systemctl --user is-active --quiet rm-ralph-gss2; }
+game_busy() { ! ralph/steve.sh alive 2>/dev/null; }   # game B on SteveDesktop: nobody queues ahead of it, so only an unreachable machine waits
 
 tally() {   # weighted tokens over every pass: input + output + cache writes + cache reads / 10
   python3 ralph/tally.py "$LOGS"
@@ -26,19 +26,19 @@ while :; do
   if game_busy && [ "$t" -ge "$OFFLINE_AT" ]; then touch ralph/NEED_GAME; fi
   if [ -e ralph/NEED_GAME ]; then
     if game_busy; then
-      say "GAME_WAIT: a loop ahead has the game, no model running, $t tokens"
+      say "GAME_WAIT: Steve does not answer, no model running, $t tokens"
       while game_busy; do
         [ -e "$LOGS/STOP" ] && { say "LOOP stopped: STOP file"; exit 0; }
         sleep 60
       done
-      say "GAME_FREE: loops ahead have ended"
+      say "GAME_FREE: Steve answers"
     fi
     rm -f ralph/NEED_GAME
   fi
   n=$((n + 1))
   f=$(printf '%s/pass_%03d.jsonl' "$LOGS" "$n")
   say "PASS $n start, $t tokens so far"
-  timeout 6h claude -p "$(cat ralph/PROMPT.md)" --model opus --setting-sources project \
+  timeout 6h claude -p "$(cat ralph/PROMPT.md)" --model opus --effort xhigh --setting-sources project \
     --dangerously-skip-permissions --strict-mcp-config --output-format stream-json --verbose > "$f" 2> "$f.err"
   rc=$?
   say "PASS $n end, rc $rc, $(tally) tokens, head $(git log -1 --format=%h)"
