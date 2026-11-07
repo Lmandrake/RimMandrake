@@ -1,32 +1,37 @@
 # GSS Ralph: where the last pass got to
 
-Pass 1 was offline only (Graffiti held the game). Nothing below has been seen in the game yet. The new DLL is built and committed but NOT deployed.
+Pass 2 had the game until Graffiti came back mid-diagnosis. HEAD's DLL is the one deployed when I stopped; Graffiti may have replaced the mod list since, so redeploy and re-apply the `gimmesomeslack` tier first.
 
-## Built, proven offline only
-- **Modern junction strip** (the owed change). `CordBuilder.PoseStrip`: sockets face the T's stem, the lead takes the arm to their right, a cord from behind swings round the free end. One plug per bundle. Selftest `JunctionStripChecks`; `CordAudit` reads the strip from the decal alone and now covers blobs in every look.
-- **Blob junctions in box looks changed too**: cords now end on the box's arms, not its centre. Not asked for by name, but the plan's "arm alignment must cover blobs" needs it. Look at this one: it touches approved Industrial/Scrapper/Futuristic.
-- **Plug altitude**: plugs print 0.001 above other decals so they lie over the strip. This touches every plug.
-- **Cord shape instrument**: `Core/CordShape.cs`, probe `shapetable`. Offline: 8 parallel equal runs, 5 seeds, closest pair 0.99 cells apart, bar 0.3, planted twin reads red. Bar not yet checked by eye.
-- New rows, never run: `M15f_restring_joined_run_one_look`, `S12e_batched_links_merge`, `M22a/b` kinetic sway (`explode:x,z,r,dmg,kinetic` carries its own marker, so no KineticArms needed), and B6/B6b now read tangle-only strip counts, because Modern junction strips sit on other nets and would have false-failed them.
+## What I saw, playing it
+`northstar/colony_scene.py` builds a real little colony in all four looks: walled house, shed, solar field, a yard of dense conduit, a cut, masts with one span down, a second run in another look. `--hard` adds a mountain room, a run wholly inside a wall, and a corridor. Shots are `c*`, `d1_*`, `h2_*`, `g1_*` under `shots/`. The owner's look holds up: I would show `d1_*_house` and `d1_*_yard` today.
 
-## Offline state
-validation.py 9/9, selftest 1056/1056, proof_all --offline-gate green with no allow-red.
-`review/render_laid.py` draws a selftest `--dump` with the real art. It is geometry only: flat cords, no floor. It is how I judged the strip; it is not the game.
+Fixed because only a real colony showed them:
+- **In-wall runs drew nothing.** A machine wired to conduit inside a wall had no cord, so `conduit_reads_invisible` was false for one of the commonest layouts. Now one cord comes out of the nearest wall or rock face (`CordGraph.FaceFor`); hidden conduit still draws none. Rows M1e/M1f passed live.
+- **Cords folded into spikes and barbs.** They read as loose stick-like ends in piles. `CordShape.Unfold` rounds a fold locally. My first detector also rounded the approved heap coils and I saw it in the shot: a fold now needs two straight arms. Coils are back. Probe `kinks`, row M2c. It passed in the last run on 1 fold in 9 strands (a lead hard against a machine). The bar is max(1, strands/20).
+- **S8 was red from pass 1's styled-winner fix.** HARNESS: its mast auto-linked to a styled run. S8 now stands alone; S8b (passed) pins the join.
 
-## Items
-Fixed in code, runtime half unproven: BATCHED_LINK, STYLED_WINNER, COLOUR_SEED, STRIP_LED (selftest for the signature; live repaint unseen), MULTILINK, FRESH_BUILD.
-Fixed, offline is the whole fix: FUZZ_ONLY, CORD_AUDIT, RECOLOR (the --check now accepts the necked T/X: no orange, same shape as the base; the writer skips them. I tried regenerating them first: the art guard refused the push, rightly, they are judged art, and installing would write to infrastructure/state.)
-Already fixed before this pass (notes were stale): POWER_THEFT (TapWindowChecks), RESTRING_FIX (Patch_Restring_Bridge), CORD_SWAY alloc half (SwayInto), WATER_STUB (FlowWorks swim made deep water read walkable; WaterStubChecks). Each still owes its live row.
-Ruled out: CORD_ADAPTER no-lamp-geometry. Lamps read as Consumer and slide to the centroid, the look he walked; enabling Lamp would change approved art with no north-star line false. Comment on `KindOf`.
-Rows exist, need a live run: SWITCHES (M21a-f, M12a/b). keepWiresOnGravship is setting-state only; its behaviour is not shown anywhere live.
-Not mine to edit (`infrastructure/state/`), for the Conductor: `--allow-red O6_review_round1` can drop from the SWITCHES and WATER_STUB live_proofs; RESTRING_PROVE's A2 wants `live-proof A1:` naming M15f.
-
-## Not done
-The 23 scenes in `scenes.json` are not built, deliberately: authored blind they would be harness I can't run. Build them with the game up, starting with those that show a north-star line and aren't already a proof row. Showcases `workshop_floor` / `yard_of_masts` too.
+## Open: the one thing to chase first
+`AERIAL_block` stopped on GovernorStop, "downed (health 1)", in the last two full runs (`/tmp/gss/proof3.log`, `proof4.log`; /tmp may be gone), after M15f in the latest and after R3 in the one before. Runs 1 and 2 passed the block, on 136 and 134 rows' worth of run. The colonist was Ellison at 108,183, inside the aerial site. **Cause unknown.** I was reading their hediffs when the gate shut. Runs 3 and 4 are the first with M1e/M1f, which stage walls at X0-70, Z0+12 and Z0+24, so check that site against where the colonists get moved. Then shock (M15e/f restring crossing a live wire) and temperature or hunger. Rows after the stop never ran, so **those two runs do not count as a pass**: no 0-FAIL result exists on HEAD and nothing is recorded with modcheck. `proof_all_*.json` from this pass are untracked on purpose.
 
 ## Next, with the game
-1. Deploy (dry run, then --apply), modset `gimmesomeslack`, launch, `proof_all.py --live`. Read the first exception first. Likely suspects: S10/S9 rows if the styled-winner force write stores too much; M1c if a Modern default loses boxes.
-2. Look at play zoom, Modern: T, +, blob, strip beside a wall, adjacent junctions. Does the plug really lie over the strip? Is the spare black plug acceptable? Does the skew read loose or broken? LEDs flip when power is cut?
-3. Look at Industrial/Scrapper/Futuristic blobs (they changed) against the old look.
-4. `shapetable` over a real room next to a shot: does 0.3 match what the eye calls a repeat?
-5. Screenshots for all eleven north-star lines, in a real colony, for DONE.md.
+1. Deploy (`--apply`), tier, launch via `steam.exe -applaunch 294100`, `python.exe -u .../proof_all.py --live`. Run the downed colonist to ground, then get a clean run and record it.
+2. `colony_scene.py --build --fresh-map --hard --shots <new tag> --frames house,yard,cut,fallen,ring,rock,pair`. Pick DONE.md's shots. `fallen`'s default frame is weak: use `--rect 56,4,14,16`.
+3. `downed_span_lies_on_ground` is my least sure line: a mid-span cut draws three nearly straight wires from the crossarm to a spark and can read as still up at play zoom. It follows his B11/B21 rulings (one cable, no wiggle), so I left it. Look at a killed mast before giving a verdict.
+4. `shapetable` on the colony against a shot: does the 0.3 bar match the eye? No read of it on a colony yet.
+5. Never_taut has no number on a colony. Consider a probe over `LaidPiece.LaidRatio` for cords of 3+ cells. By eye nothing long is taut.
+6. Restore at the end with the game down: `modset_builder.py --restore` (the owner's 316-mod list; backup in `deployed/config/`).
+
+## Scenes (`scenes.json`, 23): not built as named entry points
+Rows and `colony_scene.py` / `gravship_scene.py` cover much of what they ask, but most of their debug-flag controls (wall-face rule off, rebuild skipped, draw suppressed) do not exist. Decide per scene and say so in DONE.md. Do not claim them as built. `sc_gravship` is now real apart from its planted control.
+
+## Items
+- SWITCHES: all four switches now have on/off rows. `gravship_scene.py on|off` flew real ships: on keeps the aboard span up; off takes it down; the ground link goes either way; cords land with the ship (`g1_on`, `g1_off`). Its A2 (0 FAIL proof) is still owed.
+- Seen live this pass, rows green in runs 1-2: RESTRING_FIX/PROVE (M15f), SWAY_PROVE (M22a/b), BATCHED_LINK (S12e), STYLED_WINNER (S8/S8b). Rows ran in those runs on earlier DLLs.
+- Not re-read live this pass, offline only: COLOUR_SEED, FRESH_BUILD, MULTILINK, POWER_THEFT. STRIP_LED: dark strips read by B6b, repaint race itself unseen. WATER_STUB: the matrix passes on this list; the item's FlowWorks-list case not run.
+- Fixed offline, complete: FUZZ_ONLY, CORD_AUDIT, RECOLOR. Ruled out: CORD_ADAPTER (approved art).
+- For the Conductor, in `infrastructure/state/`: drop `--allow-red O6_review_round1` from SWITCHES and WATER_STUB live_proofs; RESTRING_PROVE's A2 names M15f; the SWITCHES proof can name `gravship_scene.py`.
+
+## Noted, left alone
+- The artfit probe reads 39 faults on the colony. The ones I traced are junctions under a building (hidden) and leads to a machine one cell away, which look fine in `c3d`. Not all 39 traced. It may want to skip hidden junctions.
+- A battery-to-machine cord with no conduit draws the Mod Settings default; the settings file reads Modern (`ExtensionCord`) while the shipped default is Scrapper. I did not establish who set it: the owner or a past proof. Check before shots of a default-look scene.
+- The ledger files and `ModsConfig.before-*` in the tree are dirty from the bridge, `./game` and modset commands. Not committed.
