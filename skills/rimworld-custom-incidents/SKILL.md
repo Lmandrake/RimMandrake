@@ -79,6 +79,8 @@ needed (Harmony on a vanilla worker where its own worker would do).
 - **Per-faction data registered only at load**, or **counting the wrong event**
   (`Faction.Notify_MemberDied` fires for any death of that faction, anywhere).
 - **Unbounded save lists**, and **two mods answering one beat** (two extortion letters).
+- 🔴 **A `ChoiceLetter` option with `resolveTree=true` only closes the dialog;** the letter stays on the stack and the option can be clicked again until timeout (a Sell option paid 1500 silver per click). Only vanilla `Option_Close` calls `Find.LetterStack.RemoveLetter(this)`: every one-shot choice must remove the letter itself. Also: `GenAdj.CellsAdjacent8Way(thing)` is not bounds-checked, and `ThingDef.terrainAffordanceNeeded` is null for items, so `TryFindSkyfallerCell(...null...)` rejects every cell.
+- **"Any faction of def X" is unsafe for Sanguophages (and any def quests spawn ad hoc):** vanilla `QuestNode_Root_SanguophageMeetingHost` makes a temporary, player-NEUTRAL, quest-reserved Sanguophages faction, and `QuestNode_Root_SanguophageShip` a temporary one hostile to all. Filter on `!temporary`, `!defeated` and the relation you need (`HostileTo(Faction.OfPlayer)`) before putting your own pawns in it.
 
 ## 4. Where the depth lives
 

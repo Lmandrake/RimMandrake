@@ -75,7 +75,7 @@ capture with no `defs/` at all, wasting the whole dump. Write `all`.
 
 📎 Full study: `research\RimMandrake\reference\rimsage_rimcp_source_index_mcp.md`.
 ⚠️ There is no local decompiled tree (`D:\Luke\dev\reference\rimworld-decompiled` does not exist). For C# that
-rimsage misses, decompile on demand with `ilspycmd` (`C:\Users\<user>\.dotnet\tools\ilspycmd.exe`, v8.2), as per
+rimsage misses, decompile on demand with `ilspycmd` (`C:\Users\<user>\.dotnet\tools\ilspycmd.exe`, v8.2; from WSL `/mnt/c/Users/<user>/.dotnet/tools/ilspycmd.exe`): `ilspycmd.exe -t <FullTypeName> <RimWorld>\RimWorldWin64_Data\Managed\Assembly-CSharp.dll > out.cs` decompiles one type in seconds (a static helper may live in `Verse` rather than `Verse.Sound`); write output under `D:\ClaudeWork`. A decompiled 1.6 tree already exists at `D:\ClaudeWork\rimmandrake\decomp\rw16`. As per
 the trap file (provenance: `research\RimMandrake\reference\rimworld_decompiled_source.md`).
 
 ---

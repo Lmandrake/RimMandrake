@@ -159,6 +159,7 @@ rather than omit them.
   def that is not offerable at all.
 
 ---
+- **`QuestScriptDef`-level fields (`successHistoryEvent`, `failedOrExpiredHistoryEvent`) written inside a `QuestNode_End` load as a red 'doesn't correspond to any field' XML error and never fire.** To record a history event on one branch use vanilla `QuestNode_RecordHistoryEvent` (`inSignal`, `historyDef`) before that branch's End; the def-level fields fire on EVERY success or fail. A mod absent from the def dump still gets a static check: every `Class=` child must be a field of that class or a base class.
 
 ## 4. The slate
 

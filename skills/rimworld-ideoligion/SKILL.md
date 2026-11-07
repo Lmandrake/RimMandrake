@@ -233,6 +233,7 @@ of these produce a red error.** The faction simply generates something else and
 the design is gone.
 
 ---
+A `.rid` loaded on a smaller mod list fails two ways: precepts whose own def is missing are dropped quietly by `Ideo.ExposeData`, but RITUAL precepts whose def exists (Festival, a Core ritual precept) while their `sourcePattern`/behavior/outcome def or Class is from an absent mod survive half-built and throw `PostLoadInit` NREs at every load. `validate_save_artifact.py` checks names against a FULL-list dump and does not check `Class=` attributes, so it passed 246/251 files while the dev world logged ritual NREs. Check a `.rid` against the target list's packageIds (`src/RimMandrake/Utils/remake/salvation_paint_clean.py` shows how).
 
 ## 5. EVALUATE — judging a religion
 
@@ -275,3 +276,4 @@ thing that would most improve it>`.
 
 Keep this list short. Detail goes to
 `skills/rimworld-modding/references/traps-*.md`.
+- **Under Ideology a `BuildableDef` with `canGenerateDefaultDesignator=false` is IDEO-ONLY:** `Ideo.MembersCanBuild` returns false unless a meme/style/precept names it, so `GenConstruct.CanConstruct` refuses every non-classic-ideo colonist with 'Only Faithholders can build' and no WorkGiver offers a delivery or build job. Any def placed by its own custom designator hits this (fix: `RM_OwnDesignatorBuildable.cs`). Diagnose with `jawa/workgiver_probe`, which reports `canConstruct` and its fail reason per gate.

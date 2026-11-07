@@ -130,6 +130,7 @@ inert — spamming load errors while never actually taking ownership — because
 the "replacement" never got a stable identity. Always grep every new def
 batch's ACTUAL `<defName>` against its filename before staging; never trust the
 filename to match the content.
+A CROSS-mod duplicate defName logs NOTHING: `AddAllInMods` Remove()s then Add()s, so the 'Adding duplicate' error is unreachable for that case and the DefDatabase keeps only the winner (a dump's package_id per defName says who won). Only a SAME-mod duplicate logs the error and randomizes the name. Never use the log to find cross-mod collisions.
 
 ### `AllLeafSubclasses()` means "nothing currently loaded subclasses this", not "concrete"
 

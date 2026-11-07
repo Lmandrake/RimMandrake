@@ -218,3 +218,8 @@ map still did not look as before.
 **On a colony that matters, save before the experiment and reload to undo it** —
 that restores terrain *and* everything the terrain write destroyed. Bridge-injected
 content does survive the save/reload round trip.
+
+## Census a save before removing a def or a donor
+- **Removing a def needs a save THING census first:** a test-site save kept 1528 `RM_TreeMartyr` plants after the def was cut and threw 100 'Exception spawning loaded thing null' on load. Run `src/RimMandrake/Utils/save_def_census.py <saves>` (the donor census knows only retired donors).
+- **A retired donor mod leaves CLASS names in saves, not just def names.** `<li Class="VFEInsectoids.Area_Hive">` under `areaManager` made the map lose its whole AreaManager; Vehicle Framework's `VehiclePathFinder` then NRE'd on every map and the map never finished setting up (blank screen). The donor census checks defNames only: scan `Class=` values against the active assemblies (`save_class_census.py`) before loading any save on a donor-removed list, and read the FIRST exception, never the Vehicle Framework one that follows.
+- **VEF's new-faction dialog:** 'Do nothing' (Skip) writes nothing and the pop-up returns on every load; only 'Don't ask for this faction again' (Ignore) writes `NewFactionSpawningState.ignoredFactions`, and only a save made AFTER it keeps it.

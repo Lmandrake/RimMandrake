@@ -260,3 +260,19 @@ cannot be fixed by us: **do not call it on the full list.**
 ✅ `jawa/debug_actions` is the bounded replacement — filters during the walk, wall-clock
 budget, `resumeFromType`, and never invokes a yielder (reporting `yieldersSkipped`, so the
 blind spot is a number rather than a gap).
+
+## Verify the shipped artifact, and instruments that share a blind spot
+- **A generator that BFS-proves its in-memory grid has not verified the shipped XML.** Audit the committed def instead (`audit_ashfall_layout.py` style): assert exactly ONE gap per ring and that sealing either interior gap makes the core unreachable; reachability alone also passes a ring with a second gap, and a reachability start one cell inside the outer hull proves nothing about the hull.
+- **`sed 's/Name/…/'` misses `RM_Name`** (underscore is a word char) and so does the verifying `grep -E 'Name'`: two instruments with one blind spot corroborate nothing. Rename sweeps must check the defName form explicitly.
+- **`$?` after a pipeline is the LAST command's status** (a probe loop silently tested `tail`'s exit code): assert exit codes without pipes, or use `PIPESTATUS`/`set -o pipefail`. `validate_patch.py | tail -N` also eats the WARN lines, which print before the summary: capture the full output or grep WARN.
+- **When a ruling is "read from the def", re-census by exactly that predicate before building.** A size-only rule outran its census: six plants drawn 3.0-3.9 with no wood became trees under the rule without ever appearing in the census table that motivated it.
+- **A generator can silently undo a hand edit.** Regenerating a mod reverted size genes from `SM_BodySizeOffset` to cosmetic. Read the generator before editing its output and change the value at its source (e.g. `gen_races_mod.SIZE_GENES_REAL`), never in the emitted XML.
+- **`defs.sqlite` (DefDump) cuts `BodyDef` part trees at a fixed depth:** deeper parts read as the string `<maxdepth:List`1>` split into characters, so hands and fingers are invisible offline. Read limb tags at the shoulder/leg level; vanilla tags animal mouths `ManipulationLimbCore` (+`EatingSource`) and a snake's core body `MovingLimbCore`.
+
+## validate_patch.py blind spots
+- **`validate_patch.py` does not descend into a custom `PatchOperation` class** (e.g. `RSW_PatchOperationSithSetting` wrapping a Sequence): it reports 0 lines for the whole file, with no error and no info. A silent file is UNMEASURED, not passed; evaluate the inner xpaths yourself (lxml over the merged Defs).
+- **`validate_patch.py --live` counts an xpath of `/Defs` once PER SOURCE FILE** (7041 matches for one `PatchOperationAdd xpath=/Defs`). The game patches ONE unified document (`LoadedModManager.cs` creates a single Defs root), so `/Defs` matches exactly once. A huge count on `/Defs` is a validator artifact; any other xpath's per-file count is fine as a total.
+- **Static `validate_patch.py` on a mod that ships loose files under the same parent folders as vanilla art** (`Things/Filth/Spatter`, `UI/Abilities/...`) reports ERRORs for texPaths that are really vanilla resources.assets: its parent-chain classifier calls them own-namespace. Confirm each is vanilla (a genuine miss is possible, e.g. `UI/Abilities/FireSpew`) before trusting the folder verdict.
+
+## Reading a Fire/scan result
+- **Grepping decompiled vanilla proves only vanilla's doors.** For `MakeThing(ThingDefOf.Fire)` it shows `FireUtility`'s two sites, but mods on the list spawn Fires themselves (VEF flame/tesla projectiles, gravship raid wreckage ignition). IL-scan the active mod DLLs (dnfile: `ldsfld ThingDefOf::Fire` followed by `MakeThing`/`GenSpawn`; probe it on Assembly-CSharp first, it must show the two vanilla sites; run from a cwd without dnfile shadows) with `D:\ClaudeWork\rimmandrake\tools\firespawn_scan.py`, and catch the rest at `Fire.SpawnSetup`.
