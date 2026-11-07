@@ -43,6 +43,7 @@ fired, and the `[RimBridge]` start line had scrolled out too.
   arithmetic depends on that.
 - **`lost > 0` → UNMEASURED.** A full-list save load writes ~1,000 lines. The tap keeps
   them only if it is polled every couple of seconds during the load.
+- **Three more log-check blind spots.** `jawa/health` `log.state` is `emitting|suppressed|unknown|unavailable` (or the block may be missing): require `state == 'emitting'`, since a check that aborts only on 'suppressed' passes blind on the other three. Verse `LogMessageQueue` holds 1000 entries and stops incrementing a repeated message's count at 99, dropping further repeats silently. Once `Log.Messages` reaches its cap, a per-text count diff against the baseline can hide new errors: if any baseline count FELL, or a message sits at repeat 99, the buffer rolled over (or `Log.Clear` ran) and the check is BLIND, not clean (`bridgetools/deepfire_log_check.py`).
 
 ## Charging an error to the mod: the control
 

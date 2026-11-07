@@ -38,6 +38,7 @@ Each line names the failure it prevents. Every one of these cost a full-list run
       grants the TEST profile, and once it lapses, test-only tools such as
       `jawa/map_comp_timing` are refused as CAMPAIGN. Renew it with the same keys and
       a new expiry.
+- **A lapsed `JawaBench/companion_profile.json` grant (`expiresUtc`) turns test-only tools (`jawa/static_call`, `flowworks_job_probe`, `map_comp_timing`) into REFUSED, and a proof then misreads it.** Rows read UNMEASURED/SITE with a misleading message such as 'RM_LineProofs is not in the loaded FlowWorks', or UNMEASURED 'did not answer' with NO refusal text (the could_not text is cleared before those rows attach it), as if the work never happened. Before any proof run check `jawa/companion_handshake` `effectiveProfile == test`, renew `expiresUtc`, and have the row carry the REFUSED message.
 
 ## Run start (in the script, not by hand)
 

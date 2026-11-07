@@ -1,1 +1,0 @@
-jawa/set_draft(pawnId=...) WITHOUT drafted=True changes nothing (JawaBenchJobTools.cs SetDraft); undrafted test pawns wander off decks/covers and a 'held' verdict is a harness artefact (2026-10-19 cover-tier rows). Always pass drafted=True and read the draft back.

@@ -1,1 +1,0 @@
-FlowWorks C# SelfTest run from the staged build folder (D:\ClaudeWork\...\build\FlowWorks) always shows 14 FAILs: it reads sibling source files by walking up from the exe, and the stage lacks them. Run it from src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0 (after winbuild.py) in the repo tree: 0 FAIL.

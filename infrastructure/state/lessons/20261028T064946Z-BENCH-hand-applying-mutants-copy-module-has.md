@@ -1,1 +1,0 @@
-Hand-applying mutants to a copy of a module has two traps: matching a mutant's line by text picks the wrong line when the text repeats (match by line number), and a same-size edit can reuse a stale .pyc (run with -B / PYTHONDONTWRITEBYTECODE or delete __pycache__). Counts from a driver without both guards are suspect.

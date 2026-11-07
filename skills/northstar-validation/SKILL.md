@@ -163,6 +163,8 @@ work around it.
 
 New interference: fix it in `bland_world.py` / `saved_base.py` / `runner.py` / `detectors.py` with a
 selftest, add a row here, and file the test-environment item.
+- **`northstar_driver run --mod <Mod>` without `--plan <path to the mod's northstar_plan.py>` does an EMPTY run** with 0 rows and no error (e.g. `--plan src/RimMandrake/Pyrelands/northstar_plan.py`). Always pass `--plan`, and treat a 0-row result as UNMEASURED.
+- **The modcheck governor stops on `hostile_arrival` before the detector sweep.** A raid that fires records no `raid_arrived` unless the sweep runs immediately after the raid, so run the sweep right after triggering one.
 
 ## 6. The time ledger
 

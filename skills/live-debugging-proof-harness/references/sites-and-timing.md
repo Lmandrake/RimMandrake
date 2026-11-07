@@ -18,6 +18,11 @@
   `Thing.HitPoints` is ~0, so `CompExplosive` detonates on ANY damage unless
   `requiredDamageTypeToExplode` is set. `restore_needs` verifies by percentage
   (Food max is 0.9).
+- **Process-wide statics survive a scene change.** GSS `PowerTheftConsequences` counters (`caughtCount`, `goodwillCharged`) are GLOBAL statics: an `RM_PowerTapClamp` left on the map from an earlier scene kept draining and charging the same faction, so one day read -4 instead of -2. A theft scene must remove every `RM_PowerTapClamp` on the map first (`validation_aerial` `theft_catch` does).
+- **Chaining proofs on one map is a SITE hazard.** FlowWorks liquid loss is attributable per bridge call: read `RM_MapComponent_Excavation.overflowDestroyedTotal` with `jawa/map_comp_read` after every mutating call. It pinned 200 'lost' levels on one `ProofStageBasin` strip of a rehearsal staged over another proof's ponds: not a mod conservation bug.
+- **A rescue scene needs MEDICAL beds.** Set them with `jawa/set_bed_owner_type medical=true` and read back. A tired rescuer lies down in a free plain bed and claims it (`Toils_Bed.ClaimBedIfNonMedical`); `RestUtility.FindBedFor` then finds no bed for the patient and `WorkGiver_RescueDowned` never offers the rescue, which looks exactly like a mod regression (`pit_rescue RESCUE_COLONIST_OUT` went PASS to FAIL 2/2 purely from this). Record the final bed census (owners, sleepingSlots, pos) so a not-rescued verdict can be told apart as SITE.
+- **Live northstar runner colonist traps on a debug map.** (1) A freshly spawned colonist can arrive downed or dead (old age, pre-existing hediffs): re-roll after a short step and check `list_pawns` before using it. (2) WorkGiver HasMaterial-style answers can be cached per pawn per tick, so step at least 1-2 ticks after spawning material before probing. (3) Never vanish the run's colonist in `finally`: vanishing the last colonist triggers Game Over and every later staging fails (GovernorStop).
+- **A saved 'calm' test site can have EVERY colonist Mining-disabled**, including freshly spawned ones (ideo 'Cell of Faith': `disabledWorkTypes` includes Mining). Any dig or fill-in proof then silently gets no worker. Before a dig/fill live row read `jawa/flowworks_job_probe` `pawn.workTypeDisabled`, or use a fresh debug map (`newmap.py`).
 
 ## Clearing a site, and reading it back
 
@@ -47,6 +52,11 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   failed check exits 2 (`UNMEASURED/SITE <reason>`), never a PASS or a FAIL.
 - **Blocks need disjoint sites**, and a block that tears down map-wide (the GSS matrix)
   runs first.
+- **Hose reel staging.** Since a98046cbe9 the hose reel turns and a bare build op (`RM_HoseReel:x,z`) spawns it NORTH; a 2x2 built West shifts one square west (GenAdj). To keep an old layout build `RM_HoseReel:x+1,z,3` and look it up by a 2-wide rect (`list_things` filters by Position). Hose lay refusals can be reproduced offline with `HoseMath.CheckInstall/Lay` on a CordWorld (SelfTest `HoseBandChecks` `Scenario_C4_C10_hoses_lay_offline`) before spending a live build.
+- **Drawbridge and suspension anchors carry no 'Choose style' gizmo once built** (`objects_sheet.choose_look` returns None); their look is fixed at build from the designator pick or `RM_MachinerySettings.pipeDefaultLook`. To stage a drawbridge in a look, set `pipeDefaultLook` via `jawa/mod_settings_field` before `ProofMakeDrawbridge` and restore it afterwards. `list_things` returns the cell under key `cell`, not x/z.
+- **The hose probe verb `net:x,z` accepts only a liquid machine or tank cell.** On a reel cell it answers 'no liquid machine or tank there', so a coupling cannot be read from the reel end; ask `net:` on the fixture the hose couples to.
+- **A pumping station (3x2 `Building_LiquidPump`) has ONE port, south, at the centre lane (ax, az-1).** A hose aimed at the lane's minX lays but does not couple. `owner_review_stage`'s `pipeN_hoseS` close frame also misses the pump.
+- **Staging the 325 pipe-levelling perf site on the full list (no quicktest there).** Load a save with `rimworld/load_game_ready` (reports ready in seconds; poll `get_game_info` until `mapCount>0`), `jawa/world_tile_map_generate tile=96545 size 325` + `set_current_map`, spawn a player Colonist, run `validation_core.clear_huge_plants(B)` TWICE (the first pass hits the 5000-row list cap), THEN `pipe_levelling_perf_proof.py --no-time --lay 0:0` (30 s). Without the clear it reads SITE 'RM_HugeTrunkBlocker still standing'. Lays cost 13-18 s per rig (2 hoses). The generated faction Settlement leaves a world NRE loop that makes `belt_watchdog` read WEDGED; reload the save after dropping the map.
 
 ## Which world, which map
 
@@ -92,6 +102,8 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   a poll loop (`lightspeed-authoring.md` §3).
 - Tick-keyed caches, a stepper that overshoots short states, load-call races:
   `skills/rimbridge/references/traps.md`, "Bridge time is TICKS".
+- **`rimworld/load_game` (and `load_game_ready`, which reports 'map data is available' with `state.longEventPending=true`) returns before the map's things are spawned.** A hook queried at once answers 'no eligible fixture', and a persistence row reads that as a LOST claim. Poll the subject until it exists before judging (the save held the claim and it came back seconds later).
+- **A flat tick wait for a pawn job must scale with the pawn's work stat.** `fill_in_on` waited 2,500 ticks for a D=1 fill-in (1600 work), but a Mining-0 colonist sits at the MiningSpeed floor 0.1 (one notch = 16,000 ticks), so the row FAILed; the earlier PASS had drawn a skilled pawn. Read `jawa/pawn_stats` MiningSpeed and poll the cell depth (`northstar/extensions.py` `_fill_in_budget`/`_wait_filled_in`). A PASS that depends on which colonist the harness picked is not a PASS.
 
 ## A simplified model passes what the real operation refuses
 
@@ -103,6 +115,7 @@ operation's trial run is cheap, gate on that trial run. When a ruling changes th
 geometry, re-check every live scene built before it. For example, the owner refused a
 straight lead-out on 2026-10-06 rather than lay it without one. See
 `deciding-and-superseding`, "A stale belief hides…".
+- **RimWorld 1.6 `PathFinder.FindPathNow(start, target, pawn)` passes NO path-grid customizer.** FlowWorks' swim and pit offset grids ride only the pather's own request (`RM_Patch_PathFollower_PitRoute` on `GenerateNewPathRequest`). A proof that compares `CanReach` with A* must call the TraverseParms overload with `RM_SwimPathing.Combine(pit, swim)`, or it reads a non-swimmer crossing deep water as found.
 
 ## Pre-port save fixtures (old build, mid-job)
 

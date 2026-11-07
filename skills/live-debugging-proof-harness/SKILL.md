@@ -64,6 +64,7 @@ Add `--preview` first to print the per-chain plan and exit. `--rows` runs each c
 
 Read `references/run-checklists.md` before every full-list run. It holds the
 run-start and run-end checklists line by line.
+- **`modcheck run FlowWorks --item <ID>` REFUSES items whose rows live only in `northstar/gravel_live.py` or `shovels_live.py`** (no `validation.py` chain or `DRIVER_BAR_ROWS` entry names them). The targeted live run for those rows is the script itself with `--only <row ids>`; its result JSON is the evidence.
 
 ## Row semantics: PASS, FAIL, UNMEASURED
 
@@ -101,6 +102,7 @@ A green one becomes a site note (`validation_core.SHARED`).
 ⛔ **Never hand-edit a result JSON** to flip a row, not even to test how modcheck reads
 a status. Fix the harness so it emits the right status and rerun. A result that has
 been edited is deleted and rerun before anything is recorded.
+- **A live re-assert row must FAIL, not UNMEASURED, on any last-reason that only startup writes** (e.g. 'surface placer registered'): seeing it last in a running game proves the FinalizeInit hook never ran. Only reasons a later proof could have written (`proof:`, settings changed) are UNMEASURED.
 
 ## Sites, clearing, calm
 

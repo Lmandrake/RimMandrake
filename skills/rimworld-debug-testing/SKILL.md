@@ -132,6 +132,7 @@ anything about the full mod list (2026-09-20).
 
 **The rule of thumb:** a quicktest answers *"does this work?"* It never answers
 *"is this true of our campaign?"*
+- **A def that passes `validate_patch.py` clean can still crash the whole game at startup.** Three new creature defs with invalid diet values crashed GeneticRim and broke ALL pawn and animal creation game-wide (a campaign save loaded with 0 pawns). Offline validation proves the XML resolves, not that the game survives it; only a real load (a quicktest on the minimal list is enough) does, so load once before deploying new creature defs to the owner's list.
 
 ## 3. Always say which map a result came from
 
