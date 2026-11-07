@@ -15,4 +15,4 @@ Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are 
 
 **New problem:** the pond's **water** draws as flat, stepped blue-grey blocks with hard cell edges (`p_pond_edge.png`). The noise ponds on map `m` looked the same. This is the next thing to fix.
 
-**What I'm least sure about:** up close, the drifts can read a little like camouflage blotches; a smaller drawSize (1.2) may be better. Ash fall now banks into a drift field, but I haven't seen it on screen yet. Neither has the new ponds' look.
+**What I'm least sure about:** up close, the drifts can read a little like camouflage blotches; a smaller drawSize (1.2) may be better. Ash fall now banks into a drift field, but I haven't seen it on screen yet.
