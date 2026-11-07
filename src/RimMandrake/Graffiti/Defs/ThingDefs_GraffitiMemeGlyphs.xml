@@ -143,6 +143,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
+        <pigmented>true</pigmented>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -229,6 +230,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <pigmented>true</pigmented>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>

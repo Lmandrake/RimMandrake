@@ -510,6 +510,13 @@ namespace RimMandrake.Graffiti
         public static int PigmentCount => Pigments.Length;
         public static RM_Rgb PigmentColor(int index) { return Pigments[Math.Abs(index) % Pigments.Length]; }
 
+        /// <summary>Does this pigment stand off a wall face of this lightness?</summary>
+        public static bool PigmentReads(int index, float wallValue)
+        {
+            RM_Rgb p = PigmentColor(index);
+            return Math.Abs((p.r + p.g + p.b) / 3f - wallValue) >= 0.2f;
+        }
+
         /// <summary>What an inspecting player reads off a mark's Beauty, so the stat and the picture can be held side by side.</summary>
         public static string BeautyWord(float beauty)
         {

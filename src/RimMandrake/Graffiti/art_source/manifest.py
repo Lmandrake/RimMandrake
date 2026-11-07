@@ -54,7 +54,7 @@ for i, t in enumerate(["furious tangled tar strokes with a brown filth smear dra
 for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)
 for i, t in enumerate(["two neat bundles of tally strokes", "one bundle of tally strokes and three spare strokes", "three bundles of short tally strokes, the last unfinished"]):
-    add(f"tally_{i}", F + "TallyMarks", 1, "chalk", 0.12, "Prisoner's tally marks counting days: " + t + ", careful, patient, small. " + CHALK + PIG.format(c="chalk white") + SQ, height=0.75)
+    add(f"tally_{i}", F + "TallyMarks", 1, "chalk", 0.12, "Prisoner's tally marks counting days: " + t + ", careful, patient, small. " + CHALK + PALE + SQ, True, height=0.75)
 for i, (t, c) in enumerate([("a jagged eye with a slash through it, meaning keep out", "rust red"), ("three spikes pointing at a ragged blot, meaning danger here", "ochre and soot"), ("a skull-like blot with two gouged eyes and no teeth, meaning death", "chalk and soot"), ("a crude open maw of teeth, meaning something bites", "rust red and soot")]):
     add(f"warn_{i}", F + "WarningGlyph", 1.2, "brush", 0.25, "A settler's warning daubed on a wall, not any real-world sign: " + t + ". " + BRUSH + PIG.format(c=c) + SQ)
 for i, t in enumerate(["two great angry slashes crossed over a scribble", "a big scrubbing back and forth scribble blotting something out"]):
@@ -104,7 +104,7 @@ G = [
  ("Shipborn", "a blunt star-tailed ship shape rising over a wiped curve of a planet", SPRAY, "dull blue and lime white"),
 ]
 for name, t, tool, c in G:
-    add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ)
+    add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"))
 
 
 def gen(workers):

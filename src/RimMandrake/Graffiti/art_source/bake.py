@@ -52,7 +52,7 @@ def bake(name, m):
     rgb, alpha = can[..., :3], can[..., 3] / 255
     rng = np.random.default_rng(abs(hash_name(name)) % 2 ** 31)
     # Reads at 25 px: strengthen what's there before weathering takes some of it.
-    alpha = np.clip(alpha, 0, 1) ** 0.72
+    alpha = np.clip(alpha, 0, 1) ** 0.62
     if not m["pigmented"] and m["mode"] != "scratch":
         rgb = P.to_pigment(rgb, 0.25)
     if m["pigmented"]:

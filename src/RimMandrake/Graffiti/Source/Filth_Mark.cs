@@ -173,6 +173,12 @@ namespace RimMandrake.Graffiti
             }
             int count = Graphic is Graphic_Random random ? random.SubGraphicsCount : 1;
             variant = RM_GraffitiKernel.PickFree(count, usedVariants, Rand.Value);
+            // A pigment the wall would swallow is no choice at all: chalk on marble, soot on slate.
+            float wallValue = WallPlane.FaceValue(cell + new Rot4(wallSide == RM_GraffitiKernel.NoWall ? 0 : wallSide).FacingCell, map);
+            for (int i = 0; i < RM_GraffitiKernel.PigmentCount; i++)
+            {
+                if (!RM_GraffitiKernel.PigmentReads(i, wallValue)) usedPigments.Add(i);
+            }
             pigment = RM_GraffitiKernel.PickFree(RM_GraffitiKernel.PigmentCount, usedPigments, Rand.Value);
         }
 

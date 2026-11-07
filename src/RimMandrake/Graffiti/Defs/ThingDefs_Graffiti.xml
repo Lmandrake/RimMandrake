@@ -75,7 +75,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Vandal</defName>
     <label>graffiti</label>
-    <description>An untrained scrawl, sprayed by an idle or unhappy hand. Nobody will call it art.</description>
+    <description>A hateful smear of tar and filth, flung on by an idle or unhappy hand. Nobody will call it art.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
@@ -134,7 +134,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_TallyMarks</defName>
     <label>tally marks</label>
-    <description>A running tally scratched into the wall, groups of four struck through by a fifth.</description>
+    <description>A patient tally in charcoal, a day at a time, groups of four struck through by a fifth.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
@@ -148,6 +148,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -158,7 +159,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_WarningGlyph</defName>
     <label>warning glyph</label>
-    <description>A crude hazard glyph, daubed as a warning to whoever reads it next.</description>
+    <description>A settler's warning daubed on the wall for whoever reads it next.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
@@ -475,7 +476,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Crown</defName>
     <label>crossed-out crown stencil</label>
-    <description>A crisp stencilled crown, struck through - anti-authority in the one register vanilla itself owns. It does not fade.</description>
+    <description>A crude crown sprayed through hacked card, a slash of paint knocked through it. An insult to anyone with a title.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Crown</texPath>
@@ -505,7 +506,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Gear</defName>
     <label>broken gear stencil</label>
-    <description>A crisp stencilled gear, cracked through the teeth - anti-machine, the other authority vanilla owns. It does not fade.</description>
+    <description>A blunt cog sprayed through hacked card, a work gang's emblem.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Gear</texPath>
@@ -534,7 +535,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Fist</defName>
     <label>fist stencil</label>
-    <description>A stencilled fist snapping a chain. No target named. It does not fade.</description>
+    <description>A brawler's knuckles sprayed through hacked card. No target named.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
@@ -658,7 +659,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_StencilBox</defName>
     <label>ideoligion sigil, stencil box</label>
-    <description>A stencilled diamond box sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <description>A hand-sprayed box with broken corners around a painted emblem - the maker's own ideoligion, in its own colour.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
@@ -690,7 +691,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_DripFrame</defName>
     <label>ideoligion sigil, drip ring</label>
-    <description>A ring of running paint sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <description>A heavy ring of running paint dragged around a painted emblem - the maker's own ideoligion, in its own colour.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
