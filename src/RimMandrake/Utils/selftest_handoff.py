@@ -249,5 +249,15 @@ _v = handoff._wake_view(_h, "/p/H.md")
 check(all(k in _v for k in ("CARRY", "SEE", "A_B_C_D", "running: UP", "/p/H.md")), "keeps the five parts and the full path")
 check(not any(k in _v for k in ("TRAPX", "CLOSEDX", "FILEDX", "COMMITX", "dirtyfile")), "drops traps, closed, filed, commits, uncommitted")
 
+print("handoff: POINTER STATUS sees a spawned item")
+_s = handoff.pointer_states([
+    {"ts": "1", "event": "spawn", "name": "A_SPAWNED_LIVE_ITEM"},
+    {"ts": "1", "event": "spawn", "name": "A_SPAWNED_THEN_CLOSED"},
+    {"ts": "2", "event": "close", "id": "A_SPAWNED_THEN_CLOSED"},
+    {"ts": "3", "event": "note", "id": "A_SPAWNED_THEN_CLOSED"},
+])
+check(_s.get("A_SPAWNED_LIVE_ITEM") == "spawn", "a live spawn's id is read from its name field, not 'not in ledger'")
+check(_s.get("A_SPAWNED_THEN_CLOSED") == "close", "a later close wins, and a note does not change the state")
+
 print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 sys.exit(1 if fails else 0)

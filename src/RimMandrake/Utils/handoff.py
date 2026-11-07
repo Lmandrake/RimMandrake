@@ -497,6 +497,15 @@ def _wake_view(text, path):
     return "\n\n".join(out) + "\n"
 
 
+def pointer_states(evs):
+    """{item id: its latest state-changing event}. A `spawn` carries its id in `name`."""
+    last = {}
+    for e in sorted(evs, key=lambda x: x.get("ts") or ""):
+        if e.get("event") in ("file", "spawn", "start", "close", "block", "drop", "supersede"):
+            last[e.get("id") or e.get("name")] = e.get("event")
+    return last
+
+
 def wake():
     """The READ side of the ritual: print this seat's latest committed handoff
     with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
@@ -511,11 +520,7 @@ def wake():
     print(_wake_view(text, os.path.join(HANDOFFS, prev_name)))
     ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
     if ids:
-        last = {}
-        for e in sorted(events(), key=lambda x: x.get("ts") or ""):
-            if e.get("event") in ("file", "start", "close", "block", "drop",
-                                  "supersede"):
-                last[e.get("id")] = e.get("event")
+        last = pointer_states(events())
         print("=" * 66)
         print("POINTER STATUS (ledger, re-derived now — the handoff above is a")
         print("snapshot and may be stale):")
@@ -523,7 +528,7 @@ def wake():
         for i in dict.fromkeys(ids):
             st = last.get(i, "not in ledger")
             print("  %-48s %s" % (i, st))
-            if st in ("file", "start", "block", "not in ledger"):
+            if st in ("file", "spawn", "start", "block", "not in ledger"):
                 open_ids.append(i)
         print("open pointers: %d — pick each up, close it, or say in your first"
               % len(open_ids))
