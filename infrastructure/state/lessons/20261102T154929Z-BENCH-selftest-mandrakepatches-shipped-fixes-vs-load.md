@@ -1,1 +1,0 @@
-selftest_mandrakepatches 'shipped fixes vs the load-14 dump' needs checked>=15 but counts only patches whose donor is in the LIVE ModsConfig; with 5 donors inactive it reads 12 and FAILs on a clean tree - a live-state-dependent selftest, not a code defect (seen 2026-11-02, BIOME_TIER_CLEANUP_1)

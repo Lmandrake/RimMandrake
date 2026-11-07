@@ -1,1 +1,0 @@
-ART_CHECKS_FIX_OUTLINE_COHERENCE_SEVEN: a nightly-red item on an art_checks check can be mooted by a ruling-driven deletion elsewhere (4f07ac704e removed outline_coherence per owner card 2026-10-04 'no outlines'); rerun the named selftest on origin/main before editing anything.

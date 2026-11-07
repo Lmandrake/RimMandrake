@@ -1,1 +1,0 @@
-A live proof chained 'repro && record' hides a wrong-map run as FAIL: the guard that rejects the wrong map lived in the second step, which never ran after the first exited 1. Put precondition checks (map, biome, save) FIRST in the first command and exit UNMEASURED, never FAIL. (LEANINGSCRUB_STALL_SHARED_MOVE_1, 2026-11-03)

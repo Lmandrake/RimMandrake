@@ -1,1 +1,0 @@
-A live_def_check witness def must be unconditional: a def carrying MayRequire=<other mod> is correctly absent when that mod is not loaded, and live_def_check reports it as FAIL (MODCHECK_DONOR_ENVIRONMENTS_1 A1: guy762_gamorreanaxe is MayRequire guy762.StarWarsXenotypes). grep the def's opening tag for MayRequire before naming it in --has.

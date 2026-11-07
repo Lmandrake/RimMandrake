@@ -1,1 +1,0 @@
-A save's mod header only ages: every retirement from the full list adds a mod the bridge's save.missing_mods check refuses forever. live_site now loads past mods off ModsConfig.FULL.LATEST.xml (GAMEENV_FIX_HARNESS_A412C1DF_ITEMS_WAIT); a load on such a save still logs Scribe errors for their classes and defs, so a log-budget proof on it must expect them.

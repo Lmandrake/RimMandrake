@@ -134,6 +134,8 @@ anything about the full mod list (2026-09-20).
 *"is this true of our campaign?"*
 - **A def that passes `validate_patch.py` clean can still crash the whole game at startup.** Three new creature defs with invalid diet values crashed GeneticRim and broke ALL pawn and animal creation game-wide (a campaign save loaded with 0 pawns). Offline validation proves the XML resolves, not that the game survives it; only a real load (a quicktest on the minimal list is enough) does, so load once before deploying new creature defs to the owner's list.
 - **A site save is bound to the mod list it was built on.** `RM_TestSite_river_v1`, built on the owner's full list, loaded on the 14-mod minimal list does not degrade: it error-storms every frame (first: `VFEInsectoids.GameComponent_Insectoids` missing) and the game reads as "died". Check the save's mod list against the active list before a bridge driver loads it; sites for the minimal list must be built on it.
+- **RimWorld logs 'researchViewX and/or researchViewY not set' for a ResearchProjectDef at a NEGATIVE coordinate, not only an unset one** (`RR_Organization` at x=-2). A def-dump-vs-patch selftest also goes red for any coordinate move until the next load recaptures the dump.
+- **RimWorld warns (ConfigError) on defNames ending in a digit:** the `titan_test_races` load logged 'RM_TestTitanT2/T3 ends with a numerical digit'. Rename test races (e.g. `RM_TestTitanTierTwo`) before the TITANIC proof's log-budget row counts it.
 
 ## 3. Always say which map a result came from
 

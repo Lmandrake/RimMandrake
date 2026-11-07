@@ -118,6 +118,7 @@ through testq). Fall back to `live-mods:` only when no tier fits. The reason: an
 exact-tier job is what Lightspeed can batch, a 13-mod list loads in 22 s, and the
 owner's full list takes ~25 min (`rimworld-load-round`). The proof must not swap the
 list itself (§2).
+- **The `--minimal` modlist (26 mods) does NOT include `mandrake.rm.gimmesomeslack`:** `validation_aerial.py` on it fails `A_probe_channel` 'No loaded type RimMandrake.GimmeSomeSlack.Aerial...'. GSS live proofs need `modset_builder.py --tier gimmesomeslack` (10 mods); a brief saying 'minimal list' for GSS is wrong.
 
 ## 7. hot_reload_defs is not a speed path
 

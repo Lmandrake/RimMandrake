@@ -1,1 +1,0 @@
-A live proof of an RM_ standalone behaviour that a RUT/Droidworks campaign patch swaps (FindMod-guarded) must read the RUNNING def state first (jawa/get_def extra.modExtensions) and end on 'reload needed: ... lacks <pkg>' (exit 2, a restage) when the swap is live; otherwise a load batched with other items' mods FAILs a sound build (WARSCAR_HOSPICE_DESERTERS_1 A2, 2026-11-05).

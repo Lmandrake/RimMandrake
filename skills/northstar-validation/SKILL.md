@@ -194,6 +194,7 @@ is wired) are never written here as facts: read the ledger and the code.
 
 ## The scoreboard counts only what it can read
 `required_checks_report.py` reads only `Transient/modcheck/live_queue/*_summary.json`, so a mod with no readable record counts as unproven even when its suite passes live (it once read "proven 0 of 1543" while FlowWorks ran 59/59). The report names the unreadable mods under NOT IN THE TOTAL: never cite a proven-count without that line beside it.
+- **A north star reads DRAFT when its recorded hash no longer matches disk, even for a trim that loosens nothing.** A later commit trimmed stale status prose off the WreckedMachines `never_two_identical_smelters` cannot-show line, so the hash reverted it although `NORTH_STAR_WALK_AUTHORING_1` still lists it VALIDATED. A reworded line is loosening-class for the delegated route (`modcheck validate --delegated` refuses it); it needs the owner's re-validation (owner words or Conductor `--per-ruling`). Measure with `northstar.validated_baseline` + loosenings.
 
 ## A new north-star bar stays DRAFT
 A new north-star bar added on the owner's word stays DRAFT: `modcheck/cli.py validate` needs him to hear the lines, then `--owner-said` or `--by-card`; the loop then needs `shows=` claims in `validation.py`.

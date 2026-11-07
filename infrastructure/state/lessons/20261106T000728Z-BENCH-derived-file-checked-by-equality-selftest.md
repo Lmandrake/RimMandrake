@@ -1,1 +1,0 @@
-A derived file checked by an equality selftest (RM_MineralRegistry.xml from gen_mineral_registry.py) must be regenerated in the same commit as its CSV; regenerate WITH the def dump, since --no-dump drops unresolvable defs (32 -> 27). Found on MINERAL_TWIN_COLUMNS_DELETE_RM_WINS.

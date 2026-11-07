@@ -17,6 +17,8 @@ Each line names the failure it prevents. Every one of these cost a full-list run
 - [ ] **A restored C# file keeps its backup's older mtime.** msbuild's incremental
       check then skips it, and the old build stays compiled. `touch` a restored source
       file before rebuilding. This happened with a planted-defect fuzz, 2026-10-11.
+- **Some proof entry points do not preflight the companion profile.** `proof_all.py` and `pit_superdeep_walk.py` (unlike `live_session.py` and the modcheck runner, which call `runner.ensure_test_profile(min_minutes=60)`) ran on an expired `companion_profile.json`: `jawa/static_call` was REFUSED, `Z_log_budget` read UNMEASURED (sentinel not emitted), and the pit walk ran `--fresh-map` and reported a single `PSW_site` UNMEASURED/HARNESS 'ProofResetRect REFUSED in the CAMPAIGN profile'. Call `ensure_test_profile` before touching the game. A wall-clock perf bound in an offline gate (`selftest_gimmesomeslack` 'tail scale' 3.50 ms vs 2.85 ms) is flaky: rerun before trusting a red `O3_core_selftest`.
+- **modcheck `runner.py` truncates a failed deploy's output to its last 500 chars,** so a def-guard refusal hides the conflicts it names. Run the compose plan (`deploy_custom_mods.py --compose biomes`) to read the full guard list, then deploy the stale mod (`--mod SWBestiary --apply`). A commit that moves a def between mods leaves the old mod's game copy stale until that mod is deployed (two Stillsand proofs went UNMEASURED on `RSW_SandLion` still in the old copy).
 
 ## Launch and readiness
 

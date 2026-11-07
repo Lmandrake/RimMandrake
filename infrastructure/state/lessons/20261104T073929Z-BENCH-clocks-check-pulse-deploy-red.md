@@ -1,2 +1,0 @@
-selftest_ops_clocks_check is RED at HEAD (not from OPS_CHURN work): 'ops_watch install defaults --deploy to the Operations deploy' fails because ops_watch.py line ~1209-1218 reads env RM_PULSE_DEPLOY (pulse-deploy root for the books probe), and the check forbids that string anywhere in ops_watch.py. Either the check should scope to install() or the env name should change.
-home: src/RimMandrake/Utils/selftest_ops_clocks_check.py

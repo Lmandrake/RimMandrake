@@ -1,1 +1,0 @@
-A selftest that patches time.sleep on an imported module (WB.time.sleep = ...) patches the global time module, so subprocess's wait loop polls through the stub under load; a check on recorded sleeps then fails only when the machine is busy (3 of 12 parallel runs before the fix, 0 of 36 after). Replace the module's name instead: WB.time = SimpleNamespace(sleep=..., time=...).

@@ -1,1 +1,0 @@
-A mutation harness that edits a .py in place and restores it fast can leave a stale .pyc: same size and same mtime second means Python keeps running the MUTANT after the restore (a same-length swap like 'factor > 0' for 'factor > 1'). A later test then fails on correct source. Run mutants with PYTHONDONTWRITEBYTECODE=1 or delete __pycache__ after.
