@@ -39,6 +39,9 @@ namespace RimMandrake.Pyrelands
             Apply(h, AccessTools.Method(typeof(FilthMaker), nameof(FilthMaker.CanMakeFilth)),
                   typeof(Patch_FilthMaker_NoAshOnAsh), "no-vanilla-ash-on-natural-ground",
                   "armed; flame leaves no Filth_Ash on natural ground here, the biome's own loose ash marks a burn");
+            Apply(h, AccessTools.Method(AccessTools.TypeByName("RimWorld.WorkGiver_StudyInteract"), "HasJobOnThing"),
+                  typeof(Patch_StudyInteract_NotInTheFire), "no-study-in-the-fire",
+                  "armed; nobody walks into a live front to study a scorch-fruit unless ordered");
         }
 
         private static void Apply(Harmony h, MethodBase target, Type patchClass,
@@ -181,6 +184,28 @@ namespace RimMandrake.Pyrelands
         }
     }
 
+    /// <summary>Scorch-fruit only stands in a fresh burn, right behind the front, and its shade-cloth study (EnvironmentalHazards'
+    /// found-tech comp) is served automatically by vanilla's study work giver, which knows nothing of fire. On map n
+    /// (2026-11-07) two colonists walked 70 cells into the opening front on day 0 and one came back with three burns. A pod
+    /// with fire within FireClear cells is not studied unless the player orders it.</summary>
+    public static class Patch_StudyInteract_NotInTheFire
+    {
+        private const int FireClear = 6;
+        private static ThingDef pod;
+
+        public static void Postfix(ref bool __result, Thing t, bool forced)
+        {
+            if (!__result || forced || t == null || !t.Spawned) return;
+            if (pod == null) pod = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
+            if (t.def != pod) return;
+            Map map = t.Map;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(t.Position, FireClear, true))
+            {
+                if (c.InBounds(map) && c.ContainsStaticFire(map)) { __result = false; return; }
+            }
+        }
+    }
+
     /// <summary>The pod rots through CompRottable, which runs in base.TickInterval; a rot landing on the pod's long-tick hash
     /// destroys it and Plant.TickInterval then calls TickLong on a thing with no map (NRE in CheckMakeLeafless).</summary>
     public class Plant_ScorchFruitPod : Plant
@@ -260,15 +285,17 @@ namespace RimMandrake.Pyrelands
                 if (!RM_FireEcoKernel.FireTickMayRoll(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.ashDustingEnabled,
                         RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null, scorchable)) return;
 
-                // Loose ash dusting — rides alongside vanilla's own
-                // unconditional Filth_Ash spawn (DamageWorker_Flame), does
-                // not replace it.
+                // Loose ash dusting: the scar's ash (vanilla's Filth_Ash is kept off natural ground here, Patch_FilthMaker_NoAshOnAsh).
+                // A fire leaves at most ONE drift on its own cell and never spills: rolled per tick, a long burn filled its cell to
+                // the cap and FilthMaker then propagated the overflow to the neighbours, so 6,335 of 6,924 burned cells sat at x4 and
+                // the scar read as one pale sheet (map n, 2026-11-07). Only ash fall heaps drifts deeper.
                 if (RM_PyrelandsSettings.ashDustingEnabled)
                 {
                     ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta)))
+                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta))
+                        && pos.GetFirstThing(map, ashFilth) == null)
                     {
-                        FilthMaker.TryMakeFilth(pos, map, ashFilth);
+                        FilthMaker.TryMakeFilth(pos, map, ashFilth, 1, FilthSourceFlags.None, false);
                     }
                 }
 
@@ -434,6 +461,24 @@ namespace RimMandrake.Pyrelands
         {
         }
 
+        // Unsaved: rebuilt from the map's own id, so the same hollows fill after a reload.
+        private Verse.Noise.Perlin driftField;
+
+        /// <summary>0..1, how readily falling ash settles here: the drift field, or 1 in the lee of rock or a wall.</summary>
+        private float DriftWeight(IntVec3 c)
+        {
+            if (driftField == null)
+            {
+                driftField = new Verse.Noise.Perlin(0.045, 2.0, 0.5, 3, map.uniqueID * 7919 + 1543, Verse.Noise.QualityMode.Medium);
+            }
+            for (int k = 0; k < 4; k++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[k];
+                if (n.InBounds(map) && n.GetEdifice(map) != null) return 1f;
+            }
+            return RM_FireEcoKernel.DriftAccept((float)driftField.GetValue(c.x, 0.0, c.z));
+        }
+
         private static void ResolveDefs()
         {
             defsResolved = true;
@@ -481,7 +526,10 @@ namespace RimMandrake.Pyrelands
 
             try
             {
-                for (int i = 0; i < attempts; i++)
+                // Drifts, not a sprinkle: a uniformly random cell gave an even scatter that never banked. Each candidate is kept
+                // with the map's drift-field weight (a static low-frequency noise, so ash banks in the same hollows every fall) or
+                // always beside rock or a wall (the lee). Twice the candidates keep the total near the old rate.
+                for (int i = 0; i < attempts * 2; i++)
                 {
                     IntVec3 c = CellFinder.RandomCell(map);
                     // Under a roof the ash never lands; on water it sinks.
@@ -492,6 +540,7 @@ namespace RimMandrake.Pyrelands
                     {
                         continue;
                     }
+                    if (!Rand.Chance(DriftWeight(c))) continue;
                     FilthMaker.TryMakeFilth(c, map, ashFilthDef, 1, FilthSourceFlags.None, false);
                 }
             }

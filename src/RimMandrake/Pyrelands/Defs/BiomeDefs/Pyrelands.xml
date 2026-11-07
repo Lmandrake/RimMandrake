@@ -51,6 +51,7 @@
          see GenStep_ScorchPyrelandsRuins (Source/FireEcologyHook.cs) and its
          GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) for the mechanism. -->
     <extraGenSteps>
+      <li>RM_FE_StandingWater</li>
       <li>RM_FE_ScorchRuins</li>
       <li>RM_FE_FireCast</li>
       <li>RM_FE_ScorchRuinsLate</li>

@@ -290,6 +290,16 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>Deposit attempts this batch: map area per attempt scaled by the rate; a rate of zero deposits nothing, any positive
         /// rate deposits at least one.</summary>
+        /// <summary>Ash fall's keep chance for a cell from its drift-field noise (about -1..1): the low half takes little, the
+        /// high bands take nearly all, so drifts bank instead of sprinkling.</summary>
+        public static float DriftAccept(float noise)
+        {
+            float w = 0.5f + noise * 1.1f;
+            if (w < 0.04f) return 0.04f;
+            if (w > 1f) return 1f;
+            return w * w;
+        }
+
         public static int AshAttempts(int area, float cellsPerAttempt, float rate)
         {
             if (rate <= 0f)

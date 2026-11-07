@@ -43,4 +43,11 @@
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsFireCast" />
     <order>1210</order>
   </GenStepDef>
+  <!-- The rare water, never none: a map the noise left with almost no standing water gets two or three ringed ponds
+       (GenStep_PyrelandsStandingWater). Right after Terrain (210), before roads, ruins, plants and animals. -->
+  <GenStepDef>
+    <defName>RM_FE_StandingWater</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsStandingWater" />
+    <order>215</order>
+  </GenStepDef>
 </Defs>

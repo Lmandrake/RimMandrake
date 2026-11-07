@@ -52,6 +52,7 @@
     <Compile Include="FireEcologyHook.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />
     <Compile Include="GenStep_PyrelandsFireCast.cs" />
+    <Compile Include="GenStep_PyrelandsStandingWater.cs" />
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
