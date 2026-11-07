@@ -215,17 +215,12 @@ not do live testing of flyers without a human present. It doesn't work."* and *"
 capture images of flight. It doesn't work."* Verify flight by a deterministic STATE read of
 `Pawn_FlightTracker`; a visual check is a joint session or it waits.
 
-## Queue items are NAMED, not numbered — owner, 2026-08-20; grammar 2026-11-05
+## Queue items are NAMED, not numbered
 
-New items are **`PROJECT_VERB_INTENTION_TWIST`** (owner 2026-11-05, `~/.claude/CLAUDE.md` "EVERY ITEM IS
-NAMED"): slot 1 is the project's registry Id (this project: `RIMMASTER`; `PROJNOW`/`PROJTEMP` for no project),
-slot 2 any verb (no word bank), then the intention, then a **true, kind, specific** twist. 4-9 words, at most
-64 chars, `A-Z 0-9 _` only, no trailing bare digits: `RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY`.
-`rimflow namecheck <NAME>` shows the parse; `file`/`spawn` refuse the rest. The registry is read from
-`$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`); if unreadable the refusal names that path.
-Every older name (`SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stays valid forever, never renamed; the
-refusal applies only to newly minted names. B-style ones are cited with their title — `B58 (the dead Jawa
-pawnkind)`, never bare. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
+The grammar is `~/.claude/CLAUDE.md`'s `PROJECT_VERB_INTENTION_TWIST`; this project's slot 1 is `RIMMASTER`. `rimflow namecheck <NAME>`
+shows the parse and `file`/`spawn` refuse the rest. The registry is read from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`);
+if unreadable the refusal names that path. Older names (`SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stay valid forever, never
+renamed. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
 
 ## Correctness outranks seat ownership; wrong material is deleted
 
@@ -269,12 +264,11 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
 Work in your seat clone (`/home/mandrake/rm/bench`);
-`D:\Luke\dev\RimMandrake` is a read-only mirror. Commit explicit paths (never `git add -A`/`.`/`-a`,
-never `--force`, never a file over ~50 MB), push at once (`./publish` prints `PUBLISHED <sha>`),
+`D:\Luke\dev\RimMandrake` is a read-only mirror. Land with `./publish` (prints `PUBLISHED <sha>`, skill `clone-landing-commits`),
 and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole).
-🔴 **`git worktree` is OFF** (owner, 2026-10-02, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
-clones is approved** for writers above 4 (owner, 2026-10-31: "I trust you, but please monitor them carefully. They seem to
-propagate prolifically."). Cap 16 clones and 70 GB (owner by card 2026-11-02, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", up from 10 / 40), refused at creation by `scratch_clone.py` (an idle pushed clone is
+🔴 **`git worktree` is OFF** (owner, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
+clones and 70 GB is approved** for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
+propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
 reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired, owner 2026-11-03; status is `D:\ClaudeWork\rimmandrake\conductor\RELENTLESS_NOW.md`); one alarm, `disk.pool_breach`; any helper clone with unlanded work
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a clone a live Relentless item names and has not put down (a held, blocked or game-waiting item's clone goes back at once with every commit and stash it holds, so one still standing is the alarm), a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
