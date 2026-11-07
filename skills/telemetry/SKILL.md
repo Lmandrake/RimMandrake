@@ -6,7 +6,7 @@ description: Query recorded history before re-measuring anything about the game,
 # Telemetry: recorded history for the game, the bridge and the host
 
 Built by `TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED`; design
-`Transient/weekly_cleaning_2026-10-11/08_telemetry_deep_design.md` (owner picks: hybrid VictoriaMetrics + SQLite +
+[references/history.md](references/history.md) (owner picks: hybrid VictoriaMetrics + SQLite +
 Grafana + RimPulse alerts, data on E:, 1 s test tier + flight recorder). Code: `src/RimMandrake/Utils/telemetry/`.
 
 ## The three laws

@@ -1,8 +1,6 @@
 # First look: before any theory, capture the scene
 
-Map awareness phase 1d (`VISITOR_DETECTORS_MEND_NAME_THE_STRANGER`, 2026-10-10). Protocol from GPT review §6 of
-`Transient/foundry_map_awareness_review_gpt_20261010.md` (Transient: ~14-day shelf life; everything that binds is
-restated here). It extends, and does not compete with, `rimworld-debug-testing`'s "look before you theorise".
+Map awareness phase 1d (`VISITOR_DETECTORS_MEND_NAME_THE_STRANGER`, 2026-10-10). Protocol from a GPT review (since expired; everything that binds is restated here). It extends, and does not compete with, `rimworld-debug-testing`'s "look before you theorise".
 
 **Why:** Player.log records no incident firing and no pawn arriving (measured over three logs, 2026-10-10). The
 only way to know who is on the map, and what we know about why, is to read the map, and to read it **before**

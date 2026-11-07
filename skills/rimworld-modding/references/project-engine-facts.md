@@ -29,7 +29,7 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
   whole `<Operation>` block; guard with `PatchOperationFindMod`/`Conditional` instead,
   or (the fix actually applied) test that the referenced def actually exists before
   applying. MEASURED 2026-10-09: **0** live top-level `<Operation MayRequire>` remain in
-  `src/` and all 14 `<li>`-level attributes resolve (`Transient/belt_mayrequire_census_20261009.md`).
+  `src/` and all 14 `<li>`-level attributes resolve (census of that date).
   ⚠️ A composed member (e.g. `mandrake.rm.longshade`) has a standalone About.xml in `src/` but
   **no packageId at runtime** — its id is folded into `mandrake.rm.biomes`, so a `MayRequire`
   naming a member id silently never loads (sitting 2 found 26 such sites).

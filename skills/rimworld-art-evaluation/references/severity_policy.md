@@ -1,6 +1,6 @@
 # Severity policy — what blocks, decided by policy, never by model mood
 
-The pilot (`Transient/art_eval_pilot_20261023/SCORE.md`, 47 Weeping Stones subjects) showed the failure this file
+The pilot ([history.md](history.md), 47 Weeping Stones subjects) showed the failure this file
 exists for: **Opus named the owner's defect on 15 of 16 REDO rows but filed 7 of them as minor follow-ups and
 kept the picture.** Perception was fine; severity was not. So a reviewer reports *what it saw* as reason codes,
 and this table decides whether each code blocks. The model's own severity guess is recorded beside it (so a

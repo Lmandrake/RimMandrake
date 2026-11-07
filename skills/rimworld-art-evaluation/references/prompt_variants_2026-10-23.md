@@ -20,7 +20,6 @@ This file holds the comparison tables and the adoption decision for each round. 
     left out.
   - `regression_specs/holdout_rows.jsonl` (18): Leaning Scrub, picks_dessicated and tree sheets, 2026-10-18 to
     2026-10-22. ACCEPT is his pick; NOT_ACCEPT is a retire or a redo note. The prompts were never tuned on these rows.
-    Pictures: `Transient/art_eval_holdout_20261023/` (FOUNDRY clone).
 - **Score:** decision class ACCEPT against not-ACCEPT. A **false accept** (a bad picture let in) is the worst error
   and must not rise. A false reject costs one regen. Cost is the USD the Claude CLI reports, plus model seconds.
   GPT runs on a subscription, so it has no USD figure.
