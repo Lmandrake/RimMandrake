@@ -1,0 +1,1 @@
+src/RimMandrake/Utils/show.sh opens Explorer with the file SELECTED; it does not open the file. When the owner asks to see an image or page, open it with powershell.exe Start-Process '<native path>' (2026-11-07: he saw only one of two images after show.sh).
