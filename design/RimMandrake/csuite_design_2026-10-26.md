@@ -121,7 +121,7 @@ Five facts from today show what that costs:
 - **Frame rate.** Full-list TPS at x6 fell from **346 to 112-145** between 10-20 and 10-26 (E-Q4). It was sampled every 5 s and stored in VictoriaMetrics, and no one looked for six days.
 - **Scratch reaper.** It was built and carded on 10-18, then **left in dry-run for 8 days** while helper scratch reached **240 GB** (E-Q12; commit `630669a1db`).
 - **Skip-when-unchanged.** It was built on 10-08 and its hit rate cannot be seen. Meanwhile 33% of selftest executions are repeats and one test ate 26% of 72.1 agent-hours (E-Q2).
-- **Self-marked code.** Builders marked their own files CLEAN. Reviewers then found real bugs in them. Lessons `20261015T070804Z-BENCH-reviewers-twice-marked-files-clean-after` and `20261026T171949Z-BENCH-builders-mark-their-own-new-files` record **the same failure 11 days apart**.
+- **Self-marked code.** Builders marked their own files CLEAN. Reviewers then found real bugs in them. Lessons `20261015T070804Z-BENCH-reviewers-twice-marked-files-clean-after` and `infrastructure/state/facts/tool_traps.md` record **the same failure 11 days apart**.
 - **The close gate.** It only *warns* on owed criteria (FF item 7), and 98.8% of closes carry no verify level (BL-M8).
 
 So measurement is not what is missing. What is missing is a **control loop**:

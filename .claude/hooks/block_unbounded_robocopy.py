@@ -3,7 +3,7 @@
 
 WHY: robocopy's defaults are /R:1000000 /W:30. On 2026-11-02 one unreadable file on a damaged USB stick
 turned an agent's background robocopy into a 3.6 h hang that held BENCH past its hard restart
-(infrastructure/state/lessons/20261103T091148Z-BENCH-robocopy-s-default-r-1000000-w.md). A retry bound
+(infrastructure/state/facts/tool_traps.md). A retry bound
 alone does not bound a copy, so a total deadline is required too.
 
 Refuses (exit 2) a Bash command in which robocopy is INVOKED (first word of a segment, or inside a
@@ -33,7 +33,7 @@ REASON = (
     "Bound the retries AND the whole copy:\n"
     "    timeout -k 10 1800 robocopy.exe <src> <dst> /E /R:2 /W:5\n"
     "(/R:<=%d, /W:<=%d, and a `timeout N` in front; a WSL timeout kills the Windows process.)\n"
-    "Lesson: infrastructure/state/lessons/20261103T091148Z-BENCH-robocopy-s-default-r-1000000-w.md"
+    "Lesson: infrastructure/state/facts/tool_traps.md"
     % (R_MAX, W_MAX))
 
 

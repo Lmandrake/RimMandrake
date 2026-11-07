@@ -3,7 +3,7 @@
 Review-save pen animals are placed by `jawa/artboard_stage` (pawn ops) with a 60000-tick `JobDefOf.Wait`
 so each holds its planned facing (`JawaBenchArtboardTools.cs`, the `kind == "pawn"` branch). A keeper save
 keeps them frozen for a game day and `jawa/order_pawn` refuses wild animals (0/64,
-`infrastructure/state/lessons/20261016T035329Z-BENCH-review-save-pens-hold-animals-with.md`), so the owner
+`skills/rimworld-live-review/references/traps.md`), so the owner
 cannot watch them move. Progress log: `Transient/release_pens_2026-10-16/PROGRESS.md`.
 
 ## spec

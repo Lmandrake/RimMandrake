@@ -253,7 +253,7 @@ month more than it saves. The version that pays is narrower:
   One mutant was an infinite loop.
   - Run it only in a scratch clone, give each mutant a process-group timeout, and restore the file and run
     `git diff --exit-code` after every run.
-  - Filed as lesson `20261028T001338Z-BENCH-mutmut-timeout-orphans`.
+  - Filed as lesson `infrastructure/state/facts/tool_traps.md`.
   - The SteveDesktop runner (`Utils/mutation/run_mutation.py`) times out each selftest with `subprocess.run`. That
     kills the selftest but not its grandchildren, so the same orphan risk applies.
 

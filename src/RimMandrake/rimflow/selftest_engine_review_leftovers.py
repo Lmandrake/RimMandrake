@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ENGINE_REVIEW_FIX_LEFTOVERS_STILL_WARM: one case per finding Codex left open on cd905b46d6
-(infrastructure/state/lessons/20261105T082718Z-BENCH-review-cd905b-leftovers.md).
+(infrastructure/state/facts/operations.md).
 
 relentless_game: G1 finals_waiting ranks expedited finals as expedited_ahead does (no deadlock). G2 (stage_idle_s
 counted load time) and G3 (riders' remedies) were fixed by 0a2ec71ec9; their cases live in

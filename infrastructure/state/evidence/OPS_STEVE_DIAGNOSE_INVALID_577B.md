@@ -37,7 +37,7 @@ from c775d5, which went DONE on a cold start; it was not replayed.
   had it inside the 300-character note.
 - Why the DLL failed to load was not examined. The Steve job logs for these jobs were not found on a search of its
   ClaudeWork paths (the worker's own TESTQ_HOME was not searched). A corrupt read fits the memory fault and the disk
-  bad-block events in `infrastructure/state/lessons/20261101T005033Z-BENCH-steve-nvme-badblock-events.md`, but that link
+  bad-block events in `infrastructure/state/facts/tool_traps.md`, but that link
   is a hypothesis.
 
 ## Rerun

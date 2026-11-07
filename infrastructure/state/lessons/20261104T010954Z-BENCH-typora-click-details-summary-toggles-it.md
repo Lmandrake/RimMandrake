@@ -1,1 +1,0 @@
-Typora: a click on a <details> summary toggles it but marks the document modified, so a page rewritten every minute then prompts Save on close; put no click-to-open sections on RUNNING_NOW. An SVG <title> tooltip does show on hover in Typora (captures in D:\ClaudeWork\scratch\running_v3).

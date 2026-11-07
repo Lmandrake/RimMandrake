@@ -80,7 +80,7 @@ We already have more than most hobby systems: a content-hashed selftest cache (B
 
 **What it is.** Google SRE's rule is that every RPC carries a deadline and the deadline propagates to whatever it calls ([SRE book, cascading failures](https://sre.google/sre-book/addressing-cascading-failures/); [gRPC deadlines](https://grpc.io/docs/guides/deadlines/)). A job's deadline also bounds its retries and its cleanup, and the whole process tree gets killed when it expires.
 
-**What we have.** Many callers do pass `timeout=`. `role_launch.py` stops a run at `run_max_s`. There is a lesson on the robocopy default (`infrastructure/state/lessons/20261103T091148Z-BENCH-robocopy-s-default-r-1000000-w.md`). But nothing enforces any of this.
+**What we have.** Many callers do pass `timeout=`. `role_launch.py` stops a run at `run_max_s`. There is a lesson on the robocopy default (`infrastructure/state/facts/tool_traps.md`). But nothing enforces any of this.
 
 **Measured today.** An AST scan of non-selftest `.py` under `rimflow/` and `Utils/` counts **325** blocking `subprocess.run/check_output/check_call/call` calls, of which **130** pass no `timeout=`.
 - The top files are `seat_sync.py` (8), `publish.py` (6), `winbuild.py` (5) and `rimflow/cli.py` (3).
