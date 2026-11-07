@@ -25,9 +25,9 @@
   No `*ArtOverride` mod exists for Strill (checked first). 7 PNGs extracted
   this pass via extract_bundle.py against the same AssetBundle every prior
   wave used: `Strill_{south,east,north}` (base facing), `Strill_Dessicated`,
-  and the single flying-animation frame (`flyingAnimationFrameCount>1</`,
-  `Strill_Flying_1_{south,east,north}` — a glide pose, not a multi-frame
-  flap cycle like Shyrack/Sketto this same pass). Every texPath the def
+  and the flying frames. `Strill_Flying_1-4_{south,east,north}` are now a
+  body-locked cut-out flip-book (flyer_cutout_sets/Strill.json), legs and
+  membrane beating. Every texPath the def
   references resolves. Sits at Textures/swanimals/Strill/.
 
   Wired into the live cast this same pass: per cast_assignment.csv's current
@@ -202,10 +202,10 @@
     <combatPower>60</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <flyingAnimationFramePathPrefix>swanimals/Strill/Strill_Flying_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>1</flyingAnimationFrameCount>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
-    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationDrawSize>1.15</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
     <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
