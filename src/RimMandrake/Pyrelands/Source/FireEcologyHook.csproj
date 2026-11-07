@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
+    <Compile Include="PyrelandsForeignArrivals.cs" />
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />

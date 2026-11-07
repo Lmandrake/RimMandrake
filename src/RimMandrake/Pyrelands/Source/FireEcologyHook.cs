@@ -284,6 +284,9 @@ namespace RimMandrake.Pyrelands
                         {
                             IntVec3 spot = pos + new IntVec3(RM_FireEcoKernel.FruitSpotDx[spotIndex], 0, RM_FireEcoKernel.FruitSpotDz[spotIndex]);
                             Thing fruit = ThingMaker.MakeThing(fruitDef);
+                            // Ripe at birth: the crack IS the ripening. Left to grow it starts at 0.15 of a 0.65 harvest line,
+                            // rests at night and stops dead above its 58C ceiling, so at this biome's heat it could rot unripe.
+                            if (fruit is Plant pod) pod.Growth = 1f;
                             GenSpawn.Spawn(fruit, spot, map);
                         }
                     }
@@ -577,6 +580,18 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // pyre_ruins_scorched: the ruin itself stands black and damaged, not just the ground under it. Vanilla's paint slot
+        // (Building.ChangePaint) replaces the stuff colour on any building with no comp and no new graphic.
+        private static void CharRuinBuilding(Building b)
+        {
+            ColorDef charred = DefDatabase<ColorDef>.GetNamedSilentFail("RM_FE_Charred");
+            if (charred != null) b.ChangePaint(charred);
+            if (b.def.useHitPoints && b.MaxHitPoints > 1)
+            {
+                b.HitPoints = Math.Max(1, (int)(b.MaxHitPoints * Rand.Range(0.35f, 0.8f)));
+            }
+        }
+
         private static void SweepUnownedBuildings(Map map)
         {
             ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
@@ -600,6 +615,7 @@ namespace RimMandrake.Pyrelands
                         continue;
                     }
                     rects.Add(b.OccupiedRect());
+                    CharRuinBuilding(b);
                 }
 
                 foreach (CellRect occupied in rects)

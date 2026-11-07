@@ -29,7 +29,7 @@
   <BiomeDef>
     <defName>RM_Pyrelands</defName>
     <label>the Pyrelands</label>
-    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_Pyrelands</texture>
 
@@ -39,6 +39,10 @@
     <preventGenSteps>
       <li>RockChunks</li>
       <li>ScatterShrines</li>
+      <!-- pyre_plant_distribution_correct: these special trees are placed by name and never pass WildPlantAllowlist. -->
+      <li>AnimaTrees</li>
+      <li>PoluxTrees</li>
+      <li>HarbingerTrees</li>
     </preventGenSteps>
 
     <!-- PYRELANDS_SCORCHED_RUINS_1 — owner: ruins "should be scorched and
@@ -105,7 +109,7 @@
            (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Pyrelands</letterLabel>
-        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It grows back faster than anything can eat it and dries within days, and the first dry storm sets it off. Keep bare paving between the grass and your walls. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It greens over within days of a burn and dries out soon after, and the first dry storm sets it off. Keep bare paving between the grass and your walls. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
       </li>
     </modExtensions>
 
@@ -129,8 +133,10 @@
          regrow fastest). -->
     <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <!-- Fast: the whole point of the grass below is that the fuel bed
-         comes back before the scar has cooled. Vanilla savanna is 26-27. -->
-    <wildPlantRegrowDays>9</wildPlantRegrowDays>
+         comes back before the scar has cooled. Vanilla savanna is 26-27. This is an MTB per empty cell
+         (RimSage, WildPlantSpawner.cs:310): at 3, 63% of a scar has sprouted by day 3 and 81% holds grown grass
+         by day 7 (sprout + ~2 days); at the old 9 only 43% did, and lifespan outran reseeding. -->
+    <wildPlantRegrowDays>3</wildPlantRegrowDays>
     <settlementSelectionWeight>0.7</settlementSelectionWeight>
     <movementDifficulty>1</movementDifficulty>
     <forageability>0.45</forageability>

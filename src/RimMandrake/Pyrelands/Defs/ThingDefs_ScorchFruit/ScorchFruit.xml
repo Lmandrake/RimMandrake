@@ -71,6 +71,8 @@
       <visualSizeRange>0.8~1.1</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <growDays>0.05</growDays>
+      <!-- Off: the vanilla span (0.05 x 8 days) would kill the pod in half a day, before its 1.1-day rot. -->
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
       <harvestYield>5</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.01</harvestAfterGrowth>

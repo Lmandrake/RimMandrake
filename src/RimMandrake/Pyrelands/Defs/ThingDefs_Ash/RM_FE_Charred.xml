@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The paint a Pyrelands ruin wears (GenStep_ScorchPyrelandsRuins). Misc, so it stays off the player's paint list. -->
+  <ColorDef>
+    <defName>RM_FE_Charred</defName>
+    <label>charred</label>
+    <color>(58, 52, 49)</color>
+    <colorType>Misc</colorType>
+  </ColorDef>
+</Defs>
