@@ -269,6 +269,7 @@ LIVE_MOVES = (
 CLASSIFY_RX = re.compile(r"^\s*CLASSIFY:\s*(MOD|SITE|HARNESS|CONTRACT)\b(?![|/])[\s:;,.\u2014-]*([^\s<|].{9,})", re.S)
 INSTRUMENT = "instrument"   # snag class: the site or the instrument is broken, not the work - a block on its repair item
 HISTORY_MAX = 10            # endings the brief lists, newest last       # a dead process or a silent checker tried nothing
+LEARNED_MAX = 8000          # chars of a worker's notes the brief carries, whole entries, the newest (learned_view)
 
 
 def pkg(name):
@@ -4631,7 +4632,32 @@ def subagent_rule(st, r):
             % ({1: "one", 2: "two", 3: "three"}[n], "" if n == 1 else "s"))
 
 
-def worker_prompt(st, text, learned, r, history=None, causes=None):
+def learned_view(learned, listed, log=None, cap=LEARNED_MAX):
+    """The brief's memory, rewritten from the raw log at every lease and capped (LOOP_MEMORY_DESIGN_SHORT_AND_HASH_BOUND;
+    as built: design/RimMandrake/relentless_agent_design_2026-11-01.md section 5). `listed` holds the endings the brief
+    already lists: their log lines go, 22% of all log text when measured on 2026-11-06. Whole entries only, the newest
+    run of them, oldest first. A plain tail cut began mid-sentence on every long item. learned.md itself is untouched."""
+    entries = [e for e in re.split(r"\n+(?=(?:- )?\d{4}-\d\d-\d\dT)", learned.strip()) if e.strip()]
+    def carried(entry):
+        m = re.match(r"- \S+ gen \d+ ended [^:]*: (.+)", entry, re.S)
+        said = " ".join(m.group(1).split())[:120] if m else ""
+        return bool(said) and any(" ended " in x and said in x for x in listed)
+    keep = [e for e in entries if not carried(e)]
+    whole = "\n".join(keep)
+    if len(whole) <= cap:
+        return whole
+    def note(left):
+        return "(%d older note(s) not shown; the whole log: %s)" % (left, log or "learned.md in this item's store")
+    room, shown = cap - len(note(99999)) - 1, []
+    for e in reversed(keep):
+        if sum(len(x) + 1 for x in shown) + len(e) > room:
+            break
+        shown.insert(0, e)
+    shown = shown or [keep[-1][-room:]]     # one entry over the whole cap: its end, the part that says how it came out
+    return "\n".join([note(len(keep) - len(shown))] + shown)
+
+
+def worker_prompt(st, text, learned, r, history=None, causes=None, log=None):
     i, g = st["item"], st["gen"]
     rc = "python3 src/RimMandrake/rimflow/relentless.py"
     head = ["You carry one item until it is proven. You are one worker in a line: others came before you and another "
@@ -4796,7 +4822,8 @@ def worker_prompt(st, text, learned, r, history=None, causes=None):
                  for n, o in enumerate(st["help_options"]["options"])]
     if relentless_prooflines.is_job(st):     # PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: lines only, the ledger stays built
         head.append(relentless_prooflines.brief(st))
-    return "\n".join(head + ["", "--- item ---", text, "", "--- learned so far ---", learned[-8000:]])
+    return "\n".join(head + ["", "--- item ---", text, "", "--- learned so far ---",
+                             learned_view(learned, hist if len(hist) > 1 else [], log)])
 
 
 def attributions(tried):
@@ -7240,7 +7267,8 @@ def _lease(store, fx, r, now, acts, seen, wake=None, late=None):
         if not why:
             prompt = resume_prompt(st, "work") if st["run"].get("resume") else worker_prompt(
                 st, fx.item_text(item), store.learned(item), r, store.attempts(item),
-                relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None)
+                relentless_explain.open_causes(store, getattr(fx, "state_of", None)) if st.get("diagnose_owed") else None,
+                os.path.join(store.item_dir(item), "learned.md"))
             pilot = piloting(st)
             agent = r["pilot_agent"] if pilot else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],

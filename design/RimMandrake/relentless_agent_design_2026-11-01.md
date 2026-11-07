@@ -133,6 +133,13 @@ as last reported). A worker may not edit until that passes or it records why not
 
 Three stores, per the contract, sized by the research (context files often hurt; small, cited, verified at read).
 
+**As built, 2026-11-06 (LOOP_MEMORY_DESIGN_SHORT_AND_HASH_BOUND), under the freeze in `standing_rulings.md` §Relentless: subtract.**
+Result cache: built (`selftest_cache.py`, known results in `run_selftests.py`; keyed by content hash, shared between clones).
+Tried table: the supervisor's half is built (`attempts.jsonl`, shown as "Endings on record" by `ending_history`, written even when a worker dies); the worker's cited half is not.
+Current state: `learned_view` in `relentless.py` rewrites the notes from `learned.md` at every lease: no ending told twice, whole entries, the newest run, capped at `LEARNED_MAX`, the raw log named. A program writes it, so no worker duty, verb, store, rule or settings key is added.
+Replayed over the 1369 logs on 2026-11-06: 18% less text than the old tail cut, 0 over the cap, 0 starting mid-entry.
+Not built, and not to be built before `RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9` is read: the worker-written `state.md`, the worker's `tried` columns, citation re-hashing at lease, and a cold brief for a redesign (Help is already cold). Below is the full design they would come from. The tail cut bound only 35 of 1368 logs when measured, so build them only if a measured return traces to lost memory.
+
 **1. Result cache (no agent).** Extends `selftest_cache.py`; keys on tests, code, tools, env, data, with reads measured by
 `suite_trace`, so XML and assets count. Default miss. External or unobserved input: never cached. `--no-cache` needs
 `--because`. A sampled rerun and seeded changes audit it, since it is a grader. **Build's inner loop only: never the
