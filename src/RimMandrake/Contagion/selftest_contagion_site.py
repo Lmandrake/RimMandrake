@@ -162,7 +162,7 @@ for mods, why in ((MODS + ["sarg.alphabiomes"], "a retired donor running"), ([""
     except B.SiteError:
         check("nothing built on " + why, not events and "jawa/world_tile_set" not in fk.log, (events, fk.log))
 check("registry entry records the running mods", rec.get("mods") == MODS, rec.get("mods"))
-check("SITES row and site_spec agree on v2", TS.SITES[S.SITE]["save"] == S.SAVE == "RM_TestSite_contagion_v2",
+check("SITES row and site_spec agree on v3", TS.SITES[S.SITE]["save"] == S.SAVE == "RM_TestSite_contagion_v3",
       (TS.SITES[S.SITE]["save"], S.SAVE))
 _hd = tempfile.mkdtemp(prefix="cg_hdr_")
 _st_atexit.register(_st_shutil.rmtree, _hd, True)

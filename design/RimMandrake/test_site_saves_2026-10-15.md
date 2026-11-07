@@ -61,12 +61,12 @@ hazards came only from the three fresh-map suites.
    ≥3 standing colonists, 250x250. **Nothing is saved unless every reading is clean.**
 4. Back up the whole Saves folder to `Transient/test_site_saves/saves_backup_<stamp>/` (project rule), save under the
    stable name, then STAT: the new `.rws` appeared and no existing file changed (the wrong-slot trap). **A save is never
-   overwritten.** A rebuild takes the next version (`RM_TestSite_calm_v3`), and `SITES` in the module names the current one.
+   overwritten.** A rebuild takes the next version (`RM_TestSite_calm_v4`), and `SITES` in the module names the current one.
 5. The registry `src/RimMandrake/Utils/modcheck/test_site_saves.json` records the save name, tile, mapId, biome, HEAD
    at build, profile, outdoor temperature at save and byte size. The `.rws` files live in the game's Saves folder on this
    machine only. They are derived (rebuildable by the command above), so they are never committed.
 
-Stable names: `RM_TestSite_calm_v3` (v2 with its compressed thing grid expanded by `src/RimMandrake/Utils/modcheck/save_uncompress.py`, which `build` now runs on every save: a compressed cell is a list-bound shortHash, and on the full list v2 lost 1704 chunks and 34 uranium cells per load), `RM_TestSite_river_v2` (built on `fw_gss_sitting`; v1 was made on the full list and died on the 14-mod list, RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS), `NS_Pyrelands_site_1_<fp12>_calm`. The live name is `SITES[...]['save']` in `src/RimMandrake/Utils/modcheck/test_site_saves.py`.
+Stable names: `RM_TestSite_calm_v3`, `RM_TestSite_river_v3`, `RM_TestSite_cauldron_v3`, `RM_TestSite_contagion_v3`, `RM_TestSite_leaningscrub_v3`, `NS_Pyrelands_site_1_<fp12>_calm3`. Each is its predecessor with the compressed thing grid expanded by `src/RimMandrake/Utils/modcheck/save_uncompress.py`, which `save_site` now runs on every save: a compressed cell is a list-bound shortHash, and on the full list calm_v2 lost 1704 chunks and 34 uranium cells per load. The river site's list is `fw_gss_sitting`. Pyrelands calm3's header still names three retired donors. The live name is `SITES[...]['save']` in `src/RimMandrake/Utils/modcheck/test_site_saves.py`.
 
 ## 4. Loading: the default for every suite
 

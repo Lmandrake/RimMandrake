@@ -188,7 +188,7 @@ except ValueError:
 
 # 7. RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS: river is v2 on fw_gss_sitting; prove refuses a header off the running list or
 #    beyond the tier, refuses to BUILD on a superset, and leaves a failed load at the main menu
-check("7 river site is v2", T.SITES["river"]["save"] == "RM_TestSite_river_v2", T.SITES["river"]["save"])
+check("7 river site is v3", T.SITES["river"]["save"] == "RM_TestSite_river_v3", T.SITES["river"]["save"])
 check("7 river fixture tier is fw_gss_sitting", T.SITES["river"].get("tier") == "fw_gss_sitting")
 DLC = ["ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey"]

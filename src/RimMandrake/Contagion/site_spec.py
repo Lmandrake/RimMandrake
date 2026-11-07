@@ -17,7 +17,8 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 SITE = "contagion"                        # key in Utils/modcheck/test_site_saves.SITES and its registry
 # v2 (2026-11-02): v1 was saved with sarg.alphabiomes + oskarpotocki.vfe.insectoid2 (retired donors), the header that
 # killed leaningscrub_v1 in FinalizeLoading; biome_site.build_site_save now refuses a retired donor in the running game.
-SAVE = "RM_TestSite_contagion_v2"         # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
+# v3 (FIXTURES_FIX_REST_STILL_COMPRESSED): v2 with its compressed thing grid expanded by save_uncompress.py.
+SAVE = "RM_TestSite_contagion_v3"         # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
 BIOME = "RM_Contagion"
 PROFILE = "danger"                        # the biome IS the subject: its wildlife and ocular flora stay, dangers go
 MAP_SIZE = 250                            # validation.py pads sit 45 cells from the centre, PAD_SIZE 30 (<= 60 out)

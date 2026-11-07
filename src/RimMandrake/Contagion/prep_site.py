@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build, clean, save and register the Contagion saved test site (RM_TestSite_contagion_v2). LIVE ONLY, bridge holder.
+"""Build, clean, save and register the Contagion saved test site (site_spec.SAVE). LIVE ONLY, bridge holder.
 
 BIOME_SPRINT_PROVE_SCRUB_SETS_PACE (kickoff packet §1.2). Data: site_spec.py. Recipe: Utils/modcheck/biome_site.py
 (Cauldron's steps, shared). Contagion's own read-back: no Burn may be active at the save or after the reload (a site

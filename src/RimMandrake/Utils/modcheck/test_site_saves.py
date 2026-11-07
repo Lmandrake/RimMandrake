@@ -56,35 +56,37 @@ SITES = {
     # advanced 0 ticks and no pawn moved (validation_v2's whole pawn block, day 3 + day 4). v2 was built on the 11-mod tier.
     # v3 (CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES): v2 with its compressed thing grid expanded by save_uncompress.py. A small
     # list's save did NOT load clean on a superset: on the full list v2 lost 1704 chunks and 34 uranium cells at 1738
-    # warnings per load. build() now expands every site it saves.
+    # warnings per load. save_site now expands every site saved.
     "calm": {"save": "RM_TestSite_calm_v3", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
              "suites": ["GimmeSomeSlack/northstar/proof_all.py --live", "FlowWorks/northstar/validation_v2.py --live"]},
     # v2 (RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS): v1 was saved 2026-10-15 on the owner's 22-mod list (vfe.insectoid2,
     # sarg.alphaanimals, rsw.swbestiary ...); on the 14-mod fw_gss_sitting list its VFEInsectoids GameComponent could not
     # load and Map.FinalizeLoading NRE'd into a Root-level Update() storm. v2 is built on fw_gss_sitting (`tier`), and
     # `prove river` refuses any save whose header names a mod the running list lacks.
-    "river": {"save": "RM_TestSite_river_v2", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
+    # v3 (FIXTURES_FIX_REST_STILL_COMPRESSED): v2 with its compressed grid expanded, as calm_v3. Likewise cauldron_v3,
+    # contagion_v3, leaningscrub_v3 and Pyrelands calm3, whose header still names three retired donors.
+    "river": {"save": "RM_TestSite_river_v3", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
               "minRiverEdges": 2, "tier": "fw_gss_sitting",
               "suites": ["FlowWorks/northstar/extension_proof.py --live --site river"]},
-    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm2",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
-                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm2, then northstar_driver run"]},
+    "pyrelands": {"save": None, "profile": "danger", "size": 250, "temp": None, "minColonists": 3, "tag": "calm3",   # calm (v1) lost its wildlife to the nonColonists sweep; never overwritten
+                  "suites": ["Pyrelands/northstar_site.py --reload-only --tag calm3, then northstar_driver run"]},
     # BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: a scratch-world RM_Cauldron patch, danger-cleaned (wildlife and vents stay).
     # Single source: src/RimMandrake/Cauldron/site_spec.py site_entry() (selftest_cauldron_site.py compares the two).
     # `builder` = the module whose build_site_save(session, work_dir) `build cauldron` runs.
     # v2 (2026-10-21): v1 was saved with VEF loaded and biomes_sprint then lacked it, so its load died in FinalizeLoading.
-    "cauldron": {"save": "RM_TestSite_cauldron_v2", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
+    "cauldron": {"save": "RM_TestSite_cauldron_v3", "profile": "danger", "size": 250, "temp": (0.0, 30.0),
                  "minColonists": 3, "biome": "RM_Cauldron", "builder": "Cauldron/prep_site.py",
                  "suites": ["northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py"]},
     # Same recipe, shared in biome_site.py. Single sources: <Biome>/site_spec.py site_entry() (each biome's
     # selftest_<biome>_site.py compares). Contagion: no Burn at save/reload. LeaningScrub: the Lean heading points at the
     # sun before the save and must come back unchanged off it (LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY).
     # v2 (2026-11-02): v1 carried the same retired donors as leaningscrub_v1 (sarg.alphabiomes, vfe.insectoid2).
-    "contagion": {"save": "RM_TestSite_contagion_v2", "profile": "danger", "size": 250, "temp": (0.0, 38.0),
+    "contagion": {"save": "RM_TestSite_contagion_v3", "profile": "danger", "size": 250, "temp": (0.0, 38.0),
                   "minColonists": 3, "biome": "RM_Contagion", "builder": "Contagion/prep_site.py",
                   "suites": ["northstar_driver/cli.py run --mod Contagion --plan src/RimMandrake/Contagion/northstar_plan.py"
                              " (on-Contagion arm only; needs the arm split first)"]},
     # v2 (2026-10-21): v1 was saved with Alpha Biomes + VFE Insectoids 2 (retired donors); its load died in FinalizeLoading.
-    "leaningscrub": {"save": "RM_TestSite_leaningscrub_v2", "profile": "danger", "size": 250, "temp": (0.0, 32.0),
+    "leaningscrub": {"save": "RM_TestSite_leaningscrub_v3", "profile": "danger", "size": 250, "temp": (0.0, 32.0),
                      "minColonists": 3, "biome": "RM_LeaningScrub", "builder": "LeaningScrub/prep_site.py",
                      "suites": ["northstar_driver/cli.py run --mod LeaningScrub --plan "
                                 "src/RimMandrake/LeaningScrub/northstar_plan.py"]},
@@ -363,7 +365,10 @@ def save_site(call, name, saves_dir, wait_s=180, sleep=time.sleep):
     touched = [f for f in before if after.get(f) != before[f]]
     if touched:
         raise RuntimeError("save touched existing file(s) %s" % touched)
-    return {"path": os.path.join(saves_dir, name + ".rws"), "bytes": after[name + ".rws"][0]}
+    # Every builder saves here, so no fixture leaves holding the list-bound compressed grid (save_uncompress.py).
+    path = os.path.join(saves_dir, name + ".rws")
+    expanded = save_uncompress.expand_fresh(path)
+    return {"path": path, "bytes": expanded["bytes"], "expanded": expanded}
 
 
 def _state(call):
@@ -576,8 +581,6 @@ def build(call, site, saves_dir, work_dir, max_rolls=6, sleep=time.sleep, name=N
     rec["backup"] = {"dir": os.path.join(work_dir, "saves_backup_%s" % stamp)}
     rec["backup"]["files"] = backup_saves(saves_dir, rec["backup"]["dir"])
     rec["saved"] = save_site(call, name, saves_dir, sleep=sleep)
-    rec["expanded"] = save_uncompress.expand_fresh(rec["saved"]["path"])
-    rec["saved"]["bytes"] = rec["expanded"]["bytes"]
     mi = call("jawa/map_info") or {}
     write_registry(site, {"save": name, "tile": mi.get("tile"), "mapId": mi.get("mapId"), "biome": mi.get("mapBiome"),
                           "builtUtc": rec["utc"], "head": rec["head"], "profile": spec["profile"],
@@ -816,8 +819,8 @@ def build_pyrelands(call, fingerprint, from_tag, tile, work_dir):
     write_registry("pyrelands", {"save": dst, "tile": mi.get("tile"), "mapId": mi.get("mapId"), "biome": mi.get("mapBiome"),
                                  "builtUtc": rec["utc"], "head": rec["head"], "profile": "danger", "from": src,
                                  "outdoorAtSave": mi.get("outdoorTempNow"), "bytes": rec["saved"]["bytes"],
-                                 "load": "northstar_site.py --site 1 --fingerprint %s --tag calm --reload-only --tile %s"
-                                         % (fingerprint, tile)})
+                                 "load": "northstar_site.py --site 1 --fingerprint %s --tag %s --reload-only --tile %s"
+                                         % (fingerprint, SITES["pyrelands"]["tag"], tile)})
     rec["verified"] = True
     return rec
 

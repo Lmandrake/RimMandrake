@@ -1,0 +1,5 @@
+A1 L2: RM_TestSite_cauldron_v3 loads on a list holding Elshender.stackablechunks and Armoury, logs no non-compressible or 0-stackCount line, and its chunks and ore stand on the map
+A2 L2: RM_TestSite_contagion_v3 loads on a list holding Elshender.stackablechunks and Armoury, logs no non-compressible or 0-stackCount line, and its chunks and ore stand on the map
+A3 L2: RM_TestSite_leaningscrub_v3 loads on a list holding Elshender.stackablechunks and Armoury, logs no non-compressible or 0-stackCount line, and its chunks and ore stand on the map
+A4 L2: RM_TestSite_river_v3 loads on a list holding Elshender.stackablechunks and Armoury, logs no non-compressible or 0-stackCount line, and its chunks and ore stand on the map
+A5 L2: the control: unrepaired RM_TestSite_cauldron_v2 on that same list loses its compressed chunks, so A1-A4 can see the fault

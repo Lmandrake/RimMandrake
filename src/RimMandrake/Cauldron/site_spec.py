@@ -15,7 +15,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 SITE = "cauldron"                         # key in Utils/modcheck/test_site_saves.SITES and its registry
-SAVE = "RM_TestSite_cauldron_v2"          # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
+# v3 (FIXTURES_FIX_REST_STILL_COMPRESSED): v2 with its compressed thing grid expanded by save_uncompress.py.
+SAVE = "RM_TestSite_cauldron_v3"          # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
 BIOME = "RM_Cauldron"
 PROFILE = "danger"                        # the biome IS the subject: its wildlife and vents stay, dangers go
 MAP_SIZE = 250                            # validation.py pads sit up to 85 cells from the centre (PADS, PAD_SIZE 24)

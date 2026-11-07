@@ -1,0 +1,11 @@
+live-mods: RimMandrake.Biomes, FlowWorks, GimmeSomeSlack, HugeThings, LuminousPigment, MandrakePatches, Warcasket, WeatherSuite, SWBestiary, Antiquities, AshkarrLandmarkArt, UtinniPatches, PyrelandsMechanics, Rites, WasteRun, Armoury, Elshender.stackablechunks, oskarpotocki.vanillafactionsexpanded.core, ray1203.simplecamerasetting
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_cauldron_v3
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_cauldron_v3 --expect ChunkGranite=461,ChunkMarble=511,ChunkMechanoidSlag=16,ChunkSlagSteel=59,ChunkSlate=538,MineableComponentsIndustrial=15,MineableGold=5,MineableSilver=11,MineableSteel=176
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_contagion_v3
+live-proof A2: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_contagion_v3 --expect ChunkLimestone=425,ChunkMechanoidSlag=12,ChunkSandstone=437,ChunkSlagSteel=53,ChunkSlate=435,MineableComponentsIndustrial=21,MineableJade=2,MineablePlasteel=3,MineableSilver=9,MineableSteel=106,MineableUranium=10
+live-site A3: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_leaningscrub_v3
+live-proof A3: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_leaningscrub_v3 --expect ChunkGranite=401,ChunkLimestone=493,ChunkMechanoidSlag=10,ChunkSandstone=589,MineableComponentsIndustrial=12,MineableJade=12,MineableSteel=196,MineableUranium=11
+live-site A4: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_river_v3
+live-proof A4: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_river_v3 --expect ChunkGranite=380,ChunkLimestone=353,ChunkMarble=398,ChunkMechanoidSlag=8,MineableComponentsIndustrial=49,MineableSilver=5,MineableSteel=310
+live-site A5: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_cauldron_v2
+live-proof A5: python.exe src/RimMandrake/Utils/modcheck/prove_chunks_v2_control.py live RM_TestSite_cauldron_v2 --lost ChunkMarble=511,ChunkGranite=461,ChunkSlate=538

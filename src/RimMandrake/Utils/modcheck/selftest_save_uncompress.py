@@ -184,6 +184,40 @@ check("9 offline exit 0", C.main(["offline", "--red", red, "--clean", clean]) ==
 check("9 offline exit 1", C.main(["offline", "--red", clean, "--clean", clean]) == 1)
 check("9 offline exit 2 when absent", C.main(["offline", "--red", red + "x", "--clean", clean]) == 2)
 
+# 10. FIXTURES_FIX_REST_STILL_COMPRESSED: every site reads an expanded fixture, and the one save door expands for every builder
+FIXED = {"calm": "RM_TestSite_calm_v3", "river": "RM_TestSite_river_v3", "cauldron": "RM_TestSite_cauldron_v3",
+         "contagion": "RM_TestSite_contagion_v3", "leaningscrub": "RM_TestSite_leaningscrub_v3",
+         "pyrelands": "NS_Pyrelands_site_1_417df172fdb5_calm3"}
+check("10 every site is listed", set(FIXED) == set(T.SITES), sorted(T.SITES))
+for site, name in FIXED.items():
+    code = T.SITES[site]["save"] or "NS_Pyrelands_site_1_417df172fdb5_" + T.SITES[site]["tag"]
+    check("10 %s: code reads the expanded save" % site, code == name, code)
+    check("10 %s: registry reads the expanded save" % site, REG[site]["save"] == name, REG[site]["save"])
+check("10 the registry's river row is the v2 build's map", (REG["river"]["tile"], REG["river"]["mapId"]) == (4921, 11), REG["river"])
+check("10 the registry's contagion row is the v2 build's tile", REG["contagion"]["tile"] == 28674, REG["contagion"])
+d10 = tempfile.mkdtemp()
+
+
+def game_writes(_method, saveName=None, **_k):
+    with open(os.path.join(d10, saveName + ".rws"), "w", encoding="utf-8", newline="") as f:
+        f.write(SAVE)
+
+
+rec10 = T.save_site(game_writes, "S10", d10, sleep=lambda s: None)
+with open(rec10["path"], encoding="utf-8", newline="") as f:
+    check("10 save_site leaves no compressed cell", not U.problems(f.read())[0])
+check("10 save_site reports the expanded size", rec10["bytes"] == os.path.getsize(rec10["path"]), rec10)
+with open(os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "biome_site.py"), encoding="utf-8") as f:
+    check("10 the biome builder saves through save_site", "TS.save_site(" in f.read())
+with open(os.path.join(REPO, LR.PROOFS_DIR, "FIXTURES_FIX_REST_STILL_COMPRESSED.txt"), encoding="utf-8") as f:
+    LIVE10 = f.read()
+for need in ("Elshender.stackablechunks", "Armoury"):
+    check("10 the game list holds %s" % need, need in LR.live_mods(LIVE10), LR.live_mods(LIVE10))
+for cid, site in (("A1", "cauldron"), ("A2", "contagion"), ("A3", "leaningscrub"), ("A4", "river")):
+    check("10 %s stages %s" % (cid, site), LR.site_for(LIVE10, cid).endswith("--save " + FIXED[site]), LR.site_for(LIVE10, cid))
+    check("10 %s reads %s" % (cid, site), "save_uncompress.py live %s " % FIXED[site] in LR.proof_lines(LIVE10).get(cid, ""))
+check("10 A5 is the unrepaired control", "prove_chunks_v2_control.py live RM_TestSite_cauldron_v2 " in LR.proof_lines(LIVE10).get("A5", ""))
+
 if FAILS:
     print("FAIL: %d: %s" % (len(FAILS), FAILS))
     sys.exit(1)

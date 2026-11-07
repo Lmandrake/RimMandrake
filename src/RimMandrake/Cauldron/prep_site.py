@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build, clean, save and register the Cauldron saved test site (RM_TestSite_cauldron_v1). LIVE ONLY, bridge holder.
+"""Build, clean, save and register the Cauldron saved test site (site_spec.SAVE). LIVE ONLY, bridge holder.
 
 BIOME_SPRINT_PROVE_SCRUB_SETS_PACE, BENCH D0 tooling slice (kickoff packet §4 D0 "Cauldron site"). Data: site_spec.py.
 Recipe: Utils/modcheck/biome_site.py (shared with Contagion and LeaningScrub); Cauldron's own read-back is the probe

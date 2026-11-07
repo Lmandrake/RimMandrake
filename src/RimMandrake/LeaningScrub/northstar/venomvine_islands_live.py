@@ -1,6 +1,6 @@
 """venomvine_islands_live.py -- VENOMVINE_BUILD_SCRUB_GROWS_TEETH live check on a REAL Leaning Scrub map (python.exe).
 
-Two modes, both on the CURRENT map (the RM_TestSite_leaningscrub_v2 site: a real mapgen Scrub map with the islands the
+Two modes, both on the CURRENT map (the RM_TestSite_leaningscrub_v3 site: a real mapgen Scrub map with the islands the
 shipped genstep laid; ProofIslands is NOT run here, it re-lays islands and belongs on a disposable map):
 
   check   (b) perf + pathing with the islands. Read-only except colonist walks and a short unpaused window.
@@ -382,7 +382,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mode", choices=("check", "stage"))
     ap.add_argument("--save", default="")
-    ap.add_argument("--load", default="", help="load this save first (e.g. RM_TestSite_leaningscrub_v2)")
+    ap.add_argument("--load", default="", help="load this save first (e.g. RM_TestSite_leaningscrub_v3)")
     ap.add_argument("--out", default=r"D:\ClaudeWork\rimmandrake\venomvine_live")
     a = ap.parse_args()
     B = reviewmap.LiveBridge()

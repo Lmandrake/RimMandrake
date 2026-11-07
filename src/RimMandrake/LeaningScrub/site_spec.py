@@ -17,7 +17,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 SITE = "leaningscrub"                     # key in Utils/modcheck/test_site_saves.SITES and its registry
-SAVE = "RM_TestSite_leaningscrub_v2"      # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
+# v3 (FIXTURES_FIX_REST_STILL_COMPRESSED): v2 with its compressed thing grid expanded by save_uncompress.py.
+SAVE = "RM_TestSite_leaningscrub_v3"      # a site save is never overwritten: a rebuild bumps _vN here AND in SITES
 BIOME = "RM_LeaningScrub"
 PROFILE = "danger"                        # ruins and camps are the subject (item text): they stay, dangers go
 MAP_SIZE = 250                            # validation.py pads sit 45 cells from the centre, PAD_SIZE 24 (<= 57 out)
