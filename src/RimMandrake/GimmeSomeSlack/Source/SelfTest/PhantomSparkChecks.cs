@@ -29,6 +29,26 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static int FreeEnds(CordWorld w) =>
             new CordBuilder().Build(w, new BuildOptions { Seed = 1 }, c => true).Sum(p => p.Ends.Count);
 
+        /// <summary>A blast's gap off a T: both short stumps are the cut's ends, however wide the blast (seen in a lived-in colony 2026-11-07: a 3-cell gap beat the old reach,
+        /// both stumps were pruned as needless spurs, and the cut drew no end at all). A lone short spur facing nothing is still pruned: the can-fail.</summary>
+        private static void BlastStumps()
+        {
+            foreach (int gap in new[] { 1, 3, 5 })
+            {
+                var w = new CordWorld(40, 40);
+                for (int x = 2; x <= 14; x++) { w.SetConduit(new Cell(x, 9)); w.SetConduit(new Cell(x, 14 + gap)); }
+                for (int z = 10; z <= 11; z++) w.SetConduit(new Cell(8, z));
+                for (int z = 12 + gap; z <= 13 + gap; z++) w.SetConduit(new Cell(8, z));
+                Check(FreeEnds(w) >= 2 + 4, "a blast gap of " + gap + " off a T: both stumps draw an end, as well as the rows' own four");
+                var g = CordGraph.Reduce(w);
+                Check(g.SpurKnots.Count == 0, "gap " + gap + ": neither stump is pruned as a needless spur (" + g.SpurKnots.Count + ")");
+            }
+            var lone = new CordWorld(40, 40);
+            for (int x = 2; x <= 14; x++) lone.SetConduit(new Cell(x, 9));
+            for (int z = 10; z <= 11; z++) lone.SetConduit(new Cell(8, z));
+            Check(CordGraph.Reduce(lone).SpurKnots.Count == 1, "can-fail: a short spur facing nothing is still a needless spur");
+        }
+
         /// <summary>A battery or generator takes one cord from a run alongside it, however many cells touch (seen in a lived-in colony 2026-11-07: seven into one solar panel).</summary>
         private static void CarrierHookups()
         {
@@ -57,6 +77,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         public static void Run()
         {
             CarrierHookups();
+            BlastStumps();
             // old: the pump is linked to the battery only -> the conduit end at (5,3) is free and sparks
             CordWorld wOld = Scene(out MachineInfo pOld, out MachineInfo bOld);
             CordWorldLinks.LinkToMachine(wOld, pOld, bOld);

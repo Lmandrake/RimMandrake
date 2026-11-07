@@ -74,7 +74,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             public bool Charged;
             public List<Cell> Broken = new List<Cell>();
             public BuildOptions Opt;
-            public int Reserved => W - 6;          // columns >= Reserved stay empty: the unrelated-edit probe lives there (a dead end looks 3 cells along its own line for a gap, so the probe sits 5+ away)
+            public int Reserved => W - 9;          // columns >= Reserved stay empty: the unrelated-edit probe lives there (a dead end looks 6 cells along its own line for a gap, so the probe sits 8 away)
             public int Idx(int x, int z) => z * W + x;
             public bool Protected(int x, int z) => Machines.Any(m => (x >= m.X && x < m.X + m.W && z >= m.Z && z < m.Z + m.H) || (m.Hook.X == x && m.Hook.Z == z));
             public bool InPlay(int x, int z) => x >= 0 && z >= 0 && x < Reserved && z < H;
@@ -137,7 +137,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static Scene MakeScene(long seed)
         {
             CordRng r = CordRng.Of("gssfuzz-scene", seed);
-            var s = new Scene { W = r.Int(14, 24), H = r.Int(10, 18) };
+            var s = new Scene { W = r.Int(17, 27), H = r.Int(10, 18) };
             int n = s.W * s.H;
             s.Block = new byte[n]; s.Door = new bool[n]; s.Cond = new bool[n]; s.Tree = new bool[n];
             // obstacle rectangles (never in the reserved columns)

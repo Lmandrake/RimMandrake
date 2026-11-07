@@ -542,13 +542,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return new Cell(c.X - n.X, c.Z - n.Z);
         }
 
-        /// <summary>render.Net.end_class, only the "break" answer matters: a dead end facing
-        /// another conduit cell within 3 cells across a gap.</summary>
+        /// <summary>render.Net.end_class, only the "break" answer matters: a dead end facing another conduit cell across a gap of up to 5 cells.
+        /// Was 3 reach, which a blast's gap of 3 cells beat: both short stumps of a real cut were pruned as needless spurs and the cut drew no ends at all.</summary>
         private bool FacesGap(Cell c)
         {
             if (NetDeg(c) != 1 || hookCells.Contains(c)) return false;
             Cell o = OutDir(c);
-            for (int k = 1; k <= 3; k++)
+            for (int k = 1; k <= 6; k++)
             {
                 var q = new Cell(c.X + o.X * k, c.Z + o.Z * k);
                 if (Cells.Contains(q)) return true;
