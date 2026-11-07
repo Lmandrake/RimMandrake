@@ -127,6 +127,82 @@ TAKES_ARG = {"-e", "--regexp", "-f", "--file", "-m", "--max-count",
 
 REDIR = re.compile(r"^(<<-?|<|>>|>|\d*>&?\d*)")
 
+HEREDOC = re.compile(r"""<<(-?)\s*(?:'([^']*)'|"([^"]*)"|\\?([^\s;&|<>()'"]+))""")
+
+
+def _commands(cmd):
+    """The commands a line runs, split only on separators outside quotes.
+
+    A separator inside quotes is text: splitting on it first left pieces shlex
+    refuses, so `grep "a|b" save.rws` was skipped unseen. A comment runs nothing,
+    and neither its apostrophes nor a heredoc body's may open a quote over the
+    commands after them, so both are stepped over; each body line is still read
+    as a command, because `bash <<EOF` runs them. Returns the plain split when a
+    quote stays open: a misread line must not blind the guard.
+    """
+    out, buf, heredocs = [], [], []
+    quote = None
+    i, n = 0, len(cmd)
+
+    def flush():
+        seg = "".join(buf)
+        del buf[:]
+        if seg.strip():
+            out.append(seg)
+
+    while i < n:
+        c = cmd[i]
+        if quote:
+            if c == "\\" and quote == '"':
+                buf.append(cmd[i:i + 2])
+                i += 2
+                continue
+            if c == quote:
+                quote = None
+            buf.append(c)
+            i += 1
+        elif c == "\\":
+            if cmd[i + 1:i + 2] != "\n":        # a continuation joins its lines
+                buf.append(cmd[i:i + 2])
+            i += 2
+        elif c in "'\"":
+            quote = c
+            buf.append(c)
+            i += 1
+        elif c == "#" and (not buf or buf[-1][-1:].isspace()):
+            end = cmd.find("\n", i)
+            i = n if end < 0 else end
+        elif cmd.startswith("<<<", i):
+            buf.append("<<<")
+            i += 3
+        elif cmd.startswith("<<", i) and HEREDOC.match(cmd, i):
+            m = HEREDOC.match(cmd, i)
+            heredocs.append((m.group(1), m.group(2) or m.group(3) or m.group(4) or ""))
+            buf.append(m.group(0))
+            i = m.end()
+        elif cmd.startswith(("||", "&&"), i):
+            flush()
+            i += 2
+        elif c in "|;\n":
+            flush()
+            i += 1
+            while c == "\n" and heredocs and i < n:
+                end = cmd.find("\n", i)
+                line = cmd[i:] if end < 0 else cmd[i:end]
+                i = n if end < 0 else end + 1
+                dash, word = heredocs[0]
+                if (line.lstrip("\t") if dash else line) == word:
+                    heredocs.pop(0)
+                else:
+                    out.extend(_commands(line))
+        else:
+            buf.append(c)
+            i += 1
+    if quote:
+        return [s for s in re.split(r"\|\||&&|\||;|\n", cmd) if s.strip()]
+    flush()
+    return out
+
 
 def segments(cmd):
     """Split a compound command into the individual commands it runs.
@@ -134,7 +210,7 @@ def segments(cmd):
     Also unwraps `bash -c "..."` / `sh -c "..."`, because a scan hidden one
     quote deep is still a scan. Found by red team 2026-08-21.
     """
-    parts = [s for s in re.split(r"\|\||&&|\||;|\n", cmd) if s.strip()]
+    parts = _commands(cmd)
     out = []
     for seg in parts:
         out.append(seg)

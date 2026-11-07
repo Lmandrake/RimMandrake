@@ -237,6 +237,73 @@ def t_a_scanner_or_reader_in_any_position_imports_the_skill():
         assert _imports_skill(cmd), "no import for: %s" % cmd
 
 
+def t_a_scanner_behind_a_quoted_separator_imports_the_skill():
+    """The gate walks the same segments, so a miss here would be a miss in offence()."""
+    for cmd in ('grep "a|b" y', 'grep -c "a;b" y', "grep 'a&&b' y",
+                'bash -c "cd /tmp && tail y"'):
+        assert _imports_skill(cmd), "no import for: %s" % cmd
+
+
+def t_a_separator_inside_quotes_runs_no_command_and_imports_nothing():
+    for cmd in ('echo "a; grep b; c"', "git commit -m 'x && wc -l y'",
+                "python3 x.py 'a | sed s/a/b/'", "ls # then grep x y"):
+        assert not _imports_skill(cmd), "imported for: %s" % cmd
+
+
+# --------------------------------------------------------------------------
+# HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST: segments() split on separators
+# before reading quotes, so the pieces failed shlex and were skipped unseen.
+# --------------------------------------------------------------------------
+
+def t_a_separator_inside_a_quoted_argument_does_not_hide_the_scan():
+    denied('grep "a|b" /x/save.rws')
+    denied('grep -c "a;b" Player.log')
+    denied('bash -c "cd /tmp && grep -c biome /x/save.rws"')
+    denied("grep -E 'a||b' /x/y.dll")
+    denied('cat /x/save.rws | grep -c "a|b"')              # reader, then quoted pipe
+    denied(r'grep a\|b /x/save.rws')                       # escaped, not quoted
+    denied('grep -c "a\\"|b" /x/save.rws')                 # escaped quote stays inside
+
+
+def t_a_quoted_separator_is_not_a_command_of_its_own():
+    """The same bug refused text that only MENTIONED a scan, and a refusal nobody
+    earned is what gets a guard switched off."""
+    allowed('git commit -m "x; grep -c foo Player.log; y"')
+    allowed("echo 'then | wc -l /x/save.rws'")
+    allowed('python3 x.py "a && strings /x/y.dll"')
+
+
+def t_a_comment_ends_at_its_newline_and_runs_nothing():
+    """An apostrophe in a comment opens no quote, and a comment is no alibi or scan."""
+    denied("echo hi # don't\ngrep -c biome /x/save.rws")
+    denied("grep -c biome /x/save.rws # measure says so")
+    denied("grep -c biome /x/save.rws # it's fine")
+    allowed("ls # then grep -c biome /x/save.rws")
+    denied('grep "#a|b" /x/save.rws')                      # a quoted # is no comment
+    allowed("echo a#b; wc -l notes.txt")
+
+
+def t_a_line_continuation_joins_one_command():
+    denied("grep -c biome \\\n  /x/save.rws")
+    denied('grep "a|b" \\\n  /x/save.rws')
+
+
+def t_a_heredoc_body_cannot_swallow_what_follows_it():
+    """An apostrophe in a body is text. The quote-aware split must not read it as an
+    open quote and carry it over the real command after the terminator."""
+    denied("cat <<EOF\ndon't\nEOF\ngrep -c biome /x/save.rws")
+    denied("cat <<'EOF' > a.txt\ndon't\nEOF\ngrep -c biome /x/save.rws")
+    denied("cat <<-EOF\n\tdon't\n\tEOF\ngrep -c biome /x/save.rws")
+    denied("bash <<EOF\ngrep -c biome /x/save.rws\nEOF")   # a body still gets read
+    allowed("cat <<'EOF' > a.txt\ndon't\nEOF\nls")
+    allowed('grep -c x notes.txt <<< "a|b"')
+
+
+def t_an_unbalanced_quote_falls_back_to_the_plain_split():
+    """Bash would refuse this line, but a misread quote must never blind the guard."""
+    denied("echo it's; grep -c biome /x/save.rws")
+
+
 def t_a_failing_skill_import_fails_open():
     """_imports_skill's fake raises, and run() asserts the hook still allowed it."""
     assert _imports_skill("grep -c Desert '/x/Saves/Ash.rws'")
