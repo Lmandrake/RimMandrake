@@ -5687,3 +5687,5 @@
 {"seat":"RUNNER","event":"raise","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-07T11:33:12Z","tsn":1794051192071900739}
 {"seat":"RUNNER","event":"live","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","result":"kept","detail":"sweep: running again","ts":"2026-11-07T11:48:07Z","tsn":1794052087965267501}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-07T11:48:11Z","tsn":1794052091276277019}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 23 min ago (limit 15 min)","ts":"2026-11-07T12:03:07Z","tsn":1794052987199684567}
+{"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-07T12:03:10Z","tsn":1794052990301565494}
