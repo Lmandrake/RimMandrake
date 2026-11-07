@@ -137,6 +137,9 @@
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Herbivore_Eat</soundEating>
     </race>
+    <comps>
+      <li><compClass>RimMandrake.Pyrelands.CompBurrowStatus</compClass></li>
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.RM_BurrowOnFireExtension">
         <detectionRadius>15</detectionRadius>

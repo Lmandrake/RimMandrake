@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -108,6 +109,10 @@ namespace RimMandrake.Pyrelands
             }
             Hediff hediff = HediffMaker.MakeHediff(PyrelandsMechanicsDefOf.RM_Burrowed, pawn);
             pawn.health.AddHediff(hediff);
+            if (pawn.Spawned)
+            {
+                MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, "RM_BurrowedMote".Translate(), 3.65f);
+            }
         }
 
         private static void RemoveBurrowedHediff(Pawn pawn)
@@ -121,6 +126,17 @@ namespace RimMandrake.Pyrelands
             {
                 pawn.health.RemoveHediff(hediff);
             }
+        }
+    }
+
+    /// <summary>The burrowed status on the inspect pane: a wild animal shows no job report, so without this the only
+    /// place a player could read it is the health tab.</summary>
+    public class CompBurrowStatus : ThingComp
+    {
+        public override string CompInspectStringExtra()
+        {
+            return parent is Pawn pawn && pawn.health?.hediffSet != null && pawn.health.hediffSet.HasHediff(PyrelandsMechanicsDefOf.RM_Burrowed)
+                ? "RM_BurrowedInspect".Translate().ToString() : null;
         }
     }
 }
