@@ -15,3 +15,6 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 
 ## 5. Prove it, or it is not done
 - **Adding a parameter to `jawa/set_terrain_batch` or `jawa/build_batch` in the companion C# must also update the `known` calibration set in `src/RimMandrake/Utils/rimplace/contract.py`,** or `tool_parameters()` returns None and the rimplace selftest goes red.
+
+## Building and exporting the companion
+- **`bridgetools/build.py` needs the user site-packages** (`closure_scan` imports `dnfile`): run it without `python -I`, or it fails 'No module named dnfile' after a good dotnet build. A `git archive` export of the companion needs `src/Directory.Build.props/.targets`, `Utils` and `contracts` beside `bridgetools`.
