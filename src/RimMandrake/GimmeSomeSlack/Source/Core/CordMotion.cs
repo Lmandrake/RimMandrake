@@ -12,11 +12,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
     {
         /// <summary>How long the whipping end of a live floor terminal is, cells (was 0.4, shorter than its own glow: the owner, 2026-11-07,
         /// saw the end move while the spark stayed put).</summary>
-        public const double WhipLen = 0.7;
+        public const double WhipLen = 0.95;
         /// <summary>The whip's bend, cells: the tip's swing is up to 1.9 x this.</summary>
-        public const double WhipAmp = 0.18;
+        public const double WhipAmp = 0.24;
         /// <summary>A fallen overhead wire is heavier and longer: its writhing end, and its bend.</summary>
-        public const double WireWhipLen = 1.0, WireWhipAmp = 0.26;
+        public const double WireWhipLen = 1.3, WireWhipAmp = 0.3;
+        /// <summary>Seconds a bend takes to run from the joint out to the tip: the end snakes, it does not swing like a stick.</summary>
+        public const double WhipLag = 0.16;
 
         /// <summary>The first Value() of new CordRng(seed ^ k*golden), computed without allocating: Whip calls this
         /// per snap interval every frame (thousands of times late in a session), so a CordRng per call was per-frame garbage.</summary>
@@ -34,7 +36,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// The whipping tail of a live floor terminal (phase 1b B3). tail[0] is where the tail joins the
         /// static cord and never moves; the free tip moves most (weight u^1.6). The bend is a sum of three
         /// sines plus a seeded random SNAP every 0.6-2.0 s (a sharp kick that decays in ~0.15 s), all
-        /// perpendicular to the tail's own direction. t is seconds (real time in game, so a broken line is
+        /// perpendicular to the tail's own direction, and each runs out along the tail (<see cref="WhipLag"/>). t is seconds (real time in game, so a broken line is
         /// findable while paused). |displacement| never exceeds 1.9 x amp.
         /// </summary>
         internal static List<V2> Whip(IList<V2> tail, double t, ulong seed, double amp)
@@ -79,16 +81,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary><see cref="Whip"/> into a caller's list (cleared first), resuming the snap search from
         /// <paramref name="cur"/>: no allocation, and per-frame cost no longer grows with session time.</summary>
-        internal static void WhipInto(IList<V2> tail, double t, ulong seed, double amp, List<V2> o, ref WhipCursor cur)
+        internal static void WhipInto(IList<V2> tail, double t, ulong seed, double amp, List<V2> o, ref WhipCursor cur, double ampPos = 1, double ampNeg = 1)
         {
             o.Clear();
             int n = tail.Count;
             if (n < 2) { for (int i = 0; i < n; i++) o.Add(tail[i]); return; }
             double w1 = 5 + 3 * H01(seed, 1), w2 = 11 + 5 * H01(seed, 2), w3 = 2 + 1.5 * H01(seed, 3);
             double p1 = 6.283 * H01(seed, 4), p2 = 6.283 * H01(seed, 5), p3 = 6.283 * H01(seed, 6);
-            double wave = 0.5 * Math.Sin(w1 * t + p1) + 0.25 * Math.Sin(w2 * t + p2) + 0.15 * Math.Sin(w3 * t + p3);
             // snaps: the timeline is cut into seeded intervals of 0.6-2.0 s; each starts with a kick
-            double snap = 0, acc = H01(seed, 7) * 2.0 - 2.0;
+            double since = -1, kick = 0, acc = H01(seed, 7) * 2.0 - 2.0;
             int idx = 0;
             double tt = t % 10000.0;
             if (cur.Valid && tt >= cur.T && cur.Acc <= tt) { acc = cur.Acc; idx = cur.Idx; }
@@ -97,9 +98,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double len = 0.6 + 1.4 * H01(seed, 1000 + idx);
                 if (tt < acc + len)
                 {
-                    double since = tt - acc;
-                    double sgn = H01(seed, 5000 + idx) < 0.5 ? -1 : 1;
-                    snap = sgn * 0.9 * Math.Exp(-since / 0.15);
+                    since = tt - acc;
+                    kick = H01(seed, 5000 + idx) < 0.5 ? -0.9 : 0.9;
                     break;
                 }
                 acc += len;
@@ -110,9 +110,37 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 double u = i / (double)(n - 1);
                 Geo.TanNorm(tail, i, out V2 tg, out V2 nrm);
+                double lag = WhipLag * u, tu = t - lag;
+                double wave = 0.5 * Math.Sin(w1 * tu + p1) + 0.25 * Math.Sin(w2 * tu + p2) + 0.15 * Math.Sin(w3 * tu + p3);
+                double snap = since >= lag ? kick * Math.Exp(-(since - lag) / 0.15) : 0;
                 double d = amp * Math.Pow(u, 1.6) * Geo.Clamp(wave + snap, -1.9, 1.9);
-                o.Add(tail[i] + nrm * d);
+                o.Add(tail[i] + nrm * (d * (d > 0 ? ampPos : ampNeg)));
             }
+        }
+
+        /// <summary>How far this tail may swing to each side and stay on open floor (1, 0.6, 0.3 or 0 of its full swing): a cut end by a wall writhes away from
+        /// it, never onto it. Reads the laid tail, so it holds still from frame to frame.</summary>
+        internal static void WhipRoom(IList<V2> tail, double amp, Func<int, int, bool> open, out double ampPos, out double ampNeg)
+        {
+            ampPos = ampNeg = 0;
+            foreach (double k in Room)
+                if (TailClear(tail, 1.9 * amp * k, open)) { ampPos = k; break; }
+            foreach (double k in Room)
+                if (TailClear(tail, -1.9 * amp * k, open)) { ampNeg = k; break; }
+        }
+
+        private static readonly double[] Room = { 1.0, 0.6, 0.3 };
+
+        private static bool TailClear(IList<V2> tail, double swing, Func<int, int, bool> open)
+        {
+            int n = tail.Count;
+            for (int i = 1; i < n; i++)
+            {
+                Geo.TanNorm(tail, i, out V2 tg, out V2 nrm);
+                V2 q = tail[i] + nrm * (swing * Math.Pow(i / (double)(n - 1), 1.6));
+                if (!open((int)Math.Floor(q.X), (int)Math.Floor(q.Z))) return false;
+            }
+            return true;
         }
 
         /// <summary>

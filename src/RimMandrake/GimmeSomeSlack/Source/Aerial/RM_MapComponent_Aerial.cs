@@ -811,6 +811,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly List<Vector2> tailU = new List<Vector2>();
         private readonly List<int> tailT = new List<int>();
 
+        private Func<int, int, bool> tailOpen;
+        private Func<int, int, bool> TailOpen => tailOpen ?? (tailOpen = (x, z) =>
+        {
+            var c = new IntVec3(x, 0, z);
+            return c.InBounds(map) && map.pathing.Normal.pathGrid.WalkableFast(c);
+        });
+
         /// <summary>The writhing end of every live fallen wire, drawn per frame like a floor cord's whip tail (<see cref="WireMesh"/> stops where it starts), with its
         /// frayed end on it. The spark and glow read TipNow (owner 2026-11-07: "the spark of the cut powerline should follow the writhing edge of the cable").</summary>
         private void DrawFallenTails(CellRect view)
@@ -839,7 +846,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                         if (animate)
                         {
                             tailCursors.TryGetValue(l, out CordMotion.WhipCursor cur);
-                            CordMotion.WhipInto(tailLaid, now, unchecked((ulong)(long)(f.seed * 2654435761L + l.Pts.Count)), CordMotion.WireWhipAmp, tailBent, ref cur);
+                            CordMotion.WhipRoom(tailLaid, CordMotion.WireWhipAmp, TailOpen, out double roomPos, out double roomNeg);
+                            CordMotion.WhipInto(tailLaid, now, unchecked((ulong)(long)(f.seed * 2654435761L + l.Pts.Count)), CordMotion.WireWhipAmp, tailBent, ref cur, roomPos, roomNeg);
                             tailCursors[l] = cur;
                             bent = tailBent;
                         }

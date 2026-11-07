@@ -772,6 +772,14 @@ namespace RimMandrake.GimmeSomeSlack
             return motionBuckets;
         }
 
+        private Func<int, int, bool> whipOpen;
+        /// <summary>Is this cell floor a cord may lie on (Func cached: the whip asks every frame)?</summary>
+        private Func<int, int, bool> WhipOpen => whipOpen ?? (whipOpen = (x, z) =>
+        {
+            var c = new IntVec3(x, 0, z);
+            return c.InBounds(map) && map.pathing.Normal.pathGrid.WalkableFast(c);
+        });
+
         private void DrawMotion()
         {
             if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
@@ -825,7 +833,8 @@ namespace RimMandrake.GimmeSomeSlack
                             {
                                 ulong seed = MotionSeed(p, s, atStart ? 0 : 1, 0);
                                 whipCursors.TryGetValue(seed, out CordMotion.WhipCursor cur);
-                                CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur);
+                                CordMotion.WhipRoom(tail, CordMotion.WhipAmp, WhipOpen, out double roomPos, out double roomNeg);
+                                CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur, roomPos, roomNeg);
                                 whipCursors[seed] = cur;
                                 bent = bentBuf;
                             }

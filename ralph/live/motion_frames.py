@@ -32,8 +32,16 @@ def settle(paths):
             shutil.copyfile(src, os.path.join(OUT, name + ".png"))
 
 
+def park(B, cx, cz, cells):
+    """Leave the camera on the end: a shot puts the camera back afterwards, and off screen no whip is drawn, so the probe would read the laid tip."""
+    B.call("rimworld/jump_camera_to_cell", x=int(cx), z=int(cz))
+    B.call("rimworld/set_camera_zoom", rootSize=cells * 0.75)
+    time.sleep(0.4)
+
+
 def sequence(B, tag, label, read, cx, cz, n, cells):
     rows, paths = [], []
+    park(B, cx, cz, cells)
     t0 = time.time()
     for i in range(n):
         name = "%s_%s_%02d" % (tag, label, i)

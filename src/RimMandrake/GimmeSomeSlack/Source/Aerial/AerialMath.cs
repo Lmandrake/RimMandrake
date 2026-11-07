@@ -487,16 +487,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         // ------------------------------------------------------------------ a fallen / cut wire (design 2.6, owner review B11/B21)
         /// <summary>
         /// A cut or orphaned wire as ONE continuous cable (owner review 2026-10-04 B21: never a hanging drop joined to a
-        /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down
-        /// tangent-free to a touchdown point and lies on the ground the rest of the way to its end at
-        /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the end. On the ground it is a loose cut cord
-        /// (blind judge, pass 1: "a downed wire must read as a loose cut cord lying there"): wide seeded bends, a coil on
-        /// anything over 3 cells, and no pull toward anything. Slack that would cross an unwalkable cell is halved and
-        /// halved again before giving up; then the first unwalkable cell on the bare line stops it (Blocked; the rest "is
-        /// over the wall"). Height above the ground path is h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's
-        /// sideways offset on the crossarm fades out by s0. <paramref name="length"/> (cable length, span x 1.05) caps the
-        /// reach only when it is under 0.8 x the distance. The first 0.75 cell is never checked: a wall bracket's base sits
-        /// on its wall face. <paramref name="side"/> picks the first bend's side (0 = by seed).
+        /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down and out
+        /// to its own side to a touchdown point and lies on the ground the rest of the way, so the polyline's LAST point (Tip)
+        /// is the end, near <paramref name="toward"/> but not on its line. On the ground it is a loose cut cord (blind judge,
+        /// pass 1: "a downed wire must read as a loose cut cord lying there"): uneven seeded bends at uneven places, a small
+        /// wander so no stretch runs straight, a hook at the end, and on anything over 3 cells an uneven coil or two. Slack that
+        /// would cross an unwalkable cell is halved and halved again before giving up; then the first unwalkable cell on the
+        /// bare line stops it (Blocked; the rest "is over the wall"). Height above the ground path is h (1 - s/s0)^2 up to the
+        /// touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0. <paramref name="length"/>
+        /// (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance. The first 0.75 cell is never
+        /// checked: a wall bracket's base sits on its wall face. <paramref name="side"/> picks the side it falls to (0 = by
+        /// seed, and it falls closer in: the middle wire between two outer ones).
         /// </summary>
         public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable, int side = 0)
         {
@@ -509,16 +510,36 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
             double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
             int sgn = side != 0 ? Math.Sign(side) : U(seed, 9) < 0.5 ? -1 : 1;
-            double bow = sgn * Math.Min(1.9, 0.22 + 0.24 * want) * (0.65 + 0.35 * U(seed, 10));
-            double bow2 = (U(seed, 11) < 0.5 ? -1 : 1) * Math.Abs(bow) * (0.3 + 0.3 * U(seed, 12));
-            double bow3 = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Abs(bow) * 0.18;
-            double coilAt = want >= 3 ? want * (0.5 + 0.3 * U(seed, 14)) : -1, coilR = 0.3 + 0.2 * U(seed, 15);
-            int coilSide = U(seed, 16) < 0.5 ? -1 : 1;
+            double fit = Math.Min(1, want / 3);
+            // the bends: uneven, at uneven places, the last of them late so the cord still wanders into its end
+            int bends = want < 2 ? 1 : Math.Min(4, 2 + (int)(want / 5));
+            var bendAt = new double[bends]; var bendW = new double[bends]; var bendA = new double[bends];
+            int sign = sgn;
+            for (int b = 0; b < bends; b++)
+            {
+                bendAt[b] = want * (b == bends - 1 ? 0.62 + 0.26 * U(seed, 40 + b) : 0.14 + 0.5 * (b + U(seed, 40 + b)) / bends);
+                bendW[b] = Math.Max(0.8, Math.Min(2.6, want * (0.13 + 0.1 * U(seed, 50 + b))));
+                bendA[b] = sign * Math.Min(1.8, 0.25 + 0.32 * want) * (0.5 + 0.5 * U(seed, 60 + b));
+                sign = U(seed, 70 + b) < 0.8 ? -sign : sign;
+            }
+            double wanderA = (0.07 + 0.09 * U(seed, 10)) * fit, wanderL = 0.55 + 0.4 * U(seed, 11), wanderP = 6.283 * U(seed, 12);
+            double hookL = Math.Min(1.7, 0.35 * want), hookA = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Min(0.95, 0.24 * want) * (0.6 + 0.4 * U(seed, 14));
+            double fan = sgn * (side != 0 ? 0.75 + 0.45 * U(seed, 15) : 0.3 + 0.25 * U(seed, 15)) * fit;
+            // a wire falling away up the screen doubles back past its own drop: the wider the touchdown, the rounder that turn
+            double s0 = Math.Min(want * 0.6, Math.Max(0.7, Math.Abs(h) * (0.45 + 0.5 * Math.Max(0, uz))));
+            double fanIn = s0 * (1.3 + 0.7 * Math.Max(0, uz));
             Func<double, double, P2> ground = (s, k) =>
             {
-                double u = Math.Min(1, s / want);
-                double off = k * (bow * Math.Sin(Math.PI * u) + bow2 * Math.Sin(2 * Math.PI * u) + bow3 * Math.Sin(3 * Math.PI * u));
-                off = Geo2Clamp(off, 0.4 * want + 0.3);
+                double off = 0;
+                double on = Smooth01(s / Math.Max(0.5, fanIn));
+                for (int b = 0; b < bends; b++)
+                {
+                    double q = (s - bendAt[b]) / bendW[b];
+                    off += bendA[b] * Math.Exp(-q * q);
+                }
+                off = on * (off + wanderA * Math.Sin(s / wanderL + wanderP)) + fan * Smooth01(s / Math.Max(0.5, fanIn)) * (1 - Smooth01((s - fanIn) / Math.Max(0.5, want - fanIn)));
+                if (s > want - hookL) { double q = (s - (want - hookL)) / Math.Max(1e-6, hookL); off += hookA * q * q; }
+                off = Geo2Clamp(k * off, Math.Min(2.6, 0.4 * want + 0.3));
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
             Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
@@ -536,21 +557,30 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             for (double s = 0.2; s <= want + 1e-9; s += 0.2)
                 if (s > 0.75 && !open(ground(s, slack))) { lay.Blocked = true; reach = Math.Max(0, s - 0.2); break; }
             if (reach < 0.05) return lay;
-            double s0 = Math.Min(reach * 0.6, Math.Max(0.7, Math.Abs(h) * 0.45));
+            s0 = Math.Min(reach * 0.6, s0);
+            // where the coils go: never on the hanging part, never on the end that writhes
+            var coilsAt = new List<double>();
+            if (want >= 3) coilsAt.Add(want * (0.3 + 0.35 * U(seed, 16)));
+            if (want >= 7 && U(seed, 17) < 0.65) coilsAt.Add(want * (0.68 + 0.14 * U(seed, 18)));
+            int coilIdx = 0;
             // the one cable, insulator -> touchdown -> end
             double sPos = 0;
-            bool coiled = coilAt <= s0 || coilAt >= reach - 0.8;
             while (true)
             {
-                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.06 : 0.15));
+                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.06 : 0.1));
                 double k = sPos < s0 ? 1 - sPos / s0 : 0;
                 P2 g = ground(sPos, slack);
                 lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
                 if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
-                if (k == 0 && !coiled && sPos >= coilAt)
+                while (k == 0 && coilIdx < coilsAt.Count && sPos >= coilsAt[coilIdx])
                 {
-                    coiled = true;
-                    AddCoil(lay.Pts, ground(sPos + 0.05, slack), coilR * Math.Max(0.5, slack), coilSide, open);
+                    if (sPos <= reach - 1.8 && slack > 0)
+                    {
+                        double drift = 0.1 + 0.25 * U(seed, 80 + coilIdx);
+                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, slack, drift, want >= 5, open))
+                            sPos = Math.Min(reach - 1.5, sPos + drift);
+                    }
+                    coilIdx++;
                 }
                 if (sPos >= reach - 1e-9) break;
             }
@@ -561,24 +591,34 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
 
-        /// <summary>One closed turn of slack on the end of <paramref name="pts"/>, leaving the way the cable was heading. Left out if the turn would cross an unwalkable cell.</summary>
-        private static void AddCoil(List<P2> pts, P2 next, double r, int side, Func<P2, bool> open)
+        private static double Smooth01(double x) { x = Math.Max(0, Math.Min(1, x)); return x * x * (3 - 2 * x); }
+
+        /// <summary>A turn of slack on the end of <paramref name="pts"/>, leaving and coming back the way the cable was heading: never a stamped circle (it stretches, bulges
+        /// to one side, and a double turn comes in tighter on its second round). Comes out <paramref name="drift"/> further on. False, and left out, if it would cross an unwalkable cell.</summary>
+        private static bool AddCoil(List<P2> pts, P2 next, int seed, double slack, double drift, bool mayDouble, Func<P2, bool> open)
         {
             P2 p = pts[pts.Count - 1];
             double tx = next.X - p.X, tz = next.Z - p.Z, tl = Math.Sqrt(tx * tx + tz * tz);
-            if (tl < 1e-9 || r < 0.1) return;
+            double r = (0.26 + 0.28 * U(seed, 20)) * Math.Max(0.5, slack);
+            if (tl < 1e-9 || r < 0.1) return false;
             tx /= tl; tz /= tl;
-            double cx = p.X - tz * side * r, cz = p.Z + tx * side * r;
-            double a0 = Math.Atan2(p.Z - cz, p.X - cx);
-            var turn = new List<P2>();
-            for (int i = 1; i <= 16; i++)
+            int side = U(seed, 21) < 0.5 ? -1 : 1;
+            double nx = -tz * side, nz = tx * side;
+            int wraps = mayDouble && U(seed, 22) < 0.35 ? 2 : 1;
+            double stretch = 0.8 + 0.65 * U(seed, 23), bulge = 0.1 + 0.25 * U(seed, 24), bulgeAt = 6.283 * U(seed, 25), tighten = wraps == 2 ? 0.22 + 0.2 * U(seed, 26) : 0;
+            int n = 24 * wraps;
+            var turn = new List<P2>(n);
+            for (int i = 1; i <= n; i++)
             {
-                double a = a0 + side * 2 * Math.PI * i / 16.0, rr = r * (1 - 0.15 * Math.Sin(Math.PI * i / 16.0));
-                var q = new P2(cx + Math.Cos(a) * rr, cz + Math.Sin(a) * rr);
-                if (!open(q)) return;
+                double th = 2 * Math.PI * wraps * i / n, end = Math.Sin(th / 2 / wraps);
+                double rr = r * (1 + bulge * Math.Sin(th + bulgeAt) * end * end - tighten * end * end);
+                double along = rr * stretch * Math.Sin(th) + drift * i / n, across = rr * (1 - Math.Cos(th));
+                var q = new P2(p.X + tx * along + nx * across, p.Z + tz * along + nz * across);
+                if (!open(q)) return false;
                 turn.Add(q);
             }
             pts.AddRange(turn);
+            return true;
         }
 
         /// <summary>
