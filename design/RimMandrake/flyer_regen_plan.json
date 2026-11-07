@@ -951,10 +951,12 @@
    "frames": "4"
   },
   "RSW_Strill": {
-   "tier": 2,
-   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
-   "flipbook": "unannotated",
-   "sets": [],
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Strill"
+   ],
    "tex": "swanimals/Strill/Strill",
    "static": {
     "g1": 0.655,
@@ -964,8 +966,8 @@
    "static_fails": [
     "G3 no wings drawn"
    ],
-   "provenance": "donor-copy (cartoon)",
-   "frames": "1"
+   "provenance": "generated/ours",
+   "frames": "4"
   },
   "RSW_Thranta": {
    "tier": 4,
