@@ -119,7 +119,20 @@ def one(d: str, plan: dict, idx) -> None:
     want(not hits, f"{d}: no frame is a banned picture (hits {hits})")
 
 
+def state_read_cases() -> None:
+    """Clause A1's verdict (flyer_tier_three_state_read.py): every kind reads true, a false one fails, a blind one says so."""
+    import flyer_tier_three_state_read as R
+    yes = {"canEverFly": True, "maxFlightTimeStat": 5.0}
+    all_ok = {k: [yes] for k in R.KINDS}
+    want(set(R.KINDS) == set(SETS), "state read: names the same six defs")
+    want(R.verdict(all_ok)[0] == 0, "state read: all true is exit 0")
+    want(R.verdict(dict(all_ok, RSW_Porg=[dict(yes, maxFlightTimeStat=0)]))[0] == 1, "state read: a zero stat is exit 1")
+    want(R.verdict(dict(all_ok, RM_Dwommo=[dict(yes, canEverFly=False)]))[0] == 1, "state read: canEverFly false is exit 1")
+    want(R.verdict(dict(all_ok, RM_Dwommo=[]))[0] == 2, "state read: no pawn is exit 2, UNMEASURED")
+
+
 def main() -> int:
+    state_read_cases()
     plan = G.plan_rows()
     idx = L.Index()
     for d in SETS:

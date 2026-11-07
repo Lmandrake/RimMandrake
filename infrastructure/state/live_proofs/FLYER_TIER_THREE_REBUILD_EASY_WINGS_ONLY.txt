@@ -1,0 +1,3 @@
+live-mods: GelatinousSlime, Miasma, FeverWood, Contagion, LongShade, SWBestiary
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game
+live-proof A1: python.exe src/RimMandrake/Utils/art/flyer_tier_three_state_read.py
