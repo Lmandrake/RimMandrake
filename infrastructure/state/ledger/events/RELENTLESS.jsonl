@@ -1417,3 +1417,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T00:13:22Z","tsn":1794010402416645242}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT: review savegame for the owner's look","ts":"2026-11-07T00:15:18Z","tsn":1794010518082396871}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless showing BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-07T00:35:24Z","tsn":1794011724143490659}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T00:41:20Z","tsn":1794012080772256214}
