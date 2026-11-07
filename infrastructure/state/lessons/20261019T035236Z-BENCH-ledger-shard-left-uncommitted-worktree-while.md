@@ -1,1 +1,0 @@
-A ledger shard left uncommitted in the worktree while peers' rebases move HEAD can be OLDER than origin; committing it by path silently deletes upstream lines (ledger_lint NOT_APPEND on push). Fix: rebuild the file as origin version + your extra lines, commit on top.

@@ -1,1 +1,0 @@
-A selftest CRASH that never reproduces (72 concurrent runs clean): the only RuntimeError source is the fixture git() helper; capture the run_selftests CRASH stderr tail on first sight, it carries the git stderr.

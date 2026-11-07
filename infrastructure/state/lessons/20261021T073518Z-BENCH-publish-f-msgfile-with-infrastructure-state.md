@@ -1,1 +1,0 @@
-./publish -F <msgfile> with infrastructure/state/ledger/events/<SEAT>.jsonl among the paths is refused whole by the ledger-writer hook (reads -F/redirect as a write to the ledger); use -m "..." for ledger commits (2026-10-21).

@@ -103,6 +103,7 @@ that item's own state changes, not just after weeks.** `rimflow lint
 --citations`' STALE_GATE sweep has found items describing another item as
 "still open/blocked" that closed the SAME calendar day, one within the same
 session that closed it — a doc can go stale within hours, not just weeks.
+- **Before building, claiming or re-briefing an item, check the code and git first.** `git log -S <symbol the finding names>` and `git log --grep=<ITEM_ID>` (a design doc's "not changed yet" lines go stale; 4 of 7 "unworked" pieces and 8 of 10 "proposed" candidates were already built), `rimflow show <ID>` history, and a `git fetch` plus grep of origin for the deliverable's files at the start and at each milestone (a ~800-line helper was built twice). If it is built, record `implemented` with the DLL/commit sha instead of rebuilding. After building, append a `## Built` section to `infrastructure/state/items/<ID>.md`: a build recorded only in a ledger note gets re-briefed as new work. When a brief says "these uncommitted edits finish items X and Y", mark an item implemented only when `git show --stat <sha>` lists THAT item's files.
 
 ## `close` is earned (RO3, ruling D1(b), 2026-11-01)
 
@@ -174,6 +175,7 @@ the window half — so every ledger call there needs an **explicit `--seat`**,
 or a whole sitting's ledger trail lands mis-seated. Also: subcommand targets
 take `--to` (e.g. `reassign --to FOUNDRY`, `needs --to bridge`); bare
 positionals for a target are refused.
+- **`rimflow next --seat <OTHER SEAT>` takes a real lease as that seat in YOUR clone** (a diagnostic `next --seat FOUNDRY` wrote a lease into the local `FOUNDRY.jsonl` and then blocked `./publish`). For a read-only look use `blind_view.py queue <SEAT>` or `rimflow why` / `rimflow show`.
 
 ## Committing ledger writes
 
@@ -210,6 +212,9 @@ the sharding a torn line is far likelier in a shard than in the frozen head.
 shard (a seat name, never a path); it removes only lines that fail to
 parse (keeping a whole event glued onto a torn fragment), backs up to
 `D:\ClaudeWork\rimmandrake\ledger_repair\` first, and sanity-caps at 25 bad lines.
+- **`--owner-said`, `--by-card`, `--per-ruling` and `./game --why/--said` write `infrastructure/state/ledger/events/OWNER.jsonl`, not your seat shard.** Commit `OWNER.jsonl` by explicit path too (a commit of only `<SEAT>.jsonl` silently publishes nothing of the ruling), and a helper that restarts the game must commit it with its work: an uncommitted OWNER.jsonl makes `./publish`'s `reset --keep` refuse for every helper in the clone once origin's OWNER shard moves.
+- **A ledger or `code_review` shard left uncommitted in the worktree while peers' rebases move HEAD goes older than origin (or ends up mid-file).** Committing it by path then silently deletes upstream lines and fails `ledger_lint` NOT_APPEND, and `./publish` retries forever. Fix forward: rebuild the file as origin's content plus your extra lines appended (`grep -qxF` to add only the new ones), commit. Prevention: the seat commits its shard promptly instead of helpers working around foreign lines.
+- **`./publish` rebases your local commits onto origin, so a sha taken before publishing never reaches main.** `rimflow close --sha`, `verify --sha`, notes and commit-message references must use the sha `./publish` prints (`PUBLISHED <sha>`), so publish first and close after; a closed item cannot be re-closed, so correct a dead sha with `rimflow note`. A clone fed those commits by bundle then diverges ('ahead 10, behind 27'); bring it back with `git rebase origin/main`, which drops the already-applied duplicates. `code_review_status.py mark-clean` records the current local HEAD the same way: rebase first and then mark, or pass `--sha` with a published commit.
 
 ## Reading projections
 
@@ -239,6 +244,7 @@ missed `implemented` and `file --needs owner`, so the old RimPulse board hid 29 
 and listed one item 9.5 h after it moved (2026-10-11). `observe(ev, world, ok)`
 is called after every folded event, so it tells you which event moved a field
 without re-implementing the verbs.
+- **`rimflow queue` renders from the clone's own ledger, so a clone behind origin shows closed or changed items as open.** A reconcile or decay sweep must `./sync` first (or re-check each item in a fresh origin clone) and never trust the stale seat clone's queue view.
 
 ## Bridge lock
 

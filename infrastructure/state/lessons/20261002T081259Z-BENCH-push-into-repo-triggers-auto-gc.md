@@ -1,1 +1,0 @@
-Pushing into a repo (to create refs) can trigger git auto-gc there; on drvfs its reflog expire --all ran ~100 s. Pass -c gc.auto=0 for any push/ref write into a repo you are draining. Home: git-efficiency.

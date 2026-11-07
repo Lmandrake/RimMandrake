@@ -1,1 +1,0 @@
-In the shared bench clone, pull --rebase refuses on peers' dirty tracked files. Path-scoped 'git stash push -- <their paths>' + rebase + pop works; push in a SEPARATE Bash call or the ledger-lint pre-push hook evaluates the pre-rebase HEAD and refuses the whole compound.
