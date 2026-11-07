@@ -121,8 +121,9 @@ browser/e2e tests first: our analogue is a live proof first, and it is equally s
 *says* rather than what it *does*. obra's list below names that exact smell ("the test greps source text"). Some are
 legitimate structure checks; how many are not is UNMEASURED.
 
-**Verdict: adapt.** Put the three anti-patterns and "name the seam and what it misses" into briefs (builder, Artisan
-judge, Codex review). Do not install.
+**Verdict: adapt.** Put the three anti-patterns and "name the seam and what it misses" into the builder and Codex
+review briefs. Not into the Artisan judge's brief: the design pass found a code question there works as a review
+ceremony and a gate (`2026-11-07-pocock-design\MERGE_DRAFT.md`). Do not install.
 
 ### `codebase-design` (with `DEEPENING.md` and `DESIGN-IT-TWICE.md`)
 
@@ -138,8 +139,8 @@ don't layer": delete the old shallow tests once interface tests exist. `DESIGN-I
 different constraints (minimal interface, maximal flexibility, optimise the common caller, ports and adapters) and
 compares on depth, locality and seam placement.
 
-**Keep:** *the deletion test* and *one adapter = hypothetical seam*. Both are cheap, falsifiable questions a judge can
-ask of any new file. And "interface includes invariants, ordering and error modes", which is what our proofs keep
+**Keep:** *the deletion test* and *one adapter = hypothetical seam*. Both are cheap, falsifiable questions a reviewer
+or builder can ask of any new file. And "interface includes invariants, ordering and error modes", which is what our proofs keep
 discovering the hard way.
 
 **Rating:** novelty 4, complexity 1, insight 5. The most valuable file in the set for us.
@@ -253,7 +254,7 @@ a test yet.
 offline geometry sweep (a sweep is a measurement, not a red test), and "delete it, start over" is the review ceremony that
 *"use it, break it, grow"* (owner, 2026-11-02) rules out. The repo also holds 72 script files; none was run.
 
-**Verdict: skip the skill; lift Name the Break** into the builder and judge briefs.
+**Verdict: skip the skill; lift Name the Break** into the builder and Codex review briefs.
 
 ## The online references
 
@@ -277,8 +278,8 @@ here, banned here (numbering), or contradicts a placement rule (`Transient/`).
 
 ## What to keep, as one list
 
-1. **The deletion test, and one adapter = hypothetical seam** (codebase-design). For any judge or review brief.
-2. **Tautological / implementation-coupled tests by name, plus Name the Break** (tdd, obra). For builder and judge briefs.
+1. **The deletion test, and one adapter = hypothetical seam** (codebase-design). For the builder and Codex review briefs.
+2. **Tautological / implementation-coupled tests by name, plus Name the Break** (tdd, obra). For the builder and Codex review briefs.
 3. **Seams agreed before code, for the few modules that matter** (tdd). The only place his added involvement would buy
    something we lack. A trial, not a rule.
 4. **Hot spots first** (improve-codebase-architecture). Decide where to look from `git log`, not from taste.
@@ -302,3 +303,14 @@ a labelled section of the Codex review brief.
 | RobMitt `grill-me` | skip | question-card is a superset |
 | obra `test-driven-development` | skip, lift one idea | Name the Break; the Iron Law fights two of his rulings |
 | listings and guides | skip | they lag the repo; read `docs/` instead |
+
+## What the design pass that followed found
+
+`D:\Luke\dev\RimMandrake\design\RimMandrake\2026-11-07-pocock-design\MERGE_DRAFT.md`, measured the same day:
+
+- The Artisan loops' code is not the nonsense feared: 81% to 100% of the lines they add survive, about 6 of 1,300 names
+  are unreferenced, and their own tests are literal or behavioural. What is real is accretion (one-line boolean gates
+  pile up), copies of harness helpers no prompt told them were shared, and proof rows deleted without a record.
+- The top trial is free: mutate the callers of the project's pure kernel gates (38 truth-table tests in 21 mods restate
+  one-line gates) and see whether caller mistakes escape.
+- Owning interfaces himself: not yet; if he wants it, one module, about 20 minutes a week for four weeks.
