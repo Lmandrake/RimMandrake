@@ -63,6 +63,9 @@ fake_bridge([{"installed": True, "nullCalls": 3, "byCaller": [{"caller": "<no ma
 check("only an unmanaged caller -> A1 FAIL", P.live("A1") == 1)
 
 # --- WORLD_NULLTEX_FLOOD_HUNT_NEEDS_A_STACK: the selftest and world clauses
+PROBE_SRC = open(P.PROBE_CS, encoding="utf-8").read()
+check("the companion build's source declares jawa/nulltex_probe with its selftest action",
+      '"jawa/nulltex_probe"' in PROBE_SRC and 'act == "selftest"' in PROBE_SRC)
 OWN = "JawaBench.BridgeTools.JawaBenchNullTexSelftestCaller.Fire [JawaBench.BridgeTools]"
 fake_bridge([{"installed": True, "armed": True, "captured": True, "frames": [OWN], "target": "t"}])
 check("selftest captured -> PASS", P.live("selftest") == 0)
