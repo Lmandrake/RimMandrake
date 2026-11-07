@@ -1,0 +1,1 @@
+A loop launched with --setting-sources project skips the user's effort setting and ran at medium with no warning; pass --effort. A running pass does not take a changed settings file; its next pass does (MEASURED on Pyrelands, 4 min after the edit).
