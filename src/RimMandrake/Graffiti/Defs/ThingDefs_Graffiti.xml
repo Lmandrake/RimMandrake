@@ -25,6 +25,10 @@
          none - a free per-tick virtual call on every mark with nothing
          behind it. -->
     <category>Filth</category>
+    <!-- Every mark def sets shaderType Mote, tested live against the alternatives. The default Cutout throws
+         away partial alpha, so overspray and soft runs clip into a clean sticker edge. Map/Transparent draws
+         nothing at this altitude, TransparentPostLight glows at night. And not here on this abstract parent:
+         a graphicData block on it left every child invisible, with no error. -->
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawerType>MapMeshAndRealTime</drawerType>
@@ -75,6 +79,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-15</Beauty>
@@ -107,6 +112,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>
@@ -129,6 +135,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
+      <shaderType>Mote</shaderType>
       <drawSize>(0.8, 0.8)</drawSize>
     </graphicData>
     <statBases>
@@ -152,6 +159,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -182,6 +190,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_Wide</texPath>
+      <shaderType>Mote</shaderType>
       <drawSize>(2, 1)</drawSize>
     </graphicData>
     <statBases>
@@ -207,6 +216,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_RollCall</texPath>
+      <shaderType>Mote</shaderType>
       <drawSize>(2, 1)</drawSize>
     </graphicData>
     <statBases>
@@ -232,6 +242,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Gig</texPath>
+      <shaderType>Mote</shaderType>
       <drawSize>(2, 1)</drawSize>
     </graphicData>
     <statBases>
@@ -259,6 +270,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Piece</texPath>
+      <shaderType>Mote</shaderType>
       <drawSize>(3, 1)</drawSize>
     </graphicData>
     <statBases>
@@ -291,6 +303,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_A</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -314,6 +327,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_B</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -337,6 +351,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_C</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -360,6 +375,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_A</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -387,6 +403,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_B</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -411,6 +428,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_CrossOut</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-7</Beauty>
@@ -448,6 +466,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Crown</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -476,6 +495,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Gear</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -503,6 +523,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -528,6 +549,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Flyer</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -553,6 +575,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Wanted</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -588,6 +611,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -619,6 +643,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -649,6 +674,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>

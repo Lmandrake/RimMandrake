@@ -156,12 +156,12 @@ namespace RimMandrake.Graffiti
             }
             if (!string.IsNullOrEmpty(ext.sigilFrameTexPath))
             {
-                cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Cutout);
+                cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Mote);
             }
             Texture2D icon = makerIdeo.Icon;
             if (icon != null)
             {
-                cachedIconMat = MaterialPool.MatFrom(icon, ShaderDatabase.Cutout, makerIdeo.Color);
+                cachedIconMat = MaterialPool.MatFrom(icon, ShaderDatabase.Mote, makerIdeo.Color);
             }
         }
 

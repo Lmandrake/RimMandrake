@@ -51,6 +51,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Cannibal</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -77,6 +78,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_MaleSupremacy</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -102,6 +104,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FemaleSupremacy</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -127,6 +130,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Nudism</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -152,6 +156,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Inhuman</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>
@@ -174,10 +179,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_PainIsVirtue</defName>
     <label>thorn crown glyph</label>
-    <description>A crown of thorns, running with paint like blood - pain worn as devotion.</description>
+    <description>A crown of thorns, running red - pain worn as devotion.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_PainIsVirtue</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -207,6 +213,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Loyalist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -236,6 +243,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Guilty</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -268,6 +276,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Raider</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -294,6 +303,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Blindsight</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -320,6 +330,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Darkness</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -346,6 +357,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Tunneler</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -372,6 +384,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Rancher</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -397,6 +410,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_AnimalPersonhood</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -423,6 +437,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_NaturePrimacy</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -449,6 +464,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_TreeConnection</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -475,6 +491,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HumanPrimacy</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -501,6 +518,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Supremacist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -530,6 +548,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Collectivist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -556,10 +575,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Individualist</defName>
     <label>individualist glyph</label>
-    <description>One small figure inside one rough circle - and nobody else gets in.</description>
+    <description>A lone wolf, howling at nothing - nobody here answers to the pack.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Individualist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -587,6 +607,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Proselytizer</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
@@ -612,6 +633,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Transhumanist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -638,6 +660,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FleshPurity</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -664,6 +687,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HighLife</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
@@ -689,6 +713,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -715,6 +740,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Ritualist</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -746,6 +772,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Shipborn</texPath>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
