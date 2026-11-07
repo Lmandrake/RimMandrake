@@ -5689,3 +5689,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-07T11:48:11Z","tsn":1794052091276277019}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 23 min ago (limit 15 min)","ts":"2026-11-07T12:03:07Z","tsn":1794052987199684567}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-07T12:03:10Z","tsn":1794052990301565494}
+{"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_D87C","kind":"task","needs":"offline","title":"SteveDesktop lane PAUSED, unowned 10 min: paused until 2026-11-07T12:26:04Z: STEVE_FAULT_MONITOR: F20261107T061130Z onset 2026-11-07T06:24:30Z, CPUs [6]: drain,","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-07T12:36:55Z","tsn":1794055015487363316}
