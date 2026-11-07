@@ -8,7 +8,7 @@ BE CREATIVE. Figure out the problems and solve them. Don't just work to a checkl
 
 He read an outside review of your social layer, written before anything of it ran in the game, and chose these by card on 2026-11-07. Full review, with the reasoning and code references: `D:\ClaudeWork\rimmandrake\ralph_graffiti\gpt_review\gameplay_review.md`. Treat its claims as things to check, and these choices as his. Do them along with what you'd do anyway, and keep them small.
 
-- **Walls:** paint dies with its wall. Keep marks on the wall tile. Nothing floats when a wall goes.
+- **Walls:** paint dies with its wall, and nothing floats when a wall goes. Draw it on the wall as you do now. Keep the mark's `Position` on the floor cell unless you carry its beauty another way: `CellBeauty` ignores anything on a cell holding a full-fillage wall (see the personality pass).
 - **Rereads:** the first read gives the full effect. Later reads add no opinion or grudges, and only the subject keeps a small mood reminder while the mockery stands.
 - **Answers:** they wait their turn (refused when hungry, tired, enemies near or the target far). A failed or blocked answer stays open, and one whose mark is gone is dropped. Artists obey the normal table and `PainterMayPaint`, including Artistic-disabled pawns. Gossip stacks once per person.
 - **The base:** measure a mark's real width before painting, so nobody erases a neighbour by accident. Autonomous painters skip hospitals and kitchens; orders may still paint there. Only enemy tags in the Home area count against colony mood.
