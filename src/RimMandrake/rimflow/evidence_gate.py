@@ -234,6 +234,8 @@ def _same_work(cwd, item, full, cand):
     out of the item's work, and a third commit repairing it reads as a neighbour. Counting every line written since the
     item began closes that and refuses RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN's busy file again; it would take a blame per
     commit in the file."""
+    rc, top = _git(cwd, "rev-parse", "--show-toplevel")     # the paths below are the repo root's; pathspecs and blame read the cwd's
+    cwd = top if rc == 0 and top else cwd
     rc, out = _git(cwd, "diff", "--name-only", "--no-renames", full, cand)
     if rc:
         return False

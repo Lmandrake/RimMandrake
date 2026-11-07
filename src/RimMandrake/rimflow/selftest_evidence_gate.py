@@ -223,6 +223,17 @@ def work_sha_shapes(sd):
     check(row and row["record"] == cand and row["predicate"] == "accept",
           "work sha: another item's landing in other lines of a shared file is not this item's work (%s)"
           % (row and row["reasons"]))
+    # the real callers run git from the rimflow dir, not the repo root (RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN's real row)
+    row, _ = quiet(G.shadow, "ITEM_BUSY", work, "", [], sd=sd, cwd=os.path.join(rp, "src"))
+    check(row and row["record"] == cand and row["predicate"] == "accept",
+          "work sha: a caller in a subdirectory reads the same lines as one at the repo root (%s)"
+          % (row and row["reasons"]))
+    rp12 = toy_repo()
+    commit(rp12, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    broken12 = commit(rp12, "ITEM_SUBDIR: broken", {"src/busy.py": edit(busy, 5, "line 5 broken\n")})
+    cand12 = commit(rp12, "ANYONE: rewrites the line", {"src/busy.py": edit(busy, 5, "line 5 fixed\n")})
+    check(not G._same_work(os.path.join(rp12, "src"), "ITEM_SUBDIR", broken12, cand12),
+          "work sha: A broken, B fixed: still rejects from a subdirectory")
     # a form feed in the file is a line to str.splitlines, not to git: the item's line must not read one line down
     rp3 = toy_repo()
     fed = edit(busy, 2, "line 2\x0cfed\n")
@@ -401,7 +412,7 @@ def shadow():
     row, _ = quiet(G.shadow, "NOT_RELENTLESS", a, "", [], sd=sd)
     check(row is None, "shadow: an item the store does not hold is not judged")
     n = len(G.rows(sd))
-    check(n == 19, "shadow: one row per judged close (%d)" % n)
+    check(n == 20, "shadow: one row per judged close (%d)" % n)
     # finding 4: a torn last row (crash mid-append) must not swallow the next whole observation
     with open(os.path.join(sd, G.SHADOW), "a") as f:
         f.write('{"item": "TORN", "sha": "x", "gate": "acc')
