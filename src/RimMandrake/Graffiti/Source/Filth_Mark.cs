@@ -1,3 +1,4 @@
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -30,8 +31,8 @@ namespace RimMandrake.Graffiti
 
         // GRAFFITI_WALLFACE (owner, by card 2026-10-22: "Q9 → Graffiti floor cell drawn offset facing wall"): the side of the
         // floor cell the wall it was painted on stands (RM_GraffitiKernel.WallSide; Rot4 int, NoWall = none). Read at the
-        // first spawn (a mark from an older save has none and reads it then), kept if that wall later goes: the paint
-        // was put there. Print draws the mark offset onto that wall and turned to face it.
+        // first spawn (a mark from an older save has none and reads it then). The paint goes with its wall
+        // (RaidExitTagger's sibling WallLossPatch): nothing may hang in the air. Print draws the mark on that wall cell and turned to face it.
         public int wallSide = RM_GraffitiKernel.NoWall;
 
         // Tier-A rendering cache (design §3.1): built lazily from
@@ -181,7 +182,8 @@ namespace RimMandrake.Graffiti
             {
                 RebuildSigilMats();
             }
-            float angle = RM_GraffitiKernel.WallFaceAngle(wallSide);
+            RM_GraffitiKernel.HandOf(thingIDNumber, GraffitiPool.WidthOf(def), out float tilt, out float scale, out float slide);
+            float angle = RM_GraffitiKernel.WallFaceAngle(wallSide) + tilt;
             if (cachedFrameMat == null && cachedIconMat == null)
             {
                 if (wallSide == RM_GraffitiKernel.NoWall)
@@ -189,32 +191,34 @@ namespace RimMandrake.Graffiti
                     base.Print(layer);
                     return;
                 }
-                PrintPlainOnWall(layer, angle);
+                PrintPlainOnWall(layer, angle, scale, slide);
                 return;
             }
-            Vector3 basePos = WallFacePos();
+            Vector3 basePos = WallFacePos(slide);
+            Vector2 size = (def.graphicData?.drawSize ?? Vector2.one) * scale;
             if (cachedFrameMat != null)
             {
-                Printer_Plane.PrintPlane(layer, basePos, Vector2.one, cachedFrameMat, angle);
+                Printer_Plane.PrintPlane(layer, basePos, size, cachedFrameMat, angle);
             }
             if (cachedIconMat != null)
             {
                 Vector3 iconPos = basePos + new Vector3(0f, 0.01f, 0f);
-                Printer_Plane.PrintPlane(layer, iconPos, new Vector2(0.62f, 0.62f), cachedIconMat, angle);
+                Printer_Plane.PrintPlane(layer, iconPos, size * 0.62f, cachedIconMat, angle);
             }
         }
 
-        /// <summary>DrawPos pushed RM_GraffitiKernel.WallFaceOffsetCells toward the recorded wall (DrawPos itself for none).</summary>
-        private Vector3 WallFacePos()
+        /// <summary>DrawPos pushed RM_GraffitiKernel.WallFaceOffsetCells toward the recorded wall (DrawPos itself for none), and `slide` cells along it.</summary>
+        private Vector3 WallFacePos(float slide)
         {
             RM_GraffitiKernel.WallFaceOffset(wallSide, RM_GraffitiKernel.WallFaceOffsetCells, out float dx, out float dz);
-            return DrawPos + new Vector3(dx, 0f, dz);
+            Vector3 along = wallSide == RM_GraffitiKernel.NoWall ? Vector3.zero : new Rot4(wallSide).Rotated(RotationDirection.Clockwise).FacingCell.ToVector3();
+            return DrawPos + new Vector3(dx, 0f, dz) + along * slide;
         }
 
         /// <summary>The plain (non-sigil) mark on its wall: vanilla Graphic.Print's plane (Graphic_Random's sub-graphic for this
         /// thing, its drawSize, its material at North, the def's drawOffset) at the wall-face position and angle. The atlas
         /// replacement Graphic.Print also does is skipped: it only re-points the same texture into a shared atlas.</summary>
-        private void PrintPlainOnWall(SectionLayer layer, float angle)
+        private void PrintPlainOnWall(SectionLayer layer, float angle, float scale, float slide)
         {
             Graphic g = Graphic;
             if (g is Graphic_Random random)
@@ -225,8 +229,23 @@ namespace RimMandrake.Graffiti
             {
                 return;
             }
-            Vector3 center = WallFacePos() + g.DrawOffset(Rot4.North);
-            Printer_Plane.PrintPlane(layer, center, g.drawSize, g.MatAt(Rot4.North, this), angle);
+            Vector3 center = WallFacePos(slide) + g.DrawOffset(Rot4.North);
+            Printer_Plane.PrintPlane(layer, center, g.drawSize * scale, g.MatAt(Rot4.North, this), angle);
+        }
+
+        /// <summary>A wall is gone: every mark painted on it goes too.</summary>
+        internal static void Notify_WallGone(IntVec3 wall, Map map)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Rot4 side = new Rot4(i);
+                IntVec3 floor = wall - side.FacingCell;
+                if (!floor.InBounds(map)) continue;
+                foreach (Thing t in floor.GetThingList(map).ToArray())
+                {
+                    if (t is Filth_Mark m && m.wallSide == i && !m.Destroyed) m.Destroy();
+                }
+            }
         }
 
         /// <summary>Marks whose drawing overlaps a width centred on `wall`, a wall cell: looked for along the wall's line, on the

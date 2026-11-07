@@ -77,7 +77,7 @@ namespace RimMandrake.Graffiti
                 }
                 paintTotal = paintLeft = RM_GraffitiKernel.PaintTicks(
                     markDef.GetModExtension<ModExtension_Graffiti>()?.form ?? GraffitiForm.Scrawl,
-                    RM_GraffitiSettings.paintIntervalTicks, pawn.InMentalState);
+                    RM_GraffitiSettings.paintIntervalTicks);
             };
             paint.AddPreTickIntervalAction(delegate(int delta)
             {

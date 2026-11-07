@@ -67,10 +67,7 @@
     </statBases>
   </ThingDef>
 
-  <!-- The absorbed vandal-spree mark. Textures are the donor mod's own
-       6 graffiti_N.png files, copied byte-for-byte (MIT license, confirmed
-       via LICENSE.md read in full - GRAFFITI_FRAMEWORK_BUILD_1's own
-       license-check gate) - credited in About.xml. -->
+  <!-- The untrained scrawl: the ugliest thing on the wall, and it looks it. -->
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Vandal</defName>
     <label>graffiti</label>
@@ -171,6 +168,107 @@
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <breachLure>true</breachLure>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The wide throw-up: two cells of wall, big enough to change the rhythm of a corridor.
+       Quick and sloppy, so a spree reaches for it too, unlike the piece. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_ThrowUp_Wide</defName>
+    <label>wide throw-up</label>
+    <description>Fat letterforms stretched across a stretch of wall, filled fast and outlined faster. It is meant to be seen from the far end of the corridor.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_Wide</texPath>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>ThrowUp</form>
+        <poolWeight>3</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Tag_RollCall</defName>
+    <label>tag roll call</label>
+    <description>A whole crew has signed this wall, one over the other, each hand answering the last.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Tag_RollCall</texPath>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-7</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>Tag</form>
+        <poolWeight>2</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Paste_Gig</defName>
+    <label>pasted-up posters</label>
+    <description>Two cheap posters slapped up side by side with flour glue: a scream and a many-eyed thing, and whatever they advertise, it is not for you.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Paste_Gig</texPath>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Paste</form>
+        <poolWeight>1</poolWeight>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The piece: the big one, the reason you stop and look. Three cells of wall, an
+       afternoon's work; only a trained hand, only a calm one (not in the spree pool).
+       Beauty is the only mark above zero: real graffiti varies wildly in scale and
+       worth (owner, 2026-09-16), and someone meant this one. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Piece</defName>
+    <label>graffiti piece</label>
+    <description>A full wall piece in several colours, planned and outlined and worked over for hours. Somebody signed the colony's wall and meant it.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Piece</texPath>
+      <drawSize>(3, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Mural</category>
+        <form>Piece</form>
+        <poolWeight>1</poolWeight>
+        <minArtistic>4</minArtistic>
+        <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
   </ThingDef>

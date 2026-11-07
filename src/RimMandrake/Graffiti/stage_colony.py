@@ -38,7 +38,6 @@ def static(s, method, arg="x"):
 
 
 def shot(s, name, rect, ppc=64):
-    s.call("jawa/set_fog", action="unfog", rect=",".join(str(v) for v in rect)) if False else None
     cal = play_zoom.Calibration()
     path = play_zoom.shoot(s, cal, rect, 0, ppc, name, RuntimeError)
     local = play_zoom.local_path(path) if not os.path.exists(path) else path
@@ -51,7 +50,7 @@ def run(s, ticks):
     done = 0
     while done < ticks:
         n = min(2000, ticks - done)
-        s.call("rimworld/step_game_ticks", ticks=n)
+        print(str(s.call("jawa/safe_advance", ticks=n).get("triggers"))[:200])
         done += n
         print(done, static(s, "Count"), flush=True)
 

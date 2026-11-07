@@ -25,11 +25,11 @@
     </requiredCapacities>
     <prisonersCanDo>true</prisonersCanDo>
     <colonistsOnly>true</colonistsOnly>
-    <minTicksBeforeRecovery>25000</minTicksBeforeRecovery>
-    <maxTicksBeforeRecovery>45000</maxTicksBeforeRecovery>
+    <minTicksBeforeRecovery>15000</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>30000</maxTicksBeforeRecovery>
     <recoveryMtbDays>0.033</recoveryMtbDays>
     <nameColor>(0.5, 0.9, 0.5)</nameColor>
-    <beginLetter>{0} is on a graffiti painting spree.\n\n[PAWN_pronoun] will randomly smear walls with his so-called art for a while.</beginLetter>
+    <beginLetter>{0} is on a graffiti painting spree.\n\n[PAWN_pronoun] will cover the walls in [PAWN_possessive] so-called art for a while.</beginLetter>
     <beginLetterDef>NegativeEvent</beginLetterDef>
     <moodRecoveryThought>Catharsis</moodRecoveryThought>
     <recoveryMessage>{0} is no longer on a graffiti painting spree.</recoveryMessage>

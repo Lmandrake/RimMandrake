@@ -57,11 +57,10 @@ namespace RimMandrake.Graffiti
             }
         }
 
-        /// <summary>Work ticks for one mark: the form's base scaled by the pace setting (clamped), halved for a pawn on a spree.</summary>
-        public static int PaintTicks(GraffitiForm form, int paceSetting, bool frenzied)
+        /// <summary>Work ticks for one mark: the form's base scaled by the pace setting (clamped).</summary>
+        public static int PaintTicks(GraffitiForm form, int paceSetting)
         {
             int t = PaintTicksBase(form) * PaintInterval(paceSetting) / 250;
-            if (frenzied) t /= 2;
             return t < 30 ? 30 : t;
         }
 
@@ -233,9 +232,10 @@ namespace RimMandrake.Graffiti
         // the wall but records which side the wall is on, and is DRAWN offset onto that wall (turned to face it, except a south wall: upright), so it reads as
         // wall art with no new thing class. Sides are Rot4 integers: 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
 
-        /// <summary>How far toward the wall a mark is drawn, in cells: onto the shared edge, half over the wall. [INVENTED; the
-        /// owner judges it in game]</summary>
-        public const float WallFaceOffsetCells = 0.5f;
+        /// <summary>How far toward the wall a mark is drawn, in cells: a whole cell, so it lies on the wall cell itself. The first
+        /// value, 0.5, sat on the seam and left half of every mark hanging over the floor (seen live, the north star's
+        /// mark_sits_on_the_wall).</summary>
+        public const float WallFaceOffsetCells = 1f;
 
         public const int NoWall = -1;
 
@@ -263,6 +263,21 @@ namespace RimMandrake.Graffiti
         public static float WallFaceAngle(int side)
         {
             return side >= 0 && side <= 3 && side != 2 ? side * 90f : 0f;
+        }
+
+        /// <summary>
+        /// Every hand is different: from a mark's id, a stable tilt, size and slide along the wall, so a run of marks reads as
+        /// people painting and not as a row of stickers. A wide mark stays nearly level and at full size (it is planned, and
+        /// it needs its wall); nothing grows past its def's size, which is what keeps a mark inside its wall cell.
+        /// </summary>
+        public static void HandOf(int id, float width, out float tiltDegrees, out float scale, out float slide)
+        {
+            uint h = (uint)id * 2654435761u;
+            float a = ((h >> 4) & 255) / 255f, b = ((h >> 12) & 255) / 255f, c = ((h >> 20) & 255) / 255f;
+            bool wide = width > 1.01f;
+            tiltDegrees = (a - 0.5f) * (wide ? 4f : 18f);
+            scale = wide ? 1f : 0.8f + 0.2f * b;
+            slide = wide ? 0f : (c - 0.5f) * 0.2f;
         }
 
         /// <summary>

@@ -140,10 +140,16 @@ namespace RimMandrake.Graffiti
             return false;
         }
 
-        /// <summary>The wall test every mark placer and Filth_Mark's wall-face draw share: an in-bounds full-fillage edifice.</summary>
+        /// <summary>The wall test every mark placer and Filth_Mark's wall-face draw share: an in-bounds wall or rock face. Not any
+        /// full-fillage edifice: a door swings and a cooler is a machine, and neither is a surface to paint a mark across.</summary>
         internal static bool IsFullWallAt(IntVec3 n, Map map)
         {
-            return n.InBounds(map) && n.GetEdifice(map) is Building building && building.def.Fillage == FillCategory.Full;
+            return n.InBounds(map) && n.GetEdifice(map) is Building building && IsPaintableWall(building.def);
+        }
+
+        internal static bool IsPaintableWall(ThingDef def)
+        {
+            return def.Fillage == FillCategory.Full && (def.building?.isNaturalRock == true || def.graphicData?.Linked == true);
         }
     }
 }
