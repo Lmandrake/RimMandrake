@@ -65,7 +65,8 @@ def prose_files():
 def test_folded():
     check(not os.path.exists(os.path.join(ROOT, "infrastructure", "agents", "BENCH.md")), "infrastructure/agents/BENCH.md is gone")
     cond = open(os.path.join(ROOT, "infrastructure", "agents", "CONDUCTOR.md"), encoding="utf-8").read()
-    check("SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP" in cond, "CONDUCTOR.md holds the folded workshop rules")
+    role = open(os.path.join(ROOT, "src", "RimMandrake", "rimflow", "roles", "conductor.md"), encoding="utf-8").read()
+    check("SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP" in cond + role, "CONDUCTOR.md or the role file holds the folded workshop rules")
 
 
 def _grep(pattern):
