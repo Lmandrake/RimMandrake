@@ -1,2 +1,0 @@
-An error that 'then almost stops' in Player.log may only have hit Verse.Log's message cap: session ee0fbaa8 logged 3200 'non-drug Beer' lines that ended near line 15218, and 'Reached max messages limit' at 15852 then hid all later Verse.Log output. Check for the cap line and for Log.Clear (log_revive) before reading a falling count as a stop. Separately: Cherry Picker's cut of a drug sets drugCategory=None and strips DrugPolicyDefs but not a save's own DrugPolicy.
-home: skills/live-debugging-proof-harness
