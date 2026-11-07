@@ -83,6 +83,29 @@ v = read([("calm", 3000 + 60 * i, 4000, 13000) for i in range(4)] + [("other", 3
 check("same-save run found and its slope is per load", v["sameSave"][0]["save"] == "calm" and v["sameSave"][0]["mbPerLoad"] == 60.0,
       v["sameSave"])
 
+# the ee0fbaa8 shape: a no-GC game inside the run is still a load, so 300 MB over 4 readings and 5 loads is 60, not 75
+def no_gc_game(run):
+    """per_game over [(save, floor)]: floor None makes that game a load with no GC in it."""
+    rows, gc = [{"seq": 1, "kind": "session", "mods": 317}], 100
+    for i, (save, floor) in enumerate(run):
+        rows.append({"seq": len(rows) + 1, "kind": "game", "game": i + 1, "save": save})
+        rows.append({"seq": len(rows) + 1, "kind": "sample", "heapMB": (floor or 3000) + 400, "gc": gc})
+        if floor is not None:
+            gc += 1
+            rows.append({"seq": len(rows) + 1, "kind": "sample", "heapMB": floor, "gc": gc})
+    return H.per_game(rows)
+
+games = no_gc_game([("calm", 3000), ("calm", None), ("calm", 3060), ("calm", 3150), ("calm", 3240), ("calm", 3300)])
+runs = H.same_save_runs(games)
+check("a no-GC game inside a same-save run keeps the run and counts as a load", len(runs) == 1 and H.slope(runs[0]) == 60.0,
+      [H.slope(r) for r in runs])
+games = no_gc_game([("calm", 3000), ("calm", 3060), ("calm", 3120), ("other", None), ("calm", 3300), ("calm", 3360), ("calm", 3420)])
+runs = H.same_save_runs(games)
+check("a no-GC game on another save breaks the run: the map was not held fixed", [len(r) for r in runs] == [3, 3],
+      [len(r) for r in runs])
+games = no_gc_game([("a", 3000), ("a", None), ("a", 3100), ("a", 3200)])
+check("the game-order series counts unread loads too", [g["load"] for g in games] == [0, 1, 2, 3], games)
+
 with tempfile.TemporaryDirectory() as d:
     session(d, [("s", 3000 + 200 * i, 4000 + 200 * i, THINGS[i]) for i in range(6)], torn=True)
     check("a torn last line is skipped, not fatal", H.report(d, SID[:8])["verdict"] == "reload_ratchet")
@@ -95,6 +118,7 @@ with open(FINDING, encoding="utf-8") as fh:
     text = fh.read()
 check("the written finding names the verdict and the item", "reload_ratchet" in text and
       "HEAP_DIAGNOSE_RELOAD_RATCHET_NOT_MAP_SCALE" in text)
+check("the finding's slope is per load spanned (59), not per floor read (74)", "**59 MB per load**" in text and "74 MB" not in text)
 
 print("%d failures" % len(FAILS))
 sys.exit(1 if FAILS else 0)

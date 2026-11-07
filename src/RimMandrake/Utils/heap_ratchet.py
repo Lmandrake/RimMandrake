@@ -58,13 +58,14 @@ def read_rows(directory, session):
 
 
 def per_game(rows):
-    """[{game, save, floor, firstGc, lastGc, gcs, peak, reserved, things, maps}] in game order. floor is None when no GC
-    fell inside the game: a game with no collection has no floor, and its lowest reading would be a guess."""
+    """[{load, game, save, floor, firstGc, lastGc, gcs, peak, reserved, things, maps}] in game order. load is the game row's
+    place in the session, so the distance between two games counts every load between them, read or not. floor is None when
+    no GC fell inside the game: a game with no collection has no floor, and its lowest reading would be a guess."""
     games, cur, last_gc = [], None, None
     for r in rows:
         kind = r.get("kind")
         if kind == "game":
-            cur = {"game": r.get("game"), "save": r.get("save") or "", "floor": None, "firstGc": None, "lastGc": None,
+            cur = {"load": len(games), "game": r.get("game"), "save": r.get("save") or "", "floor": None, "firstGc": None, "lastGc": None,
                    "gcs": 0, "peak": None, "reserved": None, "things": None, "maps": None}
             games.append(cur)
             last_gc = None
@@ -103,16 +104,21 @@ def r2(xs, ys):
     return sum((x - mx) * (y - my) for x, y in zip(xs, ys)) ** 2 / (sxx * syy)
 
 
-def slope(ys):
-    return (ys[-1] - ys[0]) / (len(ys) - 1) if len(ys) > 1 else None
+def slope(run):
+    """MB per load across a run of games: the floors' change over the loads spanned, not over the floors read. A game with
+    no GC still loaded, so dividing by the readings would overstate the rate."""
+    span = run[-1]["load"] - run[0]["load"]
+    return (run[-1]["floor"] - run[0]["floor"]) / span if span else None
 
 
 def same_save_runs(games, save=None):
     """Consecutive games on one named save with a floor: the control that holds the map fixed."""
     runs, cur = [], []
     for g in games:
-        if g["floor"] is None:                          # no GC, no reading: it does not break the run of loads
-            continue
+        if g["floor"] is None:
+            if cur and g["save"] != cur[-1]["save"]:    # another save loaded: the map was not held fixed
+                cur = []
+            continue                                    # same save, no GC, no reading: still a load, counted by slope()
         if cur and g["save"] == cur[-1]["save"]:
             cur.append(g)
         else:
@@ -134,7 +140,7 @@ def verdict(games):
     rise = sum(floors[-q:]) / q - sum(floors[:q]) / q
     ev.update(floorFirst=floors[0], floorLast=floors[-1], floorRiseMB=round(rise, 1), reservedFirst=res[0],
               reservedLast=res[-1], reservedRiseMB=round(res[-1] - res[0], 1),
-              r2GameIndex=round(r2(list(range(len(use))), floors), 3),
+              r2GameIndex=round(r2([g["load"] for g in use], floors), 3),
               r2Things=round(r2([g["things"] for g in use], floors), 3))
     if rise < RISE_MB:
         return ("high_water_only" if res[-1] - res[0] >= RISE_MB else "flat"), ev
@@ -155,7 +161,7 @@ def report(directory, session, same_save=None):
     runs = same_save_runs(games, same_save)
     return {"session": full, "mods": mods, "verdict": v, "evidence": ev, "games": games,
             "sameSave": [{"save": r[0]["save"], "floors": [g["floor"] for g in r],
-                          "mbPerLoad": round(slope([g["floor"] for g in r]), 1)} for r in runs]}
+                          "loads": r[-1]["load"] - r[0]["load"], "mbPerLoad": round(slope(r), 1)} for r in runs]}
 
 
 def show(rep):
@@ -168,7 +174,8 @@ def show(rep):
             fmt(g["peak"]), fmt(g["reserved"]), g["things"] if g["things"] is not None else "-",
             g["maps"] if g["maps"] is not None else "-"))
     for r in rep["sameSave"]:
-        print("  same save %s: floors %s, %s MB/load" % (r["save"], [round(f) for f in r["floors"]], r["mbPerLoad"]))
+        print("  same save %s: floors %s over %d loads, %s MB/load" % (
+            r["save"], [round(f) for f in r["floors"]], r["loads"], r["mbPerLoad"]))
 
 
 def fmt(x):

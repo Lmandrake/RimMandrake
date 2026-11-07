@@ -11,13 +11,13 @@ memory.** The high-water explanation does not fit, because the companion reads b
 - `heapMB`, the field behind `mem.managed_peak_mb`, is Mono's USED size. It equals `monoUsedMB` on the context rows. RESERVED is
   `monoHeapMB`.
 - Reserved does hold its high-water mark: 4020 MB to 6589 MB, and it never fell. That is the expected behaviour, and it stays
-  about 1 to 1.5 GB above the used floor.
+  0.7 to 1.7 GB above the used floor.
 - Used does not hold a high-water mark. It falls about 440 MB at each GC (game 15), and its floor sometimes drops between games.
   Its post-GC floor still climbed from 3024 MB to 5523 MB. Reserved rose because the floor pushed it.
 
 ## Evidence
 
-**Not map scale.** Across the 15 games with a GC, game order explains the floor (r² 0.87) and things on the map do not (r² 0.21).
+**Not map scale.** Across the 15 games with a GC, game order explains the floor (r² 0.949) and things on the map do not (r² 0.246).
 Game 15 has 3117 things and a floor of 4848 MB. Game 2 has 13358 things and a floor of 3024 MB.
 
 | game | save | post-GC floor MB | GCs | reserved MB | things |
@@ -33,23 +33,27 @@ Game 15 has 3117 things and a floor of 4848 MB. Game 2 has 13358 things and a fl
 **Not garbage waiting for a GC.** Within a quiet game the floor stays level: game 13 goes 4624 to 4612 MB over 158 GCs, and game
 15 goes 4953 to 4857 MB over 30. Most of the climb therefore happens around loads and added maps, not during ticking.
 
-**Same save, same map.** RM_TestSite_calm_v2 loaded repeatedly gives floors of 3024, 3022, 3130, 3258, 3321 MB, or **74 MB per
-load**. BENCH_r17_midrain loaded twice gives 3971 then 4278 MB.
+**Same save, same map.** RM_TestSite_calm_v2 loaded repeatedly gives floors of 3024, 3022, 3130, 3258, 3321 MB across games 2 to 7, or
+**59 MB per load** (59.3: 297 MB over 5 loads; game 3 loaded the same save but had no GC, so it has no floor and still counts as a
+load). BENCH_r17_midrain loaded twice gives 3971 then 4278 MB.
 
-**It goes with the list.** The same save on 14 mods (session 871ad37b, 10 loads) gives floors of 681, 663, 697, 694, 744, 765, 790,
-801, 786, 753 MB: 8 MB per load, falling back over the last two loads, and that session's verdict is `high_water_only`. So the
-game alone, with the companion, shows no comparable ratchet. A rougher scan of other sessions (lowest reading of any kind, not
-this reader) gives 14 to 28 MB per load on 14 to 34 mods.
+**In absolute MB it goes with the list.** The same save on 14 mods (session 871ad37b, 10 loads) gives floors of 681, 663, 697, 694,
+744, 765, 790, 801, 786, 753 MB: 8 MB per load, falling back over the last two loads (17 MB per load up to its peak), and that
+session's verdict is `high_water_only`. Three other small-list sessions, read by this reader on their own saves over 2 or 3 loads,
+give 18 MB per load on 14 mods (992472ea), 28 on 23 mods (85c00727) and 14.7 on 34 mods (f4da8573). Records for all of these sit
+beside the main one in `D:\ClaudeWork\rimmandrake\HEAP_DIAGNOSE_RELOAD_RATCHET_NOT_MAP_SCALE\record`.
 
 ## What this does not settle
 
 - **What is retained.** Used counts what Mono holds as in use, so this record cannot separate objects still reachable (a static
   cache holding an old game) from memory kept alive some other way, such as heap fragmentation or conservative false pointers.
-  Filed: `HEAP_BISECT_WHICH_MODS_RETAIN_PER_RELOAD`.
-- **That the whole climb is per-load.** The later games differ in save and map count, and one load can add far more than 74 MB
-  (game 8 added 650 MB on the first 2-map load). 74 MB per load is the only figure with the map held fixed.
-- **The size of the list effect.** Relative to its starting floor the 14-mod control still rises about 1.2% per load against about
-  2.4% on the full list, and that is one pair of sessions. Absolute growth is about 9 times larger; the proportional gap is smaller.
+  Filed: `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE`.
+- **That the whole climb is per-load.** The later games differ in save and map count, and one load can add far more than 59 MB
+  (game 8 added 650 MB on the first 2-map load). 59 MB per load is the only full-list figure with the map held fixed.
+- **That the list multiplies the rate.** Absolute growth on the same save is about 7.4 times the control's (59.3 against 8.0 MB per
+  load; 3.5 times against the control's rise to its peak). Relative to its starting floor there is no clear gap: the full list
+  rises 2.0% per load, the 14-mod control 1.2%, and the small lists above 1.8% (14 mods), 3.2% (23) and 1.6% (34). So the retained
+  amount may scale with what the list already holds rather than come from a few mods, and a bisect should read both MB and percent.
 - **A real `map_scale` reading from this reader.** e50b27df has only 2 games, which reads UNMEASURED. That verdict is proved on
   synthetic records only.
 
