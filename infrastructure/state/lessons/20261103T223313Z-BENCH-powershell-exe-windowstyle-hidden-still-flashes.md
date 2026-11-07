@@ -1,1 +1,0 @@
-powershell.exe -WindowStyle Hidden still flashes a window; with Windows Terminal as default console host, Start-Process wsl.exe opens a Terminal window too. Scheduled tasks use wscript //B plus a .vbs, and ProcessStartInfo CreateNoWindow.

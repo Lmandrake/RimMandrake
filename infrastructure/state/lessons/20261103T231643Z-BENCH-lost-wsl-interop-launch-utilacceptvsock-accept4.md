@@ -1,1 +1,0 @@
-A lost WSL interop launch (UtilAcceptVsock accept4 failed 110) costs about 2 minutes, not seconds: a Wastes fuzz run that lost two launches took 5m48s against 6 s clean (2026-11-03). Anything that retries it needs a per-test selftest-timeout above the 240 s default; winbuild.run_interop is the retry.

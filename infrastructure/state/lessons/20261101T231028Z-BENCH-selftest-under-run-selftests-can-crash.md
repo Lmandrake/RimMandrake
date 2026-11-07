@@ -1,1 +1,0 @@
-A selftest under run_selftests can crash with OSError ENOMEM on a /mnt or ~/dev path (drvfs) while the box has free RAM: seen once in selftest_close_gate at sys.path/listdir of Lodestar/bin with 6 workers, standalone and rerun both PASS. Rerun before blaming the code; it is not a verdict on the test.

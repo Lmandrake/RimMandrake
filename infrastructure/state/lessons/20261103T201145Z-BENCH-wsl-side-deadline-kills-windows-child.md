@@ -1,1 +1,0 @@
-A WSL-side deadline kills the Windows child: 'timeout 3 PING.EXE -n 40' exits 124 and tasklist then shows no PING.EXE (measured 2026-11-03). So subprocess timeout= or a 'timeout N' prefix does bound robocopy.exe/python.exe/powershell.exe. Enforced by call_deadline_lint.py and the block_unbounded_robocopy.py hook.

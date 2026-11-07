@@ -1,1 +1,0 @@
-A WSL 'UtilAcceptVsock: accept4 failed 110' during a dotnet.exe selftest build is a transient interop failure (selftest_map_awareness_core went RED once, GREEN on immediate rerun, 2026-11-03); rerun before calling it a defect

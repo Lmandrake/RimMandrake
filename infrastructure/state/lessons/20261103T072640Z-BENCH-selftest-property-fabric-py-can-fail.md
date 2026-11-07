@@ -1,1 +1,0 @@
-selftest_property_fabric.py can fail with rsync 'Cannot allocate memory (12)' while staging to /mnt/d/ClaudeWork build dir: an env failure (run_selftests says 'not a selftest verdict'); an immediate rerun passed (SETTLEMENT_VERBS_WAVE_1, 2026-11-02).

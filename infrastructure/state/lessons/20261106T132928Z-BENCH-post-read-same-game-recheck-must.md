@@ -1,1 +1,0 @@
-A post-read 'same game?' recheck must not compare game_started() to the start time directly: game_started() returns None for a flaky powershell.exe read too, so one hiccup read as 'the running game changed while the log was read' (GAMEENV_FIX_PROOFSITE_B7C18A7D_ITEMS_WAIT). Use live_log_check.same_game(started), which re-asks a None.
