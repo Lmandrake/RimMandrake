@@ -1,2 +1,0 @@
-BeautyUtility.CellBeauty keeps only Fillage.Full things when a cell holds one, so anything else on a wall tile (a filth-class mark, for example) adds zero beauty, and filth under a roof is multiplied by .3. Thing.GetBeauty is virtual, so a Thing subclass can set its beauty per instance with no Harmony. Moving a beauty-bearing thing's Position onto a wall tile silently zeroes it.
-home: rimworld-modding

@@ -279,3 +279,7 @@ blind spot is a number rather than a gap).
 
 ## Config errors are invisible to validate_patch
 - **`validate_patch.py` and the patch-failure baseline do not see `Config error in` warnings.** Those come from each def's own `ConfigErrors()` at load time (duplicate categories, verb and projectile mismatches, burned-def chains), a third class apart from patch match failures and dead-mod discards. A def can patch cleanly, validate clean and still log them. Only a live load's `Player.log` shows them: grep for `^Config error in`, or `harvest_log.py --show configerror` against its baseline, after every load that touched defs.
+
+## gate.py audit misses and list_things caps
+- **`gate.py audit` counts a would-skip row that is UNMEASURED now but PASS in its record as a 'miss' (a lost PASS); 'valid FAIL on a would-skip chain' is a narrower count.** Read the miss lines before calling the miss rate a gate defect (a full-list shadow sweep had 3 misses, all one stab surprise in plot_C_limitless_canal, 0 valid FAILs).
+- **A `list_things` read with `limit=N` that returns exactly N rows is truncated:** a 'none of N carries X' verdict from it is the cap, not the map. Query the narrow ThingRequestGroup (e.g. PowerTrader) instead.

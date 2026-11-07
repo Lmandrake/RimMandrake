@@ -1,2 +1,0 @@
-A ThingComp must never destroy its own Plant from CompTickLong: vanilla Plant.TickLong checks Destroyed once, runs base.TickLong() (the comps), then reads base.Map unchecked in GrowthSeasonNow, so the kill is an NRE in RegionAndRoomQuery.RegionAt that names whichever mods patched the stack, not the culprit. Queue the destroy on a MapComponent (RM_MapComponent_DeferredTreeFall, RM_MapComponent_DeferredPlantKill). Seen 35 times on RM_Mirrelbole in session ee0fbaa8.
-home: skills/rimworld-modding/references/project-engine-facts.md

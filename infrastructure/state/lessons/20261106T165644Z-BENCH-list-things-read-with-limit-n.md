@@ -1,1 +1,0 @@
-A list_things read with limit=N that returns exactly N rows is truncated: a 'none of N carries X' verdict from it is the cap, not the map. Query the narrow ThingRequestGroup (e.g. PowerTrader) instead (GAMEENV_FIX_PROOFSITE_28883863_ITEMS_WAIT).

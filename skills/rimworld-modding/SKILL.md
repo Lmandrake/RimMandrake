@@ -456,3 +456,5 @@ External, when the references above don't cover it:
 [PatchOperations wiki](https://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations) ·
 [Zhentar's xpath guide](https://gist.github.com/Zhentar/4a1b71cea45b9337f70b30a21d868782)
 
+## animal_inventory.py drops defs that inherit <race>
+- **`Utils/animal_inventory.py` selects an animal by its OWN `<race>` element, so a ThingDef that inherits its whole `<race>` block from an abstract parent is silently dropped** (e.g. RM_Drommath and RM_Ollareth read 'no def in the load set'). Any census built on animals.csv undercounts such animals; select by roster name and then read the RESOLVED race.
