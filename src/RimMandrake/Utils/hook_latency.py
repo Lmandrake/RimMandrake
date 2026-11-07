@@ -51,7 +51,7 @@ PAYLOADS = {
     "bash_commit": ("Bash", {"command": "git commit -m x"}),
     "bash_push": ("Bash", {"command": "git push origin HEAD"}),
     "edit": ("Edit", {"file_path": "src/x.py", "old_string": "a", "new_string": "b"}),
-    "agent": ("Agent", {"description": "d", "prompt": "p", "subagent_type": "rm-search", "model": "sonnet"}),
+    "agent": ("Agent", {"description": "d", "prompt": "p", "subagent_type": "rm-fixer", "model": "sonnet"}),
 }
 SECRET = re.compile(r"(?i)token|secret|passw|api[_-]?key|authorization|bearer|ssh-")
 
