@@ -9,6 +9,7 @@ Offline; exit 0 only if every clause holds.
   LATE_CLAIM_MAP.json     [{id, entry, rows}] - every ERRORS/ENRICHMENT/cross-entry line of late_NN.md (late_bullets.py) points at its log rows
   page continuity         read from each page's own {{Top}} header: no page of Legends or non-canon status is labelled canon in an entry
   LATE_MERGES.json        {"owner_item": ID, "rows": [{entry, text, claim, ruled}]} - each text is in the entry now; owner_item is a ledger item filed in an earlier commit than the candidate
+A quote may be flat page text or raw wikitext; only the raw form can reach the {{Top}} header and the infobox lines.
 usage: check_late_review.py"""
 import json, os, re, sys, urllib.parse
 HERE = os.path.dirname(os.path.abspath(__file__))
