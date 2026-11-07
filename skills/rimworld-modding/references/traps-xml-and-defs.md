@@ -265,6 +265,7 @@ abstract is usually the wrong target: patch the concrete defs, or nothing change
 ones that opted out by redeclaring.
 
 ---
+- **A list `<li>` inherited from a ParentName cannot be removed by xpath.** Inheritance resolves after PatchOperations run and list fields append the parent's items, so the `<li>` seen in the dump may exist in no file a patch can reach. A `PatchOperationRemove` matches nothing, and inside a `PatchOperationConditional` (true on no match) the log stays clean while the patch does nothing. Sever the append instead: `PatchOperationAttributeSet` putting `Inherit="False"` on the child's list node (preferred over replacing the node, so other mods' appended items survive). Check first by reading the def's own XML, not the dump.
 
 ## Invalid `RaceProperties` fields don't just get dropped — they can crash the whole mod load
 
@@ -509,3 +510,6 @@ mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
 - **`GasType` is a fixed 4-value C# enum** (BlindSmoke/ToxGas/RotStink/DeadlifeDust): no new gas cloud type is buildable from XML; pick one of the four by its actual gameplay effect rather than inventing a fifth (only decompiling and patching Core would add one).
 - **`Recipe_InstallNaturalBodyPart` (Kidney/Liver/Lung/Heart) is generic to any `BodyPartRecord`**, not organ-specific: a 'grown limb' surgery needs only new ThingDefs/RecipeDefs pointed at Leg/Arm through that same recipe worker.
 - **`TraderKindDef.PriceTypeFor` never applies a premium on the player-SELL side:** there is no XML lever for 'this trader pays more/less for tag X'. A pure-XML buy-premium/bounty-discount design is dead; it needs a Harmony postfix.
+
+## Sweeping scale requests: ceiling fields break when doubled
+- **"Scale everything" cannot mean every field.** Armour ratings are fractions: `ArmorRating_Sharp` 0.60 doubled is 1.20, and at 1.00 or more the armour roll deflects every sharp hit, so the creature is unkillable. `Wildness` near 1, `Flammability` 0 and `baseHungerRate` (food need already scales with `bodySize` in the engine, so doubling counts it twice) break the same way. `bodySize` does NOT scale melee damage; tool `power` is a flat per-tool number, so deliver heavier hits by patching the tool `power` operations. Scale mass and power fields, cap fractions below 1.0 and state the number, leave fields another patch owns, and list the untouched fields in the patch file.

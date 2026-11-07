@@ -142,3 +142,6 @@ or changes what a save holds. They prove that a player's existing save survives.
    (the old driver class aliased onto the new mod).
 6. **Keep the fixtures** in Saves until the owner says delete. They are the regression
    test for the next port.
+
+## A generated map is culled unless it is home
+- **A map from `jawa/world_tile_map_generate` is culled as soon as time advances unless living player colonists stand on it.** Settlement maps spawn hostile pawns AND turrets that down the colonists (sweep `list_things group=BuildingArtificial` by faction, not just `list_pawns`), and downed or dead colonists un-home the map; the cull is silent and the current map just switches. Right after generating: run `jawa/map_commit {redraw:true, full:true}` (mapgen leaves the region updater disabled, so destroyed plants and changed terrain render as phantoms), spawn 2-3 colonists away from the settlement and kill every hostile pawn and turret, and keep the game paused except when deliberately stepping.

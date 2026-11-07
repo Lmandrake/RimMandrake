@@ -375,3 +375,6 @@ Worked example: `src/RimMandrake/Utils/gravship_floor_v2.py`.
 
 ## Staging sappers and breachers
 `LordToil_AssaultColonySappers` gives the Sapper duty only to `IsGoodSapper` pawns (kindDef `canBeSapper` + a building-destroyer weapon + effective Mining >= 4); otherwise Escort, and with none EVERY pawn gets plain `AssaultColony`. A "sapper" lord of `Mercenary_Gunners` is an assault in disguise. Use `Grenadier_Destructive`, set Mining raw 20 (a xenotype aptitude cut raw 10 to effective 2), and check `RimWorld.SappersUtility.IsGoodSapper` via `static_call` before creating the lord.
+
+## Clear the footprint before you build
+- **Clear the footprint and its exclusion zone before placing a building, not after.** Build-then-clear chases debris with ever wider `jawa/destroy_batch` rects; one ~500-cell destroy collapsed a mountain roof onto the buildings under test. First `jawa/list_things` the full footprint-plus-exclusion rect, `jawa/destroy_batch` exactly that rect, verify it reads empty, then `jawa/build_batch`. Keep the destroyed rect as small as the def's own exclusion fields require.

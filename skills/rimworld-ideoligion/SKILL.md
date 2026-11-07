@@ -277,3 +277,6 @@ thing that would most improve it>`.
 Keep this list short. Detail goes to
 `skills/rimworld-modding/references/traps-*.md`.
 - **Under Ideology a `BuildableDef` with `canGenerateDefaultDesignator=false` is IDEO-ONLY:** `Ideo.MembersCanBuild` returns false unless a meme/style/precept names it, so `GenConstruct.CanConstruct` refuses every non-classic-ideo colonist with 'Only Faithholders can build' and no WorkGiver offers a delivery or build job. Any def placed by its own custom designator hits this (fix: `RM_OwnDesignatorBuildable.cs`). Diagnose with `jawa/workgiver_probe`, which reports `canConstruct` and its fail reason per gate.
+
+## The repo copy of an ideoligion is not the live one
+- **Writing the repo `.rid` is not deploying it.** The game reads the player ideoligion from its LocalLow `Ludeon Studios` Ideos folder, not from the repo copy, and no deploy script exists for it; copy it deliberately and read it back, as with any mod file.

@@ -125,6 +125,7 @@ then a genuinely FRESH restart, caused deliberately, reproduced the identical
 stall a 4th time (same checkpoint, same CPU-climbing-but-stuck signature).
 Intermittent bugs need a restart YOU cause, not a state you happened to inherit
 already working.
+- **Before killing a live game, spend a minute folding in other game-up work.** Check the queue for anything needing a running game or the bridge (`rimflow next` and its also-waiting list), any red or unresolved finding from this session's `harvest_log.py` run, and anything flagged earlier as still owed for a live check. A restart costs about 25 minutes on the full list, so it should answer everything that is waiting on a live game.
 
 ## 2. Write the decision strings BEFORE launching
 
@@ -389,3 +390,6 @@ producing exactly this class of intermittent assembly-version collision.
 def/content change) via `steam.exe -applaunch 294100`, never the bare
 `RimWorldWin64.exe` path**, even though the latter looks like the more direct
 and reliable route.
+
+## An idle main menu is not a load hang
+- **An idle main menu looks exactly like a cold-load stall.** A frozen `Player.log` at the last mod's line, steady CPU, a bridge answering `no_game` / `programState=Entry`, and a live main thread are all normal at the menu with no save loaded; `Playing` only comes from loading one. Tell them apart: `rimworld/get_ui_state` returning in ~0 s means the main thread is alive (check `programState`, `inEntryScene`, `hasCurrentGame`); `jawa/load_stall_probe` runs off-thread and is safe during a real hang. Do not kill the process on an idle menu.

@@ -189,6 +189,7 @@ directory is not identity of a mod.
 ├── About/About.xml          (packageId, name, supportedVersions, description)
 └── Patches/<Something>.xml  (or Defs/ for new content)
 ```
+- **Mod folder basenames must be unique across tiers.** `deploy_custom_mods.py` builds its mod map keyed on the bare folder name while iterating the tiers (`RimMandrake`, `RimStarWars`, `RimUtinni`, `SPLIT_Phase3`) in fixed order; two mods with the same folder name in different tiers silently overwrite each other (later tier wins, no warning) and the shadowed one, even the one carrying the compiled hook, never appears in the plan. The game uses the packageId, so give each mod a distinct folder name.
 
 ## 7. Assemblies deploy in the shutdown window, not now
 

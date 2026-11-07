@@ -304,6 +304,8 @@ Earned on this project's pilot; both rules are now non-negotiable.
 Phrase all three positively in the prompt — "every fitting terminates flush against
 the hull", never "no cables sticking out". See
 `../generating-images/references/prompting.md`.
+- **Generate creature sprites at 256 px, not 512.** 512-sourced and 256-sourced art are pixel-identical once downscaled to play sizes (RMSE 5-7 at every zoom), while 512 costs about 4x the atlas VRAM (183 renders: ~241 MB vs ~64 MB), a real out-of-memory axis on a large mod list. Default 256; `fill_queue.py` warns past it without an `oversize_reason`.
+- **Gate legibility with `art_zoom_sim.py`.** Downscale the candidate to on-screen tiers beside a same-tier vanilla control (vanilla small creatures ship at 128 px) and LOOK. Vanilla reads at 24-32 px through a thick dark keyline, a few bold shapes and body value clearly apart from the ground; fine detail and thin or absent outlines turn to mud.
 
 ## Matching the reference's style
 

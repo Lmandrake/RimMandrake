@@ -276,3 +276,6 @@ blind spot is a number rather than a gap).
 
 ## Reading a Fire/scan result
 - **Grepping decompiled vanilla proves only vanilla's doors.** For `MakeThing(ThingDefOf.Fire)` it shows `FireUtility`'s two sites, but mods on the list spawn Fires themselves (VEF flame/tesla projectiles, gravship raid wreckage ignition). IL-scan the active mod DLLs (dnfile: `ldsfld ThingDefOf::Fire` followed by `MakeThing`/`GenSpawn`; probe it on Assembly-CSharp first, it must show the two vanilla sites; run from a cwd without dnfile shadows) with `D:\ClaudeWork\rimmandrake\tools\firespawn_scan.py`, and catch the rest at `Fire.SpawnSetup`.
+
+## Config errors are invisible to validate_patch
+- **`validate_patch.py` and the patch-failure baseline do not see `Config error in` warnings.** Those come from each def's own `ConfigErrors()` at load time (duplicate categories, verb and projectile mismatches, burned-def chains), a third class apart from patch match failures and dead-mod discards. A def can patch cleanly, validate clean and still log them. Only a live load's `Player.log` shows them: grep for `^Config error in`, or `harvest_log.py --show configerror` against its baseline, after every load that touched defs.
