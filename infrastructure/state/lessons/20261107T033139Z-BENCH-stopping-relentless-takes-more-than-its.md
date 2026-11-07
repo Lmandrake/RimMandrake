@@ -1,0 +1,1 @@
+Stopping Relentless takes more than its units and the Dispatcher PAUSE: relentless_live_round.py is a bare Popen, it kept running game_next and launched the game 11 minutes after the stop. Kill the process by pid and check the journal. dispatcher stop-runs also leaves rm-dispatcher.timer off, which disables Conductor restarts.
