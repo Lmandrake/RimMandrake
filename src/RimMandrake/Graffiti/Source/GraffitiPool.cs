@@ -26,7 +26,7 @@ namespace RimMandrake.Graffiti
         public static ThingDef PickForSpree(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
             ThingDef pick = WeightedPick(SpreeEligible, painter, maxWidth, at);
-            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+            return pick ?? Fallback(maxWidth);
         }
 
         // Joy: a calm hand with time on its side. Everything a spree reaches
@@ -37,10 +37,16 @@ namespace RimMandrake.Graffiti
         {
             bool trained = (painter?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0) >= TrainedHand;
             ThingDef pick = WeightedPick(ext => RM_GraffitiKernel.JoyForm(ext.form) && !(trained && ext.form == GraffitiForm.Scrawl), painter, maxWidth, at);
-            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+            return pick ?? Fallback(maxWidth);
         }
 
         private const int TrainedHand = 6;
+
+        /// <summary>The old scrawl when the pool has nothing, but only if it fits: a mark too wide for its gap would paint over a neighbour.</summary>
+        private static ThingDef Fallback(float maxWidth)
+        {
+            return WidthOf(RMGraffitiDefOf.RM_Graffiti_Vandal) <= maxWidth ? RMGraffitiDefOf.RM_Graffiti_Vandal : null;
+        }
 
         /// <summary>Wall cells a mark's drawing spans.</summary>
         public static float WidthOf(ThingDef markDef) => markDef?.graphicData?.drawSize.x ?? 1f;
@@ -51,7 +57,7 @@ namespace RimMandrake.Graffiti
         public static ThingDef PickForDesignator(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
             ThingDef pick = WeightedPick(DesignatorEligible, painter, maxWidth, at);
-            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+            return pick ?? Fallback(maxWidth);
         }
 
         // RaidExitTagger: marks a raiding pawn's own gang leaves behind
@@ -86,6 +92,8 @@ namespace RimMandrake.Graffiti
             ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
             if (ext == null || !ext.designatorEligible) return false;
             if (RM_GraffitiKernel.RefusesToPaint(ext.meaning, painter?.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false)) return false;
+            // A mark about someone takes a hand that does art at all; a scrawl doesn't.
+            if ((ext.hasSubject || ext.minArtistic > 0) && painter != null && painter.WorkTagIsDisabled(WorkTags.Artistic)) return false;
             // A mark about someone never rolls out of a pool (weight 0), but it can be ordered by name.
             return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.hasSubject || ext.meaning == RM_Meaning.Insult ? 1f : ext.poolWeight);
         }

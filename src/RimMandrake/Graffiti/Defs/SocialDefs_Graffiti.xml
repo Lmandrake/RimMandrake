@@ -20,13 +20,15 @@
     <casualInterruptible>true</casualInterruptible>
   </JobDef>
 
-  <!-- Never chosen by chance (InteractionWorker's weight is 0): only JobDriver_ConfrontPainter does this. The fight is the game's own check at a high base chance. -->
+  <!-- Never chosen by chance (InteractionWorker's weight is 0): only JobDriver_ConfrontPainter does this. Owner's pick, "Scale it with temper":
+       the game never rolls a fight on this (base 0, so vanilla's roll on the painter's traits never fires); GraffitiSocial.FightChance rolls it
+       on the confronter's own temper after the talk, three insults' worth, capped, at most once in 15 days. -->
   <InteractionDef>
     <defName>RM_Graffiti_Confront</defName>
     <label>confront about the wall</label>
     <workerClass>InteractionWorker</workerClass>
     <symbol>Things/Mote/SpeechSymbols/Insult</symbol>
-    <socialFightBaseChance>0.75</socialFightBaseChance>
+    <socialFightBaseChance>0</socialFightBaseChance>
     <recipientThought>Insulted</recipientThought>
     <logRulesInitiator>
       <rulesStrings>

@@ -14,6 +14,9 @@ namespace RimMandrake.Graffiti
         {
             if (!RM_GraffitiSettings.paintingEnabled) return null;
             if (pawn.Map == null) return null;
+            // The temperament table's paint column: an abrasive hand reaches for the brush more, a lazy one less, a psychopath not at all.
+            float paint = GraffitiTemperament.Of(pawn).paint;
+            if (paint < 1f && Rand.Value > paint) return null;
             if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell, roomCap: true)) return null;
             return JobMaker.MakeJob(def.jobDef, cell);
         }

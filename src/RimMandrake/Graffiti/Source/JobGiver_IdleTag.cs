@@ -13,9 +13,12 @@ namespace RimMandrake.Graffiti
         protected override Job TryGiveJob(Pawn pawn)
         {
             if (!RM_GraffitiSettings.paintingEnabled || pawn.Map == null || pawn.Downed) return null;
-            if (pawn.needs?.joy == null || !RM_GraffitiKernel.IdleHandTags(Rand.Value)) return null;
+            if (pawn.needs?.joy == null || !RM_GraffitiKernel.IdleHandTags(Rand.Value / GraffitiTemperament.Of(pawn).paint)) return null;
             if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell, roomCap: true)) return null;
-            return JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell);
+            Job job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell);
+            // Idle in work hours is still idle: the tag is the pawn's own fun, and the joy timetable mustn't end it at the first stroke.
+            job.ignoreJoyTimeAssignment = true;
+            return job;
         }
     }
 }

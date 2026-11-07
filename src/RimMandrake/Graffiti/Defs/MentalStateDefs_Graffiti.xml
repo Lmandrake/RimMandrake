@@ -4,6 +4,7 @@
   <MentalBreakDef>
     <defName>RM_GraffitiPaintingSpreeBreak</defName>
     <mentalState>RM_GraffitiPaintingSpreeState</mentalState>
+    <workerClass>RimMandrake.Graffiti.MentalBreakWorker_GraffitiSpree</workerClass>
     <baseCommonality>0.4</baseCommonality>
     <intensity>Major</intensity>
   </MentalBreakDef>
@@ -36,6 +37,40 @@
     <baseInspectLine>Mental state: Graffiti painting spree</baseInspectLine>
     <recoverFromSleep>true</recoverFromSleep>
     <unspawnedNotInCaravanCanDo>true</unspawnedNotInCaravanCanDo>
+  </MentalStateDef>
+
+  <!-- Personality pass, section 8 (owner, 2026-11-07: clean freaks "have a mood break that makes them compulsively clean graffitti marks").
+       Only someone the temperament table calls neat 2 can have it (MentalBreakWorker_GraffitiCleaning). Written out in full: ParentName
+       doesn't carry the spree's settings. -->
+  <MentalBreakDef>
+    <defName>RM_GraffitiCompulsiveCleaningBreak</defName>
+    <mentalState>RM_GraffitiCompulsiveCleaningState</mentalState>
+    <workerClass>RimMandrake.Graffiti.MentalBreakWorker_GraffitiCleaning</workerClass>
+    <baseCommonality>1</baseCommonality>
+    <intensity>Minor</intensity>
+  </MentalBreakDef>
+
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RM_GraffitiCompulsiveCleaningState</defName>
+    <stateClass>RimMandrake.Graffiti.MentalState_GraffitiCompulsiveClean</stateClass>
+    <label>compulsive scrubbing</label>
+    <category>Misc</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <colonistsOnly>true</colonistsOnly>
+    <minTicksBeforeRecovery>7500</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>15000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.1</recoveryMtbDays>
+    <nameColor>(0.55, 0.75, 0.95)</nameColor>
+    <beginLetterLabel>compulsive scrubbing</beginLetterLabel>
+    <beginLetter>{0} can't stand the paint on the walls any longer.\n\n[PAWN_pronoun] will scrub every mark [PAWN_pronoun] can reach, whoever painted it and whatever it meant: tributes, memorials, the colony's own signs, even marks meant to lure raiders. People who loved what [PAWN_pronoun] scrubs will hold it against [PAWN_objective].</beginLetter>
+    <beginLetterDef>NegativeEvent</beginLetterDef>
+    <moodRecoveryThought>Catharsis</moodRecoveryThought>
+    <recoveryMessage>{0} has stopped scrubbing the walls.</recoveryMessage>
+    <baseInspectLine>Mental state: Compulsive scrubbing</baseInspectLine>
+    <recoverFromSleep>true</recoverFromSleep>
   </MentalStateDef>
 
 </Defs>

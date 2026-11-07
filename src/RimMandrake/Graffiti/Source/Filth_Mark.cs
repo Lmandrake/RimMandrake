@@ -53,6 +53,15 @@ namespace RimMandrake.Graffiti
         private int angered, amused, moved;
         private bool skipCleanNotice;
 
+        // Owner, 2026-11-07: "Please ensure that a person's art skill goes into the art's effect." The painter's hand, rolled by the game's own
+        // quality roll when the mark is made (RM_GraffitiKernel.CraftBeauty, CraftReach, CraftLook). A mark from an older save, or with no
+        // maker, has no craft and keeps its def's Beauty.
+        public int craft = RM_GraffitiKernel.Normal;
+        public bool hasCraft;
+
+        // Who held this mark dear: readers it moved, a tribute's subject, a mourner. Somebody who scrubs it in a cleaning fit answers to them.
+        private List<int> valuedBy = new List<int>();
+
         // Tier-A rendering cache (design §3.1): built lazily from
         // ModExtension_Graffiti.sigilTierA + sigilFrameTexPath + makerIdeo.
         // Never Scribed - rebuilt from the (Scribed) fields above every
@@ -123,6 +132,49 @@ namespace RimMandrake.Graffiti
             return !readBy.TryGetValue(viewer.thingIDNumber, out int last) || now - last >= RM_GraffitiKernel.ReadAgainTicks;
         }
 
+        /// <summary>Has this pawn never read this mark? Opinion and grudges come only from the first reading.</summary>
+        internal bool FirstReadBy(Pawn viewer) { return !readBy.ContainsKey(viewer.thingIDNumber); }
+
+        internal void NoteValued(Pawn p) { if (p != null && !valuedBy.Contains(p.thingIDNumber)) valuedBy.Add(p.thingIDNumber); }
+
+        internal bool ValuedBy(Pawn p) { return p != null && valuedBy.Contains(p.thingIDNumber); }
+
+        /// <summary>How far its meaning reaches, by its maker's hand: a clumsy insult is laughed off and a great one sticks.</summary>
+        public float Reach => hasCraft ? RM_GraffitiKernel.CraftReach(craft) : 1f;
+
+        public string CraftLabel => hasCraft ? ((QualityCategory)craft).GetLabel() : null;
+
+        // The room counts a mark's beauty on the floor cell it was painted from (CellBeauty ignores whatever stands on a wall's own cell), and
+        // under a roof it counts filth at 0.3. This undoes that for craft, so a masterwork is worth its table value indoors and out.
+        public override float GetBeauty(bool outside)
+        {
+            if (!hasCraft) return base.GetBeauty(outside);
+            float net = NetBeauty;
+            return Spawned && Map.roofGrid.Roofed(Position) ? net / 0.3f : net;
+        }
+
+        /// <summary>What this mark does to its cell's beauty, roofs aside: its craft, or a crossed-out ruin of it.</summary>
+        public float NetBeauty
+        {
+            get
+            {
+                if (!hasCraft) return this.GetStatValue(StatDefOf.Beauty);
+                float net = RM_GraffitiKernel.CraftBeauty(craft);
+                return defaced ? System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor)) : net;
+            }
+        }
+
+        /// <summary>The same mark painted again where it stands is a new piece of work, by a new hand: nobody has read it, nobody has crossed it out.</summary>
+        private void MadeAfresh()
+        {
+            readBy.Clear();
+            factionsRead.Clear();
+            valuedBy.Clear();
+            angered = amused = moved = 0;
+            defaced = false;
+            defacedBy = null;
+        }
+
         internal void NoteRead(Pawn viewer, int now) { readBy[viewer.thingIDNumber] = now; }
 
         internal bool FactionHasRead(Faction f) { return factionsRead.Contains(f.loadID); }
@@ -157,7 +209,8 @@ namespace RimMandrake.Graffiti
         /// <summary>The story of this mark, for whoever inspects its wall.</summary>
         internal string StoryLines()
         {
-            string line = LabelCap;
+            string line = def.LabelCap;
+            if (hasCraft) line += " (" + CraftLabel + ")";
             if (maker != null) line += ", by " + maker.LabelShort;
             else if (makerFaction != null) line += ", by " + makerFaction.Name;
             if (subject != null || !subjectName.NullOrEmpty()) line += ", about " + SubjectName;
@@ -194,11 +247,15 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref angered, "rmMarkAngered");
             Scribe_Values.Look(ref amused, "rmMarkAmused");
             Scribe_Values.Look(ref moved, "rmMarkMoved");
+            Scribe_Values.Look(ref craft, "rmMarkCraft", RM_GraffitiKernel.Normal);
+            Scribe_Values.Look(ref hasCraft, "rmMarkHasCraft");
+            Scribe_Collections.Look(ref valuedBy, "rmMarkValuedBy", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 sigilMatsBuilt = false;
                 readBy = readBy ?? new Dictionary<int, int>();
                 factionsRead = factionsRead ?? new List<int>();
+                valuedBy = valuedBy ?? new List<int>();
             }
         }
 
@@ -213,8 +270,9 @@ namespace RimMandrake.Graffiti
         // other, not one filth pile growing. "Rival" = any other
         // Filth_Mark whose def differs from markDef; thickening the SAME
         // def (the vanilla FilthMaker behaviour) is left alone.
-        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null)
+        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false)
         {
+            bool repaint = false;
             // GPT deep review 2026-10-22 #6: rivals are collected first and destroyed only once the new mark exists, so a
             // refused placement no longer erases the old mark and leaves the wall bare
             var rivals = new System.Collections.Generic.List<Filth_Mark>();
@@ -225,6 +283,11 @@ namespace RimMandrake.Graffiti
                     if (t is Filth_Mark rival && RM_GraffitiKernel.IsRival(true, rival.def == markDef))
                     {
                         rivals.Add(rival);
+                    }
+                    else if (t is Filth_Mark same && same.def == markDef)
+                    {
+                        repaint = true;
+                        if (same.maker != null && same.maker != maker) GraffitiSocial.Notify_WentOver(same, maker);
                     }
                 }
                 // Going over reaches along the wall: whatever this mark's drawing will lie on top of, on either face of it.
@@ -259,6 +322,7 @@ namespace RimMandrake.Graffiti
             {
                 return null;
             }
+            if (repaint) mark.MadeAfresh();
             mark.maker = maker;
             mark.makerFaction = maker?.Faction;
             mark.makerIdeo = maker?.Ideo;
@@ -269,10 +333,15 @@ namespace RimMandrake.Graffiti
             {
                 mark.placedTick = Find.TickManager.TicksGame;
             }
+            mark.hasCraft = maker?.skills != null && maker.RaceProps.Humanlike;
+            // Ordered work may spend an inspiration; a tag dashed off in an idle moment doesn't use one up (personality pass, section 9).
+            mark.craft = mark.hasCraft ? (int)QualityUtility.GenerateQualityCreatedByPawn(maker, SkillDefOf.Artistic, ordered) : RM_GraffitiKernel.Normal;
             mark.sigilMatsBuilt = false;
             mark.RebuildSigilMats();
             mark.ChooseLook(cell, map);
             map.mapDrawer.MapMeshDirty(cell, MapMeshFlagDefOf.Things);
+            // The room's beauty and impressiveness were worked out when the mark spawned, before its craft was rolled.
+            cell.GetRoom(map)?.Notify_ContainedThingSpawnedOrDespawned(mark);
             GraffitiSocial.Notify_Painted(mark, maker);
             return mark;
         }
@@ -318,6 +387,17 @@ namespace RimMandrake.Graffiti
 
         private const float LookRadius = 9f;
 
+        /// <summary>A poor hand's paint: overmixed toward mud, the colours gone brown and dull.</summary>
+        private static Color Muddied(Color c, float mud)
+        {
+            if (mud <= 0f) return c;
+            RM_Rgb m = RM_GraffitiKernel.Mud;
+            Color muddy = new Color(m.r, m.g, m.b) * (0.6f + 0.4f * c.grayscale) * 1.6f;
+            Color o = Color.Lerp(c, muddy, mud);
+            o.a = 1f;
+            return o;
+        }
+
         private static Color PigmentOf(int index)
         {
             RM_Rgb p = RM_GraffitiKernel.PigmentColor(index);
@@ -327,7 +407,7 @@ namespace RimMandrake.Graffiti
         public override string GetInspectString()
         {
             string baseText = base.GetInspectString();
-            float beauty = this.GetStatValue(StatDefOf.Beauty);
+            float beauty = NetBeauty;
             string line = StoryLines() + "\nBeauty " + beauty.ToString("+0;-0;0") + ": " + RM_GraffitiKernel.BeautyWord(beauty);
             return string.IsNullOrEmpty(baseText) ? line : baseText + "\n" + line;
         }
@@ -388,9 +468,11 @@ namespace RimMandrake.Graffiti
             {
                 scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
             }
+            RM_GraffitiKernel.CraftLook(hasCraft ? craft : RM_GraffitiKernel.Normal, out float craftThrough, out float wobble, out float mud);
+            slope *= wobble;
             float width = size.x * scale;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
-            float through = ThroughOf(ext);
+            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough, 0.04f, 0.6f);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
                 if (cachedHeadMat != null)
@@ -409,7 +491,11 @@ namespace RimMandrake.Graffiti
                 Material mat = g.MatAt(Rot4.North, this);
                 if (ext != null && ext.pigmented && !string.IsNullOrEmpty(g.path))
                 {
-                    mat = MaterialPool.MatFrom(g.path, g.Shader, PigmentOf(pigment));
+                    mat = MaterialPool.MatFrom(g.path, g.Shader, Muddied(PigmentOf(pigment), mud));
+                }
+                else if (mud > 0f && !string.IsNullOrEmpty(g.path))
+                {
+                    mat = MaterialPool.MatFrom(g.path, g.Shader, Muddied(Color.white, mud));
                 }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);

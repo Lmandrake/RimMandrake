@@ -58,6 +58,8 @@
     <Compile Include="WallLossPatch.cs" />
     <Compile Include="WallInspectPatch.cs" />
     <Compile Include="GraffitiSocial.cs" />
+    <Compile Include="GraffitiTemperament.cs" />
+    <Compile Include="GraffitiCompulsiveClean.cs" />
     <Compile Include="JobDrivers_AnswerMark.cs" />
     <Compile Include="RM_GraffitiSocialProof.cs" />
     <Compile Include="JobGiver_IdleTag.cs" />

@@ -71,8 +71,9 @@ namespace RimMandrake.Graffiti
             if (Group(list, "Painting", RimMandrake.Shared.SettingScope.Now, new[] { "paintingEnabled", "paintIntervalTicks" }))
             {
                 list.CheckboxLabeled("Graffiti painting", ref paintingEnabled,
-                    "Pawns can paint graffiti marks on walls as a joy activity, and during "
-                  + "the painting-spree mental break. Off: no pawn ever paints a mark.");
+                    "Pawns paint marks on walls: for fun, when idle, on your orders, in a painting spree, in reply to a mark about them, and "
+                  + "raiders tag on their way out. Off: nobody paints anything, replies included. Marks already on the walls stay, and "
+                  + "people still read them unless the switch for what marks mean between people is off too.");
                 list.Label((TaggedString)("Painting pace: " + paintIntervalTicks), -1f,
                     "How long a mark takes to paint. At the shipped 250 a tag takes about 8 seconds at normal speed and "
                   + "a wall piece about 47; 60 is four times faster, 1000 four times slower. Lower: more marks per session.");
@@ -80,17 +81,19 @@ namespace RimMandrake.Graffiti
                 list.GapLine();
             }
 
-            if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "viewerReactionEnabled" }))
+            if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "socialEnabled", "socialMessagesEnabled", "viewerReactionEnabled" }))
             {
                 list.CheckboxLabeled("Marks matter between people", ref socialEnabled,
-                    "Colonists read the walls: a mockery humiliates its subject and turns friends against its painter, a tribute or memorial moves people, and they scrub, cross out, paint back or go and confront whoever did it.");
+                    "Colonists read the walls: a mockery humiliates its subject and turns friends against its painter, a tribute or memorial moves people, "
+                  + "a fine piece pleases and a clumsy one grates, and they scrub, cross out, paint back or go and confront whoever did it. Each takes it "
+                  + "like themselves: a psychopath doesn't care, a nervous soul feels it more, a very neurotic one may break and scrub the walls. "
+                  + "Off: none of that, and what it already made anyone feel is forgotten at once.");
                 list.CheckboxLabeled("Say so when it happens", ref socialMessagesEnabled,
                     "Lines over a pawn's head when they read a mark, and a message when something starts between people. The thoughts and social log still happen with this off.");
-                list.CheckboxLabeled("Viewer reactions to marks", ref viewerReactionEnabled,
-                    "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them: "
-                  + "colonists are unsettled by a tag a hostile faction left behind, and the RimMandrake "
-                  + "Sacred Marks mod adds its own sacred-mark thoughts to the same switch. "
-                  + "Off: marks are purely decorative filth.");
+                list.CheckboxLabeled("Feelings while near a mark", ref viewerReactionEnabled,
+                    "While a pawn stands near certain marks they feel it: a tag a hostile faction left behind unsettles colonists, and the "
+                  + "RimMandrake Sacred Marks mod adds its own sacred-mark thoughts to the same switch. Off: none of those. This doesn't touch "
+                  + "what marks mean between people, which is the first switch in this section.");
                 list.GapLine();
             }
 

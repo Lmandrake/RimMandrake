@@ -137,9 +137,13 @@ namespace RimMandrake.Graffiti
                 }
                 if (ReplyTo != null)
                 {
+                    // An answer in paint may go over what it answers: that's the point of it.
                     subject = ReplyTo;
-                    return RMGraffitiDefOf.RM_Graffiti_Mockery;
+                    return GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery) <= room ? RMGraffitiDefOf.RM_Graffiti_Mockery : null;
                 }
+                // Owner's pick, 2026-11-07: measure a mark's real width before painting, so nobody erases a neighbour by accident. A spree
+                // has no such manners: going over is what it's for.
+                if (!pawn.InMentalState) room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map));
                 ThingDef said = GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject);
                 if (said != null) return said;
                 return pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
@@ -163,7 +167,7 @@ namespace RimMandrake.Graffiti
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }
-            Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction);
+            Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated);
             markDef = null;
             subject = null;
             targetFaction = null;
@@ -184,7 +188,8 @@ namespace RimMandrake.Graffiti
             }
             if (ReplyTo != null)
             {
-                EndJobWith(JobCondition.Succeeded);
+                if (made != null) MapComponent_GraffitiSocial.For(Map)?.Answered(pawn, null, ReplyTo);
+                EndJobWith(made != null ? JobCondition.Succeeded : JobCondition.Incompletable);
                 return;
             }
             marksThisSitting++;

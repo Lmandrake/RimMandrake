@@ -15,7 +15,9 @@ namespace RimMandrake.Graffiti
             if (!RM_GraffitiSettings.paintingEnabled) return null;
             if (pawn.Map == null) return null;
             if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell)) return null;
-            return JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell);
+            Job job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell);
+            job.ignoreJoyTimeAssignment = true;
+            return job;
         }
     }
 }

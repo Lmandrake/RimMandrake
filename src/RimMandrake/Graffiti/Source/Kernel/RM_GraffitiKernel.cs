@@ -21,6 +21,20 @@ namespace RimMandrake.Graffiti
     /// <summary>What a pawn does about a mark: wipe it, cross it out, paint back at the painter, or go and have it out.</summary>
     public enum RM_Answer { None, Scrub, Deface, Reply, Confront }
 
+    /// <summary>The temperament table's answer column: what a person would rather do about a mark than what the answer table says.</summary>
+    public enum RM_Lean { None, Scrub, Reply, Nothing }
+
+    /// <summary>One person's temperament toward marks, or one row of the table (Defs/TemperamentDefs_Graffiti.xml). Multipliers default 1.</summary>
+    public struct RM_Temper
+    {
+        public bool numb;
+        public float bad, good, fine, ugly, temper, paint, offended;
+        public int neat;
+        public RM_Lean lean;
+
+        public static RM_Temper Plain => new RM_Temper { bad = 1f, good = 1f, fine = 1f, ugly = 1f, temper = 1f, paint = 1f, offended = 1f };
+    }
+
     /// <summary>A viewer's standing to a mark, read off the pawns by GraffitiSocial.</summary>
     public struct RM_Viewer
     {
@@ -642,7 +656,11 @@ namespace RimMandrake.Graffiti
             if (beauty <= -12f) return "a filthy eyesore";
             if (beauty <= -6f) return "ugly scrawl";
             if (beauty < 0f) return "rough, but somebody meant it";
-            return "real craft";
+            if (beauty < 1f) return "just a mark";
+            if (beauty < 6f) return "decent work";
+            if (beauty < 15f) return "real craft";
+            if (beauty < 25f) return "a fine piece of work";
+            return "a masterpiece, on a wall";
         }
 
         /// <summary>Picks from `count` choices one that `taken` doesn't hold, as evenly as a roll in 0..1 goes; with all taken, any.</summary>
@@ -680,8 +698,13 @@ namespace RimMandrake.Graffiti
         // layer takes is here as a table, so it can be fuzzed without the game. GraffitiSocial.cs reads the pawns and acts on the answers.
 
         public const int SightRadiusSq = 49;
-        /// <summary>A pawn who has read a mark reads it again after this long while it still stands: a mockery goes on working until someone answers it.</summary>
-        public const int ReadAgainTicks = 90000;
+        /// <summary>Owner, card 2026-11-07: "Seeing the same mark repeatedly SHOULD repeatedly affect you, but no more than once per day."
+        /// A pawn reads a standing mark again after a day. Mood comes again; opinion and grudges only came the first time.</summary>
+        public const int ReadAgainTicks = 60000;
+        /// <summary>A mark read again is an old sting, not a new one: its mood comes back at this share of the first reading. A memory
+        /// still running at full strength is left alone (GraffitiTemperament.Give keeps the stronger), so a standing mockery is a
+        /// steady reminder once the shock has worn off, not a permanent first-day blow.</summary>
+        public const float RereadFactor = 0.6f;
         /// <summary>A pawn answers one mark at a time, and has cooled off this long before taking on another.</summary>
         public const int AnswerCooldownTicks = 60000;
         /// <summary>A grudge not answered in this long is borne.</summary>
@@ -749,17 +772,29 @@ namespace RimMandrake.Graffiti
             }
         }
 
-        /// <summary>What they do about it. The roll is in 0..1. A hot head goes for the painter; a good hand answers in paint; anyone can wipe a wall.</summary>
-        public static RM_Answer AnswerOf(RM_Reaction reaction, bool hot, bool canFight, bool makerHere, bool goodHand, float roll)
+        /// <summary>What they do about it. The roll is in 0..1. A hot head goes for the painter; a good hand answers in paint; anyone can wipe a
+        /// wall. The bands don't overlap, so a skilled hothead can still answer in paint (the first version's confront band hid the reply).
+        /// `lean` is the temperament table's: a Kind or Neurotic hand would rather scrub than shout, a tortured artist answers in paint,
+        /// and Nothing is somebody who lets it go.</summary>
+        public static RM_Answer AnswerOf(RM_Reaction reaction, bool hot, bool canFight, bool makerHere, bool goodHand, float roll, RM_Lean lean = RM_Lean.None)
         {
-            bool confront = canFight && makerHere;
+            RM_Answer a = BaseAnswer(reaction, hot, canFight && makerHere, goodHand && makerHere, roll);
+            if (a == RM_Answer.None || lean == RM_Lean.None) return a;
+            if (lean == RM_Lean.Nothing) return RM_Answer.None;
+            if (lean == RM_Lean.Scrub && (a == RM_Answer.Confront || a == RM_Answer.Deface || a == RM_Answer.Reply)) return ScrubbableReaction(reaction) ? RM_Answer.Scrub : RM_Answer.None;
+            if (lean == RM_Lean.Reply && goodHand && makerHere && (a == RM_Answer.Confront || a == RM_Answer.Deface)) return RM_Answer.Reply;
+            return a;
+        }
+
+        private static RM_Answer BaseAnswer(RM_Reaction reaction, bool hot, bool confront, bool reply, float roll)
+        {
             switch (reaction)
             {
                 case RM_Reaction.Humiliated:
-                    if (hot && confront && roll < 0.6f) return RM_Answer.Confront;
-                    if (goodHand && makerHere && roll < 0.55f) return RM_Answer.Reply;
-                    if (confront && roll < 0.3f) return RM_Answer.Confront;
-                    return roll < 0.7f ? RM_Answer.Scrub : RM_Answer.Deface;
+                    if (hot && confront && roll < 0.4f) return RM_Answer.Confront;
+                    if (reply && roll < 0.65f) return RM_Answer.Reply;
+                    if (!hot && confront && roll < 0.2f) return RM_Answer.Confront;
+                    return roll < 0.85f ? RM_Answer.Scrub : RM_Answer.Deface;
                 case RM_Reaction.FriendDefends:
                     if (hot && confront && roll < 0.25f) return RM_Answer.Confront;
                     return roll < 0.45f ? RM_Answer.Scrub : (roll < 0.65f ? RM_Answer.Deface : RM_Answer.None);
@@ -768,15 +803,175 @@ namespace RimMandrake.Graffiti
                 case RM_Reaction.Uneasy:
                     return roll < 0.2f ? RM_Answer.Scrub : RM_Answer.None;
                 case RM_Reaction.RivalTag:
-                case RM_Reaction.WorkDestroyed:
                     if (hot && confront && roll < 0.2f) return RM_Answer.Confront;
                     return roll < 0.4f ? RM_Answer.Deface : RM_Answer.None;
+                case RM_Reaction.WorkDestroyed:
+                    // Nothing left to cross out: the work is under someone else's paint.
+                    if (hot && confront && roll < 0.3f) return RM_Answer.Confront;
+                    if (reply && roll < 0.6f) return RM_Answer.Reply;
+                    return RM_Answer.None;
                 case RM_Reaction.Offended:
                     return hot && roll < 0.35f ? RM_Answer.Deface : RM_Answer.None;
                 default:
                     return RM_Answer.None;
             }
         }
+
+        /// <summary>Is there still a mark to wipe? Work painted over is gone already.</summary>
+        private static bool ScrubbableReaction(RM_Reaction reaction) { return reaction != RM_Reaction.WorkDestroyed; }
+
+        /// <summary>Owner's pick, 2026-11-07: an answer waits its turn. Hungry, tired, with enemies about or the target across the map, it waits.</summary>
+        public static bool AnswerWaits(bool hungry, bool tired, bool enemiesNear, float distance)
+        {
+            return hungry || tired || enemiesNear || distance > AnswerReach;
+        }
+
+        /// <summary>Cells a pawn will walk to answer a mark.</summary>
+        public const float AnswerReach = 45f;
+        /// <summary>An answer that couldn't be started (blocked, unreachable) is tried again after this, not dropped.</summary>
+        public const int AnswerRetryTicks = 2500;
+
+        // ---------------------------------------------------------------- temperament (personality pass, owner by card 2026-11-07)
+
+        /// <summary>Owner's pick, "Scale it with temper": the chance a confrontation over a mark comes to blows. `vanilla` is the confronter's own
+        /// chance of a fight over an insult, the game's whole formula (his opinion of the painter, his traits, capacities, age gap, both pawns'
+        /// genes); `temper` is the table's column for him. Three insults' worth, because a named slur on a wall is more than an insult.</summary>
+        public static float ConfrontFightChance(float vanilla, float temper)
+        {
+            float t = Clamp(temper, 0f, 4f);
+            float c = Clamp(vanilla, 0f, 1f);
+            return Math.Min(ConfrontFightCap, ConfrontInsults * c * t);
+        }
+
+        public const float ConfrontInsults = 3f, ConfrontFightCap = 0.85f;
+        /// <summary>At most one fight the walls caused in this long, for the whole game: a confrontation always happens as a row, a fight is rare.</summary>
+        public const int FightCooldownTicks = 15 * 60000;
+        /// <summary>At most one Graffiti break (spree or compulsive cleaning) in this long, for the whole game.</summary>
+        public const int BreakCooldownTicks = 15 * 60000;
+
+        /// <summary>A hot head: whose temper, times the game's own social-fight factors on his traits and genes, is half again an ordinary man's.</summary>
+        public static bool IsHot(float temper, float vanillaFactors) { return temper * vanillaFactors >= 1.5f; }
+
+        /// <summary>One person's temperament, multiplied up from the table's rows (Defs/TemperamentDefs_Graffiti.xml) and clamped.</summary>
+        public static RM_Temper Combine(IList<RM_Temper> rows)
+        {
+            RM_Temper t = RM_Temper.Plain;
+            foreach (RM_Temper r in rows)
+            {
+                t.numb |= r.numb;
+                t.bad *= r.bad; t.good *= r.good; t.fine *= r.fine; t.ugly *= r.ugly;
+                t.temper *= r.temper; t.paint *= r.paint; t.offended *= r.offended;
+                if (r.neat > t.neat) t.neat = r.neat;
+                if (r.lean != RM_Lean.None) t.lean = r.lean;
+            }
+            t.bad = Clamp(t.bad, 0f, 1.5f); t.good = Clamp(t.good, 0f, 1.5f); t.fine = Clamp(t.fine, 0f, 1.5f); t.ugly = Clamp(t.ugly, 0f, 1.5f);
+            t.temper = Clamp(t.temper, 0f, 4f); t.paint = Clamp(t.paint, 0f, 2f); t.offended = Clamp(t.offended, 0f, 1.5f);
+            if (t.numb)
+            {
+                t.bad = t.good = t.fine = t.ugly = t.offended = 0f;
+                t.lean = RM_Lean.Nothing;
+                t.neat = 0;
+            }
+            return t;
+        }
+
+        /// <summary>A memory's strength after the pawn's own budget for Graffiti feelings of that sign: `already` is what Graffiti memories of that
+        /// sign already add up to (absolute), `offset` the new one at full strength (absolute), `budget` the most they may add up to. Positives
+        /// never pay for negatives. Returns the factor (0..1) the new memory keeps.</summary>
+        public static float FitBudget(float already, float offset, float budget)
+        {
+            if (offset <= 0f) return 1f;
+            float room = budget - already;
+            if (room <= 0.05f) return 0f;
+            return room >= offset ? 1f : room / offset;
+        }
+
+        /// <summary>Mood budgets (each times the pawn's bad or good): what Graffiti memories may add up to; the named victim of a mockery more.</summary>
+        public const float BadMoodBudget = 8f, VictimMoodBudget = 12f, GoodMoodBudget = 8f;
+        /// <summary>Opinion caps for Graffiti's social memories of one pawn about another; the named victim's of the painter more.</summary>
+        public const float BadOpinionCap = 30f, VictimOpinionCap = 45f, GoodOpinionCap = 30f;
+
+        // ---------------------------------------------------------------- art skill (owner, 2026-11-07)
+        // "A poor artist will paint such a bad graffiti mark that it is ugly, harms a room's beauty, and gives mood debuffs. But a highly
+        // skilled artist is actually making art." Quality as the game's QualityCategory: 0 Awful .. 6 Legendary.
+
+        public const int Awful = 0, Poor = 1, Normal = 2, Good = 3, Excellent = 4, Masterwork = 5, Legendary = 6;
+
+        /// <summary>A mark's net beauty in its cell by craft, wherever it is (Filth_Mark.GetBeauty undoes the roof's 0.3 on filth).</summary>
+        public static float CraftBeauty(int quality)
+        {
+            switch (quality)
+            {
+                case Awful: return -6f;
+                case Poor: return -2.5f;
+                case Normal: return 0f;
+                case Good: return 3f;
+                case Excellent: return 8f;
+                case Masterwork: return 18f;
+                default: return quality > Masterwork ? 30f : -6f;
+            }
+        }
+
+        /// <summary>How far a mark's meaning reaches, by craft: a clumsy insult is laughed off and a great one sticks.</summary>
+        public static float CraftReach(int quality)
+        {
+            switch (quality)
+            {
+                case Awful: return 0.75f;
+                case Poor: return 0.85f;
+                case Normal: return 1f;
+                case Good: return 1.1f;
+                case Excellent: return 1.2f;
+                case Masterwork: return 1.35f;
+                default: return quality > Masterwork ? 1.5f : 0.75f;
+            }
+        }
+
+        /// <summary>The craft thought a reader takes from it: -1 none, else the stage of RM_Graffiti_UglyMark (ugly true) or RM_Graffiti_FineArt.</summary>
+        public static int CraftStage(int quality, out bool ugly)
+        {
+            ugly = quality <= Poor;
+            if (quality == Awful) return 1;
+            if (quality == Poor) return 0;
+            if (quality <= Normal) return -1;
+            return Math.Min(quality, Legendary) - Good;
+        }
+
+        /// <summary>How the craft shows on the wall. through: more of the wall shows through a thin, patchy coat; wobble: a shaky hand's tilt;
+        /// mud: how far the pigment slides toward the muddy brown of a cheap mix.</summary>
+        public static void CraftLook(int quality, out float through, out float wobble, out float mud)
+        {
+            switch (quality)
+            {
+                case Awful: through = 0.2f; wobble = 3f; mud = 0.5f; return;
+                case Poor: through = 0.1f; wobble = 2f; mud = 0.25f; return;
+                case Good: through = -0.04f; wobble = 0.8f; mud = 0f; return;
+                case Excellent: through = -0.08f; wobble = 0.6f; mud = 0f; return;
+                case Masterwork: through = -0.12f; wobble = 0.4f; mud = 0f; return;
+                case Legendary: through = -0.15f; wobble = 0.3f; mud = 0f; return;
+                default: through = 0f; wobble = 1f; mud = 0f; return;
+            }
+        }
+
+        /// <summary>The muddy brown a cheap, overmixed paint goes.</summary>
+        public static readonly RM_Rgb Mud = new RM_Rgb(0.36f, 0.30f, 0.24f);
+
+        // ---------------------------------------------------------------- visitors
+
+        /// <summary>A visit, for goodwill: one faction's party on the map within this long of its first read is one visit.</summary>
+        public const int VisitTicks = 3 * 60000;
+        /// <summary>Most goodwill one visit can lose or gain off the walls.</summary>
+        public const int VisitLossCap = 12, VisitGainCap = 3;
+
+        /// <summary>What a visitor's read may still move, given what this visit has already moved: the delta clipped to the caps.</summary>
+        public static int VisitCharge(int delta, int lostSoFar, int gainedSoFar)
+        {
+            if (delta < 0) return -Math.Min(-delta, Math.Max(0, VisitLossCap - lostSoFar));
+            if (delta > 0) return Math.Min(delta, Math.Max(0, VisitGainCap - gainedSoFar));
+            return 0;
+        }
+
+        private static float Clamp(float v, float lo, float hi) { return v < lo ? lo : (v > hi ? hi : v); }
 
         /// <summary>Is this reaction said out loud, so the player's told? The ones that start something between people.</summary>
         public static bool Announces(RM_Reaction reaction)

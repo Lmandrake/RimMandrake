@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Pawn_InteractionsTracker.StartSocialFight(other, key): {0} is the painter, {1} the one who confronted them. -->
+  <RM_Graffiti_MessageWallFight>{1} confronted {0} about what {0} painted on the wall, and it came to blows.</RM_Graffiti_MessageWallFight>
+</LanguageData>

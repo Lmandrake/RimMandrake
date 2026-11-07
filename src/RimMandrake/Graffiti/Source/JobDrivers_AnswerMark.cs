@@ -7,40 +7,49 @@ using Verse.AI;
 namespace RimMandrake.Graffiti
 {
     // What a pawn does about a mark (RM_GraffitiKernel.AnswerOf). Think tree: Humanlike_PreMain, so a grudge is seen to at the pawn's next
-    // free moment, but it never interrupts a job and it waits for someone starving or collapsing.
+    // free moment; it never interrupts a job. Owner's pick, 2026-11-07: answers wait their turn (hungry, tired, enemies about or the target
+    // across the map: later), an answer that can't start stays open, and one whose mark is gone is dropped (MapComponent_GraffitiSocial.GrudgeOf).
+    // It is settled only when the job finishes (MapComponent_GraffitiSocial.Answered), so a blocked wall doesn't use up anyone's answer.
     public class JobGiver_AnswerMark : ThinkNode_JobGiver
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RM_GraffitiSettings.socialEnabled || pawn.Map == null || pawn.Downed) return null;
+            if (!RM_GraffitiSettings.socialEnabled || pawn.Map == null || pawn.Downed || pawn.Drafted) return null;
             MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(pawn.Map);
             RM_Grudge grudge = comp?.GrudgeOf(pawn);
             if (grudge == null) return null;
-            if (pawn.needs?.food?.Starving == true || pawn.needs?.rest?.CurCategory == RestCategory.Exhausted) return null;
+            IntVec3 target = grudge.answer == RM_Answer.Confront ? grudge.against.Position : (grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position);
+            bool hungry = pawn.needs?.food != null && pawn.needs.food.CurCategory >= HungerCategory.Hungry;
+            bool tired = pawn.needs?.rest != null && pawn.needs.rest.CurCategory >= RestCategory.Tired;
+            if (RM_GraffitiKernel.AnswerWaits(hungry, tired, PawnUtility.EnemiesAreNearby(pawn, 9, passDoors: true), target.DistanceTo(pawn.Position))) return null;
             Job job = null;
             switch (grudge.answer)
             {
                 case RM_Answer.Scrub:
                 case RM_Answer.Deface:
-                    if (pawn.CanReserveAndReach(grudge.mark.Position, PathEndMode.OnCell, Danger.Some))
+                    if (grudge.mark != null && grudge.mark.Spawned && pawn.CanReserveAndReach(grudge.mark.Position, PathEndMode.OnCell, Danger.Some)
+                        && !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Cleaning))
                     {
                         job = JobMaker.MakeJob(grudge.answer == RM_Answer.Scrub ? RMGraffitiDefOf.RM_ScrubMark : RMGraffitiDefOf.RM_DefaceMark, grudge.mark, grudge.mark.Position);
                     }
                     break;
                 case RM_Answer.Reply:
-                    if (GraffitiJobUtility.TryFindReplyCell(pawn, grudge.mark != null && !grudge.mark.Destroyed ? grudge.mark.Position : pawn.Position, out IntVec3 cell))
+                    if (GraffitiSocial.CanReplyInPaint(pawn)
+                        && GraffitiJobUtility.TryFindReplyCell(pawn, grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position, out IntVec3 cell))
                     {
                         job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell, grudge.against);
+                        job.ignoreJoyTimeAssignment = true;
                     }
                     break;
                 case RM_Answer.Confront:
                     if (pawn.CanReach(grudge.against, PathEndMode.Touch, Danger.Some))
                     {
-                        job = JobMaker.MakeJob(RMGraffitiDefOf.RM_ConfrontPainter, grudge.against);
+                        job = JobMaker.MakeJob(RMGraffitiDefOf.RM_ConfrontPainter, grudge.against, grudge.mark);
                     }
                     break;
             }
-            comp.Settle(grudge);
+            // Started or not, not again at once: a job that fails comes back here after the wait, a finished one settles it.
+            comp.Postpone(grudge);
             return job;
         }
     }
@@ -87,6 +96,7 @@ namespace RimMandrake.Graffiti
                 if (left <= 0)
                 {
                     Finish(mark);
+                    MapComponent_GraffitiSocial.For(pawn.Map)?.Answered(pawn, mark, null);
                     EndJobWith(JobCondition.Succeeded);
                 }
             });
@@ -102,8 +112,10 @@ namespace RimMandrake.Graffiti
         protected override void Finish(Filth_Mark mark)
         {
             mark.SkipCleanNotice();
-            GraffitiSocial.Notify_Answered(mark, pawn, crossedOut: false);
+            MentalState_GraffitiCompulsiveClean fit = pawn.MentalState as MentalState_GraffitiCompulsiveClean;
+            GraffitiSocial.Notify_Answered(mark, pawn, crossedOut: false, fit: fit != null);
             mark.Destroy();
+            fit?.Notify_Scrubbed();
         }
 
         public override string GetReport()
@@ -130,10 +142,11 @@ namespace RimMandrake.Graffiti
         }
     }
 
-    /// <summary>Walk up to whoever painted it and have it out. The fight's chance is the game's own: traits, opinion, age, the lot.</summary>
+    /// <summary>Walk up to whoever painted it and have it out. The row always happens; whether it comes to blows is GraffitiSocial.FightChance.</summary>
     public class JobDriver_ConfrontPainter : JobDriver
     {
         private Pawn Painter => (Pawn)job.GetTarget(TargetIndex.A).Thing;
+        private Filth_Mark About => job.GetTarget(TargetIndex.B).Thing as Filth_Mark;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed) { return true; }
 
@@ -153,7 +166,8 @@ namespace RimMandrake.Graffiti
             {
                 if (pawn.interactions.TryInteractWith(Painter, RMGraffitiDefOf.RM_Graffiti_Confront))
                 {
-                    GraffitiSocial.Notify_Confronted(pawn, Painter);
+                    MapComponent_GraffitiSocial.For(pawn.Map)?.Answered(pawn, About, Painter);
+                    GraffitiSocial.Notify_Confronted(pawn, Painter, About);
                 }
             };
             confront.defaultCompleteMode = ToilCompleteMode.Instant;

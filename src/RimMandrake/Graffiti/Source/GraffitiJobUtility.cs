@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -33,7 +34,7 @@ namespace RimMandrake.Graffiti
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, SearchRadius, useCenter: false))
             {
                 bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)
-                    && (!roomCap || !RoomFull(c, map, marksInRoom));
+                    && !KeptClean(c, map) && (!roomCap || !RoomFull(c, map, marksInRoom));
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
                 states.Add(new RM_MarkCell(usable, marked));
@@ -49,7 +50,7 @@ namespace RimMandrake.Graffiti
             IntVec3 fallback = IntVec3.Invalid;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, ReplyRadius, useCenter: true))
             {
-                if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
+                if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
                 if (!AlreadyMarked(c, map))
                 {
                     result = c;
@@ -62,6 +63,43 @@ namespace RimMandrake.Graffiti
         }
 
         private const float ReplyRadius = 7f;
+
+        /// <summary>Owner's pick, 2026-11-07: nobody paints a hospital or a kitchen on their own. A mark is filth, and filth there is infection and
+        /// food poisoning. The player's own order may still paint there.</summary>
+        internal static bool KeptClean(IntVec3 c, Map map)
+        {
+            RoomRoleDef role = c.GetRoom(map)?.Role;
+            return role != null && (role == RoomRoleDefOf.Hospital || role == KitchenRole);
+        }
+
+        private static RoomRoleDef kitchen;
+        private static RoomRoleDef KitchenRole => kitchen ?? (kitchen = DefDatabase<RoomRoleDef>.GetNamedSilentFail("Kitchen"));
+
+        /// <summary>How wide a mark centred on this floor cell's wall may be before its drawing overlaps a neighbour's on the same face
+        /// (RM_GraffitiKernel.WallMarksOverlap's own rule, read from the other side). Unlimited with nothing near.</summary>
+        public static float BareRoom(IntVec3 c, Map map)
+        {
+            int side = Filth_Mark.ReadWallSide(c, map);
+            if (side == RM_GraffitiKernel.NoWall) return float.MaxValue;
+            int face = RM_GraffitiKernel.FaceOfSide(side);
+            RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
+            IntVec3 along = new IntVec3(ax, 0, az);
+            float room = float.MaxValue;
+            for (int k = -BareSearchCells; k <= BareSearchCells; k++)
+            {
+                IntVec3 floor = c + along * k;
+                if (!floor.InBounds(map)) continue;
+                foreach (Thing t in floor.GetThingList(map))
+                {
+                    if (!(t is Filth_Mark m) || m.wallSide != side) continue;
+                    if (k == 0) return 0f;
+                    room = System.Math.Min(room, 2f * (System.Math.Abs(k) - GraffitiPool.WidthOf(m.def) / 2f) + 0.3f);
+                }
+            }
+            return room;
+        }
+
+        private const int BareSearchCells = 6;
 
         private static Dictionary<Room, int> CountMarksByRoom(Map map)
         {

@@ -12,7 +12,7 @@ import rimbridge_client as rb
 import play_zoom
 
 PROBE = "RimMandrake.Graffiti.RM_GraffitiStage"
-SHOTS = r"D:\ClaudeWork\rimmandrake\ralph_graffiti\shots"
+SHOTS = r"Transient\gshots"   # in the clone on Steve, brought back with steve.sh fetch
 CALFILE = r"D:\ClaudeWork\rimmandrake\ralph_graffiti\k.json"
 
 
@@ -55,6 +55,7 @@ def shot(s, name, rect, ppc=64):
         if os.path.exists(local) and os.path.getsize(local) > 0:
             break
         time.sleep(0.5)
+    os.makedirs(SHOTS, exist_ok=True)
     dest = os.path.join(SHOTS, name + ".png")
     shutil.copy(local, dest)
     print("SHOT", dest, "ticks", s.call("rimworld/get_game_info").get("ticksGame"))

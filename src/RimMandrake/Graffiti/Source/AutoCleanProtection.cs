@@ -1,6 +1,7 @@
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.Graffiti
 {
@@ -31,6 +32,14 @@ namespace RimMandrake.Graffiti
         public static bool Prefix(Pawn pawn, Thing t, bool forced, ref bool __result)
         {
             Filth_Mark mark = t as Filth_Mark;
+            // Owner, card 2026-11-07: "if a person hates the subject, they will refuse to clean the insult". Ordered or not: the float menu says why.
+            string refuses = mark != null ? GraffitiSocial.RefusesToClean(pawn, mark) : null;
+            if (refuses != null)
+            {
+                JobFailReason.Is(refuses);
+                __result = false;
+                return false;
+            }
             ModExtension_Graffiti ext = mark?.def.GetModExtension<ModExtension_Graffiti>();
             // design §2.3/§4 fork F7, verbatim: "own-faction AND Devotional marks protected" - two independent conditions,
             // either one is enough. Own-faction: this mark's maker was one of ours. Devotional: the mark's own category,
