@@ -38,6 +38,7 @@ ralph/steve.sh fetch '<path>' <dir>   copy a file or folder back, from a D:\ pat
 A live proof: run `python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate` here first, then `ralph/steve.sh run 'python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live --skip-offline --only core'`. Steve's WSL has no dotnet, so the offline gate belongs here. Don't record a run from it on the ledger. It took 185 s for `core` (47 rows) on 2026-11-07.
 Steve's Saves folder holds only the `calm` test site (`RM_TestSite_calm_v3`, copied from Archmagi). A site save that isn't there makes `load_game` do nothing, and the proof polls its 420 s budget with no error. If you pick another site, scp it over first: read from Archmagi's Saves, write to `$RM_GAME_USERDATA/Saves` on Steve.
 Shots land under `Transient/` in Steve's clone, and the proof's JSON under `northstar/` there: `fetch` them. Never read a shot's path as if it were on this machine.
+Never wait on `pgrep -f` for a steve.sh command: your prompt holds that text, so it matches your own `claude -p` and never ends. steve.sh calls return when they are done.
 Your own bridge script: put it under `ralph/live/`, `sync`, then `ralph/steve.sh run 'python.exe ralph/live/foo.py'`. The test lane's clone `~/rm/runner` is not yours: never write there. Don't take the bridge lock on Steve; the lane is paused and the game is yours.
 
 Bridge client: `src/RimMandrake/Utils/rimbridge_client.py`. Screenshots: `rimworld/screenshot_cell_rect`.
