@@ -45,6 +45,19 @@ NEVER = re.compile(r"taskkill[^|;&]*/IM\b[^|;&]*RimWorld", re.I)
 NEVER_ON_NAMED = re.compile(r"system_click|system_screenshot|steam://|steam\.exe", re.I)
 
 
+PREFIX = re.compile(r"^(timeout|nohup|bash|sh|env|stdbuf|nice)$|^-|^\d+[smh]?$|^\w+=")
+
+
+def runs_wrapper(segment):
+    """Does this segment run WRAPPER, under any prefixes (`timeout 300`, `bash`, `env X=1`)?"""
+    for token in segment:
+        if token.endswith(WRAPPER):
+            return True
+        if not PREFIX.search(token):
+            return False
+    return False
+
+
 def local_part(command):
     """The command minus its WRAPPER segments: those run on the other machine, whatever their arguments say."""
     try:
@@ -56,7 +69,7 @@ def local_part(command):
     kept, segment = [], []
     for token in tokens + [";"]:
         if token and set(token) <= set("();<>|&"):
-            if segment and not any(t.endswith(WRAPPER) for t in segment[:2]):   # `ralph/steve.sh x` or `bash ralph/steve.sh x`
+            if segment and not runs_wrapper(segment):
                 kept.append(" ".join(segment))
             segment = []
         else:
