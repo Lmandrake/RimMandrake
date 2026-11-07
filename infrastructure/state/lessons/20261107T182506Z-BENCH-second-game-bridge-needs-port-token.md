@@ -1,2 +1,0 @@
-A second RimWorld on one machine gets its own bridge only if BOTH GABP_SERVER_PORT and GABP_TOKEN are set before launch (Lib.GAB source). RimBridgeServer has no port fallback: without them it logs [RimBridge] Failed to start server and the game runs with no bridge. In env mode the Bridge token: line is not written, so log-waiters must accept the port line.
-home: design/RimMandrake/two_rimworld_instances_2026-11-07.md

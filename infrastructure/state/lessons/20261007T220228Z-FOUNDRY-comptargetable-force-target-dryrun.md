@@ -1,1 +1,0 @@
-2026-10-07: CompTargetable-based items need selectedTarget set via OrderForceTarget; a plain UseItem is accepted and does nothing (antidote read UNMEASURED at 0.55 for this reason). Also jawa/fire_incident defaults dryRun=true: pass dryRun=false to actually fire.

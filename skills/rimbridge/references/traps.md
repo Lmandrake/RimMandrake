@@ -200,6 +200,22 @@ Collected 2026-08-13; each one cost a seat time before it was written down.
 - **An UNDRAFTED pawn does not hold a move order** — it walks off to its own AI job, so a reachability measurement reads as failure. Draft for the measurement (`draft: true`), undraft only when you want the pawn to take a work job at the destination.
 - 🔴 **A FactionDef's defName is not its filename.** `JawaAscendantHelix.xml` contains `<defName>Jawa_AscendantHelix</defName>`. Querying the filename returns `found=false`, which reads exactly like the def being absent — and on 2026-08-15 that manufactured a false "five factions are still broken" finding that was reported to another seat. Read the defName out of `<defName>`. A control def in the same call does NOT catch this unless the control is misspelt the same way.
 - 🔴 **`Actions\T: Destroy` with `thingId` can kill something you did not name.** Measured 2026-08-15: 77 pawns targeted by explicit `Thing_<id>`, **78 died** — the one survivor I had deliberately excluded by name was destroyed too, and 3 of the 77 calls reported `success: false`. Cause not established; suspect an unresolvable `thingId` falling back to the current selection or the cursor cell. **Never fire a long batch of destroy calls and check the total only at the end** — re-read the survivor set every ~10 and abort on the first unexpected loss. Losing one wrong pawn is invisible in an aggregate count.
+- **`rimworld/get_cell_info` has no `mapIndex` param** (current map only). **`rimworld/select_pawn` needs `Thing_<id>`** even though `jawa/spawn_pawn` returns a bare id; the bare id fails with "Could not find player-controlled colonist id". The client's declared-parameter check refuses an unknown param name loudly, so trust it over guessing.
+- **`jawa/get_terrain_batch` refuses more than 70,000 cells per call in total** (MaxCells, `JawaBenchTerrainTools.cs`): it sums ALL rects, so semicolon-joining rects does not help — split into SEPARATE calls. A whole-map rect `0,0,sizeX,sizeZ` therefore works only up to ~264x264; read bigger maps in z-bands of `70000//sizeX` rows. It also silently skips out-of-bounds cells (`cellsOutOfBounds` counts them, nothing fails): assert `cellsRead` covers `sx*sz`, or a census over a hardcoded rect reads a partial/empty map as "no change".
+- **Tools whose list params want a comma-separated STRING.** `jawa/world_tile_get` `tiles` and `jawa/inspect_string` `thingIds` take "1,2,3"; a Python list raises `Object must implement IConvertible` with a stack trace that never names the parameter.
+- **`jawa/world_neighbors` `path` is an OUTPUT FILE path, not a tile id.** It wrote an 840 KB neighbour dump into the game install root while reading as a query. Read the tool's param meaning before passing a `path`.
+- **`jawa/ordered_job` with `waitTicks>0` on a PAUSED clock burns the whole tool timeout (~17 s per order):** 72 queued Mine orders ate 20 minutes of a 25-minute budget. Queue with `waitTicks=0` and read the effect after a real wait.
+- **An unnamed colony re-raises `Dialog_NamePlayerFactionAndSettlement` every ~600 ticks**, force-pausing the clock mid-chain even when a `modal_open` detector ignores it. `jawa/name_colony` names faction+settlement (idempotent, same as the dialog's OK). A `jawa/fire_incident` `dryRun` that cannot fire returns `success=false` WITH `canFireNow=false`: read `canFireNow`, never `success`.
+- **`CompTargetable` items need `selectedTarget` set via `OrderForceTarget`:** a plain `UseItem` is accepted and does nothing (an antidote test read UNMEASURED for this reason). Also `jawa/fire_incident` defaults `dryRun=true`: pass `dryRun=false` to actually fire.
+- **The rimbridge CLI client has its own default wait (~30 s)**, separate from a tool's `timeoutSeconds`/`timeoutMs`. A tool that legitimately needs 30-90 s (quicktest boot, an `ordered_job` wait) needs `--timeout <N>` on the CLI call too, or it times out client-side first.
+- **A scenario FILE name is not its defName.** `Scenario_Utinni.xml` holds defName `RUT_Jawa_UtinniStart`; `jawa/scenario_select {scenario:'Scenario_Utinni'}` can never match. Read the defName out of the def before writing it into a tool call or runbook.
+- **`jawa/flowworks_excavation_report` has NO terrain key** (depth, fill, isExcavated, source/sink only): read a cell's terrain from `rimworld/get_cell_info` `cell.terrainDefName`; `r.get("terrain")` is always None.
+- **`jawa/static_call` args.** Multi-arg is `a|b|c` (a comma fails); it cannot pass byte args; `args=''` reads as ZERO params, so a one-string-arg method is not found: pass a single space `' '` for one empty arg. And a pawn holding the same job 10,000+ ticks is not necessarily stuck: read the work toil's duration first (`RM_RaiderFillTrench`'s Delay toil is sized by the deep-dig cost curve x MiningSpeed, so one notch at D8 took ~22,400 ticks for a gunner at MiningSpeed 0.336).
+- **`jawa/order_pawn`'s `success` means the pawn ARRIVED on the cell**; with `waitTicks=1` it is false for every pawn. Read the per-pawn `orderAccepted` (`live_session.order_taken`). Never walk bystanders across a map (on a river map they swim and the current bruises them): teleport instead (`HoseProbe pawn:<id>=tp:x,z`).
+- **`rimworld/get_ui_layout` has no `disabled` key** on widgets, so a greyed-out switch cannot be read from the layout: prove greying by a capture plus "click changes nothing" (snapshot the settings fields before and after). The HoseProbe `pawn:<id>=tp` and `colonists` commands take the numeric `thingIDNumber` (107458), not `list_pawns`' `Human107458`, which answers "no such pawn on this map".
+- **`jawa/list_things` rows carry `x` and `z`, not `position`.** A proof comparing `r.get("position")` before vs after got None==None, so "moved" was always False. Match rows by id and compare `(x, z)`.
+- **`rimworld/get_game_info` carries NO key naming the loaded save** (keys: status, ticksGame, mapCount, selectedPawns, operation, state). Identify the map from `jawa/world_info_get` (`info.name` + `info.seedString`) and compare with the save's `<world><info>`. `hasCurrentGame` lives on `get_ui_state`, NOT `get_game_info`: reading it from the wrong reply gives None, and a check written `is not False` passes with no game. Assert the field is True.
+- **`jawa/destroy_batch` takes rects as `x,z,w,h`**, while other jawa tools take corners: passing corners `36,36,58,52` with `categories=All` wiped a 58x52 area. Read the tool's rect format before every call. A `spawn_batch` lattice on `WaterDeep` spawns fine but GSS marks every cell buried (census `cordEdges 0`): sample the terrain before staging a GSS site.
 
 ## Five traps from the 2026-08-15 unattended collection run
 
@@ -363,6 +379,7 @@ instinct gets wrong:
   predicting it from stats.
 
 Detect: a result that flips when you change the step size is a timing artefact, not a verdict.
+- **Throughput is far below real time on a big list.** `jawa/step_game_ticks` advances only ~50 ticks/s on the 325-mod full list (506 of 2000 in a 10 s call), so an 8-day plant survival run is ~2.6 h. Prove plant-light mechanics from the inspect string instead (a light-limited plant reads "needs light level N%").
 
 ## `rimbridge/list_logs` is a ring, not the log — a long session loses its startup lines
 
@@ -397,6 +414,9 @@ it loaded nothing. A plain `rimworld/load_game` from a settled Entry then worked
 (`loadSeconds` 1-4) and every "after load" read comes off the old map or mid-load. **Wait
 for the state to LEAVE `Playing` first, then for it to come back** (worked code:
 `GimmeSomeSlack/validation.py` `_wait_playing`, 2026-10-10).
+🔴 **`load_game_ready` is not a safe fallback for the `start_debug_game_ready` world-gen crash.** Loading a real save on the full 629-mod list hit the identical `SetupForQuickTestPlay`/`WorldPathGrid` `ArgumentOutOfRangeException`, confirmed on two saves.
+**`save.missing_mods` is RimWorld's own native mod-compat gate** (the bridge surfaces it structurally); interactively it only warns "some mods are missing, load anyway?". The bridge exposes the same escape as `ignoreModCompatibility: true`, and the save then reaches `programState: Playing`. Use it only for read/verify loads; it never authorizes a RESAVE of a canonical save (owner-reserved).
+**Reloading in-session right after dropping a generated map is not clean on the full list.** `settlement_remove mode=map force=true` then `load_game_ready` logged `Could not do PostLoadInit on RimWorld.FactionManager: KeyNotFoundException key 0` (Vehicle Framework's static per-map cache `SmashTools.DetachedMapComponentCache` keyed on the stale map index). A SECOND reload of the same save was clean. After dropping maps reload twice, or grep the log for `FactionManager PostLoadInit` after the first; a half-initialised FactionManager is not a clean game.
 
 ## A game can wedge on "Loading world." forever, and nothing on the bridge recovers it
 
@@ -443,6 +463,7 @@ tree and went looking for why dev mode was off. Dev mode was on; the call was fa
 an exit code: it converts "I could not answer" into "the answer is nothing", and those need
 completely different responses. Generalises to every `.get(x) or default` over a bridge
 reply.
+The same defect appears when a check substring-matches the raw payload: a FAILED call reads as ABSENT. Read `success`/`foundCount`/`notFound` and keep "could not ask" as UNMEASURED, never as a pass or an absence.
 
 ## Three parameter names that produced fake catastrophes in one session — 2026-08-21, CHECK
 
@@ -479,6 +500,7 @@ matched to the byte.
 🔑 **And hash your screenshots.** Four identical md5s is the cheapest possible detector, and
 nothing else would have caught it — the image was a perfectly good screenshot of the wrong
 thing.
+- **`screenshot_cell_rect` can crop the wrong screen region at far zoom**; crop from the full frame it saves beside the crop. It also draws NO pawns outside the MAIN camera's view rect (DynamicDrawManager culls by the live camera) while terrain, plants and buildings render: `jump_camera_to_cell` to the rect centre before every cell_rect shot that must show pawns. And on a paused game right after a map mutation (`destroy_batch` of 201 plants plus a zoom change) it returned a STALE image; `take_screenshot` showed the change, so prefer `take_screenshot` and crop, or compare against a full shot, before believing a cell_rect. Separately `get_cell_info` `cell.solidThingDefs` lists plants and filth, not only edifices: for an edifice check filter `cell.things` by `className` (Mineable/Building).
 
 ### `rimworld/search_debug_actions` times out; the walk it exists to replace does not
 
@@ -625,7 +647,7 @@ the instance faithfully; the instance is just wearing something.
 
 ## `[JawaBench] ready` is LAZY — a missing line is not a failed deploy
 
-The module initializer waits for the first `jawa/*` **tool call**, not assembly load, and
+The module initializer WAS lazy (it waited for the first `jawa/*` **tool call**); since 2026-10-10 `RimBridgeServer` constructs `JawaBenchTpsTools` at companion registration (game load), so `JawaBenchInit.Announce` fires before the GABP server even listens. Still never treat a missing `[JawaBench] ready` line as a failed deploy (census the live tool list), and anything that must hold with no bridge call should install explicitly from that ctor. The companion DLL lives in `GAME_DIR/BridgeTools`, not a mod Assemblies folder, so a `[StaticConstructorOnStartup]` class there never runs. Older note:
 `tools/list` does not trigger it. Measured 2026-08-26: `harvest_log.py` scored
 `RED  JawaBench ready  0  MISSING` at the main menu with a perfectly good 166-tool DLL, and the line
 appeared the instant `jawa/get_def` was called. ⇒ **Census the live tool list; never use that line as
@@ -1151,7 +1173,7 @@ subclass — tried and failed on `SettlementManifestDef` and `InhabitedPlaceDef`
 mod independently confirmed loaded (its `WorldObjectDef`s resolved fine via the same tool, its
 `Player.log` init line printed, and its debug actions were present in the live debug tree).
 Vanilla/common types (`ThingDef`, `WorldObjectDef`, `TraderKindDef`) resolve fine; some
-project-custom ones do not — the boundary is untested beyond these two.
+project-custom ones do not — the boundary is untested beyond these two. The resolver finds a bare type name only in Verse/RimWorld (GenTypes plus `RimWorld.`/`Verse.` prefixes), so ask for a mod's own Def subclass by its FULL namespaced type name (e.g. `RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef/RUT_WS_AshkarrGeometry`, `TitanicCreatures`-namespaced `RM_CrushRuleDef`); a bare name answers notFound "No def TYPE named X" on a load where the def is present. A null value comes back as `fields:{}` (treat as null, not missing) and floats come back as JSON numbers (63.0), so compare numerically, never `str(got)=="63"`.
 **Fix:** never conclude "not loaded" from this error alone for a custom Def subclass. Verify
 independently: a debug-action census (`rimworld/list_debug_action_children`), a
 `Player.log` init line, or a live spawn/read through a different route.
@@ -1163,3 +1185,40 @@ independently: a debug-action census (`rimworld/list_debug_action_children`), a
 **Cause:** `Verse/Log.cs` stops ALL managed logging after **10,000** messages (`Reached max messages limit. Stopping logging to avoid spam.`, and it also sets `Debug.unityLogger.logEnabled = false`). After that, `Log.Message`/`Warning`/`Error` return immediately, so the in-game log, RimBridge's LogJournal and Player.log all go silent. In that session **8,994** of the 10,000 were our own plants' `must have plant.MaxMeshCount that is a perfect square` (`Plant.cs:1000`, which accepts only 1/4/9/16/25).
 **Fix:** before trusting a silent debug action, grep Player.log for `Reached max messages limit`. The only reset is the Debug log window's **Clear** button (`EditWindow_Log` → `Log.Clear` → `ResetMessageCount`), and no bridge tool calls it. Keep `maxMeshCount` a perfect square (all 15 offenders fixed 2026-09-30).
 **Recurs when:** any long session on the full list with a per-frame or per-print error spammer. Every log-based verdict after the cap is blind.
+
+## `jawa/world_tile_map_generate` on an unfamiliar tile spawns that tile's own faction
+`world_tile_map_generate`'s default `suggestedMapParent: "Settlement"` generates the tile's OWN resident faction settlement, not a neutral scratch site: forcing a river tile's biome, planting a colonist and unpausing brought a real raid from the tile's owner faction within seconds (`rimworld/list_letters` showed it targeting the scratch map's own mapId). Check `jawa/world_tile_get` feature/faction fields before generating on an unfamiliar tile.
+
+## Standing up a bridge test site that survives save and a long chain
+A generated bridge map needs a player settlement (`jawa/colony_found`) or it is culled on save; load saves from the main menu, once. Closing the naming dialog hops the current map. A paused site no-ops `ordered_job waitTicks`. `step_game_ticks` needs `timeoutMs`. In zsh a multi-path variable needs `${=P}` to split.
+
+## `jawa/get_defs` cannot read everything a def holds
+`jawa/get_defs` serialises at most 64 items of any list field, so rows APPENDED to a long list (a trader stock list of ~79 read exactly 64) fall off the end and read as "patch matched nothing": a read at exactly 64 cannot prove absence (say UNMEASURED). It returns only the TYPE NAME for list-valued fields (`["TerrainThreshold"]`), so a field-by-field diff silently calls complex fields identical: read the XML. It cannot read `System.Type` fields (`driverClass`, `workerClass`, a GenStep class; the read is "(no such field)") nor name the JobGiver/ThinkNode inside a `ThinkTreeDef` (scalar mode skips the object-valued `thinkRoot`, deep mode emits node fields, never type names), so a check asserting those always reads FAIL on a loaded, correct def: assert the class from the shipped XML (or a behaviour counter) and prove the def loaded (`foundCount 1`, a populated object); an unresolvable class discards the def. It takes ONE Type/defName per call (a comma list is looked up as one name and answers notFound). For resolved nested values no bridge tool reads (`tools[].power`, `projectile.damageAmountBase`), the live def dump `DefDump/defs.sqlite` (RimDefDump serialises the runtime DefDatabase after patches) is a resolved-value readback: check its `captured_utc`/fingerprint matches the mod set first.
+
+## GameComponentTick-driven async delivery never drains while PAUSED
+`GameComponentTick`, and any `ConcurrentQueue`-based async delivery built on it (the Oracle's), never drains while the game is PAUSED, which `start_debug_game_ready` leaves it by default. `step_game_ticks` a handful of ticks (still paused) to force delivery before reading a result.
+
+## A swapped Greater Landforms recipe needs a full process restart
+A GL custom landform swapped into `Config\CustomLandforms-v1\` while the game runs is NOT picked up by `go_to_main_menu` + `start_debug_game_ready` (confirmed live twice); a full process kill plus Steam relaunch is required. A same-recipe tile re-roll via `go_to_main_menu` needs no restart.
+
+## A failed `jawa/set_current_map` does not stop later calls
+A failed `jawa/set_current_map` does not stop later calls: they land on whatever map is current. Two failed `set_current_map(12)` calls (the map had auto-culled) sent `jump_camera`/`set_time_speed` to the owner's real campaign map and unpaused ~10 game-minutes. Re-check `jawa/map_info` mapId immediately before any `set_time_speed(>0)`; never trust an earlier `set_current_map` return. Separately the World-tab UI can stay on screen while `jump_camera_to_cell` reports the right mapId (`TryHideWorld` does not stick); only a screenshot shows what the owner sees.
+
+## Killing a test pawn through the bridge — single damage calls lie
+`rimworld/execute_debug_action` "Damage To Death" NRE'd silently on 2 of 34 pawns, and `jawa/damage` Cut 500 on a raider reported success and left it alive. Reliable: `pawn_force_incapacitate` then kill, or loop `jawa/damage {thingId:<bare id>, amount:large, damageDef:Bomb}` until the response reads `dead:true` (amount is a request, not a delivered result). `jawa/debug_settings` takes `field`/`value`, not `name`.
+
+## JawaBench companion test grant expires
+The JawaBench `companion_profile.json` test grant carries `expiresUtc`. Once lapsed, `P03_LOG_ALIVE` is refused as CAMPAIGN, the L1 log tap goes blind, and whole suites silently read UNMEASURED. Renew with the same keys and a new expiry before a round.
+
+## `jawa/mod_settings_field` does not fire the mod's WriteSettings side effects
+A mod setting written with `jawa/mod_settings_field` does NOT fire the mod's `WriteSettings` side effects (the settings window's `WholeMapChanged` never runs). Biomes world toggles (`worldBiomeSwirls` etc.) only redraw on `SetAllLayersDirty`, so follow the set with `jawa/world_commit redraw=true lazy=true` (60 px changed vs 214k with it). For FlowWorks art settings call `jawa/static_call RimMandrake.FlowWorks.SectionLayer_RMExcavationWalls.RedrawAll` (or `RM_PipePoles.RedrawSpans`) before a before/after screenshot, or the "after" frame shows the old art.
+
+## FlowWorks reads that mislead
+- A whole-notch `f` (`jawa/flowworks_excavation_rect`) floors a level surface: a 351-cell moat a hair under 2 m (1.99 m, one dry grate cell it levelled into) reads 1.5 m on EVERY cell. Before calling water lost, look for a dry dug cell the body touches through a grate (grates pass liquid; only a shut sluice seals) and read decilitres/the cell readout, not `f`.
+- `jawa/flowworks_excavation_drive` (dig+fill) followed by a same-tick teleport into the new pool makes the pawn FALL (9.7 blunt, bruise + cracked clavicle): the swim-climb cache (`RM_MapComponent_Excavation.swimClimb`) refreshes only every `SwimRefreshTicks`=60 or after a pulse, so for that first tick a brim-full pool still reads as an 8-deep dry pit. Step >=60 ticks after driving fill before putting a pawn in; check `flowworks_pit_report` `recentDescents` + `pawn_get` hediffs, and heal with `jawa/pawn_health remove`. Injuries silently move ConstructionSpeed via Manipulation.
+
+## An UNKNOWN call blocks the bridge client until reconciled
+When a timeout kills a `python.exe` bridge script mid-call, the client records that mutating call as UNKNOWN and refuses EVERY later call, read-only ones included, until `rimbridge_client.py --reconcile --resolve CID --as applied|not-applied`. On a game whose frame takes ~75 s (a choking map current) budget watchdogs do not fire because one call blocks: set the outer timeout and expect to reconcile. Two `python.exe` bridge processes in parallel (a sampler loop plus a `set_time_speed`) share `scratch\bridge_calls.jsonl`: the other process's in-flight mutating call reads as UNKNOWN and raises `IndeterminateError` on the next call, killing the sampler mid-window; catch it, sleep 0.5 s, continue (`--reconcile` a moment later shows 0 pending). WSL env vars reach `python.exe` only via `WSLENV`.
+
+## A "Playing" wait does not prove a map was regenerated or reloaded
+After `Actions\Regenerate Current Map` `programState` stays `Playing`, so a wait-for-Playing loop passes at once and censuses the OLD map; "map regenerated" is proven by `jawa/map_info` `mapId` changing, not by `mapBiome` (`Map.Biome` reads the tile live, so it shows the new biome straight after `world_tile_set`) nor `programState`. And `jawa/list_things` returns at most `limit` rows (default 200): count from `perDef`/`countMatched`, which cover every match.

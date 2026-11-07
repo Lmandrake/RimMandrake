@@ -1,2 +1,0 @@
-rimbridge_client.py refused jawa/running_mods as 'not read-only' (exit 3) because its leaf has no list_/get_ prefix, and relentless_live's forbid_re banned --yes-i-know-this-is-live, so live_def_check's owner lookup (call_running_mods) failed on every call and every unresolved def read UNMEASURED instead of FAIL. Fixed 2026-11-02 by adding jawa/running_mods to READ_ONLY_TOOLS. A read-only bridge tool whose name lacks a read prefix must be listed in READ_ONLY_TOOLS, and a probe of the real call (not a fake) is the only check that sees it.
-home: rimbridge

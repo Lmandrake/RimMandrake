@@ -1,1 +1,0 @@
-jawa/fire_raid (JawaBenchEventTools.cs) has no JawaBenchAwareness.BridgeBegin wrapper, unlike fire_incident/raid_shape_fire/spawn_pawn: a raid fired through it journals chain incident:RaidEnemy only, and its pawns read ourInvolvement unknown. Use jawa/fire_incident when provenance matters, or wrap fire_raid. Found by MAP_AWARENESS_PROVE_ON_A_QUIET_MAP 2026-11-03.

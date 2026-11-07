@@ -97,6 +97,7 @@ and wait for them to release — do not restart the game.** A reload costs ~25�
 minutes and would have bought nothing here.
 
 ---
+- **Never `--force-take` the bridge from a stale-looking lock.** First check `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` for a live foreign client: a force-take once loaded another seat's walk save over a running test site.
 
 ## 1. Connect
 
@@ -235,6 +236,9 @@ print(len(build.tool_surface(open('<gamedir>/BridgeTools/JawaBench/JawaBench.Bri
 neither side is a quoted number. Deciding strings per tool are in the same file.
 
 ---
+- **Check the bridge tool list before declaring a mechanism unreachable.** `jawa/gravship_launch` and `jawa/gravship_land` are closed, proven tools reaching the real vanilla path (`WorldComponent_GravshipController.InitiateTakeoff` -> `GravshipUtility.GenerateGravship`; `Gravship.TickInterval` fires ArriveExistingMap/ArriveNewMap by itself). Six passes concluded "no debug shortcut exists" because they checked only the debug-action tree, never the `jawa/` surface. Proven ~10 minute route: `prove_gravship.py` minimal-ship recipe, then `gravship_launch`, `step_game_ticks`, `gravship_land`.
+- **ModsConfig can hold a phantom id** such as `rimmandrake.biomes` next to the real `mandrake.rm.biomes` (suspected: `modlist_swap --enable` keeps a lowercased folder name when no About resolves). Harmless to the load, but "every one is already active" then proves nothing about that mod: read `jawa/running_mods` for the real packageId (the deployed About.xml).
+- **A second RimWorld on one machine gets its own bridge only if BOTH `GABP_SERVER_PORT` and `GABP_TOKEN` are set before launch.** RimBridgeServer has no port fallback: without them it logs `[RimBridge] Failed to start server` and the game runs with no bridge. In env mode the `Bridge token:` line is not written, so log-waiters must accept the port line. On a machine where the bridge mod is a Workshop item (not a local Mods folder), a failed `SteamAPI.Init` makes the game carry on without Workshop mods, so it has no bridge and looks fine on screen; whether a second concurrent game gets Init must be measured.
 
 ## 2. The one law
 
@@ -419,6 +423,7 @@ about another's. A `success: false` with no message means the path did not
 resolve, which is a different failure from the action refusing.
 
 ---
+- **Selection ids carry a `Thing_` prefix.** `rimworld/get_selection_semantics` names a thing `Thing_<def><idNumber>` (`selectedObjects[].id`, `details.thingId`) while `jawa/list_things` names it `<def><idNumber>`. Code binding a selection to a listed thing must strip `Thing_` (or compare `details.thingIdNumber`); a selftest stub that invented a bare-id shape passed 660/660 while the live read was blind.
 
 ## 4b. ⚠️ Unpausing is the most consequential call on the bridge
 
@@ -492,7 +497,7 @@ once you chain tiers.** Each `--apply` backs up whatever was live at that moment
 chaining e.g. xenotypes(16 mods) → beastmechanics writes a backup containing only 16 mods
 — `--restore` at that point hands back the test tier while reporting success. Before
 `--restore`, parse the backup file and count `activeMods` (never grep `<li>`) and pick the
-backup whose count matches the full list you actually want back (2026-09-20).
+backup whose count matches the full list you actually want back (2026-09-20). `--restore` also refuses once the bridge is released: restore ModsConfig BEFORE releasing the bridge, or copy the pre-run backup back (owner list 547 mods, md5 1f7122ea...).
 
 **Prove new bridge work on the 3-mod tier.** Three suspects instead of five
 hundred, and the load is seconds rather than half an hour.

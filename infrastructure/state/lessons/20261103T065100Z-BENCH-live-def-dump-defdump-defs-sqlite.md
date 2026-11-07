@@ -1,1 +1,0 @@
-The live def dump (DefDump/defs.sqlite, fields JSON) is a RESOLVED-value readback: RimDefDump serialises the runtime DefDatabase after patches, so nested values no bridge tool reads (ThingDef.tools[].power, projectile.damageAmountBase) can be asserted from it — check its captured_utc/fingerprint matches the mod set first.

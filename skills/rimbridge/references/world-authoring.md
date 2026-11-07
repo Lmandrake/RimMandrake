@@ -93,3 +93,6 @@ previous mode. Give the render loop a beat (or step a frame/tick) before capturi
   it, and ocean terrain sets `canFreeze=false` so even Odyssey's runtime freeze cannot touch
   it. A cold custom sea stays liquid forever. Full evidence and the repaint traps that go with
   it: `rimworld-world-editing` SKILL.md §6.
+- **`jawa/world_stats` is the live-tile instrument.** It is read-only (safe on a campaign world) and returns a `biomes` dict of live per-defName world-tile counts: the fast, correct check before any biome defName rename or deletion (no hand-decoding shortHash `tileBiome` data).
+- **`jawa/world_view` right after a save load photographs the camera mid-lerp from the colony map** (a close tile view, not the globe): throw away the first shot or wait longer than 3 s. `rimworld/open_main_tab mainTabId=World` throws an NRE on the 320-mod quicktest; `jawa/world_view` reaches the planet view instead.
+- **Re-stamp `temp_c` when elevation changes.** A tile's temperature is not re-derived when its elevation moves (312 tiles went from a perched 1,411 m lake to -350 m and kept the 1,411 m temperature, 7.8 C of lapse, for two months). In the same change re-stamp `temp_c` from `world_physics_audit.t_intent` (arc curve minus 5.5 C/km above sea level); `jawa/world_tile_import` takes a partial `tile,temp_c` CSV.

@@ -222,6 +222,7 @@ echoes the request either way and never says it was overridden.**
 
 ⇒ **Census the ARRIVALS.** `jawa/list_pawns` before and after, diff the ids, group by `factionName`.
 A raid test that reads `resolved` has not verified which faction raided.
+- `jawa/fire_raid` (`JawaBenchEventTools.cs`) has no `JawaBenchAwareness.BridgeBegin` wrapper, unlike `fire_incident`/`raid_shape_fire`/`spawn_pawn`: a raid fired through it journals chain `incident:RaidEnemy` only and its pawns read `ourInvolvement` unknown. Use `jawa/fire_incident` when provenance matters, or wrap `fire_raid`.
 
 ## 🔴 `executed: true` with nothing spawned can be a MODAL DIALOG a mod pushed instead of the action
 
@@ -289,6 +290,7 @@ too, which no theory about my spawns could explain.
 ✅ **Use `rimworld/list_colonists` for a pawn's current job** — colonists only, but it is populated.
 `jawa/list_pawns` remains the right tool for the census it advertises (every pawn, all factions,
 which `list_colonists` cannot do); just never for `job`.
+**Classifying pawns from `list_pawns`.** A factionless wolf reads `hostile:false`; the colony Husky reads `isPlayer` true. A colonist is `isPlayer` AND `intelligence==Humanlike`; a predator is faction None + Animal + proximity. The rows carry no humanlike/drafted field (filter on `intelligence`, read job/drafted from `jawa/site_state`), and the `faction`/`factionName` key is OMITTED, not null, on an unowned pawn: test `row.get("faction") is None` (a filter requiring `"faction" in row`, or `faction=none`, counted 0 wildlife on a map holding 20) and cross-check against a `list_things` census. A vanilla flee and a mod's flee both answer `JobDefOf.Flee`, so attributing the job needs a setting-off arm.
 
 ## 🔴 A stale `Verse.FloatMenu` blocks every debug tool after it — and reports success
 
@@ -510,7 +512,7 @@ comp is switched off it answers `"has no Pawn_AbilityTracker"` — a stronger ne
 ## `jawa/list_pawns` nests health under `health.hediffs`, never a top-level `hediffs`
 
 `row['hediffs']` returns `[]` for every pawn and reads as a working mechanism being
-inert. Read `row['health']['hediffs']` (2026-09-21).
+inert. Read `row['health']['hediffs']` (2026-09-21); it is present only when the call passes `includeHealth=True`, otherwise there are no hediffs in the row at all. Read the reply shape in `JawaBenchTerrainTools.cs` `ListPawns` before keying into any bridge reply.
 
 ## 🔴 `jawa/pawn_health` adding `WoundInfection` at severity 1.0 is IMMEDIATELY LETHAL — `success:true`, no warning, no corpse in the obvious place
 

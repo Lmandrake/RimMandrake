@@ -140,6 +140,7 @@ versus `run_lua`, companion SDK tools.
 
 _(Letters and alerts left this list on 2026-08-12 — `jawa/send_letter` is
 deployed and proven.)_
+- **No hover/tooltip READ is known.** `rimworld/set_hover_target` and `clear_hover_target` exist but nothing found returns tooltip text, and tooltips are how RimWorld teaches (an agent playing as a player needs them). Census the live tool list, then add a JawaBench tool if absent.
 
 ## The Lua front-end is a lowered DSL
 
