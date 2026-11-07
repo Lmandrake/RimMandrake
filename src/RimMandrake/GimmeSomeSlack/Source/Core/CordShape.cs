@@ -249,6 +249,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return strays;
         }
 
+        /// <summary>Times a strand's slack runs in under a powered machine its route does not cross. A bench or a battery is pass-through, so the game calls that floor, but the cord vanishes under the machine and comes
+        /// back out, and from above each pass reads as one more cable into it (seen at a smithy in a played colony; owner 2026-11-07: "multiple cables for no reason"). A strand's own plug run is added after this is read.</summary>
+        internal static int MachineStrays(CordWorld w, List<V2> pts, List<V2> plan)
+        {
+            if (pts == null || pts.Count == 0 || w.Machines.Count == 0) return 0;
+            var under = new HashSet<Cell>();
+            foreach (MachineInfo m in w.Machines)
+                for (int x = m.X0; x < m.X0 + m.W; x++)
+                    for (int z = m.Z0; z < m.Z0 + m.H; z++) under.Add(new Cell(x, z));
+            if (plan != null) foreach (V2 p in plan) under.Remove(p.Floor);
+            int strays = 0;
+            bool inside = false;
+            foreach (V2 p in pts)
+            {
+                bool now = under.Contains(p.Floor);
+                if (now && !inside) strays++;
+                inside = now;
+            }
+            return strays;
+        }
+
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
         private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 

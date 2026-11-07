@@ -251,6 +251,24 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var coil = new List<V2>();
             for (int i = 0; i < 160; i++) coil.Add(new V2(10 + 0.3 * Math.Cos(i * 0.16), 10 + 0.3 * Math.Sin(i * 0.16)));
             Check(CordShapeAudit.Corners(coil).Count == 0 && Geo.Length(CordShape.Polish(open, coil)) > 0.8 * Geo.Length(coil), "a coil of 0.3 cell is no corner and keeps its size");
+            // slack under a machine it does not plug into reads as extra cables into it: the count sees a planted pass, spares a route that really crosses, and laying leaves almost none
+            var bench = new CordWorld(40, 20);
+            bench.Machines.Add(new MachineInfo { Id = "bench", Kind = MachineKind.Consumer, X0 = 18, Z0 = 11, W = 3, H = 1 });
+            var pass = new List<V2>();
+            for (int i = 0; i <= 200; i++) pass.Add(new V2(10 + i * 0.1, 11.5));
+            Check(CordShape.MachineStrays(bench, pass, null) > 0, "a planted pass under a bench reads as a stray");
+            Check(CordShape.MachineStrays(bench, pass, pass) == 0, "a route that really crosses the bench is no stray");
+            int straysLaid = 0, strandsLaid = 0;
+            for (ulong seed = 1; seed <= 12; seed++)
+            {
+                var room = new CordWorld(40, 24);
+                for (int x = 4; x <= 34; x++) room.SetConduit(new Cell(x, 10));
+                room.Machines.Add(new MachineInfo { Id = "bench", Kind = MachineKind.Consumer, X0 = 17, Z0 = 12, W = 3, H = 1, Hookups = new List<Cell> { new Cell(18, 10) } });
+                foreach (LaidPiece p in new CordBuilder().Build(room, new BuildOptions { Seed = seed }, c => true))
+                    if (p.EndA != null && !p.EndA.StartsWith("consumer") && !p.EndB.StartsWith("consumer"))
+                        foreach (CordStrand t in p.Strands) { strandsLaid++; straysLaid += CordShape.MachineStrays(room, t.Pts, null); }
+            }
+            Check(strandsLaid > 0 && straysLaid * 10 <= strandsLaid, $"laying keeps a through cord's slack out from under a bench: {straysLaid} passes in {strandsLaid} strands");
             // a Modern T with a battery right beside it: the battery takes the strip's lead, a straight nub, with no hook round the strip's end
             var w = new CordWorld(30, 20);
             for (int x = 4; x <= 24; x++) w.SetConduit(new Cell(x, 8));
