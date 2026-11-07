@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
   <!-- North star: no other animal wanders in, no other wild plant grows. These incidents bring a fixed foreign species, so
-       they never fire here (IncidentWorker.CanFireNow reads disallowedBiomes). Herd migrations and manhunter packs keep
+       they never fire here (IncidentWorker.CanFireNow reads disallowedBiomes). Alphabeavers, AmbrosiaSprout and BoomshroomSprout
+       are absent: they already carry an allowedBiomes whitelist without this biome, and a def with both lists is a config error. Herd migrations and manhunter packs keep
        firing but draw from the roster: PyrelandsForeignArrivals.cs. -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/IncidentDef[defName="FarmAnimalsWanderIn"]/disallowedBiomes</xpath>
@@ -22,28 +23,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>Defs/IncidentDef[defName="ThrumboPasses"]</xpath>
-      <value><disallowedBiomes><li>RM_Pyrelands</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="Alphabeavers"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Alphabeavers"]/disallowedBiomes</xpath>
-      <value><li>RM_Pyrelands</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Alphabeavers"]</xpath>
-      <value><disallowedBiomes><li>RM_Pyrelands</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="AmbrosiaSprout"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="AmbrosiaSprout"]/disallowedBiomes</xpath>
-      <value><li>RM_Pyrelands</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="AmbrosiaSprout"]</xpath>
       <value><disallowedBiomes><li>RM_Pyrelands</li></disallowedBiomes></value>
     </nomatch>
   </Operation>
@@ -88,17 +67,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>Defs/IncidentDef[defName="AnimaTreeSpawn"]</xpath>
-      <value><disallowedBiomes><li>RM_Pyrelands</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="BoomshroomSprout"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="BoomshroomSprout"]/disallowedBiomes</xpath>
-      <value><li>RM_Pyrelands</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="BoomshroomSprout"]</xpath>
       <value><disallowedBiomes><li>RM_Pyrelands</li></disallowedBiomes></value>
     </nomatch>
   </Operation>

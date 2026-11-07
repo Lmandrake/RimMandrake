@@ -322,7 +322,7 @@ namespace RimMandrake.ExplosiveGrowth
         /// end of life is its event (§2 table, T4).</summary>
         public bool CyclesHere(Plant plant, RM_PlantProfile prof)
         {
-            if (prof == null || prof.isTree || !prof.Soaks || RM_TopResolver.Effective(prof.top) == RM_GrowthTop.None) return false;
+            if (prof == null || prof.isTree || prof.noCycle || !prof.Soaks || RM_TopResolver.Effective(prof.top) == RM_GrowthTop.None) return false;
             BiomeDef biome = map.Biome;
             return RM_ExplosiveGrowthKernel.Cycles(prof.archetype, RM_ExplosiveGrowthRegistry.PlantInScope(prof, biome),
                 RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome), Sealed(plant));

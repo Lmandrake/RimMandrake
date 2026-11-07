@@ -110,6 +110,15 @@ namespace RimMandrake.ExplosiveGrowth
         public RM_ArchetypeChoice archetype = RM_ArchetypeChoice.Auto;
         public float ruptureChance = -1f;
         public IntRange sproutCount = IntRange.Zero;
+
+        /// <summary>A burst that only pops and sows: no husk hay, no scattered filth, no blow to pawns and no message.
+        /// For a groundcover that carpets a map, where one plant in three bursting would bury the map in hay and beat up
+        /// anyone crossing it (Pyrelands, live 2026-11-07: 11,039 hay stacks and colonists downed by bruises in 3 days).</summary>
+        public bool gentleBurst;
+
+        /// <summary>The plant never reaches its top by itself; only a forced top (debug action, API) fires it. For a plant
+        /// that must stand until its own clock ends it (the scorch-fruit pod: harvestable, rots within about a day).</summary>
+        public bool noCycle;
         public List<string> adaptedLiquids = new List<string>();
         public bool fireAdapted;
     }

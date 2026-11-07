@@ -198,15 +198,18 @@ namespace RimMandrake.ExplosiveGrowth
             RM_ExplosiveGrowthDefOf.RM_EG_Pop?.PlayOneShot(new TargetInfo(c, map));
             for (int i = 0; i < 6; i++) FleckMaker.ThrowDustPuff(c.ToVector3Shifted() + Gen.RandomHorizontalVector(1.2f), map, 1.4f);
 
-            // Chaff and husk: hay is vanilla's own dry, flammable plant matter
-            // — low-grade fuel, exactly the ruled husk. TINDER leaves more.
-            SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
-            foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
+            if (!prof.gentleBurst)
             {
-                if (f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
-            }
+                // Chaff and husk: hay is vanilla's own dry, flammable plant matter
+                // — low-grade fuel, exactly the ruled husk. TINDER leaves more.
+                SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
+                foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
+                {
+                    if (f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
+                }
 
-            if (ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
+                if (ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
+            }
 
             SplitAndDie(plant);
 
@@ -214,7 +217,7 @@ namespace RimMandrake.ExplosiveGrowth
             int n = tinder ? Rand.RangeInclusive(5, 9) : Rand.RangeInclusive(3, 6);
             RM_SproutRing.Sow(map, c, ring, BurstRadius, n, respectBuiltGround: false, comp, growth: Rand.Range(0.25f, 0.45f));
 
-            if (map.IsPlayerHome && MessagesRepeatAvoider.MessageShowAllowed("RM_EG_Burst", 60f))
+            if (!prof.gentleBurst && map.IsPlayerHome && MessagesRepeatAvoider.MessageShowAllowed("RM_EG_Burst", 60f))
             {
                 Messages.Message("A swollen " + def.label + " burst, sowing the ground around it.",
                     new TargetInfo(c, map), MessageTypeDefOf.NegativeEvent);

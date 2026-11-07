@@ -10,6 +10,10 @@ namespace RimMandrake.ExplosiveGrowth
     {
         public RM_GrowthTop top;
         public float produceFactor = 1f;
+        /// <summary>The row's gentleBurst: see RM_ExplosiveGrowthRosterEntry.</summary>
+        public bool gentleBurst;
+        /// <summary>The row's noCycle: see RM_ExplosiveGrowthRosterEntry.</summary>
+        public bool noCycle;
         public ThingDef ringPlant;
         public TerrainDef slimeTerrain;
         /// <summary>The ruled archetype (spec §4.3), seeded from the biomes' plant lists unless a row decides.</summary>
@@ -304,6 +308,8 @@ namespace RimMandrake.ExplosiveGrowth
                         p.slimeTerrain = DefDatabase<TerrainDef>.GetNamedSilentFail(row.slimeTerrain);
                     p.ruptureChance = row.ruptureChance;
                     p.sproutCount = row.sproutCount;
+                    p.gentleBurst = row.gentleBurst;
+                    p.noCycle = row.noCycle;
                     choice = row.archetype;
                     fireFlag = row.fireAdapted;
                     adapted = row.adaptedLiquids;
