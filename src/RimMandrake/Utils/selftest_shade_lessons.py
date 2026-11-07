@@ -271,8 +271,12 @@ def main():
 
     # Apply's own guard, as written: every `requires` finished, else return; and no gate check (off keeps the discount)
     apply_src = lessons[lessons.index("class RM_ResearchMod_RaiseProject"):lessons.index("class RM_ShadeCrossingWatch")]
-    check("!requires[i].IsFinished" in apply_src and "RM_ShadeLessonMath.RaiseAmount(project.ProgressReal, project.Cost, fraction)" in apply_src,
+    # the guard's body too: a `continue` there would let one finished idea of a pair raise the project to 75%
+    guard = re.compile(r"if \(requires\[i\] == null \|\| !requires\[i\]\.IsFinished\)\s*\{\s*return;\s*\}")
+    check(bool(guard.search(apply_src)) and "RM_ShadeLessonMath.RaiseAmount(project.ProgressReal, project.Cost, fraction)" in apply_src,
           "RaiseProject.Apply returns unless every required idea is finished, and raises by RaiseAmount on ProgressReal/Cost")
+    check(not guard.search(re.sub(r"(IsFinished\)\s*\{\s*)return;", r"\1continue;", apply_src)),
+          "the guard check catches a planted continue-for-return (one idea alone must not raise the project)")
     check("MechanicGates" not in apply_src, "the 75% credit is not gated (design §6: off, the discount still works)")
 
     # 3. Crossings.
