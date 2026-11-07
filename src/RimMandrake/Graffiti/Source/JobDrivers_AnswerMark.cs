@@ -35,7 +35,7 @@ namespace RimMandrake.Graffiti
                     break;
                 case RM_Answer.Reply:
                     if (GraffitiSocial.CanReplyInPaint(pawn)
-                        && GraffitiJobUtility.TryFindReplyCell(pawn, grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position, out IntVec3 cell))
+                        && GraffitiJobUtility.TryFindReplyCell(pawn, grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position, out IntVec3 cell, grudge.against))
                     {
                         job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell, grudge.against);
                         job.ignoreJoyTimeAssignment = true;

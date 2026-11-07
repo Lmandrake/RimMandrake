@@ -44,19 +44,23 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Where a hand answers a mark in paint: as near as it can get on bare wall, in the mark's own sight; failing that, over the top of it.</summary>
-        internal static bool TryFindReplyCell(Pawn pawn, IntVec3 near, out IntVec3 result)
+        /// Live 2026-11-07: the fallback went over whatever stood there, and BW's answer to Mo erased Pell's work too, so Pell took a grudge
+        /// against BW over a quarrel that wasn't his. Now the reply needs room clear of everyone but the pawn it answers.
+        internal static bool TryFindReplyCell(Pawn pawn, IntVec3 near, out IntVec3 result, Pawn against = null)
         {
             Map map = pawn.Map;
+            float need = GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery);
             IntVec3 fallback = IntVec3.Invalid;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, ReplyRadius, useCenter: true))
             {
                 if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
+                if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, against))) continue;
                 if (!AlreadyMarked(c, map))
                 {
                     result = c;
                     return true;
                 }
-                if (!fallback.IsValid) fallback = c;
+                if (!fallback.IsValid) fallback = c;     // over the top of the answered pawn's own mark
             }
             result = fallback;
             return fallback.IsValid;
@@ -77,7 +81,8 @@ namespace RimMandrake.Graffiti
 
         /// <summary>How wide a mark centred on this floor cell's wall may be before its drawing overlaps a neighbour's on the same face
         /// (RM_GraffitiKernel.WallMarksOverlap's own rule, read from the other side). Unlimited with nothing near.</summary>
-        public static float BareRoom(IntVec3 c, Map map)
+        /// `spare`: a pawn whose own marks don't count (a reply may go over the work of the one it answers, and only theirs).
+        public static float BareRoom(IntVec3 c, Map map, Pawn spare = null)
         {
             int side = Filth_Mark.ReadWallSide(c, map);
             if (side == RM_GraffitiKernel.NoWall) return float.MaxValue;
@@ -91,7 +96,7 @@ namespace RimMandrake.Graffiti
                 if (!floor.InBounds(map)) continue;
                 foreach (Thing t in floor.GetThingList(map))
                 {
-                    if (!(t is Filth_Mark m) || m.wallSide != side) continue;
+                    if (!(t is Filth_Mark m) || m.wallSide != side || (spare != null && m.maker == spare)) continue;
                     if (k == 0) return 0f;
                     room = System.Math.Min(room, 2f * (System.Math.Abs(k) - GraffitiPool.WidthOf(m.def) / 2f) + 0.3f);
                 }
@@ -123,8 +128,26 @@ namespace RimMandrake.Graffiti
         {
             Room room = c.GetRoom(map);
             if (room == null) return false;
+            // Outside, "the room" is the whole map and its share never fills: live 2026-11-07, three idle days painted the colony's outer west
+            // wall solid from end to end. Out there a stretch of wall holds its share instead.
+            if (room.PsychologicallyOutdoors || room.CellCount > RM_GraffitiKernel.OpenGroundCells)
+            {
+                return RM_GraffitiKernel.StretchHoldsEnough(MarksNear(c, map, RM_GraffitiKernel.StretchRadius));
+            }
             counts.TryGetValue(room, out int n);
             return RM_GraffitiKernel.RoomHoldsEnough(n, room.CellCount);
+        }
+
+        private static int MarksNear(IntVec3 c, Map map, float radius)
+        {
+            MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(map);
+            if (comp == null) return 0;
+            int n = 0;
+            foreach (Filth_Mark m in comp.marks)
+            {
+                if (m.Spawned && m.Position.InHorDistOf(c, radius)) n++;
+            }
+            return n;
         }
 
         private static bool PickFrom(List<IntVec3> cells, List<RM_MarkCell> states, Map map, out IntVec3 result)

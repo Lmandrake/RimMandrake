@@ -85,6 +85,25 @@ def setup(s):
     print("ROLES mocker=%s target=%s cold=%s" % tuple(names))
 
 
+def days(s, ticks, chunk=15000):
+    """A run of days with nothing staged: one Tally line per chunk, and only the trace lines that are events (not every read)."""
+    import re
+    keep = re.compile(r"painted|over|confront|BLOWS|scrub|crossed|unfinished|refus|fit|goodwill|raid|left their|means to")
+    done = 0
+    while done < ticks:
+        n = min(chunk, ticks - done)
+        r = s.call("jawa/safe_advance", ticks=n)
+        done += n
+        trig = r.get("triggers") if isinstance(r, dict) else r
+        if trig:
+            print("TRIGGERS", str(trig)[:300])
+        led = str(static(s, SOCIAL, "Ledger", "trace"))
+        for l in led.splitlines():
+            if l.startswith("  . ") and keep.search(l) and " reads " not in l:
+                print(l)
+        print(static(s, SOCIAL, "Tally"), flush=True)
+
+
 def until(s, pattern, maxticks, step=60):
     """Advance `step` ticks at a time until a trace line matches `pattern`; leaves the game paused right after it."""
     import re
@@ -173,6 +192,9 @@ def wallui(s, name, cell, root=7.4):
 
 
 def one(s, a):
+    if a[0] == "days":
+        days(s, int(a[1]), int(a[2]) if len(a) > 2 else 15000)
+        return
     if a[0] == "wallui":
         wallui(s, a[1], a[2], float(a[3]) if len(a) > 3 else 7.4)
         return

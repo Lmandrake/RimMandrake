@@ -434,11 +434,39 @@ namespace RimMandrake.Graffiti
             }
             if (!first) return;
             Say(v, line, tone);
+            // A rival's tags, a friend's pieces, a creed: one walk down a corridor past five of them is one feeling, not five lines in the
+            // log (live 2026-11-07: "Mo glared at BW's tag" three times in 360 ticks). Events (a mockery read, a tribute) always log.
+            if (log != null && RM_GraffitiKernel.LogsOncePerDay(reaction) && LoggedToday(v, maker, reaction)) log = null;
             if (log != null) Log(v, maker, string.Format(log, v.LabelShort, makerName));
             if (log != null && RM_GraffitiKernel.Announces(reaction) && RM_GraffitiSettings.socialMessagesEnabled && PawnUtility.ShouldSendNotificationAbout(v))
             {
-                Messages.Message(string.Format(log, v.LabelShort, makerName), WallTarget(m), reaction == RM_Reaction.Humiliated ? MessageTypeDefOf.NegativeEvent : MessageTypeDefOf.SilentInput, historical: true);
+                Tell(string.Format(log, v.LabelShort, makerName), WallTarget(m), reaction == RM_Reaction.Humiliated ? MessageTypeDefOf.NegativeEvent : MessageTypeDefOf.SilentInput, historical: true);
             }
+        }
+
+        /// <summary>Every message the walls send, counted and kept (the game's own list forgets them in seconds), so a run of days can say how
+        /// many reached the player: the owner's "never a stream of messages".</summary>
+        internal static int messagesSent;
+        internal static readonly List<string> messagesKept = new List<string>();
+
+        private static void Tell(string text, LookTargets at, MessageTypeDef type, bool historical = true)
+        {
+            messagesSent++;
+            messagesKept.Add(Find.TickManager.TicksGame + " " + text);
+            if (messagesKept.Count > 300) messagesKept.RemoveAt(0);
+            Messages.Message(text, at, type, historical);
+        }
+
+        private static readonly Dictionary<long, int> lastLogged = new Dictionary<long, int>();
+
+        /// <summary>Has this reader already had this kind of feeling about this painter's marks logged in the last day? Records it if not.</summary>
+        private static bool LoggedToday(Pawn v, Pawn maker, RM_Reaction reaction)
+        {
+            long key = ((long)v.thingIDNumber << 32) ^ ((long)(maker?.thingIDNumber ?? 0) << 8) ^ (long)reaction;
+            int now = Find.TickManager.TicksGame;
+            if (lastLogged.TryGetValue(key, out int at) && at <= now && now - at < GenDate.TicksPerDay) return true;
+            lastLogged[key] = now;
+            return false;
         }
 
         /// <summary>A visitor's faction reads a mark on the host's wall, once per mark. Owner's pick: only marks your own people painted count,
@@ -459,7 +487,7 @@ namespace RimMandrake.Graffiti
             Say(v, delta > 0 ? "A good sign, that." : "So that's what they think of us.", delta > 0 ? Tone.Warm : Tone.Angry);
             if (delta <= -5 && RM_GraffitiSettings.socialMessagesEnabled)
             {
-                Messages.Message(v.LabelShort + " of " + v.Faction.Name + " read the insult on your wall.", WallTarget(m), MessageTypeDefOf.NegativeEvent);
+                Tell(v.LabelShort + " of " + v.Faction.Name + " read the insult on your wall.", WallTarget(m), MessageTypeDefOf.NegativeEvent);
             }
             return true;
         }
@@ -572,13 +600,13 @@ namespace RimMandrake.Graffiti
                 Log(painter, mark.subject, painter.LabelShort + what + " on the wall.");
                 if (RM_GraffitiSettings.socialMessagesEnabled && painter.Faction == Faction.OfPlayer)
                 {
-                    Messages.Message(painter.LabelShort + what + " on the wall.", WallTarget(mark), MessageTypeDefOf.SilentInput, historical: true);
+                    Tell(painter.LabelShort + what + " on the wall.", WallTarget(mark), MessageTypeDefOf.SilentInput, historical: true);
                 }
             }
             if (painter.Faction != null && painter.Faction.HostileTo(Faction.OfPlayer) && RM_GraffitiSettings.socialMessagesEnabled
                 && MapComponent_GraffitiSocial.For(mark.Map)?.RaidMessageDue() == true)
             {
-                Messages.Message(painter.Faction.Name + " left their mark on your walls on the way out.", WallTarget(mark), MessageTypeDefOf.NegativeEvent);
+                Tell(painter.Faction.Name + " left their mark on your walls on the way out.", WallTarget(mark), MessageTypeDefOf.NegativeEvent);
             }
         }
 
@@ -610,7 +638,7 @@ namespace RimMandrake.Graffiti
             Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.");
             if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned)
             {
-                Messages.Message((by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.", WallTarget(under), MessageTypeDefOf.SilentInput);
+                Tell((by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.", WallTarget(under), MessageTypeDefOf.SilentInput);
             }
             MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(maker.Map);
             if (comp != null && by != null && maker.Spawned && Answers(maker))
@@ -664,7 +692,7 @@ namespace RimMandrake.Graffiti
             Say(by, crossedOut ? "Not on my wall." : "There. Gone.", Tone.Neutral);
             if (RM_GraffitiSettings.socialMessagesEnabled && by.Faction == Faction.OfPlayer && (enemy || subject != null || fit))
             {
-                Messages.Message(text, WallTarget(mark), MessageTypeDefOf.SilentInput);
+                Tell(text, WallTarget(mark), MessageTypeDefOf.SilentInput);
             }
         }
 
@@ -716,7 +744,7 @@ namespace RimMandrake.Graffiti
             Log(by, painter, by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".");
             if (RM_GraffitiSettings.socialMessagesEnabled)
             {
-                Messages.Message(by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".", new LookTargets(by, painter), MessageTypeDefOf.NeutralEvent);
+                Tell(by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".", new LookTargets(by, painter), MessageTypeDefOf.NeutralEvent);
             }
         }
 

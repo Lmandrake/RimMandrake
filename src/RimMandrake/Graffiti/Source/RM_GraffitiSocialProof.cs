@@ -210,6 +210,34 @@ namespace RimMandrake.Graffiti
             return "ordered at " + cell + ", job=" + p.CurJobDef?.defName;
         }
 
+        /// <summary>One line for a run of days: marks standing, how many are about someone, messages and log lines the walls have sent so far,
+        /// and each colonist's net mood off the walls. The owner's "occasional stories, never a mood tax or a stream of messages", as numbers.</summary>
+        public static string Tally(string args)
+        {
+            Map map = Find.CurrentMap;
+            MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(map);
+            if (comp == null) return "error=no map";
+            var sb = new StringBuilder();
+            sb.Append("TALLY t=" + Find.TickManager.TicksGame + " marks=" + comp.marks.Count + " about=" + comp.marks.Count(m => m.subject != null || m.targetFaction != null)
+                + " msgs=" + GraffitiSocial.messagesSent + " log=" + Find.PlayLog.AllEntries.OfType<PlayLogEntry_Graffiti>().Count() + " moods");
+            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned.ToList())
+            {
+                var thoughts = new List<Thought>();
+                p.needs.mood.thoughts.GetAllMoodThoughts(thoughts);
+                float sum = thoughts.Where(t => t.def.defName.StartsWith("RM_Graffiti")).Sum(t => t.MoodOffset());
+                float opinion = p.needs.mood.thoughts.memories.Memories.OfType<Thought_MemorySocial>().Where(t => t.def.defName.StartsWith("RM_Graffiti")).Sum(t => System.Math.Abs(t.OpinionOffset()));
+                sb.Append(" " + p.LabelShort + ":" + sum.ToString("+0.0;-0.0;0") + "/" + opinion.ToString("0"));
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>The last n messages the walls sent the player, with their ticks.</summary>
+        public static string Said(string args)
+        {
+            int n = int.TryParse(args, out int k) ? k : 30;
+            return "SAID " + GraffitiSocial.messagesSent + "\n" + string.Join("\n", GraffitiSocial.messagesKept.Skip(System.Math.Max(0, GraffitiSocial.messagesKept.Count - n)));
+        }
+
         /// <summary>Everything the social layer has done, as a player could read it: each pawn's job, thoughts and opinions off the walls; each mark's story; the open grudges.</summary>
         public static string Ledger(string args)
         {

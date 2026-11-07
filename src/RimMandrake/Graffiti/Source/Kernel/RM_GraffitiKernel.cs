@@ -297,6 +297,20 @@ namespace RimMandrake.Graffiti
         /// <summary>Has a room its share of a calm painter's marks? One, and one more for every 15 cells of floor.</summary>
         public static bool RoomHoldsEnough(int marks, int floorCells) { return marks >= 1 + floorCells / 15; }
 
+        /// <summary>Open ground (outdoors, or a room bigger than any building's) is capped by stretch of wall, not by room: two marks within
+        /// StretchRadius cells, so an outer wall reads as written on with bare wall between, not painted solid.</summary>
+        public static bool StretchHoldsEnough(int marksNear) { return marksNear >= 2; }
+
+        public const float StretchRadius = 4.5f;
+        public const int OpenGroundCells = 400;
+
+        /// <summary>Feelings that come again with every mark of the kind (a rival's tags, a friend's pieces, a creed, a memorial): logged once a day
+        /// per reader and painter. Events about someone (a mockery, a tribute, a faction insult) log every time.</summary>
+        public static bool LogsOncePerDay(RM_Reaction r)
+        {
+            return r == RM_Reaction.RivalTag || r == RM_Reaction.Moved || r == RM_Reaction.Offended || r == RM_Reaction.Mourning;
+        }
+
         /// <summary>Two marks on one line of wall, centres `distance` cells apart with half-widths a and b, cover each other.</summary>
         public static bool WallMarksOverlap(float distance, float halfWidthA, float halfWidthB)
         {

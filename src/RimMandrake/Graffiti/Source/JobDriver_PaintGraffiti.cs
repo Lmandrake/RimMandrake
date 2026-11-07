@@ -137,8 +137,9 @@ namespace RimMandrake.Graffiti
                 }
                 if (ReplyTo != null)
                 {
-                    // An answer in paint may go over what it answers: that's the point of it.
+                    // An answer in paint may go over what it answers, that's the point of it, but nobody else's work.
                     subject = ReplyTo;
+                    room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map, ReplyTo));
                     return GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery) <= room ? RMGraffitiDefOf.RM_Graffiti_Mockery : null;
                 }
                 // Owner's pick, 2026-11-07: measure a mark's real width before painting, so nobody erases a neighbour by accident. A spree
@@ -167,7 +168,13 @@ namespace RimMandrake.Graffiti
                 EndJobWith(JobCondition.Incompletable);
                 return;
             }
-            Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated);
+            // The gap was measured when the brush went up. A mark painted beside it since (two hands on one wall) may have narrowed it, and
+            // finishing now would erase the neighbour by accident: live 2026-11-07, three "painted over my work" grudges in half a day, one
+            // of them ending in a mockery. Whoever sees fresh paint there leaves it be. A spree and an order go over on purpose; a reply only over the work it answers.
+            bool crowded = !designated && !pawn.InMentalState
+                && GraffitiPool.WidthOf(markDef) > GraffitiJobUtility.BareRoom(cell, Map, ReplyTo) + 0.01f;
+            if (crowded) GraffitiSocial.Trace(pawn.LabelShort + " left " + markDef.defName + "@" + cell + " unfinished: fresh paint beside it");
+            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated);
             markDef = null;
             subject = null;
             targetFaction = null;
@@ -192,7 +199,7 @@ namespace RimMandrake.Graffiti
                 EndJobWith(made != null ? JobCondition.Succeeded : JobCondition.Incompletable);
                 return;
             }
-            marksThisSitting++;
+            if (made != null) marksThisSitting++;
             if (!RM_GraffitiKernel.SittingContinues(marksThisSitting, pawn.InMentalState, pawn.needs?.joy?.CurLevelPercentage ?? 1f)
                 || !GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 next, roomCap: !pawn.InMentalState)
                 || !pawn.CanReserve(next))
