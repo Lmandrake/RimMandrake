@@ -2,7 +2,7 @@
 
 Pass 9. Retired on the context guard. Not done, so no `DONE.md`. **New from the owner: a broaden call to GPT is required before `DONE.md` (Phone for help in `ralph/PROMPT.md`). Not used yet.** Owner ruled by card: cords under grass stay, "grass hides the cord"; taken out of `QUESTIONS.md`.
 
-Final DLL: selftest 1146/1146, offline 9/9, offline gate no red, live `core` 47/47 PASS (`proof_all_20261107T124134.json` on Steve; mode `partial`, not recorded). The whole proof was not run on this DLL. **Those rows passing did not see what I fixed: M2c read clean while 55 of 70 strands had a sharp corner.**
+Final DLL: selftest 1149/1149, live `core` 47/47 PASS (`proof_all_20261107T125417.json` on Steve; not recorded). Offline 9/9 and the offline gate were last run one commit before the final one, which added only machine strays. The whole proof was not run on this DLL. **Those rows passing did not see what I fixed: M2c read clean while 55 of 70 strands had a sharp corner.**
 
 ## The new tool: use it first
 **The shape lab.** Cord shape needs no game now. `B.probe("worlddump:NAME")` writes a live map's cord world to `$RM_GAME_USERDATA/GssWorlds/NAME.json`. Then, here:
@@ -18,11 +18,12 @@ Same builder as the game, a minute a turn, and the audit matched the live `shape
 - **Polish (`CordShape.Polish`, inside `Unfold`):** a 0.1-cell blur plus a local retract of needles on every laid strand, ends left point for point. Takes the settle's sawtooth and the corners off; the lay and the loops stay. Polish runs before fold rounding, because the other order made 150 folds.
 - **Strip beside a machine:** its lead is now one short nub with a slight belly (`StripNub`), not a flat hook round the strip's end. This is the judge's "two short cords to one machine" at close range. `p9c_Modern_work` against `p9a_Modern_work`.
 - **Needle at a socket:** a cord arriving against its socket had both Bézier handles on one line. `Approach` now swings out in a U when given `roomy`, strips only. Shared file, so the FlowWorks DLL is rebuilt with it; hoses never pass `roomy`, so hoses are unchanged.
+- **Sixth cause of "multiple cables", in `QUESTIONS.md`:** a through cord's slack ran under a pass-through machine and back out, reading as extra cables into it. `CordShape.MachineStrays`, re-lay in `SprawlOnce`, selftest with a planted pass and a route control. Smithy has one cord: `p9e_Scrapper_work` against `p9d_Scrapper_work`. Unlike doors, there is no live probe of this count yet.
 - Lamp on a mast drop: looked at it. `LooseDrop` is not a rod (`p9a_Modern_drop`). Its last half cell hides under grass, which the owner's ruling covers.
 - Spark: opened `p8m_wire_sheet` and `p8m_floor_sheet` myself. Sparks ride the moving tips. No change.
 
 ## Do next, in order
-1. **Sixth cause of "multiple cables", seen in `p9d_Scrapper_work`:** a through cord's slack runs under the smithy bench and back out, so one cord reads as extra cables into that machine. A bench is pass-through, so it counts as walkable. Same for the battery corners in `p9c_Modern_strips`. Fix like `DoorStrays`: count entries into a machine footprint that is neither this cord's end nor on its plan, and re-lay in `SprawlOnce`. **Check the top of `git log`: if I got to it, this is done, and it goes in `QUESTIONS.md`.**
+1. Sixth cause is fixed, see below. Check the battery corners in a Modern `strips` frame, which I did not re-open after the fix.
 2. **Barb at narrow one-cell devices** (heater, mast base: `p9c_Modern_hut` at 690,655 and 375,255): the cord arrives diagonal and the plug art sits square, out in the open, because the art is narrower than its cell. Don't change the arrival: the owner ruled for diagonals and `slideunder` pins it (I tried, 9 rows went red). Try the plug decal following the cord, or art insets in `CordWorldAdapter.InsetsSNEW`.
 3. Crossarm squiggle: still a visible zigzag across the insulators (crop of `p9a_Modern_work`). The judge's item, and pass 8's fix is not enough. Read the drip loop code in `AerialMath`.
 4. Audit still reads 34-37 of 70 strands with a corner, mostly tiny spur knots (`SpliceLoop`) and tight bends in a short cord's pinned ends. Decide by looking in the lab whether each is real or tighten the audit. A terminal strand pins 1.0 cell at both ends (`LimpSkip` takes one number), so its far end gets less polish: split it per end. Then make the audit a proof row.
@@ -56,4 +57,4 @@ Modern and one Scrapper colony on this code; Industrial and Futuristic last seen
 - four_styles_distinguishable: true
 - one_run_one_style: true
 - never_taut_straight_cord: true
-- never_cord_across_impassable: false (slack runs under pass-through machines, item 1; the game calls them passable, a player sees a cord under a bench)
+- never_cord_across_impassable: true
