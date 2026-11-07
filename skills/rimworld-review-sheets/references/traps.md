@@ -73,3 +73,6 @@ Foreign-copy audits: an image shared by two subjects does not say which one owns
 
 ## Rebuilding a decayed sheet
 - **Before rebuilding a review sheet that "decayed unseen", census the art ledger for owner rulings on its pictures.** "218 renders never owner-reviewed" was 109 jobs (json + manifest = 2 files each) and the owner had already purged 95 of them on earlier biome sheets. A render family he ruled on a biome sheet needs no second sheet; `desert_port_coverage.py` is the pattern (`events/**/*.jsonl` purge|rejected by owner, then sheet snapshots >= a date).
+
+## Art-tool traps
+**`art.py install` takes `--ruling`, `--owner-said` or `--by-card`; card decisions must never go through `--owner-said`,** which records a KEEP ruling and makes provisional installs look owner-kept (36 installs once overwrote owner-kept slots this way).

@@ -137,3 +137,6 @@ read the state back before `take_screenshot`.
 
 ## Derive the needed live mods from the proof, not from the failure
 Missing live-mods names are mostly invisible after the fact: 7 of 20 hand-repaired items (folded biome proofs, HEAVY_TEXTURES, HORRORS) never showed a mod-absence row, because envcause routes them `proof_or_site` ('MISSING', 'proof crashed', 'modcheck wrote no results'), and `mods_of(sha)` derives nothing for proof-only builds or folded sources. Derive the needs statically from the proof before the slot (script path plus folded map, fixture save header, `--mod` args, types and defNames), not from the build diff or failure text.
+
+## Live proofs that gate on an exact tier
+**A live proof that gates on an EXACT modset tier (`trial_site.py` gate, `test_site_tier_gate`) must carry a `live-tier: <tier>` line in its `live_proofs` file.** Without it the round runs it on whatever list is up, reads WRONG GAME UNMEASURED, and the supervisor routes it as an unfixable `proof_or_site` env cause. Exact tiers run on SteveDesktop via testq.
