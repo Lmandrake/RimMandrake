@@ -166,7 +166,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// </summary>
     public sealed class CordBuilder
     {
-        private Dictionary<string, LaidPiece> cache = new Dictionary<string, LaidPiece>();
+        private Dictionary<string, LaidPiece> cache = new Dictionary<string, LaidPiece>(), spareCache = new Dictionary<string, LaidPiece>();
         public int LastPlanned, LastReused;
         /// <summary>Edges the last Build left to a later Build because <see cref="BuildOptions.LayBudgetMs"/> ran out.</summary>
         public int LastPending;
@@ -246,8 +246,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         private sealed class GraphJob
         {
-            public List<long> Inputs;
-            public string Mach;
+            public InputBuf In;
             public CordGraph G;
             public List<EdgePlan> Plan;
             public List<KeyValuePair<VId, CordNode>> NodeOrder;
@@ -278,7 +277,48 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private bool graphRunning, graphFaulted;
         private List<LaidPiece> lastOut = new List<LaidPiece>();
 
-        private void StartGraph(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, string mach, List<long> inputs)
+        /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: a graph's exact inputs, the numbers and the machine ids and links, in
+        /// buffers kept across Builds. A Build compares them, it does not keep them: on the live scene they cost 76 KB of frame
+        /// allocation per hand-off (selftest AllocBudget), and an allocation that size on the frame pays Unity's incremental collector by its size
+        /// (a 25.8 ms slice, 21.6 of it in the two allocating steps of a hand-off that usually costs under 0.3 ms).</summary>
+        private sealed class InputBuf
+        {
+            public const int Floor = 16384;
+            public readonly List<long> Nums = new List<long>(Floor);
+            private char[] ids = new char[Floor];
+            private int n;
+            public int IdLength => n;
+            public void Clear() { Nums.Clear(); n = 0; }
+            public void Add(char c)
+            {
+                if (n == ids.Length) Array.Resize(ref ids, n * 2);
+                ids[n++] = c;
+            }
+            public void Add(string t)
+            {
+                if (n + t.Length > ids.Length) Array.Resize(ref ids, Math.Max(n + t.Length, ids.Length * 2));
+                t.CopyTo(0, ids, n, t.Length);
+                n += t.Length;
+            }
+            public bool SameIds(InputBuf o)
+            {
+                if (n != o.n) return false;
+                for (int i = 0; i < n; i++) if (ids[i] != o.ids[i]) return false;
+                return true;
+            }
+            public void CopyFrom(InputBuf o)
+            {
+                Nums.Clear();
+                Nums.AddRange(o.Nums);
+                if (ids.Length < o.n) ids = new char[o.ids.Length];
+                Array.Copy(o.ids, ids, o.n);
+                n = o.n;
+            }
+        }
+        /// <summary>Input buffers of finished graph jobs (caller only; a job holds at most one running and one landed).</summary>
+        private readonly Stack<InputBuf> freeBufs = new Stack<InputBuf>();
+
+        private void StartGraph(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, InputBuf inputs)
         {
             lock (layLock)
             {
@@ -287,7 +327,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 graphWorld = w;
             }
             GraphJobs++;
-            var job = new GraphJob { Inputs = new List<long>(inputs), Mach = mach };
+            InputBuf held = freeBufs.Count > 0 ? freeBufs.Pop() : new InputBuf();
+            held.CopyFrom(inputs);
+            var job = new GraphJob { In = held };
             ulong seed = opt.Seed;
             bool slide = opt.SlideUnder;
             HashSet<string> plugs = opt.StraightPlugIds;
@@ -393,8 +435,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// reuse, edge keys + cache checks + lays, node pieces, reach), so the live probe names where a rebuild's time goes.</summary>
         public double PhInputsMs, PhReduceMs, PhEdgesMs, PhNodesMs, PhReachMs, PhKeyMs, PhCorridorMs;
         private static double Ms(long a, long b) => (b - a) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-        private List<long> graphIn = new List<long>(), graphInNext = new List<long>();
-        private string graphMach;
+        private InputBuf graphIn = new InputBuf(), graphInNext = new InputBuf();
+        /// <summary>graphIn holds a Build's inputs a later Build may reuse (a LinkAllowed world's never match).</summary>
+        private bool graphInComparable;
 
         /// <summary>Where a terrain or roof change could alter the next Build (see CordReach); null before the first Build.</summary>
         internal CordReach Reach { get; private set; }
@@ -403,12 +446,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             int tangleMin = opt.Tangles ? opt.TangleMin : int.MaxValue, spurMax = opt.NeedlessLoops ? CordGraph.SpurMax : 0;
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            string mach = GraphInputs(w, opt, tangleMin, spurMax, graphInNext);
+            GraphInputs(w, opt, tangleMin, spurMax, graphInNext);
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
             CordGraph g;
             LastGraphPending = false;
             // a LinkAllowed callback (selftest bands only; the game adapter never sets one) is opaque: always re-reduce
-            bool reuse = Graph != null && w.LinkAllowed == null && mach == graphMach && SameInputs(graphIn, graphInNext);
+            bool reuse = Graph != null && w.LinkAllowed == null && graphInComparable && graphIn.SameIds(graphInNext) && SameInputs(graphIn.Nums, graphInNext.Nums);
             GraphJob adopt = null, gotGraph;
             // every Build takes the graph worker's output (a job that no Build adopts is dropped, so LayReady goes quiet)
             lock (layLock)
@@ -423,18 +466,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // (whole-map work: 142 of a 188 ms frame at 8 lattices offline). The frame takes a landed graph only when its
                 // inputs equal this Build's exactly (then it is the graph this Build would reduce); otherwise it starts a job
                 // for this Build's inputs and shows the last pieces, touching nothing else of the builder.
-                if (gotGraph != null && gotGraph.Mach == mach && SameInputs(gotGraph.Inputs, graphInNext)) adopt = gotGraph;
+                if (gotGraph != null && gotGraph.In.SameIds(graphInNext) && SameInputs(gotGraph.In.Nums, graphInNext.Nums)) adopt = gotGraph;
                 else if (!graphFaulted)
                 {
-                    StartGraph(w, opt, tangleMin, spurMax, mach, graphInNext);
+                    if (gotGraph != null) freeBufs.Push(gotGraph.In);
+                    gotGraph = null;
+                    StartGraph(w, opt, tangleMin, spurMax, graphInNext);
                     LastGraphPending = true;
                     LastPlanned = LastReused = LastLanded = LastLaidOnCaller = 0;
                     LastPending = Math.Max(1, LastPending);
                     long tw = System.Diagnostics.Stopwatch.GetTimestamp();
                     PhInputsMs = Ms(t0, t1); PhReduceMs = Ms(t1, tw); PhEdgesMs = PhNodesMs = PhReachMs = PhKeyMs = PhCorridorMs = 0;
-                    return new List<LaidPiece>(lastOut);
+                    // the very list the last full Build returned (nothing writes a returned list): no copy on the frame
+                    return lastOut;
                 }
             }
+            if (gotGraph != null) freeBufs.Push(gotGraph.In);
             if (reuse)
             {
                 g = Graph;
@@ -443,7 +490,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else if (adopt != null)
             {
-                LastReduceWhy = ReduceWhy(w, mach) + " (worker)";
+                LastReduceWhy = ReduceWhy(w) + " (worker)";
                 g = adopt.G;
                 plan = adopt.Plan; planFor = g;
                 junctions = adopt.Junctions; nodeOrder = adopt.NodeOrder; junctionsFor = g; junctionSeed = opt.Seed;
@@ -452,16 +499,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else
             {
-                LastReduceWhy = ReduceWhy(w, mach);
+                LastReduceWhy = ReduceWhy(w);
                 g = CordGraph.Reduce(w, opt.Seed, tangleMin, spurMax, opt.SlideUnder, opt.StraightPlugIds);
                 LastGraphReused = false;
             }
             (graphIn, graphInNext) = (graphInNext, graphIn);
-            graphMach = w.LinkAllowed == null ? mach : null;
+            graphInComparable = w.LinkAllowed == null;
             Graph = g;
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
-            var next = new Dictionary<string, LaidPiece>();
-            var outp = new List<LaidPiece>();
+            // the last cache's dictionary, retired below, is this one (a whole-map dictionary per frame was the Build's largest block)
+            Dictionary<string, LaidPiece> next = spareCache;
+            next.Clear();
+            // sized once: growing it by doubling allocated about twice its final size
+            var outp = new List<LaidPiece>(lastOut.Count + 16);
             LastPlanned = LastReused = LastPending = LastLanded = LastLaidOnCaller = 0;
             shownNext.Clear();
             // the worker's landed pieces (taken whatever this Build's mode: a landed piece is exactly what the caller would lay)
@@ -489,19 +539,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
             string fingerprint = opt.Lay.Fingerprint();
             string optTail = (opt.DiveThrough ? "V" : "") + (opt.SlideUnder ? "U" : "");
             long tKey = 0, tCorr = 0;
-            var full = new StringBuilder();
             foreach (EdgePlan ep in plan)
             {
                 long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
                 CordEdge e = ep.Edge;
                 bool parallel = ep.Parallel;
                 string ekey = ep.EKey;
-                full.Clear().Append(ep.PartA);
-                for (int i = 0; i < ep.LiveCells.Length; i++)
-                    full.Append(isLive(ep.LiveCells[i]) ? 'L' : 'D').Append(ep.LiveSeam[i] ? "S" : "");
-                full.Append(ep.PartB).Append('#').Append(fingerprint).Append('#')
-                    .Append(PileName(opt.PileFor(ep.CellA))).Append(PileName(opt.PileFor(ep.CellB))).Append(optTail);
-                string fk = full.ToString();
+                string fk = ep.Key(isLive, fingerprint, PileName(opt.PileFor(ep.CellA)), PileName(opt.PileFor(ep.CellB)), optTail, keyText);
                 string sig = ep.Sig;
                 long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
                 tKey += k1 - k0;
@@ -584,6 +628,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
                 outp.Add(p);
             }
+            spareCache = cache;
             cache = next;
             lastOut = outp;
             long t4 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -602,9 +647,33 @@ namespace RimMandrake.GimmeSomeSlack.Core
             public Cell[] LiveCells;
             public bool[] LiveSeam;
             public Cell CellA, CellB;
+            // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: the key this edge last made and what it was made of. An all-reused Build formatted
+            // a fresh key per edge, most of the 625 KB it allocated per frame at E=980; an unchanged edge now returns the same
+            // string. Caller only (the worker reads the fields above and a job's own Fk).
+            private string memoKey, memoFingerprint, memoPileA, memoPileB, memoTail;
+            private bool[] memoLive;
+
+            public string Key(Func<Cell, bool> isLive, string fingerprint, string pileA, string pileB, string tail, StringBuilder text)
+            {
+                bool same = memoKey != null && memoFingerprint == fingerprint && memoPileA == pileA && memoPileB == pileB && memoTail == tail;
+                memoLive ??= new bool[LiveCells.Length];
+                for (int i = 0; i < LiveCells.Length; i++)
+                {
+                    bool l = isLive(LiveCells[i]);
+                    if (memoLive[i] != l) { memoLive[i] = l; same = false; }
+                }
+                if (same) return memoKey;
+                text.Clear().Append(PartA);
+                for (int i = 0; i < LiveCells.Length; i++)
+                    text.Append(memoLive[i] ? 'L' : 'D').Append(LiveSeam[i] ? "S" : "");
+                text.Append(PartB).Append('#').Append(fingerprint).Append('#').Append(pileA).Append(pileB).Append(tail);
+                memoFingerprint = fingerprint; memoPileA = pileA; memoPileB = pileB; memoTail = tail;
+                return memoKey = text.ToString();
+            }
         }
 
         private List<EdgePlan> plan = new List<EdgePlan>();
+        private readonly StringBuilder keyText = new StringBuilder();
         private CordGraph planFor, junctionsFor;
         private ulong junctionSeed;
         private Dictionary<VId, LaidPiece> junctions = new Dictionary<VId, LaidPiece>();
@@ -680,52 +749,52 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>Everything CordGraph.Reduce reads, in its reading order: the map size, the reduce options, every conduit cell
         /// with its buried kind (IsBuried / BuriedKind are the only per-cell world reads), and every machine field.</summary>
-        private static string GraphInputs(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, List<long> into)
+        private static void GraphInputs(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, InputBuf into)
         {
             into.Clear();
-            into.Add(w.Width); into.Add(w.Height);
-            into.Add(unchecked((long)opt.Seed)); into.Add(tangleMin); into.Add(spurMax); into.Add(opt.SlideUnder ? 1 : 0);
+            List<long> nums = into.Nums;
+            nums.Add(w.Width); nums.Add(w.Height);
+            nums.Add(unchecked((long)opt.Seed)); nums.Add(tangleMin); nums.Add(spurMax); nums.Add(opt.SlideUnder ? 1 : 0);
             foreach (Cell c in w.ConduitCells())
-                into.Add(((long)c.X << 32) | ((long)(uint)c.Z << 8) | (long)(byte)w.BuriedKind(c));
-            var sb = new StringBuilder();
-            if (opt.StraightPlugIds != null)
+                nums.Add(((long)c.X << 32) | ((long)(uint)c.Z << 8) | (long)(byte)w.BuriedKind(c));
+            if (opt.StraightPlugIds != null && opt.StraightPlugIds.Count > 0)
             {
                 var ids = opt.StraightPlugIds.ToList();
                 ids.Sort(string.CompareOrdinal);
-                foreach (string id in ids) sb.Append(id).Append('\u0001');
+                foreach (string id in ids) { into.Add(id); into.Add('\u0001'); }
             }
-            sb.Append('\u0002');
-            // round 2: the machines' numbers go into the exact long list (no per-Build double/int formatting); the string keeps
-            // only the ids and links. -1 separates the machines' variable-length hookup lists.
+            into.Add('\u0002');
+            // round 2: the machines' numbers go into the exact long list (no per-Build double/int formatting); the ids and links
+            // go to the id buffer. -1 separates the machines' variable-length hookup lists.
             foreach (MachineInfo m in w.Machines)
             {
-                sb.Append(m.Id).Append('\u0001');
-                foreach (string l in m.MachineLinks) sb.Append(l).Append('\u0001');
-                sb.Append('\u0002');
-                into.Add(-1L); into.Add((long)m.Kind); into.Add(m.X0); into.Add(m.Z0); into.Add(m.W); into.Add(m.H);
-                into.Add(m.Hookups.Count);
-                foreach (Cell h in m.Hookups) into.Add(((long)h.X << 32) | (uint)h.Z);
-                into.Add(BitConverter.DoubleToInt64Bits(m.InsetS)); into.Add(BitConverter.DoubleToInt64Bits(m.InsetN));
-                into.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); into.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
-                if (m.HasHome) { into.Add(1); into.Add(m.HomeX); into.Add(m.HomeZ); } else into.Add(0);
+                into.Add(m.Id); into.Add('\u0001');
+                foreach (string l in m.MachineLinks) { into.Add(l); into.Add('\u0001'); }
+                into.Add('\u0002');
+                nums.Add(-1L); nums.Add((long)m.Kind); nums.Add(m.X0); nums.Add(m.Z0); nums.Add(m.W); nums.Add(m.H);
+                nums.Add(m.Hookups.Count);
+                foreach (Cell h in m.Hookups) nums.Add(((long)h.X << 32) | (uint)h.Z);
+                nums.Add(BitConverter.DoubleToInt64Bits(m.InsetS)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetN));
+                nums.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
+                if (m.HasHome) { nums.Add(1); nums.Add(m.HomeX); nums.Add(m.HomeZ); } else nums.Add(0);
             }
-            return sb.ToString();
         }
 
         /// <summary>Why the last re-reduce could not reuse the graph (round 2: the live probe names what a far dig changed).</summary>
         public string LastReduceWhy = "";
 
-        private string ReduceWhy(CordWorld w, string mach)
+        private string ReduceWhy(CordWorld w)
         {
             if (Graph == null) return "first";
             if (w.LinkAllowed != null) return "linkAllowed";
-            if (mach != graphMach) return "machine ids/links";
-            int n = Math.Min(graphIn.Count, graphInNext.Count), i = 0;
-            while (i < n && graphIn[i] == graphInNext[i]) i++;
+            if (!graphInComparable || !graphIn.SameIds(graphInNext)) return "machine ids/links";
+            List<long> was = graphIn.Nums, now = graphInNext.Nums;
+            int n = Math.Min(was.Count, now.Count), i = 0;
+            while (i < n && was[i] == now[i]) i++;
             if (i < 6) return "size/options";
-            int sep = graphInNext.IndexOf(-1L);
+            int sep = now.IndexOf(-1L);
             string part = sep < 0 || i < sep ? "conduit cells" : "machine numbers";
-            return part + " @" + i + " (" + graphIn.Count + "->" + graphInNext.Count + ")";
+            return part + " @" + i + " (" + was.Count + "->" + now.Count + ")";
         }
 
         private static bool SameInputs(List<long> a, List<long> b)

@@ -28,9 +28,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// a stable FNV hash of its smallest cell token -- pure geometry, no vanilla PowerNet (which is not built yet while a
         /// loaded map's sections first regenerate). Bit-identical to the component's former ComputeNetSeeds (SelfTest), with
         /// each piece's tokens kept on the piece (a reused piece is not re-tokenised) and each root hashed once.</summary>
+        [System.ThreadStatic] private static Dictionary<string, string> scratchParent;
+        [System.ThreadStatic] private static Dictionary<string, int> scratchHash;
+
         internal static Dictionary<LaidPiece, int> NetSeeds(List<LaidPiece> ps)
         {
-            var parent = new Dictionary<string, string>(ps.Count * 2);
+            // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: kept between calls (read only inside one): two tens-of-KB tables per frame paid the
+            // incremental collector by size. [ThreadStatic] because the SelfTest's frames may run on any thread.
+            Dictionary<string, string> parent = scratchParent ??= new Dictionary<string, string>();
+            parent.Clear();
             string Find(string x)
             {
                 if (!parent.TryGetValue(x, out string px)) { parent[x] = x; return x; }
@@ -49,7 +55,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 Find(p.NetTokA);
                 if (p.NetTokB != null) Union(p.NetTokA, p.NetTokB);
             }
-            var hashOf = new Dictionary<string, int>();
+            Dictionary<string, int> hashOf = scratchHash ??= new Dictionary<string, int>();
+            hashOf.Clear();
             var res = new Dictionary<LaidPiece, int>(ps.Count);
             foreach (LaidPiece p in ps)
             {

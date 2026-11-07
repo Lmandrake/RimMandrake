@@ -23,6 +23,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             Slices();
             AsyncSlices();
+            AllocBudget();
             GraphWorker();
             SustainedChange();
             Coalesce();
@@ -279,6 +280,50 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS (live round 6: maxSliceMs 18 -> 39 -> 47/75 -> 87/98 ms as lattices piled
         /// up, every edge already laid on the worker): a frame's Build re-reduced the whole map's graph on the caller (offline
         /// 142 of 188 ms at 8 lattices). A changed graph is now reduced on a worker and adopted only under equal inputs.</summary>
+        /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: under Unity's incremental Boehm collector (boot.config gc-max-time-slice)
+        /// an allocation on the frame path pays marking work GC.CollectionCount never sees, and a large one pays by its size: the
+        /// live over-bar slices (25.8 ms, every ms in the two allocating phases of a Build whose usual cost is under 0.3 ms) were
+        /// that. So the frame Build's allocation is pinned in bytes, a measure a loaded machine cannot move: the changed-graph
+        /// hand-off, and an all-reused Build, on 4 lattices of lamps (the live proof's whole scene, E near 1000).</summary>
+        private static void AllocBudget()
+        {
+            const int k = 3;   // three whole lattices and a fourth being spawned
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            var (cells, lamps) = CordScaleBench.Lattice(k);
+            var opt = new BuildOptions { AsyncLay = true };
+            var b = new CordBuilder();
+            void Settle(CordWorld w)
+            {
+                var sw = Stopwatch.StartNew();
+                while (sw.Elapsed.TotalSeconds < 120)
+                {
+                    b.Build(w, opt, live);
+                    if (!b.LastGraphPending && b.LastPending == 0 && !b.LayRunning) return;
+                    System.Threading.Thread.Sleep(2);
+                }
+            }
+            long Bytes(CordWorld w)
+            {
+                long a0 = GC.GetAllocatedBytesForCurrentThread();
+                b.Build(w, opt, live);
+                return GC.GetAllocatedBytesForCurrentThread() - a0;
+            }
+            CordWorld before = CordScaleBench.World(k, cells.Count, lamps.Count - 6);
+            Settle(before);
+            long reused = 0;
+            for (int i = 0; i < 3; i++) reused = Bytes(before);   // the third: anything a first read memoizes is done
+            Program.Check(b.LastReused > 500 && b.LastPlanned == 0 && !b.LastGraphPending, $"alloc budget: blind, the settled Build reused {b.LastReused}, planned {b.LastPlanned}");
+            CordWorld after = CordScaleBench.World(k, cells.Count, lamps.Count);
+            long handoff = Bytes(after);
+            Program.Check(b.LastGraphPending, "alloc budget: blind, the changed world did not take the graph hand-off");
+            Console.WriteLine($"alloc budget: E={b.Graph?.Edges.Count} changed-graph hand-off {handoff} bytes, all-reused Build {reused} bytes");
+            Program.Check(handoff <= HandoffBytes, $"alloc budget: the changed-graph hand-off allocated {handoff} bytes on the frame (bound {HandoffBytes})");
+            Program.Check(reused <= ReusedBytes, $"alloc budget: an all-reused Build allocated {reused} bytes on the frame (bound {ReusedBytes})");
+            Settle(after);
+        }
+        /// <summary>Before the fix, E=980: 76568 and 624552 bytes. After it: 320 and 15256 (twice-ish headroom; a whole-map table is 40 KB up).</summary>
+        internal const long HandoffBytes = 4096, ReusedBytes = 32768;
+
         private static void GraphWorker()
         {
             Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;

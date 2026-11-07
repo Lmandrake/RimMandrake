@@ -193,7 +193,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void ComputeMaterials(List<LaidPiece> ps, Dictionary<Cell, Aerial.CellStyle> cells)
         {
-            var next = new Dictionary<LaidPiece, int>();
+            var next = new Dictionary<LaidPiece, int>(ps.Count);
             var leg = new HashSet<LaidPiece>();
             var mix = new HashSet<LaidPiece>();
             bool single = GimmeSomeSlackSettings.extCordColorMode == ExtCordColorMode.Single;
@@ -338,50 +338,57 @@ namespace RimMandrake.GimmeSomeSlack
             }
             LastLanded = b.LastLanded;
             LastLaidOnCaller = b.LastLaidOnCaller;
-            var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
-            foreach (LaidPiece p in next)
+            // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: a Build waiting on the graph worker returned the pieces already published, so there is
+            // nothing to publish (the tail's dictionaries are whole-map frame allocations). The Build that takes the graph publishes,
+            // and any style or setting change that came meanwhile with it. A pending Build always leads to one: LayReadyCoalesced fires.
+            long tSeeds = tTail, tMat = tTail, tSig = tTail;
+            if (!(b.LastGraphPending && ReferenceEquals(next, pieces)))
             {
-                IntVec2 s = SectionOf(p.Owner);
-                if (!nextBy.TryGetValue(s, out List<LaidPiece> l)) nextBy[s] = l = new List<LaidPiece>();
-                l.Add(p);
-            }
-            // Publish BEFORE dirtying: a throw below must never leave the map with no cords.
-            Dictionary<IntVec2, List<LaidPiece>> prevBy = bySection;
-            pieces = next;
-            bySection = nextBy;
-            Dictionary<LaidPiece, int> prevSeeds = netSeeds;
-            long tSeeds = System.Diagnostics.Stopwatch.GetTimestamp();
-            try { netSeeds = ComputeNetSeeds(next); }
-            catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[GimmeSomeSlack] net seeds: " + ex, 0x4d43_5345); }
-            Dictionary<LaidPiece, int> prevMat = matIdx;
-            long tMat = System.Diagnostics.Stopwatch.GetTimestamp();
-            try { ComputeMaterials(next, styled); }
-            catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[GimmeSomeSlack] run styles: " + ex, 0x4d43_5346); }
-            // dirty every section whose owned set changed (not just the regenerating one)
-            // CORD_STATIC_DYNAMIC_HANDOFF_1: the compared signature is the one recorded when the section was last
-            // dirtied for print, and it carries each strand's static/dynamic eligibility (sway, shader sway + pin roof,
-            // ripple) — so a roof landing in ANOTHER section, which leaves the piece set unchanged, still reprints the
-            // owner section, and the per-frame and printed paths never both draw (or both skip) a strand.
-            long tSig = System.Diagnostics.Stopwatch.GetTimestamp();
-            LastSigSections = 0;
-            if (Current.ProgramState == ProgramState.Playing)
-            {
-                // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: a 64-bit signature per section (RebuildTail.SectionSig), no strings:
-                // the former string join of every piece's cache key and geometry ran over the whole map on every frame
-                // rebuild, untimed, and its garbage fed the stop-the-world collector
-                Func<CordStrand, int> elig = SwayOn || GimmeSomeSlackSettings.floorRipple ? (eligBits ??= EligBits) : null;
-                sigKeys.Clear();
-                sigKeys.UnionWith(nextBy.Keys);
-                sigKeys.UnionWith(prevBy.Keys);
-                sigKeys.UnionWith(printedSig.Keys);
-                foreach (IntVec2 s in sigKeys)
+                var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
+                foreach (LaidPiece p in next)
                 {
-                    ulong cur = RebuildTail.SectionSig(nextBy.TryGetValue(s, out List<LaidPiece> nl) ? nl : null, netSeeds, matIdx, elig);
-                    if (!printedSig.TryGetValue(s, out ulong was))
-                        was = RebuildTail.SectionSig(prevBy.TryGetValue(s, out List<LaidPiece> pl) ? pl : null, prevSeeds, prevMat, elig);
-                    if (was != cur) DirtySection(s);
-                    if (cur == 0UL) printedSig.Remove(s); else printedSig[s] = cur;
-                    LastSigSections++;
+                    IntVec2 s = SectionOf(p.Owner);
+                    if (!nextBy.TryGetValue(s, out List<LaidPiece> l)) nextBy[s] = l = new List<LaidPiece>();
+                    l.Add(p);
+                }
+                // Publish BEFORE dirtying: a throw below must never leave the map with no cords.
+                Dictionary<IntVec2, List<LaidPiece>> prevBy = bySection;
+                pieces = next;
+                bySection = nextBy;
+                Dictionary<LaidPiece, int> prevSeeds = netSeeds;
+                tSeeds = System.Diagnostics.Stopwatch.GetTimestamp();
+                try { netSeeds = ComputeNetSeeds(next); }
+                catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[GimmeSomeSlack] net seeds: " + ex, 0x4d43_5345); }
+                Dictionary<LaidPiece, int> prevMat = matIdx;
+                tMat = System.Diagnostics.Stopwatch.GetTimestamp();
+                try { ComputeMaterials(next, styled); }
+                catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[GimmeSomeSlack] run styles: " + ex, 0x4d43_5346); }
+                // dirty every section whose owned set changed (not just the regenerating one)
+                // CORD_STATIC_DYNAMIC_HANDOFF_1: the compared signature is the one recorded when the section was last
+                // dirtied for print, and it carries each strand's static/dynamic eligibility (sway, shader sway + pin roof,
+                // ripple) — so a roof landing in ANOTHER section, which leaves the piece set unchanged, still reprints the
+                // owner section, and the per-frame and printed paths never both draw (or both skip) a strand.
+                tSig = System.Diagnostics.Stopwatch.GetTimestamp();
+                LastSigSections = 0;
+                if (Current.ProgramState == ProgramState.Playing)
+                {
+                    // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: a 64-bit signature per section (RebuildTail.SectionSig), no strings:
+                    // the former string join of every piece's cache key and geometry ran over the whole map on every frame
+                    // rebuild, untimed, and its garbage fed the stop-the-world collector
+                    Func<CordStrand, int> elig = SwayOn || GimmeSomeSlackSettings.floorRipple ? (eligBits ??= EligBits) : null;
+                    sigKeys.Clear();
+                    sigKeys.UnionWith(nextBy.Keys);
+                    sigKeys.UnionWith(prevBy.Keys);
+                    sigKeys.UnionWith(printedSig.Keys);
+                    foreach (IntVec2 s in sigKeys)
+                    {
+                        ulong cur = RebuildTail.SectionSig(nextBy.TryGetValue(s, out List<LaidPiece> nl) ? nl : null, netSeeds, matIdx, elig);
+                        if (!printedSig.TryGetValue(s, out ulong was))
+                            was = RebuildTail.SectionSig(prevBy.TryGetValue(s, out List<LaidPiece> pl) ? pl : null, prevSeeds, prevMat, elig);
+                        if (was != cur) DirtySection(s);
+                        if (cur == 0UL) printedSig.Remove(s); else printedSig[s] = cur;
+                        LastSigSections++;
+                    }
                 }
             }
             long tEnd = System.Diagnostics.Stopwatch.GetTimestamp();
