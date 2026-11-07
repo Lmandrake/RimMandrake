@@ -176,7 +176,7 @@ Chronicle/Property/Pursuit merges execute (adopted by card, 2026-09-08).
    namespaces).
 6. **MayRequire rewrite** from the map + the zero-tolerance checker (a
    wrong MayRequire is a silent no-op; 167 sites last time; known hot rows:
-   ResearchRetag → ionweapons/armoury, Graffiti ↔ sacredgraffiti/rut.marks,
+   ResearchRetag → ionweapons/armoury, Graffiti ↔ sacredgraffiti/rut.sacredgraffiti,
    IshkoDarkLandmarks → ashkarrlandmarkart).
 7. **defName re-prefix** (RULED yes, R4) via migrate_names.py rows.
 7b. **Fully-qualified C# class-reference sweep** (lesson from
