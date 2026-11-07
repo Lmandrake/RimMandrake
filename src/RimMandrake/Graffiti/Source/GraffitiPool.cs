@@ -23,9 +23,9 @@ namespace RimMandrake.Graffiti
         // to RM_Graffiti_Vandal if nothing else is registered, so a mod
         // list with only the four GRAFFITI_GENERIC_MARKS_1 defs behaves
         // exactly as it did before this item.
-        public static ThingDef PickForSpree(Pawn painter, float maxWidth = float.MaxValue)
+        public static ThingDef PickForSpree(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            ThingDef pick = WeightedPick(SpreeEligible, painter, maxWidth);
+            ThingDef pick = WeightedPick(SpreeEligible, painter, maxWidth, at);
             return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
         }
 
@@ -33,10 +33,10 @@ namespace RimMandrake.Graffiti
         // for plus the planned forms - the stencil, the poster, the piece and
         // above all the painter's own ideoligion sigil - and no untrained
         // scrawl from a trained artist.
-        public static ThingDef PickForJoy(Pawn painter, float maxWidth = float.MaxValue)
+        public static ThingDef PickForJoy(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
             bool trained = (painter?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0) >= TrainedHand;
-            ThingDef pick = WeightedPick(ext => RM_GraffitiKernel.JoyForm(ext.form) && !(trained && ext.form == GraffitiForm.Scrawl), painter, maxWidth);
+            ThingDef pick = WeightedPick(ext => RM_GraffitiKernel.JoyForm(ext.form) && !(trained && ext.form == GraffitiForm.Scrawl), painter, maxWidth, at);
             return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
         }
 
@@ -48,18 +48,18 @@ namespace RimMandrake.Graffiti
         // Designator: only marks the player can deliberately choose
         // (ModExtension_Graffiti.designatorEligible), still weighted so a
         // designated cell doesn't always get the exact same mark.
-        public static ThingDef PickForDesignator(Pawn painter, float maxWidth = float.MaxValue)
+        public static ThingDef PickForDesignator(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            ThingDef pick = WeightedPick(DesignatorEligible, painter, maxWidth);
+            ThingDef pick = WeightedPick(DesignatorEligible, painter, maxWidth, at);
             return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
         }
 
         // RaidExitTagger: marks a raiding pawn's own gang leaves behind
         // (ModExtension_Graffiti.raidExitEligible), meme-gated ones only
         // offered when the pawn's ideo actually holds a matching meme.
-        public static ThingDef PickForRaidExit(Pawn raider, float maxWidth = float.MaxValue)
+        public static ThingDef PickForRaidExit(Pawn raider, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            return WeightedPick(RaidExitEligible, raider, maxWidth);
+            return WeightedPick(RaidExitEligible, raider, maxWidth, at);
         }
 
         private static bool SpreeEligible(ModExtension_Graffiti ext)
@@ -99,8 +99,26 @@ namespace RimMandrake.Graffiti
 
         private delegate bool EligibleFilter(ModExtension_Graffiti ext);
 
-        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth)
+        private const float NearbyRadius = 8f;
+
+        /// <summary>The marks already on this bit of wall, so the pool rarely repeats one beside itself.</summary>
+        private static HashSet<ThingDef> DefsNear(IntVec3 at, Map map)
         {
+            var near = new HashSet<ThingDef>();
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(at, NearbyRadius, useCenter: true))
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing t in c.GetThingList(map))
+                {
+                    if (t is Filth_Mark) near.Add(t.def);
+                }
+            }
+            return near;
+        }
+
+        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth, IntVec3? at)
+        {
+            HashSet<ThingDef> near = at.HasValue && placer?.Map != null ? DefsNear(at.Value, placer.Map) : null;
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -109,7 +127,7 @@ namespace RimMandrake.Graffiti
                 if (ext == null || !filter(ext) || WidthOf(d) > maxWidth) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
-                weights.Add(ext.poolWeight);
+                weights.Add(near != null && near.Contains(d) ? ext.poolWeight * RM_GraffitiKernel.NearbySameMarkWeight : ext.poolWeight);
             }
             int index = RM_GraffitiKernel.PickIndex(weights, defs.Count == 0 ? 0f : Rand.Range(0f, RM_GraffitiKernel.Total(weights)));
             return index < 0 ? null : defs[index];

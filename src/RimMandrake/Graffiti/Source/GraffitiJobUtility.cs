@@ -39,7 +39,7 @@ namespace RimMandrake.Graffiti
                 states.Add(new RM_MarkCell(usable, marked));
                 if (usable && !marked && ++bareSeen >= RM_GraffitiKernel.MaxCandidates) break;
             }
-            return PickFrom(cells, states, out result);
+            return PickFrom(cells, states, map, out result);
         }
 
         private static Dictionary<Room, int> CountMarksByRoom(Map map)
@@ -68,11 +68,17 @@ namespace RimMandrake.Graffiti
             return RM_GraffitiKernel.RoomHoldsEnough(n, room.CellCount);
         }
 
-        private static bool PickFrom(List<IntVec3> cells, List<RM_MarkCell> states, out IntVec3 result)
+        private static bool PickFrom(List<IntVec3> cells, List<RM_MarkCell> states, Map map, out IntVec3 result)
         {
             List<int> pool = RM_GraffitiKernel.Gather(states);
             if (pool.Count > 0)
             {
+                // A side face shows a sliver; a hand with a whole front face in reach mostly uses it.
+                if (Rand.Value < RM_GraffitiKernel.FrontFaceBias)
+                {
+                    List<int> fronts = pool.FindAll(i => Filth_Mark.ReadWallSide(cells[i], map) == 0);
+                    if (fronts.Count > 0) pool = fronts;
+                }
                 result = cells[pool.RandomElement()];
                 return true;
             }
@@ -104,8 +110,9 @@ namespace RimMandrake.Graffiti
             return Filth_Mark.MarksOverlapping(c + new Rot4(side).FacingCell, side, 0.5f, map, null).Count > 0;
         }
 
-        /// <summary>How many cells wide a mark centred on this floor cell's wall may be: the unbroken run of wall on either side
-        /// of the middle, doubled from the shorter side. A corner, a door or the wall's end limits it; 1 at least.</summary>
+        /// <summary>How many cells wide a mark centred on this floor cell's wall may be: the unbroken run of this face on either side of
+        /// the middle, doubled from the shorter side. A corner, a door or the wall's end limits it; 1 at least. A side face, a sliver, takes
+        /// less than a front.</summary>
         public static float WallRoom(IntVec3 c, Map map)
         {
             int side = Filth_Mark.ReadWallSide(c, map);
@@ -113,13 +120,14 @@ namespace RimMandrake.Graffiti
             {
                 return 1f;
             }
-            Rot4 wallDir = new Rot4(side);
-            IntVec3 wall = c + wallDir.FacingCell;
-            IntVec3 along = wallDir.Rotated(RotationDirection.Clockwise).FacingCell;
+            int face = RM_GraffitiKernel.FaceOfSide(side);
+            IntVec3 wall = c + new Rot4(side).FacingCell;
+            RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
+            IntVec3 along = new IntVec3(ax, 0, az);
             int a = 0, b = 0;
-            while (a < MaxWallReach && IsFullWallAt(wall + along * (a + 1), map)) a++;
-            while (b < MaxWallReach && IsFullWallAt(wall - along * (b + 1), map)) b++;
-            return 1 + 2 * System.Math.Min(a, b);
+            while (a < MaxWallReach && WallPlane.FaceAt(wall + along * (a + 1), map, face)) a++;
+            while (b < MaxWallReach && WallPlane.FaceAt(wall - along * (b + 1), map, face)) b++;
+            return System.Math.Min(1 + 2 * System.Math.Min(a, b), RM_GraffitiKernel.MaxWidthOnFace(face));
         }
 
         private const int MaxWallReach = 3;
@@ -148,7 +156,7 @@ namespace RimMandrake.Graffiti
                 states.Add(new RM_MarkCell(usable, marked));
                 if (usable && !marked && ++bareSeen >= RM_GraffitiKernel.MaxCandidates) break;
             }
-            return PickFrom(cells, states, out result);
+            return PickFrom(cells, states, map, out result);
         }
 
         /// <summary>An exterior cell: unroofed, and its room known and psychologically outdoors (Verse.Room, rw16).</summary>
@@ -158,16 +166,10 @@ namespace RimMandrake.Graffiti
             return RM_GraffitiKernel.ExteriorFace(c.Roofed(map), room != null, room != null && room.PsychologicallyOutdoors);
         }
 
+        /// <summary>A wall to paint here, on a side the camera can see. A wall south of the cell shows only its cap: nobody would see the mark.</summary>
         internal static bool HasCardinalWall(IntVec3 c, Map map)
         {
-            foreach (IntVec3 adj in GenAdj.CardinalDirections)
-            {
-                if (IsFullWallAt(c + adj, map))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return IsFullWallAt(c + IntVec3.North, map) || IsFullWallAt(c + IntVec3.East, map) || IsFullWallAt(c + IntVec3.West, map);
         }
 
         /// <summary>The wall test every mark placer and Filth_Mark's wall-face draw share: an in-bounds wall or rock face. Not any

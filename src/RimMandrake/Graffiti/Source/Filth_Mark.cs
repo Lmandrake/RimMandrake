@@ -35,6 +35,11 @@ namespace RimMandrake.Graffiti
         // (RaidExitTagger's sibling WallLossPatch): nothing may hang in the air. Print draws the mark on that wall cell and turned to face it.
         public int wallSide = RM_GraffitiKernel.NoWall;
 
+        // Which of the def's drawings this is, and its pigment, chosen when painted to differ from what's already on this stretch of
+        // wall. -1 (an older save's mark): the old pick by thing id.
+        public int variant = -1;
+        public int pigment;
+
         // Tier-A rendering cache (design §3.1): built lazily from
         // ModExtension_Graffiti.sigilTierA + sigilFrameTexPath + makerIdeo.
         // Never Scribed - rebuilt from the (Scribed) fields above every
@@ -71,6 +76,8 @@ namespace RimMandrake.Graffiti
             Scribe_References.Look(ref subject, "rmMarkSubject");
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
+            Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
+            Scribe_Values.Look(ref pigment, "rmMarkPigment", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 sigilMatsBuilt = false;
@@ -141,7 +148,48 @@ namespace RimMandrake.Graffiti
             }
             mark.sigilMatsBuilt = false;
             mark.RebuildSigilMats();
+            mark.ChooseLook(cell, map);
+            map.mapDrawer.MapMeshDirty(cell, MapMeshFlagDefOf.Things);
             return mark;
+        }
+
+        /// <summary>This mark's drawing and pigment, unlike what's near it on the same line of sight: a second tag on this wall is
+        /// the same hand in another colour or another hand, not a stamp.</summary>
+        private void ChooseLook(IntVec3 cell, Map map)
+        {
+            var usedVariants = new System.Collections.Generic.HashSet<int>();
+            var usedPigments = new System.Collections.Generic.HashSet<int>();
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(cell, LookRadius, useCenter: true))
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing t in c.GetThingList(map))
+                {
+                    if (t is Filth_Mark m && m != this && m.def == def)
+                    {
+                        usedVariants.Add(m.variant);
+                        usedPigments.Add(m.pigment);
+                    }
+                }
+            }
+            int count = Graphic is Graphic_Random random ? random.SubGraphicsCount : 1;
+            variant = RM_GraffitiKernel.PickFree(count, usedVariants, Rand.Value);
+            pigment = RM_GraffitiKernel.PickFree(RM_GraffitiKernel.PigmentCount, usedPigments, Rand.Value);
+        }
+
+        private const float LookRadius = 9f;
+
+        private static Color PigmentOf(int index)
+        {
+            RM_Rgb p = RM_GraffitiKernel.PigmentColor(index);
+            return new Color(p.r, p.g, p.b);
+        }
+
+        public override string GetInspectString()
+        {
+            string baseText = base.GetInspectString();
+            float beauty = this.GetStatValue(StatDefOf.Beauty);
+            string line = "Beauty " + beauty.ToString("+0;-0;0") + ": " + RM_GraffitiKernel.BeautyWord(beauty);
+            return string.IsNullOrEmpty(baseText) ? line : baseText + "\n" + line;
         }
 
         private void RebuildSigilMats()
@@ -158,83 +206,73 @@ namespace RimMandrake.Graffiti
             {
                 cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Mote);
             }
-            Texture2D icon = makerIdeo.Icon;
+            Texture2D icon = WallPlane.PaintedIcon(makerIdeo.Icon) ?? makerIdeo.Icon;
             if (icon != null)
             {
-                cachedIconMat = MaterialPool.MatFrom(icon, ShaderDatabase.Mote, makerIdeo.Color);
+                // Ideoligion colours are clean UI colours; on a wall they are the same hue in a mixed pigment.
+                Color pigmentOfIdeo = Color.Lerp(makerIdeo.Color, new Color(0.45f, 0.42f, 0.38f), 0.3f) * 0.9f;
+                pigmentOfIdeo.a = 1f;
+                cachedIconMat = MaterialPool.MatFrom(icon, ShaderDatabase.Mote, pigmentOfIdeo);
             }
         }
 
-        // Tier-A composite: frame quad, then the ideo icon quad slightly
-        // above it (Printer_Plane's center.y IS the base altitude of all
-        // four verts - a small +y on the icon's center keeps it drawn over
-        // the frame rather than z-fighting at the same layer). Falls back
-        // to the ordinary Filth print (base.Print -> Graphic.Print from the
-        // def's own <graphicData>) whenever there is nothing to composite -
-        // every non-sigil mark, and a sigil mark whose ideo/icon didn't
-        // resolve.
-        //
-        // GRAFFITI_WALLFACE: both paths draw at WallFacePos / WallFaceAngle, i.e. pushed onto the recorded wall and turned to
-        // face it; a mark with no recorded wall draws exactly as before (the plain path then stays vanilla's own print).
+        // A painted mark lies in its wall's plane (WallPlane, RM_GraffitiKernel.MarkPieces): stopped at the crease and the corners,
+        // squashed the way the camera squashes that face. Tier-A sigils print the same way, frame then ideo icon. A mark with no
+        // wall recorded draws as vanilla filth, flat on its floor.
         public override void Print(SectionLayer layer)
         {
             if (!sigilMatsBuilt)
             {
                 RebuildSigilMats();
             }
-            RM_GraffitiKernel.HandOf(thingIDNumber, GraffitiPool.WidthOf(def), out float tilt, out float scale, out float slide);
-            if (def.GetModExtension<ModExtension_Graffiti>()?.form == GraffitiForm.Scrawl)
+            if (wallSide == RM_GraffitiKernel.NoWall)
+            {
+                base.Print(layer);
+                return;
+            }
+            ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+            Vector2 size = def.graphicData?.drawSize ?? Vector2.one;
+            RM_GraffitiKernel.HandOf(thingIDNumber, size.x, out float slope, out float scale, out float slide, out float lift, out bool flip);
+            if (ext?.form == GraffitiForm.Scrawl)
             {
                 scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
             }
-            float angle = RM_GraffitiKernel.WallFaceAngle(wallSide) + tilt;
+            float width = size.x * scale;
+            float height = RM_GraffitiKernel.WallWorldHeight * RM_GraffitiKernel.MarkFillOfFace * Mathf.Min(1f, size.y) * scale;
+            float through = ThroughOf(ext);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
-                if (wallSide == RM_GraffitiKernel.NoWall)
+                Graphic g = Graphic;
+                if (g is Graphic_Random random)
                 {
-                    base.Print(layer);
-                    return;
+                    g = variant >= 0 ? random.SubGraphicAtIndex(variant) : random.SubGraphicFor(this);
                 }
-                PrintPlainOnWall(layer, angle, scale, slide);
+                if (g == null) return;
+                Material mat = g.MatAt(Rot4.North, this);
+                if (ext != null && ext.pigmented && !string.IsNullOrEmpty(g.path))
+                {
+                    mat = MaterialPool.MatFrom(g.path, g.Shader, PigmentOf(pigment));
+                }
+                WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip, through);
                 return;
             }
-            Vector3 basePos = WallFacePos(slide);
-            Vector2 size = (def.graphicData?.drawSize ?? Vector2.one) * scale;
             if (cachedFrameMat != null)
             {
-                Printer_Plane.PrintPlane(layer, basePos, size, cachedFrameMat, angle);
+                WallPlane.Print(layer, this, cachedFrameMat, width, height, slide, slope, lift, flip, cachedIconMat == null ? through : 0f);
             }
             if (cachedIconMat != null)
             {
-                Vector3 iconPos = basePos + new Vector3(0f, 0.01f, 0f);
-                Printer_Plane.PrintPlane(layer, iconPos, size * 0.62f, cachedIconMat, angle);
+                // The icon's square in the wall's plane, as tall as the frame leaves room for. An icon may have text-like symmetry, so no flip.
+                float iconH = height * 0.86f;
+                WallPlane.Print(layer, this, cachedIconMat, iconH, iconH, slide, slope, lift, false, through, 0.001f);
             }
         }
 
-        /// <summary>DrawPos pushed RM_GraffitiKernel.WallFaceOffsetCells toward the recorded wall (DrawPos itself for none), and `slide` cells along it.</summary>
-        private Vector3 WallFacePos(float slide)
+        /// <summary>How much of the wall stays visible through paint: paper hides most of it, a gouge is the wall, spray and a dry brush let it through.</summary>
+        private static float ThroughOf(ModExtension_Graffiti ext)
         {
-            RM_GraffitiKernel.WallFaceOffset(wallSide, RM_GraffitiKernel.WallFaceOffsetCells, out float dx, out float dz);
-            Vector3 along = wallSide == RM_GraffitiKernel.NoWall ? Vector3.zero : new Rot4(wallSide).Rotated(RotationDirection.Clockwise).FacingCell.ToVector3();
-            return DrawPos + new Vector3(dx, 0f, dz) + along * slide;
-        }
-
-        /// <summary>The plain (non-sigil) mark on its wall: vanilla Graphic.Print's plane (Graphic_Random's sub-graphic for this
-        /// thing, its drawSize, its material at North, the def's drawOffset) at the wall-face position and angle. The atlas
-        /// replacement Graphic.Print also does is skipped: it only re-points the same texture into a shared atlas.</summary>
-        private void PrintPlainOnWall(SectionLayer layer, float angle, float scale, float slide)
-        {
-            Graphic g = Graphic;
-            if (g is Graphic_Random random)
-            {
-                g = random.SubGraphicFor(this);
-            }
-            if (g == null)
-            {
-                return;
-            }
-            Vector3 center = WallFacePos(slide) + g.DrawOffset(Rot4.North);
-            Printer_Plane.PrintPlane(layer, center, g.drawSize * scale, g.MatAt(Rot4.North, this), angle);
+            if (ext == null) return 0.28f;
+            return ext.wallThrough >= 0f ? ext.wallThrough : (ext.form == GraffitiForm.Paste ? 0.12f : 0.28f);
         }
 
         /// <summary>A wall is gone: every mark painted on it goes too.</summary>
@@ -252,8 +290,8 @@ namespace RimMandrake.Graffiti
             }
         }
 
-        /// <summary>Marks whose drawing overlaps a width centred on `wall`, a wall cell: looked for along the wall's line, on the
-        /// floor cells either side of it, since a one-thick wall carries both its faces' marks on one drawn cell.</summary>
+        /// <summary>Marks whose drawing overlaps a width centred on `wall`, a wall cell: looked for along the wall's line, on this one face.
+        /// The other side of a one-thick wall is another face and carries its own.</summary>
         internal static System.Collections.Generic.List<Filth_Mark> MarksOverlapping(IntVec3 wall, int side, float halfWidth, Map map, Filth_Mark except)
         {
             var found = new System.Collections.Generic.List<Filth_Mark>();
@@ -263,17 +301,14 @@ namespace RimMandrake.Graffiti
             for (int k = -WallSearchCells; k <= WallSearchCells; k++)
             {
                 IntVec3 onWall = wall + along * k;
-                foreach (IntVec3 floor in new[] { onWall - normal, onWall + normal })
+                IntVec3 floor = onWall - normal;
+                if (!floor.InBounds(map)) continue;
+                foreach (Thing t in floor.GetThingList(map))
                 {
-                    if (!floor.InBounds(map)) continue;
-                    foreach (Thing t in floor.GetThingList(map))
+                    if (!(t is Filth_Mark m) || m == except || m.wallSide != side) continue;
+                    if (RM_GraffitiKernel.WallMarksOverlap(k, halfWidth, GraffitiPool.WidthOf(m.def) / 2f) && !found.Contains(m))
                     {
-                        if (!(t is Filth_Mark m) || m == except || m.wallSide == RM_GraffitiKernel.NoWall) continue;
-                        if (m.Position + new Rot4(m.wallSide).FacingCell != onWall) continue;
-                        if (RM_GraffitiKernel.WallMarksOverlap(k, halfWidth, GraffitiPool.WidthOf(m.def) / 2f) && !found.Contains(m))
-                        {
-                            found.Add(m);
-                        }
+                        found.Add(m);
                     }
                 }
             }

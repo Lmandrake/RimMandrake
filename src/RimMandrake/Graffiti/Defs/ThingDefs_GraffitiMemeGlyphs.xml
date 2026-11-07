@@ -47,10 +47,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Cannibal</defName>
     <label>cannibal glyph</label>
-    <description>A bone crossed with a fork, sprayed fast - a mark for those who feed on their own kind.</description>
+    <description>A gnawed bone in a ring of toothmarks, wet from the brush - a mark for those who feed on their own kind.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Cannibal</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -74,10 +75,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_MaleSupremacy</defName>
     <label>male supremacy glyph</label>
-    <description>A crowned man's face, scowling - a claim of dominance painted where it will be seen.</description>
+    <description>A great horned head over a row of bowed little figures, daubed in rust.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_MaleSupremacy</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -100,10 +102,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_FemaleSupremacy</defName>
     <label>female supremacy glyph</label>
-    <description>A crowned woman's face, unsmiling - a claim of dominance painted where it will be seen.</description>
+    <description>A crowned woman's head over a row of bowed little figures, sprayed tall.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FemaleSupremacy</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -126,10 +129,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Nudism</defName>
     <label>nudism glyph</label>
-    <description>A bare figure, arms flung wide - clothing means nothing here.</description>
+    <description>A naked running figure in four strokes of charcoal, arms flung wide.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Nudism</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -152,10 +156,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>RM_Graffiti_Glyph_Inhuman</defName>
     <label>void glyph</label>
-    <description>A black pupil in a nest of tendrils and teeth - the void's own mark, and it looks back.</description>
+    <description>A head that is only a jagged burst with too many eyes.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Inhuman</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -179,10 +184,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_PainIsVirtue</defName>
     <label>thorn crown glyph</label>
-    <description>A crown of thorns, running red - pain worn as devotion.</description>
+    <description>A wreath of thorns dragged in one go, a blot of red falling from it.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_PainIsVirtue</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -209,10 +215,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Loyalist</defName>
     <label>banner glyph</label>
-    <description>A tattered war banner, sprayed where the walls can see it - the hand that paints this still kneels.</description>
+    <description>A blunt three-spiked banner on a pole, hung and dripping.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Loyalist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -239,10 +246,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Guilty</defName>
     <label>chain link glyph</label>
-    <description>One chain link, cracked through and still dripping - the debt is not paid.</description>
+    <description>A head bowed to the ground in charcoal, lines of weeping dragged away from it.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Guilty</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -272,10 +280,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Raider</defName>
     <label>raider glyph</label>
-    <description>An open grabbing hand, closing over a broken box - what's yours is only yours until someone stronger wants it.</description>
+    <description>A boot stamped on a heap, smeared by the heel.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Raider</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -299,10 +308,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Blindsight</defName>
     <label>blindsight glyph</label>
-    <description>An eye stitched shut - only the blind perceive the true reality.</description>
+    <description>An eye gouged out with two heavy strokes.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Blindsight</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -326,10 +336,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Darkness</defName>
     <label>darkness glyph</label>
-    <description>A black sun in a thin ring - drawn by those who have made their peace with the dark.</description>
+    <description>A wiped black blot with a pale ragged ring left around it.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Darkness</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -353,10 +364,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Tunneler</defName>
     <label>tunneler glyph</label>
-    <description>A pick driven into a mountain, the tunnel mouth black behind it - the deep places are home.</description>
+    <description>A black hole rammed into a mound, pick marks fanning out.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Tunneler</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -380,10 +392,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Rancher</defName>
     <label>rancher glyph</label>
-    <description>A pair of hoofprints, pressed deep and fresh - a wayfinding mark left near the pens.</description>
+    <description>The wide horns and long face of a muskox, daubed fast.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Rancher</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -406,10 +419,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_AnimalPersonhood</defName>
     <label>animal personhood glyph</label>
-    <description>A paw print beside an open hand, drawn the same size - a claim that the two are equals.</description>
+    <description>A wolf's head in five thick strokes, with a person's eye.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_AnimalPersonhood</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -433,10 +447,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_NaturePrimacy</defName>
     <label>nature primacy glyph</label>
-    <description>A leaf bursting through a broken cog - nature outlasts every machine.</description>
+    <description>A twisted knot of roots clawing downward.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_NaturePrimacy</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -460,10 +475,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_TreeConnection</defName>
     <label>tree connection glyph</label>
-    <description>Two trees, joined at the root.</description>
+    <description>A gnarled trunk dragged with a filthy rag, branches like arms.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_TreeConnection</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -487,10 +503,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_HumanPrimacy</defName>
     <label>human primacy glyph</label>
-    <description>A standing figure, drawn over a slumped beast - a taunt for any wall an Animalist ideo calls home.</description>
+    <description>A big human handprint, pressed and dragged down the wall.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HumanPrimacy</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -514,10 +531,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Supremacist</defName>
     <label>supremacist glyph</label>
-    <description>A boot, pressed down over a broken chain - a claim of rightful dominance, painted where it will be seen.</description>
+    <description>A sword thrust down into a heap of little heads.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Supremacist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -544,10 +562,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Collectivist</defName>
     <label>collectivist glyph</label>
-    <description>Three rings chained through each other - no one here stands alone.</description>
+    <description>A mob of thumbprint heads pressed so close they make one blot.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Collectivist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -575,10 +594,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Individualist</defName>
     <label>individualist glyph</label>
-    <description>A lone wolf, howling at nothing - nobody here answers to the pack.</description>
+    <description>One big open eye, alone, a line slashed under it.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Individualist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -603,10 +623,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Proselytizer</defName>
     <label>proselytizer glyph</label>
-    <description>An open mouth, ringed by a radiating spiral - a message meant to spread.</description>
+    <description>A screaming mouth with three lines of shout flying out of it.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Proselytizer</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -629,10 +650,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Transhumanist</defName>
     <label>transhumanist glyph</label>
-    <description>A spiral eye sprouting wires - the body is only the first draft.</description>
+    <description>Half a head, half a machine, hard-edged on one side and loose on the other.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Transhumanist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -656,10 +678,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_FleshPurity</defName>
     <label>flesh purity glyph</label>
-    <description>A bare heart with its wires snipped off - a taunt for any wall a Techist ideo calls home.</description>
+    <description>A heart wrapped in a wet scrawl.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FleshPurity</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -683,10 +706,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_HighLife</defName>
     <label>high life glyph</label>
-    <description>A bent pipe and a fat curl of smoke, sprayed loose and easy.</description>
+    <description>One long curl of smoke rising into a blot.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HighLife</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -709,10 +733,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Biotech">
     <defName>RM_Graffiti_Glyph_Bloodfeeding</defName>
     <label>bloodfeeding glyph</label>
-    <description>A single drop, fanged - left where the night shift will see it first.</description>
+    <description>Two long fangs and a wiped smear of red.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -736,10 +761,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>RM_Graffiti_Glyph_Ritualist</defName>
     <label>ritualist glyph</label>
-    <description>A long knife, point down in a dripping bowl - devotion, precisely observed.</description>
+    <description>Thumbed squat figures dancing around a blot of fire.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Ritualist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -768,10 +794,11 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Graffiti_Glyph_Shipborn</defName>
     <label>shipborn glyph</label>
-    <description>A star over a swept hull - painted by people who were born between worlds.</description>
+    <description>A blunt ship rising over the curve of a world.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Shipborn</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>

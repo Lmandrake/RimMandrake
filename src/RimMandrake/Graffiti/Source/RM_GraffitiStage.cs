@@ -92,6 +92,17 @@ namespace RimMandrake.Graffiti
             {
                 Put(map, "Door", steel, d[0], d[1]);
             }
+            // Power first, so everything spawned after it connects: a fuelled generator on a conduit down the corridor, spurs into the rooms.
+            for (int x = 5; x <= 41; x++) Put(map, "PowerConduit", null, x, 14);
+            foreach (int[] spur in new[] { new[] { 13, 5, 13, 13 }, new[] { 25, 5, 25, 13 }, new[] { 37, 5, 37, 13 }, new[] { 22, 15, 22, 23 }, new[] { 31, 15, 31, 22 } })
+            {
+                for (int x = spur[0]; x <= spur[2]; x++)
+                {
+                    for (int z = spur[1]; z <= spur[3]; z++) Put(map, "PowerConduit", null, x, z);
+                }
+            }
+            Put(map, "WoodFiredGenerator", null, 41, 13, Rot4.North);
+            Put(map, "Battery", null, 41, 16, Rot4.North);
             // bedrooms
             foreach (int x in new[] { 6, 8, 17, 19, 29, 31 })
             {
@@ -106,16 +117,52 @@ namespace RimMandrake.Graffiti
             {
                 Put(map, "DiningChair", wood, x, 21, x % 2 == 0 ? Rot4.East : Rot4.West);
             }
-            Put(map, "FueledStove", steel, 6, 23, Rot4.South); Put(map, "StandingLamp", null, 22, 18); Put(map, "HorseshoesPin", wood, 22, 22);
+            Put(map, "FueledStove", steel, 6, 23, Rot4.South); Put(map, "StandingLamp", null, 21, 18); Put(map, "HorseshoesPin", wood, 21, 22);
             // workshop
             Put(map, "TableMachining", null, 30, 23, Rot4.South); Put(map, "ElectricSmelter", null, 35, 23, Rot4.South); Put(map, "Shelf", wood, 28, 18, Rot4.North);
             Put(map, "StandingLamp", null, 37, 18);
-            // food, so a run of days watches recreation and not starvation
+            // food, so a run of days watches recreation and not starvation; stores and clutter, so it looks like people live here
             for (int i = 0; i < 6; i++)
             {
                 Thing meals = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack);
                 meals.stackCount = 10;
                 GenSpawn.Spawn(meals, C(6 + i, 18), map);
+            }
+            foreach (string[] store in new[] { new[] { "RawPotatoes", "75", "12", "23" }, new[] { "RawRice", "60", "13", "23" }, new[] { "Steel", "75", "28", "19" }, new[] { "WoodLog", "75", "29", "18" }, new[] { "WoodLog", "75", "30", "18" }, new[] { "Cloth", "40", "34", "18" }, new[] { "Medicine", "8", "35", "18" }, new[] { "ComponentIndustrial", "12", "36", "18" } })
+            {
+                ThingDef what = DefDatabase<ThingDef>.GetNamedSilentFail(store[0]);
+                if (what == null) continue;
+                Thing heap = ThingMaker.MakeThing(what);
+                heap.stackCount = System.Math.Min(int.Parse(store[1]), what.stackLimit);
+                GenSpawn.Spawn(heap, C(int.Parse(store[2]), int.Parse(store[3])), map);
+            }
+            // a working kitchen and workshop, not a set: fuel in the fires, bills on the benches
+            foreach (Building b in map.listerBuildings.allBuildingsColonist.ToList())
+            {
+                CompRefuelable fuel = b.TryGetComp<CompRefuelable>();
+                if (fuel != null) fuel.Refuel(fuel.Props.fuelCapacity);
+                CompPowerBattery cell = b.TryGetComp<CompPowerBattery>();
+                if (cell != null) cell.AddEnergy(cell.Props.storedEnergyMax);
+                if (b is IBillGiver giver && b.def.AllRecipes != null)
+                {
+                    RecipeDef recipe = b.def.AllRecipes.FirstOrDefault(r => r.defName == "CookMealSimple" || r.defName == "Make_ComponentIndustrial" || r.defName == "SmeltWeapon") ?? b.def.AllRecipes.FirstOrDefault();
+                    if (recipe != null) giver.BillStack.AddBill(BillUtility.MakeNewBill(recipe));
+                }
+            }
+            // a crop out front, a path worn into the yard, the rubbish of living
+            for (int x = 8; x <= 22; x++)
+            {
+                for (int z = 0; z <= 2; z++)
+                {
+                    Plant crop = (Plant)ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("Plant_Rice"));
+                    crop.Growth = 0.35f + 0.5f * ((x * 7 + z * 13) % 10) / 10f;
+                    GenSpawn.Spawn(crop, C(x, z), map);
+                }
+            }
+            for (int i = 0; i < 26; i++)
+            {
+                ThingDef mess = DefDatabase<ThingDef>.GetNamedSilentFail(i % 3 == 0 ? "Filth_Dirt" : (i % 3 == 1 ? "Filth_Trash" : "Filth_Ash"));
+                if (mess != null) FilthMaker.TryMakeFilth(C(6 + (i * 13) % 32, 5 + (i * 7) % 19), map, mess, 1);
             }
             map.mapDrawer.RegenerateEverythingNow();
             List<Pawn> pawns = map.mapPawns.FreeColonistsSpawned.ToList();
@@ -125,7 +172,15 @@ namespace RimMandrake.Graffiti
                 pawns[i].DeSpawn();
                 GenSpawn.Spawn(pawns[i], C(12 + 2 * i, 18), map);
             }
-            return "COLONY origin " + origin.x + "," + origin.z + " | pawns " + pawns.Count;
+            int powered = 0, dark = 0;
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+            {
+                CompPowerTrader power = b.TryGetComp<CompPowerTrader>();
+                if (power == null) continue;
+                if (power.PowerOn) powered++;
+                else dark++;
+            }
+            return "COLONY origin " + origin.x + "," + origin.z + " | pawns " + pawns.Count + " | powered " + powered + " dark " + dark;
         }
 
         /// <summary>Every mark def on rows of wall (steel then granite then wood), with vanilla filth on the floor below for comparison.
@@ -216,6 +271,81 @@ namespace RimMandrake.Graffiti
                 if (f != null) FilthMaker.TryMakeFilth(C(2 + 3 * i, 2), map, f, 4);
             }
             return "COMPARE " + origin.x + "," + origin.z + ",26,7";
+        }
+
+        /// <summary>Every mark on one wall, worst Beauty on the left, best on the right, in steps of four cells at most. -> LADDER rect | beauty per column,
+        /// so the driver can write what each is above it. The stat and the picture, side by side.</summary>
+        public static string Ladder(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            origin = new IntVec3(6, 0, map.Size.z - 16);
+            ThingDef stuff = args == "wood" ? ThingDefOf.WoodLog : ThingDefOf.BlocksGranite;
+            string[] names = { "RM_Graffiti_Vandal", "RM_Graffiti_Scratches", "RM_Graffiti_CrossOut", "RM_Graffiti_Tag_A", "RM_Graffiti_WarningGlyph", "RM_Graffiti_Stencil_Crown", "RM_Graffiti_ThrowUp_Wide", "RM_Graffiti_TallyMarks", "RM_Graffiti_Paste_Flyer", "RM_Graffiti_IdeoSigil", "RM_Graffiti_Piece" };
+            const int Len = 34;
+            Clear(map, new CellRect(origin.x, origin.z, Len, 5), TerrainDefOf.Concrete);
+            WallRun(map, stuff, 0, 3, Len - 1, 3);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, Len, 5)) map.areaManager.Home[c] = false;
+            int cursor = 1;
+            var parts = new List<string>();
+            foreach (string name in names)
+            {
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(name);
+                if (def == null) continue;
+                int w = (int)System.Math.Ceiling(GraffitiPool.WidthOf(def));
+                Filth_Mark.MakeMark(C(cursor + w / 2, 2), map, def, hand);
+                parts.Add((cursor + w / 2) + ":" + def.GetStatValueAbstract(StatDefOf.Beauty).ToString("+0;-0;0"));
+                cursor += w + 1;
+            }
+            map.mapDrawer.RegenerateEverythingNow();
+            return "LADDER " + origin.x + "," + origin.z + "," + Len + ",5 | " + string.Join(" ", parts);
+        }
+
+        /// <summary>One small room in every wall material, each wall carrying marks: the front, both side faces, the hidden south wall from inside and the
+        /// front from outside, a wide mark run into a corner, a door in the run, and a free wall end. -> SWEEP rect | rows.</summary>
+        public static string Sweep(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            origin = new IntVec3(4, 0, 6);
+            ThingDef[] stuffs = { ThingDefOf.BlocksGranite, ThingDefOf.WoodLog, ThingDefOf.Steel, DefDatabase<ThingDef>.GetNamedSilentFail("BlocksMarble"), DefDatabase<ThingDef>.GetNamedSilentFail("Plasteel"), DefDatabase<ThingDef>.GetNamedSilentFail("BlocksSlate") };
+            const int RoomW = 13, RoomH = 7;
+            Clear(map, new CellRect(origin.x, origin.z, 3 * (RoomW + 2) + 2, 2 * (RoomH + 3) + 2), TerrainDefOf.Concrete);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, 3 * (RoomW + 2) + 2, 2 * (RoomH + 3) + 2)) map.areaManager.Home[c] = false;
+            ThingDef wide = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Graffiti_ThrowUp_Wide"), piece = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Graffiti_Piece"),
+                tag = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Graffiti_Tag_A"), one = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Graffiti_Stencil_Fist");
+            for (int i = 0; i < stuffs.Length; i++)
+            {
+                if (stuffs[i] == null) continue;
+                int x0 = 1 + (i % 3) * (RoomW + 2), z0 = 2 + (i / 3) * (RoomH + 3);
+                int x1 = x0 + RoomW, z1 = z0 + RoomH;
+                WallRun(map, stuffs[i], x0, z0, x1, z0); WallRun(map, stuffs[i], x0, z1, x1, z1);
+                WallRun(map, stuffs[i], x0, z0, x0, z1); WallRun(map, stuffs[i], x1, z0, x1, z1);
+                Put(map, "Door", ThingDefOf.Steel, x0 + 9, z1);
+                // a free wall end in the room
+                WallRun(map, stuffs[i], x0 + 4, z0 + 3, x0 + 6, z0 + 3);
+                // front: a piece, run hard into the door on its right; a one-cell mark; a wide mark driven into the corner on the left
+                Filth_Mark.MakeMark(C(x0 + 7, z1 - 1), map, piece, hand);
+                Filth_Mark.MakeMark(C(x0 + 2, z1 - 1), map, wide, hand);
+                Filth_Mark.MakeMark(C(x0 + 11, z1 - 1), map, one, hand);
+                // side faces, with a wide mark on one
+                Filth_Mark.MakeMark(C(x0 + 1, z0 + 4), map, one, hand);
+                Filth_Mark.MakeMark(C(x1 - 1, z0 + 3), map, wide, hand);
+                // the hidden side: a south wall seen from inside
+                Filth_Mark.MakeMark(C(x0 + 8, z0 + 1), map, tag, hand);
+                // the free wall's front, then its two ends' side faces
+                Filth_Mark.MakeMark(C(x0 + 5, z0 + 2), map, tag, hand);
+                Filth_Mark.MakeMark(C(x0 + 3, z0 + 3), map, tag, hand);
+                Filth_Mark.MakeMark(C(x0 + 7, z0 + 3), map, tag, hand);
+                // the room's south wall seen from outside: a whole front
+                Filth_Mark.MakeMark(C(x0 + 5, z0 - 1), map, wide, hand);
+            }
+            map.mapDrawer.RegenerateEverythingNow();
+            return "SWEEP " + origin.x + "," + origin.z + "," + (3 * (RoomW + 2) + 2) + "," + (2 * (RoomH + 3) + 2);
         }
 
         /// <summary>WALLGONE: paint a mark on a fresh wall, destroy the wall; the mark must not outlive it. -> before/after counts.</summary>

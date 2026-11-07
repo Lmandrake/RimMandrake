@@ -40,6 +40,12 @@ namespace RimMandrake.Graffiti
         // column. Spree/Joy reads the punk pool via GraffitiPool; a player
         // Designator only offers marks with designatorEligible=true;
         // RaidExitTagger only offers marks with raidExitEligible=true.
+        /// <summary>The art is a pale drawing and each mark is written in its own pigment (Filth_Mark.pigment), so tags on a wall differ.</summary>
+        public bool pigmented;
+
+        /// <summary>How much of the wall's own surface comes back over this mark; negative for the form's usual. A gouge carries no paint: 0, it is the wall.</summary>
+        public float wallThrough = -1f;
+
         public bool designatorEligible;
         public bool raidExitEligible;
 

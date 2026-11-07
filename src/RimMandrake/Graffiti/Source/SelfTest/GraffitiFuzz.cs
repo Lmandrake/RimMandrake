@@ -279,30 +279,66 @@ namespace RimMandrake.Graffiti.SelfTest
                     int side = RM_GraffitiKernel.WallSide(has[0], has[1], has[2], has[3]);
                     Check(side == want, $"mask {mask}: WallSide {side}, want {want}");
                     Check(side == RM_GraffitiKernel.NoWall || has[side], $"mask {mask}: side {side} has no wall");
-                    RM_GraffitiKernel.WallFaceOffset(side, 0.5f, out float dx, out float dz);
-                    float angle = RM_GraffitiKernel.WallFaceAngle(side);
-                    if (side == RM_GraffitiKernel.NoWall)
-                    {
-                        Check(dx == 0f && dz == 0f && angle == 0f, $"mask {mask}: no wall but offset ({dx},{dz}) angle {angle}");
-                        continue;
-                    }
-                    Check(dx == 0.5f * stepX[side] && dz == 0.5f * stepZ[side], $"mask {mask}: offset ({dx},{dz}) is not toward side {side}");
-                    if (side == 2)
-                    {
-                        Check(angle == 0f, $"mask {mask}: south wall rotated the mark to {angle}; it must stay upright");
-                        continue;
-                    }
-                    Check(angle == side * 90f, $"mask {mask}: angle {angle} does not face side {side}");
-                    // the mark's top (0, 1) turned clockwise by the angle points at the wall
-                    double rad = angle * Math.PI / 180.0;
-                    Check(Math.Abs(Math.Sin(rad) - stepX[side]) < 1e-6 && Math.Abs(Math.Cos(rad) - stepZ[side]) < 1e-6, $"side {side}: the top does not point into the wall");
+                    Check(side == RM_GraffitiKernel.NoWall || RM_GraffitiKernel.FaceOfSide(side) != RM_GraffitiKernel.FaceNone, $"mask {mask}: side {side} has no face");
                 }
                 foreach (int bad in new[] { -2, 4, 99 })
                 {
-                    RM_GraffitiKernel.WallFaceOffset(bad, 0.5f, out float bx, out float bz);
-                    Check(bx == 0f && bz == 0f && RM_GraffitiKernel.WallFaceAngle(bad) == 0f, $"out-of-range side {bad} moved the mark");
+                    Check(RM_GraffitiKernel.FaceOfSide(bad) == RM_GraffitiKernel.FaceNone, $"out-of-range side {bad} has a face");
                 }
-                Check(RM_GraffitiKernel.WallFaceOffsetCells > 0f && RM_GraffitiKernel.WallFaceOffsetCells <= 1f, "the wall-face offset leaves the wall's own cell");
+                Check(RM_GraffitiKernel.FaceOfSide(0) == RM_GraffitiKernel.FaceFront && !RM_GraffitiKernel.SidePaintable(2), "a wall north of the floor shows its front; a wall south of it shows nothing");
+                // Every mark, every link set, every face, every width: inside its face, and its art's map stays affine.
+                float[][] geoms = { new[] { 0.40f, 0.22f }, new[] { 0.30f, 0.20f }, new[] { 0.45f, 0.30f } };
+                foreach (float[] g in geoms)
+                {
+                    foreach (int face in new[] { RM_GraffitiKernel.FaceFront, RM_GraffitiKernel.FaceEast, RM_GraffitiKernel.FaceWest })
+                    {
+                        RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
+                        for (int linksA = 0; linksA < 16; linksA++)
+                        {
+                            for (int linksB = 0; linksB < 16; linksB++)
+                            {
+                                foreach (float width in new[] { 0.6f, 1f, 2f, 3f })
+                                {
+                                    foreach (float slope in new[] { -0.06f, 0f, 0.06f })
+                                    {
+                                        foreach (float lift in new[] { 0f, 0.5f, 1f })
+                                        {
+                                            Cases++; Steps++;
+                                            int la = linksA, lb = linksB;
+                                            Func<int, int> linksAt = k => k == 0 ? la : (k > 0 ? lb : (la & 8) != 0 ? 10 : -1);
+                                            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(linksAt, face, g[0], g[1], width, 0.74f, 0f, slope, lift, false);
+                                            if (!RM_GraffitiKernel.FaceExists(la, face))
+                                            {
+                                                Check(pieces.Count == 0 || pieces.TrueForAll(p => p.k != 0), $"face {face} links {la}: drew on a cell with no such face");
+                                            }
+                                            foreach (RM_MarkPiece p in pieces)
+                                            {
+                                                List<RM_PlaneVert> edge = RM_GraffitiKernel.FacePoly(linksAt(p.k), face, g[0], g[1]);
+                                                Check(edge != null, $"face {face}: a piece on a cell with no face");
+                                                if (edge == null) continue;
+                                                foreach (RM_PlaneVert v in p.poly)
+                                                {
+                                                    float x = v.x - ax * p.k, z = v.z - az * p.k;
+                                                    Check(x >= -1e-3f && x <= 1.001f && z >= -1e-3f && z <= 1.001f, $"face {face} links {linksAt(p.k)}: vertex ({x},{z}) leaves the wall cell");
+                                                    for (int e = 0; e < edge.Count; e++)
+                                                    {
+                                                        RM_PlaneVert a = edge[e], b = edge[(e + 1) % edge.Count];
+                                                        Check((b.x - a.x) * (z - a.z) - (b.z - a.z) * (x - a.x) >= -1e-3f, $"face {face} links {linksAt(p.k)}: vertex ({x},{z}) outside the face");
+                                                    }
+                                                    Check(v.u >= -1e-3f && v.u <= 1.001f && v.v >= -1e-3f && v.v <= 1.001f, "uv left the art");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // Measuring the crease: an outline at the tile's edge must not be taken for it.
+                float[] prof = { 100, 100, 100, 100, 104, 104, 200, 240, 240, 240, 0, 0 };
+                Check(RM_GraffitiKernel.CreaseCrossing(prof, 1, 7, 10) == 6, "crease crossing misread");
+                Check(RM_GraffitiKernel.CreaseCrossing(new float[] { 90, 90, 90, 90 }, 0, 2, 4) == -1, "a flat tile has no crease");
             });
         }
 
@@ -327,11 +363,11 @@ namespace RimMandrake.Graffiti.SelfTest
                     foreach (float width in new[] { 1f, 2f, 3f })
                     {
                         Cases++; Steps++;
-                        RM_GraffitiKernel.HandOf(id, width, out float tilt, out float scale, out float slide);
+                        RM_GraffitiKernel.HandOf(id, width, out float slope, out float scale, out float slide, out float lift, out bool flip);
                         Check(scale > 0.5f && scale <= 1f, $"id {id}: scale {scale} grows out of the wall");
-                        Check(Math.Abs(tilt) <= 9f && Math.Abs(slide) <= 0.1f, $"id {id}: tilt {tilt}, slide {slide}");
-                        RM_GraffitiKernel.HandOf(id, width, out float tilt2, out float scale2, out float slide2);
-                        Check(tilt == tilt2 && scale == scale2 && slide == slide2, $"id {id}: the hand is not stable across redraws");
+                        Check(Math.Abs(slope) <= 0.0601f && Math.Abs(slide) <= 0.1f && lift >= 0f && lift <= 1f, $"id {id}: slope {slope}, slide {slide}, lift {lift}");
+                        RM_GraffitiKernel.HandOf(id, width, out float slope2, out float scale2, out float slide2, out float lift2, out bool flip2);
+                        Check(slope == slope2 && scale == scale2 && slide == slide2 && lift == lift2 && flip == flip2, $"id {id}: the hand is not stable across redraws");
                     }
                 }
                 Check(RM_GraffitiKernel.WallMarksOverlap(0f, 0.5f, 0.5f) && !RM_GraffitiKernel.WallMarksOverlap(1f, 0.5f, 0.5f), "one-cell neighbours must not count as overlapping");

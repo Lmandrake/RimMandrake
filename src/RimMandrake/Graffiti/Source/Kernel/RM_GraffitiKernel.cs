@@ -1,6 +1,6 @@
 // Verse-free kernel of Graffiti: the weighted mark pick and its three eligibility gates, the relation-keyed reaction priority, the
 // clan-only veto, scrub protection, the raid-exit gate, the wall-cell candidate gathering, the paint cadence clamp, the breach-lure
-// choice and the wall-face draw (side, offset, angle). GraffitiPool, ThoughtWorker_ViewedGraffitiMark, AutoCleanProtection, RaidExitTagger, GraffitiJobUtility, JobDriver_PaintGraffiti,
+// choice and the wall-plane draw (which face, its polygons, the hand). GraffitiPool, ThoughtWorker_ViewedGraffitiMark, AutoCleanProtection, RaidExitTagger, GraffitiJobUtility, JobDriver_PaintGraffiti,
 // Filth_Mark and BreachBiasHook call these with the same expressions; SelfTest/GraffitiFuzz.cs compiles this file (and the two plain enum
 // files GraffitiForm.cs / GraffitiCategory.cs) alone. Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks
 // the self-test build, which is the guard rail).
@@ -11,6 +11,32 @@ namespace RimMandrake.Graffiti
 {
     /// <summary>Which of a mark's reaction ThoughtDefs a viewer gets, in priority order (first match wins).</summary>
     public enum RM_ReactionSlot { Subject, OwnFaction, SameIdeo, HostileMaker, OtherIdeo, Flat }
+
+    /// <summary>A plain colour, here where UnityEngine isn't.</summary>
+    public struct RM_Rgb
+    {
+        public float r, g, b;
+        public RM_Rgb(float r, float g, float b) { this.r = r; this.g = g; this.b = b; }
+    }
+
+    /// <summary>A point of a mark on a wall: screen position in cells, and where on the mark's art it is.</summary>
+    public struct RM_PlaneVert
+    {
+        public float x, z, u, v;
+        public RM_PlaneVert(float x, float z, float u = 0f, float v = 0f) { this.x = x; this.z = z; this.u = u; this.v = v; }
+        public static RM_PlaneVert Lerp(RM_PlaneVert a, RM_PlaneVert b, float f)
+        {
+            return new RM_PlaneVert(a.x + (b.x - a.x) * f, a.z + (b.z - a.z) * f, a.u + (b.u - a.u) * f, a.v + (b.v - a.v) * f);
+        }
+    }
+
+    /// <summary>The part of a mark on one wall cell, k cells along from its anchor: a convex counter-clockwise polygon.</summary>
+    public struct RM_MarkPiece
+    {
+        public int k;
+        public List<RM_PlaneVert> poly;
+        public RM_MarkPiece(int k, List<RM_PlaneVert> poly) { this.k = k; this.poly = poly; }
+    }
 
     /// <summary>One scanned wall-adjacent cell for the mark finder: usable (in the map, standable, walled, reservable) and whether it already carries a mark.</summary>
     public struct RM_MarkCell
@@ -235,20 +261,30 @@ namespace RimMandrake.Graffiti
             return Math.Abs(distance) < halfWidthA + halfWidthB - 0.15f;
         }
 
-        // ---------------------------------------------------------------- wall face (GRAFFITI_WALLFACE)
-        // Owner, by card 2026-10-22 ("Q9 → Graffiti floor cell drawn offset facing wall"): a mark stays on the floor cell beside
-        // the wall but records which side the wall is on, and is DRAWN offset onto that wall (turned to face it, except a south wall: upright), so it reads as
-        // wall art with no new thing class. Sides are Rot4 integers: 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
-
-        /// <summary>How far toward the wall a mark is drawn, in cells: a whole cell, so it lies on the wall cell itself. The first
-        /// value, 0.5, sat on the seam and left half of every mark hanging over the floor (seen live, the north star's
-        /// mark_sits_on_the_wall).</summary>
-        public const float WallFaceOffsetCells = 1f;
+        // ---------------------------------------------------------------- the wall plane
+        // Owner, 2026-11-07: "Make the art look like it's on the WALLS in perspective correctly". A wall tile is a fake box, read off
+        // the atlases (art_source/wallgeom.py is the offline twin of this, same numbers): a dark cap; a front face at the cell's south
+        // edge when no wall stands south; a side face at the east or west edge when no wall stands there; mitred where they meet. No
+        // north face exists: seen from this camera, the side of a wall away from us is simply not there to paint.
+        // A mark stays on the floor cell where the painter stood and records the side its wall is on. Sides are Rot4 integers:
+        // 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
 
         public const int NoWall = -1;
+        public const int LinkN = 1, LinkE = 2, LinkS = 4, LinkW = 8;    // MaterialAtlasPool's bits
+        public const int FaceNone = -1, FaceFront = 0, FaceEast = 1, FaceWest = 2, FaceHidden = 3;
 
-        /// <summary>The wall a mark is painted on, from which cardinal neighbours are full-fillage walls. With several, north first
-        /// (the wall face the top-down camera sees, so the mark stays upright), then east, west, south. NoWall with none.</summary>
+        /// <summary>A wall's height in cells, on the wall's own plane: the visible band of a face is this tall foreshortened. It
+        /// sets how squashed a mark is: at a 0.4-cell band a square mark comes out half as tall as it is wide.</summary>
+        public const float WallWorldHeight = 0.8f;
+        /// <summary>A plain painted mark fills this much of the face's height at full size.</summary>
+        public const float MarkFillOfFace = 0.92f;
+        /// <summary>Atlas outline: the art stops this far short of the cell's edge.</summary>
+        public const float RimX = 0.03f, RimZ = 0.02f;
+        /// <summary>The Core atlases measured (crease 0.40, side 0.22), for a wall whose atlas can't be read.</summary>
+        public const float DefaultCrease = 0.40f, DefaultSideWidth = 0.22f;
+
+        /// <summary>The wall a mark is painted on, from which cardinal neighbours are walls. North first (the face the camera sees
+        /// whole), then east, west (the side faces), and south last: only an old save's mark ever gets that one.</summary>
         public static int WallSide(bool north, bool east, bool south, bool west)
         {
             if (north) return 0;
@@ -258,35 +294,246 @@ namespace RimMandrake.Graffiti
             return NoWall;
         }
 
-        /// <summary>Draw offset (x, z in cells) toward the wall on `side`; (0, 0) for NoWall or an out-of-range side.</summary>
-        public static void WallFaceOffset(int side, float cells, out float dx, out float dz)
+        /// <summary>Which face of its wall a mark on `side` lies on. A wall to the floor's north shows its front to the camera.</summary>
+        public static int FaceOfSide(int side)
         {
-            dx = side == 1 ? cells : side == 3 ? -cells : 0f;
-            dz = side == 0 ? cells : side == 2 ? -cells : 0f;
+            switch (side)
+            {
+                case 0: return FaceFront;
+                case 1: return FaceWest;
+                case 3: return FaceEast;
+                case 2: return FaceHidden;
+                default: return FaceNone;
+            }
         }
 
-        /// <summary>Draw rotation in degrees (RimWorld's clockwise-from-north, as Rot4.AsAngle): the mark's top points into the wall
-        /// it is painted on. 0 for NoWall or an out-of-range side, which is the old upright floor draw, and 0 for a wall on the
-        /// SOUTH (owner, by card 2026-10-22: a mark on a south wall stays upright, never upside down; it is still offset onto the wall).</summary>
-        public static float WallFaceAngle(int side)
+        /// <summary>A painter can't be seen to have painted the far side of a wall, so nobody chooses it.</summary>
+        public static bool SidePaintable(int side) { return side == 0 || side == 1 || side == 3; }
+
+        /// <summary>Chance a calm hand picks a whole front face over a side's sliver when it has both within reach.</summary>
+        public const float FrontFaceBias = 0.85f;
+
+        /// <summary>The widest mark a face may carry: a side face is a sliver, three cells of piece would be a stripe.</summary>
+        public static float MaxWidthOnFace(int face) { return face == FaceFront ? float.MaxValue : 2f; }
+
+        /// <summary>Where the walk along a wall goes for each cell of `s`, the painter's right: x, z.</summary>
+        public static void AlongOf(int face, out int dx, out int dz)
         {
-            return side >= 0 && side <= 3 && side != 2 ? side * 90f : 0f;
+            dx = face == FaceFront ? 1 : 0;
+            dz = face == FaceEast ? 1 : (face == FaceWest ? -1 : 0);
+        }
+
+        /// <summary>Does a wall cell with these links show this face?</summary>
+        public static bool FaceExists(int links, int face)
+        {
+            if (links < 0) return false;
+            switch (face)
+            {
+                case FaceFront: return (links & LinkS) == 0;
+                case FaceEast: return (links & LinkE) == 0;
+                case FaceWest: return (links & LinkW) == 0;
+                default: return false;
+            }
+        }
+
+        /// <summary>The face's outline in cell coordinates (x east, z north, 0..1), convex and counter-clockwise; null if not shown.</summary>
+        public static List<RM_PlaneVert> FacePoly(int links, int face, float crease, float sideW)
+        {
+            if (!FaceExists(links, face)) return null;
+            var p = new List<RM_PlaneVert>(4);
+            if (face == FaceFront)
+            {
+                bool w = (links & LinkW) != 0, e = (links & LinkE) != 0;
+                p.Add(new RM_PlaneVert(w ? 0f : RimX, RimZ));
+                p.Add(new RM_PlaneVert(e ? 1f : 1f - RimX, RimZ));
+                p.Add(new RM_PlaneVert(e ? 1f : 1f - sideW, crease));
+                p.Add(new RM_PlaneVert(w ? 0f : sideW, crease));
+                return p;
+            }
+            bool south = (links & LinkS) != 0;
+            float top = (links & LinkN) != 0 ? 1f : 1f - RimX - RimZ;
+            float footOut = south ? 0f : RimZ, footIn = south ? 0f : crease;
+            if (face == FaceEast)
+            {
+                p.Add(new RM_PlaneVert(1f - RimX, footOut));
+                p.Add(new RM_PlaneVert(1f - RimX, top));
+                p.Add(new RM_PlaneVert(1f - sideW, top));
+                p.Add(new RM_PlaneVert(1f - sideW, footIn));
+            }
+            else
+            {
+                p.Add(new RM_PlaneVert(sideW, footIn));
+                p.Add(new RM_PlaneVert(sideW, top));
+                p.Add(new RM_PlaneVert(RimX, top));
+                p.Add(new RM_PlaneVert(RimX, footOut));
+            }
+            return p;
+        }
+
+        /// <summary>The wall's plane (s along the wall to the painter's right from the anchor cell's centre, t up from the wall's foot,
+        /// both in world cells) -> screen cell coordinates relative to the anchor cell.</summary>
+        public static void PlaneToCell(int face, float s, float t, float crease, float sideW, out float x, out float z)
+        {
+            if (face == FaceFront)
+            {
+                x = 0.5f + s;
+                z = RimZ + t * (crease - RimZ) / WallWorldHeight;
+            }
+            else if (face == FaceEast)
+            {
+                x = 1f - RimX - t * (sideW - RimX) / WallWorldHeight;
+                z = 0.5f + s;
+            }
+            else
+            {
+                x = RimX + t * (sideW - RimX) / WallWorldHeight;
+                z = 0.5f - s;
+            }
+        }
+
+        /// <summary>Sutherland-Hodgman: `subject` clipped to the convex counter-clockwise `edge`, keeping u and v interpolated.</summary>
+        public static List<RM_PlaneVert> ClipConvex(List<RM_PlaneVert> subject, List<RM_PlaneVert> edge)
+        {
+            List<RM_PlaneVert> output = subject;
+            for (int i = 0; i < edge.Count && output.Count > 0; i++)
+            {
+                RM_PlaneVert a = edge[i], b = edge[(i + 1) % edge.Count];
+                List<RM_PlaneVert> input = output;
+                output = new List<RM_PlaneVert>(input.Count + 2);
+                for (int j = 0; j < input.Count; j++)
+                {
+                    RM_PlaneVert p = input[j], q = input[(j + input.Count - 1) % input.Count];
+                    float sp = (b.x - a.x) * (p.z - a.z) - (b.z - a.z) * (p.x - a.x);
+                    float sq = (b.x - a.x) * (q.z - a.z) - (b.z - a.z) * (q.x - a.x);
+                    if ((sp >= 0f) != (sq >= 0f))
+                    {
+                        output.Add(RM_PlaneVert.Lerp(q, p, sq / (sq - sp)));
+                    }
+                    if (sp >= 0f)
+                    {
+                        output.Add(p);
+                    }
+                }
+            }
+            return output;
+        }
+
+        /// <summary>One mark laid in its wall's plane and cut to what the wall shows, cell by cell. `linksAt(k)` gives the links of the
+        /// wall k cells along from the anchor (negative for no wall). The walk stops at the first cell without this face, so a corner,
+        /// door or wall end ends the mark there. Polygon coordinates are relative to the anchor cell's south-west corner.
+        /// `slope` shears the baseline (rise per cell along the wall): the hand's tilt, which leaves every run hanging straight down.</summary>
+        public static List<RM_MarkPiece> MarkPieces(Func<int, int> linksAt, int face, float crease, float sideW, float width, float height, float slide, float slope, float lift, bool flip)
+        {
+            var pieces = new List<RM_MarkPiece>();
+            if (face != FaceFront && face != FaceEast && face != FaceWest) return pieces;
+            AlongOf(face, out int ax, out int az);
+            float halfW = width / 2f;
+            float room = Math.Abs(slope) * halfW;
+            float hh = Math.Min(height, WallWorldHeight - 2f * room);
+            float tc = hh / 2f + room + (WallWorldHeight - hh - 2f * room) * lift;
+            var quad = new List<RM_PlaneVert>(4);
+            foreach (float[] c in QuadCorners)
+            {
+                float s = slide + (c[0] - 0.5f) * width;
+                float t = tc + (c[1] - 0.5f) * hh + slope * (s - slide);
+                PlaneToCell(face, s, t, crease, sideW, out float x, out float z);
+                quad.Add(new RM_PlaneVert(x, z, flip ? 1f - c[0] : c[0], c[1]));
+            }
+            foreach (int dir in new[] { 1, -1 })
+            {
+                for (int k = dir > 0 ? 0 : -1; Math.Abs(k) <= MaxReachCells; k += dir)
+                {
+                    float s0 = k - 0.5f;
+                    if (s0 + 1f < slide - halfW || s0 > slide + halfW) break;
+                    int links = linksAt(k);
+                    List<RM_PlaneVert> edge = FacePoly(links, face, crease, sideW);
+                    if (edge == null) break;
+                    var shifted = new List<RM_PlaneVert>(edge.Count);
+                    foreach (RM_PlaneVert e in edge) shifted.Add(new RM_PlaneVert(e.x + ax * k, e.z + az * k));
+                    List<RM_PlaneVert> poly = ClipConvex(quad, shifted);
+                    if (poly.Count >= 3) pieces.Add(new RM_MarkPiece(k, poly));
+                }
+            }
+            return pieces;
+        }
+
+        private const int MaxReachCells = 5;
+        private static readonly float[][] QuadCorners = { new[] { 0f, 0f }, new[] { 1f, 0f }, new[] { 1f, 1f }, new[] { 0f, 1f } };
+
+        /// <summary>Where a profile running from a tile's cap toward its face crosses two thirds of the way from the cap's value to the
+        /// face's own (face taken as the median of [faceLo, faceHi)): the crease, not the cap's soft border or the tile's outline.
+        /// Index of the crossing, -1 with none.</summary>
+        public static int CreaseCrossing(float[] profile, int capAt, int faceLo, int faceHi)
+        {
+            int n = faceHi - faceLo;
+            if (n <= 0 || capAt < 0 || capAt >= profile.Length || faceLo < 0 || faceHi > profile.Length) return -1;
+            var sorted = new float[n];
+            Array.Copy(profile, faceLo, sorted, 0, n);
+            Array.Sort(sorted);
+            float face = sorted[n / 2], cap = profile[capAt];
+            for (int i = capAt; i < profile.Length; i++)
+            {
+                if (Math.Abs(profile[i] - cap) >= Math.Abs(face - cap) * 2f / 3f && Math.Abs(face - cap) > 4f) return i;
+            }
+            return -1;
+        }
+
+        /// <summary>A measured crease or side width, or the default if it's outside anything a wall draws (rock's torn edge and odd atlases).</summary>
+        public static float SaneOr(float measured, float lo, float hi, float fallback)
+        {
+            return measured >= lo && measured <= hi ? measured : (measured > hi ? hi : fallback);
         }
 
         /// <summary>
-        /// Every hand is different: from a mark's id, a stable tilt, size and slide along the wall, so a run of marks reads as
-        /// people painting and not as a row of stickers. A wide mark stays nearly level and at full size (it is planned, and
-        /// it needs its wall); nothing grows past its def's size, which is what keeps a mark inside its wall cell.
+        /// Every hand is different: from a mark's id, a stable baseline slope, size, slide along the wall, height on the face and
+        /// which way round. A wide mark stays nearly level and at full size (it is planned, and it needs its wall).
         /// </summary>
-        public static void HandOf(int id, float width, out float tiltDegrees, out float scale, out float slide)
+        public static void HandOf(int id, float width, out float slope, out float scale, out float slide, out float lift, out bool flip)
         {
             uint h = (uint)id * 2654435761u;
             float a = ((h >> 4) & 255) / 255f, b = ((h >> 12) & 255) / 255f, c = ((h >> 20) & 255) / 255f;
+            uint h2 = h * 2654435761u + 40503u;
             bool wide = width > 1.01f;
-            tiltDegrees = (a - 0.5f) * (wide ? 4f : 18f);
-            scale = wide ? 1f : 0.8f + 0.2f * b;
+            slope = (a - 0.5f) * (wide ? 0.05f : 0.12f);
+            scale = wide ? 1f : 0.82f + 0.18f * b;
             slide = wide ? 0f : (c - 0.5f) * 0.2f;
+            lift = ((h2 >> 6) & 255) / 255f;
+            flip = ((h2 >> 17) & 1) == 1;
         }
+
+        /// <summary>Pigments a tag can be written in (multiplied onto a pale drawing): dull colours a colony could mix, none neon.</summary>
+        public static readonly RM_Rgb[] Pigments =
+        {
+            new RM_Rgb(0.74f, 0.27f, 0.20f), new RM_Rgb(0.82f, 0.60f, 0.27f), new RM_Rgb(0.92f, 0.90f, 0.83f), new RM_Rgb(0.20f, 0.19f, 0.19f),
+            new RM_Rgb(0.42f, 0.52f, 0.33f), new RM_Rgb(0.36f, 0.48f, 0.58f), new RM_Rgb(0.54f, 0.37f, 0.56f), new RM_Rgb(0.86f, 0.46f, 0.22f),
+        };
+        public static int PigmentCount => Pigments.Length;
+        public static RM_Rgb PigmentColor(int index) { return Pigments[Math.Abs(index) % Pigments.Length]; }
+
+        /// <summary>What an inspecting player reads off a mark's Beauty, so the stat and the picture can be held side by side.</summary>
+        public static string BeautyWord(float beauty)
+        {
+            if (beauty <= -12f) return "a filthy eyesore";
+            if (beauty <= -6f) return "ugly scrawl";
+            if (beauty < 0f) return "rough, but somebody meant it";
+            return "real craft";
+        }
+
+        /// <summary>Picks from `count` choices one that `taken` doesn't hold, as evenly as a roll in 0..1 goes; with all taken, any.</summary>
+        public static int PickFree(int count, ICollection<int> taken, float roll)
+        {
+            if (count <= 0) return 0;
+            var free = new List<int>(count);
+            for (int i = 0; i < count; i++)
+            {
+                if (!taken.Contains(i)) free.Add(i);
+            }
+            if (free.Count == 0) return Math.Min(count - 1, (int)(roll * count));
+            return free[Math.Min(free.Count - 1, (int)(roll * free.Count))];
+        }
+
+        /// <summary>The pool's weight for a mark already on this stretch of wall: posters and tags rarely repeat side by side.</summary>
+        public const float NearbySameMarkWeight = 0.08f;
 
         /// <summary>
         /// Which luring building the raid heads for: the nearest to the plain pick (squared distance), ties by the lowest key. -1 for none.

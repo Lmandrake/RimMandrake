@@ -114,12 +114,12 @@ namespace RimMandrake.Graffiti
                 {
                     return null;
                 }
-                return pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room) : GraffitiPool.PickForJoy(pawn, room);
+                return pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
             }
             ThingDef ordered = MapComponent_GraffitiOrders.For(Map)?.OrderAt(cell);
             return ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) && GraffitiPool.WidthOf(ordered) <= room
                 ? ordered
-                : GraffitiPool.PickForDesignator(pawn, room);
+                : GraffitiPool.PickForDesignator(pawn, room, cell);
         }
 
         private void FinishMark(IntVec3 cell, Toil walk)

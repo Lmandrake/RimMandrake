@@ -31,7 +31,7 @@
          a graphicData block on it left every child invisible, with no error. -->
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <useHitPoints>false</useHitPoints>
-    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawerType>MapMeshOnly</drawerType>
     <!-- 🔴 REQUIRED, and measured live 2026-09-06: placementMask is a
          REQUIREMENT the terrain's own filthAcceptanceMask must fully cover
          (FilthMaker.TerrainAcceptsFilth: (terrainMask & placementMask) ==
@@ -79,6 +79,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
+      <drawSize>(1.5, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -112,6 +113,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>
+      <drawSize>(1, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -121,6 +123,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <wallThrough>0</wallThrough>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -136,7 +139,7 @@
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
       <shaderType>Mote</shaderType>
-      <drawSize>(0.8, 0.8)</drawSize>
+      <drawSize>(1, 0.75)</drawSize>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -159,6 +162,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
+      <drawSize>(1.2, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -303,6 +307,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_A</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -312,6 +317,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -327,6 +333,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_B</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -336,6 +343,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -351,6 +359,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_C</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -360,6 +369,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -375,6 +385,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_A</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -403,6 +414,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_B</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -428,6 +440,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_CrossOut</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -466,6 +479,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Crown</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -495,6 +509,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Gear</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -523,6 +538,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -549,6 +565,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Flyer</texPath>
+      <drawSize>(1.1, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -575,6 +592,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Wanted</texPath>
+      <drawSize>(1.1, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -611,6 +629,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -643,6 +662,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
@@ -674,6 +694,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
+      <drawSize>(1.3, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
