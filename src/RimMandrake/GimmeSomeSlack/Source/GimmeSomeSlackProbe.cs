@@ -92,6 +92,8 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "artfit") return ArtFit(map, comp);
             if (cmd == "shapetable") return ShapeTable(comp);
             if (cmd == "kinks") return KinkTable(comp);
+            if (cmd == "slack") return SlackTable(comp);
+            if (cmd == "statics") return Statics();
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
@@ -455,6 +457,40 @@ namespace RimMandrake.GimmeSomeSlack
                    ",\"classes\":[" + string.Join(",", t.Select(one)) + "]}";
         }
 
+        /// <summary>never_taut_straight_cord as a number: laid length over the chord of every cord strand spanning 3+ cells, tautest first.
+        /// A straight line reads 1 through the same arithmetic.</summary>
+        private static string SlackTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var all = new List<KeyValuePair<double, string>>();
+            foreach (LaidPiece p in comp.Pieces)
+            {
+                if (p.EndA == null || p.Unroutable) continue;
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.OverFace || s.Pts.Count < 2) continue;
+                    double len = 0;
+                    for (int i = 1; i < s.Pts.Count; i++) len += Math.Sqrt(Math.Pow(s.Pts[i].X - s.Pts[i - 1].X, 2) + Math.Pow(s.Pts[i].Z - s.Pts[i - 1].Z, 2));
+                    V2 a = s.Pts[0], b = s.Pts[s.Pts.Count - 1];
+                    double chord = Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Z - a.Z, 2));
+                    if (chord < 3) continue;
+                    double r = len / chord;
+                    all.Add(new KeyValuePair<double, string>(r, "{\"key\":" + J.S(p.Key) + ",\"chord\":" + chord.ToString("0.0", inv) + ",\"ratio\":" + r.ToString("0.000", inv) + "}"));
+                }
+            }
+            all.Sort((x, y) => x.Key.CompareTo(y.Key));
+            return "{\"success\":true,\"cmd\":\"slack\",\"strands\":" + all.Count + ",\"under115\":" + all.Count(k => k.Key < 1.15) + ",\"under13\":" + all.Count(k => k.Key < 1.3) +
+                   ",\"median\":" + (all.Count > 0 ? all[all.Count / 2].Key.ToString("0.000", inv) : "null") +
+                   ",\"tautest\":[" + string.Join(",", all.Take(12).Select(k => k.Value)) + "]}";
+        }
+
+        /// <summary>The session-wide tables GssSessionReset empties, read back (sc_statics_new_game).</summary>
+        private static string Statics()
+        {
+            return "{\"success\":true,\"cmd\":\"statics\",\"resets\":" + GssSessionReset.resets + ",\"taps\":" + Aerial.TapRegistry.Count +
+                   ",\"conduitPick\":" + J.S(Aerial.ConduitStylePicker.LastPicked(ThingDefOf.PowerConduit) ?? "") + ",\"skipReseed\":" + J.B(Aerial.CompAerialAnchor.debugSkipReseed) + "}";
+        }
+
         /// <summary>Where a laid strand folds back on itself (CordShape.Kinks), grouped by how the piece ends.</summary>
         private static string KinkTable(RM_MapComponent_CordGraph comp)
         {
@@ -543,6 +579,11 @@ namespace RimMandrake.GimmeSomeSlack
             F("paused", J.B(Find.TickManager.Paused));
             F("frame", UnityEngine.Time.frameCount.ToString());
             F("whipDraws", RM_MapComponent_CordGraph.WhipDraws.ToString());
+            F("sparkTips", J.Arr(comp.SparkEnds().Where(e => !e.Wall).Select(e =>
+            {
+                V2 now = comp.SparkTipNow(e);
+                return "{\"laid\":[" + J.D(e.Tip.X) + "," + J.D(e.Tip.Z) + "],\"now\":[" + J.D(now.X) + "," + J.D(now.Z) + "]}";
+            }).ToList()));
             int whipTails = comp.Pieces.Sum(p => p.Strands.Sum(x => (x.WhipA > 0 ? 1 : 0) + (x.WhipB > 0 ? 1 : 0)));
             F("whipTails", whipTails.ToString());
             int liveFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && (comp.EndLive(e.NetCell) ?? false)));

@@ -35,7 +35,7 @@ import scenes as S  # noqa: E402
 # to the old name, so every catalog, plan and board now sends loopBudget (run_live still translates an old catalog).
 LEVELS = {
     "tidy": {"slack": 0.2, "loopBudget": 3.0, "cordsPerConnection": 1},
-    "ropey": {"slack": 1.0, "loopBudget": 16.0, "cordsPerConnection": 3},     # = shipped defaults
+    "ropey": {"slack": 1.0, "loopBudget": 16.0, "cordsPerConnection": 1},     # = shipped defaults
     "ratsnest": {"slack": 1.8, "loopBudget": 40.0, "cordsPerConnection": 3},
 }
 TANGLE_STRAND_ALLOWANCE = 32      # per tangle node: UNVERIFIED upper allowance for tangle strands in `strands`

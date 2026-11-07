@@ -115,7 +115,7 @@ SETTINGS = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings"
 TRANSPARENT = "RimMandrake/GimmeSomeSlack/ConduitTransparent"
 
 SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "loopBudget": "16f",
-           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
+           "cordsPerConnection": "1", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
@@ -1108,6 +1108,13 @@ def lane_a_live(B, rows, log):
     m1 = motion(B)
     B.probe("set:whip=True")
     m1b = motion(B)
+    # the spark rides the whip (owner 2026-11-07): the glow's point differs from the laid tip and moves between two looks, paused or not
+    tips0 = (motion(B).get("sparkTips") or [])
+    time.sleep(0.4)
+    tips1 = (motion(B).get("sparkTips") or [])
+    rode = [a for a, b in zip(tips0, tips1) if a["laid"] == b["laid"] and a["now"] != b["now"] and (a["now"] != a["laid"] or b["now"] != b["laid"])]
+    row(rows, "B3c_spark_rides_whip", "PASS" if tips0 and len(rode) == len(tips0) else "FAIL", "MOD",
+        {"ends": len(tips0), "rode": len(rode), "first": tips0[:2], "then": tips1[:2], "meaning": "PASS = every live floor end's spark point moves with its tail"})
     row(rows, "B3_whip_live_ends", "PASS" if w_on > 0 and m0.get("whipTails", 0) > 0 and m1.get("whipDraws") == 0 and m1b.get("whipDraws", 0) > 0 else "FAIL",
         "MOD", {"whipDraws_on": w_on, "whipTails": m0.get("whipTails"), "liveFloorEnds": m0.get("liveFloorEnds"),
                 "deadFloorEnds": m0.get("deadFloorEnds"), "whipDraws_off": m1.get("whipDraws"), "whipDraws_on_again": m1b.get("whipDraws")})

@@ -576,11 +576,17 @@ namespace RimMandrake.GimmeSomeSlack
                     // a downed wire's glow follows its burst schedule: a 2x flash, brief pops, an ember between
                     if (e.Wall && GimmeSomeSlackSettings.downedWire && downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
                         size = (float)(0.45 * dw.Glow(t)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
-                    var pos = new Vector3((float)e.Tip.X, y, (float)e.Tip.Z);
+                    V2 tipNow = SparkTipNow(e);
+                    var pos = new Vector3((float)tipNow.X, y, (float)tipNow.Z);
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(size, 1f, size)), CordMaterials.LiveGlow, 0);
                     LastGlowDraws++;
                 }
         }
+
+        /// <summary>The whip tails drawn this frame: laid outer point, outer point now. The glow and the thrown sparks ride these.</summary>
+        private readonly List<V2> whipLaid = new List<V2>(), whipNow = new List<V2>();
+
+        internal V2 SparkTipNow(CordEnd e) => CordMotion.RideTail(e.Tip, whipLaid, whipNow);
 
         private void Sparks(int tick)
         {
@@ -592,7 +598,8 @@ namespace RimMandrake.GimmeSomeSlack
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     int period = Mathf.Max(12, Mathf.RoundToInt((e.Wall ? 50 : 80) / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
-                    var at = new Vector3((float)e.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
+                    V2 tipNow = SparkTipNow(e);
+                    var at = new Vector3((float)tipNow.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z);
                     FleckMaker.ThrowMicroSparks(at, map);
                     SparksThrown++;
                     if (((tick / period + h) & 3) == 0) FleckMaker.ThrowLightningGlow(at, map, e.Wall ? 0.6f : 0.4f);
@@ -762,6 +769,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
             WhipDraws = 0; WhipStillDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
+            whipLaid.Clear(); whipNow.Clear();
             if (!GimmeSomeSlackSettings.enabled || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             float now = Time.realtimeSinceStartup;
@@ -816,6 +824,8 @@ namespace RimMandrake.GimmeSomeSlack
                             }
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
                             if (animate) WhipDraws++; else WhipStillDraws++;
+                            whipLaid.Add(tail[tail.Count - 1]);
+                            whipNow.Add(bent[bent.Count - 1]);
                             Material fray = CordMaterials.DecalG(DecalKind.FrayLive, v);
                             if (fray != null)
                             {

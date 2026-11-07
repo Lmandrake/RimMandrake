@@ -40,6 +40,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
+        /// <summary>Where a live end's tip is on screen now: the outer point of the whip tail laid nearest it (owner 2026-11-07: "the spark of
+        /// the cut powerline should follow the writhing edge of the cable"). No tail near it (whip off, far zoom, past the motion cap): the laid tip.</summary>
+        internal static V2 RideTail(V2 laidTip, IList<V2> laid, IList<V2> now)
+        {
+            int best = -1;
+            double bd = 0.75 * 0.75;
+            for (int i = 0; i < laid.Count; i++)
+            {
+                double dx = laid[i].X - laidTip.X, dz = laid[i].Z - laidTip.Z, d = dx * dx + dz * dz;
+                if (d < bd) { bd = d; best = i; }
+            }
+            return best >= 0 ? now[best] : laidTip;
+        }
+
         /// <summary>Where the last <see cref="WhipInto"/> call found its snap interval (GPT pre-release B15). The schedule is
         /// a running sum from t = 0, so a call that starts from the interval the previous call ended in, when the clock has
         /// not gone backwards, walks a handful of intervals instead of t/1.3 of them. Same answer either way (a selftest row

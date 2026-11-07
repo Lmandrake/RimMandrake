@@ -15,6 +15,36 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static List<int> OldScan(List<int> items, Func<int, int> idx, int nv, int v) =>
             items.Where(p => !(nv > 1 && idx(p) != v)).ToList();
 
+        /// <summary>Owner 2026-11-07: the spark follows the writhing end. The tail's outer point IS the end's tip on a laid live end, so
+        /// RideTail finds it; the point it hands back is the one the whip bent.</summary>
+        internal static void SparkRidesTail()
+        {
+            var w = new CordWorld(40, 20);
+            for (int x = 5; x <= 25; x++) w.SetConduit(new Cell(x, 10));
+            var b = new CordBuilder();
+            List<LaidPiece> ps = b.Build(w, new BuildOptions(), c => true);
+            int ends = 0, far = 0, stays = 0;
+            foreach (LaidPiece p in ps)
+                foreach (CordEnd e in p.Ends)
+                {
+                    if (e.Wall) continue;
+                    ends++;
+                    var laid = new List<V2>(); var now = new List<V2>();
+                    foreach (CordStrand s in p.Strands)
+                    {
+                        if (s.WhipA > 0) { laid.Add(s.Pts[0]); now.Add(s.Pts[0] + new V2(0.2, -0.1)); }
+                        if (s.WhipB > 0) { laid.Add(s.Pts[s.Pts.Count - 1]); now.Add(s.Pts[s.Pts.Count - 1] + new V2(0.2, -0.1)); }
+                    }
+                    V2 got = CordMotion.RideTail(e.Tip, laid, now);
+                    if (Math.Abs(got.X - e.Tip.X - 0.2) > 1e-6 || Math.Abs(got.Z - e.Tip.Z + 0.1) > 1e-6) far++;
+                    V2 alone = CordMotion.RideTail(e.Tip, new List<V2>(), new List<V2>());
+                    if (alone.X != e.Tip.X || alone.Z != e.Tip.Z) stays++;
+                }
+            Check(ends >= 2, "a cut run lays its live ends (" + ends + ")");
+            Check(far == 0, "the spark of a live end rides its own whip tail (" + far + "/" + ends + " do not)");
+            Check(stays == 0, "no tail drawn: the spark stays on the laid tip");
+        }
+
         private static void SwayAllocChecks()
         {
             var pts = new List<V2>(); var w = new List<double>();

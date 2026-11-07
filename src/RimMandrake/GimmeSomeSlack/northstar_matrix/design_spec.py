@@ -49,7 +49,7 @@ V_LEVELS = ["normal", "overlay", "selected"]
 Z_LEVELS = ["close", "far"]
 STAGE = {
     "tidy": {"settings": {"slack": "0", "cordsPerConnection": "1", "tangles": "False"}, "tangle_min": 10 ** 9, "cmax": 1},
-    "ropey": {"settings": {"slack": "1", "cordsPerConnection": "3", "tangles": "True"}, "tangle_min": None, "cmax": 3},
+    "ropey": {"settings": {"slack": "1", "cordsPerConnection": "1", "tangles": "True"}, "tangle_min": None, "cmax": 1},
     "ratsnest": {"settings": {"slack": "1.8", "loopBudget": "40", "cordsPerConnection": "3", "tangles": "True"},
                  "tangle_min": None, "cmax": 3},
     "lattice_tangle": {"settings": {"slack": "1", "cordsPerConnection": "3", "tangles": "True", "tangleMin": "6"},

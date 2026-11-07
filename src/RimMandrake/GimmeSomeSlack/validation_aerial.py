@@ -365,6 +365,7 @@ def run_live(args):
     if i2:
         B.ap("cut:%d,%d" % (i2, i3))
         B.ticks(2)
+        home = {p["id"]: p.get("pos") for p in B.probe("colonists").get("pawns") or []}
         o = B.ap("restringorder:%d" % i2)
         B.ticks(5)
         st0 = B.ap("restringstate:%d" % i2)
@@ -386,6 +387,12 @@ def run_live(args):
             V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
                   {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre,
                    "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
+        # HARNESS (runs of 2026-11-06, downed at 108,183, "health 1"): the splicer is left standing on the span's line, and M15f
+        # cuts that span again: a live wire falls on him and the shock is the mod working. Back where he came from, held there.
+        for pid, pos in home.items():
+            if pos:
+                B.probe("pawn:%d=tp:%d,%d" % (pid, pos[0], pos[1]))
+            B.probe("pawn:%d=draft" % pid)
 
     # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): cut the only span joining two runs, give each side its own look, re-string:
     # the joined run must carry one look. Patch_Restring_Bridge queues the bridge rule; the job and the verb both call Restring.

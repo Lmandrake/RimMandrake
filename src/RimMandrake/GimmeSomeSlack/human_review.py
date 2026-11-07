@@ -998,7 +998,7 @@ SETTINGS = [
     ("gss", "hideHookupWires", "True", "hide vanilla's thin machine hookup wires", "15"),
     ("gss", "slack", "1.0", "slack, 0 = path-tight", "1-4, 12"),
     ("gss", "loopBudget", "16", "cells of each cord in loops and heaps", "1-4"),
-    ("gss", "cordsPerConnection", "3", "cords per connection, 1 to 3", "1-4, 16"),
+    ("gss", "cordsPerConnection", "1", "cords per connection, 1 to 3", "1-4, 16"),
     ("gss", "tangles", "True", "dense conduit fields become one tangle", "1-4 (the 3x3), 16"),
     ("gss", "tangleMin", "9", "cells before a dense field becomes a tangle", "1-4, 16"),
     ("gss", "needlessLoops", "True", "needless stubs (2 cells or less) become pointless loops", "25 (the stub)"),
