@@ -13,13 +13,14 @@ Check the item and the timer first. Don't restart it, enrol into it, or file wor
 will pick that up.
 
 What it had delivered when he stopped it: about 360 items closed a day at about 1.1M tokens each, 0 of
-135 mods accepted, 67 pass, 40 fail and 169 no answer from live proofs in 24 hours. He asked: *"Why are
-you so intelligent when I ask questions, but so foolish in this automated loop?"*
-(`D:\Luke\dev\MandrakeWorkflows\artisan\RESEARCH.md`). So a green here means a contract was met, never that
-he accepts the work.
+135 mods accepted, 67 pass, 40 fail and 169 no answer from live proofs in 24 hours. So a green here means a
+contract was met, never that he accepts the work.
 
-**Traps from about 130 filed lessons are in [references/traps.md](references/traps.md).** Read its section for
-what you're doing before you set a contract, write a proof, finish an item or touch the supervisor.
+This file is the RimMandrake layer: commands, paths and this code's traps. **The general lessons (what belongs
+in a pipeline, verdict machinery, counting, failure modes, operations) are in the `relentless-pipeline` skill;
+read it before changing the design or judging how well this works.** Traps from about 130 filed lessons are in
+[references/traps.md](references/traps.md). Read its section for what you're doing before you set a contract,
+write a proof, finish an item or touch the supervisor.
 
 ## What it is
 
@@ -33,14 +34,11 @@ Two parts named apart, so one can change without the other (owner, 2026-11-03):
   `D:\Luke\dev\MandrakeWorkflows\relentless\workers\BUILDER_JUDGE.md` (the blindness contract lives there), run
   as the agents `worker_agent` and `checker_agent` in the rules.
 
-**The item is the owner, workers are replaceable.** *"just don't let go until it's done."* The record on disk
-holds the goal, proof, attempts, learned notes and a fencing generation; a worker may die and the next one
-sits in the same clone.
+**The item is the owner, workers are replaceable.** *"just don't let go until it's done."*
 
 **What belongs in it** (owner, 2026-11-06): *"It's a builder/test-builder/judge pipeline, not an everything
-pipeline...."* It's for work that needs building, a built test and a judge. Approved art, deploys, one-off
-commands and readings are done directly. For a single defect that needs live observation, use a Test Pilot
-sitting; for whole work judged by the owner's eye, `artisan`.
+pipeline...."* For a single defect that needs live observation, use a Test Pilot sitting; for whole work judged
+by the owner's eye, `artisan`.
 
 ## Where things are
 
@@ -100,8 +98,7 @@ did the work. The box replays the ledger and code review from the candidate's *p
 earlier and finish on a later commit outside them. Fire a `reading=` service after publish and before finish.
 
 **Never decide his ruling.** An item whose title says "decide" about the meaning of something he said is a §2
-call: a worker read one narrowly and wrote "Decided" into a spec, and he reversed it the same day. Snag it as
-`owner_call`.
+call. Snag it as `owner_call`.
 
 ## The blind check
 
@@ -111,9 +108,7 @@ The Marker runs walled, in `/home/mandrake/walled/<id>`: an exported tree at the
 the proof has a gap), FAIL, REJECT-PACKET, UNJUDGEABLE. A too-easy contract is a FAIL. `relentless_rules.json`
 `walls.marker` is the current list.
 
-**Done means the contract was met, not that the contract was complete.** A missing requirement passes every
-stage by construction. Report "accepted against contract", and see `mutate-your-checker` for whether a proof
-can see anything.
+**Done means the contract was met, not that the contract was complete.** Report "accepted against contract".
 
 ## The live round
 
@@ -162,9 +157,12 @@ Read before you redesign anything. Each of these has cost generations.
 ## Changing it
 
 The main supervisor is about 8,400 lines, and the owner's stop was partly about that. Prefer deleting to adding.
-A full-file GPT review doesn't converge on it (traps file), so don't re-run one hoping for CLEAN. A new alarm
-kind needs its route in the same commit. A new lane needs its own queue cap and a look at the journal for its
-first enrol.
+A full-file GPT review doesn't converge on it (traps file), so don't re-run one hoping for CLEAN.
+
+**What his sitting may overturn** (`PIPELINE_RETHINK_OWNER_STOPPED_BURN`; don't settle these in prose): the perpetual
+worker that goes back to the top of the queue, contracts frozen at first write, the blind checker at the end of the
+cycle, the Setter/Marker split, and this supervisor itself. Every line here and in `references/traps.md` about those is
+provisional. The stop doesn't reach the art pipeline (*"It's ok to keep the art pipeline going"*).
 
 Add a new trap to `references/traps.md` directly when you're editing skills; otherwise
 `python3 src/RimMandrake/Utils/lessons.py add "..." --home skills/relentless`.

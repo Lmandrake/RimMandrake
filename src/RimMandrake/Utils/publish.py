@@ -41,6 +41,7 @@ import sys
 import time
 
 REMOTE, BRANCH = "origin", "main"
+OWNER_SHARD = "infrastructure/state/ledger/events/OWNER.jsonl"
 RM_ROOT = os.environ.get("PUBLISH_RM_ROOT", "/home/mandrake/rm")
 MAX_TRIES = 8
 GIT_TIMEOUT_S = float(os.environ.get("PUBLISH_GIT_TIMEOUT", "300"))   # one git call, push included; a hang is a loud TimeoutExpired, not a stall
@@ -573,13 +574,22 @@ def publish(top, paths, msg, cwd=None):
         return _publish(top, paths, msg, cwd)
 
 
+def warn_owner_shard(top, named):
+    """`--owner-said`, `--by-card`, `ack` and an OWNER-seat `file` write OWNER.jsonl, not the seat's shard, so a landing that names
+    only the seat's shard ends green with his ruling still unpublished. Loud, not refused: a helper may rightly not own those lines."""
+    if OWNER_SHARD not in named and run(top, "status", "--porcelain", "--", OWNER_SHARD).stdout.strip():
+        print("WARNING: %s has unpublished events and you did not name it. His rulings stay on this clone until it lands: name it." % OWNER_SHARD)
+
+
 def _publish(top, paths, msg, cwd=None):
     if paths:
         if not msg or not msg.strip():
             raise Refuse("a message is required (-m or -F)")
-        made = commit(top, rel_paths(top, paths, cwd or top), msg if msg.endswith("\n") else msg + "\n")
+        named = rel_paths(top, paths, cwd or top)
+        made = commit(top, named, msg if msg.endswith("\n") else msg + "\n")
         if not made:
             print("no change in the named paths; pushing any local commits")
+        warn_owner_shard(top, named)
     run(top, "fetch", "-q", REMOTE)
     _, track, label = target_ref(top)
     head = out(top, "rev-parse", "HEAD")

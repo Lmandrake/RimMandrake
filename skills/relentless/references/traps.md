@@ -138,9 +138,8 @@ Walled, the Marker can't read the following, and a proof that needs them is gree
 - **Most of the needs=owner pile wasn't his** on 11-03: 43 of 61 were tooling holds. Read `hold.reason` before asking.
 - **`relentless_packet` word lint, hand-scored on 48 receipts:** 6 of 24 hits false and 6 of 24 non-hits missed. Re-score
   `testdata/relentless_packet_handscored.json` before rejects go live. 11-06.
-- **Counting Markers:** 6 of 36 E1 runs read the books unprompted and held both seed PASSes, moving the catch from 88% to
-  95%. Report a contaminated drop with the sensitivity beside it. Control false fail was 4 of 9, so a catch rate alone
-  says nothing. A shlex-based scan is blind to newlines, `$(...)`, `<` and `#`. 11-01.
+- **Counting Markers:** 6 of 36 E1 runs read the books unprompted and held both seed PASSes. A shlex-based scan is blind to
+  newlines, `$(...)`, `<` and `#`. 11-01.
 
 ## Workers' environment
 
@@ -194,8 +193,7 @@ Measure a baseline from `git archive` of HEAD before blaming your diff. These we
 - **Any `subprocess` with `timeout=` in a tick catches `TimeoutExpired`** and returns a retry reason, or the tick crashes. 11-03.
 - **Parsing a "not in the running load" list:** two shapes exist, so parse dotted packageIds anywhere. 11-05.
 - **Candidate checks read `guard_owed` from the tick's cached ledger view,** which can refuse a commit carrying its own guard. 11-05.
-- **Live-tier review pattern:** blacklists over shell text are evadable; an uncaught crash reads as FAIL; re-verify build and
-  game identity around the proof; unreadable inputs fail closed; fakes that ignore arguments make oracles vacuous. 11-02.
+- **Live-tier review pattern:** `relentless-pipeline` skill, `references/verdicts.md`. 11-02.
 - **GPT full-file review doesn't converge:** 13, 12, 12, 21, 22 findings over rounds 2-6, mostly new kinds. Clean isn't reachable
   without changing the ruling. A whole-file `gpt_consult --lockdown --effort medium` answers inside 540 s, and its receipt
   covers exact bytes. A HIGH grade can state a false consequence, so trace callers. 11-05, 11-06.

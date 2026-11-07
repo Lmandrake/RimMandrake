@@ -80,6 +80,25 @@ def refused(fn, *a):
     return None
 
 
+def t_unnamed_owner_shard_warns_and_named_does_not(a, b):
+    shard = P.OWNER_SHARD
+    write(a, shard, "{}\n")
+    sh(a, "add", shard)
+    sh(a, "commit", "-q", "-m", "seed owner shard")
+    sh(a, "push", "-q", "origin", "HEAD:main")
+    write(a, shard, "{}\n{\"ruling\": 1}\n")
+    write(a, "f.txt", LINES.replace("line 3", "LINE 3"))
+    _, log = quiet(P.publish, a, ["f.txt"], "mine")
+    assert "WARNING" in log and shard in log, log
+    assert "ruling" not in show(a, shard), "the warning must not publish it"
+    _, log = quiet(P.publish, a, [shard], "his ruling")
+    assert "WARNING" not in log, log
+    assert "ruling" in show(a, shard)
+    write(a, "g.txt", "clean shard now\n")
+    _, log = quiet(P.publish, a, ["g.txt"], "mine")
+    assert "WARNING" not in log, log
+
+
 def t_commits_only_named_paths(a, b):
     write(a, "f.txt", LINES.replace("line 3", "LINE 3"))
     write(a, "g.txt", "dirty, not mine to publish\n")
