@@ -4,8 +4,12 @@
 cd "$(dirname "$0")/.." || exit 1
 LOGS=/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti
 EVENTS=$LOGS/events.log
-REVIEW_AT=${REVIEW_AT:-10000000}
+REVIEW_AT=${REVIEW_AT:-20000000}
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
+
+gss_has_game() {   # the Gimme Some Slack loop lets go when its log's last line says GAME_WAIT
+  python3 ralph/game_gate.py --held
+}
 
 tally() {   # weighted tokens over every pass: input + output + cache writes + cache reads / 10
   python3 ralph/tally.py "$LOGS"
@@ -18,6 +22,17 @@ while :; do
   [ -e ralph/DONE.md ] && { say "LOOP DONE_CLAIMED, $(tally) tokens"; exit 0; }
   t=$(tally)
   if [ "$t" -ge "$REVIEW_AT" ]; then say "LOOP PAUSED_FOR_REVIEW at $t tokens"; exit 0; fi
+  if [ -e ralph/NEED_GAME ]; then
+    if gss_has_game; then
+      say "GAME_WAIT: Gimme Some Slack still has the game, no model running, $t tokens"
+      while gss_has_game; do
+        [ -e "$LOGS/STOP" ] && { say "LOOP stopped: STOP file"; exit 0; }
+        sleep 60
+      done
+      say "GAME_FREE"
+    fi
+    rm -f ralph/NEED_GAME
+  fi
   n=$((n + 1))
   f=$(printf '%s/pass_%03d.jsonl' "$LOGS" "$n")
   say "PASS $n start, $t tokens so far"
