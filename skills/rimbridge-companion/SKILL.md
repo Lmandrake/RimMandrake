@@ -272,3 +272,5 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. Pr
 | 🔴 `skills/rimbridge/references/silent-failures.md` | **before designing any tool.** It is the catalogue of engine calls that report success and change nothing — i.e. the failures your tool exists to prevent |
 | `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md` | ~95 candidate tools with exact API anchors, already researched |
 
+## Building and exporting the companion
+- **`bridgetools/build.py` needs the user site-packages** (`closure_scan` imports `dnfile`): run it without `python -I`, or it fails 'No module named dnfile' after a good dotnet build. A `git archive` export of the companion needs `src/Directory.Build.props/.targets`, `Utils` and `contracts` beside `bridgetools`.

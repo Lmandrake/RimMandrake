@@ -35,3 +35,6 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 
 ## An idle main menu is not a load hang
 - **An idle main menu looks exactly like a cold-load stall.** A frozen `Player.log` at the last mod's line, steady CPU, a bridge answering `no_game` / `programState=Entry`, and a live main thread are all normal at the menu with no save loaded; `Playing` only comes from loading one. Tell them apart: `rimworld/get_ui_state` returning in ~0 s means the main thread is alive (check `programState`, `inEntryScene`, `hasCurrentGame`); `jawa/load_stall_probe` runs off-thread and is safe during a real hang. Do not kill the process on an idle menu.
+
+## Modset_builder
+- **Run `modset_builder --tier X --apply` from the seat clone, never from a git-archive export:** its backup and swap-active marker are written relative to cwd, so re-exporting (`rm -rf`) deletes the marker and `--restore` then refuses.
