@@ -221,7 +221,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 VId mv = VId.Mach(m.Id);
                 bool any = false;
                 foreach (Cell h in m.Hookups)
-                    if (Cells.Contains(h)) { Link(mv, Vid(h), null, h); any = true; }
+                {
+                    if (!Cells.Contains(h)) continue;
+                    any = true;
+                    // conduit run inside a wall or rock: the machine's cord comes out of the face nearest it, as any other stub
+                    // (a hidden-conduit hookup stays hidden: M3); with no open face left it stays in the wall too
+                    if (BuriedCells.Contains(h) && FaceFor(m, h) is VId face)
+                    {
+                        machineStubs.Add(face);
+                        Link(mv, face, null, null);
+                        Link(face, Vid(face.B), null, face.B);
+                    }
+                    else Link(mv, Vid(h), null, h);
+                }
                 foreach (string other in m.MachineLinks)
                 {
                     MachineInfo om = world.Machines.FirstOrDefault(x => x.Id == other);
@@ -240,6 +252,34 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (VId v in keep) Nodes[v] = Classify(v);
             WallTerminals();
             Endpoints();
+        }
+
+        private readonly HashSet<VId> machineStubs = new HashSet<VId>();
+
+        /// <summary>The stub a machine hooked to buried cell h draws its cord from: the open face of that buried run closest to the
+        /// machine, h's own first. A machine standing against the face has no cord to draw, and null keeps it the hidden link.</summary>
+        private VId? FaceFor(MachineInfo m, Cell h)
+        {
+            BlockKind kh = World.BuriedKind(h);
+            if (kh != BlockKind.Wall && kh != BlockKind.Rock) return null;
+            var c = new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+            VId? best = null;
+            double bd = double.MaxValue;
+            foreach (Cell hid in new[] { h }.Concat(BuriedCells.Where(b => b != h && V2.Dist(b.Centre, h.Centre) < 3).OrderBy(b => b)))
+            {
+                BlockKind k = World.BuriedKind(hid);
+                if (k != BlockKind.Wall && k != BlockKind.Rock) continue;
+                foreach (Cell dd in Cell.Dirs4)
+                {
+                    Cell w = hid + dd;
+                    if (m.Contains(w)) return null;
+                    if (!World.InBounds(w) || World.IsBuried(w)) continue;
+                    double d = V2.Dist(w.Centre, c);
+                    if (d < bd) { bd = d; best = VId.S(w, hid); }
+                }
+                if (best != null) break;      // h's own face is the one vanilla's wire went to
+            }
+            return best;
         }
 
         private VId Vid(Cell c)
@@ -593,7 +633,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 NodeType t = k == BlockKind.Rock ? NodeType.StubRock : k == BlockKind.Water ? NodeType.StubWater :
                              k == BlockKind.Device ? NodeType.StubDevice : k == BlockKind.Hidden ? NodeType.StubHidden :
                              NodeType.StubWall;
-                return new CordNode { Type = t, Pos = w.Centre + into * 0.44, Cell = w, Into = into, Face = w.Centre + into * 0.5, Buried = hid };
+                // a machine's own stub has no conduit in its walk cell: it stands for the buried cell, the one on the net
+                return new CordNode { Type = t, Pos = w.Centre + into * 0.44, Cell = Cells.Contains(w) ? w : hid, Into = into, Face = w.Centre + into * 0.5, Buried = hid };
             }
             if (v.T == 't' || v.T == 'k')
             {
@@ -696,7 +737,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 for (int side = 0; side < 2; side++)
                 {
                     VId s = side == 0 ? e.A : e.B, h = side == 0 ? e.B : e.A;
-                    if (s.T == 's' && Nodes.TryGetValue(h, out CordNode hn) && hn.Type == NodeType.HiddenEnd)
+                    if (s.T == 's' && !machineStubs.Contains(s) && Nodes.TryGetValue(h, out CordNode hn) && hn.Type == NodeType.HiddenEnd)
                         Nodes[s].WallTerminal = true;
                 }
             }

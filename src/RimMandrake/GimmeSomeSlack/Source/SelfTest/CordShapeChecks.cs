@@ -21,6 +21,45 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>Conduit run wholly inside the wall of a room: a machine wired to it draws one cord, out of the wall's face and
+        /// across the floor to it. Rock the same; hidden conduit draws nothing (M3); a lamp hard against the wall draws nothing.</summary>
+        private static void InWallHookups()
+        {
+            foreach (BlockKind kind in new[] { BlockKind.Wall, BlockKind.Rock, BlockKind.Hidden })
+            {
+                var w = new CordWorld(30, 30);
+                for (int x = 5; x <= 20; x++)
+                    foreach (int z in new[] { 5, 20 })
+                    {
+                        w.SetConduit(new Cell(x, z));
+                        if (kind == BlockKind.Hidden) w.SetForcedBuried(new Cell(x, z)); else w.SetBlocked(new Cell(x, z), kind);
+                    }
+                for (int z = 6; z <= 19; z++)
+                    foreach (int x in new[] { 5, 20 })
+                    {
+                        w.SetConduit(new Cell(x, z));
+                        if (kind == BlockKind.Hidden) w.SetForcedBuried(new Cell(x, z)); else w.SetBlocked(new Cell(x, z), kind);
+                    }
+                var far = new MachineInfo { Id = "far", Kind = MachineKind.Consumer, X0 = 12, Z0 = 11, W = 1, H = 1 };
+                far.Hookups.Add(new Cell(12, 5));
+                w.Machines.Add(far);
+                var near = new MachineInfo { Id = "near", Kind = MachineKind.Consumer, X0 = 6, Z0 = 15, W = 1, H = 1 };
+                near.Hookups.Add(new Cell(5, 15));
+                w.Machines.Add(near);
+                var b = new CordBuilder();
+                List<LaidPiece> ps = b.Build(w, new BuildOptions(), c => true);
+                List<CordEdge> edges = b.Graph.CordEdges().ToList();
+                bool farDrawn = edges.Any(e => e.A.T == 'm' && e.A.M == "far" || e.B.T == 'm' && e.B.M == "far");
+                bool nearDrawn = edges.Any(e => e.A.T == 'm' && e.A.M == "near" || e.B.T == 'm' && e.B.M == "near");
+                bool plate = ps.Any(p => p.Decals.Any(d => d.Kind == DecalKind.StubWall || d.Kind == DecalKind.StubRock));
+                bool want = kind != BlockKind.Hidden;
+                Check(farDrawn == want, $"{kind}: a machine across the room from its in-wall run draws {(farDrawn ? "a cord" : "nothing")}");
+                Check(!nearDrawn, $"{kind}: a machine hard against its in-wall run draws {(nearDrawn ? "a cord" : "nothing")}");
+                Check(plate == want, $"{kind}: the cord's plate on the face {(plate ? "drawn" : "absent")}");
+                Check(!ps.Any(p => p.Strands.Any(s => s.Pts.Skip(3).Take(Math.Max(0, s.Pts.Count - 6)).Any(q => !w.IsWalkable(q.Floor)))), $"{kind}: the cord stays on the floor");
+            }
+        }
+
         public static void Run()
         {
             int alike = 0, cords = 0;
@@ -49,6 +88,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         }
             Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
             Console.WriteLine($"  cord folds: {folds} in {strands} strands");
+
+            InWallHookups();
 
             // planted: a hairpin reads as a fold, rounding removes it, and the strand's ends stay put
             {

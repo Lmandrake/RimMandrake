@@ -776,7 +776,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Everything CordGraph.Reduce reads, in its reading order: the map size, the reduce options, every conduit cell
-        /// with its buried kind (IsBuried / BuriedKind are the only per-cell world reads), and every machine field.</summary>
+        /// with its buried kind, the ground around a buried hookup (IsBuried / BuriedKind are the only per-cell world reads), and every machine field.</summary>
         private static void GraphInputs(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, InputBuf into)
         {
             into.Clear();
@@ -801,7 +801,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 into.Add('\u0002');
                 nums.Add(-1L); nums.Add((long)m.Kind); nums.Add(m.X0); nums.Add(m.Z0); nums.Add(m.W); nums.Add(m.H);
                 nums.Add(m.Hookups.Count);
-                foreach (Cell h in m.Hookups) nums.Add(((long)h.X << 32) | (uint)h.Z);
+                foreach (Cell h in m.Hookups)
+                {
+                    nums.Add(((long)h.X << 32) | (uint)h.Z);
+                    if (!w.IsBuried(h)) continue;
+                    // CordGraph.FaceFor reads the ground around a buried hookup for the face its cord comes out of
+                    long around = 0;
+                    for (int dz = -3; dz <= 3; dz++)
+                        for (int dx = -3; dx <= 3; dx++)
+                            around = (around << 1) | (w.IsBuried(new Cell(h.X + dx, h.Z + dz)) ? 1L : 0L);
+                    nums.Add(around);
+                }
                 nums.Add(BitConverter.DoubleToInt64Bits(m.InsetS)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetN));
                 nums.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
                 if (m.HasHome) { nums.Add(1); nums.Add(m.HomeX); nums.Add(m.HomeZ); } else nums.Add(0);

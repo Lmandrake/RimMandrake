@@ -30,7 +30,8 @@ ORIGINS = {"Modern": (10, 10), "Scrapper": (140, 10), "Industrial": (10, 165), "
 W, H = 74, 40
 # name: (x, z, w, h), local cells. 30x17 cells is one 1920x1080 frame at 64 px per cell.
 FRAMES = {"house": (6, 2, 30, 17), "workshop": (7, 3, 15, 9), "shed": (20, 3, 22, 13), "yard": (22, 12, 18, 13), "cut": (22, -2, 12, 9),
-          "masts": (28, 14, 30, 17), "fallen": (44, 2, 30, 17), "pair": (34, 4, 30, 17), "all": (0, 0, 74, 40)}
+          "masts": (28, 14, 30, 17), "fallen": (44, 2, 30, 17), "pair": (34, 4, 30, 17), "all": (0, 0, 74, 40),
+          "rock": (0, 44, 30, 22), "ring": (34, 44, 22, 17), "hall": (52, 46, 24, 10)}
 
 
 def line(x0, z0, x1, z1):
@@ -71,6 +72,23 @@ def plan():
     p["cuts"] = [(2, 3)]
     p["hut_lamp"] = ("StandingLamp", (64, 8))
     return p
+
+
+def plan_hard():
+    """Local cells, north of the colony: what real bases do to a cord. A room cut into a mountain; conduit run wholly inside a wall;
+    a one-wide corridor; a machine hard against rock."""
+    rock = [(x, z) for x in range(3, 31) for z in range(44, 68) if not (7 <= x <= 22 and 49 <= z <= 61)]
+    room = perimeter(36, 46, 52, 58, ((44, 46),))
+    hall = perimeter(56, 50, 72, 52, ((56, 51),))
+    return {"rock": rock, "walls": room + hall, "doors": [((44, 46), 0), ((56, 51), 1)],
+            "floors": "PavedTile:7,49,16,13;WoodPlankFloor:37,47,15,11;Concrete:57,51,15,1",
+            "conduit": line(0, 55, 14, 55) + line(14, 50, 14, 64)       # in through rock, a T, out into rock, on in the rock
+            + perimeter(36, 46, 52, 58, ((44, 46),))                                           # the whole ring inside the wall
+            + line(53, 52, 55, 52) + line(52, 52, 52, 52)                                      # out to the corridor's door side
+            + line(57, 51, 71, 51),                                                            # the corridor's length
+            "machines": [("Battery", (-1, 55), 0, None), ("Battery", (46, 48), 0, None), ("StandingLamp", (10, 50), None, None), ("StandingLamp", (20, 60), None, None), ("Heater", (22, 49), None, None),
+                         ("ElectricStove", (9, 60), 0, None), ("StandingLamp", (38, 48), None, None), ("StandingLamp", (50, 56), None, None),
+                         ("Heater", (37, 57), None, None), ("HiTechResearchBench", (44, 52), 0, None), ("StandingLamp", (71, 51), None, None)]}
 
 
 class Scene(object):
@@ -163,6 +181,38 @@ class Scene(object):
         self.call("jawa/paint_area", area="BuildRoof", ops=rect, value=False)
         self.call("jawa/paint_area", area="Home", ops=rect, value=False)
 
+    def hard(self, look):
+        ox, oz = ORIGINS[look]
+        p = plan_hard()
+        key = KEY[look]
+        r = "%d,%d,%d,%d" % (ox - 2, oz + 42, W + 4, 30)
+        self.call("jawa/destroy_batch", rects=r, categories="All")
+        self.call("jawa/set_terrain_batch", ops="Soil:" + r, clearOverlays=True)
+        self.call("jawa/set_fog", action="unfog", rect=r)
+        self.call("jawa/set_roof_batch", ops="None:" + r)
+        ops = []
+        for f in p["floors"].split(";"):
+            d, q = f.split(":")
+            x, z, w, h = [int(v) for v in q.split(",")]
+            ops.append("%s:%d,%d,%d,%d" % (d, x + ox, z + oz, w, h))
+        self.call("jawa/set_terrain_batch", ops=";".join(ops))
+        self.batch("Granite", p["rock"], ox, oz)
+        self.batch("Wall", sorted(set(p["walls"])), ox, oz, stuff="Steel")
+        for c, rot in p["doors"]:
+            self.batch("Door", [c], ox, oz, rot=rot, stuff="Steel")
+        self.ap("cclearpicks")
+        for c in sorted(set(p["conduit"])):
+            self.ap("cplace:PowerConduit:%s:%d,%d:god" % (key, c[0] + ox, c[1] + oz))
+            if key.endswith("_Multi"):
+                self.ap("cprocess")
+        self.ap("cprocess")
+        for d, c, rot, stuff in p["machines"]:
+            self.batch(d, [c], ox, oz, rot=rot, stuff=stuff)
+        for t in self.B.call("jawa/list_things", defName="Battery", rect=r, limit=50).get("things") or []:
+            self.call("jawa/battery_set", thing=t.get("id") or t.get("thingId"), mode="setPct", value=1.0)
+        self.call("jawa/paint_area", area="BuildRoof", ops=r, value=False)
+        self.call("jawa/paint_area", area="Home", ops=r, value=False)
+
     def colonists(self, looks):
         pawns = [q for q in self.B.call("jawa/list_pawns").get("pawns") or [] if q.get("isPlayer") and q.get("kind") == "Colonist"]
         ox, oz = ORIGINS[looks[0]]
@@ -209,6 +259,7 @@ def main():
     ap.add_argument("--shots", default=None, help="capture name tag: use a new one each time, the writer is asynchronous")
     ap.add_argument("--frames", default="house,yard,cut,fallen")
     ap.add_argument("--rect", default=None, help="x,z,w,h local cells, with --frames naming it")
+    ap.add_argument("--hard", action="store_true", help="the mountain room, in-wall run and corridor, north of each colony")
     ap.add_argument("--save", default=None)
     a = ap.parse_args()
     S = Scene()
@@ -232,6 +283,14 @@ def main():
         S.noon()
         S.B.call("rimworld/set_god_mode", enabled=False)
         print("census", json.dumps({k: v for k, v in S.B.probe("census").items() if isinstance(v, (int, str, bool))})[:400])
+    if a.hard:
+        S.call("rimworld/set_god_mode", enabled=True)
+        for look in looks:
+            S.hard(look)
+        S.call("jawa/map_commit")
+        S.B.ticks(300)
+        S.B.probe("rebuild")
+        S.B.call("rimworld/set_god_mode", enabled=False)
     if a.save:
         S.call("rimworld/save_game", saveName=a.save)
     if a.shots:
