@@ -15,9 +15,15 @@ temperature is the kind's safe max + 8 C (hot) or the middle of its safe range (
 reflection): IncidentWorker.CanFireNow caches one answer per tick and its storyteller gates (Map_PlayerHome, earliestDay,
 the world tile's biome) say nothing about this mechanism on a generated test map.
 Scene: Def -> map -> Stage 5 (wild animals cleared, home + built roof on an open 5x5, 5 of one roster herd kind 30-40
-cells away) -> hot -> Can(few) -> Add 3 -> cool -> Can(cool) -> hot -> Can(hot) -> Roof off -> Can(noroof) -> Roof on ->
+cells away) -> hot -> Can(few) -> Add 3 -> FRESH cool -> FRESH hot -> Roof off -> Can(noroof) -> Roof on ->
 stampedeEnabled=false Can(off) -> true Can(on) -> Fire -> Interrupt -> run 130 -> Runners(reissue) -> cool, run 600 ->
-Runners(cooled) -> hot, run 320 -> Can(hot2) -> Fire(fire2) -> run 5500 -> Runners(cap1) -> run 800 -> Runners(cap2) -> Cleanup.
+Runners(cooled) -> FRESH hot2 -> Fire(fire2) -> run 5500 -> Runners(cap1) -> run 800 -> Runners(cap2) -> Cleanup.
+FRESH <read> = Stage 8 of the same kind as ONE batch -> heat -> run 320 -> jawa/list_pawns (HERD line: n, wild, max pairwise
+distance, factions) -> Can(<read>), both at the same paused tick; re-staged up to 3 times while the batch is not together.
+The herd precondition is READ, never assumed: wild animals wander, and a gate that says false over a scattered herd says
+nothing about the mechanism (LIVE 2026-11-06: best=0 with herd=8 hot=8, 1081 ticks after a two-batch spawn, and no reading
+of where the 8 were). A clause whose control or stimulus needs the herd is UNMEASURED unless the HERD line shows >= 8
+same-kind, faction-less pawns all within 25 cells; with that shown, a false gate is a FAIL of the mechanism.
   A1  IncidentDef RM_ShadeStampede is loaded, worker IncidentWorker_RM_ShadeStampede, allowedBiomes holds RM_LongShade
   A2  a herd of 8 same-def wild herd animals (>= 50 % overheated) and a roofed home cell: canFireNow (CanFireNowSub) true
   A3  no herd: 5 overheated animals (< 6) -> false; 8 cooled animals (< 50 % overheated) -> false
@@ -53,6 +59,7 @@ METHODS = ("Def", "Toggle", "Stage", "Add", "Heat", "Roof", "Can", "Runners", "F
 TITLE = "An overheated herd is bolting for your roof"
 MIN_HERD, HOT_FRACTION, HERD_RADIUS, CAP, REISSUE = 6, 0.5, 25, 6000, 120
 FIRST, ADDED = 5, 3
+HEAT_RUN, FRESH_TRIES = 320, 3     # the outdoor cache refreshes every 300 ticks; how many batches may scatter before UNMEASURED
 WORKER = "RimMandrake.LongShade.IncidentWorker_RM_ShadeStampede"
 
 
@@ -82,6 +89,37 @@ def _hot_enough(c):
 
 def _herd_ok(c):
     return _i(c, "alive", 0) >= MIN_HERD
+
+
+def herd_line(rows, kind, tick=None, truncated=0):
+    """jawa/list_pawns rows -> 'HERD kind=X n=N wild=N maxd=F factions=a,b|none tick=N truncated=N': the living, spawned,
+    not-downed pawns of the kind as FindHerd would weigh them, with the farthest pair (distance as InHorDistOf measures it)."""
+    mine = [r for r in rows if r.get("kindDef") == kind and r.get("spawned") and not r.get("dead") and not r.get("downed")]
+    pts = [(r.get("x", -1), r.get("z", -1)) for r in mine]
+    far = max([((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5 for a in pts for b in pts] or [0.0])
+    wild = sum(1 for r in mine if r.get("faction") is None)
+    facs = sorted(set(str(r.get("faction")) for r in mine if r.get("faction") is not None))
+    return "HERD kind=%s n=%d wild=%d maxd=%.1f factions=%s tick=%s truncated=%s" % (
+        kind, len(mine), wild, far, ",".join(facs) or "none", tick, truncated or 0)
+
+
+def together(line, kind):
+    """-> None when the HERD line shows the clause's herd (>= 8 of the staged kind, all wild, all within 25 cells), else why not."""
+    h = kv(line)
+    if h.get("_head") != "HERD":
+        return "no herd reading (%s)" % line
+    n, wild = _i(h, "n", 0), _i(h, "wild", 0)
+    try:
+        far = float(h.get("maxd"))
+    except (TypeError, ValueError):
+        return "no distance in the herd reading (%s)" % line
+    if h.get("kind") != kind or n < FIRST + ADDED or _i(h, "truncated", 1) != 0:
+        return "not the staged 8 (%s)" % line
+    if wild != n or h.get("factions") != "none":
+        return "not all wild (%s)" % line
+    if far > HERD_RADIUS:
+        return "scattered past %d cells (%s)" % (HERD_RADIUS, line)
+    return None
 
 
 def judge(rec):
@@ -119,12 +157,20 @@ def judge(rec):
             raise KeyError("%s: %s" % (name, rec.get(name)))
         return r
 
+    def apart(name):
+        """why the herd the read named was not the clause's herd, or None; a missing reading raises, so UNMEASURED"""
+        need(name, "HERD")
+        return together(rec[name], kind)
+
     def a2():
         h = need("hot", "CAN")
         if not (_herd_ok(h) and _hot_enough(h)):
             return 2, "UNMEASURED: herd not hot enough to test (%s)" % rec["hot"]
+        why = apart("herd_hot")
+        if why:
+            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["hot"])
         ok = _b(h, "sub") and _i(h, "homeRoofed", 0) >= 1 and h.get("bestDef") == kind and _i(h, "best", 0) >= MIN_HERD
-        return (0 if ok else 1), "hot herd + roof: %s" % rec["hot"]
+        return (0 if ok else 1), "hot herd + roof: %s | %s" % (rec["hot"], rec["herd_hot"])
 
     def a3():
         f, c = need("few", "CAN"), need("cool", "CAN")
@@ -132,6 +178,9 @@ def judge(rec):
             return 2, "UNMEASURED: the 5-animal control is not 5 hot animals with a roof (%s)" % rec["few"]
         if not _herd_ok(c) or _hot_enough(c) or _i(c, "homeRoofed", 0) < 1:
             return 2, "UNMEASURED: the cooled control is not a cool herd of >= 6 with a roof (%s)" % rec["cool"]
+        why = apart("herd_cool")
+        if why:   # false over a scattered herd is false for the wrong reason
+            return 2, "UNMEASURED: the cooled control's herd precondition does not hold: %s" % why
         ok = not _b(f, "sub") and not _b(c, "sub")
         return (0 if ok else 1), "few: sub=%s; cool: sub=%s" % (f.get("sub"), c.get("sub"))
 
@@ -139,6 +188,8 @@ def judge(rec):
         n = need("noroof", "CAN")
         if not (_herd_ok(n) and _hot_enough(n)):
             return 2, "UNMEASURED: herd not hot for the no-roof control (%s)" % rec["noroof"]
+        if _i(n, "best", 0) < MIN_HERD:   # the worker sees no herd, so its false says nothing about the roof
+            return 2, "UNMEASURED: the worker sees no herd in the no-roof control (%s)" % rec["noroof"]
         ok = _i(n, "homeRoofed", -1) == 0 and not _b(n, "sub")
         return (0 if ok else 1), "no roof: %s" % rec["noroof"]
 
@@ -146,11 +197,16 @@ def judge(rec):
         o, back = need("off", "CAN"), need("on", "CAN")
         if not (_herd_ok(o) and _hot_enough(o)) or _i(o, "homeRoofed", 0) < 1:
             return 2, "UNMEASURED: no hot herd + roof for the toggle control (%s)" % rec["off"]
+        if _i(o, "best", 0) < MIN_HERD:   # the worker sees no herd, so its false says nothing about the toggle
+            return 2, "UNMEASURED: the worker sees no herd in the toggle control (%s)" % rec["off"]
         ok = o.get("stampedeEnabled") == "False" and not _b(o, "sub") and back.get("stampedeEnabled") == "True" and _b(back, "sub")
         return (0 if ok else 1), "off: sub=%s; back on: sub=%s" % (o.get("sub"), back.get("sub"))
 
     def a6():
         fr, h = need("fire", "FIRED"), need("hot", "CAN")
+        why = apart("herd_hot")
+        if why:
+            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["fire"])
         n = _i(fr, "n", 0)
         ok = (_b(fr, "ok") and _b(fr, "letter") and n >= MIN_HERD and n == _i(h, "alive", -1)
               and _i(fr, "goto", -1) == n and _i(fr, "sprint", -1) == n and _i(fr, "toTarget", -1) == n
@@ -159,6 +215,9 @@ def judge(rec):
 
     def a7():
         it, re_ = need("interrupt", "INTERRUPTED"), need("reissue", "RUNNERS")
+        why = apart("herd_hot")
+        if why:
+            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["interrupt"])
         n = _i(it, "n", 0)
         if n < 1 or _i(it, "wait", -1) != n or _i(it, "goto", -1) != 0:
             return 1, "the interrupt did not leave every runner on Wait: %s" % rec["interrupt"]
@@ -174,6 +233,9 @@ def judge(rec):
 
     def a8():
         c = need("cooled", "RUNNERS")
+        why = apart("herd_hot")
+        if why:
+            return 2, "UNMEASURED: no stampede was owed, the herd precondition does not hold: %s" % why
         if _i(c, "herdHot", 1) != 0:
             return 2, "UNMEASURED: the herd did not cool (%s)" % rec["cooled"]
         since = _i(c, "since", CAP)
@@ -183,8 +245,13 @@ def judge(rec):
     def a9():
         h2, f2 = need("hot2", "CAN"), need("fire2", "FIRED")
         c1, c2 = need("cap1", "RUNNERS"), need("cap2", "RUNNERS")
+        why = apart("herd_hot2")
+        if why:
+            return 2, "UNMEASURED: the second herd's precondition does not hold: %s" % why
+        if not _hot_enough(h2):
+            return 2, "UNMEASURED: the second herd is not hot (%s)" % rec["hot2"]
         if not _b(h2, "sub") or not _b(f2, "ok") or _i(f2, "n", 0) < MIN_HERD:
-            return 2, "UNMEASURED: the second stampede did not start (%s | %s)" % (rec["hot2"], rec["fire2"])
+            return 1, "a hot herd held together and the second stampede did not start (%s | %s | %s)" % (rec["herd_hot2"], rec["hot2"], rec["fire2"])
         s1, s2 = _i(c1, "since", -1), _i(c2, "since", -1)
         if not (0 <= s1 < CAP - REISSUE):
             return 2, "UNMEASURED: first read at since=%s is not before the cap" % s1
@@ -222,10 +289,14 @@ def _good():
            "safeMax=40 stampedeEnabled=%s modEnabled=True")
     run = ("RUNNERS n=%d goto=%d sprint=%d toTarget=%d wait=%d atTarget=%d hot=%d alive=%d herdHot=%d since=%d running=%s "
            "tick=%d target=75,75 targetRoofed=True targetHome=True")
+    herd = "HERD kind=RM_Bokka n=8 wild=8 maxd=6.0 factions=none tick=%d truncated=0"
     return {
         "def": "DEF found=True worker=%s biomes=RM_LongShade category=Misc" % WORKER,
         "stage": "STAGED kind=RM_Bokka spawned=5 failed=0 herd=5 wildCleared=9 roof=75,75 roofCells=25 herdAt=40,75 biome=RM_LongShade roster=RM_Bokka",
         "add": "ADDED spawned=3 failed=0 herd=8",
+        "herd_cool": herd % 320,
+        "herd_hot": herd % 640,
+        "herd_hot2": herd % 1400,
         "few": can % ("False", 5, 5, 25, 0, "True"),
         "cool": can % ("False", 8, 0, 25, 0, "True"),
         "hot": can % ("True", 8, 8, 25, 8, "True"),
@@ -247,7 +318,7 @@ def _breaks():
     """clause -> list of (key, old, new) edits that must make that clause FAIL (code 1), not pass."""
     return {
         "A1": [("def", "found=True", "found=False"), ("def", "biomes=RM_LongShade", "biomes=Desert")],
-        "A2": [("hot", "sub=True", "sub=False")],
+        "A2": [("hot", "sub=True", "sub=False"), ("hot", "best=8", "best=0")],
         "A3": [("few", "sub=False", "sub=True"), ("cool", "sub=False", "sub=True")],
         "A4": [("noroof", "sub=False", "sub=True")],
         "A5": [("off", "sub=False", "sub=True"), ("on", "sub=True", "sub=False")],
@@ -255,17 +326,24 @@ def _breaks():
                ("fire", "n=8", "n=7"), ("fire", "ok=True", "ok=False"), ("fire", "targetHome=True", "targetHome=False")],
         "A7": [("reissue", "wait=0", "wait=8"), ("reissue", "goto=6", "goto=0"), ("interrupt", "wait=8", "wait=0"),
                ("cooled", "n=0", "n=8"), ("cooled", "running=False", "running=True"),
-               ("cap1", "n=8", "n=0"), ("cap2", "n=0", "n=8"), ("cap2", "since=6400", "since=6050")],
+               ("cap1", "n=8", "n=0"), ("cap2", "n=0", "n=8"), ("cap2", "since=6400", "since=6050"),
+               ("hot2", "sub=True", "sub=False"), ("fire2", "ok=True", "ok=False")],
     }
 
 
 def _unmeasured():
     """clause -> list of edits that must make that clause UNMEASURED (code 2): a bad scene is never a pass or a fail."""
     return {
-        "A2": [("hot", "hot=8 homeRoofed=25 running=False best=8", "hot=2 homeRoofed=25 running=False best=8")],
-        "A3": [("cool", "hot=0", "hot=8")],
-        "A4": [("noroof", "alive=8 hot=8", "alive=8 hot=1")],
-        "A7": [("cooled", "herdHot=0", "herdHot=3"), ("cap2", "herdHot=8", "herdHot=0"), ("cap1", "since=5560", "since=6100")],
+        "A2": [("hot", "hot=8 homeRoofed=25 running=False best=8", "hot=2 homeRoofed=25 running=False best=8"),
+               ("herd_hot", "maxd=6.0", "maxd=25.1"), ("herd_hot", "wild=8", "wild=7"), ("herd_hot", "factions=none", "factions=PlayerColony"),
+               ("herd_hot", "n=8 wild=8", "n=7 wild=7"), ("herd_hot", "kind=RM_Bokka", "kind=RM_Other"), ("herd_hot", "truncated=0", "truncated=3"),
+               ("herd_hot", "HERD", "UNREAD")],
+        "A3": [("cool", "hot=0", "hot=8"), ("herd_cool", "maxd=6.0", "maxd=40.0"), ("herd_cool", "wild=8", "wild=0")],
+        "A4": [("noroof", "alive=8 hot=8", "alive=8 hot=1"), ("noroof", "best=8", "best=0")],
+        "A5": [("off", "best=8", "best=0")],
+        "A6": [("herd_hot", "maxd=6.0", "maxd=40.0"), ("herd_hot", "wild=8", "wild=0")],
+        "A7": [("cooled", "herdHot=0", "herdHot=3"), ("cap2", "herdHot=8", "herdHot=0"), ("cap1", "since=5560", "since=6100"),
+               ("herd_hot", "maxd=6.0", "maxd=40.0"), ("herd_hot2", "maxd=6.0", "maxd=40.0"), ("hot2", "hot=8", "hot=1")],
     }
 
 
@@ -304,9 +382,28 @@ def offline():
     me = _read("src/RimMandrake/LongShade/prove_stampede.py")
     if ("type=PROBE, method=method, " + 'args=arg or "x")') not in me:
         bad.append('the driver can send args="" to jawa/static_call, which reads it as ZERO arguments (every probe method takes one)')
+    tool = _read("src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs")
+    for frag in ('"jawa/list_pawns"', "kindDef = pawn.kindDef?.defName", "faction = pawn.Faction?.def?.defName", "x = pos.IsValid ? pos.x : -1",
+                 "z = pos.IsValid ? pos.z : -1", "spawned = pawn.Spawned", "dead = pawn.Dead", "downed = pawn.Downed", "ticksGame = TicksGameSafe()", "truncated,"):
+        if frag not in tool:
+            bad.append("jawa/list_pawns lost %r (the herd reading reads it)" % frag)
+    if 'p.Faction == null && p.RaceProps.Animal && p.RaceProps.herdAnimal && !p.Dead && !p.Downed' not in mech or "a.def == animals[i].def" not in mech:
+        bad.append("FindHerd no longer weighs what the herd reading weighs (wild, same def, alive, not downed)")
     calls = set(re.findall(r'static\("(\w+)"', me))
     if not calls or not calls <= set(METHODS):
         bad.append("the driver calls probe methods outside METHODS: %s" % sorted(calls - set(METHODS)))
+    bad += _logic_checks()
+    bad += _mutants(me)
+    for b in bad:
+        print("FAIL " + b)
+    print("%s offline: probe compiled, mechanism strings and numbers match the item, judge sees a pass and every clause's fail, "
+          "the herd is read beside each gate, every mutant goes red" % ("PASS" if not bad else "FAIL"))
+    return 0 if not bad else 1
+
+
+def _logic_checks():
+    """the verdict logic, the herd reading and the driver's order: pure, so a mutant of this file can run them too"""
+    bad = []
     g = judge(_good())
     bad += ["judge does not pass %s on a good record: %s" % (c, w) for c, (code, w) in g.items() if code != 0]
     if set(g) != set(CLAUSES):
@@ -327,18 +424,249 @@ def offline():
         del rec[k]
         if all(code == 0 for code, _ in judge(rec).values()):
             bad.append("judge passes every clause with %s missing" % k)
-    for b in bad:
-        print("FAIL " + b)
-    print("%s offline: probe compiled, mechanism strings and numbers match the item, judge sees a pass and every clause's fail"
-          % ("PASS" if not bad else "FAIL"))
-    return 0 if not bad else 1
+    for name, clauses in (("herd_hot", ("A2", "A6", "A7")), ("herd_cool", ("A3",)), ("herd_hot2", ("A7",))):
+        rec = _good()
+        del rec[name]
+        for c in clauses:
+            if judge(rec)[c][0] != 2:
+                bad.append("%s is not UNMEASURED with %s missing" % (c, name))
+    bad += _replay_checks() + _herd_line_checks() + _script_checks()
+    return bad
+
+
+def _replay_checks():
+    """the LIVE reading of 2026-11-06 (best=0, herd=8 hot=8): the proof must tell a scattered herd from a broken FindHerd"""
+    seen = ("CAN sub=False herd=8 alive=8 hot=8 homeRoofed=25 running=False best=0 bestDef=none outdoor=113 amb=128 safeMax=105 "
+            "stampedeEnabled=True modEnabled=True")
+    bad = []
+    for far, wild, want, says in (("6.0", "8", 1, "a broken FindHerd"), ("41.0", "8", 2, "a scattered herd"), ("6.0", "0", 2, "a herd with a faction")):
+        rec = _good()
+        rec["hot"] = seen
+        rec["herd_hot"] = "HERD kind=RM_Bokka n=8 wild=%s maxd=%s factions=%s tick=1 truncated=0" % (wild, far, "none" if wild == "8" else "Ancients")
+        code, why = judge(rec)["A2"]
+        if code != want:
+            bad.append("the 2026-11-06 reading over %s gives A2=%d, not %d: %s" % (says, code, want, why))
+        if want == 1 and ("maxd=" not in why or "factions=" not in why or "best=" not in why):
+            bad.append("the A2 verdict does not print spread and faction beside best=: %s" % why)
+    # its knock-on: nothing fired, so no runners. Over a scattered herd that is unmeasured; over a herd held together, a failure
+    run0 = ("RUNNERS n=0 goto=0 sprint=0 toTarget=0 wait=0 atTarget=0 hot=0 alive=0 herdHot=%d downed=0 since=-1 running=False tick=1211 "
+            "target=none targetRoofed=False targetHome=False")
+    for far, want in (("6.0", 1), ("41.0", 2)):
+        rec = _good()
+        rec.update(hot=seen, noroof=seen, off=seen, on=seen, fire="FIRED ok=False letters=0 letter=False " + (run0 % 8)[8:],
+                   interrupt="INTERRUPTED n=0 goto=0 wait=0 tick=1081", reissue=run0 % 8, cooled=run0 % 0,
+                   herd_hot="HERD kind=RM_Bokka n=8 wild=8 maxd=%s factions=none tick=1 truncated=0" % far)
+        got = judge(rec)
+        for c in ("A6", "A7"):
+            if got[c][0] != want:
+                bad.append("the 2026-11-06 knock-on with maxd=%s gives %s=%d, not %d: %s" % (far, c, got[c][0], want, got[c][1]))
+        for c in ("A4", "A5"):
+            if got[c][0] != 2:
+                bad.append("the 2026-11-06 reading (the worker sees no herd) gives %s=%d, not UNMEASURED: %s" % (c, got[c][0], got[c][1]))
+    return bad
+
+
+def _herd_line_checks():
+    bad = []
+
+    def row(x, z, kind="K", faction=None, **kw):
+        out = {"kindDef": kind, "x": x, "z": z, "faction": faction, "spawned": True, "dead": False, "downed": False}
+        out.update(kw)
+        return out
+    pack = [row(0, 0)] * 7
+    for rows, field, want in (([row(0, 0), row(15, 20)], "maxd", "25.0"),     # 15,20 is exactly the radius: InHorDistOf holds
+                              ([row(0, 0), row(15, 21)], "maxd", "25.8"),
+                              ([row(0, 0), row(3, 4), row(9, 0, kind="Other")], "n", "2"),     # another kind is not the herd
+                              ([row(0, 0), row(90, 0, dead=True)], "maxd", "0.0"),
+                              ([row(0, 0), row(90, 0, downed=True)], "n", "1"),
+                              ([row(0, 0), row(90, 0, spawned=False)], "n", "1"),
+                              ([row(0, 0), row(1, 0, faction="PlayerColony")], "wild", "1"),
+                              ([row(0, 0), row(1, 0, faction="PlayerColony")], "factions", "PlayerColony"),
+                              ([row(0, 0)], "factions", "none"), ([], "maxd", "0.0")):
+        got = kv(herd_line(rows, "K", 7, 0)).get(field)
+        if got != want:
+            bad.append("herd_line %s=%s, not %s on %r" % (field, got, want, rows))
+    for rows, ok in ((pack + [row(15, 20)], True), (pack + [row(15, 21)], False), (pack, False), (pack[:6] + [row(1, 0, kind="Other")] * 2, False),
+                     (pack + [row(1, 0, faction="PlayerColony")], False), ([row(0, 0)] * 8, True)):
+        why = together(herd_line(rows, "K", 7, 0), "K")
+        if (why is None) != ok:
+            bad.append("together says %r on %d rows, want together=%s" % (why, len(rows), ok))
+    if together(herd_line([row(0, 0)] * 8, "K", 7, 2), "K") is None:
+        bad.append("together accepts a truncated pawn list")
+    if together("", "K") is None or together("HERD kind=K n=8 wild=8 factions=none truncated=0", "K") is None:
+        bad.append("together accepts a line with no reading")
+    return bad
+
+
+def _fake_scene(scatter=lambda stages: False, lines=None):
+    """_script against a stand-in game: a clock, a call log, and scatter(stages) saying whether this batch has spread."""
+    st = {"clock": 0, "stages": 0, "log": []}
+
+    def static(method, arg="x"):
+        st["log"].append((method, arg, st["clock"]))
+        if method == "Stage":
+            st["stages"] += 1
+            return "STAGED kind=K spawned=%s biome=RM_LongShade" % arg.split(",")[0]
+        return (lines or {}).get(method, method.upper())
+
+    def run(n):
+        st["log"].append(("run", n, st["clock"]))
+        st["clock"] += n
+
+    def herd(kind):
+        st["log"].append(("herd", kind, st["clock"]))
+        return "HERD kind=%s n=8 wild=8 maxd=%s factions=none tick=%d truncated=0" % (kind, "40.0" if scatter(st["stages"]) else "6.0", st["clock"])
+    rec = {}
+    _script(rec, static, run, herd)
+    return rec, st
+
+
+def _script_checks():
+    bad = []
+    rec, st = _fake_scene()
+    log = st["log"]
+    names = {"herd_cool": 0, "herd_hot": 1, "herd_hot2": 2}
+    reads = [i for i, e in enumerate(log) if e[0] == "herd"]
+    if len(reads) != len(names) or any(k not in rec for k in names):
+        return ["the driver does not read the herd once per fresh read: %s" % [e[0] for e in log]]
+    for i in reads:
+        nxt, clock = log[i + 1], log[i][2]
+        if nxt[0] != "Can" or nxt[2] != clock:
+            bad.append("the herd read at tick %d is not followed by Can at that tick: %r" % (clock, nxt))
+        stage = [e for e in log[:i] if e[0] == "Stage"][-1]
+        if clock - stage[2] > HEAT_RUN:
+            bad.append("the herd read at tick %d comes %d ticks after its batch, more than one heat run" % (clock, clock - stage[2]))
+        if stage[1] != "%d,kind=K" % (FIRST + ADDED):
+            bad.append("the fresh batch is not 8 of the staged kind as one spawn: %r" % (stage,))
+    order = [e[0] for e in log]
+    hot_at, fire_at = reads[1], order.index("Fire")
+    if any(e[0] == "run" for e in log[hot_at:fire_at]):
+        bad.append("ticks pass between the hot herd read and the fire, so the read no longer describes what fired")
+    fire2_at = len(order) - 1 - order[::-1].index("Fire")
+    if any(e[0] == "run" for e in log[reads[2]:fire2_at]):
+        bad.append("ticks pass between the second herd read and the second fire")
+    if not rec.get("add", "").startswith("ADD") or rec.get("few") != "CAN":
+        bad.append("the 5-animal control or the Add step is gone from the driver")
+    # a scattered batch is staged again, up to FRESH_TRIES, then stays on the record for the judge to call UNMEASURED
+    once = _fake_scene(lambda n: n == 2)[1]["stages"]
+    if once != 1 + 2 + 1 + 1:
+        bad.append("one scattered batch gave %d stagings, not 5" % once)
+    rec2, st2 = _fake_scene(lambda n: True)
+    if st2["stages"] != 1 + 3 * FRESH_TRIES:
+        bad.append("an always-scattered herd gave %d stagings, not %d" % (st2["stages"], 1 + 3 * FRESH_TRIES))
+    good = _good()
+    good["herd_hot"] = rec2.get("herd_hot", "").replace("kind=K", "kind=RM_Bokka")
+    if judge(good)["A2"][0] != 2:
+        bad.append("an always-scattered herd does not leave A2 UNMEASURED")
+    # a staging the probe refuses stops the scene; it is never read as a herd
+    r3 = {}
+    _script(r3, lambda m, a="x": "REFUSED: no" if m == "Stage" else m, lambda n: None, lambda k: "HERD")
+    if not r3.get("unmeasured"):
+        bad.append("a refused staging does not stop the scene as unmeasured")
+    return bad
+
+
+# (what the mutant does, the text in this file, its replacement): each must turn _logic_checks red, or the check is decoration
+MUTANTS = (
+    ("the driver stops reading the herd", 'rec["herd_" + name] = herd(kind)', 'rec["herd_" + name] = rec.get("herd_" + name, "HERD kind=K n=8 wild=8 maxd=6.0 factions=none tick=0 truncated=0")'),
+    ("the batch ages four heat runs before it is read", 'static("Heat", mode)\n            run(HEAT_RUN)\n            rec["herd_"', 'static("Heat", mode)\n            run(HEAT_RUN * 4)\n            rec["herd_"'),
+    ("the fresh batch is not re-staged", 'rec["stage_" + name] = static("Stage", "%d,kind=%s" % (FIRST + ADDED, kind))', 'rec["stage_" + name] = "STAGED"'),
+    ("a2 stops asking where the herd is", '        why = apart("herd_hot")\n        if why:\n            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["hot"])\n', ''),
+    ("a6 stops asking where the herd is", '        why = apart("herd_hot")\n        if why:\n            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["fire"])\n', ''),
+    ("a7 stops asking where the herd is", '        why = apart("herd_hot")\n        if why:\n            return 2, "UNMEASURED: the herd precondition does not hold: %s; %s" % (why, rec["interrupt"])\n', ''),
+    ("the cooled reading stops asking where the herd was", '        why = apart("herd_hot")\n        if why:\n            return 2, "UNMEASURED: no stampede was owed, the herd precondition does not hold: %s" % why\n', ''),
+    ("a3 stops asking where the cooled herd is", '        why = apart("herd_cool")\n        if why:   # false over a scattered herd is false for the wrong reason\n            return 2, "UNMEASURED: the cooled control\'s herd precondition does not hold: %s" % why\n', ''),
+    ("a4 stops asking if the worker saw the herd", 'if _i(n, "best", 0) < MIN_HERD:', 'if False:'),
+    ("a5 stops asking if the worker saw the herd", 'if _i(o, "best", 0) < MIN_HERD:', 'if False:'),
+    ("the second herd is not read", '        why = apart("herd_hot2")\n        if why:\n            return 2, "UNMEASURED: the second herd\'s precondition does not hold: %s" % why\n', ''),
+    ("the radius is wrong", 'if far > HERD_RADIUS:', 'if far > HERD_RADIUS + 20:'),
+    ("faction is ignored", 'if wild != n or h.get("factions") != "none":', 'if False:'),
+    ("distance measures only x", '((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5', 'abs(a[0] - b[0]) * 1.0'),
+    ("a dead pawn counts as herd", 'and r.get("spawned") and not r.get("dead") and not r.get("downed")]', 'and r.get("spawned") and not r.get("downed")]'),
+    ("the verdict hides the spread", '"hot herd + roof: %s | %s" % (rec["hot"], rec["herd_hot"])', '"hot herd + roof: %s" % rec["hot"]'),
+)
+
+
+def _mutants(src):
+    bad = []
+    src = re.sub(r"(?ms)^MUTANTS = \(.*?^\)\n", "", src)     # the table holds every mutant's text too; a mutant needs only the code
+    for what, old, new in MUTANTS:
+        if src.count(old) != 1:
+            bad.append("mutant %r does not apply: its text occurs %d times" % (what, src.count(old)))
+            continue
+        ns = {"__name__": "prove_stampede_mutant", "__file__": os.path.abspath(__file__)}
+        exec(compile(src.replace(old, new), "<mutant>", "exec"), ns)
+        try:
+            caught = ns["_logic_checks"]()
+        except Exception as ex:     # a crash in the checks is red too
+            caught = ["crashed: %r" % (ex,)]
+        if not caught:
+            bad.append("mutant survived: %s" % what)
+    return bad
 
 
 # ---------------------------------------------------------------- live
+def _script(rec, static, run, herd):
+    """The scene's stages, in order, into rec. run() advances paused, so no tick passes between two reads with no run between."""
+    rec["stage"] = static("Stage", str(FIRST))
+    if not rec["stage"].startswith("STAGED") or "kind=none" in rec["stage"]:
+        rec["unmeasured"] = "staging refused: " + rec["stage"]
+        return
+    kind = kv(rec["stage"]).get("kind")
+    rec["heat1"] = static("Heat", "hot")
+    if not rec["heat1"].startswith("HEAT"):
+        rec["unmeasured"] = "heat lever refused: " + rec["heat1"]
+        return
+    run(HEAT_RUN)
+    rec["few"] = static("Can")
+    rec["add"] = static("Add", str(ADDED))
+
+    def fresh(name, mode):
+        """8 of the kind as ONE batch, the heat, one heat run, then the herd's whereabouts and the gate at one paused tick"""
+        for _ in range(FRESH_TRIES):
+            rec["stage_" + name] = static("Stage", "%d,kind=%s" % (FIRST + ADDED, kind))
+            rec["heat_" + name] = static("Heat", mode)
+            run(HEAT_RUN)
+            rec["herd_" + name] = herd(kind)
+            rec[name] = static("Can")
+            if together(rec["herd_" + name], kind) is None:
+                return
+
+    fresh("cool", "cool")
+    fresh("hot", "hot")
+    rec["roof_off"] = static("Roof", "off")
+    rec["noroof"] = static("Can")
+    rec["roof_on"] = static("Roof", "on")
+    static("Toggle", "stampedeEnabled=false")
+    rec["off"] = static("Can")
+    static("Toggle", "stampedeEnabled=true")
+    rec["on"] = static("Can")
+    rec["fire"] = static("Fire")
+    rec["interrupt"] = static("Interrupt")
+    run(130)
+    rec["reissue"] = static("Runners")
+    rec["heat_cool2"] = static("Heat", "cool")
+    run(600)
+    rec["cooled"] = static("Runners")
+    fresh("hot2", "hot")
+    rec["fire2"] = static("Fire")
+    run(5500)
+    rec["cap1"] = static("Runners")
+    run(800)
+    rec["cap2"] = static("Runners")
+    rec["cleanup"] = static("Cleanup")
+
+
 def _scene():
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
     from scenes import scenelib as S  # noqa: E402
     from await_lifecycle import await_lifecycle  # noqa: E402
+
+    def herd(kind):
+        r = S.call("jawa/list_pawns", limit=500)
+        if not S.ok(r):
+            return "UNREAD jawa/list_pawns: %s" % str(r)[:200]
+        return herd_line(r.get("pawns") or [], kind, r.get("ticksGame"), r.get("truncated"))
 
     def static(method, arg="x"):
         # never args="": jawa/static_call reads "" as ZERO arguments, so every one-string probe method (Def, Can, Fire,
@@ -363,46 +691,7 @@ def _scene():
     try:
         mid = S.biome_map(TILE, "RM_LongShade", size=SIZE)
         S.run(120)
-        rec["stage"] = static("Stage", str(FIRST))
-        if not rec["stage"].startswith("STAGED") or "kind=none" in rec["stage"]:
-            rec["unmeasured"] = "staging refused: " + rec["stage"]
-            return rec
-        rec["heat1"] = static("Heat", "hot")
-        if not rec["heat1"].startswith("HEAT"):
-            rec["unmeasured"] = "heat lever refused: " + rec["heat1"]
-            return rec
-        S.run(320)
-        rec["few"] = static("Can")
-        rec["add"] = static("Add", str(ADDED))
-        rec["heat_cool"] = static("Heat", "cool")
-        S.run(320)
-        rec["cool"] = static("Can")
-        rec["heat2"] = static("Heat", "hot")
-        S.run(320)
-        rec["hot"] = static("Can")
-        rec["roof_off"] = static("Roof", "off")
-        rec["noroof"] = static("Can")
-        rec["roof_on"] = static("Roof", "on")
-        static("Toggle", "stampedeEnabled=false")
-        rec["off"] = static("Can")
-        static("Toggle", "stampedeEnabled=true")
-        rec["on"] = static("Can")
-        rec["fire"] = static("Fire")
-        rec["interrupt"] = static("Interrupt")
-        S.run(130)
-        rec["reissue"] = static("Runners")
-        rec["heat_cool2"] = static("Heat", "cool")
-        S.run(600)
-        rec["cooled"] = static("Runners")
-        rec["heat3"] = static("Heat", "hot")
-        S.run(320)
-        rec["hot2"] = static("Can")
-        rec["fire2"] = static("Fire")
-        S.run(5500)
-        rec["cap1"] = static("Runners")
-        S.run(800)
-        rec["cap2"] = static("Runners")
-        rec["cleanup"] = static("Cleanup")
+        _script(rec, static, S.run, herd)
     finally:
         for t, was in found.items():
             if was in ("True", "False"):
