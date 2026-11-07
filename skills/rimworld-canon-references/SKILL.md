@@ -107,6 +107,8 @@ TITLE can lie (the Rakata article is titled "Rakatan") (2026-09-15).
   before sampling a palette.
 
 ---
+- **"Star Wars style" naming is not Star Wars IP: the tier line is IP, not flavour.** An invented exotic name may live in the franchise-free `RM_` tier; only a genuine canon name routes through the Utinni patch layer. "The top mod without star wars will look precisely the same as the star wars enhanced one." (owner) Recorded as Q11a in `design/RimMandrake/biome_mod_architecture.md`.
+- **Read the canon entry and the shipped source before designing a canon-adjacent feature; this project has usually already answered the question.** The dianoga's single entry answered six design questions (transparent colour change, humming that scares prey, hearing, water dependency, limb regeneration, bone-eating bait). Shipped examples: `RM_ToxinSealant` with `RM_MapComponent_LivingRegrowth` gating regrowth; `RM_CompTerritorialAnchor`/`RM_AnchorGuard`; `RM_MapComponent_StrandingPools.IsReconnected()` (a 4-way water flood-fill) which IS the swim-eligibility test; `RM_CompVerminBreeder` with soft/hard caps and an aggression ramp. A claim that a name "ships" must check what KIND of thing resolved: `RUT_WardenMother` existed only as an XML example inside a C# comment.
 
 ## 3. Classify the defect BEFORE proposing a fix
 

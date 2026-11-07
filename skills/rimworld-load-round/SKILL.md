@@ -184,6 +184,7 @@ nothing. **So check the entry, the folder, and the mtime:**
 
 ```bash
 - **`ModsConfig.xml` is the list for the NEXT launch, never what the running process holds.** A running game keeps what it loaded at startup and the file can be rewritten underneath it (another seat swaps to a minimal list, then restores the full one). To know what is actually loaded call `jawa/mod_inventory`, or grep `Player.log` for `[JawaBench] context: modSet N/<hash>`. Before filing a defect from an instrument, verify the environment the measurement ran in, not just the measurement: a validated instrument on a stale input gives a confident wrong answer (a 0/16 Harmony-attach sweep on a game that had loaded 22 mods and none of the target).
+- **A load-order or ModsConfig fix must touch BOTH the live `ModsConfig.xml` and the committed `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` in the same commit, or say why not.** A fix only in the live file is undone by the next `modlist_swap.py --restore` (it restores FROM FULL.LATEST), which re-broke a ParentName fix and hung the game with the owner watching.
 # activeMods ONLY. `grep -c "<li>"` counts LINES and returns 6, not a count of mods;
 # `grep -o "<li>" | wc -l` returns activeMods + the 5 knownExpansions. Parse it.
 # Never quote a remembered total — print it, and quote the command with it.

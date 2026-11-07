@@ -299,6 +299,7 @@ an unresolved-version mod — a rapid minimal-list load catches this in one
 launch where the full 589-mod stack buries it in noise.
 
 ---
+- **A wrong enum literal or a misplaced field can discard a whole ThingDef at parse, and "present in source, deployed, mod active" does not prove a def loaded.** `<purpose>None</purpose>` (`PlantPurpose` has only Food/Health/Beauty/Misc) silently dropped 15 plants. `<butcherProducts>` nested inside `<race>` is a `ThingDef` field, not a `RaceProperties` one, so it is silently ignored. After a "missing at load" mystery, grep with a comment-aware search (`grep -rn "<butcherProducts>" src --include=*.xml`) for race-nested occurrences and check enum values against the real enum.
 
 ## Every humanlike `PawnKindDef` owes `initialResistanceRange` and `initialWillRange`
 

@@ -356,6 +356,7 @@ whatever stage the hediff was at when first added. Test a stage-dependent mechan
 real player path (a bench recipe / bill), not a raw severity poke (2026-09-09).
 
 ---
+- **The `Spawn Pawn...` debug action NPEs on every pawn defName on a VEF-loaded list, same as `rimworld/spawn_thing`; use `jawa/spawn_pawn`.** Do not "fix" it by removing `sarg.alphaanimals`: that breaks `ScenPart_StartingAnimal` with a different NPE, because some SWBestiary defs inherit from an Alpha-Animals parent or field.
 
 ## 4. Debug actions are the real surface
 

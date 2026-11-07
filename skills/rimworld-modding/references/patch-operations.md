@@ -302,6 +302,7 @@ how "that mod isn't installed" gets asserted about a mod that is.
 **`PatchOperationTest`** — obsolete. Use `Conditional`.
 
 ---
+- **`PatchOperationFindMod` needs the exact About `<name>` (or a packageId that matches), and a guard that matches nothing logs nothing.** The folded biome mods are named by the composed mod, `RimMandrake: Baroque Biomes`; the core game is `Core`, not `Ludeon.RimWorld`. An audit found 12 guards silently matching nothing. Also not real: `PatchOperationAddOrReplace`, a `CompProperties_Equippable` type, TrainabilityDef `Simple`; a cold composed-deploy load showed these and missing SoundDefs that offline checks passed.
 
 ## 7. Worked examples
 

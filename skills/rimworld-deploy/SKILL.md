@@ -67,6 +67,7 @@ TRUNCATE it mid-list.** A run that stopped at "Cuisine" would have been read as
 "only Armoury drifts"; the real answer that day was 5 mods including one the
 caller owned. Redirect the run to a file and confirm it printed its final
 `Drift found` / `Everything in sync` line before believing any drift list.
+- **Deploy a CLEAN tree, never while agents edit, and read the Player.log error classes after.** A deploy copies half-written files and the launch gate then refuses. `deploy_custom_mods.py --compose biomes --apply` is a SEPARATE step from plain `--apply`. A full-sweep `--apply` is not proof every mod deployed: before blaming a third-party mod for a fresh-restart crash, run `deploy_custom_mods.py --mod <each mod touched today>` for drift. A stale `CreatureBehaviors.dll` left 6+ XML-registered classes "Could not find type named", one broken def left `PawnKindDef.race` null, and GeneticRim.Core's static constructor dereferences it unguarded (`item.race.tradeTags`), crashing it and every later call (Need Food, `jawa/spawn_pawn`), looking like GeneticRim's own bug.
 
 ## 3. A `-` line means someone hand-edited the deployed copy
 

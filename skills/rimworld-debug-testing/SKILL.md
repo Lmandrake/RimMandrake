@@ -170,6 +170,7 @@ labelled "gimmesomeslack tier" ran on 550 mods: its preflight only checked the
 mod was PRESENT. Three of its 15 FAILs PASS on the 11-mod list. Before comparing
 two runs, read `len(env.running)` (`jawa/running_mods`) on each; a run that does
 not record the running list cannot be compared at all (2026-10-11).
+A colony looking real is not evidence it is real: 37 named colonists do not make a map the campaign. Only an explicit announcement does; "DO NOT MAINTAIN THE PURITY OF TEST COLONIES! This is a throw-away game." (owner)
 
 ## 3a. 🔴 One crash signature that looks like several: a missing `thingClass` blocks EVERY route to a `Game`
 
