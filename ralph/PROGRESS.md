@@ -1,5 +1,7 @@
 # GSS Ralph: where the last pass got to
 
+**Merge landed (pass 10): `origin/main` is merged into `ralph/gss` and on Steve (`da048b95aa`), for the Conductor's game B. Stop my game only through `ralph/steve.sh`, by pid. Game B's bridge is 5175, mine 5174: leave B alone.**
+
 Pass 9. Retired on the context guard. Not done, so no `DONE.md`. **New from the owner: a broaden call to GPT is required before `DONE.md` (Phone for help in `ralph/PROMPT.md`). Not used yet.** Owner ruled by card: cords under grass stay, "grass hides the cord"; taken out of `QUESTIONS.md`.
 
 Final DLL: selftest 1149/1149, live `core` 47/47 PASS (`proof_all_20261107T125417.json` on Steve; not recorded). Offline 9/9 and the offline gate were last run one commit before the final one, which added only machine strays. The whole proof was not run on this DLL. **Those rows passing did not see what I fixed: M2c read clean while 55 of 70 strands had a sharp corner.**
