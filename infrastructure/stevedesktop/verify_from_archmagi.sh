@@ -8,16 +8,18 @@
 #                                     WSL2 cannot broadcast on the LAN), then wait 90 s
 #
 # Where the facts come from: the report bootstrap.ps1 posts to Archmagi
-# (D:\ClaudeWork\stevedesktop\serve\reports\latest.json). Override any with env vars:
+# (D:\ClaudeWork\stevedesktop\serve\reports\latest.json), except the wired NIC's LAN IP and MAC: the
+# report predates the cable and holds the Wi-Fi pair. Override any with env vars:
 #   STEVE_LAN (LAN IP), STEVE_USER (Windows user), STEVE_MAC, STEVE_TS (tailscale name of the
 #   Windows node, default stevedesktop), STEVE_TS_WSL (default stevedesktop-wsl), STEVE_WSL_USER.
 set -uo pipefail
+PATH=$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0  # a timer or steward session has no Windows PATH
 
 REPORT=/mnt/d/ClaudeWork/stevedesktop/serve/reports/latest.json
 jget() { [ -f "$REPORT" ] && python3 -c 'import json,sys;d=json.load(open(sys.argv[1]));v=d.get("facts",{}).get(sys.argv[2]);print("" if v is None else v)' "$REPORT" "$1" 2>/dev/null; }
-LAN=${STEVE_LAN:-$(jget lan_ip)}
+LAN=${STEVE_LAN:-192.168.86.62}
 WUSER=${STEVE_USER:-$(jget user)}
-MAC=${STEVE_MAC:-$(jget mac)}
+MAC=${STEVE_MAC:-D4:5D:64:B5:8D:D1}
 EDITION=$(jget edition_id)
 TS=${STEVE_TS:-stevedesktop}
 TS_WSL=${STEVE_TS_WSL:-stevedesktop-wsl}
