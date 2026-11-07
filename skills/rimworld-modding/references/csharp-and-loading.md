@@ -254,6 +254,8 @@ shape changed. Grep for `static constructor` first, every time.
 
 ---
 - **A subprocess-wrapping C# (`OracleClient.cs` style) must read both streams.** A real `claude -p` auth failure ('OAuth session expired') prints to STDOUT, so a wrapper that reads stderr only on a nonzero exit logs nothing useful; fall back to stdout when stderr is empty.
+- **A native Burst-job crash with no managed exception is a native array freed too early, not the sounds logged just before it.** Seen on Stillsand 100x100 (4 of 4): a sun-cost path array in `RM_MapComponent_ShadeGrid` was freed one rebuild too early. Free retired native arrays only after 60 ticks (`RM_DeferredDisposal`); live-confirmed over 12,084 ticks, one run.
+- **A float-times-int in a `Ceil` can overshoot:** `0.3f*100` ceils to 31, moving a 30% floor by one HP. Keep thresholds as whole percents and compare `hp*100 > max*pct`.
 
 ## 8. A csproj with `EnableDefaultCompileItems false` needs the new file listed twice
 

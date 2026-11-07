@@ -1,1 +1,0 @@
-A printed spec dash line on a generated pipe strip reads as perforation/stitching once the strip is 18 px tall (0.136 cell): both judges flagged it. Keep extruded-pipe strips plain; product identity comes from the fittings (sockets, rings, caps).

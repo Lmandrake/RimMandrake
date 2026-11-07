@@ -19,6 +19,7 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 ## 8. After the load: harvest the WHOLE log
 - **`launch_ready` rotates `Player.log` away BEFORE launch**, so the tps 'Player-prev archive' row cannot be observed on a launch it started (tag dedupe = silent no row). To prove the archive step, launch without launch_ready's rotation.
 - **A candidate named on an item is a hypothesis about each row it covers.** The log-spam item named Intimacy and was half true (Mood Chain Reaction wrote the largest rises alone; one rise was a save load). `Player.log` has no timestamps, but a rise can be pinned to lines by walking messages back from the 'Reached max messages limit' line, which sits at count 10000 (`log_rise_census.py`). `logErr` reads an evicting queue, so during a burst it undercounts: read the log lines too.
+- **Unity `Crash_*` folder mtime moves after the crash:** on Archmagi, `Crash_2026-10-09_*` folders read mtime >= 2026-10-11, so a 'Crash_ newer than T' check by folder mtime can false-FAIL on old crashes (never false-PASS). The name stamp is local time. A crash may also write NO folder (ntdll heap death): read WER Event 1000/1001 via `src/RimMandrake/Utils/coldstart_crashes.py`.
 
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
 - **The owner's full-list load time is disputed: ~15 min (TestPilot brief) vs ~25 min (above).** Any design that prices full-list loads must range both (testpilot_sim `full_load_min` 15-30) until one is re-measured from a Player.log timestamp pair.

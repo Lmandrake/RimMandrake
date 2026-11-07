@@ -1,1 +1,0 @@
-SEATRESTART_AUDIT_WHOLE_FILE: a clean mark after fresh section reviews is still wrong if an earlier CHECKPOINT note lists an OPEN correctness finding. Before mark-clean, read the item's own notes for OPEN/residual findings and fix each with a negative row or file it as its own item. Gen 1 skipped round-4 (c), and the blind check failed it.

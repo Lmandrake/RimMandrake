@@ -1,1 +1,0 @@
-A claude -p loop's prompt text sits in its process command line, so a pass's pgrep -f on a command named in its prompt matches itself and waits forever; --setting-sources project also drops the global bash_guard that would have refused it.

@@ -110,6 +110,7 @@ keyboard, and check `/proc/loadavg` before and during: over ~10 on this box mean
 somebody's frames are being eaten. Applies to any loop over
 `start_debug_game_ready`, `load_game`, `go_to_main_menu` or long `save_game`
 calls.
+- **Never leave a broken game running (owner: "Let's not leave broken games running").** The moment the log shows a Root-level exception storm or a map that failed to set up, stop driving it, close the game, stamp it down, and fix the cause before relaunching; a broken session wastes cycles and its results are not trustworthy.
 
 ## 2. What a quicktest proves, and what it cannot
 

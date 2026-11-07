@@ -1,1 +1,0 @@
-ops_lives.check tests the md's generation with a substring test (reg['generation'] not in md): an md of generation 'T-P7' passes for json generation 'T-P' (pid prefix at the same second). Narrow, outside OPS_LIVES_CENSUS_EVERY_DEATH_READ_ONLY's clauses; a fix would match the exact 'generation <id>.' token.

@@ -28,3 +28,4 @@
   `bridge_calls.jsonl` carries tool names and timings only, no args or results. A colony can die mid-pass
   with every telemetry row green — pass 7 did. Until vitals land, read colonists and letters yourself
   around every time advance, and watch `bridge_calls.jsonl` live during a pass (`Monitor`).
+- **A loop has access to an instrument only in principle until its prompt names it.** 19 passes ran no telemetry command, and the database reads Archmagi only.

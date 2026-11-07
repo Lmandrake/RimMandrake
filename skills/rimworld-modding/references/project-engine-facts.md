@@ -44,6 +44,7 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 ## Liquid terrain: read the registry before authoring
 Before authoring any liquid terrain read `src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml` and the `LIQUID_ROWS` table in `src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py`: propane, brine, acid, tar, coolant, ichor and more already have an `RM_<X>Shallow`/`RM_<X>Deep` suite with bottles and a body registration, so a `RUT_` duplicate collides. Never hand-edit a generated `RM_<X>.xml`; edit the table row (a fishing block was one word, `waterBodyType None` vs `Saltwater`), regenerate, and diff after every run.
+- **A drawdown/recession picker that falls back to a whole-body split check only when NO locally-safe candidate exists silently breaks its own priority key.** An 8-ring 'two wet arcs' test rejects many globally-safe squares on rough floors, so a deeper safe square wins (37/72 offline). Check globally (one articulation pass) whenever the primary key is at stake.
 
 ## A "moved" def file may be a copy; reuse the mechanic gates
 - **A kit "move" can be a COPY.** A TerminalBiomes move left 16 byte-identical twin files, 8 pairs deployed and duplicate-loading (7 TerrainDefs, scatterer register patches appending their GenStep twice). Diff both trees (repo and the live Mods folder) before believing a build's "moved".

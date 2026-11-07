@@ -1,1 +1,0 @@
-canon.yml: commit cf2f034d7c (2026-09-11) replaced the 'cradle_memory:' header line while inserting the voice laws, so the owner's 2026-08-29 ship-memory ruling sat as a second ruled/src pair under cathedral_voice and every YAML reader silently dropped one. Hunt with yaml.compose + a duplicate-key walk (safe_load never complains). Restored by PLAYER_START_SITE_1.

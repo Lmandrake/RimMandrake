@@ -1,2 +1,0 @@
-A changed-only writer (fleet_refresh.py hashes each doc and writes only changed ones) was defeated by a position field: every row carried order=i, so one row ending shifted every later row's hash and the board rewrote ~31 unchanged rows every 5 minutes (~5k output tokens, $0.10 a run, MEASURED in runs.jsonl 2026-11-02). Never store list position inside a per-doc hashed record; let the reader sort by a stable key (started, last_at).
-home: NONE
