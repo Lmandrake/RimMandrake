@@ -725,6 +725,8 @@ namespace RimMandrake.Graffiti
         {
             if (!DebugSettings.enableRandomMentalStates || TutorSystem.TutorialMode || by.needs?.mood == null || painter.needs?.mood == null) return 0f;
             if (!by.interactions.SocialFightPossible(painter) || !painter.interactions.SocialFightPossible(by)) return 0f;
+            // The game's own check lets a drafted pawn brawl; paint must never take a soldier out of the player's hands.
+            if (by.Drafted || painter.Drafted) return 0f;
             float vanilla = by.interactions.SocialFightChance(InteractionDefOf.Insult, painter);
             return RM_GraffitiKernel.ConfrontFightChance(vanilla, GraffitiTemperament.Of(by).temper);
         }

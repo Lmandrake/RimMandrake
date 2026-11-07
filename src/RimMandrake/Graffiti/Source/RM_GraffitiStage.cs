@@ -116,7 +116,8 @@ namespace RimMandrake.Graffiti
             Put(map, "WoodFiredGenerator", null, 41, 7, Rot4.North);
             Put(map, "Battery", null, 41, 16, Rot4.North);
             // bedrooms
-            foreach (int x in new[] { 6, 8, 17, 19, 29, 31 })
+            // a bed for each of the cast and one spare, three to a room
+            foreach (int x in new[] { 6, 8, 10, 17, 19, 21, 29, 31, 33 })
             {
                 Put(map, "Bed", wood, x, 6, Rot4.North);
             }

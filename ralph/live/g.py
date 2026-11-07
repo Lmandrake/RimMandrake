@@ -139,7 +139,43 @@ def ui(s, name, pawn, tab, cell=None, root=7.4):
     print("UISHOT", dest)
 
 
+def wallui(s, name, cell, root=7.4):
+    """Click the wall a mark is drawn on, as a new player would, and shoot the inspect pane with the wall in view."""
+    x, z = (int(v) for v in cell.split(","))
+    r = s.call("jawa/list_things", rect="%d,%d,1,1" % (x, z), group="BuildingArtificial")
+    things = r.get("things") if isinstance(r, dict) else None
+    tid = None
+    for t in things or []:
+        tid = t.get("id") or t.get("thingId") or t.get("ThingID")
+        if tid:
+            break
+    print("WALL", tid, str(r)[:200])
+    if not tid:
+        return
+    s.call("jawa/clear_ui")
+    s.call("jawa/screenshot_mode", enabled=False)
+    print(str(s.call("jawa/select_things", ids=tid))[:200])
+    s.call("rimworld/jump_camera_to_cell", x=x, z=z - 2)
+    s.call("rimworld/set_camera_zoom", rootSize=root)
+    s.call("rimworld/step_game_ticks", ticks=1)
+    static(s, STAGE, "Settle")
+    time.sleep(1.0)
+    r = s.call("rimworld/take_screenshot", fileName="%s__%d" % (name, int(time.time())), suppressMessage=True)
+    path = r.get("path") if isinstance(r, dict) else None
+    for _ in range(40):
+        if path and os.path.exists(path) and os.path.getsize(path) > 0:
+            break
+        time.sleep(0.5)
+    os.makedirs(SHOTS, exist_ok=True)
+    shutil.copy(path, os.path.join(SHOTS, name + ".png"))
+    s.call("jawa/screenshot_mode", enabled=True)
+    print("UISHOT", os.path.join(SHOTS, name + ".png"))
+
+
 def one(s, a):
+    if a[0] == "wallui":
+        wallui(s, a[1], a[2], float(a[3]) if len(a) > 3 else 7.4)
+        return
     if a[0] == "brk":
         print(str(s.call("jawa/pawn_force_mental_break", pawn=a[1], breakDef=a[2], reason="the walls"))[:400])
         return

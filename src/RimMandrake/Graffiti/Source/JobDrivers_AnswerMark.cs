@@ -158,7 +158,8 @@ namespace RimMandrake.Graffiti
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
-            this.FailOn(() => Painter.Downed || Painter.InMentalState);
+            // A painter under the player's orders is not to be had out with: the grudge stays open for later (owner: a blocked answer stays open).
+            this.FailOn(() => Painter.Downed || Painter.InMentalState || Painter.Drafted);
             yield return Toils_Interpersonal.GotoInteractablePosition(TargetIndex.A);
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
             Toil confront = ToilMaker.MakeToil("MakeNewToils");

@@ -53,6 +53,12 @@ namespace RimMandrake.Graffiti
             var req = new PawnGenerationRequest(PawnKindDefOf.Colonist, Faction.OfPlayer, PawnGenerationContext.NonPlayer, forceGenerateNewPawn: true,
                 developmentalStages: DevelopmentalStage.Adult, allowDowned: false, canGeneratePawnRelations: false, mustBeCapableOfViolence: true);
             Pawn p = PawnGenerator.GeneratePawn(req);
+            // A cast part with an art level wants a hand that can hold a brush: a backstory that rules art out would make the level a lie.
+            for (int tries = 0; tries < 20 && w.Length > 2 && w[2].Length > 0 && int.Parse(w[2]) > 0 && p.WorkTagIsDisabled(WorkTags.Artistic); tries++)
+            {
+                Find.WorldPawns.PassToWorld(p, RimWorld.Planet.PawnDiscardDecideMode.Discard);
+                p = PawnGenerator.GeneratePawn(req);
+            }
             if (p.Name is NameTriple n) p.Name = new NameTriple(n.First, w[0], n.Last);
             GenSpawn.Spawn(p, CellFinder.RandomClosewalkCellNear(anchor.Position, map, 3), map);
             return Cast(w[0] + "/" + (w.Length > 1 ? w[1] : "") + "/" + (w.Length > 2 ? w[2] : ""));
