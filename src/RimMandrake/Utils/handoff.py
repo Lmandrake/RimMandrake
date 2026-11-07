@@ -479,6 +479,24 @@ def show_last_reply():
         print(r.stdout.rstrip() + "\n")
 
 
+WAKE_KEEP = ("The one thing to carry forward", "What the owner should see",
+             "What is half-done", "Game / bridge")
+
+
+def _wake_view(text, path):
+    """What --wake prints (HANDOFF_SHRINK_HALF_THE_BYTES_WERE_GIT): the title, the one thing to carry, what the owner
+    should see, the pointer lines and the game/bridge state; then the file's full path for everything else (traps,
+    closed/filed lists, commits, uncommitted). The handoff file itself stays whole."""
+    parts = re.split(r"(?m)^(?=## )", text)
+    out = [parts[0].rstrip()]
+    for sec in parts[1:]:
+        if sec.startswith(tuple("## " + k for k in WAKE_KEEP)):
+            # the game section ends in the uncommitted list: git's job, not the wake's
+            out.append(re.split(r"(?m)^Uncommitted\b", sec)[0].rstrip())
+    out.append("(Traps, closed/filed lists, commits and the uncommitted list are in the full handoff: %s)" % path)
+    return "\n\n".join(out) + "\n"
+
+
 def wake():
     """The READ side of the ritual: print this seat's latest committed handoff
     with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
@@ -490,7 +508,7 @@ def wake():
         print("no committed handoff for %s — nothing to wake from" % seat())
         return 0
     text = io.open(os.path.join(HANDOFFS, prev_name), encoding="utf-8").read()
-    print(text)
+    print(_wake_view(text, os.path.join(HANDOFFS, prev_name)))
     ids = re.findall(r"^- `([A-Z][A-Z0-9_]+)`", text, re.M)
     if ids:
         last = {}

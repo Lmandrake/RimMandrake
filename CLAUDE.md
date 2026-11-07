@@ -215,15 +215,17 @@ not do live testing of flyers without a human present. It doesn't work."* and *"
 capture images of flight. It doesn't work."* Verify flight by a deterministic STATE read of
 `Pawn_FlightTracker`; a visual check is a joint session or it waits.
 
-## Queue items are NAMED, not numbered — owner, 2026-08-20; grammar 2026-10-10
+## Queue items are NAMED, not numbered — owner, 2026-08-20; grammar 2026-11-05
 
-New items are **`SUBJECT_INTENT_TWIST`**: what it is, one intent word from the bank
-(what it set out to do at filing — never live state), then a **true, kind, specific**
-comic aside on how it is going: `BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY`. No trailing
-`_1`. `rimflow namecheck <NAME>` shows the parse; `file`/`spawn` refuse the rest. Rules
-and bank: `design/RimMandrake/ticket_naming_2026-10-10.md`. Legacy `…_1` and
-`B*`/`C*`/`D*`/`W*` IDs are never renamed; B-style ones are always cited with their
-title attached — `B58 (the dead Jawa pawnkind)`, never bare.
+New items are **`PROJECT_VERB_INTENTION_TWIST`** (owner 2026-11-05, `~/.claude/CLAUDE.md` "EVERY ITEM IS
+NAMED"): slot 1 is the project's registry Id (this project: `RIMMASTER`; `PROJNOW`/`PROJTEMP` for no project),
+slot 2 any verb (no word bank), then the intention, then a **true, kind, specific** twist. 4-9 words, at most
+64 chars, `A-Z 0-9 _` only, no trailing bare digits: `RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY`.
+`rimflow namecheck <NAME>` shows the parse; `file`/`spawn` refuse the rest. The registry is read from
+`$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`); if unreadable the refusal names that path.
+Every older name (`SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stays valid forever, never renamed; the
+refusal applies only to newly minted names. B-style ones are cited with their title — `B58 (the dead Jawa
+pawnkind)`, never bare. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
 
 ## Correctness outranks seat ownership; wrong material is deleted
 

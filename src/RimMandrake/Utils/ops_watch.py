@@ -68,6 +68,7 @@ import importlib.util
 import json
 import math
 import os
+os.environ.setdefault("RIMFLOW_MACHINE_MINT", "1")  # machine minter: fixed alarm prefixes, see rimflow/model.py mint_problems
 import re
 import shutil
 import signal

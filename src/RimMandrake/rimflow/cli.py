@@ -1718,20 +1718,19 @@ def _mint_or_die(iid, w):
     probs = model.mint_problems(iid, set(w.items))
     if probs:
         die("%s is not a new-style item name:\n  - %s\n\n"
-            "New items are SUBJECT_INTENT_TWIST: what it is, what it sets out to do (one word "
-            "from the bank), then a TRUE comic aside on how it is going.\n"
-            "  e.g. BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY, GREATBOLE_CORE_RESKIN_NOT_A_DRILL\n"
-            "Check a name first:  rimflow namecheck <NAME>   (the bank: rimflow namecheck --bank)"
+            "New items are PROJECT_VERB_INTENTION_TWIST (owner 2026-11-05): slot 1 the registry Id "
+            "(this project: RIMMASTER), slot 2 any verb, 4-9 words, <= 64 chars, then a TRUE aside.\n"
+            "  e.g. RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY\n"
+            "Check a name first:  rimflow namecheck <NAME>   (no word bank any more)"
             % (iid, "\n  - ".join(probs)))
 
 
 def cmd_namecheck(args, seat):
     """Show how a proposed item name parses and whether it may be minted."""
     if args.bank or not args.name:
-        print("intent words (the hinge between SUBJECT and TWIST):")
-        words = sorted(model.INTENT_WORDS)
-        for i in range(0, len(words), 10):
-            print("  " + " ".join(words[i:i + 10]))
+        print("the intent-word bank is RETIRED (owner 2026-11-05): slot 2 takes any verb. A new name is "
+              "PROJECT_VERB_INTENTION_TWIST, slot 1 a registry Id (this project: RIMMASTER), 4-9 words, "
+              "<= %d chars. Older names stay valid forever." % model.NAME_MAX_LEN)
         if not args.name:
             return 0
     _, w = load()
@@ -1744,7 +1743,7 @@ def cmd_namecheck(args, seat):
         return 0
     parts = model.parse_name(iid)
     if parts:
-        print("subject %s · intent %s · twist %s"
+        print("project %s · verb %s · rest %s"
               % ("_".join(parts[0]), parts[1], "_".join(parts[2])))
     probs = model.mint_problems(iid, set(w.items))
     if probs:
@@ -4308,10 +4307,10 @@ def build_parser():
     s = add("why", "why is this item not being offered", cmd_why)
     s.add_argument("id")
 
-    s = add("namecheck", "does a proposed item name follow SUBJECT_INTENT_TWIST?",
+    s = add("namecheck", "does a proposed item name follow PROJECT_VERB_INTENTION_TWIST?",
             cmd_namecheck)
     s.add_argument("name", nargs="?")
-    s.add_argument("--bank", action="store_true", help="list the intent words")
+    s.add_argument("--bank", action="store_true", help="retired: prints that the bank is gone")
 
     s = add("ack", "take ownership of an incident; a ring or a read is not one", cmd_ack)
     s.add_argument("id")

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest: the SUBJECT_INTENT_TWIST item-id grammar (design/RimMandrake/ticket_naming_2026-10-10.md).
+"""Selftest: the PROJECT_VERB_INTENTION_TWIST item-id grammar (owner 2026-11-05; older doc design/RimMandrake/ticket_naming_2026-10-10.md).
 
 New ids are minted in the new form; legacy `..._N` ids (and B58-style ids) stay valid
 forever for everything that already exists; malformed and colliding names are refused
@@ -17,19 +17,14 @@ PASS, FAIL = [], []
 # Every example the design doc prints must actually pass the grammar — a doc whose
 # examples the checker refuses teaches the wrong thing.
 DOC_EXAMPLES = [
-    "TPS_TIMERS_AUDIT_WATCHING_THE_WATCH",
-    "BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY",
-    "ARTPIPE_QUEUE_DRAIN_182_AND_COUNTING",
-    "GREY_DEEP_ROSTER_CENSUS_READ_THE_LABELS",
-    "OLD_NAME_GATES_EXCISE_SIXTEEN_DAYS_LATE",
-    "FIREHAWK_WINGS_REWIRE_FLAPPING_NOT_JIGGLING",
-    "MODSCONFIG_COUNT_FIX_LI_TAGS_LIED",
-    "GREATBOLE_CORE_RESKIN_NOT_A_DRILL",
-    "CHILL_DENSITY_RESCUE_FROM_ABSOLUTE_ZERO",
-    "TICKET_NAMES_REDESIGN_NO_MORE_ONES",
-    "FLYER_FLIGHT_VERIFY_BY_STATE_NOT_STARING",
-    "SETTINGSKIT_TESTS_MEND_STILL_RED",
+    "RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY",
+    "RIMMASTER_AUDIT_TIMERS_WATCHING_THE_WATCH",
+    "RIMMASTER_PRUNE_ARTPIPE_QUEUE_182_AND_COUNTING",
+    "RIMMASTER_FROBNICATE_ANYTHING_THE_VERB_IS_FREE",   # no word bank: any verb
+    "PROJNOW_TIDY_SCRATCH_SHELF_ONCE_MORE",
 ]
+OLD_FORMS = ["GREATBOLE_CORE_RESKIN_NOT_A_DRILL", "TPS_TIMERS_AUDIT_WATCHING_THE_WATCH",
+             "SANDSTORM_WEATHER_TUNING_1", "DIRTY_CODE_REVIEW_LOOP_RESTART_10"]
 
 
 def case(name, fn):
@@ -51,9 +46,20 @@ def t_new_style_accepted():
         assert probs == [], "%s refused: %s" % (iid, probs)
 
 
-def t_parse_splits_on_first_intent_word():
+def t_parse_new_form_by_position():
+    assert model.parse_name("RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY") == (
+        ["RIMMASTER"], "UNSTICK", ["BRIDGE", "HANG", "THIRD", "TIME", "LUCKY"])
+
+
+def t_parse_old_form_still_reads():
     assert model.parse_name("GREATBOLE_CORE_RESKIN_NOT_A_DRILL") == (
         ["GREATBOLE", "CORE"], "RESKIN", ["NOT", "A", "DRILL"])
+
+
+def t_old_forms_still_recognised_not_mintable():
+    for iid in OLD_FORMS[:2]:
+        assert model.is_named_id(iid), iid
+        assert model.mint_problems(iid, set()), "%s mintable under the old grammar" % iid
 
 
 def t_legacy_still_valid_for_existing_items():
@@ -70,15 +76,14 @@ def t_legacy_form_refused_for_new_items():
 
 def t_malformed_rejected():
     bad = {
-        "tps_timers_audit_lowercase": "UPPER",
-        "TPS_TIMERS_WATCHING": "intent",              # no intent word
-        "AUDIT_THE_TIMERS": "subject",                # intent first: no subject
-        "TPS_TIMERS_AUDIT": "twist",                  # nothing after the intent
-        "TPS_TIMERS_AUDIT_STUFF": "vague",            # banned filler twist
-        "TPS_TIMERS_AUDIT_" + "VERYLONGWORD_" * 3 + "END": "long",
-        "A_B_C_D_E_F_AUDIT_G": "words",
-        "TPS-TIMERS-AUDIT-DASHES": "UPPER",
-        "TPS_TIMERS_AUDIT_ÜBER": "UPPER",
+        "rimmaster_audit_lowercase": "UPPER",
+        "AUDIT_THE_TIMERS_WATCHING": "project",         # slot 1 not a registry Id
+        "RIMMASTER_AUDIT_TIMERS": "words",               # 3 words
+        "RIMMASTER_AUDIT_TIMERS_STUFF": "vague",
+        "RIMMASTER_AUDIT_" + "VERYLONGWORD_" * 5 + "END": "long",
+        "RIMMASTER_A_B_C_D_E_F_G_H_I": "words",            # 9+ words
+        "RIMMASTER-AUDIT-DASHES-HERE": "UPPER",
+        "RIMMASTER_AUDIT_TIMERS_42": "number",           # trailing bare digits
     }
     for iid, needle in bad.items():
         probs = model.mint_problems(iid, set())
@@ -87,9 +92,22 @@ def t_malformed_rejected():
             "%s refused but the reason does not mention %r: %s" % (iid, needle, probs))
 
 
+def t_unreadable_registry_refuses_loudly():
+    old = os.environ.get("LODESTAR_ROOT")
+    os.environ["LODESTAR_ROOT"] = "/nonexistent/lodestar"
+    try:
+        probs = model.mint_problems("RIMMASTER_AUDIT_TIMERS_WATCHING_THE_WATCH", set())
+        assert any("/nonexistent/lodestar" in p for p in probs), probs
+    finally:
+        if old is None:
+            os.environ.pop("LODESTAR_ROOT")
+        else:
+            os.environ["LODESTAR_ROOT"] = old
+
+
 def t_collision_rejected():
-    known = {"BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY"}
-    probs = model.mint_problems("BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY", known)
+    known = {DOC_EXAMPLES[0]}
+    probs = model.mint_problems(DOC_EXAMPLES[0], known)
     assert any("already exists" in p for p in probs), probs
 
 

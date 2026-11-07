@@ -240,5 +240,14 @@ check(handoff.window_is_empty("HEAD", future) is True,
 check(handoff.window_is_empty(None, None) is False,
       "with no previous handoff, nothing is suppressed -- the first one must write")
 
+print("handoff: --wake prints the short view, the file stays whole")
+_h = ("# T_HANDOFF — READ FIRST\n\n## The one thing to carry forward\nCARRY\n\n## What the owner should see\nSEE\n\n"
+      "## What is half-done, and where it stops\n- `A_B_C_D` — x\n\n## Traps learned\nTRAPX\n\n## Closed since the last handoff (1)\nCLOSEDX\n\n"
+      "## Filed and still open (1)\nFILEDX\n\n## Commits\nCOMMITX\n\n## Game / bridge / tree state at wrap\n- running: UP\n\n"
+      "Uncommitted (replace the placeholder):\n\n```\nM dirtyfile\n```\n")
+_v = handoff._wake_view(_h, "/p/H.md")
+check(all(k in _v for k in ("CARRY", "SEE", "A_B_C_D", "running: UP", "/p/H.md")), "keeps the five parts and the full path")
+check(not any(k in _v for k in ("TRAPX", "CLOSEDX", "FILEDX", "COMMITX", "dirtyfile")), "drops traps, closed, filed, commits, uncommitted")
+
 print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 sys.exit(1 if fails else 0)

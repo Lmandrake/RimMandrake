@@ -91,6 +91,7 @@ import fcntl
 import glob
 import json
 import os
+os.environ.setdefault("RIMFLOW_MACHINE_MINT", "1")  # machine minter: fixed alarm prefixes, see rimflow/model.py mint_problems
 import re
 import secrets
 import shlex
