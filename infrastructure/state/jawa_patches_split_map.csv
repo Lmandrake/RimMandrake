@@ -60,7 +60,7 @@ EggLayersLayEggs.xml,RSW,HIGH,Patches 19 egg-laying species + RSW_RimMandrakeHut
 Fleshbeast_TrispikeCull.xml,RUT,MEDIUM,"Removes Trispike from Anomaly death-spawn lists per a campaign-specific curation ruling, tied to this world's renames",no
 ForceGremlin_NoHair.xml,RSW,HIGH,Adds bald/beardless genes to RSW_RimMandrakeYoderForceGremlin — generic SW species content,no
 ForgottenArsenal.xml,RUT,HIGH,"Builds FACTION_SPEC.md's ""the Forgotten Arsenal"" faction (patches vanilla Mechanoid)",no
-GalacticEmpire.xml,RUT,HIGH,"Implements FACTION_SPEC.md's Empire: Jawa_Empire_* rosters, campaign ideo, whitelist naming Ash'karr-specific factions","yes — ""Galactic Empire"" itself is franchise-generic, but nearly every mechanical detail here is this world's faction relationships"
+GalacticEmpire.xml,RSW+RUT,HIGH,"SPLIT, owner 2026-11-07: the reskin moved to RimStarWars StarWarsPatches/Patches/GalacticEmpire.xml; Jawa_Empire_* rosters, leader, culture and the whitelist naming Ash'karr-specific factions stay in UtinniPatches/Patches/GalacticEmpire_Campaign.xml","yes — split along that line"
 GiantWeaponWielders_Ashkarr.xml,RUT,HIGH,Owner's campaign ruling on which species may wield giant weapons IN THIS PLAYTHROUGH,"yes — genes/xenotypes patched are generic RSW content; only the ""which 16"" decision is Ash'karr-specific"
 GrimTerraTexPaths_Fix.xml,RM,HIGH,"Fixes texPath typos in GRiNDTerra Biomes, a generic non-SW animal/biome mod",no
 HeadSetForFA_Revive.xml,RM,HIGH,Fixes a static-constructor crash in Head Set For Facial Animation — generic engine-level bug,no

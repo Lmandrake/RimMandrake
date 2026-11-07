@@ -1118,8 +1118,10 @@ empire:
   vessel: Empire
   vessel_src: >
     Owner, 2026-08-20: "OuterRim_GalacticEmpire is no longer in the game, we patch
-    Empire." src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml patches
-    FactionDef[defName="Empire"] and nothing else.
+    Empire." src/RimStarWars/StarWarsPatches/Patches/GalacticEmpire.xml (the reskin, moved
+    from Utinni by the owner 2026-11-07) and
+    src/RimUtinni/UtinniPatches/Patches/GalacticEmpire_Campaign.xml (this campaign's
+    half) patch FactionDef[defName="Empire"] and nothing else.
   # 🔴 RE-RATIFIED ONCE AND FOR ALL — owner, 2026-08-28, closing the content census
   # deferred at commit 5b991b79: "Make a bunch of queue items to do the full Empire
   # reskin, and simply don't include the outerrim galactic empire. Once and for all,
@@ -1132,7 +1134,7 @@ empire:
     ratified repo copy (deployed/config/v1_freeze/). The 2026-08-28 census of the
     mod's 1.6 tree found NOTHING unique dies with the faction: no quests, no
     incidents, no royalty content, no C# keyed to the defName. Its 17 NPC pawnkinds
-    are orphaned by design (the raid roster is ours — GalacticEmpire.xml), the 3
+    are orphaned by design (the raid roster is ours — GalacticEmpire_Campaign.xml), the 3
     faction-pinned TraderKindDefs and the reward ThingSetMaker patch are DELIBERATELY
     not retargeted (the Empire is a permanent enemy: it never trades with the player
     and never gives quests, so both are dead surface), and the Rising Order ideo plus
@@ -1140,7 +1142,7 @@ empire:
   outerrim_mod_stays_active: true
   outerrim_mod_stays_src: >
     ⛔ The MOD Neronix17.OuterRim.GalacticEmpire is NOT removed — only its NPC
-    FactionDef is cut. GalacticEmpire.xml's raid groups force OuterRim armor
+    FactionDef is cut. GalacticEmpire_Campaign.xml's raid groups force OuterRim armor
     (apparelRequired on OuterRim_Stormtrooper*) and field the three OuterRim
     specialists in the rare raid under MayRequire. Removing the mod silently
     strips the whole Imperial look. Owner, 2026-08-28: "We would take over the

@@ -1,57 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  GalacticEmpire.xml                     Jawa_Patches · re-pointed 2026-08-14
-                                         renamed 2026-08-20
+  GalacticEmpire_Campaign.xml            UtinniPatches · split 2026-11-07
   ============================================================================
 
-  Builds FACTION_SPEC.md section 1, "Galactic Empire - PATCH vanilla `Empire`",
-  under V1_CHAIN R15 and R11.
+  The Ash'karr campaign's half of the Galactic Empire, builds FACTION_SPEC.md
+  section 1 under V1_CHAIN R15. The reskin every Star Wars game wants (name,
+  title, favor word and icon, troopers' word, faction badge, the Rising Order)
+  moved to RimStarWars on the owner's word of 2026-11-07, in
+  `src/RimStarWars/StarWarsPatches/Patches/GalacticEmpire.xml`; it runs first
+  (this mod loads after mandrake.rsw.patches), but nothing here relies on it.
 
-  🔴 THE VESSEL CHANGED, AND SO DID THE NAME. This file used to reskin
-  `OuterRim_GalacticEmpire` into a differently-named sector occupier. ⛔ THAT
-  FACTION IS STRUCK FROM THE RECORDS — owner, 2026-08-20: "Doesn't exist
-  anymore." Its name is deliberately not repeated here or anywhere else; the
-  file was renamed to match on the same day. The Empire is the Galactic Empire
-  and has no other name.
+  What stays here names this campaign: the RUT_ leader and raid kinds, the RUT_
+  culture, the whitelist of this world's factions, the hostility to the player
+  (Pillar 5), this world's settlement count and the description of this world.
 
-  It now patches VANILLA `Empire` (Royalty), and the faction is the Galactic
-  Empire. R15's reason is `settlementGenerationWeight`: vanilla `Empire` sits at
-  1 against the Outer Rim def's 0.3, which is why the old faction held one
-  settlement while the Fallen Dominion held four. The occupier has to outweigh
-  the locals to read as one.
+  It patches VANILLA `Empire` (Royalty). R15's reason is
+  `settlementGenerationWeight`: the occupier has to outweigh the locals to read
+  as one.
 
   ⚠️ It still references `OuterRim_Imp*` PAWN KINDS under MayRequire, so the
   Neronix17.OuterRim.GalacticEmpire dependency stays. The Outer Rim FACTION def
   is no longer touched.
 
-  READ FROM THE SHIPPED DEF, game up, 2026-08-14 — not inferred:
+  READ FROM THE SHIPPED DEF, game up, 2026-08-14 - not inferred:
   C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Royalty\Defs\
     FactionDefs\Faction_Empire.xml
 
-      ParentName                  FactionBase
-      label                       shattered empire
-      pawnSingular / pawnsPlural  imperial / imperials
-      leaderTitle                 high stellarch
-      factionNameMaker            NamerFactionEmpire
       settlementGenerationWeight  1
       techLevel                   Ultra
-      fixedName                   ABSENT      -> Add, not Replace
       permanentEnemy              ABSENT      -> Add, not Replace
       fixedLeaderKinds            WRITTEN (line 90) -> Replace, not Add
       pawnGroupMakers             [1] Trader · [2] Combat commonality 100 ·
                                   [3] Combat commonality 10 · [4] Settlement
 
-  ⚠️ `fixedName` IS AN ADD. Vanilla `Empire` has no `fixedName` node at all;
-  it names itself through `NamerFactionEmpire`, which generates a random name.
-  A `Replace` here would match nothing and log a red error. The spec REQUIRES
-  the world to say "Galactic Empire", so the node has to be created.
-
-  ⚠️ Do NOT patch `factionNameMaker` away. `fixedName` overrides it for the
-  faction itself, and the namer is still what names the faction's SETTLEMENTS.
-
   ⚠️ techLevel is left alone. The spec's "Spacer (vessel default)" mis-reads the
-  vessel — it actually ships `Ultra` — but the instruction is "no change", so
+  vessel - it actually ships `Ultra` - but the instruction is "no change", so
   no change is what this file makes.
 
   🔑 THE COMBAT GROUPS ARE NAMED BY THEIR COMMONALITY, NOT BY POSITION. A positional
@@ -115,25 +99,6 @@
     <match Class="PatchOperationSequence">
       <operations>
 
-        <!-- "shattered empire" -> the occupier's own name. -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/label</xpath>
-          <value><label>The Galactic Empire</label></value>
-        </li>
-
-        <!-- REQUIRED. Absent on the vessel; NamerFactionEmpire would otherwise
-             generate a random name and the world must say Galactic Empire. -->
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
-          <value><fixedName>Galactic Empire</fixedName></value>
-        </li>
-
-        <!-- high stellarch -> Emperor (R11). -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/leaderTitle</xpath>
-          <value><leaderTitle>Emperor</leaderTitle></value>
-        </li>
-
         <!--
           The leader the world actually names. WRITTEN on the vessel
           (Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:90, one li holding
@@ -150,58 +115,6 @@
               <li>RUT_Jawa_Empire_Leader</li>
             </fixedLeaderKinds>
           </value>
-        </li>
-
-        <!--
-          ================================================================
-          THE IMPERIAL WORD FOR IT === IMPERIAL_VOCABULARY_KEYED_1
-          ================================================================
-          `royalFavorLabel` on the vessel is literally `honor`, and it is the
-          string the engine splices into every reward line, every quest
-          description and the Factions tab toggle. WRITTEN on the vessel
-          (Faction_Empire.xml:16 and :17), so BOTH of these are Replaces.
-
-          🔑 `Empire` is the ONLY def in the whole 578-mod load set that carries
-          `royalFavorLabel` or `royalTitleTags` === checked against the def dump,
-          not assumed. So the Keyed overrides that ship beside this file cannot
-          mistranslate somebody else's faction; there is nobody else.
-
-          "Imperial favor", not "favour": RimWorld's own UI is US English and the
-          label renders inline with shipped strings. The design prose
-          (faction_world_spec.md:334, tidally_locked_world.md:274) writes
-          "imperial favour" and this is that phrase, spelled to match its
-          neighbours.
-
-          ⚠️ The ICON is half the fix and it is easy to skip. Left alone it keeps
-          pointing at `UI/Icons/RoyalFavor`, Royalty's crown, next to the new
-          word. It is re-pointed at the faction badge this mod already ships and
-          already uses for `factionIconPath` ===
-          `Textures/World/JawaFactions/GalacticEmpire.png`, 128x128 RGBA, on disk.
-          No new art, and the badge and the currency read as one faction.
-
-          ⚠️ NOT a rename of what the currency DOES. The player cannot earn it:
-          the Empire is a permanent enemy, so titles, permits and the bestowing
-          quests are dark by design (EMPIRE_GAP_AUDIT.md section 3). This item is
-          about the strings that still render anyway.
-        -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorLabel</xpath>
-          <value><royalFavorLabel>Imperial favor</royalFavorLabel></value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/royalFavorIconPath</xpath>
-          <value><royalFavorIconPath>World/JawaFactions/GalacticEmpire</royalFavorIconPath></value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/pawnSingular</xpath>
-          <value><pawnSingular>stormtrooper</pawnSingular></value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/pawnsPlural</xpath>
-          <value><pawnsPlural>stormtroopers</pawnsPlural></value>
         </li>
 
         <li Class="PatchOperationReplace">
@@ -273,68 +186,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/settlementGenerationWeight</xpath>
           <value><settlementGenerationWeight>0.45</settlementGenerationWeight></value>
-        </li>
-
-        <!--
-          ================================================================
-          THE RISING ORDER — faction_religions_spec.md entry 1 (B54)
-          ================================================================
-          Authored, not constrained. Vanilla `Empire` ships `requiredMemes` +
-          `structureMemeWeights`, which STEER a generated religion; both are
-          removed here because `fixedIdeo` means "do not generate", which makes
-          them dead weight that only invites a later contradiction.
-
-          `ideoName` and `ideoDescription` are copied VERBATIM from the spec —
-          they are the only strings the engine renders, and the Empire's
-          contempt for the player's faith now lives in that description and
-          nowhere else, because every precept that could have carried it
-          measured unreachable.
-
-          ⛔ `hiddenIdeo` MUST STAY UNSET. Setting it suppresses the description
-          entirely, which is the whole deliverable.
-
-          `Structure_TheistEmbodied` has deityCount 2-4, so `deityPresets` is
-          mandatory and two are given. Four normal memes is exactly the
-          `MemeCountRangeAbsolute` ceiling — the ceiling is a COUNT, never an
-          impact budget. Structure meme goes FIRST in `forcedMemes`.
-        -->
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/FactionDef[defName="Empire"]/requiredMemes</xpath>
-        </li>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/FactionDef[defName="Empire"]/structureMemeWeights</xpath>
-        </li>
-        <li Class="PatchOperationAdd">
-          <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
-          <value>
-            <fixedIdeo>true</fixedIdeo>
-            <requiredPreceptsOnly>true</requiredPreceptsOnly>
-            <ideoName>The Rising Order</ideoName>
-            <ideoDescription>We have never seen him. We will never see him. He is rising, and we are the ground he rises from. Take the helmet: it is the last thing you will ever choose. There is no doubt among us — only disorder, and disorder is corrected. Say the name once when you are given the armour, and once when you are taken out of it. Between those two words, stand in line.</ideoDescription>
-            <forcedMemes>
-              <li MayRequire="Ludeon.RimWorld.Ideology">Structure_TheistEmbodied</li>
-              <li MayRequire="vanillaexpanded.vmemese">VME_GodEmperor</li>
-              <li MayRequire="Ludeon.RimWorld.Ideology">Proselytizer</li>
-              <li MayRequire="Ludeon.RimWorld.Ideology">Supremacist</li>
-              <li MayRequire="Ludeon.RimWorld.Ideology">HumanPrimacy</li>
-            </forcedMemes>
-            <styles>
-              <li MayRequire="vanillaexpanded.vmemese">VME_Authoritarian</li>
-              <li MayRequire="Ludeon.RimWorld.Ideology">Techist</li>
-            </styles>
-            <deityPresets>
-              <li>
-                <nameType><name>Palpatine</name><type>He Who Is Rising</type></nameType>
-                <gender>Male</gender>
-                <iconPath>UI/Deities/DeityGeneric</iconPath>
-              </li>
-              <li>
-                <nameType><name>the Line</name><type>That Which Has No Face</type></nameType>
-                <gender>None</gender>
-                <iconPath>UI/Deities/DeityGeneric</iconPath>
-              </li>
-            </deityPresets>
-          </value>
         </li>
 
         <!-- R15: stormtroopers, not cataphracts. Combat groups only. -->
@@ -457,19 +308,6 @@
 
             </operations>
           </match>
-        </li>
-
-        <!-- Bespoke world-map icon. the def writes it - Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:19, so REPLACE.
-             FIXED 2026-09-04 (code review): this <li> was nested inside the Outer Rim
-             PatchOperationFindMod above by mistake (indentation gave it away - 8 spaces
-             like the FindMod's own <li>, not 14 like its true siblings the group-maker
-             ops). It is this mod's own badge art, unrelated to Outer Rim's pawn kinds,
-             and must apply whenever vanilla Empire exists - not only when Outer Rim -
-             Galactic Empire happens to be active. Moved out to be a direct sibling of
-             the FindMod operation instead. -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/FactionDef[defName="Empire"]/factionIconPath</xpath>
-          <value><factionIconPath>World/JawaFactions/GalacticEmpire</factionIconPath></value>
         </li>
 
       </operations>

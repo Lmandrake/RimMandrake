@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
   ============================================================================
-  ImperialVocabulary.xml                 Jawa_Patches · IMPERIAL_VOCABULARY_KEYED_1
-                                         written 2026-08-21
+  ImperialVocabulary.xml                 StarWarsPatches · IMPERIAL_VOCABULARY_KEYED_1
+                                         written 2026-08-21, moved here 2026-11-07
                                          🔴 CORRECTED the same day, see below
   ============================================================================
 
@@ -13,8 +13,8 @@
   `Patches/GalacticEmpire.xml` that re-point `royalFavorLabel` to
   "Imperial favor" and `royalFavorIconPath` off Royalty's crown.
 
-  🔑 WHY A GLOBAL KEY OVERRIDE IS SAFE HERE, and would not be in another
-  campaign. `Empire` is the ONLY def in the entire 578-mod load set carrying
+  🔑 WHY A GLOBAL KEY OVERRIDE IS SAFE HERE. `Empire` is the ONLY def in the
+  entire 578-mod load set carrying
   `royalFavorLabel` or `royalTitleTags` === counted against
   DefDump/defs/FactionDef.json, 86 FactionDefs, not assumed. Every
   `{FACTION_name}` these strings splice therefore resolves to the Galactic
