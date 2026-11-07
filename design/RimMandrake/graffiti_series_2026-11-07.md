@@ -366,8 +366,8 @@ Then the same "Taking turns" and "How to work" sections, with its own shots fold
 
 ## Open questions for Mandrake
 
-1. **Should a god be drawn as a figure, or only as his Form?** The pantheon defines Forms and no bodies, but all nine idols are already hooded, faceless figures. *Recommend both: the Form is his symbol, and the idol figure is his depiction. This means accepting the idols as canon for the wall.*
-2. **Do plain Jawa marks live in RimUtinni or RimStarWars?** The naming plan puts the Jawa species in RimStarWars, and this clan's culture in RimUtinni. A Tatooine campaign might want Jawa tags. Your words put them in the takeover. *Recommend all in RimUtinni for now, as they are this clan's hand; split later if a second Star Wars scenario ever wants them.*
+Answered by card 2026-11-07: a god appears as both his Form (his symbol) and the idol figure (his depiction), so the idols are canon for the wall. Plain Jawa marks live in RimStarWars; RimUtinni holds this clan's own marks and extends them. Sort the two mark by mark when loop 2 starts, and this changes the "Utinni takes over" scope of loop 3 for plain marks.
+
 3. **Is the Dark Vigil part of loop 3?** The mark's only named caller does not exist as a rite. *Recommend yes, and let the loop also have other existing rites leave marks, since "rites leave marks" is much of what makes it shine.*
 4. **Ta'Baa's name.** The pantheon says his name is a pun on Jawaese "Taa baa" meaning goodbye. Wookieepedia's Jawaese page today gives "Taa baa" as "Thank you". The name is locked. *Recommend keeping the name, dropping "goodbye" as a canon claim, and calling it the clan's own reading. Thanks for leaving is arguably the better joke.*
 
