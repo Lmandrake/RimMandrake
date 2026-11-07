@@ -56,6 +56,11 @@ _CUT = re.compile(r"\s+(?:exits?|exit code|prints?|printing|shows?|showing|repor
                   r"must|should|gives?|says?|succeeds?|fails?|with|and then|then|both|all|green|GREEN|red|RED)"
                   r"(?=\s|$|[:,;)])"
                   r"|\s*:(?:\s|$)|\s+\(|,\s|;|\s+(?:->|=>|→|—|–|-)\s|\.\s+[A-Z]|\.$")
+# Right after the script, the bare form of a result verb is its sub-command (`cli.py show X`, `x.py report`): cutting it would
+# run the bare script, a green for a check that never ran. If it was prose, the sub-command is the loud failure. A described
+# result stays prose: `shows`, `exit 0` (no script has `exit`; stored proofs write it as prose), `both`, `show:`.
+_IMPERATIVE = frozenset(("show", "print", "report", "return", "output", "give", "say", "fail", "succeed"))
+_AT_SUBCOMMAND = re.compile(r"\s*(?:!\s+)?(?:[A-Za-z_][A-Za-z0-9_]*=\S*\s+)*(?:%s)\s+(?:-m\s+)?\S+" % "|".join(RUNNERS))
 _WORD_OK = re.compile(r"^(?:-.*|.*[/._=0-9].*|[A-Z][A-Z0-9_]*|[a-z][a-z0-9]*_[a-z0-9_]*)$")
 _PLAIN = re.compile(r"^[a-z]+$")
 _SHELL_META = re.compile(r"[|<>`$*?{}\[\]~#]|\|\||\s&\s|&$")
@@ -77,8 +82,12 @@ _LATER_CMD = re.compile(
 
 def _cut(text):
     """-> (head, prose tail) of one `&&` segment: the command up to where prose starts."""
-    m = _CUT.search(text)
-    return (text[:m.start()], text[m.start():]) if m else (text, "")
+    for m in _CUT.finditer(text):
+        if m.group().strip() in _IMPERATIVE and _AT_SUBCOMMAND.fullmatch(text[:m.start()]) \
+                and not text[m.end():m.end() + 1].strip():
+            continue
+        return text[:m.start()], text[m.start():]
+    return text, ""
 
 
 def _command_kind(seg):

@@ -314,6 +314,29 @@ def t_extract():
     for proof, want in cases:
         cmd, why = B.extract(proof)
         ok(cmd == want if want else cmd is None and why, "5. extract(%r) -> %r (%s)" % (proof[:50], cmd, why))
+    # BOXRUN_FIX_SHOW_VERB_CUT_AS_PROSE: right after the script a bare verb is the sub-command; bare `cli.py` could go green
+    # for a check that never ran. A described result (`shows`, `exit 0`, `both`) is still prose, anywhere.
+    for proof, want in (
+            ("python3 a/cli.py show X_Y && python3 b.py (x)", "python3 a/cli.py show X_Y && python3 b.py"),
+            ("python3 a/cli.py show X_Y", "python3 a/cli.py show X_Y"),
+            ("python3 a/cli.py show", "python3 a/cli.py show"),
+            ("python3 a/cli.py show X_Y exits 0", "python3 a/cli.py show X_Y"),
+            ("python3 a/cli.py show X_Y shows PASS", "python3 a/cli.py show X_Y"),
+            ("python3 a/x.py report --json exits 0", "python3 a/x.py report --json"),
+            ("! LABEL=a python3 a/cli.py show X_Y", "! LABEL=a python3 a/cli.py show X_Y"),
+            ("python3 -m a.cli show X_Y exits 0", "python3 -m a.cli show X_Y"),
+            ("python3 a.py && python3 a/cli.py show X_Y", "python3 a.py && python3 a/cli.py show X_Y"),
+            ("python3 a/x.py shows PASS", "python3 a/x.py"),
+            ("python3 a/x.py reports PASS", "python3 a/x.py"),
+            ("python3 a/x.py exit 0: fine", "python3 a/x.py"),
+            ("python3 a/x.py exit code 0", "python3 a/x.py"),
+            ("python3 a/x.py both exit 0", "python3 a/x.py"),
+            ("python3 a/x.py show: the row", "python3 a/x.py"),
+            ("python3 a/x.py --only a show the row", "python3 a/x.py --only a"),
+            ("python3 a/cli.py show X_Y | grep -c PASS", None),
+            ("python3 a/cli.py show X_Y && grep -c PASS b.txt", None)):
+        cmd, why = B.extract(proof)
+        ok(cmd == want if want else cmd is None and why, "5b. extract(%r) -> %r (%s)" % (proof, cmd, why))
 
 
 def t_verb():
