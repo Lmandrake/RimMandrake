@@ -1,1 +1,0 @@
-art.py install with only --why writes live reason 'agent-why', which 'art.py guard' reports UNLEDGERED (not a mechanical tag); installing a judged artpipe render needs --reason artpipe-collect plus --why 'delegated: art <verdict file>'. (SELFTEST_FIX_DESSIC_INSTALL_CHECK_HZAH, 2026-11-05)

@@ -1,1 +1,0 @@
-Reinstalling a systemd --user unit file (cp + daemon-reload) after a timer was stopped leaves it disabled/inactive: re-run 'systemctl --user enable --now <timer>' and have the selftest check UnitFileState=enabled AND ActiveState=active (rm-arteval-autojudge died this way twice, LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE).

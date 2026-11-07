@@ -36,6 +36,7 @@ in game), `owner_key` (the pipeline disagrees with a verdict he already gave on 
 4. `ledger.py fix CL-NNN --change … --files … --regression DEF:LETTER --expect ACCEPT|NOT_ACCEPT`.
 5. `runner.py regress` — every row passes on the new versions, or the change does not ship.
 6. Commit the ledger, the regression row, the changed files and the regression run together.
+Criteria-ledger ids (CL-NNN) collide across seats (two clones minted the same id and `./publish` refused the replay): mint the id from origin/main's tail right before committing, or key it by seat. A ruling that changes how art is MADE (prompt template, house register) must change how it is JUDGED in the same change: a no-outlines ruling reached the generator prompt but the judge brief (B1/B2) and `art_checks.outline_coherence` kept the outline clause for a month, so compare picked keyline-free regens while outline_coherence flagged them (guard: `selftest_art_judge_no_keyline.py`).
 
 ## Restraint
 

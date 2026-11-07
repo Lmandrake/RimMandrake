@@ -22,6 +22,7 @@ Serve the sheet. There is no second route.
 
 ## Image sizing on a sheet
 - **A custom row body that caps image `max-height` squeezes tall sprites, and the owner reads it as truncation.** Keep aspect at natural thumb size and let the zoom control carry the detail; a giant creature ("render MUCH larger") also deserves a 512 canvas.
+An offline art sheet composited on a stand-in background can win owner approval and still fail in game: a flat grey floor (lum 56) hid that the dug floor (Gravel x RM_Channel_Superdeep, lum 28 brown) swallows brown stake bodies, which read as orange fuzz live. Composite on the real terrain texture x def colour at play zoom (~83 px/cell) and pin the floor against a live capture (`fw_scenes_spikes.floor_matches_live`). Also `stage_fw_art.py` `gizmo()` matches 'Ladder up' exactly but the label gains ' (ordered)', so its raise never fires (the raised shot came from `gz2.py`'s DEV gizmo).
 
 ## Name and census sweeps
 - **`biome_census.py` marks a row NO ART when its def's texPath points at vanilla/donor art, even when artpipe holds finished renders for it by name** (6 of 8 Blue Desert rows). `art_sheet.py` finds renders by name and the census does not: trust the sheet's NO-ART list, not `census.md`'s count.
@@ -57,6 +58,7 @@ Serve the sheet. There is no second route.
 
 ## Borrowed pictures
 - **A creature that wears ANOTHER creature's picture by texPath (RSW_SandStalker draws Skarnix; RSW_Excretor draws RSW_FeralNerf's owner-kept renders) trips two guards.** If the owner rejected that picture, the art ledger refuses `install_bytes` of any copy, so a tier move of the BORROWER fails mid-apply after `git mv`: before a move batch list every texPath the defs draw, look each sha up for a reject/redo verdict, and drop that creature first. And the regen gate classifies a row for its own new path REFUSED_REGEN ("the def now draws a render of ours elsewhere"), so the dregen path cannot queue its own-art job: run `regen_eligibility` classify on a scratch row before promising "queue it a picture", and read the sheet decisions (the owner may have kept the shared picture FOR that creature, then it is his call, not a gate bypass).
+Foreign-copy audits: an image shared by two subjects does not say which one owns it. Direction comes from the codex rollout trace: a rollout whose own id differs from the `generated_images/<session>` it copies from is the copier, and the cache session id is a UUIDv7 whose first 48 bits date the original (a 'known bad' cocoon was the spiral desert wrap's OWN render, copied 09-23..28). A retried job overwrites the copied PNG in `_artsrc`, but art_eval runs and owner-sheet `subjects.json` keep a `reference_texture` to it, so 'never installed' is not 'never shown': grep sheets and runs for the copy paths before closing.
 
 ## Prereview parsing
 - **`prereview.py` reads ITEMS with `<script id="ITEMS"[^>]*>`,** so a block written `<script type="application/json" id="ITEMS">` reports "no readable ITEMS block" though it is valid HTML. Put `id` first, or loosen `ITEMS_RE`.
@@ -66,6 +68,7 @@ Serve the sheet. There is no second route.
 
 ## Audits that count owner decisions
 - **`texture_regen_audit.py`'s "owner sheet decided" UNPROVEN sub-class is a stem substring match in any `decisions.json`, not proof of an owner pick:** traced to the commit that first brought each picture's bytes in (git blob id via one `git log --raw`), 61 of 121 such defs were donor stand-ins. Art-ledger `kind=artpipe` includes `_artsrc/` job INPUTS (often donor pictures), `kind=install` can record donor bytes, and a 256-bit dhash <=7 matched a spore item to an animal by chance: confirm dhash hits by pixels (`unproven_adjudicate.py`).
+`texture_regen_audit.py`'s roster view classes a face by its bytes' ledger kinds only, while its def view's `file_class` also accepts an install-time live record of the path, so the same N/S facing reads UNPROVEN in one view and REGEN in the other (15 roster rows). An art-ledger 'install' is not proof of our render: the 2026-10-16 facing rescale installed donor-port pictures under swanimals/BiomesTeam with empty provenance.
 
 ## Rebuilding a decayed sheet
 - **Before rebuilding a review sheet that "decayed unseen", census the art ledger for owner rulings on its pictures.** "218 renders never owner-reviewed" was 109 jobs (json + manifest = 2 files each) and the owner had already purged 95 of them on earlier biome sheets. A render family he ruled on a biome sheet needs no second sheet; `desert_port_coverage.py` is the pattern (`events/**/*.jsonl` purge|rejected by owner, then sheet snapshots >= a date).

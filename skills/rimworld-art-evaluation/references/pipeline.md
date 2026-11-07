@@ -49,6 +49,9 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   `generating-rimworld-sprites`). **At most `max_regen_rounds` (3) per subject**, then `ESCALATE` — one line to the
   owner, not a sheet (delegation_policy §4.5).
 - **Code:** `policy.regen_findings`, `policy.cap_regen`, `runner.evaluate`, `runner.regen_jobs` (fill_queue rows).
+A loosened art rule must be loosened in every enforcer and tested against both: when a tool's refusal is relaxed (e.g. `artledger.retire` dropping a kept picture whose sha is live in another slot), grep its guard twin (`art_guard.py`) for the same message and add a guard-side assertion (`G._authorized` on the real event), or the gap stays invisible until the first real move is accepted by the tool and refused at push.
+Measured judge load: the art judge returns REGEN 74% of the time, 39% of art subjects were generated more than once (max 40, RM_HoseReel), 27% of attempts fail at the worker, 21 of 177 accepted subjects were later sent back. The regen cap (`max_rounds`=3 then ESCALATE) counts only judge REGEN rounds per series; owner-note/owner-ruling regens (1,012 of 6,919 jobs, 15%) and 25 owner-authorised series resets sit outside it, which is how HoseReel reached 40 jobs. An 'add an art cap' proposal misses that a cap exists; the leak is what it does not count. Evidence: `D:\ClaudeWork\rimmandrake\orch_record\friction_census.md` section 2, `...\ff\factcheck.md`.
+Regen prompt edits can re-insert 'keyline/outline' wording copied from the reference's rendering-treatment sentence, and `fill_queue` then refuses the row (outlines retired): strip the phrase from the row prompt before refiling. A `regen_prompt_edit` can also write invariants and a whole prompt that contradict the spec's `canon.must_show` (RSW_Shiro: 'stubby legs, short tail, low domed shell, clean dark outline' against canon 'high columnar legs, long spiked tail, high frilled carapace, no outlines'): never `--file-regens` such a prompt blind; read `request.prompt` against the canon entry first.
 
 ## 5. Owner-KEPT art may be redrawn — and he sees every swap after, with a revert
 
@@ -61,11 +64,13 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   revert through the art ledger (dry run unless `--apply-reverts`) and counts it as a blocking override.
 - **Code:** `policy.after_opus`, `policy.revert_record_ok`, `policy.revert_commands`, `runner.evaluate`,
   `shadow.revert`.
+`art_guard check_range` checks every unpushed commit on its own (per-commit diff-tree), not the net diff: a commit that replaced owner-kept texture bytes without an authorized live event stays refused even if a later commit restores them. The only fixes are an authorized live event (owner ruling, or the pipeline-regen by-card exception) or rewriting the unpushed commit. A machine-template picture (including a module part) without scale+assembled panels is HOLD_INPUT, so the kept-art redraw exception cannot fire for it without an in-game capture. A redraw that replaces kept art also turns any selftest that sha-pins that PNG red overnight: repin to the redraw and prove the art-ledger install chain (event prev = old pin, sha = new, ruling keep), as `selftest_dewback_owned.py` REDRAWN does; do not revert the art.
 
 ## 6. The generator never judges itself
 
 - **Guard:** renders come from GPT image (codex imagegen); the first and deciding look is always Opus. GPT is a
   second opinion only on WEAK subjects, never the sole judge of its own family's output.
+A head-to-head Opus judge (live art vs its regen candidates, blind or incumbent-framed) does NOT track the owner's keeps on the 2026-10-24 escalation sheets: blind kept 4/17 with 0-1/10 wrong keeps and run-to-run membership changes; incumbent-framed kept 8/17 with 4/10 wrong (base rate). It rewards redraws that illustrate the description literally, like DEPARTURE_MISSING. Evidence: `infrastructure/state/art_eval/live_h2h_replays/`, tool `src/RimMandrake/Utils/art_eval/live_h2h.py`.
 
 ## 7. Shadow mode — his quick sheet AFTER the run
 
@@ -82,6 +87,7 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   Statistical note for him: with zero misses in n independent subjects, the one-sided 95 % upper bound on the miss
   rate is about 3/n — **30 → ≤10 %, 59 → ≤5 %, 149 → ≤2 %** (GPT plan review, standard rule of three).
 - **Code:** `shadow.py`, `policy.shadow_status`, `infrastructure/state/art_eval/settings.json`.
+Art ledger owner 'keep' rulings written by `art install` under a BLANKET card (a standing authority such as an 'Art audit across all creatures' card) are the pipeline's own accepts, not his look at the picture. Any agent-vs-owner agreement measure must drop them (`override_rate.is_look`), or the pipeline grades itself (agreement read 1.4% with them, 6.7% without).
 
 ## 8. The learning loop — every miss changes a check
 
@@ -111,6 +117,7 @@ as **owner's rule + guard**, with the evidence that made the guard necessary and
   (ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING).
 - **Why:** the blunt rule would have rejected Burrak/Vobbal-style subjects whose text names the Earth body (pilot
   §6.2) — and, measured in the e2e run, a plant described as "a fern" (criteria ledger CL-001).
+Departures briefs must state anatomy only. Scene departures ('shown with the proboscis in a plant stem', 'drawn inside flames', 'sits submerged in a pool') cannot be carried by a transparent cutout sprite and contradict the creature template's 'Real alpha: no backdrop, ground patch' rule, so GPT files DEPARTURE_MISSING for the absent prop/backdrop. Rewrite such departures as anatomy before the round (`mkspec.py` DEP_FIX did 6).
 
 ## 10. Every decision is reproducible
 

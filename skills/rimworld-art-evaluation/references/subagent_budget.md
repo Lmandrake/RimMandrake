@@ -26,6 +26,7 @@ variants x the same set), and are the likeliest single biggest Opus spend, unmea
 7. **Quota first.** Before launching judge-heavy work, run one tiny `claude -p` probe; a 429 / session-limit means
    do not start. A session-limit error is NEVER recorded as a verdict (the runner must not write it as a final
    decision); the run is left resumable.
+Helpers launched through the `rm-*` agent types carry their own bounds (autoCompactWindow 150000, maxTurns, omitClaudeMd), which held measured peak helper context to 97-117k (it had reached 966k). A long job that hits maxTurns mid-step is resumed with a "wrap to the next clean boundary" message, not respawned. Brief art makers as `rm-builder`, never `rm-judge` (a judge seat refuses to make art). Measured cost driver: ~94% of tokens are cache reads and ~89% of spend is subagents, so cap helper context (~200k), hand off to a fresh helper from its progress file (cost grows roughly quadratically with run length), and use sonnet for selftest-checked fixes.
 
 ## Rules for the judging itself
 

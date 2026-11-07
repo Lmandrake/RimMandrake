@@ -1,1 +1,0 @@
-An art-eval redraw that replaces kept art (allowed by owner card 2026-10-23 06:42) turns any selftest that sha-pins that PNG red overnight (SELFTEST_FIX_DEWBACK_OWNED_CYAQ: Dewback north). Repin to the redraw and prove the art-ledger install chain (event prev = old pin, sha = new, ruling keep), as selftest_dewback_owned.py REDRAWN does; don't revert the art.

@@ -11,6 +11,7 @@ Everything above the JSON block is sent to the reviewer as the class module; the
   scatters it): max zoom, normal play (32 px per cell), zoomed out.
 - **variants.png** (when given) — the other members of its random pool.
 - **siblings.png** (when given) — owner-kept pictures of the same plant: the style target.
+Judge a random-pool plant one picture at a time (subject `DEF__stem`), never as one composite of single + variants: one cartoon variant fails the whole subject and the REGEN replaces the kept good picture. Give kept pool members as siblings and a POOL FACT line in the description (count, names, 'do not mark WANTS_VARIANTS/DUPLICATE from unseen members'), otherwise Opus returns VARIANTS unreadable.
 
 ## How to look (owner's past notes)
 

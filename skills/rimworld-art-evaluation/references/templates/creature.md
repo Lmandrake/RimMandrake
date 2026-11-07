@@ -89,3 +89,4 @@ the catch waits for it whatever you say here.
   ]
 }
 ```
+A creature render with baked-in scenery or more than one body is a blocking defect (ALPHA_HALO / multiple subjects) and must never reach ACCEPT: a round-3 ACCEPT was a clump of five pinecone-like critters under a baked-in grass arc on every facing, and neither Opus nor GPT flagged it; only the head-to-head (`fauna_compare.py`) stopped the install. Until the checks are tightened, never install a fauna ACCEPT without the compare. Also: `facing_scale_lint` compares HEIGHT only, so a north drawn 20% narrower than south (N:S width 0.80, heights equal) lints ok while the judge files F_SIZE_JUMP; measure alpha-bbox width too for broad low bodies. The Opus pass files ANY row of small dark dots near a mouth as STYLE_CARTOON (dot-eyes over a grin), even irregular pores; removing the openings and drawing the mouth as a band of straining plates cleared it.
