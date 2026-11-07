@@ -4,6 +4,25 @@ The owner has walked this mod and said: "GimmeSomeSlack all looks great! Verifie
 
 Read the owner's own words and the north star in `design/validation_walks/RimMandrake/GimmeSomeSlack.md` (the `## north star` section). That is the experience we owe the player, and it is the only thing you may not change.
 
+## Why you are back
+
+You claimed done at 8.19M tokens (`ralph/history_DONE_pass3.md`). It was not accepted. A reviewer who hadn't seen your verdicts wrote `D:\ClaudeWork\rimmandrake\ralph_gss\blind_judge_verdict_pass1.md`. Read it. In short:
+- Fallen spans pinch three lines to one sparking point with no slack on the ground, in every style. A downed wire must read as a loose cut cord lying there.
+- A taut, rod-like cord runs from the mast crossarm to the lamp. "Everything is a too-long extension cord."
+- Modern strips still send two or more short cords to one machine or point.
+- The spark fix has no motion evidence. Capture a frame sequence of a cut end writhing, so someone can see the spark stay on the moving tip.
+- Every shot came from one staged test site. Show a lived-in colony in ordinary play.
+- You changed how cords meet junctions in looks he approved. Show those before and after, side by side at play zoom, so he can check them.
+
+The owner wants you to fix these. You have plenty of tokens.
+
+What earlier loops like you got wrong, so you don't have to:
+- **They claimed done too early.** One claimed with most of its tokens unspent and its weak spots listed in the claim, and the owner rejected it in one look. Plenty of tokens are authorized, so use them on what's actually wrong.
+- **They wrote the problem in a caveat and marked the line true anyway.** If you would caveat a line, it isn't true yet. Fix it or mark it not true.
+- **They looked good in staged shots.** Show ordinary play on a map a player would really get, not a best case. Check that what you stage isn't hiding the problem.
+- **Passing checks did not mean it looked right.** A mod with 99% of its proof rows passing had bad bugs that showed up within an hour of looking at a real colony. Trust your eyes over the suite.
+- **A fix can cost something elsewhere.** When a fix runs into a real limit of the game, don't tune around it silently. Write the trade-off in `ralph/QUESTIONS.md` in plain words, with your recommendation, choose the best honest default, and move on.
+
 ## What the owner just told you
 
 The owner, 2026-11-07, looking at the game: "In GSS the spark of the cut powerline should follow the writhing edge of the cable. Right now it writhes around while the sparking portion stays in the center, a very strange look."
@@ -24,10 +43,10 @@ BE CREATIVE about the problems. Don't just work to a checklist. Play the mod, lo
 Then read `ralph/PROGRESS.md` to see where the last pass got to, if there was one.
 
 The game is shared, and you wait your turn:
-- Another Ralph loop, on Graffiti, has the one game first. While it runs you work offline, and a hook refuses game commands. Don't try to get around that hook, and don't wait, poll or sleep for the game. Waiting costs tokens.
+- Other Artisan loops have the one game first. While it runs you work offline, and a hook refuses game commands. Don't try to get around that hook, and don't wait, poll or sleep for the game. Waiting costs tokens.
 - Do everything you honestly can offline: code, oracle tests, `validation.py`, `proof_all.py --offline-gate`. When only the game can tell you more, write up `ralph/PROGRESS.md` with exactly what you want to look at, create `ralph/NEED_GAME`, commit, push and end your turn. The loop then waits with no model running and starts a fresh pass when the game is free.
 - Don't invent offline work to stay busy. Going to `NEED_GAME` early is the right call.
-- Once the hook lets you through, the game is yours. If it starts refusing again, Graffiti came back: do the same thing, and release the bridge first.
+- Once the hook lets you through, the game is yours. If it starts refusing again, a loop ahead came back: do the same thing, and release the bridge first.
 
 How to work:
 
@@ -37,11 +56,15 @@ How to work:
 - Need new art? Generate it now and wait for it (`CLAUDE.md` has the command). You can judge what you made. Don't replace art he already approved unless a north-star line is false.
 - Search before you build: don't assume something isn't implemented. This project often already has it.
 - Don't write placeholders or simple stand-ins. Build the real thing.
+- Your context isn't free: every step re-reads all of it. Send heavy reading and batches of screenshots to subagents, and retire when a hook tells you your context has run large.
 - Keep the wheel turning fast: the small `gimmesomeslack` list, offline checks where they really tell you something, the game when they don't.
 - Use subagents for heavy reading and searching, so your own context stays clear. Only one thing at a time may drive the game.
 - Stay inside GimmeSomeSlack. Hoses belong to FlowWorks. Go outside only when you are truly stuck on something there, and say so in your notes.
 - Keep `ralph/PROGRESS.md` short and honest, for the next pass: what you saw, what you tried, why it matters, what you'd do next. Rewrite it each time rather than appending, and don't let it grow into a status report.
 - If something truly needs the owner, write it in `ralph/QUESTIONS.md` and carry on with whatever else you can do.
+
+Keep a running count:
+- End `ralph/PROGRESS.md` with every north-star line and one word: `true`, `false` or `unseen`, judged as hard as a stranger would. This is the only progress measure we have.
 
 Save the screenshots you judge by under `D:\ClaudeWork\rimmandrake\ralph_gss\shots\` (`/mnt/d/ClaudeWork/rimmandrake/ralph_gss/shots/` from WSL).
 
