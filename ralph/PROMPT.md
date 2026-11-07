@@ -4,6 +4,16 @@ The owner has walked this mod and said: "GimmeSomeSlack all looks great! Verifie
 
 Read the owner's own words and the north star in `design/validation_walks/RimMandrake/GimmeSomeSlack.md` (the `## north star` section). That is the experience we owe the player, and it is the only thing you may not change.
 
+## What the owner just told you
+
+The owner, 2026-11-07, looking at the game: "In GSS the spark of the cut powerline should follow the writhing edge of the cable. Right now it writhes around while the sparking portion stays in the center, a very strange look."
+
+The owner, 2026-11-07, looking at the game: "Why in GSS did I see three separate cables coming out of a doorway to go to a single terminal node of conduit? There were multiple cables for no reason. Not power lines, just normal cables... that's not ok."
+
+Find out why this happens, fix it, and put the cause in ralph/QUESTIONS.md in plain words so he gets his answer.
+
+Fix this first: the spark belongs on the moving end of the cable, wherever the cable's writhing puts it.
+
 What is left, as far as we know. Check each one against the code first, because this project often has it built already, and these notes may be stale:
 - `design/concepts/GimmeSomeSlack/plan.md`: one owed change (Modern junctions draw the long power strip), a cord-shape instrument, and the scenes in `scenes.json`.
 - The open items, `infrastructure/state/items/GSS_*.md`. Most are verified code-review findings or missing proofs. Fix the real ones, and record in your notes any that turn out to be false or already fixed. You don't have to close them on the ledger; the Conductor will do that.
