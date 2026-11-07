@@ -22,6 +22,10 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 | The frozen statement | The mod's `## north star` in `design/validation_walks/RimMandrake/<Mod>.md` |
 | Second-machine design | `design/RimMandrake/two_rimworld_instances_2026-11-07.md` (the steps for a loop on game B are its section "How a loop goes on game B") |
 - **Copy the running loops' `Environment=PATH=/home/mandrake/.local/bin:...` into every new `rm-ralph-*` unit started with `systemd-run`.** Without it the unit cannot find `claude`: the pass ends rc 127 in about a second and spends nothing.
+- **A new loop clone:** `scratch_clone.py clone --name ralph_<mod> --checkout` from a detached helper lands under
+  `/home/mandrake/rm/scratch/BENCH-rm-detached-<session>/` even with `RIMFLOW_SEAT=BENCH`; move it into `/home/mandrake/rm/scratch/BENCH/`
+  yourself, since `artisan_now.py` globs `ralph_*` there. Never pass `--dissociate`: it made a 23 GB `.git` against 110 MB with alternates to
+  `/home/mandrake/rm/store.git`, and the pool's cap is 70 GB.
 
 ## Writing the prompt here
 
@@ -36,6 +40,12 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 
 `ralph/game_gate.py` is the gate. Its pattern matches the playtest runner's and proof scripts' filenames anywhere in a local command, a `grep`
 included, so tell a loop to open those files with Read.
+
+A gate for a loop queued **behind** another on a SteveDesktop game must also list `ralph/steve.sh`'s own verbs (`up`, `down`, `restart`,
+`deploy`, `tier`, `run`) in its GAME pattern, including under a wrapper such as `timeout 300 ralph/steve.sh ...`: a gate copied from a local
+loop matched only bridge and proof names, so it let those through whatever AHEAD said and read `bash ralph/steve.sh up` as a local command.
+AHEAD is one-way: the loop ahead knows nothing of the one behind, so before restarting the loop ahead, stop the one behind or accept that
+both may drive the game until the next game command behind is refused.
 
 Long bridge scripts: write output to a file and background them with a long timeout, since piping through `cut` hides everything. A killed
 script leaves the game running, so pause it.
