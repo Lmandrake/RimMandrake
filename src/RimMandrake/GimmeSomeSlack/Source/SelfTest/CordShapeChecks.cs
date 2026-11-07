@@ -21,6 +21,16 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>Short stumps off a long run in a walled yard, as a blast leaves them: a short edge carrying a lot of spare length.</summary>
+        private static CordWorld ShortStumps()
+        {
+            var w = new CordWorld(40, 30);
+            for (int x = 3; x <= 36; x++) { w.SetConduit(new Cell(x, 12)); w.SetBlocked(new Cell(x, 18), BlockKind.Wall); }
+            foreach (int x in new[] { 8, 16, 24, 32 })
+                for (int z = 13; z <= 15; z++) w.SetConduit(new Cell(x, z));
+            return w;
+        }
+
         /// <summary>Conduit run wholly inside the wall of a room: a machine wired to it draws one cord, out of the wall's face and
         /// across the floor to it. Rock the same; hidden conduit draws nothing (M3); a lamp hard against the wall draws nothing.</summary>
         private static void InWallHookups()
@@ -88,6 +98,35 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         }
             Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
             Console.WriteLine($"  cord folds: {folds} in {strands} strands");
+
+            // no sawtooth (seen in a lived-in colony 2026-11-07: a stretch of settled cord buckled into a jag on a run cut to two cells), walled room and open alike
+            foreach (var scene in new (string name, Func<CordWorld> make, bool laidHere)[] { ("open runs", Room, true), ("short stumps", ShortStumps, true), ("heap", ReviewRound1Checks.PileWorld, false) })
+            {
+                int jagStrands = 0, jags = 0;
+                foreach (ulong seed in new ulong[] { 1, 2, 3, 7, 19, 23, 41, 57 })
+                    foreach (LaidPiece p in new CordBuilder().Build(scene.make(), new BuildOptions { Seed = seed }, c => true))
+                        foreach (CordStrand s in p.Strands)
+                        {
+                            jagStrands++;
+                            jags += CordShape.Saws(s.Pts);
+                        }
+                Console.WriteLine($"  cord saws, {scene.name}: {jags} in {jagStrands} strands");
+                if (scene.laidHere) Check(jags <= jagStrands / 8, $"{scene.name}: {jags} sawtooth stretches in {jagStrands} strands (bar: one in eight; before the relaxing 30 and 40 in these scenes, and what stays is inside a coil bunch, plotted 2026-11-07)");
+            }
+
+            // planted: a sawtooth reads as jags, relaxing removes them, the strand's ends stay put, a one-way coil is not one
+            {
+                var saw = new List<V2>();
+                for (int k = 0; k <= 120; k++) saw.Add(new V2(5 + k * 0.04, 5 + (k > 40 && k < 80 ? 0.05 * ((k / 3) % 2 == 0 ? 1 : -1) : 0)));
+                var open = new CordWorld(20, 20);
+                Check(CordShape.Jags(saw).Count >= 2, $"planted sawtooth reads {CordShape.Jags(saw).Count} jags");
+                List<V2> calm = CordShape.Dejag(open, saw);
+                Check(CordShape.Jags(calm).Count == 0 && V2.Dist(calm[0], saw[0]) < 1e-9 && V2.Dist(calm[calm.Count - 1], saw[saw.Count - 1]) < 1e-9,
+                    $"relaxed: {CordShape.Jags(calm).Count} jags left, ends in place");
+                var coil = new List<V2>();
+                for (int k = 0; k <= 100; k++) coil.Add(new V2(8 + 0.4 * Math.Cos(k * 0.15), 8 + 0.4 * Math.Sin(k * 0.15)));
+                Check(CordShape.Jags(coil).Count == 0, $"a coil is not a jag ({CordShape.Jags(coil).Count})");
+            }
 
             InWallHookups();
 

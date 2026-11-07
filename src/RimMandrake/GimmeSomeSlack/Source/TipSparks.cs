@@ -26,7 +26,7 @@ namespace RimMandrake.GimmeSomeSlack
             d.rotationRate = Random.Range(-40f, 40f);
             // velocityAngle: 0 = screen up, 90 = screen right
             d.velocityAngle = Mathf.Atan2(outX, outZ) * Mathf.Rad2Deg + Random.Range(-55f, 55f);
-            d.velocitySpeed = Random.Range(0.2f, 0.7f);
+            d.velocitySpeed = Random.Range(0.12f, 0.4f);   // slow enough that the sparks stay round the end they came off, not a cloud beside it
             map.flecks.CreateFleck(d);
         }
     }

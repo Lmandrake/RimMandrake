@@ -110,6 +110,86 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
+        /// <summary>A jag is the heading kicking one way past JagDeg over JagArc and straight back within JagSpan. A coil turns one way only and a real bend is far longer,
+        /// so neither reads as one. The settle leaves these where it bunches spare length in a straight stretch: a rope buckling, which a ribbon draws as a sawtooth.</summary>
+        public const double JagArc = 0.08, JagDeg = 22, JagSpan = 0.3, JagReach = 0.3;
+
+        private static double SignedTurnDeg(V2 u, V2 v)
+        {
+            if (u.Len < 1e-6 || v.Len < 1e-6) return 0;
+            return Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z) * 180 / Math.PI;
+        }
+
+        /// <summary>Where a strand's heading jags. The ends are skipped: they are the art's (plugs, frays, wall plates).</summary>
+        internal static List<int> Jags(List<V2> pts, double skipEnds = 0.25)
+        {
+            var o = new List<int>();
+            if (pts == null || pts.Count < 7) return o;
+            double[] cum = Geo.CumLen(pts);
+            double L = cum[cum.Length - 1];
+            var turn = new double[pts.Count];
+            for (int i = 1; i < pts.Count - 1; i++)
+                turn[i] = SignedTurnDeg(pts[i] - pts[AtArc(cum, i, -JagArc)], pts[AtArc(cum, i, JagArc)] - pts[i]);
+            for (int i = 1; i < pts.Count - 1; i++)
+            {
+                if (cum[i] < skipEnds || cum[i] > L - skipEnds || Math.Abs(turn[i]) < JagDeg) continue;
+                for (int j = i + 1; j < pts.Count - 1 && cum[j] - cum[i] <= JagSpan && cum[j] <= L - skipEnds; j++)
+                    if (Math.Abs(turn[j]) >= JagDeg && turn[j] * turn[i] < 0)
+                    {
+                        o.Add(i);
+                        i = j;
+                        break;
+                    }
+            }
+            return o;
+        }
+
+        /// <summary>Stretches of sawtooth: three or more jags in a row, each within SawGap of the last. One or two are the neck of a loop, where it leaves the run and comes back.</summary>
+        public const double SawGap = 0.8;
+
+        internal static int Saws(List<V2> pts)
+        {
+            List<int> at = Jags(pts);
+            if (at.Count < 3) return 0;
+            double[] cum = Geo.CumLen(pts);
+            int saws = 0, run = 1;
+            for (int k = 1; k < at.Count; k++)
+            {
+                run = cum[at[k]] - cum[at[k - 1]] <= SawGap ? run + 1 : 1;
+                if (run == 3) saws++;
+            }
+            return saws;
+        }
+
+        /// <summary>Relax every jag into the line either side of it, leaving the rest of the strand where it lies. A point the relaxing would put off walkable ground stays.</summary>
+        internal static List<V2> Dejag(CordWorld w, List<V2> pts, double skipEnds = 0.25)
+        {
+            List<V2> P = pts;
+            for (int guard = 0; guard < 12; guard++)
+            {
+                List<int> at = Jags(P, skipEnds);
+                if (at.Count == 0) return P;
+                double[] cum = Geo.CumLen(P);
+                var Q = new List<V2>(P);
+                foreach (int c in at)
+                {
+                    int a = Math.Max(1, AtArc(cum, c, -JagReach)), b = Math.Min(P.Count - 2, AtArc(cum, c, JagReach));
+                    for (int it = 0; it < 6; it++)
+                    {
+                        var prev = new List<V2>(Q);
+                        for (int i = a; i <= b; i++)
+                        {
+                            double fade = Math.Min(1, Math.Min(i - a + 1, b - i + 1) / 3.0);
+                            V2 q = prev[i] + ((prev[i - 1] + prev[i + 1]) * 0.5 - prev[i]) * (0.5 * fade);
+                            if (w == null || w.IsWalkable(q.Floor)) Q[i] = q;
+                        }
+                    }
+                }
+                P = Q;
+            }
+            return P;
+        }
+
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
         private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 
@@ -117,7 +197,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// ends do not move. A fold whose bend would leave walkable ground stays: the floor rule outranks the look.</summary>
         internal static List<V2> Unfold(CordWorld w, List<V2> pts, double skipEnds = 0.25)
         {
-            List<V2> P = pts;
+            List<V2> P = Dejag(w, pts, skipEnds);
             var stuck = new List<V2>();
             for (int guard = 0; guard < 60; guard++)
             {

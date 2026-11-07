@@ -20,7 +20,7 @@ KEY = {"Scrapper": "Scrapper", "Industrial": "Industrial", "Modern": "Modern_Mul
 STATE = "ralph/live/lived_state.json"
 SPAN_W, SPAN_H = 76, 26
 FRAMES = {"all": (-3, -6, 80, 30), "house": (-2, -3, 30, 20), "kitchen": (0, 0, 16, 10), "rec": (13, 0, 13, 11), "beds": (0, 9, 26, 8),
-          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14)}
+          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14), "spanpawn": (40, -3, 14, 9)}
 
 
 def line(x0, z0, x1, z1):
@@ -203,6 +203,13 @@ class Run(object):
         c = self.B.ap("census")
         print("anchors", json.dumps([{k: a.get(k) for k in ("id", "fallenLive")} | {"fallen": len(a.get("fallen") or [])} for a in c.get("anchors") or []]))
 
+    def spanpawn(self):
+        """Colonists standing under the live span between the first two masts, for overhead_span_above_everything."""
+        s = self.st()
+        for x, z in ((44, 2), (46, 2), (48, 1)):
+            print(json.dumps(self.call("jawa/spawn_pawn", kindDef="Colonist", x=s["ox"] + x, z=s["oz"] + z, count=1))[:120])
+        self.B.ticks(2)
+
     def shots(self, tag, frames):
         s = self.st()
         out = []
@@ -242,6 +249,8 @@ def main():
         R.play(a.ticks)
     elif a.cmd == "blast":
         R.blast()
+    elif a.cmd == "spanpawn":
+        R.spanpawn()
     elif a.cmd == "shots":
         R.shots(a.tag, a.frames.split(","))
     if R.notes:
