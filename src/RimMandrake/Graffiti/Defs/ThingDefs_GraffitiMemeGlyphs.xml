@@ -47,7 +47,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Cannibal</defName>
     <label>cannibal glyph</label>
-    <description>A skull, crossed with a fork - a mark for those who feed on their own kind.</description>
+    <description>A bone crossed with a fork, sprayed fast - a mark for those who feed on their own kind.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Cannibal</texPath>
@@ -123,7 +123,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Nudism</defName>
     <label>nudism glyph</label>
-    <description>A bare figure, sketched plain - clothing means nothing here.</description>
+    <description>A bare figure, arms flung wide - clothing means nothing here.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Nudism</texPath>
@@ -147,8 +147,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>RM_Graffiti_Glyph_Inhuman</defName>
-    <label>void ring glyph</label>
-    <description>A ring struck through with nothing at its centre - the Cult's own mark, never seen on a colony's own walls by choice.</description>
+    <label>void glyph</label>
+    <description>A black pupil in a nest of tendrils and teeth - the void's own mark, and it looks back.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Inhuman</texPath>
@@ -173,8 +173,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_PainIsVirtue</defName>
-    <label>thorn ring glyph</label>
-    <description>A ring of thorns, closed - pain worn as devotion.</description>
+    <label>thorn crown glyph</label>
+    <description>A crown of thorns, running with paint like blood - pain worn as devotion.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_PainIsVirtue</texPath>
@@ -203,7 +203,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Loyalist</defName>
     <label>banner glyph</label>
-    <description>A banner, painted plain - a placeholder subject for Loyalist devotion, pending the owner's own reading.</description>
+    <description>A tattered war banner, sprayed where the walls can see it - the hand that paints this still kneels.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Loyalist</texPath>
@@ -232,7 +232,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Guilty</defName>
     <label>chain link glyph</label>
-    <description>A single chain link, sketched rough - a placeholder subject for Guilty devotion, pending the owner's own reading.</description>
+    <description>One chain link, cracked through and still dripping - the debt is not paid.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Guilty</texPath>
@@ -290,7 +290,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Blindsight</defName>
     <label>blindsight glyph</label>
-    <description>An eye, struck clean through - only the blind perceive the true reality.</description>
+    <description>An eye stitched shut - only the blind perceive the true reality.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Blindsight</texPath>
@@ -316,7 +316,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Darkness</defName>
     <label>darkness glyph</label>
-    <description>A lamp, snuffed - drawn by those who have made their peace with the dark.</description>
+    <description>A black sun in a thin ring - drawn by those who have made their peace with the dark.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Darkness</texPath>
@@ -342,7 +342,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Tunneler</defName>
     <label>tunneler glyph</label>
-    <description>A mountain, with an arrow driven straight into its side - the deep places are home.</description>
+    <description>A pick driven into a mountain, the tunnel mouth black behind it - the deep places are home.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Tunneler</texPath>
@@ -368,7 +368,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Rancher</defName>
     <label>rancher glyph</label>
-    <description>A hoofprint, pressed deep and fresh - a wayfinding mark left near the pens.</description>
+    <description>A pair of hoofprints, pressed deep and fresh - a wayfinding mark left near the pens.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Rancher</texPath>
@@ -419,7 +419,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_NaturePrimacy</defName>
     <label>nature primacy glyph</label>
-    <description>A leaf, splitting a rusted gear clean in half - nature outlasts every machine.</description>
+    <description>A leaf bursting through a broken cog - nature outlasts every machine.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_NaturePrimacy</texPath>
@@ -445,7 +445,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_TreeConnection</defName>
     <label>tree connection glyph</label>
-    <description>Roots, linking two trees, drawn as a single unbroken line.</description>
+    <description>Two trees, joined at the root.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_TreeConnection</texPath>
@@ -526,7 +526,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Collectivist</defName>
     <label>collectivist glyph</label>
-    <description>Linked rings, unbroken - a placeholder subject for Collectivist devotion, pending the owner's own reading.</description>
+    <description>Three rings chained through each other - no one here stands alone.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Collectivist</texPath>
@@ -556,7 +556,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Individualist</defName>
     <label>individualist glyph</label>
-    <description>A single dot, closed inside a ring - a placeholder subject for Individualist pride, pending the owner's own reading.</description>
+    <description>One small figure inside one rough circle - and nobody else gets in.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Individualist</texPath>
@@ -608,7 +608,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_Transhumanist</defName>
     <label>transhumanist glyph</label>
-    <description>A circuit trace, bent into a spiral - the body is only the first draft.</description>
+    <description>A spiral eye sprouting wires - the body is only the first draft.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Transhumanist</texPath>
@@ -634,7 +634,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_FleshPurity</defName>
     <label>flesh purity glyph</label>
-    <description>A circuit, crossed clean out - a taunt for any wall a Techist ideo calls home.</description>
+    <description>A bare heart with its wires snipped off - a taunt for any wall a Techist ideo calls home.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FleshPurity</texPath>
@@ -660,7 +660,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_HighLife</defName>
     <label>high life glyph</label>
-    <description>A curling wisp of smoke, sketched loose and easy.</description>
+    <description>A bent pipe and a fat curl of smoke, sprayed loose and easy.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HighLife</texPath>
@@ -711,7 +711,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>RM_Graffiti_Glyph_Ritualist</defName>
     <label>ritualist glyph</label>
-    <description>A knife, laid across a closed circle - devotion, precisely observed.</description>
+    <description>A long knife, point down in a dripping bowl - devotion, precisely observed.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Ritualist</texPath>
@@ -742,7 +742,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Graffiti_Glyph_Shipborn</defName>
     <label>shipborn glyph</label>
-    <description>A hull plate, stamped with a single star - a placeholder subject for Shipborn pride, pending the owner's own reading.</description>
+    <description>A star over a swept hull - painted by people who were born between worlds.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Shipborn</texPath>
