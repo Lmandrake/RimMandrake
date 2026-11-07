@@ -544,9 +544,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
             Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
-            // the widest slack this ground takes
+            // the widest slack this ground takes: the same bends turned the other way before any less of them, so a wire beside a
+            // rock or a wall bends away from it and stays a loose cord instead of halving into a rod
             double slack = 0;
-            foreach (double k in new[] { 1.0, 0.5, 0.25 })
+            foreach (double k in SlackTries)
             {
                 bool clear = true;
                 for (double s = 0.2; s <= want + 1e-9 && clear; s += 0.2)
@@ -575,10 +576,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
                 while (k == 0 && coilIdx < coilsAt.Count && sPos >= coilsAt[coilIdx])
                 {
-                    if (sPos <= reach - 1.8 && slack > 0)
+                    if (sPos <= reach - 1.8 && slack != 0)
                     {
                         double drift = 0.1 + 0.25 * U(seed, 80 + coilIdx);
-                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, slack, drift, want >= 5, open))
+                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, Math.Abs(slack), drift, want >= 5, open))
                             sPos = Math.Min(reach - 1.5, sPos + drift);
                     }
                     coilIdx++;
@@ -589,6 +590,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             lay.TipNow = lay.Tip;
             return lay;
         }
+
+        private static readonly double[] SlackTries = { 1.0, -1.0, 0.5, -0.5, 0.25, -0.25 };
 
         private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
 

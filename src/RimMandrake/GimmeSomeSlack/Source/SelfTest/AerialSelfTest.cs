@@ -350,6 +350,20 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 double dev = q.Pts.Skip(q.GroundFrom).Max(p => Math.Abs(p.X - 10.5));
                 C(dev >= 0.5 && dev <= 4.2, "seed " + seed + ": a 7-cell wire lying along its own span's line leaves that line, by " + dev.ToString("0.00") + " cells");
             }
+            // a wall along one side of where it falls (rows below the base blocked): a wire whose bends go that way turns them the other way, and stays
+            // a loose cord, rather than halving its slack into a rod (the Futuristic cut span beside rocks, pass 10). Halving only: 16/40; mirror first: 31/40
+            int loose = 0;
+            var lens = new List<string>();
+            for (int seed = 1; seed <= 40; seed++)
+            {
+                FallenLay q = AerialMath.LayFallen(top, basePt, brk, 6.3, seed, (x, z) => z >= 10);
+                double ql = 0;
+                for (int i = q.GroundFrom + 1; i < q.Pts.Count; i++) ql += P2.Dist(q.Pts[i - 1], q.Pts[i]);
+                double dev = q.Pts.Skip(q.GroundFrom).Max(p => Math.Abs(p.Z - 10.5));
+                if (dev >= 0.6) loose++;
+                lens.Add(dev.ToString("0.0"));
+            }
+            C(loose >= 28, "beside a wall " + loose + "/40 fallen wires still bend 0.6+ cell off their line (" + string.Join(" ", lens) + ")");
             FallenLay g = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, (x, z) => x != 14);
             C(g.Blocked && g.Tip.X < 14 && g.Pts.Skip(1).All(p => (int)Math.Floor(p.X) != 14 || p.Z > 11.2), "a wall stops the lying wire before the wall (tip " + g.Tip + ")");
             FallenLay h = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, open);
