@@ -138,11 +138,12 @@ namespace RimMandrake.Graffiti
             Put(map, "TableMachining", null, 30, 23, Rot4.South); Put(map, "ElectricSmelter", null, 35, 23, Rot4.South); Put(map, "Shelf", wood, 28, 18, Rot4.North);
             Put(map, "StandingLamp", null, 37, 18); Put(map, "StandingLamp", null, 27, 22); Put(map, "StandingLamp", null, 33, 22);
             // food, so a run of days watches recreation and not starvation; stores and clutter, so it looks like people live here
-            for (int i = 0; i < 6; i++)
+            // Live 2026-11-07: 60 meals ran out on day 7 and three of eight starved or sickened: a week's run watched a famine, not a colony.
+            for (int i = 0; i < 14; i++)
             {
                 Thing meals = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack);
                 meals.stackCount = 10;
-                GenSpawn.Spawn(meals, C(6 + i, 18), map);
+                GenSpawn.Spawn(meals, C(6 + i % 7, 18 - i / 7), map);
             }
             foreach (string[] store in new[] { new[] { "RawPotatoes", "75", "12", "23" }, new[] { "RawRice", "60", "13", "23" }, new[] { "Steel", "75", "28", "19" }, new[] { "WoodLog", "75", "29", "18" }, new[] { "WoodLog", "75", "30", "18" }, new[] { "Cloth", "40", "34", "18" }, new[] { "Medicine", "8", "35", "18" }, new[] { "ComponentIndustrial", "12", "36", "18" } })
             {

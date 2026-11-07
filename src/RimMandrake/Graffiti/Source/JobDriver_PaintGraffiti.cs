@@ -50,6 +50,10 @@ namespace RimMandrake.Graffiti
         /// <summary>Someone this job answers, painting back at them (JobGiver_AnswerMark): a single mark, not a sitting.</summary>
         private Pawn ReplyTo => job.GetTarget(TargetIndex.B).Thing as Pawn;
 
+        /// <summary>Someone the painter came here to say something about (JoyGiver_PaintGraffiti found this wall wide enough for it): the
+        /// sitting's first mark, then cleared.</summary>
+        private Pawn Meant => job.GetTarget(TargetIndex.C).Thing as Pawn;
+
         public override string GetReport()
         {
             if (subject != null && markDef != null)
@@ -142,6 +146,18 @@ namespace RimMandrake.Graffiti
                     room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map, ReplyTo));
                     return GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery) <= room ? RMGraffitiDefOf.RM_Graffiti_Mockery : null;
                 }
+                if (Meant != null)
+                {
+                    // Over nobody's work but the painter's own. If the gap has closed or the feeling has changed since, a plain mark instead.
+                    ThingDef meant = GraffitiSocial.MeaningFor(pawn, Meant);
+                    float mine = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map, pawn, meant == RMGraffitiDefOf.RM_Graffiti_Mockery ? Meant : null));
+                    if (meant != null && GraffitiPool.WidthOf(meant) <= mine && GraffitiPool.PainterMayPaint(meant, pawn))
+                    {
+                        subject = Meant;
+                        return meant;
+                    }
+                    job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
+                }
                 // Owner's pick, 2026-11-07: measure a mark's real width before painting, so nobody erases a neighbour by accident. A spree
                 // has no such manners: going over is what it's for.
                 if (!pawn.InMentalState) room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map));
@@ -171,8 +187,11 @@ namespace RimMandrake.Graffiti
             // The gap was measured when the brush went up. A mark painted beside it since (two hands on one wall) may have narrowed it, and
             // finishing now would erase the neighbour by accident: live 2026-11-07, three "painted over my work" grudges in half a day, one
             // of them ending in a mockery. Whoever sees fresh paint there leaves it be. A spree and an order go over on purpose; a reply only over the work it answers.
+            Pawn spare = ReplyTo ?? (Meant != null ? pawn : null);
+            Pawn spare2 = Meant != null && markDef == RMGraffitiDefOf.RM_Graffiti_Mockery ? Meant : null;
             bool crowded = !designated && !pawn.InMentalState
-                && GraffitiPool.WidthOf(markDef) > GraffitiJobUtility.BareRoom(cell, Map, ReplyTo) + 0.01f;
+                && GraffitiPool.WidthOf(markDef) > GraffitiJobUtility.BareRoom(cell, Map, spare, spare2) + 0.01f;
+            job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
             if (crowded) GraffitiSocial.Trace(pawn.LabelShort + " left " + markDef.defName + "@" + cell + " unfinished: fresh paint beside it");
             Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated);
             markDef = null;

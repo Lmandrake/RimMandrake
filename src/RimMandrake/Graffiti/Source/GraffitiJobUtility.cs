@@ -68,6 +68,38 @@ namespace RimMandrake.Graffiti
 
         private const float ReplyRadius = 7f;
 
+        /// <summary>Where a hand with something to say about someone says it: the nearest stretch wide enough for it to where that person
+        /// sleeps, else where they stand, else where the painter stands. It may go over the painter's own old marks and, for a mockery, the
+        /// target's (`over`): nobody else's. A room's share doesn't hold it back (a grudge doesn't wait for wall space); kitchens and hospitals
+        /// still do.</summary>
+        internal static bool TryFindMeaningCell(Pawn pawn, Pawn subject, float need, Pawn over, out IntVec3 result)
+        {
+            Map map = pawn.Map;
+            var centres = new List<IntVec3>();
+            if (subject != null && subject.Spawned && subject.Map == map)
+            {
+                Building_Bed bed = subject.ownership?.OwnedBed;
+                if (bed != null && bed.Spawned && bed.Map == map) centres.Add(bed.Position);
+                centres.Add(subject.Position);
+            }
+            centres.Add(pawn.Position);
+            foreach (IntVec3 centre in centres)
+            {
+                foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, MeaningRadius, useCenter: true))
+                {
+                    if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map)) continue;
+                    if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, pawn, over))) continue;
+                    if (!pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)) continue;
+                    result = c;
+                    return true;
+                }
+            }
+            result = IntVec3.Invalid;
+            return false;
+        }
+
+        private const float MeaningRadius = 12f;
+
         /// <summary>Owner's pick, 2026-11-07: nobody paints a hospital or a kitchen on their own. A mark is filth, and filth there is infection and
         /// food poisoning. The player's own order may still paint there.</summary>
         internal static bool KeptClean(IntVec3 c, Map map)
@@ -81,8 +113,9 @@ namespace RimMandrake.Graffiti
 
         /// <summary>How wide a mark centred on this floor cell's wall may be before its drawing overlaps a neighbour's on the same face
         /// (RM_GraffitiKernel.WallMarksOverlap's own rule, read from the other side). Unlimited with nothing near.</summary>
-        /// `spare`: a pawn whose own marks don't count (a reply may go over the work of the one it answers, and only theirs).
-        public static float BareRoom(IntVec3 c, Map map, Pawn spare = null)
+        /// `spare`, `spare2`: pawns whose own marks don't count (a reply may go over the work of the one it answers, and only theirs; a
+        /// mockery over its painter's own old marks and its target's).
+        public static float BareRoom(IntVec3 c, Map map, Pawn spare = null, Pawn spare2 = null)
         {
             int side = Filth_Mark.ReadWallSide(c, map);
             if (side == RM_GraffitiKernel.NoWall) return float.MaxValue;
@@ -96,7 +129,7 @@ namespace RimMandrake.Graffiti
                 if (!floor.InBounds(map)) continue;
                 foreach (Thing t in floor.GetThingList(map))
                 {
-                    if (!(t is Filth_Mark m) || m.wallSide != side || (spare != null && m.maker == spare)) continue;
+                    if (!(t is Filth_Mark m) || m.wallSide != side || (spare != null && m.maker == spare) || (spare2 != null && m.maker == spare2)) continue;
                     if (k == 0) return 0f;
                     room = System.Math.Min(room, 2f * (System.Math.Abs(k) - GraffitiPool.WidthOf(m.def) / 2f) + 0.3f);
                 }

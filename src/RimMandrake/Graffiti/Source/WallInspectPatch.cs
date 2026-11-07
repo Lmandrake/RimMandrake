@@ -29,7 +29,9 @@ namespace RimMandrake.Graffiti
             }
             foreach (Filth_Mark m in seen)
             {
-                __result = __result.NullOrEmpty() ? m.StoryLines() : __result + "\n" + m.StoryLines();
+                float beauty = m.NetBeauty;
+                string line = m.StoryLines() + ". Beauty " + beauty.ToString("+0;-0;0") + ": " + RM_GraffitiKernel.BeautyWord(beauty);
+                __result = __result.NullOrEmpty() ? line : __result + "\n" + line;
             }
         }
     }

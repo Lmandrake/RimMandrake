@@ -531,6 +531,18 @@ namespace RimMandrake.Graffiti
             return def;
         }
 
+        /// <summary>What a hand that set out to paint about this person paints when it gets to the wall, read off how it feels about them now:
+        /// a memorial for the dead, a mockery for someone it dislikes, a tribute otherwise. Null if the moment has passed.</summary>
+        internal static ThingDef MeaningFor(Pawn painter, Pawn subject)
+        {
+            if (!RM_GraffitiSettings.socialEnabled || subject == null || painter.relations == null) return null;
+            ThingDef def = subject.Dead ? RMGraffitiDefOf.RM_Graffiti_Memorial
+                : painter.relations.OpinionOf(subject) < 0 ? RMGraffitiDefOf.RM_Graffiti_Mockery : RMGraffitiDefOf.RM_Graffiti_Tribute;
+            bool kind = painter.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false;
+            if (RM_GraffitiKernel.RefusesToPaint(def.GetModExtension<ModExtension_Graffiti>()?.meaning ?? RM_Meaning.None, kind)) return null;
+            return AlreadySaid(painter.Map, def, subject, painter) ? null : def;
+        }
+
         /// <summary>A hand doesn't say the same thing about the same person twice while the first still stands.</summary>
         private static bool AlreadySaid(Map map, ThingDef def, Pawn subject, Pawn painter)
         {
@@ -544,7 +556,9 @@ namespace RimMandrake.Graffiti
             return false;
         }
 
-        /// <summary>Someone this pawn still grieves, off their own memories: a dead person with a sad thought attached.</summary>
+        /// <summary>Someone this pawn still grieves, off their own memories: a dead friend (the game's own "died" thought for someone they
+        /// thought well of) or kin or a lover (the relation's own "died" thought). The "colonist died" every colonist gets is not grief: live
+        /// 2026-11-07, Kinso, who had only that for Mo (-3), painted Mo a memorial and took +5.7 from it.</summary>
         internal static Pawn Mourned(Pawn p)
         {
             List<Thought_Memory> memories = p.needs?.mood?.thoughts?.memories?.Memories;
@@ -552,7 +566,8 @@ namespace RimMandrake.Graffiti
             for (int i = 0; i < memories.Count; i++)
             {
                 Thought_Memory t = memories[i];
-                if (t.otherPawn != null && t.otherPawn.Dead && t.otherPawn.RaceProps.Humanlike && !(t is Thought_MemorySocial) && t.MoodOffset() < 0f)
+                if (t.otherPawn != null && t.otherPawn.Dead && t.otherPawn.RaceProps.Humanlike && !(t is Thought_MemorySocial) && t.MoodOffset() < 0f
+                    && (t.def == ThoughtDefOf.PawnWithGoodOpinionDied || p.GetRelations(t.otherPawn).Any()))
                 {
                     return t.otherPawn;
                 }
@@ -733,7 +748,11 @@ namespace RimMandrake.Graffiti
             GameComponent_Graffiti game = GameComponent_Graffiti.Get;
             bool fight = chance > 0f && game != null && game.FightDue && Rand.Value < chance;
             Trace(by.LabelShort + " confronts " + painter.LabelShort + ": fight chance " + chance.ToString("0.00") + (game != null && !game.FightDue ? " (a fight too recent)" : "") + " -> " + (fight ? "BLOWS" : "words"));
-            string where = about != null ? " what " + painter.LabelShort + " painted about " + about.SubjectName : " what's on the wall";
+            // Live 2026-11-07: "about what Kinso painted about someone", over a plain tag that was about nobody.
+            string where = about == null ? " what's on the wall"
+                : about.subject != null || !about.subjectName.NullOrEmpty() ? " what " + painter.LabelShort + " painted about " + about.SubjectName
+                : about.maker == painter ? " " + painter.LabelShort + "'s " + about.def.label + " on the wall"
+                : " what's on the wall";
             if (fight)
             {
                 game.lastFight = Find.TickManager.TicksGame;
@@ -744,7 +763,7 @@ namespace RimMandrake.Graffiti
             Log(by, painter, by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".");
             if (RM_GraffitiSettings.socialMessagesEnabled)
             {
-                Tell(by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".", new LookTargets(by, painter), MessageTypeDefOf.NeutralEvent);
+                Tell(by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".", about != null ? new LookTargets(new GlobalTargetInfo(by), new GlobalTargetInfo(painter), WallTarget(about).PrimaryTarget) : new LookTargets(by, painter), MessageTypeDefOf.NeutralEvent);
             }
         }
 

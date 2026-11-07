@@ -15,7 +15,7 @@ M = "Source/RM_GraffitiMod.cs"
 PLANTS = [
     ("form is not an enum name", D, "<form>Tag</form>", "<form>Tagg</form>", "gr-ext"),
     ("negative pool weight", D, "<poolWeight>", "<poolWeight>-", "gr-ext"),
-    ("minArtistic far too high", D, "<minArtistic>6</minArtistic>", "<minArtistic>60</minArtistic>", "gr-ext"),
+    ("minArtistic far too high", D, "<minArtistic>4</minArtistic>", "<minArtistic>60</minArtistic>", "gr-ext"),
     ("thingClass back to plain Filth", D, "<thingClass>RimMandrake.Graffiti.Filth_Mark</thingClass>", "<thingClass>Filth</thingClass>", "gr-class"),
     ("category not Filth", D, "<category>Filth</category>", "<category>Item</category>", "gr-class"),
     ("slider wider than the kernel clamp", M, "list.Slider(paintIntervalTicks, 60f, 1000f)", "list.Slider(paintIntervalTicks, 0f, 1000f)", "gr-slider"),

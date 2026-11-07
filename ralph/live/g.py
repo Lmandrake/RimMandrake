@@ -88,7 +88,7 @@ def setup(s):
 def days(s, ticks, chunk=15000):
     """A run of days with nothing staged: one Tally line per chunk, and only the trace lines that are events (not every read)."""
     import re
-    keep = re.compile(r"painted|over|confront|BLOWS|scrub|crossed|unfinished|refus|fit|goodwill|raid|left their|means to")
+    keep = re.compile(r"painted|wants to|over|confront|BLOWS|scrub|crossed|unfinished|refus|fit|goodwill|raid|left their|means to")
     done = 0
     while done < ticks:
         n = min(chunk, ticks - done)
@@ -122,8 +122,15 @@ def until(s, pattern, maxticks, step=60):
     return False
 
 
+def close_naming(s):
+    for _ in range(6):
+        if not s.call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement").get("changed"):
+            break
+
+
 def ui(s, name, pawn, tab, cell=None, root=7.4):
     """Select a pawn, open an inspect tab, frame at about play zoom, take a full-screen shot (UI included)."""
+    close_naming(s)
     s.call("jawa/clear_ui")
     s.call("jawa/screenshot_mode", enabled=False)
     if pawn != "-":
@@ -175,6 +182,7 @@ def wallui(s, name, cell, root=7.4):
     print("WALL", tid, str(r)[:200])
     if not tid:
         return
+    close_naming(s)
     s.call("jawa/clear_ui")
     s.call("jawa/screenshot_mode", enabled=False)
     print(str(s.call("jawa/select_things", ids=tid))[:200])
