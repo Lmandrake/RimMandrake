@@ -1,20 +1,39 @@
 #!/usr/bin/env python3
 """PreToolUse hook for this Artisan loop, doing three things: deliver a note from the owner to a running pass, warn once a
-pass's context runs large, and refuse game commands while a loop ahead in the queue is running."""
+pass's context runs large, and refuse every game command on this machine: this loop's game is SteveDesktop's, reached
+through ralph/steve.sh, and Archmagi's belongs to other loops."""
 import json
 import os
 import re
-import subprocess
+import shlex
 import sys
 
-AHEAD = ["rm-ralph-graffiti", "rm-ralph-pyrelands"]
 SOFT, HARD = 250_000, 350_000
 WARNED = "ralph/.context_warned"
 GAME = re.compile(
     r"bridge\s+take|rimbridge|live_session|modset_builder[^|;&]*--apply|modlist_swap|deploy_custom_mods[^|;&]*--apply"
-    r"|logwait|\./game\s+\S*\s*\S*\s*(up|down|loading)\b|proof_all\.py(?![^|;&]*--offline)|--live\b"
+    r"|logwait|modcheck\s+run|\./game\s+\S*\s*\S*\s*(up|down|loading)\b|proof_all\.py(?![^|;&]*--offline)|--live\b"
     r"|(?<!selftest_)gss_playtest_runner|human_review\.py|save_review_map|pole_shots|shader_sway_look"
     r"|RimWorldWin64|steam://|Start-Process|taskkill|system_click|system_screenshot")
+
+
+def local_part(command):
+    """The command minus its ralph/steve.sh segments: those run on Steve, whatever their arguments say."""
+    try:
+        lex = shlex.shlex(command.replace("\n", ";"), posix=True, punctuation_chars=True)
+        lex.whitespace_split = True
+        tokens = list(lex)
+    except ValueError:
+        return command
+    kept, segment = [], []
+    for token in tokens + [";"]:
+        if token and set(token) <= set("();<>|&"):
+            if segment and not segment[0].endswith("ralph/steve.sh"):
+                kept.append(" ".join(segment))
+            segment = []
+        else:
+            segment.append(token)
+    return " ; ".join(kept)
 
 
 def owner_note():
@@ -79,13 +98,10 @@ def main():
         print(message, file=sys.stderr)
         return 2
     command = (hook.get("tool_input") or {}).get("command", "")
-    if not GAME.search(command):
+    if not GAME.search(local_part(command)):
         return 0
-    if not any(subprocess.run(["systemctl", "--user", "is-active", "--quiet", u]).returncode == 0 for u in AHEAD):
-        return 0
-    print("REFUSED: another Artisan loop has the game, and it goes first. Do the offline work you can. When only the game "
-          "can tell you more: write ralph/PROGRESS.md, create ralph/NEED_GAME, commit, push and end your turn. The loop "
-          "waits at no token cost and starts a fresh pass when the game is free.", file=sys.stderr)
+    print("REFUSED: that drives a game on this machine, and Archmagi's game belongs to other loops. Yours is on SteveDesktop: "
+          "run it through ralph/steve.sh (CLAUDE.md has the commands).", file=sys.stderr)
     return 2
 
 
