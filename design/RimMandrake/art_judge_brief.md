@@ -64,6 +64,10 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   "bent up" towards the viewer … Keep the pipe in the proper perspective plane please.")
 - C5. Flyers: a whole-body directional flip-book, never a wing render-tree. Judge frames from stills only; never
   ask for live flight capture. — Owner 2026-09-19 (CLAUDE.md, flight)
+- C5a. Flyer frames, looked at one at a time at full size: the head holds still and the eyes stay level; no wing lies
+  baked along the body while another flaps; no wing breaks into specks where it turns edge-on; no body pixels leave
+  with a lifted wing; every part of a facing has its art. These passed stills once, so say what you could not see. —
+  Owner 2026-11-07 (`rimworld-sprite-facings`, "Cut-out flip-books")
 
 ### D. Size and resolution
 - D1. Judge at true scale beside a vanilla human at 128–256 px/cell, and at 32 px/cell. — Owner 2026-10-04 (req 2)

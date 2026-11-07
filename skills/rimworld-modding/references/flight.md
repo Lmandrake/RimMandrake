@@ -105,3 +105,7 @@ default (male) prefix. Sparrow is the cleanest from-scratch template and
 Chicken/Duck/Goose the retrofit references. Verify: loop correctness,
 all-facing correctness, landing restores the grounded graphic, save/load
 safety.
+
+The frame faults the owner's eye names (a wing baked into the plate, squash noise, flesh
+ripping away, level eyes, the double-held last frame) and the checks for them are in
+`rimworld-sprite-facings`, "Cut-out flip-books" and "Checking a flip-book".

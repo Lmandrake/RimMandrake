@@ -92,7 +92,10 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
    `versions_key` names every prompt version, so two runs on different versions are never pooled.
 4. **Machines without an in-game assembled capture are held, not judged.** Captures come from a keeper save via
    `rimworld-live-review`, batched.
-5. **Never live-test a flyer to get frames** (owner): flight is judged from the flip-book stills.
+5. **Never live-test a flyer to get frames** (owner): flight is judged from the flip-book stills. A pass from stills is
+   not evidence about motion: judges passed a wing baked into the plate, squash noise and flesh ripping away with the
+   wing, all of which he saw at speed. Give a flyer judge the `flyer_eye_checks.py parts` sheet and every frame full
+   size, count only its catches, and score any flyer check against `../rimworld-sprite-facings/references/flyer_truth_set.md`.
 
 ## When the owner (or a live walk) disagrees
 

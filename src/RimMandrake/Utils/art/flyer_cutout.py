@@ -90,7 +90,9 @@ def _unpremul(f: np.ndarray) -> np.ndarray:
 def turn(layer: np.ndarray, hinge, deg: float, scale: float, sy: float = 1.0) -> np.ndarray:
     """Rotate LAYER (RGBA uint8) by DEG counter-clockwise on screen about HINGE, scale it by SCALE, then squash it
     vertically by SY about the hinge's row (side views: a wing beating about the body's long axis projects as a
-    vertical squash; SY < 0 swings it below the shoulder). Resampled premultiplied, so edges keep no dark fringe."""
+    vertical squash; SY < 0 swings it below the shoulder). Resampled premultiplied, so edges keep no dark fringe.
+    Samples without averaging: under |SY| 0.5 it skips source rows and the wing breaks into specks (the owner's "static-like
+    noise", 2026-11-07), so a pose that low wants a drawn frame; flyer_eye_checks.py audit --config names such poses."""
     if abs(deg) < 1e-6 and abs(scale - 1) < 1e-6 and abs(sy - 1) < 1e-6:
         return layer.copy()
     if abs(sy) < 0.08:

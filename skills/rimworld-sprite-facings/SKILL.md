@@ -305,6 +305,15 @@ per-facing generation guidance above applies here too, doubled by frame count).
 Gendered species (vanilla Quail, Peafowl) add a second full set under
 `flyingAnimationFramePathPrefixFemale`.
 
+**Before generating anything**, read the reference doc a fresh implementation
+pass should start from: `~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md`
+(owner, 2026-09-19) if present, or re-derive the same facts from the installed
+game the way this section did — Sparrow (Odyssey) is the cleanest from-scratch
+template, Chicken/Duck/Goose (Core) are the retrofit references for turning an
+existing grounded animal into a flier. `flyingAnimationDrawSizeIsMultiplier`
+scales the flying sprite relative to the grounded one — most vanilla fliers
+read bigger mid-flight, and that is timing/scale tuning, not art.
+
 🔴 **Standing rule for every flier's flip-book, both at rest and in the air**
 (owner, verbatim, 2026-09-25 — watching FireHawk's shipped v1 art live):
 **wings move, the body does not, unless a specific creature has an explicit,
@@ -317,37 +326,110 @@ modes this rule exists to stop, both hit on FireHawk's own v1 art:
   asymmetric wing; save the raised-wing pose for the flying frames only.
 - **Flying flip-book: the head, neck and torso stay pixel-stable — same
   fixed, level position and silhouette — across every frame of the cycle;
-  only the wing pose changes frame to frame.** FireHawk's v1 flying frames let
-  the body bob up and down between frames, which reads as flicker rather than
-  flight the instant it's seen moving (a static single-frame QA pass will
-  never catch this — it only shows up animating, live). State both
-  invariants explicitly in every frame's prompt and in `style_notes`, the way
-  `../generating-rimworld-sprites/SKILL.md`'s "state the invariants every
-  iteration" rule already asks for restyles generally.
+  only the wing pose changes frame to frame.** A body that bobs reads as flicker
+  and looks silly the instant it moves, and a static single-frame QA pass never
+  catches it. State both invariants explicitly in every frame's prompt and in
+  `style_notes`, the way `../generating-rimworld-sprites/SKILL.md`'s "state the
+  invariants every iteration" rule already asks for restyles generally.
 
-**Before generating anything**, read the reference doc a fresh implementation
-pass should start from: `~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md`
-(owner, 2026-09-19) if present, or re-derive the same facts from the installed
-game the way this section did — Sparrow (Odyssey) is the cleanest from-scratch
-template, Chicken/Duck/Goose (Core) are the retrofit references for turning an
-existing grounded animal into a flier. `flyingAnimationDrawSizeIsMultiplier`
-scales the flying sprite relative to the grounded one — most vanilla fliers
-read bigger mid-flight, and that is timing/scale tuning, not art.
+**Keep the eyes level between frames.** Register on the rigid body, never on the
+ink bounding box, because the wings drive the bounding box and couple their motion
+into the body. Place the head on its skull mass, ignoring ears, horns and crests.
+Where the eyes show, use them; the back view has none, so use the head mass. The
+vanilla Chicken, which the owner calls a bird that "satisfies the requirements
+perfectly", moves its head 0 px across all 8 frames of all three facings, while its
+wings and much of its torso are redrawn from frame to frame. Whether a torso may
+change like that is his to rule; until he does, hold it still.
 
-**Validation plan for a flier specifically** (on top of the standard one below):
-verify the cycle actually alternates pose (not a static image, per the
-worked-example lie above), verify all three facings resolve (a missing
-`_north_3` silently drops to the bare-path fallback — see "How sprite checks
-lie"), and verify the grounded graphic returns cleanly on landing. A screenshot
-of the animal standing still proves nothing about whether it flies. Do not
-live-test flight or capture it without the owner present (owner: "For the third
-time, do not do live testing of flyers without a human present. It doesn't
-work." and "Don't try to capture images of flight. It doesn't work."): verify
-by a deterministic state read of `Pawn_FlightTracker`, and leave the look to a
-joint session. A single still passes the wings-folded and body-level checks above
-by accident even when the flip-book jitters between frames, so check frames
-offline with the flipbook tools. In that joint session, spawn a batch, not one (see
-`rimworld-debug-testing`'s "single spawned pawn is not a sample" — for a flier
-specifically, `flightStartChanceOnJobStart` means a lone pawn is unlikely to
-fly at all in any given observation window; spawn ~20 faction-`none` and let the
-odds work, owner ruling 2026-09-25).
+### Cut-out flip-books: what `flyer_cutout.py` can get wrong
+
+A cut-out keeps one master frame as a plate and swings wing layers over it. Its
+body is still by construction, so the body gates pass it whatever the plate
+contains. These four faults all passed those gates, and the owner saw each one.
+
+**Run `flyer_eye_checks.py parts CONFIG --src DIR --out PNG` before building and look
+at it.** It draws the plate alone and each wing layer alone. The plate must be a
+wingless body with its own natural outline, and each wing layer must hold wing and
+nothing else. Faults 1 and 3 are obvious on that sheet and on no check that exists.
+
+1. **Two wings at once: a wing baked into the plate.** Everything outside the wing
+   polygon stays on screen in every frame. A master drawn with a folded wing along
+   the flank and a raised wing as well puts the folded wing in the plate, so it
+   stays while the moving wing flaps. So pick the master from what its flank shows,
+   not only from where its wing is. A clean source has a thin torso behind the wing
+   root and no wing feathers on the flank. Check by measuring the torso at a column
+   behind the root against the thinnest source frame: FireHawk's plate was 47 px
+   thick at x=80, against 32 px on the clean frame. The cut-out pass did not draw
+   this wing, but it made one bad frame permanent.
+2. **Static-like noise when the wing points at the camera: a squash through
+   edge-on.** A side-view pose with `sy` near zero projects the wing edge-on, and
+   `turn()` samples rows without averaging them. At `sy` -0.1, each output row covers
+   ten source rows and reads only a few, so the outlines break into specks and the
+   pattern changes every frame. An area filter removes the specks and leaves a smear, so filtering is not
+   the fix. Keep every side-view pose at |`sy`| 0.5 or above (SQUASH row), and for
+   mid-stroke use a drawn pose: a wing seen edge-on or folded along the body.
+3. **Flesh ripping away: a wing polygon that crosses the body.** The polygon takes
+   whatever is inside it. An inner edge running through body texture leaves the plate
+   with a straight sliced side and carries a strip of body away with the lifted wing.
+   Route the polygon along the wing's drawn outline. Where the wing and body differ
+   in colour, count body-coloured pixels in the layer: the Porg's south wing held 514
+   belly-white pixels of 3478, and pale moved pixels went from 81 at rest to 738 at
+   full lift. A static sprite has no body drawn under its folded wing, so a large lift
+   uncovers a hole: use a small lift or a drawn wing.
+4. **A wing that does not flap, with a sliver of it elsewhere in the quadrant: a
+   mapping error, not art.** Some polygon or mask does not cover the wing's whole
+   sweep, so the pixels outside it behave differently. Fix the mask and do not redraw.
+
+**A facing with part of its art missing** shows as an empty quadrant. The eye finds
+it at once in motion, because one side of a symmetric bird is doing nothing. Motion
+gates add both wings together and pass it. Compare the two sides instead (SIDES row):
+pixels moved left of the axis against right of it read 0.05 on a frozen or erased
+wing, and 0.94 to 1.00 on every other north and south in the truth set.
+
+### Beat timing
+
+**The engine holds the last frame for two steps** (`durationTicks` is
+`(frames + 1) * ticksPerFrame`, last key at `(frames - 1) * ticksPerFrame`), so the
+last frame is the pose the eye gets longest. **Put a stroke extreme last.** Two sets
+of identical frames differing only in which came last: the owner said the one holding
+the full raise appeared "to beat more and that's better", while the other held a pose
+part way through the stroke. Both ran 12 ticks a cycle, 5 beats a second, so the beat
+count did not change. HOLD reports this as advice: it rests on that one comparison,
+and the Chicken holds mid-stroke.
+
+### Checking a flip-book before anyone watches it
+
+**Audit:** `flyer_eye_checks.py audit DIR --prefix P --n N --head FACING=x0,y0,x1,y1
+[--ref K] [--config JSON]`. Rows: FRAMES, HEAD (head held on the skull mass; a head box
+is placed by a person, no box is UNMEASURED), SIDES, SQUASH, STATIC, HOLD. Its rows are
+fitted on `references/flyer_truth_set.md`, the eight birds he labelled, and unproven on a
+fresh batch, so green is a lead. Score any new flyer check against that table.
+
+**When a control he passed goes red, the check is at fault.** The Chicken reads
+OFFENDER at `flier_frame_registration` (17 px, wing mass read as body), red at
+`flyer_cutout check`, and BROKE at stabilize. A set started one frame later reads red at
+stabilize and `--lines`, because the tool's master index now points at another frame.
+Do not redraw art to satisfy those readings; fix or set aside the check.
+
+**A pass from stills is not evidence about motion.** The judge passed the double wing,
+the squash noise and the Porg rip, and the Porg had been accepted from its frames before
+he saw it move. Show a judge the `parts` sheet and every frame full size, and count what
+it catches, never what it passes.
+
+**Every flyer review page gets a frame-step control and a slow speed**, beside the true
+game rate, with full-size frames and a true-scale view next to a vanilla human. At 5 beats
+a second a fault goes by too fast to diagnose: he could only call it noise. Honour the
+double-held last frame in the playback, or the page does not show what ships.
+
+**Also verify** that the cycle alternates pose (not a static image, per the worked-example
+lie above), that all three facings resolve (a missing `_north_3` silently drops to the
+bare-path fallback — see "How sprite checks lie"), and that the grounded graphic returns
+cleanly on landing. A screenshot of the animal standing still proves nothing about whether
+it flies. Do not live-test flight or capture it without the owner present (owner: "For the
+third time, do not do live testing of flyers without a human present. It doesn't work." and
+"Don't try to capture images of flight. It doesn't work."): verify by a deterministic state
+read of `Pawn_FlightTracker`, and leave the look to a joint session. In that joint session,
+spawn a batch, not one (see `rimworld-debug-testing`'s "single spawned pawn is not a sample"
+— for a flier specifically, `flightStartChanceOnJobStart` means a lone pawn is unlikely to
+fly at all in any given observation window; spawn ~20 faction-`none` and let the odds work,
+owner ruling 2026-09-25).
