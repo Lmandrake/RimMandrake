@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RM_Vozzik_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vozzik",
+  "prompt": "A creature sprite for RimWorld: the vozzik. A massive, barely-moving slug that grazes across the open dayside at a fraction of walking pace. Wherever it has gone, it has been going for a very long time; wherever it stops, it is likely to still be there years later. Visible features: an enormous slug body, far beyond any Earth slug; a broad rounded mantle dome; a wide grazing foot skirt; weathered, sun-baked brown and ochre hide; a low neck carrying the head and eye stalks close to the ground. In the rear view, seen from behind, the creature shows the same massive body as the front view: the broad rounded mantle dome and the wide foot skirt along its base are as wide and as tall as in the front view and fill the same share of the frame. The head and neck stay low and forward, hidden behind the mantle, and only the tips of the eye stalks show just beyond the top of the hump. In the front view, eyes toward the viewer, and in the side view, the neck slopes down below the top of the mantle. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, with a clean dark outline. The cut-out has a clean transparent edge, and the antialiased edge pixels carry the body's own brown and ochre colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, ALPHA_HALO, F_SIZE_JUMP, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+ },
+ {
+  "id": "arteval_RM_Bladderboil_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bladderboil",
+  "prompt": "A creature sprite for RimWorld: the bladderboil in its RESTING state, drawn so that every facing (front view with the mouths toward the viewer, rear view seen from behind, and side view) shows the same soft collapsed sac. A leathery golden sac the size of a head, drifted into a quiet margin pool and sighed out through its crater-mouths. It is a limp, empty-looking bag of loose golden leathery skin that has caved in on itself: the crown is low, rounded and uneven, slumping off-centre, with a hollow dip where the skin has buckled inward. Broad inward buckles and overlapping slack folds run across the whole surface, and one heavy overhanging fold of skin drapes over the rim like the edge of a deflated bladder. The lower edge is irregular and soft, with the skin pooling in loose, rounded lobes, giving a half-sunk, resting silhouette that sits low and wide, wider than it is tall. The body holds no firm shape, and it has fins-free, tail-free, scale-free, limb-free smooth leathery skin. Two or three crater-like mouths are visible on the slumped skin at different places, each puckered shut into a small ringed rim with fine radiating wrinkles. The skin is warm golden leather with darker amber creases and a soft highlight on the upper folds. It reads as a harmless, sagging, collapsed hollow bag. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of golden brown. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: LUMP, LUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil"
+ },
+ {
+  "id": "arteval_RM_Iliss_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Iliss",
+  "prompt": "A creature sprite for RimWorld: the iliss. A wire-thin eel the length of a forearm, far thinner than an Earth eel, with matte black skin. Its spine is made of conductive mineral: a continuous row of glinting blue-white crystalline vertebrae runs the full length of the back, each one a distinct angular faceted mineral block with hard visible facet edges and its own dark outline, reading as stone or metal against the smooth matte black skin beside it. It is the same animal in every facing: a thin matte black body with the faceted blue-white mineral ridge along its back, at the same body thickness and the same visual size, filling about half the canvas in width and height. Side view: the full length of the body is shown in a gentle S, the whole row of mineral vertebrae along the back, and the head in true profile with a single small dull eye on the visible side of the head and the sharp biting mouth with small teeth. Front view, eyes toward the viewer: the head is turned toward the camera and drawn large, with two small pale eyes and an open jaw showing small sharp teeth all clearly readable, the faceted mineral ridge rising along the top of the head, and the long thin black body looping back behind the head in a foreshortened S-curve that fills about half the canvas in width and height, so it reads clearly as a long thin eel. Rear view, seen from behind: the long thin black body is drawn in a looping, foreshortened S-curve filling about half the canvas, the tail tapers away with the faceted mineral ridge running down its centre, the black body clearly visible around it, and the eyes hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SOUTH_NOT_FRONT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.55,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+ },
+ {
+  "id": "arteval_RM_Niim_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Niim",
+  "prompt": "A creature sprite for RimWorld: the niim, the lit shoal of the light columns. A shoal of exactly six hand-long alien light-swimmers schooling close together, drawn as one centred group with every body fully visible and nothing cut off: two larger swimmers in the centre and four smaller swimmers around them in a loose ring, the same six in the same positions and sizes in every facing, turned with the camera. Every swimmer is the same design: a pale blue-white body, slim and tapered, a moderate body depth, a smooth wedge-shaped head with a small pointed snout and no gill cover, a single soft ribbon-like tail veil, and two slender trailing filament-fins in place of ordinary fins. Along each flank runs one dotted line of cold light, small sharp bright white points set into the body. Each swimmer has a thin, clean, continuous outline in a darker saturated blue around the body, tail veil and filaments; the translucent veil and filaments sit inside a crisp, hard-edged outlined silhouette. Side view: the slim swimmers in profile, snouts pointing the same way, the dotted flank lines clearly lit, at the game's oblique camera angle. Front view, eyes toward the viewer: the true head-on view of the side-view swimmers, each a small slim oval face with the same body depth and tapered snout as the profile, one dotted light line showing as a short row of dots at either side of the body, the ribbon veil and filaments trailing out behind. Rear view, seen from behind: each swimmer foreshortened at the game's oblique camera angle, the ribbon tail veil nearest the viewer and largest, the body receding upward behind it with the same slim depth as the side view, the head end hidden behind the body, the flank dot-lines visible as short rows at the edges of each body. The palette stays blue-white with cold-light dots and a darker blue outline throughout. Realistic painterly vanilla RimWorld sprite style. Fully transparent background: every pixel outside the fish outlines is empty, with no glow, haze, bloom, ground, water, shadow, text or border around the shoal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_TOPDOWN, F_INCONSISTENT, ALPHA_HALO, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Niim/RM_Niim"
+ }
+]

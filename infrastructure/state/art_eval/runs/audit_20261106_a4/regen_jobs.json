@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RM_Ssurr_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "A creature sprite for RimWorld: the ssurr, a hound-sized alien reptile with one enormous half-circle crest-fan. The fan is thin skin stretched over fine radiating rays and flushes with colour toward its rim; its edge carries fine comb-like tines (the dew-comb), so the rim is toothed and bristle-fringed. Closed, it is a straight blade; open, it is a wheel. Even-tempered, curious, tamable. Body: slim, long-limbed, hound-proportioned and lean. A long flat wedge-shaped head with a narrow snout, a heavy bony brow shelf and two forward-set pale eyes. Smooth skin of finely ridged, overlapping scale rows with a faint iridescent sheen. Long digitigrade legs with elongated three-toed feet, and a long whip-thin tail. The back is bare and smooth, and the fan is the only structure rising from it. The fan stands upright across the nape as one transverse half-circle wheel, in a plane at right angles to the spine, rising far above and beyond the head. It has one fixed orientation, one fixed size and one fixed colour flush in every view, and every view uses the same body scale and the same leg length. Side view (east): the fan is a tall, thin, edge-on blade rising from behind the head, its toothed rim a fine curved line, the slim body in profile beneath it. Front view (south, eyes toward the viewer): the fan is a full wheel rising behind and above the head, wider than the shoulders, with the same slim body and narrow snout seen head-on. Rear view (north, seen from behind): the same enormous fan, with the same width (wider than the shoulders) and the same height as in the front view, shows its back face with the same fine rays and toothed rim, filling the upper body; below it are the haunches, hocks with the same leg length as in the front view, and the whip-thin tail; the head is hidden behind the fan and the eyes are out of sight. The fan and body together fit the canvas with nothing cut off. The fan's rim is a crisp, tight, dark-outlined edge, and the pixels immediately outside every outline are fully transparent: a clean cut-out silhouette with only a thin antialiased edge, the area above and beside the fan completely clear. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, a single solid opaque painted figure, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, ALPHA_HALO, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a4",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+ },
+ {
+  "id": "arteval_RM_Aveluthia_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Aveluthia_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view) and consistent with the accepted front view: same anatomy, same proportions, same charcoal-black colours, seen from behind. A creature sprite for RimWorld: the aveluthia. A tall, ponderous pack beast hung in thick wrinkled folds of black flesh, on four pillar legs with broad splayed toes for loose obsidian scree. Rear view, seen from behind: the back, the broad rump and haunches, and the tail end, with the head carried low and forward beyond the shoulders so its eyes are hidden from the viewer. The body is as massive from behind as from the front: the folded shoulders and haunches span the full breadth of the front view's shoulders, the two rear pillar legs are thick and heavy, and the broad splayed toes show at the feet. The body stands exactly as tall on the canvas as in the accepted side view: from the soles of the feet to the top of the back it spans the same height in pixels as the side view, and it is no taller and no wider than the side view's body. The foreground feet rest on the same ground-contact baseline as the accepted side view, the same distance above the bottom edge of the canvas, with the top of the back at the same height as the side view's top and the body centred horizontally, so the animal keeps its place when it turns. Thick wrinkled folds of black flesh hang from the whole body in sharply articulated painterly creases, with high contrast between deep fold shadows and lit ridges, in the charcoal palette of the accepted side view. A faint cool blue-violet rim edge runs around the whole silhouette, over a clean dark outline. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a4",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+ },
+ {
+  "id": "arteval_RM_Tarruq__dessicated_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tarruq__dessicated_n",
+  "prompt": "Draw the SAME dead specimen as the attached reference image (its accepted east view): same anatomy, same proportions, same colours and markings, same limb thickness, same foot-pad size, same overall body mass, same pose, seen from behind. A catch item sprite for RimWorld: the dessicated carcass of a tarruq, a lean, long-limbed climber of the Cracked Lands crack network. The carcass lies flat on the ground, limp, with dull closed eyes, its desiccated body collapsed and flattened. The rear view, seen from behind: the tail and haunches are nearest the viewer, the spine runs away from the viewer, and the back of the crested skull is farthest away with the eyes hidden. The limbs are folded tightly under and beside the collapsed body exactly as in the east view, with the same substantial, thick bone segments, so the body keeps the compact footprint of the east carcass. The large grip-padded feet sit at the ends of the folded limbs at the same size as in the reference. The long, slender, thin tail loops in a coil on the ground beside the haunches, the same length and thickness as in the east view. The open ribcage shows as prominent separated ribs along both flanks, as in the east view. The deep resonating throat-chamber is hidden under the head, which is turned away from the viewer. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE carcass, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a4",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+ }
+]

@@ -1,0 +1,71 @@
+[
+ {
+  "id": "arteval_RSW_TunnelSnake_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_TunnelSnake",
+  "prompt": "A creature sprite for RimWorld: the yanker, an invented alien corridor predator. A long, low ambush hunter built for a tunnel: it lies dormant, coiled in a wide, low, symmetric arch of three stacked loops about 320 px across, wedged into one narrow gap, and it wakes only when prey comes within touching distance. Anatomy: a heavy blunt wedge of a head with a wide hinged mouth ringed by thick pouchy lip-flaps and short hooked grasping palps at the jaw corners, small recessed eyes under bony brow ridges. The long limbless body is built from broad overlapping armoured plates like a segmented carapace, dark mottled leathery hide with pale rubbery seams and a velvety sheen, and a ridge of short gripping spurs along each flank that brace against corridor walls. The tail ends in a thick blunt anchoring paddle with a cluster of hooked grip-spurs. Colour: deep olive-brown hide, pale rubbery seams, darker plates. The coil has identical width, thickness and bulk in every facing. Front view: eyes toward the viewer, head resting on top of the coil. Side view: profile of the head resting on the coil, spur ridge visible. Rear view, seen from behind: the plated back, spur ridge and anchoring tail paddle face the viewer at the same wide arch and bulk as the front view, head hidden behind the coil. Realistic painterly vanilla RimWorld sprite style, clean dark outline with soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, F_INCONSISTENT, STYLE_EARTHLY, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake"
+ },
+ {
+  "id": "arteval_RSW_WompRat_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_WompRat",
+  "prompt": "A creature sprite for RimWorld: the womp rat. Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Visible features it must show: the canon Tatooine womp rat (see canon entry womprat); a large, heavy-bodied rodent with a thick broad torso; a predator-scavenger's teeth. Body scale is identical in every facing: the front view's broad shoulders and chest, the side view's substantial rump, and the rear view's wide hunched haunches, thick rump and substantial dark paws planted wide all carry equal bulk, fill the same width at the same height, and show ears and paws of the same size. The rear view is seen from behind, showing back, tail and haunches, with eyes hidden; its haunches are as wide as the front view's shoulders and chest, and its tail curls in close against the rump and one hip, resting within the body's silhouette so the body sets the sprite's height. The creature is drawn large in the frame with a margin of empty canvas on every side, so the whole body and the curled tail sit inside the canvas at the same scale as the other facings. Keep the palette, fur colouring and body plan identical to the previous render. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/WompRat/WompRat"
+ },
+ {
+  "id": "arteval_RM_Qorrax_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Qorrax",
+  "prompt": "A creature sprite for RimWorld: the qorrax. A deer-sized, squid-descended predator that runs on its tentacles. Its beak delivers a venomous bite, and an internal shell protects its vital organs. Visible features it must show: a deer-sized squid-descended predator standing and running upright on land on eight tentacles used as legs; a hard, hooked, venomous beak at the front of the head, eyes toward the viewer in the front view; a mantle body carried above the running tentacles. The mantle is smooth, continuous, muscular skin with a crisp, glossy, wet-looking surface; the internal shell shows only as faint raised ridges and subtle contours beneath the unbroken skin, so the shell reads as internal. The same eight tentacles and the same crisp wet skin finish appear in every facing; the rear view, seen from behind, shows the back of the mantle and the eight tentacles, eyes hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DESC_MISS, F_INCONSISTENT, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
+ }
+]

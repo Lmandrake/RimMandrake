@@ -1,0 +1,94 @@
+[
+ {
+  "id": "arteval_RM_Noolim_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Noolim",
+  "prompt": "A creature sprite for RimWorld: the noolim, a darting shoal of dull silver slivers from the dark floor of the Twilight, seen as a shoal and never as one individual. The shoal is an irregular, swirling, open cloud of about twenty separate slivers, with three or four strays drifting just outside the main spread. Every sliver is the same shape: a long, thin, sharply pointed shard of dull silver with a flat narrow cross-section, a crisp painted edge, a thin dark contour line of its own and a dull metallic glint along one edge. Shading is restrained and painterly, in flat-to-two-tone strokes. The slivers have no fin, no tail and no head. They sit at many different angles and depths, streaming and turning together as if darting through water, with clear gaps of transparent background between neighbours. The cloud keeps the same compact oval envelope and the same sliver shape in every facing. Front view (south): seen head-on, the same thin shards point their sharp tips toward the viewer and appear foreshortened as narrow pointed silver flecks, scattered at varied angles, with the same thinness, dark contour and metallic glint as the side view. Rear view (north): seen from behind, the same thin shards recede away from the viewer with their blunt trailing ends toward the viewer, foreshortened as narrow pointed silver flecks at varied angles, in the same oval envelope and at the same width as the front view, with the same thin shape, dark contour and finish. Side views (east and west): the thin shards lie side-on as long slender silver slivers at varied angles in a loose layer with open space showing through the centre, all swept the same way along the direction of travel. Colouring is dull, unlit silver with a deeper shade of the local colour along the edges. Realistic painterly vanilla RimWorld sprite style with clean dark outlines. Exactly ONE shoal, centred, the whole cloud visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, DESC_MISS, STYLE_OFF, F_INCONSISTENT, DESC_MISS, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+ },
+ {
+  "id": "arteval_RM_IllothLarvae__Smogapillar_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IllothLarvae__Smogapillar",
+  "prompt": "A creature sprite for RimWorld: the illoth larva, the larval form of the illoth, an alien segmented larva that hosts a fungus. To deter predators it wears the toxic colours of the fungus it hosts: the whole body is painted in the vivid toxic warning colours of its hosted fungus, blotched orange over olive. The body is one broad rounded dome of plated segment bands with a ridged crest along the spine. Raised fungal shelves and domed fungus caps in orange and olive rise from the back segments like bracket fungus, larger toward the middle of the back. The left and right sides are smooth and rounded, with the same girth in every view. The head is a smooth, flattened, helmet-like plate with a small vertical slit mouth framed by a few short frond-like feelers, and one round glossy eye with a pale ring on each side of the face. The rear end is a small, smooth, closed olive tail segment, the same in every view. Front view: the head with both eyes toward the viewer, full body width. Side view: the head to one side with the near eye clearly visible, the fungal shelves along the back, the closed olive tail segment at the other end. Rear view, seen from behind: the orange-blotched back segments and fungal shelves taper to the small closed olive tail segment nearest the viewer, as wide as the front view at the same body height with the same lateral contours. The head is hidden on the far side of the body. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_NORTH_FACE, F_INCONSISTENT, STYLE_EARTHLY, F_NORTH_FACE, F_INCONSISTENT, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+ },
+ {
+  "id": "arteval_RUT_SealedSleeper__RUT_SealedSleeper_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_SealedSleeper__RUT_SealedSleeper",
+  "prompt": "A creature sprite for RimWorld: the tammuq, a squat burrower that spends almost its whole life motionless under cracked clay, sealed in a wax-lined burrow. Its body is an irregular, slumped, lumpy clod of fused cracked-clay armour, low, wider than long, hunched and asymmetric. The armour grows out of the trunk itself as uneven overlapping crust slabs separated by seams of pale wax, like a dried clay pan, and the outline is a rough, lumpy mass. Four short, heavy shovel-limbs with broad flat digging blades are tucked under the trunk, with only the blade tips showing at the edge of the mass. They are fused clay-armoured limbs, thick and blunt. The head is a broad, sealed digging snout, a wedge-shaped plough of fused armour that merges into the front of the trunk with no neck; two tiny dull eye-slits sit in the upper edge of the plough, and the snout is the lowest, narrowest part of the silhouette. The rear is a heavy blunt haunch of stacked slabs. Pale cream wax is a glossy crust that seeps from the seams between the slabs and pools in the hollows and at the limb joints, like candle drippings. The body has one consistent breadth, mass, height and stance width throughout. The palette is clay browns and ochres with pale cream wax. Realistic painterly vanilla RimWorld sprite style, with soft painted edges in a deeper shade of the local colour and a clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+ },
+ {
+  "id": "arteval_RM_Vennick_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vennick",
+  "prompt": "A creature sprite for RimWorld: the vennick, an alien silk-runner. Fist-sized, with a sleek, low, elongated body, much longer than tall. A streamlined wedge-shaped head is fused into the body line, with a pair of small dark eyes on the sides of the head, a short pair of forward-pointing silk-feeler palps level with the head, and below them one pair of short fangs that curve downward from the front of the head. The back is covered by one smooth, glossy bone-white dorsal plate like polished shell, running from head to rump and catching the gloom. The flanks and underside are smooth pale grey with fine painted shading. The abdomen tapers to a visible pair of spinnerets at the tail end. Exactly six long, thin, fast legs, three on each side of the body, set low along the flanks and sweeping backward in a running stride, each ending in a small hooked claw that grips a silk line. The same six legs and the same downward-curving fangs appear on every facing. Front view: eyes toward the viewer, palps forward, fangs curving downward, the six legs splayed three per side. Rear view, seen from behind: the dorsal plate, tapering abdomen and spinnerets, eyes hidden, three legs per side. Side view: the full long low profile showing the three legs of the near flank as three distinct, evenly spaced legs with three claw tips on the ground line, the far-side legs tucked behind them and hidden by the body, and the fangs hanging downward from the snout tip, curving down and slightly back exactly as on the front view, with the palps pointing straight forward above them. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.35,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+ }
+]

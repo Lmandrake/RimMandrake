@@ -1,0 +1,91 @@
+[
+ {
+  "id": "arteval_RM_Candler_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Candler_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same outline weight, same size on the canvas, now seen in the rear view, from behind. A creature sprite for RimWorld: the candler. A slow slab of pale blue, legless, moving on a single broad foot, with a swollen dorsal sac of the brightest yellow in the Deep running down its spine. It stores its energy as wax. It can be milked for that cold wax, which burns like chemfuel and needs no refinery - and which will not stay inert anywhere warm. The rear view shows the rear of the exact body in the reference: a low, flat pale blue slab with the body height of the reference. Its left-to-right width equals the width of the front view: a compact lumpy skirt of body spreading to both sides and ending at the same left and right extents as the front view, with the broad foot along the base tucked in under the skirt and no wider than it. A rounded swollen yellow dorsal sac sits over the middle of the slab, seen end-on from behind, in the same pale-to-bright yellow range as the reference: soft butter yellow with a small brighter core. The eye-stalks are hidden behind the sac or barely visible at the far end, lower than the top of the sac. A crisp, thin dark outer contour in a deeper shade of the local colour wraps the whole silhouette, with exactly the same line weight and sharp painterly edge definition as the reference, every edge clean and well defined. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: SIBLING_MISMATCH, F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.8,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler"
+ },
+ {
+  "id": "arteval_RSW_Eopie_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Eopie_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same loaded pack gear, and the same body height and size on the canvas as that side view, now seen in REAR view, from behind. A creature sprite for RimWorld: the eopie, a loaded pack animal. A pale, leathery desert herbivore from Tatooine, with thin legs and a long, drooping snout. Eopies carry heavy loads and pick their way over rocky ground on broad, splayed feet. They are easily domesticated, though stubborn. Visible features it must show: pale leathery hide; thin legs with broad splayed feet. In this rear view the animal shows its rump, tail and haunches, with the thin hind legs and broad splayed rear feet toward the viewer. The head is turned away, with the long drooping snout hidden or only slightly visible past the neck. Scale: the animal stands at the same body height as in the side view, with the rump, pack stack and rear feet at the side view's apparent size, with only natural rear-view foreshortening. It carries the same load as on the side view: a tall stack of bulky brown packs and a rolled bedroll rises above the back to the same height as on the side view, giving the tall pack hump in the silhouette. A bulky brown pannier hangs over each flank. Harness straps and bridle cords follow the rear perspective across the back, flanks and haunches. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body and load visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.25,
+  "module": "walker",
+  "target_texpath": "swanimals/Eopie/Eopie"
+ },
+ {
+  "id": "arteval_RSW_Gorg__GorgV_N_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gorg__GorgV_N_n",
+  "prompt": "A creature sprite for RimWorld: the gorg, a small amphibian known as a chuba in Huttese and used as food by many species. Rear view, seen from behind. The body is a low, soft, flattened amphibious-lizard form lying close to the ground, wide and slim rather than round. The trunk is a flat, gently tapering plate of muted purple skin with a subtle teal sheen and sparse darker spots, and the rear end is a soft taper with no tail. All four limbs splay out sideways from the trunk. The long hind limbs bend outward and back, and each ends in a very large, broad webbed foot with small claws, spread wide at the lower corners of the sprite. The shorter front limbs splay out past the flanks, each with a webbed, clawed foot visible at the upper corners. The back of the head is a low, flat, muted purple shape seen from behind, continuing the same skin, with the eyes hidden and the mouth out of sight. A paler underside shows only as a thin edge along the flanks. The skin colour, sheen and spot density are the same across the whole body. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body and all four feet visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a5",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.5,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Gorg/Gorg"
+ },
+ {
+  "id": "arteval_RM_Mirrik__dessicated_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Mirrik__dessicated_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from behind (rear view, the back and abdomen toward the viewer, head and eyes hidden). A creature sprite for RimWorld: the mirrik, a thumb-sized insect with water-combing mesh wings that mist-dance over the pools at dusk, with a slim body. The rear view shows the same two mesh wings as the accepted east view, rising in a V above the abdomen. Each wing is a broad lace panel perforated with large oval openings, with swept tan ribs and hooked panel contours, foreshortened as seen from behind. The colour matches the accepted east view exactly: deep warm browns fill the recesses and the shadowed openings between the ribs, the ribs and wing membrane are tan, and the torn outer edges of both wings are stained blue-grey, as in the east view. Value contrast is strong, from dark brown shadow to light tan highlight. The slim body carries the same deep browns and tan as the east view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261106_a5",
+  "drawsize": 0.35,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/RM_Mirrik/RM_Mirrik"
+ }
+]
