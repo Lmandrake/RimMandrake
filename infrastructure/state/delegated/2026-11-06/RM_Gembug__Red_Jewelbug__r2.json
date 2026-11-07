@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 50.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.40257
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 29.8
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gembug__Red_Jewelbug",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_SOUTH_NOT_FRONT', 'LUMP', 'F_INCONSISTENT', 'STYLE_OFF']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7818a1e9040a51460d08ea7962fc684bde2b2b07076cc3c093c703749e21b18e",
+  "east.png": "4ed27bfaec4d9e062c420b5a633c42e5379cac22d0fe23d3aa1a1202245f49e4",
+  "north.png": "543fa1742408c9363d4125b6e5f016f70322104a46f13fe2e6ffbb41ab739344",
+  "scale.png": "313e64af9635aa4f0873f2be8c93fc2bcc29eb360054c19d77c040c2f34e0f68",
+  "facings.png": "9fe5693ebc9c9823501c8074c15d53ea64f0f5f9dd25c429f917ee3713b1cb56"
+ }
+}

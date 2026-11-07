@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_Gembug__Yellow_Jewelbug_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gembug__Yellow_Jewelbug",
+  "prompt": "A creature sprite for RimWorld: the gembug, a plated crawler of the lanternstone voids that runs on cold waxy hydrocarbon oil rather than blood. Its body is a squat, irregular wedge of crystalline rock, broader than it is tall, with a jagged, ragged lower edge like a fractured piece of cave wall. The shell grows in uneven crystal facets: hard, opaque, planar crystal faces of different sizes and angles, separated by sharp straight fracture breaks. Each face is one flat plane with its own value, crisp pale-yellow highlights on the lit faces and deep amber-brown shadow on the shaded faces, in the waxy yellow-amber colour of lanternstone, like cut and cleaved mineral rather than glossy insect chitin or smooth wing-cases. The whole animal is one continuous fractured-stone mass that reads first as a broken-off chip of cave wall, and only on a second look as a living thing. Its short, stubby legs are tucked under the shell's ragged edge, with only the tips of a few feet showing. Its tiny feelers lie flush against the shell, almost hidden among the facets. The head is recessed into the front of the mass beneath uneven mineral plates, with two small dull eyes set between facets and no separate rounded head or neck. Side view in profile, the eyes toward the facing direction. Realistic painterly vanilla RimWorld sprite style with a clean, thin, continuous dark ochre-brown outline around the entire silhouette, crisp and unbroken, a deeper shade of the amber shell, legible at normal gameplay scale. The outer edge is the dark contour, and pale gold and cream appear only as highlights inside the shell. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. reference: none",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+ },
+ {
+  "id": "arteval_RM_Dakkra_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dakkra",
+  "prompt": "A creature sprite for RimWorld: the dakkra, an alien low ambusher that waits in shade, then makes a short, fast rush at exposed prey. Reference: none; build the body from this description. Body plan, identical in every view: a compact, deep-chested, low-slung wedge torso held close to the ground, with an arched, plated back and heavy, full haunches; the hips are as wide as the shoulders. Four short limbs with unusual joints, each with an extra bend so elbows and knees fold in opposite directions to a lizard's sprawl, are held tucked under the body and end in narrow pads. The head is short and broad, a heat-venting head with vented plates and narrow jaws and forward-set eyes, sitting on a short thick neck. The dorsal fins are upright longitudinal plates standing in the body's own plane, forming a lengthwise row along the spine from the shoulders to the tail root; they spread in shade and fold flat when it runs. The tail, identical in every view, rises from the tail root and curls upward, carried well above the ground at mid-height, and ends in one smaller fan of fin rays, a distinct cluster of spreading spike tips clearly separate from the dorsal row. Side view: the compact wedge torso in profile, the lengthwise row of upright dorsal plates along the spine, the upward-curving tail ending in its small upright fan at mid-height at the rear, the short broad vented head at the front. Front view, eyes toward the viewer: the short broad head in front, and the dorsal fins seen end-on as a narrow vertical ridge of stacked fin tips rising above the spine behind the head, no wider than the neck, overlapping into narrow edges along the receding spine. Rear view, seen from behind: the full-width haunches and flanks, the dorsal ridge as a narrow vertical stack of fin tips above the spine, and below it the same upward-curving tail held at the same mid-height as in the side view, ending in the small tail fan facing the viewer as a short, distinct fringe of fin-ray spike tips centred under the dorsal ridge, with the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261106_1836",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+ }
+]
