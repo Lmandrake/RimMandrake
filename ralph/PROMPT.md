@@ -26,6 +26,13 @@ He also said Luminous Pigments will later make graffiti luminous, shimmering, mo
 
 Prove the social layer live: `readers_feel_the_wall`, then answers finishing with fights that have causes, then the mod standing alone, from the tests section of that review, are the first to try. They're proposals, so improve them.
 
+He then asked how all this meets the many kinds of people, and he chose how fights work:
+
+- **Personality:** the table is on main, not on this branch, at `/home/mandrake/rm/bench/design/RimMandrake/graffiti_personality_pass_2026-11-07.md` (mirror: `D:\Luke\dev\RimMandrake\design\RimMandrake\graffiti_personality_pass_2026-11-07.md`). Read it. Its BUILD NOW rows are the job, and its numbers are proposals you may tune in play. He wants psychopaths not to care, sensitive people to feel more both ways, and clean freaks to be able to break into compulsive cleaning.
+- **Fights:** his words, "Scale it with temper". The fight chance on a confront scales with the confronter's temper, as that table sets out, not a flat 0.75.
+- **The north star:** he added the social bars, art skill and personality to it, so `DONE.md` gives a verdict on all of its lines, not only the first ten. They read as DRAFT until he re-validates. Build to them anyway.
+- **Aurebesh** isn't this loop's concern.
+
 ## What the owner just decided
 
 His words, 2026-11-07, on the contrast sheet and on what this mod is for:
