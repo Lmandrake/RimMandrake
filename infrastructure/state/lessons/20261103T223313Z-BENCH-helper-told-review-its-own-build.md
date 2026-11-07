@@ -1,1 +1,0 @@
-A helper told to review its own build keeps going: the running-page rebuild reached review round 7 and the mockup helper kept rendering until ordered to stop (2026-11-03, owner: 'The subagents do not appear to be finishing'). Cap rounds in the brief.

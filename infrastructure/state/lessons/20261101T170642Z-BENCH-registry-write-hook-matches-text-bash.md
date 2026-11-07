@@ -1,1 +1,0 @@
-The registry-write hook matches text in the Bash command, so a heredoc patch that only mentions the modcheck status file by name is refused even when it writes elsewhere; put the patch in a scratch file.

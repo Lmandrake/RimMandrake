@@ -1,1 +1,0 @@
-A subagent's unverified fact reached the owner wrong (Royalty's Empire as the wrong faction) when a memory file had the right answer: grep memory before relaying a fact about factions, biomes or rulings

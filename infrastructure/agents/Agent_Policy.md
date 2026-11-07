@@ -106,11 +106,16 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
 - **Cutting claims from a doc:** the two-blind-arms method in `efficient-subagents`, with `src/RimMandrake/Utils/doc_claims.py` numbering the claims.
 - **Cheap read-only fan-out:** `src/RimMandrake/Utils/nemotron_fanout.py` and `nemotron_ceiling.py`; the measured pool, its ranking and the abstention clause are in
   `research/FANOUT_WORKER_EVALUATION.md`.
+- **One live-game lane at a time.** Several helper lanes that each need the running game starve one another (one lane waited 45 minutes and tested nothing): run at most one live-game lane, and batch the live checks. A bridge hold goes stale after 45 idle minutes and another window can then take the bridge, killing a helper's live session: keep the hold fresh with an event inside every 45 minutes during long helper runs.
+- **Split art redraws one agent per subject.** An art-regeneration agent works one picture at a time (eight redraws took ~20 min in one agent); launch them in parallel, one agent per subject.
+- **Briefs for helpers that edit a previously clean file say: 'mark-clean only after reading every line'.** Helpers tend to re-mark such a file clean after reading only their own hunks. The orchestrator checks each report for 'hunk' or 'diff only' wording and reopens the file with `python3 src/RimMandrake/Utils/code_review_status.py reopen`.
+- **`infrastructure/state/code_review/<SEAT>.jsonl` is one shared file per seat, and parallel helpers collide on it.** Helper A's mark-clean lines sit uncommitted beside helper B's, and the commit hook forces a pathspec commit, which takes the whole working-tree file, so neither can commit its own marks without sweeping the other's (staging a HEAD-plus-your-lines blob with `update-index` is refused too, because a pathspec-less commit is refused). Commit mark-clean lines in the same Bash turn as the mark, or let the last helper of the wave (or the parent) commit the shard once all are done. Open fix: one shard per helper, or a `code_review_status.py` verb that commits only the caller's tagged records.
+- **Grep memory before relaying a fact about factions, biomes or rulings to the owner.** A subagent's unverified fact reached the owner wrong (a DLC's empire named as the wrong faction) when a memory file held the right answer.
 
 ## Subagents — this is where the saving is
 
 🔴 **Every `Agent` call takes `model`. Pass it, every time**
-(`block_agent_without_model.py` refuses otherwise).
+(`block_agent_without_model.py` refuses otherwise; it also blocks named agent types such as `Explore` called without an explicit `model`, despite the hook text exempting named types).
 
 | Job | Model |
 |---|---|

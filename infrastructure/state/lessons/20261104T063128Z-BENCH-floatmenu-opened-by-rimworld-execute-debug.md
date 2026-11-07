@@ -1,1 +1,0 @@
-A FloatMenu opened by rimworld/execute_debug_action is gone before the next bridge call (get_context_menu_options sees nothing), so a debug action's picker cannot be read or clicked that way. Use jawa/debug_action_menu {path, pick|pickIndex}: it runs the action and reads/picks its menu in one main-thread slice (BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE).

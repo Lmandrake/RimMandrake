@@ -1,2 +1,0 @@
-A selftest that starts helper processes (sleep 600 with cwd in a fixture) and cleans them in a finally LEAKS them when killed by SIGTERM (timeout, a scope stop): Python's default SIGTERM does not run finally. The leaked child held the caller's stdout pipe open, so a '| tail' wait hung for 9+ minutes after the test died. Fix: signal.signal(SIGTERM, lambda *_: sys.exit(143)) at the top of main, and keep helper sleeps no longer than the test's own timeout (selftest_scratch_reap_tmp.py, 2026-11-03).
-home: NONE
