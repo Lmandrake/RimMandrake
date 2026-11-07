@@ -418,6 +418,8 @@ def attribute(brs, kinds, ctx, t0, m, player_log=None):
             s.append("largest scan-to-scan rise of Verse.Log's message count: %d at %s (%s)" % (
                 int(big[0]), _hm(big[1]), "an eviction between two scans" if big[0] >= QUEUE_MAX else
                 "under the queue size: no scan interval proves an eviction"))
+            if big[0] >= QUEUE_MAX:
+                s.append("which source wrote each rise: Utils/log_rise_census.py --session <id> --log <archived log> --record <tps dir>")
         else:
             s.append("no two context rows carry logMsgs: scan-to-scan eviction UNMEASURED")
         out["log.errors_lower_bound"] = s

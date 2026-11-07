@@ -1,0 +1,3 @@
+live-mods: MandrakePatches, lovelydovey.sex.witheuterpe, acutus.moodchainreaction
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --game
+live-proof A2: python3 src/RimMandrake/MandrakePatches/prove_log_spam_off_live.py

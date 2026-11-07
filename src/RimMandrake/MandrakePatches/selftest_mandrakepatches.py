@@ -516,6 +516,49 @@ def cut_drug_guard_check():
           lht.has_member(index, "RimWorld.DrugPolicy", "field", "noSuchFieldHere")[0] != "OK")
 
 
+
+# LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS: the third-party debug sinks LogSpamOff.cs binds by name.
+def log_spam_problems(src, mod_src):
+    out = []
+    for const, member in (('IntimacyType = "LoveyDoveySexWithEuterpe.SexUtilities"', "Intimacy's type"),
+                          ('IntimacySink = "HandNotesToEuterpe"', "Intimacy's log method"),
+                          ('MoodChainType = "MoodChainReaction.Hediff_MCRMoodChain"', "Mood Chain's type"),
+                          ('MoodChainSink = "DebugLog"', "Mood Chain's log method")):
+        if const not in src:
+            out.append("%s is not bound as %s" % (member, const))
+    if "Bind(harmony, IntimacyType, IntimacySink, nameof(Prefix_Intimacy))" not in src:
+        out.append("Intimacy's sink is not patched")
+    if "Bind(harmony, MoodChainType, MoodChainSink, nameof(Prefix_MoodChain))" not in src:
+        out.append("Mood Chain's sink is not patched")
+    if "if (!RM_PatchesSettings.quietThirdPartyLogSpam)\n                return true;" not in src:
+        out.append("the prefix ignores the toggle")
+    if "first line dropped from" not in src or "return false;\n        }\n    }" not in src:
+        out.append("the prefix does not skip the original or never reports its first drop")
+    if "harmony.Patch(target, prefix: new HarmonyMethod(typeof(LogSpamOff), prefix));" not in src:
+        out.append("no Harmony prefix")
+    if "public static bool quietThirdPartyLogSpam = true;" not in mod_src or 'Scribe_Values.Look(ref quietThirdPartyLogSpam, "quietThirdPartyLogSpam", true);' not in mod_src:
+        out.append("the setting is not default-on in both the field and the Scribe default")
+    if "ref RM_PatchesSettings.quietThirdPartyLogSpam" not in mod_src or "LogSpamOff.Status" not in mod_src:
+        out.append("no settings checkbox or status")
+    return out
+
+
+def log_spam_check():
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read().replace("\r\n", "\n")
+    src, mod_src = rd("Source", "LogSpamOff", "LogSpamOff.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs")
+    got = log_spam_problems(src, mod_src)
+    check("log spam off: shipped source", got == [], got)
+    breaks = [("Intimacy's method renamed", src.replace('"HandNotesToEuterpe"', '"HandNotes"'), mod_src),
+              ("Mood Chain's type renamed", src.replace('"MoodChainReaction.Hediff_MCRMoodChain"', '"MoodChainReaction.X"'), mod_src),
+              ("Mood Chain left out", src.replace("Bind(harmony, MoodChainType", "Bind(null, MoodChainType"), mod_src),
+              ("toggle ignored", src.replace("if (!RM_PatchesSettings.quietThirdPartyLogSpam)\n                return true;", ""), mod_src),
+              ("the original still runs", src.replace("return false;\n        }\n    }", "return true;\n        }\n    }"), mod_src),
+              ("defaults off", src, mod_src.replace("quietThirdPartyLogSpam = true;", "quietThirdPartyLogSpam = false;")),
+              ("checkbox removed", src, mod_src.replace("ref RM_PatchesSettings.quietThirdPartyLogSpam", "ref RM_PatchesSettings.caiFogForcedOff"))]
+    for name, a, b in breaks:
+        check("break: planted '%s' changed the text" % name, (a, b) != (src, mod_src))
+        check("break: log spam off %s is reported" % name, len(log_spam_problems(a, b)) >= 1)
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -526,6 +569,7 @@ def main():
     cai_fog_check()
     null_guard_check()
     cut_drug_guard_check()
+    log_spam_check()
     ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
     check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
     fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()

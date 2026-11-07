@@ -13,6 +13,8 @@ namespace RimMandrake.Patches
         public static bool nullThingClassGuard = true;
         // BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS: remove saved drug policy entries for a drug Cherry Picker cut.
         public static bool cutDrugPolicyGuard = true;
+        // LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS: drop the debug lines of Intimacy and Mood Chain Reaction.
+        public static bool quietThirdPartyLogSpam = true;
 
         public override void ExposeData()
         {
@@ -20,6 +22,7 @@ namespace RimMandrake.Patches
             Scribe_Values.Look(ref caiFogForcedOff, "caiFogForcedOff", true);
             Scribe_Values.Look(ref nullThingClassGuard, "nullThingClassGuard", true);
             Scribe_Values.Look(ref cutDrugPolicyGuard, "cutDrugPolicyGuard", true);
+            Scribe_Values.Look(ref quietThirdPartyLogSpam, "quietThirdPartyLogSpam", true);
         }
     }
 
@@ -58,6 +61,12 @@ namespace RimMandrake.Patches
                 + "entries leave the policy when a save loads, and each removal is named in the log. Off = vanilla "
                 + "behaviour. Takes effect at the next save load.");
             l.Label(CutDrugPolicyGuard.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Silence debug logging of Intimacy and Mood Chain Reaction", ref RM_PatchesSettings.quietThirdPartyLogSpam,
+                "Those two mods write debug lines about every pawn all the time. The lines fill the game's log until it "
+                + "stops recording, which hides real errors. While this is on, their debug lines are dropped and nothing "
+                + "else about either mod changes. Off = they log as they ship. Takes effect at once.");
+            l.Label(LogSpamOff.Status);
             l.End();
             if (RM_PatchesSettings.caiFogForcedOff && !before)
                 CaiFogOff.Force("settings toggle");
