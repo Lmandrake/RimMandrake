@@ -1,3 +1,5 @@
+**The bridge's test-tools grant lapsed at 14:46Z on 2026-11-07, and I need you to renew it.** `companion_profile.json` (`<SaveData>\JawaBench\`) was last written 2026-10-31 with a one-week expiry. Since it lapsed, `jawa/safe_advance` and the other test tools are refused, so the suite, staged scenes and fast clock steps cannot run. `companion_grant.json` says renewal "opens test-only tools on the owner's machine and no ruling makes it an agent's call", so I did not write the file. To continue, set a later `expiresUtc` in it, or tell me agents may renew it. Until then I only use what stays open: normal game speed, reads and screenshots.
+
 # Questions for the owner
 
 **Anima, polux and harbinger trees don't appear on Pyrelands maps.** The north star says no wild plant other than ember
