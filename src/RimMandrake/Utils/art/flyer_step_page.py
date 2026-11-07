@@ -10,8 +10,9 @@ Timing copies the engine: ticksPerFrame per frame, the last frame held double. E
 It is a viewing page with no picks: his answer goes back through the Conductor. It never serves itself and never writes
 src/. Usage:
   flyer_step_page.py --out DIR --title T [--intro TEXT]
-      --cand "NAME|DIR|PREFIX|FRAMES|TICKS|CELLS|what changed" ...
-CELLS is the drawn size in cells of the whole canvas (flyingAnimationDrawSize, times canvas/256 if a candidate's canvas
+      --cand "NAME|DIR|PREFIX|FRAMES|TICKS|CELLS|what changed[|north=x,y;east=x,y;south=x,y]" ...
+The optional last field puts each facing's crosshair on the head (eye or skull mass, in source pixels); without it the
+crosshair sits at the canvas centre. West's crosshair is east's, mirrored. CELLS is the drawn size in cells of the whole canvas (flyingAnimationDrawSize, times canvas/256 if a candidate's canvas
 grew). Exit 0 written, 2 bad input.
 """
 from __future__ import annotations
@@ -83,7 +84,13 @@ def build(out: Path, title: str, intro: str, cands: list[dict]) -> None:
                 files.append([f"{c['name']}/{f1}", f"{c['name']}/{f2}"])
             views[facing] = files
         ticks = [c["ticks"]] * (c["frames"] - 1) + [2 * c["ticks"]]
-        data.append(dict(name=c["name"], note=c["note"], ticks=ticks, views=views))
+        side = Image.open(src / f"{c['prefix']}1_east.png").width
+        cross = {f: [50.0, 50.0] for f in FACINGS + ("west",)}
+        for f, (x, y) in c.get("anchors", {}).items():
+            cross[f] = [round(100 * (x + 0.5) / side, 2), round(100 * (y + 0.5) / side, 2)]
+            if f == "east":
+                cross["west"] = [round(100 - cross["east"][0], 2), cross["east"][1]]
+        data.append(dict(name=c["name"], note=c["note"], ticks=ticks, views=views, cross=cross))
     page = TEMPLATE.replace("__TITLE__", html.escape(title)).replace("__INTRO__", html.escape(intro))
     page = page.replace("__DATA__", json.dumps(data))
     (out / "index.html").write_text(page)
@@ -100,7 +107,7 @@ figcaption{color:#ff6}.full{position:relative;display:inline-block}
 .hx{left:0;right:0;height:1px}.vx{top:0;bottom:0;width:1px}.state{font-family:monospace;color:#9cf}
 </style></head><body><h1>__TITLE__</h1><p class="note">__INTRO__</p>
 <p>Keys: space plays or pauses the candidate under the mouse, left and right arrows step a frame. Each candidate starts
-paused on frame 1. The crosshair is fixed on the canvas, so a head that moves shows against it.</p>
+paused on frame 1. The crosshair is fixed on the head's place in the first frame, so a head that moves shows against it.</p>
 <div id="all"></div>
 <script>
 const DATA=__DATA__;const TICK_MS=1000/60;let hover=null;
@@ -117,7 +124,7 @@ DATA.forEach(c=>{
   ['north','east','west','south'].forEach(f=>{
     const fig=mk('figure');fig.appendChild(mk('figcaption','',f+(f==='west'?' (east mirrored, as the engine draws it)':'')));
     const box=mk('div','full');const im=mk('img');box.appendChild(im);
-    const h=mk('div','hx');h.style.top='50%';const v=mk('div','vx');v.style.left='50%';box.appendChild(h);box.appendChild(v);
+    const h=mk('div','hx');h.style.top=c.cross[f][1]+'%';const v=mk('div','vx');v.style.left=c.cross[f][0]+'%';box.appendChild(h);box.appendChild(v);
     fig.appendChild(box);const sc=mk('img');sc.style.display='block';sc.style.marginTop='6px';fig.appendChild(sc);
     fig.appendChild(mk('div','','beside a vanilla human, 64 px a cell'));row.appendChild(fig);imgs.push([f,im,sc]);
     c.views[f].forEach(p=>{new Image().src=p[0];new Image().src=p[1]});
@@ -149,11 +156,16 @@ def main() -> int:
     cands = []
     for s in a.cand:
         parts = s.split("|")
-        if len(parts) != 7:
-            print(f"--cand needs 7 fields separated by |, got {len(parts)}: {s}", file=sys.stderr)
+        if len(parts) not in (7, 8):
+            print(f"--cand needs 7 or 8 fields separated by |, got {len(parts)}: {s}", file=sys.stderr)
             return 2
-        name, d, prefix, frames, ticks, cells, note = parts
-        cands.append(dict(name=name, dir=d, prefix=prefix, frames=int(frames), ticks=int(ticks), cells=float(cells), note=note))
+        name, d, prefix, frames, ticks, cells, note = parts[:7]
+        anchors = {}
+        for item in (parts[7].split(";") if len(parts) == 8 and parts[7] else []):
+            f, _, xy = item.partition("=")
+            anchors[f.strip()] = tuple(float(v) for v in xy.split(","))
+        cands.append(dict(name=name, dir=d, prefix=prefix, frames=int(frames), ticks=int(ticks), cells=float(cells), note=note,
+                          anchors=anchors))
     build(Path(a.out), a.title, a.intro, cands)
     print(f"wrote {Path(a.out) / 'index.html'}: {len(cands)} candidates")
     return 0

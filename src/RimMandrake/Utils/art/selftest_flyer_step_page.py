@@ -61,6 +61,13 @@ def main() -> int:
             expect("west is east mirrored", np.array_equal(w, e[:, ::-1]))
             expect("a 128 px frame is shown at 2x", e.shape[1] == 256, str(e.shape))
         expect("the change note is on the page", "what changed" in page)
+        r = subprocess.run([sys.executable, str(TOOL), "--out", str(t / "pageA"), "--title", "T",
+                            "--cand", f"X|{t / 'src'}|{PREFIX}|5|2|1.35|n|east=31.5,63.5;south=63.5,20"], capture_output=True, text=True)
+        pa = (t / "pageA" / "index.html").read_text() if r.returncode == 0 else ""
+        ma = re.search(r"const DATA=(\[.*?\]);const TICK_MS", pa, re.S)
+        cr = json.loads(ma.group(1))[0]["cross"] if ma else {}
+        expect("crosshair on the placed head, west mirrored, unplaced facing at the centre",
+               cr.get("east") == [25.0, 50.0] and cr.get("west") == [75.0, 50.0] and cr.get("north") == [50.0, 50.0], str(cr) + r.stderr)
 
         (t / "src" / f"{PREFIX}3_south.png").unlink()
         r = subprocess.run([sys.executable, str(TOOL), "--out", str(t / "page2"), "--title", "T",
