@@ -1,1 +1,0 @@
-A GPT full-file review that cannot run code states 'Got' from reading: run each finding's own input before fixing or counting it. REACH_GATE_HARDEN_PARENS_HIDE_THE_TOOL round 9's only finding claimed needs() returned [] on a python3 -c proof; running it returned the hidden path, so that round was the zero-findings round.
