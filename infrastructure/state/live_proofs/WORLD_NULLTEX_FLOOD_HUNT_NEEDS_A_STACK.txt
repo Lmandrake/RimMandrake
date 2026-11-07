@@ -1,0 +1,7 @@
+# WORLD_NULLTEX_FLOOD_HUNT_NEEDS_A_STACK: the sibling STACKLESS_SO_FAR named RimThemes' LoaderGM at the main menu and never saw a world load.
+# A2's site makes the first jawa/ call (arms the probe), goes to the menu, then loads a quicktest map; RimThemes comes with MenuShell.
+live-mods: MenuShell, NullTexTrace
+live-companion: JawaBench
+live-proof A1: python.exe src/RimMandrake/bridgetools/nulltex_probe.py --live selftest < /dev/null
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --menu-dwell 20
+live-proof A2: python.exe src/RimMandrake/bridgetools/nulltex_probe.py --live world < /dev/null

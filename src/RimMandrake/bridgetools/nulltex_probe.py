@@ -34,6 +34,16 @@ FINDINGS SO FAR (offline, 2026-11-02; decompiled copies in D:\ClaudeWork\rimmand
 - The load-to-load spread (19,519 vs 77) is UNEXPLAINED offline; the probe's byProgramState and
   duringLongEvent split says when the nulls land.
 
+  --live selftest  WORLD_NULLTEX_FLOOD_HUNT_NEEDS_A_STACK A1: the probe is installed and armed, and its deliberate
+              null call through the patched overload came back with a stack naming the selftest's own caller. This
+              is what makes a later 0 a measured zero rather than blindness.
+  --live world     WORLD_NULLTEX_FLOOD_HUNT_NEEDS_A_STACK A2: staged by `live_site.py --menu-dwell N`, which makes the
+              first jawa/ call, goes to the menu, then loads a quicktest map, so the probe was armed BEFORE the world
+              load. Names the culprits and splits them: world load (a non-Entry program state, or during a long
+              event), the menu, and the load-time callers the NullTexTrace mod wrote to Player.log (the companion is
+              armed too late to see those). A world load that drew no null is reported as exactly that, with the
+              culprit named by the other readings. Nothing captured by either instrument is UNMEASURED.
+
 Exit 0 = the clause holds, 1 = a reading refutes it, 2 = no reading (instrument error, or 0 null calls).
 """
 from __future__ import annotations
@@ -113,7 +123,7 @@ def offline() -> int:
     m = re.search(r"TargetArgs\s*=\s*\{(.*?)\};", probe, re.S)
     got = re.findall(r"typeof\((\w+)\)", m.group(1)) if m else []
     check(got == TYPES12, "O1d the probe's TargetArgs are that signature", " ".join(got))
-    check(re.search(r"static void Prefix\(Texture image\)", probe) is not None,
+    check(re.search(r"static bool Prefix\(Texture image\)", probe) is not None,
           "O1e the prefix binds Harmony parameter 'image'")
     check("JawaBenchNullTextureProbe.Install()" in INIT_CS.read_text(), "O2a Install() is called from JawaBenchInit")
     check('"jawa/nulltex_probe"' in probe, "O2b the tool jawa/nulltex_probe is declared")
@@ -133,13 +143,114 @@ def offline() -> int:
 
 
 REREAD_S = 8.0
+STACKS_READ = 1000    # past the probe's own table, so no world-load stack is cut off below the top of it
+PROBE_MARKS = ("JawaBenchNullTex", "NullTexTrace")   # frames of the instruments: never a culprit
 
 
-def read_probe(s) -> dict:
-    r = s.call("jawa/nulltex_probe", {"action": "get", "top": 5}) or {}
+def read_probe(s, action: str = "get", top: int = 5) -> dict:
+    r = s.call("jawa/nulltex_probe", {"action": action, "top": top}) or {}
     if isinstance(r, dict) and r.get("content"):
         r = json.loads(r["content"][0]["text"])
     return r if isinstance(r, dict) else {}
+
+
+def live_selftest(s) -> int:
+    r = read_probe(s, "selftest")
+    if r.get("installed") is None:
+        print(f"UNMEASURED: the probe answered no selftest reading ({str(r)[:200]})")
+        return 2
+    print(f"selftest: installed={r.get('installed')} armed={r.get('armed')} captured={r.get('captured')} "
+          f"error={r.get('error')}")
+    for f in (r.get("frames") or [])[:6]:
+        print(f"  {f}")
+    ok = bool(r.get("installed") and r.get("armed") and r.get("captured"))
+    print(("PASS" if ok else "FAIL") + " A1: the deliberate null call " + ("was" if ok else "was NOT")
+          + f" captured with a stack on {r.get('target')}")
+    return 0 if ok else 1
+
+
+def split_stacks(stacks: list) -> tuple:
+    """-> ({caller: world-load calls}, {caller: other calls}), each caller only where its count is non-zero."""
+    world, other = {}, {}
+    for st in stacks:
+        w = int(st.get("worldLoad") or 0)
+        rest = int(st.get("count") or 0) - w
+        if w > 0:
+            world[st["caller"]] = world.get(st["caller"], 0) + w
+        if rest > 0:
+            other[st["caller"]] = other.get(st["caller"], 0) + rest
+    return world, other
+
+
+def read_load_time_log() -> tuple:
+    """-> (load-time callers NullTexTrace named, count of Unity's warning in the log) or (None, why)."""
+    sys.path.insert(0, str(ROOT / "src/RimMandrake/NullTexTrace"))
+    import nulltex_log_check as lc
+    text, why = lc.read_running_log()
+    if text is None:
+        return None, why
+    parsed = lc.parse(text)
+    if parsed["installed"] is None:
+        return None, "no [NullTexTrace] installed line: the mod is not in this load"
+    return [c[3].split(" <- ")[0] for c in parsed["callers"]], text.count(WARNING)
+
+
+def is_culprit(caller: str) -> bool:
+    return not caller.startswith("<") and not any(mark in caller for mark in PROBE_MARKS)
+
+
+def live_world(s) -> int:
+    try:
+        info = s.call("jawa/map_info", {}) or {}
+    except Exception as e:      # noqa: BLE001  no map answers with an error: that is no world, not a verdict
+        info = {"error": str(e)[:200]}
+    if not info.get("mapBiome"):
+        print(f"UNMEASURED: no map after the staged world load ({str(info.get('error') or info)[:200]})")
+        return 2
+    r = read_probe(s, "get", STACKS_READ)
+    if not r.get("installed"):
+        print(f"FAIL A2: probe NOT installed ({r.get('installError') or r.get('error') or r})")
+        return 1
+    if not r.get("armed"):
+        print("UNMEASURED: the probe is disarmed, so it did not watch the world load")
+        return 2
+    if not int(r.get("worldLoadsSeen") or 0):
+        print("UNMEASURED: no world load finished while the probe was armed")
+        return 2
+    world, other = split_stacks(r.get("stacks") or [])
+    blind = int(r.get("droppedStacks") or 0) + int(r.get("recordErrors") or 0)
+    print(f"probe: nullCalls={r.get('nullCalls')} droppedStacks={r.get('droppedStacks')} "
+          f"recordErrors={r.get('recordErrors')} map={info.get('mapBiome')}")
+    for label, table in (("world load", world), ("menu or map", other)):
+        for caller, count in sorted(table.items(), key=lambda kv: -kv[1])[:5]:
+            print(f"  {label}: {count:>7}  {caller}")
+    load_time, extra = read_load_time_log()
+    if load_time is None:
+        print(f"  load-time log: unread ({extra})")
+        load_time = []
+    else:
+        print(f"  Player.log holds {extra} '{WARNING}' line(s)")
+        for caller in load_time[:5]:
+            print(f"  load time: {caller}")
+    named = [c for c in list(world) + list(other) + load_time if is_culprit(c)]
+    if not (world or other or load_time):
+        print("UNMEASURED: neither instrument captured a null call this sitting")
+        return 2
+    if not named:
+        print("FAIL A2: null calls were captured, but none names a culprit frame outside the probes")
+        return 1
+    in_world = {c: n for c, n in world.items() if is_culprit(c)}
+    if in_world:
+        kept = f" among the stacks kept ({blind} call(s) unread)" if blind else ""
+        print(f"PASS A2: the world load's top culprit{kept} is {max(in_world, key=in_world.get)}")
+    elif world:
+        print(f"PASS A2: the world load's nulls name no culprit frame; the culprit named this sitting is {named[0]}")
+    elif blind:
+        print(f"UNMEASURED: no world-load null among the stacks kept, but the probe could not read {blind} call(s)")
+        return 2
+    else:
+        print(f"PASS A2: this world load drew no null texture; the culprit named this sitting is {named[0]}")
+    return 0
 
 
 def live(clause: str) -> int:
@@ -148,6 +259,10 @@ def live(clause: str) -> int:
     host, port, token = rb.resolve_endpoint()
     s = rb.RimBridge(host=host, port=port, token=token, timeout=45.0)
     s.connect()
+    if clause == "selftest":
+        return live_selftest(s)
+    if clause == "world":
+        return live_world(s)
     r = read_probe(s)
     if r.get("installed") and not int(r.get("nullCalls") or 0):
         # the first jawa/ call installs the probe: a reading taken by that very call is 0 by construction,
@@ -170,6 +285,10 @@ def live(clause: str) -> int:
               "RimThemes + MenuShell active: live_site.py --menu-dwell, then re-read). Not a verdict.")
         return 2
     top = callers[0]["caller"]
+    unread = int(r.get("droppedStacks") or 0) + int(r.get("recordErrors") or 0)
+    if clause == "A2" and unread:
+        print(f"UNMEASURED: the probe could not read {unread} null call(s), so the ranking is open")
+        return 2
     if clause == "A1":
         ok = not top.startswith("<no managed caller")
         print(("PASS" if ok else "FAIL") + f" A1: {n} null call(s); top caller {top}")
@@ -184,7 +303,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--offline", action="store_true")
-    g.add_argument("--live", choices=["A1", "A2"])
+    g.add_argument("--live", choices=["A1", "A2", "selftest", "world"])
     a = ap.parse_args()
     try:
         return offline() if a.offline else live(a.live)

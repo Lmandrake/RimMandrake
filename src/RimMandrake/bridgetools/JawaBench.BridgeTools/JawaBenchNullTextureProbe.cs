@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
@@ -57,6 +58,7 @@ namespace JawaBench.BridgeTools
         internal static long RecordErrors;
         internal static string LastRecordError;
         internal static float InstalledAt = -1f;
+        internal static long WorldLoadsSeen;   // Game.FinalizeInit while armed, since the last reset: a world load the probe watched
         // Seconds since this class loaded. Not Time.realtimeSinceStartup: Install and Snapshot run on the
         // bridge's worker thread, where a Unity API may refuse to answer.
         private static readonly Stopwatch Clock = Stopwatch.StartNew();
@@ -70,6 +72,7 @@ namespace JawaBench.BridgeTools
             public float FirstAt, LastAt;
             public readonly Dictionary<string, long> ByProgramState = new Dictionary<string, long>();
             public long DuringLongEvent;
+            public long WorldLoad;     // a non-Entry state or a long event: a load begun from the menu still reads Entry
         }
 
         internal static readonly Dictionary<string, Entry> ByStack = new Dictionary<string, Entry>();
@@ -93,6 +96,10 @@ namespace JawaBench.BridgeTools
                     }
                     new Harmony("mandrake.jawabench.nulltextureprobe").Patch(m, prefix: new HarmonyMethod(
                         typeof(JawaBenchNullTextureProbe).GetMethod(nameof(Prefix), BindingFlags.Static | BindingFlags.NonPublic)));
+                    var finalize = AccessTools.Method(typeof(Game), nameof(Game.FinalizeInit));
+                    if (finalize != null)
+                        new Harmony("mandrake.jawabench.nulltextureprobe").Patch(finalize, postfix: new HarmonyMethod(
+                            typeof(JawaBenchNullTextureProbe).GetMethod(nameof(WorldLoaded), BindingFlags.Static | BindingFlags.NonPublic)));
                     Installed = true;
                     InstalledAt = Now;
                     Log.Message("[JawaBench] null-texture probe installed on " + Target + ", armed=" + Armed +
@@ -106,22 +113,74 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        private static void WorldLoaded()
+        {
+            if (Armed) Interlocked.Increment(ref WorldLoadsSeen);
+        }
+
         // Harmony binds 'image' by parameter name; the engine's own test is Unity's == null,
         // which also counts a destroyed texture, so this uses the same operator.
-        private static void Prefix(Texture image)
+        // Returns true (run the engine's method) on every path but the selftest's own call.
+        private static bool Prefix(Texture image)
         {
-            if (!Armed || image != null) return;
+            if (image != null) return true;
+            if (_selftestActive)
+            {
+                _selftestFrames = WalkStack(out _);
+                return false;   // not a draw: Unity's body would read Event.current off the main thread
+            }
+            if (!Armed) return true;
             try
             {
                 var ev = Event.current;
-                if (ev == null || ev.type != EventType.Repaint) return;
-                Record();
+                if (ev != null && ev.type == EventType.Repaint) Record();
             }
             catch (Exception e)
             {
                 Interlocked.Increment(ref RecordErrors);
                 LastRecordError = e.GetType().Name + ": " + e.Message;
             }
+            return true;
+        }
+
+        // Thread-static: only the bridge thread running the selftest sees it set, so the game's own
+        // draws on the main thread can never be skipped by it.
+        [ThreadStatic] private static bool _selftestActive;
+        [ThreadStatic] private static List<string> _selftestFrames;
+
+        // One deliberate null call through the patched overload itself, so a 0 from 'get' can be told
+        // from blindness. It reaches the prefix and has its stack walked, but is not a game draw: it
+        // never counts in nullCalls or byCaller.
+        internal static object Selftest()
+        {
+            string error = null;
+            List<string> frames = null;
+            var m = AccessTools.Method(typeof(GUI), "DrawTexture", TargetArgs);
+            if (m == null) error = "overload " + Target + " not found";
+            else
+            {
+                _selftestActive = true;
+                _selftestFrames = null;
+                try { JawaBenchNullTexSelftestCaller.Fire(m); }
+                catch (Exception e) { error = e.GetType().Name + ": " + (e.InnerException ?? e).Message; }
+                finally
+                {
+                    frames = _selftestFrames;
+                    _selftestActive = false;
+                    _selftestFrames = null;
+                }
+            }
+            string own = typeof(JawaBenchNullTexSelftestCaller).FullName + ".";
+            return new
+            {
+                installed = Installed,
+                armed = Armed,
+                target = Target,
+                captured = frames != null && frames.Any(f => f.StartsWith(own, StringComparison.Ordinal)),
+                frames,
+                error,
+                nullCalls = Interlocked.Read(ref NullCalls)
+            };
         }
 
         // True for frames that are the draw call itself: GUI, the Harmony replacement (its
@@ -147,12 +206,12 @@ namespace JawaBench.BridgeTools
             return (t != null ? t.FullName : "<dynamic>") + "." + m.Name + (asm.Length > 0 ? " [" + asm + "]" : "");
         }
 
-        private static void Record()
+        // The frames above the draw call's own plumbing; caller is the first of them.
+        private static List<string> WalkStack(out string caller)
         {
-            Interlocked.Increment(ref NullCalls);
             var frames = new StackTrace(1, false).GetFrames() ?? new StackFrame[0];
             var kept = new List<string>(MaxFrames);
-            string caller = null;
+            caller = null;
             foreach (var f in frames)
             {
                 var m = f.GetMethod();
@@ -163,14 +222,21 @@ namespace JawaBench.BridgeTools
                 if (kept.Count >= MaxFrames) break;
             }
             if (caller == null) caller = "<no managed caller above GUI.DrawTexture>";
+            return kept;
+        }
+
+        private static void Record()
+        {
+            var kept = WalkStack(out var caller);
             string key = string.Join(" <- ", kept);
             float now = Now;
             string state = "unknown";
             bool longEvent = false;
             try { state = Current.ProgramState.ToString(); } catch { }
             try { longEvent = LongEventHandler.AnyEventNowOrWaiting; } catch { }
-            lock (Gate)
+            lock (Gate)     // the count and the table move together, so a Reset can never split them
             {
+                Interlocked.Increment(ref NullCalls);
                 if (!ByStack.TryGetValue(key, out var e))
                 {
                     if (ByStack.Count >= MaxStacks) { DroppedStacks++; return; }
@@ -182,6 +248,7 @@ namespace JawaBench.BridgeTools
                 e.ByProgramState.TryGetValue(state, out var c);
                 e.ByProgramState[state] = c + 1;
                 if (longEvent) e.DuringLongEvent++;
+                if (longEvent || state != "Entry") e.WorldLoad++;
             }
         }
 
@@ -197,7 +264,8 @@ namespace JawaBench.BridgeTools
                     firstAt = e.FirstAt,
                     lastAt = e.LastAt,
                     byProgramState = e.ByProgramState.ToDictionary(kv => kv.Key, kv => kv.Value),
-                    duringLongEvent = e.DuringLongEvent
+                    duringLongEvent = e.DuringLongEvent,
+                    worldLoad = e.WorldLoad
                 }).ToList();
                 var callers = ByStack.Values.GroupBy(e => e.Caller)
                     .Select(g => new { caller = g.Key, count = g.Sum(e => e.Count) })
@@ -211,6 +279,7 @@ namespace JawaBench.BridgeTools
                     installedAt = InstalledAt,
                     now = Now,
                     nullCalls = Interlocked.Read(ref NullCalls),
+                    worldLoadsSeen = Interlocked.Read(ref WorldLoadsSeen),
                     distinctStacks = ByStack.Count,
                     droppedStacks = DroppedStacks,
                     recordErrors = Interlocked.Read(ref RecordErrors),
@@ -227,10 +296,25 @@ namespace JawaBench.BridgeTools
             {
                 ByStack.Clear();
                 Interlocked.Exchange(ref NullCalls, 0);
+                Interlocked.Exchange(ref WorldLoadsSeen, 0);
                 DroppedStacks = 0;
                 Interlocked.Exchange(ref RecordErrors, 0);
                 LastRecordError = null;
             }
+        }
+    }
+
+    // A class of its own so its name in a captured stack proves the walk reached this call.
+    internal static class JawaBenchNullTexSelftestCaller
+    {
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void Fire(MethodInfo leaf)
+        {
+            leaf.Invoke(null, new object[]
+            {
+                new Rect(0f, 0f, 1f, 1f), null, ScaleMode.StretchToFill, true, 0f,
+                Color.white, Color.white, Color.white, Color.white, Vector4.zero, Vector4.zero, false
+            });
         }
     }
 
@@ -245,27 +329,31 @@ namespace JawaBench.BridgeTools
                 "is written - records the stack of each null call under the engine's own condition (Repaint, " +
                 "Unity-null image). Installed and ARMED on the first jawa/ call of the session, so it sees " +
                 "nothing before that. 'get' (default) reads; 'arm' / 'disarm' toggle recording; 'reset' clears " +
-                "the counts. READ 'installed' FIRST: installed=false means nullCalls=0 is blindness, not health.",
+                "the counts; 'selftest' makes one deliberate null call through the patched overload and reports " +
+                "whether its stack was captured (it is never counted as a game draw). READ 'installed' FIRST: " +
+                "installed=false means nullCalls=0 is blindness, not health.",
             ResultDescription =
-                "installed, installError, armed, nullCalls, distinctStacks, droppedStacks, byCaller (caller -> " +
+                "installed, installError, armed, nullCalls, worldLoadsSeen (Game.FinalizeInit calls while armed, since the last reset), distinctStacks, droppedStacks, byCaller (caller -> " +
                 "count, the first frame above GUI/Harmony), stacks (top N: count, caller, frames, " +
-                "byProgramState, duringLongEvent, firstAt/lastAt/installedAt/now in seconds on the probe's own clock).")]
+                "byProgramState, duringLongEvent, worldLoad (calls in a non-Entry state or a long event), firstAt/lastAt/installedAt/now in seconds on the probe's own clock). " +
+                "'selftest' instead returns installed, armed, target, captured, frames, error, nullCalls.")]
         public static Task<object> NullTexProbe(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "'get' (default), 'arm', 'disarm' or 'reset'.")]
+            [ToolParameter(Description = "'get' (default), 'arm', 'disarm', 'reset' or 'selftest'.")]
             string action = "get",
             [ToolParameter(Description = "How many of the most frequent stacks to return (default 10).")]
             int top = 10)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var act = (action ?? "get").Trim().ToLowerInvariant();
-            if (act != "get" && act != "arm" && act != "disarm" && act != "reset")
-                return Task.FromResult(Fail("Unknown action '" + action + "'. Use 'get', 'arm', 'disarm' or 'reset'."));
+            if (act != "get" && act != "arm" && act != "disarm" && act != "reset" && act != "selftest")
+                return Task.FromResult(Fail("Unknown action '" + action + "'. Use 'get', 'arm', 'disarm', 'reset' or 'selftest'."));
             JawaBenchNullTextureProbe.Install();
             if (!JawaBenchNullTextureProbe.Installed && act != "get")
                 return Task.FromResult(Fail("The probe is not installed, so '" + act + "' would do nothing.",
                     new { installError = JawaBenchNullTextureProbe.InstallError }));
+            if (act == "selftest") return Task.FromResult(JawaBenchNullTextureProbe.Selftest());
             if (act == "arm") JawaBenchNullTextureProbe.Armed = true;
             else if (act == "disarm") JawaBenchNullTextureProbe.Armed = false;
             else if (act == "reset") JawaBenchNullTextureProbe.Reset();

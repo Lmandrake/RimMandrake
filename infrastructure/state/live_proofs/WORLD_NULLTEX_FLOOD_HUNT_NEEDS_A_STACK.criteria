@@ -1,0 +1,2 @@
+A1 L1: jawa/nulltex_probe is armed on the GUI.DrawTexture leaf and its selftest null call comes back with a captured stack
+A2 L2: after a world load, captured null-texture stacks name a non-probe culprit frame, split into world load, menu and load time
