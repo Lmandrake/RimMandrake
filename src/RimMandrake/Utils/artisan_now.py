@@ -20,6 +20,10 @@ Stdlib only. Every subprocess has a timeout, and the machine reads share one dea
 cannot hold the page. Loops are discovered from systemd, the scratch clones and the log folders, so a new
 loop shows up with no edit here.
 
+The picture at the top (owner, 2026-11-07: "something graphical in HTML at its top so I can very quickly understand what's
+happening") draws every pass on one clock, split by where its time went, read from the transcript the pass log names. A finished
+pass is read once and kept in the state file; a live one is read from where it stopped. What it can't read, it hatches and names.
+
 Tokens are the loops' own weighted count (ralph/tally.py): input + output + cache writes + cache reads / 10.
 The running total is the last figure the loop's shell logged plus a tally of the live pass's log, read
 incrementally: the pass logs run to hundreds of MB on a slow drive, and only the live one can have moved.
@@ -34,9 +38,11 @@ import re
 import statistics
 import subprocess
 import sys
+import textwrap
 import threading
 import time
 from collections import Counter
+from html import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.environ.get("ARTISAN_NOW_OUT", "/mnt/d/ClaudeWork/rimmandrake/conductor")
@@ -410,6 +416,8 @@ def discover(sources):
         wd = props.get("WorkingDirectory", "")
         name = by_clone.get(wd)
         if name is None:
+            if not unit.startswith("rm-ralph-"):
+                continue    # a watcher that restarts a loop runs loop.sh in its command line; it is not a loop
             name = unit.replace("rm-ralph-", "", 1)
             loops.setdefault(name, {"name": name, "clone": wd or None, "logs": None, "unit": None, "props": None})
         rec = loops[name]
@@ -672,12 +680,19 @@ def parse_questions(text):
     return out
 
 
+VERDICT_ROW = re.compile(r"(?m)^\|\s*`([\w-]+)`\s*\|\s*\**(TRUE|FALSE|CANNOT TELL)[^|]*\|", re.I)
+
+
 def parse_verdict(path):
-    """A blind judge's counts and overall call."""
+    """A blind judge's counts, the lines it would not pass, and its overall yes or no."""
     text = read_text(path, 400_000)
-    counts = re.search(r"Counts?:?\**:?\s*([^\n*]{5,90})", text)
-    call = re.search(r"(?im)^#+\s*\d*\.?\s*overall call\s*\n+(.+)", text)
-    return {"counts": short(counts[1], 90) if counts else None, "call": short(call[1], 220) if call else None}
+    counts = re.search(r"(?:Counts?|Tally):?\**:?\s*([^\n*]{5,90})", text)
+    call = re.search(r"(?im)^#+\s*\d*\.?\s*overall(?: call)?\s*\n+(.+)", text) or re.search(r"(?i)\*\*overall call:\s*(.+?)\*\*", text)
+    rows = {m[1]: m[2].upper() for m in VERDICT_ROW.finditer(text)}
+    answer = re.match(r"\W*(no|yes)\b", call[1], re.I) if call else None
+    return {"counts": short(counts[1], 90) if counts else None, "call": short(call[1], 220) if call else None,
+            "lines": len(rows), "passed": sum(1 for v in rows.values() if v == "TRUE"),
+            "short": sorted(k for k, v in rows.items() if v != "TRUE"), "answer": answer[1].lower() if answer else None}
 
 
 def gate_info(clone):
@@ -743,6 +758,17 @@ def read_note(path):
         return {"t": m, "first": "UNMEASURED: %s" % e}
 
 
+def read_stop_reason(path):
+    """A STOP file's first line says why it was set. Empty means nobody said."""
+    try:
+        for line in read_text(path, 2000).splitlines():
+            if line.strip():
+                return short(line, 140)
+    except OSError:
+        pass
+    return None
+
+
 def collect_loop(rec, sources, cache):
     """Everything measurable about one loop. A part that fails records its reason in rec['unmeasured']."""
     name, clone, logs = rec["name"], rec.get("clone"), rec["logs"]
@@ -764,6 +790,7 @@ def collect_loop(rec, sources, cache):
 
     rec["model"], rec["procs"] = cgroup_processes(rec.get("props"))
     rec["stop_file"] = mtime(os.path.join(logs, "STOP"))
+    rec["stop_reason"] = read_stop_reason(os.path.join(logs, "STOP"))
     rec["done"] = read_note(os.path.join(rdir, "DONE.md")) if rdir else None
     rec["need_game"] = mtime(os.path.join(rdir, "NEED_GAME")) if rdir else None
     rec["note_pending"] = read_note(os.path.join(rdir, "OWNER_NOTE")) if rdir else None
@@ -911,11 +938,16 @@ def classify(rec):
         if text.startswith("LOOP PAUSED_FOR_REVIEW"):
             return "paused for review", "it reached its token limit and waits for your word"
         if text.startswith("LOOP stopped") or text.startswith("LOOP STOPPED"):
-            how = "on its STOP file" if "STOP file" in text else "by its own stop rule: " + short(text.split(":", 1)[-1], 90)
+            if "STOP file" in text:
+                how = "on its STOP file (%s)" % rec["stop_reason"] if rec.get("stop_reason") else "on its STOP file"
+            else:
+                how = "by its own stop rule: " + short(text.split(":", 1)[-1], 90)
             return "stopped", "it ended %s, %s ago, and nothing will run it until someone restarts it" % (how, ago(now_s() - t))
         if not rec["events"]:
             return "not started", "no events log yet"
         return "dead", "no unit is running it and its log ends without a clean finish: %s" % short(text, 80)
+    if text.startswith("LOOP PAUSED_FOR_REVIEW"):
+        return "paused for review", "it reached its token limit and waits for your word"
     if rec["unmeasured"].get("events"):
         return "unmeasured", "its unit is up but its log can't be read: %s" % rec["unmeasured"]["events"]
     if text.startswith("GAME_WAIT"):
@@ -936,10 +968,11 @@ def warn_about(rec):
     w = rec["warnings"]
     active = (rec.get("props") or {}).get("ActiveState") == "active"
     if rec["stop_file"] is not None:
+        why = " Reason: %s." % rec["stop_reason"] if rec.get("stop_reason") else ""
         if active:
-            w.append("STOP is set (%s ago) and the unit still runs: it ends after this pass." % ago(now_s() - rec["stop_file"]))
+            w.append("STOP is set (%s ago) and the unit still runs: it ends after this pass.%s" % (ago(now_s() - rec["stop_file"]), why))
         else:
-            w.append("STOP is still set from %s ago: a restart would end at once. Clear it first." % ago(now_s() - rec["stop_file"]))
+            w.append("STOP is still set from %s ago: a restart would end at once. Clear it first.%s" % (ago(now_s() - rec["stop_file"]), why))
     if rec.get("done") and rec["state"] == "working":
         w.append("DONE.md exists while a pass runs: the loop ends when the pass does.")
     done_passes = [p for p in rec["passes"] if p["end"]]
@@ -1007,13 +1040,16 @@ pid = None
 if s is None:
     out["game"] = None
 else:
-    m = re.search(r'"RimWorldWin64\.exe","(\d+)"', s)
-    out["game"] = bool(m)
-    pid = m[1] if m else None
+    pids = re.findall(r'"RimWorldWin64\.exe","(\d+)"', s)
+    out["game"] = bool(pids)
+    pid = pids[0] if pids else None
+    out["games"] = [{"pid": x} for x in pids]
 if pid:
     s = run([W + "NETSTAT.EXE", "-ano", "-p", "TCP"], 5)
     if s is not None:
-        out["ports"] = sorted({l.split()[1].rsplit(":", 1)[1] for l in s.splitlines() if "LISTENING" in l and l.split()[-1] == pid})
+        for g in out["games"]:
+            g["ports"] = sorted({l.split()[1].rsplit(":", 1)[1] for l in s.splitlines() if "LISTENING" in l and l.split()[-1] == g["pid"]})
+        out["ports"] = out["games"][0]["ports"]
 s = run([W + "typeperf.exe", r"\Memory\Available MBytes", "-sc", "1"], 6)
 if s:
     m = re.search(r'",\s*"([\d.]+)"', s)
@@ -1035,6 +1071,29 @@ def newest(d, pat):
     return best
 roots = glob.glob(os.environ.get("ARTISAN_TPS_ROOT") or "/mnt/c/Users/*/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/JawaBench/tps")
 out["tps_roots"] = len(roots)
+sessions = []
+for r in roots:
+    with os.scandir(r) as it:
+        for e in it:
+            m = re.match(r"tps_(\d{8}T\d{6})Z_\w+?_(\d+)_\d+\.jsonl$", e.name)
+            if not m:
+                continue
+            st = e.stat()
+            if time.time() - st.st_mtime > 26 * 3600:
+                continue
+            row = {"start": dt.datetime.strptime(m[1], "%Y%m%dT%H%M%S").replace(tzinfo=dt.timezone.utc).timestamp(), "end": st.st_mtime, "pid": m[2], "stalls": []}
+            with open(e.path, "rb") as f:
+                for line in f:
+                    if b'"type":"stall"' in line:
+                        try:
+                            i = json.loads(line)
+                        except ValueError:
+                            continue
+                        if (i.get("unexplainedS") or 0) >= 1 and iso(i.get("utc")):
+                            row["stalls"].append([round(iso(i["utc"])), round(i["unexplainedS"], 1)])
+            row["stalls"] = row["stalls"][-60:]
+            sessions.append(row)
+out["sessions"] = sorted(sessions, key=lambda x: x["start"])
 best = None
 for r in roots:
     n = newest(r, re.compile(r"tps_.*\.jsonl$"))
@@ -1157,6 +1216,11 @@ def read_machines(state, sources):
     return out
 
 
+def game_ports(games):
+    """One entry per running game: its port, or a word when it has none yet."""
+    return [", ".join(g.get("ports") or []) or "none yet" for g in games]
+
+
 def machine_lines(name, m):
     """Plain lines about a machine. Old figures are said to be old."""
     lines = []
@@ -1172,8 +1236,12 @@ def machine_lines(name, m):
         lines.append("Game: **not running**.")
     else:
         ports = d.get("ports")
-        lines.append("Game: **running**%s." % (
-            "" if ports is None else ", listening on port %s" % ", ".join(ports) if ports else ", no listening port yet (bridge not up)"))
+        games = d.get("games") or []
+        if len(games) > 1:
+            lines.append("**%d games running**, ports %s." % (len(games), " and ".join(game_ports(games))))
+        else:
+            lines.append("Game: **running**%s." % (
+                "" if ports is None else ", listening on port %s" % ", ".join(ports) if ports else ", no listening port yet (bridge not up)"))
     hb = d.get("hb")
     if d.get("game") and hb and now_s() - hb["mtime"] < 300:
         silent = hb.get("silent")
@@ -1437,6 +1505,7 @@ def check_waits(loops):
         since = ago(now_s() - r["events"][-1][0])
         if on:
             r["state_why"] = "it gives way to %s, which is active; no model running, so it spends nothing, for %s" % (", ".join(on), since)
+            r["wait_on"] = [next((x["name"] for x in loops if x.get("unit") == u), u) for u in on]
         elif r["loopsh"].get("busy_steve"):
             r["state_why"] = "SteveDesktop isn't answering; no model running, for %s" % since
         else:
@@ -1457,10 +1526,299 @@ def spend_today(rec):
     return int(total)
 
 
+# ---- the arc: where each pass's time went, read from its transcript ------------------------------------
+
+ARC_KINDS = ("think", "code", "build", "game", "wait", "idle")
+ARC_PRIO = ("game", "wait", "build", "code", "think", "idle")   # two tools open at once: the time goes to the first of these
+ARC_LETTER = {"think": "T", "code": "C", "build": "B", "game": "G", "wait": "W", "idle": "I"}
+ARC_OF_LETTER = {v: k for k, v in ARC_LETTER.items()}
+ARC_VERSION = 1             # bump when the classifier changes: every finished pass is read again
+STALL_S = 300               # the model silent this long with no tool open and no job running is a stall
+BIN_S = 60                  # the picture draws about a pixel a minute, so a finished pass keeps one letter a minute
+ARC_BUDGET_S = 8            # a fresh cache is many hundreds of MB: read for this long, finish over the next minutes
+GAME_MERGE_S = 600          # game use with a gap under this is one hold of the game
+HOLD_MERGE_S = 1200         # on the picture, holds by one loop this close read as one
+
+HEREDOC = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?[^\n]*\n(.*?)\n\s*\1\b", re.S)
+ARC_TESTS = re.compile(r"selftest|\bfuzz|pytest|proof_all\.py[^|;&]*--offline")
+ARC_BUILD = re.compile(r"winbuild|msbuild|\bdotnet\b|\bcsc\b|deploy_custom_mods[^|;&]*|modset_builder[^|;&]*|modlist_swap[^|;&]*|\./publish|land\.sh|\./sync\b"
+                       r"|git\s+(?:commit|push|pull|fetch|rebase|merge|add)\b|bake\.py|build\.py")
+ARC_GAME = re.compile(r"steve\.sh|python\.exe|\bbridge\b|rimbridge|live_session|logwait|modcheck\s+run|\./game\b|proof_all\.py|\bplay\.py|stage_colony|\bcolony\.py"
+                      r"|northstar/|Player\.log|RimWorldWin64|steam://|Start-Process|taskkill|system_click|system_screenshot|--live\b|jawa/")
+ARC_WAIT = re.compile(r"\blogwait\b|waitlog|\bwait_?for\b|tail\s+--pid|\bsleep\s+[1-9]\d|\b(?:until|while)\b.*\bsleep\b|time\.sleep\(|while time\.time", re.S)
+ARC_WRITES = re.compile(r"\bcat\s*>|\btee\s+\S|>>?\s*[\w./$-]+\.(?:py|cs|xml|sh|md|json|csproj)\b|\bsed\s+-i|\bgit\s+apply|\bperl\s+-pi")
+BODY_WRITES = re.compile(r"\.write(?:_text)?\(|open\([^)]*['\"][wa]b?['\"]")
+EFFORT = re.compile(rb'"effort":"(\w+)"')
+
+
+def bash_kind(command, gate=None):
+    """What a shell command's time went to. A heredoc's body is the code being written, not what the command does."""
+    outer = HEREDOC.sub(" ", command)
+    # a heredoc fed to a file is only written; one fed to an interpreter runs
+    bodies = [] if re.search(r"\bcat\s*>|\btee\s", outer) else [m[2] for m in HEREDOC.finditer(command)]
+    if ARC_TESTS.search(outer):
+        return "build"
+    rest = ARC_BUILD.sub(" ", outer)
+    if ARC_WAIT.search(outer) or any(ARC_WAIT.search(b) for b in bodies):
+        return "wait"
+    if ARC_GAME.search(rest) or (gate is not None and gate.search(rest)):
+        return "game"
+    if rest != outer:
+        return "build"
+    if ARC_WRITES.search(outer) or any(BODY_WRITES.search(b) for b in bodies):
+        return "code"
+    return "think"
+
+
+def tool_kind(name, inp, gate=None):
+    if name == "Bash":
+        return bash_kind(str(inp.get("command", "")), gate)
+    if name in ("Edit", "Write", "NotebookEdit"):
+        return "code"
+    if name == "Read" and re.search(r"\.(png|jpe?g|bmp|gif)$", str(inp.get("file_path", "")), re.I):
+        return "game"       # a screenshot it took: looking at the game
+    if name == "Monitor":
+        return "watch"      # watching a job it started: the time belongs to that job
+    return "think"
+
+
+def arc_new():
+    return {"offset": 0, "spans": [], "open": {}, "bg": [], "bg_last": None, "last": None, "first": None, "ended": False, "effort": None,
+            "notes": [], "game": [], "where": "A", "lines": 0, "stamped": 0}
+
+
+def arc_span(c, a, b, kind):
+    spans = c["spans"]
+    if spans and spans[-1][2] == kind and a - spans[-1][1] < 1:
+        spans[-1][1] = b
+    else:
+        spans.append([a, b, kind])
+    if kind == "game":
+        g = c["game"]
+        if g and g[-1][2] == c["where"] and a - g[-1][1] < GAME_MERGE_S:
+            g[-1][1] = b
+            g[-1][3] += b - a
+        else:
+            g.append([a, b, c["where"], b - a])
+
+
+def job_kind(c):
+    """A job running in the background that the model is waiting on."""
+    if c["bg"]:
+        return min(c["bg"], key=ARC_PRIO.index)
+    return c["bg_last"] or "wait"
+
+
+def gap_kind(c, rec_kind, uses, notified, gap, gate):
+    """What the time up to this line went to, by what was open when it began."""
+    if c["open"]:
+        best = min((k for k in c["open"].values() if k != "watch"), key=ARC_PRIO.index, default="watch")
+        return job_kind(c) if best in ("watch", "think") and "watch" in c["open"].values() else best
+    if rec_kind == "assistant" and not c["ended"]:
+        if gap > STALL_S:
+            return "idle"
+        return "code" if any(tool_kind(u.get("name"), u.get("input") or {}, gate) == "code" for u in uses) else "think"
+    if notified or c["bg"]:
+        return job_kind(c)
+    return "idle" if gap > 60 else "think"
+
+
+def arc_step(c, d, gate):
+    """One transcript line through the walker."""
+    kind = d.get("type")
+    c["lines"] += 1
+    t = parse_iso(d.get("timestamp"))
+    if t is None:
+        return
+    c["stamped"] += 1
+    msg = d.get("message") or {}
+    content = msg.get("content")
+    blocks = [b for b in content if isinstance(b, dict)] if isinstance(content, list) else []
+    uses = [b for b in blocks if b.get("type") == "tool_use"] if kind == "assistant" else []
+    words = content if isinstance(content, str) else " ".join(str(b.get("text", "")) for b in blocks if b.get("type") == "text")
+    notified = kind == "user" and "<task-notification>" in words
+    if c["last"] is not None and t > c["last"]:
+        arc_span(c, c["last"], t, gap_kind(c, kind, uses, notified, t - c["last"], gate))
+    if c["first"] is None:
+        c["first"] = t
+    c["last"] = max(t, c["last"] or t)
+    for u in uses:
+        inp = u.get("input") or {}
+        k = tool_kind(u.get("name"), inp, gate)
+        if k == "game" and u.get("name") == "Bash":
+            c["where"] = "S" if "steve.sh" in str(inp.get("command", "")) else "A"
+        if inp.get("run_in_background") and u.get("name") in ("Bash", "Agent", "Task"):
+            c["bg"].append("wait" if k == "watch" else k)
+            c["bg_last"] = c["bg"][-1]
+            c["open"][u.get("id")] = "think"
+        else:
+            c["open"][u.get("id")] = k
+    for b in blocks:
+        if b.get("type") == "tool_result":
+            c["open"].pop(b.get("tool_use_id"), None)
+            if b.get("is_error") and "owner sent you a note" in json.dumps(b.get("content"))[:4000]:
+                if not c["notes"] or t - c["notes"][-1] > GAME_MERGE_S:     # the gate repeats one note until it is read
+                    c["notes"].append(t)
+    if notified and c["bg"]:
+        c["bg"].pop(0)
+    c["ended"] = kind == "assistant" and msg.get("stop_reason") == "end_turn"
+
+
+def arc_feed(path, c, gate):
+    """Read what was added since the last read, whole lines only. A half-written last line waits for the next."""
+    size = os.path.getsize(path)
+    if c["offset"] > size:
+        c.clear()
+        c.update(arc_new())
+    if c["offset"] >= size:
+        return
+    with open(path, "rb") as f:
+        f.seek(c["offset"])
+        raw = f.read()
+    end = raw.rfind(b"\n")
+    if end < 0:
+        return
+    for line in raw[:end].split(b"\n"):
+        if b'"isSidechain":true' in line[:300] or not (b'"type":"assistant"' in line or b'"type":"user"' in line):
+            continue
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("isSidechain") or d.get("type") not in ("assistant", "user"):
+            continue
+        if d["type"] == "assistant":
+            hit = EFFORT.search(line)
+            if hit:
+                c["effort"] = hit[1].decode()
+        arc_step(c, d, gate)
+    c["offset"] += end + 1
+
+
+def arc_result(c, start, end, live):
+    """Seconds by kind and a letter a minute over the pass, from the walker's spans. The head before its first line is the
+    model starting up; the tail of a live pass goes to what is open now, or a stall once it has been quiet long enough."""
+    spans = [list(x) for x in c["spans"]]
+    if c["first"] is not None and c["first"] > start:
+        spans.insert(0, [start, c["first"], "think"])
+    if c["last"] is not None and end > c["last"]:
+        if live:
+            quiet = end - c["last"]
+            kinds = [k for k in c["open"].values() if k != "watch"]
+            tail = "idle" if not c["open"] and not c["bg"] and quiet > STALL_S else (min(kinds, key=ARC_PRIO.index) if kinds else job_kind(c) if c["open"] or c["bg"] else "think")
+        else:
+            tail = "think"
+        spans.append([c["last"], end, tail])
+    sec = Counter()
+    n = max(1, int((end - start) // BIN_S) + 1)
+    bins = [Counter() for _ in range(n)]
+    for a, b, k in spans:
+        a, b = max(a, start), min(b, end)
+        if b <= a:
+            continue
+        sec[k] += b - a
+        i = int((a - start) // BIN_S)
+        while a < b and i < n:
+            edge = start + (i + 1) * BIN_S
+            bins[i][k] += min(b, edge) - a
+            a, i = edge, i + 1
+    letters = "".join(ARC_LETTER[b.most_common(1)[0][0]] if b else "." for b in bins)
+    return {"sec": {k: int(v) for k, v in sec.items()}, "bins": letters}
+
+
+def session_of(pass_log):
+    """The transcript's id, from the pass log's first line. Raises Unmeasured when that line can't say."""
+    try:
+        with open(pass_log, "rb") as f:
+            first = f.readline(400_000)
+    except OSError:
+        raise Unmeasured("no log")
+    try:
+        sid = json.loads(first).get("session_id")
+    except ValueError:
+        raise Unmeasured("its log can't be read")
+    if not sid:
+        raise Unmeasured("its log can't be read")
+    return sid
+
+
+def bars_at(clone, sha):
+    """The loop's own count and open questions as they stood at a commit, or None when that commit has no count."""
+    out = {"bars": None, "q": None}
+    try:
+        counts = parse_progress(git(clone, "show", "%s:ralph/PROGRESS.md" % sha))["counts"]
+        if sum(counts.values()):
+            out["bars"] = {k: counts[k] for k in ("true", "false", "unseen")}
+    except Unmeasured:
+        pass
+    try:
+        out["q"] = sum(1 for q in parse_questions(git(clone, "show", "%s:ralph/QUESTIONS.md" % sha)) if not q["fyi"])
+    except Unmeasured:
+        out["q"] = 0
+    return out
+
+
+def read_arc(rec, cache, deadline):
+    """One row per pass of this loop. A finished pass is read once and kept; a live one is read from where it stopped."""
+    clone, logs = rec.get("clone"), rec["logs"]
+    gate = (rec.get("gate") or {}).get("game")
+    pdir = project_dir(clone) if clone else None
+    now = now_s()
+    rows = []
+    for p in rec["passes"]:
+        key = "%s#%d" % (logs, p["n"])
+        live = p["end"] is None
+        kept = cache.get(key)
+        if kept and kept.get("done") and kept.get("v") == ARC_VERSION:
+            rows.append(dict(kept, n=p["n"], start=p["start"], end=p["end"], live=False))
+            continue
+        row = {"n": p["n"], "start": p["start"], "end": p["end"] or now, "live": live, "v": ARC_VERSION}
+        walker = (kept or {}).get("walker") if (kept or {}).get("v") == ARC_VERSION else None
+        try:
+            sid = (kept or {}).get("session") or session_of(os.path.join(logs, "pass_%03d.jsonl" % p["n"]))
+            row["session"] = sid
+            path = os.path.join(pdir or "", sid + ".jsonl")
+            if not os.path.exists(path):
+                raise Unmeasured("no transcript")
+            if time.time() > deadline:
+                row["broken"] = "still being read"
+                rows.append(row)
+                continue
+            walker = walker or arc_new()
+            arc_feed(path, walker, gate)
+            if walker["lines"] and not walker["stamped"]:
+                raise Unmeasured("no times in its log")
+            if not walker["lines"]:
+                raise Unmeasured("nothing in its log yet" if live else "its log is empty")
+            row.update(arc_result(walker, p["start"], row["end"], live))
+            row.update(effort=walker["effort"], notes=walker["notes"], game=[g for g in walker["game"] if g[3] >= 60])
+        except Unmeasured as e:
+            row["broken"] = str(e)
+            if not live:
+                row["done"] = True
+                cache[key] = {k: v for k, v in row.items() if k not in ("start", "end", "live", "n")}
+            rows.append(row)
+            continue
+        if not live:
+            row["done"] = True
+            if p.get("head") and clone:
+                row.update(bars_at(clone, p["head"]))
+            cache[key] = {k: v for k, v in row.items() if k not in ("start", "end", "live", "n")}
+        else:
+            cache[key] = {"v": ARC_VERSION, "session": sid, "walker": walker}
+        rows.append(row)
+    return rows
+
+
 # ---- rendering ------------------------------------------------------------------------------------
 
 STATE_WORD = {"working": "working", "waiting for game": "waiting for game", "paused for review": "PAUSED FOR REVIEW",
               "stopped": "STOPPED", "done claimed": "DONE CLAIMED", "dead": "DEAD", "stuck": "STUCK", "not started": "not started", "unmeasured": "UNMEASURED"}
+
+
+def at_limit(r):
+    """Its tokens have reached the limit, whatever the last line of its log calls the stop."""
+    return bool(r.get("limit") and r.get("total") is not None and r["total"] >= r["limit"])
 
 
 def needs_you(loops, fault, world):
@@ -1481,7 +1839,9 @@ def needs_you(loops, fault, world):
                 out.append((2, "**%s claims done:** blind judge owed, then your look." % nm))
         elif r["state"] == "paused for review":
             out.append((2, "**%s reached its limit of %s tokens** and waits for your word on more." % (nm, toks(r["limit"]))))
-        elif r["state"] == "stopped":
+        elif r["state"] == "stopped" and at_limit(r):
+            out.append((2, "**%s reached its limit of %s tokens** and has stopped: %s." % (nm, toks(r["limit"]), r["state_why"])))
+        elif r["state"] == "stopped" and not r.get("stop_reason"):
             out.append((3, "**%s has stopped:** %s." % (nm, r["state_why"])))
         real_qs = [q for q in r["qs"] if not q["fyi"]]
         if real_qs:
@@ -1493,9 +1853,9 @@ def needs_you(loops, fault, world):
             out.append((4, "%s has an early look for you, %s old (LOOK.md)." % (nm, ago(now_s() - r["look_t"]))))
         if r["state"] == "working" and r.get("eta_s") is not None and r["eta_s"] < 2 * 3600:
             out.append((3, "%s will reach its token limit in about %s." % (nm, ago(r["eta_s"]))))
-        if r["state"] == "working" and r.get("stop_file") is not None:
+        if r["state"] == "working" and r.get("stop_file") is not None and not r.get("stop_reason"):
             out.append((4, "%s has STOP set: it ends after this pass. Clear it if that is no longer wanted." % nm))
-        elif r["state"] in ("waiting for game",) and r.get("stop_file") is not None:
+        elif r["state"] in ("waiting for game",) and r.get("stop_file") is not None and not r.get("stop_reason"):
             out.append((4, "%s has STOP set while it waits." % nm))
     if fault and fault.get("state"):
         st = fault["state"]
@@ -1757,6 +2117,454 @@ def loop_section(r, machines):
     return L
 
 
+# ---- the picture at the top of the page -------------------------------------------------------------
+# Inline SVG, viewed in Typora: one line with no blank line in it (a blank line ends Typora's HTML block and spills the rest
+# as text), no <details> (a click marks the page edited). It paints its own dark card, so it reads the same in a light or dark
+# theme. His window's column is about 765 px, so 1040 units draw at 0.73 scale: no text under 10.5 units.
+
+PIC_W = 1040
+BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#a2abb8", "#5d6675"
+ALERT = "#ff8a7a"           # text and marks that want him; always beside a word, never colour alone
+BARE, FALSE_BAR, OPEN_BAR = "#dfe3ea", "#ff5a4d", "#3a4250"
+INK = "#0b0f14"             # labels on a coloured layer
+ARC_COLOUR = {"wait": "#b28a00", "game": "#2aa98a", "build": "#b277d6", "code": "#e0713f", "think": "#4f97d6", "idle": "#6b7380"}
+ARC_WORD = {"wait": "waiting", "game": "game", "build": "building", "code": "writing code", "think": "thinking", "idle": "idle"}
+ARC_LONG = {"wait": "waiting for the game or a long run", "game": "driving the game and looking at it", "build": "building, testing, deploying",
+            "code": "writing code", "think": "reading and thinking", "idle": "idle or stalled"}
+ARC_STACK = ("wait", "game", "build", "code", "think", "idle")  # waiting on the baseline: it is the one to compare pass to pass
+GAP_WORD = {"queue": "queued for the game", "claimed": "said done, waiting on review", "stopped": "stopped", "limit": "at its token limit"}
+WINDOW_S = 24 * 3600
+LANE_L, LANE_R, SIDE_X = 12, 836, 850
+SIDE_CHARS = 33
+
+
+class Pic:
+    def __init__(self):
+        self.parts = []
+
+    def rect(self, x, y, w, h, fill, rx=0, title=None):
+        body = "<title>%s</title>" % escape(title) if title else ""
+        self.parts.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" fill="%s"%s>%s</rect>' % (x, y, max(w, 0), h, fill, ' rx="%s"' % rx if rx else "", body))
+
+    def line(self, x1, y1, x2, y2, colour=EDGE, width=1, dash=None):
+        self.parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="%s"%s/>' % (x1, y1, x2, y2, colour, width, ' stroke-dasharray="%s"' % dash if dash else ""))
+
+    def text(self, x, y, words, size=11, colour=TEXT, weight=None, anchor=None):
+        self.parts.append('<text x="%.1f" y="%.1f" font-size="%s" fill="%s"%s%s>%s</text>' % (
+            x, y, size, colour, ' font-weight="%s"' % weight if weight else "", ' text-anchor="%s"' % anchor if anchor else "", escape(str(words))))
+
+    def diamond(self, x, y, fill, title=None):
+        body = "<title>%s</title>" % escape(title) if title else ""
+        self.parts.append('<path d="M%.1f %.1f l6 6 l-6 6 l-6 -6 z" fill="%s" stroke="%s">%s</path>' % (x, y, fill, BG, body))
+
+    def out(self, h, label):
+        hatch = ('<defs><pattern id="arcHatch" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)"><rect width="7" height="7" fill="#2a2f38"/>'
+                 '<rect width="2.5" height="7" fill="#7d8796"/></pattern></defs>')
+        return ('<div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="100%%" role="img" aria-label="%s" style="max-width:%dpx;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif">%s'
+                '<rect width="%d" height="%d" rx="10" fill="%s"/>%s</svg></div>' % (PIC_W, h, escape(label, {'"': "&quot;"}), PIC_W, hatch, PIC_W, h, BG, "".join(self.parts)))
+
+
+def text_w(words, size):
+    return len(str(words)) * size * 0.53
+
+
+def gaps_of(rec):
+    """The stretches between passes, from the shell's own lines: (from, to, kind)."""
+    out, ev = [], rec["events"]
+    for i, (t, text) in enumerate(ev):
+        to = ev[i + 1][0] if i + 1 < len(ev) else now_s()
+        low = text.lower()
+        if text.startswith("GAME_WAIT"):
+            out.append((t, to, "queue"))
+        elif text.startswith("LOOP DONE_CLAIMED"):
+            out.append((t, to, "claimed"))
+        elif low.startswith("loop paused_for_review"):
+            out.append((t, to, "limit"))
+        elif low.startswith("loop stopped"):
+            out.append((t, to, "stopped"))
+    return out
+
+
+def own_counts(rec):
+    """The loop's own count at the end of each pass, with today's file standing in for the live pass."""
+    pts = [(a["n"], a["bars"]) for a in rec["arc"] or [] if a.get("bars")]
+    counts = rec["prog"]["counts"] if rec.get("prog") else None
+    if rec.get("open_pass") and counts and sum(counts.values()):
+        pts.append((rec["open_pass"]["n"], {k: counts[k] for k in ("true", "false", "unseen")}))
+    return pts
+
+
+def judged(rec):
+    """Each judge's answer in order, with what repeats from the one before."""
+    out, prev = [], None
+    for v in rec["verdicts"]:
+        v = dict(v)
+        v["repeat"] = sorted(set(v.get("short") or []) & set(prev)) if prev is not None else []
+        out.append(v)
+        prev = v.get("short") or []
+    return out
+
+
+def better_words(rec):
+    """(word, lines) for "is it getting better". A word only when there is enough history to earn it."""
+    pts = own_counts(rec)
+    js = judged(rec)
+    lines = []
+    if len(pts) >= 3:
+        recent = [b["true"] for _, b in pts[-4:]]
+        lines.append("Bars met, by its own count: %s of %d." % (", ".join(map(str, recent)), sum(pts[-1][1].values())))
+        agreed = js and js[-1].get("answer") == "yes" and rec.get("arc") and (js[-1].get("t") or 0) >= rec["arc"][-1]["end"]
+        word = "not by its own count" if recent[-1] <= recent[0] else "yes, and the judge agrees" if agreed else "only by its own count"
+    elif pts:
+        lines.append("Bars met, by its own count: %d of %d." % (pts[-1][1]["true"], sum(pts[-1][1].values())))
+        word = "too few to say"
+    else:
+        word = "too few to say" if js else "nothing to judge by yet"
+        if not js:
+            lines.append("It keeps no count of its own.")
+    if not js:
+        lines.append("No judge yet.")
+    else:
+        said = {"no": "no", "yes": "yes"}.get(js[-1].get("answer"), "unclear")
+        seq = ", then ".join("%s of %s" % (v["passed"], v["lines"]) if v.get("lines") else "unread" for v in js)
+        at = [a["n"] for a in rec.get("arc") or [] if js[-1].get("t") and a["end"] <= js[-1]["t"]]
+        where = " after pass %d" % at[-1] if at and len(js) == 1 else ""
+        lines.append("Judge said %s%s: %s lines passed." % (said, where, seq))
+        rep = js[-1]["repeat"]
+        if rep:
+            lines.append("%d line%s refused both times." % (len(rep), "" if len(rep) == 1 else "s"))
+        if len(js) < 3:
+            lines.append("One judgement is no trend." if len(js) == 1 else "Two judgements are no trend.")
+        else:
+            a, b = len(js[-3].get("short") or []), len(js[-1].get("short") or [])
+            lines.append("Refusals %s over 3 judgements." % ("shrinking" if b < a else "growing" if b > a else "not shrinking"))
+    return word, lines
+
+
+def wants(rec):
+    """What this loop wants from him, in the fewest words."""
+    out = []
+    state = rec["state"]
+    if state in ("dead", "stuck", "unmeasured"):
+        out.append({"dead": "dead: restart or retire", "stuck": "looks stuck", "unmeasured": "can't be read"}[state])
+    if state == "done claimed":
+        out.append("says done: your look")
+    if state == "paused for review" or (state == "stopped" and at_limit(rec)):
+        out.append("at its token limit: your word")
+    if state == "stopped" and not rec.get("stop_reason") and not at_limit(rec):
+        out.append("stopped, nobody said why")
+    real = [q for q in rec.get("qs") or [] if not q["fyi"]]
+    if real:
+        out.append("%d question%s for you" % (len(real), "" if len(real) == 1 else "s"))
+    if rec.get("look_t"):
+        out.append("an early look for you")
+    if state == "working" and rec.get("eta_s") is not None and rec["eta_s"] < 2 * 3600:
+        out.append("token limit in about %s" % ago(rec["eta_s"]))
+    return out
+
+
+def now_words(rec):
+    """(colour of what it is doing, the state, what it is doing)."""
+    state = rec["state"]
+    arc = rec.get("arc") or []
+    live = arc[-1] if arc and arc[-1].get("live") else None
+    kind = ARC_OF_LETTER.get(live["bins"][-1]) if live and live.get("bins") else None
+    word = {"waiting for game": "queued for the game", "done claimed": "said done", "paused for review": "at its token limit"}.get(state, state)
+    if state == "waiting for game" and rec.get("wait_on"):
+        word = "queued behind %s" % ", ".join(rec["wait_on"])
+    quiet = now_s() - rec["last_active"] if rec.get("last_active") else None
+    tx = rec.get("tx")
+    if state == "working" and rec.get("open_pass"):
+        what = "pass %d, %s in" % (rec["open_pass"]["n"], ago(now_s() - rec["open_pass"]["start"]))
+        if tx and tx["tools"]:
+            what += ": " + tx["tools"][-1]["line"].replace("ran: ", "", 1)
+        return ARC_COLOUR.get(kind or "think"), word, what
+    if state == "waiting for game":
+        return ARC_COLOUR["wait"], word, "for %s, spending nothing" % ago(now_s() - rec["events"][-1][0])
+    if state == "stopped":
+        return ARC_COLOUR["idle"], word, rec.get("stop_reason") or ("for %s" % ago(quiet) if quiet is not None else "")
+    return ARC_COLOUR["idle"], word, "for %s" % ago(quiet) if quiet is not None else ""
+
+
+def draw_axis(p, tmin, tmax, sx, y0, y1, now):
+    """Hour marks in real time. Labels every 2 hours, or every 4 when the window is long."""
+    step = 4 if tmax - tmin > 18 * 3600 else 2
+    d = dt.datetime.fromtimestamp(tmin).replace(minute=0, second=0, microsecond=0)
+    while d.timestamp() < tmax:
+        t = d.timestamp()
+        if t >= tmin and d.hour % step == 0:
+            p.line(sx(t), y0, sx(t), y1, "#262b34")
+            if sx(now) - sx(t) > 34:
+                p.text(sx(t), y0 - 4, d.strftime("%b %-d") if d.hour == 0 else d.strftime("%H:%M"), 10.5, TEXT if d.hour == 0 else DIM, "600" if d.hour == 0 else None, "middle")
+        d += dt.timedelta(hours=1)
+
+
+def draw_pass(p, a, sx, tmin, y, height, rec):
+    """One pass: width is its real time, layers its split, waiting on the baseline. Broken data is hatched and says so."""
+    x0, x1 = sx(max(a["start"], tmin)), sx(a["end"])
+    w = max(x1 - x0 - 1.5, 2)
+    tokens = a.get("tokens")
+    head = str(a["n"])
+    p.text(x0, y - 3, head, 10.5, TEXT, "700")
+    if tokens and w > 40:
+        p.text(x0 + text_w(head, 10.5) + 5, y - 3, toks(tokens), 10.5, DIM)
+    if a.get("broken") or not a.get("sec"):
+        why = a.get("broken") or "no time read"
+        p.rect(x0, y, w, height, "url(#arcHatch)", 0, "pass %d: %s" % (a["n"], why))
+        return
+    total = max(1, sum(a["sec"].values()))
+    title = "pass %d, %s to %s: %s" % (a["n"], clock(a["start"]), clock(a["end"]), ", ".join(
+        "%s %d min" % (ARC_WORD[k], round(a["sec"][k] / 60)) for k in ARC_STACK if a["sec"].get(k, 0) >= 30))
+    title += "; %s tokens; %d commits" % (toks(tokens), len(a.get("commits") or []))
+    bottom = y + height
+    for k in ARC_STACK:
+        h = height * a["sec"].get(k, 0) / total
+        if h <= 0:
+            continue
+        p.rect(x0, bottom - h, w, h, ARC_COLOUR[k], 0, title)
+        minutes = round(a["sec"][k] / 60)
+        word = "%s %d min" % (ARC_WORD[k], minutes)
+        if h >= 13 and w >= text_w(word, 10.5) + 6:
+            p.text(x0 + 3, bottom - h / 2 + 3.7, word, 10.5, INK, "600")
+        elif h >= 13 and w >= text_w("%d min" % minutes, 10.5) + 6:
+            p.text(x0 + 3, bottom - h / 2 + 3.7, "%d min" % minutes, 10.5, INK, "600")
+        bottom -= h
+    for c in a.get("commits") or []:
+        p.line(sx(c), y + height, sx(c), y + height + 4, TEXT)
+    for t in a.get("notes") or []:
+        p.parts.append('<path d="M%.1f %.1f l4 6 h-8 z" fill="%s"><title>your note reached it, %s</title></path>' % (sx(t), y + height, ALERT, clock(t)))
+
+
+def draw_count(p, x, y, w, b, q):
+    """The loop's own count at the end of a pass: filled true, red false, dark unseen, with the numbers when they fit."""
+    total = max(1, sum(b.values()))
+    at = x
+    for k, colour in (("true", BARE), ("false", FALSE_BAR), ("unseen", OPEN_BAR)):
+        part = w * b[k] / total
+        if part > 0:
+            p.rect(at, y, max(part - 0.8, 0.5), 9, colour)
+        at += part
+    words = "%d of %d" % (b["true"], total)
+    if w < text_w(words, 10.5) + 2:
+        words = "%d/%d" % (b["true"], total)
+    if w >= text_w(words, 10.5):
+        p.text(x, y + 20, words, 10.5, TEXT)
+        if b["false"] and w >= text_w(words + " %d failed" % b["false"], 10.5) + 6:
+            p.text(x + text_w(words, 10.5) + 5, y + 20, "%d failed" % b["false"], 10.5, ALERT)
+
+
+def draw_loop(p, rec, y, tmin, sx):
+    """One loop's row. Returns its height."""
+    colour, word, what = now_words(rec)
+    p.parts.append('<circle cx="%d" cy="%.1f" r="5" fill="%s"/>' % (LANE_L + 5, y + 8, colour))
+    p.text(LANE_L + 15, y + 13, rec["name"], 15, TEXT, "700")
+    x = LANE_L + 15 + text_w(rec["name"], 15) + 8
+    p.text(x, y + 13, word, 12, TEXT, "600")
+    x += text_w(word, 12) + 8
+    room = int((SIDE_X - x) / (10.5 * 0.53))
+    p.text(x, y + 13, short(what, room), 10.5, DIM)
+    blocks_y = y + 34
+    height = 52
+    if rec.get("arc_why"):
+        p.text(LANE_L, blocks_y + 18, "Passes could not be read: %s" % short(rec["arc_why"], 90), 11, ALERT)
+    arc = rec.get("arc") or []
+    if not arc and not rec.get("arc_why"):
+        p.text(LANE_L, blocks_y + 18, "No passes on record yet.", 11, DIM)
+    gaps = [g for g in gaps_of(rec) if g[1] > tmin]
+    for a, b, kind in gaps:
+        a = max(a, tmin)
+        mid = blocks_y + height / 2
+        p.line(sx(a), mid, sx(b), mid, ARC_COLOUR["wait"] if kind == "queue" else "#7d8796", 2, "2 4")
+        label = GAP_WORD[kind]
+        if sx(b) - sx(a) > text_w(label, 10.5) + 8:
+            p.text((sx(a) + sx(b)) / 2, mid - 5, label, 10.5, ARC_COLOUR["wait"] if kind == "queue" else DIM, None, "middle")
+    earlier = sum(1 for a in arc if a["end"] <= tmin)
+    if earlier:
+        p.text(LANE_L, blocks_y - 3, "+%d earlier" % earlier, 10.5, FAINT)
+    broken = []
+    prev_effort = None
+    for a in arc:
+        tokens_known = next((q for q in rec["passes"] if q["n"] == a["n"]), None)
+        if tokens_known:
+            spent = tokens_known["t_end"] - tokens_known["t_start"] if tokens_known["t_end"] is not None else rec.get("live_tokens")
+            a["tokens"] = spent
+            a["commits"] = [c["t"] for c in rec["commits"] if tokens_known["start"] <= c["t"] <= (tokens_known["end"] or now_s())]
+        if a["end"] > tmin:
+            draw_pass(p, a, sx, tmin, blocks_y, height, rec)
+            b = a.get("bars")
+            if a.get("live") and not b:
+                pts = own_counts(rec)
+                b = pts[-1][1] if pts and pts[-1][0] == a["n"] else None
+            if b:
+                x0 = sx(max(a["start"], tmin))
+                draw_count(p, x0, blocks_y + height + 7, max(sx(a["end"]) - x0 - 1.5, 2), b, a.get("q"))
+            effort = a.get("effort")
+            if effort and prev_effort and effort != prev_effort:
+                x0 = sx(a["start"])
+                p.line(x0, blocks_y - 16, x0, blocks_y + height, ALERT, 1.5)
+                p.text(x0 - 3, blocks_y - 16, "%s effort from here" % effort, 10.5, ALERT, "600", "end")
+        if a.get("broken") and a["end"] > tmin and a["broken"] != "still being read":
+            broken.append("pass %d: %s" % (a["n"], a["broken"]))
+        elif a.get("broken") == "still being read":
+            broken.append("pass %d: still being read" % a["n"])
+        if a.get("effort"):
+            prev_effort = a["effort"]
+    last_x = None
+    counted = bool(own_counts(rec))
+    judge_y = blocks_y + height + (26 if counted else 8)
+    for v in judged(rec):
+        if v.get("t") is None or v["t"] < tmin:
+            continue
+        vx = sx(v["t"])
+        said = {"no": "judge said no", "yes": "judge said yes"}.get(v.get("answer"), "judge: answer unclear")
+        words = "%s, %s of %s" % (said, v["passed"], v["lines"]) if v.get("lines") else said
+        p.diamond(vx, judge_y, FALSE_BAR if v.get("answer") == "no" else BARE, short(v.get("call") or v.get("counts") or "", 200))
+        anchor = "end" if vx + 10 + text_w(words, 10.5) > LANE_R else None
+        p.text(vx + (-9 if anchor else 9), judge_y + 10, words, 10.5, TEXT, "600", anchor)
+        last_x = vx
+    # the side column: tokens, then is it getting better, then what it wants
+    sy = y + 13
+    if rec.get("total") is not None and rec.get("limit"):
+        frac = rec["total"] / rec["limit"]
+        p.text(SIDE_X, sy, "%s of %s tokens" % (toks(rec["total"]), toks(rec["limit"])), 10.5, DIM)
+        p.rect(SIDE_X, sy + 4, 178, 4, EDGE, 2)
+        p.rect(SIDE_X, sy + 4, 178 * min(1, frac), 4, FALSE_BAR if frac >= 0.9 else BARE, 2)
+    elif rec.get("total") is None:
+        p.text(SIDE_X, sy, "tokens: no reading", 10.5, ALERT)
+    sy += 24
+    word, lines = better_words(rec)
+    p.text(SIDE_X, sy, "Better? " + word, 12, TEXT, "700")
+    sy += 14
+    for ln in lines:
+        for piece in textwrap.wrap(ln, SIDE_CHARS):
+            p.text(SIDE_X, sy, piece, 10.5, DIM)
+            sy += 13
+    for line in broken[:3]:
+        for piece in textwrap.wrap("Can't draw " + line, SIDE_CHARS):
+            p.text(SIDE_X, sy, piece, 10.5, ALERT, "600")
+            sy += 13
+    for want in wants(rec):
+        p.parts.append('<circle cx="%d" cy="%.1f" r="3" fill="%s"/>' % (SIDE_X + 3, sy - 4, ALERT))
+        for i, piece in enumerate(textwrap.wrap(want, SIDE_CHARS - 2)):
+            p.text(SIDE_X + 10, sy, piece, 10.5, ALERT, "600")
+            sy += 13
+    below = judge_y - blocks_y - height + 18 if last_x is not None else (24 if counted else 10)
+    return max(blocks_y + height + below - y, sy - y + 4)
+
+
+def draw_games(p, loops, world, y, tmin, sx):
+    """Who drove each game when. Above: holds, labelled by loop. Under: each running game, a row per game when they overlap, red ticks for freezes."""
+    for name, letter in (("Archmagi", "A"), ("SteveDesktop", "S")):
+        m = (world.get("machines") or {}).get(name) or {}
+        d = m.get("data") or {}
+        for r in loops:
+            held = []
+            for a in r.get("arc") or []:
+                for g in a.get("game") or []:
+                    if g[2] != letter or g[1] <= tmin:
+                        continue
+                    if held and g[0] - held[-1][1] < HOLD_MERGE_S:
+                        held[-1][1] = g[1]
+                    else:
+                        held.append([g[0], g[1]])
+            for a, b in held:
+                x0, x1 = sx(max(a, tmin)), sx(b)
+                p.rect(x0, y, max(x1 - x0, 2), 17, ARC_COLOUR["game"], 2, "%s drove this game, %s to %s" % (r["name"], clock(a), clock(b)))
+                label = next((w for w in (r["name"], r["name"][:3]) if x1 - x0 > text_w(w, 10.5) + 5), None)
+                if label:
+                    p.text(x0 + 3, y + 12.5, label, 10.5, INK, "600")
+        rows = []
+        stalls = 0
+        for g in d.get("sessions") or []:
+            if g["end"] <= tmin:
+                continue
+            row = next((i for i, last in enumerate(rows) if g["start"] > last), None)
+            if row is None:
+                rows.append(0)
+                row = len(rows) - 1
+            rows[row] = g["end"]
+            yy = y + 20 + min(row, 2) * 4
+            p.rect(sx(max(g["start"], tmin)), yy, max(sx(g["end"]) - sx(max(g["start"], tmin)), 1), 3, "#5f6878")
+            for t, _gap in g.get("stalls") or []:
+                if t > tmin:
+                    stalls += 1
+        tick_y = y + 20 + min(max(len(rows), 1), 3) * 4
+        for g in d.get("sessions") or []:
+            for t, gap in g.get("stalls") or []:
+                if t > tmin:
+                    p.line(sx(t), tick_y, sx(t), tick_y + 5, FALSE_BAR)
+        sy = y + 11
+        p.text(SIDE_X, sy, "%s game" % name, 12, TEXT, "700")
+        sy += 14
+        if not m.get("fresh") and not d:
+            p.text(SIDE_X, sy, "no reading: %s" % short(m.get("why"), SIDE_CHARS - 12), 10.5, ALERT)
+        else:
+            games = d.get("games") or []
+            old = "" if m.get("fresh") else ", from an old reading"
+            if len(games) > 1:
+                words = "%d games running, ports %s%s" % (len(games), " and ".join(game_ports(games)), old)
+                colour, weight = ALERT, "600"
+            elif d.get("game"):
+                ports = d.get("ports") or []
+                words = "running, port %s%s" % (", ".join(ports) or "not up yet", old)
+                colour, weight = DIM, None
+            elif d.get("game") is False:
+                words, colour, weight = "not running" + old, DIM, None
+            else:
+                words, colour, weight = "state unknown", ALERT, None
+            p.text(SIDE_X, sy, short(words, SIDE_CHARS + 6), 10.5, colour, weight)
+            sy += 13
+            if d.get("sessions"):
+                for piece in textwrap.wrap("Grey: game open. %s" % ("Red: %d freeze%s of 1 s or more." % (stalls, "" if stalls == 1 else "s") if stalls else "No freezes of 1 s or more."), SIDE_CHARS):
+                    p.text(SIDE_X, sy, piece, 10.5, DIM)
+                    sy += 13
+        y += 58 + max(0, len(rows) - 1) * 4
+    return y
+
+
+def arc_picture(loops, world):
+    """The picture at the top of the page: one glance at what each loop does, where its time went, whether it is winning, what it wants."""
+    now = now_s()
+    starts = [a["start"] for r in loops for a in r.get("arc") or [] if a["end"] > now - WINDOW_S]
+    tmin = min(starts) if starts else now - 6 * 3600
+    tmin = max(tmin, now - WINDOW_S) - 300
+    tmax = now + 300
+    span = max(1, tmax - tmin)
+    sx = lambda t: LANE_L + (t - tmin) / span * (LANE_R - LANE_L)  # noqa: E731
+    p = Pic()
+    x = LANE_L
+    for k in ARC_STACK:
+        word = "waiting, for the game or a long run" if k == "wait" else ARC_WORD[k]
+        p.rect(x, 12, 11, 11, ARC_COLOUR[k], 2)
+        p.text(x + 15, 22, word, 11, TEXT)
+        x += 15 + text_w(word, 11) * 0.88 + 11
+    p.line(x + 3, 13, x + 3, 22, TEXT)
+    p.text(x + 8, 22, "commit", 11, DIM)
+    x += 8 + text_w("commit", 11) + 12
+    p.parts.append('<path d="M%.1f 15 l4 6 h-8 z" fill="%s"/>' % (x, ALERT))
+    p.text(x + 8, 22, "your note", 11, DIM)
+    p.text(PIC_W - 12, 22, "as of %s" % clock(now), 11, TEXT, "600", "end")
+    p.text(LANE_L, 39, "Each block is one numbered pass, tokens above it, its width its real time.", 11, DIM)
+    x = LANE_L + text_w("Each block is one numbered pass, tokens above it, its width its real time.", 11) * 0.9
+    p.text(x, 39, "Under it, bars met by its own count:", 11, DIM)
+    x += text_w("Under it, bars met by its own count:", 11) * 0.9 + 4
+    for word, colour in (("met", BARE), ("failed", FALSE_BAR), ("unseen", OPEN_BAR)):
+        p.rect(x, 30, 11, 10, colour)
+        p.text(x + 14, 39, word, 11, TEXT)
+        x += 14 + text_w(word, 11) + 9
+    body = Pic()
+    y = 70
+    for rec in loops:
+        y += draw_loop(body, rec, y, tmin, sx) + 8
+    y = draw_games(body, loops, world, y + 4, tmin, sx)
+    draw_axis(p, tmin, tmax, sx, 62, y - 6, now)
+    p.line(sx(now), 62, sx(now), y - 6, TEXT, 1)
+    p.text(sx(now), 58, "now", 10.5, TEXT, "700", "middle")
+    p.parts += body.parts
+    words = "; ".join("%s %s" % (r["name"], now_words(r)[1]) for r in loops) or "no loops"
+    return p.out(y + 2, "Artisan loops, on one clock: " + words)
+
+
 def glance_table(loops):
     L = ["| Loop | State | Game on | Pass | Tokens | Rate | Last active | Bars true / false / unseen |", "|---|---|---|---|---|---|---|---|"]
     for r in loops:
@@ -1804,6 +2612,11 @@ def build():
             sources.add("loop %s" % rec["name"], None, rec["unmeasured"]["loop"])
         prepare_safe(rec)
     state["tally"] = {p: c for p, c in tally_cache.items() if now_s() - (mtime(p) or 0) < 86400}
+    arc_cache = state.get("arc") or {}
+    arc_deadline = time.time() + ARC_BUDGET_S
+    for rec in loops:
+        rec["arc"], rec["arc_why"] = guarded(read_arc, rec, arc_cache, arc_deadline)
+    state["arc"] = arc_cache
 
     world = {"machines": read_machines(state, sources)}
     fault_data, fault_why = guarded(read_fault, sources)
@@ -1820,7 +2633,11 @@ def build():
     head = one_line(loops, needs, spend)
     stamp = "Generated %s, by `artisan_now.py`, no model called." % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%b %-d, %H:%M:%S %Z")
 
-    L = ["# Artisan now", "", "**%s**" % head, "", "%s Written every minute: over 3 minutes old means the timer is dead." % stamp, ""]
+    try:
+        picture, picture_why = arc_picture(loops, world), None
+    except Exception as e:      # a page without its picture still says everything else
+        picture, picture_why = None, "%s: %s" % (type(e).__name__, short(e, 110))
+    L = ["# Artisan now", "", picture if picture else "*The picture could not be drawn: %s*" % picture_why, "", "**%s**" % head, "", "%s Written every minute: over 3 minutes old means the timer is dead." % stamp, ""]
     if units_error:
         L += ["**Unit states are UNMEASURED: %s.** States below come from logs alone." % units_error, ""]
     L += ["## Needs you", ""]
@@ -1853,6 +2670,7 @@ def build():
           "**paused for review** it reached its token limit. **stopped** it ended on STOP or its own stop rule. **done claimed** it wrote DONE.md, "
           "which starts a review and is not acceptance. **dead** no unit runs it and its log has no clean finish. **stuck** the unit is up and nothing is happening.",
           "- **Tokens** are weighted: input + output + cache writes + cache reads ÷ 10, as the loop's own `tally.py` counts them. Today's figures spread each pass evenly over its hours, so they carry a ~.",
+          "- **The picture's split** comes from each pass's transcript: a shell command counts as game, waiting, building, code or thinking by what it runs, and model time counts as thinking, or code when it ends in an edit. A sleep or a poll can't say what it waits on, so waiting means the game or a long run; a queue for the game is drawn between passes. The model silent 5 minutes with nothing running is idle. The white strips under a pass are the loop's own count at the end of that pass; a diamond is a blind judge's answer.",
           "- **UNMEASURED** means the sheet could not read it, with the reason beside it. It never means zero.",
           "- Relentless lives on its own sheet: `%s\\RELENTLESS_NOW.md`." % NATIVE_OUT, ""]
     page = "\n".join(L)
@@ -1960,6 +2778,14 @@ def background_section(bg, why, old_logs):
     return L
 
 
+def better_line(r):
+    """The picture's one word for the phone, which stays text: at phone width the picture's labels would be about 4 px."""
+    try:
+        return better_words(r)[0]
+    except Exception:       # the phone is the last thing that should go blank
+        return "UNMEASURED"
+
+
 def phone_page(head, loops, needs, world, spend):
     t = dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%H:%M %Z")
     L = ["Artisan %s" % t, head, ""]
@@ -1972,6 +2798,7 @@ def phone_page(head, loops, needs, world, spend):
     for r in loops:
         tok = "tokens UNMEASURED" if r["total"] is None else toks(r["total"]) + ("/" + toks(r["limit"]) if r["limit"] else "")
         L.append("%s: %s, %s, %s" % (r["name"], r["state"], r["machine"], tok))
+        L.append("  better? %s" % better_line(r))
         tx = r.get("tx")
         if tx and tx["tools"] and r["state"] == "working":
             row = tx["tools"][-1]
@@ -1983,6 +2810,8 @@ def phone_page(head, loops, needs, world, spend):
             L.append("%s: UNMEASURED, %s" % (name, short(m["why"], 80)))
             continue
         bits = ["game " + ("up" if d.get("game") else "down" if d.get("game") is False else "UNMEASURED")]
+        if len(d.get("games") or []) > 1:
+            bits[0] = "%d games up, ports %s" % (len(d["games"]), " and ".join(game_ports(d["games"])))
         if d.get("game") and d.get("ratio_med") is not None and now_s() - d.get("tps_mtime", 0) < 180:
             bits.append("%d%% speed" % round(d["ratio_med"] * 100))
         if d.get("game") and d.get("period"):

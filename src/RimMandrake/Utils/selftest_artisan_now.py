@@ -8,6 +8,7 @@ No game, no bridge, no ssh, nothing outside a temp folder.
 """
 
 import contextlib
+import html
 import io
 import json
 import os
@@ -83,7 +84,8 @@ class World:
         if done:
             open(os.path.join(rd, "DONE.md"), "w").write("I would show this.\n")
         if stop:
-            open(os.path.join(logs, "STOP"), "w").close()
+            with open(os.path.join(logs, "STOP"), "w") as f:
+                f.write(stop if isinstance(stop, str) else "")
         if events_file:
             path = os.path.join(logs, "events.log")
             with open(path, "w") as f:
@@ -151,6 +153,94 @@ def glance(page, name):
     return m[0] if m else ""
 
 
+def stamp_iso(t):
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+
+
+def plant_pass(w, name, n, lines, session=None, garbage=False):
+    """A pass log whose first line names the transcript, and that transcript. `lines`: (seconds ago or None, kind, message)."""
+    logs = os.path.join(w.logs_root, "ralph_" + name)
+    session = session or "%s-pass-%d" % (name, n)
+    with open(os.path.join(logs, "pass_%03d.jsonl" % n), "w") as f:
+        f.write("this is not json\n" if garbage else json.dumps({"type": "system", "subtype": "init", "session_id": session}) + "\n")
+    clone = os.path.join(w.root, "scratch", "BENCH", "ralph_" + name)
+    with open(os.path.join(w.mod.project_dir(clone), session + ".jsonl"), "w") as f:
+        for ago_s, kind, msg in lines:
+            row = {"type": kind, "message": msg}
+            if ago_s is not None:
+                row["timestamp"] = stamp_iso(time.time() - ago_s)
+            f.write(json.dumps(row, separators=(",", ":")) + "\n")     # the transcript's own spacing: the reader filters on it
+
+
+def tool_call(tid, command):
+    return {"content": [{"type": "tool_use", "id": tid, "name": "Bash", "input": {"command": command}}]}
+
+
+def tool_done(tid):
+    return {"content": [{"type": "tool_result", "tool_use_id": tid, "content": "ok"}]}
+
+
+def plant_verdict(w, name, n, rows, answer, age):
+    path = os.path.join(w.logs_root, "ralph_" + name, "blind_judge_verdict_pass%d.md" % n)
+    with open(path, "w") as f:
+        f.write("# Verdict\n\n| Line | Verdict | Sure |\n|---|---|---|\n")
+        for line, verdict in rows:
+            f.write("| `%s` | %s | High |\n" % (line, verdict))
+        f.write("\n## Overall call\n\n%s, I would not show this.\n" % answer)
+    os.utime(path, (time.time() - age, time.time() - age))
+
+
+def plant_picture(mod, root):
+    """A world for the picture: a good pass beside a broken log, a live pass with no times, a loop with no history, stops with and
+    without a reason, loops at their limit, thin and thick judge history, two games on one machine, a watcher that is no loop."""
+    w = World(mod, root)
+    start = "LOOP start, 0 passes on record, 0 tokens"
+    w.loop("goodloop", [(7200, start), (7200, "PASS 1 start, 0 tokens so far"), (3600, "PASS 1 end, rc 0, 800000 tokens, head abc"),
+                        (3600, "PASS 2 start, 800000 tokens so far"), (1800, "PASS 2 end, rc 0, 900000 tokens, head def"),
+                        (1800, "LOOP DONE_CLAIMED, 900000 tokens")], unit=None)
+    plant_pass(w, "goodloop", 1, [(7100, "assistant", tool_call("a", "python.exe play.py step 3000")), (6500, "user", tool_done("a")),
+                                  (6400, "assistant", tool_call("b", "sleep 300; tail run.log")), (6100, "user", tool_done("b")),
+                                  (5700, "assistant", {"content": [{"type": "text", "text": "the model went quiet before this"}]}),
+                                  (3700, "assistant", tool_call("c", "ls")), (3650, "user", tool_done("c"))])
+    plant_pass(w, "goodloop", 2, [], garbage=True)
+    w.loop("notimes", [(1800, start), (1800, "PASS 7 start, 0 tokens so far")], pass_n=None)
+    plant_pass(w, "notimes", 7, [(None, "assistant", tool_call("a", "ls")), (None, "user", tool_done("a"))])
+    w.loop("nohist", [(600, start)])
+    w.loop("stopwhy", [(3000, start), (2000, "LOOP stopped: STOP file")], unit=None, stop="Conductor: held for the two-game trial\nmore\n")
+    w.loop("stopbare", [(3000, start), (2000, "LOOP stopped: STOP file")], unit=None, stop=True)
+    w.loop("pausedoff", [(3000, start), (2000, "LOOP PAUSED_FOR_REVIEW at 10000000 tokens")], unit=None)
+    w.loop("pausedon", [(3000, start), (2000, "LOOP PAUSED_FOR_REVIEW at 10000000 tokens")])
+    w.loop("stoplimit", [(3000, start), (2000, "LOOP stopped: STOP file, 12000000 tokens")], unit=None, stop="Conductor: enough\n")
+    w.loop("twojudges", [(9000, start), (2000, "LOOP DONE_CLAIMED, 5000000 tokens")], unit=None)
+    plant_verdict(w, "twojudges", 1, [("bar_a", "TRUE"), ("bar_b", "FALSE")], "No", 5000)
+    plant_verdict(w, "twojudges", 2, [("bar_a", "CANNOT TELL FROM THESE"), ("bar_b", "FALSE")], "No", 3000)
+    w.loop("threejudges", [(9000, start), (2000, "LOOP DONE_CLAIMED, 5000000 tokens")], unit=None)
+    plant_verdict(w, "threejudges", 1, [("bar_a", "FALSE"), ("bar_b", "FALSE"), ("bar_c", "FALSE")], "No", 7000)
+    plant_verdict(w, "threejudges", 2, [("bar_a", "FALSE"), ("bar_b", "TRUE"), ("bar_c", "FALSE")], "No", 5000)
+    plant_verdict(w, "threejudges", 3, [("bar_a", "FALSE"), ("bar_b", "TRUE"), ("bar_c", "TRUE")], "No", 3000)
+    w.units["rm-pyre-relaunch-at-limit"] = {"Id": "rm-pyre-relaunch-at-limit.service", "WorkingDirectory": "!/home/x", "ActiveState": "active", "SubState": "running",
+                                            "Result": "success", "ControlGroup": "", "ExecStart": "bash -c 'ralph/loop.sh'", "Environment": "",
+                                            "ActiveEnterTimestampMonotonic": "1000000"}
+    mod.list_units = lambda sources: w.units
+    mod.cgroup_processes = lambda props: (False, [])
+    now = time.time()
+
+    def read_machine(name):
+        if name == "SteveDesktop":
+            return {"read_at": now, "game": True, "ports": ["5174"], "games": [{"pid": "1", "ports": ["5174"]}, {"pid": "2", "ports": ["5175"]}], "tps_roots": 1,
+                    "wsl_free_mb": 4096, "sessions": [{"start": now - 7000, "end": now - 100, "pid": "1", "stalls": [[now - 3000, 2.5]]}, {"start": now - 6000, "end": now - 100, "pid": "2", "stalls": []}]}
+        return {"read_at": now, "game": False, "tps_roots": 1, "wsl_free_mb": 4096}
+
+    mod.read_machine = read_machine
+    mod.read_tailscale = lambda: []
+    mod.read_background = lambda sources: {"detached": [], "failed": [], "watchers": 0, "claude": __import__("collections").Counter()}
+    return w
+
+
+def picture_words(picture):
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", picture)))
+
+
 def scenarios(mod):
     """Run every check on this module; return the names of those that failed."""
     fails = []
@@ -200,7 +290,7 @@ def scenarios(mod):
         check("waiter_names_who", section(page, "waiter").startswith("## waiter: waiting for game") and "gives way to rm-ralph-healthy, which is active" in page)
         check("claim_is_not_acceptance", section(page, "claimed").startswith("## claimed: DONE CLAIMED") and "blind judge owed" in page)
         check("stamp_present", re.search(r"Generated \w+ \d+, \d\d:\d\d:\d\d \w+", page) is not None)
-        check("first_line_is_state", page.splitlines()[2].startswith("**9 loops:"))
+        check("first_line_is_state", page.splitlines()[4].startswith("**9 loops:"))
 
         # the tally is tally.py's arithmetic, read in pieces, with a half-written last line left for later
         path = os.path.join(root, "tally.jsonl")
@@ -270,6 +360,69 @@ def scenarios(mod):
         check("check_flags_dead_timer", (fresh, old, gone) == (0, 1, 1))
     finally:
         shutil.rmtree(root, ignore_errors=True)
+
+    # the picture: what it knows it draws, what it can't read it says, and it never draws a trend it hasn't earned
+    root = tempfile.mkdtemp(prefix="artisan_now_pic_")
+    try:
+        plant_picture(mod, root)
+        page, phone, state = mod.build()
+        lines = page.splitlines()
+        pic_line = lines[2]
+        pic = picture_words(pic_line)
+        check("pic_under_title", lines[0] == "# Artisan now" and pic_line.startswith("<div><svg") and pic_line.endswith("</svg></div>"))
+        block = page[page.index("<div><svg"): page.index("</svg></div>")] if "</svg></div>" in page else "\n"
+        check("pic_typora_no_blank_line", "\n" not in block and not lines[1].strip() and not lines[3].strip() and "<details" not in page)
+        # a broken pass log is hatched and named, with no layers drawn for it
+        check("pic_broken_log_said", "Can't draw pass 2: its log can't be read" in pic and "url(#arcHatch)" in pic_line)
+        check("pic_broken_log_no_false_data", re.search(r"pass 2, \S+ \S+ to ", pic) is None)
+        check("pic_good_pass_drawn", "pass 1, " in pic and "game 10 min" in pic and "waiting 5 min" in pic)
+        # a live pass whose transcript has no times
+        check("pic_no_times_said", "Can't draw pass 7: no times in its log" in pic)
+        check("pic_no_times_no_false_data", re.search(r"pass 7, \S+ \S+ to ", pic) is None)
+        # no history at all
+        check("pic_empty_history_said", "No passes on record yet." in pic and "nothing to judge by yet" in pic)
+        # thin history gets words, not a trend
+        check("pic_two_judges_no_trend", "Judge said no: 1 of 2, then 0 of 2 lines passed." in pic and "Two judgements are no trend." in pic and "1 line refused both times." in pic)
+        check("pic_three_judges_trend", "Refusals shrinking over 3 judgements." in pic)
+        def said(*trues):
+            return mod.better_words({"open_pass": None, "verdicts": [], "arc": [{"n": i, "end": 0, "bars": {"true": t, "false": 0, "unseen": 9 - t}} for i, t in enumerate(trues)]})[0]
+        check("pic_one_count_no_trend", said(3) == "too few to say" and said(3, 4) == "too few to say")
+        check("pic_own_rise_says_whose", said(3, 4, 5) == "only by its own count" and said(5, 5, 5) == "not by its own count" and said(5, 4, 3) == "not by its own count")
+        # a stall: the model silent past the limit with nothing open
+        g = next(a for a in mod.read_arc({"logs": os.path.join(mod.LOG_ROOT, "ralph_goodloop"), "clone": os.path.join(root, "scratch", "BENCH", "ralph_goodloop"), "gate": {},
+                                          "passes": [{"n": 1, "start": time.time() - 7200, "end": time.time() - 3600, "head": None}]}, {}, time.time() + 9))
+        check("arc_stall_is_idle", g["sec"].get("idle", 0) >= 1900)
+        check("arc_game_and_wait", 590 <= g["sec"].get("game", 0) <= 610 and 290 <= g["sec"].get("wait", 0) <= 310)
+        check("arc_adds_up", abs(sum(g["sec"].values()) - 3600) <= 2)
+        # a finished pass is kept: its transcript can go and the picture still draws it
+        key = "%s#1" % os.path.join(mod.LOG_ROOT, "ralph_goodloop")
+        check("arc_finished_kept", state["arc"].get(key, {}).get("done") and "walker" not in state["arc"][key])
+        # STOP's first line is its reason, and a reason is not a call for him
+        needs = page.split("## Needs you")[1].split("## Loops at a glance")[0]
+        check("stop_reason_shown", "Conductor: held for the two-game trial" in section(page, "stopwhy") and "Conductor: held for the two-game trial" in pic)
+        check("stop_reason_not_needs", "stopwhy" not in needs)
+        check("stop_bare_needs", "**stopbare has stopped:**" in needs)
+        # a loop at its limit always wants him, whatever its log calls the stop
+        check("limit_paused_off_needs", "**pausedoff reached its limit" in needs and section(page, "pausedoff").startswith("## pausedoff: PAUSED FOR REVIEW"))
+        check("limit_paused_on_needs", "**pausedon reached its limit" in needs)
+        check("limit_stop_needs", "**stoplimit reached its limit" in needs)
+        # two games on one machine, both ports, on page, phone and picture
+        check("two_games_page", "**2 games running**, ports 5174 and 5175." in page)
+        check("two_games_phone", "SteveDesktop: 2 games up, ports 5174 and 5175" in phone)
+        check("two_games_picture", "2 games running, ports 5174 and 5175" in pic and "Red: 1 freeze of 1 s or more." in pic)
+        check("watcher_not_a_loop", "relaunch" not in pic and "## pyre-relaunch" not in page)
+        # the classifier, on what the logs really hold
+        k = mod.bash_kind
+        check("kind_heredoc_body_ignored", k("cat > probe.py <<'EOF'\nbridge take; python.exe; sleep 100\nEOF") == "code")
+        check("kind_wait", k("sleep 240; cat out.log") == "wait" and k("timeout 590 tail --pid=12 -f /dev/null") == "wait" and k("python3 - <<'E'\nwhile time.time()-t<400: pass\nE") == "wait")
+        check("kind_game", k("python.exe src/play.py step 300") == "game" and k("ralph/steve.sh run 'x'") == "game")
+        check("kind_build", k("python3 src/Utils/winbuild.py Mod 2>&1 | tail -1") == "build" and k("python3 deploy_custom_mods.py --mod X --apply") == "build" and k("python.exe src/x/selftest_y.py") == "build")
+        check("kind_think", k("grep -n foo bar.cs | head") == "think" and k("cat notes.md") == "think")
+        # verdict parsing
+        v = mod.parse_verdict(os.path.join(mod.LOG_ROOT, "ralph_twojudges", "blind_judge_verdict_pass2.md"))
+        check("verdict_parsed", v["lines"] == 2 and v["passed"] == 0 and v["answer"] == "no" and v["short"] == ["bar_a", "bar_b"])
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
     return fails
 
 
@@ -294,6 +447,23 @@ MUTANTS = [
     ('if p >= 2 and fit >=', 'if False and fit >=', "reader_finds_freeze"),
     ('big = sorted(k for k, x in wr.items() if x["ms"] >= 150)', 'big = sorted(wr)', "reader_quiet_on_smooth_game"),
     ('return 1 if age > STALE_PAGE_S else 0', 'return 0', "check_flags_dead_timer"),
+    ('"".join(self.parts)))', '"\\n\\n".join(self.parts)))', "pic_typora_no_blank_line"),
+    ('raise Unmeasured("its log can\'t be read")\n    if not sid', 'return "x"\n    if not sid', "pic_broken_log_said"),
+    ('row["broken"] = str(e)\n', 'row.update(sec={"game": 600}, bins="G")\n', "pic_broken_log_no_false_data"),
+    ('word = "not by its own count" if recent[-1] <= recent[0] else', 'word = "only by its own count" if recent[-1] <= recent[0] else', "pic_own_rise_says_whose"),
+    ('if walker["lines"] and not walker["stamped"]:', 'if False:', "pic_no_times_said"),
+    ('if not arc and not rec.get("arc_why"):', 'if False:', "pic_empty_history_said"),
+    ('if len(js) < 3:', 'if False:', "pic_two_judges_no_trend"),
+    ('if len(pts) >= 3:', 'if len(pts) >= 1:', "pic_one_count_no_trend"),
+    ('if gap > STALL_S:', 'if False:', "arc_stall_is_idle"),
+    ('outer = HEREDOC.sub(" ", command)', 'outer = command', "kind_heredoc_body_ignored"),
+    ('elif r["state"] == "stopped" and not r.get("stop_reason"):', 'elif r["state"] == "stopped":', "stop_reason_not_needs"),
+    ('if line.strip():\n                return short(line, 140)', 'if False:\n                return short(line, 140)', "stop_reason_shown"),
+    ('return bool(r.get("limit") and r.get("total") is not None and r["total"] >= r["limit"])', 'return False', "limit_stop_needs"),
+    ('    if text.startswith("LOOP PAUSED_FOR_REVIEW"):\n        return "paused for review", "it reached its token limit and waits for your word"\n    if rec["unmeasured"]', '    if rec["unmeasured"]', "limit_paused_on_needs"),
+    ('if len(games) > 1:', 'if False:', "two_games_page"),
+    ('continue    # a watcher', 'pass    # a watcher', "watcher_not_a_loop"),
+    ('row["done"] = True\n            if p.get("head")', 'row["done"] = False\n            if p.get("head")', "arc_finished_kept"),
 ]
 
 
