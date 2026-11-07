@@ -48,6 +48,10 @@ it to DRAFT by hash mismatch, so amend it only in another sitting with him.
 
 (`state:` is kept as a single bare token because `modcheck/cli.py` parses that field.)
 
+The paragraph above describes the ten lines of 2026-09-16. The social lines, the
+art-skill line and the personality line came later, added on his word by card
+2026-11-07; that same sentence's rule on amending applies to them.
+
 ### the experience  (OWNER'S WORDS — verbatim)
 
 2026-08-30, filing `GRAFFITI_MOD_EXPANSION_1`:
@@ -71,6 +75,29 @@ it to DRAFT by hash mismatch, so amend it only in another sitting with him.
 
 🔑 The through-line in all three: **variety, and marks that read as punk/urban
 graffiti.** *"All the various kinds"* is a demand about appearance, not mechanism.
+
+His words on what happens between people came later, and add to that:
+
+2026-11-07, on the contrast sheet:
+
+> *"And did you test the social implications of the mod? It's more than just art
+> display."*
+
+2026-11-07, on art skill:
+
+> *"Please ensure that a person's art skill goes into the art's effect. A poor
+> artist will paint such a bad graffiti mark that it is ugly, harms a room's beauty,
+> and gives mood debuffs. But a highly skilled artist is actually making art. It is
+> beautiful, improves a room and people's moods. And this combines with slanderous
+> art: it can actually make you really angry as well as improve your mood from the
+> beauty of it. Emotions are complicated."*
+
+2026-11-07, on personality:
+
+> *"Take a moment to consider the many personality types and how this would interact
+> with them. Sociopaths wouldn't feel any mood change or care, while sensitive types
+> might get extra mood debuffs or buffs as results. Clean freaks might get extra
+> debuffs and have a mood break that makes them compulsively clean graffitti marks."*
 
 ### must show
 
@@ -106,6 +133,37 @@ graffiti.** *"All the various kinds"* is a demand about appearance, not mechanis
 **Beauty legibility**
 - [ ] `mark_ugliness_is_visible` — a Beauty −15 vandal scrawl looks worse than a
       Beauty −3 tally at a glance. The stat and the picture agree.
+
+**Between people — his "more than just art display"**
+- [ ] `mockery_changes_regard` — a mockery names someone, hurts or amuses the right
+      people, and changes how they regard its painter.
+- [ ] `tribute_and_memorial_mean_it` — a tribute can warm someone, make someone
+      jealous, or annoy an enemy; a memorial comes from someone actually grieving.
+- [ ] `pawns_answer_the_wall` (change) — pawns answer what is on the wall: the player
+      sees the scrub, the cross-out, the reply or the confrontation finish.
+- [ ] `raid_mark_troubles_until_retaken` (change) — a raid's mark left standing
+      troubles the colony; taking the wall back ends that claim.
+- [ ] `visitors_read_without_recharging` — visitors can read an insult to their
+      faction. One passing trader must never charge the same wall over and over.
+- [ ] `stories_not_a_tax` — graffiti makes occasional stories in an ordinary colony.
+      It must never become a permanent mood tax or a stream of messages.
+- [ ] `fights_have_people_and_reasons` — a fight has people and a reason behind it.
+      Paint must never manufacture violence from nothing or bypass a pawn's
+      restrictions.
+- [ ] `stands_alone_and_obeys_settings` — graffiti works alone, without an
+      ideoligion, survives saving, and stops when its settings say it stops.
+
+**Art skill — his words, 2026-11-07**
+- [ ] `art_skill_goes_into_the_art` — "a poor artist will paint such a bad graffiti
+      mark that it is ugly, harms a room's beauty, and gives mood debuffs"; "a highly
+      skilled artist is actually making art. It is beautiful, improves a room and
+      people's moods"; and slanderous art "can actually make you really angry as well
+      as improve your mood from the beauty of it".
+
+**Personality — each kind of person takes it like themselves**
+- [ ] `each_takes_it_like_themselves` — psychopaths don't care: no mood change from
+      any mark. Sensitive people feel more, both ways. Clean freaks take extra
+      debuffs and can break into compulsively cleaning graffiti marks.
 
 ### cannot show
 
