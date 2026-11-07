@@ -8,6 +8,7 @@ one runs. A detached run lives in its own transient systemd unit and survives th
       [--model opus|sonnet] [--max-s 3600] [--budget-usd 15]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
+  python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
 
 launch: the item must be on the ledger. It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
@@ -18,6 +19,12 @@ finish: runs when the unit stops for any reason (done, failed, killed at its bou
 claude_bounded scope (claude-seat-<seat>-<unit>.scope): claude lives there, outside the unit, so a stopped unit alone left
 it running and billing (DETACHED_STOP_FIX_ORPHAN_KEEPS_BILLING, 2026-11-03: killed at 15:06:59, ran to ~15:13). It writes the outcome as a note
 on the item, publishes the seat's shard from the clone, and appends one line to the Conductor log. Once per run.
+return: the run's last step gives the pool clone <ITEM>.det BACK (RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES, 2026-11-07:
+three finished .det clones, a stopped pipeline's ten and SHOWINGS held 16 of 16 pool places and 67 of 70 GB while little ran).
+It lands the clone's conversation records, publishes the seat shard if the run left it dirty, levels the clone with
+./sync, then hands what is still unlanded to Effects.remove_clone, which bundles every commit, stash and dirty file to
+the store before the clone goes (or parks it as a warm spare). A bundle that cannot be made KEEPS the clone, and the step
+says so; a clone the caller gave with --clone, one a process sits in and one another live run uses are never touched.
 Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expected to run over ~20 min; the Agent
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
 """
@@ -156,6 +163,161 @@ def stop_scope(seat, unit, runner=subprocess.run):
     return "scope %s: %s; now %s" % (scope, "; ".join(said), RL.unit_state(scope, runner=runner))
 
 
+def return_argv(rec):
+    """The unit's last ExecStopPost: start the return step in a unit of its own and let go (--no-block). ExecStopPost runs
+    under the run's TimeoutStopSec=30, and a bundle of a 3.6 GB clone, a landing and a ./sync take longer than that."""
+    me = os.path.abspath(__file__)
+    env = ["--setenv", "RM_DISPATCHER_STATE=" + rec["state"], "--setenv", "RIMFLOW_SEAT=" + rec["seat"],
+           "--setenv", "AGENT_SEAT=" + rec["seat"]]
+    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RELENTLESS_ROOT"):
+        if os.environ.get(k):
+            env += ["--setenv", "%s=%s" % (k, os.environ[k])]
+    return ["/usr/bin/systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", rec["unit"] + "-return",
+            "-p", "RuntimeMaxSec=1800", "-p", "StandardOutput=file:" + rec["out"] + ".return", "-p", "StandardError=inherit",
+            *env, "/usr/bin/python3", me, "return", "--unit", rec["unit"]]
+
+
+def owns_clone(rec):
+    """True for the pool clone <pool>/clones/<ITEM>.det that launch made or reused itself. A clone the caller gave with
+    --clone is theirs, and so is any other path: this step never touches them."""
+    how = rec.get("clone_how") or ""
+    want = os.path.join(pool_root(), "clones", rec.get("item", "") + ".det")
+    return how.startswith(("made ", "reused ")) and os.path.abspath(rec.get("clone") or "") == os.path.abspath(want)
+
+
+def other_users(rec, root=None):
+    """Units of other runs that are still going and hold this run's clone."""
+    out = []
+    d = runs_dir(root)
+    for n in sorted(os.listdir(d)):
+        if not n.endswith(".json") or n.endswith(".out.json"):
+            continue
+        o = read_record(n[:-5], root)
+        if o and o.get("unit") != rec.get("unit") and o.get("clone") == rec.get("clone") \
+                and o.get("status") in ("launching", "running"):
+            out.append(o["unit"])
+    return out
+
+
+def clone_busy(clone):
+    """True when a process has its cwd in the clone (scratch_clone's own test; this process is not counted)."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+    import scratch_clone as SC
+    return SC.clone_in_use(SC.Path(clone))
+
+
+def evict_clone(item, clone, before=None):
+    """-> (bundle dir or None, why the clone stayed or None). relentless Effects.remove_clone: every commit, stash and
+    dirty file goes to the store's bundles first, then the clone is parked as a warm spare or removed. A bundle that
+    cannot be made keeps the clone (and alarms on the relentless journal)."""
+    import relentless as R
+    store = R.Store(pool_root())
+    fx = R.Effects(R.rules(), store)
+    out = fx.remove_clone({"clone": clone, "item": item}, before)
+    if os.path.isdir(clone):
+        return out, "the clone stayed: its bundle or its removal failed (alarm on the relentless journal)"
+    return out, None
+
+
+def _tail(r, n=140):
+    return ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or "")).strip()[-n:]
+
+
+def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, log_path=None):
+    """The run's last step. -> (exit code, text). Gives the pool clone back after landing what can land and bundling the
+    rest; keeps it (exit 1) when a bundle cannot be made. Once per run: a second call changes nothing."""
+    now = now or time.time()
+    rec = read_record(unit, root)
+    if not rec:
+        return 2, "no record for %s" % unit
+    if rec.get("returned"):
+        return 0, "already returned %s" % unit
+    clone, seat, item = rec["clone"], rec["seat"], rec["item"]
+    if not owns_clone(rec):
+        return 0, "left alone: %s is not a pool clone this helper made (%s)" % (clone, rec.get("clone_how", "-"))
+    if rec.get("status") != "finished":
+        return 0, "kept %s: the run is %s, not finished (its finish step has not recorded it)" % (clone, rec.get("status"))
+    mates = other_users(rec, root)
+    if mates:
+        return 0, "kept %s: still in use by %s" % (clone, ", ".join(mates))
+    if not os.path.isdir(clone):
+        rec.update(returned=now, return_steps=["clone already gone"])
+        write_record(rec, root)
+        return 0, "returned %s: the clone was already gone" % unit
+    if (busy or clone_busy)(clone):
+        return 0, "kept %s: a process is working in it" % clone
+    steps = []
+
+    def run(argv, what, timeout=300):
+        r = runner(argv, cwd=clone, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+        steps.append("%s exit %d" % (what, r.returncode))
+        return r
+    land = os.path.join(clone, "src", "RimMandrake", "Utils", "conversations_land.py")
+    if os.path.exists(land):
+        r = run(["python3", land, "--apply"], "conversations")
+        if r.returncode:
+            steps.append("conversations: " + _tail(r))
+    shard = "infrastructure/state/ledger/events/%s.jsonl" % seat
+    if publish_ledger:
+        r = run(["git", "status", "--porcelain", "--", shard], "shard status", 60)
+        if r.returncode == 0 and (r.stdout or "").strip():
+            r = run(["./publish", "-m", "ledger: %s returned its clone" % item, shard], "publish")
+            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", _tail(r, 400))
+            steps.append("publish " + (m.group(1)[:10] if m else "FAILED: " + _tail(r, 100)))
+    run(["./sync"], "sync")
+    told = []
+
+    def before(bundle):     # the clone still stands: say where its leftovers went
+        told.append(bundle)
+        if not publish_ledger:  # its dirty ledger lines ride in the bundle; a note's publish would send them upstream too
+            return
+        text = ("DETACHED run %s left work no remote had; its clone %s is bundled at %s and goes back to the pool. NEXT: "
+                "restore it from that bundle (relentless restore_bundle) if the work is still wanted." % (unit, clone, bundle))
+        r = run(["python3", os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py"), "note", item, "--text", text,
+                 "--seat", seat, "--why", "detached run clone returned"], "bundle note", 120)
+        if r.returncode == 0:
+            r = run(["./publish", "-m", "ledger: %s clone bundled" % item, shard], "publish note")
+            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", _tail(r, 400))
+            steps.append("publish note " + (m.group(1)[:10] if m else "FAILED: " + _tail(r, 100)))
+    try:
+        bundle, kept = (evictor or evict_clone)(item, clone, before)
+    except Exception as e:  # noqa: BLE001  never lose the clone to a surprise: it stays
+        bundle, kept = None, "eviction raised: %s" % str(e)[:200]
+    steps.append("bundle " + (bundle or "none (nothing left to bundle)"))
+    if kept:
+        steps.append("KEPT: " + kept)
+    rec.update(return_steps=steps, bundle=bundle)
+    if not kept:
+        rec["returned"] = now
+    write_record(rec, root)
+    if bundle or kept:
+        try:
+            conductor_line("%s on %s: clone %s %s. %s. READ: rimflow show %s." % (
+                unit, item, clone, "KEPT" if kept else "returned, leftovers bundled at %s" % bundle, "; ".join(steps)[-300:], item),
+                now, log_path)
+        except Exception as e:  # noqa: BLE001
+            steps.append("conductor log FAILED: %s" % e)
+    return (1 if kept else 0), "%s %s: %s" % ("KEPT" if kept else "RETURNED", unit, "; ".join(steps))
+
+
+def return_all(runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, now=None, grace_s=3600):
+    """Every finished run whose pool .det clone is still standing and not returned (a return step that never ran), except
+    a run that ended less than grace_s ago: whoever launched it may still be reading the clone."""
+    out, worst = [], 0
+    now = now or time.time()
+    d = runs_dir(root)
+    for n in sorted(os.listdir(d)):
+        if not n.endswith(".json") or n.endswith(".out.json"):
+            continue
+        rec = read_record(n[:-5], root)
+        if rec and rec.get("status") == "finished" and not rec.get("returned") and owns_clone(rec) \
+                and os.path.isdir(rec["clone"]) and now - (rec.get("ended") or rec.get("at") or 0) >= grace_s:
+            rc, text = return_clone(rec["unit"], now=now, runner=runner, evictor=evictor, busy=busy, publish_ledger=publish_ledger, root=root)
+            out.append(text)
+            worst = max(worst, rc)
+    return worst, "\n".join(out) or "no finished run holds a pool clone"
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -166,12 +328,14 @@ def launch_argv(rec, msg, claude):
     wrapup = "-+/usr/bin/python3 %s unit --unit %s --seat %s --clone %s" % (
         shlex.quote(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wrapup.py")), shlex.quote(unit),
         shlex.quote(seat), shlex.quote(clone))
+    back = "-" + shlex.join(return_argv(rec))
     cmd = [bounded, "-p", msg, "--model", rec["model"], "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + rec["out"], "-p", "StandardError=file:" + rec["err"],
             "-p", "ExecStopPost=" + finish,
             "-p", "ExecStopPost=" + wrapup,     # the census of what it left (wrapup.py), after finish recorded it
+            "-p", "ExecStopPost=" + back,       # last: the pool clone goes back, bundled (return_clone)
             "--working-directory", clone,
             "--setenv", "AGENT_SEAT=" + seat, "--setenv", "RIMFLOW_SEAT=" + seat,
             *(sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(rec["tmp"]).items()), []) if rec.get("tmp") else []),
@@ -348,6 +512,12 @@ def main(argv=None):
     a.add_argument("--clone", help="an existing clone to run in (default: a pool clone <ITEM>.det)")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
+    b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
+    b.add_argument("--unit")
+    b.add_argument("--all", action="store_true", help="every finished run whose pool .det clone still stands")
+    b.add_argument("--grace-s", type=int, default=3600, help="with --all: skip a run that ended more recently than this")
+    b.add_argument("--no-publish-ledger", action="store_true",
+                   help="do not publish the seat shard from the clone (its dirty lines ride in the bundle instead)")
     s = sub.add_parser("status")
     s.add_argument("--all", action="store_true")
     args = ap.parse_args(argv)
@@ -360,6 +530,14 @@ def main(argv=None):
                           clone=args.clone)
     elif args.cmd == "finish":
         rc, text = finish(args.unit)
+    elif args.cmd == "return":
+        os.chdir("/")           # the unit's working directory is the clone; a process sitting in it would keep it
+        if bool(args.unit) == bool(args.all):
+            rc, text = 2, "return: give --unit U, or --all"
+        elif args.all:
+            rc, text = return_all(publish_ledger=not args.no_publish_ledger, grace_s=args.grace_s)
+        else:
+            rc, text = return_clone(args.unit, publish_ledger=not args.no_publish_ledger)
     else:
         rc, text = 0, status(args.all)
     print(text)

@@ -146,6 +146,14 @@ Read before you redesign anything. Each of these has cost generations.
   `Popen` from the tick, in no unit. On 2026-11-06 it kept calling `game_next` and launched the game 11 minutes
   after the stop, and the owner caught it. Kill it by pid and check the journal. `dispatcher stop-runs` also
   leaves `rm-dispatcher.timer` off, which disables Conductor restarts.
+- 🔴 **A stop must also give the pool back.** A frozen running, stopping, checking or game-active item reads live
+  to `pool_rows` by status, and only `release_parked` frees clones, so on 2026-11-07 ten of them held 16 of 16
+  places and 67 of 70 GB while little ran (`RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES`). Under PAUSE the tick
+  now calls `park_stopped`, and `relentless.py park-pool` does the same by hand when no tick is running: it
+  bundles each dead frozen clone (its commits, stashes and dirty files, recorded on the item as `bundle`) and
+  releases it; a live unit, a process in the clone and a closing item stay. The next lease restores the bundle.
+  A detached helper's pool clone `<ITEM>.det` goes back the same way when its run ends: the unit's last
+  ExecStopPost runs `detached_helper.py return --unit U` (`return --all` sweeps strays).
 - **Pausing a timer for a while:** `python3 src/RimMandrake/Utils/timers_guard.py pause --hours H <timer>`, so
   guards read a planned stop. Stopping by hand raises `RELENTLESS_BLIND` after 10 minutes.
 - **A release:** `relentless_release.py cut --emergency --why "..."`, `rollback`, `status`. Limits in the rules,
