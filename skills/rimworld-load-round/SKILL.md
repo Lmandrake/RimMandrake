@@ -109,6 +109,7 @@ filing anything this sweep surfaces.
   whatever tier serves the work. `--status`'s warning while minimal is live is informational.
 
 ---
+- **The minimal list is 14 mods, not 13, and the owner's full list drifts.** `mandrake.inhabited` loads last; Ideology and `brrainz.rimbridgeserver` are in it, so the beggars Harmony patch has a real target and the bridge works. Never quote a remembered total of the full list (578 drifting to ~593): print it from `activeMods` in `ModsConfig.xml` at that moment. A save, quit, reload soak costs TWO loads: ~45 s on minimal against ~30 min on the full list, which is the whole reason the regime exists. It cannot reproduce the 21,872-tile geometry (`ferny.Worldbuilder` is absent, so a quicktest world comes out 119,904 tiles); anything keyed to real tile IDs needs the full list. Disarm the def dump before swapping to minimal: a dump captured on a debug list reports every real mod's defs as "does not exist in the live game". `modlist_swap.py` is plan-only by default and `--apply` archives the live file first.
 
 ## 1. Never "restart and see"
 
@@ -182,6 +183,7 @@ an unsubscribe done in Steam or RimSort is invisible to it and the exit writes
 nothing. **So check the entry, the folder, and the mtime:**
 
 ```bash
+- **`ModsConfig.xml` is the list for the NEXT launch, never what the running process holds.** A running game keeps what it loaded at startup and the file can be rewritten underneath it (another seat swaps to a minimal list, then restores the full one). To know what is actually loaded call `jawa/mod_inventory`, or grep `Player.log` for `[JawaBench] context: modSet N/<hash>`. Before filing a defect from an instrument, verify the environment the measurement ran in, not just the measurement: a validated instrument on a stale input gives a confident wrong answer (a 0/16 Harmony-attach sweep on a game that had loaded 22 mods and none of the target).
 # activeMods ONLY. `grep -c "<li>"` counts LINES and returns 6, not a count of mods;
 # `grep -o "<li>" | wc -l` returns activeMods + the 5 knownExpansions. Parse it.
 # Never quote a remembered total — print it, and quote the command with it.

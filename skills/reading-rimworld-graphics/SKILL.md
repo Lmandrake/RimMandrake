@@ -163,6 +163,7 @@ Nothing but a fuzzy stem match finds those, and fuzzy matching is what caused th
 apparel disaster. ✅ **Leave them blank and say WHY** — that is the correct
 answer, and `Plant_Berry_Leafless` is the regression case that must stay
 unresolved.
+- **Deployed, byte-identical and in sync proves nothing about what renders: the def may not point at the art.** Read the PawnKindDef's `lifeStages[].bodyGraphicData.texPath` and its `alternateGraphics` off the mod's own XML on disk, then look at one in game; never score art by whether the file deployed. Three ways the path misses: (1) life stage, `_j` is the JUVENILE texture (calf reads `BanthaW_j`, adult reads `BanthaW`), so supplying only `_j` leaves every adult unchanged; (2) foreign defName, a def's texPath can name another creature's file (`AA_Behemoth` uses `FO_ForsakenDragon`); (3) `alternateGraphics`, e.g. `alternateGraphicChance` 0.8 over five separate texPaths `EopieA..EopieE`, so overriding the base reaches one animal in five, while alternates that are colour tints with no texPath need nothing (they look identical in the XML until you read the `<li>` bodies). `jawa/get_defs` returns null for `graphicData` (nested objects are not serialised) and the def dump carries no `drawSize`: both come from the mod source XML.
 
 ## Which content folders a mod actually loads
 

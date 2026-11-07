@@ -408,3 +408,6 @@ Art generation answers to The Artist (`src/RimMandrake/rimflow/roles/artist.md`)
 ## Dependencies
 
 None beyond the standard library.
+
+## Prove the game lacks the art before generating any
+- **Show the magenta boxes first (owner: ironclad).** Do not infer "the art is missing" from files we have not made: the game often needs only two views and derives the rest by symmetry, and a magenta-heads case was fixed by path and namespace, not regeneration. A magenta square is a failed texture lookup and a failed lookup logs: `grep -c "Failed to find any textures at" <Player.log>`. Magenta has a blind spot on a `Graphic_Multi` thing: `Graphic_Multi.Init` falls back `_north` to `_south` rotated 180, `_east` and `_west` flipped, and reaches `BadMat` only when all four suffixes AND the bare path miss, so a partially shipped directional set never goes magenta. `ContentFinder<T>.Get` also resolves per file path walking the mod list backwards, so a partial reskin at another mod's path silently mixes both mods' art on one object. Ask the engine what it will draw before commissioning anything.

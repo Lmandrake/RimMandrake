@@ -371,7 +371,7 @@ terrain shader samples in WORLD space and the on-screen repeat belongs to the sh
 not to the 1024×1024 file. ⇒ **Do not render from the source PNG** — cut swatches from
 a live capture instead. Measured by autocorrelation: every palette terrain repeats on
 a 1-cell lattice with a 4-cell super-period, so a 4-cell swatch tiles seamlessly.
-Worked example: `src/RimMandrake/Utils/gravship_floor_v2.py`.
+Worked example: `src/RimMandrake/Utils/gravship_floor_v2.py`. Treat the result as a composition study, not a colour proof (the live game came out markedly more saturated than a plain-multiply model of the colour grid predicted), and separate a build from its ground by VALUE, not hue: a brown ship on tan desert vanished twice before the ramp moved darker.
 
 ## Staging sappers and breachers
 `LordToil_AssaultColonySappers` gives the Sapper duty only to `IsGoodSapper` pawns (kindDef `canBeSapper` + a building-destroyer weapon + effective Mining >= 4); otherwise Escort, and with none EVERY pawn gets plain `AssaultColony`. A "sapper" lord of `Mercenary_Gunners` is an assault in disguise. Use `Grenadier_Destructive`, set Mining raw 20 (a xenotype aptitude cut raw 10 to effective 2), and check `RimWorld.SappersUtility.IsGoodSapper` via `static_call` before creating the lord.

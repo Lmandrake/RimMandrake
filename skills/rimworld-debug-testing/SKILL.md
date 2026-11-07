@@ -353,6 +353,7 @@ single most expensive confusion in this project and it has three distinct shapes
 The third is the newest and the nastiest, because nothing about the dump looks wrong. The
 in-game info card is the arbiter, and reading one costs no map, no spawn and no bridge
 privileges.
+- **The def dump has holes: "absent from the dump" is not evidence of absence.** Many def-type files are empty (`"count":0`, `AbilityDef` among them), so a `--defs` or dump-based check on those types is UNMEASURED, not passed: give unmeasurable its own word and exit code so it never reads as a green tick. The current list is in `infrastructure/state/observed/LIVE.md`; regenerate with `validate_save_artifact.py --rebuild-index`. `defs.sqlite` also carries no `size`, so it cannot say how many cells a building occupies: `src/RimMandrake/Utils/rimplace/defsize.py` resolves it from the active mods' XML with parent-chain inheritance. A def that declares no `<size>` really is 1x1, so found-and-silent is a fact, and only absent-from-the-index is UNMEASURED; do not collapse the two.
 
 ## 6. Choosing: bridge test, quicktest, or a real load
 

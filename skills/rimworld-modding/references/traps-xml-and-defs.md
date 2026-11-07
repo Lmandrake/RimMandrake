@@ -17,6 +17,7 @@ What goes in, and what does not: `references/traps.md`.
 ---
 
 ---
+- **A defect a PatchOperation CREATES is invisible to any reader of mod XML; ask the def dump capture, and treat its list as a floor.** Two mods' patches can each look fine on disk (one adds a biome to `race/wildBiomes`, ours adds the animal to the biome's `wildAnimals`) while the post-patch game collides. `DefDump/captures/<id>/defs/*.json` carries the post-patch fields; `src/RimMandrake/Utils/biome_animal_conflicts.py` is the worked example. The log undercounts structurally: `BiomeDef.CommonalityOfAnimal` throws at the first duplicate key per biome (the log named 12, the capture 27). The capture reports the engine's answer, not the field: `DefDumper.cs` serialises `CommonalityOfAnimal` inside a bare `catch { }`, the throw leaves a partial cache, and every animal never reached reads a plausible 0f (181 of 744 weights), so a computed zero can mean the computation died. The capture is also self-erasing: it is taken after every patch, so a defect a shipped patch already cured is invisible (56 found vs 61 shipped). Never ship a capture-derived list as the fix file; the shipped set stays the union of every pair ever found.
 
 ### `Inherit="False"` makes a correct patch a silent no-op
 **Symptom:** a rebalance patch aimed at an abstract base applied cleanly — zero errors in `Player.log` — yet only 7 of 15 lightsabers went to power 99 / AP 0, and 8 stayed at 26 / AP −1.
@@ -134,6 +135,7 @@ What goes in, and what does not: `references/traps.md`.
 **Diagnosis tip:** rule out the newer/more obviously-suspect change first with a git-stash A/B test on a live quicktest — reverting the actual content edit and reproducing the identical crash is what proves it's an engine interaction rather than the new XML.
 
 ---
+- **A `FactionDef` with no `fixedName` and no `factionNameMaker` NREs inside `NameGenerator`** when a lure or incident lazily creates the faction, so its raids can never arrive (`RM_FactionDef_KurrethSwarm`, `RSW_Shokk_FeraliskBrood`). `jawa/static_call` returns six stack frames for a throwing proof; use it, since a bare NullReferenceException hid this for two loads.
 
 ### `isJunk` on a scatterer lets a world-tile mutator silently multiply its count to ZERO
 **Symptom:** a `GenStep_ScatterThings` with `countPer10kCellsRange 12~20` that should place 75–125 things on a 250×250 map, placing far fewer or none, with no warning — a count of 0 never enters the placement loop, so it cannot emit `could not find cell to generate at`.
@@ -359,6 +361,7 @@ reading the `BiomeDef` alone sees the wrong half of a twin.
 (`BIOME_SPECIFIC_FAUNA_LAW_1`, 2026-09-22)
 
 ---
+- **A list field read by `LoadDataFromXmlCustom` takes `<Name>value</Name>`; the `<li>` form throws and RimWorld discards the WHOLE containing def, silently.** The loader takes the node NAME as the key and the node TEXT as the value (`ParseHelper.FromString<float>(xmlRoot.FirstChild.Value)`), so `<li><animal>X</animal><commonality>1.0</commonality></li>` makes `FirstChild` an element whose `.Value` is null, an `ArgumentNullException`, and the def is gone. The patch layer reports success; the only evidence is `Exception loading def from file <X>.xml` plus later `Failed to find <Type> named <Y>. There are N defs of this type loaded.` Confirmed for `BiomeAnimalRecord` (`wildAnimals`) and `WeatherCommonalityRecord`, while `biomeConfigs`/`FactionDef` fields ARE `<li>`: the shape is per record class, so before writing ANY generator that emits into a list field, read that class for `LoadDataFromXmlCustom`. One generator emitting `<li><animal>` destroyed 26 BiomeDefs (94.8% of the painted planet, 3,037 cross-reference errors, an 84 MB log). Also check what the field RESOLVES to: `wildAnimals` wants a PawnKindDef and several defNames exist as both a ThingDef and a PawnKindDef.
 
 ## `<ingestible />` (self-closed) is NOT "no ingestible" — it CONSTRUCTS a bare properties object
 
@@ -513,3 +516,6 @@ mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
 
 ## Sweeping scale requests: ceiling fields break when doubled
 - **"Scale everything" cannot mean every field.** Armour ratings are fractions: `ArmorRating_Sharp` 0.60 doubled is 1.20, and at 1.00 or more the armour roll deflects every sharp hit, so the creature is unkillable. `Wildness` near 1, `Flammability` 0 and `baseHungerRate` (food need already scales with `bodySize` in the engine, so doubling counts it twice) break the same way. `bodySize` does NOT scale melee damage; tool `power` is a flat per-tool number, so deliver heavier hits by patching the tool `power` operations. Scale mass and power fields, cap fractions below 1.0 and state the number, leave fields another patch owns, and list the untouched fields in the patch file.
+
+## A modExtension `Class=` naming an unloaded type discards the WHOLE def
+- **A `<li Class="SomeMod.ModExtension_Foo">` inside `<modExtensions>` does not degrade when that mod is absent.** RimWorld throws while parsing (`System.ArgumentException: Could not find type named ...`) and drops the entire def. A donor def carrying a missing comp type is discarded the same way, and on a trimmed mod list a surviving `recipeMaker`/`costList` def can then NRE vanilla `RecipeDefGenerator.SetIngredients` and trigger the corrupted-mods recovery reset (which persists to disk); bisect by removal. Fix with `MayRequire="<packageId>"` on the `<li>`, but only if you can READ that packageId from an installed About.xml; if the providing mod is not installed, comment the block out (keep the data and the restore note) rather than guess an id. Any `Class=` attribute is a promise that an assembly provides that type: confirm the mod and its real packageId before shipping one, and run `harvest_log.py --show defdiscard` after any load.

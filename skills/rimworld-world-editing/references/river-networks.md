@@ -84,6 +84,7 @@ rather than deleting the flavour:
 | `VEE_RelictDelta` (needs a coastline) | **`VEE_DryRiver`** (landlocked) |
 
 ---
+- **River links carry NO direction; flow direction is `SurfaceTile.riverDist` (hops from the MOUTH, 0 at the mouth, rising upstream).** `WorldGrid.OverlayRiver` adds a `RiverLink` to BOTH tiles, each pointing at the other, so swapping the a/b columns of a links CSV row is a no-op. `WorldGenStep_Rivers` seeds from coastal Ocean tiles and floods upstream; every `TileMutatorWorker_River*` orders links by neighbour `riverDist`, lower = downstream. To change which way a river appears to flow, renumber `riverDist`, not the links and not elevation (a water body can be the planet's lowest point and still be a river source). `riverDist` is a byte, so no river exceeds 255 hops. It is NOT in `world/ASHKARR_WORLDMAP_tiles.csv`, so its value on the frozen world is UNMEASURED offline: read it live before planning a write. `WorldGenStep_Rivers` only runs at `GenerateFresh`, so it never re-runs on a hand-authored world.
 
 ## 2. Laying and cutting links
 
