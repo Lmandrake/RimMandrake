@@ -47,7 +47,7 @@ beside the main one in `D:\ClaudeWork\rimmandrake\HEAP_DIAGNOSE_RELOAD_RATCHET_N
 
 - **What is retained.** Used counts what Mono holds as in use, so this record cannot separate objects still reachable (a static
   cache holding an old game) from memory kept alive some other way, such as heap fragmentation or conservative false pointers.
-  Filed: `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE`.
+  Measured by `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE` (below).
 - **That the whole climb is per-load.** The later games differ in save and map count, and one load can add far more than 59 MB
   (game 8 added 650 MB on the first 2-map load). 59 MB per load is the only full-list figure with the map held fixed.
 - **That the list multiplies the rate.** Absolute growth on the same save is about 7.4 times the control's (59.3 against 8.0 MB per
@@ -56,6 +56,31 @@ beside the main one in `D:\ClaudeWork\rimmandrake\HEAP_DIAGNOSE_RELOAD_RATCHET_N
   amount may scale with what the list already holds rather than come from a few mods, and a bisect should read both MB and percent.
 - **A real `map_scale` reading from this reader.** e50b27df has only 2 games, which reads UNMEASURED. That verdict is proved on
   synthetic records only.
+
+## The bisect (`HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE`)
+
+**Why it is a ladder and not every tier.** SteveDesktop holds 100 mods, 56 of them on the full list's 316 (read 2026-11-06). Every
+existing `modset_builder` tier resolves there to at most 23 mods, and to at most 18 with none missing, so tiers alone cannot reach
+anything between 23 and 316. The ladder is `bridge` (9), `fw_gss_sitting` (14), `pyrelands` (16), `heap_full_on_steve_half`,
+`heap_full_on_steve` (the full list's own mods that Steve has), and the full list itself on Archmagi. If a rung jumps, the next
+split goes inside that step.
+
+**Reading it.** Each rung's proof prints one `HEAP_ROW` line. `python3 src/RimMandrake/Utils/heap_bisect.py read <files>` tables
+them with a verdict of `jump` (one step holds the rise and far more than its share of the mods), `smooth`, or `flat`, on MB and on
+percent per load. Each row also says what is retained: the companion's `jawa/heap_census` reads earlier Game and Map objects still
+alive through WeakReferences and lists static collections whose count climbs per load, whichever mod owns them. A grower names its
+owner; no old Game alive with no grower points at fragmentation or conservative false pointers instead.
+
+**Static caches in our own C#, read offline** (`heap_bisect.py scan`, 2026-11-06). 61 static collections hold game objects; 13 are
+never emptied in their own file. None reads as the 59 MB. Nine of the 13 hold delegates, an always-empty list or test stubs, not game state: `floodSources`,
+`arrestRules`, `currentCellRules` (RM_RiverWorks), `spansChanged` (AerialLineProfiles), `liveWireSources` (RM_FallenWireShock),
+`providers` (RM_BazaarTags), `NoIngredients` (CharacterApplier), and the stubs `Placed` and `Maps`. Two are scratch lists
+(`rawThings` in HosePorts, `ladderScratch` in RM_PitPathing), so they hold at most one call's Things. `HiddenFactionCache`
+(RM_MapComponent_TwoFrontLure) keeps one old Faction per def until its next use, which is bounded, though that Faction can keep
+what it references alive for a while. `PendingJobReveals` (RM_Comp_VaeuliskLure) is emptied only by a map component's tick, so it can
+keep a Pawn across a load, and only if a reveal was pending. The delegate lists are registered once, guarded against duplicates or at mod start. This covers our source
+only, the 48 that are emptied were not checked for emptying on a new Game, and the scan reads only the first field of a multi-field
+declaration (`atThings`). Third-party mods and vanilla have no source here; the live census covers them.
 
 ## Corrections to what was filed
 

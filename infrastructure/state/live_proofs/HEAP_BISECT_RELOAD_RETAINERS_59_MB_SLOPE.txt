@@ -1,0 +1,14 @@
+# Each clause reloads one save 6 times on one list and reads MB and percent per load plus what is retained. A clause measures: exit 0 is
+# a real series was read, 1 is the reloads made no new Game, 2 is UNMEASURED. Its HEAP_ROW line is the data; `heap_bisect.py read` tables them.
+# The companion must be at or after this item (it adds jawa/heap_census); an older one reads UNMEASURED.
+live-tier A1: bridge
+live-proof A1: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier bridge < /dev/null
+live-tier A2: fw_gss_sitting
+live-proof A2: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier fw_gss_sitting < /dev/null
+live-tier A3: pyrelands
+live-proof A3: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier pyrelands < /dev/null
+live-tier A4: heap_full_on_steve_half
+live-proof A4: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier heap_full_on_steve_half < /dev/null
+live-tier A5: heap_full_on_steve
+live-proof A5: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier heap_full_on_steve < /dev/null
+live-proof A6: python.exe src/RimMandrake/Utils/heap_bisect.py live --tier full --save RM_TestSite_calm_v2 < /dev/null

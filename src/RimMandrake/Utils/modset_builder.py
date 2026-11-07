@@ -897,6 +897,48 @@ TIERS["acc_green_min2"] = {
 }
 
 
+# HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE: the top rungs of the reload-retention ladder. SteveDesktop holds 56 of the full list's
+# 316 mods (read 2026-11-06), so these are the full list's own mods that it can load, and half of them in the full list's order.
+TIERS["heap_full_on_steve"] = {
+    "why": "HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE: every mod of ModsConfig.FULL.LATEST.xml installed on SteveDesktop, so a slope "
+           "measured here is a slope of the owner's list, not of a test mix.",
+    "want": [
+              "brrainz.harmony", "adaptive.storage.framework", "unlimitedhugs.hugslib",
+              "oskarpotocki.vanillafactionsexpanded.core", "7f.alienworlds", "unlimitedhugs.allowtool",
+              "falconne.bwm", "brrainz.cameraplus", "void.charactereditor", "mlie.decorativecliffs",
+              "merthsoft.designatorshapes", "dubwise.dubsmintmenus", "dubwise.dubsmintminimap",
+              "mandrake.rm.injections", "mandrake.rm.graffiti", "mandrake.rm.inhabited", "mandrake.rut.injections",
+              "jaxe.bubbles", "m00nl1ght.mappreview", "andromeda.milkyway", "dawnsglow.qualcolor",
+              "brrainz.rimbridgeserver", "weilbyte.snapout", "marvinkosh.ughyougotme",
+              "vanillaexpanded.vanillabackstoriesexpanded", "vanillaexpanded.vanillatraitsexpanded",
+              "7f.alienworlds.tidallylocked", "memegoddess.replacestuff", "jaxe.rimhud", "mandrake.rm.weathersuite",
+              "erdelf.humanoidalienraces", "mehni.pickupandhaul", "vanillaexpanded.vmemese", "neronix17.toolbox",
+              "divinederivative.romance", "neronix17.outerrim.core", "frozensnowfox.complexjobs",
+              "mandrake.rsw.ionweapons", "mandrake.rut.shipmemory", "mandrake.rm.gimmesomeslack",
+              "mandrake.rm.flowworks", "mandrake.rm.luminouspigment", "mandrake.rsw.droidworks", "kutte.stairs",
+              "mandrake.rm.biomes", "mandrake.rsw.cuisine", "mandrake.rsw.armoury", "mandrake.rsw.swbestiary",
+              "mandrake.rut.patches", "mandrake.rut.pyrelandsmechanics"
+    ],
+    "dlc": True,
+}
+
+TIERS["heap_full_on_steve_half"] = {
+    "why": "HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE: the first half of heap_full_on_steve in the full list's order, the rung that "
+           "splits it.",
+    "want": [
+              "brrainz.harmony", "adaptive.storage.framework", "unlimitedhugs.hugslib",
+              "oskarpotocki.vanillafactionsexpanded.core", "7f.alienworlds", "unlimitedhugs.allowtool",
+              "falconne.bwm", "brrainz.cameraplus", "void.charactereditor", "mlie.decorativecliffs",
+              "merthsoft.designatorshapes", "dubwise.dubsmintmenus", "dubwise.dubsmintminimap",
+              "mandrake.rm.injections", "mandrake.rm.graffiti", "mandrake.rm.inhabited", "mandrake.rut.injections",
+              "jaxe.bubbles", "m00nl1ght.mappreview", "andromeda.milkyway", "dawnsglow.qualcolor",
+              "brrainz.rimbridgeserver", "weilbyte.snapout", "marvinkosh.ughyougotme",
+              "vanillaexpanded.vanillabackstoriesexpanded"
+    ],
+    "dlc": True,
+}
+
+
 # LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: a tier named by its mods, so every live-proof line can go to SteveDesktop
 # through testq (a job's profile is tier:<name>, and the worker resolves the name here, at the job's source_sha).
 # `mods__<token>__<token>...`: each token a packageId lowercased with its dots as `_` (mandrake.rm.flowworks ->

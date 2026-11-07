@@ -1,0 +1,6 @@
+A1 L2: tier bridge, 6 reloads of one save: forced-GC floors, MB and percent per load, old Games and Maps alive, growing static fields all read
+A2 L2: tier fw_gss_sitting, 6 reloads of one save: forced-GC floors, MB and percent per load, old Games and Maps alive, growing static fields all read
+A3 L2: tier pyrelands, 6 reloads of one save: forced-GC floors, MB and percent per load, old Games and Maps alive, growing static fields all read
+A4 L2: tier heap_full_on_steve_half, 6 reloads of one save: forced-GC floors, MB and percent per load, old Games and Maps, growing statics all read
+A5 L2: tier heap_full_on_steve, 6 reloads of one save: forced-GC floors, MB and percent per load, old Games and Maps, growing statics all read
+A6 GREEN-FULL: full list, 6 reloads of RM_TestSite_calm_v2: forced-GC floors, MB and percent per load, old Games and Maps, growing statics all read
