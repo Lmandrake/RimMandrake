@@ -21,7 +21,22 @@
   "Webwork",
   "CreatureBehaviors",
   "Miasma",
-  "Minerals"
+  "Minerals",
+  "LeaningScrub",
+  "Watchers",
+  "ExplosiveGrowth",
+  "MovingDunes",
+  "Rites",
+  "UtinniPatches",
+  "Atlas",
+  "GelatinousSlime",
+  "LanternDeeps",
+  "TheForge",
+  "UnfinishedLine",
+  "Bacta",
+  "CrackedLands",
+  "SWBestiary",
+  "Sarlacc"
  ],
  "wired": {
   "FlowWorks": "2026-10-25, the original filler mod",
@@ -44,6 +59,21 @@
   "Webwork": "2026-11-06, Lightspeed batch 1 rank 12: 7 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
   "CreatureBehaviors": "2026-11-06, Lightspeed batch 1 rank 13: 6 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
   "Miasma": "2026-11-06, Lightspeed batch 1 rank 14: 6 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
-  "Minerals": "2026-11-06, Lightspeed batch 1 rank 15: 6 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)"
+  "Minerals": "2026-11-06, Lightspeed batch 1 rank 15: 6 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "LeaningScrub": "2026-11-07, Lightspeed batch 2 rank 1: 14 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "Watchers": "2026-11-07, Lightspeed batch 2 rank 2: 7 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "ExplosiveGrowth": "2026-11-07, Lightspeed batch 2 rank 3: 6 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "MovingDunes": "2026-11-07, Lightspeed batch 2 rank 4: 5 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "Rites": "2026-11-07, Lightspeed batch 2 rank 5: 5 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "UtinniPatches": "2026-11-07, Lightspeed batch 2 rank 6: 5 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "Atlas": "2026-11-07, Lightspeed batch 2 rank 7: 4 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "GelatinousSlime": "2026-11-07, Lightspeed batch 2 rank 8: 4 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "LanternDeeps": "2026-11-07, Lightspeed batch 2 rank 9: 4 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "TheForge": "2026-11-07, Lightspeed batch 2 rank 10: 4 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "UnfinishedLine": "2026-11-07, Lightspeed batch 2 rank 11: 4 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "Bacta": "2026-11-07, Lightspeed batch 2 rank 12: 3 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "CrackedLands": "2026-11-07, Lightspeed batch 2 rank 13: 3 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "SWBestiary": "2026-11-07, Lightspeed batch 2 rank 14: 3 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)",
+  "Sarlacc": "2026-11-07, Lightspeed batch 2 rank 15: 3 open bridge items (LIGHTSPEED_WIDEN_112_MODS_NEVER_QUEUED)"
  }
 }
