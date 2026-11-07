@@ -1,0 +1,6 @@
+act {"success": true, "path": "Actions\\Tanks: fill ALL on map to max (pick liquid)", "node": {"path": "Actions\\Tanks: fill ALL on map to max (pick liquid)", "parentPath": "Actions", "label": "Tanks: fill ALL on map to max (pick liquid)", "category": "RMFlowWorks", "actionType": "Action", "isRoot": false, "visible": true, "active": true, "on": false, "displayPriority": 0, "tabId": "actions", "tabTitle": "Actions/tools", "tabRootPath": "Actions", "hasChildren": false, "expandable": false, "childCoun
+surfaces ['Verse.GizmoGridDrawer', 'Verse.ImmediateWindow', 'RimWorld.MainTabWindow_Architect', 'Verse.ImmediateWindow', 'Verse.ImmediateWindow', 'Verse.ImmediateWindow']
+labels ['C', 'Cancel', 'X', 'Deconstruct', 'Hose reel', 'Universal pipe', 'Universal cargo tank', 'Extra-tall cargo tank', 'Pipe pole', 'Sprinkler head', 'Pipe faucet', 'Liquid tank', 'Tall liquid tank', 'Orders', 'Zone', 'Structure', 'Production', 'Furniture', 'Power', 'Pipe networks', 'Security', 'Misc', 'Floors', 'Recreation', 'Ship', 'Temperature', 'Ideology', 'Anomaly', 'Biotech', 'Odyssey', '<color=#FFFF14FF>Architect</color>\n\nDesignate where to build, farm, store items, and so on.', 'Pick the liquid to fill every tank on this map with.']
+menu None []
+RESULT pick=None full_of_brine=0/26 sample=['Holding: Fresh water (16 kL / 16 kL)', 'Empty']
+EMPTY 26 26

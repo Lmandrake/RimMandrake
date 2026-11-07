@@ -1,0 +1,151 @@
+{
+ "script": "deep_stone_live.py",
+ "started": "2026-10-23T17:23:21",
+ "rows": [
+  {
+   "id": "DS_map_has_deep_stone",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "report": "DEEPSTONE Limestone chunk=ChunkLimestone | source fallback | enabled True"
+   }
+  },
+  {
+   "id": "DS_superdeep_cut_turns_up_deep_stone",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "why": "the dig job was not taken: WorkGiver_DigCanal hands this pawn no job (shouldSkip=None hasJobOnCell=None deleted=None)",
+    "designate": "{'success': True, 'action': 'add', 'designation': 'RM_DigCanal', 'added': 1, 'removed': 0, 'alreadyPresent': 0, 'alreadyAbsent': 0, 'skippedWrongType': 0, 'targetType': 'Cell', 'targetedThings': False",
+    "probe": "{'success': True, 'kind': 'dig', 'cell': {'x': 45, 'z': 45}, 'fogged': False, 'terrain': 'RM_Channel_Deep', 'designationPresent': True, 'designator': {'accepted': False, 'reason': 'Already being dug as a canal.'}, 'ticksGame': 33, 'operation': {'OperationId': 'op_0063b6216b2e47d1bdadd2fb072d6a32', '"
+   }
+  }
+ ],
+ "args": {
+  "out": "D:\\ClaudeWork\\rimmandrake\\scratch\\bridge_run_1d\\out\\deep_stone3.json",
+  "origin": "40,40",
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brogg37208",
+    "RM_Brogg37209",
+    "RM_Brogg37211",
+    "RM_Brogg37212",
+    "RM_Brogg37214",
+    "RM_Brogg37215",
+    "RM_Brullith37217",
+    "RM_Brullith37218",
+    "RM_Brullith37220",
+    "RM_MycoidColossus37210",
+    "RM_Shambles37219",
+    "RM_Thozzik37216",
+    "RM_ThozzikQueen37213"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive4917"
+    ],
+    [
+     "EggSac",
+     "EggSac4932"
+    ],
+    [
+     "Hive",
+     "Hive4933"
+    ],
+    [
+     "GlowPod",
+     "GlowPod4946"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "digDeepStoneEnabled": "True",
+  "digRockChunksEnabled": "True",
+  "digRockChunkMultiplier": "1",
+  "digFindsEnabled": "True",
+  "digFindLetterEnabled": "True",
+  "digCostRisesWithDepth": "True"
+ },
+ "job_probe": {
+  "success": true,
+  "kind": "dig",
+  "cell": {
+   "x": 45,
+   "z": 45
+  },
+  "fogged": false,
+  "terrain": "RM_Channel_Deep",
+  "designationPresent": true,
+  "designator": {
+   "accepted": false,
+   "reason": "Already being dug as a canal."
+  },
+  "ticksGame": 33,
+  "operation": {
+   "OperationId": "op_0063b6216b2e47d1bdadd2fb072d6a32",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 45,
+   "Warnings": [
+    {
+     "Code": "arguments.unknown",
+     "Message": "Ignored unknown argument(s) pawn. Valid parameters: x, z, kind, pawnId, forced."
+    }
+   ]
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "job_order": {
+  "success": true,
+  "accepted": true,
+  "interruptibleBefore": true,
+  "requestedJobDef": "RM_DigCanalJob",
+  "afterJobDef": "RM_DigCanalJob",
+  "nowRunningRequested": true,
+  "ticksElapsed": 0,
+  "pausedDuringWait": true,
+  "queueLength": 0,
+  "operation": {
+   "OperationId": "op_b8b543803793440999c57f49eb271dcd",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 72
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 33
+  }
+ },
+ "finished": "2026-10-23T17:23:52"
+}

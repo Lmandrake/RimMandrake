@@ -1,0 +1,9 @@
+despawned 3 pawn(s): ['Human475', 'Human478', 'Human483']
+incident queue: cleared 0
+quiet site (map): removed [{'removed': [], 'threatsAfter': 0, 'kept': 0, 'errors': []}], error None
+built 11 plots; painted 0 stray wet/rough halo cell(s) to Soil
+body D_pond: {'id': 1, 'limitless': False, 'cellCount': 25, 'capacity': 50.0, 'stock': 50.0, 'recededCount': 0}
+body K_pond: {'id': 2, 'limitless': False, 'cellCount': 4, 'capacity': 8.0, 'stock': 8.0, 'recededCount': 0}
+body C_sea: {'id': 3, 'limitless': True, 'cellCount': 96, 'capacity': 384.0, 'stock': 384.0, 'recededCount': 0}
+body S_pond: {'id': 4, 'limitless': False, 'cellCount': 16, 'capacity': 32.0, 'stock': 32.0, 'recededCount': 0}
+PREP REFUSED at step 8: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\NS_FlowWorks_TrialSite_v1.rws exists; golden saves are never overwritten (pass --rebuild to move it aside)

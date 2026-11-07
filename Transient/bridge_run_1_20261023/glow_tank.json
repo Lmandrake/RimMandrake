@@ -1,0 +1,215 @@
+{
+ "script": "glow_tank_live.py",
+ "started": "2026-10-23T09:32:51",
+ "rows": [
+  {
+   "id": "GLOWTANK_SALT_DRAWN_ONE_UNIT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "saltDrawn": 2000,
+    "saltInspect": [
+     "Power needed: 180 W",
+     "Grid excess: -180 W (599 Wd stored)",
+     "Fuel: 0 / 1",
+     "Cannot grow (bad seasonal temperature).",
+     "Ocean water: 5.9 h in reserve (salt water)."
+    ],
+    "fresh": [
+     20000,
+     20000,
+     [
+      "Power needed: 180 W",
+      "Grid excess: -180 W (599 Wd stored)",
+      "Fuel: 0 / 1",
+      "Cannot grow (bad seasonal temperature).",
+      "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+     ]
+    ],
+    "brine": [
+     20000,
+     20000,
+     [
+      "Power needed: 180 W",
+      "Grid excess: -180 W (599 Wd stored)",
+      "Fuel: 0 / 1",
+      "Cannot grow (bad seasonal temperature).",
+      "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+     ]
+    ]
+   }
+  },
+  {
+   "id": "GLOWTANK_SALT_CROP_GROWS",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "why": "crop growth unreadable",
+    "S": [
+     null,
+     null
+    ],
+    "F": [
+     null,
+     null
+    ],
+    "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],"
+   }
+  },
+  {
+   "id": "GLOWTANK_SETTING_OFF_NO_LINE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "inspectOff": [
+     "Power needed: 180 W",
+     "Grid excess: -180 W (581 Wd stored)",
+     "Fuel: 0 / 1",
+     "Growing season here now."
+    ],
+    "restoredTo": "True"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/br1/glow_tank.json",
+  "origin": "60,150",
+  "fresh_map": true,
+  "ticks": 6000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Agaripawn35262",
+    "RM_Agaripawn35263",
+    "RM_Agaripawn35264",
+    "RM_Brullith35257",
+    "RM_Brullith35267",
+    "RM_Dustveil35254",
+    "RM_Dustveil35255",
+    "RM_Dustveil35265",
+    "RM_MycoidColossus35252",
+    "RM_MycoidColossus35253",
+    "RM_MycoidColossus35261",
+    "RM_Shambles35256",
+    "RM_Shambles35260",
+    "RM_Shambles35266",
+    "RM_Thozzik35251",
+    "RM_Thozzik35258",
+    "RM_Thozzik35259"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "scenes": {
+  "S": {
+   "gt": [
+    64,
+    152
+   ],
+   "bat": [
+    61,
+    152
+   ],
+   "tank": [
+    66,
+    152
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank35497",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank35497', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 18000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Cannot grow (bad seasonal temperature).",
+    "Ocean water: 5.9 h in reserve (salt water)."
+   ],
+   "growth1": null,
+   "growth2": null,
+   "units2": 18000
+  },
+  "F": {
+   "gt": [
+    64,
+    162
+   ],
+   "bat": [
+    61,
+    162
+   ],
+   "tank": [
+    66,
+    162
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank35502",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank35502', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 20000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Cannot grow (bad seasonal temperature).",
+    "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+   ],
+   "growth1": null,
+   "growth2": null,
+   "units2": 20000
+  },
+  "B": {
+   "gt": [
+    64,
+    172
+   ],
+   "bat": [
+    61,
+    172
+   ],
+   "tank": [
+    66,
+    172
+   ],
+   "build": "{'success': True, 'placed': 5, 'survived': 5, 'lostToLaterOps': 0, 'failedCount': 0, 'failed': [], 'displacedCount': 0, 'displaced': [], 'placeWorkerWarningsCount': 0, 'placeWorkerWarnings': [], 'qual",
+   "gid": "RM_GlowTank35507",
+   "refuel": "{'success': True, 'thing': 'RM_GlowTank35507', 'def': 'RM_GlowTank', 'fuelBefore': 0.0, 'fuelAfter': 1.0, 'capacity': 1.0, 'hasFuel': True, 'fields': {}, 'missi",
+   "units0": 20000,
+   "plant": "{'success': True, 'message': 'Planted 4, cleared 0.', 'planted': 4, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [],",
+   "units1": 20000,
+   "inspect1": [
+    "Power needed: 180 W",
+    "Grid excess: -180 W (599 Wd stored)",
+    "Fuel: 0 / 1",
+    "Cannot grow (bad seasonal temperature).",
+    "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run)."
+   ],
+   "growth1": null,
+   "growth2": null,
+   "units2": 20000
+  }
+ },
+ "finished": "2026-10-23T09:35:21"
+}

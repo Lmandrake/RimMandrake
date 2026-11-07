@@ -1,0 +1,95 @@
+{
+ "script": "deep_stone_live.py",
+ "started": "2026-10-23T10:17:02",
+ "rows": [
+  {
+   "id": "DS_map_has_deep_stone",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "report": "DEEPSTONE Marble chunk=ChunkMarble | source fallback | enabled True"
+   }
+  },
+  {
+   "id": "DS_superdeep_cut_turns_up_deep_stone",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "PIT_DEEPSTONE_BUILD_DIGGING_FINALLY_PAYS",
+   "detail": {
+    "deepstone": "DEEPSTONE Marble chunk=ChunkMarble | source fallback | enabled True",
+    "before": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+    "after": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+    "depth": [
+     3,
+     3
+    ],
+    "cutAt": null,
+    "newThings": {},
+    "newLetters": [],
+    "designate": "{'success': True, 'action': 'add', 'designation': 'RM_DigCanal', 'added': 1, 'removed': 0, 'alreadyPresent': 0, 'alreadyAbsent': 0, 'skippedWrongType': 0, 'targetType': 'Cell', 'targetedThings': False",
+    "why": "no colonist cut the square in 6000 ticks"
+   }
+  }
+ ],
+ "args": {
+  "out": "Transient/br1/deep_stone.json",
+  "origin": "40,40",
+  "fresh_map": true
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith35725",
+    "RM_Chittik35728",
+    "RM_Chittik35729",
+    "RM_Chittik35730",
+    "RM_Chittik35731",
+    "RM_Chittik35732",
+    "RM_Dustveil35738",
+    "RM_Dustveil35739",
+    "RM_Dustveil35744",
+    "RM_Grellik35740",
+    "RM_Grellik35741",
+    "RM_Grellik35742",
+    "RM_Illoth35735",
+    "RM_Illoth35743",
+    "RM_Illoth35745",
+    "RM_Shambles35726",
+    "RM_Shambles35727",
+    "RM_Shambles35736",
+    "RM_Shambles35737",
+    "RM_Shambles35746",
+    "RM_Skerrith35747",
+    "RM_Skerrith35748",
+    "RM_ThozzikColony35733",
+    "RM_ThozzikColony35734"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "settings_before": {
+  "digDeepStoneEnabled": "True",
+  "digRockChunksEnabled": "True",
+  "digRockChunkMultiplier": "1",
+  "digFindsEnabled": "True",
+  "digFindLetterEnabled": "True",
+  "digCostRisesWithDepth": "True"
+ },
+ "finished": "2026-10-23T10:19:29"
+}

@@ -260,6 +260,7 @@
 !/biome_ffar/flora_legibility.subjects.json
 !/biome_ffar/flora_legibility_sheet_2026-11-05.html
 !/biome_ffar/flora_legibility_sheet_2026-11-05.prereview.json
+!/biome_ffar/flowworks_gpt_art_review_sheet_2026-10-23.html
 !/biome_ffar/img/00063bfc98bbf60c00c9.webp
 !/biome_ffar/img/002c5b479db108114bb6.webp
 !/biome_ffar/img/004678d5bc522129f222.webp
@@ -1431,6 +1432,20 @@
 !/biome_ffar/suspension_four_looks_sheet_2026-10-21.html
 !/biome_sprint_live_order_2026-10-16.md
 !/bridge_run_1_20261023/RESULTS.md
+!/bridge_run_1_20261023/captures/br1d3_c3_boar_zoom.png
+!/bridge_run_1_20261023/captures/br1f/fw_review_map_verify.json
+!/bridge_run_1_20261023/captures/br1f/ors_rot.log
+!/bridge_run_1_20261023/deep_lake3.json
+!/bridge_run_1_20261023/deep_lake3.log
+!/bridge_run_1_20261023/deep_stone.json
+!/bridge_run_1_20261023/deep_stone3.json
+!/bridge_run_1_20261023/deep_stone3.log
+!/bridge_run_1_20261023/fillall_probe.log
+!/bridge_run_1_20261023/fillall_probe.py
+!/bridge_run_1_20261023/glow_tank.json
+!/bridge_run_1_20261023/gss_A.log
+!/bridge_run_1_20261023/s33_prep.log
+!/bridge_run_1_20261023/suspension_bridge.json
 !/coupler_regen_20261023/**
 !/coupler_regen_20261023/stations/Kludged_before_after.png
 !/coupler_regen_20261023/stations/Repaired_before_after.png
@@ -1776,6 +1791,8 @@
 !/mineral_matrix_round_two/index.html
 !/mineral_matrix_round_two/prereview.md
 !/mineral_matrix_round_two/template.html
+!/modcheck/FlowWorks_20261024T092758Z.json
+!/modcheck/FlowWorks_20261024T191345Z.json
 !/modcheck_format/FlowWorks_appearance_excerpt.html
 !/modcheck_format/Pits_pilot_report.html
 !/modcheck_format/modcheck_format_ratify_2026-11-05.decisions.json
@@ -1965,6 +1982,7 @@
 !/pile_2026-10-22/harness_research/trickle_vs_batch.md
 !/pile_2026-10-22/hose_audit.md
 !/pile_2026-10-22/hose_audit/**
+!/pile_2026-10-22/hose_walls_fix.md
 !/pile_2026-10-22/jg_list2.py
 !/pile_2026-10-22/jg_pawn.py
 !/pile_2026-10-22/jg_shoot.py
