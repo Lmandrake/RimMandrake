@@ -1447,3 +1447,5 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:21:35Z","tsn":1794018095247977115}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-07T02:21:49Z","tsn":1794018109823282995}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:22:00Z","tsn":1794018120148416871}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS A1 (L2), read-only proof","ts":"2026-11-07T02:26:02Z","tsn":1794018362918349039}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:26:16Z","tsn":1794018376968912236}
