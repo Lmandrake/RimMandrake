@@ -27,6 +27,7 @@ our stand-in).
 - **Colour:** glossy dark blue-black to teal shell with brighter teal/green panel markings on the carapace (painting).
 - **Head:** flat head with cutting jaws and a pair of LOOPED feelers (Legends text; not readable in the painting).
 - **Donor sprite:** a dark navy beetle with teal panel lines, six teal legs and small red eyes: agrees with the painting.
+- **Canon text (late review):** giant beetles native to Neimoidia's hot jungles, tamed by the Neimoidians to help produce a wealth-bringing fungus; canon gives no length, leg count or feeler detail, which is all Legends.
 
 ## Must show
 - [ ] BODY PLAN: a giant domed six-legged beetle with a flat head and cutting jaws

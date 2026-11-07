@@ -42,6 +42,7 @@ sprite, our stand-in). Related entry: `iridonianreek` (the Iridonian subspecies,
 - **Hide:** thick, wrinkled, armoured skin.
 - **Donor sprite:** grey body with a red-orange head and one pale nose horn: agrees on colour layout, but shows no
   cheek horns.
+- **Size and diet (late review):** canon infobox: height 2.24 meters, length 4 meters, 1100 kilograms, skin red and gray; naturally herbivores, and only arena-bred reeks were fed meat and given nose rings by handlers (canon). Legends only: horns of males usually larger than females.
 
 ## Must show
 - [ ] BODY PLAN: a massive rhino-like quadruped with heavy sprawling legs

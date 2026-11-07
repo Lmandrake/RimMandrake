@@ -27,7 +27,7 @@ Predators of the adults included narglatches and zalaacas.
 Kaadu meat was comestible. The cookbook Essential Cooking Skills detailed how to best cook that meat.
 
 ## Visual brief
-Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Phantom Menace kaadu render, saddled), `wookieepedia_legends_1.webp`
+Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars: Card Trader image `Kaadu-SWCT.png`, saddled), `wookieepedia_legends_1.webp`
 (spotted kaadu, side view), `wookieepedia_legends_2.webp` (sketch: male and female with young), and
 `donor_current_sprite.png` (donor male sprite, our stand-in).
 
@@ -39,6 +39,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Phantom Menace kaadu render, sad
 - **Colour:** shades of yellow and bright orange (both texts), with darker spots or stripes on the body (Legends
   images); the sketch also shows a purple-tinted male/female.
 - **Donor sprite:** an orange-and-cream striped biped with a blue eye patch: agrees.
+- **Size and capability (late review, canon):** about 2 m tall and 35 kg, orange skin with feathers and black eyes; strong legs and sleek hide for speed on land and in water, can breathe underwater for long periods; the clutch is 6 to 8 eggs (Legends: 10 to 12, up to two hours underwater).
 
 ## Must show
 - [ ] BODY PLAN: a tall two-legged flightless reptavian with very long thin legs, heavy forward body, long curved neck, short tail

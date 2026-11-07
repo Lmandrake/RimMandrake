@@ -24,6 +24,7 @@ the def also draws B and C variants and a juvenile).
 - **Behaviour:** mimics sounds such as basic speech; a character believed this means sentience (canon text, a belief,
   not a fact).
 - **Donor sprite:** a blue crab under a big grey angular scrap shell, eye-stalks up: agrees.
+- **Names and size (late review):** species name is trash crab, scientific name Megapagurus detritiphorus for the giant Tet'niss, whose name began as an animators' nickname; the 9.14 m height belongs to her alone, not to ordinary trash crabs; the species is said to communicate in a very limited way with the technology it scavenges.
 
 ## Must show
 - [ ] BODY PLAN: a hermit crab with many jointed legs and a pair of claws, living inside a big borrowed scrap shell

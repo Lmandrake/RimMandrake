@@ -39,6 +39,7 @@ saddled narglatch), `wookieepedia_legends_2.webp` (Legends painting of a male on
 - **Claws:** long, non-retractable claws on big padded feet.
 - **Donor sprite:** a dark navy cat with a grey-blue spine crest and fin tail; it is darker than the brilliant blue in
   the renders.
+- **Habitat and use (canon):** adaptable to various climates; Talz ride them and Trandoshans prize the pelt as a trophy. Legends only: non-retractable claws, avoids deep water but swims when needed.
 
 ## Must show
 - [ ] BODY PLAN: a huge lean long-limbed cat, low-slung, with a long tail ending in a spiked fin/fan

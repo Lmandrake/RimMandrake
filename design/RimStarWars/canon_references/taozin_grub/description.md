@@ -34,6 +34,7 @@ physical grub hung by a cord against a rock wall) and `bloggathehutt_grub_post_p
   about mid-body; behind it a very long, smooth, legless **tapering tail**, longer than the head-and-leg section.
 - **Colour, look 1 (default):** **terracotta / rust red-brown** body, dark legs, cream collar, pale pink-white tail.
 - **Colour, look 2 (long brined):** the whole body **white** (canon prose "white-skinned"; the Solo tank image), same shape.
+- **Canon page notes (late review):** the page lead says eight limbs while its body text says eight pairs of legs clustered below the head; the grub has black eyes; Traveler's Guide to Batuu labelled an image of a dwarf vinock as the grub (corrected in a 2019 video), so do not use that image; the brine's mental-fortitude effect is only a belief of the species that prize it; Vos received his grub as a gift from Moff Doelsor Triggant.
 
 ## Must show
 - [ ] SIZE: forearm-length — small beside the true-scale human

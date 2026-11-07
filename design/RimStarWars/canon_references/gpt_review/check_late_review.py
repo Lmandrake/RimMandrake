@@ -43,8 +43,9 @@ nb = (len(late) + 4) // 5
 small = [n for n in range(1, nb + 1)
          if not os.path.exists(os.path.join(HERE, f"late_{n:02d}.md")) or os.path.getsize(os.path.join(HERE, f"late_{n:02d}.md")) < 2000]
 need(not small, f"{nb} GPT batches late_01..late_{nb:02d} on disk, none a stub; missing/stub: {small}")
+squash = lambda t: re.sub(r"[\s_-]+", "", t.lower())  # slug "ithorianreek" is the answer's "Ithorian reek"
 answered = [s for n in range(1, nb + 1) if n not in small for s in late[(n - 1) * 5:n * 5]
-            if s.replace("_", " ").lower() not in open(os.path.join(HERE, f"late_{n:02d}.md"), encoding="utf-8").read().replace("_", " ").lower()]
+            if squash(s) not in squash(open(os.path.join(HERE, f"late_{n:02d}.md"), encoding="utf-8").read())]
 need(not answered, f"every batch answers each of its entries by name; unanswered: {answered}")
 
 cache = json.load(open(os.path.join(HERE, "late_wiki_cache.json"), encoding="utf-8"))

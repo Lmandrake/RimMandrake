@@ -31,6 +31,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Jedi: Fallen Order render on Kas
   a blue-white head crest and red face.
 - **Hands/feet:** long fingers; reddish bare skin on hands and feet in the canon render.
 - **Donor sprite:** dark grey body, white swept head cowl, red face triangle: agrees with canon.
+- **Behaviour (late review):** canon: non-sentient, harmless and friendly, often on the ground searching for overripe fruits; Cal Kestis found several on the Origin Tree. Legends only: a high-pitched yelp, and tach essence enraged them.
 
 ## Must show
 - [ ] BODY PLAN: a monkey-like quadruped with arms longer than its legs and a long tail with a tasselled tip

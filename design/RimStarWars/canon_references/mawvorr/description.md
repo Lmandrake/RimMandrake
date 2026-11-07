@@ -26,6 +26,7 @@ donor sprite, and is weaker evidence than an image-grounded brief.
   vessels inside ("chromatophore plates"). The donor description calls them "vibrant", "brightly coloured chitinous".
 - **Donor sprite:** a purple-mauve quadruped with glowing cyan-blue back plates, a spiked tail and a toothy head:
   agrees with the text's glowing plates; the four eyes are not readable at sprite size.
+- **Limbs and underside (text):** every limb has three digits ending in big claws; the tail and belly are also covered in plates; the two big head plates are absent on stunning mawvorrs and only some species glow.
 
 ## Must show
 - [ ] BODY PLAN: a four-legged chitin-plated carnivore with large plates on the back

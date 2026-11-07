@@ -33,6 +33,7 @@ has no image), and `donor_current_sprite.png` (donor sprite, our stand-in).
 - **Colour:** none sourced: the drawing is black and white; Aayla Secura's rycrit-hide belt and "black rycrit
   leather" (canon text) suggest a dark hide is possible.
 - **Donor sprite:** a white cow-like beast with a toothy horse face: shape agrees; colour is the donor's.
+- **Legends anatomy (late review, Legends only):** native to Ryloth, short fur, long faces, four nostrils, pointed teeth and sharp cloven hooves; raised by Twi'leks for hides and meat. Canon gives only hide and meat uses, so the living shape is a Legends reconstruction.
 
 ## Must show
 - [ ] BODY PLAN: a stocky, heavy-bodied cow-like quadruped with cloven hooves and a tufted tail

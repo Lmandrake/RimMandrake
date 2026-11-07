@@ -30,7 +30,7 @@ Ecology, also Legends:
 ## Visual brief
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Tooke-trap plant and Tooke-trap plant/Legends, catimages "Images of Tooke-trap plants"; only a Field Guide painting, a Gungan Frontier sprite and a LEGO render exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+**Legends and non-canon sources only — no realistic source found (searched: Wookieepedia pageimages Tooke-trap plant and Tooke-trap plant/Legends, catimages "Images of Tooke-trap plants"; only a Field Guide painting, a Gungan Frontier sprite and a LEGO render exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
 Both images agree on the body plan (the LEGO toy render was deleted 2026-10-08 as a cartoon duplicate):
 - a low **rosette of broad, pointed, veined leaves**, eight on the mature plant;
@@ -50,6 +50,7 @@ Size: a small plant, roughly knee-high to waist-high, judging by tooke prey and 
 The images:
 - **Image 1** (Legends field-guide painting) is the strongest reference, with one stalk and mouth.
 - **Image 2** (*Gungan Frontier* sprite) shows **two** stalks and mouths, which confirms the one-to-four-stalk range.
+- **Legends status (late review):** the unsuffixed article is tagged non-canon (LEGO Star Wars: The Skywalker Saga), so leaf counts and the seedling sequence come from that game, while the one-to-four stalks, tooke-scent lure, house-plant use, clodhopper predation and the shiro-trap association (a tooke-trap growing in soil pockets on a shiro, a symbiosis and not a separate species) are Legends only.
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images (the Legends field-guide painting above all).*
@@ -78,9 +79,9 @@ The images:
   It confirms more than one stalk.
 
 ## Webwork notes (for WEBWORK_FLORA_ROSTER_1)
-- Canon home is a **swamp** on Naboo. In the Webwork it is a donor row (`Plant_TookeTrap_Wild`), so per the
+- Its Legends home is the **swamps** of Naboo (the LEGO-tagged article is non-canon). In the Webwork it is a donor row (`Plant_TookeTrap_Wild`), so per the
   no-donor-art rule it needs our own render against this entry.
-- Its canon ecology fits a predator-flora roster: it lures small prey with a fake mating scent, rides shiros, and is
+- Its Legends ecology fits a predator-flora roster: it lures small prey with a fake mating scent, rides shiros, and is
   eaten by clodhoppers. Check which of tooke, shiro and clodhopper are cast in the Webwork before claiming the
   ecology in its description.
 - Canon is thin. The main text is Legends, and the canon article is LEGO-tagged non-canon. Per Q11 it is a genuine

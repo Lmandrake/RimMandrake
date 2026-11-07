@@ -30,7 +30,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (canon ink comic: a veermok attac
 and `donor_current_sprite.png` (donor sprite, our stand-in).
 
 - **Overall shape:** a carnivorous primate with a broad upper torso, long powerful arms and comparatively thin hind
-  limbs (canon text); knuckle-walking, ape-like stance.
+  limbs (canon text); ape-like build; neither page says knuckle-walking, the Legends page describes a bounding gait driven by the shoulders and long arms.
 - **Hands:** three-fingered paws tipped with jagged white claws (canon text).
 - **Head:** a dog-like muzzle full of razor-sharp teeth, with long fangs (all images).
 - **Fur:** woolly dark brown fur on back and arms; the lower body hairless (canon text); grey bare skin on the face

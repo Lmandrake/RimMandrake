@@ -32,6 +32,7 @@ held in an alien hand; Legends), and `donor_current_sprite.png` (donor sprite, o
 - **Mane:** a thick mane of fur around the neck (canon text and all images).
 - **Colour:** red-brown to tawny brown fur, darker mane, reddish stripes on the face in the SWTOR model.
 - **Donor sprite:** a brown maned cat with four lower tusks and reddish ears: agrees.
+- **Behaviour and colour (Legends only):** hunted in packs and alone, able to bring down nerfs; the Legends infobox lists brown skin, brown hair and brown eyes. The red face stripes are the SWTOR model's, not text.
 
 ## Must show
 - [ ] BODY PLAN: a powerful low-slung big cat with heavy forequarters and big curved claws

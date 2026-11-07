@@ -34,6 +34,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (canon render), `wookieepedia_leg
 - **Colour:** red to red-brown skin (all images), a dark shaggy mane of hair over the neck and back (canon render).
 - **Donor sprite:** a red beast with big pink-lined ears, a dark mane and big teeth: agrees; the four arms are not
   readable.
+- **Canon vs Legends (late review):** canon: a vicious carnivorous DESERT mammal of Vanqor; Legends only: 1 to 2.5 m tall, born with two arms and black fur, the second arm pair emerging in adolescence, with green and beastlord subspecies.
 
 ## Must show
 - [ ] BODY PLAN: a hunched, powerfully built creature with FOUR clawed arms (two large, two smaller)

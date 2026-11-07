@@ -37,7 +37,8 @@ def also draws `TukataB`/`TukataC` variants).
 - **Colour:** grey-green to olive-grey hide with paler belly (Legends painting); dark grey-black (Legends howl);
   blue luminous spines/barbels in the canon comic.
 - **Donor sprite:** a slate-blue hound with blue spines and barbels: agrees with the canon comic colouring.
-- **Ability:** can leap over twice its height (canon text; donor ports a leap ability).
+- **Ability:** one individual tuk'ata could leap over twice its height (canon text, a single beast and not a species statistic; donor ports a leap ability).
+- **Canon vs Legends (late review):** canon: a Sith warbeast of Moraband, seen guarding a tomb in the Doctor Aphra comic; Legends only: Korriban tomb guardians that speak the Sith language, were corrupted grazing animals made by Sith alchemy and draw nourishment from the dark side.
 
 ## Must show
 - [ ] BODY PLAN: a large lean quadruped with clawed paws and a long whip-like tail

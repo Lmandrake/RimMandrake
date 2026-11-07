@@ -42,6 +42,8 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (2024 Ewoks comic, an Ewok riding
 - **Colour:** olive-tan to mustard-brown body in the canon comic and the sketch.
 - **Donor sprite:** olive-khaki pony with curved grey horns, a ginger mane and a pale muzzle: consistent with the images.
 - **Size:** lesser bordok up to 1.5 m at the shoulder, greater bordok twice that (Legends text).
+- **Review 2026-11-06, canon (Bordok):** a sure-footed equine herbivore carrying large loads for its small size, an Ewok pack animal and mount, related to pulgas, fathiers, orbaks and tris. "Equine" is its classification, not a licence for a horse face (the owner's ruling below stands).
+- **Review 2026-11-06, Legends only (Bordok/Legends):** lesser bordok to 1.5 m at the shoulder, greater bordok twice that; split hooves; horns short on young females, larger on adult males (age and sex are mixed in that one line, so it fixes no male/female sprite rule).
 
 ## Must show
 - [ ] BODY PLAN: a pony-sized quadruped with a deep barrel and strong back, slim legs and split hooves

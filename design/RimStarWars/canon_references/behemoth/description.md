@@ -7,7 +7,7 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Sith_war_behemoth
+### Legends — https://starwars.fandom.com/wiki/Sith_war_behemoth
 
 The Sith war behemoths were beasts of war used by the Sith Empire.
 
@@ -18,7 +18,7 @@ Wild war behemoths tended to travel in small groups of two to four and spent mos
 The troop container of a Sith personnel carrier was able to hold two war behemoths, though only one was able to exit them at a time.
 
 ## Visual brief
-Canon page is `Sith war behemoth` (the donor label is just "behemoth"). Viewed 2026-10-14: `wookieepedia_canon_1.webp`
+The Wookieepedia page is `Sith war behemoth`, a Legends article (no canon page exists under this name; the donor label is just "behemoth"). Viewed 2026-10-14: `wookieepedia_canon_1.webp`
 (field-guide render), `wookieepedia_canon_2.webp` (painted group of Sith beasts), `wookieepedia_canon_3.webp` (comic
 panel, a herd with riders), and `donor_current_sprite.png` (the sprite we ship: `swanimals/Behemoth/JawaBehemoth_m`,
 our own up-res carried over from `BehemothArtUpres_StarWarsAnimalCollection.xml`).
@@ -31,6 +31,7 @@ our own up-res carried over from `BehemothArtUpres_StarWarsAnimalCollection.xml`
 - **Coat:** shaggy brown fur on the shoulders, chest and legs (canon_1); in the comic a long red-brown shaggy coat;
   grey-white wrinkled hide elsewhere.
 - **Donor/ours sprite:** cream-white hide, shaggy tan lower coat, back plates, horned crest and two long tusks: agrees.
+- **History (Legends):** peaceful herd beasts of icy Khar Delba that used their long tusks only against predators; the Sith brought them to Ziost and made them part of their army. A hard shell protects the back.
 
 ## Must show
 - [ ] BODY PLAN: a massive high-shouldered quadruped on thick pillar legs

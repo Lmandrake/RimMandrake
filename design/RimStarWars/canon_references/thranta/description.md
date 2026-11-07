@@ -30,6 +30,7 @@ and `donor_current_sprite.png` (donor sprite, our stand-in).
   paler undersides.
 - **Behaviour:** floats; emits mournful cries; ridden with howdahs (Legends sketch).
 - **Donor sprite:** a blue-grey winged whale with a pale belly and long tail: agrees.
+- **Canon behaviour (late review):** native to Alderaan, migratory in herds or flocks; riding is canon too (Leia learned to ride one, and Bespin thrantas were ridden through the clouds). Legends only: airsacks under the skin, a diet of small flying creatures and airborne zooplankton, and giant breeds.
 
 ## Must show
 - [ ] BODY PLAN: a streamlined whale-like flier with broad triangular wings and a long stabilising tail

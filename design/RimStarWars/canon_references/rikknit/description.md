@@ -25,6 +25,7 @@ and `donor_current_sprite.png` (donor sprite, our stand-in).
   blurred for more.
 - **Donor sprite:** a curled, segmented tan-brown crustacean with dark purple-red legs and tail: agrees with the
   little the image shows.
+- **Range and use (late review, Legends only):** native to New Plympto; hunted with harvest blades until Chancellor Valorum protected them; the diet is not stated.
 
 ## Must show
 - [ ] BODY PLAN: an arboreal crustacean with a segmented, plated body and eight to twelve long curved legs

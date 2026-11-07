@@ -36,6 +36,7 @@ its jaws open), and `donor_current_sprite.png` (donor sprite, our stand-in). Not
 - **Donor sprite:** a peach-tan rodent with a striped segmented tail: the tail and colour roughly agree; it misses the
   head bristles and the long toothy snout.
 - **Behaviour:** pack/swarm hunters in the treetops, very fast (texts).
+- **Canon vs Legends (late review):** canon says only a rodent native to Yavin 4 that hunted in packs in the giant massassi trees and overwhelmed roosting whisper birds; sharp puncturing teeth, litters of four or five, a very high metabolism and cannibalism when hungry are Legends only.
 
 ## Must show
 - [ ] BODY PLAN: a long-bodied, lizard-like rodent with clawed gripping limbs

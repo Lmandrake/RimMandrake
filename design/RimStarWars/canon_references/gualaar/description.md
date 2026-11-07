@@ -38,6 +38,7 @@ detail), and `donor_current_sprite.png` (the sprite we already ship: the owner's
 - **Contradiction to flag:** the art we ship is a slim llama/antelope with two thin backward horns and tan-and-white
   patches. It misses the single large head horn, the snout horns, the white coat and the heavy barrel. Reported only:
   it is shipped owner art, so no cosmetic change without his permission.
+- **Use (late review, canon):** domesticated draught animal: four gualaar pulled Padmé Amidala's funeral carriage on Naboo in 19 BBY; the Legends page says only tall, heavy-bodied, horned, white fur.
 
 ## Must show
 - [ ] BODY PLAN: a tall, heavy, broad-barrelled quadruped with a long upright neck and long tail

@@ -27,9 +27,10 @@ painting, side view), and `donor_current_sprite.png` (donor sprite, our stand-in
   and a long, thick, tapering tail; carries its head low.
 - **Hide:** RED, scaly, banded skin (canon text: "red, scaly skin"); the images show orange-red armoured bands across
   the back and tail with a row of small spines/ridges, paler yellow-tan belly.
-- **Head:** blunt reptilian head, big round BLUE/violet eyes (canon text: "a pair of blue eyes"), rows of pointed teeth;
+- **Head:** blunt reptilian head, big round BLUE eyes (canon text: "a pair of blue eyes"), rows of pointed teeth;
   four horns (canon text), small and stubby in the images.
 - **Donor sprite:** a red-banded lizard-dog with a pale belly and violet eyes: agrees.
+- **Legends only (Akk dog/Legends), never for the canon dog:** native to Haruun Kal, Force-sensitive, domesticated by the Korunnai, six vestigial horns, jaws that crush durasteel, a hide that blocks a lightsaber. Canon is the red, four-horned dog of Anoat.
 
 ## Must show
 - [ ] BODY PLAN: a heavy, long-bodied four-legged reptile with a long thick tapering tail

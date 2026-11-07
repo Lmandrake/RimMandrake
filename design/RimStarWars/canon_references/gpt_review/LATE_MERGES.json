@@ -1,0 +1,489 @@
+{
+ "owner_item": "CANON_RULINGS_DECIDE_SNAKE_NEVER_SHIPPED",
+ "rows": [
+  {
+   "entry": "aiwha",
+   "text": "- **Mouth and diet (canon, Aiwha):** long, slightly down-turned, beak-like mouth filled with baleen, filtering krill and other tiny prey from seawater; a filter feeder, never a hunter of land animals.",
+   "claim": "baleen and tiny prey make it a filter feeder, not a predator of land animals",
+   "ruled": false
+  },
+  {
+   "entry": "aiwha",
+   "text": "- **Legends only (Aiwha/Legends):** also lived on Naboo in medium-size pods and were domesticated by Gungans; canon places them on Kamino as Kaminoan mounts.",
+   "claim": "Naboo populations and Gungan mounts belong to Legends",
+   "ruled": false
+  },
+  {
+   "entry": "akk",
+   "text": "big round BLUE eyes (canon text: \"a pair of blue eyes\")",
+   "claim": "canon gives blue eyes, not blue/violet",
+   "ruled": false
+  },
+  {
+   "entry": "akk",
+   "text": "- **Legends only (Akk dog/Legends), never for the canon dog:** native to Haruun Kal, Force-sensitive, domesticated by the Korunnai, six vestigial horns, jaws that crush durasteel, a hide that blocks a lightsaber. Canon is the red, four-horned dog of Anoat.",
+   "claim": "Force sensitivity, Korunnai bond, six horns and durasteel jaws are Legends",
+   "ruled": false
+  },
+  {
+   "entry": "behemoth",
+   "text": "The Wookieepedia page is `Sith war behemoth`, a Legends article (no canon page exists under this name; the donor label is just \"behemoth\").",
+   "claim": "Sith war behemoth is a Legends article, not canon (page header Top with leg flag), sourced to Legends references",
+   "ruled": false
+  },
+  {
+   "entry": "behemoth",
+   "text": "### Legends — https://starwars.fandom.com/wiki/Sith_war_behemoth",
+   "claim": "Sith war behemoth is a Legends article, not canon (page header Top with leg flag), sourced to Legends references",
+   "ruled": false
+  },
+  {
+   "entry": "behemoth",
+   "text": "- **History (Legends):** peaceful herd beasts of icy Khar Delba that used their long tusks only against predators; the Sith brought them to Ziost and made them part of their army. A hard shell protects the back.",
+   "claim": "origin on Khar Delba and Sith use on Ziost",
+   "ruled": false
+  },
+  {
+   "entry": "boarwolf",
+   "text": "while the Legends text gives a three-metre predator (the canon page states no height).",
+   "claim": "the three-metre height comes from the Legends page, not the canon text",
+   "ruled": false
+  },
+  {
+   "entry": "boarwolf",
+   "text": "- **Canon (Boar-wolf):** domesticated by the semi-sentient Gorax, who raise the young after killing the mother; not livestock.",
+   "claim": "Gorax domestication is on the canon page",
+   "ruled": false
+  },
+  {
+   "entry": "boarwolf",
+   "text": "- **Legends only (Boar-wolf/Legends):** hunts in pairs for blurrgs and Ewoks, large hooked claws that tear holes in trees, howls at the gas giant Endor.",
+   "claim": "pair hunting, blurrg prey, tree-tearing claws and howling at Endor are Legends",
+   "ruled": false
+  },
+  {
+   "entry": "bordok",
+   "text": "- **Review 2026-11-06, canon (Bordok):** a sure-footed equine herbivore carrying large loads for its small size, an Ewok pack animal and mount, related to pulgas, fathiers, orbaks and tris. \"Equine\" is its classification, not a licence for a horse face (the owner's ruling below stands).",
+   "claim": "canon relates bordoks to fathiers, orbaks and other riding beasts",
+   "ruled": true
+  },
+  {
+   "entry": "bordok",
+   "text": "- **Review 2026-11-06, Legends only (Bordok/Legends):** lesser bordok to 1.5 m at the shoulder, greater bordok twice that; split hooves; horns short on young females, larger on adult males (age and sex are mixed in that one line, so it fixes no male/female sprite rule).",
+   "claim": "lesser/greater forms and the 1.5 m limit are Legends",
+   "ruled": true
+  },
+  {
+   "entry": "brezak",
+   "text": "the skin flaps attach to the ribcage and dangle loosely between fore and hind legs when retracted",
+   "claim": "skin flaps attach to the ribcage and dangle between fore and hind legs when retracted",
+   "ruled": false
+  },
+  {
+   "entry": "bursa",
+   "text": "the canon page Bursa holds just a name mention (Smuggler's Guide, bursa-baiting on Ohma-D'un)",
+   "claim": "a canon Bursa page exists: first mentioned in canon in Smuggler's Guide (2018)",
+   "ruled": false
+  },
+  {
+   "entry": "bursa",
+   "text": "the Amaran captured, bred and sold them, and they could be trained to dance on their hind legs",
+   "claim": "Amaran captured, bred and sold bursas, trained to dance on hind legs",
+   "ruled": false
+  },
+  {
+   "entry": "chrysaliderancor",
+   "text": "made by transforming rancors in immense alchemical cocoons on Byss",
+   "claim": "Palpatine transformed rancors into chrysalides in immense alchemical cocoons on Byss",
+   "ruled": false
+  },
+  {
+   "entry": "corellianhound",
+   "text": "three bony spiked tendrils protruding from the",
+   "claim": "Sibian has three bony spiked tendrils on its cheeks beneath the eyes (not the lower jaw)",
+   "ruled": false
+  },
+  {
+   "entry": "corellianhound",
+   "text": "a grey-skinned Sibian variation also existed",
+   "claim": "a grey-skinned Sibian variation existed",
+   "ruled": false
+  },
+  {
+   "entry": "devourer",
+   "text": "the Legends lead (the page `Devourer` carries the Legends header, no `/Legends` suffix) says only",
+   "claim": "Devourer is a Legends article (header Top leg), not canon",
+   "ruled": false
+  },
+  {
+   "entry": "devourer",
+   "text": "two devourers ate Mandalore the Indomitable, leaving only his mask",
+   "claim": "two devourers ate Mandalore the Indomitable leaving only his mask",
+   "ruled": false
+  },
+  {
+   "entry": "chrysaliderancor",
+   "text": "Legends chrysalide skin is green",
+   "claim": "canon chrysalide skin wording contradicts the entry being Legends",
+   "ruled": false
+  },
+  {
+   "entry": "dragonsnake_albino",
+   "text": "the Hutt twins' dragonsnake wounded Din Djarin through his armour and injected venom",
+   "claim": "the Hutt twins owned the film dragonsnake, it wounded Din through his armour and injected venom",
+   "ruled": true
+  },
+  {
+   "entry": "drexl",
+   "text": "a small head on a long neck, with a short, wide snout and sharp fangs (Legends text)",
+   "claim": "adult has a small head with short wide snout, not a long horned head",
+   "ruled": false
+  },
+  {
+   "entry": "drexl",
+   "text": "born 3 m tall, wingless and more humanoid, on two legs with clawed three-fingered hands",
+   "claim": "larvae are wingless humanoid-shaped, bright green, with tail and three rows of spines",
+   "ruled": false
+  },
+  {
+   "entry": "energyspider",
+   "text": "the separate canon page Spice spider (Aaloth, Taul, allegedly Kessel) has pure-glitterstim webs",
+   "claim": "a separate canon Spice spider article exists, found on Aaloth and Taul and allegedly Kessel",
+   "ruled": false
+  },
+  {
+   "entry": "energyspider",
+   "text": "ion weapons being highly effective but not lethal",
+   "claim": "ion weapons are highly effective but not lethal against them",
+   "ruled": false
+  },
+  {
+   "entry": "frogdog",
+   "text": "canon notes a less intelligent subspecies on At Attin",
+   "claim": "a less intelligent subspecies of frogdog lived on At Attin",
+   "ruled": false
+  },
+  {
+   "entry": "grazerdomestic",
+   "text": "survived Alderaan's destruction in 0 BBY",
+   "claim": "many grazers were moved offworld and survived Alderaan's destruction in 0 BBY",
+   "ruled": false
+  },
+  {
+   "entry": "gualaar",
+   "text": "domesticated draught animal: four gualaar pulled Padmé Amidala's funeral carriage",
+   "claim": "draught animal pulling the funeral carriage",
+   "ruled": false
+  },
+  {
+   "entry": "gullipud",
+   "text": "(the page says only that it extends its spine to be hard to catch and swallow, not claws)",
+   "claim": "extends its spine against pikobi predation, not claws",
+   "ruled": false
+  },
+  {
+   "entry": "gullipud",
+   "text": "native to Naboo swamps, small easy prey for pikobis, bounces when inflated",
+   "claim": "bounces when inflated and used in gullipud ball",
+   "ruled": false
+  },
+  {
+   "entry": "gundark",
+   "text": "a vicious carnivorous DESERT mammal of Vanqor; Legends only: 1 to 2.5 m tall",
+   "claim": "canon: carnivorous desert mammal of Vanqor with sixteen claws and keen hearing",
+   "ruled": false
+  },
+  {
+   "entry": "harvesterbeetle",
+   "text": "giant beetles native to Neimoidia's hot jungles, tamed by the Neimoidians",
+   "claim": "canon gives only giant beetle, hot jungles, tamed for fungus",
+   "ruled": false
+  },
+  {
+   "entry": "ithorianreek",
+   "text": "not an independent species: a reek subspecies exported to Ithor, yellow because of a diet of yellow flora",
+   "claim": "it is a reek subspecies exported to Ithor not a separate species",
+   "ruled": false
+  },
+  {
+   "entry": "junglerancor",
+   "text": "webbed hands and feet; eyes with black pupils, brown irises and yellow sclerae",
+   "claim": "webbed hands and feet and yellow sclerae eyes",
+   "ruled": true
+  },
+  {
+   "entry": "kaadu",
+   "text": "about 2 m tall and 35 kg, orange skin with feathers and black eyes",
+   "claim": "canon infobox gives 2 m height 35 kg orange skin feathers black eyes",
+   "ruled": false
+  },
+  {
+   "entry": "katarn",
+   "text": "canon text: a dangerous predator native to Kashyyyk that prowled the deep, lightless levels",
+   "claim": "canon gives only a Kashyyyk predator of the dark lower levels",
+   "ruled": false
+  },
+  {
+   "entry": "kelldragon",
+   "text": "A canon page `Kell dragon` exists but gives no anatomy",
+   "claim": "a canon page exists so Legends only and no canon page found is wrong",
+   "ruled": false
+  },
+  {
+   "entry": "kwazelmaw",
+   "text": "a giant aquatic slug (canon text) with a long segmented body, multiple short appendages at",
+   "claim": "giant aquatic slug with appendages front and back not caterpillar legs",
+   "ruled": false
+  },
+  {
+   "entry": "kwazelmaw",
+   "text": "its skin deflects blaster bolts and even some missiles, and its eyelids close when it sleeps underwater",
+   "claim": "skin has glowing bioluminescent markings and deflects blasters and some missiles",
+   "ruled": false
+  },
+  {
+   "entry": "leaftail",
+   "text": "- **Habitat (Legends only):** arboreal, jumping tree to tree; the main prey of greater bogwings.",
+   "claim": "Legends leaf-tails were arboreal and main prey of greater bogwings",
+   "ruled": false
+  },
+  {
+   "entry": "lothwolf",
+   "text": "the single wolf Dume is abnormally large even for Loth-wolves",
+   "claim": "Dume is abnormally large so ordinary wolves need a separate scale",
+   "ruled": false
+  },
+  {
+   "entry": "maalraas",
+   "text": "maalraas are only \"possibly the ancestors of nighthunters\"",
+   "claim": "maalraas were possibly the ancestors of nighthunters, so the two names are not strictly synonyms",
+   "ruled": false
+  },
+  {
+   "entry": "manka",
+   "text": "hunted in packs and alone, able to bring down nerfs",
+   "claim": "Legends manka hunted in packs and alone and could bring down nerfs",
+   "ruled": false
+  },
+  {
+   "entry": "mastiffphalone",
+   "text": "turkey-like head and sharp beak and a mane of large brown feathers",
+   "claim": "Legends gives a turkey-like head with a sharp beak and a mane of large brown feathers",
+   "ruled": false
+  },
+  {
+   "entry": "mastmot",
+   "text": "the hump, nasal horns, long ears and ungulate build are Legends text",
+   "claim": "nasal horns, long ears, shoulder hump and ungulate build are Legends only",
+   "ruled": false
+  },
+  {
+   "entry": "mawvorr",
+   "text": "every limb has three digits ending in big claws; the tail and belly are also covered in plates",
+   "claim": "every limb has three digits ending in big claws and tail and belly are plated",
+   "ruled": false
+  },
+  {
+   "entry": "narglatch",
+   "text": "adaptable to various climates; Talz ride them and Trandoshans prize the pelt as a trophy",
+   "claim": "pelts are prized trophies of Trandoshans and others",
+   "ruled": false
+  },
+  {
+   "entry": "nexu",
+   "text": "the canon infobox lists two lengths, 1.83 m and 4.51 m (the page does not say which includes the tail)",
+   "claim": "infobox lists two lengths, 1.83 and 4.51 meters, and height 0.94",
+   "ruled": false
+  },
+  {
+   "entry": "paintedspat",
+   "text": "a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: canon text)",
+   "claim": "the protruding mandible structure is not a true beak and the jaw resembles a reptilian jaw",
+   "ruled": false
+  },
+  {
+   "entry": "rancor",
+   "text": "Legends text: rancors walked on two relatively stubby legs with longer forelimbs, sometimes on all fours, and had a short tail (Legends only)",
+   "claim": "rancors walked mainly on two stubby hind legs with a short tail",
+   "ruled": true
+  },
+  {
+   "entry": "rancor",
+   "text": "the canon infobox gives height 4.2 meters and 5 meters",
+   "claim": "five metres is not a universal size",
+   "ruled": true
+  },
+  {
+   "entry": "raxshir",
+   "text": "the tail is thick and nearly reaches the ground",
+   "claim": "thick tail nearly reaching the ground",
+   "ruled": false
+  },
+  {
+   "entry": "raxshir",
+   "text": "wild pine-forest hunter on Shili, calmed once by the infant Ahsoka through the Force",
+   "claim": "Ahsoka calmed one raxshir with the Force and it returned her peacefully",
+   "ruled": false
+  },
+  {
+   "entry": "reek",
+   "text": "canon infobox: height 2.24 meters, length 4 meters, 1100 kilograms, skin red and gray",
+   "claim": "canon height is 2.24 metres",
+   "ruled": false
+  },
+  {
+   "entry": "reek",
+   "text": "only arena-bred reeks were fed meat and given nose rings by handlers (canon)",
+   "claim": "arena reeks were meat-fed and wore nose rings while naturally herbivores",
+   "ruled": false
+  },
+  {
+   "entry": "rikknit",
+   "text": "native to New Plympto; hunted with harvest blades until Chancellor Valorum protected them",
+   "claim": "hunted then protected",
+   "ruled": false
+  },
+  {
+   "entry": "roggwart",
+   "text": "canon: Gor was enhanced with cybernetics including mechanical arms attached to its back",
+   "claim": "Gor mechanical arms are modifications not natural anatomy",
+   "ruled": false
+  },
+  {
+   "entry": "rycrit",
+   "text": "native to Ryloth, short fur, long faces, four nostrils, pointed teeth and sharp cloven hooves",
+   "claim": "Legends rycrits have four nostrils short fur long face cloven hooves",
+   "ruled": false
+  },
+  {
+   "entry": "squall",
+   "text": "The page `Squall (species)` is a Legends article ({{Top|leg}})",
+   "claim": "Squall (species) is a Legends article not canon",
+   "ruled": false
+  },
+  {
+   "entry": "squall",
+   "text": "about 30 to 40 centimeters long and 5 kilograms, long ears and a hopping gait",
+   "claim": "size 30 to 40 cm and 5 kg with long ears and hopping gait",
+   "ruled": false
+  },
+  {
+   "entry": "stintaril",
+   "text": "canon says only a rodent native to Yavin 4 that hunted in packs in the giant massassi trees",
+   "claim": "canon core is a Yavin 4 rodent hunting in packs in massassi trees",
+   "ruled": false
+  },
+  {
+   "entry": "tach",
+   "text": "canon: non-sentient, harmless and friendly, often on the ground searching for overripe fruits",
+   "claim": "friendly harmless forager on the ground not only arboreal",
+   "ruled": false
+  },
+  {
+   "entry": "taozin",
+   "text": "(Legends trait: the translucent shell diffuses blaster and lightsaber energy)",
+   "claim": "energy-diffusing shell is a Legends trait not canon",
+   "ruled": true
+  },
+  {
+   "entry": "taozin",
+   "text": "it spat silken webbing to entrap prey and could make itself appear invisible in the Force",
+   "claim": "webbing and Force concealment are Legends mechanics",
+   "ruled": true
+  },
+  {
+   "entry": "taozin_grub",
+   "text": "the brine's mental-fortitude effect is only a belief of the species that prize it",
+   "claim": "brine mental benefit is a belief of consumers",
+   "ruled": true
+  },
+  {
+   "entry": "taozin_grub",
+   "text": "Traveler's Guide to Batuu labelled an image of a dwarf vinock as the grub",
+   "claim": "a dwarf vinock image was mislabelled as the grub",
+   "ruled": true
+  },
+  {
+   "entry": "tetnisscrab",
+   "text": "whose name began as an animators' nickname; the 9.14 m height belongs to her alone",
+   "claim": "Tet'niss began as an animators nickname",
+   "ruled": false
+  },
+  {
+   "entry": "tetnisscrab",
+   "text": "the species is said to communicate in a very limited way with the technology it scavenges",
+   "claim": "communicating with technology is unsupported",
+   "ruled": false
+  },
+  {
+   "entry": "thranta",
+   "text": "riding is canon too (Leia learned to ride one, and Bespin thrantas were ridden through the clouds)",
+   "claim": "riding is canon not only Legends",
+   "ruled": false
+  },
+  {
+   "entry": "tooke",
+   "text": "canon: small, round, bipedal, tan fur with a darker brown tail tip, mostly nocturnal",
+   "claim": "canon fur is tan with darker brown tail tip and nocturnal with large black eyes",
+   "ruled": false
+  },
+  {
+   "entry": "tooke_trap_plant",
+   "text": "- Its Legends home is the **swamps** of Naboo (the LEGO-tagged article is non-canon).",
+   "claim": "the unsuffixed article is non-canon so canon home and canon ecology are wrong",
+   "ruled": false
+  },
+  {
+   "entry": "tooke_trap_plant",
+   "text": "a symbiosis and not a separate species",
+   "claim": "shiro-trap is a symbiosis not a separate species with camouflage for shiros",
+   "ruled": false
+  },
+  {
+   "entry": "torton",
+   "text": "the related tortur of Talus is red or green in both skin and armour and has two short vertical snout horns",
+   "claim": "tortur has two short vertical snout horns and red or green skin and armour",
+   "ruled": false
+  },
+  {
+   "entry": "torton",
+   "text": "the Torton article is a Legends article ({{Top|leg}})",
+   "claim": "Torton is a Legends article not canon",
+   "ruled": false
+  },
+  {
+   "entry": "tukata",
+   "text": "one individual tuk'ata could leap over twice its height (canon text, a single beast and not a species statistic",
+   "claim": "the leap is one individual not a species trait",
+   "ruled": false
+  },
+  {
+   "entry": "tuskcat",
+   "text": "Canon text says it is a non-sentient",
+   "claim": "it is a carnivorous feline predator not a grazing beast",
+   "ruled": false
+  },
+  {
+   "entry": "veermok",
+   "text": "neither page says knuckle-walking, the Legends page describes a bounding gait",
+   "claim": "knuckle-walking is not stated; Legends gives a bounding gait",
+   "ruled": false
+  },
+  {
+   "entry": "warbird",
+   "text": "yellow to yellowish-green (Legends text; the tan sketch is only a drawing, no text gives a tan-brown variant)",
+   "claim": "feathers yellow to yellowish-green so tan-brown is not attested",
+   "ruled": false
+  }
+ ],
+ "ruled_conflicts": [
+  {
+   "entry": "dragonsnake_albino",
+   "conflict": "Dragonsnake page: Fallen Order dragonsnakes were unused concept art that never made the final cut, so the owner ruling accepting the four Fallen Order variants as the canon Dragonsnake rests on non-appearing art; ruling not edited"
+  },
+  {
+   "entry": "junglerancor",
+   "conflict": "Jungle rancor page: brightly colored blue and gray skin and orange and gray spines; the ruling says regenerate only on the brown/red image and eliminate the purple images as not canon, so skin and spine colour are not merged"
+  }
+ ]
+}

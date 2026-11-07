@@ -23,7 +23,8 @@ Empire II comic panel, chrysalis rancors breaking loose), and `donor_current_spr
   dark green, wet, warty monster.
 - **Surface:** heavy ridges and pale bony growths/armour plates over the head and shoulders (comic panel).
 - **Contradiction to flag:** both donor sprites (adult `ChrysalideRancor`, juvenile `RancorW`) are white/grey with
-  a spiky back; canon chrysalide skin is green. Reported only.
+  a spiky back; Legends chrysalide skin is green. Reported only.
+- **Legends behaviour:** made by transforming rancors in immense alchemical cocoons on Byss; the teeth could chew through X-1 Viper droid armour; it attacks anything in sight except other chrysalides, preferring the largest target.
 
 ## Must show
 - [ ] BODY PLAN: a hunched, long-armed rancor-like beast with clawed hands and a huge fanged mouth

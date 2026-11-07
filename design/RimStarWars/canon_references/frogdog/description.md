@@ -31,6 +31,7 @@ palace), `wookieepedia_legends_1.webp` (front view, blue-lit), `wookieepedia_leg
 - **Contradiction to flag:** frog-dogs are SENTIENT and highly intelligent in both canon and Legends; the donor def
   ports them as an animal. Reported only.
 - **Donor sprite:** a brown squat frog-faced lizard with pointed teeth and a tapering tail: agrees on shape.
+- **Extra detail:** canon notes a less intelligent subspecies on At Attin; Legends: hopped and waddled, caught insects with a long sticky tongue, most stood 0.5 m tall at about 35 kg, with craggy gray nails on the five-fingered hands.
 
 ## Must show
 - [ ] BODY PLAN: a squat frog-like lizard with a bulbous body resting on the ground, two squat front legs with five-fingered hands, a long thin tapering tail

@@ -32,6 +32,7 @@ and `donor_current_sprite.png` (donor sprite, our stand-in).
   of the head (canon text and renders); a sticky projectile tongue (text).
 - **Colour:** dark charcoal to blue-black thick skin with pale horn tips and claws.
 - **Donor sprite:** a dark grey reptile with forward curved horns, a toothy grin and a long tail: agrees.
+- **Gor's additions (late review):** canon: Gor was enhanced with cybernetics including mechanical arms attached to its back, so those arms and the harness are not natural anatomy; Legends only: roggwarts are native to Vendaxa and natural enemies of the acklay.
 
 ## Must show
 - [ ] BODY PLAN: a large reptile on powerful hind legs with long clawed arms and a long tail ending in three grasping digits

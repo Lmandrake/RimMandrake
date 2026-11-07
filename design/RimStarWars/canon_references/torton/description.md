@@ -7,7 +7,7 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Torton
+### Legends — https://starwars.fandom.com/wiki/Torton
 
 Tortons were red and green testudines with long legs. They originated on Naboo's moon of Rori.
 
@@ -21,13 +21,14 @@ Torton meat was comestible. The cookbook Essential Cooking Skills detailed how t
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars Galaxies model), `wookieepedia_canon_2.webp` (pencil design
 sketch labelled "TORTON"), and `donor_current_sprite.png` (donor sprite, our stand-in; the def also draws a female).
 
-- **Overall shape:** a massive testudine (turtle) with LONG legs (canon text), standing tall like a fambaa; a big
+- **Overall shape:** a massive testudine (turtle) with LONG legs (Legends text), standing tall like a fambaa; a big
   ridged, plated shell over a heavy body.
 - **Head:** a turtle head on a thick neck with a horn on the snout (sketch, donor sprite).
-- **Colour:** canon text says "red and green"; the Galaxies model is brown with a dark brown shell. The images and the
+- **Colour:** Legends text says "red and green"; the Galaxies model is brown with a dark brown shell. The images and the
   text disagree; the near-identical tortur differs only in pigmentation.
 - **Donor sprite:** a brown, ridged shell over a tan body with a nose horn: matches the model, not the "red and green"
   text.
+- **Continuity and relatives (late review):** the Torton article is a Legends article ({{Top|leg}}), so none of this is current canon; tortons are oviparous and long-lived, with pygmy variants and fambaa-like size; the related tortur of Talus is red or green in both skin and armour and has two short vertical snout horns, so do not copy the tortur colours or horn count onto the torton.
 
 ## Must show
 - [ ] BODY PLAN: a massive turtle on long, thick pillar legs, standing tall

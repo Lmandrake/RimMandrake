@@ -30,6 +30,7 @@ stand-in). Canon page has text only.
 - **Fur:** long, shaggy, cream to pale yellow-white fur covering the whole body (comic).
 - **Donor sprite:** a cream-white shaggy beast with a tan face patch and thin tusks: agrees on colour; tusks and hump
   are understated.
+- **Canon vs Legends:** canon says only massive, furry, friendly beasts of burden with tusks; the hump, nasal horns, long ears and ungulate build are Legends text, as is the herd-dwelling herbivore ecology hunted by Whiphids.
 
 ## Must show
 - [ ] BODY PLAN: a massive shaggy quadruped with a dorsal hump over the shoulders

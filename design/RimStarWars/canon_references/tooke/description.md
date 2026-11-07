@@ -38,6 +38,7 @@ own entry (`tooke_trap_plant`).
 - **Tail:** long thin tail ending in a darker brown tuft (canon text, both sketches).
 - **Colour:** tan to light brown fur with a pale/white belly and face (sketches).
 - **Donor sprite:** a red-brown round rodent with a white face and a tufted tail: agrees.
+- **Canon vs Legends (late review):** canon: small, round, bipedal, tan fur with a darker brown tail tip, mostly nocturnal, found in the forests near the ancient ruins on Batuu; Legends only: native to the Gungan swamps of Naboo, litters of eight, hunted by tooke-trap plants and otta, a defensive backflip, flesh toxic to rancors.
 
 ## Must show
 - [ ] BODY PLAN: a small round jerboa-like hopper on long hind legs with big three-clawed feet; tiny forearms under the belly

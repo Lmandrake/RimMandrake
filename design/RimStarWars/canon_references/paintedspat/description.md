@@ -17,7 +17,7 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars Galaxies-style model i
 
 - **Overall shape:** a large, flightless, two-legged avian (canon text: a mutated variant of the carrion spat,
   larger and stronger), hunched forward on long scaly legs with big clawed feet; long neck.
-- **Head:** a long, heavy, downward-curving bony beak/crest that sweeps back over the head (tan-cream), small eye.
+- **Head:** a bony structure protruding from the mandible that is not a true beak (the jaw resembles a reptilian jaw: canon text); the model image shows it as a long, heavy, downward-curving tan-cream bony projection sweeping back over the head; small eye.
 - **Colour:** much darker skin than the carrion spat, grey-brown, with pronounced horizontal stripes along the back
   (canon text); the model's legs are pale orange-tan.
 - **Donor sprite:** a grey-brown striped hunched bird with a big cream beak: agrees.

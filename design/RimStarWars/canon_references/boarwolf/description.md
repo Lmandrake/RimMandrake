@@ -37,7 +37,9 @@ the moon, too dark for detail), and `donor_current_sprite.png` (the donor's adul
 - **Donor sprite:** a dark grey-brown wild boar with tusks and a short dark crest: it reads as an ordinary boar and
   misses the hump, the size and the wolf head. Its juvenile is a striped piglet; canon says nothing of young.
 - **Size:** big predator, hunts Ewoks and blurrgs in pairs (Legends text). Contradiction to flag: the donor def
-  is sized and labelled like a farm boar, while canon is a three-metre predator.
+  is sized and labelled like a farm boar, while the Legends text gives a three-metre predator (the canon page states no height).
+- **Canon (Boar-wolf):** domesticated by the semi-sentient Gorax, who raise the young after killing the mother; not livestock.
+- **Legends only (Boar-wolf/Legends):** hunts in pairs for blurrgs and Ewoks, large hooked claws that tear holes in trees, howls at the gas giant Endor.
 
 ## Must show
 - [ ] BODY PLAN: a heavy quadruped with a pronounced shoulder hump and a bristly, shaggy ridge of hair along the back

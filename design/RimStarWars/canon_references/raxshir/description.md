@@ -26,6 +26,7 @@ Pav-ti and carrying the infant Ahsoka), and `donor_current_sprite.png` (donor sp
   vivid yellow-green-gold coat with dark tiger stripes and a dark grey face mask.
 - **Paws:** four clawed toes per paw (text).
 - **Donor sprite:** a bright yellow striped sabre-tooth with a grey face and white belly: agrees with canon.
+- **Tail, length, habitat (late review):** the 4 m is a body length, not a shoulder height; the tail is thick and nearly reaches the ground; wild pine-forest hunter on Shili, calmed once by the infant Ahsoka through the Force, not a tame animal.
 
 ## Must show
 - [ ] BODY PLAN: a hulking big cat with heavy shoulders, thick neck and long tail

@@ -31,6 +31,7 @@ open), `wookieepedia_legends_2.webp` (a pack in savanna grass), and `donor_curre
 - **Plumage:** a coat of grey feathers with dark-blue markings; a mane of dark feathers over the neck and shoulders and
   a long feather-like tail (canon text and images).
 - **Donor sprite:** a grey-blue striped bird-beast with a dark mane and pale beak, seen front-on: agrees.
+- **Head and mane (Legends only):** flightless, with a turkey-like head and sharp beak and a mane of large brown feathers (canon says only "dark feathers"); about two metres long.
 
 ## Must show
 - [ ] BODY PLAN: a large long-bodied four-legged avian (griffin-like) with taloned feet and vestigial wings at the front legs

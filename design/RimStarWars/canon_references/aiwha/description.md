@@ -36,6 +36,8 @@ rider in a saddle), `wookieepedia_legends_1.webp` (Attack of the Clones frame, f
 - **Flight:** flies and swims, using flippers as wings and vice versa (canon text).
 - **Donor sprite:** a green cross-shaped flier seen from above with a pale belly: agrees on colour; its wings are much
   shorter and stubbier than canon.
+- **Mouth and diet (canon, Aiwha):** long, slightly down-turned, beak-like mouth filled with baleen, filtering krill and other tiny prey from seawater; a filter feeder, never a hunter of land animals.
+- **Legends only (Aiwha/Legends):** also lived on Naboo in medium-size pods and were domesticated by Gungans; canon places them on Kamino as Kaminoan mounts.
 
 ## Must show
 - [ ] BODY PLAN: a whale-like body with enormous long, narrow, swept wing-flippers (span many times the body length) and small tail flukes

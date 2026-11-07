@@ -7,14 +7,14 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Devourer
+### Legends — https://starwars.fandom.com/wiki/Devourer
 
 Devourers were carnivores twisted by the dark side of the Force and were indigenous to Dxun. Exar Kun was attacked by a devourer while trying to enter the tomb of Freedon Nadd, but killed the beast. Two devourers later ate Mandalore the Indomitable after he crashed on Dxun, leaving only his mask, which was found by Mandalore the Ultimate.
 
 ## Visual brief
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (the only image: concept-style painting of a hunched green beast), and
 `donor_current_sprite.png` (donor sprite `swanimals/Devourer/Devourer`, our stand-in). The donor's description calls
-them "carnivorous anthropoids"; the canon lead says only "carnivores twisted by the dark side of the Force",
+them "carnivorous anthropoids"; the Legends lead (the page `Devourer` carries the Legends header, no `/Legends` suffix) says only "carnivores twisted by the dark side of the Force",
 indigenous to Dxun.
 
 - **Overall shape:** a heavily muscled, hunched beast with an enormous humped back and shoulders, long, thin, jointed
@@ -24,6 +24,7 @@ indigenous to Dxun.
 - **Donor sprite:** a lumpy lime-green hunched beast with a dark face: agrees on hunch and colour; legs and snout are
   simplified.
 - ⚠️ The def is named `RSW_Devourers` (plural); the vanilla Anomaly `Devourers` is an unrelated PawnGroupKindDef.
+- **Legends detail:** semi-sentient carnivores of Dxun, twisted by the dark side; two devourers ate Mandalore the Indomitable, leaving only his mask.
 
 ## Must show
 - [ ] BODY PLAN: an enormous humped, heavily muscled back and shoulders on long, thin, jointed clawed legs

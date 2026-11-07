@@ -7,17 +7,16 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Squall_%28species%29
+### Legends — https://starwars.fandom.com/wiki/Squall_%28species%29
 
 Squalls were small lagomorphs that inhabited the planets of Endor and  Chandrila.
 
 ## Visual brief
 Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Star Wars Galaxies in-game model), `wookieepedia_canon_2.webp`
 (painted art: a group of squalls on Chandrila around a crate), `wookieepedia_canon_3.webp` (black-and-white line
-drawing of a sitting squall), and `donor_current_sprite.png` (donor sprite, our stand-in). The page body is a stub
-(lead text only); the donor def's description (cuteness, begging) is the donor's, not sourced here.
+drawing of a sitting squall), and `donor_current_sprite.png` (donor sprite, our stand-in). The page `Squall (species)` is a Legends article ({{Top|leg}}), so every image here is Legends; the canon squall (`Squall (rodent)`) is only a rodent on Endor with no appearance given. The Legends page does source cuteness and begging for food.
 
-- **Overall shape:** a small rabbit/hare-like lagomorph (canon text: "small lagomorphs") with long legs, a slim body
+- **Overall shape:** a small rabbit/hare-like lagomorph (Legends text: "small lagomorphs") with long legs, a slim body
   and big hind feet.
 - **Ears:** very long, broad, floppy ears, often hanging to the sides or down (all three images).
 - **Tail:** a big bushy, curling, squirrel-like tail (line drawing; painted group shows long tails).
@@ -26,6 +25,7 @@ drawing of a sitting squall), and `donor_current_sprite.png` (donor sprite, our 
 - **Face:** large dark eyes, small nose, rabbit-like muzzle.
 - **Donor sprite:** a white-grey rabbit with long ears and a bushy tail: shape agrees; the PNG is white greyscale,
   but the def tints it (CutoutComplex, brown alternates 80% of the time), so in game the colour agrees.
+- **Size and habits (late review, Legends only):** about 30 to 40 centimeters long and 5 kilograms, long ears and a hopping gait, begged for food or raided unguarded food stores, and were kept as pets or sold as food.
 
 ## Must show
 - [ ] BODY PLAN: a small slim hare-like animal with long hind legs and big hind feet

@@ -14,7 +14,7 @@ Bursas were carnivorous quadrupeds native to the planet of Naboo.
 **Characteristics** Bursas were a species of non-sentient, four-legged carnivorous creatures native to Naboo. They had tusked snouts and feathery tufts of brown hair on their thick-skinned bodies, and were known to build and live in mud huts in the planet's swamps. Prey included motts.
 
 ## Visual brief
-Legends only (no canon page found). Viewed 2026-10-14: `wookieepedia_legends_1.webp` (illustration, a bursa beside
+Anatomy is Legends only; the canon page Bursa holds just a name mention (Smuggler's Guide, bursa-baiting on Ohma-D'un). Viewed 2026-10-14: `wookieepedia_legends_1.webp` (illustration, a bursa beside
 two small humanoids for scale), `wookieepedia_legends_2.webp` (a dim, scanned screen image of bursas in the swamp,
 too dark for detail), `wookieepedia_legends_3.webp` (2000 concept art by Robin Pronovost: an upright green-and-brown
 beast; concept art, NOT the final design), and `donor_current_sprite.png` (donor sprite, our stand-in).
@@ -31,6 +31,7 @@ beast; concept art, NOT the final design), and `donor_current_sprite.png` (donor
 - **Donor sprite:** a brown-grey bear-like beast with a spiky dark-green crest and a pale face: shape and crest agree
   with legends_1; the crest colour is green, not brown.
 - **Habitat note:** builds mud huts in Naboo swamps; preys on motts (text).
+- **Legends ecology:** early Gungans were attacked by wild bursas, which destroyed Gungan settlements; the Amaran captured, bred and sold them, and they could be trained to dance on their hind legs. Pronovost's design was used in Galactic Battlegrounds and The Wildlife of Star Wars (2001).
 
 ## Must show
 - [ ] BODY PLAN: a large, heavy, hunched quadruped carrying a long tusked snout low

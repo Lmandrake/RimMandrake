@@ -27,13 +27,14 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Clone Wars render, "Bogey"), `wo
 frame, glowing), `wookieepedia_legends_1.webp` (render, mouth open), and `donor_current_sprite.png` (donor sprite, our
 stand-in; the def also draws a swimming graphic).
 
-- **Overall shape:** a giant aquatic slug/caterpillar (canon text) with a long segmented body, many short stubby legs
-  at front and back, and a large flat finned tail.
+- **Overall shape:** a giant aquatic slug (canon text) with a long segmented body, multiple short appendages at
+  front and back (canon text; not a row of repeated legs), and a large flat finned tail.
 - **Head:** a huge, boxy head with a cavernous mouth (swallows a humanoid whole), big round YELLOW eyes with eyelids,
   and two curled antenna-like horns on top.
 - **Skin:** tan-khaki segmented hide with glowing bioluminescent GREEN and BLUE line markings (canon text and all
   images), dark blue-grey along the back.
 - **Donor sprite:** a tan head with dark crest seen top-down: agrees on colour but omits the glowing lines.
+- **Canon text (late review):** a large aquatic predator of the swamps of Rodia that lurks on the bottom; its skin deflects blaster bolts and even some missiles, and its eyelids close when it sleeps underwater. Legends only: lifespan up to 100 years.
 
 ## Must show
 - [ ] BODY PLAN: a giant segmented slug/caterpillar body with many short stubby legs and a large flat finned tail

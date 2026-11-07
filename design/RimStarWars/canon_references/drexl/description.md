@@ -7,7 +7,7 @@
 > from the pages, but the visual brief below was written on 2026-10-14 by the donor-pack port (DONOR_DEFS_PORT_TO_OURS_1) after viewing them.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Drexl
+### Legends — https://starwars.fandom.com/wiki/Drexl
 
 Drexls, also known as warbeasts, were reptavian winged creatures indigenous to Dxun.
 
@@ -16,12 +16,13 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp`, `wookieepedia_canon_2.webp`, `wo
 the Jedi-era comics: drexls swooping and a captured one roped down), and `donor_current_sprite.png` (donor adult
 sprite, our stand-in).
 
-- **Overall shape:** a large WINGED reptavian (canon text), dragon-like: big leathery bat-like wings, long neck and
+- **Overall shape:** a large WINGED reptavian (Legends text; the page `Drexl` is a Legends article), dragon-like: big leathery bat-like wings, long neck and
   long tail, clawed limbs; used as war mounts ("warbeasts").
-- **Head:** a long, spiked/horned reptilian head with a toothy beak-like jaw.
-- **Colour:** grey to grey-violet hide in the comics.
+- **Head:** a small head on a long neck, with a short, wide snout and sharp fangs (Legends text).
+- **Colour:** heavily muscled, covered in purple scales (Legends text); grey-violet in the comics.
 - **Donor sprite:** a purple, horned, dragon-like reptile with its wings drawn folded/spread (east and south); its juvenile
   is green and spiky.
+- **Larva (Legends):** born 3 m tall, wingless and more humanoid, on two legs with clawed three-fingered hands, a tail and three rows of spines down the back, bright green unlike the dark purple adults. A fully grown male had a 20 m wingspan.
 
 ## Must show
 - [ ] BODY PLAN: a large winged reptile with big leathery wings, a long neck and long tail, clawed limbs

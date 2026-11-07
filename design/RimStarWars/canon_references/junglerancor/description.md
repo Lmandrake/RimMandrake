@@ -40,6 +40,7 @@ this image does. `donor_current_sprite.png` is the donor's stand-in, not a refer
   head; small dark nodules in rows down the chest and belly.
 - **Colour layout:** a dark brown-to-charcoal back, shell and arm bands with RED-BROWN/rust spike tips; a
   pale tan-to-ochre wrinkled throat, chest plastron and belly; tan-grey legs. Matte, earthy, no bright hues.
+- **Further canon text (late review):** webbed hands and feet; eyes with black pupils, brown irises and yellow sclerae; lives in herds and tolerates local Felucian farmers, also found on Teth.
 
 ## Must show
 - [ ] BODY PLAN: an enormous hunched turtle-built rancor, front-heavy, long thick forearms reaching the ground, short bowed legs

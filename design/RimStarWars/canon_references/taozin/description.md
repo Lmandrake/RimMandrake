@@ -31,7 +31,8 @@ beside it). `donor_current_sprite.png` is the donor sprite that was our stand-in
 - **Body:** a giant segmented annelid / centipede: a long armoured ringed body in **red-brown and cream bands**, many short
   legs and arms along its length.
 - **Head:** blunt, with **mandibles** and **green eyes**.
-- **Shell:** hard, faintly translucent armour (canon trait: it diffuses blaster and lightsaber energy).
+- **Shell:** hard, faintly translucent armour (Legends trait: the translucent shell diffuses blaster and lightsaber energy).
+- **Legends abilities (late review, Legends only):** also known as a force dragon, native to the jungle moon Va'art; it spat silken webbing to entrap prey and could make itself appear invisible in the Force. The canon page says only that taozin have a life cycle with a grub stage.
 
 ## Must show
 - [ ] SCALE: a giant — the body reads at least ten times a man's length beside the true-scale human

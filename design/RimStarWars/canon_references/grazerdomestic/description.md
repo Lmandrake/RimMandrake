@@ -22,6 +22,7 @@ Viewed `wookieepedia_legends_1.webp` (*The Wildlife of Star Wars* watercolour; t
 - **Head:** small, carried low at the front; floppy flat ears; a wrinkled, trunk-like snout; a few small horn knobs; open mouth in the image.
 - **Tail:** short and thin.
 - **Donor stand-in:** a white egg-shaped blob with a dark dorsal ridge and one hooked horn — the colour mass agrees, but no gold rosette patches, no legs read, no ears, and a cartoon outline. It is the domestic shape only in bulk.
+- **Legends detail:** many grazers were moved offworld long ago and so survived Alderaan's destruction in 0 BBY; the domestic grazer is fatter and better fed than the significantly leaner wild form, and grazers were related to the nerf.
 
 ## Must show
 *Distilled from the brief above (one Legends image, domestic = left animal); body plan, colour layout and a negative, each checkable on a 256px sprite.*

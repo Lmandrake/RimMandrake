@@ -23,11 +23,12 @@ profile, wearing a harness), `wookieepedia_canon_3.webp` (a hound skull hung in 
 - **Skin:** pale white to bone-grey, completely hairless, with wrinkled folds and visible ribs/veins under the skin
   (both renders). The breed in these images is the white Sibian (canon text: "white skin, orange eyes").
 - **Head:** broad, flat, hairless skull with a crest of white bone-like scales from the head down to the shoulders
-  (text); a huge underbite jaw with long, uneven, protruding fangs and long spine-like whiskers/barbs fanning out from
-  the lower jaw (canon_1). Small eyes.
+  (text); a huge underbite jaw with long, uneven, protruding fangs and three bony spiked tendrils protruding from the
+  cheeks beneath the eyes (text; canon_1). Small eyes.
 - **Skull (canon_3):** wide, with a row of large fangs and spikes projecting from the jaw line.
 - **Donor sprite:** a pale white hairless hound with a scaled crest and a fanged underbite: agrees with the renders.
 - **Behaviour:** fast, nimble trackers with a keen nose and a vicious bite; used by gangs for attack and guard.
+- **Breed and variants:** the depicted Sibian is one breed, not the whole species; a grey-skinned Sibian variation also existed; some hounds stood 0.7 m tall; Sibians often lost regenerating teeth in fights, so uneven or missing fangs are right.
 
 ## Must show
 - [ ] BODY PLAN: a large hairless dog with deep chest and heavy shoulders tapering to slimmer hindquarters, thin whip tail

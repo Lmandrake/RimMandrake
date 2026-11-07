@@ -34,6 +34,7 @@ stand-in).
 - **Colour:** olive-brown to khaki fur, greener on the leaf membrane.
 - **Donor sprite:** a green-striped, squirrel-like rodent with a big green leaf-shaped tail and a pale face: the
   leaf tail agrees; the stylised striping and pale face are the donor's, not the illustration's.
+- **Habitat (Legends only):** arboreal, jumping tree to tree; the main prey of greater bogwings. The tail-tip leaf is animal membrane that resembles a gnarltree leaf (canon), not a real leaf.
 
 ## Must show
 - [ ] BODY PLAN: a small squat furry rodent with short clawed limbs and a round face with puffy cheeks

@@ -28,6 +28,7 @@ page has text only; all images are Legends.
   spines (comic, legends_3).
 - **Donor sprite:** an olive-green long-bodied beast with pale back-swept horns and a reddish tail: agrees with
   a mix of the three.
+- **Canon vs Legends (late review):** canon text: a dangerous predator native to Kashyyyk that prowled the deep, lightless levels, no anatomy given; Legends text only: slender body, rodent-like tail, narrow face leading back to a cartilaginous ridge over neck and shoulders, domesticated as Wookiee dragon-trooper war-mounts.
 
 ## Must show
 - [ ] BODY PLAN: a lean, long-bodied climbing quadruped with long limbs, large hooked claws and a long thin tail

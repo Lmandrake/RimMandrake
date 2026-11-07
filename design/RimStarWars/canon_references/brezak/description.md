@@ -29,6 +29,7 @@ Wars renders, ridden, gliding with skin flaps spread), and `donor_current_sprite
 - **Colour:** sandy tan to ochre-brown body and limbs with green-teal tints on the head and limbs; the flaps pinkish-
   tan with darker veining and spots.
 - **Donor sprite:** a top-down tan lizard with spread veined pink flaps: agrees.
+- **Legends detail:** the skin flaps attach to the ribcage and dangle loosely between fore and hind legs when retracted; the flat tail acts as a rudder; tan undersides with dark brown backs; the head is horned (Legends). Canon: bred as transport for Zygerrian royal guards and the high class.
 
 ## Must show
 - [ ] BODY PLAN: a lean giant lizard with four long splayed limbs and long grasping fingers

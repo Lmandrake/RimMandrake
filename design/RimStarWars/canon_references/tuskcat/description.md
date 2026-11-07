@@ -16,8 +16,8 @@ Viewed 2026-10-14: `wookieepedia_canon_1.webp` (the only image: a grey pencil-st
 "TUSK-CAT"), and `donor_current_sprite.png` (donor sprite, our stand-in).
 
 - **Overall shape:** a large, long-bodied quadruped with a heavy chest and shoulders, long legs with hooved or
-  heavy-toed feet, and a very long, thin, banded muscular tail (canon text: "a long muscular tail"). Despite the
-  name, the drawing reads more like a heavy grazing beast than a cat.
+  heavy-toed feet, and a very long, thin, banded muscular tail (canon text: "a long muscular tail"). Canon text says it is a non-sentient
+  carnivorous feline that hunted herbivores under grass cover on Naboo and could be used as a mount, so draw a predator, not a grazer.
 - **Head:** a heavy, drooping head with a pair of TUSKS growing from the lower jaw (canon text) curving down; a
   ridged/banded neck.
 - **Markings:** dark stripes/bands along the spine and tail in the drawing.

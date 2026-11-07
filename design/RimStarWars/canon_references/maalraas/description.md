@@ -26,6 +26,7 @@ concept art, brown), and `donor_current_sprite.png` (donor sprite, our stand-in)
   shape.
 - **Donor sprite:** a brown-and-cream arch-backed beast with fangs and a tufted tail: agrees with the concept art.
 - **Ability:** cloaks itself with the Force (text), matching the donor's `SW_ForceInvisibility`.
+- **Habitat and kin (page text):** Dxun packs prey mainly on cannoks and are in turn preyed on by the zakkeg; maalraas are only "possibly the ancestors of nighthunters", which are the trainable guard-beast form.
 
 ## Must show
 - [ ] BODY PLAN: a gaunt, arch-backed, long-legged quadruped with a long thin tail
