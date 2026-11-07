@@ -1032,6 +1032,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (reached >= 0 && t >= reached + StripNubUnder) break;
                 }
                 if (reached < 0) continue;
+                // still a cord, not a rod: a slight belly on what shows
+                int sgn = CordRng.Of(opt.Seed, "nub", nd.Cell.X, nd.Cell.Z).Sign();
+                for (int i = 0; i < line.Count; i++)
+                    line[i] = line[i] + sp.Side * (sgn * StripNubBelly * reached * Math.Sin(Math.PI * Math.Min(1, i * 0.05 / Math.Max(reached, 0.05))));
                 if (!atA) return line;
                 line.Reverse();
                 return line;
@@ -1039,7 +1043,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return null;
         }
 
-        private const double StripNubReach = 1.8, StripNubUnder = 0.3;
+        private const double StripNubReach = 1.8, StripNubUnder = 0.3, StripNubBelly = 0.12;
 
         /// <summary>How far a diving cord runs on past the face into a wall, rock or building (hidden by it), cells. Water: 0,
         /// the cord meets the water's edge like a conduit stub into water.</summary>
