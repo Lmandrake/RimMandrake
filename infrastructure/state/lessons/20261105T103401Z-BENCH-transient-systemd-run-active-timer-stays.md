@@ -1,1 +1,0 @@
-A transient systemd-run --on-active timer stays loaded after it fires (RemainAfterElapse defaults to yes), so reusing a fixed unit name is refused until it unloads; pass --timer-property=RemainAfterElapse=no (probed 2026-11-05: the timer was gone after it fired). Found in ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS (findings judge retry).

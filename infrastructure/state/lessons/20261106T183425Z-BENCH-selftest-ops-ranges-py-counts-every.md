@@ -1,1 +1,0 @@
-selftest_ops_ranges.py counts every class of every ops_watch range against its own fixtures: a commit that adds a range (ops_watch_rules.json) must add a fixture there or exclude the prefix with a comment naming the selftest that holds its fixtures, in the same commit, or the nightly goes red (SELFTEST_FIX_OPS_RANGES_VJAS: disk.root_fall_*, fixed in f3b9929d41).

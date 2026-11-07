@@ -1,1 +1,0 @@
-A systemd --user unit on WSL has no Windows dirs on PATH: shutil.which('curl.exe') returns None there though it works in your shell. Code that falls back to a Windows exe must try its fixed path (/mnt/c/Windows/System32/curl.exe). Test a unit's command with env -i PATH=/usr/bin:/bin. (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH: every ops_memory generation was BLIND for this.)

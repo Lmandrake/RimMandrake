@@ -1,1 +1,0 @@
-ops_watch churn: an 'unmeasured' ending is the Judge's blindness on one candidate; the same sha re-checked after a reach repair is not a second bounce (OPS_CHURN_DIAGNOSE_NIGHTLY_ZNGK_SBPI, NIGHTLY_COP_FIX_RED_AQJSGV_CFVH rang 'unmeasured failed it 2 times' off ec3e5f14 twice). churn_why now counts it once per sha (ops_watch.blind_again).

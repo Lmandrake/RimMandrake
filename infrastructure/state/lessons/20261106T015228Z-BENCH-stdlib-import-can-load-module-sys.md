@@ -1,1 +1,0 @@
-A stdlib import can load a module sys.stdlib_module_names omits: zoneinfo -> sysconfig -> _sysconfigdata__<platform> (name is platform-specific). An import-purity check keyed on stdlib_module_names flags it as foreign; judge by the interpreter's stdlib dir instead (selftest_contracts C6, CONTRACTS_IMPORT_DIAGNOSE_SYSCONFIG_TRIPWIRE).

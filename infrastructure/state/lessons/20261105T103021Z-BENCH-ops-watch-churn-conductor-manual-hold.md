@@ -1,1 +1,0 @@
-ops_watch churn: a Conductor/manual 'hold' or 'conductor_hold' ending in attempts.jsonl is a put-down, not a failed attempt; counting it re-armed old returns (HORRORS_RAIDING_FACTION_1 read 'bouncing: 3 returns' with every real failure >12 h old). churn_not_fail_ends now lists both (OPS_CHURN_DIAGNOSE_HORRORS_XSDJ_RKYR).

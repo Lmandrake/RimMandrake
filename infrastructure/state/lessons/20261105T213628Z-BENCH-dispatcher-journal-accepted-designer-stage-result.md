@@ -1,1 +1,0 @@
-Dispatcher journal: an ACCEPTED Designer stage result is logged do=role_stage with kind=role:Designer:stage_rejected (role_launch.py ~l.870 uses one kind for both branches); grep the why text ('accepted'/'REJECTED') or do=alarm, never the kind, to tell a rejected stage.

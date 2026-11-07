@@ -1,1 +1,0 @@
-SELFTEST_FIX_FUELSNOWS_NAME_CULL_AAEJ: a NIGHTLY_RED alarm can be fixed already when the item is taken. The red named the old Bench seat agent file, which 4b1c4a745c (2026-11-04) folded into CONDUCTOR.md two days before the alarm was filed. Rerun the named selftest on origin/main before you edit anything.

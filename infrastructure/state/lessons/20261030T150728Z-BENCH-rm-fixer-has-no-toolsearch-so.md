@@ -1,1 +1,0 @@
-No subagent can reach Artifact/ArtifactData (rm-fixer lacks ToolSearch; rm-builder's ToolSearch finds neither; general-purpose is hook-blocked), MEASURED 2026-10-30. A helper gathers the data into a file; the write goes through a headless `claude -p` with CLAUDE_CODE_ARTIFACT=1 (see src/RimMandrake/Utils/fleet_refresh.py), not necessarily the top-level window (2026-11-02).
