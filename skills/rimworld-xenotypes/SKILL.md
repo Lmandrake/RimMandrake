@@ -220,6 +220,7 @@ tier 1; one with `forcedHeadTypes` is tier 2. In our 70, that split was 29 / 35 
 `deployed/config/Mod_1635901197_FacialAnimationMod.BEFORE-{hutt,gand,gamorrean,bulk}-exclude-*.xml`.
 Back up before editing and commit both sides; FA reads settings at startup, so the
 change needs a restart.
+- **Facial Animation (1635901197) reads its skip list ONLY from the player's ModSettings, once at startup.** No def, extension or XML hook exists, so a mod that ships the opt-out must do it in C#: postfix `FacialAnimationModSettings.ShouldDrawRaceXenoType(Pawn)`, resolved by name (StarWarsRaces does this); the owner's own config is not evidence that players get the same. Entries are `Human-<XenotypeDefName>`, so after ANY xenotype rename (e.g. a tier prefix change) re-key `IgnoreEnableAnimationForRaceXenoTypeListAA` and restart: a stale key silently matches nothing and every species draws FA faces (reload_mod_settings, graphics dirty and respawn change nothing).
 
 ## 4. 🔴 A xenotype cannot be spawned — PawnKindDef is the handle
 

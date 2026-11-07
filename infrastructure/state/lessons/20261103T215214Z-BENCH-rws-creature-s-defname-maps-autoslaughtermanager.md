@@ -1,1 +1,0 @@
-In a .rws, a creature's defName in maps/autoSlaughterManager/configs or priceHistoryRecorders is a registry row, not an animal: R3 lists 563 such rows. Split save hits by XML path before counting. And grep -r over the 1269-mod workshop root can die with 'Cannot allocate memory' and leave an empty result that reads as zero hits; check stderr, and use a Python walk.

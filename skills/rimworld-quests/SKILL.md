@@ -357,6 +357,7 @@ known and low.** It cannot see inside a C# root, and it does not claim to.
 folder — `skills/rimworld-deploy/SKILL.md`.
 
 ---
+- **`validate_quest.py` false-WARNs `[unwritten-slate]` on a list built only through `<addToLists><li>X</li></addToLists>` of `QuestNode_GeneratePawn`.** That is a real engine field (1.6 `RunInt` loops it into `AddToOrMakeList`) that `collect_writes` does not read; treat the WARN as a false positive for such lists, or teach `collect_writes` the field.
 
 ## 9. XML or C#?
 

@@ -82,6 +82,7 @@ main page's real content often lives at `<Name>/Legends`, and a page's own
 TITLE can lie (the Rakata article is titled "Rakatan") (2026-09-15).
 
 ---
+- **Canon web searches need controls.** fandom.com 403s python-urllib's default User-Agent; curl with a browser UA works. Run a positive control before trusting any zero-hit search (e.g. dewback -> 3 hits). A Wookieepedia `list=search` hit is not an occurrence: 'brogg' hit a page whose wikitext holds zero 'brogg'; probe the page with `action=parse` before calling a name collision.
 
 ## 2. Before generating anything
 

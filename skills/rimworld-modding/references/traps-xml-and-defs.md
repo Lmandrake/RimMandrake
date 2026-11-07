@@ -341,6 +341,7 @@ job. (2026-09-14)
 
 ---
 Also grep the OWNING MOD'S DLL strings for the defName before cutting a def: a Cherry Picker removal of a def that C# looks up with `DefDatabase.GetNamed` turns into an NRE in that mod on every new/loaded game (`RimFridge_PowerFactorSetting` broke `RimFridgeComponent.StartedOrLoadedGame`). Read the FIRST error (the GetNamed miss), not the NRE under it. After a label rename, grep the old words across the whole def file and its Keyed strings too: comp letter labels/texts and death messages keep the old name.
+- **Sunless plants need BOTH `growMinGlow 0` AND `growOptimalGlow 0`** (vanilla Glowstool). The light factor is `InverseLerp(growMinGlow, growOptimalGlow, glow)`, 0 at glow 0 while `growOptimalGlow` stays 1.0, so a plant with only `growMinGlow 0` is unlit and dies at 7.5 days. The selftest refuses the half-set.
 
 ## `wildPlants`/`wildAnimals` use the `<DefName>commonality</DefName>` shorthand — not `<li>`
 
@@ -523,3 +524,9 @@ mistake above.** `Verse.ParseHelper.FromString` calls `Enum.Parse`
 
 ## A donor port copies the donor's XML, not our patches to it
 - **A donor port (plain-XML copy of a donor def, e.g. AB_* -> RM_*) copies the donor's XML, NOT what our patches did to it.** RM_AlienGrass/RM_HardyGrass/RM_ToxiGrass silently lost the FloorEmplacement layer a RUT patch gave their AB_ donors. When porting, grep src/**/Patches for the donor defName and fold every patch into the port; re-run the census that motivated the patch (plant_draw_layers.py).
+
+## A mod being active does not mean its defs exist
+- **A mod being active does not mean its defs exist.** Alpha Memes defines its `AM_*` thoughts only through LoadFolders keyed on other mods (VFE Pirates etc.), so a `FindMod` gate passes and a bare-def Add fails the whole sequence on a lean list. Guard patch writes on the def xpath itself. Likewise a save carries planet layers: a fixture's world may need its layer mod (`broms.deeporbit`, PlanetLayerDef Orbit2) or `World.ExposeData` NREs into an error storm.
+
+## A hediff with comps and no hediffClass never runs its comps
+- **A hediff with `<comps>` and no `hediffClass` is a plain `Hediff`: its comps never run** (the engine logs a config error). Set `HediffWithComps`. `selftest_config_errors_five` walks every src HediffDef for this.
