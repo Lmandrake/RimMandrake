@@ -191,3 +191,6 @@ citing any fix as done.
 Paths cited here are checked by `python3 skills/northstar-validation/scripts/check_paths.py` (exit 0 =
 every repo path exists). States (which item is done, whether the flip happened, whether the saved base
 is wired) are never written here as facts: read the ledger and the code.
+
+## The scoreboard counts only what it can read
+`required_checks_report.py` reads only `Transient/modcheck/live_queue/*_summary.json`, so a mod with no readable record counts as unproven even when its suite passes live (it once read "proven 0 of 1543" while FlowWorks ran 59/59). The report names the unreadable mods under NOT IN THE TOTAL: never cite a proven-count without that line beside it.

@@ -96,6 +96,7 @@ python3 selftest_art_eval.py                            # pure parts + a mocked 
    not evidence about motion: judges passed a wing baked into the plate, squash noise and flesh ripping away with the
    wing, all of which he saw at speed. Give a flyer judge the `flyer_eye_checks.py parts` sheet and every frame full
    size, count only its catches, and score any flyer check against `../rimworld-sprite-facings/references/flyer_truth_set.md`.
+- **A sheet column or installed texture can be art that is not art.** A generator returned a white pillar-limb image for the wrong prompt and it was wired unreviewed; 21+ plants shipped as flat-circle placeholders that the owner then picked because the sheet offered them as ordinary columns. Look at the image. The placeholder guard (detector with sheet/install/lint/artpipe enforcement) and the wrong-subject sweep are the instruments.
 
 ## When the owner (or a live walk) disagrees
 

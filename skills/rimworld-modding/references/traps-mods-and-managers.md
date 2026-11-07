@@ -166,3 +166,6 @@ being inspected.
 `CanDrawNow` and `HeadgearVisible`) before blaming load or patch order.
 **Recurs when:** a render, visibility or availability check is a chain of small
 virtuals and only the obvious one is inspected. (bridge6, 2026-10-09)
+
+## Map Designer overwrites biome densities at game start
+`zylle.mapdesigner` snapshots biome densities at startup (ctor) and writes them back at game start, undoing any mod that set them earlier (`RM_SeabedFloorLife`): every sea floor then read plantDensity 0 / animalDensity 0 live. Re-assert densities before floor generation and again on `Game.FinalizeInit`; the fix lives in `RimMandrake.DivingInteraction.dll`, so deploy that DLL before touching any sea floor.

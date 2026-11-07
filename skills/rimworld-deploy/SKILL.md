@@ -282,6 +282,7 @@ re-derive it**, and do not copy its numbers into another doc where they will rot
   overwritten within minutes by another clone deploying from an older sha. Before
   calling a fix live, re-run the deploy dry run from a clone AT the fix sha — a
   clean plan (no `~`/`-` lines for your files) is the proof; the earlier report is not.
+A "done" or "reverted" claim about a deploy is only as good as its last re-measure against the live Mods folder. A deployed folder can carry a different mod identity than `ModsConfig.xml` references (a full successor sat under the old packageId for two days, found only when a load check refused). Compare deployed packageId and files with ModsConfig's own references, not the item's prose.
 
 ## 9. Validation plan — what you owe whoever holds the game
 

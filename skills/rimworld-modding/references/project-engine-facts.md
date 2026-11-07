@@ -37,3 +37,10 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 - ⚠️ **`RM_CreatureBehaviors.csproj` sets `EnableDefaultCompileItems false` and lists every file.** A new
   `.cs` in `Source/` without a `<Compile Include>` line **compiles into nothing, with no error**. Adding a
   file to that assembly is always a two-file change.
+
+## Liquid terrain: read the registry before authoring
+Before authoring any liquid terrain read `src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml` and the `LIQUID_ROWS` table in `src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py`: propane, brine, acid, tar, coolant, ichor and more already have an `RM_<X>Shallow`/`RM_<X>Deep` suite with bottles and a body registration, so a `RUT_` duplicate collides. Never hand-edit a generated `RM_<X>.xml`; edit the table row (a fishing block was one word, `waterBodyType None` vs `Saltwater`), regenerate, and diff after every run.
+
+## A "moved" def file may be a copy; reuse the mechanic gates
+- **A kit "move" can be a COPY.** A TerminalBiomes move left 16 byte-identical twin files, 8 pairs deployed and duplicate-loading (7 TerrainDefs, scatterer register patches appending their GenStep twice). Diff both trees (repo and the live Mods folder) before believing a build's "moved".
+- **Settings-gate seam: reuse `RM_MechanicGates`** (EnvironmentalHazards): unregistered = enabled, a def opts in via `RM_MechanicGateExtension`, a biome mod registers its toggles at load. The Scald's five toggles are the worked example.
