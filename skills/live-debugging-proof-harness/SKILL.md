@@ -145,7 +145,7 @@ not your mechanism.
   ticks. Vanilla's power net switches it on later, not at spawn. A cycle timed from
   the build measures that gap, so the row records `pumpPoweredAfterTicks`.
 - **Bridge time is ticks, and a step is not the step you asked for.** See
-  `skills/rimbridge/references/traps.md` for tick-keyed caches, overshoot and load races.
+  `skills/rimbridge/references/traps/lifecycle.md` for tick-keyed caches, overshoot and load races.
 - **Advance with `B.ticks(n)`, never with an advance-read-repeat loop.** `B.ticks` goes
   through `clockgate.advance_chunk` to `jawa/safe_advance`, which runs many ticks per
   frame. A raw `step_game_ticks` runs one tick per frame, and every poll round trip

@@ -9,9 +9,10 @@ Every claim here was **verified against a running game**. Nothing is repeated
 from documentation without a live test. Guesses are marked ❓, provisional
 findings ⚠️.
 
-**`references/traps.md` is ~45 KB and deliberately has no index** — it is appended to, not
-curated. Do not read it whole. **Grep it for your verb** (`grep -i -n "roof\|spawn\|screenshot" traps.md`)
-and read the hits, plus every entry marked 🔴 — those have each destroyed something real.
+**`references/traps.md` is the index of the trap catalogue**: every entry's title, under the seven topic files in
+`references/traps/` that hold them. Do not read the topic files whole. **Grep them for your verb**
+(`grep -i -n "roof\|spawn\|screenshot" references/traps/*.md`) and read the hits, plus every entry marked 🔴 — those
+have each destroyed something real.
 
 🔴 **Before your first WRITE of any session, read `references/silent-failures.md` instead.**
 That is the catalogue of engine calls that report success and change nothing, and it is the
@@ -32,7 +33,7 @@ things** — a colony and a 568-mod game respectively.
 | author a **map** — terrain, substructure, buildings, prefab copy/paste, fog, snow, zones | `references/map-authoring.md` |
 | edit **pawns**, or make pawns that live somewhere | `references/pawn-authoring.md` |
 | **add a tool the bridge does not have** | the `rimbridge-companion` skill |
-| something "worked" and did not | grep `references/traps.md` for your verb |
+| something "worked" and did not | grep `references/traps/` for your verb |
 | meet a pawn/creature you did not put there, or start any debugging theory | `references/first_look.md` — the 7-step first look (`modcheck/scene_report.py`), and what you may NOT claim about origin |
 | optimise, or quote a timing | `references/performance.md` |
 | **launch** the game (cold load), or attach after one | `references/preflight.md` — `preflight_bridge.py --tier full [--deep]` before, `--live` after; GREEN or do not spend the load *(fold-in owed: full text lives there until a curation pass)* |
@@ -98,7 +99,7 @@ minutes and would have bought nothing here.
 
 ---
 
-More traps for this section: [references/traps.md](references/traps.md) § 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`.
+More traps for this section: [references/traps/lifecycle.md](references/traps/lifecycle.md) § 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`.
 
 ## 1. Connect
 
@@ -238,9 +239,9 @@ neither side is a quoted number. Deciding strings per tool are in the same file.
 
 ---
 
-More traps for this section: [references/traps.md](references/traps.md) § Census the companion before you trust any `jawa/` call.
+More traps for this section: [references/traps/companion.md](references/traps/companion.md) § Census the companion before you trust any `jawa/` call.
 
-More traps for this section: [references/traps.md](references/traps.md) § 1. Connect.
+More traps for this section: [references/traps/lifecycle.md](references/traps/lifecycle.md) § 1. Connect.
 
 ## 2. The one law
 
@@ -359,7 +360,7 @@ real player path (a bench recipe / bill), not a raw severity poke (2026-09-09).
 
 ---
 
-More traps for this section: [references/traps.md](references/traps.md) § Spawning pawns — `jawa/spawn_pawn` works; the `GenSpawn` routes NPE.
+More traps for this section: [references/traps/pawns-factions.md](references/traps/pawns-factions.md) § Spawning pawns — `jawa/spawn_pawn` works; the `GenSpawn` routes NPE.
 
 ## 4. Debug actions are the real surface
 
@@ -428,7 +429,7 @@ resolve, which is a different failure from the action refusing.
 
 ---
 
-More traps for this section: [references/traps.md](references/traps.md) § 4. Debug actions are the real surface.
+More traps for this section: [references/traps/debug-actions-ui.md](references/traps/debug-actions-ui.md) § 4. Debug actions are the real surface.
 
 ## 4b. ⚠️ Unpausing is the most consequential call on the bridge
 
@@ -516,7 +517,7 @@ hundred, and the load is seconds rather than half an hour.
 | the finding | file |
 |---|---|
 | an **engine API** reported success and changed nothing | 🔴 `references/silent-failures.md` |
-| the **bridge, client, build or workflow** misled you | `references/traps.md` |
+| the **bridge, client, build or workflow** misled you | `references/traps.md` (the index) and `references/traps/` |
 | a `jawa/world_*` behaviour | `references/world-authoring.md` |
 | a `jawa/`-map or building behaviour | `references/map-authoring.md` |
 | a pawn-editing behaviour | `references/pawn-authoring.md` |
@@ -527,7 +528,7 @@ After any RimBridge task, ask **what surprised you**.
 
 * New **verified capability** → §3 and `references/capability-matrix.md`, with
   the evidence that proves it.
-* A **failure that cost time** → `references/traps.md`: symptom, cause, fix, and
+* A **failure that cost time** → its topic file in `references/traps/` (and its title in the `traps.md` index): symptom, cause, fix, and
   **"generalises to"**.
 * When a trap would change default behaviour, **promote it here and delete it
   from the log.**

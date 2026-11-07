@@ -289,7 +289,7 @@ v1 gate ever asked for:
 ### 🔴 A SCREENSHOT IS A CACHE, NOT AN OBSERVATION — read this before trusting one
 
 **Two traps already cost real debug cycles and both are in
-`skills/rimbridge/references/traps.md`. That file is the home; this is the
+`skills/rimbridge/references/traps/` (indexed in `traps.md`). That file is the home; this is the
 pointer.** They matter here because §4a tells you to trust an image:
 
 0. **`take_screenshot` names files by SECOND — two shots in the same second silently

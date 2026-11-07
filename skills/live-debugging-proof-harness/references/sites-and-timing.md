@@ -114,7 +114,7 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   What the trace teaches goes into the proof as a precondition wait or a bound, not as
   a poll loop (`lightspeed-authoring.md` §3).
 - Tick-keyed caches, a stepper that overshoots short states, load-call races:
-  `skills/rimbridge/references/traps.md`, "Bridge time is TICKS".
+  `skills/rimbridge/references/traps/lifecycle.md`, "Bridge time is TICKS".
 - **`rimworld/load_game` (and `load_game_ready`, which reports 'map data is available' with `state.longEventPending=true`) returns before the map's things are spawned.** A hook queried at once answers 'no eligible fixture', and a persistence row reads that as a LOST claim. Poll the subject until it exists before judging (the save held the claim and it came back seconds later).
 - **A flat tick wait for a pawn job must scale with the pawn's work stat.** `fill_in_on` waited 2,500 ticks for a D=1 fill-in (1600 work), but a Mining-0 colonist sits at the MiningSpeed floor 0.1 (one notch = 16,000 ticks), so the row FAILed; the earlier PASS had drawn a skilled pawn. Read `jawa/pawn_stats` MiningSpeed and poll the cell depth (`northstar/extensions.py` `_fill_in_budget`/`_wait_filled_in`). A PASS that depends on which colonist the harness picked is not a PASS.
 - **Setting weather Clear does not stop rain:** `WeatherManager.RainRate` lerps out over the transition and FlowWorks `ApplyRain` reads it, so re-enabling `rainFillsExcavationsEnabled` at the Clear set refills the canals. Restore rain fill only once `weather_get` reads rainRate 0.
