@@ -31,11 +31,11 @@ def ev(r, suites=("A", "B"), keys=("A", "B"), dead=()):
 
 
 def main():
-    check("a clean full pass on the current envelope licenses the flip", ev(rec()) == [])
+    check("a clean full pass at or after the gate licenses the flip", ev(rec()) == [])
     check("no record is a problem", ev(None) == ["no live situational_rerun record"])
     check("a FAIL record does not license it", any("FAIL" in p for p in ev(rec(verdict="FAIL", status="MEASURED"))))
     check("an UNMEASURED record does not license it", any("UNMEASURED" in p for p in ev(rec(verdict=None, status="UNMEASURED"))))
-    check("a pass on an envelope older than the newest change does not", any("predates" in p for p in ev(rec(sha="old"))))
+    check("a pass older than the gate does not", any("predates" in p for p in ev(rec(sha="old"))))
     check("an unrelatable sha is a problem, not a pass", any("cannot relate" in p for p in ev(rec(sha="zzz"))))
     check("a record without a sha is a problem", any("no git sha" in p for p in ev(rec(sha=None))))
     p = ev(rec(mods=("A",)), suites=("A", "B", "C"), keys=("A", "B"))

@@ -1198,7 +1198,8 @@ def cmd_submit(a):
             print("REFUSED: --row-item wants ROW_OR_CHAIN=ITEM, got %r" % pair)
             return 2
         ri[k] = v
-    kw.update(row_items=ri, deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity)
+    kw.update(row_items=ri, deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity,
+              situational=bool(getattr(a, "situational", False)))
     try:
         job = S.make_job(a.mod, sel, a.purpose, a.by, a.sha, **kw)
     except S.SchemaError as e:
@@ -2015,6 +2016,7 @@ def main(argv=None):
     s.add_argument("--timeout", type=int)
     s.add_argument("--no-canary", action="store_true")
     s.add_argument("--no-validity", action="store_true")
+    s.add_argument("--situational", action="store_true", help="modcheck run --situational --policy abort")
     s.add_argument("--no-sha-check", action="store_true", help="skip the is-it-on-origin/main check")
     s.add_argument("--retest-why", help="run chains that already hold a verdict at their code version, and say why")
     s = sub.add_parser("list")

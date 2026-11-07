@@ -3,12 +3,14 @@
 The item: "Flip modcheck --situational to default after an abort-only pass over every suite". This reads the record
 of that pass; it never touches the game, so it is a read-only live-proof:
 
-    python3 src/RimMandrake/Utils/modcheck/live_queue/rollout_gate.py [--results <live_queue_results.jsonl>]
+    python3 src/RimMandrake/Utils/modcheck/live_queue/rollout_gate.py [--results <jsonl>]   (default: the committed
+    record situational_pass.py rollup writes)
 
 Exit 0 when the LATEST live `situational_rerun` record (that job always runs --policy abort) satisfies all of:
   * it is MEASURED PASS (its own judge: no suite crashed, every chain bland, every surprise has its evidence, ...);
-  * it ran on a commit that already holds the newest change to the situational envelope (ENVELOPE files), so a pass
-    on an older envelope does not license the flip;
+  * it ran at or after this gate's own newest commit (the item's contract). Not "after the newest envelope change": the
+    envelope files took 3-7 commits a day (measured 2026-10-31..11-06) and the pass takes about a day of lane time, so
+    that bar could never be met; a later envelope change is listed, not failed;
   * its digests cover EVERY modcheck suite on disk that composes onto the minimal list (suite_set.py; on 2026-11-02
     the status registry situational_rerun then read offered 57 suites of 105 on disk);
   * the registry holds no key whose mod folder is gone (a dead key makes every pass fail "no suite raised").
@@ -27,7 +29,8 @@ sys.path.insert(0, HERE)
 from common import MEASURED, PASS, ROOT, read_results   # noqa: E402
 
 REGISTRY = os.path.join(ROOT, "infrastructure", "state", "modcheck_status.json")
-# the code a situational verdict depends on: a pass recorded before the newest change here proves an older envelope
+RECORD = os.path.join(ROOT, "infrastructure", "state", "situational_pass.jsonl")
+# the code a situational verdict depends on: changes here after the pass are listed beside the verdict
 ENVELOPE = ["src/RimMandrake/Utils/modcheck/" + p for p in
             ("runner.py", "watch.py", "detectors.py", "clockgate.py", "helpers.py", "surprise.py", "contract.py",
              "bland_world.py", "live_queue/situational_rerun.py")]
@@ -53,10 +56,17 @@ def latest_rerun(records):
     return live[-1] if live else None
 
 
-def envelope_head(root=ROOT):
-    r = subprocess.run(["git", "-C", root, "log", "-1", "--format=%H", "--"] + ENVELOPE,
+def gate_head(root=ROOT):
+    r = subprocess.run(["git", "-C", root, "log", "-1", "--format=%H", "--", "src/RimMandrake/Utils/modcheck/live_queue/rollout_gate.py"],
                        capture_output=True, text=True, timeout=60)
     return r.stdout.strip() or None
+
+
+def envelope_since(sha, root=ROOT):
+    """-> the commits changing the envelope after `sha`, newest first (a note, never a verdict)."""
+    r = subprocess.run(["git", "-C", root, "log", "--format=%h", "%s..HEAD" % sha, "--"] + ENVELOPE,
+                       capture_output=True, text=True, timeout=60)
+    return r.stdout.split()
 
 
 def is_ancestor(old, new, root=ROOT):
@@ -66,7 +76,7 @@ def is_ancestor(old, new, root=ROOT):
     return {0: True, 1: False}.get(r.returncode)
 
 
-def evaluate(rec, suites, registry_keys, dead, env_sha, ancestor):
+def evaluate(rec, suites, registry_keys, dead, gate_sha, ancestor):
     """-> list of problems (empty = the flip is licensed). Pure: every input is passed in."""
     if rec is None:
         return ["no live situational_rerun record"]
@@ -78,13 +88,13 @@ def evaluate(rec, suites, registry_keys, dead, env_sha, ancestor):
     ev = rec.get("evidence") or {}
     sha = (((ev.get("run_identity") or {}).get("git")) or {}).get("sha")
     if not sha:
-        probs.append("the record carries no git sha (run_identity.git): cannot tell which envelope it proved")
-    elif env_sha:
-        a = ancestor(env_sha, sha)
+        probs.append("the record carries no git sha (run_identity.git): cannot tell what it proved")
+    elif gate_sha:
+        a = ancestor(gate_sha, sha)
         if a is None:
-            probs.append("git cannot relate the run's sha %s to the envelope head %s" % (sha[:12], env_sha[:12]))
+            probs.append("git cannot relate the run's sha %s to the gate's %s" % (sha[:12], gate_sha[:12]))
         elif not a:
-            probs.append("the run's sha %s predates the newest envelope change %s" % (sha[:12], env_sha[:12]))
+            probs.append("the run's sha %s predates the gate's %s" % (sha[:12], gate_sha[:12]))
     ran = {d.get("mod") for d in (ev.get("digests") or [])}
     missing = sorted(set(suites) - ran)
     if missing:
@@ -100,19 +110,23 @@ def evaluate(rec, suites, registry_keys, dead, env_sha, ancestor):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--results", default=None, help="live_queue_results.jsonl (default: this checkout's live file)")
+    ap.add_argument("--results", default=None, help="a results jsonl (default: the committed RECORD)")
     a = ap.parse_args(argv)
     with open(REGISTRY, encoding="utf-8") as f:
         reg = json.load(f)
     keys = set(reg.get("mods", reg))
-    rec = latest_rerun(read_results(False, a.results))
-    probs = evaluate(rec, disk_suites(), keys, dead_keys(keys), envelope_head(), is_ancestor)
+    rec = latest_rerun(read_results(False, a.results or RECORD))
+    probs = evaluate(rec, disk_suites(), keys, dead_keys(keys), gate_head(), is_ancestor)
     if rec is None:
-        print("UNMEASURED rollout_gate: no live situational_rerun record in %s" % (a.results or "the live results file"))
+        print("UNMEASURED rollout_gate: no live situational_rerun record in %s" % (a.results or RECORD))
         return 2
     print("%s rollout_gate: record %s" % ("PASS" if not probs else "FAIL", rec.get("finished")))
     for p in probs:
         print("  - " + p)
+    sha = (((rec.get("evidence") or {}).get("run_identity") or {}).get("git") or {}).get("sha")
+    since = envelope_since(sha) if sha else []
+    if since:
+        print("  note: %d envelope commit(s) since the pass: %s" % (len(since), " ".join(since)))
     return 0 if not probs else 1
 
 

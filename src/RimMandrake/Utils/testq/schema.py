@@ -32,6 +32,8 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   lane          "stevedesktop" (default) | "archmagi" | "any"
   deploy        extra mod folders to deploy with `mod` (list)
   canary        bool (default true): modcheck --canary
+  situational   bool (default false): modcheck --situational --policy abort; the result carries the suite's digest
+                (NORTHSTAR_SITUATIONAL_ROLLOUT_1, modcheck/live_queue/situational_pass.py)
   validity      bool (default true): modcheck --validity
   timeout_s     the run phase's watchdog (default 2700)
 
@@ -81,7 +83,7 @@ JOB_ID_RE = re.compile(r"^J\d{8}T\d{6}Z-[0-9a-f]{6}$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 DEFAULTS = {"item": None, "profile": "targeted", "priority": 50, "not_before": None, "supersedes": None,
-            "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True,
+            "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True, "situational": False,
             "timeout_s": 2700, "row_items": {}, "gate": None}
 
 
@@ -194,6 +196,7 @@ def validate_job(job):
          "deploy must be a list of mod folder names")
     for k in ("canary", "validity"):
         need(isinstance(job.get(k), bool), "%s must be a boolean" % k)
+    need(isinstance(job.get("situational", False), bool), "situational must be a boolean")   # an older record has none
     need(isinstance(job.get("timeout_s"), int) and 60 <= job["timeout_s"] <= 6 * 3600, "timeout_s 60..21600")
     return job
 
@@ -283,6 +286,8 @@ def modcheck_args(job):
     a += ["--reuse", "off" if job["purpose"] in GATE_BYPASS else "on"]
     if job.get("gate"):
         a += ["--gate", job["gate"]]
+    if job.get("situational"):
+        a += ["--situational", "--policy", "abort"]
     return a
 
 
@@ -354,7 +359,7 @@ def json_schema():
             "source_sha": {"type": "string", "pattern": SHA_RE.pattern},
             "supersedes": {"type": ["string", "null"], "pattern": JOB_ID_RE.pattern},
             "gate": {"enum": [None] + list(GATES)}, "owner_gate": {"type": ["string", "null"]}, "lane": {"enum": list(LANES)},
-            "deploy": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"},
+            "deploy": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"}, "situational": {"type": "boolean"},
             "timeout_s": {"type": "integer", "minimum": 60, "maximum": 21600},
             "row_items": {"type": "object", "additionalProperties": name},
             "submitted": {"type": "string", "description": "UTC time make_job stamped"},
@@ -385,6 +390,7 @@ def json_schema():
             "kept_game_maps": {"type": "integer"},
             # STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: a known harness condition, named for machines (retest.job_cause)
             "harness_cause": {"type": "string"}, "stale_load_bounced": {"type": "string"},
+            "situational": {"type": ["object", "null"], "description": "a situational job's suite digest"},
         },
         "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
     }

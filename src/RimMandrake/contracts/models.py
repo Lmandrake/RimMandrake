@@ -192,6 +192,7 @@ class TestqResult(Strict):
     harness_cause: str | None = None        # a known harness condition by name (stale_load, mod_not_installed), retest.job_cause reads it
     stale_load_bounced: str | None = None   # the worker restarted the game onto the composed list once, for this reason
     tier: dict[str, Any] | None = None      # an exact-tier job's load check (testq/tier_load.py): want, running, exact, why
+    situational: dict[str, Any] | None = None   # a situational job's suite digest (situational_rerun.digest)
     running: list[str] | None = None        # the packageIds that run actually loaded (an exact-tier job)
 
     @model_validator(mode="after")

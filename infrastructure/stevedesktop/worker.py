@@ -583,6 +583,21 @@ def deploy_closure(mod, clone=None):
 
 
 
+def situational_digest(mod, summary):
+    """A situational job's suite digest for its result (situational_rerun.digest, plus which surprise evidence this host
+    lacks: the sidecars stay on this machine, so the rollup cannot look). A digest that cannot be made says so by name."""
+    try:
+        sys.path.insert(0, os.path.join(CLONE, "src", "RimMandrake", "Utils", "modcheck", "live_queue"))
+        import situational_rerun as R
+        d = R.digest(mod, summary)
+        d["evidence_missing"] = ["%s %s" % (s["chain"], p) for s in d["surprises"] for p in (s.get("sidecar"), s.get("png"))
+                                 if p and not R.evidence_present(p)]
+        d["evidence_missing"] += ["%s sidecar" % s["chain"] for s in d["surprises"] if not s.get("sidecar")]
+        return d
+    except Exception as e:                                      # noqa: BLE001
+        return {"mod": mod, "digest_error": "%s: %s" % (type(e).__name__, e)}
+
+
 def driver_budget_export(timeout_s):
     """The drivers share at most half the job's run timeout (and never more than 2 h), so a targeted job whose chains
     read a slow driver (thirst_live ~40 min) ends as a driver TIMEOUT receipt, not a whole-job HANG."""
@@ -1297,6 +1312,8 @@ class Attempt:
             return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s"
                              % (self.res["modcheck_exit"], tail[-300:]))
         rows = S.rows_from_summary(data.get("summary") or {})
+        if self.job.get("situational"):
+            self.res["situational"] = situational_digest(self.job["mod"], data.get("summary") or {})
         # a red canary: every row the SHEET has is UNMEASURED for it (before NOT_RUN accounting, which used to hide a
         # red canary on a --rows job behind the requested rows it appended)
         canary_red = bool(rows) and all(r["verdict"] == "UNMEASURED" for r in rows) and "canary" in text.lower() \

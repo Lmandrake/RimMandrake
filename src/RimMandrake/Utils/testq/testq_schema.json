@@ -13,6 +13,7 @@
     "priority": 50,
     "profile": "targeted",
     "row_items": {},
+    "situational": false,
     "supersedes": null,
     "timeout_s": 2700,
     "validity": true
@@ -148,6 +149,9 @@
       }
      },
      "type": "object"
+    },
+    "situational": {
+     "type": "boolean"
     },
     "source_sha": {
      "pattern": "^[0-9a-f]{7,40}$",
@@ -342,6 +346,13 @@
     },
     "schema": {
      "const": "testq.result/1"
+    },
+    "situational": {
+     "description": "a situational job's suite digest",
+     "type": [
+      "object",
+      "null"
+     ]
     },
     "stale_load_bounced": {
      "type": "string"

@@ -31,6 +31,9 @@ def main():
     check(S.JOB_ID_RE.match(j["id"]) and j["lane"] == "stevedesktop" and j["canary"], "make_job fills defaults")
     check(S.modcheck_args(j) == ["FlowWorks", "--chains", "core_offline", "--canary", "--validity", "--reuse", "on"],
           "a fix job asks modcheck for its chains with the gate on: %s" % S.modcheck_args(j))
+    js = S.make_job("Bacta", {"full": True}, "sweep", "BENCH", "5403169aab", situational=True)
+    check(S.modcheck_args(js)[-3:] == ["--situational", "--policy", "abort"], "a situational job asks for the abort envelope")
+    check("--situational" not in S.modcheck_args(j) and j["situational"] is False, "a plain job does not")
     jg = S.make_job("FlowWorks", {"full": True}, "sweep", "BENCH", "5403169aab", gate="shadow")
     check(S.modcheck_args(jg)[-2:] == ["--gate", "shadow"] and "--gate" not in S.modcheck_args(j), "gate passes through to modcheck")
     check(refused(S.make_job, "FlowWorks", {"full": True}, "sweep", "BENCH", "5403169aab", gate="bogus") is not None, "bad gate refused")
