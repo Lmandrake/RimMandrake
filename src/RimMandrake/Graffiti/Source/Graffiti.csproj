@@ -54,6 +54,7 @@
     <Compile Include="MapComponent_GraffitiOrders.cs" />
     <Compile Include="Filth_Mark.cs" />
     <Compile Include="WallPlane.cs" />
+    <Compile Include="StatPart_GraffitiCraft.cs" />
     <Compile Include="RM_GraffitiStage.cs" />
     <Compile Include="WallLossPatch.cs" />
     <Compile Include="WallInspectPatch.cs" />

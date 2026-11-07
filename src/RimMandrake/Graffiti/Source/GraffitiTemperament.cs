@@ -133,6 +133,15 @@ namespace RimMandrake.Graffiti
 
         public static bool IsNumb(Pawn p) { return Of(p).numb; }
 
+        /// <summary>How strongly this hand reaches for the brush on its own: the table's paint column times the hand's own feel for art
+        /// (RM_GraffitiKernel.HandUrge). A pawn the game says is incapable of art never paints by choice; a break can still drive one to it.</summary>
+        public static float Urge(Pawn p)
+        {
+            if (p.WorkTagIsDisabled(WorkTags.Artistic)) return 0f;
+            SkillRecord art = p.skills?.GetSkill(SkillDefOf.Artistic);
+            return Of(p).paint * RM_GraffitiKernel.HandUrge(art == null ? 0 : (int)art.passion, art?.Level ?? 0);
+        }
+
         /// <summary>Every Graffiti memory goes through here: scaled by the mark's reach and the pawn's temperament for its sign, fitted to the pawn's
         /// budgets, and merged so that the stronger of two memories of one kind about one person stands (vanilla's merge renews the old one and
         /// throws away the new one's strength). Returns true if anything was given. `column` picks the multiplier: 0 meaning, 1 fine art, 2 ugly,

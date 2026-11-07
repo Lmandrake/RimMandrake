@@ -415,7 +415,7 @@ namespace RimMandrake.Graffiti
             if (map == null) return "REFUSED no current map";
             JoyGiverDef giver = DefDatabase<JoyGiverDef>.GetNamed("RM_PaintGraffitiJoy");
             var rows = new List<string>();
-            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned.ToList())
             {
                 bool found = GraffitiJobUtility.TryFindWallMarkCell(p, out IntVec3 cell);
                 rows.Add(p.LabelShort + " joy=" + (p.needs?.joy?.CurLevelPercentage.ToString("F2") ?? "none")

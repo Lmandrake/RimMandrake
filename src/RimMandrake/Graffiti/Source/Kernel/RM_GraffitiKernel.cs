@@ -285,6 +285,15 @@ namespace RimMandrake.Graffiti
 
         public static bool IdleHandTags(float roll) { return roll < IdleTagChance; }
 
+        /// <summary>A hand's own pull toward the brush, by its Artistic passion (0 none, 1 minor, 2 burning; a modded passion past 2 counts as
+        /// burning) and level. Live 2026-11-07, before this: the two weakest hands in an 8-pawn colony made 7 of its 8 marks, all ugly, and the
+        /// level-15 artist none, because who painted was blind to art. Now the colony's walls are mostly written by the people who care.</summary>
+        public static float HandUrge(int passion, int level)
+        {
+            float p = passion <= 0 ? 0.4f : (passion == 1 ? 1f : 1.6f);
+            return p + 0.04f * Clamp(level, 0, 20);
+        }
+
         /// <summary>Has a room its share of a calm painter's marks? One, and one more for every 15 cells of floor.</summary>
         public static bool RoomHoldsEnough(int marks, int floorCells) { return marks >= 1 + floorCells / 15; }
 

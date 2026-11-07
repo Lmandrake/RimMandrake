@@ -460,7 +460,7 @@ namespace RimMandrake.Graffiti
             if (!RM_GraffitiSettings.socialEnabled || painter.relations == null || painter.Map == null) return null;
             Pawn worst = null, beloved = null;
             int worstOpinion = 0, bestOpinion = 0;
-            IReadOnlyList<Pawn> colonists = painter.Map.mapPawns.FreeColonistsSpawned;
+            IReadOnlyList<Pawn> colonists = painter.Map.mapPawns.FreeColonistsSpawned.ToList();   // a copy: reading opinions can refill the game's cached list under us
             for (int i = 0; i < colonists.Count; i++)
             {
                 Pawn c = colonists[i];
@@ -631,7 +631,7 @@ namespace RimMandrake.Graffiti
             }
             if (fit && !crossedOut && by.Map != null)
             {
-                foreach (Pawn p in by.Map.mapPawns.FreeColonistsSpawned)
+                foreach (Pawn p in by.Map.mapPawns.FreeColonistsSpawned.ToList())
                 {
                     if (p != by && p != maker && p != (mark.Meaning == RM_Meaning.Mockery ? subject : null) && mark.ValuedBy(p))
                     {
@@ -657,7 +657,7 @@ namespace RimMandrake.Graffiti
         {
             Map map = mark.Map;
             if (map == null) return;
-            IReadOnlyList<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
+            IReadOnlyList<Pawn> colonists = map.mapPawns.FreeColonistsSpawned.ToList();
             for (int i = 0; i < colonists.Count; i++)
             {
                 Pawn p = colonists[i];

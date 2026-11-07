@@ -10,13 +10,18 @@ namespace RimMandrake.Graffiti
     // TryGiveJob finds a target cell, hands it to JobMaker.MakeJob.
     public class JoyGiver_PaintGraffiti : JoyGiver
     {
+        /// <summary>The temperament table's paint column times the hand's feel for art: an abrasive or passionate artist reaches for the
+        /// brush more, a lazy or clumsy one less, a psychopath or a pawn incapable of art not at all.</summary>
+        public override float GetChance(Pawn pawn)
+        {
+            return base.GetChance(pawn) * GraffitiTemperament.Urge(pawn);
+        }
+
         public override Job TryGiveJob(Pawn pawn)
         {
             if (!RM_GraffitiSettings.paintingEnabled) return null;
             if (pawn.Map == null) return null;
-            // The temperament table's paint column: an abrasive hand reaches for the brush more, a lazy one less, a psychopath not at all.
-            float paint = GraffitiTemperament.Of(pawn).paint;
-            if (paint < 1f && Rand.Value > paint) return null;
+            if (GraffitiTemperament.Urge(pawn) <= 0f) return null;
             if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell, roomCap: true)) return null;
             return JobMaker.MakeJob(def.jobDef, cell);
         }
