@@ -1,0 +1,2 @@
+A detached helper spawned on an item whose file event is still uncommitted in the Conductor's clone (here OWNER.jsonl in /home/mandrake/rm/bench, 2026-11-07) cannot note it: rimflow note refuses 'never been filed' for the whole run, so the 20-minute notes the brief asks for are impossible. Publish the file event's shard before spawning the helper, or the helper must report through conductor/log.md instead.
+home: skills/using-rimflow
