@@ -1,1 +1,0 @@
-mutate_hugethings_fuzz.py (44 mutations) runs past a 540 s foreground budget; a timeout kill leaves the live mutation applied to the kernel source (seen: RM_HugeTitanKernel.cs). Run a subset JSON through mutate_kernel_fuzz.py selftest_hugethings_fuzz.py <subset.json>, and restore any file git status shows modified afterwards.

@@ -1,1 +1,0 @@
-An interrupted git pull can die after writing the index: the dirt is STAGED (renames too), and the blobs match an intermediate commit in HEAD..origin/main, not the tip, because the next fetch moves origin/main on. A 'landed dirt' check must compare against every commit in that range, index and worktree both.

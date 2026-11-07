@@ -1,1 +1,0 @@
-tool_schemas.json is generated: on a publish/rebase conflict in it, take origin's copy (git show origin/main:<path> > <path>) and rerun 'python3 tool_schemas.py --supplement-only ../../bridgetools/JawaBench.BridgeTools' from Utils/northstar_driver, never hand-merge the JSON (CONDPROBES_WIRE_ENGINE_READS, 2026-11-06)

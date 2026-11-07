@@ -1,1 +1,0 @@
-selftest_art_ledger_fixes.py crashes before its verdict (git add infrastructure/state/art/events/BUILD.jsonl: pathspec did not match) on HEAD artledger.py too — pre-existing, found by ART_INDEX_CACHE_FIX_ABSORB_RACE 2026-11-05; its git_fixture needs the shard to exist before git add

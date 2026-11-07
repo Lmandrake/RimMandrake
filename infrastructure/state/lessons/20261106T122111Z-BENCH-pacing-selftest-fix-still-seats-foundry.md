@@ -1,1 +1,0 @@
-PACING_SELFTEST_FIX_STILL_SEATS_FOUNDRY: an item filed against a failing selftest at an old sha (7cf35bdbaf) was already fixed by later commits (SELFTEST_FIX_STREAMS_FQCB frozen fixture; FOUNDRY_LITERALS_EXCISE_FROM_CODE). Rerun the named test at origin/main before editing; check git log of the test file for a sibling item.

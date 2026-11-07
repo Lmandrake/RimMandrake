@@ -1,1 +1,0 @@
-/tmp in WSL on Archmagi can be a FULL 18G tmpfs: cp of a backup to /tmp fails with 'No space left on device' while the next command still mutates the original. Back up mutated sources outside /tmp or restore from git show HEAD:<path>.

@@ -1,1 +1,0 @@
-A census proof that reads the live tree (donor_retire_census standin) goes red when another item lands a new StandIn/ text between evidence and blind check (Gene_PregnancyShort via VRE_XENO_MODS_RETIRE_DEFOF_HOLDOUTS). Rerun the proof on the PUBLISHED sha right before finish.

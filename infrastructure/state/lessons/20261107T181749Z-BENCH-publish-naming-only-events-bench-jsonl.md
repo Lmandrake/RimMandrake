@@ -1,1 +1,0 @@
-./publish naming only events/BENCH.jsonl prints 'no change in the named paths' and looks like success when --owner-said or ack wrote events/OWNER.jsonl: name OWNER.jsonl too, or a ruling sits unpublished

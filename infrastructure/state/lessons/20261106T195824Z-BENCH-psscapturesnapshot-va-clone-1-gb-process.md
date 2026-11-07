@@ -1,1 +1,0 @@
-PssCaptureSnapshot (VA clone) on a 1 GB process failed with error 1450 ERROR_NO_SYSTEM_RESOURCES when Archmagi had ~3 GB commit free (2 of 4 spike runs): a snapshot dump of a multi-GB RimWorld can fail under memory pressure; health_minidump.py falls back to a direct MiniDumpWriteDump and records fallbackFrom/pssError (MINIDUMP_PROVE_SPIKE_BEFORE_THE_KILL)

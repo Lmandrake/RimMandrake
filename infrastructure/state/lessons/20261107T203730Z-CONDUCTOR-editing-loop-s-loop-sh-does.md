@@ -1,1 +1,0 @@
-Editing a loop's loop.sh does not change a running while loop: bash already parsed it. Replace the file atomically and restart at a pass end, or use the clone's .claude/settings.json, which each new pass reads.

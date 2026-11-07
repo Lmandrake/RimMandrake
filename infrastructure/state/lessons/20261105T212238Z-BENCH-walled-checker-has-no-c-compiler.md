@@ -1,1 +1,0 @@
-A walled checker has no C# compiler in WSL: a regex read of C# lets a logic mutant through. For small Verse-free int math, translate the production .cs mechanically to Python (refusing unknown syntax) and execute it, and bind the committed DLL to its .srchash '# dll:' line plus the source rows (selftest_pump_station_ports_compiled.py, HOSE_END_FIX_CELL_SHORT_OF_PORT)

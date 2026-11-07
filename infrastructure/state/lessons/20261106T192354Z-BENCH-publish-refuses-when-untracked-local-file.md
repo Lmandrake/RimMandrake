@@ -1,1 +1,0 @@
-./publish refuses when an untracked local file collides with one origin/main already has (Designer result JSONs, conversations/ records landed by conversations.py). If git show origin/main:<f> | cmp - <f> is identical, delete the local copy and re-publish.

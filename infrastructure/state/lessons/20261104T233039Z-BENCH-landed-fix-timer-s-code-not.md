@@ -1,1 +1,0 @@
-A landed fix to a timer's code is not running until the clone the unit runs from (/home/mandrake/rm/dispatch for rm-scratch-reap) syncs; an alarm between landing and that sync is the old code, yet live_repeats counts it as the fix dying. Replay the guard on the pre-fix rev (selftest --rev) to answer it. (OPS_TMP_DRAIN_RESTORE_DEVU)

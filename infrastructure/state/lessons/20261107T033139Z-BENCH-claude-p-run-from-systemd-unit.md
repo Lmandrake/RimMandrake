@@ -1,1 +1,0 @@
-A claude -p run from a systemd unit gets no Windows PATH or RIMFLOW_SEAT, and --setting-sources project still loads the user CLAUDE.md: exclude it with claudeMdExcludes in the project settings. A fresh clone's ledger keeps a released bridge hold until its stale timer, so it refuses though the shared lock is free.

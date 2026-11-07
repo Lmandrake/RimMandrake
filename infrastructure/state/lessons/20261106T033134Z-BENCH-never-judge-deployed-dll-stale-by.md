@@ -1,1 +1,0 @@
-Never judge a deployed DLL stale by file mtime against repo sources: a fresh clone's checkout is newer than every deployed DLL, so every mod reads stale (LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT degraded every type/defName need to a warning this way). Compare the Assemblies/*.dll.srchash '# dll:' line of the repo copy with the game folder copy.

@@ -1,1 +1,0 @@
-selftest_idle_bringback's fixture pops roles but leaves incident on, so its journal carries incident:write alarms (no role 'Conductor'/'Operations' in the schedule). Harmless to its checks, unfixed. And seat_restart.unpublished_shard's docstring ends 'UNMEASURED -> None' while the code returns an UNMEASURED string that holds the kill; the docstring is wrong.

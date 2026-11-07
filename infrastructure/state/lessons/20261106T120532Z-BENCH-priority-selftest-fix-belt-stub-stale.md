@@ -1,1 +1,0 @@
-PRIORITY_SELFTEST_FIX_BELT_STUB_STALE: a selftest-CRASH item filed days ago may already be fixed by a nightly-red drain (here 9c4238a49d, guarded by f64996751a selftest_fake_effects_drift). Rerun the named selftest on origin/main and git log the test file before editing anything.

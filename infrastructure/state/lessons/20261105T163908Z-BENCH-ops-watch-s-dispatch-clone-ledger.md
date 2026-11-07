@@ -1,1 +1,0 @@
-ops_watch's dispatch-clone ledger read lagged an alarm's own freshly filed item for ~2.5 h (SELFTEST_FIX_LIVE_QUEUE_QBHV, 2026-11-05 12:37-14:49Z: open_without_item every pass), which pushed the alarm to PENDING and onto the found_closed route; any guard on alarm reopen must sit on EVERY route (OPEN, found_closed, file_held), not just the OPEN one.

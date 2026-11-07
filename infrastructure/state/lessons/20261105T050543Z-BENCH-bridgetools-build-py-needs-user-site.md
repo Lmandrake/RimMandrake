@@ -1,1 +1,0 @@
-bridgetools/build.py needs the user site-packages (closure_scan imports dnfile): run it without python -I, or it fails 'No module named dnfile' after a good dotnet build. A git-archive export of the companion needs src/Directory.Build.props/.targets, Utils and contracts beside bridgetools (CHECKER_REACH_FIX_WINDOWS_BUILD_STILL_DARK).
