@@ -122,8 +122,9 @@ BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
 COMMON_GRAZERS = ("RM_Ullai", "RM_Ashwallow", "RSW_Nuna", "RSW_Iriaz", "RSW_Gizka")
 BIG_PREDATORS = ("RM_Flamefang", "RM_Barbslinger", "RM_Emberscythe", "RM_Sytheclaw", "RSW_Anooba", "RSW_Orray", "RSW_Dalgo")
-REGROW_OVERRIDE_DAYS = 0.1
-REGROW_SHORT_STEP = 1500   # two steps of this, through safe_advance
+REGROW_SAMPLE_DAYS = (3, 7)
+REGROW_FIRST_DAYS_FRAC = 0.25
+REGROW_WEEK_FRAC = 0.6
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
 FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW)
 DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
@@ -2131,52 +2132,22 @@ def embergrass_regrow(t):
         def new_count():
             return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                            inner, limit=2000) if p.get("id") not in pre_ids])
-        # PYRE_REGROW_BUILD_A_WEEK_IN_MINUTES: COMPRESSED. The shipped regrow pace is wildPlantRegrowDays 9; the
-        # override 0.1 runs the spawner 90x faster, so REGROW_SHORT_STEP*2 ticks stand in for ~4.5 shipped days.
-        # The override is flipped AFTER the burn check (it only paces new spawns) and restored + read back below.
-        _set(t, {"wildPlantRegrowDaysOverride": REGROW_OVERRIDE_DAYS})
+        # The real clock at the shipped settings: a compressed override cannot stand in here, because the bursts, not the
+        # spawner, carry the scar (measured: 9 regrow days filled a scar as fast as 3).
         d0 = new_count()
-        _wait(t, REGROW_SHORT_STEP)
-        d3 = new_count()
-        live_ovr = (_get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlantRegrowDays").get("RM_Pyrelands") or {}).get(
-            "wildPlantRegrowDays")
-        _wait(t, REGROW_SHORT_STEP)
-        d7 = new_count()
+        fracs = []
+        for days in REGROW_SAMPLE_DAYS:
+            _wait(t, int(days * 60000) - (fracs[-1][0] * 60000 if fracs else 0))
+            fracs.append((days, (float(new_count()) / len(pre_ids)) if pre_ids else None))
         temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
-        pre = len(pre_ids)
-        bad = _restore(t)
-        shipped = _live_setting(t, "wildPlantRegrowDaysOverride")
-        _wait(t, 300)   # the enforcer re-asserts on 250-tick boundaries
-        live_after = (_get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlantRegrowDays").get("RM_Pyrelands") or {}).get(
-            "wildPlantRegrowDays")
-        _note(t, "COMPRESSED regrow (override %s days vs shipped 9; ~90x). Shipped constant read back after restore"
-              % REGROW_OVERRIDE_DAYS,
-              {"pre": pre, "afterBurn": d0, "step1": d3, "step2": d7, "stepTicks": REGROW_SHORT_STEP,
-               "step1Frac": (float(d3) / pre) if pre else None,
-               "step2Frac": (float(d7) / pre) if pre else None, "temp": temp,
-               "overrideReadBack": shipped, "biomeRegrowDaysDuringOverride": live_ovr,
-               "biomeRegrowDaysAfterRestore": live_after, "restoreFailures": [str(x) for x in bad]})
+        _note(t, "regrow on the real clock", {"pre": len(pre_ids), "afterBurn": d0, "fractions": fracs, "temp": temp})
         if _live(t):
-            if pre <= 0:
+            if not pre_ids:
                 _fail("regrow cohort had no pre-burn plants")
-            def _num(v):
-                try:
-                    return float(v)
-                except (TypeError, ValueError):
-                    return None
-            if bad or _num(shipped) != 0.0:
-                _fail("regrow override did not restore to the shipped 0: readback %r, failures %r" % (shipped, bad))
-            if _num(live_ovr) is None or abs(_num(live_ovr) - REGROW_OVERRIDE_DAYS) > 1e-4:
-                _fail("override did not reach the live biome: wildPlantRegrowDays %r, wanted %r"
-                      % (live_ovr, REGROW_OVERRIDE_DAYS))
-            if _num(live_after) is None or abs(_num(live_after) - 9.0) > 1e-4:
-                _fail("shipped biome wildPlantRegrowDays 9 not restored: live %r" % (live_after,))
-            if d7 <= d0:
-                _fail("no new plants appeared during the COMPRESSED regrow window: afterBurn=%d step2=%d" % (d0, d7))
-            _unmeasured(t, "COMPRESSED (override %s days, 2x%d ticks): new roster plants in the burned 16x16 cohort "
-                           "pre=%d afterBurn=%d step1=%d step2=%d; shipped 7-day fractions stay INFERRED/CALIBRATING "
-                           "(plan targets 25%%/60%%); override restored to %r"
-                        % (REGROW_OVERRIDE_DAYS, REGROW_SHORT_STEP, pre, d0, d3, d7, shipped))
+            if not fracs[0][1] or fracs[0][1] < REGROW_FIRST_DAYS_FRAC:
+                _fail("not visibly re-greening within a few days: %r" % (fracs,))
+            if not fracs[-1][1] or fracs[-1][1] < REGROW_WEEK_FRAC:
+                _fail("not largely green again within about a week: %r" % (fracs,))
         t.screenshot(rect=regrow)
 
 
