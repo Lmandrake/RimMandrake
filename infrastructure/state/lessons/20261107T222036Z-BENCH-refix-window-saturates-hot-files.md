@@ -1,0 +1,2 @@
+'Fix within 72h of a previous fix on the same file' saturates on hot files and measures nothing: relentless.py scored 31 of 32 fixes, dispatcher 19 of 22, because they change daily. Use fix commits per commit, and hand-classify a sample; the fix-subject regex also over-counts (6 of 25 sampled 'fix' commits were art picks, owner reverts or hardening) (2026-11-07).
+home: infrastructure/state/facts/instrument_traps.md
