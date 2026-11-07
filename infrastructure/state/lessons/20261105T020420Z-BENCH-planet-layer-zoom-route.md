@@ -1,2 +1,0 @@
-A PlanetLayer's zoomInToLayer/zoomOutToLayer is not a harmless link: vanilla 1.6 WorldCameraDriver auto-SELECTS Selected.zoomInToLayer whenever zoom passes MinAltitude (and zoomOutToLayer only above 1100, the max), when Prefs.ZoomSwitchWorldLayer is on. A custom layer reachable only by ship (RM_SeabedLayer) must never be a zoom target from the surface; and PlanetLayer scribes both fields, so removing the setter is not enough for old saves - clear the saved route on load. SEABED_LAYER_DIAGNOSE_STEALS_THE_ZOOM.
-home: skill rimworld-world-editing

@@ -1,1 +1,0 @@
-ExplosiveGrowth ships inside mandrake.rm.biomes (composed), so grepping running_mods for a mod's own packageId falsely says it is not loaded. Composed mods: check the composed member list or the live def.

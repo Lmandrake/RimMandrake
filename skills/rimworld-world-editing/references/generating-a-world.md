@@ -177,6 +177,7 @@ work (see `savegame-editing.md`) and adding one is worse. The four easiest to lo
 vanilla vessels a Star Wars roster reskins — `Empire`, `OutlanderCivil`, `TribeCivil`,
 `Pirate` — because they do not look like campaign factions in the list. `Pirate` was lost
 exactly this way.
+- **A world made through the Create World page generates ONLY the page's faction list** (`FactionGenerator.InitializeFactions` with a non-null list); `requiredCountAtGameStart` is read only on the no-page path. A hidden faction must be on the list: `maxConfigurableAtWorldCreation > 0` (default -1), `startingCountAtWorldCreation > 0`, `displayInFactionSelection false` (the shape of Core's Insect/Ancients). A faction with start 0 and no maxConfigurable is simply absent.
 
 ## 8. ⭐ PROVEN: the tile grid is deterministic, so a painted world is PORTABLE
 

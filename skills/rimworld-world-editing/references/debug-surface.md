@@ -49,6 +49,7 @@ no confirmation and no undo. **Never fire it on a world anyone cares about witho
 first.**
 
 ---
+- **Our mods' `[DebugAction]`s are listed flat under Actions with a `T: ` prefix in 1.6**, not inside a category node. Search for the `T: ` label.
 
 ## 9. ⚠️ A mod setting that gates on INITIALISATION will silently do nothing
 

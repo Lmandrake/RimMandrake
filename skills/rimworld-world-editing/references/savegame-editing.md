@@ -251,6 +251,7 @@ misses are exactly the ones that NRE.
 Converting what a faction OWNS is safe and effective; deleting the faction is not.
 📌 Work on a COPY and read `Player.log` — `load_game_ready` returned `success: true` on
 the broken save. **The load succeeding is not the save being sound.**
+- **1.6 recreates and never auto-defeats factions, so banish rather than delete.** `BackCompatibility.FactionManagerPostLoadInit` recreates TradersGuild and Salvagers (Odyssey), HoraxCult and Entities (Anomaly) and Empire (Royalty, only when `world.info.factions` is null) on EVERY load when none exists, whatever the def says (`requiredCountAtGameStart 0` does not stop it; removing it from a save only brings it back with a fresh platform). Odyssey also makes TradersGuild the faction of Core's four orbital traders (`TraderKindDef.faction`): unfaction them. A faction with no settlements can never be defeated (`Faction.defeated` is set only by `SettlementDefeatUtility.CheckDefeated` on the LAST settlement taken; only temporary factions are removed) and still raids, trades and visits. Hidden does NOT stop raids (`IncidentWorker_RaidEnemy` passes `allowHidden:true`); `raidsForbidden` does. To take a faction off the board: def hidden + `raidsForbidden` + `canGenerateQuestSites false`; save defeated, world objects removed. Registry/checker: `src/RimMandrake/Utils/banned_factions.py`.
 
 ## ⭐ SWAPPING a faction's def WORKS — and it is the way in for a faction worldgen refuses
 

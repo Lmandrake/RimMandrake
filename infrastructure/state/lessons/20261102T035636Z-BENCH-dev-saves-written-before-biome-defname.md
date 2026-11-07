@@ -1,1 +1,0 @@
-Dev saves written before BIOME_DEFNAME_MIGRATION_WAVE_1 (33596c33a9) store biome hashes 18404/21915 = exact StableStringHash%65535 of RM_Wasteland/RM_NightsideIce; no post-rename dump decodes them. Alias them only by exact recomputed hash to a name present in the dump (geo_landmarks.py RENAMED_BIOMES) and fail on any other undecoded hash; never treat ?NNNN tiles as 'not a sea'.

@@ -74,6 +74,7 @@ d = math.degrees(math.acos(math.cos(math.radians(lon)) * math.cos(math.radians(l
 ⛔ It is **not** a dropdown on the Create World page and **not** a scenario setting. If
 you are looking for it at worldgen you will not find it. Framework + Harmony are hard
 `modDependencies`.
+- **Without Worldbuilder (the PAINT list) Alien Worlds runs its Standalone backend and silently gives a vanilla planet.** At startup it sets `PlanetTypeManager.Current` from `Config/Mod_3626210061_AlienWorldsFramework.xml` (`selectedPlanetType`); with no file it is `Default`. `src/RimMandrake/Utils/remake/set_planet_type.py --apply` persists `TidallyLocked` (needs `7f.alienworlds.tidallylocked` active or it falls back to `Default`); with Worldbuilder loaded the setting is ignored. Verify `alienWorldsFrameworkPlanetType` in the saved world, never the setting.
 
 ### 🔑 "Planet type: Rimworld" in the planet editor is CORRECT — do not regenerate over it
 
@@ -137,6 +138,7 @@ the blunt lever, and per-tile repainting from `jawa/world_tile_export` is the pr
   (`Mods/sarg.alphabiomes/Patches/UngeneratedPlanetParts.xml`).
 * Ships `Textures/TidallyLockedWorld/Worldbuilder/{Thumbnail,Flavor}.png` — i.e. it is
   **built to be presented through Worldbuilder**, which is currently disabled here.
+- **With `ferny.worldbuilder` loaded, patching the TidallyLocked def's `seasonalTempVariationCurve` does nothing.** Worldbuilder's prefix on `GenTemperature.SeasonalShiftAmplitudeAt` returns false, so the original body and Alien Worlds' transpiler never run; its postfix applies an axial-tilt table (8.649 C at the home tile). Use a `Priority.Last` postfix returning 0 (`RM_TidalNoSeasonsPatch`). Measure by jumping the clock and reading seasonal vs outdoor temperature.
 
 ### ⭐ Coverage: the mod tells you itself
 

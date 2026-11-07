@@ -33,6 +33,7 @@ a planet but no map. Everything below follows from that one fact.
 broken world. **Do not use it as your are-we-alive probe**; use `get_ui_state`.
 
 ---
+- **A world cannot be saved at `Page_SelectStartingSite`.** The new world lives in `Current.CreatingWorld` and `Current.Game` is null until landing, so `rimworld/save_game` answers 'No game is currently loaded' and `GameDataSaveLoader.SaveGame` via `static_call` NREs (measured, 1.6). The first world-bearing checkpoint is the first save after landing; anything that closes the landing page before then (a `clear_ui`, a stray Escape) discards the painted world with nothing logged.
 
 ## 1. What actually works
 
@@ -251,6 +252,8 @@ not editing. Audit early.
 
 ---
 - **Review a whole painted world in four phases, because the two instruments catch DISJOINT defect classes.** Phase 0: export every layer LIVE first (tiles, links, mutators, landmarks, objects, features, plus in-engine `world_lint`/`mutators_audit`) into one dated folder with a manifest; nothing on disk is trusted, the drift is the finding. Phase 1: parallel measured lanes (rivers; roads+settlements; mutators+landmarks; seams+landforms), each helper given a CALIBRATION ANCHOR, a number verified the same session ("BiomeCypreJungle ~ 199 river tiles; if you get something wild, fix your parse, don't report"). Phase 2: the STARE in-window: `world_view` at ~18 arc/bearing grid points (altitude 900) plus ~12 site closeups (320), `clear_ui` and close DevPalette per shot. Phase 3/4: harvest strings to one file, judge in-window, and tag every claim MEASURED / SEEN / JUDGED. Only the stare sees hard-edged shadows, a mechanical-looking river comb, label collisions and hex-edged shallows; only the audits see `riverDist` broken on 88% of river tiles, coastal-gate mutator violations, or a sea with zero landmarks. Traps: `take_screenshot` filenames collide within the same second (md5sum the set, reshoot duplicates with 1.5 s sleeps); `world_links_get` with only `limit` REFUSES in the payload while the envelope says Success (an export silently wrote 0 links); read the engine's lint against what the sheets already rule before calling it damage (`landBiomeSubmerged=181` decomposed into 54 sheet-owned shore tiles plus ~127 waterline-ribbon tiles).
+- **Check every candidate start tile against the settlements CSV (distance >= 2) before a run, not at the landing page.** The engine refuses any start tile adjacent to a settlement (`TileFinder.IsValidTileForNewSettlement`, `FactionBaseAdjacent`), and a paint that stamps NPC settlements can make a tile chosen against the paint record illegal.
+- **Count settlements on layer 0 (`worldmap.WorldObjects.settlements()` 'layer'), never the bare total.** The 97 cited for the ASHKARR world bases included the orbital Luminary Dock (id 155, layer 1), since removed; saves from PARITY on hold 96, all on the surface.
 
 ## 5a. A BiomeDef with no `workerClass` crashes ALL worldgen, not just its own tiles
 
@@ -389,6 +392,8 @@ rather than letting the bridge discard it and report success. Drive the bridge t
 client, never raw.
 
 ---
+- **`BiomeDef.movementDifficulty` is a WORLD-TILE stat only** (caravan travel between planet tiles, `WorldPathGrid`); it has zero effect on in-map walking speed. In-map crossing difficulty is entirely `TerrainDef`/`ThingDef.pathCost`, a per-cell MAX, not additive (verified against `Verse/AI/PathGrid.CalculatedCostAt`).
+- **Biome painting traps.** A biome painted with the same texture as its neighbour is invisible (BiomeDef has no colour override). `TileMutatorDef` has NO visual fields; only `LandmarkDef` draws on the world map. A water/liquid biome needs hilliness Flat too. Painting a biome can bury a settlement (world_lint's settlements-on-water check catches it). `HillinessLabel` is cached on the Tile until world reload.
 
 ## 7. Where the detail lives
 

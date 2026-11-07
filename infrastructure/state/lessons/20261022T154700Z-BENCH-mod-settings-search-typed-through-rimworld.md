@@ -1,1 +1,0 @@
-A Mod Settings search typed through rimworld/set_text_field persists after the window closes (the owner would reopen a filtered page). Clear it with mode=instant on the field whose screenRect is the 420-wide search box, re-reading get_ui_layout first: target ids change every capture (ui-element:N:...).

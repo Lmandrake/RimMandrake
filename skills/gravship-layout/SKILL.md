@@ -508,3 +508,6 @@ foundation cells because of pre-existing ruins. Authoring the same ship as a
 file has none of those failure modes: no map state, no substructure ordering,
 no spawn collisions. The build path stays useful for *proving* a design in
 game; the file path is how a design should be *made*.
+
+## Landing rotation
+- **Gravship landing rotation (1.6 `Gravship.GetPlacementValues`).** Rotatable things turn with the ship; `rotatable=false` SQUARE things keep `defaultPlacingRot` (never turn); `rotatable=false` NON-square Buildings are FORCED to the ship's rotation anyway. Audit/lint with `src/RimMandrake/Utils/gravship_rotation_audit.py --check`.

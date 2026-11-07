@@ -1,1 +1,0 @@
-The 97 settlements cited for the ASHKARR world bases (mountain_system_2026-10-20.md, MOUNTAINS2 item) include the orbital Luminary Dock (id 155, layer 1), removed by UNWANTED_FACTIONS_SILENCE_NOT_DELETED; saves from PARITY on hold 96, all on the surface. Count settlements on layer 0 (worldmap.WorldObjects.settlements() 'layer'), never the bare total.

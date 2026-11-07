@@ -107,6 +107,8 @@ disagreed differed by 1 m and 3 m. Elevation is the tiebreak, never the primary.
 first.
 
 ---
+- **`world_links_import clearFirst:true` clears only the tiles the CSV touches, and reports `clearedFirst:true` regardless.** Orphan river links on tiles absent from the CSV survive (25 orphans on 39 tiles were the owner's 'broken rivers'; vanilla worldgen's 983 river and 489 road links survived a stamp). Clear the whole range first (`world_links_clear` 0-21871), re-import, then diff a live per-tile sweep against the CSV and `world_links_clear` extras by name. `riverEntries` staying identical across two imports proves idempotency, not correctness.
+- **A river's mouth cannot be inferred from geometry.** On Ash'karr 3 of 11 canonical mouths are neither the lowest tile nor the biggest-river leaf (7 do not border a sea) and 2 links are level. To re-stamp canonical `riverDist`, carry the target (tile, river_dist) as data and derive the lay order from it (`river_lay.order_links_mouth_first`); never trust a save-exported links CSV's row order.
 
 ## 3. The five diagnostics worth running on any river network
 

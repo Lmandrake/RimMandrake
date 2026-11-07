@@ -1,1 +1,0 @@
-bash: in "$(basename $x) exit=$?" the command substitution runs first and resets $?, so every test reads exit=0 even when it failed; capture rc=$? on the line right after the command, then echo it (hit 2026-11-05, WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED)

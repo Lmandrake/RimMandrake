@@ -82,6 +82,7 @@ late."* `world_objects_validate` reports `nullFactionSettlements`, `badTileCount
 `settlementsOnWater`, `settlementsOnImpassable`, `stackedTiles` — all five must be 0.
 
 ✅ Always run `tile_settleable` FIRST. It is cheap and it answers with a reason.
+- **`jawa/settlement_remove mode=settlement` on a PLAYER Settlement whose map was already dropped (`mode=map force=true`) fails with 'Abandon threw: NullReferenceException'** (`SettlementAbandonUtility` expects a map), and the mapless Settlement persists until a save reload. Remove or abandon the settlement while its map still exists, or do not create a player Settlement in a save you will keep. A player-faction Settlement precreated with `world_objects_add` avoids the TILEMAP_GENERATE NRE loop.
 
 ## 6. Category conflicts, and the verification that cannot see them
 
@@ -308,3 +309,9 @@ counts = collections.Counter(struct.unpack('<%dH' % (len(raw)//2), raw))
 ⚠️ Compare against TOTALS, not against how many you added — the pre-existing count is in
 there too. That mistake produced a false "SOMETHING DID NOT PERSIST" verdict on a pass that
 was perfect.
+
+## Stamping over rolled worldgen mutators
+- **Rolled worldgen mutators (28616 entries, 150 defs) are not authored content, and a stamp only adds, never subtracts.** Strip every live mutator the input does not hold (stage 4a; keep `RM_SeaCoast`) or the frozen-world rule breaks.
+
+## A mutator layer may be our own authoring
+- **A mutator layer on the Ash'karr planet may be OUR authoring, not donor worldgen.** The 8,262 VEE solar entries were painted by `world/audit_2026-08-26/plan.py` on a geometric rule (arc<=55 / >=125, minus a biome blacklist). Before designing a port or calling a layer donor-random, grep `world/` authoring scripts for the defName.
