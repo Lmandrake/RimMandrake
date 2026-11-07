@@ -45,7 +45,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Heemin</defName>
     <label>heemin</label>
-    <description>A near-transparent sliver swimming the top layer of the Chill, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black mirror rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
+    <description>A near-transparent sliver swimming the fuel of the Chill, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black fuel rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
     <statBases>
       <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.05: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
       <LeatherAmount>0</LeatherAmount>
@@ -319,7 +319,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vaunoom</defName>
     <label>vaunoom</label>
-    <description>You rarely see the thing itself — only the V-shaped ripple it cuts across the black mirror of the lake, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the surface: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
+    <description>You rarely see the thing itself — only the V-shaped ripple it cuts through the black shallows off the beach, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the shallows: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <Mass>28</Mass>

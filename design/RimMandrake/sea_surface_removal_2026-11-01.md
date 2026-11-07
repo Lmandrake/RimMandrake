@@ -95,8 +95,7 @@ Every statement in the three seas' design sheets, their shared law sheet (`termi
 | `D:\Luke\dev\RimMandrake\src\RimMandrake\TerminalBiomes\Defs\TerrainDefs\RM_GreySeaTerrains.xml`:115 | the surface sea is | RM_GreySea itself is |
 | `D:\Luke\dev\RimMandrake\src\RimMandrake\TerminalBiomes\Defs\IncidentDefs\RM_SuulkArrival.xml`:11 | world-surface tile AND | world-map tile AND |
 
-## Not changed, filed for FOUNDRY
+## Not changed here
 
-- Player-facing description text still placing life at the surface: the oovu "rides at the surface of the fuel" (`RM_TheChillCatch.xml:141`, `RM_TheChillFloorLife.xml:370`). Def text, not a comment, so it was left for FOUNDRY.
 - The ledger item `CHILL_SURFACE_SITTING_1` keeps its id (ids are permanent); a note on it says its scope is now the shore (beach).
-- Leftovers of the Scald precedent that 66c228ef46 did not reach: comments citing the withdrawn ban 4 (`RUT_ScaldWater.xml:349`, `RUT_ScaldMargin.xml:46`, `RM_ScaldFloorFauna.xml:75`) and the player-facing `RUT_ScaldWater` descriptions "dead calm on the surface ... nothing swims here". Outside this brief; filed for FOUNDRY.
+- Player-facing def text and the Scald comments citing the withdrawn ban 4 were reworded by SEA_DESCRIPTIONS_CORRECT_NO_SURFACE_PLACE; `src/RimMandrake/TerminalBiomes/Tools/selftest_sea_text_no_surface_place.py` holds the line.

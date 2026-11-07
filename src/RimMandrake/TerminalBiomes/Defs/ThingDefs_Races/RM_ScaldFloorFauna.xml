@@ -66,15 +66,13 @@
         life, not a route a colonist can wear. Ban 3 governs what the PLAYER
         can cross for nothing; scald_steam_and_hazards_spec.md §1 states the
         distinction outright ("Native immunity is not traversal-for-free").
-  Ban 4 (no macro-life in the boil itself): honoured, and worth stating per
-        species because it is the ban most easily broken here. Nothing below
-        is macro-life. The three vent/margin dwellers (karrash, ekkel,
-        muddal) live ON the chimneys and mats, the two shoal feeders (eesh,
-        doss) work the column and the dung-fall, thuum lives UNDER the mats,
-        and the bladderboil is written into the ban's own carve-out
-        ("nothing swims the roiling surface layer but bubbles and sails") by
-        its own commission §10b: it does not swim the boil, it floats it —
-        it IS its own bubble, the sail register's second member.
+  Ban 4 (alien macro-life lives in the boil; owner 2026-11-01): nothing
+        here needs an exception. The three vent/margin dwellers (karrash,
+        ekkel, muddal) live ON the chimneys and mats, the two shoal feeders
+        (eesh, doss) work the column and the dung-fall, thuum lives UNDER the
+        mats, and the bladderboil by its commission §10b does not swim the
+        boil, it hangs in the column: it IS its own bubble, the sail
+        register's second member.
   Ban 5 (no drained, cooled or tamed Scald): no def here changes terrain,
         and every one is trainability None — nothing here tames.
   Ban 6 (no vanilla-Earth flora or fauna): every species is invented and
@@ -767,14 +765,14 @@
        RM_Bladderboil — the pilgrim's kettle. The owner's own coinage,
        fully specced at RUT_hydrocarbon_ecology_commission.md §10: a
        golden sac that inflates in the roar and sighs flat in the quiet
-       margins. Ban 4's own carve-out (§10b): it does not swim the boil,
-       it floats it — it IS its own bubble.
+       margins. Commission §10b: it does not swim the boil, it hangs in
+       the column — it IS its own bubble.
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Bladderboil</defName>
     <label>bladderboil</label>
-    <description>A leathery golden sac the size of a head, riding the Scald's boil. When the water around it roars it gulps itself full and swells taut, floating high and hard where nothing else can live; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag, half-sunk, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
+    <description>A leathery golden sac the size of a head, riding the vent columns of the Scald's boil. When the water around it roars it gulps itself full and swells taut, hanging high and hard in the roar; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag on the bed, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
     <statBases>
       <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.3: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
       <LeatherAmount>0</LeatherAmount>

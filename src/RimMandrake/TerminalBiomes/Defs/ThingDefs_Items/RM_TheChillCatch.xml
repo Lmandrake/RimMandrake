@@ -17,7 +17,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_HeeminCatch</defName>
     <label>heemin</label>
-    <description>A near-transparent sliver hauled off the Chill's top layer, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
+    <description>A near-transparent sliver hauled up out of the Chill's fuel, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
     <graphicData>
       <texPath>Things/Item/RM_TheChill/RM_HeeminCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -138,7 +138,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_OovuCatch</defName>
     <label>oovu</label>
-    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
+    <description>A bell of frozen hydrocarbon jelly that rides high in the fuel column where the snow falls, catching it — a hanging cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_OovuCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>

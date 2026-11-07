@@ -367,7 +367,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Oovu</defName>
     <label>oovu</label>
-    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing.</description>
+    <description>A bell of frozen hydrocarbon jelly that rides high in the fuel column where the snow falls, catching it — a hanging cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing.</description>
     <statBases>
       <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.08: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
       <LeatherAmount>0</LeatherAmount>

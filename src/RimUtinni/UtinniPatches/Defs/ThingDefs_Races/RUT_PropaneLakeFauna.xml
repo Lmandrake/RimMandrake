@@ -246,7 +246,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_VWake</defName>
     <label>v-wake</label>
-    <description>You rarely see the thing itself — only the V-shaped ripple it cuts across the black mirror of the lake, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the surface: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
+    <description>You rarely see the thing itself — only the V-shaped ripple it cuts through the black shallows off the beach, closing fast. Propane-native from nose to tail, it hunts anything that disturbs the shallows: a boot, a pipe, a hull. Crews running the pumps learn to read the wake before they learn much else about the lake.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <Mass>28</Mass>

@@ -102,7 +102,7 @@
   <BiomeDef ParentName="RM_SeabedBiomeBase">
     <defName>RM_SeabedFloor</defName>
     <label>sea floor</label>
-    <description>The floor of a sea, far below the surface. Nothing has been surveyed here yet.</description>
+    <description>The floor of a sea, deep under the water. Nothing has been surveyed here yet.</description>
     <texture>World/Biomes/RM_SeabedFloor</texture>
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>

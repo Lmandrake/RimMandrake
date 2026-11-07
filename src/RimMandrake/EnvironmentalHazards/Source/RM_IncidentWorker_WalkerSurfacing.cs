@@ -4,8 +4,8 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     // SCALD_MECHANICS_1 S5 spike (scald_kit_spec.md "bottom-walker
-    // set-pieces"). Ban 4 ("no macro-life in the boil itself") forces v1 to
-    // be a SURFACING SET-PIECE, never a resident pawn: this worker never
+    // set-pieces"). v1 is a SIGHTING SET-PIECE seen from the beach, never a
+    // resident pawn: this worker never
     // spawns a Pawn, only picks a deep-boil cell far from shore and plays a
     // sighting. TryExecuteWorker (RimWorld/IncidentWorker.cs:289, confirmed
     // real and protected virtual — same seam RM_IncidentWorker_MirrorBreak

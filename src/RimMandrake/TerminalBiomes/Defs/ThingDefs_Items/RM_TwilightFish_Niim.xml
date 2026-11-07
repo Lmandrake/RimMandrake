@@ -179,7 +179,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_HolluCatch</defName>
     <label>hollu</label>
-    <description>A section of the waveglass itself, the beautifully coloured, transparent organism that sheets so much of the topside ocean like stained glass. In its final life stage a pane of the sheet curls in on itself, a curved shell of leaded cells glowing teal, gold and violet, breaks from the canopy and sinks, trailing a fringe of pale stinging threads, to settle on the floor and be eaten by nuudal. A big stretch of waveglass sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain. Netted mid-fall it is a sting and a curl of living glass; cooked, it is a delicacy in exactly one dock.</description>
+    <description>A section of the waveglass itself, the beautifully coloured, transparent organism that roofs so much of the ocean like stained glass. In its final life stage a pane of the sheet curls in on itself, a curved shell of leaded cells glowing teal, gold and violet, breaks from the canopy and sinks, trailing a fringe of pale stinging threads, to settle on the floor and be eaten by nuudal. A big stretch of waveglass sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain. Netted mid-fall it is a sting and a curl of living glass; cooked, it is a delicacy in exactly one dock.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_HolluCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>

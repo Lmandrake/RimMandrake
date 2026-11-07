@@ -113,7 +113,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Oovu</defName>
     <label>oovu</label>
-    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
+    <description>A bell of frozen hydrocarbon jelly that rides high in the fuel column where the snow falls, catching it — a hanging cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_OovuCatch catch painting (phfix_RM_OovuCatch_a/_b) is installed here as Things/Item/Fish/RUT_Oovu; was borrowing Things/Plant/AloeVera/AloeVeraA. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>

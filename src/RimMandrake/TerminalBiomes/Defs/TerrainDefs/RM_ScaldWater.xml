@@ -140,7 +140,7 @@
   <TerrainDef ParentName="WaterDeepBase">
     <defName>RM_ScaldWaterDeep</defName>
     <label>deep boiling water</label>
-    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. From the beach it looks dead calm; underneath it scalds. Only what can stand the temperature swims here, and nothing wades in without paying for it.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -181,7 +181,7 @@
   <TerrainDef ParentName="WaterDeepBase">
     <defName>RM_ScaldWaterOceanDeep</defName>
     <label>deep boiling water</label>
-    <description>Deep water at the boil, kept liquid by heat rather than by depth. It is dead calm on the surface and scalding underneath — nothing swims here that cannot stand the temperature, and nothing wades in without paying for it.</description>
+    <description>Deep water at the boil, kept liquid by heat rather than by depth. From the beach it looks dead calm; underneath it scalds. Only what can stand the temperature swims here, and nothing wades in without paying for it.</description>
     <renderPrecedence>397</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
@@ -345,10 +345,7 @@
          shared by every boil terrain) was chosen so the mat would not
          wild-spawn across the whole boil. RM_CrowncarpetBed on this one
          shallow-shore terrain is narrower still and matches the plant's own
-         shipped description ("thick and unbroken where the water boils") —
-         a sessile mat, not the "macro-life"/"swims the roiling surface"
-         ban 4 is aimed at (walkers, sails); the design pass reads ban 4 the
-         same way. -->
+         shipped description ("thick and unbroken where the water boils"). -->
     <tags>
       <li>Water</li>
       <li>Ocean</li>
