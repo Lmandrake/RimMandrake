@@ -199,6 +199,76 @@ namespace RimMandrake.Graffiti
             return "COLONY origin " + origin.x + "," + origin.z + " | pawns " + pawns.Count + " | powered " + powered + " dark " + dark;
         }
 
+        /// <summary>Give the colony a day's work, so a run of days measures an ordinary colony and not eight people with nothing to do: a potato
+        /// field to sow, a granite storeroom to build from blueprints with its blocks dumped in the yard, steel and wood scattered to haul into
+        /// a stockpile, every bill set to forever, and the trees near the base marked to cut. Call after Colony. -> BUSY counts</summary>
+        public static string Busy(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            origin = new IntVec3(map.Size.x / 2 - W / 2, 0, map.Size.z / 2 - H / 2);
+            CellRect field = new CellRect(origin.x + 24, origin.z - 15, 16, 10);
+            Clear(map, field.ExpandedBy(1), TerrainDefOf.Soil);
+            Zone_Growing zone = new Zone_Growing(map.zoneManager);
+            map.zoneManager.RegisterZone(zone);
+            foreach (IntVec3 c in field) zone.AddCell(c);
+            ThingDef potato = DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Potato");
+            if (potato != null) zone.SetPlantDefToGrow(potato);
+            CellRect store = new CellRect(origin.x + 47, origin.z + 3, 9, 8);
+            Clear(map, store.ExpandedBy(2), TerrainDefOf.Soil);
+            int blueprints = 0;
+            foreach (IntVec3 c in store.EdgeCells)
+            {
+                if (c.z == store.minZ && c.x == store.minX + 4) continue;     // the doorway
+                GenConstruct.PlaceBlueprintForBuild(ThingDefOf.Wall, c, map, Rot4.North, Faction.OfPlayer, ThingDefOf.BlocksGranite);
+                blueprints++;
+            }
+            GenConstruct.PlaceBlueprintForBuild(ThingDefOf.Door, new IntVec3(store.minX + 4, 0, store.minZ), map, Rot4.North, Faction.OfPlayer, ThingDefOf.WoodLog);
+            for (int i = 0; i < 4; i++)
+            {
+                Thing blocks = ThingMaker.MakeThing(ThingDefOf.BlocksGranite);
+                blocks.stackCount = 75;
+                GenSpawn.Spawn(blocks, new IntVec3(store.minX + 2 * i, 0, store.minZ - 2), map);
+            }
+            Zone_Stockpile pile = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, map.zoneManager);
+            map.zoneManager.RegisterZone(pile);
+            foreach (IntVec3 c in new CellRect(origin.x + 27, origin.z + 17, 11, 2))
+            {
+                if (c.GetEdifice(map) == null) pile.AddCell(c);
+            }
+            int hauls = 0;
+            for (int i = 0; i < 14; i++)
+            {
+                Thing heap = ThingMaker.MakeThing(i % 2 == 0 ? ThingDefOf.Steel : ThingDefOf.WoodLog);
+                heap.stackCount = 30;
+                IntVec3 at = new IntVec3(origin.x - 6 + (i * 5) % 50, 0, origin.z + H + 3 + (i * 3) % 6);
+                if (at.InBounds(map) && at.Standable(map) && GenPlace.TryPlaceThing(heap, at, map, ThingPlaceMode.Near)) hauls++;
+            }
+            int bills = 0;
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+            {
+                if (!(b is IBillGiver giver)) continue;
+                foreach (Bill bill in giver.BillStack.Bills)
+                {
+                    if (bill is Bill_Production prod)
+                    {
+                        prod.repeatMode = BillRepeatModeDefOf.Forever;
+                        bills++;
+                    }
+                }
+            }
+            int trees = 0;
+            foreach (Plant plant in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant).OfType<Plant>().ToList())
+            {
+                if (plant.def.plant.IsTree && plant.Position.InHorDistOf(C(W / 2, H / 2), 40f) && map.designationManager.DesignationOn(plant) == null)
+                {
+                    map.designationManager.AddDesignation(new Designation(plant, DesignationDefOf.CutPlant));
+                    trees++;
+                }
+            }
+            return "BUSY field " + field.Area + " | blueprints " + blueprints + " | hauls " + hauls + " | bills forever " + bills + " | trees to cut " + trees;
+        }
+
         /// <summary>Every mark def on rows of wall (steel then granite then wood), with vanilla filth on the floor below for comparison.
         /// args "page": 0.. -> GALLERY rects. Row spacing leaves the floor in front visible.</summary>
         public static string Gallery(string args)

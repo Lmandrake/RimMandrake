@@ -231,6 +231,21 @@ namespace RimMandrake.Graffiti
             return sb.ToString();
         }
 
+        /// <summary>"field=value": flip one of the mod's settings as the player's checkbox would (the same static field the settings window
+        /// writes), so a run can show that off means off. No args: every setting as it stands.</summary>
+        public static string Set(string args)
+        {
+            System.Type t = typeof(RM_GraffitiSettings);
+            if (!string.IsNullOrEmpty(args) && args.Contains("="))
+            {
+                string[] kv = args.Split('=');
+                var f = t.GetField(kv[0], System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (f == null) return "error=no setting " + kv[0];
+                f.SetValue(null, System.Convert.ChangeType(kv[1], f.FieldType));
+            }
+            return "SETTINGS " + string.Join(" ", t.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Select(f => f.Name + "=" + f.GetValue(null)));
+        }
+
         /// <summary>The last n messages the walls sent the player, with their ticks.</summary>
         public static string Said(string args)
         {
