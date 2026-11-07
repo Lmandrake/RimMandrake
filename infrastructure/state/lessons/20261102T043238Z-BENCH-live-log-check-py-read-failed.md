@@ -1,1 +1,0 @@
-live_log_check.py read a failed patch's unindented 'file: <path>' line as its own record, so a token naming a PATCH FILE (ColdStorage_AncientComplexLoot, Armour_Leather.xml) never met the 'failed' word: a false PASS. Fixed in CONT_RE (LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST).

@@ -1,2 +1,0 @@
-selftest_role_launch_decide_mut decide_off_switch_and_window and decide_off_switch_on_event_run_is_not_spent bake the off-switch temp path (/home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP) into their goldens: they pass standalone and FAIL under run_selftests.py, whose per-run temp base differs (selftest_run_*/selftest_dispatcher_TMP). Seen 2026-11-02 by TOKEN_LIMITS_TAME_BARK_NO_BITE; not caused by it. Fix: normalise the temp base in the golden compare.
-home: src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py

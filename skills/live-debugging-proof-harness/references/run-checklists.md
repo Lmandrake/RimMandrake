@@ -86,6 +86,7 @@ Each line names the failure it prevents. Every one of these cost a full-list run
 
 Watchdog: `python3 src/RimMandrake/Utils/belt_watchdog.py` every 5 minutes. Runbook:
 `design/RimMandrake/live_test_hang_runbook.md`.
+- **A live proof that loops over hundreds of probe calls (20 s wait each) hangs silently for an hour when the probe channel dies** (mech raid, map switch). Wrap the bridge in `validation_core.Watchdog` (budget plus 3 dead replies in a row gives UNMEASURED/HARNESS) and drive game time through governed `B.ticks`, never raw `step_game_ticks`.
 
 ## Run end, before you report
 

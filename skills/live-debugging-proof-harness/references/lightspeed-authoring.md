@@ -87,6 +87,7 @@ not a mod FAIL. Do not rely on that. Exit 2 yourself (§1).
 - The lint that would refuse poll loops is PLANNED (item POLLLOOPS_MIGRATE_TO_UNTIL,
   `lint_calls.py`), and so is the proof-line lint at filing (PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN).
   Today: you are the lint.
+- **Condition node ids (`conds_dsl`) come from ONE counter across the `until` tree and every watch tree.** Read ids from the compiled canonical; never renumber. (`clockgate.resumable_stop` and `is_benign_stop` take dict triggers only; `conds_dsl.run_until` filters string triggers such as `('cond','unknown')` before calling.)
 
 ## 4. Validate the site before the proof, and name the UNMEASURED reason
 

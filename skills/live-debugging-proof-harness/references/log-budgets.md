@@ -84,3 +84,4 @@ is in `skills/rimworld-modding/references/player-log-triage.md`.
 tap's `polls` and `lost`, and the sentinel's text and `alive`. A reader must be able to
 see **why** it is PASS. "0 errors naming the mod" with `lost` unreported is not
 evidence.
+- **Player.log carries no level marker:** `Log.Warning` text is written bare (stack traces off), so `live_log_check --warnings` (which needs the word 'warn') cannot see a warning like '[RM Minerals] quarry: ...'. Name a known warning by its own text with `live_log_check --never`.

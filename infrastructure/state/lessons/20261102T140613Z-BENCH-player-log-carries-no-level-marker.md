@@ -1,1 +1,0 @@
-Player.log carries no level marker: Log.Warning text is written bare (stack traces off), so live_log_check --warnings (which needs the word 'warn') cannot see a warning like '[RM Minerals] quarry: ...'. Name a known warning by its own text with live_log_check --never. (LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST, 2026-11-02)

@@ -244,7 +244,7 @@ More traps for this section: [references/traps.md](references/traps.md) § Pre-p
    the walk's `## anti-guessing notes`. Nothing that found a bug lives only in a
    Transient log.
 5. **The commit names the class** (MOD / SITE / HARNESS) and the row id. A
-   prior-pass-now-fail is a STOP: that regression is the finding.
+   prior-pass-now-fail is a STOP: that regression is the finding, unless `git log --since=<last pass>` on the subsystem's source shows a RULED behaviour change (liquid spill became `RM_Filth_WaterSpill`, so a row counting only `RM_Filth_LiquidSpill` failed). Search the map for every filth def the liquid can make before calling it lost.
 
 How to tell the classes apart, the 2026-10-11 tally and the modcheck/walk traps:
 `references/classifying-and-learning.md`.
