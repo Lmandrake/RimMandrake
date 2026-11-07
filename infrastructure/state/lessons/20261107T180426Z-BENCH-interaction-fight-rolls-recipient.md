@@ -1,0 +1,2 @@
+A custom InteractionDef's socialFightBaseChance is judged on the RECIPIENT's traits and opinion (Pawn_InteractionsTracker.TryInteractWith calls recipient.CheckSocialFightStart). Only gene factors read the initiator. So a 'confront' interaction scales with the person confronted, not the angry one; Graffiti's RM_Graffiti_Confront at 0.75 had this defect. To scale with the initiator's temper, set the base to 0 and roll after TryInteractWith, using SocialFightChance(Insult, initiator)/Insult base as the shared factor.
+home: rimworld-modding
