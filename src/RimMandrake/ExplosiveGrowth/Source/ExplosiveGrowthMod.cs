@@ -293,7 +293,7 @@ namespace RimMandrake.ExplosiveGrowth
                 list.CheckboxLabeled("Falling snow melts like rain where the biome says so", ref snowmeltEnabled);
                 list.CheckboxLabeled("Salt-line surges water the fresh side", ref gradientSurgeSoakEnabled,
                     "Needs the gradient-axis surge (RimMandrake: Environmental Hazards).");
-                list.CheckboxLabeled("Fresh ash counts as fresh water for fire-adapted plants", ref ashFreshEnabled, "Needs the Pyrelands' ash field.");
+                list.CheckboxLabeled("Fresh ash counts as fresh water for fire-adapted plants and crops", ref ashFreshEnabled, "Needs the Pyrelands' ash field.");
                 list.Label("  Fresh for " + ashFlushDays.ToString("0.0") + " days after a burn, restarted when a seedling appears");
                 ashFlushDays = list.Slider(ashFlushDays, 0.5f, 10f);
                 list.GapLine();

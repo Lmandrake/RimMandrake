@@ -23,6 +23,7 @@
   <TerrainDef Name="RM_FE_ScorchableGroundBase" Abstract="true">
     <researchPrerequisites/>
     <renderPrecedence>100</renderPrecedence>
+    <edgeType>FadeRough</edgeType>
     <fertility>0</fertility>
     <!-- Vanilla Soil/Gravel's set (Core Terrain_Natural.xml); the sand clone drops GrowSoil as vanilla Sand does.
          ASH_TERRAIN_FIX_NO_MEDIUM_GROUND, 2026-10-15: without Medium, ~35 vanilla+DLC buildings could not be placed. -->

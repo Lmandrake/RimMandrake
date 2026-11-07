@@ -76,6 +76,26 @@ namespace RimMandrake.ExplosiveGrowth
     }
 
     /// <summary>
+    /// The inspect pane names the rule: without this a dry crop just reads "Growth rate: 6%" and no player can tell why.
+    /// </summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.GetInspectString))]
+    [RimMandrake.Shared.PatchFeature("Crop water note", typeof(ExplosiveGrowthSettings), "enabled")]
+    public static class RM_Patch_Plant_InspectWater
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Plant __instance, ref string __result)
+        {
+            if (!RM_ExplosiveGrowthRegistry.Ready || !ExplosiveGrowthSettings.On || !__instance.Spawned) return;
+            RM_PlantProfile p = RM_ExplosiveGrowthRegistry.For(__instance.def);
+            if (p == null || p.archetype != RM_Archetype.Vanilla) return;
+            RM_MapComponent_ExplosiveGrowth comp = RM_MapComponent_ExplosiveGrowth.For(__instance.Map);
+            if (comp == null) return;
+            string note = comp.CropWaterNote(__instance, p);
+            if (note != null) __result = __result.NullOrEmpty() ? note : __result + "\n" + note;
+        }
+    }
+
+    /// <summary>
     /// DORMANCY (WP2 "Yes, age at the slowed rate"; spec §5.2, D13): a PREFIX on Plant.TickLong takes (1 - r) x 2000 off
     /// the age step vanilla is about to add, so a plant below x1 ages at r. A prefix because vanilla adds ageInt += 2000 and
     /// checks Dying in the same call (RimSage RimWorld/Plant.cs:810-868): a postfix would let vanilla kill it first. Only

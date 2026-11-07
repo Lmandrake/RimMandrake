@@ -147,8 +147,8 @@ namespace RimMandrake.ExplosiveGrowth
             ThingDef def = plant.def;
             DropProduce(plant, prof.produceFactor, scatter: false);
             RM_ExplosiveGrowthDefOf.RM_EG_Split?.PlayOneShot(new TargetInfo(c, map));
-            FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_LooseGround);
-            SplitAndDie(plant);
+            if (!prof.gentleBurst) FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_LooseGround);   // a gentle carpet leaves the ground clean: 26,000 grey smudges a storm (owner, 2026-11-07)
+            EndCycle(plant, prof, comp);
             RM_SproutRing.Sow(map, c, def, SproutRadius, Sprouts(prof, DrySprouts), respectBuiltGround: true, comp, growth: 0.05f);
         }
 
@@ -208,7 +208,7 @@ namespace RimMandrake.ExplosiveGrowth
 
             if (!prof.gentleBurst && ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
 
-            SplitAndDie(plant);
+            EndCycle(plant, prof, comp);
 
             ThingDef ring = prof.ringPlant ?? def;
             int n = tinder ? Rand.RangeInclusive(5, 9) : Rand.RangeInclusive(3, 6);
@@ -496,6 +496,22 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         // ── shared pieces ────────────────────────────────────────────────
+
+        private static readonly AccessTools.FieldRef<Plant, int> ageRef = AccessTools.FieldRefAccess<Plant, int>("ageInt");
+
+        /// <summary>A gentle carpet starts over where it stands, which looks the same as dying and resprouting: destroying a
+        /// plant costs about 1.8 ms on a grass-covered map, and a soaked map pops one every tick.</summary>
+        private static void EndCycle(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
+        {
+            if (!prof.gentleBurst || comp == null)
+            {
+                SplitAndDie(plant);
+                return;
+            }
+            plant.Growth = 0.05f;
+            ageRef(plant) = 0;
+            comp.Dirty(plant.Position);
+        }
 
         private static void SplitAndDie(Plant plant)
         {

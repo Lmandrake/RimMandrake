@@ -76,6 +76,9 @@ namespace RimMandrake.ExplosiveGrowth
         public int irrigationCursor;   // kept for old saves; the channel is read on demand now
         public int surgeCursor;
         private int plantCursor;
+        private int lastSweepTick = -1;
+        private int nextSweepTick;
+        private bool plantsRun;
 
         // Rain (OQ-9): saved.
         private bool wasRaining;
@@ -296,7 +299,8 @@ namespace RimMandrake.ExplosiveGrowth
             IntVec3 c = plant.Position;
             if (prof.archetype == RM_Archetype.Vanilla)
             {
-                bool near = s.vanillaNeedsWater && RM_WetSources.WaterNearby(this, c, RM_ExplosiveGrowthRegistry.CleanWaterSet, ExplosiveGrowthSettings.nearbyRadius, now);
+                // Fresh ash feeds a crop as water would (Pyrelands' burn-and-sow field; AshFresh is false on every other biome).
+                bool near = s.vanillaNeedsWater && (AshFresh(c, now) || RM_WetSources.WaterNearby(this, c, RM_ExplosiveGrowthRegistry.CleanWaterSet, ExplosiveGrowthSettings.nearbyRadius, now));
                 return RM_ExplosiveGrowthKernel.MoistureFactor(prof.archetype, true, false, false, false, false, prof.woody, near, s);
             }
             bool stalled = RM_ExplosiveGrowthRegistry.IsTerminatorBiome(biome);
@@ -306,6 +310,20 @@ namespace RimMandrake.ExplosiveGrowth
                 return RM_ExplosiveGrowthKernel.TreeMoistureFactor(prof.archetype, true, stalled, false, wet, ash,
                     plant.Growth >= MatureGrowth, s);
             return RM_ExplosiveGrowthKernel.MoistureFactor(prof.archetype, true, stalled, false, wet, ash, prof.woody, false, s);
+        }
+
+        /// <summary>What the inspect pane says about a vanilla plant's water here, or null when the rule does not touch it.</summary>
+        public string CropWaterNote(Plant plant, RM_PlantProfile prof)
+        {
+            if (MoistureFactorFor(plant, prof) < 1f)
+                return "Too dry: grows at " + ExplosiveGrowthSettings.vanillaDryMultiplier.ToStringPercent() + " without water within "
+                    + ExplosiveGrowthSettings.nearbyRadius + " cells";
+            int now = Find.TickManager.TicksGame;
+            if (!ExplosiveGrowthSettings.Rates.vanillaNeedsWater || !RM_ExplosiveGrowthRegistry.PlantInScope(prof, map.Biome)
+                || Sealed(plant) || !AshFresh(plant.Position, now)
+                || RM_WetSources.WaterNearby(this, plant.Position, RM_ExplosiveGrowthRegistry.CleanWaterSet, ExplosiveGrowthSettings.nearbyRadius, now))
+                return null;
+            return "Fresh ash: feeds it as water would, for now";
         }
 
         /// <summary>The tree rules (tree_burst_design_2026-10-17.md §3, §4, §6a) run for this tree here: in scope, not sealed,
@@ -417,26 +435,30 @@ namespace RimMandrake.ExplosiveGrowth
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
-            if (now < nextPassTick) return;
-            nextPassTick = now + PassInterval;
-            // EGROWTH_SUPPRESS_FIX_OFF_STILL_SUPPRESSES: switching suppression off drops grids already laid.
-            // EGROWTH_MASTER_FIX_SPARES_THE_BANDS: the master switch off drops them too, so nothing laid survives a master-off spell.
-            if ((!ExplosiveGrowthSettings.suppressionEnabled || !ExplosiveGrowthSettings.On) && ledger.suppressedUntil.Count != 0)
-                ledger.suppressedUntil.Clear();
-            if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready)
+            if (now >= nextPassTick)
             {
+                nextPassTick = now + PassInterval;
+                // EGROWTH_SUPPRESS_FIX_OFF_STILL_SUPPRESSES: switching suppression off drops grids already laid.
+                // EGROWTH_MASTER_FIX_SPARES_THE_BANDS: the master switch off drops them too, so nothing laid survives a master-off spell.
+                if ((!ExplosiveGrowthSettings.suppressionEnabled || !ExplosiveGrowthSettings.On) && ledger.suppressedUntil.Count != 0)
+                    ledger.suppressedUntil.Clear();
+                if (!ExplosiveGrowthSettings.On || !RM_ExplosiveGrowthRegistry.Ready)
+                {
+                    lastPassTick = now;
+                    plantsRun = false;
+                    return;
+                }
                 lastPassTick = now;
-                return;
+                Pass(now);
             }
-            int dt = RM_ExplosiveGrowthKernel.PassDelta(now, lastPassTick);
-            lastPassTick = now;
-            Pass(now, dt);
+            if (plantsRun) StepPlants(now);
         }
 
-        private void Pass(int now, int dt)
+        private void Pass(int now)
         {
             ledger.PruneExpired(now);
-            if (!RM_ExplosiveGrowthRegistry.MapMayRun(map.Biome))
+            plantsRun = RM_ExplosiveGrowthRegistry.MapMayRun(map.Biome);
+            if (!plantsRun)
             {
                 // EGROWTH_SCOPE_FIX_FROZEN_CHARGES_GAMBLE: out of scope the ledger is not stepped, so drop charges instead of freezing them (a frozen charge still paid the jackpot).
                 // EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: a dropped charge's swollen, tinted mesh is baked; dirty it first.
@@ -451,30 +473,41 @@ namespace RimMandrake.ExplosiveGrowth
             UpdateRain(now);
             RefreshChannelGrids(now);
             RM_SoakSources.Pulse(this, now);
+            // EGROWTH_RUPTURE_FIX_ROLLS_TWICE: ruptures tick before the sweep below can start new ones.
+            if (ruptures.Count > 0) TickRuptures(now);
+        }
 
-            bool reprint = now >= nextReprintTick;
-            if (reprint)
+        /// <summary>The plants' share of the work, a little every tick: one tick paying for a whole soaked map was a visible
+        /// stall every 250 ticks (owner, 2026-11-07).</summary>
+        private void StepPlants(int now)
+        {
+            if (ledger.SweepDone && now >= nextSweepTick)
             {
-                nextReprintTick = now + Mathf.Max(60, ExplosiveGrowthSettings.reprintIntervalTicks);
-                wobbleParity = !wobbleParity;
+                bool reprint = now >= nextReprintTick;
+                if (reprint)
+                {
+                    nextReprintTick = now + Mathf.Max(60, ExplosiveGrowthSettings.reprintIntervalTicks);
+                    wobbleParity = !wobbleParity;
+                }
+                ledger.BeginSweep(RM_ExplosiveGrowthKernel.PassDelta(now, lastSweepTick), reprint);
+                lastSweepTick = now;
+                nextSweepTick = now + PassInterval;
             }
 
-            if (ruptures.Count > 0) TickRuptures(now);
-
-            // The full-map wave: one eighth of every plant on the map is offered to the arming step per pass.
+            // The full-map wave: every plant on the map is offered to the arming step once per SliceCount passes.
             candidates.Clear();
             List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
-            RM_ExplosiveGrowthKernel.SliceRange(plants.Count, plantCursor, out int start, out int end);
-            plantCursor = RM_ExplosiveGrowthKernel.NextCursor(plantCursor);
-            for (int i = start; i < end; i++)
+            for (int n = plants.Count / (RM_ExplosiveGrowthKernel.SliceCount * PassInterval) + 1; n > 0 && plants.Count > 0; n--)
             {
-                Thing t = plants[i];
+                if (plantCursor >= plants.Count) plantCursor = 0;
+                Thing t = plants[plantCursor++];
                 if (t is Plant p && p.Spawned && p.Growth >= MatureGrowth) candidates.Add(p.Position);
             }
+            ledger.Arm(sink, candidates, now, ExplosiveGrowthSettings.waveStaggerEnabled);
 
-            float chargeTicks = RM_ExplosiveGrowthKernel.ChargeTicks(ExplosiveGrowthSettings.chargeHours);
-            ledger.Pass(sink, candidates, now, dt, reprint, chargeTicks, ExplosiveGrowthSettings.tellSoundsEnabled,
-                ExplosiveGrowthSettings.waveStaggerEnabled);
+            int steps = Mathf.Min(ledger.SweepCount / PassInterval + 1, RM_ExplosiveGrowthKernel.MaxChargeStepsPerTick);
+            ledger.StepSweep(sink, now, steps, RM_ExplosiveGrowthKernel.MaxPopsPerTick, RM_ExplosiveGrowthKernel.ChargeTicks(ExplosiveGrowthSettings.chargeHours),
+                ExplosiveGrowthSettings.tellSoundsEnabled);
         }
 
         private sealed class Sink : IEgSink<IntVec3>
