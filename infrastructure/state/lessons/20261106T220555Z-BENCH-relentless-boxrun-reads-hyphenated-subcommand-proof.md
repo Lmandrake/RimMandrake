@@ -1,1 +1,0 @@
-relentless boxrun reads a hyphenated subcommand in a proof (tool.py check-x) as prose: mid-chain it refuses the proof as unrunnable, and in the last part it would silently drop the word. Give a proof's CLI plain-word verbs or --flags, and run relentless.py boxrun before you set a contract you cannot change (RIMFLOW_RETIRE_DEAD_MODULES).

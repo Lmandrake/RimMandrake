@@ -1,1 +1,0 @@
-relentless restaffs approach=build after a snag --class contract_needs_redesign: LEANINGSCRUB_STALL_SHARED_MOVE_1 got 4 build attempts (gens 3,5,7) each refused at 'contract' because only redesign/proof-only workers may change a set contract. A build snag naming contract_needs_redesign should route the next attempt to approach=redesign.

@@ -1,1 +1,0 @@
-A Relentless contract proof must not pass --no-cache/--full to run_selftests.py without --because: the runner refuses (exit 2) before any test, and the set contract can then only be fixed by rebind + judge (GIT_DARK_FIX_STALL_ITEM_STILL_HELD, 2026-11-06).

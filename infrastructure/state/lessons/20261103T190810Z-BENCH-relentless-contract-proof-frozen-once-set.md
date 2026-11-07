@@ -1,1 +1,0 @@
-relentless contract --proof is frozen once set (only a redesign or proof-only worker may change it): run the exact proof command green BEFORE setting the contract, or a typo in an --only stem fails the blind check

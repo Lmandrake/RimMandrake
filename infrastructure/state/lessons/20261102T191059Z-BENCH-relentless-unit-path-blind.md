@@ -1,2 +1,0 @@
-The rm-relentless systemd unit's PATH has no /mnt/c/WINDOWS dirs, so every game read from the tick (powershell.exe, tasklist, netstat) returned None and was read as 'no running game': ten game-phase items (BIOME_TIER_CLEANUP_1, TITANIC_BODYSIZE_TEST_RACE_1, ...) were held on the owner while the game ran. Fixed c0868e628f (windows_path on the tick and game_started env). Any tool run from a systemd unit that shells to Windows must add those dirs itself; an unreadable game is a harness gap, never 'no game'.
-home: src/RimMandrake/rimflow/relentless_live.py windows_path

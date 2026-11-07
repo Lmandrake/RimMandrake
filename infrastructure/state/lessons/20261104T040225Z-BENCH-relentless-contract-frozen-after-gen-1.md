@@ -1,1 +1,0 @@
-relentless contract is frozen after gen 1 for build workers: a typo in --proof or --live (wrong path, --only by name not path) cannot be fixed by later build workers and dooms every finish until a redesign/proof-only attempt; dry-run the --proof command and ls the --live reading BEFORE contract (OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH)
