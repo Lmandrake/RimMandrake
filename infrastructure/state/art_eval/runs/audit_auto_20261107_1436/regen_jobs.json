@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RM_Vozzik_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vozzik",
+  "prompt": "A creature sprite for RimWorld: the vozzik. A massive, barely-moving slug that grazes across the open dayside at a fraction of walking pace. Wherever it has gone, it has been going for a very long time; wherever it stops, it is likely to still be there years later. Visible features: an enormous slug body, far beyond any Earth slug; a broad rounded mantle dome; a wide grazing foot skirt; weathered, sun-baked brown and ochre hide; a low neck carrying the head and eye stalks close to the ground. In the rear view, seen from behind, the creature shows the same massive body as the front view: the broad rounded mantle dome and the wide foot skirt along its base are as wide and as tall as in the front view and fill the same share of the frame. The head and neck stay low and forward, hidden behind the mantle, and only the tips of the eye stalks show just beyond the top of the hump. In the front view, eyes toward the viewer, and in the side view, the neck slopes down below the top of the mantle. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, with a clean dark brown outline. The creature is rendered on a flat, neutral mid-grey backdrop that shares no hue with the hide, so the silhouette separates cleanly. The cut-out has a clean transparent edge all the way round: the foot's lower outline, the left and right tips of the foot, and the underside of the head each end in a crisp one-pixel antialiased step, and every antialiased edge pixel is the body's own tan, brown and ochre hide colour, matching the adjacent skin. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent final background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1436",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+ },
+ {
+  "id": "arteval_RM_Iliss_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Iliss",
+  "prompt": "A creature sprite for RimWorld: the iliss. A wire-thin eel the length of a forearm, far thinner than an Earth eel, with matte black skin. Its spine is made of conductive mineral: a continuous row of glinting blue-white crystalline vertebrae runs the full length of the back, each one a distinct angular faceted mineral block with hard visible facet edges and its own dark outline, reading as stone or metal against the smooth matte black skin beside it. It is the same animal in every facing: a thin matte black body with the faceted blue-white mineral ridge along its back, at the same body thickness (about 8 px at game scale) and the same visual size in every view, so the eel never shrinks when it turns. Side view: the full length of the body is shown in a gentle S, filling about half the canvas in width and height, the whole row of mineral vertebrae along the back, and the head in true profile with a single small dull eye on the visible side of the head and the sharp biting mouth with small teeth. Front view, eyes toward the viewer: the head is nearest the camera at the bottom of the body, seen from the front at a raised three-quarter game angle, drawn large, with the snout, two small pale eyes and an open jaw showing small sharp teeth all clearly readable, the faceted mineral ridge rising along the top of the head, and the long thin black body with its row of mineral plates receding up the canvas behind the head in a gentle S-curve, about 0.6 of the side-view length and roughly 120 to 140 px tall, at the same body thickness as the side view, so it reads clearly as a long thin eel of the same size. Rear view, seen from behind: the tail end is nearest the camera at the bottom of the canvas, and the long thin black body with the faceted mineral ridge down its centre recedes up the canvas away from the viewer in a gentle S-curve, about 0.6 of the side-view length and roughly 120 to 140 px tall, at the same body thickness as the side view, with the head out of sight at the far end and the eyes hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1436",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.55,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+ }
+]
