@@ -68,6 +68,8 @@ set and never merges biome rosters.
     replacement is not installed yet): it appears as the IN GAME column only, badged "you purged this — still
     live until a replacement is installed", non-pickable (no pick header, no ✕, absent from the row's letters).
     A purged picture that is not live still fails the gate.
+- **Canon lookup is not exact-dirname, and library absence is never a canon verdict.** `art_sheet` must strip variant words (Alpha/Juv/Feral) when looking up `canon_references/<dir>/` (RSW_WraidAlpha read "no canon" while `wraid/` exists). The empty state says "not yet in our library", never "no canon-library entry, judge on its own" (which reads as NOT CANON).
+- **His X'd pictures came back by three routes (measured): the same bytes reinstalled (21 shas), re-shown on another sheet (232; X'd again more than 1 h later: 366), and a redraw near-duplicate at dHash d<=10 (16).** A purge alone stopped none, because sheets, install, artpipe and art-eval checked only `is_purged(sha)`, which store re-entry and redraws bypass. Bans carry sha + perceptual hash (d<=10, popcount>=32, mirror too; false-positive 0.007% on 399,512 distinct-subject pairs) and every route checks them; `install_bytes` checks the ban BEFORE `store_put_bytes`, or refused bytes re-enter the store.
 
 ## Enforcement — what refuses, and where (2026-10-05)
 

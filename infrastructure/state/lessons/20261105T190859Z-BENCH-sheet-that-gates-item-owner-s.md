@@ -1,1 +1,0 @@
-A sheet that gates an item on the owner's look must be pinned (transient_pin.py add) the moment it is filed as the gate: unpinned Transient decays in ~14 days and the 2026-09-12 modcheck Pits format sheet died unseen, blocking MOD_VALIDATION_RETROFIT_1 for 7 weeks (MODCHECK_PITS_SHEET_REBUILD_DECAYED_UNSEEN).

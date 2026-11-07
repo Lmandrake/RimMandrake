@@ -1,2 +1,0 @@
-Blind review pages written by hand (firehawk_replay/scripts/build_page.py) omit <meta name=viewport>, so a phone renders them at about 980 px wide and zoomed out: every sprite and radio button shrinks. Add the viewport meta to any generated review page. Also localStorage.setItem in its change handler is unguarded: picks still reach the textarea if storage is blocked, but do not persist.
-home: rimworld-review-sheets

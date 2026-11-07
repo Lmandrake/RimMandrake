@@ -1,1 +1,0 @@
-Enacting a ruled art sheet is ONE command: art.py enact <decisions.json> (dry-run) then --apply; --hold <subject> for rows awaiting a sitting. Conflicts (live/kept) are listed, never purged. Documented in skills/rimworld-review-sheets (lifecycle step 5).

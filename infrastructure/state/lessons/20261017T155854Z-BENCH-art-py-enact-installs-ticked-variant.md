@@ -1,1 +1,0 @@
-art.py enact installs a ticked variant at <base>V_<letter>, so a sheet column letter that matches an existing variant slot overwrites the owner's earlier pick there on every run (GorgV_G clobbered pick M, 2026-10-17); check existing V_ slots before enact --apply

@@ -1,1 +1,0 @@
-art_sheet --textures: a row's render_match is re.search'd against the column label 'render <family>' — a ^-anchored pattern hides every candidate and the gate still PASSes; check the build's sets count against candidates (bridge_redraw 2026-10-21)

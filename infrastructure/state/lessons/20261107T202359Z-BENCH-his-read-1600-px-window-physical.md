@@ -1,1 +1,0 @@
-His 'read on a 1600 px window' is physical pixels: Archmagi runs at 200% scale, so a Typora sheet's column is about 765 CSS px and an inline SVG with viewBox 1040 draws at 0.73. A 1500-wide viewBox shrinks to unreadable. Design at 1040 with no text under 10.5 units, and test in headless Edge with --force-device-scale-factor=2 --window-size=825,H.
