@@ -75,7 +75,6 @@
       <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
       <harvestYield>5</harvestYield>
       <harvestTag>Standard</harvestTag>
-      <harvestAfterGrowth>0.01</harvestAfterGrowth>
       <harvestedThingDef>RM_FE_ScorchFruitYield</harvestedThingDef>
       <wildOrder>2</wildOrder>
       <purpose>Food</purpose>

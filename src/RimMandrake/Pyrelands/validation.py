@@ -1582,10 +1582,17 @@ def scorchfruit_produces(t):
                 _fail("set_plants placed no RM_FE_Plant_ScorchFruit in %s" % _rs(rect))
             t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant",
                           rect=_rs(rect))
-            for p in plants[:3]:
+            # The first order must interrupt: queued behind a sleeper it never starts. A colonist's harvest can fail
+            # (PlantHarvestYield 0.7) and one pod takes ~1100 ticks, so three pods need ~3500.
+            for i, p in enumerate(plants[:3]):
                 t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest",
-                              targetAId=p["id"], queue=True, waitTicks=60)
-            _wait(t, 2500)
+                              targetAId=p["id"], queue=i > 0, waitTicks=0)
+            _wait(t, 3600)
+            gone = [p["id"] for p in plants[:3]
+                    if p["id"] not in set(x.get("id") for x in _things(t, "RM_FE_Plant_ScorchFruit", _rs(rect), limit=20))]
+            _note(t, "pods taken by the harvest", gone)
+            if not gone:
+                _fail("a harvest left every pod standing: it would regrow and be picked again")
             made = [x for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)
                     if x.get("id") not in before]
             _note(t, "yield made by the harvest", made)
@@ -2046,6 +2053,8 @@ def heat_dome(t):
         _wait(t, 5)
         domed = _dome_probe(t, g)
         _wait(t, 60)
+        # bodyGraphic is the graphic of the LAST draw, and an off-screen pawn is not drawn: frame it first.
+        t.screenshot(rect=(x - 6, z - 6, 12, 12))
         drawn = _dome_probe(t, g)
         _wait(t, DOME_HOLD_TICKS + 300)
         after = _dome_probe(t, g)
