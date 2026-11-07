@@ -44,6 +44,9 @@
   <!-- PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3. The ash-field mouseover sign after the terrain line (MapComponent_PyrelandsAshField.SignFor);
        {0} is the fresh-burn fertility bonus (e.g. 0.32), {1} the days it has left on the clock. -->
   <RM_AshSignWatered>watered</RM_AshSignWatered>
+  <!-- PyrelandsWetRoots: a plant on watered ash-field ground reads its heat growth factor as if {0} cooler; {1} is the
+       temperature growth multiplier it would have dry. -->
+  <RM_WetRootsInspect>Wet ash keeps its roots cool: grows as if {0} cooler (dry it would grow at {1}).</RM_WetRootsInspect>
   <RM_AshSignFreshBurn>fresh burn +{0} ({1} days)</RM_AshSignFreshBurn>
 
 </LanguageData>

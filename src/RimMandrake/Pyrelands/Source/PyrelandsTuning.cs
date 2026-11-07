@@ -313,6 +313,11 @@ namespace RimMandrake.Pyrelands
         /// last possible cell. [INVENTED]</summary>
         public const float BurrowDetectionRadius = 15f;
 
+        /// <summary>PyrelandsWetRoots: degrees a plant on WATERED ash-field ground is spared when its heat growth factor is read.
+        /// At the biome's 53.6 C median a vanilla crop's 42-58 C falloff zeroes the growing day; 15 C brings a 45-62 C day
+        /// to 30-47 C, so a watered crop grows nearly all day and a dry one hardly at all. [INVENTED, 2026-11-07]</summary>
+        public const float WetRootsCoolingC = 15f;
+
         /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: least gap between two dive nudges of one pawn
         /// (MapComponent_BurnLine re-asks an idling burrower's think tree while a fire is near). Normally one nudge
         /// suffices because it starts the dive; the gap only bounds a pawn whose tree answers something other than the
