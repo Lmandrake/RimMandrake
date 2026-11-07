@@ -1,1 +1,0 @@
-A loop unit started with systemd-run and no Environment=PATH cannot find claude: the pass ends rc 127 in about a second and spends nothing (Graffiti on game B, 2026-11-07 13:23 PST). Copy the running loops' Environment=PATH=/home/mandrake/.local/bin:... into every new rm-ralph-* unit.

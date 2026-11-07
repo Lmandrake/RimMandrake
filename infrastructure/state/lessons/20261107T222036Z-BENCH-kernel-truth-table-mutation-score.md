@@ -1,2 +1,0 @@
-A test that restates a one-line kernel gate as a truth table (Check(K.Gate(a,b) == (a && !b))) kills every mutant of the gate, so its mutation score is high by construction, and it cannot see the caller that computes a and b (one Graffiti caller passes a literal true). 38 such checks in 21 mods on 2026-11-07. Mutate the caller too before trusting a kernel's mutation score.
-home: mutate-your-checker

@@ -122,6 +122,7 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
 - **A collapsed suspension bridge leaves an IMPASSABLE `RM_SuspensionWreck` on every fallen square, and FlowWorks' live fallen-cord contacts are exactly those squares:** a pawn spawned there is pushed off within 10 ticks, before GSS's 20-tick shock check. Read a victim's position AFTER the check window (or clear the wreck and draft him), never right after spawn.
 - **Plain `RM_DigCanal` digs ONE notch per order and notch n costs 3200*n work:** a Tunneler (~2.5 work/tick) takes ~38k ticks from 2 m to 4 m; a skill-3 colonist did not finish 1.5 to 2 m in 8000 ticks (not a stall). Budget dig rows by `WorkToCut`.
 - **`scenes/scenelib.run(n)` is coarse:** each `rimworld/play_for` lasts >=200 ms, about 80 ticks at speed 4, so `run(10)` advances ~80 ticks. A 120-200 tick walk timed with it read glass/granite 0.65 where the engine law (cost = T + pathCost) gives 0.77. Time anything under a few hundred ticks with exact `rimworld/step_game_ticks` steps.
+- **A live dig driver that waits a fixed tick window must set `digLabourMultiplier` itself.** The shipped x4 makes a D4->D5 cut 51,200 work (~30,000 ticks at MiningSpeed 1), so a 15,000-tick wait read a running, accepted `RM_DigCanalJob` as 'no cut landed' (UNMEASURED/SITE). Run the driver at 0.25, and have mocks price work like the mod so a stale window fails offline.
 
 ## A simplified model passes what the real operation refuses
 

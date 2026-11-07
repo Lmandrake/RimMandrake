@@ -1,2 +1,0 @@
-Branch churn by numstat (lines added+deleted over net) cannot tell a loop rewriting its own code from a loop deleting inherited code. Pyrelands' validation.py read 10.3x gross/net; git blame at the tip showed all 84 loop-added lines survive and the 102 deletions were main's lines (proof rows removed). Measure survival with blame before calling a file 'rewritten' (2026-11-07, design/RimMandrake/2026-11-07-pocock-design/02m-remeasure.md).
-home: skills/rimworld-modding

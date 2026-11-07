@@ -21,6 +21,7 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 | The page | `D:\ClaudeWork\rimmandrake\conductor\ARTISAN_NOW.md`, and `ARTISAN_NOW_PHONE.md` beside it (`src/RimMandrake/Utils/artisan_now.py`, `rm-artisan-now.timer`, every minute, no model) |
 | The frozen statement | The mod's `## north star` in `design/validation_walks/RimMandrake/<Mod>.md` |
 | Second-machine design | `design/RimMandrake/two_rimworld_instances_2026-11-07.md` (the steps for a loop on game B are its section "How a loop goes on game B") |
+- **Copy the running loops' `Environment=PATH=/home/mandrake/.local/bin:...` into every new `rm-ralph-*` unit started with `systemd-run`.** Without it the unit cannot find `claude`: the pass ends rc 127 in about a second and spends nothing.
 
 ## Writing the prompt here
 
