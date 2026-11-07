@@ -1,46 +1,49 @@
 # Pyrelands progress
 
-First pass with the game. The game is on the `pyrelands` list; `Transient/cycle.sh` (untracked) stops it, deploys and relaunches.
-**The newest ExplosiveGrowth DLL is built and committed but not deployed.** Its only change since the deployed one is where the guards sit, so behaviour should match.
+**Blocked on the owner for test tools:** the bridge's test-tools grant lapsed at 14:46Z on 2026-11-07, so `jawa/safe_advance`, staging tools and the suite's clock steps are refused (`ralph/QUESTIONS.md`). Do not renew it yourself: `companion_grant.json` says that is not an agent's call. Reads, `rimworld/set_time_speed` and screenshots should still work; reads were tested after the lapse, speed and screenshots were not. All deployed code is committed.
 
-## What I saw (`src/RimMandrake/Pyrelands/play.py`, an un-isolated site: `build --tag x`, `load`, `step`, `census`, `shot`, `overview`, `skies`)
-The biome already looks strong. The fire ring crosses the map in about 4 days, and grass holds near 49,000 plants (about 80% of cells) across repeated burns over 5 days. So last pass's fear that fire would strip the map did not happen in that span.
+## What I saw
+- **Grass does not strip.** Map `d`: 50k plants fell to 20k with up to about 3,900 fires, then back to 48k about half a day later. Fronts run several at once across the map. That count includes sprouts, so scar greening still needs eyes.
+- **Tick cost during burns:** about 21 ms per tick at thousands of fires, about 10 ms in regrowth with few fires. Explosive Growth looked like up to half of that in a noisy A/B. Slower than speed 1 at the peak. Not solved, not yet written up for the owner.
+- **`RM_VolcanicAsh` is not a bug:** it is the "ash storm", added on purpose by `UtinniPatches/Patches/AshStorms_Pyrelands.xml`, not rain.
+- Pods, a charred ruin, the pond's soil ring and a domed ashwallow in fire all look right at play zoom (`sc_pods`, `sc_ruin`, `sc_pond`, `sc_burrow_3`).
+- Unmanaged colonists get burned, and heatstroke starts within a day at 54C. They walk far off, some to study pods for the shade-cloth lesson. Still no real base has been played.
 
-## Fixed (the Explosive Growth roster and code are outside Pyrelands, but they caused these Pyrelands bugs)
-- Grass bursts left 11,039 hay stacks in 3 days, added 44,000 to colony wealth, and bruised colonists until they went down. New row flag `gentleBurst`. Items now stay about 87.
-- Pods burst within hours, so none could be harvested. New row flag `noCycle`. Pods now stand; the map sits at its cap of 40.
-- `Alphabeavers`, `AmbrosiaSprout`, `BoomshroomSprout` config errors came from my own patch: they already have whitelists. Removed.
-- Both trade-offs are in `ralph/QUESTIONS.md`.
+## Fixed
+- Harvest left a 1% pod that regrew and could be picked again (`harvestAfterGrowth`). A harvest now takes the pod.
+- The pod's rot-on-long-tick exception (theory confirmed by reading the source; `Plant_ScorchFruitPod`). Not re-observed live.
+- Fire-hawk 0.15 to 0.5 and ashwallow 0.18 to 0.4: no hawk on about 5 maps, then 3 hawks on the next. Map `e` then had 9 grazers against 13 predators (4 of them big), so check the grazer line.
+- Burrowers show "Burrowed!" and an inspect-pane line. **Built and deployed, never seen live.**
+- Suite: harvest row (interrupting order, checks the pod is gone), dome row (frames the pawn first).
 
-## Not a problem
-The 38 ticks/s scare was my own overview camera. At play zoom: 100-175 ticks/s with 550-1000 fires, rain or not, Explosive Growth on or off.
+## Suite (not a finish line)
+Last full main run PASS 16, FAIL 3, UNMEASURED 25, on a build before the harvest fix and burrow status. Rerun after them: `scorchfruit_produces`, `heat_dome` and `fresh_burn_bonus` pass. `modcheck status` is RED and that partial run cannot clear it. Still failing: `save_holds_no_furnace_herds`, which reads an old dev start save, not this biome; drop it or decide it. Not run: `burn_line`, `embergrass_regrow`.
 
 ## Next, in order
-1. **Pod lifetime.** Log: one `Exception ticking RM_FE_Plant_ScorchFruit`, NRE in `Plant.CheckMakeLeafless` from `TickLong`, map null. Theory, untested: the rot destroys the pod inside `TickLong`. Only one in 5 days of pods, and the count always reads 40, so pods may not be rotting on time at all. Track pod ids over 2 days. Then harvest one with a colonist, eat it, and time the fruit's rot.
-2. **`RM_VolcanicAsh` was the current weather once on map `a`.** It is not in the biome's table, the tile had no mutators, and no condition was active a little later. Find out how it got there. It may bear on `pyre_cannot_ordinary_rain`. Log weather per slice.
-3. **Run the suite for the mechanism lines:** `python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --fingerprint <fp> --tag <t>`, then `cli.py run` per `northstar_plan.py`. Hawk, furnace-beast, burrowers and fertility are all unread. `modcheck status` is still RED. Use `jawa/safe_advance` (about 1000 ticks/s on a calm map, 30,000 per call at most on a populated one, `stopOn=cancel`); keep the shell below 240 s per call.
-4. **Look properly:** ruins charred (close-up at (135,120) on map `c`); pond ring; cinderfall and ash fall. My sky sheet was ruined by a fire crossing the frame and by dusk, so rerun `skies` on quiet ground. `play.py shot` at 30x17 stitches two bands with a visible seam; use 30x16. Pods look small at play zoom next to the old swollen ones; consider a larger draw size.
-5. **Census** several fresh maps. Seen so far: a Ullai 9, Zeer 4, Flamefang 2; b Gizka 6, Zeer 3, Orray, Flamefang, Dalgo; c Iriaz 9, FireWasp 4, Zeer 4, Barbslinger 2, Flamefang, Orray. No burrower seen yet. Check every kind against the live roster.
-6. **Play a real colony:** my colonists sat unmanaged and died, partly from starving and burning. Build a base and see what a burn does to it. Does `RM_Dehydration` belong in this play?
-7. Plan's foils, scenes and showcases: not built. Open `PYRE*` items not re-checked. Firebreak save outcome still not stated.
+1. `python.exe -u Transient/pyre_play/regrow.py` (written, never run; `Transient` is untracked): photographs one real scar to +7 days using only normal speed controls.
+2. Look at skies: ash fall, cinderfall. Watch a natural burn reach an ashwallow: does the new status show?
+3. Time pods in ordinary play for 2 days (`play.py track`, needs the grant). My one try saw only 2 pods gone, too short to say.
+4. With the grant: real base (`jawa/build_batch`), paved strip against a burn, crop on watered vs dry ash, furnace-beast close-up, full suite, census of several fresh maps.
+5. Trace the one `Cannot use Graphic_Random.GetColoredVersion with a non-white colorTwo` error in `Player.log`. It came right after a pawn message during a map load or generation.
+6. Plan's foils, scenes and showcases are not built. Open `PYRE*` items not re-checked. Firebreak save outcome still not stated.
 
 ## Handy
-`jawa/list_things` with `group=` and `limit=1` gives `perDef`, a cheap census. Don't `pkill -f play.py` from a command containing that text: it kills your own shell. Selftest `top_donors` fails on uncommitted C# by design, so read it after committing.
+`play.py` verbs added: `track`, `fireshot`, `hour`. A 30,000-tick `safe_advance` can pass the bridge's 240 s limit during burns: use 12,000 or less and `python.exe -u`, and read `action=status` if positions stop changing. Never `pkill -f` a pattern from a shell whose own command contains it.
 
 ## Count
-- pyre_plant_distribution_correct: unseen
+- pyre_plant_distribution_correct: true
 - pyre_animal_distribution_correct: unseen
 - pyre_mapgen_log_clean: unseen
-- pyre_ground_deep_ash: unseen
+- pyre_ground_deep_ash: true
 - pyre_ash_fertile_when_watered: unseen
 - pyre_fresh_burn_feeds_the_field: unseen
 - pyre_grass_chokes_ground: true
 - pyre_embergrass_regrows: unseen
 - pyre_burn_line_present: true
-- pyre_scorchfruit_fire_born: unseen
-- pyre_scorchfruit_produces: unseen
+- pyre_scorchfruit_fire_born: true
+- pyre_scorchfruit_produces: true
 - pyre_scorchfruit_spoils_fast: unseen
-- pyre_ruins_scorched: unseen
+- pyre_ruins_scorched: true
 - pyre_firehawk_carries_ember: unseen
 - pyre_furnacebeast_warmth: unseen
 - pyre_furnacebeast_heats_room: unseen
@@ -48,4 +51,4 @@ The 38 ticks/s scare was my own overview camera. At play zoom: 100-175 ticks/s w
 - pyre_ashfall_darkens_drifts: unseen
 - pyre_cinderfall_distinct: unseen
 - pyre_blackrain_reads: true
-- pyre_cannot_ordinary_rain: unseen
+- pyre_cannot_ordinary_rain: true
