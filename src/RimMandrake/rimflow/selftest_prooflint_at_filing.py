@@ -8,7 +8,8 @@ them, `finish` refuses them at the finished sha, and the game phase's preflight 
 1. proof_scripts(): names the scripts a line runs (`python3 x.py`, `python.exe -u x.py`, `./x.sh`, `--plan x.py`,
    `--plan=x.py`, after `&&`/`;`/`|`), and not a redirect target, an absolute or Windows path, `-c` code or a VAR=.
    PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS: only positions that execute are named (a command's data is not, a quoted `;` ends
-   nothing), and `cd` moves the path read or, when it cannot be placed, stops the naming.
+   nothing), and `cd` moves the path read or, when it cannot be placed, stops the naming; real bash is the oracle, on a hand
+   list (1c) and on lines drawn from a shell grammar (1d; PROOFLINT_FUZZ_LINES and _SEED draw more).
 2. missing_scripts(): names only what `has` lacks; None when all are there.
 3. lint_lines(): `$`, backtick, eval, brace list, a load, flyer wording, OWNER.jsonl and a missing script each named;
    a literal line with its scripts present is clean; has=None skips the script check.
@@ -29,6 +30,9 @@ No ledger, clone or game is touched; temp files under TMPDIR.
 import contextlib
 import io
 import os
+import posixpath
+import random
+import re
 import subprocess
 import sys
 import tempfile
@@ -90,8 +94,7 @@ for line, want in (("cd tools && python3 src/check.py", ["tools/src/check.py"]),
                    ("cd src && python3 ../tools/x.py", ["tools/x.py"]), ("cd src/a && cd .. && python3 b/x.py", ["src/b/x.py"]),
                    ("cd -P src && python3 a/x.py", ["src/a/x.py"]), ("cd src > /dev/null && python3 a/x.py", ["src/a/x.py"]),
                    ("(cd tools && python3 a.py) && python3 src/b.py", ["tools/a.py", "src/b.py"]),
-                   ("cd tools | python3 src/x.py", ["src/x.py"]), ("true | cd tools; python3 src/x.py", ["src/x.py"]),
-                   ("cd tools & python3 src/x.py", ["src/x.py"]), ("cd src && cd .. && python3 tools/x.py", ["tools/x.py"]),
+                   ("cd src && cd .. && python3 tools/x.py", ["tools/x.py"]),
                    ("python3 src/x.py && cd /tmp", ["src/x.py"])):
     ok(ps(line) == want, "1c read at its cd: %r -> %r" % (line, ps(line)))
 for line in ("cd /mnt/d/other && python3 src/x.py", "cd .. && python3 src/x.py", "cd - && python3 src/x.py", "cd && python3 src/x.py",
@@ -106,7 +109,11 @@ for line in ("cd src/a; python3 x.py", "cd src\npython3 a/x.py", "cd tools\n\npy
              "test -d nosuch && cd tools; python3 src/x.py", "false && cd tools\npython3 src/x.py", "true && cd tools; python3 src/x.py",
              "false &&\ncd tools\npython3 src/x.py", "false && { cd tools; }; python3 src/x.py", "{ cd tools; } & python3 src/x.py",
              "cd tools && true || python3 src/x.py", "false && cd tools && true; python3 src/x.py", "eval cd tools; python3 src/x.py",
-             "if false; then cd tools; fi\npython3 src/x.py"):
+             "if false; then cd tools; fi\npython3 src/x.py", "cd tools | python3 src/x.py", "true | cd tools; python3 src/x.py",
+             "cd tools & python3 src/x.py", "true | { cd tools && python3 src/check.py; }", "true | { cd tools; python3 src/check.py; }",
+             "true | if cd tools; then python3 src/check.py; fi", "! cd nosuch && python3 src/x.py", "CDPATH=tools cd src && python3 x.py",
+             "f() { cd tools; }; f; python3 src/x.py", "function f { cd tools; }; f; python3 src/x.py", "command -- cd tools; python3 src/x.py",
+             "for i in 1 2; do test -d tools || python3 src/x.py; cd tools; done"):
     ok(ps(line) == [], "1c a cd that may not have run names nothing: %r -> %r" % (line, ps(line)))
 for line, want in (("command cd tools && python3 src/x.py", ["tools/src/x.py"]),
                    ("command -p cd tools && python3 src/x.py", ["tools/src/x.py"]), ("builtin cd tools && python3 src/x.py", ["tools/src/x.py"]),
@@ -115,7 +122,12 @@ for line, want in (("command cd tools && python3 src/x.py", ["tools/src/x.py"]),
                    ("true && (cd tools && python3 src/x.py); python3 src/x.py", ["tools/src/x.py", "src/x.py"]),
                    ("true && (cd tools; python3 src/x.py); python3 src/x.py", ["src/x.py"]),
                    ("env cd tools; python3 src/x.py", ["src/x.py"]), ("timeout 5 cd tools; python3 src/x.py", ["src/x.py"]),
-                   ("cd tools && python3 x.py & python3 src/x.py", ["tools/x.py", "src/x.py"]),
+                   ("cd tools && python3 x.py & python3 src/x.py", ["tools/x.py"]),
+                   ("cd tools && { true & python3 src/check.py; }", []), ("cd tools && { python3 src/a.py; python3 src/b.py; }", ["tools/src/a.py"]),
+                   ("cd tools && (python3 src/a.py; python3 src/b.py)", ["tools/src/a.py", "tools/src/b.py"]),
+                   ("(cd tools); python3 src/x.py", ["src/x.py"]), ("true | (cd tools && python3 x.py); python3 src/y.py", ["tools/x.py", "src/y.py"]),
+                   ("for i in 1 2; do python3 src/x.py; done", ["src/x.py"]),
+                   ("f() { python3 src/x.py; }; cd tools && f", []), ("(cd tools && case a in a) python3 src/x.py;; esac)", []),
                    ("command -v src/x.py && python3 src/x.py", ["src/x.py"]),
                    ("command python3 src/x.py", ["src/x.py"]),):
     ok(ps(line) == want, "1c placed behind its prefix or chain: %r -> %r" % (line, ps(line)))
@@ -124,7 +136,7 @@ got = dict(L.lint_lines(LR, "t", {"A1": "test -d nosuch && cd tools; python3 src
 ok("A1" not in got, "1c the checker's false refusal is gone: %r" % got)
 # Real bash is the oracle: every script a line names is one bash ran, in a tree holding each candidate path.
 with tempfile.TemporaryDirectory() as tree:
-    for rel in ("src/x.py", "tools/src/x.py", "tools/x.py"):
+    for rel in ("src/x.py", "tools/src/x.py", "tools/x.py", "tools/src/check.py"):
         os.makedirs(os.path.dirname(os.path.join(tree, rel)), exist_ok=True)
         with open(os.path.join(tree, rel), "w", encoding="utf-8") as f:
             f.write("print(%r)\n" % rel)
@@ -139,11 +151,80 @@ with tempfile.TemporaryDirectory() as tree:
                  "(cd tools); python3 src/x.py", "(false && cd tools; python3 src/x.py); python3 src/x.py",
                  "true && (cd tools; python3 src/x.py); python3 src/x.py", "if true; then cd tools; fi; python3 src/x.py",
                  "cd tools && python3 src/x.py", "cd tools; python3 src/x.py", "cd tools; cd tools; python3 src/x.py", "cd nosuch; python3 src/x.py",
-                 "true && cd tools && python3 src/x.py"):
+                 "true && cd tools && python3 src/x.py", "true | { cd tools && python3 src/check.py; }",
+                 "true | { cd tools; python3 src/check.py; }", "true | if cd tools; then python3 src/check.py; fi",
+                 "cd tools && { true & python3 src/check.py; }", "! cd nosuch && python3 src/x.py", "f() { python3 src/check.py; }; cd tools && f",
+                 "f() { cd tools; }; f; python3 src/x.py", "function f { cd tools; }; f; python3 src/x.py", "command -- cd tools; python3 src/x.py",
+                 "for i in 1 2; do test -d tools || python3 src/x.py; cd tools; done"):
         run = subprocess.run(["bash", "-c", line], cwd=tree, capture_output=True, text=True, timeout=30)
         ran = run.stdout.split()
         named = ps(line)
         ok(ran and set(named) <= set(ran), "1c real bash ran what is named: %r ran=%r named=%r" % (line, ran, named))
+for line in ("true | { cd tools && python3 src/check.py; }", "true | { cd tools; python3 src/check.py; }",
+             "true | if cd tools; then python3 src/check.py; fi", "cd tools && { true & python3 src/check.py; }"):
+    got = dict(L.lint_lines(LR, "t", {"A1": line}, {"tools/src/check.py"}.__contains__))
+    ok("A1" not in got, "1c the checker's false refusal in a group is gone: %r %r" % (line, got))
+
+
+# Lines drawn from a shell grammar, against real bash with a logging python3: a named path is where bash ran that script,
+# and a line with no directory change names everything it ran. Hand lists found one shape per attempt; this draws them.
+def shape(rnd, depth, counter):
+    def script():
+        counter[0] += 1
+        return "python3 src/s%d.py" % counter[0]
+
+    def atom():
+        return rnd.choice([script, script, script, lambda: "true", lambda: "false", lambda: "test -d tools", lambda: "test -d nosuch",
+                           lambda: "cd " + rnd.choice(("tools", "lib", "nosuch", "tools/sub", "..", ".", "-", "/tmp")),
+                           lambda: rnd.choice(("cd", "command cd", "builtin cd", "time cd", "! cd", "env cd", "timeout 5 cd", "eval cd",
+                                               "pushd", "command -- cd")) + " " + rnd.choice(("tools", "lib", "nosuch")),
+                           lambda: "popd", lambda: rnd.choice(("env", "time", "command", "timeout 5", "!", "nohup")) + " " + script()])()
+
+    def lst(d):
+        parts = [unit(d) for _ in range(rnd.choice((1, 2, 2, 3)))]
+        text = parts[0]
+        for part in parts[1:]:
+            text += rnd.choice((" && ", " && ", " && ", " || ", "; ", "\n", " & ", " | ", " |& ")) + part
+        return text
+
+    def unit(d):
+        if d <= 0 or rnd.random() < .55:
+            return atom()
+        form = rnd.choice(("{ %s; }", "{ %s; }", "( %s )", "( %s )", "if %s; then %s; fi", "if %s; then %s; else %s; fi", "while false; do %s; done",
+                           "for i in 1 2; do %s; done", "case a in a) %s;; esac", "fN() { %s; }; fN", "function fN { %s; }; fN", "fN() ( %s ); fN", "! { %s; }"))
+        counter[0] += 1                   # each function its own name: a nested redefinition of one name would recurse for ever
+        return form.replace("fN", "f%d" % counter[0]) % tuple(lst(d - 1) for _ in range(form.count("%s")))
+    return lst(depth)
+
+
+FUZZ_LINES = int(os.environ.get("PROOFLINT_FUZZ_LINES") or 1500)
+with tempfile.TemporaryDirectory() as tree:
+    os.makedirs(os.path.join(tree, "bin"))
+    os.makedirs(os.path.join(tree, "repo/tools/sub/lib"))
+    os.makedirs(os.path.join(tree, "repo/lib/tools"))
+    shim = os.path.join(tree, "bin/python3")
+    with open(shim, "w", encoding="utf-8") as f:
+        f.write('#!/bin/sh\nprintf \'%s\\n\' "$PWD/$1" >> "$RAN_LOG"\n')
+    os.chmod(shim, 0o755)
+    root, rnd, wrong, unnamed, runs = os.path.join(tree, "repo") + "/", random.Random(int(os.environ.get("PROOFLINT_FUZZ_SEED") or 20261106)), [], [], 0
+    env = dict(os.environ, PATH=os.path.join(tree, "bin") + os.pathsep + os.environ["PATH"])
+    for i in range(FUZZ_LINES):
+        line = shape(rnd, 2, [0])
+        env["RAN_LOG"] = log = os.path.join(tree, "ran%d.log" % i)    # its own: a straggler job of an earlier line writes to that line's
+        open(log, "w").close()
+        subprocess.run(["bash", "-c", line + "\nwait"], cwd=root, env=env, capture_output=True, timeout=30)
+        with open(log, encoding="utf-8") as f:
+            ran = {r[len(root):] if r.startswith(root) else r for r in f.read().split()}
+        runs += bool(ran)
+        named = ps(line)
+        tails = {posixpath.basename(r) for r in ran}
+        if any(n not in ran and posixpath.basename(n) in tails for n in named):
+            wrong.append((line, sorted(ran), named))
+        if not re.search(r"\b(?:cd|pushd|popd|eval)\b|\(\s*\)|\b(?:case|function)\b", line) and not ran <= set(named):
+            unnamed.append((line, sorted(ran), named))
+ok(not wrong, "1d grammar lines: every named path is where bash ran it: %d wrong of %d, first %r" % (len(wrong), FUZZ_LINES, wrong[:3]))
+ok(not unnamed, "1d grammar lines with no cd name all they ran: %d, first %r" % (len(unnamed), unnamed[:3]))
+ok(runs > FUZZ_LINES // 3, "1d sanity: the shim saw scripts run on %d of %d lines" % (runs, FUZZ_LINES))
 ok(ps("cd tools; x.py") == [], "1c a bare command word is PATH's, not the working directory's")
 ok(ps("(cd /tmp && python3 src/a.py); python3 src/b.py") == ["src/b.py"], "1c the unknown directory ends with its subshell")
 got = dict(L.lint_lines(LR, "", {"A1": "printf tools/deleted.py && python3 src/a/x.py", "A2": "test ! -f src/gone.py",
