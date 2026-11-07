@@ -38,7 +38,8 @@ Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (
 
 ## north star
 state: VALIDATED
-validated-hash: 335bccf3b6cbda91ab995e52922ffd51ae11365b0652dc0481dc6bf8fc10693c
+validated-hash: eeca8dff8692b20bc41f1761f3d94e6eb627df90b8ea859d1a25fe5a12a352c9
+validated-by: BY CARD: Should I validate it now? → Validate with the rereads pick (Recommended)
 
 ✅ **BINDING.** Every line below was ruled or accepted in the owner's sitting of
 2026-09-16 and validated on his word — *"Validate now, all 10 lines"* — at the hash
