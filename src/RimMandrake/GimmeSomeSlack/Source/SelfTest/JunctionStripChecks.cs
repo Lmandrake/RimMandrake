@@ -81,6 +81,23 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(faults == 0, $"{faults} junction faults over 24 seeds of T and +");
             Console.WriteLine($"  junction strips: {strips} over 24 seeds, {faults} faults");
 
+            // a machine right beside a strip takes the strip's own lead: sockets facing it sent a through cord along its edge, which read as two cords into it
+            {
+                int wrong = 0;
+                for (ulong seed = 1; seed <= 12; seed++)
+                {
+                    var w = new CordWorld(30, 24);
+                    for (int x = 3; x <= 24; x++) w.SetConduit(new Cell(x, 10));
+                    for (int x = 12; x <= 13; x++) for (int z = 11; z <= 13; z++) w.SetBlocked(new Cell(x, z), BlockKind.Device);
+                    w.Machines.Add(new MachineInfo { Id = "battery", Kind = MachineKind.Battery, X0 = 12, Z0 = 11, W = 2, H = 3, Hookups = new List<Cell> { new Cell(12, 10) } });
+                    var b = new CordBuilder();
+                    b.Build(w, Modern(seed), c => true);
+                    VId v = VId.C(new Cell(12, 10));
+                    if (b.Graph.Nodes[v].Type != NodeType.Junction || !b.Graph.MachineArmsOf(v).Contains(new Cell(0, 1)) || CordBuilder.PoseStrip(b.Graph, v, seed).LeadArm != new Cell(0, 1)) wrong++;
+                }
+                Check(wrong == 0, $"a machine beside a strip takes its lead: {wrong} of 12 seeds did not");
+            }
+
             // the arms: a T's three arms are two plugged cords and the lead; a +'s four are three plugged and the lead
             {
                 CordWorld w = Board();
