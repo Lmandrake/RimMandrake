@@ -1624,7 +1624,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     : (t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t));
                 List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k, bundle, strand, n, out SettleStats st);
                 double d = CordShape.Doubled(Q);
-                int strays = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan);
+                int strays = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan) + CordShape.RingReturns(w, Q);
                 if (strays < bestStrays || (strays == bestStrays && d < bestD)) { best = Q; bestStrays = strays; bestD = d; bestSettle = st; }
                 if (strays == 0 && d <= CordShape.DoubledMax) break;
             }

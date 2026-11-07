@@ -59,6 +59,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         internal static int Run(string inPath, string outPath)
         {
+            if (Directory.Exists(inPath))   // a folder of worlds, each laid to OUT/name.out.json: a matrix of layouts costs one build
+            {
+                Directory.CreateDirectory(outPath);
+                foreach (string f in Directory.GetFiles(inPath, "*.json").OrderBy(f => f, StringComparer.Ordinal))
+                    Run(f, Path.Combine(outPath, Path.GetFileNameWithoutExtension(f) + ".out.json"));
+                return 0;
+            }
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(inPath));
             CordWorld w = Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
             var b = new CordBuilder();

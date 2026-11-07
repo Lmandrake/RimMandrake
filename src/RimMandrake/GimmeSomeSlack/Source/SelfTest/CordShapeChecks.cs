@@ -193,6 +193,40 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Check(CordShape.DoorStrays(pl, thrice, through) == 2, "three passes under its one door: two strays");
             }
 
+            // one cord through a door to a conduit end draws two lines at that door, and no coil on its own end (owner 2026-11-07, three cables out of a doorway to one terminal node).
+            // Every seed and length of the plain case, with the plain draw as the control, which lays coils there.
+            {
+                Func<int, CordWorld> room = d =>
+                {
+                    var w = new CordWorld(50, 30);
+                    for (int z = 4; z <= 26; z++) if (z != 15) w.SetBlocked(new Cell(20, z), BlockKind.Wall);
+                    w.SetDoor(new Cell(20, 15));
+                    for (int x = 6; x <= 20 + d; x++) w.SetConduit(new Cell(x, 15));
+                    return w;
+                };
+                int lays = 0, returns = 0, plain = 0;
+                foreach (int d in new[] { 2, 3, 4, 6, 8, 12, 18 })
+                    foreach (ulong seed in new ulong[] { 1, 2, 3, 4, 5, 6 })
+                    {
+                        CordWorld w = room(d);
+                        foreach (LaidPiece p in new CordBuilder().Build(w, new BuildOptions { Seed = seed }, c => true))
+                            foreach (CordStrand st in p.Strands) { lays++; returns += CordShape.RingReturns(w, st.Pts); }
+                        var line = new List<V2>();
+                        for (double x = 6.5; x <= 20.5 + d; x += 0.05) line.Add(new V2(x, 15.5));
+                        plain += CordShape.RingReturns(w, CordLayer.Sprawl(w, line, new BuildOptions().Lay, 0.8, 8, CordRng.Of(seed, "b"), CordRng.Of(seed, "s"), 1));
+                    }
+                Console.WriteLine($"  ring returns: {returns} in {lays} lays through a door; plain draw {plain}");
+                Check(plain > 0, $"can-fail: the plain draw lays coils on a door or an end ({plain} extra lines)");
+                Check(lays >= 42 && returns == 0, $"a cord through a door to its end reaches each once: {returns} extra lines in {lays} lays");
+                var coil = new List<V2> { new V2(10, 15.5) };
+                for (double t = 0; t < 2 * Math.PI; t += 0.1) coil.Add(new V2(19 + 2.2 * Math.Cos(t), 15.5 + 2.2 * Math.Sin(t)));
+                coil.Add(new V2(21.5, 15.5));
+                coil.Add(new V2(30, 15.5));
+                Check(CordShape.RingReturns(room(10), coil) > 0, "a loop round a door reads as extra lines there");
+                var plainPass = new List<V2> { new V2(10, 15.5), new V2(20.5, 15.5), new V2(30, 15.5) };
+                Check(CordShape.RingReturns(room(10), plainPass) == 0, "one pass through a door reads none");
+            }
+
             // planted: a sawtooth reads as jags, relaxing removes them, the strand's ends stay put, a one-way coil is not one
             {
                 var saw = new List<V2>();

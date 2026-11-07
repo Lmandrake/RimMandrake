@@ -270,6 +270,48 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return strays;
         }
 
+        /// <summary>The ring round a strand's own end, and round a door, that one cord should cross no more than it has to: a loop inside it draws extra lines at that point.</summary>
+        public const double EndRing = 1.5, DoorRing = 1.5;
+
+        /// <summary>Lines this strand draws at its own ends and at any door beyond what it needs: one at each end, two at a door (in and out). A coil laid on the end or the door crosses the ring
+        /// three times or more, and from above that is more cables reaching one place (owner 2026-11-07: "three separate cables coming out of a doorway to go to a single terminal node").</summary>
+        internal static int RingReturns(CordWorld w, List<V2> pts)
+        {
+            if (pts == null || pts.Count < 3) return 0;
+            List<V2> q = Geo.Resample(pts, DoubledStep / 2);
+            int extra = Math.Max(0, Crossings(q, pts[0], EndRing) - 1) + Math.Max(0, Crossings(q, pts[pts.Count - 1], EndRing) - 1);
+            var doors = new HashSet<Cell>();
+            Cell last = new Cell(int.MinValue, int.MinValue);
+            foreach (V2 p in q)
+            {
+                Cell c = p.Floor;
+                if (c.Equals(last)) continue;
+                last = c;
+                for (int dx = -2; dx <= 2; dx++)
+                    for (int dz = -2; dz <= 2; dz++)
+                    {
+                        var d = new Cell(c.X + dx, c.Z + dz);
+                        if (w.InBounds(d) && w.IsDoor(d)) doors.Add(d);
+                    }
+            }
+            foreach (Cell d in doors) extra += Math.Max(0, Crossings(q, d.Centre, DoorRing) - 2);
+            return extra;
+        }
+
+        private static int Crossings(List<V2> q, V2 at, double r)
+        {
+            int n = 0;
+            bool inside = false, any = false;
+            foreach (V2 p in q)
+            {
+                bool now = V2.Dist(p, at) <= r;
+                if (any && now != inside) n++;
+                inside = now;
+                any = true;
+            }
+            return n;
+        }
+
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
         private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 
