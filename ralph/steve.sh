@@ -8,7 +8,7 @@
 #   deploy                  sync, game down, deploy GimmeSomeSlack on Steve (a game is left down: follow with `up`)
 #   tier                    game down, the small gimmesomeslack mod list on Steve
 #   up | down               start the game and wait for the bridge | stop it
-#   reboot                  restart the machine, wait for it to answer (about 6 min); the game stays down
+#   reboot                  restart the machine (about 6 min); REFUSES while another game runs (reboot_guard.sh), STEVE_REBOOT_BOTH=1 overrides
 #   run '<shell command>'   run it in ~/rm/gss on Steve, CR stripped; python.exe there is what reaches the bridge
 #   fetch <Steve path> <local dir>   copy a file or folder back; a D:\ or C:\ path is fine
 cd "$(dirname "$0")/.." || exit 1
@@ -17,6 +17,7 @@ WIN=stevedesktop
 DIR=rm/gss
 OPTS=(-o BatchMode=yes -o ConnectTimeout=10 -o LogLevel=ERROR -o ServerAliveInterval=15 -o ServerAliveCountMax=4)
 G=infrastructure/stevedesktop/rw_game.sh
+. ralph/reboot_guard.sh   # reboot_guard: refuses a reboot while another game runs
 on() { ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR && $1"; }
 dead() { echo "STEVE_UNREACHABLE: $1. Weather, not your bug: see Steve's section in ralph/PROMPT.md." >&2; exit 75; }
 
@@ -51,6 +52,7 @@ case "${1:-}" in
     up) on "$G init; $G up --wait" || dead "the game did not come up" ;;
     down) on "$G down" || dead "game down failed" ;;
     reboot)
+        reboot_guard || exit 1
         ssh "${OPTS[@]}" "$WIN" 'Restart-Computer -Force' || echo "reboot: no answer to the command, waiting anyway" >&2
         sleep 45
         for _ in $(seq 40); do
