@@ -68,6 +68,7 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
 - **A gate script that spawns wild slimes (or any hostile) must sweep every spawned pawn per gate (`G.live`/`G.sweep`), not clean up per early-return path.** Three leaks in `titanoslime_gates.py` were found one at a time.
 - **Clearing a pad on a mountain tile (`modcheck` `Suite.clear_area`, `jawa/destroy_batch All`) carves the rock but leaves the overhead `RoofRockThick`;** the roof collapses next tick and `RoofCollapserImmediate` deals 99999 Crush to every pawn and thing on the pad (fixtures vanish, `inspect_string` matches 0, 'died: Crush' governor stops, toggle-off arms pass on an empty pad). Remove the roof (`set_roof_batch 'None:<rect + 7-cell margin>'`) in the same paused tick as the clear.
 - **FlowWorks body claims outlive a plot reset:** `RM_FlowKernel.CollectBody` joins ANY claimed 8-neighbour (a Soil-repainted cell included) and `FillIn` reattaches dug squares to their pond, so a fresh pond painted on cleared ground can read back as a far sea body. `ProofResetRect` now releases claims on its rect; before blaming a golden save, read its `RM_liquidBodies` and check the run really reloaded (no `<tag>_load.txt` = no reload).
+- **Striped water (levels alternating 1,0,1,0) after a FlowWorks level solve:** suspect how wet cells join into one body first (a single dry dug cell between two wet ones must bridge them), not the kernel.
 
 ## Which world, which map
 
