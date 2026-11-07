@@ -1,1 +1,0 @@
-artpipe done/ manifests can point at PNGs that no longer exist: dregen_RM_SlimePit/ArchiveVat/Meal_SlimeAmbrosyx (2026-10-19) name D:\Luke\dev\_artpipe\_artsrc\..., a tree that is gone, and the renders are not in D:\ClaudeWork\rimmandrake\artpipe\_artsrc either. A 'done' job is not usable art until its PNG is opened (GELATINOUSSLIME_KIT_ART_1).

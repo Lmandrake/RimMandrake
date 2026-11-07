@@ -1,1 +1,0 @@
-A texture ported to a new mod/def (e.g. LanternDeeps 5de4e33f66 RM_FacetMothLarvae) can carry the PRE-redraw art and silently undo an accepted redraw; check a port's PNG hashes against the art ledger's latest live install of that file name.

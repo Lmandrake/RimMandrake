@@ -43,3 +43,6 @@ Fits the silhouette's top arc (each half separately, so a pipe on one side is to
 0.46–0.66 or when the fit is unreliable (rms > 3 px: lugs or valves cross the rim). **How it lies:** a domed head
 drawn in pure side elevation is also an ellipse arc in silhouette and can pass — the check proves the rim's shape,
 never that a top face is painted. Look at the picture beside a vanilla machine at game scale.
+
+## Prompting the camera
+- **Tell the generator to reason about which faces the camera can see, in one sentence.** Exact geometry numbers did not fix a wrong perspective (pit side-wall ladders stayed lying east-west), but 'think about which faces the camera can see from where it is before drawing' made it stand them upright. Under our camera, height is 'up the screen' on every wall, so anything standing against a pit's west or east wall runs north-south.

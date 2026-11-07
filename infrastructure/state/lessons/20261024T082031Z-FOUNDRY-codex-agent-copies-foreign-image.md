@@ -1,2 +1,0 @@
-When codex image_gen returns no output path, the agent may copy the newest PNG from ANY codex cache (even the global ~/.codex) into the output path; a wrapper that trusts an agent-placed file ships an unrelated image. Trust a placed file only if it is not byte-identical to a pre-existing cache image (codex_image.py CODEX_FOREIGN_IMAGE_COPY). Distinguish legit from suspect done jobs via manifest worker_stderr_tail 'harvested exec-'.
-home: skills/generating-images

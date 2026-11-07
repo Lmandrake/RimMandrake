@@ -1,1 +1,0 @@
-art.py install --by-card writes THREE art-ledger lines per PNG (ruling, install, live); the commit guard ART_VERSION_WRANGLING_1 refuses a commit carrying the PNGs without the ruling lines. In a shared clone, select your lines by the installed PNGs' sha256, not by path text.

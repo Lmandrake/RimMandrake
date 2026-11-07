@@ -1,1 +1,0 @@
-art ledger selftests that append through artledger.append() must pin L.seat (monkeypatch): RIMFLOW_SEAT in the caller's env outranks ART_SEAT, so setting ART_SEAT silently writes the fixture event into another shard and the check reads as 'event lost' (ART_ROTATE_FIX_LATE_APPEND_LOST, 2026-11-05)

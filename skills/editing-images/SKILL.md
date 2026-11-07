@@ -75,6 +75,7 @@ tolerance, so it can gate a pipeline.
 
 Then look at both images. Numbers catch geometry; only your eyes catch "this is
 the wrong kind of rust".
+- **The edit tool silently drops thin must-be-continuous lines.** With a measured blockout as image 1 it held registration to 0-1 px on most panels but dropped thin rope lines across decks even when told to keep them, and one re-render drifted 16 px. Draw such lines by code after the render, and measure shift per panel by phase correlation before overlaying. PIL trap: `ImageDraw.Draw(im,'RGBA')` on an RGBA image writes alpha instead of blending; use `Image.alpha_composite`.
 
 ## Chain edits deliberately
 
@@ -84,6 +85,7 @@ persist coherently: a hole torn in step 1 is still there, patched, in step 3.
 
 The cost is compounding drift, so run `compare_images.py` against the
 **original** at every step, not just against the immediately previous one.
+- **Derive one facing from accepted facings by writing the edit from what the accepted images SHOW (same figure), not from the spec.** Description-led regen edits beat the attached images (a clay turtle replaced the east view; a battery lost its legs). Keep description-only lines out of a derivation.
 
 ## Editing is where the negation trap does the most damage
 

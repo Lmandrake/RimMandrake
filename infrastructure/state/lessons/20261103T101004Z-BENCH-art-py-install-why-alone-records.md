@@ -1,1 +1,0 @@
-art.py install --why alone records reason 'agent-why', which the pre-push art guard refuses for texture PNGs (needs artpipe-collect | script:<writer> | an owner field). A re-install of the same bytes is 'already-live' and writes no new event: delete the PNG, reinstall with --reason script:<committed writer>, then art_guard.py range A..HEAD. (MIASMA_WARDEN_MOTHER_ART_1)

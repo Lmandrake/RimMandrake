@@ -164,6 +164,7 @@ apparel disaster. ✅ **Leave them blank and say WHY** — that is the correct
 answer, and `Plant_Berry_Leafless` is the regression case that must stay
 unresolved.
 - **Deployed, byte-identical and in sync proves nothing about what renders: the def may not point at the art.** Read the PawnKindDef's `lifeStages[].bodyGraphicData.texPath` and its `alternateGraphics` off the mod's own XML on disk, then look at one in game; never score art by whether the file deployed. Three ways the path misses: (1) life stage, `_j` is the JUVENILE texture (calf reads `BanthaW_j`, adult reads `BanthaW`), so supplying only `_j` leaves every adult unchanged; (2) foreign defName, a def's texPath can name another creature's file (`AA_Behemoth` uses `FO_ForsakenDragon`); (3) `alternateGraphics`, e.g. `alternateGraphicChance` 0.8 over five separate texPaths `EopieA..EopieE`, so overriding the base reaches one animal in five, while alternates that are colour tints with no texPath need nothing (they look identical in the XML until you read the `<li>` bodies). `jawa/get_defs` returns null for `graphicData` (nested objects are not serialised) and the def dump carries no `drawSize`: both come from the mod source XML.
+- **`jawa/thing_graphic` cannot judge creature textures.** It reads `UI/Misc/BadTexture` / `Pawn.Graphic=BadTexture` for EVERY undrawn pawn, vanilla Muffalo included (144/144 false badTex FAILs), and `jawa/texture_audit` missed the known RM_Glasmaw miss too. Read a vanilla control pawn first (a harness proven only against a fake bridge lies on the real one); Player.log texture lines (`Failed to find any textures at`) are the instrument.
 
 ## Which content folders a mod actually loads
 
@@ -340,6 +341,7 @@ the per-file stat cost dominates.
 **Build the index once, persist it, and query the cache.** The extractor already
 writes `bundle_textures/index.csv`; give the loose PNGs the same treatment rather
 than re-walking per question. A diagnosis that cannot finish is not a diagnosis.
+- **Texture memory is not 4 B/px over every PNG.** The game loads only `Textures/` of the load folders, one file per path, and DXT5-compresses (1 B/px, mips clamped by FastCompressDXT) any texture with both sides %4 under Prefs `textureCompression`: a 4 B/px proxy over every PNG in a mod folder overstates RimWorld 1.6 VRAM ~15x (Planet Atmosphere: 1131.6 MB proxy vs ~74 MB), and `modaudit/diskfacts.py` `decoded_mb_est` (RGBA32 across every version folder) is NOT memory either (41.7 GB vs 10.4 GB on a 551-mod list). Use `src/RimMandrake/Utils/planet_atmosphere_cost.py` `texture_bytes()` or `modaudit/memory_attribution.py`.
 
 ## Reporting
 
