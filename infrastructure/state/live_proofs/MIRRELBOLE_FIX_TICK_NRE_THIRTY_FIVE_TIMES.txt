@@ -1,0 +1,4 @@
+# Any Playing quicktest map; RimMandrake.Biomes carries EnvironmentalHazards and Greentide (RM_Mirrelbole). The probe spawns one tree
+# with its fall due, ticks it through the real Plant.TickLong, advances 5 ticks and reads that the tree fell.
+live-mods: RimMandrake.Biomes
+live-proof A2: python.exe src/RimMandrake/EnvironmentalHazards/prove_crackfall_deferred.py < /dev/null

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -55,7 +56,8 @@ namespace RimMandrake.EnvironmentalHazards
     // roll in this assembly (RM_CompDryFieldEmitter, HediffComp_
     // PeriodicAreaAttack's own tickIntervalTicks default). Two states, not
     // Scribed as an enum: warnTicksRemaining < 0 means "not yet warned, still
-    // rolling"; >= 0 counts down to the delayed FellTree call.
+    // rolling"; >= 0 counts down to the delayed fall (0 = due, queued for the map's
+    // next tick).
     public class RM_CompCrackFall : ThingComp
     {
         private int warnTicksRemaining = -1;
@@ -93,10 +95,15 @@ namespace RimMandrake.EnvironmentalHazards
 
             if (warnTicksRemaining >= 0)
             {
-                warnTicksRemaining -= elapsedTicks;
-                if (warnTicksRemaining <= 0)
+                // Held at 0, never negative: a queue entry lost to a save re-queues on the next tick.
+                warnTicksRemaining = Mathf.Max(0, warnTicksRemaining - elapsedTicks);
+                if (warnTicksRemaining == 0)
                 {
-                    RM_TreeFallUtility.FellTree(tree, Rot4.Random, RM_TreeFallUtility.FallCause.Cracked);
+                    // Never fell here: this runs inside Plant.TickLong's base call, and vanilla goes on to read
+                    // base.Map with no second Destroyed check (null once destroyed), the NRE in
+                    // RegionAndRoomQuery.RegionAt under PlantUtility.GrowthSeasonNow. The fall happens on the map's
+                    // next tick instead.
+                    tree.Map.GetComponent<RM_MapComponent_DeferredTreeFall>()?.Enqueue(tree);
                 }
                 return;
             }
@@ -138,6 +145,102 @@ namespace RimMandrake.EnvironmentalHazards
         public override string CompInspectStringExtra()
         {
             return warnTicksRemaining >= 0 ? "RM_TreeFallCracking".Translate() : null;
+        }
+
+        /// <summary>Live proof only: the countdown is over, the next step fells.</summary>
+        internal void ForceDueForProof()
+        {
+            warnTicksRemaining = 0;
+        }
+    }
+
+    /// <summary>Fells a cracked tree outside Plant.TickLong (see RM_CompCrackFall.Step). Not saved: an entry lost to a
+    /// save re-queues on the tree's next long tick, since its countdown stays at 0.</summary>
+    public class RM_MapComponent_DeferredTreeFall : MapComponent
+    {
+        private readonly List<Plant> pending = new List<Plant>();
+        private readonly List<Plant> draining = new List<Plant>();
+
+        public RM_MapComponent_DeferredTreeFall(Map map) : base(map)
+        {
+        }
+
+        public void Enqueue(Plant tree)
+        {
+            if (tree != null && !pending.Contains(tree)) pending.Add(tree);
+        }
+
+        public bool IsQueued(Plant tree)
+        {
+            return pending.Contains(tree);
+        }
+
+        public override void MapComponentTick()
+        {
+            if (pending.Count == 0) return;
+            // Emptied before the first fall, so one that throws cannot repeat every tick.
+            draining.AddRange(pending);
+            pending.Clear();
+            for (int i = 0; i < draining.Count; i++)
+            {
+                Plant tree = draining[i];
+                if (tree.Spawned && !tree.Destroyed && tree.Map == map)
+                {
+                    RM_TreeFallUtility.FellTree(tree, Rot4.Random, RM_TreeFallUtility.FallCause.Cracked);
+                }
+            }
+            draining.Clear();
+        }
+    }
+
+    /// <summary>Live proof of MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES, through jawa/static_call
+    /// (prove_crackfall_deferred.py). Stage ticks a due RM_Mirrelbole through the real Plant.TickLong; Read asks
+    /// whether the fall came after the map ticked.</summary>
+    public static class RM_CrackFallProof
+    {
+        private static Plant tree;
+
+        public static string Stage(string unused)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "UNMEASURED: no current map";
+            if (!RM_EnvironmentalHazardsSettings.treeFallEnabled) return "UNMEASURED: treeFallEnabled is off";
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Mirrelbole");
+            if (def == null) return "UNMEASURED: RM_Mirrelbole not loaded (needs Greentide)";
+            var queue = map.GetComponent<RM_MapComponent_DeferredTreeFall>();
+            if (queue == null) return "FAIL: RM_MapComponent_DeferredTreeFall not on the map";
+            IntVec3 cell = IntVec3.Invalid;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(map.Center, 40f, true))
+            {
+                if (c.InBounds(map) && c.Standable(map) && c.GetThingList(map).Count == 0)
+                {
+                    cell = c;
+                    break;
+                }
+            }
+            if (!cell.IsValid) return "UNMEASURED: no clear cell within 40 of the map centre";
+            tree = (Plant)GenSpawn.Spawn(def, cell, map);
+            tree.Growth = 1f;
+            var comp = tree.TryGetComp<RM_CompCrackFall>();
+            if (comp == null) return "FAIL: RM_Mirrelbole has no RM_CompCrackFall";
+            comp.ForceDueForProof();
+            try
+            {
+                tree.TickLong();
+            }
+            catch (System.Exception ex)
+            {
+                return "FAIL: Plant.TickLong threw " + ex.GetType().Name + " with the fall due";
+            }
+            if (tree.Destroyed) return "FAIL: the tree was destroyed inside its own tick";
+            if (!queue.IsQueued(tree)) return "UNMEASURED: the comp did not step (a TickLong prefix took the tick)";
+            return "STAGED at " + cell;
+        }
+
+        public static string Read(string unused)
+        {
+            if (tree == null) return "UNMEASURED: nothing staged";
+            return "READ felled=" + tree.Destroyed;
         }
     }
 }

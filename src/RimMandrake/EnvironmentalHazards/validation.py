@@ -153,6 +153,29 @@ MECHANICS = (
 )
 
 
+def _crackfall_findings(src=None):
+    """MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES: vanilla Plant.TickLong reads base.Map after base.TickLong() with no second
+    Destroyed check, so a comp must never destroy its plant in CompTickLong: the fall waits for the map's next tick."""
+    if src is None:
+        with open(os.path.join(HERE, "Source", "RM_CompCrackFall.cs"), encoding="utf-8") as fh:
+            src = fh.read()
+    bad = []
+    comp, _, rest = src.partition("class RM_MapComponent_DeferredTreeFall")
+    body = "\n".join(line.split("//", 1)[0] for line in comp.splitlines())
+    if "FellTree(" in body:
+        bad.append("crack fall: RM_CompCrackFall calls FellTree inside the tick (the Plant.TickLong NRE)")
+    if "RM_MapComponent_DeferredTreeFall>()?.Enqueue(tree)" not in body:
+        bad.append("crack fall: RM_CompCrackFall never queues its tree")
+    if "Mathf.Max(0, warnTicksRemaining - elapsedTicks)" not in body:
+        bad.append("crack fall: the countdown can go negative, and a lost queue entry forgets the crack")
+    drain = rest.partition("class RM_CrackFallProof")[0]
+    if "MapComponentTick" not in drain or "RM_TreeFallUtility.FellTree(" not in drain:
+        bad.append("crack fall: the deferred queue never fells")
+    if "public static string Stage(string unused)" not in rest or "public static string Read(string unused)" not in rest:
+        bad.append("crack fall: live proof hook RM_CrackFallProof missing")
+    return bad
+
+
 def gate_findings(comp_name=None):
     """Offline: each mechanic's Source file consults its toggle inside a branch (if/return/&&/||), so a toggle that gates
     nothing is red. Returns [message]."""
@@ -208,6 +231,7 @@ def static_checks():
         if not any(float(e.findtext("lethalSeverity") or 0) > 0 for e in hd if isinstance(e.tag, str)):
             bad.append("RM_VenomvineVenom has no lethalSeverity (the lethal-off toggle holds under it)")
     bad.extend(_living_map_findings())
+    bad.extend(_crackfall_findings())
     bad.extend(gate_findings())
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "EnvironmentalHazards.md")):
         bad.append("walk missing")
