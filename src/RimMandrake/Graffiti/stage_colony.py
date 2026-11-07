@@ -44,6 +44,9 @@ def shot(s, name, rect, ppc=64):
     s.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=0)
     s.call("rimworld/step_game_ticks", ticks=4)
     static(s, "Settle")
+    for _ in range(6):      # vanilla's "name your settlement" prompts stack up across a long advance
+        if not s.call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement").get("changed"):
+            break
     unique = "%s__%d" % (name, int(time.time()))
     cal = play_zoom.Calibration()
     path = play_zoom.shoot(s, cal, rect, 0, ppc, unique, RuntimeError)

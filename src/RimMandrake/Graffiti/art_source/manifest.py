@@ -49,7 +49,7 @@ for i, (t, c) in enumerate([("sharp interlocking angular shapes like shattered l
 for i, t in enumerate(["furious tangled tar strokes with a brown filth smear dragged across them", "a mess of crossed-out slashes, black tar over sick yellow-brown, hand-prints wiped through it",
                        "a crude ugly face of three gashes and a smeared mouth, in tar and rust, wiped half away", "dozens of hateful stabbing strokes radiating from a blot of tar, filthy brown drips",
                        "a huge careless wipe of filth with a stick-drawn scribble dragged through it while wet", "black tar flung and scraped in big arcs, greasy brown underneath, disgusting"]):
-    add(f"vandal_{i}", F + "Vandal", 1.5, "brush", 0.15, "The ugliest vandalism imaginable, hateful, filthy, no skill at all: " + t + ". " + RAG + PIG.format(c="soot black tar, sick greasy brown, dull rust") + SQ)
+    add(f"vandal_{i}", F + "Vandal", 2, "brush", 0.08, "The ugliest vandalism imaginable, hateful, filthy, no skill at all: " + t + ". " + RAG + PIG.format(c="soot black tar, sick greasy brown, dull rust") + SQ)
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs
 for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)

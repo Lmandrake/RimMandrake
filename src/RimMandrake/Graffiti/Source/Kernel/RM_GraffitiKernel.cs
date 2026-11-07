@@ -515,7 +515,7 @@ namespace RimMandrake.Graffiti
         {
             RM_Rgb p = PigmentColor(index);
             float dr = p.r - wallR, dg = p.g - wallG, db = p.b - wallB;
-            return dr * dr + dg * dg + db * db >= 0.06f;
+            return dr * dr + dg * dg + db * db >= 0.09f;
         }
 
         /// <summary>What an inspecting player reads off a mark's Beauty, so the stat and the picture can be held side by side.</summary>

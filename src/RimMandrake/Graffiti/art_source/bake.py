@@ -59,6 +59,10 @@ def bake(name, m):
         # A pale drawing tinted later: keep the variation in its value only, and high.
         l = rgb.mean(2, keepdims=True)
         rgb = np.clip(235 + (l - l[alpha > 0.3].mean() if (alpha > 0.3).any() else 0) * 0.4, 150, 255) * np.ones(3)
+    if m["mode"] == "paste":
+        # Cheap paper in a dim room: printed inks gone dull, so a poster is not the brightest thing on the wall.
+        grey = rgb.mean(2, keepdims=True)
+        rgb = (grey + (rgb - grey) * 0.62) * 0.84
     if m["mode"] not in ("paste", "scratch"):
         alpha = break_rim(rgb, alpha, rng)
         # The brush runs out: long level streaks through every fill, so no area of colour stays flat.

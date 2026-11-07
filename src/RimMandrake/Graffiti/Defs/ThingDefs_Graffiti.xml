@@ -79,7 +79,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
-      <drawSize>(1.5, 1)</drawSize>
+      <drawSize>(2, 1)</drawSize>
       <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>

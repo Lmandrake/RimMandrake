@@ -278,7 +278,7 @@ namespace RimMandrake.Graffiti
         private static float ThroughOf(ModExtension_Graffiti ext)
         {
             if (ext == null) return 0.24f;
-            return ext.wallThrough >= 0f ? ext.wallThrough : (ext.form == GraffitiForm.Paste ? 0.12f : 0.24f);
+            return ext.wallThrough >= 0f ? ext.wallThrough : (ext.form == GraffitiForm.Paste ? 0.18f : 0.24f);
         }
 
         /// <summary>A wall is gone: every mark painted on it goes too.</summary>
