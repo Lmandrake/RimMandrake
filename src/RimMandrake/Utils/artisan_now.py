@@ -102,6 +102,12 @@ def ago(seconds):
     return "%.1f days" % (s / 86400)
 
 
+def hm(seconds):
+    """A long duration as 7h 05m."""
+    h, m = divmod(int(seconds / 60 + 0.5), 60)
+    return "%dh %02dm" % (h, m)
+
+
 def toks(n):
     if n is None:
         return "UNMEASURED"
@@ -1432,11 +1438,20 @@ def read_background(sources):
     return out
 
 
-def read_scoreboard():
+def acceptance_line():
     m = re.search(r"Acceptances?:?\**\s*(\d+)[^\n]*", read_text(LEARNED))
     if not m:
         raise Unmeasured("no Acceptances line in learned.md")
-    return m[0].replace("*", "").split(". ")[0].rstrip(".")
+    return m
+
+
+def read_scoreboard():
+    return acceptance_line()[0].replace("*", "").split(". ")[0].rstrip(".")
+
+
+def read_acceptances():
+    """The count the Scoreboard line shows, as a number."""
+    return int(acceptance_line()[1])
 
 
 def holder_of_game(loops):
@@ -1869,12 +1884,13 @@ def needs_you(loops, fault, world):
     return out
 
 
-def one_line(loops, needs, spend):
+def one_line(loops, needs, spend, accepted, waited_s):
     words = Counter(r["state"] for r in loops)
     order = ["dead", "stuck", "unmeasured", "done claimed", "paused for review", "stopped", "waiting for game", "working", "not started"]
     part = ", ".join("%d %s" % (words[w], w) for w in order if words[w])
-    return "%d loop%s: %s. Needs you: %d. Tokens today: ~%s." % (
-        len(loops), "" if len(loops) == 1 else "s", part or "none", len(needs), toks(spend))
+    return "%d loop%s: %s. Accepted: %s. Waited for a game: %s. Needs you: %d. Tokens today: ~%s." % (
+        len(loops), "" if len(loops) == 1 else "s", part or "none", "UNMEASURED" if accepted is None else accepted,
+        "UNMEASURED, a loop's log can't be read" if waited_s is None else "%s, all loops added" % hm(waited_s), len(needs), toks(spend))
 
 
 def rate_for(rec):
@@ -2183,6 +2199,22 @@ def gaps_of(rec):
         elif low.startswith("loop stopped"):
             out.append((t, to, "stopped"))
     return out
+
+
+def wait_total(loops):
+    """Seconds the loops spent queued for the game: the stretches the picture draws as 'queued for the game', added across loops,
+    one loop's overlapping stretches counted once. None when any loop's log can't be read, because the sum would come up short."""
+    total = 0
+    for rec in loops:
+        if (rec.get("unmeasured") or {}).get("events") or (rec.get("unmeasured") or {}).get("loop"):
+            return None
+        reach = None
+        for a, b, _ in sorted(g for g in gaps_of(rec) if g[2] == "queue"):
+            a = a if reach is None else max(a, reach)
+            if b > a:
+                total += b - a
+                reach = b
+    return total
 
 
 def own_counts(rec):
@@ -2625,12 +2657,13 @@ def build():
     bridge, bridge_why = guarded(read_bridge)
     bg, bg_why = guarded(read_background, sources)
     score, score_why = guarded(read_scoreboard)
+    accepted, _ = guarded(read_acceptances)
     fault = {"state": fault_data[0], "windows": fault_data[1]} if fault_data else None
 
     check_waits(loops)
     needs = needs_you(loops, fault, world)
     spend = sum(r.get("spend_today") or 0 for r in loops)
-    head = one_line(loops, needs, spend)
+    head = one_line(loops, needs, spend, accepted, wait_total(loops))
     stamp = "Generated %s, by `artisan_now.py`, no model called." % dt.datetime.fromtimestamp(now_s()).astimezone().strftime("%b %-d, %H:%M:%S %Z")
 
     try:

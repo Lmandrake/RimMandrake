@@ -206,6 +206,8 @@ def plant_picture(mod, root):
     w.loop("notimes", [(1800, start), (1800, "PASS 7 start, 0 tokens so far")], pass_n=None)
     plant_pass(w, "notimes", 7, [(None, "assistant", tool_call("a", "ls")), (None, "user", tool_done("a"))])
     w.loop("nohist", [(600, start)])
+    w.loop("queuer", [(7200, start), (6000, "GAME_WAIT: a loop ahead has the game, no model running, 0 tokens"), (4800, "LOOP stopped: STOP file")],
+           unit=None, stop="Conductor: planted\n")
     w.loop("stopwhy", [(3000, start), (2000, "LOOP stopped: STOP file")], unit=None, stop="Conductor: held for the two-game trial\nmore\n")
     w.loop("stopbare", [(3000, start), (2000, "LOOP stopped: STOP file")], unit=None, stop=True)
     w.loop("pausedoff", [(3000, start), (2000, "LOOP PAUSED_FOR_REVIEW at 10000000 tokens")], unit=None)
@@ -291,6 +293,9 @@ def scenarios(mod):
         check("claim_is_not_acceptance", section(page, "claimed").startswith("## claimed: DONE CLAIMED") and "blind judge owed" in page)
         check("stamp_present", re.search(r"Generated \w+ \d+, \d\d:\d\d:\d\d \w+", page) is not None)
         check("first_line_is_state", page.splitlines()[4].startswith("**9 loops:"))
+        # the headline's two figures with nothing to read them from (no learned.md, a loop with no log): UNMEASURED, never 0
+        head = page.splitlines()[4]
+        check("headline_figures_unmeasured", "Accepted: UNMEASURED." in head and "Accepted: 0" not in head and "Waited for a game: UNMEASURED" in head)
 
         # the tally is tally.py's arithmetic, read in pieces, with a half-written last line left for later
         path = os.path.join(root, "tally.jsonl")
@@ -365,9 +370,23 @@ def scenarios(mod):
     root = tempfile.mkdtemp(prefix="artisan_now_pic_")
     try:
         plant_picture(mod, root)
+        mod.LEARNED = os.path.join(root, "learned.md")
+        with open(mod.LEARNED, "w") as f:
+            f.write("**Acceptances: 3, as of 2026-11-07,** across two pieces of work.\n")
         page, phone, state = mod.build()
         lines = page.splitlines()
         pic_line = lines[2]
+        # the headline's figures: the Scoreboard's own count, and the one 20 min queue the picture draws, on page and phone alike
+        check("headline_figures", "Accepted: 3. Waited for a game: 0h 20m, all loops added." in lines[4] and "Scoreboard: Acceptances: 3, as of 2026-11-07" in page
+              and phone.splitlines()[1] == lines[4].strip("*"))
+        # overlapping queue stretches count once per loop, loops add, a loop that can't be read blanks the sum, and 7h 05m is written so
+        real_gaps = mod.gaps_of
+        try:
+            mod.gaps_of = lambda rec: [(0, 100, "queue"), (50, 200, "queue"), (500, 600, "queue"), (0, 999, "claimed")]
+            check("headline_waited_adds_once", mod.wait_total([{"unmeasured": {}}]) == 300 and mod.wait_total([{"unmeasured": {}}, {"unmeasured": {}}]) == 600
+                  and mod.wait_total([{"unmeasured": {"events": "gone"}}]) is None and mod.hm(25500) == "7h 05m")
+        finally:
+            mod.gaps_of = real_gaps
         pic = picture_words(pic_line)
         check("pic_under_title", lines[0] == "# Artisan now" and pic_line.startswith("<div><svg") and pic_line.endswith("</svg></div>"))
         block = page[page.index("<div><svg"): page.index("</svg></div>")] if "</svg></div>" in page else "\n"
@@ -464,6 +483,12 @@ MUTANTS = [
     ('if len(games) > 1:', 'if False:', "two_games_page"),
     ('continue    # a watcher', 'pass    # a watcher', "watcher_not_a_loop"),
     ('row["done"] = True\n            if p.get("head")', 'row["done"] = False\n            if p.get("head")', "arc_finished_kept"),
+    ('"UNMEASURED" if accepted is None else accepted', '0 if accepted is None else accepted', "headline_figures_unmeasured"),
+    ('if (rec.get("unmeasured") or {}).get("events") or (rec.get("unmeasured") or {}).get("loop"):', 'if False:', "headline_figures_unmeasured"),
+    ('return int(acceptance_line()[1])', 'return 0', "headline_figures"),
+    ('for g in gaps_of(rec) if g[2] == "queue"):', 'for g in gaps_of(rec)):', "headline_figures"),
+    ('a = a if reach is None else max(a, reach)', 'a = a', "headline_waited_adds_once"),
+    ('return "%dh %02dm" % (h, m)', 'return "%dh %dm" % (h, m)', "headline_waited_adds_once"),
 ]
 
 
