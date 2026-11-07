@@ -129,6 +129,7 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
+      <drawSize>(0.8, 0.8)</drawSize>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>

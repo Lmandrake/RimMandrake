@@ -183,6 +183,10 @@ namespace RimMandrake.Graffiti
                 RebuildSigilMats();
             }
             RM_GraffitiKernel.HandOf(thingIDNumber, GraffitiPool.WidthOf(def), out float tilt, out float scale, out float slide);
+            if (def.GetModExtension<ModExtension_Graffiti>()?.form == GraffitiForm.Scrawl)
+            {
+                scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
+            }
             float angle = RM_GraffitiKernel.WallFaceAngle(wallSide) + tilt;
             if (cachedFrameMat == null && cachedIconMat == null)
             {

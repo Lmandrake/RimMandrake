@@ -110,6 +110,13 @@ namespace RimMandrake.Graffiti
             // workshop
             Put(map, "TableMachining", null, 30, 23, Rot4.South); Put(map, "ElectricSmelter", null, 35, 23, Rot4.South); Put(map, "Shelf", wood, 28, 18, Rot4.North);
             Put(map, "StandingLamp", null, 37, 18);
+            // food, so a run of days watches recreation and not starvation
+            for (int i = 0; i < 6; i++)
+            {
+                Thing meals = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack);
+                meals.stackCount = 10;
+                GenSpawn.Spawn(meals, C(6 + i, 18), map);
+            }
             map.mapDrawer.RegenerateEverythingNow();
             List<Pawn> pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             for (int i = 0; i < pawns.Count; i++)
@@ -186,6 +193,46 @@ namespace RimMandrake.Graffiti
                 Filth_Mark.MakeMark(C(cells[i][0], cells[i][1]), map, m[i % m.Length], hand);
             }
             return "FACES " + origin.x + "," + origin.z + ",20,16";
+        }
+
+        /// <summary>Beauty at a glance and dirt beside paint: on one wall, a run of Vandal (-15) then tallies (-3), and vanilla filth on the
+        /// floor below both. -> COMPARE x,z,w,h</summary>
+        public static string Compare(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            origin = new IntVec3(10, 0, 40);
+            Clear(map, new CellRect(origin.x, origin.z, 26, 8), TerrainDefOf.Concrete);
+            WallRun(map, ThingDefOf.Steel, 0, 5, 25, 5);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, 26, 8)) map.areaManager.Home[c] = false;   // or the colonists clean the comparison away
+            ThingDef vandal = RMGraffitiDefOf.RM_Graffiti_Vandal, tally = DefDatabase<ThingDef>.GetNamed("RM_Graffiti_TallyMarks");
+            for (int x = 1; x <= 11; x += 2) Filth_Mark.MakeMark(C(x, 4), map, vandal, hand);
+            for (int x = 14; x <= 24; x += 2) Filth_Mark.MakeMark(C(x, 4), map, tally, hand);
+            string[] filth = { "Filth_Dirt", "Filth_Trash", "Filth_Blood", "Filth_RubbleRock", "Filth_Vomit", "Filth_Slime", "Filth_Ash", "Filth_Fuel" };
+            for (int i = 0; i < filth.Length; i++)
+            {
+                ThingDef f = DefDatabase<ThingDef>.GetNamedSilentFail(filth[i]);
+                if (f != null) FilthMaker.TryMakeFilth(C(2 + 3 * i, 2), map, f, 4);
+            }
+            return "COMPARE " + origin.x + "," + origin.z + ",26,7";
+        }
+
+        /// <summary>WALLGONE: paint a mark on a fresh wall, destroy the wall; the mark must not outlive it. -> before/after counts.</summary>
+        public static string WallGone(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            origin = new IntVec3(40, 0, 40);
+            Clear(map, new CellRect(origin.x, origin.z, 6, 4), TerrainDefOf.Concrete);
+            WallRun(map, ThingDefOf.Steel, 0, 2, 5, 2);
+            Filth_Mark m = Filth_Mark.MakeMark(C(2, 1), map, DefDatabase<ThingDef>.GetNamed("RM_Graffiti_Tag_A"), hand);
+            bool made = m != null && m.Spawned;
+            C(2, 2).GetEdifice(map).Destroy(DestroyMode.Deconstruct);
+            return "WALLGONE made " + made + " | destroyed " + (m == null || m.Destroyed);
         }
 
         /// <summary>The real thing: args "n" free colonists start the forced spree. -> SPREE started k of n</summary>
