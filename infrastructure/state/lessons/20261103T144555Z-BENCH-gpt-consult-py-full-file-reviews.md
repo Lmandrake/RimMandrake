@@ -1,1 +1,0 @@
-gpt_consult.py full-file reviews with 7 files (~100k chars) timed out at 500 s twice because codex started running PowerShell/python on the files; the same review with 'Do NOT run any tools or commands; just read and answer', --effort medium and <=4 files answered in 51-150 s (2026-11-03, GRAFFITI_V1_LIVE_PROOF_1).

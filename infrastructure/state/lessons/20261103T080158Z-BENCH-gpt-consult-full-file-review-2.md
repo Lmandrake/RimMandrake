@@ -1,1 +1,0 @@
-gpt_consult full-file review of a 2,000+ line file timed out at 520 s because codex went web-searching decompiled RimWorld source; the same review with --lockdown --effort medium answered well inside the limit. Use --lockdown for code reviews; check its claims against vanilla Data defs (it called MeleeDodgeChance 8 an 800% bug; vanilla uses 15 and 8 on the unfinalized scale).

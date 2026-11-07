@@ -134,3 +134,6 @@ the dry plot, the controls), never staged by hand. The reason: a hand-staged sce
 proves nothing that the proof reproduces. Waiting for a screenshot to settle on a
 paused game is PLANNED (item SHOTSETTLE_BUILD_PAUSED_BARRIER). Today: pause, then
 read the state back before `take_screenshot`.
+
+## Derive the needed live mods from the proof, not from the failure
+Missing live-mods names are mostly invisible after the fact: 7 of 20 hand-repaired items (folded biome proofs, HEAVY_TEXTURES, HORRORS) never showed a mod-absence row, because envcause routes them `proof_or_site` ('MISSING', 'proof crashed', 'modcheck wrote no results'), and `mods_of(sha)` derives nothing for proof-only builds or folded sources. Derive the needs statically from the proof before the slot (script path plus folded map, fixture save header, `--mod` args, types and defNames), not from the build diff or failure text.

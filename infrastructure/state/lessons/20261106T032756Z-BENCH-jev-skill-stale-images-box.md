@@ -1,2 +1,0 @@
-The consult-jev skill and the pinned TypeSafe snapshot (~/dev/Dispatch/providers/jev/docs/typesafe_snapshot) say Jev is text-only at jev-1.13. The live docs (downloaded 2026-11-05 to D:\ClaudeWork\rimmandrake\scratch\jev_docs_2026-11-05\llms-full.txt) show Jev 1.14 (2026-10-14) with PNG/JPEG image input (1.13 and 1.14, header TypeSafe-Danger-Zone-Images: true, prototype grade), a Box question type, and a 262k long-context header. The consultjev client has no image support. Re-pin the snapshot before designing anything that relies on what Jev cannot do.
-home: consult-jev
