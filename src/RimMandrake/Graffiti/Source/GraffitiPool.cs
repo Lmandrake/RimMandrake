@@ -23,27 +23,43 @@ namespace RimMandrake.Graffiti
         // to RM_Graffiti_Vandal if nothing else is registered, so a mod
         // list with only the four GRAFFITI_GENERIC_MARKS_1 defs behaves
         // exactly as it did before this item.
-        public static ThingDef PickForSpree(Pawn painter)
+        public static ThingDef PickForSpree(Pawn painter, float maxWidth = float.MaxValue)
         {
-            ThingDef pick = WeightedPick(SpreeEligible, painter);
+            ThingDef pick = WeightedPick(SpreeEligible, painter, maxWidth);
             return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
         }
+
+        // Joy: a calm hand with time on its side. Everything a spree reaches
+        // for plus the planned forms - the stencil, the poster, the piece and
+        // above all the painter's own ideoligion sigil - and no untrained
+        // scrawl from a trained artist.
+        public static ThingDef PickForJoy(Pawn painter, float maxWidth = float.MaxValue)
+        {
+            bool trained = (painter?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0) >= TrainedHand;
+            ThingDef pick = WeightedPick(ext => RM_GraffitiKernel.JoyForm(ext.form) && !(trained && ext.form == GraffitiForm.Scrawl), painter, maxWidth);
+            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+        }
+
+        private const int TrainedHand = 6;
+
+        /// <summary>Wall cells a mark's drawing spans.</summary>
+        public static float WidthOf(ThingDef markDef) => markDef?.graphicData?.drawSize.x ?? 1f;
 
         // Designator: only marks the player can deliberately choose
         // (ModExtension_Graffiti.designatorEligible), still weighted so a
         // designated cell doesn't always get the exact same mark.
-        public static ThingDef PickForDesignator(Pawn painter)
+        public static ThingDef PickForDesignator(Pawn painter, float maxWidth = float.MaxValue)
         {
-            ThingDef pick = WeightedPick(DesignatorEligible, painter);
+            ThingDef pick = WeightedPick(DesignatorEligible, painter, maxWidth);
             return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
         }
 
         // RaidExitTagger: marks a raiding pawn's own gang leaves behind
         // (ModExtension_Graffiti.raidExitEligible), meme-gated ones only
         // offered when the pawn's ideo actually holds a matching meme.
-        public static ThingDef PickForRaidExit(Pawn raider)
+        public static ThingDef PickForRaidExit(Pawn raider, float maxWidth = float.MaxValue)
         {
-            return WeightedPick(RaidExitEligible, raider);
+            return WeightedPick(RaidExitEligible, raider, maxWidth);
         }
 
         private static bool SpreeEligible(ModExtension_Graffiti ext)
@@ -83,14 +99,14 @@ namespace RimMandrake.Graffiti
 
         private delegate bool EligibleFilter(ModExtension_Graffiti ext);
 
-        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer)
+        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth)
         {
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
-                if (ext == null || !filter(ext)) continue;
+                if (ext == null || !filter(ext) || WidthOf(d) > maxWidth) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
                 weights.Add(ext.poolWeight);

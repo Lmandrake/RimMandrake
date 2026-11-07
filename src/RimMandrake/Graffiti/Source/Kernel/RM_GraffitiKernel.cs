@@ -34,6 +34,47 @@ namespace RimMandrake.Graffiti
         /// <summary>Paint cadence in ticks. The slider stops at 60..1000, but the file can be edited: 0 would divide by zero in IsHashIntervalTick.</summary>
         public static int PaintInterval(int setting) { return setting < MinPaintInterval ? MinPaintInterval : (setting > MaxPaintInterval ? MaxPaintInterval : setting); }
 
+        /// <summary>The joy pool is what a calm hand chooses to make: everything the spree pool has, and the slower, planned forms.</summary>
+        public static bool JoyForm(GraffitiForm form)
+        {
+            return SpreeForm(form) || form == GraffitiForm.Stencil || form == GraffitiForm.Paste || form == GraffitiForm.Sigil || form == GraffitiForm.Piece;
+        }
+
+        /// <summary>Ticks of work for one mark at the slider's default pace (250): a scrawl is seconds, a piece an afternoon.</summary>
+        public static int PaintTicksBase(GraffitiForm form)
+        {
+            switch (form)
+            {
+                case GraffitiForm.Scrawl: return 300;
+                case GraffitiForm.Stencil: return 300;
+                case GraffitiForm.Paste: return 300;
+                case GraffitiForm.Glyph: return 400;
+                case GraffitiForm.Tag: return 500;
+                case GraffitiForm.ThrowUp: return 1200;
+                case GraffitiForm.Sigil: return 1200;
+                case GraffitiForm.Piece: return 2800;
+                default: return 500;
+            }
+        }
+
+        /// <summary>Work ticks for one mark: the form's base scaled by the pace setting (clamped), halved for a pawn on a spree.</summary>
+        public static int PaintTicks(GraffitiForm form, int paceSetting, bool frenzied)
+        {
+            int t = PaintTicksBase(form) * PaintInterval(paceSetting) / 250;
+            if (frenzied) t /= 2;
+            return t < 30 ? 30 : t;
+        }
+
+        public const int MaxMarksPerJoySitting = 4;
+        public const float JoySittingFull = 0.95f;
+
+        /// <summary>A spree job always moves on down the wall; a joy sitting moves on until the pawn is satisfied or has made its few marks.</summary>
+        public static bool SittingContinues(int marksMade, bool frenzied, float joyLevel)
+        {
+            if (frenzied) return true;
+            return marksMade < MaxMarksPerJoySitting && joyLevel < JoySittingFull;
+        }
+
         /// <summary>A mark with no requiresAnyMeme is ungated; otherwise the placer needs an ideo that holds at least one of them.</summary>
         public static bool MemeGate(bool hasRequirement, bool placerHasIdeo, bool ideoHoldsAny)
         {
@@ -179,6 +220,12 @@ namespace RimMandrake.Graffiti
                 }
             }
             return bare.Count > 0 ? bare : any;
+        }
+
+        /// <summary>Two marks on one line of wall, centres `distance` cells apart with half-widths a and b, cover each other.</summary>
+        public static bool WallMarksOverlap(float distance, float halfWidthA, float halfWidthB)
+        {
+            return Math.Abs(distance) < halfWidthA + halfWidthB - 0.15f;
         }
 
         // ---------------------------------------------------------------- wall face (GRAFFITI_WALLFACE)

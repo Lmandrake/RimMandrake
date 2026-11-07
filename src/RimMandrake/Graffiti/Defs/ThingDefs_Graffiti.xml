@@ -47,9 +47,12 @@
         <li>Unnatural</li>
       </placementMask>
       <cleaningSound>Interact_CleanFilth</cleaningSound>
-      <rainWashes>true</rainWashes>
+      <!-- Paint on a wall: rain does not take it off and boots do not carry it.
+           With canFilthAttach a thick mark rode off on a pawn's feet (Pawn_FilthTracker)
+           and was dropped as a mark on open floor, with no wall behind it. -->
+      <rainWashes>false</rainWashes>
       <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
-      <canFilthAttach>true</canFilthAttach>
+      <canFilthAttach>false</canFilthAttach>
     </filth>
     <building>
       <isEdifice>false</isEdifice>

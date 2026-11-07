@@ -78,7 +78,7 @@ namespace RimMandrake.Graffiti
             {
                 return;
             }
-            ThingDef markDef = GraffitiPool.PickForRaidExit(pawn);
+            ThingDef markDef = GraffitiPool.PickForRaidExit(pawn, GraffitiJobUtility.WallRoom(cell, map));
             if (markDef == null)
             {
                 return;

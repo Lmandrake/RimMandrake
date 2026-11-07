@@ -53,6 +53,7 @@
     <Compile Include="GraffitiPool.cs" />
     <Compile Include="MapComponent_GraffitiOrders.cs" />
     <Compile Include="Filth_Mark.cs" />
+    <Compile Include="RM_GraffitiStage.cs" />
     <Compile Include="JobDriver_PaintGraffiti.cs" />
     <Compile Include="JoyGiver_PaintGraffiti.cs" />
     <Compile Include="MentalState_GraffitiSpree.cs" />

@@ -101,6 +101,18 @@ namespace RimMandrake.Graffiti
                         rivals.Add(rival);
                     }
                 }
+                // Going over reaches along the wall: whatever this mark's drawing will lie on top of, on either face of it.
+                int side = ReadWallSide(cell, map);
+                if (side != RM_GraffitiKernel.NoWall)
+                {
+                    foreach (Filth_Mark under in MarksOverlapping(cell + new Rot4(side).FacingCell, side, GraffitiPool.WidthOf(markDef) / 2f, map, null))
+                    {
+                        if (under.Position != cell && !rivals.Contains(under))
+                        {
+                            rivals.Add(under);
+                        }
+                    }
+                }
             }
             // GRAFFITI_V1_LIVE_PROOF_1 (GPT review): no propagation. Vanilla filth spills onto a neighbour when the cell will not
             // take it; a mark is painted on THIS wall cell or not at all, and a spill elsewhere would let the going-over below erase
@@ -216,6 +228,36 @@ namespace RimMandrake.Graffiti
             Vector3 center = WallFacePos() + g.DrawOffset(Rot4.North);
             Printer_Plane.PrintPlane(layer, center, g.drawSize, g.MatAt(Rot4.North, this), angle);
         }
+
+        /// <summary>Marks whose drawing overlaps a width centred on `wall`, a wall cell: looked for along the wall's line, on the
+        /// floor cells either side of it, since a one-thick wall carries both its faces' marks on one drawn cell.</summary>
+        internal static System.Collections.Generic.List<Filth_Mark> MarksOverlapping(IntVec3 wall, int side, float halfWidth, Map map, Filth_Mark except)
+        {
+            var found = new System.Collections.Generic.List<Filth_Mark>();
+            Rot4 dir = new Rot4(side);
+            IntVec3 along = dir.Rotated(RotationDirection.Clockwise).FacingCell;
+            IntVec3 normal = dir.FacingCell;
+            for (int k = -WallSearchCells; k <= WallSearchCells; k++)
+            {
+                IntVec3 onWall = wall + along * k;
+                foreach (IntVec3 floor in new[] { onWall - normal, onWall + normal })
+                {
+                    if (!floor.InBounds(map)) continue;
+                    foreach (Thing t in floor.GetThingList(map))
+                    {
+                        if (!(t is Filth_Mark m) || m == except || m.wallSide == RM_GraffitiKernel.NoWall) continue;
+                        if (m.Position + new Rot4(m.wallSide).FacingCell != onWall) continue;
+                        if (RM_GraffitiKernel.WallMarksOverlap(k, halfWidth, GraffitiPool.WidthOf(m.def) / 2f) && !found.Contains(m))
+                        {
+                            found.Add(m);
+                        }
+                    }
+                }
+            }
+            return found;
+        }
+
+        private const int WallSearchCells = 4;
 
         /// <summary>The side of `cell` the wall stands on (RM_GraffitiKernel.WallSide), NoWall with none.</summary>
         internal static int ReadWallSide(IntVec3 cell, Map map)

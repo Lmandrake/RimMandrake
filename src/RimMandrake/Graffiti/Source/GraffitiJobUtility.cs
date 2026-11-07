@@ -56,16 +56,43 @@ namespace RimMandrake.Graffiti
         // happily stack a Tag right on top of a Stencil at the same cell
         // instead of finding a bare wall (going-over is for placers that
         // WANT to cover a rival's mark, not the ordinary wander target).
+        //
+        // A mark is drawn ON the wall, so "marked" is about the wall, not this floor
+        // cell: a one-cell tag beside a three-cell piece is painted over it, and so is
+        // a tag on the far side of a one-thick wall, whose drawing lands on the same cell.
         private static bool AlreadyMarked(IntVec3 c, Map map)
         {
-            List<Thing> things = c.GetThingList(map);
-            for (int i = 0; i < things.Count; i++)
+            int side = Filth_Mark.ReadWallSide(c, map);
+            if (side == RM_GraffitiKernel.NoWall)
             {
-                if (things[i] is Filth_Mark) return true;
-                if (things[i].def == RMGraffitiDefOf.RM_Graffiti_Vandal) return true;
+                foreach (Thing t in c.GetThingList(map))
+                {
+                    if (t is Filth_Mark) return true;
+                }
+                return false;
             }
-            return false;
+            return Filth_Mark.MarksOverlapping(c + new Rot4(side).FacingCell, side, 0.5f, map, null).Count > 0;
         }
+
+        /// <summary>How many cells wide a mark centred on this floor cell's wall may be: the unbroken run of wall on either side
+        /// of the middle, doubled from the shorter side. A corner, a door or the wall's end limits it; 1 at least.</summary>
+        public static float WallRoom(IntVec3 c, Map map)
+        {
+            int side = Filth_Mark.ReadWallSide(c, map);
+            if (side == RM_GraffitiKernel.NoWall)
+            {
+                return 1f;
+            }
+            Rot4 wallDir = new Rot4(side);
+            IntVec3 wall = c + wallDir.FacingCell;
+            IntVec3 along = wallDir.Rotated(RotationDirection.Clockwise).FacingCell;
+            int a = 0, b = 0;
+            while (a < MaxWallReach && IsFullWallAt(wall + along * (a + 1), map)) a++;
+            while (b < MaxWallReach && IsFullWallAt(wall - along * (b + 1), map)) b++;
+            return 1 + 2 * System.Math.Min(a, b);
+        }
+
+        private const int MaxWallReach = 3;
 
         // RaidExitTagger's own finder: unlike TryFindWallMarkCell, this
         // takes a bare position (not a pawn to reserve-and-path for) -
