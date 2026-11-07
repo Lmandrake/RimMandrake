@@ -519,7 +519,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Fist</defName>
     <label>fist stencil</label>
-    <description>A stencilled fist coming down through a plank. No target named. It does not fade.</description>
+    <description>A stencilled fist snapping a chain. No target named. It does not fade.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
