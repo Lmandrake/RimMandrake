@@ -124,6 +124,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return Ok(cmd, "\"designated\":" + B(Restringing.Designated(ra.parent)) + ",\"cut\":" + ra.links.Count(l => l.state == SpanState.Cut) +
                                ",\"jobsDone\":" + Restringing.jobsDone + ",\"spansRestrung\":" + Restringing.spansRestrung + (by != null ? ",\"by\":" + S(by) : ""));
             }
+            if (cmd.StartsWith("restringwhy:"))
+            {
+                CompAerialAnchor wa = CompAerialAnchor.Of(ById(map, int.Parse(cmd.Substring(12), CultureInfo.InvariantCulture)));
+                if (wa == null) return Fail(cmd, "not an anchor");
+                var wg = new WorkGiver_RestringSpan();
+                var rows = map.mapPawns.FreeColonistsSpawned.Select(c => "{\"id\":" + c.thingIDNumber + ",\"drafted\":" + B(c.Drafted) + ",\"job\":" + S(c.CurJobDef?.defName ?? "") +
+                    ",\"disabled\":" + B(c.WorkTypeIsDisabled(DefDatabase<WorkTypeDef>.GetNamed("Construction"))) + ",\"active\":" + B(c.workSettings != null && c.workSettings.WorkIsActive(DefDatabase<WorkTypeDef>.GetNamed("Construction"))) +
+                    ",\"priority\":" + (c.workSettings?.GetPriority(DefDatabase<WorkTypeDef>.GetNamed("Construction")) ?? -1) + ",\"hasJob\":" + B(wg.HasJobOnThing(c, wa.parent)) +
+                    ",\"forbidden\":" + B(wa.parent.IsForbidden(c)) + ",\"reserve\":" + B(Verse.AI.ReservationUtility.CanReserve(c, wa.parent)) + ",\"target\":" + B(Restringing.WorkTarget(c, wa).IsValid) + "}");
+                return Ok(cmd, "\"restringable\":" + B(Restringing.Restringable(wa)) + ",\"pawns\":[" + string.Join(",", rows) + "]");
+            }
             if (cmd.StartsWith("restring:")) { var (a, b) = Pair(map, cmd.Substring(9)); return Ok(cmd, "\"done\":" + B(a != null && b != null && CompAerialAnchor.Restring(a, b))); }
             if (cmd.StartsWith("kill:") || cmd.StartsWith("dismantle:"))
             {

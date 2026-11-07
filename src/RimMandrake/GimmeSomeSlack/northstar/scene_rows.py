@@ -208,8 +208,9 @@ def restring(B, V, rows):
         played += 250
         st1 = B.ap("restringstate:%d" % ia)
     ok = st1.get("cut") == 0 and st1.get("jobsDone", 0) > st.get("jobsDone", 0)
+    why = None if ok else B.ap("restringwhy:%d" % ia)
     V.row(rows, "SC_restring_work_scheduler_takes_it", "UNMEASURED" if not free else ("PASS" if ok else "FAIL"), "MOD",
-          {"freed": free, "played": played, "before": st, "after": st1})
+          {"freed": free, "played": played, "before": st, "after": st1, "why": why})
     B.hold_off = False
     for p, pos in home.items():
         if pos:

@@ -24,7 +24,7 @@
     <label>re-string cut overhead wires</label>
     <giverClass>RimMandrake.GimmeSomeSlack.Aerial.WorkGiver_RestringSpan</giverClass>
     <workType>Construction</workType>
-    <priorityInType>45</priorityInType>
+    <priorityInType>115</priorityInType> <!-- beside FixBrokenDownBuilding: a splice brings power back and takes a live wire off the ground; at 45 it waited behind every roof and frame on the map -->
     <verb>re-string</verb>
     <gerund>re-stringing</gerund>
     <requiredCapacities>
