@@ -40,10 +40,10 @@ def static(s, method, arg="x"):
 def shot(s, name, rect, ppc=64):
     # The tool writes its PNG asynchronously and answers at once if a file of that name exists, so reusing a name copies the LAST
     # run's picture (it did: a "natural day" shot showed the previous game). Every capture gets a name nobody has used.
-    # Colonists can still DRAW at their last on-screen spot after safe_advance with the camera elsewhere: the map is right,
-    # they are not evidence of where anyone stands.
+    # Settle first: after safe_advance a paused camera draws colonists where they last stood on screen (the tweener only moves with frames).
     s.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=0)
     s.call("rimworld/step_game_ticks", ticks=4)
+    static(s, "Settle")
     unique = "%s__%d" % (name, int(time.time()))
     cal = play_zoom.Calibration()
     path = play_zoom.shoot(s, cal, rect, 0, ppc, unique, RuntimeError)

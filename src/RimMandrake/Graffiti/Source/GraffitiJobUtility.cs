@@ -169,6 +169,8 @@ namespace RimMandrake.Graffiti
         /// <summary>A wall to paint here, on a side the camera can see. A wall south of the cell shows only its cap: nobody would see the mark.</summary>
         internal static bool HasCardinalWall(IntVec3 c, Map map)
         {
+            // Nobody stands in a doorway to paint the stub of wall over the lintel, or inside a machine.
+            if (c.InBounds(map) && c.GetEdifice(map) != null) return false;
             return IsFullWallAt(c + IntVec3.North, map) || IsFullWallAt(c + IntVec3.East, map) || IsFullWallAt(c + IntVec3.West, map);
         }
 

@@ -92,16 +92,28 @@ namespace RimMandrake.Graffiti
             {
                 Put(map, "Door", steel, d[0], d[1]);
             }
-            // Power first, so everything spawned after it connects: a fuelled generator on a conduit down the corridor, spurs into the rooms.
-            for (int x = 5; x <= 41; x++) Put(map, "PowerConduit", null, x, 14);
-            foreach (int[] spur in new[] { new[] { 13, 5, 13, 13 }, new[] { 25, 5, 25, 13 }, new[] { 37, 5, 37, 13 }, new[] { 22, 15, 22, 23 }, new[] { 31, 15, 31, 22 } })
+            // Door cells take the room's floor: bare soil under a door bleeds dirt tufts onto both rooms.
+            foreach (int[] d in new[] { new[] { 10, 12 }, new[] { 21, 12 }, new[] { 33, 12 }, new[] { 14, 16 }, new[] { 31, 16 }, new[] { 25, 20 } })
             {
-                for (int x = spur[0]; x <= spur[2]; x++)
+                map.terrainGrid.SetTerrain(C(d[0], d[1]), TerrainDefOf.Concrete);
+            }
+            foreach (int[] d in new[] { new[] { 4, 14 }, new[] { 39, 14 } }) map.terrainGrid.SetTerrain(C(d[0], d[1]), TerrainDefOf.Concrete);
+            // Power first, so everything spawned after it connects. Conduit runs inside the walls, as a colony builds it, with three fuelled generators out back.
+            foreach (int[] run in new[] { new[] { 5, 12, 41, 12 }, new[] { 25, 12, 25, 25 }, new[] { 26, 25, 38, 25 }, new[] { 5, 16, 25, 16 } })
+            {
+                for (int x = run[0]; x <= run[2]; x++)
                 {
-                    for (int z = spur[1]; z <= spur[3]; z++) Put(map, "PowerConduit", null, x, z);
+                    for (int z = run[1]; z <= run[3]; z++)
+                    {
+                        Thing pipe = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("PowerConduit"));
+                        pipe.SetFaction(Faction.OfPlayer);
+                        GenSpawn.Spawn(pipe, C(x, z), map, Rot4.North, WipeMode.VanishOrMoveAside, respawningAfterLoad: false, forbidLeavings: false);
+                    }
                 }
             }
             Put(map, "WoodFiredGenerator", null, 41, 13, Rot4.North);
+            Put(map, "WoodFiredGenerator", null, 41, 10, Rot4.North);
+            Put(map, "WoodFiredGenerator", null, 41, 7, Rot4.North);
             Put(map, "Battery", null, 41, 16, Rot4.North);
             // bedrooms
             foreach (int x in new[] { 6, 8, 17, 19, 29, 31 })
@@ -109,7 +121,10 @@ namespace RimMandrake.Graffiti
                 Put(map, "Bed", wood, x, 6, Rot4.North);
             }
             Put(map, "EndTable", wood, 7, 5); Put(map, "Dresser", wood, 12, 6, Rot4.South);
-            Put(map, "StandingLamp", null, 13, 10); Put(map, "StandingLamp", null, 25, 10); Put(map, "StandingLamp", null, 37, 10);
+            foreach (int[] lamp in new[] { new[] { 13, 10 }, new[] { 6, 10 }, new[] { 25, 10 }, new[] { 17, 10 }, new[] { 37, 10 }, new[] { 29, 10 }, new[] { 10, 15 }, new[] { 24, 15 }, new[] { 36, 15 }, new[] { 13, 20 } })
+            {
+                Put(map, "StandingLamp", null, lamp[0], lamp[1]);
+            }
             Put(map, "PlantPot", steel, 22, 5);
             // hall: tables and chairs, a stove against the back wall
             Put(map, "Table2x4c", wood, 9, 20, Rot4.North); Put(map, "Table2x4c", wood, 18, 20, Rot4.North);
@@ -117,10 +132,10 @@ namespace RimMandrake.Graffiti
             {
                 Put(map, "DiningChair", wood, x, 21, x % 2 == 0 ? Rot4.East : Rot4.West);
             }
-            Put(map, "FueledStove", steel, 6, 23, Rot4.South); Put(map, "StandingLamp", null, 21, 18); Put(map, "HorseshoesPin", wood, 21, 22);
+            Put(map, "FueledStove", steel, 6, 23, Rot4.South); Put(map, "StandingLamp", null, 21, 18); Put(map, "StandingLamp", null, 22, 23); Put(map, "HorseshoesPin", wood, 19, 23);
             // workshop
             Put(map, "TableMachining", null, 30, 23, Rot4.South); Put(map, "ElectricSmelter", null, 35, 23, Rot4.South); Put(map, "Shelf", wood, 28, 18, Rot4.North);
-            Put(map, "StandingLamp", null, 37, 18);
+            Put(map, "StandingLamp", null, 37, 18); Put(map, "StandingLamp", null, 27, 22); Put(map, "StandingLamp", null, 33, 22);
             // food, so a run of days watches recreation and not starvation; stores and clutter, so it looks like people live here
             for (int i = 0; i < 6; i++)
             {
@@ -346,6 +361,21 @@ namespace RimMandrake.Graffiti
             }
             map.mapDrawer.RegenerateEverythingNow();
             return "SWEEP " + origin.x + "," + origin.z + "," + (3 * (RoomW + 2) + 2) + "," + (2 * (RoomH + 3) + 2);
+        }
+
+        /// <summary>Put every pawn's drawing where the pawn is. The tweener only moves while frames run unpaused, so after a fast advance
+        /// a paused camera draws colonists where they stood a day ago, which reads as a staged shot and is false.</summary>
+        public static string Settle(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            int n = 0;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                p.Drawer?.tweener?.ResetTweenedPosToRoot();
+                n++;
+            }
+            return "SETTLED " + n;
         }
 
         /// <summary>WALLGONE: paint a mark on a fresh wall, destroy the wall; the mark must not outlive it. -> before/after counts.</summary>

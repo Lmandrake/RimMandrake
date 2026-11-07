@@ -174,10 +174,10 @@ namespace RimMandrake.Graffiti
             int count = Graphic is Graphic_Random random ? random.SubGraphicsCount : 1;
             variant = RM_GraffitiKernel.PickFree(count, usedVariants, Rand.Value);
             // A pigment the wall would swallow is no choice at all: chalk on marble, soot on slate.
-            float wallValue = WallPlane.FaceValue(cell + new Rot4(wallSide == RM_GraffitiKernel.NoWall ? 0 : wallSide).FacingCell, map);
+            Color wallColor = WallPlane.FaceColor(cell + new Rot4(wallSide == RM_GraffitiKernel.NoWall ? 0 : wallSide).FacingCell, map);
             for (int i = 0; i < RM_GraffitiKernel.PigmentCount; i++)
             {
-                if (!RM_GraffitiKernel.PigmentReads(i, wallValue)) usedPigments.Add(i);
+                if (!RM_GraffitiKernel.PigmentReads(i, wallColor.r, wallColor.g, wallColor.b)) usedPigments.Add(i);
             }
             pigment = RM_GraffitiKernel.PickFree(RM_GraffitiKernel.PigmentCount, usedPigments, Rand.Value);
         }
@@ -277,8 +277,8 @@ namespace RimMandrake.Graffiti
         /// <summary>How much of the wall stays visible through paint: paper hides most of it, a gouge is the wall, spray and a dry brush let it through.</summary>
         private static float ThroughOf(ModExtension_Graffiti ext)
         {
-            if (ext == null) return 0.28f;
-            return ext.wallThrough >= 0f ? ext.wallThrough : (ext.form == GraffitiForm.Paste ? 0.12f : 0.28f);
+            if (ext == null) return 0.24f;
+            return ext.wallThrough >= 0f ? ext.wallThrough : (ext.form == GraffitiForm.Paste ? 0.12f : 0.24f);
         }
 
         /// <summary>A wall is gone: every mark painted on it goes too.</summary>

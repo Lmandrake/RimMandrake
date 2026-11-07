@@ -59,15 +59,40 @@ def bake(name, m):
         # A pale drawing tinted later: keep the variation in its value only, and high.
         l = rgb.mean(2, keepdims=True)
         rgb = np.clip(235 + (l - l[alpha > 0.3].mean() if (alpha > 0.3).any() else 0) * 0.4, 150, 255) * np.ones(3)
+    if m["mode"] not in ("paste", "scratch"):
+        alpha = break_rim(rgb, alpha, rng)
+        # The brush runs out: long level streaks through every fill, so no area of colour stays flat.
+        streak = P.fractal((H, W), (W / 2.5, 5), rng, 3)
+        load = P.fractal((H, W), (W / 4, H / 2.2), rng, 2)
+        alpha = alpha * np.clip(0.62 + 0.8 * streak * (0.55 + 0.75 * load), 0, 1)
     # Weather: patches gone and some fading, varied per mark. A coarse wide patch and a fine horizontal scuff.
     wear = m["wear"]
     if wear > 0:
         patch = P.fractal((H, W), (W / 3.3, H / 2.5), rng, 3)
-        alpha = alpha * np.clip((patch - wear * 0.34) / 0.14, 0, 1)
+        alpha = alpha * np.clip((patch - wear * 0.36) / 0.14, 0, 1)
         scuff = P.fractal((H, W), (70, 9), rng, 3)
-        alpha = alpha * (1 - 0.28 * wear * (1 - scuff))
+        alpha = alpha * (1 - 0.3 * wear * (1 - scuff))
     rgb = bleed(rgb, alpha)
     return Image.fromarray(np.dstack((np.clip(rgb, 0, 255), np.clip(alpha, 0, 1) * 255)).astype(np.uint8), "RGBA")
+
+
+def break_rim(rgb, alpha, rng):
+    """A dark line following the shape's whole edge is what makes a sticker. Where one exists, a real hand's line skips: knock
+    it out in long gaps, and leave the fill's own edge to fray there."""
+    solid = (alpha > 0.4).astype(np.uint8) * 255
+    inner = np.asarray(Image.fromarray(solid).filter(ImageFilter.MinFilter(25))) > 127
+    rim = (alpha > 0.4) & ~inner
+    if not rim.any() or not inner.any():
+        return alpha
+    l = rgb.mean(2)
+    fill = np.median(l[inner])
+    dark = rim & (l < min(fill * 0.62, 90))
+    if dark.sum() < rim.sum() * 0.25:
+        return alpha
+    gaps = P.fractal(alpha.shape, (46, 46), rng, 2)
+    keep = np.clip((gaps - 0.46) / 0.1, 0, 1)
+    soft = P.blur(dark.astype(float), 1.2)
+    return alpha * (1 - np.clip(soft * 1.4, 0, 1) * (1 - keep))
 
 
 def hash_name(s):

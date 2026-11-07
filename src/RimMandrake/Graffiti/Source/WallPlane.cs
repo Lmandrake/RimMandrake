@@ -29,13 +29,11 @@ namespace RimMandrake.Graffiti
             return bits;
         }
 
-        /// <summary>How light the wall's face is, 0..1: its colour on the atlas's near-white face. A middling grey with no wall.</summary>
-        internal static float FaceValue(IntVec3 c, Map map)
+        /// <summary>The colour of the wall's face: its tint on the atlas's near-white face. A middling grey with no wall.</summary>
+        internal static Color FaceColor(IntVec3 c, Map map)
         {
             Material atlas = c.InBounds(map) && GraffitiJobUtility.IsFullWallAt(c, map) ? AtlasOf(c, map) : null;
-            if (atlas == null) return 0.5f;
-            Color col = atlas.color;
-            return (col.r + col.g + col.b) / 3f * 0.9f;
+            return atlas == null ? new Color(0.5f, 0.5f, 0.5f) : atlas.color * 0.9f;
         }
 
         /// <summary>Is there a face of this kind on the wall at c?</summary>

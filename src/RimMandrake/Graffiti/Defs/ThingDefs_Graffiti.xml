@@ -125,7 +125,7 @@
         <category>Code</category>
         <wallThrough>0</wallThrough>
         <form>Glyph</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -150,7 +150,7 @@
         <category>Code</category>
         <pigmented>true</pigmented>
         <form>Glyph</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -258,7 +258,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <form>Paste</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>1.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -286,7 +286,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Mural</category>
         <form>Piece</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>2</poolWeight>
         <minArtistic>4</minArtistic>
         <designatorEligible>true</designatorEligible>
       </li>
@@ -397,13 +397,13 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
         <form>ThrowUp</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §3's own table
              row for this def: "Joy (skill >= 6), RaidExit". Wired this wave
              via GraffitiPool.SkillGateAllows. -->
-        <minArtistic>6</minArtistic>
+        <minArtistic>3</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -426,10 +426,10 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
         <form>ThrowUp</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
-        <minArtistic>6</minArtistic>
+        <minArtistic>3</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -580,7 +580,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <form>Paste</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>1.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>

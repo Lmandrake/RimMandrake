@@ -510,11 +510,12 @@ namespace RimMandrake.Graffiti
         public static int PigmentCount => Pigments.Length;
         public static RM_Rgb PigmentColor(int index) { return Pigments[Math.Abs(index) % Pigments.Length]; }
 
-        /// <summary>Does this pigment stand off a wall face of this lightness?</summary>
-        public static bool PigmentReads(int index, float wallValue)
+        /// <summary>Does this pigment stand off a wall face of this colour? By colour, not value: rust reads on grey stone as well as chalk does.</summary>
+        public static bool PigmentReads(int index, float wallR, float wallG, float wallB)
         {
             RM_Rgb p = PigmentColor(index);
-            return Math.Abs((p.r + p.g + p.b) / 3f - wallValue) >= 0.2f;
+            float dr = p.r - wallR, dg = p.g - wallG, db = p.b - wallB;
+            return dr * dr + dg * dg + db * db >= 0.06f;
         }
 
         /// <summary>What an inspecting player reads off a mark's Beauty, so the stat and the picture can be held side by side.</summary>
