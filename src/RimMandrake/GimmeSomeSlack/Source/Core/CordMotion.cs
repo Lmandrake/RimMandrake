@@ -112,7 +112,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 Geo.TanNorm(tail, i, out V2 tg, out V2 nrm);
                 double lag = WhipLag * u, tu = t - lag;
                 double wave = 0.5 * Math.Sin(w1 * tu + p1) + 0.25 * Math.Sin(w2 * tu + p2) + 0.15 * Math.Sin(w3 * tu + p3);
-                double snap = since >= lag ? kick * Math.Exp(-(since - lag) / 0.15) : 0;
+                // the kick swells in as it arrives: a step here drew a sharp zigzag at its front, running out along the tail
+                double snap = since >= lag ? kick * (1 - Math.Exp(-(since - lag) / 0.035)) * Math.Exp(-(since - lag) / 0.15) : 0;
                 double d = amp * Math.Pow(u, 1.6) * Geo.Clamp(wave + snap, -1.9, 1.9);
                 o.Add(tail[i] + nrm * (d * (d > 0 ? ampPos : ampNeg)));
             }

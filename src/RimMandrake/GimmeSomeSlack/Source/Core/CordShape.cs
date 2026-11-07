@@ -190,6 +190,42 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return P;
         }
 
+        /// <summary>A cord reads as more cords than it is where it runs back alongside itself: two straight stretches at least DoubledGapArc apart along the cord, within
+        /// DoubledNear of each other and within about 30 degrees of the same line (owner 2026-11-07: "three separate cables ... to a single terminal"; one cord out past a heater,
+        /// back to the junction and out again drew three parallel lines between them). Straight is what tells it from a coil, whose sides never hold a line.</summary>
+        public const double DoubledNear = 1.1, DoubledGapArc = 1.5, DoubledStraightArc = 0.6, DoubledStraightDeg = 25, DoubledCos = 0.86, DoubledMax = 1.2;
+        private const double DoubledStep = 0.15;
+
+        /// <summary>The longest stretch of this strand, in cells, running alongside another stretch of itself. Over <see cref="DoubledMax"/> it reads as a second cord.</summary>
+        internal static double Doubled(List<V2> pts)
+        {
+            if (pts == null || pts.Count < 8) return 0;
+            List<V2> q = Geo.Resample(pts, DoubledStep);
+            int n = q.Count, reach = (int)Math.Round(DoubledStraightArc / DoubledStep);
+            if (n <= 2 * reach + 1) return 0;
+            var straight = new bool[n];
+            var dir = new V2[n];
+            for (int i = reach; i < n - reach; i++)
+            {
+                V2 u = q[i] - q[i - reach], v = q[i + reach] - q[i];
+                straight[i] = TurnDeg(u, v) <= DoubledStraightDeg;
+                dir[i] = (q[i + reach] - q[i - reach]).Norm();
+            }
+            // the longest unbroken stretch alongside: a coil's flat side beside a straight run is a touch, not a second cord
+            int gap = (int)Math.Round(DoubledGapArc / DoubledStep), hits = 0, run = 0;
+            for (int i = reach; i < n - reach; i++)
+            {
+                bool along = false;
+                if (straight[i])
+                    for (int j = reach; j < n - reach && !along; j++)
+                        along = Math.Abs(i - j) >= gap && straight[j] && V2.Dist(q[i], q[j]) <= DoubledNear
+                            && Math.Abs(dir[i].X * dir[j].X + dir[i].Z * dir[j].Z) >= DoubledCos;
+                run = along ? run + 1 : 0;
+                hits = Math.Max(hits, run);
+            }
+            return hits * DoubledStep;
+        }
+
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
         private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 

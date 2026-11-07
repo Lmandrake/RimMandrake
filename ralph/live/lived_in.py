@@ -206,8 +206,9 @@ class Run(object):
     def spanpawn(self):
         """Colonists standing under the live span between the first two masts, for overhead_span_above_everything."""
         s = self.st()
-        for x, z in ((44, 2), (46, 2), (48, 1)):
-            print(json.dumps(self.call("jawa/spawn_pawn", kindDef="Colonist", x=s["ox"] + x, z=s["oz"] + z, count=1))[:120])
+        # a span draws lifted: on screen its wires pass about 3 cells north of its ground line, so that is where a pawn stands under them
+        for x, z in ((44, 5), (46, 4), (48, 4)):
+            print(json.dumps(self.call("jawa/spawn_pawn", kindDef="Colonist", x=s["ox"] + x, z=s["oz"] + z, count=1, faction="PlayerColony"))[:120])
         self.B.ticks(2)
 
     def shots(self, tag, frames):

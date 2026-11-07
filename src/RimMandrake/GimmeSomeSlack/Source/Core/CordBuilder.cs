@@ -940,7 +940,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 SettleStats settle = null;
                 if (pl.Ok && L > 1.2 && prm.SlackScale > 0)
-                    P = CordLayer.Sprawl(w, P, prm, slack, maxExtra, CordRng.Of(opt.Seed, "bundle", key), CordRng.Of(opt.Seed, "strand", key, i), n, out settle);
+                    P = SprawlOnce(w, P, prm, slack, maxExtra, opt.Seed, key, i, n, out settle);
                 else
                 {
                     int sgn = rr.Sign();
@@ -1557,6 +1557,29 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
             }
         }
+
+        /// <summary>Lay a strand's slack; if it comes out running back alongside itself (<see cref="CordShape.Doubled"/>), so that one cord reads as three, lay it again on the next
+        /// draw with a little less slack, and keep the first that reads as one cord, or the least doubled. Try 0 is the old draw, so a cord that was fine has not moved.</summary>
+        private static List<V2> SprawlOnce(CordWorld w, List<V2> P, LayParams prm, double slack, double maxExtra, ulong seed, string key, int i, int n, out SettleStats settle)
+        {
+            List<V2> best = null;
+            SettleStats bestSettle = null;
+            double bestD = double.MaxValue;
+            for (int t = 0; t < SlackRetries; t++)
+            {
+                double k = 1 - 0.1 * t;
+                List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k,
+                    t == 0 ? CordRng.Of(seed, "bundle", key) : CordRng.Of(seed, "bundle", key, t),
+                    t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t), n, out SettleStats st);
+                double d = CordShape.Doubled(Q);
+                if (d < bestD) { best = Q; bestD = d; bestSettle = st; }
+                if (d <= CordShape.DoubledMax) break;
+            }
+            settle = bestSettle;
+            return best;
+        }
+
+        private const int SlackRetries = 6;
 
         /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose.</summary>
         private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>

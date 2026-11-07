@@ -21,6 +21,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>The lived-in colony's kitchen corner: a run down the room's edge with a machine a few cells off it, walled.</summary>
+        private static CordWorld KitchenLead()
+        {
+            var w = new CordWorld(24, 24);
+            for (int k = 3; k <= 18; k++)
+                foreach (Cell c in new[] { new Cell(k, 3), new Cell(k, 18), new Cell(3, k), new Cell(18, k) }) w.SetBlocked(c, BlockKind.Wall);
+            for (int z = 4; z <= 17; z++) w.SetConduit(new Cell(17, z));
+            for (int x = 6; x <= 16; x++) w.SetConduit(new Cell(x, 11));
+            var heater = new MachineInfo { Id = "heater", Kind = MachineKind.Consumer, X0 = 15, Z0 = 6, W = 1, H = 1 };
+            heater.Hookups.Add(new Cell(17, 6));
+            w.SetBlocked(new Cell(15, 6), BlockKind.Device);
+            w.Machines.Add(heater);
+            return w;
+        }
+
         /// <summary>Short stumps off a long run in a walled yard, as a blast leaves them: a short edge carrying a lot of spare length.</summary>
         private static CordWorld ShortStumps()
         {
@@ -112,6 +127,34 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         }
                 Console.WriteLine($"  cord saws, {scene.name}: {jags} in {jagStrands} strands");
                 if (scene.laidHere) Check(jags <= jagStrands / 8, $"{scene.name}: {jags} sawtooth stretches in {jagStrands} strands (bar: one in eight; before the relaxing 30 and 40 in these scenes, and what stays is inside a coil bunch, plotted 2026-11-07)");
+            }
+
+            // one cord reads as one cord (owner 2026-11-07, three cables to one terminal): a lead across a walled room to a machine must not run back alongside itself
+            {
+                int leads = 0, over = 0;
+                double worstD = 0;
+                foreach (ulong seed in new ulong[] { 1, 2, 3, 7, 19, 23, 41, 57, 88, 101, 133, 200 })
+                    foreach (LaidPiece p in new CordBuilder().Build(KitchenLead(), new BuildOptions { Seed = seed }, c => true))
+                        foreach (CordStrand s in p.Strands)
+                        {
+                            leads++;
+                            double d = CordShape.Doubled(s.Pts);
+                            worstD = Math.Max(worstD, d);
+                            if (d > CordShape.DoubledMax) over++;
+                        }
+                Console.WriteLine($"  cord doubled: {over} of {leads} strands over, worst {worstD:0.00} cells");
+                Check(leads > 40 && over <= leads / 20, $"{over} of {leads} strands run back alongside themselves (worst {worstD:0.00} cells)");
+                // planted: a Z of three parallel lines reads as doubled, a plain circle does not, two broad loops far apart do not
+                var zed = new List<V2>();
+                for (int k = 0; k <= 60; k++) zed.Add(new V2(5 + k * 0.05, 5));
+                for (int k = 0; k <= 10; k++) zed.Add(new V2(8, 5 + k * 0.05));
+                for (int k = 0; k <= 60; k++) zed.Add(new V2(8 - k * 0.05, 5.5));
+                for (int k = 0; k <= 10; k++) zed.Add(new V2(5, 5.5 + k * 0.05));
+                for (int k = 0; k <= 60; k++) zed.Add(new V2(5 + k * 0.05, 6));
+                Check(CordShape.Doubled(zed) > CordShape.DoubledMax, $"planted Z reads {CordShape.Doubled(zed):0.00} cells doubled");
+                var ring = new List<V2>();
+                for (int k = 0; k <= 200; k++) ring.Add(new V2(9 + 0.5 * Math.Cos(k * 0.0628), 9 + 0.5 * Math.Sin(k * 0.0628)));
+                Check(CordShape.Doubled(ring) < 0.01, $"a coil is not doubled ({CordShape.Doubled(ring):0.00})");
             }
 
             // planted: a sawtooth reads as jags, relaxing removes them, the strand's ends stay put, a one-way coil is not one
