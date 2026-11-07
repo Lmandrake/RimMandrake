@@ -1,6 +1,6 @@
 # Re-measure of the starred claims, and of the claims the critique disputed
 
-*2026-11-07, 14:12 to 14:22 PST, by the detached helper (no subagent allowed). Each claim is measured by a different
+*2026-11-07, 14:12 to 14:17 PST, by the detached helper (no subagent allowed). Each claim is measured by a different
 method from the one `01-design.md` used. Scripts and raw output: `/tmp/pocock_measure/` (regenerable).*
 
 | claim | pass 1 | new value | new method | moved? |
