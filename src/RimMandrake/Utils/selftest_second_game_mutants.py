@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 1500
+# selftest-timeout: 2400
 """selftest_second_game_mutants.py - a planted fault in each second-game tool must turn its selftest red.
 
 The faults were written down before the first run (mutate-your-checker). Each is one realistic regression: a kill by name

@@ -131,8 +131,8 @@ def main():
         check(shards, "the ledger wrote somewhere: %s" % shards)
         last = [e for e in (json.loads(ln) for f in shards for ln in open(f)) if e.get("event") == "bridge"][-1]
         check(last.get("host") == "stevedesktop.b" and last.get("state") == "taken", "the event names the game")
-        text = open(mirror).read()
-        check("other   stevedesktop.b  BENCH" in text and "for: loop on b" in text and text.splitlines()[5].startswith("FREE"), "the mirror grows a line, under the same status line: %r" % text.splitlines()[5:])
+        text = open(mirror).read() if os.path.exists(mirror) else ""
+        check("other   stevedesktop.b  BENCH" in text and "for: loop on b" in text and "".join(text.splitlines()[5:6]).startswith("FREE"), "the mirror grows a line, under the same status line: %r" % text.splitlines()[5:])
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop.b", "--for", "second")
         check(r.returncode != 0, "another seat is refused b")
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop", "--for", "loop on a")
