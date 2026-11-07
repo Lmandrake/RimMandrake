@@ -12,6 +12,7 @@ Bridge holder only, python.exe from the repo root (pipe through `tr -d '\\r'`):
   python.exe src/RimMandrake/Pyrelands/play.py shot NAME x z w h [px]  # play-zoom capture copied to shots/
   python.exe src/RimMandrake/Pyrelands/play.py overview NAME         # the widest crop the tool can frame
   python.exe src/RimMandrake/Pyrelands/play.py skies x z w h TAG       # one rect under each sky at noon
+  python.exe src/RimMandrake/Pyrelands/play.py track SLICES TICKS    # pod lifetimes and weather per slice
   python.exe src/RimMandrake/Pyrelands/play.py call jawa/map_info k=v  # any one tool, json result
 """
 import argparse
@@ -182,9 +183,48 @@ def skies(s, x, z, w, h, tag):
     NS._call(s, "jawa/weather_set", weather="RM_FE_Weather_AshDrift", lockWeather=False)
 
 
+def fireshot(s, name):
+    """A play-zoom shot centred on the fire cell with the most fire around it."""
+    fires = NS._call(s, "jawa/list_things", defName="Fire", limit=4000).get("things") or []
+    if not fires:
+        print("no fires")
+        return None
+    cells = collections.Counter((t["x"] // 10, t["z"] // 10) for t in fires)
+    (cx, cz), n = cells.most_common(1)[0]
+    x = max(0, min(250 - 30, cx * 10 - 10))
+    z = max(0, min(250 - 16, cz * 10 - 3))
+    print("fires %d densest block %s holds %d" % (len(fires), (cx * 10, cz * 10), n))
+    return shot(s, name, x, z, 30, 16)
+
+
+def track(s, slices, ticks):
+    """Run slices of N ticks; report each scorch-fruit pod's life (first seen to gone, in days) and the weather per slice."""
+    first, last, lives, weather = {}, {}, [], collections.Counter()
+    for i in range(slices):
+        r = s.call("jawa/safe_advance", ticks=ticks, stopOn="cancel", timeoutMs=max(60000, ticks * 100)) or {}
+        now = NS._call(s, "jawa/time_clock").get("ticksGame")
+        pods = NS._call(s, "jawa/list_things", defName="RM_FE_Plant_ScorchFruit", limit=500).get("things") or []
+        seen = set()
+        for t in pods:
+            k = t.get("id") or t.get("thingId") or (t["x"], t["z"])
+            seen.add(k)
+            first.setdefault(k, now)
+            last[k] = now
+        for k in list(first):
+            if k not in seen and k not in [l[0] for l in lives]:
+                lives.append((k, (last[k] - first[k]) / 60000.0))
+        wx = NS._call(s, "jawa/weather_get").get("weather") or {}
+        weather[wx.get("current")] += 1
+        fires = NS._call(s, "jawa/list_things", defName="Fire", limit=1).get("countMatched")
+        ended = [round(l, 2) for _, l in lives]
+        print("t %s adv %s pods %d fires %s wx %s gone %d lives %s" % (now, r.get("executed"), len(pods), fires, wx.get("current"),
+                                                                       len(ended), sorted(ended)[-8:]), flush=True)
+    print("weather slices %s" % weather.most_common())
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "skies", "call"])
+    ap.add_argument("verb", choices=["build", "load", "census", "step", "shot", "overview", "skies", "call", "track", "fireshot", "hour"])
     ap.add_argument("rest", nargs="*")
     ap.add_argument("--tag", default="a")
     ap.add_argument("--temp", type=float, default=TEMP)
@@ -213,6 +253,13 @@ def main():
             print(overview(s, a.rest[0]))
         elif a.verb == "skies":
             skies(s, *[int(v) for v in a.rest[:4]], a.rest[4])
+        elif a.verb == "fireshot":
+            print(fireshot(s, a.rest[0]))
+        elif a.verb == "hour":
+            to_hour(s, int(a.rest[0]))
+        elif a.verb == "track":
+            track(s, int(a.rest[0]), int(a.rest[1]))
+            census(s, terrain=False)
         elif a.verb == "call":
             kw = {}
             for kv in a.rest[1:]:

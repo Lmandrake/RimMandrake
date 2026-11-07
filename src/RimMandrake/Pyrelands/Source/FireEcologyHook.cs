@@ -163,6 +163,17 @@ namespace RimMandrake.Pyrelands
         }
     }
 
+    /// <summary>The pod rots through CompRottable, which runs in base.TickInterval; a rot landing on the pod's long-tick hash
+    /// destroys it and Plant.TickInterval then calls TickLong on a thing with no map (NRE in CheckMakeLeafless).</summary>
+    public class Plant_ScorchFruitPod : Plant
+    {
+        public override void TickLong()
+        {
+            if (Destroyed) return;
+            base.TickLong();
+        }
+    }
+
     // Postfix on the PROTECTED instance Fire.TickInterval(int delta). Runs
     // once per live Fire thing per tick-interval batch — cheap, low-chance
     // rolls only, never per-frame. `delta` is the batch's tick-interval size

@@ -311,7 +311,8 @@
       rows (UtinniPatches WildAnimals_Pyrelands.xml). Shorthand form is the only one the loader reads.
     -->
     <wildAnimals>
-      <RM_FireHawk>0.15</RM_FireHawk>
+      <!-- Raised from 0.15 / 0.18: five fresh maps in a row landed without a hawk and most without a burrower, so a player never met the fire cast. -->
+      <RM_FireHawk>0.5</RM_FireHawk>
       <RM_FurnaceBeast>0.04</RM_FurnaceBeast>
       <RM_Ullai>0.35</RM_Ullai>
       <RM_Emberscythe>0.05</RM_Emberscythe>
@@ -319,7 +320,7 @@
       <RM_Barbslinger>0.15</RM_Barbslinger>
       <RM_FireWasp>0.4</RM_FireWasp>
       <RM_Flamefang>0.5</RM_Flamefang>
-      <RM_Ashwallow>0.18</RM_Ashwallow>
+      <RM_Ashwallow>0.4</RM_Ashwallow>
     </wildAnimals>
 
     <allowedPackAnimals>

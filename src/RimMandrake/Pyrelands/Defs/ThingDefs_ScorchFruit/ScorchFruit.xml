@@ -88,7 +88,7 @@
       <MaxHitPoints>40</MaxHitPoints>
       <Nutrition>0.5</Nutrition>
     </statBases>
-    <thingClass>Plant</thingClass>
+    <thingClass>RimMandrake.Pyrelands.Plant_ScorchFruitPod</thingClass>
     <tickerType>Normal</tickerType>
     <useHitPoints>True</useHitPoints>
   </ThingDef>
