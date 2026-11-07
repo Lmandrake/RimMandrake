@@ -160,16 +160,19 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (CompPower c in net.connectors)
                     if (c?.parent != null && c.parent.Spawned) connectors.Add(c);
             }
-            // transmitter buildings (batteries, switches): nodes hooked to every orthogonally
-            // adjacent conduit cell around their footprint
+            // transmitter buildings (batteries, switches, generators): nodes hooked to the conduit around their footprint, one cord a run
+            Dictionary<Cell, int> conduitRuns = null;
+            var touching = new List<Cell>();
             foreach (CompPower t in transmitterBuildings)
             {
                 Thing th = t.parent;
                 var m = new MachineInfo { Id = "t" + th.thingIDNumber, Kind = KindOf(t, true) };
                 CellRect r = th.OccupiedRect();
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+                touching.Clear();
                 foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(th))
-                    if (world.IsConduit(C(adj)) && !m.Hookups.Contains(C(adj))) m.Hookups.Add(C(adj));
+                    if (world.IsConduit(C(adj)) && !touching.Contains(C(adj))) touching.Add(C(adj));
+                m.Hookups.AddRange(HookupPick.PickCarrier(world, touching, ref conduitRuns));
                 SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
                 transmitterMachines[th] = m;
                 if (m.Hookups.Count > 0) world.Machines.Add(m);

@@ -29,8 +29,34 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static int FreeEnds(CordWorld w) =>
             new CordBuilder().Build(w, new BuildOptions { Seed = 1 }, c => true).Sum(p => p.Ends.Count);
 
+        /// <summary>A battery or generator takes one cord from a run alongside it, however many cells touch (seen in a lived-in colony 2026-11-07: seven into one solar panel).</summary>
+        private static void CarrierHookups()
+        {
+            Dictionary<Cell, int> runs = null;
+            var w = new CordWorld(30, 30);
+            for (int x = 5; x <= 15; x++) w.SetConduit(new Cell(x, 9));
+            var along = new List<Cell> { new Cell(8, 9), new Cell(9, 9), new Cell(10, 9), new Cell(11, 9) };
+            Check(HookupPick.PickCarrier(w, along, ref runs).Count == 1, "four cells of one run along a solar panel: one cord");
+            runs = null;
+            var w2 = new CordWorld(30, 30);
+            for (int x = 2; x <= 6; x++) w2.SetConduit(new Cell(x, 9));
+            for (int x = 9; x <= 14; x++) w2.SetConduit(new Cell(x, 9));
+            Check(HookupPick.PickCarrier(w2, new List<Cell> { new Cell(6, 9), new Cell(9, 9) }, ref runs).Count == 2, "two runs joined only by the battery between them: a cord each");
+            runs = null;
+            var w3 = new CordWorld(30, 30);
+            for (int x = 2; x <= 9; x++) w3.SetConduit(new Cell(x, 9));
+            for (int z = 9; z <= 14; z++) w3.SetConduit(new Cell(5, z));
+            var pickEnd = HookupPick.PickCarrier(w3, new List<Cell> { new Cell(8, 9), new Cell(9, 9) }, ref runs);
+            Check(pickEnd.Count == 1 && pickEnd[0] == new Cell(9, 9), "a run ending beside it hooks the end, so nothing sparks there");
+            runs = null;
+            var w4 = new CordWorld(30, 30);
+            for (int x = 3; x <= 8; x++) w4.SetConduit(new Cell(x, 9));
+            Check(HookupPick.PickCarrier(w4, new List<Cell> { new Cell(3, 9), new Cell(8, 9) }, ref runs).Count == 2, "both ends of one run beside it: both hook, neither is left a free end");
+        }
+
         public static void Run()
         {
+            CarrierHookups();
             // old: the pump is linked to the battery only -> the conduit end at (5,3) is free and sparks
             CordWorld wOld = Scene(out MachineInfo pOld, out MachineInfo bOld);
             CordWorldLinks.LinkToMachine(wOld, pOld, bOld);

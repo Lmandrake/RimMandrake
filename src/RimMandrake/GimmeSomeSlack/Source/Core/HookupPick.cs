@@ -53,6 +53,42 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return null;
         }
 
+        /// <summary>A building that carries power itself (a battery, a generator, a switch) joins every conduit it touches, but a conduit running along its side is one line, not
+        /// many (seen in a lived-in colony 2026-11-07: seven cords and a row of strips into one solar panel, the owner's "multiple cables for no reason"). From what it touches: every
+        /// conduit END, since a free end beside it would spark; and for a run with no end there, one cell. Two separate runs each keep their cord, because this building is what joins them.
+        /// <paramref name="runs"/> is filled once per snapshot, cell to run number.</summary>
+        internal static List<Cell> PickCarrier(CordWorld w, IList<Cell> touching, ref Dictionary<Cell, int> runs)
+        {
+            var res = new List<Cell>();
+            if (touching.Count <= 1) { res.AddRange(touching); return res; }
+            var served = new HashSet<int>();
+            foreach (Cell c in touching)
+                if (Degree(w, c) <= 1) { res.Add(c); served.Add(RunOf(w, c, ref runs)); }
+            foreach (Cell c in touching)
+                if (served.Add(RunOf(w, c, ref runs))) res.Add(c);
+            return res;
+        }
+
+        private static int RunOf(CordWorld w, Cell c, ref Dictionary<Cell, int> runs)
+        {
+            runs = runs ?? new Dictionary<Cell, int>();
+            if (runs.TryGetValue(c, out int id)) return id;
+            id = runs.Count;
+            runs[c] = id;
+            var open = new Stack<Cell>();
+            open.Push(c);
+            while (open.Count > 0)
+            {
+                Cell q = open.Pop();
+                foreach (Cell d in Cell.Dirs4)
+                {
+                    Cell n = q + d;
+                    if (w.IsConduit(n) && (w.LinkAllowed == null || w.LinkAllowed(q, n)) && !runs.ContainsKey(n)) { runs[n] = id; open.Push(n); }
+                }
+            }
+            return id;
+        }
+
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "they should ALL draw in the piping and conduit
         /// the same way"): the hookup cells of a wrecked machine, which has no power comp, no connectParent and no net. Only a
         /// conduit under or beside its footprint draws in, one cord per conduit run: the run's first END touching the ruin (so no
