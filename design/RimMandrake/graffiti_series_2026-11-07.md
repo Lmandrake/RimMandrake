@@ -109,7 +109,7 @@ The real gallery for this job is in-world: Wookieepedia's Category:Murals, 23 en
 
 **On fan work.** Searching `CLAUDE.md`, `design/RimMandrake/standing_rulings.md`, `design/RimMandrake/art_judge_brief.md` and the canon `AGENT_BRIEF.md` finds no rule that names fan work (MEASURED). The nearest rules are that canon is the art target and every canon fact carries a source. So, as proposed practice: fan pages are a style reference at most, never a source of canon and never art to copy. Nor should the loop ship a fan Aurebesh font. It should draw its own 34 letters from the canon letter shapes, and may use a translator such as https://aurebesh.org/translator/ only to check spelling.
 
-**A practical note on Aurebesh.** An image generator will produce confident gibberish. Letters need to be composed by the art pipeline from a hand-set alphabet, in a few brush, spray and stencil hands, then roughened with the rest of the mark. That alphabet is worth building first, as loop 3 uses it too.
+**A practical note on Aurebesh.** An image generator will produce confident gibberish. Letters need to be composed by the art pipeline from a hand-set alphabet, in a few brush, spray and stencil hands, then roughened with the rest of the mark. That alphabet is worth building first, as loop 3 uses it too. Mandrake, 2026-11-07: "That Aurabesh word generator will likely come in handy in many other places in the game." So build it as a shared tool that any mod or art script can call, not as part of this mod: give it a word, a hand and a size, get back lettering as art.
 
 ### Proposed catalogue: replacing the 22 designs
 
@@ -162,7 +162,7 @@ CLAUDE.md says every mod ships Mod Settings, so the mod needs a settings screen,
 - `star_wars_wall_shows_no_terran_mark`: on the Star Wars list, at play zoom, across all 49 marks, nothing looks like Earth graffiti: no wildstyle, bubble letters, Latin words or Earth emblems.
 - `replaced_not_added`: no RimMandrake drawing can appear on that list. Check by instrument: 49 of 49 repointed. With the mod off, RimMandrake is unchanged.
 - `reads_as_painted_here`: everything loop 1 won (true perspective, paint not sticker) holds for the new art.
-- `aurebesh_is_real`: lettering is real Aurebesh or Outer Rim Basic that says something (pending question 1).
+- `aurebesh_is_real`: lettering is real Aurebesh or Outer Rim Basic that says something, every word chosen, in Basic for the galaxy's marks and Jawa Trade Talk for theirs (owner by card, 2026-11-07, "Should the Aurebesh on walls say real words? → Real words, every one chosen"). Build a hand-made alphabet first; loop 3 uses it too.
 - `you_can_tell_whose_hand`: a player can tell a rebel wall from an Imperial wall, and a Mandalorian mark from a gang's, without reading a tooltip.
 - `every_motif_has_a_source`: each mark says where it comes from, canon or invented, and nothing invented is called canon.
 - Cannot: no fan art copied; no real-world signage (the existing bar, below); no Sabine artwork reproduced as our own.
@@ -249,7 +249,7 @@ Only Ishko has a sacred mark, a def, a thought or a texture on the wall. So eigh
 - The menu pictures follow the Forms: eyes in the dark, lightning, a droplet, eyes over columns, an open hand, a trail above a dune, a spark in a ring, a white sun, a buried monument. They are the closest thing to approved symbols.
 - The idols are all hooded, robed figures with glowing eyes and no face, like a Jawa grown large, each with an attribute: Ishko hands on a slab; Ohm with a wire between raised arms and a skull at his foot; Oomo cupping a droplet; Mob'Unloo seated with scales; Rekko with a small droid across his knees; Ta'Baa striding away; Zizzik crouched over something; Sh'kaar with a sun-disc; Ozzik tall and cracked.
 
-So the project has already answered his two words: **symbols** are the Forms and **depictions** can be these figures. No document says this is the rule (see question 2). The scales in Mob'Unloo's hand are an Earth image of justice. His wall mark should stay with the tally of his Form.
+So the project has already answered his two words: **symbols** are the Forms and **depictions** can be these figures. No document says this is the rule (see question 1). The scales in Mob'Unloo's hand are an Earth image of justice. His wall mark should stay with the tally of his Form.
 
 **Limits that must hold.** The gods are never evil (`GODS_NOT_EVIL_SWEEP_1`). All are male. The Jawas "should receive very little concrete evidence of the gods" (`design/Jawa/nine_faults_permanent_rite_2026-10-01.md`), with nothing so coarse as a skill blessing. So effects are small tilts, moods and standing. Spec's marks may be ugly or unsettling and still sacred: Zizzik's, Sh'kaar's and Ozzik's can carry negative Beauty.
 
@@ -266,7 +266,7 @@ The whole mod moves. RimMandrake keeps the framework with no gods in it: the Dev
 1. **Nine marks as ThingDefs** with `ModExtension_Graffiti`, Devotional, each with its own folder, so hand-painted variety is possible.
 2. **A real hook.** A small component in the RimUtinni mod reads `godSatiationHook` and calls `ApplyDelta` on painting, on defacing, on enemy trashing. It belongs here because a RimMandrake mod may not name a god. This is a small amount of C#, against the seam test in the scope doc (see Conflicts).
 3. **Who paints.** The faithful of the right god in the right place, which needs a rule for placement that the current pool does not have. The spec's places (door, machine, cistern, exit) are the starting point.
-4. **Rites leave marks.** The worker and outcome go with the mod. The rites register names a Dark Vigil as the caller (`design/Jawa/salvation_rites_2026-10-01.md`, lines 50 and 325), and no XML or C# in `src/RimUtinni` has it (MEASURED; "vigil" only occurs in an unrelated Miasma patch). See question 4.
+4. **Rites leave marks.** The worker and outcome go with the mod. The rites register names a Dark Vigil as the caller (`design/Jawa/salvation_rites_2026-10-01.md`, lines 50 and 325), and no XML or C# in `src/RimUtinni` has it (MEASURED; "vigil" only occurs in an unrelated Miasma patch). See question 3.
 5. **All the other marks, in a Jawa hand.** On the campaign list a Jawa should not paint a rebel starbird by default. Repoint by patch again, loaded after the Star Wars layer, or use loop 2's painter gate with marks of their own, gated on the campaign xenotype `RSW_MandrakeJawa` (MEASURED in `design/RimStarWars/canon_references/jawa/description.md`). The gate is the better choice, because a Twi'lek captive can still paint like a Twi'lek.
 6. **Old material deleted.** The `src/RimMandrake/SacredGraffiti` folder goes, along with the dead style row, and every inbound reference is fixed (`src/RimMandrake/Utils/modset_builder.py` lines 240-244 name it, and others). Check saves for `RM_SacredMark_Ishko` first (UNMEASURED; with no caller, unlikely).
 
@@ -366,11 +366,10 @@ Then the same "Taking turns" and "How to work" sections, with its own shots fold
 
 ## Open questions for Mandrake
 
-1. **Does the Aurebesh say real words?** The Graffiti Imperial walk and def call it "asemic" (looks like writing, says nothing). You said "Writing in Aurebesh", and canon walls say real things. *Recommend real, readable lettering, every word chosen, in Basic for the galaxy's marks and Jawa Trade Talk for theirs.*
-2. **Should a god be drawn as a figure, or only as his Form?** The pantheon defines Forms and no bodies, but all nine idols are already hooded, faceless figures. *Recommend both: the Form is his symbol, and the idol figure is his depiction. This means accepting the idols as canon for the wall.*
-3. **Do plain Jawa marks live in RimUtinni or RimStarWars?** The naming plan puts the Jawa species in RimStarWars, and this clan's culture in RimUtinni. A Tatooine campaign might want Jawa tags. Your words put them in the takeover. *Recommend all in RimUtinni for now, as they are this clan's hand; split later if a second Star Wars scenario ever wants them.*
-4. **Is the Dark Vigil part of loop 3?** The mark's only named caller does not exist as a rite. *Recommend yes, and let the loop also have other existing rites leave marks, since "rites leave marks" is much of what makes it shine.*
-5. **Ta'Baa's name.** The pantheon says his name is a pun on Jawaese "Taa baa" meaning goodbye. Wookieepedia's Jawaese page today gives "Taa baa" as "Thank you". The name is locked. *Recommend keeping the name, dropping "goodbye" as a canon claim, and calling it the clan's own reading. Thanks for leaving is arguably the better joke.*
+1. **Should a god be drawn as a figure, or only as his Form?** The pantheon defines Forms and no bodies, but all nine idols are already hooded, faceless figures. *Recommend both: the Form is his symbol, and the idol figure is his depiction. This means accepting the idols as canon for the wall.*
+2. **Do plain Jawa marks live in RimUtinni or RimStarWars?** The naming plan puts the Jawa species in RimStarWars, and this clan's culture in RimUtinni. A Tatooine campaign might want Jawa tags. Your words put them in the takeover. *Recommend all in RimUtinni for now, as they are this clan's hand; split later if a second Star Wars scenario ever wants them.*
+3. **Is the Dark Vigil part of loop 3?** The mark's only named caller does not exist as a rite. *Recommend yes, and let the loop also have other existing rites leave marks, since "rites leave marks" is much of what makes it shine.*
+4. **Ta'Baa's name.** The pantheon says his name is a pun on Jawaese "Taa baa" meaning goodbye. Wookieepedia's Jawaese page today gives "Taa baa" as "Thank you". The name is locked. *Recommend keeping the name, dropping "goodbye" as a canon claim, and calling it the clan's own reading. Thanks for leaving is arguably the better joke.*
 
 ## Conflicts with his words and with facts
 
@@ -391,7 +390,7 @@ Reported, not edited.
 | `src/RimMandrake/SacredGraffiti/About/About.xml` | "RimMandrake Sacred Marks"; the Salvation Matrix is "design prose only" | Wrong tier; the engine has shipped | Goes with the mod |
 | `src/RimMandrake/SacredGraffiti/Defs/SacredMarks.xml:62` and `src/RimMandrake/Graffiti/Source/ModExtension_Graffiti.cs` | Name `RimMandrake.Ninefold.God` | Stale | `RimMandrake.Utinni.Rites.God`, or no god name in the framework |
 | `design/validation_walks/RimMandrake/SacredGraffiti.md` | RimMandrake subject, RimMandrake packageId | Wrong tier | Move the walk with the mod |
-| `design/Jawa/divine_satiation_engine.md:816` | "canon Jawaese 'Taa baa' = goodbye" | Wookieepedia says "Thank you" | See question 5 |
+| `design/Jawa/divine_satiation_engine.md:816` | "canon Jawaese 'Taa baa' = goodbye" | Wookieepedia says "Thank you" | See question 4 |
 | `infrastructure/state/ledger/events/BENCH.jsonl:18994` | Note uses the refused name `SACRED_GRAFFITI_TAKEOVER_NINE_GODS_WAIT_TURN` | Item is `SACRED_GRAFFITI_FINISH_NINE_GODS_WAIT_TURN` | Append-only, so leave; a new note can correct it |
 
 ## Sources
