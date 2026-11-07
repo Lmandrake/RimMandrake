@@ -1,0 +1,3 @@
+live-mods: MandrakePatches
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_calm_v2 --needs Owlchemist.CherryPicker
+live-proof A1: python3 src/RimMandrake/MandrakePatches/prove_beer_policy_live.py

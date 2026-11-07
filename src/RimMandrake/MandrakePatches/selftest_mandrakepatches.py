@@ -444,6 +444,78 @@ def null_guard_check():
           lht.has_member(index, "RimWorld.ReadingPolicyDatabase", "method", "NoSuchMethodHere")[0] != "OK")
 
 
+CDG_DECOMP = "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/RimWorld/DrugPolicy.cs"
+
+
+def cut_drug_guard_problems(src, mod_src):
+    """[problem] for the cut-drug policy repair (BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS): a Harmony postfix on
+    DrugPolicy.ExposeData that, only at PostLoadInit and only with the default-on toggle, drops each entry whose drug
+    is no longer a drug, keeps real drugs, and names each removal."""
+    import re
+    out = []
+    if not re.search(r"AccessTools\.Method\(typeof\(DrugPolicy\), TargetMethod\)", src) or 'TargetMethod = "ExposeData"' not in src:
+        out.append("Install() does not resolve DrugPolicy.ExposeData")
+    if not re.search(r"Patch\(target,\s*postfix: new HarmonyMethod\(typeof\(CutDrugPolicyGuard\), nameof\(Postfix\)\)\)", src):
+        out.append("no Harmony POSTFIX on ExposeData")
+    if "if (Scribe.mode != LoadSaveMode.PostLoadInit)\n                return;" not in src:
+        out.append("the postfix runs outside PostLoadInit (it would also edit on save)")
+    if "if (!RM_PatchesSettings.cutDrugPolicyGuard)\n                return;" not in src:
+        out.append("the postfix ignores the toggle")
+    if 'EntriesField = "entriesInt"' not in src or ".Field(EntriesField).GetValue<List<DrugPolicyEntry>>()" not in src:
+        out.append("the postfix does not read DrugPolicy.entriesInt")
+    if "if (drug == null || drug.IsDrug)\n                    continue;" not in src:
+        out.append("the postfix does not keep real drugs")
+    if "entries.RemoveAt(i);" not in src or "i = entries.Count - 1; i >= 0; i--" not in src:
+        out.append("the postfix does not remove while walking backwards")
+    if 'Log.Message(LogTag + " " + drug.defName' not in src:
+        out.append("a removal is not named in the log")
+    if "public static bool cutDrugPolicyGuard = true;" not in mod_src or 'Scribe_Values.Look(ref cutDrugPolicyGuard, "cutDrugPolicyGuard", true);' not in mod_src:
+        out.append("the setting is not default-on in both the field and the Scribe default")
+    if "ref RM_PatchesSettings.cutDrugPolicyGuard" not in mod_src or "CutDrugPolicyGuard.Status" not in mod_src:
+        out.append("no settings checkbox or status for the repair")
+    return out
+
+
+def cut_drug_guard_check():
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read()
+    src, mod_src = rd("Source", "CutDrugPolicyGuard", "CutDrugPolicyGuard.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs")
+    src, mod_src = src.replace("\r\n", "\n"), mod_src.replace("\r\n", "\n")
+    got = cut_drug_guard_problems(src, mod_src)
+    check("cut-drug repair: shipped source", got == [], got)
+    breaks = [("the target renamed", src.replace('"ExposeData"', '"ExposeDataX"'), mod_src),
+              ("postfix becomes prefix", src.replace("postfix: new HarmonyMethod", "prefix: new HarmonyMethod"), mod_src),
+              ("runs at every scribe mode", src.replace("if (Scribe.mode != LoadSaveMode.PostLoadInit)\n                return;", ""), mod_src),
+              ("toggle ignored", src.replace("if (!RM_PatchesSettings.cutDrugPolicyGuard)\n                return;", ""), mod_src),
+              ("the drug test inverted", src.replace("drug == null || drug.IsDrug", "drug == null || !drug.IsDrug"), mod_src),
+              ("nothing removed", src.replace("entries.RemoveAt(i);", ""), mod_src),
+              ("removal unnamed", src.replace('Log.Message(LogTag + " " + drug.defName', 'Log.Message(LogTag + " "'), mod_src),
+              ("defaults off", src, mod_src.replace("cutDrugPolicyGuard = true;", "cutDrugPolicyGuard = false;")),
+              ("checkbox removed", src, mod_src.replace("ref RM_PatchesSettings.cutDrugPolicyGuard", "ref RM_PatchesSettings.caiFogForcedOff"))]
+    for name, a, b in breaks:
+        check("break: planted '%s' changed the text" % name, (a, b) != (src, mod_src))
+        check("break: cut-drug repair %s is reported" % name, len(cut_drug_guard_problems(a, b)) >= 1)
+    if os.path.exists(CDG_DECOMP):
+        dec = open(CDG_DECOMP, encoding="utf-8", errors="replace").read()
+        check("vanilla still prunes only a null drug (the repair is still needed)",
+              "x == null || x.drug == null" in dec and "IsDrug)" not in dec.split("PostLoadInit", 1)[-1].split("InitializeIfNeeded", 1)[0], CDG_DECOMP)
+    else:
+        print("skip  vanilla decomp not readable (UNMEASURED): %s" % CDG_DECOMP)
+    if not os.path.exists(RW_DLL):
+        print("skip  repair target vs Assembly-CSharp.dll: not readable (UNMEASURED)")
+        return
+    try:
+        import lint_harmony_targets as lht
+        index = {"types": lht.index_dll(RW_DLL)}
+    except ImportError:
+        print("skip  repair target vs Assembly-CSharp.dll: dnfile missing (UNMEASURED)")
+        return
+    check("repair target exists in the installed Assembly-CSharp.dll",
+          lht.has_member(index, "RimWorld.DrugPolicy", "method", "ExposeData")[0] == "OK")
+    check("DrugPolicy.entriesInt exists", lht.has_member(index, "RimWorld.DrugPolicy", "field", "entriesInt")[0] == "OK")
+    check("sanity: the DrugPolicy probe can miss a member",
+          lht.has_member(index, "RimWorld.DrugPolicy", "field", "noSuchFieldHere")[0] != "OK")
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -453,6 +525,7 @@ def main():
     anima_check()
     cai_fog_check()
     null_guard_check()
+    cut_drug_guard_check()
     ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
     check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
     fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()

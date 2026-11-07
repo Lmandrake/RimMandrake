@@ -11,12 +11,15 @@ namespace RimMandrake.Patches
         public static bool caiFogForcedOff = true;
         // QUICKTEST_POLICY_NRE_FULLLIST_1: repair null-thingClass ThingDefs so a broken def cannot crash every game start.
         public static bool nullThingClassGuard = true;
+        // BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS: remove saved drug policy entries for a drug Cherry Picker cut.
+        public static bool cutDrugPolicyGuard = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref caiFogForcedOff, "caiFogForcedOff", true);
             Scribe_Values.Look(ref nullThingClassGuard, "nullThingClassGuard", true);
+            Scribe_Values.Look(ref cutDrugPolicyGuard, "cutDrugPolicyGuard", true);
         }
     }
 
@@ -48,6 +51,13 @@ namespace RimMandrake.Patches
                 "on, each such def is given a safe class and named, with its mod, in one red log error so the game still " +
                 "starts. Off = vanilla behaviour. Takes effect at the next game start.");
             l.Label(NullThingClassGuard.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Remove cut drugs from saved drug policies", ref RM_PatchesSettings.cutDrugPolicyGuard,
+                "A save can list a drug in its drug policies that this mod list has since cut (Cherry Picker makes it a "
+                + "non-drug). Vanilla then logs a red error every time a pawn thinks about it. While this is on, such "
+                + "entries leave the policy when a save loads, and each removal is named in the log. Off = vanilla "
+                + "behaviour. Takes effect at the next save load.");
+            l.Label(CutDrugPolicyGuard.Status);
             l.End();
             if (RM_PatchesSettings.caiFogForcedOff && !before)
                 CaiFogOff.Force("settings toggle");
