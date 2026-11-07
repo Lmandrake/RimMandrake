@@ -39,6 +39,10 @@ namespace RimMandrake.Shared.Slack
         public double ExcursionLo = 1.2, ExcursionHi = 2.6, Wobble = 0.06;
         /// <summary>Give any stretch the random excursions missed one of its own. Floor cords only: a hose is meant to run straighter.</summary>
         public bool FillFlats;
+        /// <summary>Floor cords: held to the planned line only across a door cell itself (<see cref="CordLayer.DoorHoldSoft"/> past it, not
+        /// <see cref="CordLayer.DoorKeep"/>), and let go along a smooth ramp, not a jump to half the bend; and a stretch running flat off a door's hold is filled
+        /// from 0.8 cell, not 2. A rod of 2-3 cells out of a doorway was what the hard hold drew. Loops and heaps still keep <see cref="CordLayer.DoorKeep"/> clear of a door. Hoses keep the hard hold.</summary>
+        public bool SoftPins;
 
         /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
@@ -167,26 +171,14 @@ namespace RimMandrake.Shared.Slack
             double L = s[s.Length - 1];
             if (L < 1.2) return P;
             int n = P.Count;
-            var pin = new bool[n];
-            for (int i = 0; i < n; i++)
-            {
-                pin[i] = s[i] < 0.45 || s[i] > L - 0.45;
-                if (w.IsDoor(P[i].Floor))
-                    for (int j = 0; j < n; j++) if (Math.Abs(s[j] - s[i]) < 0.55) pin[j] = true;
-            }
-            // soft ramp off the pins (box filter, half-width 9 samples), zero on the pins themselves
-            var ramp = new double[n];
-            for (int i = 0; i < n; i++)
-            {
-                if (pin[i]) continue;
-                double acc = 0;
-                for (int k = -9; k <= 9; k++)
-                {
-                    int j = i + k;
-                    if (j >= 0 && j < n && !pin[j]) acc += 1;
-                }
-                ramp[i] = acc / 19.0;
-            }
+            // a short hop keeps the hard hold: what a soft pin frees there is a bump the end's fitting cuts off again
+            bool soft = prm.SoftPins && L >= SoftMinLen;
+            bool[] keep = HoldMask(w, P, s, DoorKeep);
+            bool[] pin = soft ? HoldMask(w, P, s, DoorHoldSoft) : keep;
+            // soft ramp off the pins (box filter, half-width 9 samples), zero on the pins themselves; loops root only where the
+            // ramp off the old wide hold is near full, so with soft pins they keep their distance from a door
+            double[] loopRamp = BoxRamp(keep);
+            double[] ramp = soft ? SmoothRamp(pin, s, SoftRampLen) : loopRamp;
             var T = new List<V2>(n);
             var N = new List<V2>(n);
             for (int i = 0; i < n; i++) { Geo.TanNorm(P, i, out V2 t, out V2 nn); T.Add(t); N.Add(nn); }
@@ -210,9 +202,10 @@ namespace RimMandrake.Shared.Slack
                     lat[i] += side * amp * Math.Exp(-u * u);
                 }
             }
-            double spent = prm.FillFlats ? FillFlats(w, P, N, s, pin, lat, cap, prm, rrBundle) : 0;
+            double spent = prm.FillFlats ? FillFlats(w, P, N, s, pin, soft ? ramp : null, lat, cap, prm, rrBundle) : 0;
             double kAmp = rrStrand.Range(0.85, 1.1), wav = rrStrand.Range(0.35, 0.6), ph = rrStrand.Range(0, 6);
-            for (int i = 0; i < n; i++) lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * prm.Wobble * Math.Sin(s[i] / wav + ph);
+            for (int i = 0; i < n; i++)
+                lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * prm.Wobble * Math.Sin(s[i] / wav + ph);
             double[] up = FreeReach(w, P, N, 1, cap), down = FreeReach(w, P, N, -1, cap);
             var Q = new List<V2>(n);
             double wantLen = 0, gotLen = 0;
@@ -230,32 +223,93 @@ namespace RimMandrake.Shared.Slack
             // settle buckles that into a bunch against the obstacle (rope.sprawl's `lost`)
             double lost = Math.Max(0, wantLen - gotLen);
             var st = new SettleStats();
-            if (prm.LoopsPerCell > 0 || prm.HeapP > 0) Q = AddLoops(w, Q, ramp, prm, rrStrand, target, st);
+            if (prm.LoopsPerCell > 0 || prm.HeapP > 0) Q = AddLoops(w, Q, loopRamp, prm, rrStrand, target, st);
             Q = Geo.Resample(Q, step);
             st.SprawlLen = Geo.Length(Q);
             if (prm.SettleIters <= 0) { Smooth(w, Q, 6); stats = st; return Q; }
             double Lq = st.SprawlLen;
             // the budget survives the settle: never grow past the slack target (the clamp of §8.2.4)
             double restLen = Math.Min(Lq + 0.8 * lost, Math.Max(Lq, target));
-            stats = Settle(w, Q, PinMask(w, Q), restLen, prm, st);
+            stats = Settle(w, Q, PinMask(w, Q, soft ? DoorHoldSoft : DoorKeep), restLen, prm, st);
             return Q;
         }
 
+        /// <summary>How far past a doorway point a cord is held to its line (and loops are kept away): the old hard hold, and the floor cord's soft one.</summary>
+        public const double DoorKeep = 0.55, DoorHoldSoft = 0.15;
+        /// <summary>Over how much cord a soft pin lets go, and the shortest cord that gets soft pins, cells.</summary>
+        private const double SoftRampLen = 0.7, SoftMinLen = 2.5;
+
+        /// <summary>Both ends (0.45 cell) and <paramref name="door"/> either side of any doorway point.</summary>
+        private static bool[] HoldMask(CordWorld w, List<V2> P, double[] s, double door)
+        {
+            int n = P.Count;
+            double L = s[n - 1];
+            var pin = new bool[n];
+            for (int i = 0; i < n; i++) if (s[i] < 0.45 || s[i] > L - 0.45) pin[i] = true;
+            for (int i = 0; i < n; i++)
+            {
+                if (!w.IsDoor(P[i].Floor)) continue;
+                for (int j = i; j >= 0 && s[i] - s[j] < door; j--) pin[j] = true;
+                for (int j = i; j < n && s[j] - s[i] < door; j++) pin[j] = true;
+            }
+            return pin;
+        }
+
+        /// <summary>The ramp off the pins as it always was: a box filter, half-width 9 samples, zero on the pins. It jumps to about half at a pin's edge.</summary>
+        private static double[] BoxRamp(bool[] pin)
+        {
+            int n = pin.Length;
+            var ramp = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                if (pin[i]) continue;
+                double acc = 0;
+                for (int k = -9; k <= 9; k++)
+                {
+                    int j = i + k;
+                    if (j >= 0 && j < n && !pin[j]) acc += 1;
+                }
+                ramp[i] = acc / 19.0;
+            }
+            return ramp;
+        }
+
+        /// <summary>Zero on a pin, rising as a smoothstep of the distance along the cord to the nearest pin over <paramref name="len"/>: no kink where a pin lets go.</summary>
+        private static double[] SmoothRamp(bool[] pin, double[] s, double len)
+        {
+            int n = pin.Length;
+            var d = new double[n];
+            double last = double.NegativeInfinity;
+            for (int i = 0; i < n; i++) { if (pin[i]) last = s[i]; d[i] = s[i] - last; }
+            last = double.PositiveInfinity;
+            for (int i = n - 1; i >= 0; i--) { if (pin[i]) last = s[i]; d[i] = Math.Min(d[i], last - s[i]); }
+            var ramp = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                double u = Geo.Clamp(d[i] / len, 0, 1);
+                ramp[i] = u * u * (3 - 2 * u);
+            }
+            return ramp;
+        }
+
         /// <summary>The excursions fall at random, so two can land together and leave a stretch that nothing bends: six cells dead straight from a door to a heater, on a played map. Any stretch
-        /// longer than <see cref="FlatMax"/> that stays within <see cref="FlatLat"/> of the planned line gets broad, gentle excursions of its own, spaced along it. Returns the length that added.</summary>
-        private static double FillFlats(CordWorld w, List<V2> P, List<V2> N, double[] s, bool[] pin, double[] lat, double cap, LayParams prm, CordRng rr)
+        /// longer than <see cref="FlatMax"/> that stays within <see cref="FlatLat"/> of the planned line gets broad, gentle excursions of its own, spaced along it. Returns the length that added.
+        /// <paramref name="ramp"/> given (soft pins): flat means flat as laid, the bend times the ramp, so a stretch letting go of a door's hold counts from the hold.</summary>
+        private static double FillFlats(CordWorld w, List<V2> P, List<V2> N, double[] s, bool[] pin, double[] ramp, double[] lat, double cap, LayParams prm, CordRng rr)
         {
             int n = P.Count, from = -1;
             var more = new double[n];
             bool any = false;
             for (int i = 0; i <= n; i++)
             {
-                bool flat = i < n && !pin[i] && Math.Abs(lat[i]) < FlatLat;
+                bool flat = i < n && !pin[i] && Math.Abs(lat[i] * (ramp == null ? 1 : ramp[i])) < FlatLat;
                 if (flat) { if (from < 0) from = i; continue; }
                 if (from < 0) continue;
-                double a = s[from], len = s[i - 1] - a;
+                double a = s[from], len = s[i - 1] - a, L = s[n - 1];
+                // a flat that runs off a door's hold is the rod out of a doorway: a shorter one gets filled there
+                bool byDoor = ramp != null && ((from > 0 && pin[from - 1] && s[from - 1] >= 0.45) || (i < n && pin[i] && s[i] <= L - 0.45));
                 from = -1;
-                if (len <= FlatMax) continue;
+                if (len <= (byDoor ? FlatMaxDoor : FlatMax)) continue;
                 any = true;
                 int count = Math.Max(1, (int)Math.Round(len / Math.Max(2.6, prm.ExcursionHi)));
                 for (int k = 0; k < count; k++)
@@ -286,23 +340,13 @@ namespace RimMandrake.Shared.Slack
             return Math.Max(0, after - before);
         }
 
-        private const double FlatMax = 2.0, FlatLat = 0.35;
+        private const double FlatMax = 2.0, FlatMaxDoor = 0.8, FlatLat = 0.35;
 
-        /// <summary>Pins: both ends (0.45 cell) and 0.55 cell either side of any doorway point (rope.pin_mask).</summary>
-        public static bool[] PinMask(CordWorld w, List<V2> Q)
+        /// <summary>Pins: both ends (0.45 cell) and <paramref name="door"/> either side of any doorway point (rope.pin_mask; 0.55 unless a floor cord's soft pins).</summary>
+        public static bool[] PinMask(CordWorld w, List<V2> Q, double door = DoorKeep)
         {
-            double[] s = Geo.CumLen(Q);
-            double L = s[s.Length - 1];
-            int n = Q.Count;
-            var pin = new bool[n];
-            for (int i = 0; i < n; i++) if (s[i] < 0.45 || s[i] > L - 0.45) pin[i] = true;
-            for (int i = 0; i < n; i++)
-            {
-                if (!w.IsDoor(Q[i].Floor)) continue;
-                for (int j = i; j >= 0 && s[i] - s[j] < 0.55; j--) pin[j] = true;
-                for (int j = i; j < n && s[j] - s[i] < 0.55; j++) pin[j] = true;
-            }
-            pin[0] = pin[n - 1] = true;
+            bool[] pin = HoldMask(w, Q, Geo.CumLen(Q), door);
+            pin[0] = pin[pin.Length - 1] = true;
             return pin;
         }
 
