@@ -629,6 +629,30 @@ def main():
     pc2 = OW.rl_churn(s9c, NOW, cfg9)
     ok(OW.CHURN_ITEM_PREFIX + "A9_ITEM" not in pc2 and pc2["relentless.churn_items"].get("v") == 0,
        "9c: the blind PASS after those fails ends the bounce", pc2.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
+    # 9q OPS_CHURN_DIAGNOSE_PROOFLINT_JMAL_SKJL: PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS's real rows: each blind_fail a new true
+    # shape of a hand shell parser against real bash. TRUE alarm on the third candidate; the third FAIL quarantines the
+    # item, and a held item is sent no run, so the same rows then read 0 and clear it.
+    prooflint_rows = [{"gen": 1, "at": iso(NOW - 1.2 * HOUR), "start": marker("A9_ITEM", 1), "approach": "build"},
+                      {"gen": 1, "at": iso(NOW - 1.1 * HOUR), "end": "finish", "sha": "59f49f0"},
+                      {"gen": 1, "at": iso(NOW - 1.0 * HOUR), "end": "blind_fail", "approach_next": "build"},
+                      {"gen": 3, "at": iso(NOW - 0.9 * HOUR), "start": marker("A9_ITEM", 3), "approach": "build"},
+                      {"gen": 3, "at": iso(NOW - 0.8 * HOUR), "end": "finish", "sha": "8717bdc"},
+                      {"gen": 3, "at": iso(NOW - 0.6 * HOUR), "end": "blind_fail", "approach_next": "redesign"},
+                      {"gen": 5, "at": iso(NOW - 0.6 * HOUR), "start": marker("A9_ITEM", 5), "approach": "redesign"}]
+    s9q, pq = case9a("prooflint", 2, prooflint_rows)
+    said = (pq.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM") or {}).get("x", {}).get("said", "")
+    ok("blind_fail failed it 2 times" in said, "9q: PROOFLINT's two blind fails ring bouncing", said)
+    with (s9q / "items" / "A9_ITEM" / "attempts.jsonl").open("a") as f:
+        f.write(json.dumps({"gen": 5, "at": iso(NOW - 0.2 * HOUR), "end": "finish", "sha": "18178d9"}) + "\n")
+        f.write(json.dumps({"gen": 5, "at": iso(NOW - 0.1 * HOUR), "end": "blind_fail", "sha": "18178d9"}) + "\n")
+        f.write(json.dumps({"gen": 5, "at": iso(NOW - 0.1 * HOUR), "hold": "quarantine", "said": "FAIL", "pass": 3}) + "\n")
+    (s9q / "items" / "A9_ITEM" / "state.json").write_text(json.dumps(
+        {"status": "held", "returns": 2, "gen": 5, "spent": 2202860, "hold": {"kind": "quarantine", "pass": 3}}))
+    (TMP / "ops" / "alarms.json").write_text(json.dumps({OW.CHURN_ITEM_TAG + ":" + OW.CHURN_ITEM_PREFIX + "A9_ITEM": {"state": "OPEN"}}))
+    pq2 = OW.rl_churn(s9q, NOW, cfg9)
+    ok((pq2.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM") or {}).get("v") == 0,
+       "9q: quarantined, the same item reads 0 and the held alarm clears", pq2.get(OW.CHURN_ITEM_PREFIX + "A9_ITEM"))
+    (TMP / "ops" / "alarms.json").write_text("{}")
     # 9w OPS_CHURN_DIAGNOSE_OPS_GCNF_SOGA: OPS_METRONOME_MIGRATE_CLOCKS_FENCED cuts one clock a day by design and read
     # 'bouncing: 5 returns; waiting_for_sample failed it 5 times' off five `snag --wait-hours` endings (wait=true rows).
     # A wait is time, not work: no failed attempt, no bounce, and its gen's spend is no returned work. The same rows

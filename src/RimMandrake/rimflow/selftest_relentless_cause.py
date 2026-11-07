@@ -75,6 +75,17 @@ def t_causes_table():
     noctl = W.causes(["product: relentless_game.py drops the A2 row"], [], ch, None)
     ok(not noctl[0]["valid"] and "control" in noctl[0]["why_not"], "C1 a product claim with no control is unknown")
     ok(not W.cites("product: game.py", [GAME_PY], None) or True, "C1 (a bare short name is not a citation either way)")
+    # OPS_CHURN_DIAGNOSE_PROOFLINT_JMAL_SKJL: the checker's own row on 18178d9350 (shortened), its route read off state.json
+    live = ["src/RimMandrake/rimflow/relentless_live.py", "src/RimMandrake/rimflow/selftest_prooflint_at_filing.py"]
+    real = W.causes(["product: relentless_live.proof_scripts still names a non-executing argument after an attached "
+                     "interpreter option: 'python3 -cpass tools/deleted.py' exits 0 in real bash"],
+                    ["'python3 -c pass tools/deleted.py' is named []"], live, "python3 src/RimMandrake/rimflow/selftest_other.py")
+    ok(real[0]["valid"] and W.route(real) == W.PRODUCT, "C1 a changed file's module.attribute is a citation: %s" % real)
+    for text in ("relentless_live.json is stale", "xrelentless_live.proof_scripts drops a row", "a.relentless_live.proof drops a row",
+                 "relentless_live proof_scripts drops a row"):
+        ok(not W.cites(text, live, None), "C1 not a citation of relentless_live.py: %s" % text)
+    ok(not W.cites("a.attr is wrong", ["src/a.py"], None) and not W.cites("abcd.attr is wrong", ["src/abcd.py"], None),
+       "C1 a stem under five characters (name under eight) is no citation by attribute")
     mixed = W.causes(["measurement: the selftest stem is wrong", "environment: disk full"], [], ch, None)
     ok(W.route(mixed) == W.ENVIRONMENT, "C1 measurement with environment routes environment")
     mixed2 = W.causes(["unknown: ?", "product: relentless_game.py drops a row"], ["ctl"], ch, None)

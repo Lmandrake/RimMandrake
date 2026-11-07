@@ -849,14 +849,22 @@ def _proof_tokens(proof):
     return out
 
 
+_NOT_ATTRIBUTES = "py|pyc|json|jsonl|md|txt|log|csv|xml|cs|sh|bak"     # stem.json is another file, no attribute of stem.py
+
+
 def cites(text, changed, proof):
-    """True when a defect's words point at the candidate: a path its diff touches (whole, or its file name), or one of the
-    contract proof's own identifiers (the behaviour the proof runs)."""
+    """True when a defect's words point at the candidate: a path its diff touches (whole, or its file name, or a .py file's
+    module.attribute spelling), or one of the contract proof's own identifiers (the behaviour the proof runs).
+    OPS_CHURN_DIAGNOSE_PROOFLINT_JMAL_SKJL: three true defects of relentless_live.py, written relentless_live.proof_scripts,
+    read as citing nothing, and routed unknown past the builder."""
     t = (text or "").lower()
     for p in changed or []:
         p = p.lower()
         name = p.rsplit("/", 1)[-1]
         if p in t or (len(name) >= 5 and re.search(r"(?<![\w.])%s(?![\w])" % re.escape(name), t)):
+            return True
+        if name.endswith(".py") and len(name) >= 8 and re.search(
+                r"(?<![\w.])%s\.(?!(?:%s)\b)[a-z_]\w*" % (re.escape(name[:-3]), _NOT_ATTRIBUTES), t):
             return True
     return any(re.search(r"(?<![\w])%s(?![\w])" % re.escape(k), t) for k in _proof_tokens(proof))
 
