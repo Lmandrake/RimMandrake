@@ -42,6 +42,12 @@ def main() -> int:
             continue
         items = {i.get("key") or i.get("id"): i for i in items_of(html)}
         check(bool(items), f"{slug}: the sheet's ITEMS parse ({len(items)})")
+        # 0 stale, on every row of the sheet and not only the census-matched ones: no `refs` key = the old builder
+        stale = [k for k, i in items.items() if "refs" not in (i.get("scale") or {}) and (i.get("scale") or {}).get("status") != "none"]
+        check(not stale, f"{slug}: no row was built without a refs key {stale[:5]}")
+        snap = REPO / "infrastructure" / "state" / "art" / "sheets" / f"{slug}_sheet_{date}.snapshot.json"
+        check(snap.is_file(), f"{slug}: the sheet's snapshot is present")
+        dropped = set(json.loads(snap.read_text()).get("droppedAllRuled") or []) if snap.is_file() else set()
         for b in json.loads(cj.read_text()).get("biomes", {}).values():
             for r in b.get("rows", []):
                 refs = r.get("reference_textures") or []
@@ -49,6 +55,8 @@ def main() -> int:
                     continue
                 it = items.get(r["key"])
                 if it is None:   # a row the sheet omits (ruled elsewhere) shows nothing, reference included
+                    # ... but only the builder's own recorded drop: a row merely missing from ITEMS would hide its panels
+                    check(r["key"] in dropped, f"{slug} {r['key']}: off the sheet only because the snapshot records it as all-ruled")
                     continue
                 rows_checked += 1
                 scale = it.get("scale") or {}
@@ -57,6 +65,9 @@ def main() -> int:
                 got = got or []
                 check(len(got) == len(refs) and all(str(p.get("img") or "").endswith(".png") and not p.get("missing") for p in got),
                       f"{slug} {r['key']}: {len(refs)} reference panel(s) shown, each with an image ({len(got)})")
+                # one panel PER texture: the count above stays green if a panel shows the wrong texture or one twice
+                want = sorted(e["path"] if isinstance(e, dict) else e for e in refs)
+                check(sorted(str(p.get("path")) for p in got) == want, f"{slug} {r['key']}: the panels are exactly the census's textures")
     print(f"rows with reference_textures checked: {rows_checked}")
     check(rows_checked >= 35, f"the 35 formerly-stale rows are all checked ({rows_checked})")
     print(f"{len(FAILS)} failed" if FAILS else "all passed")
