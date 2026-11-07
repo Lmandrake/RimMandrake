@@ -968,7 +968,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     fell = true;
                 }
                 // the loops and the settle leave folds a cord cannot make: its ribbon spikes there (live, a real colony: 2.9 a strand)
-                if (!fell) P = CordShape.Unfold(w, P);
+                if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
@@ -1069,7 +1069,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (!diveB) P = PastFace(P, false, nb);
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
-                    if (!fell) P = CordShape.Unfold(w, P);
+                    if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
                     piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB });
                     laid += Geo.Length(P);
                 }
@@ -1557,6 +1557,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
             }
         }
+
+        /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose.</summary>
+        private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>
+            (na.Type == NodeType.Terminal && !na.Seam && !isLive(na.Cell)) || (nb.Type == NodeType.Terminal && !nb.Seam && !isLive(nb.Cell)) ? 1.0 : 0.25;
 
         /// <summary>A place a pile cable plugs in: the point its end lands on and the direction it leaves in.</summary>
         public struct PilePort

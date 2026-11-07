@@ -72,7 +72,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>A fold is two arms meeting at a point: the heading turns past KinkDeg over KinkArc either side of it, and each arm
         /// holds its line (within KinkArmDeg) on out to KinkArm. The arms are what tell it from a coil, whose heading never stops
         /// turning: a heap's tight coils are the art, and a fold is a spike or an elbow the ribbon cannot draw.</summary>
-        public const double KinkArc = 0.1, KinkDeg = 85, KinkArm = 0.3, KinkArmDeg = 45;
+        public const double KinkArc = 0.1, KinkDeg = 60, KinkArm = 0.3, KinkArmDeg = 45;
 
         private static double TurnDeg(V2 u, V2 v)
         {
@@ -111,18 +111,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
-        private const double UnfoldReach = 0.22, UnfoldFlare = 0.13;
+        private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 
         /// <summary>Round every fold into a small bend, leaving the rest of the strand exactly where it lies, so its loops and its
         /// ends do not move. A fold whose bend would leave walkable ground stays: the floor rule outranks the look.</summary>
-        internal static List<V2> Unfold(CordWorld w, List<V2> pts)
+        internal static List<V2> Unfold(CordWorld w, List<V2> pts, double skipEnds = 0.25)
         {
             List<V2> P = pts;
             var stuck = new List<V2>();
             for (int guard = 0; guard < 60; guard++)
             {
                 V2? at = null;
-                foreach (V2 k in Kinks(P))
+                foreach (V2 k in Kinks(P, skipEnds))
                     if (!stuck.Any(q => V2.Dist(q, k) < 0.05)) { at = k; break; }
                 if (at == null) return P;
                 List<V2> round = RoundFold(w, P, at.Value);

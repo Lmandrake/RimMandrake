@@ -49,6 +49,9 @@ def sequence(B, tag, label, read, cx, cz, n, cells):
         paths.append((grab(B, name, cx, cz, cells), name))
     settle(paths)
     print(label, json.dumps(rows))
+    # beside the frames, so spark_measure.py can put the spark it sees in the picture next to the tip the probe reads
+    rect = [int(cx - cells), int(cz - cells * 0.7), int(cells * 2), int(cells * 1.4)]
+    json.dump({"rect": rect, "rows": rows}, open(os.path.join(OUT, "%s_%s.json" % (tag, label)), "w"))
     return rows
 
 
@@ -60,6 +63,7 @@ def main():
     a = ap.parse_args()
     B = RL.LiveBridge()
     B.call("jawa/clear_ui", all=True)
+    B.call("rimworld/set_time_speed", speed=1)  # as a player sees it: thrown sparks only fly while time runs
     m = B.probe("motion")
     tips = m.get("sparkTips") or []
     print("whipDraws", m.get("whipDraws"), "liveFloorEnds", m.get("liveFloorEnds"), "tips", len(tips))

@@ -13,3 +13,9 @@ Fixed: the shipped setting is now 1, so one connection draws one cord everywhere
 ## Cords in tall grass look dashed: keep this? (2026-11-07, pass 6)
 
 On a real map the grass draws over the cords, so a thin cord through grass shows as broken dashes (`p6N_Modern_cutspan`, `p6L_Modern_house` bottom right). It reads as a cord lying down in the grass, but a player could take a dashed stretch for a break. Drawing cords above the grass would fix that, but they would look laid on top of the plants, and it changes a look you approved. I recommend keeping it as it is, and I have left it unchanged. Tell me if you want it the other way.
+
+## A short stump left by a blast drew no end at all (2026-11-07, pass 7, no answer needed unless you disagree)
+
+The mod hides needless conduit: a dead end of 1 or 2 cells off a junction becomes a small loop in the cord, so a stray stub doesn't spark forever. It spared a stub only if it faced more conduit within 3 cells, on the idea that this means a break. A mortar in a lived-in colony blew a 3-cell gap, one more than that test could see across, so both stumps counted as needless and the cut showed nothing: no spark, no limp end, just two cords gone.
+
+Fixed: a stub now counts as a break if it faces conduit across a gap of up to 5 cells, straight along its own line. What remains: if a blast takes a corner or the whole far side, so the stump faces nothing in line, a stump of 1 or 2 cells still reads as needless and draws a loop instead of an end. Telling those apart would mean remembering which conduit was destroyed, and this mod saves nothing of its own in your save. I recommend leaving it that way. Longer stumps always draw their end.

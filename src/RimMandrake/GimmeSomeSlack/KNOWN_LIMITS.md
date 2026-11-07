@@ -24,3 +24,5 @@ would end the starvation but break the equal-inputs guarantee that keeps the fra
 
 A wrecked machine has no power comp (`RM_RuinDrawsConduit`, `Source/Core/HookupPick.cs` PickRuin), so vanilla prints no wire to it.
 With this mod off, or the conduit def unticked in its settings, a conduit ending at a ruin stops at the footprint.
+
+- A blast that leaves a stump of 1 or 2 conduit cells off a junction, with no conduit in line within 6 cells of its end, draws no broken end: the stump reads as needless conduit and becomes a loop (`CordGraph.FacesGap`, `PruneSpurs`). Longer stumps and in-line cuts draw their ends. Telling them apart would need saved state, and the mod saves none for cords.
