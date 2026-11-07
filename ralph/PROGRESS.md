@@ -1,31 +1,23 @@
 # Graffiti: where the last pass got to
 
-## How to look at it
-`src/RimMandrake/Graffiti/stage_colony.py` (under `python.exe`, from the repo root) builds a lived-in base (rooms, corridor, three wall materials, meals), then `call Gallery|Compare|Faces|Spree 3|Who|Count`, `run <ticks>`, `shot <name> x,z,w,h`. Colony rects at play zoom: `106,122,33,15` and `106,112,33,13`. Noon is tick 15000 + 60000k.
+`ralph/DONE.md` claims done, with its gaps. If it comes back, start there.
 
-## What was wrong, and what changed
-- A paint job stood on one cell for 8000 ticks and repainted it every 250, so a spree left 3 to 6 marks. Now each job finishes one mark, with time set by its form, then moves down the wall.
-- Marks straddled the wall and floor seam. Now they draw on the wall cell itself. Doors and machines no longer count as walls, and the paint goes when its wall goes.
-- Every mark was the same size and dead level, so walls read as sticker rows. Now each has a stable tilt, size and slide, and there are 2-cell and 3-cell marks (wide throw-ups, roll calls, posters, pieces).
-- Recreation alone can leave walls bare for a whole day. `JobGiver_IdleTag` now lets an idle hand tag, and a per-room cap stops calm painters burying a bedroom. Sprees ignore the cap.
-- Marks could ride off on feet and rain washed them away. Both are off.
-- All Vandal art is replaced (it was bright clip-art), and no donor art remains. All 27 meme glyphs and the sigil frames were redone as spray work with no ring-and-slash silhouettes.
-- Marks use the `Mote` shader. Cutout clips overspray into sticker edges, Transparent draws nothing at this altitude, post-light glows at night.
+## How it works now
+- `Source/Kernel/RM_GraffitiKernel.cs` holds the wall plane (`FacePoly`, `MarkPieces`); `Source/WallPlane.cs` prints it. `art_source/wallgeom.py` and `wallsim.py` are the offline twin: judge geometry and art there first, on the real atlases.
+- Art: `art_source/manifest.py gen` generates what's missing into `ralph_graffiti/gen3`, `bake.py` writes `Textures/`, `patch_defs.py` writes sizes and pigmenting into the defs, `gallery_sim.py <dir> <prefix>` shows it all at play zoom.
+- `stage_colony.py`: `new`, `colony`, `call Ladder|Sweep|Gallery|Spree 3|Who|Count`, `run <ticks>`, `shot <name> x,z,w,h [ppc]`. Noon is tick 15000 + 60000k. Max 33 cells wide at 64 px.
 
 ## Traps that cost time
-- **A `graphicData` block on the abstract `RM_BaseGraffiti` makes every mark invisible, with no error.** Set `shaderType` per def.
-- Check new art at 64 px before installing: red-on-red detail merged into a blob that passed at full size.
-- **The screenshot tool writes asynchronously.** Reuse a filename and you copy the LAST run's picture. `shot` now uses unique capture names. This faked an "empty hall" for me. Always check colonist names in the picture against `call Who`.
-- Colonists draw at their last on-screen spot after `safe_advance` with the camera elsewhere (`Who` shows them moving). I did not fix this: framing the camera and stepping 4 ticks did not help. Don't read pawn positions from a shot. It is a harness view, not seen in the mod's logic.
-- The service environment has no Windows PATH and no seat. Export PATH with `/mnt/c/Windows/System32`, PowerShell and `WindowsApps`, and `RIMFLOW_SEAT=BENCH` (the clone's seat, and `live_session.py`'s default). `./game` with that seat writes a CONDUCTOR event into the ledger, so read `tasklist.exe` instead.
-- `bridge who` in this clone can show a stale hold. It frees after 45 minutes.
-- `jawa/time_set_ticks` refuses on a populated map. Reach noon with `run`.
-- `live_session.py` refuses a game past tick 120000: restart, then use `--no-restart --no-quicktest`. After it, run `judge_cli.py <results.json>`.
-- Concurrent `codex_image` jobs need their own `--codex-home`, or they harvest each other's images.
+- The game gate matches the install path, even for a read-only decompile. Don't dodge it. Decompiled source is in `D:\ClaudeWork\rimmandrake\decomp\rw16\all`, atlases in `D:\Luke\dev\RimMandrake\observed\inventory\bundle_textures`.
+- Paused shots drew pawns at stale spots: the tweener only moves with frames. `Settle` resets it, and `shot` calls it.
+- Vanilla's naming dialog pops up over long advances. `shot` closes it.
+- Weathering is a tight trade. A streak floor of 0.42 with patches at wear*0.5 looked great on the bench and went nearly invisible in dim rooms. Check marks in the colony, not just the sim.
+- `rimworld/load_game_ready` returns before the map is usable. The next call can see no map.
+- The service shell needs the PATH and `RIMFLOW_SEAT=BENCH` exports. `/tmp/gr/cycle.sh` was my stop-deploy-launch script and won't survive a reboot; `live_session.py` does the same plus the suite.
 
-## Next
-`ralph/DONE.md` claims done; the verdicts and untested gaps are there. If a reviewer sends it back, the open items, best first:
-1. Meme glyphs alone still read as emblems. Rougher, less centred art, or two-tone scrawl versions, would help. The owner ruled every meme gets a mark, so they can't just be dropped.
-2. Marks lie flat across the crease between wall top and front face. A wall-face mark could be split at the crease and shaded, or sit lower.
-3. Never tested: the full mod list, save/load mid-job, balance past day 3.
-4. `spree_wall` is sometimes stopped by site surprises (a `Crush` death, a wild Trispike), not by the mod. Clearing wild animals and roofs first would stop that.
+## Next, best first
+1. Run `judge_cli.py` on the suite result (not run).
+2. Test natural rock and modded walls in game, and the full list.
+3. If paint still reads clean close up: more streak in fills, without losing play zoom.
+4. Try the honest gap: −8 to −5 aren't ranked by looks.
+The game is still up on `graffiti_solo`; the owner's mod list has not been restored.
