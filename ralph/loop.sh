@@ -2,14 +2,15 @@
 # The Ralph loop on Graffiti (owner 2026-11-06). Each pass is one fresh `claude -p` on ralph/PROMPT.md.
 # It stops at ralph/DONE.md, at the token review point, or on the file STOP in the log folder.
 cd "$(dirname "$0")/.." || exit 1
+export PATH="$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Users/Mandrake/AppData/Local/Microsoft/WindowsApps"
+export RIMFLOW_SEAT=BENCH
 LOGS=/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti
 EVENTS=$LOGS/events.log
 REVIEW_AT=${REVIEW_AT:-20000000}
+OFFLINE_AT=${OFFLINE_AT:-10000000}
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
 
-gss_has_game() {   # the Gimme Some Slack loop lets go when its log's last line says GAME_WAIT
-  python3 ralph/game_gate.py --held
-}
+game_busy() { systemctl --user is-active --quiet rm-ralph-pyrelands || systemctl --user is-active --quiet rm-ralph-gss2; }
 
 tally() {   # weighted tokens over every pass: input + output + cache writes + cache reads / 10
   python3 ralph/tally.py "$LOGS"
@@ -22,14 +23,15 @@ while :; do
   [ -e ralph/DONE.md ] && { say "LOOP DONE_CLAIMED, $(tally) tokens"; exit 0; }
   t=$(tally)
   if [ "$t" -ge "$REVIEW_AT" ]; then say "LOOP PAUSED_FOR_REVIEW at $t tokens"; exit 0; fi
+  if game_busy && [ "$t" -ge "$OFFLINE_AT" ]; then touch ralph/NEED_GAME; fi
   if [ -e ralph/NEED_GAME ]; then
-    if gss_has_game; then
-      say "GAME_WAIT: Gimme Some Slack still has the game, no model running, $t tokens"
-      while gss_has_game; do
+    if game_busy; then
+      say "GAME_WAIT: a loop ahead has the game, no model running, $t tokens"
+      while game_busy; do
         [ -e "$LOGS/STOP" ] && { say "LOOP stopped: STOP file"; exit 0; }
         sleep 60
       done
-      say "GAME_FREE"
+      say "GAME_FREE: loops ahead have ended"
     fi
     rm -f ralph/NEED_GAME
   fi

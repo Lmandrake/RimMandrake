@@ -4,7 +4,22 @@ Read the owner's own words and the north star in `design/validation_walks/RimMan
 
 BE CREATIVE. Figure out the problems and solve them. Don't just work to a checklist. Play the mod, look at what a player would actually see, work out what's really wrong, and fix it. We trust you. Impress us.
 
-## What the owner just told you
+## What the owner just decided
+
+His words, 2026-11-07, on the contrast sheet and on what this mod is for:
+
+> "Go with D. I was against touching the top of the wall, but the extra space does add something. I think we have a winner! ... And did you test the social implications of the mod? It's more than just art display."
+
+These two are now the job, on top of his earlier demands below.
+
+**1. Build option D for real.** Look at `D:\ClaudeWork\rimmandrake\ralph_graffiti\contrast\contrast.md` and `D_bolder_and_climbing.png` beside it: bolder paint inside the wall face, and marks that climb onto the top of the wall. That picture is an offline composite. The bolder paint was a filter and the bent geometry does not exist in the game. Make it true in the running game, on real walls, at play zoom, through straight runs, corners and junctions, where a mark on the top must still read as the same paint. A side face stays a scrap unless you find better.
+
+**2. The social side is untested, and mostly unbuilt.** The mod is not a wallpaper. Earlier he asked for "socially infuriating graffiti or amusing graffiti". Measured today: one ThoughtDef exists (`RM_Graffiti_ViewedHostileMark`, -2 mood); `About.xml` promises colonists react to a rival's tag differently from a friend's; the design promises about ten thoughts and relation reactions; own-faction and ideoligion reaction slots exist in code with nothing assigned; there is no opinion, relationship, faction goodwill, territory or retaliation effect. The live proofs of the spree, raid-exit tag, sigil, going over a rival's mark, unease and clean protection ran on sha a70b78a8af90, before your C# commits, and none has run on your build. Your north-star bars are all about appearance, so they never asked.
+Read the design, then make the graffiti matter between people: who paints what, who is angered, amused or moved by it, and what they do about it. A player should be able to watch it happen and read why on the pawn. Prove it in a real colony with real pawns on your build, including what already exists. Say plainly what you left out and why.
+
+Put early shots of each in the shots folder as `first_look_*.png`, with one plain line on each in `ralph/LOOK.md` and what you're least sure of, as soon as you have them in the game. Carry on without waiting. He may send you a note.
+
+## What the owner told you earlier
 
 You claimed done, and he looked. His words, 2026-11-07:
 
@@ -27,7 +42,7 @@ Your earlier done claim is in `ralph/history/DONE_pass1.md`. It was not accepted
 
 ## Taking turns with the game
 
-Another Ralph loop, on Gimme Some Slack, may still be finishing with the game. A hook refuses game commands until it has let go, and it has been told to yield to you. Don't try to get around that hook, and don't wait, poll or sleep for the game. Most of your first job is offline anyway: geometry, art, rendering. If only the game can tell you more and the hook still refuses: write up `ralph/PROGRESS.md`, create `ralph/NEED_GAME`, commit, push and end your turn. The loop waits with no model running and starts a fresh pass when the game is free.
+Other Artisan loops have the one game first. While they run you work offline, and a hook refuses game commands. Don't try to get around that hook, and don't wait, poll or sleep for the game. Do what you honestly can offline. When only the game can tell you more, write up `ralph/PROGRESS.md` with exactly what you want to look at, create `ralph/NEED_GAME`, commit, push and end your turn. The loop waits with no model running and starts a fresh pass when the game is free. Don't invent offline work to stay busy.
 
 Then read `ralph/PROGRESS.md` to see where the last pass got to, if there was one.
 
@@ -47,4 +62,4 @@ How to work:
 
 Keep only the screenshots of the current build in the folder below; move older ones into its `old` folder. Save the screenshots you judge by under `D:\ClaudeWork\rimmandrake\ralph_graffiti\shots\` (`/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/shots/` from WSL).
 
-You're done when, in a real colony at play zoom, you would be happy to show this to the owner. Then write `ralph/DONE.md`: first, your honest verdict on his two demands above (true perspective on every facing, and painted rather than stuck on), each with a close-up and a play-zoom screenshot. Then, for each of the ten north-star lines, your honest verdict (true or not, and how sure you are) and the screenshot that shows it. Commit, push, release the bridge and end your turn. A reviewer who hasn't seen your verdicts will then look at the same screenshots, and the owner will take a look after that.
+You're done when, in a real colony at play zoom, you would be happy to show this to the owner. Then write `ralph/DONE.md`: first, your honest verdict on option D and on the social side, each with the live evidence, then on his two earlier demands above (true perspective on every facing, and painted rather than stuck on), each with a close-up and a play-zoom screenshot. Then, for each of the ten north-star lines, your honest verdict (true or not, and how sure you are) and the screenshot that shows it. Commit, push, release the bridge and end your turn. A reviewer who hasn't seen your verdicts will then look at the same screenshots, and the owner will take a look after that.
