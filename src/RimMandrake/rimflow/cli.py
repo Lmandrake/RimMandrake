@@ -3107,8 +3107,9 @@ def _mirror_from_ledger(actor, note=None):
     race is told who won; it is not told no.
     """
     _, w3 = load()
+    others = {k: v for k, v in w3.bridge_hosts.items() if k != model.DEFAULT_BRIDGE_HOST and v.get("holder")}
     model.write_bridge_file(w3.bridge_holder, actor, w3.bridge_purpose,
-                            w3.bridge_since, note=note)
+                            w3.bridge_since, note=note, others=others)
     return w3.bridge_holder
 
 
@@ -3640,11 +3641,12 @@ def _refuse_before_lock(ev):
 def _guard_call(hk, args_list):
     """Run a host_guard verb against host `hk`'s own driver lock: in-process when this IS that machine, else over
     ssh in its runner clone. -> (exit code, output)."""
-    if host_guard.local_host() == hk:
+    machine, inst = model.split_bridge_host(hk)
+    if host_guard.local_machine() == machine:
         import io
         import contextlib as _cl
         buf = io.StringIO()
-        with _cl.redirect_stdout(buf):
+        with _cl.redirect_stdout(buf), host_guard.instance_env(inst):
             rc = host_guard.main(args_list)
         return rc, buf.getvalue().strip()
     return host_guard.remote(hk, args_list)
@@ -3707,6 +3709,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
         if rc != 0:
             print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
         _emit(ev, w, quiet=True)
+        _mirror_from_ledger(None)
         print("%s bridge released by %s" % (hk, seat))
         return 0
     holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
@@ -3756,6 +3759,7 @@ def _bridge_other_host_locked(args, seat, w, hk):
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
             "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     _emit(ev, w, quiet=True)
+    _mirror_from_ledger(None)
     print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)
@@ -3824,7 +3828,7 @@ def cmd_bridge(args, seat):
             % (args.action, args.to, args.action))
 
     try:
-        hk = model.bridge_host_key(getattr(args, "host", None))
+        hk = model.bridge_host_key(getattr(args, "host", None) or model.ambient_bridge_host())
     except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
         die(str(e))
     if getattr(args, "mine", False):
@@ -4536,7 +4540,8 @@ def build_parser():
                    help="the purpose is a flyer's flight: --idle-ok refuses (flight needs a human present). "
                         "`bridge idle` alone reports whether a delegated take would succeed, taking nothing.")
     s.add_argument("--host", default=None,
-                   help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
+                   help="which game: archmagi (default) | stevedesktop, or a second game on a machine, stevedesktop.b. "
+                        "Each has its own lock. RM_GAME_INSTANCE=b with no --host means this machine's b.")
     s.add_argument("--mine", action="store_true",
                    help="release only: free the bridge only if THIS seat holds it; another's hold is left alone "
                         "and nothing is written (exit 0). For loops that release after every pass")

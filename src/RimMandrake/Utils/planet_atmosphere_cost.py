@@ -189,7 +189,7 @@ def load_ms(text):
 
 
 PS_SAMPLE = r"""
-$p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1
+$p = @GAME@
 if (-not $p) { '{"running": false}'; exit }
 $ded = 0; $sha = 0; $n = 0
 foreach ($c in @('Dedicated Usage','Shared Usage')) {
@@ -201,8 +201,18 @@ foreach ($c in @('Dedicated Usage','Shared Usage')) {
 """
 
 
+def sample_script():
+    import game_instance
+    return PS_SAMPLE.replace("@GAME@", game_instance.ps_process())
+
+
 def sample_process():
-    out = subprocess.run([POWERSHELL, "-NoProfile", "-Command", PS_SAMPLE], capture_output=True, text=True,
+    import game_instance
+    try:
+        script = sample_script()
+    except game_instance.Blind as e:
+        return {"error": str(e)}
+    out = subprocess.run([POWERSHELL, "-NoProfile", "-Command", script], capture_output=True, text=True,
                          timeout=120)
     line = [l for l in out.stdout.splitlines() if l.strip().startswith("{")]
     if not line:

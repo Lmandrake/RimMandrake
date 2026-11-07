@@ -20,6 +20,7 @@ from common import ROOT, UTILS   # noqa: E402
 
 
 def game_running():
+    """ANY game on this machine, on purpose: --apply deploys, and every game loads the one Mods folder."""
     try:
         out = subprocess.run(["tasklist.exe", "/FI", "IMAGENAME eq RimWorldWin64.exe"], capture_output=True,
                              text=True, timeout=20).stdout
@@ -55,7 +56,7 @@ def main(argv):
         print("REFUSED: cannot ask tasklist.exe whether RimWorld is running")
         return 2
     if running:
-        print("REFUSED: RimWorld is running; quit it first (the deploy and ModsConfig both need it down)")
+        print("REFUSED: a RimWorld is running on this machine; quit it first (the deploy writes the Mods folder every game loads)")
         return 2
     runner.swap_to_test_list()
     done = set()
@@ -74,6 +75,9 @@ def main(argv):
         print("deployed %s" % m)
     added = runner.compose_test_list(pids)
     print("composed into ModsConfig: %d added (%d already present)" % (len(added), len(pids) - len(added)))
+    if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):     # Steam's launch can only start game a
+        print("next: launch directly -- python3 src/RimMandrake/Utils/game_instance.py launch --wait")
+        return 0
     print("next: launch through Steam -- powershell.exe -NoProfile -Command \"Start-Process 'steam://rungameid/294100'\"")
     return 0
 

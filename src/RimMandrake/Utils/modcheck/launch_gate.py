@@ -26,6 +26,7 @@ OWN_NAMESPACES = ("RimMandrake", "RimStarWars", "RimUtinni", "JawaBench",
 PAT = re.compile(r"Could not find (?:a )?type named (?:%s)(?![\w])[.\w]*"
                  % "|".join(re.escape(n) for n in sorted(OWN_NAMESPACES, key=len, reverse=True)))
 PROBE = "Bridge token:"
+PORT_PROBE = "GABP server connected to GABS on port"    # a game started with its own port and token logs this instead
 _UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
@@ -37,7 +38,7 @@ def default_log():
 
 
 def scan(text):
-    probe = PROBE in text
+    probe = PROBE in text or PORT_PROBE in text
     types = sorted({m.group(0).split("named ", 1)[1] for m in PAT.finditer(text)})
     problems = []
     if not probe:

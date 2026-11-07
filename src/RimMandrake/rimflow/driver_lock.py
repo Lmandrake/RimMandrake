@@ -53,6 +53,11 @@ def lock_path():
         return env or None
     if os.environ.get("RIMFLOW_LEDGER"):
         return None
+    if (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower() not in ("", "a"):
+        import game_instance            # a second game has its own driver, so its own lock, beside its data
+        path = game_instance.lock_path()
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        return path
     return DEFAULT if os.path.isdir(os.path.dirname(DEFAULT)) else None
 
 

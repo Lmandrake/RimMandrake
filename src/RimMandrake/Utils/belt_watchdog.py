@@ -251,12 +251,12 @@ def compose(sigs):
 
 _PS_PROBE = r'''
 $o = @{}
-$p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1
+$p = @GAME@
 if ($p) { $o.game = @{ pid = $p.Id; cpu = [math]::Round($p.TotalProcessorTime.TotalSeconds, 1);
   responding = $p.Responding; age = [int](New-TimeSpan $p.StartTime (Get-Date)).TotalSeconds;
   start = $p.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
   title = $p.MainWindowTitle; ws_mb = [int]($p.WorkingSet64 / 1MB) } }
-$o.games = @(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object {
+$o.games = @(@GAMES@ | ForEach-Object {
   @{ pid = $_.Id; startUtc = $_.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ") } })
 $o.py = @(Get-CimInstance Win32_Process -Filter "Name like 'python%'" | ForEach-Object { @{ pid = $_.ProcessId; cmd = $_.CommandLine } })
 $o.fg = (Get-Fg).title
@@ -264,11 +264,17 @@ $o | ConvertTo-Json -Depth 4 -Compress
 '''
 
 
+def probe_script():
+    """_PS_PROBE aimed at this process's game (game_instance.py), never the first process PowerShell lists."""
+    import game_instance
+    return _PS_PROBE.replace("@GAME@", game_instance.ps_process()).replace("@GAMES@", game_instance.ps_processes())
+
+
 def probe_windows():
     """One PowerShell call: game process, python processes, foreground title. None on failure."""
     try:
         import game_focus
-        raw = game_focus._ps(game_focus._PS_HELPER + _PS_PROBE)
+        raw = game_focus._ps(game_focus._PS_HELPER + probe_script())
         return json.loads(raw[raw.index("{"):])
     except Exception as e:                                      # noqa: BLE001
         try:

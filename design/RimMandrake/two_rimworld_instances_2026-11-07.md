@@ -1,6 +1,6 @@
 # Two RimWorld instances on one machine (design, 2026-11-07)
 
-Status: rung one passed on SteveDesktop on 2026-11-07; see "Trial result, 2026-11-07" below. Archmagi is untested. Parts 1 and 2 were written before the trial, from disk and the running system. The tooling changes are still owed.
+Status: rung one passed on SteveDesktop on 2026-11-07; see "Trial result, 2026-11-07" below. Archmagi is untested. Parts 1 and 2 were written before the trial, from disk and the running system. The first list of tooling changes is built and proven offline (see "How a loop goes on game B"); no loop has run on B yet.
 
 Owner's words, 2026-11-07: "design a way to have two instances of Rimworld running. It would likely require running Steam in a protected environment without access to the Web. This might not be required though, so we should try it simply first. Just be prepared that we may have to do so. I'm not sure Steam will be happy with us launching two versions otherwise, so a one-two research punch. Fingers crossed it's easy."
 
@@ -192,6 +192,26 @@ An instance is a name plus one small set of environment values: `RM_GAME_USERDAT
 6. `ONE_LOCK_ONE_GAME`: `BRIDGE_HOSTS` in `rimflow/model.py`, `rimflow/cli.py`, `rimflow/host_guard.py` take an instance key such as `stevedesktop.b`. Their selftests move with them. The `BRIDGE` mirror grows a line.
 7. `THE_GATE_IS_A_ONE_GAME_QUEUE`: a loop's copy of `game_gate.py` and `loop.sh` gets its instance and an `AHEAD` naming only loops on that instance. Also correct the stale unit names, which are wrong today regardless.
 
+### How a loop goes on game B
+
+Built in `src/RimMandrake/Utils/game_instance.py`: `RM_GAME_INSTANCE=b` says which game a process means, and `game_paths`, `rimbridge_client`, `driver_lock` and `rw_game.sh` follow that name even where `.bashrc` exports game a's folders. Nothing set is game a. Key `stevedesktop.b` is that game's bridge lock.
+
+`ENACT_AND_PREP_KEEP_ANY_GAME`: `Utils/art/enact.py` and `Utils/modcheck/live_queue/prep_wsl.py` still refuse on any game, on purpose. Both guard a write into the one `Mods` folder every game loads. `Utils/running_now.py` and `Utils/artisan_now.py` still count any game too; they only display it.
+
+`OLD_TOOLS_BESIDE_B_STILL_TAKE_IT`: the fix lives in each clone. A loop running older tools still picks the first game and refuses on any game, so every loop sharing the machine carries this code before B goes up. On SteveDesktop that is `rm-ralph-gss-steve`'s `~/rm/gss`, on branch `ralph/gss`.
+
+`LOOPS_RUN_HERE_GAMES_RUN_THERE`: the SteveDesktop loop's unit and its agent run on Archmagi, and only the game and its tools run on SteveDesktop through `ralph/steve.sh`. So `systemctl --user is-active` over ssh on SteveDesktop reads such a unit as inactive while it is running.
+
+Steps, for a loop on Archmagi driving SteveDesktop's game B:
+
+1. Merge `origin/main` into `ralph/gss` at a pass boundary, by the loop's `ralph/OWNER_NOTE` (its files are its own), and let its next `ralph/steve.sh sync` carry it to `~/rm/gss`. Or wait for that loop to end.
+2. Make the loop's clone with `scratch_clone.py` and copy `D:\Luke\dev\MandrakeWorkflows\artisan\template` to its `ralph/`.
+3. Copy `ralph/steve.sh` from `/home/mandrake/rm/scratch/BENCH/ralph_gss/ralph/`. Change `DIR=rm/gss` to its own clone, for example `rm/gameb`, and the branch. Make `on()` exactly `on() { ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR && export RM_INSTANCES_ROOT=/mnt/d/ClaudeWork/rimmandrake/instances && eval \"\$(python3 src/RimMandrake/Utils/game_instance.py env b)\" && $1"; }`. Give `status`, which calls ssh itself, the same prefix. Delete `reboot`, since it takes both games.
+4. Copy the template's `example_gate_with_notes_and_context.py` to `ralph/game_gate.py`. Set `WRAPPER = "ralph/steve.sh"`, `DEFAULT_COPY = "b"` and `AHEAD = {"b": []}`, and hook it on the Bash matcher in `.claude/settings.json`. Keep `RM_GAME_INSTANCE` out of the Archmagi side, so a stray local tool never aims at a B that is not there.
+5. Keep B's writable mods disjoint from game A's in the loop's `PROMPT.md`; a deploy with two games up is unmeasured.
+6. `ralph/steve.sh run 'python3 src/RimMandrake/Utils/game_instance.py status'`, then `ralph/steve.sh tier` for its own list, then `ralph/steve.sh up`. Confirm game A's bridge still answers, then `RM_RUNNER_DIR='~/rm/gameb' rimflow bridge take --host stevedesktop.b --for "<what for>"`. A take from Archmagi runs `host_guard.py` in that clone on SteveDesktop. Without the variable it uses `~/rm/runner`, which refuses by name until it carries this code, so it can never take game A's lock by mistake.
+7. Start it: `systemd-run --user --unit rm-ralph-<name> --working-directory=<clone> /bin/bash ralph/loop.sh`. Close `RIMMASTER_BUILD_SECOND_GAME_TOOLING_STEAM_SAID_YES` once a pass has run on B and `ralph/steve.sh down` has left game A running.
+
 **Can wait:**
 
 - `belt_watchdog.py` watching N games.
@@ -286,4 +306,4 @@ What it does not change:
 - **Deploys.** Shared `Mods` makes the companion DLL a both-games-down event. Rung three cures that at a licence-question cost.
 - **Machine faults.** One SteveDesktop fault now costs two games' runs.
 
-The trial passed. Do items 1 and 2 of the tooling first, then the rest, then put one loop on B.
+The trial passed and the first list of tooling is built. What is left is putting one loop on B.

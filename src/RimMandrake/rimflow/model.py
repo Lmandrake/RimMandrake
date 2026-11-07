@@ -81,6 +81,7 @@ import fcntl
 import json
 import os
 import re
+import socket
 import sys
 import time
 
@@ -1215,7 +1216,8 @@ BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
 
 # ── one bridge per HOST (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25) ───────────────────────────
 # Two machines each run a game: Archmagi (interactive) and SteveDesktop (the batch test centre). A take names its
-# host; absent means Archmagi, the only game there was before. Keys are lower-case machine names.
+# host; absent means Archmagi, the only game there was before. Keys are lower-case machine names. A second game on one
+# machine is a key of its own, machine.instance ('stevedesktop.b'; game_instance.py): same lock rules, separate lock.
 DEFAULT_BRIDGE_HOST = "archmagi"
 BRIDGE_HOSTS = ("archmagi", "stevedesktop")
 
@@ -1224,9 +1226,26 @@ def bridge_host_key(host):
     """Normalise a host name to its key ('SteveDesktop' -> 'stevedesktop'); None/'' -> the default host.
     An unknown name raises, so a typo can never open a third, imaginary lock."""
     k = (host or DEFAULT_BRIDGE_HOST).strip().lower()
-    if k not in BRIDGE_HOSTS:
-        raise SchemaError("unknown bridge host %r (known: %s)" % (host, ", ".join(BRIDGE_HOSTS)))
-    return k
+    machine, dot, inst = k.partition(".")
+    if machine not in BRIDGE_HOSTS or (dot and not re.fullmatch("[a-z]", inst)):
+        raise SchemaError("unknown bridge host %r (known: %s, each optionally .<instance letter>)"
+                          % (host, ", ".join(BRIDGE_HOSTS)))
+    return machine if inst == "a" else k        # .a is today's game, so the same lock as no suffix
+
+
+def split_bridge_host(hk):
+    """'stevedesktop.b' -> ('stevedesktop', 'b'); 'stevedesktop' -> ('stevedesktop', None)."""
+    machine, _dot, inst = bridge_host_key(hk).partition(".")
+    return machine, inst or None
+
+
+def ambient_bridge_host():
+    """The bridge key RM_GAME_INSTANCE names on this machine, or None with today's game: a process told which game it
+    drives must not take Archmagi's bridge by leaving out --host. Never read during replay, which must not vary."""
+    inst = (os.environ.get("RM_GAME_INSTANCE") or "").strip().lower()
+    if inst in ("", "a"):
+        return None
+    return "%s.%s" % ((os.environ.get("RM_HOST") or socket.gethostname()).strip().lower(), inst)
 
 # How long a holder may be silent before another window may simply take the bridge.
 # 🔑 The number exists to prevent MUTUAL LOCKOUT, which is the failure mode the owner
@@ -1334,7 +1353,7 @@ def shared_bridge_age_seconds(d):
         return None
 
 
-def bridge_body(holder, actor, purpose=None, since=None, note=None):
+def bridge_body(holder, actor, purpose=None, since=None, note=None, others=None):
     """The exact bytes the mirror should hold. Pure, so it is testable without a disk."""
     if holder:
         line = "HELD    %s    since %s" % (holder, since or now())
@@ -1346,6 +1365,9 @@ def bridge_body(holder, actor, purpose=None, since=None, note=None):
             line += "    (released by %s)" % actor
     if note:
         line += "\nnote    %s" % note
+    for key, ent in sorted((others or {}).items()):     # another game's holder, one line each; a free one adds nothing
+        line += "\nother   %s  %s  since %s%s" % (key, ent["holder"], ent.get("since") or "?",
+                                               "  for: %s" % ent["purpose"] if ent.get("purpose") else "")
     return BRIDGE_HEADER + line + "\n"
 
 
@@ -1393,7 +1415,7 @@ def _write_atomically(target, body):
     return body
 
 
-def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
+def write_bridge_file(holder, actor, purpose=None, since=None, note=None, others=None):
     """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
 
     🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
@@ -1404,7 +1426,7 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
     through the module that owns the 9p lock discipline.
     """
     target = bridge_mirror_path()
-    body = bridge_body(holder, actor, purpose, since, note)
+    body = bridge_body(holder, actor, purpose, since, note, others)
     os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
     return _write_atomically(target, body)
 

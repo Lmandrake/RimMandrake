@@ -7,14 +7,15 @@ previous run's marker, and its exit code was wrong both ways ("TIMEOUT after 273
 1005 s). This replaces it. launch_and_wait.sh is now a thin wrapper around this file.
 
 READY requires ALL of, in order:
-  1. every pre-existing RimWorldWin64 killed by PID (not image name) and seen gone      else KILL_FAILED
+  1. every pre-existing RimWorldWin64 OF THIS GAME (game_instance.py; another game on the machine is not ours to touch)
+     killed by PID (not image name) and seen gone                                       else KILL_FAILED
   2. the old Player.log MOVED to an archive (so no old line can be read again)           else LOG_NOT_ROTATED
   3. exactly one new process whose start time is after the launch                       else LAUNCH_NO_PROCESS /
                                                                                               DUPLICATE_PROCESS
      (a closed Steam is NOT a no-process case: steam:// revives it and the game starts; LAUNCH_NO_PROCESS means
      nothing came in launch_to_process_s, and a game arriving in late_arrival_watch_s after that is killed by PID
      so the verdict stays true, else LATE_PROCESS_ALIVE)
-  4. a 'Bridge token:' line in a Player.log written after the launch, while that process
+  4. a 'Bridge token:' line (a named game's port line) in a Player.log written after the launch, while that process
      stays alive                                                                         else PROCESS_EXITED /
                                                                                               DEADLINE_ALIVE
   5. the bridge port's LISTENING socket is owned by that PID                              else LISTENER_NOT_OURS
@@ -46,6 +47,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 sys.path.insert(0, UTILS)
+import game_instance  # noqa: E402
 
 SLACK_S = 5.0                       # WSL vs Windows clock skew allowance for start-time / mtime comparisons
 POLL_S = 2.0
@@ -65,7 +67,12 @@ def _token(text):
     m = None
     for m in TOKEN_RE.finditer(text or ""):
         pass
-    return m.group(1) if m else None
+    if m:
+        return m.group(1)
+    if game_instance.PORT_LINE in (text or ""):     # env mode logs no token line: the token is the one the game was given
+        return os.environ.get("GABP_TOKEN") or (
+            game_instance.read_token() if game_instance.current() != game_instance.DEFAULT else None)
+    return None
 
 
 def _port(text):
@@ -270,14 +277,7 @@ class RealEnv:
         time.sleep(s)
 
     def list_game_procs(self):
-        out = _ps("Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object { '{0}|{1}' -f "
-                  "$_.Id, ([DateTimeOffset]$_.StartTime).ToUnixTimeMilliseconds() }")
-        procs = []
-        for line in out.split("\n"):
-            if "|" in line:
-                a, b = line.strip().split("|", 1)
-                procs.append({"pid": int(a), "start": int(b) / 1000.0})
-        return procs
+        return game_instance.procs()    # Blind becomes LAUNCHER_ERROR: never "no game", never a kill on a guess
 
     def kill_pid(self, pid):
         subprocess.run(["taskkill.exe", "/PID", str(pid), "/F"], capture_output=True, timeout=60)
@@ -291,6 +291,11 @@ class RealEnv:
         return dst
 
     def launch(self):
+        if game_instance.current() != game_instance.DEFAULT:    # Steam's launch can only ever start game a
+            rc, out = game_instance.launch()
+            if rc != 0:
+                raise RuntimeError(out)
+            return
         subprocess.run(["cmd.exe", "/c", "start", "", "steam://rungameid/294100"], cwd="/mnt/c",
                        capture_output=True, timeout=60)
 
