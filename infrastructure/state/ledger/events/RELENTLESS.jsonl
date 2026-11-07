@@ -1412,3 +1412,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING A1 (L1), read-only proof","ts":"2026-11-06T23:56:18Z","tsn":1794009378020971953}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-06T23:59:10Z","tsn":1794009550648338574}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE A1 (L1), read-only proof","ts":"2026-11-06T23:59:28Z","tsn":1794009568173698266}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T00:00:29Z","tsn":1794009629812254067}
