@@ -5709,3 +5709,4 @@
 {"seat":"RUNNER","event":"live","id":"PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT","result":"kept","detail":"sweep: running again","ts":"2026-11-07T16:33:25Z","tsn":1794069205511287526}
 {"seat":"RUNNER","event":"live","id":"PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN","result":"kept","detail":"sweep: running again","ts":"2026-11-07T16:33:28Z","tsn":1794069208618033229}
 {"seat":"RUNNER","event":"live","id":"PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT","result":"kept","detail":"sweep: running again","ts":"2026-11-07T16:33:31Z","tsn":1794069211844221509}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-07T18:33:24Z","tsn":1794076404207647464}
