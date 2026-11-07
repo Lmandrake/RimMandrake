@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """selftest_save_uncompress -- offline checks of modcheck/save_uncompress.py on a small fake save (no game)."""
 import atexit
+import json
 import os
 import shutil
 import sys
@@ -11,6 +12,12 @@ tempfile.tempdir = os.environ["TMPDIR"] = tempfile.mkdtemp(prefix="st_selftest_s
 atexit.register(shutil.rmtree, tempfile.tempdir, True)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import save_uncompress as U  # noqa: E402
+import prove_chunks_v2_control as C  # noqa: E402
+import test_site_saves as T  # noqa: E402
+
+REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+import relentless_live_round as LR  # noqa: E402
 
 FAILS = []
 
@@ -122,6 +129,60 @@ for s in U.BAD_LOG:
     check("6 counts: %s" % s[:24], U.log_verdict(LINE + "\n" + s + ": x\n", "S")[1] == 1)
 check("6 things enough", U.things_verdict([{"defName": "A"}, {"defName": "A"}], {"A": 2}) == [])
 check("6 things short", U.things_verdict([{"defName": "A"}], {"A": 2}) != [])
+
+# 7. the repoint: every load of the calm site reads the expanded fixture, in the code and in the registry
+check("7 SITES calm is v3", T.SITES["calm"]["save"] == "RM_TestSite_calm_v3", T.SITES["calm"]["save"])
+with open(T.REGISTRY, encoding="utf-8") as f:
+    REG = json.load(f)
+check("7 the registry's calm is v3", REG["calm"]["save"] == "RM_TestSite_calm_v3", REG["calm"]["save"])
+
+# 8. the game lines: A1 reads v3 and A2 reads v2, both on a list that holds what causes the fault
+with open(os.path.join(REPO, LR.PROOFS_DIR, "CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES.txt"), encoding="utf-8") as f:
+    LIVE = f.read()
+MODS = LR.live_mods(LIVE)
+check("8 the list holds the chunk patch", "Elshender.stackablechunks" in MODS, MODS)
+check("8 the list holds the hash thief", "Armoury" in MODS, MODS)
+for cid, save, tool in (("A1", "RM_TestSite_calm_v3", "save_uncompress.py live "), ("A2", "RM_TestSite_calm_v2", "prove_chunks_v2_control.py live ")):
+    check("8 %s stages %s" % (cid, save), LR.site_for(LIVE, cid).endswith("--save " + save), LR.site_for(LIVE, cid))
+    check("8 %s reads %s" % (cid, save), tool + save + " " in LR.proof_lines(LIVE).get(cid, ""), LR.proof_lines(LIVE).get(cid))
+ALLD = "ChunkMarble=589,ChunkLimestone=566,ChunkSlate=549,MineableUranium=34"
+check("8 A2 asks after all four lost defs", LR.proof_lines(LIVE)["A2"].endswith("--lost " + ALLD), LR.proof_lines(LIVE)["A2"])
+check("8 A1 still asks after them", ALLD in LR.proof_lines(LIVE)["A1"], LR.proof_lines(LIVE)["A1"])
+
+# 9. the control's verdicts, on logs shaped like the two real ones
+FULL = "  - elshender.stackablechunks\n  - mandrake.rsw.armoury\n"
+TIER = "  - mandrake.rm.flowworks\n"
+LOADV2 = U.LOAD_LINE % C.V2 + "\n"
+RED = LOADV2 + FULL + (U.BAD_LOG[0] + ": x\n") * C.RED_LINES_AT_LEAST
+CLEAN = LOADV2 + TIER + "fine\n"
+check("9 mods are read under the load line only", C.mods_of(LOADV2 + TIER + "words\n  - not.amod\n") == {"mandrake.rm.flowworks"})
+check("9 the slice stops at the next load", C.load_slice(RED + U.LOAD_LINE % "Z" + "\nzz", C.V2, "first") == RED)
+check("9 the two records hold", C.offline_problems(RED, CLEAN) == [], C.offline_problems(RED, CLEAN))
+check("9 a red log without the mods fails", any("lacks" in b for b in C.offline_problems(RED.replace(FULL, TIER), CLEAN)))
+check("9 a red log gone quiet fails", any("bad lines" in b for b in C.offline_problems(LOADV2 + FULL, CLEAN)))
+check("9 a later load's lines do not make the first red", any("bad lines" in b for b in
+      C.offline_problems(LOADV2 + FULL + U.LOAD_LINE % "Z" + "\n" + (U.BAD_LOG[0] + "\n") * C.RED_LINES_AT_LEAST, CLEAN)))
+check("9 a contrast with the mods fails", any("no contrast" in b for b in C.offline_problems(RED, CLEAN.replace(TIER, FULL))))
+check("9 a contrast that is not clean fails", any("reads" in b for b in C.offline_problems(RED, CLEAN + U.BAD_LOG[0])))
+check("9 a contrast with no list fails", any("no mods" in b for b in C.offline_problems(RED, LOADV2 + "fine\n")))
+check("9 no load line is unmeasured", C.offline_problems("x", CLEAN)[0].startswith("UNMEASURED"))
+RUN = set(C.FAULT_MODS)
+LOST = {"ChunkMarble": 2, "MineableUranium": 1}
+check("9 live: all lost is red", C.control_verdict([], LOST, RUN)[0] == "red")
+check("9 live: too few of a def still counts as lost", C.control_verdict([{"defName": "ChunkMarble"}], LOST, RUN)[0] == "red")
+check("9 live: a def that stood is blind", C.control_verdict([{"defName": "MineableUranium"}], LOST, RUN)[0] == "blind")
+check("9 live: all stood is blind", C.control_verdict([{"defName": "ChunkMarble"}] * 2 + [{"defName": "MineableUranium"}], LOST, RUN)[0] == "blind")
+for gone in C.FAULT_MODS:
+    kind, lines = C.control_verdict([], LOST, RUN - {gone})
+    check("9 live: %s absent asks for a reload" % gone, kind == "unmeasured" and lines[-1].startswith("reload needed:"), lines)
+d = tempfile.mkdtemp()
+red, clean = os.path.join(d, "r.log"), os.path.join(d, "c.log")
+for path, text in ((red, RED), (clean, CLEAN)):
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+check("9 offline exit 0", C.main(["offline", "--red", red, "--clean", clean]) == 0)
+check("9 offline exit 1", C.main(["offline", "--red", clean, "--clean", clean]) == 1)
+check("9 offline exit 2 when absent", C.main(["offline", "--red", red + "x", "--clean", clean]) == 2)
 
 if FAILS:
     print("FAIL: %d: %s" % (len(FAILS), FAILS))

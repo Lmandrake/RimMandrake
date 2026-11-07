@@ -1,1 +1,2 @@
 A1 L2: RM_TestSite_calm_v3 loads with no non-compressible or 0-stackCount line; its chunks and uranium stand on the map
+A2 L2: control on the A1 list: unrepaired RM_TestSite_calm_v2 loses its chunks and uranium, so the list can see the fault

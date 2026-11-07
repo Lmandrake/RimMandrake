@@ -1,3 +1,5 @@
-live-mods: FlowWorks, GimmeSomeSlack
+live-mods: FlowWorks, GimmeSomeSlack, Armoury, Elshender.stackablechunks
 live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_calm_v3
 live-proof A1: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_calm_v3 --expect ChunkMarble=589,ChunkLimestone=566,ChunkSlate=549,MineableUranium=34,ChunkMechanoidSlag=9
+live-site A2: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_calm_v2
+live-proof A2: python.exe src/RimMandrake/Utils/modcheck/prove_chunks_v2_control.py live RM_TestSite_calm_v2 --lost ChunkMarble=589,ChunkLimestone=566,ChunkSlate=549,MineableUranium=34
