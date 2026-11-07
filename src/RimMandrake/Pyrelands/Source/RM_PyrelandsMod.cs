@@ -109,8 +109,6 @@ namespace RimMandrake.Pyrelands
         public static bool freshBurnBonusEnabled = true;
         public static float freshBurnBonus = 0.50f;
         public static float freshBurnDays = 6f;
-        public static bool rainFadesBurnBonus = true;
-        public static float rainFadeBudgetHours = 12f;
         public static int blackRainWaterHours = 24;
         public static bool ambientAshEnabled = true;
         public static float ambientAshShare = 1f;
@@ -176,8 +174,6 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref freshBurnBonusEnabled, "freshBurnBonusEnabled", true);
             Scribe_Values.Look(ref freshBurnBonus, "freshBurnBonus", 0.50f);
             Scribe_Values.Look(ref freshBurnDays, "freshBurnDays", 6f);
-            Scribe_Values.Look(ref rainFadesBurnBonus, "rainFadesBurnBonus", true);
-            Scribe_Values.Look(ref rainFadeBudgetHours, "rainFadeBudgetHours", 12f);
             Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
@@ -217,8 +213,7 @@ namespace RimMandrake.Pyrelands
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
             .Declare("ashWaterFertilityEnabled", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours")
-            .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus")
-            .Declare("rainFadesBurnBonus", "rainFadeBudgetHours")
+            .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays")
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
@@ -229,7 +224,7 @@ namespace RimMandrake.Pyrelands
             .Name("pyrelandsEnabled", "Mod enabled")
             .Name("ashDustingEnabled", "Fire dusts loose ash").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
             .Name("ashfallAccumulationEnabled", "Weather deposits ash drifts").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
-            .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground").Name("rainFadesBurnBonus", "Rain washes the bonus away early")
+            .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground")
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
             .Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
@@ -373,7 +368,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Ash field", RimMandrake.Shared.SettingScope.Now, new[] { "ashWaterFertilityEnabled", "ashDryFertility", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours", "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours", "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy" }))
+            if (Group(list, "Ash field", RimMandrake.Shared.SettingScope.Now, new[] { "ashWaterFertilityEnabled", "ashDryFertility", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours", "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy" }))
             {
                 list.Label("Deep ash is the Pyrelands' ordinary ground. Dry it feeds little; watered it grows almost anything; a fresh burn "
                   + "feeds it for a few days. Hover a deep-ash cell to see \"watered\" and \"fresh burn\". Every number here is provisional.");
@@ -396,24 +391,17 @@ namespace RimMandrake.Pyrelands
                 }
                 }
                 list.Gap();
-                using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
+                using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays"))
                 {
                 list.CheckboxLabeled("A fresh burn feeds the ground", ref freshBurnBonusEnabled,
-                    "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it. "
+                    "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it, and black rain's watered lift adds to it. "
                   + "Off: no bonus and no burn record is kept.");
-                using (Dependent(list, "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
+                using (Dependent(list, "freshBurnBonus", "freshBurnDays"))
                 {
                     list.Label("Bonus right after a burn: +" + freshBurnBonus.ToStringPercent());
                     freshBurnBonus = list.Slider(freshBurnBonus, 0f, 1.5f);
                     list.Label("Bonus lasts: " + freshBurnDays.ToString("0.#") + " days");
                     freshBurnDays = list.Slider(freshBurnDays, 1f, 20f);
-                    list.CheckboxLabeled("Rain washes the bonus away early", ref rainFadesBurnBonus,
-                        "Each hour of rain (here, Black Rain) takes a share of the bonus. Off: the bonus fades by time only.");
-                    using (Dependent(list, "rainFadeBudgetHours"))
-                    {
-                        list.Label("Hours of full rain that strip the whole bonus: " + rainFadeBudgetHours.ToString("0"));
-                        rainFadeBudgetHours = list.Slider(rainFadeBudgetHours, 1f, 72f);
-                    }
                 }
                 }
                 list.Gap();

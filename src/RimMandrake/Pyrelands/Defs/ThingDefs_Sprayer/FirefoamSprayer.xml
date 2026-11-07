@@ -11,12 +11,6 @@
     same filth FirefoamPopper and Bullet_Shell_Firefoam already place.
     Smaller blast/shorter range than the mortar-shell firefoam popper, since
     this is a carried tool a colonist aims, not an artillery shell.
-
-    The layable firebreak LINE is the separate buildable TerrainDef
-    (Firebreak.xml) laid via the ordinary floor-designator, not fired from
-    this weapon — matching the doc's "a temporary, consumable foam-sprayed
-    strip... letting the player stage a controlled burn on their own
-    schedule," a placement action, not a combat one.
   -->
 
   <ThingDef ParentName="BaseBullet">

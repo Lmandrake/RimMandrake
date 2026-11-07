@@ -12,7 +12,7 @@ namespace RimMandrake.Pyrelands
     // "roll a chance, spawn a prop nearby" while a fire burns.
     //
     // Everything else in FIRE_ECOLOGY_LOOP_1 (the weather-table strip, Black
-    // Rain's trigger, burnedDef to deep ash, the firebreak) is pure XML riding
+    // Rain's trigger, burnedDef to deep ash) is pure XML riding
     // vanilla mechanisms that already exist — see the .xml files' own
     // comments for the RimSage citations. Only "a specific prop appears at a
     // specific cell because a specific event just happened here" has no
@@ -60,7 +60,7 @@ namespace RimMandrake.Pyrelands
         }
 
         // Scorchable ground: ANY Pyrelands ground (RM_FE_*, deep ash included,
-        // not the firebreak) OR vanilla Soil/Sand/Gravel/SoilRich. The ground
+        // not a floor) OR vanilla Soil/Sand/Gravel/SoilRich. The ground
         // alone opts no map in: the fire-tick hook also needs FireEcologyBiomeGate.
         internal static bool IsScorchableGround(TerrainDef terrain)
         {

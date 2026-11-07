@@ -4,8 +4,7 @@
   <!--
     RM_Pyrelands — the mod's OWN biome. Until this def existed, every
     piece of fire-ecology machinery in this mod (the ash field, the
-    scorchable ground clones, black rain, the scorch-fruit pod, the
-    firebreak) had to be patched onto somebody else's BiomeDef by a
+    scorchable ground clones, black rain, and the scorch-fruit pod) had to be patched onto somebody else's BiomeDef by a
     separate wiring mod. This def is what makes the mod self-contained:
     the terrains, the plants and the weather it ships are the terrains,
     plants and weather THIS biome uses, with no patch and no donor.
@@ -30,7 +29,7 @@
   <BiomeDef>
     <defName>RM_Pyrelands</defName>
     <label>the Pyrelands</label>
-    <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_Pyrelands</texture>
 
@@ -106,7 +105,7 @@
            (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Pyrelands</letterLabel>
-        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It grows back faster than anything can eat it and dries within days, and the first dry storm sets it off. Keep a firebreak. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It grows back faster than anything can eat it and dries within days, and the first dry storm sets it off. Keep bare paving between the grass and your walls. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
       </li>
     </modExtensions>
 

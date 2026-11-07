@@ -56,19 +56,18 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>The fire-tick gate's ground (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): ANY Pyrelands ground (an `RM_FE_` terrain, deep
-        /// ash included, since deep ash is ~85% of the biome) except the firebreak, plus vanilla Soil/Sand/Gravel/SoilRich. The
+        /// ash included, since deep ash is ~85% of the biome), plus vanilla Soil/Sand/Gravel/SoilRich. The
         /// ground alone opts in nothing: the hook ANDs it with the map's biome gate (ScorchableHere, FireEcologyOnMap). Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
         /// stamp on every deep-ash cell.</summary>
         public static bool IsScorchableGround(string n)
         {
-            if (n == null || n == FirebreakDefName)
+            if (n == null)
             {
                 return false;
             }
             return IsPyrelandsGround(n) || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
         }
 
-        public const string FirebreakDefName = "RM_FE_FirebreakLine";
         public const string DeepAshDefName = "RM_FE_Ash_Deep";
 
         /// <summary>The retired ladder rungs, kept one cycle as hidden legacy aliases and re-laid to deep ash on load.</summary>
@@ -86,19 +85,15 @@ namespace RimMandrake.Pyrelands
             return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;
         }
 
-        /// <summary>Fresh-burn bonus (design §4): base x max(0, 1 - age/duration - rainSince/rainBudget), capped at base. burnTick &lt; 0 =
-        /// never burned; a stamp from the future (another game) counts as never. rainFade off = time only.</summary>
-        public static float BurnBonus(int burnTick, int now, float bonus, int durationTicks, float rainSince, float rainBudget, bool rainFade)
+        /// <summary>Fresh-burn bonus: base x max(0, 1 - age/duration), on its own clock; rain never takes it away (owner, d_blackrain_stop_wipe:
+        /// black rain's watered lift stacks on top). burnTick &lt; 0 = never burned; a stamp from the future (another game) counts as never.</summary>
+        public static float BurnBonus(int burnTick, int now, float bonus, int durationTicks)
         {
             if (burnTick < 0 || now < burnTick || durationTicks <= 0 || bonus <= 0f)
             {
                 return 0f;
             }
             float f = 1f - (float)(now - burnTick) / durationTicks;
-            if (rainFade && rainBudget > 0f && rainSince > 0f)
-            {
-                f -= rainSince / rainBudget;
-            }
             if (f <= 0f)
             {
                 return 0f;
@@ -336,7 +331,7 @@ namespace RimMandrake.Pyrelands
         public static readonly int[] FruitSpotDz = { 0, -1, 0, 1, -1, 1, -1, 0, 1 };
 
         /// <summary>SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: a pod lands only on bare, standable PYRELANDS GROUND (IsScorchableGround: deep
-        /// ash or the scorchable soils), never on a firebreak, a floor or other unburnable ground beside the fire.</summary>
+        /// ash or the scorchable soils), never on a floor or other unburnable ground beside the fire.</summary>
         public static bool FruitLandingLegal(bool inBounds, bool standable, bool hasPlant, bool scorchableGround)
         {
             return inBounds && standable && !hasPlant && scorchableGround;

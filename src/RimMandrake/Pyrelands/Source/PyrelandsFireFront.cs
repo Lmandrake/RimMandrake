@@ -29,7 +29,7 @@ namespace RimMandrake.Pyrelands
     /// FireFrontWidthCells ignitions on one bearing, so the thing that walks off
     /// downwind is a burn-line rather than a candle. Every cell still goes
     /// through vanilla's FireUtility.ChanceToStartFireIn, so terrain
-    /// flammability, firebreaks (RM_FE_FirebreakLine) and the existing fire
+    /// flammability, paved strips and the existing fire
     /// chain are all respected without re-deriving any of them — this is how it
     /// "burns THROUGH quickgrass" rather than around it.
     ///

@@ -746,8 +746,8 @@ namespace RimMandrake.Pyrelands.Fuzz
                           && !RM_FireEcoKernel.WateredExpiredWithin(0, 100, 250) && !RM_FireEcoKernel.WateredExpiredWithin(-1, 100, 250), "WateredExpiredWithin boundaries");
                     for (int m = 0; m < 16; m++)   // SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: only bare standable Pyrelands ground takes a pod
                         Check(RM_FireEcoKernel.FruitLandingLegal((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 11), "FruitLandingLegal table " + m);
-                    Check(!RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.FirebreakDefName) && RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
-                          && !RM_FireEcoKernel.IsScorchableGround("WoodPlankFloor"), "a pod could land on a firebreak or a floor");
+                    Check(RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
+                          && !RM_FireEcoKernel.IsScorchableGround("WoodPlankFloor"), "a pod could land on a floor");
                     var rsKeep = RM_FireEcoKernel.RolledStillBurning(new HashSet<int> { 1, 2, 3 }, new[] { 2, 3, 4 });
                     Check(rsKeep.Count == 2 && rsKeep.Contains(2) && rsKeep.Contains(3) && RM_FireEcoKernel.RolledStillBurning(null, new[] { 1 }).Count == 0,
                           "RolledStillBurning keeps exactly the rolled fires still burning");
@@ -768,23 +768,19 @@ namespace RimMandrake.Pyrelands.Fuzz
                 }
                 // ash field (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3-§4): fresh-burn bonus vs its spec formula, then the invariants
                 {
-                    float af_bonus = (float)(r.NextDouble() * 1.5), af_budget = (float)(0.5 + r.NextDouble() * 48);
+                    float af_bonus = (float)(r.NextDouble() * 1.5);
                     int af_dur = 60000 * (1 + r.Next(20)), af_burn = r.Next(4) == 0 ? -1 : r.Next(1000000), af_now = Math.Max(0, af_burn) + r.Next(-1000, 2 * af_dur);
-                    float af_rain = r.Next(3) == 0 ? 0f : (float)(r.NextDouble() * 2 * af_budget); bool af_fade = r.Next(2) == 0;
-                    float bGot = RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, af_fade);
-                    double bF = af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : 1 - (double)(af_now - af_burn) / af_dur - (af_fade && af_rain > 0f ? af_rain / af_budget : 0);
+                    float bGot = RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur);
+                    double bF = af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : 1 - (double)(af_now - af_burn) / af_dur;
                     double bSpec = Math.Max(0, Math.Min(1, bF)) * (af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : af_bonus);
-                    Check(Math.Abs(bGot - bSpec) < 1e-4, $"BurnBonus af_burn={af_burn} af_now={af_now} af_bonus={af_bonus} af_dur={af_dur} af_rain={af_rain}/{af_budget} af_fade={af_fade}: {bGot}, bSpec {bSpec}");
+                    Check(Math.Abs(bGot - bSpec) < 1e-4, $"BurnBonus af_burn={af_burn} af_now={af_now} af_bonus={af_bonus} af_dur={af_dur}: {bGot}, bSpec {bSpec}");
                     Check(bGot >= 0f && bGot <= af_bonus + 1e-6f, "bonus outside [0, base]");
                     if (af_burn >= 0 && af_now >= af_burn)
                     {
-                        // decay: later never larger; af_rain never adds; re-af_burn resets to full
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now + 2500, af_bonus, af_dur, af_rain, af_budget, af_fade) <= bGot + 1e-6f, "the bonus grew with time");
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain + 1f, af_budget, af_fade) <= bGot + 1e-6f, "more rain raised the bonus");
-                        Check(Math.Abs(RM_FireEcoKernel.BurnBonus(af_now, af_now, af_bonus, af_dur, 0f, af_budget, af_fade) - af_bonus) < 1e-6f, "a re-burn did not restart at full");
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_burn + af_dur, af_bonus, af_dur, 0f, af_budget, af_fade) == 0f, "the bonus outlived its duration");
-                        Check(!af_fade || af_rain < af_budget || RM_FireEcoKernel.BurnBonus(af_burn, af_burn, af_bonus, af_dur, af_rain, af_budget, true) == 0f, "a full rain budget left a bonus");
-                        Check(af_fade || RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, false) == RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, 0f, af_budget, false), "rain faded the bonus with the fade off");
+                        // decay: later never larger; re-af_burn resets to full
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now + 2500, af_bonus, af_dur) <= bGot + 1e-6f, "the bonus grew with time");
+                        Check(Math.Abs(RM_FireEcoKernel.BurnBonus(af_now, af_now, af_bonus, af_dur) - af_bonus) < 1e-6f, "a re-burn did not restart at full");
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_burn + af_dur, af_bonus, af_dur) == 0f, "the bonus outlived its duration");
                     }
                     float af_dry = (float)r.NextDouble(), af_wat = af_dry + (float)r.NextDouble() * 1.5f, af_b = (float)r.NextDouble();
                     bool af_w = r.Next(2) == 0, af_on = r.Next(2) == 0;
@@ -800,11 +796,11 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(Math.Abs(RM_FireEcoKernel.BonusDaysLeft(0, 180000, 360000) - 3f) < 1e-6f && RM_FireEcoKernel.BonusDaysLeft(-1, 5, 360000) == 0f, "BonusDaysLeft");
                 }
                 // 🔴 THE REGRESSION (design §4): the fire-tick gate must admit deep ash (~85% of the biome) or ash dusting,
-                // scorch-fruit and the burn stamp go silent there. It still refuses the firebreak.
+                // scorch-fruit and the burn stamp go silent there. It still refuses paved floors.
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep"), "the fire-tick gate refuses RM_FE_Ash_Deep: dusting, scorch-fruit and the burn stamp would stop on ~85% of the Pyrelands");
                 Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash does not roll");
                 Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash is not stamped");
-                Check(!RM_FireEcoKernel.IsScorchableGround("RM_FE_FirebreakLine"), "the firebreak counts as scorchable ground");
+                Check(!RM_FireEcoKernel.IsScorchableGround("Concrete"), "a paved floor counts as scorchable ground");
                 Check(RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Heavy") && !RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsLegacyAsh(null), "IsLegacyAsh");
                 // list parser vs spec
                 string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
@@ -875,7 +871,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, here) == want4, "forest fire ash/fruit roll " + m);
                     Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, here) == want4, "forest fire burn stamp " + m);
                 }
-                Check(!RM_FireEcoKernel.ScorchableHere(true, "RM_FE_FirebreakLine") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
+                Check(!RM_FireEcoKernel.ScorchableHere(true, "Concrete") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
                     && RM_FireEcoKernel.ScorchableHere(true, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.ScorchableHere(true, null), "ScorchableHere corners");
                 Check(RM_FireEcoKernel.FireEcologyOnMap(true, false) && RM_FireEcoKernel.FireEcologyOnMap(false, true) && !RM_FireEcoKernel.FireEcologyOnMap(false, false), "FireEcologyOnMap table");
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");

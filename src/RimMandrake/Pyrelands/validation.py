@@ -31,7 +31,7 @@ puts `terrainPatchMakers` under `extra`; `jawa/get_defs` reads `wildPlants` and
 animal manifest is read through `jawa/biome_probe` (the resolved roster). A component that cannot measure
 calls `_unmeasured()`, which records UNMEASURED with its reason; it never passes.
 
-Fire hygiene: every fire burns on its own pad, ringed by `RM_FE_FirebreakLine`. Pads sit away
+Fire hygiene: every fire burns on its own pad, ringed by a vanilla floor (concrete). Pads sit away
 from the colonists at the map centre.
 
 Teardown (`@_teardown`): settings fields are `public static`
@@ -66,7 +66,7 @@ suite.toggles = ["ashDustingEnabled", "scorchFruitEnabled",
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 SOIL = "RM_FE_Ground_Soil"
-FIREBREAK = "RM_FE_FirebreakLine"
+FIREBREAK = "Concrete"
 TEST_SIZE = 24
 
 # Immutable manifests (plan 1.3). 3 plants; 16 animal kinds (RM_Ullai added by PYRELANDS_ULLAI_GIANT_BUILD_1;
@@ -526,7 +526,7 @@ def _probe(t, x, z):
             out[k] = v
     if "fertility" not in out:
         _fail("ProbeCell(%d,%d) returned no fertility: %r" % (x, z, r))
-    for k in ("fertility", "bonus", "rainAcc"):
+    for k in ("fertility", "bonus", "base", "wateredFertility"):
         out[k] = float(out.get(k, "nan"))
     out["watered"] = out.get("watered") == "True"
     return out
@@ -617,7 +617,7 @@ def burn_cleared(pre, after_fire, min_cleared=0.5):
 
 
 def _firebreak(t, rect, width=4):
-    """Ring `rect` with the biome's own non-flammable firebreak terrain and strip its plants."""
+    """Ring `rect` with a non-flammable vanilla floor and strip its plants."""
     x, z, w, h = rect
     ring = [(x - width, z - width, w + 2 * width, width), (x - width, z + h, w + 2 * width, width),
             (x - width, z, width, h), (x + w, z, width, h)]
@@ -1288,8 +1288,8 @@ def ash_fertility_watered(t):
 def fresh_burn_bonus(t):
     """LONG SPLIT (~100k ticks). pyre_fresh_burn_feeds_the_field, a STATE read of FertilityAt on a burned deep-ash cell:
     before the burn, right after it, +1 day (the linear decay; the design's +3 days costs another 120k ticks for a point
-    the kernel selftest already pins), then after ~15 h of forced RM_FE_BlackRain (rain budget 12 h at rate 1.1: the bonus
-    must be gone, and the Black Rain must have watered the field). The fire burning on DEEP ASH is also the live proof of
+    the kernel selftest already pins), then after ~15 h of forced RM_FE_BlackRain: the bonus must still be on its own clock
+    and the Black Rain must have watered the field, so burned-and-rained beats burned alone and rained alone. The fire burning on DEEP ASH is also the live proof of
     the widened fire-tick gate (the stamp fires only through it)."""
     _pad(t, PAD_BURN)
     t.clear_area(size=TEST_SIZE)
@@ -1324,10 +1324,12 @@ def fresh_burn_bonus(t):
                       % (after["bonus"], before["fertility"], after["fertility"], BURN_BONUS_MIN))
             if not (0 < day1["bonus"] < after["bonus"]):
                 _fail("the bonus did not fade over a day: %.3f -> %.3f" % (after["bonus"], day1["bonus"]))
-            if rained["bonus"] > 0.01:
-                _fail("~15 h of Black Rain left a burn bonus of %.3f (rain budget 12 h)" % rained["bonus"])
             if not rained["watered"]:
                 _fail("Black Rain did not water the field: %r" % rained)
+            if not (0 < rained["bonus"] < day1["bonus"]):
+                _fail("~15 h of Black Rain moved the bonus off its clock: day1 %.3f, rained %.3f" % (day1["bonus"], rained["bonus"]))
+            if rained["fertility"] < rained["wateredFertility"] + rained["bonus"] - 0.01:
+                _fail("the bonus did not stack on the watered lift: %r" % rained)
         t.screenshot(rect=burn)
 
 

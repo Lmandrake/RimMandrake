@@ -60,7 +60,7 @@ X0 = 8
 ROWS = [("A", "GROUND", 84), ("B", "FIRE", 68), ("C", "PLANTS", 52),
         ("D", "BUILD AND CRAFT", 36), ("E", "CREATURES", 20), ("F", "CAMPAIGN CAST", 4)]
 ASH = "RM_FE_Ash_Deep"
-FIREBREAK = "RM_FE_FirebreakLine"
+FIREBREAK = "Concrete"  # the fire-hygiene ring; the biome's own firebreak terrain is gone (d_firebreak_cut)
 WALL_STUFF = "BlocksGranite"
 FREE = dict(rect=(150, 104, 50, 28), shelter=(156, 108, 11, 9))
 NATURAL = dict(rect=(50, 168, 40, 32))  # left untouched: the fixture's own ground round its pond (x 67-72, z 180-189)
@@ -125,10 +125,10 @@ def station_defs():
         ["Hover the rich soil: 140%. Plant something on it."], "Nothing.",
         terrain=[("RM_FE_Ground_SoilRich", 2, 2, 8, 8), ("Mud", 3, 3, 6, 6), ("WaterShallow", 4, 4, 4, 4)],
         expect_terrain={"WaterShallow": 16})
-    add("A", "FIREBREAK LINE", "the buildable firebreak floor",
-        "Architect > Floors > firebreak line. Weak spot: it borrows RoughHewnRock's texture; does it read as a "
-        "deliberate firebreak beside grass?", ["Lay more of it yourself (god mode builds at once).",
-                                              "Light the grass (Dev > Debug actions > Fire): the fire stops at the line."],
+    add("A", "PAVED STRIP", "an ordinary paved strip holds a burn",
+        "Concrete laid beside grass, the player's way to hold a walking line.",
+        ["Lay more of it yourself (god mode builds at once).",
+         "Light the grass (Dev > Debug actions > Fire): the fire stops at the line."],
         "Nothing until you light the grass.",
         terrain=[(FIREBREAK, 2, 5, 8, 2)], plants=[(EMBER, 2, 7, 8, 3, 1.0, 1.0)],
         expect_terrain={FIREBREAK: 16}, burnable=True)
@@ -192,9 +192,9 @@ def station_defs():
         "Paused: nothing. Lit: the burn crosses the pen; the ashwallow dives and surfaces.",
         room=(1, 1, 10, 10), plants=[(EMBER, 2, 2, 8, 8, 1.0, 1.0)], pawns=[("RM_Ashwallow", 6, 6, 1)], keep=True,
         burnable=True)
-    add("B", "FIREBREAK AND FOAM", "lay your own firebreak, then light it",
+    add("B", "PAVING AND FOAM", "lay your own paved strip, then light it",
         "An unringed grass pad: try the player's tools against fire.",
-        ["Architect > Floors > firebreak line across the pad, then light one side.",
+        ["Architect > Floors > concrete across the pad, then light one side.",
          "Equip a colonist with the firefoam sprayer (D, items) and spray the fire."],
         "Paused: nothing. The pad is surrounded by bare ash, so the fire cannot leave the station.",
         terrain=[(ASH, 1, 1, 10, 10)], plants=[(EMBER, 1, 2, 10, 8, 1.0, 1.0)], burnable=True,
@@ -334,9 +334,9 @@ SIGNS = {
     "WATER RING": ("water ringed with mud, then rich soil",
                    "hover the rich soil (140%); compare N0's pond",
                    "does it look like the biome's own pond?"),
-    "FIREBREAK LINE": ("a stone firebreak strip beside grass",
-                       "light the grass (Dev > Debug actions > Fire)",
-                       "does the fire stop at the line? does it look deliberate?"),
+    "PAVED STRIP": ("a concrete strip beside grass",
+                    "light the grass (Dev > Debug actions > Fire)",
+                    "does the fire stop at the line?"),
     "LOOSE ASH DRIFTS": ("loose ash, 1 to 4 layers, west to east",
                          "select a drift; clean it if you like",
                          "do thick drifts read as ash, or as dirt?"),
@@ -358,9 +358,9 @@ SIGNS = {
     "BURROWER": ("an ashwallow in grass",
                  "light the west edge, unpause at 1x, select it",
                  "can you SEE that it has burrowed, and that it survives?"),
-    "FIREBREAK AND FOAM": ("an open grass pad: your tools vs fire",
-                           "lay a firebreak, light one side, spray firefoam",
-                           "do the firebreak and the foam both stop it?"),
+    "PAVING AND FOAM": ("an open grass pad: your tools vs fire",
+                        "lay a paved strip, light one side, spray firefoam",
+                        "do the paving and the foam both stop it?"),
     "EMBER GRASS: GROWTH": ("ember grass at 5, 25, 50, 75, 100%",
                             "hover each strip for its growth",
                             "does young grass read as young, or just small?"),
@@ -459,7 +459,7 @@ FEATURES = [
     ("terrain", "Unburned pockets: soil, rich soil, gravel, sand (RM_FE_Ground_*)", "ScorchableGround.xml", "2"),
     ("terrain", "Every ground burns to deep ash in one step (burnedDef)", "ScorchableGround.xml", "7 8"),
     ("terrain", "Water ringed with mud and rich soil (terrainPatchMakers)", "BiomeDefs/Pyrelands.xml", "3 N0"),
-    ("terrain", "Firebreak line: buildable floor that stops fire", "TerrainDefs/Firebreak.xml", "4 12"),
+    ("terrain", "A vanilla paved strip holds a burn", "vanilla Concrete", "4 12"),
     ("terrain", "Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)", "AshField.xml", None,
      "they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none "
      "remain. Their three PNGs are orphaned (named on station 1's card)."),
@@ -738,7 +738,7 @@ def station_def_names(s):
 
 
 # Defs a station names that this repo does not define (vanilla Core / DLC). Anything else must be found in src/.
-VANILLA = {"WaterShallow", "Mud", "Wall", "Door", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
+VANILLA = {"Concrete", "WaterShallow", "Mud", "Wall", "Door", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
            "WoodLog", "Plant_Potato", "BlocksGranite", "Cooler", "SolarGenerator", "MealSurvivalPack",
            "MedicineIndustrial", "ComponentIndustrial"}
 

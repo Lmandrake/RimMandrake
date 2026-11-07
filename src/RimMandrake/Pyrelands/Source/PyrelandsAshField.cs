@@ -12,8 +12,8 @@ namespace RimMandrake.Pyrelands
     // (design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md §3-§5a, §7).
     //
     // Deep ash is the Pyrelands' ordinary ground. Dry it feeds little (its XML fertility, written from ashDryFertility at
-    // startup); WATERED it is as rich as rich soil; a fresh burn adds a bonus that fades over days and that a Black Rain washes
-    // away early. All of it reaches every reader (plant growth, sowing, the fertility overlay, the mouseover) through one
+    // startup); WATERED it is as rich as rich soil; a fresh burn adds a bonus that fades over days, and a Black Rain's watered lift stacks
+    // on it. All of it reaches every reader (plant growth, sowing, the fertility overlay, the mouseover) through one
     // postfix on FertilityGrid.CalculateFertilityAt, which vanilla never caches (RimSage, RimWorld/FertilityGrid.cs:44).
     //
     // Watered = (a) a FlowWorks dug cell holding fresh water, itself and its 8 neighbours (the shared rule in
@@ -22,9 +22,7 @@ namespace RimMandrake.Pyrelands
     // by an 8-pass sliced sweep (RM_SoakSources' cadence), each mark lasting one day, so a drained source's residual day survives a
     // reload (ASH_FIELD_FIX_FORGETS_THE_WATER); (c) is one saved per-map tick.
     //
-    // The burn bonus: a SAVED per-cell "last fire tick" plus the rain accumulator R at that tick; R gains rainRate x hours every
-    // 250 ticks (in this biome effectively only Black Rain). Accepted simplification: roofs are ignored for the fade (a fresh burn
-    // under a roof is rare).
+    // The burn bonus: a SAVED per-cell "last fire tick", on its own clock. Rain never touches it (owner, d_blackrain_stop_wipe).
     // ════════════════════════════════════════════════════════════════════
 
     /// <summary>Opt a terrain into the ash field. Data, so another biome can opt its own ground in.</summary>
@@ -41,11 +39,9 @@ namespace RimMandrake.Pyrelands
 
         // Saved.
         private int[] burnTick;
-        private float[] rainAtBurn;
-        private float rainAcc;
         private int blackRainWateredUntil = -1;
         // Fires that took their one scorch-fruit roll (FireEcologyHook). Saved as the ids of fires still burning at the save, so a
-        // fire alive across a save/load does not roll again (SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK).
+        // fire alive across a save/load does not roll again (SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK, an item name).
         private HashSet<int> rolledFruitFires = new HashSet<int>();
 
         // Saved (ASH_FIELD_FIX_FORGETS_THE_WATER): a drained source's residual watered day must survive a reload.
@@ -79,7 +75,6 @@ namespace RimMandrake.Pyrelands
 
         internal HashSet<int> RolledFruitFires => rolledFruitFires;
 
-        public float RainAccumulator => rainAcc;
         public int BlackRainWateredUntil => blackRainWateredUntil;
 
         private void EnsureGrids()
@@ -90,22 +85,18 @@ namespace RimMandrake.Pyrelands
                 burnTick = new int[n];
                 for (int i = 0; i < n; i++) burnTick[i] = -1;
             }
-            if (rainAtBurn == null || rainAtBurn.Length != n) rainAtBurn = new float[n];
             if (wateredUntil == null || wateredUntil.Length != n) wateredUntil = new int[n];
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref rainAcc, "rainAcc", 0f);
             Scribe_Values.Look(ref blackRainWateredUntil, "blackRainWateredUntil", -1);
-            byte[] bt = null, rb = null, wu = null;
+            byte[] bt = null, wu = null;
             if (Scribe.mode == LoadSaveMode.Saving && burnTick != null)
             {
                 bt = new byte[burnTick.Length * 4];
                 Buffer.BlockCopy(burnTick, 0, bt, 0, bt.Length);
-                rb = new byte[rainAtBurn.Length * 4];
-                Buffer.BlockCopy(rainAtBurn, 0, rb, 0, rb.Length);
             }
             if (Scribe.mode == LoadSaveMode.Saving && wateredUntil != null)
             {
@@ -132,16 +123,13 @@ namespace RimMandrake.Pyrelands
                 rolledFruitFires = rolled != null ? new HashSet<int>(rolled) : new HashSet<int>();
             }
             DataExposeUtility.LookByteArray(ref bt, "ashBurnTick");
-            DataExposeUtility.LookByteArray(ref rb, "ashRainAtBurn");
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
                 // A save without the grids (or from a different map size) reads as "never burned".
-                if (bt != null && rb != null && bt.Length == rb.Length && bt.Length % 4 == 0)
+                if (bt != null && bt.Length % 4 == 0)
                 {
                     burnTick = new int[bt.Length / 4];
                     Buffer.BlockCopy(bt, 0, burnTick, 0, bt.Length);
-                    rainAtBurn = new float[rb.Length / 4];
-                    Buffer.BlockCopy(rb, 0, rainAtBurn, 0, rb.Length);
                 }
             }
         }
@@ -222,7 +210,6 @@ namespace RimMandrake.Pyrelands
                 WeatherDef w = map.weatherManager?.curWeather;
                 if (w != null)
                 {
-                    rainAcc += w.rainRate * ((float)IntervalTicks / GenDate.TicksPerHour);
                     if (w.defName == BlackRainDefName && RM_PyrelandsSettings.blackRainWaterHours > 0)
                     {
                         if (blackRainWateredUntil <= now) overlayStale = true;   // dry to wet
@@ -305,7 +292,6 @@ namespace RimMandrake.Pyrelands
             EnsureGrids();
             int i = map.cellIndices.CellToIndex(c);
             burnTick[i] = now;
-            rainAtBurn[i] = rainAcc;
             active = true;
         }
 
@@ -321,8 +307,7 @@ namespace RimMandrake.Pyrelands
             if (!RM_PyrelandsSettings.freshBurnBonusEnabled || burnTick == null || burnTick.Length != map.cellIndices.NumGridCells) return 0f;
             int i = map.cellIndices.CellToIndex(c);
             return RM_FireEcoKernel.BurnBonus(burnTick[i], now, RM_PyrelandsSettings.freshBurnBonus,
-                (int)(RM_PyrelandsSettings.freshBurnDays * GenDate.TicksPerDay), rainAcc - rainAtBurn[i],
-                RM_PyrelandsSettings.rainFadeBudgetHours, RM_PyrelandsSettings.rainFadesBurnBonus);
+                (int)(RM_PyrelandsSettings.freshBurnDays * GenDate.TicksPerDay));
         }
 
         public float BonusDaysLeft(IntVec3 c, int now)
@@ -352,10 +337,11 @@ namespace RimMandrake.Pyrelands
             TerrainDef t = c.GetTerrain(m);
             int i = m.cellIndices.CellToIndex(c);
             return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "fertility={0:0.000};terrain={1};ashField={2};watered={3};bonus={4:0.000};burnTick={5};rainAcc={6:0.00};blackRainWateredUntil={7};now={8};active={9}",
+                "fertility={0:0.000};terrain={1};ashField={2};watered={3};bonus={4:0.000};burnTick={5};base={6:0.000};wateredFertility={7:0.000};raining={8};blackRainWateredUntil={9};now={10};active={11}",
                 m.fertilityGrid.FertilityAt(c), t?.defName, t != null && t.HasModExtension<RM_AshFieldExtension>(),
                 comp != null && comp.IsWatered(c, now), comp?.BonusAt(c, now) ?? 0f,
-                comp?.burnTick != null && comp.burnTick.Length > i ? comp.burnTick[i] : -1, comp?.rainAcc ?? 0f,
+                comp?.burnTick != null && comp.burnTick.Length > i ? comp.burnTick[i] : -1, t?.fertility ?? 0f,
+                t?.GetModExtension<RM_AshFieldExtension>()?.wateredFertility ?? 0f, m.weatherManager?.curWeather?.defName == BlackRainDefName,
                 comp?.blackRainWateredUntil ?? -1, now, comp != null && comp.active);
         }
 
