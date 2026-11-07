@@ -1,3 +1,0 @@
-jawa/hot_reload_defs (in-game def reload) is UNPROVEN: the owner reports it crashed the game on a large mod list and expects it to cost about as much as a reload (owner 2026-11-05). Never count it as a speed-up until a minimal-list test proves it.
-
-Record: infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md (2026-09-03, 589 mods): the bridge hung ~5 min, then every pawn spawn failed with KeyNotFoundException RimWorld.HairDef. It calls PlayDataLoader.HotReloadDefs() (JawaBenchDebugGems1.cs:503), which never re-runs StaticConstructorOnStartup or mod static caches. A minimal-list test is the open question.

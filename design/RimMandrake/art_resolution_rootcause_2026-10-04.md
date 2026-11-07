@@ -51,7 +51,7 @@ is the ungrounded one** — and the sheet hid the evidence that would have shown
 3. **The canon panel said "No canon-library entry"** (false absence, R5→R4). `INDEX.md` lists only `RSW_Wraid` for
    `wraid/`, and `canon_entry("RSW_WraidAlpha")` tries the dirnames `rsw_wraidalpha` / `wraidalpha`, which do not exist.
    The wraid reference images, which would have shown at a glance that A matches canon, were never put beside the row.
-   (Also a lesson: `infrastructure/state/lessons/20261004T222829Z-BENCH-art-sheet-canon-lookup-was-exact.md`.)
+   (Also a lesson: `skills/rimworld-review-sheets/references/art_requirements.md`.)
 4. **"shipped, shadowed — SWBestiary" is a false label** (R2). Nothing shadows it, because no other mod ships that
    texPath. The census and the sheet were built while the live `ModsConfig.xml` held a **9-mod test list**
    (`inputs.load_order: "ModsConfig.xml 9 active, modified 2026-10-04 10:55"`). SWBestiary was not in it, so it
@@ -60,7 +60,7 @@ is the ungrounded one** — and the sheet hid the evidence that would have shown
 So the creature in A is the right one. The owner was looking at a correct sprite with no canon images beside it,
 a false "shadowed" tag on it, and a wrong render beside it presented as an equal alternative.
 
-### 2b. Blue Desert "NO ART" (lesson `20261004T220615Z-BENCH-biome-census-py-marks-row-no.md`)
+### 2b. Blue Desert "NO ART" (lesson `skills/rimworld-review-sheets/references/traps.md`)
 
 `biome_census` decides `has_art` from **R6 only**, which is the def's own texPath and its ledger versions. A row
 whose def points at a vanilla or donor texture, or whose renders were never collected to a texPath, has

@@ -5,7 +5,7 @@ WHY. Pawn.ButcherProducts reads only RaceProps.leatherDef (Pawn.cs:3002); RacePr
 default and vanilla AnimalThingBase carries none. A race with statBases LeatherAmount > 0 and no race.leatherDef (or
 race.useLeatherFrom) butchers to NO leather, silently -- the info card still advertises the amount. Found on
 RM_Shokka/RM_Shirrel (18063c93f0) and then six more (RACES_FIX_LEATHER_AMOUNT_WITHOUT_LEATHERDEF, 2026-10-26).
-Lesson: infrastructure/state/lessons/20261026T114229Z-FOUNDRY-leatheramount-needs-leatherdef.md.
+Lesson: skills/rimworld-modding/references/traps-xml-and-defs.md.
 
     python3 src/RimMandrake/Utils/leather_amount_lint.py            # the repo's src/, exit 1 on any offender
     python3 src/RimMandrake/Utils/leather_amount_lint.py <root> --json out.json

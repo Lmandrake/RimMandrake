@@ -98,7 +98,7 @@ not a mod FAIL. Do not rely on that. Exit 2 yourself (§1).
   reason: a deep pit orthogonally beside river source cells filled by gravity. That
   was correct FlowWorks behaviour, but it spoiled the ladder-refusal row, because the
   pawn's refusal could no longer be attributed (lesson
-  `20261103T204936Z-BENCH-pit-site-touching-river-floods`).
+  `skills/live-debugging-proof-harness/references/sites-and-timing.md`).
 - If a check fails, exit 2 with a named reason, for example
   `UNMEASURED/SITE water within 2 cells at (x,z)`. Never PASS or FAIL on a bad site.
   A named reason is what lets the runner route it without an LLM

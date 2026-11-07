@@ -77,7 +77,7 @@ The owner-cited figure (76-88% before, 15-17% after) matches the "calls made at 
 by roughly four-fifths. **Why it worked:** the cost of a call is its whole context, so the fix attacked context size
 (early compaction, no CLAUDE.md, a short rules digest) rather than the number of helpers. **What it did not change:**
 subagents still take about 88% of all spend, because the spend itself is real work (see 3.1). Lesson on reading this:
-`infrastructure/state/lessons/20261026T230819Z-BENCH-7-day-spend-census-pooled-across.md` (a pooled week hides a fix;
+`MW:skills/efficient-subagents/SKILL.md` (a pooled week hides a fix;
 split by day).
 
 **2.2 Compact Instructions keep the handoff alive across compaction.** Source: `design/RimMandrake/compaction_retention_test_2026-10-26.md`

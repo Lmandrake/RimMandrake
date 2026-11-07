@@ -1,5 +1,5 @@
 ## spec
-found-by: proof_restore_check.py (BENCH, 2026-10-26, systemic sweep from lesson infrastructure/state/lessons/20261026T161651Z-BENCH-proof-scene-restore-leak.md).
+found-by: proof_restore_check.py (BENCH, 2026-10-26, systemic sweep from lesson skills/live-debugging-proof-harness/references/classifying-and-learning.md).
 Tool: src/RimMandrake/Utils/proof_restore_check.py (selftest selftest_proof_restore_check.py; each hit below is counted under a BASELINE key there: lower or remove the count when fixed).
 
 A live proof that changes a def or a Mod Settings field must undo it on EVERY exit path (finally / registered restore run on

@@ -169,7 +169,7 @@ Strip: `✖ BENCH 19:40 · ✖ RIMPULSE 19:11 · ✓ 43`.
   `app.slice/rm-pulse.service`, 5 in `claude-seat-BENCH-951.scope/claude-code-bash`, 1 planted harness kill
   today (`journalctl -k`, grouped by `oom_memcg`).
 - **"To rule" is honest to rimflow.** It folds through rimflow's own replay (lesson
-  `infrastructure/state/lessons/20261011T063941Z-BENCH-reader-that-re-derives-rimflow-item.md`, commit
+  `skills/using-rimflow/SKILL.md`, commit
   `9b45858b1`), so it lists exactly the open items with `needs == owner`.
 - **Planted test kills are not alarms** (`kill_class`, commit `69c85b19f`); WSL restarts fold into one line
   (commit `8f6167818`).

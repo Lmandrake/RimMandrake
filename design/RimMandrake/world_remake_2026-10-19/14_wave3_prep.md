@@ -99,7 +99,7 @@ deploy record.)
 1. `rimflow bridge take --for "Wave 3 retirement deploy"`; `./game` must read down (close the game first; `./game --why "…" down`).
 2. Back up: copy live `ModsConfig.xml` → `infrastructure/state/modlists/ModsConfig.LIVE_BACKUP_<date>_pre_wave3.xml`.
 3. Mods: **nothing to deploy for Wave 3** (no src change). If anything under `src/` changed since, plan BOTH halves
-   (lesson `20261020T024929Z-FOUNDRY-wave-list-deploy-must-plan-both.md`): `deploy_custom_mods.py --mod <M>` for flat mods
+   (lesson `skills/rimworld-deploy/references/traps.md`): `deploy_custom_mods.py --mod <M>` for flat mods
    **and** `deploy_custom_mods.py --compose biomes` (Baroque Biomes is composed; a `--mod` deploy of a biome folder does not
    reach it), plan, read, then `--apply`.
 4. Mod list: copy `ModsConfig.FULL.WAVE3_374_2026-10-20.xml` over the live `ModsConfig.xml`; parse it back: 374, sha equal to

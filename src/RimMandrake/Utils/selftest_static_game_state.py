@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Ratchet: no NEW static field holding per-game state in the ratchet-experiment mods' C#.
 
-Lesson (infrastructure/state/lessons/20261015T025544Z-BENCH-static-session-wide-table-keyed-by.md): a static
+Lesson (skills/rimworld-modding/references/csharp-and-loading.md): a static
 (session-wide) table keyed by thing/pawn ids breaks across save/fixture reloads, because a reload re-issues the
 same ids at the same tick, so "already handled" entries from the old load refuse the new map. RimWorld does NOT
 run MapComponent.MapRemoved on a game reload (MemoryUtility.ClearAllMapsAndWorld just nulls Map fields); it runs

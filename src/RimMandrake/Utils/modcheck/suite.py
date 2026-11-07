@@ -245,7 +245,7 @@ class TestContext(object):
         # LOG MARK (mark_log): None = never marked (a bare TestContext, the old behaviour); a dict = the weight of every
         # log text already in the buffer when the chain began; False = the mark was attempted and unreadable.
         self._log_base = None
-        # SETTINGS RESTORE (lesson 20261026T161651Z-BENCH-proof-scene-restore-leak): (type_name, field) -> the value the
+        # SETTINGS RESTORE (lesson skills/live-debugging-proof-harness/references/classifying-and-learning.md): (type_name, field) -> the value the
         # field held BEFORE this chain first set it (read back via action="get"). Suite.chain's wrapper writes every one
         # back in its finally (_restore_touched_settings), so a component that fails between `set False` and `set True`
         # -- after which _guard() makes the second set a no-op -- never leaves the setting flipped for later chains, and

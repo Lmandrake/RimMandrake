@@ -66,7 +66,7 @@ measurement (named), not re-measured today.
 | How the filler picks | the *stalest* chains of `TESTQ_FILL_MODS` (default FlowWorks), purpose `guard`: by age, not by missing evidence | `testq.py` lines 1012-1100 |
 | Archmagi, owner-day 10-26 | bridge busy 43.1% of the window; 2 jobs, 6 rows, 1.3 rows/h; longest idle 138.7 min | `testing_metrics.py` [M] |
 | Archmagi backfill | built (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL), **off**: `TESTQ_ARCHMAGI=1` is not in the tick unit; 0 jobs have run there | `testq.py` header, `testq-tick.service` [M] |
-| Daily `modcheck metrics` file | 2026-10-25 only. **Cause:** it was never scheduled. The one file is a manual run at 2026-10-26T05:31Z; no unit calls `modcheck metrics`. The hourly `rm-pulse-testing.timer` (`testing_metrics.py`) does run and covers most of the same ground | `systemctl --user list-timers`, unit files [M]; lesson `20261026T184922Z-BENCH-metrics-built-never-scheduled` |
+| Daily `modcheck metrics` file | 2026-10-25 only. **Cause:** it was never scheduled. The one file is a manual run at 2026-10-26T05:31Z; no unit calls `modcheck metrics`. The hourly `rm-pulse-testing.timer` (`testing_metrics.py`) does run and covers most of the same ground | `systemctl --user list-timers`, unit files [M]; lesson `MW:skills/relentless-pipeline/references/failures-and-ops.md` |
 | Open items by `needs` | bridge 622 (FOUNDRY 447, BENCH 166), offline 641, owner 48, game-up 43, deploy 28 | `model.replay()` [M] |
 | Live verify backlog | 521 items built or validated owing a live level, median 16.8 d; owed L2 327, L4 110, L1 134 (verify levels, below) | `rimflow_metrics.py --days 1` [M] |
 | Nightly offline selftests, 03:00 10-26 | PASS 624/657, FAIL 19, CRASH 8, UNMEASURED 4, SKIPPED 2: RED; 18 min wall | `Transient/selftests_nightly.last` [M] |
@@ -397,5 +397,5 @@ Other sources:
 - **testq records:** `D:\ClaudeWork\rimmandrake\testq\done\`.
 - **Nightly selftest result:** `Transient/selftests_nightly.last`.
 - **Lessons filed with this doc:**
-  - `infrastructure/state/lessons/20261026T184922Z-BENCH-metrics-built-never-scheduled.md`
-  - `infrastructure/state/lessons/20261026T184922Z-BENCH-testq-filler-reruns-greens-one-mod.md`
+  - `MW:skills/relentless-pipeline/references/failures-and-ops.md`
+  - `infrastructure/state/facts/tool_traps.md`

@@ -2,8 +2,8 @@
 
 Proposed by the daily agent-improvement Curator on 2026-11-01 (`D:\ClaudeWork\rimmandrake\agent_improve\2026-11-01\live-debugging-proof-harness.curator.json`)
 from two FOUNDRY lessons:
-- `infrastructure/state/lessons/20261101T091226Z-FOUNDRY-sheet-saveload-live-vs-loaded.md`
-- `infrastructure/state/lessons/20261101T111824Z-FOUNDRY-save-quantises-tile-temperature-load-ticks.md`
+- `skills/live-debugging-proof-harness/references/sites-and-timing.md`
+- `skills/live-debugging-proof-harness/references/sites-and-timing.md`
 
 Both lessons record the same failure: a save/load-identical proof compared the live arm with a loaded arm and misread the result. Two vanilla causes:
 - Game.LoadGame with Prefs.PauseOnLoad runs one extra DoSingleTick, so the loaded arm is a tick ahead.

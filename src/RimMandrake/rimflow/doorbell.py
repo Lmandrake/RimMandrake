@@ -203,7 +203,7 @@ def main():
     anc = claude_ancestor()
     if anc is None:
         # Fail closed: without its window's pid the doorbell cannot tell when to die (the 23 h orphan, lesson
-        # 20261027T054627Z-BENCH-async-hook-orphan). Not arming leaves the seat UNWAKEABLE, which the Dispatcher alarms.
+        # infrastructure/state/facts/tool_traps.md). Not arming leaves the seat UNWAKEABLE, which the Dispatcher alarms.
         return 0
     try:
         hold = handoff_hold(seat, hook)

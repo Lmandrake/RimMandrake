@@ -2,11 +2,11 @@
 """Lint: every GenStepDef whose genStep is a GenStep_Scatterer subclass must set <count> or
 <countPer10kCellsRange>. Scatterer defaults are count=-1 and countPer10kCellsRange=Zero, so CalculateFinalCount
 is 0 and the step runs zero times, silently (decomp rw16 Verse/GenStep_Scatterer.cs; lesson
-20261026T060425Z-FOUNDRY-scattergroup-needs-count; Lantern Deeps 80c122a7b3).
+skills/rimworld-modding/references/traps-xml-and-defs.md; Lantern Deeps 80c122a7b3).
 Custom C# classes deriving GenStep directly (own logic) are exempt. FlowWorks/GSS are out of scope.
 
 Second check, density truncation (SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO; lesson
-20261026T101908Z-FOUNDRY-scatter-density-int-truncation). A count that rounds to 0 also places nothing:
+skills/rimworld-modding/references/traps-xml-and-defs.md). A count that rounds to 0 also places nothing:
   * countPer10kCellsRange: CountFromPer10kCells = RoundToInt(size^2 / RoundToInt(10000/c))
     (GenStep_Scatterer.cs 266-274). FAIL if the range MIDPOINT on a 250x250 map rounds to 0 -- or, for a
     genstep listed in a pocket map's MapGeneratorDef (directly or via a patch), on the smallest

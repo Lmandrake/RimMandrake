@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """proof_restore_check.py — a live proof must undo every def / mod-setting poke on EVERY exit path.
 
-Why (lesson 20261026T161651Z-BENCH-proof-scene-restore-leak): KineticArms and ExplosiveKnockback proof scenes set
+Why (lesson skills/live-debugging-proof-harness/references/classifying-and-learning.md): KineticArms and ExplosiveKnockback proof scenes set
 kineticStrength=0, enabled=false or added an extension to vanilla Bullet_Revolver, and undid it only inside Verdict.
 A Build throw or an INVALID return left the change in the running game, poisoning every later test of the session.
 The same shape exists in Python drivers: `t.set_setting(T, {"x": False}) ... t.set_setting(T, {"x": True})` never

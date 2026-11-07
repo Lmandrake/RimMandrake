@@ -3,7 +3,7 @@
 
 A message the owner types WHILE a turn runs lands in the transcript ONLY as {type: attachment, attachment: {type:
 queued_command, commandMode: prompt, origin: {kind: human}, prompt}} (440 of 444 never echoed as a user record,
-MEASURED 2026-10-29; lesson infrastructure/state/lessons/20261029T205957Z-BENCH-queued-prompt-attachment-only.md).
+MEASURED 2026-10-29; lesson infrastructure/state/facts/tool_traps.md).
 
 Audit 2026-11-06 of every transcript reader that keeps type=user records (grep over src/ and .claude/hooks/):
 

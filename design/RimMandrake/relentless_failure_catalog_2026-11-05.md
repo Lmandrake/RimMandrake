@@ -115,7 +115,7 @@ on the board, owner-ruled ones included, and nothing measures how long that has 
   on its successor, DRAWBRIDGE_UP_FIX_RAISED_LOOKS_LOWERED (filed 11-03 21:14Z with his words: "the drawbridges appear
   very broken").
 - **Mechanism:** staging chose by item status. Nothing checked whether a newer item carried a fresher owner ruling on
-  the same subject or mod. Lesson `infrastructure/state/lessons/20261105T043203Z-BENCH-before-staging-any-owner-look-read.md`.
+  the same subject or mod. Lesson `skills/rimworld-live-review/references/traps.md`.
 - **Cost:** one owner look spent on superseded work (his time is the scarcest resource here).
 - **Found by:** the owner.
 - **Fix:** policy 4a3bd2b12a (OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED, design section 8.1). No mechanical "newest
@@ -152,7 +152,7 @@ on the board, owner-ruled ones included, and nothing measures how long that has 
 
 - **Saw:** a landed fix did not take effect. The books clone read books_stale.
 - **Mechanism:** the books clone could not level because of dirt, and the fix that exempted that dirt was itself
-  unpulled (lesson ac8bef705e, `20261105T033852Z-BENCH-books-clone-levelling-exemption-books-left.md`). Also, a tick
+  unpulled (lesson ac8bef705e, `skills/relentless/references/traps.md`). Also, a tick
   imports relentless.py *then* merges origin/main, so a supervisor change takes effect one tick late (lesson
   `20261103T224213Z`). rm-mirror and rm-codebase-health ran from the retired foundry clone (lesson `20261104T032656Z`).
 - **Cost:** fixes measured as landed but not running, for hours.

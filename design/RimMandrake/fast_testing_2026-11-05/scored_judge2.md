@@ -40,7 +40,7 @@ How to read the numbers:
 7. **Reload changed XML into the running game instead of restarting it (O5): NOT a speed path today.** `jawa/hot_reload_defs`
    calls the vanilla `PlayDataLoader.HotReloadDefs()`, which hung the bridge ~5 min on a 589-mod list and then broke every
    pawn spawn (`infrastructure/state/items/closed/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`); the owner reports it unproven and
-   about as slow as a reload (lesson `20261106T043450Z-BENCH-jawa-hot-reload-defs-game-def.md`). The cold-load route being
+   about as slow as a reload (lesson `skills/rimbridge/SKILL.md`). The cold-load route being
    measured instead is DefLoadCache (`COLDLOAD_PROVE_DEFLOADCACHE_HALF_INSTALLED`).
 8. **Run many proofs side by side on one map (C17, O1, O2).** Fence off small test plots on one quicktest map, each with
    its own scenario and deadline, so one load and one stretch of game time serves twenty proofs instead of one, the way

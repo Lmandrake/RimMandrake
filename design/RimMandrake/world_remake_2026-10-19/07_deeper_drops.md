@@ -155,7 +155,7 @@ The full list is in the TSV (`profile=SHIP`).
 
 🔑 **Behaviour-changing QoL is the reason to go this deep.** Out of Combat ReBoost walks colonists ~2 ticks/cell
 while `MoveSpeed` still reads 4.6, a wrong number for any fixed-tick bridge test (lesson
-`20261011T025641Z-BENCH-owner-s-full-list-out-combat.md`). Pick Up And Haul, Common Sense and Complex Jobs change jobs
+`skills/live-debugging-proof-harness/references/sites-and-timing.md`). Pick Up And Haul, Common Sense and Complex Jobs change jobs
 and work types in the same way.
 
 ## 4. Deeper drops and problem mods

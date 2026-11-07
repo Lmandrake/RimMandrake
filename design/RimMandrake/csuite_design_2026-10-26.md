@@ -21,7 +21,7 @@ Source brief: `design/RimMandrake/csuite_brief_2026-10-26.md` (owner, verbatim).
    - Non-pass was 38.9%, not 29%.
    - T2 had three different populations: 343, 496 and 521.
    - Net filing was misstated.
-   - Lesson filed: `20261027T031905Z-BENCH-csuite-census-counts-unreconciled`.
+   - Lesson filed: `MW:skills/relentless-pipeline/references/counting.md`.
 4. **The game-studio kit is not the model.** Claude Code Game Studios (community-built, 49 agents) is "collaborative, not autonomous": it asks the human at every step. Its own test ranked its heaviest process last. We take its *role map* (producer, QA lead, technical director) and reject its ceremony.
 5. **Two weeks buys mostly instruments.** T4 (bugs per unit of exposure) and T5 (glance-answerable status) are unmeasured today. An honest first fortnight shows instruments working and one or two controls piloted, not a transformed project.
 
@@ -646,7 +646,7 @@ All five share one foundation, so they differ in what sits **on top of** it:
 
 | # | Verdict | Check |
 |---|---|---|
-| 2 non-pass | **CORRECT** | (56 + 167) / 574 = 38.9%. evidence.md line 298 says 29%, an arithmetic error, and I copied it into H13. Lesson filed: `20261027T031905Z-BENCH-csuite-census-counts-unreconciled` |
+| 2 non-pass | **CORRECT** | (56 + 167) / 574 = 38.9%. evidence.md line 298 says 29%, an arithmetic error, and I copied it into H13. Lesson filed: `MW:skills/relentless-pipeline/references/counting.md` |
 | 2 net | **CORRECT as stated** | 1,531 − 922 = 609. The census's +567 probably nets drops and supersedes, but it never says so. Unreconciled |
 | 2 T2 | **CORRECT** | 343 is the rimflow BUILT state (E-Q6). 496 is the friction-census BUILT count, from a different snapshot. 521 is the verify backlog, items that owe a level. Three populations |
 | 2 48/107 | **CORRECT** | 48 comes from lane-pattern matching (FlowWorks + GSS, "of which bugs"). 107 is the FlowWorks bug table. Two methods, never reconciled |
