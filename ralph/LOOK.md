@@ -1,20 +1,18 @@
-# First look: a real colony on a fresh 38 C landing (map `m`), every mechanic on
+# First look: the grey ground, answered and fixed
 
-Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Three colonists, a steel room built from real blueprints, rice by the pond and on dry ash, a stockpile outside. The 7 and 8 shots and the ring (6) were taken on this build. The fixes listed at the bottom are built but **not yet deployed**.
+Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are in `old\`.
 
-- `first_look_6_opening_ring_day05.png`: the map's opening fire half a day in. It grows into a ring about 60 cells across, with black scar inside and a bright front all round it. It crossed the whole map by day 3.
-- `first_look_2_front_reaches_base_night.png`: the front reaching the base on night 2. The glowing line, the dark scar behind it with scorch-fruit pods, and one colonist beating at it.
-- `first_look_7_base_after_front_day19.png`: the same base the next morning. Scar to the north, unburned grass to the south, rice coming up in both plots.
-- `first_look_5_grey_ground_before_after.png`: the grey blur fix (last pass). Still true.
-- `first_look_1_scar_day3.png`, `first_look_3_scar_day7.png`: a single scar regrowing (last pass).
+- `first_look_9_grey_layers_old_build.png`: your question, settled on the old build by stripping one burned patch layer by layer at play zoom. The blur was not the grass and not the deep ash. It was the ash filth. Vanilla's `Filth_Ash` (x3) and our loose ash (x4) both drew vanilla's soft ash blob, blown up to 3 cells, one blob per point of thickness, so every burned cell sat under a grey fog. Bare deep ash underneath is crisp and warm brown. Its colour is untinted now, so the "double darkening" is gone too. `Filth_LooseGround` no longer appears at all.
+- `first_look_10_grey_ground_before_after.png`: before is the old build; after is this build on a fresh scar on map `p`. Vanilla ash is kept off natural ground. Our loose ash is new crisp art (7 drift shapes at 256 px for 1.5 cells, a mid-light grey), and a fire leaves one drift per cell instead of filling it to the cap.
+- `first_look_11_burn_ring_new_ash.png`: the opening fire on map `p` 3.6 hours in, wide. The ring of flame, the scar inside it with pale ash on dark ground, and scorch-fruit pods.
+- `p_over_t0.png`: map `p` at night, before the fire.
 
-**The Conductor's two questions:**
-1. The stepped brown patch in the AFTER panel is rich soil (`RM_FE_Ground_SoilRich`) or mud, the unburned pockets left when the ash around them burned. On this build the boundaries fade over half a cell, as vanilla's do: see `first_look_8_mud_ash_edge_fades_x3.png`, a 3x crop of the mud and ash edge. I have not proven that the AFTER panel was taken before `FadeRough` went in. The staircase outline itself is the cell grid, and vanilla mud and soil show it too.
-2. The small pale grey squares at the top of `first_look_1`: **not identified yet.** My guess is ancient concrete or flagstone from a ruin, which vanilla draws with hard edges, but I have not read that map's terrain. If that's what they are, they also say a ruin floor stands clean and pale on a burned map, which is a question for `pyre_ruins_scorched`.
+**The Conductor's four questions (14:31):**
+1. LOOK.md is rewritten for `first_look_9` to `11`. The fixes are deployed and seen.
+2. The pale hard-edged squares in the old `first_look_1`: **still not identified.** The only ancient concrete on map `p` (a 10x1 strip at 199,92, `p_ancient_concrete.png`) sits inside a scorched ruin and reads dark, not pale. The next pass reads that old map's terrain under the squares.
+3. Grass in the bedroom: nothing sows under a roof. Explosive Growth refuses roofed cells (`RM_MapComponent_ExplosiveGrowth.cs:152,199`). That grass stood there before the walls went up and was never cut, as vanilla allows. On this burning ground it is a fire hazard, though (map `m`'s room burned on day 2.9). Not yet fixed: native grass could die back under a new roof within a day.
+4. `first_look_5`'s stepped brown block: not proven either way. The composite was saved at 12:25, after the edge-fade commit (11:50), but its panels may be older captures. On this build the mud ring round the new pond blends softly (`p_pond_edge.png`).
 
-The fire line has been re-shot on this build (2, 6, 7). Cinderfall has **not** been re-shot yet.
+**New problem:** the pond's **water** draws as flat, stepped blue-grey blocks with hard cell edges (`p_pond_edge.png`). The noise ponds on map `m` looked the same. This is the next thing to fix.
 
-**What I'm least sure about:**
-- A front walks about 60 cells a day and eats the whole map in 3 days. That's spectacular on the overview, but everything left outdoors burns, and the first fire gave no warning until it was on the home area. Built, not yet deployed: a letter when the burn first comes within 30 cells, then a message on later fronts.
-- After one burn the map held 50,000 vanilla `Filth_Ash` plus 50,000 loose ash. Colonists read "Ugly environment -10" and spent their days cleaning. Built, not yet deployed: natural ground gets only the biome's loose ash, and loose ash under open sky has no beauty penalty.
-- Scorch-fruit is capped at 40 on the whole map, a pod yields a snack, and the pods all sit wherever the front is now. Near a fixed base they're a rare treat, not a food source.
+**What I'm least sure about:** up close, the drifts can read a little like camouflage blotches; a smaller drawSize (1.2) may be better. Ash fall now banks into a drift field, but I haven't seen it on screen yet. Neither has the new ponds' look.
