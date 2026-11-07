@@ -18,6 +18,12 @@ itself first and never acts on the old figure. Blind meter = 0%: once an account
 floors.blind_zero_pct, a blind reading of it (ESTIMATE, stale) counts as 0% at once: an exhausted account often cannot
 be read at all, and the engine never sits waiting on a meter that cannot see it.
 
+A switch the plan did not make is respected (owner's account ruling, ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN: `use lukas`
+at 11:26 was undone by this engine at 11:30): the switcher's own log names the last switch; when no transition marker of
+ours accounts for it, that account stays live, whatever the priority or a reset would pull to, until it is spent (at its
+line, past its window) or the next switch. A failover (login_watch, account_handover) reads the same, on purpose: the log
+cannot tell them from his hand, and leaving a working account alone is the safe way to be wrong.
+
 Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
 gate (the account_failover cutover gate was removed 2026-10-28: that script is retired and never wrote its marker).
 
@@ -26,7 +32,8 @@ gate (the account_failover cutover gate was removed 2026-10-28: that script is r
                                           (simulate() at R %/h, default the pool's pace); acts on nothing
     switching_plan.py install [--deploy D] the durable systemd user timer account-plan.timer
 
-Env seams (selftests): RM_SWITCH_PLAN (plan json), RM_SWITCH_PLAN_DIR (output dir), RM_CLAUDE_ACCOUNT (switcher).
+Env seams (selftests): RM_SWITCH_PLAN (plan json), RM_SWITCH_PLAN_DIR (output dir), RM_CLAUDE_ACCOUNT (switcher),
+RM_ACCOUNTS_DIR (the switcher's folder, whose log.jsonl names the last switch).
 """
 import argparse
 import fcntl
@@ -42,6 +49,7 @@ HERE = Path(__file__).resolve().parent
 PLAN_PATH = Path(os.environ.get("RM_SWITCH_PLAN", HERE / "switching_plan.json"))
 OUT = Path(os.environ.get("RM_SWITCH_PLAN_DIR", "/mnt/d/ClaudeWork/rimmandrake/switching_plan"))
 CA = os.environ.get("RM_CLAUDE_ACCOUNT") or str(Path.home() / ".local/bin/claude-account")
+SWITCH_LOG = Path(os.environ.get("RM_ACCOUNTS_DIR", Path.home() / ".claude-accounts")) / "log.jsonl"
 UNIT = "account-plan"   # outside the rm-*/testq-* glob of timers_guard on purpose: nothing else restarts or stops it
 WEEK = 7 * 86400
 STALE_PENDING_S = 2400  # arm + use + disarm at 600 s each plus the reads: a pending marker older is a pass that died
@@ -213,10 +221,54 @@ def stop_key(name: str, rec: dict, now: float) -> str:
     return f"{name}_" + (datetime.fromtimestamp(rs, timezone.utc).astimezone().strftime("%Y%m%d") if rs else "unknown")
 
 
+def is_spent(plan: dict, line: dict, live, lr: dict, now: float) -> bool:
+    """live is at its line on a post-reset reading (an upper bound: usage only grows inside a week, so even an old or
+    ESTIMATE figure proves the line is reached), or a windowed account (steven) past its window, timed from the last
+    reset the recorded one implies, so it is enforced even when his reading predates that reset."""
+    p = left(plan, lr, now)
+    w, nr = (plan["accounts"].get(live) or {}).get("window_h_after_reset"), next_reset(lr, now)
+    return ((p is not None and live in line and p <= line[live] and not reset_passed(lr, now))
+            or (live in plan["order"] and w is not None and nr is not None and (WEEK - (nr - now)) / 3600 > w))
+
+
+def last_switch(path=None):
+    """The newest switch that changed the live account, from the switcher's own append-only log: {from, to, ts}, or None
+    when it has none. A malformed line is skipped (a line being appended right now)."""
+    try:
+        text = Path(path or SWITCH_LOG).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    for ln in reversed(text.splitlines()):
+        try:
+            r = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(r, dict) and r.get("op") == "use" and r.get("changed"):
+            return r
+    return None
+
+
+def manual_switch(sw, markers: dict, live):
+    """The last switch when it put `live` there and the plan did not make it, else None. The plan writes its marker
+    before it calls `use` and the call ends inside STALE_PENDING_S, so a marker of the same transition in that span
+    before the switch accounts for it; a lapsed one never called `use`. A switch with no readable time is the plan's
+    to judge: nothing can say it is recent."""
+    ts = epoch((sw or {}).get("ts"))
+    if ts is None or sw.get("to") != live:
+        return None
+    for m in markers.values():
+        at = epoch(m.get("at"))
+        if (m.get("from") == sw.get("from") and m.get("to") == sw.get("to") and m.get("phase") != "lapsed"
+                and at is not None and 0 <= ts - at <= STALE_PENDING_S):
+            return None
+    return sw
+
+
 # ------------------------------------------------------------------ the decision (pure)
-def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False) -> dict:
+def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
+           manual=None) -> dict:
     """-> {do: skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll}
-    (the HOLD brake is the caller's: check() and status())"""
+    (the HOLD brake is the caller's: check() and status()). manual: manual_switch(), the switch to respect."""
     if not live:
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     order, fr = plan["order"], plan["fresh"]
@@ -234,6 +286,13 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
             and pl <= line[live] + plan["soft_margin_pct"]):
         elig[live] = False  # a fleet stopped in its soft zone never restarts there: another account with budget wins
     target = pick(meter, plan, now, elig)
+    # a switch the plan did not make stands until the account is spent. Not on a fleet this engine stopped there: the
+    # soft-zone rule just above decides that one. Never for an account outside the plan's rules (it has no line).
+    held = bool(manual) and live in line and not is_spent(plan, line, live, lr, now) and (
+        (state.get("stopped") or {}).get("account") != live)
+    if held:
+        target = live
+    respected = f"; {manual.get('from')} -> {live} at {manual.get('ts')} was not the plan's: respected" if held else ""
     blind = blind_zero(plan, lr, now)
     base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None}
 
@@ -275,14 +334,8 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
     p = left(plan, lr, now)
-    # under its line on a post-reset reading: the reading is an upper bound (usage only grows inside a week), so even
-    # an old or ESTIMATE figure proves the line is reached
-    under = p is not None and live in line and p <= line[live] and not reset_passed(lr, now)
-    # a windowed account (steven) past its window is as spent as one at its line; the window is timed from the last
-    # reset the recorded one implies, so it is enforced even when his reading predates that reset
-    w, nr = (plan["accounts"].get(live) or {}).get("window_h_after_reset"), next_reset(lr, now)
-    out = live in order and w is not None and nr is not None and (WEEK - (nr - now)) / 3600 > w
-    under = under or out
+    under = is_spent(plan, line, live, lr, now)
+    out = under and not (p is not None and live in line and p <= line[live] and not reset_passed(lr, now))
 
     if target is None:
         st = state.get("stopped") or {}
@@ -349,7 +402,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         return {**base, "do": "soft", "why": "reading not fresh near a line after a poll: " + "; ".join(stale[live])}
     if p <= line[live] + plan["soft_margin_pct"]:
         return {**base, "do": "soft", "why": f"{live} at {p}% is within {plan['soft_margin_pct']} of its "
-                                             f"{line[live]}% line: switch pending, publish and finish"}
+                                             f"{line[live]}% line: switch pending, publish and finish{respected}"}
+    if held:  # no reset pulls the machine off it, so no "publish and finish" for a switch that will not come
+        return {**base, "do": "normal", "why": f"{live} at {p}% above its {line[live]}% line{respected}"}
     lead_h = plan["switch_lead_min"] / 60
     for n in order:
         r = meter.get(n) or {}
@@ -608,13 +663,16 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     meter = meter_fn()
     t1 = clock()
     now += t1 - t0  # a slow status or meter read moves time on too: windows are judged when the pass acts
-    d = decide(meter, live, now, plan, state, read_markers())
+
+    def manual_now():  # read at each decision: a human can switch during a slow poll
+        return manual_switch(last_switch(), read_markers(), live)
+    d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now())
     pre = None
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
-            pre = decide(meter, live, now, plan, state, read_markers(), polled=True)
+            pre = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now())
             if ((pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live)
                     or (pre["do"] == "switch" and pre.get("under"))):
                 d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
@@ -632,7 +690,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
         if d is not pre:
-            d = decide(meter, live, now, plan, state, read_markers(), polled=True)
+            d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now())
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
     if dry or d["do"] in ("passive", "skip", "hold"):
@@ -655,7 +713,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if live2 != live:
             return False
         m2, n2 = meter_fn(), now + clock() - t2
-        d2 = decide(m2, live, n2, plan, state, mk, polled=True)
+        d2 = decide(m2, live, n2, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
             d["under"] = True
@@ -757,7 +815,8 @@ def status(rate=None) -> int:
     meter = meter_now()
     live = switcher_status().get("live")
     hold = (OUT / "HOLD").exists()
-    d = decide(meter, live, now, plan, state, read_markers(), polled=True)
+    mk = read_markers()
+    d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
     pl = pool(meter, now, plan, live)
     rate = rate if rate is not None else pl.get("rate_pct_h")
     print(json.dumps({"live": live, "hold": hold, "next_pass": {"do": "passive", "why": f"{OUT / 'HOLD'} present",
@@ -765,7 +824,7 @@ def status(rate=None) -> int:
                       "pool": pl, "notice": read_json(OUT / "notice.json"), "stopped": state.get("stopped")},
                      indent=1, sort_keys=True))
     print(f"\nThe week ahead at {rate} %/h (the engine's own pick run forward on the meter's reset times; "
-          f"polls, soft notices and stops not modelled){' -- HOLD present: no pass acts until it is removed' if hold else ''}:")
+          f"polls, soft notices, stops and a respected manual switch not modelled){' -- HOLD present: no pass acts until it is removed' if hold else ''}:")
     if rate:
         print("\n".join(week_lines(simulate(meter, now, plan, live, rate), plan)))
     else:

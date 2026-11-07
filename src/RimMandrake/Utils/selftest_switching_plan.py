@@ -15,6 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 TMP = Path(tempfile.mkdtemp(prefix="selftest_switching_plan_"))
 os.environ["RM_SWITCH_PLAN_DIR"] = str(TMP / "out")
+os.environ["RM_ACCOUNTS_DIR"] = str(TMP / "accounts")  # never the machine's real switcher log
 sys.path.insert(0, str(HERE))
 import switching_plan as SP  # noqa: E402
 
@@ -42,6 +43,104 @@ def D(meter, live, state=None, gate=True, plan=PLAN, polled=False):
     if gate:
         st["gate_passed"] = True
     return SP.decide(meter, live, NOW, plan, st, markers=st.get("_markers", {}), polled=polled)
+
+
+def manual_switch_cases(calls):
+    """ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN: `use lukas` at 11:26, undone by the plan at 11:30."""
+    log = SP.SWITCH_LOG
+    log.parent.mkdir(parents=True, exist_ok=True)
+    # the week plan's order, as it stood that day: steven above lukas and above his line
+    plan = {**PLAN, "order": ["steven", "system", "lukas"],
+            "accounts": {**PLAN["accounts"], "steven": {"leave_pct_left": 30, "window_h_after_reset": 168}}}
+    plan_path = TMP / "plan_week.json"
+    plan_path.write_text(json.dumps(plan))
+    real_path, SP.PLAN_PATH = SP.PLAN_PATH, plan_path
+    day = {"steven": R(37, 120), "system": R(1, 100), "lukas": R(100, 118)}
+    def use_at(t, frm, to):
+        with open(log, "a") as f:
+            f.write(json.dumps({"op": "use", "from": frm, "to": to, "changed": True, "ts": SP.iso(t)}) + "\n")
+    def clear():
+        log.write_text("")
+        for k in list(SP.read_markers()):
+            (TMP / "out" / "markers" / f"{k}.json").unlink()
+        st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
+        calls.write_text("")
+    def go(meter, now=NOW):
+        calls.write_text("")
+        SP.check(dry=False, now=now, meter_fn=lambda: meter, poll_fn=lambda: None)
+        return [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines()
+                if ln.split() and ln.split()[0] != "--json"]
+    live_txt = TMP / "live.txt"
+    live_was = live_txt.read_text() if live_txt.exists() else None
+    live_txt.write_text("lukas")
+
+    # the incident, end to end: he moved steven -> lukas four minutes ago and no marker of ours accounts for it
+    clear()
+    use_at(NOW - 240, "steven", "lukas")
+    acts = go(day)
+    check("use" not in acts and "arm" not in acts, f"the 11:26 incident: the next pass leaves his switch alone (got {acts})")
+    rec = json.loads((TMP / "out" / "log.jsonl").read_text().splitlines()[-1])
+    check(rec["do"] == "normal" and "respected" in rec["why"], f"and the log says why (got {rec['do']}: {rec['why']})")
+    acts = go(day, NOW + 7 * 3600)
+    check("use" not in acts, "and still leaves it alone hours later, on a later pass")
+
+    # the same day with no switch of his on record: the priority still pulls (the fix did not freeze the plan)
+    clear()
+    acts = go(day)
+    check("use" in acts and "use steven --confirm testbox" in calls.read_text(), f"no manual switch on record: the plan still switches (got {acts})")
+    # the plan's own switch, in the log with its marker, is no manual switch: the priority still rules
+    use_at(NOW + 5, "lukas", "steven")
+    live_txt.write_text("steven")
+    m = SP.read_markers()
+    sw = SP.last_switch()
+    check(SP.manual_switch(sw, m, "steven") is None, "the plan's own switch is not read as a manual one")
+    d = SP.decide({**day, "system": R(90, 100)}, "steven", NOW + 10, {**plan, "order": ["system", "steven", "lukas"]},
+                  {}, m, manual=SP.manual_switch(sw, m, "steven"))
+    check(d["do"] == "switch" and d["to"] == "system", f"after its own switch the plan's priority still rules (got {d['do']})")
+    # the same transition by hand later the same week: the marker no longer accounts for it
+    use_at(NOW + SP.STALE_PENDING_S + 60, "lukas", "steven")
+    check(SP.manual_switch(SP.last_switch(), m, "steven") is not None,
+          "the same transition by hand later that week is his, not the old marker's")
+    # a lapsed marker never called use: it accounts for nothing
+    lm = {"x": {"phase": "lapsed", "at": SP.iso(NOW), "from": "steven", "to": "lukas"}}
+    sw = {"op": "use", "from": "steven", "to": "lukas", "changed": True, "ts": SP.iso(NOW + 60)}
+    check(SP.manual_switch(sw, lm, "lukas") == sw, "a lapsed marker accounts for no switch")
+    check(SP.manual_switch(sw, {**lm, "x": {**lm["x"], "phase": "done"}}, "lukas") is None, "a done marker accounts for its switch")
+    check(SP.manual_switch(sw, {}, "steven") is None, "a switch that put another account live is not this one's")
+    check(SP.manual_switch({**sw, "ts": "garbage"}, {}, "lukas") is None, "a switch with no readable time holds nothing")
+
+    # the limits: spent, past its window, or the next switch ends it
+    live_txt.write_text("lukas")
+    clear()
+    use_at(NOW - 240, "steven", "lukas")
+    man = SP.last_switch()
+    d = SP.decide({**day, "lukas": R(0, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
+    check(d["do"] == "switch" and d["to"] == "steven", f"his account spent: the plan moves on (got {d['do']})")
+    d = SP.decide({**day, "lukas": R(1.5, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
+    check(d["do"] == "soft" and d.get("to") is None, f"his account in its soft zone: publish and finish, no switch (got {d['do']})")
+    d = SP.decide({"steven": R(37, 100, age=40), "system": R(1, 100), "lukas": R(100, 118)}, "lukas", NOW, plan, {}, {}, manual=man)
+    check(d["do"] == "normal", f"a stale other account raises no poll while his switch stands (got {d['do']})")
+    d = SP.decide(day, "lukas", NOW, plan, {"stopped": {"account": "lukas"}}, {}, manual=man)
+    check(d["do"] == "switch" and d.get("to") == "steven", f"a fleet the plan stopped there keeps the stopped rules (got {d['do']})")
+    # a reset that would pull the machine: no "publish and finish" for a switch that will not come
+    soon = {"steven": R(37, 120), "system": R(1, 0.1), "lukas": R(100, 118)}
+    d = SP.decide(soon, "lukas", NOW, plan, {}, {}, manual=man)
+    check(d["do"] == "normal", f"a reset that would pull raises no soft notice over his switch (got {d['do']})")
+    d = SP.decide(soon, "lukas", NOW, plan, {}, {})
+    check(d["do"] in ("switch", "soft"), f"without his switch the plan behaves as it did (got {d['do']})")
+    # the log: only a use that changed the account, newest first, a torn line skipped, no log at all is no switch
+    with open(log, "a") as f:
+        f.write(json.dumps({"op": "use", "from": "lukas", "to": "lukas", "changed": False, "ts": SP.iso(NOW)}) + "\n")
+        f.write(json.dumps({"op": "warm", "results": {}, "ts": SP.iso(NOW)}) + "\n")
+        f.write('{"op": "use", "from": "lu')
+    check(SP.last_switch() == man, "last_switch skips a no-op use, other ops and a torn line")
+    log.unlink()
+    check(SP.last_switch() is None, "no switcher log: no manual switch, and no crash")
+    if live_was is None:
+        live_txt.unlink(missing_ok=True)
+    else:
+        live_txt.write_text(live_was)
+    SP.PLAN_PATH = real_path
 
 
 def main():
@@ -578,6 +677,7 @@ def main():
     rc = SP.check(dry=True, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
     check(all(s == "status" for s in seq), f"--dry-run calls nothing but status (got {seq})")
+    manual_switch_cases(calls)
     print(f"{'FAILED ' + str(len(FAILS)) if FAILS else 'all passed'}")
     return 1 if FAILS else 0
 
