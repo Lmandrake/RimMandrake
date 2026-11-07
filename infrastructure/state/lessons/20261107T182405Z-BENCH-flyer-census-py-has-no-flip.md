@@ -1,1 +1,0 @@
-flyer_census.py has no flip-book column: a KEEP row says nothing about flight frames (flight_tex_ledger 0), so kept-flyer coverage comes from his words in the ledger. A blind GPT judge passed vanilla Chicken's real body rock at .97 while failing 2 px bobs on FireHawk, so species biases it (FireHawk replay 2026-11-07).

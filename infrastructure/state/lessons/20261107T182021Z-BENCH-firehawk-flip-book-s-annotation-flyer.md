@@ -1,1 +1,0 @@
-The FireHawk flip-book's annotation (flyer_cutout_sets/FireHawk.json) was added in the same commit as the fix (af2991860e), so stabilize on the real pre-fix frames is UNMEASURED (APPEARANCE CHANGED): the gate cannot read the fault it was built after, only plants of it. selftest_flier_frames_present, flyer_gate and flyer_census read only the repo, so scratch panels need a caller.

@@ -1,1 +1,0 @@
-flyer_tier_three_state_read.py has no argparse: running it with --help tries the live bridge at once, spawning pawns if a game is up (2026-11-07 FireHawk replay: attempt failed with RimBridgeError, no call landed). flyer_census.py and flier_guard.py also ignore --help and run. Read a Utils/art tool's source before probing it.

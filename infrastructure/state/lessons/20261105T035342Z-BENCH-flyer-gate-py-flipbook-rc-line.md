@@ -1,2 +1,0 @@
-flyer_gate.py flipbook_rc (line ~147) sends flier_body_stabilize's stdout/stderr to DEVNULL and returns its returncode, so a Python crash (rc 1) reads exactly like a body-lock FAIL (rc 1). Measured 2026-11-05: 'flipbook Whisperbird' returned 1 once, then 23/23 runs returned 0 on identical inputs (~3 s each); the cause is unrecoverable because nothing was kept. Fail-closed, but a flaky 1 can send a worker hunting a body defect that is not there: capture stderr and report a traceback as CRASH, not FAIL. (FLYER_STABLE_BODY_GATE_1)
-home: NONE

@@ -121,6 +121,7 @@ check had run (BENCH 2026-09-17).
   his first 9 verdicts — he judges whether it LOOKS painterly, canon anatomy,
   and cross-facing scale, and only the last of those is something you can
   measure before asking him to look (2026-09-15).
+- **Derived north/south facings (artpipe `derive_from`) come back 30-140% taller than the east master**: the generator fills each canvas to ~3% margin, so a narrow front/rear view is drawn larger than a long side profile and 'same scale' in the prompt does not hold it (a 7-set redraw had `F_SIZE_JUMP` blocking on 5, e.g. 382/907/713 px). Downscale every facing taller than the shortest by more than 5% (visible alpha > 16, premultiplied BOX), bottom-aligned, then judge the normalised files. **After normalising, check the N/S width ratio and flag if more than 10% apart**: when the two renders disagree in aspect (north 487x928 vs south 416x990), scaling both to the east's height makes north visibly narrower than south and no single transform keeps height and width parity. That is a render inconsistency to regenerate (the derive prompt must hold the body's front and rear width and height to the east), not to post-process.
 
 ### No facing may BE another facing — and what that test does and does not find
 
@@ -156,6 +157,7 @@ that separates.
 
 The full ruleset, both tiers, lives in
 `design/RimMandrake/art_review_facts_spec.md`.
+- **Audit sprite coverage by IDENTITY, not by count.** A '96% have art' figure meant nothing until distinct creatures were checked to resolve to distinct files; a shared-sprite collision reads as success in every coverage count. The same holds for flip-books: a kind's `flyingAnimationFramePathPrefix` must point at its own frames (RSW_ScrapNestBird's points at `swanimals/Whisperbird/Whisperbird_Flying_`, so in flight it turns into a Whisperbird, a different hook-beaked bird).
 
 ### Measuring a sprite's extent — use the VISIBLE silhouette
 
@@ -180,6 +182,7 @@ boundary-clip finding for a worse `transparency_real` finding. Of 4
 resamplers tested (LANCZOS/BICUBIC/BILINEAR/BOX), only **BOX** (area-averaging)
 left the file no worse than it found it. Prefer BOX for any repad/recenter-
 in-place fix on existing game art.
+- **drawSize comes from the def XML, never a harvested census.** Read the adult lifeStage's drawSize from the def (a census was wrong three times); when rendering for comparison also give an explicit square footprint, or wide sprites stretch to their native aspect.
 
 ### Two more traps from the same sitting
 
@@ -250,6 +253,9 @@ from ITS OWN reference and carry the approved sibling's treatment in the prompt 
 flesh with a bioluminescent glow inside it, deep red and rose palette, hard black
 outline"*. Write that sentence down the moment the first facing is approved. Measured
 2026-08-24: it held three facings together on two different creatures.
+- **Plan-view parts that turn with a span (suspension-bridge anchors and jetties) derive their facings by rotation, never a drawn 'rear view'.** Every shipped north/east is exactly the south rotated 180/90 degrees (mean pixel diff 0.0); use `bridge_redraw.py rotate_facings`. Eighteen drawn rear views came back with the cable pointing the wrong way.
+- **Swapping the east/west texture FILES also moves the drawn object to the other side of its cell when the art is offset in its canvas** (ladder bbox x56-154 of a 384 canvas). To reverse only the lean, swap AND translate back, or mirror in place.
+- **RM_LadderPortable is `Graphic_Single` 256 px, so its west mount is just the diagonal texture rotated; a stand-up ladder needs `Graphic_Multi` on the fixed ladder's rig (384 px, drawSize 1.5, offsets).** Candidate art options A/B/C were left uninstalled in `Transient/pile_2026-10-22/ladder_art/`; the brief's ban on ground shadow in art conflicts with a requested floor shadow, so option C is a split call.
 
 ## Small animated appendages: `PawnRenderNodeProperties_Spastic`
 
@@ -266,7 +272,7 @@ appendage may be the cheaper, correct answer (owner, first art walk,
 small IDLE jiggle on one static texture, and was specifically wrong for
 expressing a per-facing flying pose.
 
-## 🔴 Flying creatures need a DIFFERENT asset shape — not a wing layer
+## 🔴 Flying creatures need a DIFFERENT asset shape — not a runtime wing layer (layered OFFLINE authoring baked into whole-body frames is the way to make them)
 
 **A flier's animation is a whole-body directional flip-book, never a separate
 wing texture jiggled by a render-tree node.** Owner ruling 2026-09-19, filed
@@ -385,6 +391,11 @@ it at once in motion, because one side of a symmetric bird is doing nothing. Mot
 gates add both wings together and pass it. Compare the two sides instead (SIDES row):
 pixels moved left of the axis against right of it read 0.05 on a frozen or erased
 wing, and 0.94 to 1.00 on every other north and south in the truth set.
+- **A `flyer_cutout_sets/<Set>.json` can be stale against what is installed.** East configs for Sketto, Whisperbird and Bogwing build floating wing fragments although `flyer_cutout.py build --facing east` passes its own check, and Whisperbird.json gated the owner's later pick C and failed 17 px. Never reinstall a facing from a config without looking, and before fixing a flip-book gate failure check which config built the INSTALLED frames (`git log` on the PNGs vs the config; a rebuild from the installed master should reproduce them within edge pixels). Never refit poses to make an envelope cover a failure; the cutout's PASS line is not a quality verdict.
+- **`flyer_cutout build --src` takes the ORIGINAL frames, not its own output.** Feeding baked frames passes the build with PASS and yields clipped, detached wings, and stabilize still reads north and south green on them. Measured: the before-frames plus the shipped config rebuild the shipped FireHawk 15 of 15 byte-identical.
+- **`flyer_cutout` keeps a 2 px SEAM band of master pixels in the body plate along every wing cut.** Where a resting wing lies directly on the body (Fire Wasp east, hind wing on the abdomen) a thin sliver stays on the body when the wing lifts, and moving the cut polygon cannot remove it; a fix would be a per-wing seam override or painting the plate under the wing (judged ~1 px polish at game size). South/north tore with falloff 12 and left root stubs with falloff 0; default falloff with amp 14 bias 6 was clean. A cut-out east view with near and far wing in ONE layer slices the far wing on the protect edge in the downstroke: give the far wing its own layer, order under, hinge at its root (Bogwing.json east).
+- **Cut-out from a generated flight master:** when a static draws no spread wing, one edit job per facing (a spread-membrane master of his static) plus `flyer_cutout` gives a locked flip-book for 3 jobs instead of 12 (Strill passed flipbook on first build). Far limbs may come back semi-transparent (alpha 90-175): solidify alpha before fitting.
+- **A motion/coverage metric over animal sprites counts DRAWN pixels only (alpha > 128; the animal shader is a cutout).** Counting alpha > 0 or raw RGB diffs lets a sub-cutoff halo, or RGB changing under alpha 0, read as wing motion while nothing moves on screen; a near-blank frame set must fail on cover, not pass on a zero reference. Rigid wing rotation keeps net area, so measure silhouette change as the XOR of drawn masks, not net-area growth (`flyer_cutout.facing_motion`).
 
 ### Beat timing
 
@@ -435,3 +446,10 @@ spawn a batch, not one (see `rimworld-debug-testing`'s "single spawned pawn is n
 — for a flier specifically, `flightStartChanceOnJobStart` means a lone pawn is unlikely to
 fly at all in any given observation window; spawn ~20 faction-`none` and let the odds work,
 owner ruling 2026-09-25).
+- **Register flip-book frames on the BODY, not the alpha bbox** (owner: wings flap while the body stays static): bbox registration couples wing motion to body motion. Most shipped frames are repaints with a re-posed body, so translate-only fixes fail; build with `flyer_cutout` (plate + wing layers), check with `flier_body_stabilize`, and never use alpha-bbox tools (`flier_guard` refuses them).
+- **A tool's red or green on a cut-out set is not a verdict.** `flier_frame_registration measure_set` and `flyer_cutout check` report OFFENDER/FAIL on FireHawk's body-locked flip-book (30.48 px north) because wing pixels read as body (erasing the north wing drops it to 8 px); `flyer_cutout build` prints PASS on byte-identical frames its own `check` verb FAILs; `flyer_lock.py check` is recipe-shaped (256 px canvas, ping-pong last frame) and is red on all 28 replay entries including kept Porg and vanilla Chicken. `flier_body_stabilize`'s near-wing envelope is tied to frame index, so a cycle started on another frame goes red in east (false alarm) and east permutations go red too: it is not a check of order, and north permutations pass stabilize, motion, frames-present and a blind image judge alike.
+- **A fix and its gate annotation in one commit leave the gate UNMEASURED on the real pre-fix frames.** FireHawk's annotation in `flyer_cutout_sets/FireHawk.json` landed with the fix, so stabilize on the pre-fix frames read APPEARANCE CHANGED: the gate saw only plants of the fault. `selftest_flier_frames_present`, `flyer_gate` and `flyer_census` read only the repo, so scratch panels need a caller.
+- **`flyer_gate.py` `flipbook_rc` (line ~147) sends `flier_body_stabilize` output to DEVNULL and returns only its returncode, so a Python crash (rc 1) reads exactly like a body-lock FAIL (rc 1).** One run of 'flipbook Whisperbird' returned 1, then 23 of 23 returned 0 on identical inputs and the cause was unrecoverable. It fails closed, but a flaky 1 can send a worker hunting a body defect that is not there: capture stderr and report a traceback as CRASH, not FAIL.
+- **`flyer_gate.TIERS` is a hard-coded snapshot (2026-11-01):** six tier-1 rows (Murrelith, Beldon, CanCell, Convor, Dactillion, ScrapNestBird) later read KEEP in `flyer_census` `last_ruling`, so a tier's 'redo rows' can hold kept art. Read census `last_ruling` before treating a tier as the ruling. `flyer_census.py` has no flip-book column (a KEEP row says nothing about flight frames, `flight_tex_ledger` 0), so kept-flyer coverage comes from his words in the ledger. A blind GPT judge passed vanilla Chicken's real body rock at .97 while failing 2 px bobs on FireHawk, so judge verdicts are species-biased.
+- **Read a `Utils/art` tool's source before probing it: `flyer_tier_three_state_read.py` has no argparse, so `--help` goes straight to the live bridge and spawns pawns if a game is up** (`flyer_census.py` and `flier_guard.py` also ignore `--help` and run).
+- **The review-sheet tools cannot carry a blind (hidden-name) flip-book page:** `art_sheet.py` keys on defs and the art ledger, so `scaled_review_gate`, `game_art deliver` and `prereview init` refuse a hand page (no ITEMS block, no stamp). A hidden-name animated page has no sanctioned builder.

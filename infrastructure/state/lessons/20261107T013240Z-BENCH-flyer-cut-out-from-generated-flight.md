@@ -1,1 +1,0 @@
-flyer cut-out from a generated flight master: when a static draws no spread wing, one edit job per facing (a spread-membrane master of his static) plus flyer_cutout gives a locked flip-book for 3 jobs instead of the study's 12; Strill passed flipbook first build. Far limbs may come back semi-transparent (alpha 90-175): solidify alpha before fitting.

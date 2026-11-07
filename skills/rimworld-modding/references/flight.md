@@ -27,7 +27,7 @@ rediscovering this — stop reaching for a live-bridge flight test at all.**
   nothing — inconclusive, not proof either way, and not a productive use of bridge
   time regardless of sampling density (worked example, now superseded:
   `FIREHAWK_FLIGHT_BEHAVIOR_1`).
-- ✅ **Verify flight via a deterministic STATE read instead**, never a screenshot/visual
+- ✅ **Verify flight via a deterministic STATE read instead** (the tool exists: `jawa/pawn_flight`, in `JawaBenchFlightTools.cs`, reads `Pawn_FlightTracker` state; it was committed before the failed FireHawk hunt that asked for one), never a screenshot/visual. That hunt was one pawn and a position proxy: it is not evidence that state reads or recording cannot work, and the ruling stands on the owner's eye finding the faults.
   hunt: a debug `[Tool]` (see `rimbridge-companion` skill) that reads
   `Pawn_FlightTracker`'s current state on a pawn directly. That is buildable and
   provable offline/asynchronously; a live *visual* sighting of the animation is the
@@ -109,3 +109,7 @@ safety.
 The frame faults the owner's eye names (a wing baked into the plate, squash noise, flesh
 ripping away, level eyes, the double-held last frame) and the checks for them are in
 `rimworld-sprite-facings`, "Cut-out flip-books" and "Checking a flip-book".
+
+## Engine facts for flyers (computed from the 1.6 decompile)
+- **`AlternateGraphic` (Verse/AlternateGraphic.cs) has no flying field**: it carries graphicData plus dessicated/swimming/rotting/stationary variants, and the flip-book prefix exists only on `PawnKindDef` (`flyingAnimationFramePathPrefix` / `...Female`, read by `AnimationDefGenerator_Flying`). A kind with alternateGraphics (RM_Murrelith: 6 coats, chance 0.857) gets ONE flight look for every coat unless C# swaps it.
+- **Computed from the decompile, not seen running: `Pawn_FlightTracker.ForceLand` starts Landing at lerpTick 25, where LandingCurve is 0.4, from Flying factor 1; with `Pawn_DrawTracker`'s 0.6-cell offset that is a 0.36-cell drop in one tick on any forced landing, for every flyer.** `AnimationDefGenerator_Flying` sets `durationTicks` to (frames+1)*ticksPerFrame, so the last pose appears to hold double. A 'no jump at landing' bar or an offline playback must baseline vanilla Chicken rather than assume smoothness.
