@@ -1,3 +1,0 @@
-A built item still owing a live clause goes game_stale_build whenever ANOTHER item rebuilds the same mod DLL (HORIZON_CARAVAN_VANILLA_REFUSES_1 vs 3f5859c16e). Fix: a fresh item commit touching the DLL, and finish on THAT commit (the preflight reads only the built commit's own touched files), not on a later review-mark commit.
-
-Addendum 2026-11-05 (RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY): since PROOF_SHA_FIX_DEPLOYS_NOTHING_TWICE, relentless_live.build_shas widens a built commit with no game file to every commit whose subject names the item, and staleness is judged after the new sha, so the fresh item commit need not touch the DLL itself: first check `dll_source_stamp.py check` says MATCH for the current DLL.

@@ -1,1 +1,0 @@
-Geological Landforms' own settings, under Odyssey, switch OFF vanilla's River, RiverDelta, Headwater, RiverIsland and RiverConfluence mutators and draw rivers with GL_River* landforms (Config/Mod_2773943594_GeologicalLandformsMod.xml Odyssey_DisabledTileMutators). While GL loads, a river tile's shape is GL's, not vanilla's; retiring GL (2026-11-02) restores vanilla rivers.

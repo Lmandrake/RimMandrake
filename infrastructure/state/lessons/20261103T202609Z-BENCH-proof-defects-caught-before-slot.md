@@ -1,2 +1,0 @@
-Post-fix UNMEASURED live rows were proof-line defects that should be caught offline before a slot: HEAVY_TEXTURES_MEASURE_REAL_VRAM proof exits 2 demanding --yes-i-know-this-is-live (the runner never passes it), and GENERATOR_MODS_PROVE_INERT_AFTER_CREATION's proof printed 'reload needed' naming mods (7f.alienworlds...) it never declared as live-mods. A dry/offline preflight of the proof's argv and its declared mod set would refuse these without spending the game.
-home: NONE

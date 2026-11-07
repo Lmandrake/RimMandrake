@@ -33,3 +33,6 @@ new concept comes back through the Designer as an amendment. Either gives a new 
 matters is a scripted step or a check, never an instruction (owner, 2026-11-03, `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`).
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.
+
+## Known holes in the concept_tree gate
+- `concept_tree.py gate` limits: a new mod filed under another kind with no citation escapes until `RA_S05_INTAKE_ENFORCE_TREE_FIRST`; a mod item may cite another mod's passing tree; `askcheck` catches a repeated waiver, not a rewording; the pruning check proves a citation exists, not that it is good. Read the tree yourself.

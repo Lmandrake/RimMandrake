@@ -1,1 +1,0 @@
-On .NET Framework 4.7.2 / Mono (RimWorld), List<T>.Reverse() and Array.Reverse(Array) on a non-primitive struct element type fall back to GetValue/SetValue and box every element; a net8 selftest allocation count (GC.GetAllocatedBytesForCurrentThread) cannot see it. In a zero-alloc hot path swap by hand. Found reviewing CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC.

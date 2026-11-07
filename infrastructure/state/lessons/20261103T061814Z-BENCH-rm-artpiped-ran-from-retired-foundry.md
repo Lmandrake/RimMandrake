@@ -1,1 +1,0 @@
-rm-artpiped ran from the retired foundry clone through drop-in zz-foundry-workdir.conf, so code fixes landed on main never reached the daemon (the re-preflight fix 9b5e7b04d2 was dead for hours). A daemon unit's WorkingDirectory is part of a deploy: after a fix to a daemon, check systemctl --user show <unit> -p WorkingDirectory and that clone's HEAD.

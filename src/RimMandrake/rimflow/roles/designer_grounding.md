@@ -28,6 +28,7 @@ project keeps having already built it.
 
 Any count you cite about a def dump, save or log: skill `measuring-large-artifacts`, then
 `infrastructure/state/facts/instrument_traps.md`.
+- **A stage 0 inventory can carry a capability that was later CUT** while its item stays closed-as-built (a furnace-beast world migration cut in 84cc81013d); the coverage judge then demands a scene for a removed feature. Before scening a capability, `git log -S` its main class to see whether it still exists.
 
 ## What we built comes first (owner, 2026-11-02)
 

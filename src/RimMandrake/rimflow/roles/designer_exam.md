@@ -30,6 +30,7 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
    miss needs his answer. Never re-score the same scenarios against an edited tree without refreezing.
 
 Charge every Examiner, Challenger, Reader and Control run: `designer_stage.py charge --kind helper`.
+- **A control run must strip every mention of the removed leaf's rule.** Removing a core leaf from `tree.json` and its sheet lines is not enough: a `## delegated` or `## pruning` clause naming the same check (e.g. 'new-game cleanup') still lets the control Reader reject, so the control does not discriminate.
 
 ## exam.json
 

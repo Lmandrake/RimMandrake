@@ -1,1 +1,0 @@
-A behaviour issued from the Animal_PreWander think-tree slot with a FarEnough gate and a short job expiry (shadow-following) is intermittent by construction: one job-state snapshot per pawn cannot say whether it works. Sample >= 9 times spaced past the job expiry and judge the counts (GLOOMCAST_FOLLOW_RECHECK_1, src/RimMandrake/LongShade/prove_gloomcast_follow.py).

@@ -1,1 +1,0 @@
-A live proof that runs 'on any loaded map' needs a live-site line (python.exe src/RimMandrake/Utils/live_site.py --game) in its live_proofs file: the lane never makes a map on its own, so a round that meets a mapless game measures nothing (HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK A1, GAMEENV_FIX_PROOFSITE_1C77350A_ITEMS_WAIT).

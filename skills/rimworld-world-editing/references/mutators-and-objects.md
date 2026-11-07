@@ -250,6 +250,7 @@ Topology, Commonness, hilliness / elevation / temperature ranges). ⇒ **The lev
 and elevation, not mutators**, and no landform ever shows on the world-tile pane, before or
 after a reload.
 - **A GL-emitted custom landform keeps the SHIPPED source landform's `worldTileReq` unless the caller overrides the field:** `gl_emit.py --from` loosens hilliness unconditionally but loosens topology only when `--topology` is passed. Sinkhole sat at 1/8 success because it inherited `Topology=CliffAllSides`; `--topology Any` fixed it 2/2. Read the source landform's `worldTileReq` XML before assuming a recipe built from it has the same shape.
+- Under Odyssey, Geological Landforms' own settings (`Config/Mod_2773943594_GeologicalLandformsMod.xml` `Odyssey_DisabledTileMutators`) switch OFF vanilla's River, RiverDelta, Headwater, RiverIsland and RiverConfluence mutators and draw rivers with `GL_River*` landforms. While GL loads, a river tile's shape is GL's, not vanilla's; with GL retired vanilla rivers return.
 
 ## 🔴 Every canyon and chasm def needs Mountainous, and they are ALL category `Mountain`
 

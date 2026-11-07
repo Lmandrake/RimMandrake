@@ -76,6 +76,7 @@ Every ask is an entry in `record.json` `asks` before it goes anywhere:
   he calls strange or redundant is a defect on the Designer's item.
 - At most two rounds of argument per run, then write what you have. An unanswered question is your problem to shrink.
 - Keep reviewed asks ready, taste first, so the Conductor can serve them while he waits; ready is not sent.
+- **`designer_stage.py` `KEEP_REMOVE` refuses innocent ask wording.** It reads 'Do you want' (the `(do|should) (we|you|i) want` branch), 'drop' in its physical sense ('drop a flame in') and 'cut' as a word (a cut wire, a GSS mechanic) as offering to remove a built capability. Phrase choice asks as 'Which ...: (a) or (b)?', avoid 'drop', and reword 'cut' ('severed') or narrow the regex to removal phrasing.
 
 ## Drawing requirements out of him
 

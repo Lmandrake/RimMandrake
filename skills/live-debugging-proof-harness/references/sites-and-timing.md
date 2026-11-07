@@ -90,6 +90,7 @@ roof and things. Anything left in the rect gives `UNMEASURED/SITE` and returns F
   `python.exe src/RimMandrake/bridgetools/prove_quicktest_world.py` (exit 0 = Playing
   with a world).
 - **`sheet_overflow_proof.py --fresh-map` can land on a tile below 0 C outdoors** (`rimworld/start_debug_game_ready`: -1.54 C, seasonal 3.96 C). Row I `CROPS_IRRIGATE_THEN_DROWN` then reads UNMEASURED/SITE (rice at Ice/None, soak 0) and row K can freeze but never thaw: a SITE re-roll on another fresh map, not a mod verdict. The durable fix is a preflight outdoor-temperature read that records it and refuses or warms the site (HeatWave ramps over 12000 ticks) before rows that assume liquid water.
+- **`sheet_overflow_proof` row K (SHEET_FREEZES_AND_THAWS) assumes scene K's water stays inside its 14x13 rect.** Rerunning K on the same map accumulates spills (42682 dL / 119 wet vs 20000 / ~49 fresh) and outflow across the rect edge reads as loss (FAIL 9476 > 8664). Run K with `--fresh-map`, or make the bar book flux across the rect boundary.
 
 ## Timing windows
 
