@@ -42,3 +42,8 @@ So J is named in the log instead of guessed: `RM_FlightJobStartGuard.Prefix_EndC
 (race, job, giver) after 20 same-tick Succeeded ends in a row on a standing animal. Deciding string, on a Stillsand
 quicktest with wild RM_Soorrak: `[RM CreatureBehaviors] instant job loop: RM_Soorrak` (the line names the JobDef,
 the giver class, the think tree and both targets). The fix follows from that line.
+
+## Live attempts so far (2026-11-06)
+The job is still unnamed: no live attempt has reached the soorrak chain. Causes, none in this item's code or proof: a
+bridge refusal on another item's unreconciled call (976c01f0), `RimMandrake.Biomes` (which ships Stillsand) not enabled
+in ModsConfig, and a stale build after other items landed the CreatureBehaviors DLL and `validation.py`.
