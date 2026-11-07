@@ -18,6 +18,14 @@ This pass landed fresh on map `q` (play.py build --tag q; tile at 50 C) and play
 - **Biome text** corrected: ash fall doesn't follow big burns, and the fresh-burn bonus is less than water's. It now says wet roots shrug off the heat and black rain on a fresh burn feeds the field richer still.
 - **FlowWorks dig fix** (builder subagent): partial work is kept per cell, and the job expires so food, thirst and fire can interrupt it. See the commit for the files.
 
+## A fresh judge on the map-q shots (rm-judge; its crops are in `shots/../judge_view/`)
+- **Ugliest:** deep water drew as hard square blocks inside the pond (`q_pond_h3`). **Fixed:** Pyrelands ponds are shallow pans now (BiomeDef patch maker and `GenStep_PyrelandsStandingWater`). Unseen on a fresh map.
+- **Ash drifts read as stickers:** "flat, cold blue-grey splats with hard edges… stickers, puddles or lichen" (`q_scar_d4`). The count is about right. Rework the art (`Textures/Things/Filth/RM_FE_LooseAsh/*`): warmer, thinner, feathered and streaked like sifted ash, without going back to the old blur the owner hated.
+- **The scar re-greens far too fast:** 55 to 60% full-height grass two days after burning. It reads as grass on dark soil, not a burn, against the north star's "largely green again within about a week". Measured: 112 to 439 of 784 cells in about 1.5 days. Slow the regrowth on dry ground (owner card 1: scars should last on dry ground).
+- **Grass grows through the ruin's floor tiles and onto furniture** (`q_land_h3`), and the ruin floors look clean. The walls are blackened.
+- **The burn reads as a line** with dark ground behind, but the trail doesn't read as scorched: "dark grey dotted with green reads as different terrain". Single flames dot both edges of a lane, like two rows of campfires.
+- Scorch-fruit pods "look like little volcanoes or raw meat". That's owner-kept art, so leave it unless a north-star line needs it.
+
 ## Next, in order
 1. Load `NS_Pyrelands_play_q_col_d3dig` on the new build. Check that Jazza now stops digging to drink and eat, and the cell's progress survives. Let the canal finish and fill, then compare rice: x 182..184 beside the canal, x 176..181 in the same rows, and the dry plot. Read the inspect text for "Wet ash keeps its roots cool". That is the honest test of `pyre_ash_fertile_when_watered`.
 2. Fire-hawks: find why the ember job never runs (think-tree order against `RM_ShadeDash` and the heat jobs; `CanSortieNow`). Read the state only and never film flight.

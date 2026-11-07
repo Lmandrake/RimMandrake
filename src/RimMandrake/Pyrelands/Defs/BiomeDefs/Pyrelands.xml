@@ -144,7 +144,10 @@
          comes back before the scar has cooled. Vanilla savanna is 26-27. This is an MTB per empty cell
          (RimSage, WildPlantSpawner.cs:310): at 3, 63% of a scar has sprouted by day 3 and 81% holds grown grass
          by day 7 (sprout + ~2 days); at the old 9 only 43% did, and lifespan outran reseeding. -->
-    <wildPlantRegrowDays>3</wildPlantRegrowDays>
+    <!-- 5 (2026-11-07): at 3, map q's opening scar held grass on 56% of its cells 1.5 days after burning (112 -> 439 of 784)
+         and a fresh judge read a two-day scar as "grass on dark soil, not a burn". At 5: about 26% sprouted by day 1.5, 45% by
+         day 3, 75% by day 7 (1 - e^(-t/5)), so a scar greens visibly within days and is largely green in about a week. -->
+    <wildPlantRegrowDays>5</wildPlantRegrowDays>
     <settlementSelectionWeight>0.7</settlementSelectionWeight>
     <movementDifficulty>1</movementDifficulty>
     <forageability>0.45</forageability>

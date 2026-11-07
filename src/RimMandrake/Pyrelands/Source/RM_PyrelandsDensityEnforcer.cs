@@ -39,7 +39,7 @@ namespace RimMandrake.Pyrelands
         // saturates every terrain down to light ash (0.25 fert); owner approved
         // the resulting ~96%-of-plantable look live, 2026-09-18.
         public const float PlantDensity = 16f;
-        public const float WildPlantRegrowDays = 3f; // the XML's own value, un-eaten
+        public const float WildPlantRegrowDays = 5f; // the XML's own value, un-eaten (3 until 2026-11-07: scars greened in 1.5 days)
 
         public RM_PyrelandsDensityEnforcer(Game game)
         {
@@ -50,7 +50,7 @@ namespace RimMandrake.Pyrelands
             Enforce();
         }
 
-        /// <summary>Shipped 3 days, unless the test-profile override (Mod Settings) is set above 0.</summary>
+        /// <summary>Shipped 5 days, unless the test-profile override (Mod Settings) is set above 0.</summary>
         public static float EffectiveRegrowDays
         {
             get
