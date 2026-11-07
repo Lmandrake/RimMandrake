@@ -90,6 +90,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);
             if (cmd == "artfit") return ArtFit(map, comp);
+            if (cmd == "shapetable") return ShapeTable(comp);
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
             {
@@ -341,6 +342,7 @@ namespace RimMandrake.GimmeSomeSlack
             var b = new CordBuilder();
             // GPT review 2026-10-08 #24: the same inputs production builds with (its per-cell PileAt), and stale extras counted
             BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
             Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
             opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
             return b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
@@ -440,6 +442,17 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same
         /// Core.CordAudit the SelfTest runs), every decal's pose, the render queues our materials hold,
         /// and the queue/shader/altitude of whatever wall and rock edifices our stubs sit on.</summary>
+        /// <summary>cord_shape_variation_probe: the pairwise shape distance table per length class of the cords now laid.</summary>
+        private static string ShapeTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            string one(ShapeClass c) => "{\"length\":" + c.Length + ",\"cords\":" + c.Cords + ",\"pairs\":" + c.Pairs + ",\"tooAlike\":" + c.TooAlike +
+                ",\"min\":" + (c.Pairs > 0 ? c.MinDistance.ToString("0.000", inv) : "null") + ",\"mean\":" + c.MeanDistance.ToString("0.000", inv) + "}";
+            List<ShapeClass> t = CordShape.Table(comp.Pieces);
+            return "{\"success\":true,\"cmd\":\"shapetable\",\"tooAlikeBelow\":" + CordShape.TooAlikeBelow.ToString("0.00", inv) +
+                   ",\"classes\":[" + string.Join(",", t.Select(one)) + "]}";
+        }
+
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)
         {
             if (comp.Graph == null) return "{\"success\":false,\"error\":\"no graph\"}";
@@ -592,6 +605,10 @@ namespace RimMandrake.GimmeSomeSlack
             F("endHeaps", settled.Sum(x => x.Settle.EndHeaps).ToString());
             F("litStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
             F("darkStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
+            // a Modern junction draws a strip too (d_modern_junction_strip), on its own net: the tangle rows read their own strips
+            Func<LaidPiece, bool> isTangle = p => p.Key != null && p.Key.StartsWith("tangle:");
+            F("tangleLitStrips", comp.Pieces.Where(isTangle).Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
+            F("tangleDarkStrips", comp.Pieces.Where(isTangle).Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
             F("lastRebuildMs", J.D(comp.LastRebuildMs));
             F("builds", comp.Builds.ToString());       // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG live re-measure
             F("farSkips", comp.FarSkips.ToString());

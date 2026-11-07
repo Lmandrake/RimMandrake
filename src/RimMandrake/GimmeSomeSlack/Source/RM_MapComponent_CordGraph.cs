@@ -225,7 +225,7 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>Union the pieces by the cells they touch; one seed per connected net (Core/RebuildTail.NetSeeds).</summary>
-        private static Dictionary<LaidPiece, int> ComputeNetSeeds(List<LaidPiece> ps) => RebuildTail.NetSeeds(ps);
+        private static Dictionary<LaidPiece, int> ComputeNetSeeds(List<LaidPiece> ps, CordGraph g) => RebuildTail.NetSeeds(ps, g?.HiddenLinks);
 
         /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD (live round 4: a planned build of 248 edges held one frame ~1 s): a
         /// build stops laying edges once the rebuild has run <see cref="FrameBudgetMs"/> (snapshot and style scan included)
@@ -357,7 +357,7 @@ namespace RimMandrake.GimmeSomeSlack
                 bySection = nextBy;
                 Dictionary<LaidPiece, int> prevSeeds = netSeeds;
                 tSeeds = System.Diagnostics.Stopwatch.GetTimestamp();
-                try { netSeeds = ComputeNetSeeds(next); }
+                try { netSeeds = ComputeNetSeeds(next, b.Graph); }
                 catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[GimmeSomeSlack] net seeds: " + ex, 0x4d43_5345); }
                 Dictionary<LaidPiece, int> prevMat = matIdx;
                 tMat = System.Diagnostics.Stopwatch.GetTimestamp();

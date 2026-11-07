@@ -1063,8 +1063,8 @@ def lane_a_live(B, rows, log):
         m0.get("settleMaxLenDev", 1) <= 0.05 else "FAIL", "MOD",
         {k: m0.get(k) for k in ("settledStrands", "settleMaxStretch", "settleMaxLenDev", "endHeaps", "laidPoints", "lastRebuildMs")})
     # L2 tangle entity + lit strips
-    row(rows, "B6_tangle_lit_strips", "PASS" if m0.get("tangles", 0) >= 1 and m0.get("litStrips", 0) > 0 and m0.get("darkStrips", 1) == 0 else "FAIL",
-        "MOD", {k: m0.get(k) for k in ("tangles", "tangleMinUsed", "litStrips", "darkStrips", "stubs", "mergedStubs")})
+    row(rows, "B6_tangle_lit_strips", "PASS" if m0.get("tangles", 0) >= 1 and m0.get("tangleLitStrips", 0) > 0 and m0.get("tangleDarkStrips", 1) == 0 else "FAIL",
+        "MOD", {k: m0.get(k) for k in ("tangles", "tangleMinUsed", "tangleLitStrips", "tangleDarkStrips", "litStrips", "darkStrips", "stubs", "mergedStubs")})
     shot(B, "p1b_01_wide", SITE, log)
     shot(B, "p1b_02_tangle_lit_and_downed_wire", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
     # B3 whip
@@ -1222,8 +1222,8 @@ def lane_a_live(B, rows, log):
     frame_fit(B, SITE)
     d1 = motion(B)
     shot(B, "p1b_06_tangle_dark", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
-    row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("darkStrips", 0) > 0 and d1.get("litStrips") == 0 else "FAIL", "MOD",
-        {k: d1.get(k) for k in ("litStrips", "darkStrips", "liveWallEnds")})
+    row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("tangleDarkStrips", 0) > 0 and d1.get("tangleLitStrips") == 0 else "FAIL", "MOD",
+        {k: d1.get(k) for k in ("tangleLitStrips", "tangleDarkStrips", "litStrips", "darkStrips", "liveWallEnds")})
     if bat2:
         B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0)
     B.probe("set:style=StarWarsJawa")              # back to the shipped default look for the rows after lane A

@@ -31,6 +31,9 @@
     <Compile Include="..\Core\CordGraph.cs" />
     <Compile Include="..\Core\SnapshotBlock.cs" />
     <Compile Include="WaterStubChecks.cs" />
+    <Compile Include="JunctionStripChecks.cs" />
+    <Compile Include="CordShapeChecks.cs" />
+    <Compile Include="..\Core\CordShape.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="..\Core\CordBuilder.cs" />

@@ -31,7 +31,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         [System.ThreadStatic] private static Dictionary<string, string> scratchParent;
         [System.ThreadStatic] private static Dictionary<string, int> scratchHash;
 
-        internal static Dictionary<LaidPiece, int> NetSeeds(List<LaidPiece> ps)
+        internal static Dictionary<LaidPiece, int> NetSeeds(List<LaidPiece> ps, List<KeyValuePair<string, string>> hiddenLinks = null)
         {
             // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD: kept between calls (read only inside one): two tens-of-KB tables per frame paid the
             // incremental collector by size. [ThreadStatic] because the SelfTest's frames may run on any thread.
@@ -55,6 +55,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 Find(p.NetTokA);
                 if (p.NetTokB != null) Union(p.NetTokA, p.NetTokB);
             }
+            // GSS_COLOUR_SEED_FIX_HIDDEN_CONDUIT_SPLIT: a run through a wall or under hidden conduit lays no piece, and is one net
+            if (hiddenLinks != null)
+                foreach (KeyValuePair<string, string> l in hiddenLinks) Union(l.Key, l.Value);
             Dictionary<string, int> hashOf = scratchHash ??= new Dictionary<string, int>();
             hashOf.Clear();
             var res = new Dictionary<LaidPiece, int>(ps.Count);
@@ -85,6 +88,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (char c in k) h = Mix(h, c);
             h = Mix(h, (ulong)k.Length);
             h = Mix(h, p.GeometryHash());
+            // what the strands' geometry does not show: a tangle's key is fixed and its strips go dark on a dead net, and a Build can
+            // consume that change before the poll sees it (GSS_STRIP_LED_FIX_MISSED_REPAINT)
+            foreach (CordDecal d in p.Decals) h = Mix(h, (ulong)d.Kind + 1);
             p.SigMemo = h;
             p.SigMemoSet = true;
             return h;

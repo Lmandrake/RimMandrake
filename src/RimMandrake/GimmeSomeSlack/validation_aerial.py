@@ -387,6 +387,31 @@ def run_live(args):
                   {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre,
                    "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
 
+    # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): cut the only span joining two runs, give each side its own look, re-string:
+    # the joined run must carry one look. Patch_Restring_Bridge queues the bridge rule; the job and the verb both call Restring.
+    if i2:
+        B.ap("cut:%d,%d" % (i2, i3))
+        B.ticks(2)
+        B.ap("cprocess")
+        ra, rb = B.ap("crestyle:%d,%d:Modern_Orange" % M2), B.ap("crestyle:%d,%d:Industrial" % M3)
+        def look_of(st, p):
+            return next((m.get("look") for m in st.get("members") or [] if (m.get("x"), m.get("z")) == p), None)
+        split = B.ap("cstyles")
+        before = (look_of(split, M2), look_of(split, M3))
+        rs3 = B.ap("restring:%d,%d" % (i2, i3))
+        B.ticks(3)
+        B.ap("cprocess")
+        joined = B.ap("cstyles")
+        after = (look_of(joined, M2), look_of(joined, M3))
+        ev = {"restyled": (ra.get("success"), rb.get("success")), "before": before, "after": after, "restring": rs3.get("done"),
+              "meaning": "PASS = two looks before the re-string, one look on the rejoined run after it"}
+        if not (ra.get("success") and rb.get("success") and rs3.get("done")) or None in before or before[0] == before[1]:
+            V.row(rows, "M15f_restring_joined_run_one_look", "UNMEASURED", "HARNESS", ev)
+        else:
+            V.row(rows, "M15f_restring_joined_run_one_look", "PASS" if after[0] == after[1] and None not in after else "FAIL", "MOD", ev)
+        B.ap("crestyle:%d,%d:%s" % (M2[0], M2[1], joined.get("defaultKey") or "Scrapper"))
+        B.ap("cprocess")
+
     # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
     # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is
     # axis-aligned, so its cut point is also a cell centre and could not tell the fix from the old cell-centre aim.
@@ -812,7 +837,7 @@ def _aerial_setting(B, key):
 
 def four_switches_block(B, rows, res):
     """M21a-f on the flips site (FSITE, cleared). Two player masts F1, F2 linked; then per switch OFF and ON."""
-    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship")
+    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship", "kineticSway")
     c0 = B.ap("census").get("settings") or {}
     prior = {k: c0.get(k) for k in keys}
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
@@ -913,6 +938,22 @@ def _four_switches(B, rows, res):
         V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
                                   "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
 
+    # ------------------------------------------------ M22a/b kineticSway (GSS_SWAY_PROVE_KINETIC_LIVE_ROW)
+    # PROVE  a real GenExplosion with a blast marked kinetic (the marker Kinetic Arms sets, matched by name), mid-span.
+    # EXPECT on: the span swings and stays up; off: nothing. A bomb's own cut is M15; a blast here never wounds.
+    mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+    for rid, val, want in (("M22a_kinetic_sway_on_swings_never_cuts", True, True), ("M22b_kinetic_sway_off_does_nothing", False, False)):
+        i1, i2, up = _scene_pair(B)
+        s = B.ap("set:kineticSway=%s" % val)
+        if not (i1 and up and s.get("success")):
+            V.row(rows, rid, "UNMEASURED", "SITE", {"linked": up, "set": s})
+            continue
+        ex = B.ap("explode:%d,%d,2.5,50,kinetic" % mid)
+        B.ticks(3)
+        ap_ = anchors_by_pos(B.ap("census"))
+        still = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2))
+        ok = ex.get("success") and still and ex.get("cuts") == 0 and (ex.get("sways", 0) > 0) == want
+        V.row(rows, rid, "PASS" if ok else "FAIL", "MOD", {"explode": ex, "spanStillUp": still, "wantSway": want})
     # ------------------------------------------------ M21e/f keepWiresOnGravship
     # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
     #        verb's echo).

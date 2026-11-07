@@ -400,6 +400,7 @@ def s12_style_run_suspects(B, rows):
           {"visitsN": n1, "visits2N": n2, "ratio": ratio,
            "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"})
     s12c_d5_multilink(B, rows)
+    s12e_batched_links(B, rows)
     # D4 needs a save + reload; it rides the script's own save (run_live, --save NAME). proof_all's one save is a plain
     # rimworld/save_game after a zero-tick BEFORE census (S7/S9e compare it with the load), so a member staged in that
     # save would change those sets: SHARED leaves D4 to the standalone run.
@@ -471,6 +472,51 @@ def s12c_d5_multilink(B, rows):
     else:
         V.row(rows, "S12c_D5_multilink_one_frame", "PASS" if len(looks_m) == 1 and looks_m == looks_c else "FAIL", "MOD", ev)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % D5_RECT, categories="All")
+    B.ticks(2)
+
+
+# S12e (GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE): masts A and C already one Industrial run through a conduit line; B a Modern mast set back
+# from the line's middle, nearer each than they are to each other. The gizmo's spanning forest strings A-B and B-C in one call: each
+# new span's check could find the other end round through the other new span, and neither merged.
+Z12E = Z0 + 40                                          # past SITE2's top; read and cleared on its own rect
+E_A, E_C, E_B = (X0 + 14, Z12E), (X0 + 20, Z12E), (X0 + 17, Z12E + 2)
+E_RECT = (X0 + 14, Z12E, 7, 3)
+
+
+def _cst_e(B):
+    B.ap("cprocess")
+    B.ticks(2)
+    return B.ap("cstyles:%d,%d,%d,%d" % E_RECT)
+
+
+def s12e_batched_links(B, rows):
+    if not prepare_site(B, E_RECT, rows, "S12e_site_ready"):
+        V.row(rows, "S12e_batched_links_merge", "UNMEASURED", "SITE", "site not ready (terrain)")
+        return
+    B.ap("set:autoLink=False")
+    try:
+        built = all([B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % E_A).get("success"),
+                     B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (E_A[0] + 1, Z12E, E_C[0] - 1, Z12E)).get("success"),
+                     B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % E_C).get("success"),
+                     B.ap("place:RM_AerialMast:Modern:%d,%d:god" % E_B).get("success")])
+        st0 = _cst_e(B)
+        cells = ";".join("%d,%d" % c for c in (E_A, E_B, E_C))
+        plan = B.ap("cmultilink:%s:plan" % cells)
+        ml = B.ap("cmultilink:%s" % cells)
+        st = _cst_e(B)
+    finally:
+        B.ap("set:autoLink=True")
+    dl = st.get("defaultLook")
+    every = [E_A, E_C, E_B] + [(x, Z12E) for x in range(E_A[0] + 1, E_C[0])]
+    before, after = _looks_of_run(_members(st0), every, st0.get("defaultLook")), _looks_of_run(_members(st), every, dl)
+    runs = {(_members(st).get(c) or {}).get("run") for c in every}
+    ev = {"built": built, "planPairs": plan.get("pairs"), "linked": ml.get("linked"), "looksBefore": before, "looksAfter": after, "runs": sorted(runs, key=str),
+          "meaning": "PASS = two spans strung in one call onto an already-joined pair leave ONE look on the run"}
+    if not (built and ml.get("success")) or len(set(before)) < 2 or not ml.get("linked") or len(plan.get("pairs") or []) != 2:
+        V.row(rows, "S12e_batched_links_merge", "UNMEASURED", "HARNESS", ev)
+    else:
+        V.row(rows, "S12e_batched_links_merge", "PASS" if len(after) == 1 and len(runs) == 1 and None not in runs else "FAIL", "MOD", ev)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % E_RECT, categories="All")
     B.ticks(2)
 
 

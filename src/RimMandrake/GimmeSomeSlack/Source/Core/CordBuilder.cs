@@ -364,6 +364,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return p;
         }
 
+        /// <summary>A Modern junction's long power strip, its LEDs reading the net. The key carries the LED state, so a flip repaints.</summary>
+        private static LaidPiece StripPiece(CordGraph g, VId v, CordNode nd, ulong seed, bool lit)
+        {
+            var p = new LaidPiece { Key = "node:" + v + (lit ? ":lit" : ":dark"), Owner = nd.Cell };
+            StripPose sp = PoseStrip(g, v, seed);
+            p.Decals.Add(new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, sp.Centre, sp.Angle, JunctionStripScale));
+            p.LiveKeys.Add(nd.Cell);
+            return p;
+        }
+
         /// <summary>Publishes the keys this Build still misses (the worker skips any other) and, with no batch running, starts
         /// one on the thread pool for the queued edges. The world and graph are this Build's: the adapter snapshots a fresh
         /// world per rebuild and nothing writes it or a reduced graph afterwards, so the worker only reads them.</summary>
@@ -605,11 +615,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 junctionSeed = opt.Seed;
                 nodeOrder = g.Nodes.OrderBy(k => k.Key).ToList();
             }
+            if (!ReferenceEquals(stripsFor, g) || stripSeed != opt.Seed)
+            {
+                litStrips.Clear();
+                darkStrips.Clear();
+                stripsFor = g;
+                stripSeed = opt.Seed;
+            }
             // node pieces: junction decals (kept with the graph), tangles (cheap, never cached)
             foreach (var kv in nodeOrder)
             {
                 CordNode nd = kv.Value;
-                if (nd.Type == NodeType.Junction)
+                if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
+                {
+                    // d_modern_junction_strip: a Modern junction draws the long strip. Its look and LEDs can change on a kept
+                    // graph, so both forms are kept with the graph and the cell's current look and net pick one
+                    Dictionary<VId, LaidPiece> forms = isLive(nd.Cell) ? litStrips : darkStrips;
+                    if (!forms.TryGetValue(kv.Key, out LaidPiece p)) forms[kv.Key] = p = StripPiece(g, kv.Key, nd, opt.Seed, ReferenceEquals(forms, litStrips));
+                    outp.Add(p);
+                }
+                else if (nd.Type == NodeType.Junction)
                 {
                     // a junction decal reads only the graph and the seed: kept with the graph (round 2)
                     if (!junctions.TryGetValue(kv.Key, out LaidPiece p)) junctions[kv.Key] = p = JunctionPiece(g, kv.Key, nd, opt.Seed);
@@ -677,6 +702,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private CordGraph planFor, junctionsFor;
         private ulong junctionSeed;
         private Dictionary<VId, LaidPiece> junctions = new Dictionary<VId, LaidPiece>();
+        private readonly Dictionary<VId, LaidPiece> litStrips = new Dictionary<VId, LaidPiece>(), darkStrips = new Dictionary<VId, LaidPiece>();
+        private CordGraph stripsFor;
+        private ulong stripSeed;
         private List<KeyValuePair<VId, CordNode>> nodeOrder = new List<KeyValuePair<VId, CordNode>>();
 
         private static string PileName(PileArt p) => p == PileArt.Strips ? "Strips" : p == PileArt.Junctions ? "Junctions" : p.ToString();
@@ -942,8 +970,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             piece.PathLen = L;
             piece.LaidRatio = n > 0 ? laid / n / Math.Max(L, 1e-6) : 0;
-            EndDecor(w, g, e.A, na, piece, true, opt, isLive);
-            EndDecor(w, g, e.B, nb, piece, false, opt, isLive);
+            EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
+            EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -1040,8 +1068,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.Dives = pl.Dives.Count;
             piece.PathLen = Ltot;
             piece.LaidRatio = n > 0 ? laid / n / Math.Max(Ltot, 1e-6) : 0;
-            EndDecor(w, g, e.A, na, piece, true, opt, isLive);
-            EndDecor(w, g, e.B, nb, piece, false, opt, isLive);
+            EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
+            EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -1090,13 +1118,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return new V2(0, d.Z < 0 ? -1 : 1);
         }
 
-        /// <summary>The cardinal direction an edge leaves a cell node in: toward the next cell of its chain.</summary>
+        /// <summary>The cardinal direction an edge leaves a cell node in: toward the next cell of its chain. A blob junction
+        /// reads it from the blob's middle, not from one of its cells.</summary>
         internal static V2 ArmDir(CordGraph g, CordEdge e, bool atA)
         {
             VId v = atA ? e.A : e.B;
             VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
             Cell c = g.Nodes[v].Cell;
             V2 d;
+            if (g.Nodes[v].IsBlob)
+            {
+                V2 toward = nxt.IsCellish ? nxt.A.Centre : (atA ? e.PB : e.PA);
+                return Snap4(toward - g.Nodes[v].Pos);
+            }
             if (nxt.IsCellish) d = new V2(nxt.A.X - c.X, nxt.A.Z - c.Z);
             else if (nxt.T == 's') d = nxt.A == c ? new V2(nxt.B.X - c.X, nxt.B.Z - c.Z) : new V2(nxt.A.X - c.X, nxt.A.Z - c.Z);
             else d = (atA ? e.PB : e.PA) - g.Nodes[v].Pos;
@@ -1111,12 +1145,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             CordRng r = CordRng.Of(seed, "jdecal", nd.Cell.X, nd.Cell.Z);
             if (nd.IsBlob || !v.IsCellish)
                 return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = 0, Centre = nd.Pos, Arms = 4 };
-            var dirs = new HashSet<Cell>();
-            foreach (CordEdge e in g.CordEdges())
-            {
-                if (e.A == v) { V2 a = ArmDir(g, e, true); dirs.Add(new Cell((int)a.X, (int)a.Z)); }
-                if (e.B == v) { V2 a = ArmDir(g, e, false); dirs.Add(new Cell((int)a.X, (int)a.Z)); }
-            }
+            HashSet<Cell> dirs = g.ArmsOf(v);
             if (dirs.Count >= 4)
                 return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = r.Int(0, 3) * Math.PI / 2, Centre = nd.Pos, Arms = 4 };
             var order = new[] { new Cell(0, 1), new Cell(1, 0), new Cell(0, -1), new Cell(-1, 0) };
@@ -1126,6 +1155,75 @@ namespace RimMandrake.GimmeSomeSlack.Core
             V2 anchor = new V2(0, TapeAnchorZ * JunctionScale);
             V2 rot = new V2(anchor.X * Math.Cos(angle) - anchor.Z * Math.Sin(angle), anchor.X * Math.Sin(angle) + anchor.Z * Math.Cos(angle));
             return new JunctionPose { Kind = DecalKind.JunctionTape, Angle = angle, Centre = nd.Pos - rot, Arms = 3 };
+        }
+
+        // ---------------------------------------------------------------- the Modern junction strip (d_modern_junction_strip)
+        // PowerStrip.png (64x32), read off the PNG in canvas widths from its centre: four plugs on art +Z, their heads at these X
+        // and StripHeadZ; the strip's own lead leaves its +X end at (StripLeadX, StripLeadZ).
+        public const double JunctionStripScale = 0.9, StripHeadZ = -0.03, StripLeadX = 0.46, StripLeadZ = -0.04;
+        public static readonly double[] StripHeads = { -0.34, -0.14, 0.06, 0.26 };
+        /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
+        public const double StripSkew = 0.22;
+        /// <summary>How far past the strip's free end a cord from behind swings to come round to the sockets.</summary>
+        public const double StripWrap = 0.3;
+        /// <summary>How far out from its socket a cord coming in from the side has straightened up to arrive square.</summary>
+        public const double StripSwing = 0.3;
+
+        public struct StripPose
+        {
+            internal V2 Centre, Along, Side;
+            public double Angle;
+            /// <summary>The arm the strip's own lead takes; every other arm plugs into a socket.</summary>
+            internal Cell LeadArm;
+            internal Cell SocketArm, FreeArm, BackArm;
+            /// <summary>The socket each arm plugs into, or -1 (no such arm).</summary>
+            public int SocketOfSocketArm, SocketOfFreeArm, SocketOfBackArm;
+
+            internal V2 At(double x, double z) => Centre + Along * (x * JunctionStripScale) + Side * (z * JunctionStripScale);
+            /// <summary>Where a cord plugged into socket k ends: the plug's own centre, its head on the socket.</summary>
+            internal V2 Tip(int k) => At(StripHeads[k], StripHeadZ) + Side * (0.46 * PilePlugScale);
+            internal V2 LeadTip => At(StripLeadX, StripLeadZ);
+
+            internal int SocketFor(Cell arm) =>
+                arm == SocketArm ? SocketOfSocketArm : arm == FreeArm ? SocketOfFreeArm : arm == BackArm ? SocketOfBackArm : -1;
+        }
+
+        private static Cell Turn(Cell d) => new Cell(-d.Z, d.X);                         // +90 degrees
+        private static V2 AsV2(Cell d) => new V2(d.X, d.Z);
+
+        /// <summary>How a Modern junction's strip lies. The art is fixed: looking at the sockets, the lead leaves to the right. So
+        /// the sockets face the T's stem (a 4-way picks a side from the seed), the lead takes the arm to their right, the arm to
+        /// their left comes in over the free end, and a 4-way's back arm swings round that end, inside it, so the two never cross.
+        /// A pure function of the graph and the seed, so the strip and the cords that plug into it agree.</summary>
+        public static StripPose PoseStrip(CordGraph g, VId v, ulong seed)
+        {
+            CordNode nd = g.Nodes[v];
+            CordRng r = CordRng.Of(seed, "jstrip", nd.Cell.X, nd.Cell.Z);
+            HashSet<Cell> arms = g.ArmsOf(v);
+            var order = new[] { new Cell(0, 1), new Cell(1, 0), new Cell(0, -1), new Cell(-1, 0) };
+            // the sockets' side: opposite the arm a T lacks; a 4-way (or a blob with every side taken) any side; never empty-handed
+            List<Cell> missing = order.Where(c => !arms.Contains(c)).ToList();
+            Cell faces = missing.Count > 0 ? new Cell(-missing[0].X, -missing[0].Z) : order[r.Int(0, 3)];
+            if (missing.Count > 1)
+            {
+                // fewer than three arms: keep the sockets on a side a cord really arrives from, and the lead on its own arm
+                foreach (Cell c in order) if (arms.Contains(c) && arms.Contains(new Cell(c.Z, -c.X))) { faces = c; break; }
+            }
+            Cell lead = new Cell(faces.Z, -faces.X);                                         // -90 degrees from the sockets
+            Cell free = new Cell(-lead.X, -lead.Z), back = new Cell(-faces.X, -faces.Z);
+            bool hasBack = arms.Contains(back), hasFree = arms.Contains(free), hasFace = arms.Contains(faces);
+            double skew = r.Range(-StripSkew, StripSkew);
+            V2 along = CordAudit.Rot(AsV2(lead), skew), side = CordAudit.Rot(AsV2(faces), skew);
+            return new StripPose
+            {
+                // the plugs stand out on the sockets' side: the strip sits back a little, so strip and plugs centre on the node
+                Centre = nd.Pos - side * 0.06,
+                Along = along, Side = side, Angle = Math.Atan2(along.Z, along.X),
+                LeadArm = lead, SocketArm = faces, FreeArm = free, BackArm = back,
+                SocketOfBackArm = hasBack ? 0 : -1,
+                SocketOfFreeArm = hasFree ? (hasBack ? 1 : 0) : -1,
+                SocketOfSocketArm = hasFace ? 2 : -1,
+            };
         }
 
         /// <summary>The cardinal direction from a point just outside a machine's footprint into it.</summary>
@@ -1153,7 +1251,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
             double lat = n == 1 ? 0 : (i - (n - 1) / 2.0);
             V2 target, arrive;
             double straight = 0.15;
-            if (nd.Type == NodeType.Junction && !nd.IsBlob && v.IsCellish)
+            if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
+            {
+                StripPose sp = PoseStrip(g, v, opt.Seed);
+                V2 ad = ArmDir(g, e, atA);
+                var arm = new Cell((int)ad.X, (int)ad.Z);
+                int socket = sp.SocketFor(arm);
+                if (socket < 0)
+                {
+                    // the strip's own lead: into the nub at its end, no plug
+                    target = sp.LeadTip + sp.Side * (lat * 0.015);
+                    arrive = -sp.Along;
+                    straight = 0.1;
+                }
+                else
+                {
+                    // a bundle shares one plug, as a device lead does: its strands close up to the socket
+                    target = sp.Tip(socket);
+                    arrive = -sp.Side;
+                    straight = 0.22;
+                    V2 onSide = target + sp.Side * StripSwing;
+                    // from behind: first out past the free end, so the cord comes round the strip instead of under it
+                    if (arm == sp.BackArm) P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap, onSide - sp.Along * 0.15);
+                    else if (arm == sp.FreeArm) P = SwingIn(w, P, !atA, sp.Centre, onSide - sp.Along * 0.5 + sp.Side * 0.25, onSide - sp.Along * 0.1 + sp.Side * 0.2);
+                }
+            }
+            else if (nd.Type == NodeType.Junction)
             {
                 V2 a = ArmDir(g, e, atA);
                 // the bigger round-5 box: tuck out along the arm, but never past the far node (or the middle, when the far node is a junction that tucks too); never shorter than before
@@ -1202,6 +1325,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else return P;
             return CordLayer.Approach(w, P, !atA, target, arrive, straight);
+        }
+
+        /// <summary>Bend a cord that does not arrive from the sockets' side out through the given points, so it comes round to its
+        /// socket in a loose curve instead of a hairpin under the plug. Unchanged if that ground is not open.</summary>
+        private static List<V2> SwingIn(CordWorld w, List<V2> P, bool atEnd, V2 centre, params V2[] via)
+        {
+            if (P.Count < 4 || via.Any(q => !w.IsWalkable(q.Floor))) return P;
+            var Q = new List<V2>(P);
+            if (!atEnd) Q.Reverse();
+            int j = Q.Count - 1;
+            while (j > 1 && V2.Dist(Q[j], centre) < 0.85) j--;
+            if (j < 1) return P;
+            var stops = new List<V2> { Q[j - 1], Q[j] };
+            stops.AddRange(via);
+            List<V2> bend = Geo.Resample(Geo.Catmull(stops, 10), 0.05);
+            if (bend.Any(q => !w.IsWalkable(q.Floor))) return P;
+            var round = new List<V2>(Q.GetRange(0, j + 1));
+            int from = bend.FindIndex(q => V2.Dist(q, Q[j]) < 0.03);
+            round.AddRange(from < 0 ? bend : bend.GetRange(from + 1, bend.Count - from - 1));
+            if (!atEnd) round.Reverse();
+            return round;
         }
 
         /// <summary>The art inset (cells) on the footprint side a cord enters through.</summary>
@@ -1307,7 +1451,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return Math.Atan2(d.Z, d.X);
         }
 
-        private static void EndDecor(CordWorld w, CordGraph g, VId v, CordNode nd, LaidPiece piece, bool atStart, BuildOptions opt,
+        private static void EndDecor(CordWorld w, CordGraph g, CordEdge e, VId v, CordNode nd, LaidPiece piece, bool atStart, BuildOptions opt,
                                      Func<Cell, bool> isLive)
         {
             if (piece.Strands.Count == 0) return;
@@ -1320,6 +1464,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 V2 a = atStart ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];
                 V2 into = Snap4(tip - a);
                 piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - into * (PlugScale * 0.25), Math.Atan2(into.Z, into.X), PlugScale));
+            }
+            else if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
+            {
+                // a cord into a junction strip plugs into its socket; the strip's own lead wears no plug
+                StripPose sp = PoseStrip(g, v, opt.Seed);
+                V2 ad = ArmDir(g, e, atStart);
+                int socket = sp.SocketFor(new Cell((int)ad.X, (int)ad.Z));
+                // square onto the socket whatever the bundle's last point did: one plug, on the art's own plug
+                if (socket >= 0) piece.Decals.Add(new CordDecal(DecalKind.Plug, sp.Tip(socket), Math.Atan2(-sp.Side.Z, -sp.Side.X), PilePlugScale));
             }
             else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
             {

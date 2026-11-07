@@ -96,7 +96,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 // the gizmo's own pair choice (AutoLinkSelected's filter + AerialMath.MinimumSpanningLinks), nothing linked
                 var mine = sel.Where(b => b.parent.Spawned && b.parent.Faction == Faction.OfPlayer).ToList();
-                var pairs = AerialMath.MinimumSpanningLinks(mine.Select(s => s.Info()).ToList(), AerialSettings.Range);
+                var pairs = CompAerialAnchor.AutoLinkPairs(mine);
                 return AerialProbe.Ok(cmd, ids + ",\"pairs\":[" + string.Join(",", pairs.Select(q => "[" + q.Item1 + "," + q.Item2 + "]")) + "]");
             }
             if (map != Find.CurrentMap) return AerialProbe.Fail(cmd, "the selector works on the current map, not map " + map.uniqueID);

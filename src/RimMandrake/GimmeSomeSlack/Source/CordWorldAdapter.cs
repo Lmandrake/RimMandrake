@@ -327,6 +327,9 @@ namespace RimMandrake.GimmeSomeSlack
             m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
         }
 
+        /// <summary>A standing lamp reads as a Consumer on purpose: the cord slides under it to the centroid like any other
+        /// device, the look the owner walked on 2026-10-16. MachineKind.Lamp is the Python oracle's node type (its top-of-the-lamp
+        /// plug point predates the centroid rule, round 2); only the oracle's scenes raise it.</summary>
         private static MachineKind KindOf(CompPower c, bool transmitter)
         {
             if (c is CompPowerPlant) return MachineKind.Source;

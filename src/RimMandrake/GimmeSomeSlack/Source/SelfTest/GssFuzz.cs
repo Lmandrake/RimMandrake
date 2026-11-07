@@ -628,6 +628,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             double scale = double.Parse(Arg(args, "--fuzz-scale") ?? "1", System.Globalization.CultureInfo.InvariantCulture);
             if (scale <= 0) return;
             string only = Arg(args, "--fuzz-only");
+            if (only != null && only != "cords" && only != "aerial")
+            {
+                Program.Check(false, "--fuzz-only " + only + " names no fuzz family (cords, aerial): an empty run proves nothing");
+                return;
+            }
             string one = Arg(args, "--fuzz-seed");
             int Cases(int n) => Math.Max(1, (int)Math.Round(n * scale));
             var all = Stopwatch.StartNew();

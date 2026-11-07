@@ -25,6 +25,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// </summary>
     public static class AerialProbe
     {
+        /// <summary>Marks a blast as Kinetic Arms' mod does: the hook matches this extension by its type NAME, so a list without
+        /// that mod can drive the real explosion path (explode:x,z,r,dmg,kinetic).</summary>
+        private sealed class RM_KineticBlastExtension : DefModExtension { }
+
+        private static DamageDef kineticDamage;
+
+        private static DamageDef KineticDamage()
+        {
+            if (kineticDamage != null) return kineticDamage;
+            var d = (DamageDef)typeof(object).GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(DamageDefOf.Bomb, null);
+            d.modExtensions = new List<DefModExtension> { new RM_KineticBlastExtension() };
+            return kineticDamage = d;
+        }
+
         public static string request = "";
         public static string result = "";
         public static int serial;
@@ -125,9 +139,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 var c = new IntVec3(int.Parse(p[0], CultureInfo.InvariantCulture), 0, int.Parse(p[1], CultureInfo.InvariantCulture));
                 float r = float.Parse(p[2], CultureInfo.InvariantCulture);
                 int dmg = int.Parse(p[3], CultureInfo.InvariantCulture);
-                int before = comp.explosionCuts;
-                GenExplosion.DoExplosion(c, map, r, DamageDefOf.Bomb, null, dmg);
-                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before));
+                int before = comp.explosionCuts, swaysBefore = comp.kineticSways;
+                GenExplosion.DoExplosion(c, map, r, AerialMath.ExplodeWantsKinetic(p) ? KineticDamage() : DamageDefOf.Bomb, null, dmg);
+                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before) + ",\"sways\":" + (comp.kineticSways - swaysBefore));
             }
             if (cmd.StartsWith("set:"))
             {

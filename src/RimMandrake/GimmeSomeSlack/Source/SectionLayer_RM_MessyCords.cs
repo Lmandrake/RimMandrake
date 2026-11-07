@@ -186,7 +186,8 @@ namespace RimMandrake.GimmeSomeSlack
                         Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);
-                        float y = face ? faceY + 0.002f : baseY + 0.009f;
+                        // a plug lies over the strip it plugs into: same-altitude sub-meshes draw in whichever order the section met them
+                        float y = face ? faceY + 0.002f : d.Kind == DecalKind.Plug ? baseY + 0.010f : baseY + 0.009f;
                         float aspect = DecalAspect.Of(d.Kind);
                         verts += d.Cropped
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)

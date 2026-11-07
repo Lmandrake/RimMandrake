@@ -747,6 +747,48 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         public IEnumerable<CordEdge> CordEdges() => Edges.Where(e => !e.Hidden);
 
+        private List<KeyValuePair<string, string>> hiddenLinks;
+
+        /// <summary>The cell tokens each hidden edge joins, as a laid piece's net tokens name them; tabled once per graph.</summary>
+        internal List<KeyValuePair<string, string>> HiddenLinks
+        {
+            get
+            {
+                if (hiddenLinks == null)
+                {
+                    var l = new List<KeyValuePair<string, string>>();
+                    foreach (CordEdge e in Edges)
+                        if (e.Hidden && Nodes.TryGetValue(e.A, out CordNode a) && Nodes.TryGetValue(e.B, out CordNode b))
+                            l.Add(new KeyValuePair<string, string>(a.Cell.X + "," + a.Cell.Z, b.Cell.X + "," + b.Cell.Z));
+                    hiddenLinks = l;
+                }
+                return hiddenLinks;
+            }
+        }
+
+        private Dictionary<VId, HashSet<Cell>> armTable;
+
+        /// <summary>The cardinal directions a node's cords leave it in, tabled once per graph: posing a junction reads this for
+        /// each of its cords, on the lay worker and the frame alike, and a whole-graph walk per read was quadratic.</summary>
+        internal HashSet<Cell> ArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref armTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, CordEdge e, bool atA)
+                {
+                    if (Nodes[n].Type != NodeType.Junction) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e, true); Arm(e.B, e, false); }
+                System.Threading.Volatile.Write(ref armTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : new HashSet<Cell>();
+        }
+
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>
         internal Cell CellOf(VId v) => Nodes[v].Cell;
     }

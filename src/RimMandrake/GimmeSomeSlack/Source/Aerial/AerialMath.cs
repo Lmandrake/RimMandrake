@@ -617,6 +617,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <paramref name="kineticSway"/> is on, otherwise does nothing. Every other harmful blast keeps the design 2.6
         /// rule: cut when the setting is on and the damage is positive.
         /// </summary>
+        public static bool ExplodeWantsKinetic(string[] parts) => parts.Length > 4 && parts[4] == "kinetic";
+
         public static BlastKind BlastKindFor(bool harmsHealth, bool kinetic, double damage, bool explosionsCut, bool kineticSway)
         {
             if (!harmsHealth) return BlastKind.None;

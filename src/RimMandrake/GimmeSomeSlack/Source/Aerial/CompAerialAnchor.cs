@@ -475,9 +475,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 .Where(b => b != null && b.Spawned && b.Faction == Faction.OfPlayer).ToList();   // GPT read A4: never string someone else's anchors
             var byId = sel.ToDictionary(b => b.thingIDNumber);
             // phase 4: one spanning forest per kind, each at its own range (a pipe pole never links to a power mast)
+            foreach ((int a, int b) in AutoLinkPairs(sel))
+                TryLink(byId[a], byId[b].parent);
+        }
+
+        /// <summary>The pairs "Auto-link selected" strings: one spanning forest per kind, each at its own range.</summary>
+        internal static List<(int, int)> AutoLinkPairs(IEnumerable<CompAerialAnchor> sel)
+        {
+            var pairs = new List<(int, int)>();
             foreach (IGrouping<AerialLineKind, CompAerialAnchor> g in sel.GroupBy(s => s.Kind))
                 foreach ((int a, int b) in AerialMath.MinimumSpanningLinks(g.Select(s => s.Info()).ToList(), AerialLineProfiles.RangeFor(g.Key)))
-                    TryLink(byId[a], byId[b].parent);
+                    pairs.Add((a, b));
+            return pairs;
         }
 
         public static string VerdictText(LinkVerdict v) => VerdictText(v, AerialLineKind.Power);
