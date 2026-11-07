@@ -19001,3 +19001,4 @@
 {"seat":"CONDUCTOR","event":"needs","id":"EMPIRE_SPLIT_DEPLOY_WAITS_FOR_FREE_GAME","to":"deploy","ts":"2026-11-07T17:12:37Z","tsn":1794071557501128892}
 {"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-07T18:33:31Z","tsn":1794076411589936792}
 {"seat":"CONDUCTOR","event":"verify","id":"CONDUCTOR_DOCS_UNIFY_ONE_GOODBYE_TWICE_TOLD","result":"pass","config":"selftest_conductor_identity bench_word_prose conductor_authority seat_restart GREEN","evidence":"/home/mandrake/.seat-tmp/t1.txt","sha":"ebc56d5a8f57","level":"L0","ts":"2026-11-07T18:58:09Z","tsn":1794077889562897917}
+{"seat":"CONDUCTOR","event":"verify","id":"RMSEARCH_AGENT_RETIRE_HAIKU_LONG_GONE","result":"pass","config":"hook selftests 26/26 + unbounded PASS + conductor_authority GREEN","evidence":"/home/mandrake/.seat-tmp/t2.txt","sha":"d9d994252c","level":"L0","ts":"2026-11-07T19:01:20Z","tsn":1794078080592798979}
