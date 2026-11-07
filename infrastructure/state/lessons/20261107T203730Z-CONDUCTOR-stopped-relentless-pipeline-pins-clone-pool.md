@@ -1,1 +1,0 @@
-A stopped Relentless pipeline pins the clone pool: frozen items count as owned for good, and finished detached runs left their clones dirty with a ledger line and a conversations record. 2 of 16 clones were in use when the pool refused.

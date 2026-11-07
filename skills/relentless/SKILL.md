@@ -153,6 +153,7 @@ Read before you redesign anything. Each of these has cost generations.
   guards read a planned stop. Stopping by hand raises `RELENTLESS_BLIND` after 10 minutes.
 - **A release:** `relentless_release.py cut --emergency --why "..."`, `rollback`, `status`. Limits in the rules,
   including `share`, arrive the same way.
+- **`relentless.py hold` refuses checking and game items by design** (hold after the verdict, let the phase settle), so for most frozen items under a PAUSE the only lever that frees the clone is `park-pool` (bundle + release; the status stays and the item resumes from its bundle). Open choice: teach `hold` to take a checking/game item once its unit is down.
 
 ## Changing it
 

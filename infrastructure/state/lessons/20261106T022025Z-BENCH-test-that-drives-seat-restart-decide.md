@@ -1,1 +1,0 @@
-A test that drives seat_restart.decide()/execute() outside the Dispatcher must save its state with dispatcher.save(st, state_dir) each tick: once the request is consumed, drain_of() reads the restart only from state.json, so an in-memory state reads 'not draining' while the window is in fact held (CLOSEOUT_DRAIN_PROVE_REAL_RESTART_LIVE, selftest_closeout_drain_real_chain.py).

@@ -1,1 +1,0 @@
-Lightspeed rollout #5 measured: only 25 of 882 owed Relentless live criteria name a suite row id (2.8%), so the spec's ~180/day guess for 'generate from the suite' fails. 222 of the 882 are cut at 160 chars on the ledger, and owed() refuses every proof for them. Re-recording criteria whole unlocks more lines than any matcher can. Tool: src/RimMandrake/rimflow/lightspeed_wire.py

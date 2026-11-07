@@ -1,2 +1,0 @@
-RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES (edc8c0ae16bf): relentless.py, detached_helper.py, selftest_detached_helper.py, selftest_relentless_park_stopped.py and skills/relentless/SKILL.md are DIRTY by code_review_status (relentless.py was clean at 80e7d60318; the other code files never marked). mark-clean needs a full-file review, which the fixer did not do: a fresh-context full review of the park_stopped / park-pool hunks in relentless.py and of detached_helper.py return_clone / return_all is owed. Selftests 19/19 GREEN, 21/21 and 7/7 mutants caught.
-home: NONE

@@ -425,6 +425,7 @@ resolve, which is a different failure from the action refusing.
 
 ---
 - **Selection ids carry a `Thing_` prefix.** `rimworld/get_selection_semantics` names a thing `Thing_<def><idNumber>` (`selectedObjects[].id`, `details.thingId`) while `jawa/list_things` names it `<def><idNumber>`. Code binding a selection to a listed thing must strip `Thing_` (or compare `details.thingIdNumber`); a selftest stub that invented a bare-id shape passed 660/660 while the live read was blind.
+- **`jawa/clear_ui` defaults `hideHud=true`:** it switches on vanilla screenshot mode for 20 s, and in screenshot mode RimWorld draws no gizmo grid, no inspect tabs and no tooltips, so `get_ui_layout` returns only an empty Inspect surface. A probe that clears the UI before reading gizmos, tabs or hover text must pass `hideHud:false` and wait out a lease still on (reply `hudHidden`). Before calling a proof_or_site NO VERDICT an environment fault, read the probe's own call log (`result_*.json` calls) for `hudHidden`. Guarded by `bridgetools/selftest_hover_probe_hud.py`.
 
 ## 4b. ⚠️ Unpausing is the most consequential call on the bridge
 

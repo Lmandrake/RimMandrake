@@ -262,6 +262,7 @@ The bar for a proof:
 ⛔ **`success: true` is not evidence.** It never was.
 
 ---
+- **Adding a parameter to `jawa/set_terrain_batch` or `jawa/build_batch` in the companion C# must also update the `known` calibration set in `src/RimMandrake/Utils/rimplace/contract.py`,** or `tool_parameters()` returns None and the rimplace selftest goes red.
 
 ## 6. Where the rest of the detail lives
 

@@ -1,1 +1,0 @@
-A reach fixture that uses a real withheld path as its example of 'dark' breaks when a later item ships an adapter covering that path: CHECKER_REACH_FIX_SEEDS_STILL_DARK's relentless_seed_compare turned selftest_relentless_reachfix row 11 red on origin/main (7398715b9d). Fixtures for 'no adapter covers X' should strip the adapter or use a path nothing will ever cover.

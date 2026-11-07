@@ -1,1 +1,0 @@
-SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG: a contract clause '! grep -q X <file>' is vacuous when the file cannot be read (grep exits 2, the negation exits 0) - it cost three blind rounds behind the Marker's tmpfs. Guard every negated grep with 'test -s <file> &&' so an unreadable file goes red, and name host files in the contract so the wall binds them read-only.

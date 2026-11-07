@@ -1,1 +1,0 @@
-run_selftests classify() checked '"FAIL" not in out' as a substring, so any output naming a path with FAIL in it (a Relentless clone named ..._REAL_FAILS) turned an UNMEASURED test into FAIL; fixed 2026-11-06 to a word-start regex. A verdict word must be matched as a token, never a substring of output that echoes paths.

@@ -1,1 +1,0 @@
-findings_fold.md 'generated' only moves when the table changes; a days-old file with the testq lane paused is the fold working (1319 'unchanged since' runs 2026-11-01..03 during the Steve NVMe swap). Ask journalctl --user -u testq-tick.service | grep findings_fold before filing a dead-fold item (FINDINGS_FOLD_REVIVE_STALE_SINCE_NOV1)

@@ -212,6 +212,7 @@ after load. Back up the keepers first and stat-diff the Saves folder after: exac
 the new files, 0 changed. Slow the carrier if the job would finish before your read.
 On the full list "Out of Combat ReBoost" walks a colonist at ~2 ticks/cell, and
 BadBack + Frail brings that to ~8. Recipe: `references/sites-and-timing.md`.
+- **The FlowWorks hose census `geometryHash` hashes `r.lay`, which (with `layKey`) is NOT scribed:** a census read right after a reload hashes a null lay until the hose re-lays. A save/load proof must compare it on a settled re-read (`V.settle_census`), never pre-tick; a Carrying hose moves between the before-read and the save by design (SL4 judges it).
 
 ## After the run: classify, then go hunting for the mod bug
 
@@ -280,6 +281,7 @@ and give a named UNMEASURED reason. Read flyers as state only. Declare the small
 tier. `hot_reload_defs` is not a speed path. `relentless_live.py` refuses proof lines
 that break these rules. The full rules, their reasons, and PLANNED tools with today's
 fallback are in `references/lightspeed-authoring.md`.
+- **Most owed live criteria cannot be generated from the suite.** Only 25 of 882 owed Relentless live criteria name a suite row id (2.8%), and 222 are cut at 160 chars on the ledger, where `owed()` refuses every proof for them. Re-recording criteria whole (tool `src/RimMandrake/rimflow/lightspeed_wire.py`) unlocks more lines than any matcher can.
 
 ## Writing the plan before the run
 

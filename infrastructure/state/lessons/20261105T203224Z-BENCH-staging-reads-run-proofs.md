@@ -1,2 +1,0 @@
-Relentless staging (game_mod_gap/batch_gap/trees) read the BUILD sha's live_proofs while the live run reads the books' current file, so a live-mods line added after the build never reached the enable list and the item held forever on a missing mod (fixed 20b6b34ba4). Also: a proof for a mod folded into RimMandrake.Biomes (Wastes, Sump, WeepingStones, Stillsand) needs 'live-mods: RimMandrake.Biomes' or the load can lack its BiomeDef (RM_Wastes, RM_GreySea).
-home: src/RimMandrake/rimflow/relentless_game.py

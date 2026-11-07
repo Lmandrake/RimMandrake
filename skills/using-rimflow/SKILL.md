@@ -256,6 +256,7 @@ is called after every folded event, so it tells you which event moved a field
 without re-implementing the verbs.
 
 More traps for this section: [references/traps.md](references/traps.md) § Reading projections.
+- **`rimflow model.read()` with no path reads the ledger under `$CLAUDE_PROJECT_DIR` (`model.ROOT`), not the tree the calling script lives in.** A proof that measures a ledger at a sha must call `model.read_clone` on that tree's frozen ledger head, or it measures whichever clone the session names (a blind check counted 11 ghosts the tree had released). The Relentless checker's `real.patch` also excludes ledger shards (POOL_NOISE), so a ledger-only repair reads to it as no ledger change.
 
 ## Bridge lock
 

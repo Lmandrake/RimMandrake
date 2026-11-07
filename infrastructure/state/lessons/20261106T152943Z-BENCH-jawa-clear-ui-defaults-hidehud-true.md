@@ -1,3 +1,0 @@
-jawa/clear_ui defaults hideHud=true: it switches on vanilla screenshot mode for 20 s, and in screenshot mode RimWorld draws no gizmo grid, no inspect tabs and no tooltips, so get_ui_layout returns only an empty Inspect surface. A probe that clears the UI before reading gizmos, tabs or hover text must pass hideHud:false and wait out a lease still on (reply hudHidden). The relentless supervisor filed this probe bug as a game-lane ENVIRONMENT cause (GAMEENV_FIX_PROOFSITE_E94045E9_ITEMS_WAIT); read the probe's own call log (result_*.json calls) for hudHidden before calling a proof_or_site NO VERDICT environment.
-
-Fixed in src/RimMandrake/bridgetools/prove_hover_tooltip.py (clear_ui helper); guarded by src/RimMandrake/bridgetools/selftest_hover_probe_hud.py.

@@ -1,1 +1,0 @@
-rename(2) over a symlink is not lookup-atomic on this ext4: a reader stat'ing through it got ENOENT 3 times in ~116k reads under 5,000 os.replace swaps (0 on tmpfs); a second look finds it. A swap-a-symlink deploy must treat a single miss as transient: a oneshot starting in that instant fails and its timer retries. Found by RELENTLESS_BUILD_DAILY_RELEASE_WITH_ROLLBACK.

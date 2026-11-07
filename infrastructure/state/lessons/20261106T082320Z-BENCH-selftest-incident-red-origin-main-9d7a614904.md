@@ -1,1 +1,0 @@
-selftest_incident is RED on origin/main 9d7a614904: 'every alarm kind is in the routing table' fails on game_env_route_failed (raised by src/RimMandrake/rimflow/relentless_game.py) which src/RimMandrake/rimflow/alarm_routes.json does not route; found by STATUS_FIX_HALF_PASS_ATE_THE_SLOT, unrelated to it

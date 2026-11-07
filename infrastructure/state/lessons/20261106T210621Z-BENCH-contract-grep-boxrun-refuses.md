@@ -1,2 +1,0 @@
-OPS_TIMERS_REVIVE_115F: relentless contract accepted a proof whose second part is a bare grep, then boxrun and finish refused it as unrunnable ('not a python3/python/bash command') and contract refuses a second setting, so the worker must rebind through a judge. Wrap any shell check as bash -c "..." in the proof, and run boxrun straight after contract, before any other work. The same rm-relentless.timer alarm recurred at 20:23Z as a bare Conductor systemctl stop restarted by hand at 20:28:30Z; the pause rule landed for OPS_TIMERS_REVIVE_343F covers it.
-home: NONE

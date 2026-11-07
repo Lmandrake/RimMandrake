@@ -1,1 +1,0 @@
-A fake subprocess.Popen in a selftest must not report pid 0: code that os.killpg(p.pid, SIGKILL)s its child (relentless_live.run_proof) then kills the test's own process group, which shows as exit 137 with no output. Use a pid no process holds (2**30).

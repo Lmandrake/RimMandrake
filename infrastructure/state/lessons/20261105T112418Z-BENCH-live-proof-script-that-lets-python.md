@@ -1,1 +1,0 @@
-A live proof script that lets a Python traceback escape exits 1, which relentless_live reads as a MOD FAIL: wrap main so harness/bridge exceptions print 'VERDICT: UNMEASURED (harness: ...)' and exit 2 (JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS, 2026-11-04 IndeterminateError recorded as game_fail)

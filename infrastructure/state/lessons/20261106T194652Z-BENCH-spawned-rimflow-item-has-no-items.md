@@ -1,1 +1,0 @@
-A spawned rimflow item has no items/<ID>.md and its ledger spawn event names it with "name", not "id": a check that collects item ids by grepping '"id":' from the shards calls every spawned item's live_proofs file an orphan (selftest_relentless_live_round orphan-stray check, fixed WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF)
