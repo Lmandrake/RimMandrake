@@ -3113,6 +3113,37 @@ def _mirror_from_ledger(actor, note=None):
     return w3.bridge_holder
 
 
+# The shared lock stamps `since` just after the take's ledger event, so the same take reads a few seconds apart.
+WHO_SAME_TAKE_SECONDS = 120
+
+
+def _who_against_shared(holder, since, purpose, idle, record):
+    """-> (since, purpose, idle, warning): the ledger's reading of a hold, corrected by the shared lock when that is
+    newer (BRIDGEWHO_FIX_STALE_CLONE_SAYS_HOUR_IDLE). A clone's ledger copy lags until it syncs. A newer take under the
+    SAME holder name looks like the old hold gone idle, which sent the Conductor after a false orphan. A different
+    holder is `_bridge_who`'s other warning."""
+    if not holder or not record:
+        return since, purpose, idle, None
+    held, was, clone = record.get("holder"), _epoch(since), record.get("clone") or "?"
+    if not held:
+        freed = _epoch(record.get("touched"))
+        if freed and was and freed > was:
+            return since, purpose, idle, (
+                "⚠️  the shared lock says the bridge was released at %s (%s); this clone's ledger is behind, and the "
+                "hold below is only its old copy." % (record.get("touched"), clone))
+        return since, purpose, idle, None
+    if held != holder:
+        return since, purpose, idle, None
+    age = model.shared_bridge_age_seconds(record)
+    fresher = age if age is not None and (idle is None or age < idle) else idle
+    newer = _epoch(record.get("since"))
+    if newer and was and newer - was > WHO_SAME_TAKE_SECONDS:
+        return record["since"], record.get("purpose"), fresher, (
+            "⚠️  this clone's ledger is behind: it has %s's hold since %s%s. The shared lock has a newer take (%s), "
+            "reported below." % (holder, since, "" if idle is None else ", idle %d min" % (idle // 60), clone))
+    return since, purpose, fresher, None
+
+
 def _bridge_who():
     """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
     # Re-derived from the ledger, so this answer is true even when the mirror is not.
@@ -3137,6 +3168,9 @@ def _bridge_who():
         print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
         return 0
     idle = _idle_seconds(w.last_seen.get(holder))
+    since, purpose, idle, behind = _who_against_shared(holder, since, purpose, idle, model.read_shared_bridge_record())
+    if behind:
+        print(behind)
     print("bridge held by %s since %s%s%s"
           % (holder, since or "?",
              ("  for: " + purpose) if purpose else "",

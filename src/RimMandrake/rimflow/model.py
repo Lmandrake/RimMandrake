@@ -1217,17 +1217,23 @@ def shared_bridge_path():
     return SHARED_BRIDGE_DEFAULT if os.path.isdir(d) else None
 
 
-def read_shared_bridge():
-    """-> dict {holder, since, touched, purpose, clone} or None. Unreadable reads as None (allow)."""
+def read_shared_bridge_record():
+    """-> the shared lock's dict as written, a release (holder None) included, or None. Unreadable reads as None."""
     p = shared_bridge_path()
     if not p:
         return None
     try:
         with open(p, encoding="utf-8") as f:
             d = json.load(f)
-        return d if isinstance(d, dict) and d.get("holder") else None
+        return d if isinstance(d, dict) else None
     except (OSError, ValueError):
         return None
+
+
+def read_shared_bridge():
+    """-> dict {holder, since, touched, purpose, clone} or None. Free or unreadable reads as None (allow)."""
+    d = read_shared_bridge_record()
+    return d if d and d.get("holder") else None
 
 
 def write_shared_bridge(holder, purpose=None, since=None):
