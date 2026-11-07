@@ -1,1 +1,0 @@
-A selftest that loads a real rules file inherits its real sinks: ops_watch_rules' conductor_log rang fake alarms into the live Conductor log twice (selftest_dispatcher, selftest_known_reds). Writers of that log now call rimflow/conductor_log_guard.refuse_if_test; a NEW writer must too, and any real rules path must equal its LIVE.

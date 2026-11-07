@@ -1,1 +1,0 @@
-detached_helper.py runs end with only a ledger note and a Conductor-log line: this window gets no notification, so a finished detached run looks like a running one until status --all is read. Check it when he asks about helpers.

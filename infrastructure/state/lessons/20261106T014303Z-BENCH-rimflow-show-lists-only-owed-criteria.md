@@ -1,1 +1,0 @@
-rimflow show lists only OWED criteria (and truncates event text): a proof that a criterion was reworded to L0 must grep the latest 'implemented criteria=' history line, not the owes block (LAUNCHREADY_FIX_CRITERION_STEAM_REVIVES, 2026-11-05)

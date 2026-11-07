@@ -1,1 +1,0 @@
-A relayed --owner-said claim/start stamps the item's owner as OWNER; before 18bd62d359 that locked the Conductor (BENCH) out of verify/close on his items. model._who_refusal now lets BENCH move OWNER-owned items.

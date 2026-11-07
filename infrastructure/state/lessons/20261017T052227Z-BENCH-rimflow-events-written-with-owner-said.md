@@ -1,1 +1,0 @@
-rimflow events written with --owner-said or --by-card land in the OWNER ledger shard (events/OWNER.jsonl), not the acting seat's; commit that shard too, or the rulings sit unpushed while the handoff calls the file someone else's

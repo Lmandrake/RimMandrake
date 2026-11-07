@@ -1,1 +1,0 @@
-A watchdog that shares the watched process's fatal dependency dies with it: after the 2026-11-02 power-off, testq steward AND steward-watch both crashed in escalate()->model.read() on torn ledger lines before writing their heartbeats (87 min silent). Any heartbeat must be written before, or regardless of, reads that can raise (fixed OPS_STEVE_UNSTICK_VHRP dc7975dac2c3).

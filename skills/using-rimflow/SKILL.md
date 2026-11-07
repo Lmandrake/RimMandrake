@@ -68,6 +68,10 @@ rimflow bridge {take,release,who,give} [to] [--for PURPOSE] [--force]
 
 rimflow sweep [--transient]    lists stale TRANSIENT_* files. LISTS ONLY, no ledger write.
 ```
+- **`rimflow file` writes only the ledger event; it creates no `items/<ID>.md`, and `--spec PATH` records PATH verbatim without copying it.** Staging the imagined prose path dies on "pathspec did not match"; write the prose to `infrastructure/state/items/<ID>.md` yourself (or pass a repo path to `--spec`, never a session-scratch path that dies with the session, or the item reads "no spec"), and commit the shards. Never create `items/*.md` without a ledger row: it turns `selftest_items_glob_live` real_glob_is_clean red.
+- **`rimflow file --needs game-up` prints a refusal-shaped warning ("A live check is owed only to a mechanism never once observed running...") but still files the item;** run `rimflow show <ID>` after a file call that looks bounced before assuming it did not file. `game-up` is the wrong tag for a pure offline roster diff; only flipping mods on and proving them needs the restart.
+- **`rimflow implemented --none-owed` moves an item straight to DONE, which is terminal.** Helpers used it on two items whose live proof was still owed and they could not be reopened. Brief helpers to use `--criteria-file` with level-tagged owed checks, never `--none-owed`, unless nothing beyond L0 is genuinely owed.
+- **`file --replaces X` supersedes X in the same act and there is no un-supersede.** A `--replaces` pasted onto the wrong line of a copy-pasted batch of file calls points the old item at the wrong successor for good (only a note corrects it). Write each file call with its own `--replaces` checked against the item it really replaces; never send a half-edited batch line.
 
 ## Item hygiene
 
@@ -104,6 +108,16 @@ that item's own state changes, not just after weeks.** `rimflow lint
 "still open/blocked" that closed the SAME calendar day, one within the same
 session that closed it — a doc can go stale within hours, not just weeks.
 - **Before building, claiming or re-briefing an item, check the code and git first.** `git log -S <symbol the finding names>` and `git log --grep=<ITEM_ID>` (a design doc's "not changed yet" lines go stale; 4 of 7 "unworked" pieces and 8 of 10 "proposed" candidates were already built), `rimflow show <ID>` history, and a `git fetch` plus grep of origin for the deliverable's files at the start and at each milestone (a ~800-line helper was built twice). If it is built, record `implemented` with the DLL/commit sha instead of rebuilding. After building, append a `## Built` section to `infrastructure/state/items/<ID>.md`: a build recorded only in a ledger note gets re-briefed as new work. When a brief says "these uncommitted edits finish items X and Y", mark an item implemented only when `git show --stat <sha>` lists THAT item's files.
+- **A closed item cannot be restarted, and `done` is terminal (no `done` -> `dropped`).** Never `close` a standing-loop item; file a continuation instead. A fixture or trial item that was closed by mistake is retired with `rimflow verify --result fail` plus a note saying so, and the false close stays visible in close statistics; prefer fixtures that never reach the shared ledger.
+- **An item found "already built" is closed or marked `implemented`, never left with only a ledger note.** Two `*_RM_MOD_BUILD_1` items sat `proposed` after notes and kept being re-offered to later windows.
+- **A failed or partial live-verify step is grounds to retry or block, never to close.** A build agent whose `## verify` needs a live quicktest and that closes on deploy-sync alone while "documenting the gap honestly" has not verified; brief build agents explicitly, and send such a close back.
+- **Before carding, routing or asking the owner anything, read the item's whole ledger history, not the latest block reason or a prose harvest.** Grep the ledger shards and sibling items for each question (`rimflow show <ID>`, the caused/causing items, `design/RimMandrake/delegation_policy.md` §1/§2): a prose-only harvest re-asked 4 already-ruled questions, and of 6 items routed as needs-owner none needed him (a ruling he had already given, classes the delegations hand to agents, a list answered by later rulings).
+- **A closed item can be true for one twin def and false for its frozen twin.** Check both the `RM_` and `RUT_` side before closing a per-biome numeric fix (`RM_PropaneLake` got `animalDensity`, the live save's `RUT_PropaneLake` did not).
+- **A note saying UNBLOCKED is not an unblock.** The BLOCKED event stands and rimflow keeps rendering the item BLOCKED; when work resumes on a blocked item run `rimflow unblock` in the same act, and have sweeps grep notes for "unblock" on BLOCKED items.
+- **When you record the owner's answer on an item that is `needs=owner`, move `needs` in the same sitting** (`rimflow needs <ID> --to offline|bridge`); 8 of 13 "to rule" rows had been answered after the needs event and nobody moved it. `needs=owner` names no addressee and `--for` names the seat that works the item, so RimPulse shows a ledger ask only when it is addressed to him (filed/asked by OWNER, a provenance flag, `--for OWNER`, only L4 owed, or "owner decides") and is a thing to view or a fresh ruling; everything else is one dim "N not shown" line. Start the reason with `owner:` (or `agent:` for a question to a seat/judge), and re-ask with `needs --to owner` to bring a stale one back.
+- **Copy an owner-ruled table or decision into `infrastructure/state/items/<ITEM>.md` the day it is ruled;** Transient decays and later specs cite only items. A spec that could not see the ruling (an owner-ruled Rot fauna table living only in a Transient draft and a ledger note) contradicted it. Likewise, before building from a design-doc section, grep the item's ledger notes for owner card rulings: a doc can still say the opposite of a later card (the mineral registry design said "unregistered minerals suppressed by default" after the card ruled the reverse); propagate the ruling into the doc.
+- **A claim sha is often a lesson-only or ledger commit, not the work.** A verifier must `git show --stat` the cited sha and find the real code commits by file log before testing. Claims whose sha is a ledger or lesson commit, with no verify text and no code-review mark, cannot leave UNRESOLVED however often they are re-judged (67 carried through four Arbiter batches): close-time sha and review marks move them, not more batches.
+- **Put a proof on its item in the moment it is seen** (`rimflow note` or `verify`). A proof that lands only in a diag file or a lane's resume reason (a wake-on-LAN success sat in a diag file with no note on its item) does not survive a handoff, and the owner had to say it again.
 
 ## `close` is earned (RO3, ruling D1(b), 2026-11-01)
 
@@ -122,6 +136,7 @@ A `verify` now moves state both ways. A fail on the built sha takes `validated` 
 a fail on a closed sha, or on a later commit that contains it, REOPENS the same item (`done` -> `ready`). A pass on any sha
 but the built one counts for nothing. A run before
 `model.EARNED_FROM` replays as it was written.
+- **A criterion's level L1 is not "selftest":** most FlowWorks L1 criteria read "in game ...". Read the criterion text before recording a selftest as its verify; a selftest pass on a live criterion is a note, not a verify. When tightening a live clause, REPLACE its line in `infrastructure/state/live_proofs/<ID>.criteria` (never append a second `A1 L1:` line): `rimflow implemented` refuses "criterion A1 is listed twice" and the game phase dies after a green offline proof.
 
 ## Done means running: `--live`
 
@@ -165,6 +180,9 @@ authority, so nothing lands in `ownerSaid` by mistake:
   `per standing ruling`, `agent's reason:`).
 - `./game` takes the same four flags (`--said` is its spelling of `--owner-said`); a
   restart you call yourself is `./game --why "<your reason>" <state>`.
+- **`--owner-said` rejects a quote ending in a question mark (read as a question) and a string stitched from several separate card answers.** Quote each answer in its own note and cut before any trailing question.
+- **A provenance flag switches the acting seat.** `--per-ruling`, `--owner-said` or `--by-card` on ANY verb (`note`, `claim`, `start`, `reassign`) writes the event into `OWNER.jsonl` as seat OWNER, even with `--seat`/`RIMFLOW_SEAT`, and on a claim/start it moves the item's ownership to OWNER; `reassign --per-ruling` reads as the owner overriding, not you acting under a ruling. A builder's own progress or result note takes `--why`; use a provenance flag only where the owner's authority is the point (a ruling, a close lifting a fail). The Conductor (BENCH) may still verify and close OWNER-owned items.
+- **An OWNER-seat note's `text=` field is an agent's gloss of a card option, not his words;** only the `ownerSaid` / `byCard` fields are verbatim. Quote those and label `text=` as "option text recorded with it". A card ruling with no doc write-back is invisible to every doc grep, so write the ruling into the item file.
 
 ## Seat identity
 
@@ -175,7 +193,9 @@ the window half — so every ledger call there needs an **explicit `--seat`**,
 or a whole sitting's ledger trail lands mis-seated. Also: subcommand targets
 take `--to` (e.g. `reassign --to FOUNDRY`, `needs --to bridge`); bare
 positionals for a target are refused.
-- **`rimflow next --seat <OTHER SEAT>` takes a real lease as that seat in YOUR clone** (a diagnostic `next --seat FOUNDRY` wrote a lease into the local `FOUNDRY.jsonl` and then blocked `./publish`). For a read-only look use `blind_view.py queue <SEAT>` or `rimflow why` / `rimflow show`.
+- **`rimflow next --seat <OTHER SEAT>` takes a real lease as that seat in YOUR clone** (a diagnostic `next --seat FOUNDRY` wrote a lease into the local `FOUNDRY.jsonl` and then blocked `./publish`). For a read-only look use `next --seat X --peek` (what the Dispatcher uses), `blind_view.py queue <SEAT>`, `rimflow why` or `rimflow show`, and run it in THAT seat's clone: the Dispatcher peeks there and a seat's local reconciles are not on origin.
+- **`handoff.py` refuses "cannot tell which agent identity is handing off" when the corpus holds several seats.** Set the seat explicitly (`HANDOFF_SEAT=MACBENCH python3 ~/dev/Lodestar/bin/handoff.py` on the Mac laptop, whose seat is `MACBENCH`, not the Desktop's `BENCH`); guessing files your reboot under the other window's name and hands it your unfinished work.
+- **`python.exe` has no seat env unless `RIMFLOW_SEAT` is set explicitly;** rimflow/ledger calls from `python.exe` fail or mis-attribute without it.
 
 ## Committing ledger writes
 
@@ -215,6 +235,9 @@ parse (keeping a whole event glued onto a torn fragment), backs up to
 - **`--owner-said`, `--by-card`, `--per-ruling` and `./game --why/--said` write `infrastructure/state/ledger/events/OWNER.jsonl`, not your seat shard.** Commit `OWNER.jsonl` by explicit path too (a commit of only `<SEAT>.jsonl` silently publishes nothing of the ruling), and a helper that restarts the game must commit it with its work: an uncommitted OWNER.jsonl makes `./publish`'s `reset --keep` refuse for every helper in the clone once origin's OWNER shard moves.
 - **A ledger or `code_review` shard left uncommitted in the worktree while peers' rebases move HEAD goes older than origin (or ends up mid-file).** Committing it by path then silently deletes upstream lines and fails `ledger_lint` NOT_APPEND, and `./publish` retries forever. Fix forward: rebuild the file as origin's content plus your extra lines appended (`grep -qxF` to add only the new ones), commit. Prevention: the seat commits its shard promptly instead of helpers working around foreign lines.
 - **`./publish` rebases your local commits onto origin, so a sha taken before publishing never reaches main.** `rimflow close --sha`, `verify --sha`, notes and commit-message references must use the sha `./publish` prints (`PUBLISHED <sha>`), so publish first and close after; a closed item cannot be re-closed, so correct a dead sha with `rimflow note`. A clone fed those commits by bundle then diverges ('ahead 10, behind 27'); bring it back with `git rebase origin/main`, which drops the already-applied duplicates. `code_review_status.py mark-clean` records the current local HEAD the same way: rebase first and then mark, or pass `--sha` with a published commit.
+- **A hook refuses a commit that stages the ledger shard together with other paths.** Commit `infrastructure/state/ledger/events/<SEAT>.jsonl` (and `OWNER.jsonl`) alone, in its own commit.
+- **`./publish` can REFUSE (a foreign dirty file blocks `reset --keep`); the commit then stays local and a later publish by any seat rebases it to a new sha.** Hold the close until it publishes. Its closing hint `close with: rimflow close <ID> --sha X` names the TIP of main after the rebase, which in a shared clone can be a peer's commit that landed after yours: take the sha from `git log --oneline` for YOUR subject line. A wrong close cannot be repeated (a second close is refused), so a pushed wrong close needs a note or a new item. Separately, `winbuild` compiles the working tree, so in a shared clone another seat's dirty `.cs` is baked into the DLL you commit (srchash shows it): build from `git archive HEAD` plus your files when anyone else has dirty source.
+- **`rimflow append()` does not check the shard ends in a newline,** so a write torn at the tail gets the NEXT good event glued onto the same physical line; a repair that deletes every unparseable line deletes that good event too. `repair_torn_ledger.py` keeps a trailing complete event (keys event/seat/ts) and drops only the fragment.
 
 ## Reading projections
 
@@ -245,6 +268,7 @@ and listed one item 9.5 h after it moved (2026-10-11). `observe(ev, world, ok)`
 is called after every folded event, so it tells you which event moved a field
 without re-implementing the verbs.
 - **`rimflow queue` renders from the clone's own ledger, so a clone behind origin shows closed or changed items as open.** A reconcile or decay sweep must `./sync` first (or re-check each item in a fresh origin clone) and never trust the stale seat clone's queue view.
+- **`rimflow show` lists only OWED criteria and truncates event text.** To prove a criterion was reworded to L0, grep the latest `implemented criteria=` history line, not the owes block.
 
 ## Bridge lock
 
@@ -262,3 +286,7 @@ release by a seat until 45 min after his last deliberate interaction (OWNER ledg
 his chat prompt to any seat); an unmeasured signal refuses (`rimflow/owner_interaction.py`). Nothing announces a release,
 so if you want the bridge, check `bridge
 who` again rather than waiting to be told.
+- **Bridge idle time counts ledger events only (take/release/note), never GABP calls.** A subagent making 90+ live calls can show "idle 58 min", and a seat's live scripts (sprinkler_live, thirst_live, load_walk) call the bridge with no seat field so they never refresh the hold: `driver lock: FREE + hold idle 2h` is not proof the bridge is free. Check `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` for calls in the last ~10 minutes (or the Player.log) before taking it, and before calling a session stalled.
+- **While the owner walks a save, do not touch the bridge at all, reads included** (`get_camera_state`/`get_ui_state` polling every 30 s coincided with his "someone automated is moving around the map"). Wait on `rimflow bridge who`, not on the game.
+- **`rimflow bridge take --idle-ok` refuses any `--for` text containing the word "flyers", even negated ("no flyers")** ("flyer flight is never delegated"). Leave flyers out of the purpose string.
+- **A bridge gate written as `rimflow bridge idle --for x | head -1 && <kill>` does not gate:** the pipeline's exit is `head`'s (0), so the kill ran on NOT TAKEABLE (a game was closed this way). Test the verdict text (`grep -q '^TAKEABLE'`) before any game close. Likewise a read-only "can I?" check must call what the action's own refusal calls: `bridge idle` once read the seat alone and said TAKEABLE while `take` refused on the process-keyed driver lock, so a tick spent 17 deploy plans and a ModsConfig write before each refused take.

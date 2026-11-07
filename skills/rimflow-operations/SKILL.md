@@ -75,6 +75,7 @@ claude-account use <acct> --confirm archmagi      # then disarm
 ```
 Check `claude-account --json status` for the live account first. No Claude session is needed
 anywhere in this path.
+- **The Tailscale-SSH-from-the-Mac route can be unavailable** (the laptop had no Tailscale CLI, no 100.x interface, and `archmagi`/`archmagi-wsl` did not resolve). The browser route works: console.tailscale.com > Machines > archmagi-wsl > "SSH to machine" > username Other: `mandrake` (Google re-auth popup) opens a shell as mandrake on Archmagi. Drive it with uiclick plus System Events keystrokes; the cdp extension loses the tab once the SSH popup opens.
 
 ## 5. Stand-down / stand-up costs (why switches are not free)
 
