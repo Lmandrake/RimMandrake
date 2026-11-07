@@ -12,6 +12,8 @@ flowworks list, ~64 px a cell. His covered-pit-trap story: a walled compound wit
   stood on the lip (the lip band was skipped so as not to paint over them).
 - `first_look_3_seam_closeup.png`: the same kind of covered pit, zoomed right in: a faint cut line and a slight
   discolouration, so the player who laid it can find it. At play zoom it draws nothing.
+- `first_look_3b_seam_at_game_max_zoom.png`: the same, at the game's own closest zoom on a 916 px window (~42 px a cell).
+  My call, not his: it may read a little like a selection square; I can make it fainter.
 - `first_look_4_open_spiked_pit.png`: the open pit with its spikes, before the cover.
 
 What I'm least sure about:
@@ -23,3 +25,17 @@ What I'm least sure about:
 
 Changes to approved things: none yet. The drawbridge got one behaviour fix from the owed-fix list (pawns already on the
 floor under a leaf that comes down stay under it); its look is untouched.
+
+## Contrast sheet: how deep a pawn reads (not decided, nothing shipped from it)
+
+`contrast_depth_sink_T0_T1_T2.png`: one ordinary row of 2x2 holes, left to right undug, 0.5, 1, 1.5, 2, 4, 8 m, a colonist
+in each hole's south-west square. Settings only, no new art:
+- T0 (shipped): sink 0.3 cell a level, near-lip band 85% opaque. The legs show through below the lip as ghosts.
+- T1: the same sink, the band opaque. Only heads poke over the near lip. Reads as "peeking out", not "2 m down".
+- T2: half the sink, the band opaque. Chest-deep in the hole: reads as standing in a trench, not trapped.
+- Both wrong is an option. My read: none of them shows "the walls are higher than their head by 20%" in a 2-wide hole,
+  because the pawn is drawn over the near lip instead of inside the hole. What I'd try next (not built): keep the whole
+  sprite inside the hole's square, shade it darker with depth, and draw the far wall face tall enough to stand above the
+  head. Also seen here: 4 m and 8 m holes look alike (bar `pit_depth_ladder_legible`).
+`first_look_5_big_pit_and_occupied.png`: a 6x5 pit 2 m deep, empty, beside a 3x3 with a colonist in it. The big one reads as
+one dark excavated place; its walls are a thin rim band, which I think is too slight for 2 m.
