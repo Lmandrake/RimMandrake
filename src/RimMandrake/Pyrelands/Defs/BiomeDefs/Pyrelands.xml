@@ -246,14 +246,11 @@
             <min>0.90</min>
             <max>1.00</max>
           </li>
+          <!-- Shallow only (2026-11-07): vanilla draws the deep/shallow seam as hard whole-cell blocks under the ash light, the
+               ugliest thing a judge found on a fresh map (q_pond_h3). A savanna pan is shallow anyway. -->
           <li>
             <terrain>WaterShallow</terrain>
             <min>1.00</min>
-            <max>1.10</max>
-          </li>
-          <li>
-            <terrain>WaterDeep</terrain>
-            <min>1.10</min>
             <max>999</max>
           </li>
         </thresholds>

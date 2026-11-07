@@ -30,7 +30,8 @@ namespace RimMandrake.Pyrelands
         public override void Generate(Map map, GenStepParams parms)
         {
             if (!PyrelandsMechanicsGate.On) return;
-            TerrainDef deep = TerrainDefOf.WaterDeep, shallow = TerrainDefOf.WaterShallow, mud = TerrainDefOf.Mud;
+            // No deep water: its seam with shallow draws as hard whole-cell blocks (q_pond_h3); a pan is shallow throughout.
+            TerrainDef deep = TerrainDefOf.WaterShallow, shallow = TerrainDefOf.WaterShallow, mud = TerrainDefOf.Mud;
             TerrainDef rich = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ground_SoilRich") ?? TerrainDefOf.Soil;
             if (WaterCells(map) < minWaterCells) DigPonds(map, deep, shallow, mud, rich);
             FirmBanks(map, mud, rich);
