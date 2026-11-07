@@ -1,1 +1,0 @@
-SELFTEST_FIX_ONE_PATH_SEAM_IXBQ: the NIGHTLY_RED alarm spawned this item at 13:46Z on 2026-11-06 from the 03:00 nightly, 40 min AFTER f3b9929d41 (13:06Z) had already fixed the red (rimflow/wrapup.py exemption). A nightly-red item can be stale on arrival: rerun the one test at HEAD before editing; if it is green, prove and finish.

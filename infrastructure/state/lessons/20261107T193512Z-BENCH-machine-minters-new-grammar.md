@@ -1,1 +1,0 @@
-New naming grammar (PROJECT_VERB_INTENTION_TWIST, 4-9 words) refuses ~60 fixed machine alarm prefixes (ops_watch, steward, audit_hardflag_file). Prefixing them RIMMASTER_ broke every startswith('OPS_'/'STEVE_LANE_UNSTICK_') consumer, so machine minters instead declare RIMFLOW_MACHINE_MINT=1 (relaxed mint, same as a test ledger). Any NEW machine minter must set it.

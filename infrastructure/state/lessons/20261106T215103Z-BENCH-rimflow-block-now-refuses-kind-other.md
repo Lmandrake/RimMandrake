@@ -1,1 +1,0 @@
-rimflow block now refuses kind other, written or implied (no --on and no --kind): name what lifts it with --on, --kind time --lift-at, --kind owner, or --kind judge|live|external. A parked item by an owner's card is --kind owner. Proposed home: using-rimflow.

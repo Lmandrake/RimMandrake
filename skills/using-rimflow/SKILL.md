@@ -109,6 +109,7 @@ session that closed it — a doc can go stale within hours, not just weeks.
 - **Any seat closes dead items.** (owner) "when any queue item is found to have been completed, totally invalidated or superceded, or otherwise rendered into something no longer worthy of being considered for activity, ANY SEAT may denote this in its log, record which seat ruled this, and CLOSE it completely." `close`/`drop`/`supersede` are `who: "any"`; pass `--reason` with the proof and no owner-quote flag. Done means proven; a subagent's verdict is not the proof.
 
 More traps for this section: [references/traps.md](references/traps.md) § Item hygiene.
+- **`rimflow block` refuses kind other**, written or implied (no `--on` and no `--kind`): name what lifts it with `--on`, `--kind time --lift-at`, `--kind owner`, or `--kind judge|live|external`. An item parked by an owner's card is `--kind owner`.
 
 ## `close` is earned (RO3, ruling D1(b), 2026-11-01)
 
