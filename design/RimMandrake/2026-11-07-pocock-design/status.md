@@ -12,3 +12,4 @@ measure | complete | session model | in session total | hot spots, fix ratios, l
 02a blind answer | complete | gpt-6.1-sol | unknown (consult reports none) | job consult-20261107-140058-263774-ce1bb4, 158 s
 01 design | complete | session model (claude-opus-5-5 per harness) | in session total | written by the helper itself (no subagents allowed); read 02a before finishing, marked [pre]/[GPT-blind]
 02 critique | complete | gpt-6.1-sol | unknown (consult reports none) | job consult-20261107-140826-364742-c2199f, 203 s; authorship hidden
+02m re-measure | complete | session model | in session total | 11 starred/disputed claims re-measured by other methods; 4 moved
