@@ -222,7 +222,7 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>An idle colonist reaches for the can on one think in this many: a few times a day for someone with truly nothing to do.</summary>
-        public const float IdleTagChance = 0.012f;
+        public const float IdleTagChance = 0.02f;
 
         public static bool IdleHandTags(float roll) { return roll < IdleTagChance; }
 

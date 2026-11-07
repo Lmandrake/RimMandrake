@@ -277,7 +277,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
         <form>Glyph</form>
-        <poolWeight>3</poolWeight>
+        <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <requiresAnyMeme>
@@ -569,7 +569,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <form>Glyph</form>
-        <poolWeight>2</poolWeight>
+        <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>

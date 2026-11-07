@@ -121,7 +121,6 @@ namespace RimMandrake.Graffiti
             List<Pawn> pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             for (int i = 0; i < pawns.Count; i++)
             {
-                // respawned, not teleported: Position plus Notify_Teleported left the drawn pawn behind at this spot for good
                 pawns[i].jobs?.StopAll();
                 pawns[i].DeSpawn();
                 GenSpawn.Spawn(pawns[i], C(12 + 2 * i, 18), map);

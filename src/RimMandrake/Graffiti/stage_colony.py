@@ -38,12 +38,23 @@ def static(s, method, arg="x"):
 
 
 def shot(s, name, rect, ppc=64):
+    # The tool writes its PNG asynchronously and answers at once if a file of that name exists, so reusing a name copies the LAST
+    # run's picture (it did: a "natural day" shot showed the previous game). Every capture gets a name nobody has used.
+    # Colonists can still DRAW at their last on-screen spot after safe_advance with the camera elsewhere: the map is right,
+    # they are not evidence of where anyone stands.
+    s.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=0)
+    s.call("rimworld/step_game_ticks", ticks=4)
+    unique = "%s__%d" % (name, int(time.time()))
     cal = play_zoom.Calibration()
-    path = play_zoom.shoot(s, cal, rect, 0, ppc, name, RuntimeError)
-    local = play_zoom.local_path(path) if not os.path.exists(path) else path
+    path = play_zoom.shoot(s, cal, rect, 0, ppc, unique, RuntimeError)
+    local = play_zoom.local_path(path)
+    for _ in range(40):
+        if os.path.exists(local) and os.path.getsize(local) > 0:
+            break
+        time.sleep(0.5)
     dest = os.path.join(SHOTS, name + ".png")
     shutil.copy(local, dest)
-    print("SHOT", dest)
+    print("SHOT", dest, "ticks", s.call("rimworld/get_game_info").get("ticksGame"))
 
 
 def run(s, ticks):
@@ -63,6 +74,7 @@ def main():
     s = Sess()
     if a[0] == "colony":
         print(static(s, "Colony"))
+        s.call("jawa/weather_set", weather="Clear", lockWeather=True)
     elif a[0] == "call":
         print(static(s, a[1], a[2] if len(a) > 2 else "x"))
     elif a[0] == "run":
