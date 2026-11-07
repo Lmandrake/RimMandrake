@@ -13,6 +13,7 @@ What goes in, and what does not: `references/traps.md`.
 **Cause:** RimWorld 1.6 gave AssetBundles first-class support, and authors ship art compiled rather than loose to halve download size.
 **Fix:** `pip install UnityPy` opens them — one bundle yielded 554 `Texture2D` objects with dimensions and internal paths, stored at `assets/data/<packageid>/textures/<the ordinary RimWorld path>`, so stripping the prefix recovers the path. Tooling: `src/RimMandrake/Utils/extract_bundle.py`, which needs Windows `python3.exe`, not WSL `python3` (UnityPy is installed only for the Windows interpreter).
 **Recurs when:** overriding bundled art — RimWorld resolves a texture as **loose file in any active mod → base game resources → bundles**, so a loose PNG at the same path wins *regardless of load order*, and a bundle can never override a base-game texture.
+**Verified live on one donor's bundle** (a `loadAfter`-only override mod shipping loose `Textures/...` at the donor's exact path: six creatures all rendered the override). It is still per-donor and per-RimWorld-version, so a genuinely new donor gets one live spawn and screenshot before you rely on it.
 
 ---
 
