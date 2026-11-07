@@ -120,6 +120,8 @@ FOLLOW_BURN = "RimMandrake.Pyrelands.RM_JobGiver_FollowBurn"
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
+COMMON_GRAZERS = ("RM_Ullai", "RM_Ashwallow", "RSW_Nuna", "RSW_Iriaz", "RSW_Gizka")
+BIG_PREDATORS = ("RM_Flamefang", "RM_Barbslinger", "RM_Emberscythe", "RM_Sytheclaw", "RSW_Anooba", "RSW_Orray", "RSW_Dalgo")
 REGROW_OVERRIDE_DAYS = 0.1
 REGROW_SHORT_STEP = 1500   # two steps of this, through safe_advance
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
@@ -976,6 +978,11 @@ def animal_census(t):
                 _fail("foreign wild animal kinds on the site: %r" % foreign)
             if len(wild) < 12:
                 _fail("only %d wild animals on the site (need >=12)" % len(wild))
+            grazers = sum(v for k, v in counts.items() if k in COMMON_GRAZERS)
+            big = sum(v for k, v in counts.items() if k in BIG_PREDATORS)
+            _note(t, "small common grazers against big predators", {"grazers": grazers, "bigPredators": big})
+            if grazers <= big:
+                _fail("the big predators (%d) are not outnumbered by the small grazers (%d): %r" % (big, grazers, counts))
             wa, why = biome_probe_animals(probe, "RM_Pyrelands")
             if wa is None:
                 _unmeasured(t, "census clean (%d wild, %d kinds, none foreign) but the live "

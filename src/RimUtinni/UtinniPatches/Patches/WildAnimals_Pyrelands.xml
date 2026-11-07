@@ -27,12 +27,12 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
       <value>
-        <RSW_Anooba>0.35</RSW_Anooba>
+        <RSW_Anooba>0.2</RSW_Anooba>
         <RSW_Iriaz>0.5</RSW_Iriaz>
-        <RSW_Nuna>0.5</RSW_Nuna>
-        <RSW_Orray>0.25</RSW_Orray>
+        <RSW_Nuna>0.7</RSW_Nuna>
+        <RSW_Orray>0.12</RSW_Orray>
         <RSW_Zeer>0.6</RSW_Zeer>
-        <RSW_Dalgo>0.18</RSW_Dalgo>
+        <RSW_Dalgo>0.1</RSW_Dalgo>
         <RSW_Gizka>1.0</RSW_Gizka>
       </value>
     </match>
