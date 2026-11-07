@@ -1191,7 +1191,11 @@ def machine_lines(name, m):
         running_now = d.get("game") and age < 120
         lead = "" if running_now else "Not now: from its last record, %s ago%s. " % (ago(age), ", game closed %s" % clock(d["shutdown"]) if d.get("shutdown") else "")
         state = {"run": "running", "paused": "**paused**", "stall": "**stalling**", "longevent": "loading", "mixed": "running, partly paused"}.get(last.get("state"), last.get("state"))
-        speed = " at %s speed" % last["speed"] if last.get("speed") and last.get("state") != "paused" else ""
+        speed = ""
+        if last.get("speed") and last.get("state") != "paused":
+            speed = " on its %s button" % last["speed"]
+            if last.get("target"):  # a dev multiplier can make Ultrafast ask for 60, so the button alone misleads
+                speed += ", asking %d ticks a second" % round(last["target"])
         bits = ["Game clock: %s%s." % (state, speed)]
         if d.get("ratio_med") is not None:
             pf = d.get("paused_frac") or 0
@@ -1411,7 +1415,7 @@ def queue_lines(loops):
         elif real:
             who = "gives way to " + ", ".join(real)
         else:
-            who = "gives way to nobody real"
+            who = "gives way to no unit that exists"
         need = ", has asked for the game (NEED_GAME, %s ago)" % ago(now_s() - r["need_game"]) if r.get("need_game") else ""
         lines.append("%s, on %s: %s%s." % (r["name"], r["machine"], who, need))
         if missing:
