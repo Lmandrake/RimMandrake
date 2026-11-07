@@ -114,6 +114,7 @@ are two different jobs and must be run and verified separately.
 **Recurs when:** proving a mod is absent. Validate the check against a mod known to be present first.
 
 ---
+- **RimWorld 1.6's ModsConfig is NOT case-blind:** `activeModsHashSet` holds `ModsConfig.xml`'s raw `<li>` strings while `IsActive()` lowercases its query. A capitalised entry (`Neronix17.OuterRim.Core`) LOADS the mod yet reads inactive: `GetActiveModWithIdentifier` returns null (Outer Rim Core ctor NRE in `get_VersionDir`, DevMode) and every `MayRequire` on that id reads false. Write every list lowercase; `zoom_guard.lower_text` does it at each door and `modlist_case.py` checks the store.
 
 ### The interpreter, not the data, rewrote 13,158 rows
 **Symptom:** regenerating the offline inventory after unsubscribing one mod produces a 12,383-line diff naming mods that are still installed.
@@ -283,3 +284,9 @@ blind spot is a number rather than a gap).
 ## gate.py audit misses and list_things caps
 - **`gate.py audit` counts a would-skip row that is UNMEASURED now but PASS in its record as a 'miss' (a lost PASS); 'valid FAIL on a would-skip chain' is a narrower count.** Read the miss lines before calling the miss rate a gate defect (a full-list shadow sweep had 3 misses, all one stab surprise in plot_C_limitless_canal, 0 valid FAILs).
 - **A `list_things` read with `limit=N` that returns exactly N rows is truncated:** a 'none of N carries X' verdict from it is the cap, not the map. Query the narrow ThingRequestGroup (e.g. PowerTrader) instead.
+
+## A 'does X still reference Y' sweep must walk every mod root
+- **A 'does X still reference Y' sweep must walk every mod root that could reference it, not just the set being changed.** `biomes_compose_sweeps.py` §4 walked only the 29 folding entries under `src/RimMandrake/` and missed the consumer layer `src/RimUtinni/UtinniPatches` (naming the same packageIds from outside the merge) and six small satellite mods' hard `<modDependencies>` in their own `About.xml`. Widen the walk to all of `src/` (patches, defs and `About.xml`) and count again.
+
+## Composed Biomes ids — resolve through the compose tools, never by name
+- **Composed Biomes ids must be resolved through the compose tools, never by name or glob.** Our folded sources load under the composite `mandrake.rm.biomes`: a `loadAfter`/dependency check naming a folded member (e.g. `mandrake.rm.webwork`) checks a dead edge, so resolve the runtime id with `biomes_compose.folded_ids()` first (lint_webwork_defs' ww-economy check was red 10 days for this). A source can load under a DIFFERENT compose key (Scarlands -> `Biomes/Warscar`) and engine kits one level deeper (`Biomes/_Kits/<key>`): map source to game folder via `deploy_custom_mods.folded()` `{source:(target,key)}`. `runner.composed_ids()` is ONE level deep (a mod's `About.xml` hard deps, not theirs, and it stops at the composed target), so 'does this compose on list X' / 'what must be deployed' needs the closure through our own mods: `suite_set.transitive()`/`closure()`. Read our mods' deps from src `About.xml` / `biomes_compose`, never `mod_facts.jsonl` (it lists `sarg.alphabiomes` as a hard dep of `mandrake.rm.biomes`; the composed About does not).

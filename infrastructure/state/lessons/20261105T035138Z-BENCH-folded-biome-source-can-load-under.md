@@ -1,1 +1,0 @@
-A folded biome source can load under a DIFFERENT compose key (Scarlands -> Biomes/Warscar) and engine kits one level deeper (Biomes/_Kits/<key>); match a source to the game folder or a compose plan through deploy_custom_mods.folded() {source:(target,key)}, never by globbing its folder name (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 32 live runs UNMEASURED on it)

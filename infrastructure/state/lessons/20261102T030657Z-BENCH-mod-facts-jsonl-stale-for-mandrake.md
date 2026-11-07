@@ -1,1 +1,0 @@
-mod_facts.jsonl is stale for mandrake.rm.biomes: it lists sarg.alphabiomes as a hard dependency, but the composed About (Biomes.compose.json members' About.xml, and the deployed copy) does not. Read our mods' deps from src About.xml / biomes_compose, never mod_facts (found by PAINT_LIST_BUILD_ONLY_THE_NEEDED_MODS 2026-11-01).
