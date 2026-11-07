@@ -420,6 +420,8 @@ it catches, never what it passes.
 game rate, with full-size frames and a true-scale view next to a vanilla human. At 5 beats
 a second a fault goes by too fast to diagnose: he could only call it noise. Honour the
 double-held last frame in the playback, or the page does not show what ships.
+`src/RimMandrake/Utils/art/flyer_step_page.py` builds such a page from frame folders, with
+west drawn as east mirrored the way the engine draws it.
 
 **Also verify** that the cycle alternates pose (not a static image, per the worked-example
 lie above), that all three facings resolve (a missing `_north_3` silently drops to the
