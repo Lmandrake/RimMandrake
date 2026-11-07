@@ -2,5 +2,6 @@
 # last PASS at 695812d5ec, 2026-10-15). Targeted run, recorded against this item; the supervisor has deployed and
 # launched, so the chain neither re-deploys nor swaps the mod list. RM_PlacerProof 'selfcheck' builds its own box on the
 # site's river. An UNMEASURED "the site's rock holds no placer mineral" is a rock-less SITE, never a pass.
+# --drivers on: the placer chain settles northstar/river_site.py first; without it the row ran on a river-less map (2026-11-06).
 live-mods: FlowWorks
-live-proof A2: MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1 WSLENV=MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST python.exe src/RimMandrake/Utils/modcheck/cli.py run FlowWorks --chains placer --gate off --purpose fix --item FlowWorks=SLUICE_BOX_PROVE_THE_DAILY_WASH --seat BENCH < /dev/null; python3 src/RimMandrake/Utils/modcheck/live_queue/row_verdict.py --max-age-min 30 --mod FlowWorks --row sluice_washes_pool_from_stock
+live-proof A2: MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1 WSLENV=MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST python.exe src/RimMandrake/Utils/modcheck/cli.py run FlowWorks --chains placer --drivers on --gate off --purpose fix --item FlowWorks=SLUICE_BOX_PROVE_THE_DAILY_WASH --seat BENCH < /dev/null; python3 src/RimMandrake/Utils/modcheck/live_queue/row_verdict.py --max-age-min 30 --mod FlowWorks --row sluice_washes_pool_from_stock
