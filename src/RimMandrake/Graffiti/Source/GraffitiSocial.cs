@@ -856,7 +856,9 @@ namespace RimMandrake.Graffiti
     {
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            if (!RM_GraffitiSettings.socialEnabled || p.Map == null || !p.IsColonist) return false;
+            // Numb (a psychopath, or any temperament row that feels nothing): no line at all. Live 2026-11-07 the multiplier alone left Toni
+            // the psychopath a "+0 Enemy marks on our walls" in the needs tab, which reads as a bug.
+            if (!RM_GraffitiSettings.socialEnabled || p.Map == null || !p.IsColonist || GraffitiTemperament.IsNumb(p)) return false;
             int stage = RM_GraffitiKernel.TerritoryStage(MapComponent_GraffitiSocial.For(p.Map)?.EnemyMarks(p.Faction) ?? 0);
             return stage < 0 ? ThoughtState.Inactive : ThoughtState.ActiveAtStage(stage);
         }

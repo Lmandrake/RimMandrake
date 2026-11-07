@@ -99,7 +99,7 @@ def days(s, ticks, chunk=15000):
             print("TRIGGERS", str(trig)[:300])
         led = str(static(s, SOCIAL, "Ledger", "trace"))
         for l in led.splitlines():
-            if l.startswith("  . ") and keep.search(l) and " reads " not in l:
+            if l.startswith("  . ") and ((keep.search(l) and " reads " not in l) or " rereads " in l):
                 print(l)
         print(static(s, SOCIAL, "Tally"), flush=True)
 
@@ -142,6 +142,9 @@ def ui(s, name, pawn, tab, cell=None, root=7.4):
     elif pawn != "-":
         s.call("rimworld/jump_camera_to_pawn", pawnName=pawn)
     s.call("rimworld/set_camera_zoom", rootSize=root)
+    # Steve's real mouse rests over the left of the screen and raises a tooltip on whatever tab is open there: park a virtual hover on the map, right of the wall.
+    if cell:
+        print(str(s.call("rimworld/set_hover_target", x=x + 7, z=z + 2))[:120])
     s.call("rimworld/step_game_ticks", ticks=1)
     static(s, STAGE, "Settle")
     time.sleep(1.0)
@@ -154,6 +157,7 @@ def ui(s, name, pawn, tab, cell=None, root=7.4):
     os.makedirs(SHOTS, exist_ok=True)
     dest = os.path.join(SHOTS, name + ".png")
     shutil.copy(path, dest)
+    s.call("rimworld/clear_hover_target")
     s.call("jawa/screenshot_mode", enabled=True)
     print("UISHOT", dest)
 
