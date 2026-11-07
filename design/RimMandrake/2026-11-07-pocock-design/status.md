@@ -9,3 +9,4 @@ step | state | model | tokens or cost | note
 ---|---|---|---|---
 measure | complete | session model | in session total | hot spots, fix ratios, loop-branch churn, dead-code and interface census
 02a blind prompt | complete | session model | in session total | `02a-gpt-blind-prompt.md`, facts only, no options
+02a blind answer | complete | gpt-6.1-sol | unknown (consult reports none) | job consult-20261107-140058-263774-ce1bb4, 158 s
