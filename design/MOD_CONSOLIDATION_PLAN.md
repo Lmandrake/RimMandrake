@@ -57,7 +57,7 @@ tooling and stay as-is (§1b).
 | **droids** | — | Droidworks `mandrake.rsw.droidworks` (stays; campaign layer already externalized by design) | campaign droid roster rows ride UtinniPatches (from Jawa_Patches' JawaFactionRoster.xml) |
 | **food** | — | Cuisine `mandrake.rsw.cuisine` | — |
 | **plants** | — | — | AshkarrFlora `mandrake.rut.ashkarrflora` |
-| **faith / pantheon** | ~~Ninefold `mandrake.rm.ninefold` (engine, R2)~~ folded into Salvation Rites `mandrake.rut.rites` 2026-10-22 (owner by card; see R2) + Graffiti `mandrake.rm.graffiti` ← SacredGraffiti's worker C# + NEW generic default marks (R7) | — | **Salvation `mandrake.rut.salvation` (NEW, R8)** ← SacredGraffiti's nine mark-styles, IshkoDarkLandmarks, Rites (AftermathRites NOT in it) |
+| **faith / pantheon** | ~~Ninefold `mandrake.rm.ninefold` (engine, R2)~~ folded into Salvation Rites `mandrake.rut.rites` 2026-10-22 (owner by card; see R2) + Graffiti `mandrake.rm.graffiti` ← NEW generic default marks (R7); SacredGraffiti, worker C# included, goes whole to RimUtinni as `mandrake.rut.sacredgraffiti` (planned) | — | **Salvation `mandrake.rut.salvation` (NEW, R8)** ← IshkoDarkLandmarks, Rites (AftermathRites NOT in it) |
 | **crime / property** | **RimProperty `mandrake.rm.property` (R1)** = Property ← SalvageClaim, TheftHauler (droid-loader wiring stays a MayRequire patch; RIMPROPERTY_ANIMAL_THEFT_1 filed) | — | — |
 | **pursuit / visibility** | **RimPursuit `mandrake.rm.pursuit` (R3, NEW)** = Visibility ← EmpirePursuit's pursuit engine (promoted RUT→RM) | — | EmpirePursuit `mandrake.rut.empirepursuit` stays as the Empire-triggers data pack |
 | **chronicle / events** | **RimChronicle `mandrake.rm.chronicle` (R5)** = Aftermath, reframed: hookable game-event evidence engine (battle-scoped v1; Ninefold consumes the same events) | — | ChronicleRites `mandrake.rut.chroniclerites` = AftermathRites renamed (proposed grammar name) |
@@ -182,7 +182,7 @@ Chronicle/Property/Pursuit merges execute (adopted by card, 2026-09-08).
 7b. **Fully-qualified C# class-reference sweep** (lesson from
    INHABITED_CHARACTERDEF_NAMESPACE_GAP_1, where 269 authored characters
    silently vanished): any merge that relocates or renames a C# namespace
-   (SacredGraffiti.cs → Graffiti; Livestock/JawaIkee/IonWeapons/SalvageClaim/
+   (SacredGraffiti.cs → the RimUtinni mod `mandrake.rut.sacredgraffiti`; Livestock/JawaIkee/IonWeapons/SalvageClaim/
    TheftHauler assemblies folding in; EmpirePursuit's engine → RimPursuit;
    RiverSteam's fleck classes → ManyWaters; FireEcology/WeatherSuite
    namespaces moving `.StarWars.` → root) must sweep EVERY
@@ -270,9 +270,10 @@ weapons                                      Armoury ◄── JawaIonWeapons
                                               │ ─extract→ Droidworks (droid namers, VERIFY)
 races                                        StarWarsRaces
 droids                                       Droidworks ─(roster rows stay out)→ UtinniPatches
-faith             (Ninefold: folded into Rites 2026-10-22, R2)                   Salvation (NEW, R8) ◄── SacredGraffiti defs
-                  Graffiti ◄── SacredGraffiti C#                               ▲ ◄── IshkoDarkLandmarks ..> AshkarrLandmarkArt
+faith             (Ninefold: folded into Rites 2026-10-22, R2)                   Salvation (NEW, R8)
+                  Graffiti                                                     ▲ ◄── IshkoDarkLandmarks ..> AshkarrLandmarkArt
                    + NEW generic marks (R7)                                    └─◄── Rites (+ Ninefold engine) ..> Antiquities
+                  SacredGraffiti (whole mod → RimUtinni, mandrake.rut.sacredgraffiti, planned)
 crime             RimProperty (R1) ◄── SalvageClaim
                    ▲              ◄── TheftHauler (droid wiring = MayRequire patch)
                    └..RaidRedesigner (stays separate)
