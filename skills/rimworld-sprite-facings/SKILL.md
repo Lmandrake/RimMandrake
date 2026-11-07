@@ -339,11 +339,14 @@ verify the cycle actually alternates pose (not a static image, per the
 worked-example lie above), verify all three facings resolve (a missing
 `_north_3` silently drops to the bare-path fallback — see "How sprite checks
 lie"), and verify the grounded graphic returns cleanly on landing. A screenshot
-of the animal standing still proves nothing about whether it flies; step ticks
-until it actually takes off and look then. **Look at it animating, not just one
-frame** — a single still passes the wings-folded and body-level checks above
-by accident even when the flip-book jitters between frames; watch it cycle live
-before calling either invariant met. Spawn a batch, not one (see
+of the animal standing still proves nothing about whether it flies. Do not
+live-test flight or capture it without the owner present (owner: "For the third
+time, do not do live testing of flyers without a human present. It doesn't
+work." and "Don't try to capture images of flight. It doesn't work."): verify
+by a deterministic state read of `Pawn_FlightTracker`, and leave the look to a
+joint session. A single still passes the wings-folded and body-level checks above
+by accident even when the flip-book jitters between frames, so check frames
+offline with the flipbook tools. In that joint session, spawn a batch, not one (see
 `rimworld-debug-testing`'s "single spawned pawn is not a sample" — for a flier
 specifically, `flightStartChanceOnJobStart` means a lone pawn is unlikely to
 fly at all in any given observation window; spawn ~20 faction-`none` and let the
