@@ -45,15 +45,19 @@ for _p in (_HERE, _UTILS):
         sys.path.append(_p)
 
 import testenv_guards as TG  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import save_uncompress  # noqa: E402
 
 REGISTRY = os.path.join(_HERE, "test_site_saves.json")
 
 SITES = {
     # v2 (2026-10-18, FOUNDRY): v1 was saved on a 22-mod list; loaded on the 11-mod flowworks tier its missing creatures'
     # corpses (Corpse_RSW_*, Corpse_RM_*) left Verse.MapDrawer.WholeMapChanged throwing every frame, so step_game_ticks
-    # advanced 0 ticks and no pawn moved (validation_v2's whole pawn block, day 3 + day 4). v2 is built on the 11-mod tier:
-    # a save made on the smaller list loads clean on every superset.
-    "calm": {"save": "RM_TestSite_calm_v2", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
+    # advanced 0 ticks and no pawn moved (validation_v2's whole pawn block, day 3 + day 4). v2 was built on the 11-mod tier.
+    # v3 (CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES): v2 with its compressed thing grid expanded by save_uncompress.py. A small
+    # list's save did NOT load clean on a superset: on the full list v2 lost 1704 chunks and 34 uranium cells at 1738
+    # warnings per load. build() now expands every site it saves.
+    "calm": {"save": "RM_TestSite_calm_v3", "profile": "calm", "size": 250, "temp": (5.0, 30.0), "minColonists": 3,
              "suites": ["GimmeSomeSlack/northstar/proof_all.py --live", "FlowWorks/northstar/validation_v2.py --live"]},
     # v2 (RIVER_SITE_REBUILD_FOR_FOURTEEN_MODS): v1 was saved 2026-10-15 on the owner's 22-mod list (vfe.insectoid2,
     # sarg.alphaanimals, rsw.swbestiary ...); on the 14-mod fw_gss_sitting list its VFEInsectoids GameComponent could not
@@ -572,6 +576,8 @@ def build(call, site, saves_dir, work_dir, max_rolls=6, sleep=time.sleep, name=N
     rec["backup"] = {"dir": os.path.join(work_dir, "saves_backup_%s" % stamp)}
     rec["backup"]["files"] = backup_saves(saves_dir, rec["backup"]["dir"])
     rec["saved"] = save_site(call, name, saves_dir, sleep=sleep)
+    rec["expanded"] = save_uncompress.expand_fresh(rec["saved"]["path"])
+    rec["saved"]["bytes"] = rec["expanded"]["bytes"]
     mi = call("jawa/map_info") or {}
     write_registry(site, {"save": name, "tile": mi.get("tile"), "mapId": mi.get("mapId"), "biome": mi.get("mapBiome"),
                           "builtUtc": rec["utc"], "head": rec["head"], "profile": spec["profile"],

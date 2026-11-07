@@ -1,0 +1,3 @@
+live-mods: FlowWorks, GimmeSomeSlack
+live-site A1: python.exe src/RimMandrake/Utils/live_site.py --save RM_TestSite_calm_v3
+live-proof A1: python.exe src/RimMandrake/Utils/modcheck/save_uncompress.py live RM_TestSite_calm_v3 --expect ChunkMarble=589,ChunkLimestone=566,ChunkSlate=549,MineableUranium=34,ChunkMechanoidSlag=9
