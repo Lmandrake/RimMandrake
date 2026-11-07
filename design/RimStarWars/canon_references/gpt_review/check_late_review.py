@@ -6,7 +6,7 @@ Offline; exit 0 only if every clause holds.
   late_NN.md              GPT's answer per batch of 5 (run_canon_review.py --late)
   late_wiki_cache.json    Wookieepedia wikitext of every page a verdict cites (late_wiki.py)
   LATE_VERIFICATION_LOG.md  | entry | claim | VERDICT | page | quote |  - a VERIFIED/REFUTED quote must be in its page
-  LATE_MERGES.json        {"owner_item": ID, "rows": [{entry, text, claim, ruled}]} - each text is in the entry now
+  LATE_MERGES.json        {"owner_item": ID, "rows": [{entry, text, claim, ruled}]} - each text is in the entry now; owner_item is a ledger item filed in an earlier commit than the candidate
 usage: check_late_review.py"""
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
