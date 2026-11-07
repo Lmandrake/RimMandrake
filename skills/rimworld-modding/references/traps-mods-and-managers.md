@@ -79,6 +79,7 @@ What goes in, and what does not: `references/traps.md`.
 **Recurs when:** `Could not find type named X` — a third cause, after "mod absent" and "type renamed", is an assembly present but loaded too early to resolve its own references. Sweeping all 568 `About.xml` files for `modDependencies` edges pointing *later* found 8 inversions, of which exactly one logged anything; parse the XML and take the root's direct child, because a naive first-`<packageId>` regex reads a *dependency's* id as the mod's own and misses the very mod that motivated the sweep.
 
 ---
+- **A donor-retirement reference census must walk donor-of-donor chains, not just direct references.** A one-hop grep of kotordroids missed that a third mod (`guy762.mm.kotorcore`) gates its own content on it with `IfModActive` and our code depends on that gated content; a one-hop grep reads a still-dependent mod as clean.
 
 ### RimSort's "ignore" dismisses a WARNING, not your sort rules
 **Symptom:** the owner clicks *ignore* on RimSort's "no Publisher ID" complaint about locally-authored mods, several times a session, and reasonably fears the dismissal is also discarding the User Rules that pin those same mods' load order. A mod that will not stay where it was put makes the fear look confirmed.

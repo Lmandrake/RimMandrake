@@ -174,6 +174,7 @@ authority, so nothing lands in `ownerSaid` by mistake:
   restart you call yourself is `./game --why "<your reason>" <state>`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Provenance: `--owner-said`, `--by-card`, `--per-ruling`, `--why`.
+- **Write a delegated call as `delegated: <policy class> - <detail>`.** `delegated_digest.py` groups by the label after `delegated:` and flags any label that is not a class of `design/RimMandrake/delegation_policy.md` (technical, scope, design, art, cosmetic, art geometric correction, art marks, bridge idle, leftovers) as `(not a policy class)`; free labels like `fix` or `harness fix` fragment the digest.
 
 ## Seat identity
 

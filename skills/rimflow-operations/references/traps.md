@@ -35,3 +35,6 @@
 
 ## 4. Recovery when a switch sticks (needs no Claude)
 - **The Tailscale-SSH-from-the-Mac route can be unavailable** (the laptop had no Tailscale CLI, no 100.x interface, and `archmagi`/`archmagi-wsl` did not resolve). The browser route works: console.tailscale.com > Machines > archmagi-wsl > "SSH to machine" > username Other: `mandrake` (Google re-auth popup) opens a shell as mandrake on Archmagi. Drive it with uiclick plus System Events keystrokes; the cdp extension loses the tab once the SSH popup opens.
+
+## Relentless fx surface
+- **A method added to the Relentless fx surface (`GameFx` in `relentless_game`) owes the same method on `FakeWorld`, and the contract proof must name `selftest_fakeworld_parity`.** A proof on the routing alone stays green while the parity guard goes red; no new gate exists, so the worker must remember it.

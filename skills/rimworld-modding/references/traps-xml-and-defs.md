@@ -95,6 +95,7 @@ What goes in, and what does not: `references/traps.md`.
 ---
 
 ---
+- **A hand-ported donor creature can keep `VEF.AnimalBehaviours.*` class comps with no `MayRequire`** while the `aa_port.py` ports guard them; our biome mods do not declare VEF, so an unguarded VEF `Class` errors at load without it. Scan for `Class="VEF.*` without `MayRequire` after any port.
 
 ### Vanilla's river step sources its mouths from the BIOME, but paths on ELEVATION
 **Symptom:** a worldgen step raises or lowers tile elevation before the river step and the rivers come out wrong — either starting inland at nothing, or ignoring a new coastline entirely.
