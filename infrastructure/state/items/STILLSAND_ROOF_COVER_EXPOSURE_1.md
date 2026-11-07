@@ -3,7 +3,7 @@
 Filed 2026-10-07 from the GREEN-MIN / L2 sweeps (Transient/*_20261007.md).
 
 ## spec
-Stillsand `sun/sun_roof_cover_above_55deg` FAILED: roofs verified placed (36 cells) but shadegrid_read gave exposure 1.00 under the roof at 60.5 degrees. Unresolved: mod defect (ShadeGrid ExposureAt ignores roof above 55) or stale ShadeGrid cache / read in the same tick as set_roof_batch. Evidence: Transient/green_min_runs2_20261007.md line 32; related item STILLSAND_SUN_LIVE_VERIFY_1 (roof criterion). Test by stepping >=1 tick (and past the grid refresh interval) after the roof batch before reading.
+Stillsand `sun/sun_roof_cover_above_55deg` FAILED: roofs verified placed (36 cells) but shadegrid_read gave exposure 1.00 under the roof at 60.5 degrees. Unresolved: mod defect (ShadeGrid ExposureAt ignores roof above 55) or stale ShadeGrid cache / read in the same tick as set_roof_batch. Evidence: Transient/green_min_runs2_20261007.md (gone from disk; last copy in git at 1731f06619) line 32; related item STILLSAND_SUN_LIVE_VERIFY_1 (roof criterion). Test by stepping >=1 tick (and past the grid refresh interval) after the roof batch before reading.
 
 ## verify
 Quicktest Stillsand map at ~60 degrees; place roof, step ticks, read RM_MapComponent_ShadeGrid ExposureAt on a roofed and an open cell.

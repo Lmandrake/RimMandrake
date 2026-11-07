@@ -3,7 +3,7 @@
 Filed 2026-10-07 by BENCH from `HUGE_THINGS_GPT_REVIEW_1` (full GPT review of the merged Huge Things, `c954ccdca`). Mod: `src/RimMandrake/HugeThings`. Do not deploy as part of filing.
 
 ## spec
-Owed by ruling. Card #1 of `TITANIC_CREATURES_MOD_1` (owner, 2026-09-09): *"thick roofs (overhead mountain) are AVOIDED — a titan never paths under rock"*. Review findings B3.5 / D3.1 / D1.4 in `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md`).
+Owed by ruling. Card #1 of `TITANIC_CREATURES_MOD_1` (owner, 2026-09-09): *"thick roofs (overhead mountain) are AVOIDED — a titan never paths under rock"*. Review findings B3.5 / D3.1 / D1.4 in `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7) (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)).
 
 Current state: `Patch_ThickRoofAvoidance` postfixes `Pawn_PathFollower.CostToMoveIntoCell` (`:84,105`), checking the anchor cell only. That only slows movement along an already-chosen route, and its own header (`:49-72`) concedes it is not avoidance. The downgrade to "slowed" came from an agent review (2026-09-11), not the owner. The settings label "Slowed under overhead mountain" and `design/validation_walks/RimMandrake/HugeThings.md:37` carry it, and both must be corrected with the fix.
 

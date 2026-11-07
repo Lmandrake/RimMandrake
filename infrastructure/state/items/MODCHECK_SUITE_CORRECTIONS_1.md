@@ -4,7 +4,7 @@ First live wave (MODCHECK_MATURE_WAVE_1, 2026-09-13, min16 environment):
 2 GREEN (Pits 3/3, FlowWorks 3/3), 12 RED, 2 aborted. Evidence per mod:
 `Transient/modcheck/<Mod>_20260913T*.html` + `<Mod>_summary.json` (raw
 read-backs per component), run log
-`Transient/modcheck_wave_bridge_20260913.log`. Most REDs are SUITE
+`Transient/modcheck_wave_bridge_20260913.log` (gone from disk; last copy in git at 9da13212e8). Most REDs are SUITE
 assumption bugs of exactly the class each file's own "Still not proven"
 register predicted — correct the suite against the captured evidence, and
 file a real mod-defect finding ONLY where the evidence shows the MOD wrong

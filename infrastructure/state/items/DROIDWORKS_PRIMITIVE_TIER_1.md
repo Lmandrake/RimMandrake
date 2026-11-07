@@ -289,7 +289,7 @@ brief):
   is not in question, it is straight from the design doc.
 
 Scratch/review art (raw generations, rejected stances, contact sheets) left
-under `Transient/art_gen/droidworks_g2/` per the Transient convention — not
+under `Transient/art_gen/droidworks_g2/` (gone from disk; last copy in git at 4dc9afc05c) per the Transient convention — not
 cited from any committed doc, human-look-once only.
 
 Item stays `doing`. Only the live-savegame look remains, and that needs the

@@ -8,9 +8,9 @@ Owner, 2026-10-13 (corrected scope): *"for all PAWNS on the map, record their vi
 - Ingest as rm_game_pawns_* series in the telemetry stack (skills/telemetry).
 
 ## prior work (read first)
-- Owner's original question and the GPT review: `Transient/foundry_map_awareness_gpt_prompt_20261010.md`, `Transient/foundry_map_awareness_review_gpt_20261010.md` (GPT kept on-demand `scene_report` primary and deferred any cadence recorder to "Phase 3 only after a measured gap" — that is where the time series dropped).
+- Owner's original question and the GPT review: `Transient/foundry_map_awareness_gpt_prompt_20261010.md` (gone from disk; last copy in git at 92f00f3b0d), `Transient/foundry_map_awareness_review_gpt_20261010.md` (gone from disk; last copy in git at 92f00f3b0d) (GPT kept on-demand `scene_report` primary and deferred any cadence recorder to "Phase 3 only after a measured gap" — that is where the time series dropped).
 - Built 2026-10-10: `Transient/foundry_map_awareness_build_20261010.md` (scene_report, CLEAN/DISRUPTED/INDETERMINATE verdict, origin recorder in JawaBenchAwareness.cs).
-- Metrics GPT review: `Transient/foundry_metrics_review_gpt_20261010.md:332` ("Pawn workload composition").
+- Metrics GPT review: `Transient/foundry_metrics_review_gpt_20261010.md (gone from disk; last copy in git at fa5b898e6e):332` ("Pawn workload composition").
 - Measured gap: pass 7 (2026-10-13) — the test colony died after a ~10-day clock jump; no instrument noticed; the owner saw the game-over letter on screen.
 
 ## 2026-10-13 widened: monitor + run governor

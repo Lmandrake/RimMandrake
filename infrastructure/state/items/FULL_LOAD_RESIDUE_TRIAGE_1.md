@@ -1,7 +1,7 @@
 ## (1) patchfail lines — FIXED, live re-confirmation owed
 
 10 NEW patchfail lines in the 2026-09-18 10:35 harvest, all root-caused by
-reading `Transient/Player.log.pre_restart_enable_injections_2026-09-18` around
+reading `Transient/Player.log.pre_restart_enable_injections_2026-09-18` (gone from disk; last copy in git at 4dc9afc05c) around
 the stack traces (lines 869-920), not just the one-line summaries:
 
 - **4x `OuterRim_DroidWeapon_*` `PatchOperationConditional`** (WeaponTags_Renormalise.xml)

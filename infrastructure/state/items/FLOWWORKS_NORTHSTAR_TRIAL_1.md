@@ -2,7 +2,7 @@
 
 Parent of the FlowWorks north-star trial. Plan (authority for every child): `design/RimMandrake/northstar_trials/FlowWorks_trial_plan.md` — bars and bindings
 (§2), site preparation and preflight (§3), run sequence (§4), SHIPPED gaps (§5), driver requirements
-(§6), proposed bar text (§7), GPT review (§9; prompt/answer in `Transient/northstar_trials_gpt/`).
+(§6), proposed bar text (§7), GPT review (§9; prompt/answer in `Transient/northstar_trials_gpt/` (gone from disk; last copy in git at 1462ff84a9)).
 
 Owner, 2026-09-30 (typed): *"Write out comprehensive northatar plans for all three and ticket them out
 as trials for full completion. Use gpt reviews for their validation plan especially site preparation

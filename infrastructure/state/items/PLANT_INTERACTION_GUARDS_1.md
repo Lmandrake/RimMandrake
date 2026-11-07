@@ -3,7 +3,7 @@
 Filed 2026-10-07 by BENCH from `HUGE_THINGS_GPT_REVIEW_1` (full GPT review of the merged Huge Things, `c954ccdca`). Mod: `src/RimMandrake/HugeThings`. Do not deploy as part of filing.
 
 ## spec
-Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md`), all re-checked on code and on the 1.6 decompile (RimSage).
+Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7) (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)), all re-checked on code and on the 1.6 decompile (RimSage).
 
 - **A3.4**: `MapComponent_HugeFootprints.Flags` (`:310`) uses `def.hasInteractionCell` and a single `InteractionCell`. In 1.6, `ThingUtility.InteractionCellsWhenAt` enumerates `multipleInteractionCellOffsets`, and `GenConstruct.NotBlockingAnyInteractionCells` resolves Blueprint/Frame via `entityDefToBuild`. A generated blueprint def never copies `hasInteractionCell`. Fix: do the same as vanilla and widen the scan margin.
 - **A3.6 (mechanical half only)**: `MoveItems` (`:252`) despawns items. In 1.6, `Thing.DeSpawn` releases reservations and sends the quest "Despawned" signal. Fix now: never move a thing with non-empty `questTags`; defer its cell instead. The wider relocation policy is owner question Q8 in the triage.

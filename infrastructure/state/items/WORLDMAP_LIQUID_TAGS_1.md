@@ -79,7 +79,7 @@ distinct (elevation, temperature, rainfall, hilliness) tuples across the whole
 planet — a scratch world carrying the name and none of the data. Confirmed by
 `jawa/world_stats` and by `jawa/world_tile_get` on three known Ash'karr tile
 ids. Summary kept at
-`Transient/WORLDMAP_LIQUID_TAGS_1/live_world_capture_2026-09-19.md`. Bridge
+`Transient/WORLDMAP_LIQUID_TAGS_1/live_world_capture_2026-09-19.md` (gone from disk; last copy in git at 842b7e1cae). Bridge
 taken and released; nothing on the planet was altered.
 
 ## owed

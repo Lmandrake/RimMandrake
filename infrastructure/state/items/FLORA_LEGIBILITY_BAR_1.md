@@ -3,7 +3,7 @@
 Filed by BENCH, 2026-09-13. MEASURED convention (vanilla core, outline
 coverage at 96px→32px): grass 0.00→0.00, bush 0.18→0.01, agave 0.02, trees
 soft-edged 1.00→0.32-0.43 (shading, not a keyline), versus fauna/pawns at
-1.00→1.00 everywhere. Sheet: `Transient/legibility_final_review_2026-09-13/class_convention.png`.
+1.00→1.00 everywhere. Sheet: `Transient/legibility_final_review_2026-09-13/class_convention.png` (gone from disk; last copy in git at 91121c42b4).
 So the creature-fitted gate and the outside stroke DO NOT APPLY to flora —
 artpiped now skips both for class=flora (never silently: legibility reads
 "skipped (flora)").

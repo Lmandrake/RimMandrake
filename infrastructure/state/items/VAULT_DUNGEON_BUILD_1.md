@@ -571,7 +571,7 @@ to the pre-swap backup, bridge released):
   dependency cascade risk for a check that only re-confirms an
   already-proven pattern (Type 1's guardians, Type 3's caskets/turrets).
 
-Screenshots: `Transient/vault_quicktest_2026-09-18/`.
+Screenshots: `Transient/vault_quicktest_2026-09-18/` (gone from disk; last copy in git at 7a8fb8fc7c).
 
 **Still correctly held for the owner, unchanged**: all six real-site
 hand-finish passes, wake/loot/leave dialogue reconciliation against

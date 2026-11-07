@@ -1,6 +1,6 @@
 # ABYSS_LIGHTFALL_BROOD_WRECK_1 — Lightfall's bottom: the dragons' brood, and the wrecked ship in the wall that repairs yours
 
-Biome: the Abyss (`RM_Abyss` in `src/RimMandrake/Abyss/`, composed into `mandrake.rm.biomes`; campaign twin `RUT_Abyss`). Review: `design/Jawa/worldbuilding/biomes/blackcrags_bedazzle_review_2026-09-30.md` section 9 (Lightfall ruling, 2026-10-01 07:42 PDT). Options: `Transient/abyss_lightfall_2026-10-01/lightfall_options.md` (option C and GPT option E; GPT's prompt and answer beside it). Sitting: `BLACKCRAGS_BEDAZZLE_SITTING_1`. Rule: every mod ships Mod Settings; the free `RM_` tier carries invented content.
+Biome: the Abyss (`RM_Abyss` in `src/RimMandrake/Abyss/`, composed into `mandrake.rm.biomes`; campaign twin `RUT_Abyss`). Review: `design/Jawa/worldbuilding/biomes/blackcrags_bedazzle_review_2026-09-30.md` section 9 (Lightfall ruling, 2026-10-01 07:42 PDT). Options: `Transient/abyss_lightfall_2026-10-01/lightfall_options.md` (gone from disk; last copy in git at ad7964639e) (option C and GPT option E; GPT's prompt and answer beside it). Sitting: `BLACKCRAGS_BEDAZZLE_SITTING_1`. Rule: every mod ships Mod Settings; the free `RM_` tier carries invented content.
 
 ## spec
 

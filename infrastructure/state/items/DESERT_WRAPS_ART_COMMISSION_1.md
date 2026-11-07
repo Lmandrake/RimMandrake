@@ -29,7 +29,7 @@ generating-rimworld-sprites.
   engine/content doctrine.
 
 ## Candidates (2026-09-09, FOUNDRY)
-Contact sheet: `Transient/DESERT_WRAPS_ART_COMMISSION_1_candidates_2026-09-09.png`
+Contact sheet: `Transient/DESERT_WRAPS_ART_COMMISSION_1_candidates_2026-09-09.png` (gone from disk; last copy in git at 59a60d9385)
 (4 wrap styles + 2 head shapes, south-facing, labeled). Source PNGs (real
 alpha, generated via `codex_image.py generate` per the `generating-rimworld-sprites`
 skill — Codex now returns native alpha on this install, no chroma-key needed)

@@ -8,8 +8,8 @@ Exception from long event: System.NullReferenceException: Object reference not s
   at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>b__0 () [0x00000]
   at Verse.LongEventHandler.UpdateCurrentSynchronousEvent (...)
 ```
-Confirmed real in `Transient/Player.log.geneticrim_ctor_nre_2026-09-25` (L11288-92) and
-`Transient/logs_2026-09-24/Player.log.before_bacta_swap` (L14377-81). Release DLL, no PDB
+Confirmed real in `Transient/Player.log.geneticrim_ctor_nre_2026-09-25` (gone; never kept in git) (L11288-92) and
+`Transient/logs_2026-09-24/Player.log.before_bacta_swap` (gone; never kept in git) (L14377-81). Release DLL, no PDB
 — only 2 frames, no field name in the trace.
 
 ## Mechanism (reverse-engineered from ReGrowthCore.dll IL, since RimSage does not index

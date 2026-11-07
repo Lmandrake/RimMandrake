@@ -1,6 +1,6 @@
 # LIVE_ROUND2_FIXES_PROOF_1 — prove the three live-round-2 fixes in game
 
-Filed by the FOUNDRY worker that fixed them offline (progress: `Transient/FOUNDRY_LIVE2_DEFECTS_PROGRESS_2026-10-01.md`).
+Filed by the FOUNDRY worker that fixed them offline (progress: `Transient/FOUNDRY_LIVE2_DEFECTS_PROGRESS_2026-10-01.md` (gone from disk; last copy in git at 0d4cdf5905)).
 Deploy first (`deploy_custom_mods.py --apply`, plus the composed `mandrake.rm.biomes`). One Stillsand quicktest covers all three.
 
 ## 1. MUURROK_BEAM_NO_DAMAGE_1 (fixed `f591714e5`, closed)

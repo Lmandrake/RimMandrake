@@ -1,6 +1,6 @@
 # CUT_FALLOUT_GENERATED_DATA_1 — Load C fallout from the Caverns + Polluted Lands cuts
 
-Source: `Transient/harvest_loadC_triage_2026-09-19.md`. 7 sub-tasks (a)-(g). This pass
+Source: `Transient/harvest_loadC_triage_2026-09-19.md` (gone from disk; last copy in git at d568bb4e01). 7 sub-tasks (a)-(g). This pass
 (FOUNDRY, 2026-09-19) closed 4 cleanly, partially closed 1, found 1 blocked on a stated
 precondition, and found 1 is not a repo file at all. Live-load confirmation that the
 patch-failure count actually dropped is explicitly OWED regardless — nothing here was

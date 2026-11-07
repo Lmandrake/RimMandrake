@@ -1,6 +1,6 @@
 # MOVINGDUNES_WATER_BANKS_SAND_1 — sand that hops onto water banks on the shore instead of vanishing
 
-Found by the MovingDunes fuzz oracle (Transient/validation_movingdunes_20261007.md, 2026-10-07): a slab whose hop landed on a cell that cannot hold sand (water, space: the terrain's `holdSnowOrSand`) was refused by the landing and deleted, so a dune field beside a lake slowly lost mass to it and influx never replaced it.
+Found by the MovingDunes fuzz oracle (Transient/validation_movingdunes_20261007.md (gone from disk; last copy in git at 1731f06619), 2026-10-07): a slab whose hop landed on a cell that cannot hold sand (water, space: the terrain's `holdSnowOrSand`) was refused by the landing and deleted, so a dune field beside a lake slowly lost mass to it and influx never replaced it.
 
 ## owner ruling (card, 2026-10-07)
 

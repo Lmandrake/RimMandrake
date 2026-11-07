@@ -1,7 +1,7 @@
 # WARSCAR_SHEET_DONOR_PORT_1 — Warscar donor rows whose ruled art has no owned path
 
 Source: owner's Warscar sheet, ruled 2026-10-05 (`Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json`; progress
-`Transient/biome_ffar/warscar_close_progress_2026-10-05.md`). Same shape as `ABYSS_SHEET_DONOR_PORT_1`; machinery `DONOR_DEFS_PORT_TO_OURS_1`.
+`Transient/biome_ffar/warscar_close_progress_2026-10-05.md` (gone from disk; last copy in git at 58c1cea23f)). Same shape as `ABYSS_SHEET_DONOR_PORT_1`; machinery `DONOR_DEFS_PORT_TO_OURS_1`.
 
 His picks on donor defs (no owned texture path, so NOT installed; labels/descriptions are already patched in
 `src/RimUtinni/UtinniPatches/Patches/Warscar_Rename.xml`):

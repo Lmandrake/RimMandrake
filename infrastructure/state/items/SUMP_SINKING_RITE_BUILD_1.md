@@ -2,7 +2,7 @@
 
 Caused by `SUMP_BEDAZZLE_SITTING_1` (turn 2). Campaign tier, `mandrake.rut.rites` (found rite).
 Design: `design/Jawa/worldbuilding/biomes/sump_bedazzle_review_2026-10-01.md` §6 (Rite A) and §9;
-offerings from `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_offerings_redo_2026-10-02.md` §1–3
+offerings from `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_offerings_redo_2026-10-02.md` (gone from disk; last copy in git at a2c932756f) §1–3
 (copy what you need out of it: Transient is binned after ~14 days). Machinery: register
 `design/Jawa/salvation_rites_2026-10-01.md` §(d).
 

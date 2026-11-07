@@ -5,7 +5,7 @@ reads only what this clone has, so a take the other seat has not yet pushed is i
 
 Measured 2026-10-07: FOUNDRY took the bridge at 10:47:16Z ("L2 gauntlet"); BENCH's `bridge who` said FREE and BENCH
 took it at 10:48:18Z. Both then drove the game. FOUNDRY's modcheck tier swaps killed two BENCH full-list loads, at 04:08
-and 04:39 PDT (`Stop-Process -Name RimWorldWin64 -Force`). Log: Transient/restart2_progress_2026-10-07.md.
+and 04:39 PDT (`Stop-Process -Name RimWorldWin64 -Force`). Log: Transient/restart2_progress_2026-10-07.md (gone from disk; last copy in git at e8a20ecfe7).
 
 ## criteria
 - `bridge take` fetches origin, or checks a shared non-git lock such as a file on /mnt/d or the BRIDGE mirror, before it grants.

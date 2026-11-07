@@ -1,8 +1,8 @@
 # LANTERNDEEPS_SHEET_ART_REDO_1 — the owner's Lantern Deeps art sheet: collect and install the repaints and variants
 
 Source: `Transient/biome_ffar/lanterndeeps_sheet_2026-10-05.decisions.json` (ingested; notes verbatim there).
-Progress record: `Transient/biome_ffar/lanterndeeps_close_progress_2026-10-05.md`. Jobs filed:
-`Transient/biome_ffar/lanterndeeps_redo_jobs_2026-10-05.json` (36 artpipe jobs, owner_note verbatim on each).
+Progress record: `Transient/biome_ffar/lanterndeeps_close_progress_2026-10-05.md` (gone from disk; last copy in git at f603c0aede). Jobs filed:
+`Transient/biome_ffar/lanterndeeps_redo_jobs_2026-10-05.json` (gone from disk; last copy in git at f603c0aede) (36 artpipe jobs, owner_note verbatim on each).
 
 ## spec
 

@@ -75,7 +75,7 @@ a new Thing. Both colours multiply the art, so the greyscale regens are what mak
 ## art
 
 Greyscale, stuff-tintable regen jobs for RM_Bottle and RM_Barrel (not the held glass
-render). See the progress log Transient/flowworks_container_materials_progress_2026-10-06.md.
+render). See the progress log Transient/flowworks_container_materials_progress_2026-10-06.md (gone from disk; last copy in git at a9c743392e).
 
 Queued 2026-10-06: `fwart_RM_Bottle_Stuffable_v1`, `fwart_RM_Barrel_Stuffable_v1`, `fwart_RM_Bucket_Stuffable_v1` (greyscale,
 owner_note = his words). Until they install, the coloured patchwork-metal art is

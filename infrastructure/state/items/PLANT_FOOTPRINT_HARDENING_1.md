@@ -3,7 +3,7 @@
 Filed 2026-10-07 by BENCH from `HUGE_THINGS_GPT_REVIEW_1` (full GPT review of the merged Huge Things, `c954ccdca`). Mod: `src/RimMandrake/HugeThings`. Do not deploy as part of filing.
 
 ## spec
-Verified fix-now findings from the full GPT review of the merged mod (`Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md`, triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md`). Each was re-checked on our code at `c954ccdca` and, where it is an engine claim, on the 1.6 decompile via RimSage.
+Verified fix-now findings from the full GPT review of the merged mod (`Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7), triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)). Each was re-checked on our code at `c954ccdca` and, where it is an engine claim, on the 1.6 decompile via RimSage.
 
 - **A2.3**: `MapComponent_HugeFootprints.Reconcile` calls `Take` at `:103`, and `RealizePending` runs at `:110,138`, with no per-owner try/catch. Only the tick path (`:125-132`) is guarded. One bad owner aborts map init. Fix: isolate per owner, log once, continue.
 - **A3.3**: `RM_HugeClaimsKernel` sorts `accepted` at `:186-190`, which discards the planner's dependency order. `RealizePending` spawns in sorted order and `continue`s past failures (`:202-206`). Fix: return acceptance order, spawn in it, and stop that owner's batch on the first failure, leaving the rest pending. Add a prefix/injected-failure case to the fuzz.

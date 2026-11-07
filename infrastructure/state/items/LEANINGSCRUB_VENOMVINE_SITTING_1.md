@@ -46,4 +46,4 @@ The owner present, the game up on a map with LeaningScrub patches spawned (`rimw
   `infrastructure/state/art_rulings/`.
 - The two "STOP USING THIS GRAPHIC" rows get new venomvine art jobs, carrying his note verbatim, only after
   the sitting confirms the form stays.
-- Context report: `Transient/leaningscrub_after_review_2026-10-08.md`.
+- Context report: `Transient/leaningscrub_after_review_2026-10-08.md` (gone from disk; last copy in git at 1ffb00c77a).

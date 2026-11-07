@@ -256,7 +256,7 @@ Order of work, and it is not negotiable: **dossier → his verification → skin
 screenshot → head shapes → grid screenshot again.** 🔑 **Our own canon library is NOT authority
 on its own** — he says the downloaded canon contains errors and he checks by search. A claim the
 library asserts without a source is reported as unsourced, never laundered into canon.
-Dossier: `Transient/canon_appearance_dossier.md`.
+Dossier: `Transient/canon_appearance_dossier.md` (gone from disk; last copy in git at b9c79b470c).
 
 ## Canon gaps — match the nearest documented relative, and say which
 Where canon leaves body size or lifespan blank, derive from the closest species canon DOES
@@ -510,7 +510,7 @@ that is the lesson. Anything that looks surplus goes to him as a question.
 
 ## The grid (`2e9d9f689`)
 
-`Transient/xenotype_review/xenotype_skin_palette_sheet.png`, keeper save
+`Transient/xenotype_review/xenotype_skin_palette_sheet.png` (gone from disk; last copy in git at 63a04fd7d7), keeper save
 `XENOTYPE_SKIN_REVIEW_2026-09-20.rws` (verified on disk, 10.7 MB).
 
 🔴 **It is 4 pawns per species, not 1, and that is not cosmetic.** A xenotype carries

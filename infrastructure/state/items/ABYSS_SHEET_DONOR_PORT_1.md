@@ -2,7 +2,7 @@
 
 Source: the owner's Abyss art sheet, ruled 2026-10-05
 (`Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json`, ingested at `26df94528`; notes are verbatim there).
-Art jobs: `Transient/biome_ffar/abyss_redo_jobs_2026-10-05.json` (each row carries `authored_label` /
+Art jobs: `Transient/biome_ffar/abyss_redo_jobs_2026-10-05.json` (gone from disk; last copy in git at 60aa849f6d) (each row carries `authored_label` /
 `authored_description` = the text below, and `owner_note` = his verbatim note). Port machinery:
 `DONOR_DEFS_PORT_TO_OURS_1` — use it, do not fork it. Biome mod: `src/RimMandrake/Abyss/` (composed into `mandrake.rm.biomes`).
 
@@ -63,8 +63,8 @@ Also on this item:
 
 ## sitting 2 (2026-10-05 evening) — picks, recolours, cuts
 
-Ingested from the same decisions file (rulings stamped 20:00-20:11; jobs `Transient/biome_ffar/abyss_sitting2_jobs_2026-10-05.json`,
-progress `Transient/biome_ffar/abyss_sitting2_close_progress_2026-10-05.md`). Descriptions in the table above are the FINAL look.
+Ingested from the same decisions file (rulings stamped 20:00-20:11; jobs `Transient/biome_ffar/abyss_sitting2_jobs_2026-10-05.json` (gone from disk; last copy in git at 1d34f1070b),
+progress `Transient/biome_ffar/abyss_sitting2_close_progress_2026-10-05.md` (gone from disk; last copy in git at 1d34f1070b)). Descriptions in the table above are the FINAL look.
 
 - 🔑 **Family look refined** (owner, verbatim on the dark vandal: *"Make hide pitch black with four glowing yellow eyes"*):
   the black kin are pitch/inky black with FOUR GLOWING YELLOW EYES. Recolour jobs (`*_v3`, derived per facing from his pick)

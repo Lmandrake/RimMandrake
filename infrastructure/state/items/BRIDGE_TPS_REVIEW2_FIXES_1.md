@@ -1,7 +1,7 @@
 # BRIDGE_TPS_REVIEW2_FIXES_1 — repair build 2 of the TPS record per the second GPT review
 
 ## spec
-Source of truth: Transient/foundry_tps_review_gpt2_20261010.md (35 numbered findings A, scenarios B, section F ranked table:
+Source of truth: Transient/foundry_tps_review_gpt2_20261010.md (gone from disk; last copy in git at 0a51df7f5b) (35 numbered findings A, scenarios B, section F ranked table:
 MUST 1-17, SHOULD 1-7). Read it whole; each finding names file+symbol and its failure scenario. Verdict: build 2 is not ready
 to trust. MUST 1 (duplicate `kind` key on incidents) was already fixed in a119858e4 — verify, don't redo.
 Fix every MUST as code plus a selftest that fails before the fix (trace-based for the accumulator/profiler boundaries,
@@ -19,7 +19,7 @@ Do not trust the previous progress log's "Done" marks; GPT found runtime defects
 
 ## notes
 - 2026-10-10 FOUNDRY: MUST 1-16 + SHOULD 1,3,5,6,7 fixed test-first; red/green per fix in
-  Transient/foundry_tps_review2_fixes_20261010.md. C2 done (BRIDGE_TPS_CAPTURE_FIXES_1 C3/C4 and tps_record.md
+  Transient/foundry_tps_review2_fixes_20261010.md (gone from disk; last copy in git at 97e9983aaf). C2 done (BRIDGE_TPS_CAPTURE_FIXES_1 C3/C4 and tps_record.md
   "Acceptance" rewritten). SHOULD 2 and 4 not attempted (not in this ticket's cheap set).
 - MUST 17 stays OWED to a cold load of the full ~600-mod list: the three-configuration overhead A/B, autostart on the
   full list, the overnight reconstruction, and a standing periodic external observer (belt_watchdog only runs when

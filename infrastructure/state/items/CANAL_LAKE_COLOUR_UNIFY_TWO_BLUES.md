@@ -10,7 +10,7 @@ Find which material, tint or depth band differs; any change is cosmetic and goes
 - L4: in the P9 review he keeps it.
 
 ## finding (FOUNDRY, 2026-10-23, offline; L1)
-The 2026-10-17 shots (`Transient/fw_scenes/live/S1_p14.png`) predate P14 and compare two DIFFERENT depth looks, not one
+The 2026-10-17 shots (`Transient/fw_scenes/live/S1_p14.png` (gone; never kept in git)) predate P14 and compare two DIFFERENT depth looks, not one
 liquid in two tints:
 - Lake: `water_scenes_walk.py:432` paints the whole lake rect vanilla `WaterDeep` (WaterDeepRamp + depth shader).
 - Canal (1 level, under 0.75 m) was then the temporary fill layer `RM_Fill_Water_Trace`

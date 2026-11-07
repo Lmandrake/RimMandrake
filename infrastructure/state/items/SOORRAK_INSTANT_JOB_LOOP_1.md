@@ -1,6 +1,6 @@
 # SOORRAK_INSTANT_JOB_LOOP_1 — a wild soorrak never moves; its job ends the moment it starts
 
-Found by the FOUNDRY live session round 2 (`Transient/LIVE_SESSION_2_2026-10-01.md`), while proving
+Found by the FOUNDRY live session round 2 (`Transient/LIVE_SESSION_2_2026-10-01.md` (gone from disk; last copy in git at f16c0ded25)), while proving
 `SOORRAK_FLIGHT_JOBSTART_NRE_1` (the NRE itself is gone: 0 exceptions over 5,000+ ticks).
 
 ## What was seen (state reads only, `jawa/pawn_flight action=report kind=RM_Soorrak`; nothing was watched)

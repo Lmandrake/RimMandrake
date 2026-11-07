@@ -46,7 +46,7 @@ LLM plan author (step 8). Terrain and one idea, nothing else.
 
 ## Round 3 verdict, absorbed 2026-09-10
 
-Round 3's comparator sheet (`Transient/mapgen_v3/comparator_sheet.png`) went to
+Round 3's comparator sheet (`Transient/mapgen_v3/comparator_sheet.png` (gone from disk; last copy in git at b47e0940bb)) went to
 the owner and came back **FAIL — 0 of 8 premises readable**, against this
 item's own ≥3 bar. Full grade and disposition:
 `infrastructure/state/items/closed/MAPGEN_ROUND3_VERDICT_LANDING_1.md`.

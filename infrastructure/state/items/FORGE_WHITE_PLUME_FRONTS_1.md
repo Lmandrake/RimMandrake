@@ -1,7 +1,7 @@
 # FORGE_WHITE_PLUME_FRONTS_1 — white plume fronts
 
 Split from `FORGE_GPT_ENRICHMENT_1` §4 (owner-picked). Built at `09ccb3ca5` (offline, L0): the builder answered the four
-questions below (record: `Transient/work_PLUME_20261003.md`; owner review owed as A7).
+questions below (record: `Transient/work_PLUME_20261003.md` (gone from disk; last copy in git at b8193d1ffe); owner review owed as A7).
 
 ## spec (from the parent)
 

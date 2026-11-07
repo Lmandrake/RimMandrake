@@ -149,7 +149,7 @@ unblock`, 2026-09-11) — see that item for the full account.
   (`take_screenshot`) per the vault quicktest-proven bar (`dungeons_arc_spec.md` §3.7).
   **DONE 2026-09-13**: `jawa/kcsg_place` (layoutType=structure, rect 95,95,61,61) on
   a fresh `warlab` 12-mod quicktest, screenshot
-  `Transient/ancient_war_lab/warlab_quicktest_proof_2026-09-13.png` — three
+  `Transient/ancient_war_lab/warlab_quicktest_proof_2026-09-13.png` (gone from disk; last copy in git at 88188e2b20) — three
   concentric bands read clearly (approach ring / lab-interior ring / core room),
   doors between bands visible.
 - [x] `AA_Slurrypede` present as lab fauna via a `KCSG.SymbolDef`+`pawnKindDef`

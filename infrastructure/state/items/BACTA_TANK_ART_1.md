@@ -5,7 +5,7 @@ lists every file and the constraints the real art must keep — two layers, a cl
 drawSize×128 canvases, no `_west`).
 
 ## state 2026-10-10 (FOUNDRY)
-- Six artpipe jobs filed (`Transient/bacta_tank_art_jobs_20261010.json`, priority 50): tank body north/south
+- Six artpipe jobs filed (`Transient/bacta_tank_art_jobs_20261010.json` (gone from disk; last copy in git at feabef60b5), priority 50): tank body north/south
   (128×256), east (256×128), medical droid, bacta canister, bacta spray. Each carries `install_to` at the exact
   texPath (art binds by texPath).
 - `RSW_BactaPatch` already has two finished renders (`phfix_RSW_BactaPatch_a/_b`, 2026-10-08) awaiting a sheet ruling.

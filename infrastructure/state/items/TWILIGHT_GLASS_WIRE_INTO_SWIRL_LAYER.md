@@ -2,7 +2,7 @@
 
 Parent: WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP. Owner, 2026-10-24: the Twilight Sea has "a stained glass window-like
 layer of life growing just below it's surface everywhere ... subtle large patches of beautiful primary colors in
-organic shapes". Options on `Transient/world_water_review_r2_2026-10-24.html` rows TwilightSea_glass_{bloom,panes,jewel};
+organic shapes". Options on `Transient/world_water_review_r2_2026-10-24.html` (gone; never kept in git) rows TwilightSea_glass_{bloom,panes,jewel};
 textures `*_glass.png` (512 RGBA, one repeat = 40 tiles) in `D:\ClaudeWork\rimmandrake\scratch\worldwater_variants_r2\sheet`.
 
 ## spec

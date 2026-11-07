@@ -3,7 +3,7 @@
 Filed 2026-10-07 by BENCH from `HUGE_THINGS_GPT_REVIEW_1` (full GPT review of the merged Huge Things, `c954ccdca`). Mod: `src/RimMandrake/HugeThings`. Do not deploy as part of filing.
 
 ## spec
-Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md`).
+Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7) (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)).
 
 - **B3.19 / C3.6 / D3.3**: `RM_HugeThingsSettings.ExposeData` sanitises only `plantTrunkScale`, `pawnHitboxScale` and `giantPlantSmashMinTier` (`:96-102`). Scribe-loaded values bypass the slider ranges. `RM_TitanicKernel.ThresholdsValid` accepts an infinite T3. Fix: clamp every numeric on load and on edit (finite, ranges as the sliders state, positive work times and batch sizes). Keep the shipped-ladder fallback.
 - **A2.7 / D1.5**: the checkbox at `:137` reads "Trunks give cover, and shots into them hurt the plant", but it controls damage only, and cover stays on. Relabel it "Trunk hits damage the plant". The "Destruction wake off" text should say "no wake damage". Move all settings strings into `Languages/English/Keyed`.

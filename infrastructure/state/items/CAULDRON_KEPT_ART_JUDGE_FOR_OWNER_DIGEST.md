@@ -1,6 +1,6 @@
 # CAULDRON_KEPT_ART_JUDGE_FOR_OWNER_DIGEST
 
-Sources: Transient/gpt_biome_art_review_2026-10-24.md (digest) and D:\ClaudeWork\rimmandrake\gpt_biome_review\Cauldron.md (full review; raw answers in raw/). Everything below is GPT (gpt-6.1-sol) opinion; nothing was acted on.
+Sources: Transient/gpt_biome_art_review_2026-10-24.md (gone; never kept in git) (digest) and D:\ClaudeWork\rimmandrake\gpt_biome_review\Cauldron.md (full review; raw answers in raw/). Everything below is GPT (gpt-6.1-sol) opinion; nothing was acted on.
 
 FOR OWNER DIGEST - DO NOT ACT. GPT wants redo/cut on rows the owner has KEPT. The owner's keeps stand; no queue, no purge, no redraw. Listed so the owner can see GPT's reasons if he wants to revisit.
 

@@ -24,4 +24,4 @@ Read the record file after a live minute; the median TPS at speed 1 is near 60.
 Built as specified but does NOT meet the goal: sampling starts only on a bridge call (owner's solo play never
 recorded), stalls >60 s are discarded, speed/pause normalisation is endpoint-based, writes are unordered and
 single-process. Fixes are ticket BRIDGE_TPS_CAPTURE_FIXES_1. Reports:
-Transient/foundry_tps_review_opus_20261010.md, Transient/foundry_tps_review_gpt_20261010.md.
+Transient/foundry_tps_review_opus_20261010.md (gone from disk; last copy in git at eecbb0a6e8), Transient/foundry_tps_review_gpt_20261010.md (gone from disk; last copy in git at eecbb0a6e8).

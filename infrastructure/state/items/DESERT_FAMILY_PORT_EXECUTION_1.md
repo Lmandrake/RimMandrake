@@ -56,7 +56,7 @@ question here — but do not quote it as a statement about the running game.
 
 ### 🔴 the 81 are NOT 81 jobs to file — the daemon is already running them
 
-CENSUSED 2026-09-20, full table in `Transient/desert_art_census.md`:
+CENSUSED 2026-09-20, full table in `Transient/desert_art_census.md` (gone from disk; last copy in git at 0c7ce00742):
 
 | state | rows | what to do |
 |---|---:|---|
@@ -213,7 +213,7 @@ decisions → `D:\Luke\dev\RimMandrake\Transient\desert_art_verdict_2026-09-20.d
 Serve it:
 ```
 python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
-  --sheet Transient/desert_art_verdict_2026-09-20.html \
+  --sheet Transient/desert_art_verdict_2026-09-20.html (gone from disk; last copy in git at 3795effe05) \
   --decisions Transient/desert_art_verdict_2026-09-20.decisions.json
 ```
 
@@ -230,7 +230,7 @@ python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
 - Gate: `check_sheet.py` 0 FAIL / 0 WARN / 34 ok; both script blocks pass `node --check`.
   ⚠️ **Not click-tested in a live browser** — no GUI was available to the builder.
 
-🔑 Re-run `Transient/desert_art_verdict_build_2026-09-20.py` then
+🔑 Re-run `Transient/desert_art_verdict_build_2026-09-20.py` (gone from disk; last copy in git at 3795effe05) then
 `..._assemble_2026-09-20.py`, in that order, as more of the queue lands.
 
 ⚠️ `build_flora_legibility_sheet.py` was not reusable (and `make_verdict_sheet.py`, since removed, was no better) —
@@ -325,7 +325,7 @@ from the live def dump). ⛔ No duplicate droid item was filed; his fresh verbat
 added to the existing one instead.
 
 🔑 **The lesson is about the question, not the answer.** Both stale figures came from this
-item's own prose and were relayed to him in `Transient/WHAT_NEEDS_THE_OWNER_2026-09-21.md`
+item's own prose and were relayed to him in `Transient/WHAT_NEEDS_THE_OWNER_2026-09-21.md` (gone from disk; last copy in git at ea48c8b018)
 as if measured. **Re-measure a count immediately before putting it in front of him**, not
 when the item was written — this queue moves same-day.
 

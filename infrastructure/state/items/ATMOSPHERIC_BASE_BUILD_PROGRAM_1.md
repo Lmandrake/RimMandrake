@@ -5,7 +5,7 @@ holds seventeen laws (L16 and L17 added 2026-09-17), the object model, and §9's
 sitting on 2026-09-16. The DRAFT north star is
 `design/validation_walks/RimMandrake/AtmosphericBase.md` (28 bars: 22 must-show, 6 cannot-show; DRAFT binds nothing until he
 validates). Candidate schemes to react to:
-`Transient/dynamiclighting_scheme_catalog_DRAFT_2026-09-16.md`.
+`Transient/dynamiclighting_scheme_catalog_DRAFT_2026-09-16.md` (gone from disk; last copy in git at 1ecefc8bb3).
 
 🔴 **Read the laws before writing a line.** Four of them will be violated by the obvious
 implementation: colour must be quantised (L4), blending is by allocation and never by
@@ -105,7 +105,7 @@ Wire what already exists: `Ninefold` as the loudness/rank source, `Oracle` for t
 gesture (and its authored-letter equivalent, since canon says v1's Narrator is pre-authored
 prose, not the LLM), `Aftermath`/`AftermathRites` for omen telegraphs, `GravshipLanding` for the
 reset. `RaidRedesigner` is deliberately NOT a consumer — it is the other half of L2, acting on
-the world directly. Detail: `Transient/atmosphericbase_hook_ecosystem_DRAFT_2026-09-16.md`.
+the world directly. Detail: `Transient/atmosphericbase_hook_ecosystem_DRAFT_2026-09-16.md` (gone from disk; last copy in git at 0e2bb51155).
 
 ## verify
 

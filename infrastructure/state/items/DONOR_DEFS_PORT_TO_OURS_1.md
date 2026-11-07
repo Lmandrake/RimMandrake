@@ -100,7 +100,7 @@ mod changes nothing a player can see.
 
 ## FOUNDRY, 2026-09-24: folding in a stray 2026-09-20 census that never landed here
 
-Commit `78b63a97` (2026-09-20, Opus) wrote `Transient/donor_port_twin_census.md`
+Commit `78b63a97` (2026-09-20, Opus) wrote `Transient/donor_port_twin_census.md` (gone from disk; last copy in git at 0d78617552)
 citing this item in its message but never touched this file — found this pass
 while checking why the queue flagged this item's prose as possibly stale. The
 work is real and worth keeping; folding it in rather than leaving it to rot in
@@ -887,7 +887,7 @@ Behaviour was read from the donor's published C# (github.com/juanosarg/AlphaAnim
 - 6 **no effect in play**: `GraphicsRefresher` + `PawnRenderNode_Alternates` only act when the donor's
   `alternatePokemonGraphics` setting is on, default `false`
 
-Sheet: `Transient/donor_code_creatures_sheet_2026-10-09.html` (+ `.decisions.json`, prefill; `_img/`), built by
+Sheet: `Transient/donor_code_creatures_sheet_2026-10-09.html` (gone from disk; last copy in git at b72daac032) (+ `.decisions.json`, prefill; `_img/`), built by
 `src/RimMandrake/Utils/sheet_donor_code_creatures.py`; `check_sheet.py` 0 FAIL. Prefill: 10 port plain, 9 rebuild,
 1 replace (swarmling). ⚠️ `serve_gated.py` refuses it: `scaled_review_gate` is the biome ART-sheet gate (reqs 1/2/4/5/11
 are art-only) and `.claude/hooks/block_hand_edited_sheet.py` refuses any direct `serve_sheet.py` start.

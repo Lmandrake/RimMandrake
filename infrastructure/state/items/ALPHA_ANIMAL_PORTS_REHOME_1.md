@@ -1,6 +1,6 @@
 # ALPHA_ANIMAL_PORTS_REHOME_1 — Alpha Animals ports re-homed from RSW_ to RM_, donor art swapped for our own
 
-Spec: `Transient/belt_art_wiring2_20261002.md`. Ruling: Q12 (RSW_ to RM_ per biome sitting).
+Spec: `Transient/belt_art_wiring2_20261002.md` (gone from disk; last copy in git at 8989e78e0f). Ruling: Q12 (RSW_ to RM_ per biome sitting).
 
 ## spec
 

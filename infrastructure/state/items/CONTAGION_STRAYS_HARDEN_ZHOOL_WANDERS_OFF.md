@@ -1,6 +1,6 @@
 # CONTAGION_STRAYS_HARDEN_ZHOOL_WANDERS_OFF — the two other non-passing Contagion rows from the 2026-10-23 sweep
 
-Source: `Transient/fwsweep/contagion_ns3.json` / `contagion_run3.log` (untracked, FOUNDRY clone), the run that
+Source: `Transient/fwsweep/contagion_ns3.json` (gone; never kept in git) / `contagion_run3.log` (untracked, FOUNDRY clone), the run that
 filed CONTAGION_BURN_DIAGNOSE_NATIVE_FEELS_NOTHING and COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE.
 
 1. `zhool_haze.conversion_off_turns_nothing` UNMEASURED: the zhool (RM_OcularJelly) was at (12,117), far off its

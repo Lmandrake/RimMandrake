@@ -5,7 +5,7 @@ Ruled by card, owner 2026-09-09 (`infrastructure/state/items/closed/TITANIC_CREA
 instant meat mountain."* · #5 *"Titans roam only where the rosters home them; anywhere else they arrive as scripted
 events/quests with warning (footfall tremors first). Wake damage applies to any structure including the player's — that is
 the point."* Spoilage and the multi-session harvest were built; camps, scavengers and the event were not (found by the GPT
-full review, `Transient/hugethingsbounds2026-10-07/`).
+full review, `Transient/hugethingsbounds2026-10-07/` (gone; never kept in git)).
 
 ## spec (as built, FOUNDRY 2026-10-21; engine-only, no creature or faction named)
 

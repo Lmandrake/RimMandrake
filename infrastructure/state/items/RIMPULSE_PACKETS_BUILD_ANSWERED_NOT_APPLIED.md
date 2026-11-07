@@ -1,6 +1,6 @@
 # RIMPULSE_PACKETS_BUILD_ANSWERED_NOT_APPLIED
 
-Sources: design/RimMandrake/rimpulse_redesign_2026-10-23.gpt_review.md (lines 6-12, 64) and Transient/away_dashboard_gpt_review_2026-10-08.md (line 13, 75). GPT opinion, ingested under "delegated: GPT assessment ingestion". Owner rulings stand: RimPulse scope picked defects-only plus morning brief (see GPT_CONFLICTS_FOR_OWNER_DIGEST); this item is agent-side data model only, no widget redesign.
+Sources: design/RimMandrake/rimpulse_redesign_2026-10-23.gpt_review.md (lines 6-12, 64) and Transient/away_dashboard_gpt_review_2026-10-08.md (gone from disk; last copy in git at 1dd9adba88) (line 13, 75). GPT opinion, ingested under "delegated: GPT assessment ingestion". Owner rulings stand: RimPulse scope picked defects-only plus morning brief (see GPT_CONFLICTS_FOR_OWNER_DIGEST); this item is agent-side data model only, no widget redesign.
 
 ## spec
 GPT quotes:

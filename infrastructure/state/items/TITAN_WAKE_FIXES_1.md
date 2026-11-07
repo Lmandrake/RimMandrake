@@ -3,7 +3,7 @@
 Filed 2026-10-07 by BENCH from `HUGE_THINGS_GPT_REVIEW_1` (full GPT review of the merged Huge Things, `c954ccdca`). Mod: `src/RimMandrake/HugeThings`. Do not deploy as part of filing.
 
 ## spec
-Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md`), checked on code and on 1.6 (RimSage).
+Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7) (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)), checked on code and on 1.6 (RimSage).
 
 - **B3.6**: `TitanicWakeProcessor.ProcessCell` (`:31-37`, `:110-140`) damages per cell. In 1.6, `ThingGrid.Register` registers a multi-cell thing in every cell, so a 2×2 under a 4×4 step takes 4 blows. Fix: collect unique targets per step, then damage once.
 - **B3.7**: in 1.6 the `Thing.Position` setter returns early when the value is equal, but `Patch_Thing_Position_Wake.Postfix` (`:28-33`) still fires. Fix: prefix-capture the old position and map; act only on a real change on the same map.

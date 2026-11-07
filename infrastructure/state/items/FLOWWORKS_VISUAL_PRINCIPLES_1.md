@@ -36,5 +36,5 @@ Drawing only — no flow, fire or pit mechanic changes. Every feature has a Mod 
 - Offline: mockups + review sheet `src/RimMandrake/FlowWorks/art_source/visual_principles_2026-10-05/`
   (before/after; decisions file `visual_principles_decisions.json`, prefill only until he rules).
 - Live: the review map (built by the map agent) from `src/RimMandrake/FlowWorks/review_map_stations_visuals.json`;
-  state-read rows for the extensions suite are listed in `Transient/belt_fwvisuals_20261005.md` "NEW ROWS NEEDED".
+  state-read rows for the extensions suite are listed in `Transient/belt_fwvisuals_20261005.md` (gone from disk; last copy in git at 5433ce3ff4) "NEW ROWS NEEDED".
 - Owed: deploy the DLL and look; a live capture of all five rules has not happened.

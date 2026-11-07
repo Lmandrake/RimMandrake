@@ -8,10 +8,10 @@
 > And on the construction reference: *"The Star Wars donor mod did have some excellent stable flyers. They simply
 > were extremely cartoonish, so we can't use them, but they are good to study."*
 
-**Study (read first):** `Transient/flyer_stable_body_study_2026-10-08.md`. Census: `Transient/flyer_census_2026-10-08.csv`
+**Study (read first):** `Transient/flyer_stable_body_study_2026-10-08.md` (gone from disk; last copy in git at 62bcfc2285). Census: `Transient/flyer_census_2026-10-08.csv` (gone from disk; last copy in git at 62bcfc2285)
 (script `Transient/flyer_census_2026-10-08.py`, which carries a sanity probe). Sheets:
 `Transient/flyer_study_2026-10-08/{sample,keeps}_contact.png`. Pilot it builds on and must be reconciled with:
-`Transient/sketto_design_2026-10-08.md` (every `[R]` value in study §3 is an assumption until that pilot lands).
+`Transient/sketto_design_2026-10-08.md` (gone from disk; last copy in git at a19e9a3667) (every `[R]` value in study §3 is an assumption until that pilot lands).
 
 ## spec
 - 72 flyers MEASURED 2026-10-08 (64 of ours by `MaxFlightTime`, 2 should-fly, 1 owner call, 5 donor-only). Not one has

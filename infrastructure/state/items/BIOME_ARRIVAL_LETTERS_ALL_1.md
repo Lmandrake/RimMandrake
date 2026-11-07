@@ -21,7 +21,7 @@ MayRequire naming the folded `mandrake.rm.environmentalhazards` would silently d
 
 **Every text is a PLACEHOLDER** drafted by an agent from the biome's own description, its definition sheet's
 "always true" list and shipped mechanics. Review copy with per-letter sources:
-`Transient/arrival_letters_draft_20261008.md` (~14-day shelf life; the shipped copy is each BiomeDef's
+`Transient/arrival_letters_draft_20261008.md` (gone from disk; last copy in git at a9105da1a2) (~14-day shelf life; the shipped copy is each BiomeDef's
 `<letterText>`). The owner's edits replace them; the Utinni voice layer may later replace any of them.
 
 ## criteria

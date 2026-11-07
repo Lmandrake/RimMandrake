@@ -1,7 +1,7 @@
 
 ## spec
 
-Map awareness phase 1 (Python harness). Design `Transient/foundry_map_awareness_design_20261010.md`, reviews
+Map awareness phase 1 (Python harness). Design `Transient/foundry_map_awareness_design_20261010.md` (gone from disk; last copy in git at 43616ba017), reviews
 `..._review_opus_20261010.md` / `..._review_gpt_20261010.md` (Transient, ~14 days). Owner decisions by question card
 2026-10-10: build the full programme; an unexpected visitor in a validation/north-star run is RECORDED and REMOVED
 and the run carries on, a redo only on EVIDENCE of disruption (CLEAN / DISRUPTED / INDETERMINATE).

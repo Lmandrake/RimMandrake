@@ -1,6 +1,6 @@
 # SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT
 
-Parent: WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP. Evidence: round-2 sheet `Transient/world_water_review_r2_2026-10-24.html`
+Parent: WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP. Evidence: round-2 sheet `Transient/world_water_review_r2_2026-10-24.html` (gone; never kept in git)
 (renders `D:\ClaudeWork\rimmandrake\scratch\worldwater_variants_r2`, `stats.json` water_value_far).
 
 ## why

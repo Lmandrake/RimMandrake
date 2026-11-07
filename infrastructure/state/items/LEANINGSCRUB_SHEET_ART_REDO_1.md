@@ -1,7 +1,7 @@
 # LEANINGSCRUB_SHEET_ART_REDO_1 — the owner's Leaning Scrub art sheet: wiring, variants and design asks
 
 Source: `Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json` (ingested; notes verbatim there).
-Progress record: `Transient/biome_ffar/leaningscrub_close_progress_2026-10-05.md`. Jobs filed: `Transient/biome_ffar/leaningscrub_redo_jobs_2026-10-05.json` (119 artpipe jobs, owner_note verbatim on each).
+Progress record: `Transient/biome_ffar/leaningscrub_close_progress_2026-10-05.md` (gone from disk; last copy in git at 828a0760b2). Jobs filed: `Transient/biome_ffar/leaningscrub_redo_jobs_2026-10-05.json` (gone from disk; last copy in git at 828a0760b2) (119 artpipe jobs, owner_note verbatim on each).
 
 ## spec
 
