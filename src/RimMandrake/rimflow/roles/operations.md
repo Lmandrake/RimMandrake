@@ -150,6 +150,7 @@ today score exactly what no change scores; name the open incidents too, or the p
 - **When redefining a measured point, grep its key across rules and readers, not just its alarm.** Narrowing `testing.nightly_news` three minutes after the `nightly_reds` SLI was built on it made 84 reds read 0/ok while the budget still burned. `ops_health` SLIs now name the unit they were written against; a changed unit reads UNMEASURED and alarms `SLI_DRIFT`.
 - **`ops_watch` `c_flow untriaged_findings` counts every UNTRIAGED finding not yet an item** (131) and is blind to `findings_fold`'s standing table, where they fold to 78 signatures and only 26 need FOUNDRY (residue). Read `D:\ClaudeWork\rimmandrake\findings_fold\standing.json` `counts.residue` (and contradictions) so the backlog alarm counts judgment owed, not repeats; wiring it into `ops_watch.py` is owed.
 - **Hole-check a series before claiming 'stayed under X for N hours'.** The `ops_watch` disk series (`D:\ClaudeWork\rimmandrake\ops_watch\series\disk.jsonl`) had no row for 4 h 18 min though the machine was up. `series_held.py` checks holes (exit 2 UNMEASURED on a gap over `--max-gap-min`); read the holes, not just the max.
+- **Before building on an OPS/NIGHTLY alarm item, check `git log` for siblings with the same stem.** One nightly red spawned three alarm items within an hour because the alarm refiled under a new suffix before the fixes landed; the fix may already be on main and the item only needs proof.
 
 ## The economy pass (daily)
 

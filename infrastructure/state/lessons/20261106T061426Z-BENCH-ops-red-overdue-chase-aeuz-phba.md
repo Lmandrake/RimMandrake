@@ -1,1 +1,0 @@
-OPS_RED_OVERDUE_CHASE_AEUZ_PHBA: a NIGHTLY_RED_OVERDUE alarm naming a deleted test (e.g. Utils/arena after 1f0e666566) needs no fix: known_reds.deleted_tests (9b4d9ef960) drops it. Before chasing, read /mnt/d/ClaudeWork/rimmandrake/ops_watch/status.json points.testing.nightly_reds_overdue; v=0 with the test under nightly_unparked_reds.x.deleted means it is already cleared.

@@ -225,6 +225,7 @@ parse (keeping a whole event glued onto a torn fragment), backs up to
 `D:\ClaudeWork\rimmandrake\ledger_repair\` first, and sanity-caps at 25 bad lines.
 
 More traps for this section: [references/traps.md](references/traps.md) § Committing ledger writes.
+- **`--owner-said` (and `--per-ruling`/`--by-card` acts) write `infrastructure/state/ledger/events/OWNER.jsonl`, not your seat shard.** Committing only `<SEAT>.jsonl` leaves them uncommitted (17 raise/note events sat ~8 h), and `./publish` refuses when origin also changed OWNER.jsonl. After any such act, commit and publish OWNER.jsonl too.
 
 ## Reading projections
 
