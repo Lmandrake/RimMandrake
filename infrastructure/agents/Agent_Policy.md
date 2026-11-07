@@ -111,6 +111,10 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
 - **Briefs for helpers that edit a previously clean file say: 'mark-clean only after reading every line'.** Helpers tend to re-mark such a file clean after reading only their own hunks. The orchestrator checks each report for 'hunk' or 'diff only' wording and reopens the file with `python3 src/RimMandrake/Utils/code_review_status.py reopen`.
 - **`infrastructure/state/code_review/<SEAT>.jsonl` is one shared file per seat, and parallel helpers collide on it.** Helper A's mark-clean lines sit uncommitted beside helper B's, and the commit hook forces a pathspec commit, which takes the whole working-tree file, so neither can commit its own marks without sweeping the other's (staging a HEAD-plus-your-lines blob with `update-index` is refused too, because a pathspec-less commit is refused). Commit mark-clean lines in the same Bash turn as the mark, or let the last helper of the wave (or the parent) commit the shard once all are done. Open fix: one shard per helper, or a `code_review_status.py` verb that commits only the caller's tagged records.
 - **Grep memory before relaying a fact about factions, biomes or rulings to the owner.** A subagent's unverified fact reached the owner wrong (a DLC's empire named as the wrong faction) when a memory file held the right answer.
+- **Debugging is script-first (`design/RimMandrake/debug_process.md`).** A live poke that ends without its lesson committed as a check (plus the informative false theories) is lost work: the `ns_probe_*` scratch files vanished and survived only in commit messages.
+- **The Conductor stays conversational.** Never block the owner's window on long foreground waits (sleep/until loops, multi-minute checks) or chain hidden steps; push waits to background and answer him in plain words first. Owner: "Conductor is supposed to be someone I can easily chat with about how it's going... Almost the opposite of the design intention" and "This procedure is opaque. What are you even doing?"
+- **Before drafting from an item's text, check it against later rulings.** A brief can carry a mechanism a later owner ruling voided (TWILIGHT_BOTTOM_CAST_1 still named 'lease practice' after "The Compact does NOT sell light... Remove." (owner)). Grep the item's design dir for an existing draft and read the later sibling passes' 'Ruled' headers first.
+- **Say what happened and how you know in the first clause of a status line.** 'No longer in the running list' reads as lost or dropped to the owner; v3 had simply finished.
 
 ## Subagents — this is where the saving is
 
@@ -129,6 +133,7 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
 
 A subagent's return is EVIDENCE, never a finding — it carries CONFIRMED/UNCERTAIN
 and the window decides what is true. Never spawn a duplicate for "reliability".
+- **A subagent report ending `HANDOFF READY` is the agent's own artifact, not a handoff.** Only the seat's handoff ritual (`handoff.py --check`) licenses that line. Parallel helpers must not share one stage folder: `selftest_winstage` once staged every clone in one shared folder so agents tested each other's source (now a per-clone hash).
 
 ## Four places a cheaper tier is forbidden outright
 
