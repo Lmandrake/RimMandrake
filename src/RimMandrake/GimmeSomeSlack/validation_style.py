@@ -291,25 +291,21 @@ def run_live(args):
            "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"})
     # GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK: the same unstyled mast strung to a styled run stores the run's look, so a later
     # change of the default cannot split the one run into two looks. The other side of S8's coin: it goes red if either rule goes.
+    B.ap("set:autoLink=False")
     B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % LEGACY_JOINED_AT, faction="player", wipeExisting=False)
     B.ticks(3)
+    B.ap("set:autoLink=True")
+    pos = {(a.get("x"), a.get("z")): a.get("id") for a in B.ap("census").get("anchors") or []}
+    partner_at = ROW_G[3]
+    verdict = B.ap("link:%s,%s" % (pos.get(LEGACY_JOINED_AT), pos.get(partner_at))).get("verdict")
     B.ap("cprocess")
-    st = B.ap("styles")
-    bp = _by_pos(st)
-    lj = bp.get(LEGACY_JOINED_AT) or {}
-    links = (B.ap("census").get("anchors") or [])
-    mine = next((a for a in links if (a.get("x"), a.get("z")) == LEGACY_JOINED_AT), {})
-    linked = bool(mine.get("links"))
-    joined_look = None
-    for o in (mine.get("links") or []):
-        other = next((a for a in links if a.get("id") == o.get("other")), None)
-        if other:
-            joined_look = (bp.get((other.get("x"), other.get("z"))) or {}).get("rawStyle")
-            break
-    V.row(rows, "S8b_legacy_joined_to_styled_stores_look", "UNMEASURED" if not (linked and joined_look) else
-          ("PASS" if lj.get("rawStyle") == joined_look else "FAIL"), "MOD" if linked and joined_look else "SITE",
-          {"linked": linked, "stored": lj.get("rawStyle"), "partner": joined_look,
-           "meaning": "PASS = strung to a styled run, an unstyled mast stores that run's look"})
+    B.ticks(2)
+    bp = _by_pos(B.ap("styles"))
+    stored, partner = (bp.get(LEGACY_JOINED_AT) or {}).get("rawStyle"), (bp.get(partner_at) or {}).get("rawStyle")
+    joined = verdict in ("Ok", "Linked", "Success") and partner is not None
+    V.row(rows, "S8b_legacy_joined_to_styled_stores_look", ("PASS" if stored == partner else "FAIL") if joined else "UNMEASURED",
+          "MOD" if joined else "SITE", {"verdict": verdict, "stored": stored, "partner": partner,
+                                        "meaning": "PASS = strung to a styled run, an unstyled mast stores that run's look"})
 
     # ---------------------------------------------------------------- S6: spans draw in their poles' look
     bad, mixed, same = [], 0, 0

@@ -72,7 +72,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>A fold is two arms meeting at a point: the heading turns past KinkDeg over KinkArc either side of it, and each arm
         /// holds its line (within KinkArmDeg) on out to KinkArm. The arms are what tell it from a coil, whose heading never stops
         /// turning: a heap's tight coils are the art, and a fold is a spike or an elbow the ribbon cannot draw.</summary>
-        public const double KinkArc = 0.1, KinkDeg = 100, KinkArm = 0.3, KinkArmDeg = 45;
+        public const double KinkArc = 0.1, KinkDeg = 85, KinkArm = 0.3, KinkArmDeg = 45;
 
         private static double TurnDeg(V2 u, V2 v)
         {
@@ -96,6 +96,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (pts == null || pts.Count < 5) return o;
             double[] cum = Geo.CumLen(pts);
             double L = cum[cum.Length - 1], last = double.MinValue;
+            if (L < 1.2) return o;                       // a machine's lead from the strip beside it: under the plug and the machine's art
             for (int i = 1; i < pts.Count - 1; i++)
             {
                 if (cum[i] < skipEnds || cum[i] > L - skipEnds || cum[i] - last < 0.3) continue;

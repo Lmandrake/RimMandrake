@@ -82,7 +82,8 @@ PARK = (125, 165)                     # colonists moved here, out of the matrix 
 # declared row the run no longer emits shows as not reached -- so this list can drift visibly, never silently.
 DECLARED_ROWS = {
     "preflight": ["P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_site_pinned_region_empty"],
-    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable",
+    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable", "M2c_no_folded_cords",
+             "M1e_machine_on_inwall_run_draws_a_cord", "M1f_machine_on_hidden_conduit_draws_none",
              "M6_overlay_lines_intact", "M5_local_invalidation", "M8_break_two_ends_live_dead", "M2_cords_only_within_net",
              "B1_rope_settle", "B6_tangle_lit_strips", "B3_whip_live_ends", "B4_downed_wire_bursts",
              "B4b_sparks_thrown_ticking", "B4c_spark_intensity_scales_downed", "B4d_spark_budget_shared_visible_first", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
@@ -102,7 +103,7 @@ DECLARED_ROWS = {
                "M21e_keep_wires_on_gravship_off_setting_state", "M21f_keep_wires_on_gravship_on_setting_state",
                "M22a_kinetic_sway_on_swings_never_cuts", "M22b_kinetic_sway_off_does_nothing"],
     "style": ["S1_pick_reaches_blueprint", "S2_blueprint_frame_building", "S3_god_mode", "S4_copy_carries_look",
-              "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S6_spans_in_pole_look",
+              "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S8b_legacy_joined_to_styled_stores_look", "S6_spans_in_pole_look",
               "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
               "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost", "S12e_batched_links_merge"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
