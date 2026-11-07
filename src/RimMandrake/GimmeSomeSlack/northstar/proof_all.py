@@ -788,13 +788,16 @@ class Proof(object):
             time.sleep(1.0)
             s9_b = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
             sty_b = B.ap("styles")
+        # owner 2026-10-22 on identical polylines after load: "I don't value that ... Strike that." Which cords exist must survive; their exact lay need not, so it is reported and not compared
+        hash_a, hash_b = cords_a.get("edgeHashes") or {}, cords_b.get("edgeHashes") or {}
+        relaid = sum(1 for k in hash_a if k in hash_b and hash_a[k] != hash_b[k])
         parts = {
             "aerial(M16)": (VA._aerial_set(aer_a), VA._aerial_set(aer_b)),
             "mastStyles(S7)": (VS._snapshot(sty_a), VS._snapshot(sty_b)),
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
             # the floor cords themselves (GPT review 8.2): cords_a/cords_b were read and never compared, so a load
             # that dropped or moved every laid cord still read SL3 PASS on the aerial + style sets alone
-            "floorCords": (V._cord_set(cords_a), V._cord_set(cords_b)),
+            "floorCords": (dict(V._cord_set(cords_a), edgeHashes=sorted(hash_a), geometryHash=None), dict(V._cord_set(cords_b), edgeHashes=sorted(hash_b), geometryHash=None)),
         }
         empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])
                  or (k == "floorCords" and not a.get("edgeHashes"))]
@@ -809,7 +812,7 @@ class Proof(object):
                     differ[k] = {"missing": [x for x in a if x not in b][:4], "extra": [x for x in b if x not in a][:4]}
         sl3 = not differ and not empty and bool(parts["aerial(M16)"][0]["fallen"])
         self.row("save_load", "SL3_after_load_census_equal", "PASS" if sl3 else "FAIL", "MOD",
-                 {"differs": differ, "emptyBefore": empty, "loadSeconds": waited,
+                 {"differs": differ, "emptyBefore": empty, "loadSeconds": waited, "relaidEdges": relaid, "edges": len(hash_a),
                   "sizes": {"aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
                             "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
                   "spawned": cords_b.get("spawnedConduitTexture")})

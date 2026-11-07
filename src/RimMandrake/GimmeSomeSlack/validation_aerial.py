@@ -448,9 +448,11 @@ def run_live(args):
         t = ((p1x - ax_) * dx + (p1z - az_) * dz) / L2
         perp = abs((p1x - ax_) * dz - (p1z - az_) * dx) / L2 ** 0.5
         same = abs(p1x - p2x) < 0.01 and abs(p1z - p2z) < 0.01
-        tips = all(not f["blocked"] and abs(f["tip"][0] - f["breakAt"][0]) < 0.05 and abs(f["tip"][1] - f["breakAt"][1]) < 0.05 for f in dh)
+        # a fallen wire lies as a loose cut cord: its end lies somewhere near the break, and the two halves' ends apart, never pinched to one point (blind judge, pass 1)
+        tips = all(not f["blocked"] and ((f["tip"][0] - f["breakAt"][0]) ** 2 + (f["tip"][1] - f["breakAt"][1]) ** 2) ** 0.5 < 4.0 for f in dh) \
+            and ((dh[0]["tip"][0] - dh[1]["tip"][0]) ** 2 + (dh[0]["tip"][1] - dh[1]["tip"][1]) ** 2) ** 0.5 > 0.3
         centre = all(abs(f["breakAt"][0] - (f["toward"][0] + 0.5)) < 0.01 and abs(f["breakAt"][1] - (f["toward"][1] + 0.5)) < 0.01 for f in dh)
-        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsAtBreak": tips,
+        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsNearBreakApart": tips, "tips": [dh[0]["tip"], dh[1]["tip"]],
                "isCellCentre(old aim)": centre}
         m15d = same and perp < 0.1 and 0 < t < 1 and tips and not centre
     V.row(rows, "M15d_diagonal_cut_halves_meet_on_line", "PASS" if m15d else "FAIL", "MOD",

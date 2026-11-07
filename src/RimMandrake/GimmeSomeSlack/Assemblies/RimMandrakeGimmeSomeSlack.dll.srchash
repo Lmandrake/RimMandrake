@@ -1,5 +1,5 @@
 # project: RimMandrake/GimmeSomeSlack/Source/RimMandrake_GimmeSomeSlack.csproj
-# dll: 250e0f3dd5dad09195b5b5b0f138bd05a578dc57d17902a78dcc5cfb61cb53c2
+# dll: 343eba4db9f69beabc0a4f80db67211d18d7c13e2b0223bedb6f31ed53d5c80c
 0369e93e98caae5901a1bbb9dc4d17331a794116f0b3a1ba4719950695dcae2b Aerial/RM_MapComponent_ConduitRuns.cs
 0725f8769b70f426e4a133870e3c1b3ba49181c0ad8264223886d7811906a638 ../../_Shared/SlackGeometry/CordWorld.cs
 07d760d041952cf9f31e3bf68e389fd2b85857b14bf774cf38e380b14ed8ce5b Core/ConduitTargets.cs
