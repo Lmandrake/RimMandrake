@@ -18,6 +18,10 @@ All in a temp state dir with a faked runner: no systemd unit, no claude, no clon
              --all sweeps strays; the unit's third ExecStopPost starts it; and through the real Effects and git the
              commit and the dirty file leave in the bundle and the clone is gone
   hook       the spawn hook's drain refusal points at this launcher
+  origin     an item filed only in a local shard (OWNER.jsonl from --owner-said, 2026-11-07) is refused with exit 2 before
+             any clone or unit, naming the shard to publish; one fetch, then a search of the shards at origin/main; allowed
+             when a `file` event's id or a `spawn` event's name is the item (a mention, a spawn's `from` and a longer id
+             are not); a failed fetch is said only on a refusal; an unreadable git is a refusal, not a pass
 """
 import json
 import os
@@ -50,10 +54,32 @@ class R:
         self.returncode, self.stdout, self.stderr = rc, out, ""
 
 
+GIT_CALLS = []     # the origin check's fetch and grep, kept apart from `calls` so each test's calls[0] stays systemd-run
+ORIGIN = {"events": None, "fetch_rc": 0, "grep_rc": None}   # the fake origin/main: ledger event lines; None = KNOWN, filed
+
+
+def origin_events():
+    if ORIGIN["events"] is not None:
+        return ORIGIN["events"]
+    return [json.dumps({"seat": "BENCH", "event": "file", "id": i, "title": "t", "for": "BENCH"}, separators=(",", ":"))
+            for i in sorted(KNOWN)]
+
+
+def fake_origin_git(argv, kw):
+    GIT_CALLS.append((argv, kw))
+    if argv[:2] == ["git", "fetch"]:
+        return R(ORIGIN["fetch_rc"], "")
+    needle = argv[argv.index("-e") + 1]      # git grep -F: the lines that hold the id, as `git grep -h` prints them
+    out = [ln for ln in origin_events() if needle in ln]
+    return R(ORIGIN["grep_rc"] if ORIGIN["grep_rc"] is not None else (0 if out else 1), "\n".join(out))
+
+
 def recorder(rc=0, out=""):
     calls = []
 
     def run(argv, **kw):
+        if argv[:2] in (["git", "fetch"], ["git", "grep"]):
+            return fake_origin_git(argv, kw)
         calls.append((argv, kw))
         return R(rc, out)
     return calls, run
@@ -77,6 +103,7 @@ def test_refuse():
                          clone=CLONE)
     check(rc == 2 and "blind" in text, "refuse: a ledger read of 0 items is blind, not a pass")
     check(calls == [], "refuse: nothing was started")
+    check(GIT_CALLS == [], "refuse: an item not on the local ledger never reaches git")
 
 
 def test_launch_and_finish():
@@ -425,6 +452,107 @@ def test_return_real_git():
         os.environ.pop("RM_DETACHED_POOL", None)
 
 
+def shard_line(event, **kw):
+    return json.dumps(dict({"seat": "BENCH", "event": event}, **kw))
+
+
+def test_origin():
+    """The item must be filed on origin/main before a clone is made or a unit starts. The fake origin holds the lines that
+    `git grep` would print; the temp repo holds the working-tree shards the refusal names."""
+    item = "SOME_ITEM_TO_BUILD"
+    repo = os.path.join(TMP, "originrepo")
+    events = os.path.join(repo, *DH.EVENTS_REL.split("/"))
+    os.makedirs(events, exist_ok=True)
+    with open(os.path.join(events, "OWNER.jsonl"), "w") as f:       # filed by --owner-said: only here
+        f.write(shard_line("file", id=item, title="t", seat="OWNER") + "\n")
+    with open(os.path.join(events, "BENCH.jsonl"), "w") as f:       # mentions it, files something else
+        f.write(shard_line("note", id=item, text="x") + "\n" + shard_line("file", id="OTHER_ITEM_ELSEWHERE") + "\n")
+    real_repo, real_pool = DH.REPO, os.environ.get("RM_DETACHED_POOL")
+    DH.REPO, os.environ["RM_DETACHED_POOL"] = repo, os.path.join(TMP, "originpool")
+    try:
+        def launch(runner, known=None, clone=CLONE, it=item):
+            return DH.launch("BENCH", it, "Build.", "sonnet", 600, 5, now=T0 + 300, runner=runner, known=known or {it},
+                             clone=clone)
+
+        def reset(**kw):
+            GIT_CALLS.clear()
+            ORIGIN.update(dict({"events": [], "fetch_rc": 0, "grep_rc": None}, **kw))
+
+        runs_before = len(os.listdir(DH.runs_dir()))
+        # refused: not on origin/main, filed only in OWNER.jsonl; with a clone given, and with none (take_clone not reached)
+        for clone in (CLONE, None):
+            reset()
+            calls, run = recorder()
+            rc, text = launch(run, clone=clone)
+            check(rc == 2 and text == "refused: %s is not on origin/main; publish %s/OWNER.jsonl first" % (item, DH.EVENTS_REL),
+                  "origin: refused, exit 2, one line naming the shard that holds the event (clone=%s): %s" % (bool(clone), text))
+            check(calls == [] and len(os.listdir(DH.runs_dir())) == runs_before,
+                  "origin: refused before any clone or unit, no record written (clone=%s)" % bool(clone))
+        check([c[0][:2] for c in GIT_CALLS] == [["git", "fetch"]] + [["git", "grep"]] and GIT_CALLS[0][1].get("cwd") == repo,
+              "origin: one fetch, then one search, in the repo")
+        check(GIT_CALLS[1][0][-3:] == [DH.ORIGIN_REF, "--", DH.EVENTS_REL] and item in GIT_CALLS[1][0],
+              "origin: the search is of every shard under the events dir at origin/main, for the id (%s)" % GIT_CALLS[1][0][-3:])
+        # a lookalike on origin does not file it: a note that mentions it, a spawn whose `from` is it, a longer id
+        reset(events=[shard_line("note", id=item, text="x"), shard_line("spawn", **{"from": item, "name": "CHILD_OF_IT", "for": "BENCH"}),
+                      shard_line("file", id=item + "_TWO", title="t")])
+        calls, run = recorder()
+        rc, text = launch(run)
+        check(rc == 2 and "is not on origin/main" in text and calls == [],
+              "origin: a note, a spawn's `from` and a longer id are not the item (%s)" % text[:60])
+        # a second shard holding it is named too
+        with open(os.path.join(events, "RUNNER.jsonl"), "w") as f:
+            f.write(shard_line("spawn", **{"from": "X", "name": item, "for": "BENCH"}) + "\n")
+        reset()
+        rc, text = launch(recorder()[1])
+        check(rc == 2 and text.endswith("publish %s/OWNER.jsonl, %s/RUNNER.jsonl first" % (DH.EVENTS_REL, DH.EVENTS_REL)),
+              "origin: every local shard that holds it is named (%s)" % text[-70:])
+        # nowhere locally either: said, not guessed
+        reset()
+        rc, text = launch(recorder()[1], known={"GHOST_ITEM_IN_NO_SHARD"}, it="GHOST_ITEM_IN_NO_SHARD")
+        check(rc == 2 and text.endswith("is not on origin/main; no local shard holds it either"), "origin: no shard holds it: %s" % text)
+        # a failed fetch: said on a refusal (origin/main may be stale), not on a pass
+        reset(fetch_rc=1)
+        rc, text = launch(recorder()[1])
+        check(rc == 2 and "fetch exit 1" in text and "may be stale" in text and text.count("\n") == 0,
+              "origin: a failed fetch is named on the same refusal line (%s)" % text[-70:])
+        reset(fetch_rc=1, events=[shard_line("file", id=item, title="t")])
+        calls, run = recorder()
+        rc, text = launch(run)
+        check(rc == 0 and "fetch" not in text and calls and calls[0][0][0] == "systemd-run",
+              "origin: the item found on origin/main is allowed even when the fetch failed (%s)" % text[:40])
+        # an unreadable git is a refusal, not a pass
+        reset(grep_rc=128)
+        calls, run = recorder()
+        rc, text = launch(run)
+        check(rc == 2 and "cannot read origin/main" in text and calls == [], "origin: git grep failing is a refusal, not a pass (%s)" % text[:70])
+        # allowed: filed on origin/main as a `file` event (compact and spaced JSON), one fetch then one search, the unit starts
+        for line in (json.dumps({"seat": "OWNER", "event": "file", "id": item, "title": "t"}),
+                     json.dumps({"seat": "OWNER", "event": "file", "id": item, "title": "t"}, separators=(",", ":"))):
+            reset(events=[shard_line("note", id=item, text="x"), line])
+            calls, run = recorder()
+            rc, text = launch(run)
+            check(rc == 0 and calls and calls[0][0][0] == "systemd-run" and "DETACHED " in text and
+                  [c[0][:2] for c in GIT_CALLS] == [["git", "fetch"], ["git", "grep"]],
+                  "origin: filed on origin/main -> allowed, the unit starts (%s)" % text[:40])
+        # allowed: a `spawn` event carries the id in `name` (RUNNER spawns files nothing with an id)
+        spawned = "SPAWNED_BY_RUNNER_FIX_X"
+        reset(events=[shard_line("spawn", **{"from": item, "name": spawned, "for": "BENCH", "title": "t"})])
+        calls, run = recorder()
+        rc, text = launch(run, known={spawned}, it=spawned)
+        check(rc == 0 and calls and calls[0][0][0] == "systemd-run" and ("--unit" in calls[0][0]),
+              "origin: a spawn event whose name is the item files it -> allowed (%s)" % text[:40])
+        reset(events=[shard_line("spawn", **{"from": spawned, "name": "CHILD_OF_SPAWNED", "for": "BENCH"})])
+        rc, text = launch(recorder()[1], known={spawned}, it=spawned)
+        check(rc == 2 and "is not on origin/main" in text, "origin: being only the `from` of a spawn does not file it")
+    finally:
+        DH.REPO = real_repo
+        if real_pool is None:
+            os.environ.pop("RM_DETACHED_POOL", None)
+        else:
+            os.environ["RM_DETACHED_POOL"] = real_pool
+        ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
+
+
 def test_hook_points_here():
     hook = os.path.join(HERE, "..", "..", "..", ".claude", "hooks", "block_agent_over_slots.py")
     with open(hook, encoding="utf-8") as f:
@@ -440,6 +568,7 @@ def main():
     test_guard()
     test_return()
     test_return_real_git()
+    test_origin()
     test_hook_points_here()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

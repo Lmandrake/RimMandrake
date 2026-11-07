@@ -129,8 +129,9 @@ try:
            "out": "/o", "err": "/e", "state": "/s", "item": "I", "tmp": None}
     argv3 = detached_helper.launch_argv(rec, "m", "/usr/bin/claude")
     post3 = [a for a in argv3 if a.startswith("ExecStopPost=")]
-    check(len(post3) == 2 and any("wrapup.py unit --unit rm-detached-1 --seat BENCH --clone /y/c" in a for a in post3),
-          "W1 detached_helper: finish and the wrap-up both run at stop")
+    check(len(post3) == 3 and any("wrapup.py unit --unit rm-detached-1 --seat BENCH --clone /y/c" in a for a in post3)
+          and any("detached_helper.py return" in a or " return --unit" in a for a in post3),
+          "W1 detached_helper: finish, the wrap-up and the clone return all run at stop")
     check(any(a.startswith("ExecStopPost=-+/usr/bin/python3 ") and "wrapup.py" in a for a in post3),
           "W1 detached_helper's wrap-up runs outside the sandbox and never fails the unit")
 

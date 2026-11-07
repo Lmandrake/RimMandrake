@@ -10,7 +10,11 @@ one runs. A detached run lives in its own transient systemd unit and survives th
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
 
-launch: the item must be on the ledger. It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
+launch: the item must be on the ledger, and FILED ON origin/main: the helper's clone is made from origin/main, so an item whose
+file event sits in an unpublished shard (OWNER.jsonl from --owner-said, say) is one the helper's `rimflow note` refuses for
+the whole run (lesson 20261107T214121Z-BENCH-detached-helper-item-not-origin). One fetch, then a search of every shard under
+infrastructure/state/ledger/events/ at origin/main; no hit refuses (exit 2) and names the local shard to publish first.
+It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
 model passed, wall time bounded twice (the unit's RuntimeMaxSec and claude_bounded's scope), spend bounded by
 claude --max-budget-usd. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
@@ -50,6 +54,8 @@ DEFAULT_BUDGET_USD = 15.0
 MODELS = ("opus", "sonnet", "haiku")
 SEATS = ("BENCH", "STEVE", "RUNNER")   # FOUNDRY retired (owner by card 2026-11-02)
 REAL_LOG = "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"
+ORIGIN_REF = "origin/main"
+EVENTS_REL = "infrastructure/state/ledger/events"
 
 FOOTER = """
 
@@ -124,6 +130,74 @@ def reserve_record(rec, root=None, tries=100):
 
 def pool_root():
     return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/relentless")
+
+
+def filed_ids(lines):
+    """The ids the ledger's own reader (helper_checkpoint.known_items) takes from event lines: a `file` event's `id` and a
+    `spawn` event's `name`. A line that merely mentions an id (a note, a spawn's `from`, a longer id) files nothing."""
+    ids = set()
+    for line in lines:
+        try:
+            ev = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(ev, dict):
+            continue
+        if ev.get("event") == "file" and ev.get("id"):
+            ids.add(ev["id"])
+        elif ev.get("event") == "spawn" and ev.get("name"):
+            ids.add(ev["name"])
+    return ids
+
+
+def local_shards(item, repo=None):
+    """-> the ledger shards in this clone's working tree (repo-relative) that file `item`, sorted. These are the ones to publish."""
+    repo = repo or REPO
+    d = os.path.join(repo, *EVENTS_REL.split("/"))
+    try:
+        names = sorted(n for n in os.listdir(d) if n.endswith(".jsonl"))
+    except OSError:
+        return []
+    found = []
+    for n in names:
+        try:
+            with open(os.path.join(d, n), encoding="utf-8", errors="replace") as f:
+                if item in filed_ids(ln for ln in f if item in ln):
+                    found.append(EVENTS_REL + "/" + n)
+        except OSError:
+            continue
+    return found
+
+
+def origin_check(item, runner=subprocess.run, repo=None):
+    """-> None when `item` is filed on origin/main, else the one-line refusal text.
+
+    One fetch (the ref could be stale), then `git grep` of every shard under EVENTS_REL at origin/main for lines holding the
+    id, kept only if filed_ids() reads the item from one: a `file` event's id or a `spawn` event's name. An item found is
+    allowed even when the fetch failed; one not found says so when it did, since origin/main may then be stale. A git that
+    cannot be read at all (not 0 or 1) refuses too: a blind instrument is not a pass."""
+    repo = repo or REPO
+    stale = ""
+    try:
+        r = runner(["git", "fetch", "-q", "--no-tags", "origin", "main"], cwd=repo, capture_output=True, text=True,
+                   timeout=120, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            stale = "fetch exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-80:])
+    except (OSError, subprocess.SubprocessError) as e:
+        stale = "fetch failed: %s" % str(e)[-80:]
+    try:
+        r = runner(["git", "grep", "-h", "-F", "-I", "-e", item, ORIGIN_REF, "--", EVENTS_REL], cwd=repo,
+                   capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "refused: cannot read %s to check %s on it (%s)" % (ORIGIN_REF, item, str(e)[-80:])
+    if r.returncode not in (0, 1):
+        return "refused: cannot read %s to check %s on it (git grep exit %d: %s)" % (
+            ORIGIN_REF, item, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-80:])
+    if item in filed_ids((r.stdout or "").splitlines()):
+        return None
+    shards = local_shards(item, repo)
+    say = ("publish %s first" % ", ".join(shards)) if shards else "no local shard holds it either"
+    return "refused: %s is not on %s; %s%s" % (item, ORIGIN_REF, say, " (%s; %s may be stale)" % (stale, ORIGIN_REF) if stale else "")
 
 
 def take_clone(item, runner=subprocess.run):
@@ -348,7 +422,7 @@ def launch_argv(rec, msg, claude):
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None):
-    """-> (exit code, text). Refuses an unknown item, a bad model or seat, an empty brief."""
+    """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief."""
     now = now or time.time()
     if seat not in SEATS:
         return 2, "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS))
@@ -366,6 +440,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         return 2, "refused: the ledger read 0 items (blind instrument), cannot check %s" % item
     if item not in known:
         return 2, "refused: %s is not a ledger item; file it first (rimflow namecheck, then file)" % item
+    unpublished = origin_check(item, runner=runner)     # before a clone is made or a unit started
+    if unpublished:
+        return 2, unpublished
     if clone:
         how = "given " + clone
     else:
