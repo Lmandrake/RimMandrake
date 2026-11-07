@@ -256,7 +256,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// ends do not move. A fold whose bend would leave walkable ground stays: the floor rule outranks the look.</summary>
         internal static List<V2> Unfold(CordWorld w, List<V2> pts, double skipEnds = 0.25)
         {
-            List<V2> P = Dejag(w, pts, skipEnds);
+            List<V2> P = Polish(w, Dejag(w, pts, skipEnds), Math.Max(PolishPin, skipEnds));
             var stuck = new List<V2>();
             for (int guard = 0; guard < 60; guard++)
             {
@@ -269,6 +269,76 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             return P;
         }
+
+        /// <summary>How far from each end the polish leaves a strand alone (the art's plug or fray lines up there), the arc it fades in over, and its passes of a 1-2-1 filter on samples PolishStep apart.
+        /// Eight passes are a blur of 0.1 cell: enough to take a settle's ripple and any corner off a cord, while a 0.2 cell coil only draws in by a seventh.</summary>
+        public const double PolishPin = 0.2, PolishFade = 0.15, PolishStep = 0.05;
+        public const int PolishPasses = 8;
+
+        /// <summary>The last word on a laid strand: a cord has no corners and no ripple at any scale it can be seen at (shape lab on a played colony: 55 of 70 strands had a sharp corner, and a sawtooth
+        /// on a stretch along a wall, while the fold check read clean). Only the fine scale moves, so the loops and the lay stay as they were. A point that would leave walkable ground stays where it is.</summary>
+        internal static List<V2> Polish(CordWorld w, List<V2> pts, double pinEnds = PolishPin)
+        {
+            if (pts == null || pts.Count < 7) return pts;
+            // the ends stay exactly as laid, point for point: what the art lines up with, a live end's straight run and a dead end's curl
+            double[] cum = Geo.CumLen(pts);
+            double L = cum[cum.Length - 1];
+            int ia = 0, ib = pts.Count - 1;
+            while (ia < pts.Count - 1 && cum[ia] < pinEnds) ia++;
+            while (ib > 0 && cum[ib] > L - pinEnds) ib--;
+            if (ib - ia < 6) return pts;
+            List<V2> P = Geo.Resample(pts.GetRange(ia, ib - ia + 1), PolishStep);
+            int n = P.Count;
+            if (n < 7) return pts;
+            V2 first = P[0], last = P[n - 1];
+            var weight = new double[n];
+            for (int i = 0; i < n; i++) weight[i] = Math.Min(1, Math.Min(i, n - 1 - i) * PolishStep / PolishFade);
+            var X = P.ToArray();
+            var tmp = new V2[n];
+            for (int pass = 0; pass < PolishPasses; pass++)
+            {
+                Array.Copy(X, tmp, n);
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (weight[i] <= 0) continue;
+                    V2 q = tmp[i] + ((tmp[i - 1] + tmp[i + 1]) * 0.5 - tmp[i]) * (0.5 * weight[i]);
+                    if (w == null || w.IsWalkable(q.Floor)) X[i] = q;
+                }
+            }
+            // a needle, two arms lying together, only shortens under a blur: what still reads as a corner gets its own passes, until it opens or it has retracted into the line
+            for (int guard = 0; guard < PolishNeedleRounds; guard++)
+            {
+                var list = new List<V2>(X);
+                List<V2> corners = CordShapeAudit.Corners(list, 0.05);
+                if (corners.Count == 0) break;
+                foreach (V2 c in corners)
+                {
+                    int at = list.IndexOf(c), reach = (int)Math.Round(PolishNeedleReach / PolishStep);
+                    if (at < 0) continue;
+                    for (int pass = 0; pass < PolishPasses; pass++)
+                    {
+                        Array.Copy(X, tmp, n);
+                        for (int i = Math.Max(1, at - reach); i <= Math.Min(n - 2, at + reach); i++)
+                        {
+                            double fade = Math.Min(1, (reach + 1 - Math.Abs(i - at)) / 3.0) * weight[i];
+                            if (fade <= 0) continue;
+                            V2 q = tmp[i] + ((tmp[i - 1] + tmp[i + 1]) * 0.5 - tmp[i]) * (0.5 * fade);
+                            if (w == null || w.IsWalkable(q.Floor)) X[i] = q;
+                        }
+                    }
+                }
+            }
+            X[0] = first;
+            X[n - 1] = last;
+            var o = new List<V2>(pts.Count + n);
+            o.AddRange(pts.GetRange(0, ia));
+            o.AddRange(X);
+            o.AddRange(pts.GetRange(ib + 1, pts.Count - ib - 1));
+            return o;
+        }
+
+        private const int PolishNeedleRounds = 6;
+        private const double PolishNeedleReach = 0.4;
 
         private static List<V2> RoundFold(CordWorld w, List<V2> P, V2 at)
         {

@@ -695,18 +695,30 @@ namespace RimMandrake.Shared.Slack
                 V2 bend = target - arrive * st;
                 double k = V2.Dist(s0, bend) * 0.45;
                 V2 c1 = s0 + tS * k, c2 = bend - arrive * k;
+                // heading straight back the way it must arrive, both handles lie on one line and the curve is a needle (shape lab: a spike under a strip's plug). With room to take, it
+                // comes round in a U instead, out to whichever side the target already lies, or the other if that is blocked
+                V2 perp = arrive.Perp;
+                double off = roomy > 0 && tS.X * arrive.X + tS.Z * arrive.Z < -0.3 ? Math.Max(0.34, 0.5 * V2.Dist(s0, bend)) * 1.33 : 0;
+                double sideOf = (target.X - s0.X) * perp.X + (target.Z - s0.Z) * perp.Z;
+                bool ok = false;
                 var add = new List<V2>();
-                int nb = Math.Max(6, (int)(V2.Dist(s0, bend) / 0.05));
-                for (int q = 1; q <= nb; q++)
+                foreach (double sgn in off > 0 ? new[] { sideOf >= 0 ? 1.0 : -1.0, sideOf >= 0 ? -1.0 : 1.0 } : new[] { 0.0 })
                 {
-                    double t = q / (double)nb, it = 1 - t;
-                    add.Add(s0 * (it * it * it) + c1 * (3 * it * it * t) + c2 * (3 * it * t * t) + bend * (t * t * t));
+                    V2 h1 = c1 + perp * (off * sgn), h2 = c2 + perp * (off * sgn);
+                    add.Clear();
+                    int nb = Math.Max(6, (int)((V2.Dist(s0, h1) + V2.Dist(h1, h2) + V2.Dist(h2, bend)) * 0.7 / 0.05));
+                    for (int q = 1; q <= nb; q++)
+                    {
+                        double t = q / (double)nb, it = 1 - t;
+                        add.Add(s0 * (it * it * it) + h1 * (3 * it * it * t) + h2 * (3 * it * t * t) + bend * (t * t * t));
+                    }
+                    int ns = Math.Max(1, (int)(st / 0.05));
+                    for (int q = 1; q <= ns; q++) add.Add(bend + arrive * (st * q / ns));
+                    ok = true;
+                    for (int q = 0; q < add.Count - 1; q++)
+                        if (w != null && !w.IsWalkable(add[q].Floor)) { ok = false; break; }
+                    if (ok) break;
                 }
-                int ns = Math.Max(1, (int)(st / 0.05));
-                for (int q = 1; q <= ns; q++) add.Add(bend + arrive * (st * q / ns));
-                bool ok = true;
-                for (int q = 0; q < add.Count - 1; q++)
-                    if (w != null && !w.IsWalkable(add[q].Floor)) { ok = false; break; }
                 if (!ok) continue;
                 var R = Q.GetRange(0, j + 1);
                 R.AddRange(add);

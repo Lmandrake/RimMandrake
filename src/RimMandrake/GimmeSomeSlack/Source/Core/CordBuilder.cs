@@ -929,8 +929,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
             int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
             double laid = 0;
+            List<V2> nub = StripNub(g, e, opt);
+            if (nub != null) n = 1;
             for (int i = 0; i < n; i++)
             {
+                if (nub != null)
+                {
+                    piece.Strands.Add(new CordStrand { Pts = nub, S0 = rr.Value() });
+                    laid += Geo.Length(nub);
+                    continue;
+                }
                 double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * 0.1;
                 double[] cl = Geo.CumLen(C);
                 var P = new List<V2>(C.Count);
@@ -999,6 +1007,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.CZ1 = Math.Min(w.Height - 1, (int)Math.Floor(z1) + 3);
             return piece;
         }
+
+        /// <summary>A strip right beside a machine points its lead at it, so that lead is a short straight nub off the strip's end and on under the machine's art. Sent to the machine's sliding plug point, off to
+        /// one side, it doubled back round the strip's end in a flat hook (blind judge's "two short cords to one machine"; shape lab). Null when this edge is no such lead, or the line misses the machine.</summary>
+        private static List<V2> StripNub(CordGraph g, CordEdge e, BuildOptions opt)
+        {
+            foreach (bool atA in new[] { true, false })
+            {
+                VId v = atA ? e.A : e.B;
+                CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
+                if (nd.Type != NodeType.Junction || !far.IsMachine || far.Machine == null || opt.PileFor(nd.Cell) != PileArt.Strips) continue;
+                V2 ad = ArmDir(g, e, atA);
+                var arm = new Cell((int)ad.X, (int)ad.Z);
+                if (!g.MachineArmsOf(v).Contains(arm)) continue;
+                StripPose sp = PoseStrip(g, v, opt.Seed);
+                if (sp.SocketFor(arm) >= 0) continue;
+                var line = new List<V2>();
+                double reached = -1;
+                for (double t = 0; t <= StripNubReach; t += 0.05)
+                {
+                    V2 q = sp.LeadTip + sp.Along * t;
+                    line.Add(q);
+                    if (reached < 0 && far.Machine.Contains(q.Floor)) reached = t;
+                    if (reached >= 0 && t >= reached + StripNubUnder) break;
+                }
+                if (reached < 0) continue;
+                if (!atA) return line;
+                line.Reverse();
+                return line;
+            }
+            return null;
+        }
+
+        private const double StripNubReach = 1.8, StripNubUnder = 0.3;
 
         /// <summary>How far a diving cord runs on past the face into a wall, rock or building (hidden by it), cells. Water: 0,
         /// the cord meets the water's edge like a conduit stub into water.</summary>
@@ -1589,9 +1630,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         private const int SlackRetries = 6;
 
-        /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose.</summary>
+        /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose, and a live end sticks straight out.</summary>
         private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>
-            (na.Type == NodeType.Terminal && !na.Seam && !isLive(na.Cell)) || (nb.Type == NodeType.Terminal && !nb.Seam && !isLive(nb.Cell)) ? 1.0 : 0.25;
+            (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam) ? 1.0 : 0.25;
 
         /// <summary>A place a pile cable plugs in: the point its end lands on and the direction it leaves in.</summary>
         public struct PilePort

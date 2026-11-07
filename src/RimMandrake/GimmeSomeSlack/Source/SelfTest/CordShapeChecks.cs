@@ -113,6 +113,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         }
             Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
             Console.WriteLine($"  cord folds: {folds} in {strands} strands");
+            PolishChecks();
 
             // no sawtooth (seen in a lived-in colony 2026-11-07: a stretch of settled cord buckled into a jag on a run cut to two cells), walled room and open alike
             foreach (var scene in new (string name, Func<CordWorld> make, bool laidHere)[] { ("open runs", Room, true), ("short stumps", ShortStumps, true), ("heap", ReviewRound1Checks.PileWorld, false) })
@@ -230,6 +231,35 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 List<ShapeClass> t = CordShape.Table(new[] { a, twin });
                 Check(t.Count == 1 && t[0].TooAlike == 1 && t[0].MinDistance < 0.05, $"planted: a cord and its moved, turned, reversed copy read {(t.Count > 0 ? t[0].MinDistance : -1):0.000} apart");
             }
+        }
+
+        /// <summary>The polish: a planted sawtooth and a planted corner read as faults and come out, the ends stay point for point; a strip beside a machine draws its lead as one straight nub.</summary>
+        private static void PolishChecks()
+        {
+            var open = new CordWorld(40, 40);
+            var saw = new List<V2>();
+            for (int i = 0; i <= 200; i++) saw.Add(new V2(5 + i * 0.05, 20 + (i > 60 && i < 140 ? 0.05 * Math.Sin(i * 2.2) : 0)));
+            Check(CordShapeAudit.Corners(saw).Count > 0, "planted sawtooth reads as corners");
+            List<V2> calm = CordShape.Polish(open, saw);
+            Check(CordShapeAudit.Corners(calm).Count == 0, $"polish takes the sawtooth out ({CordShapeAudit.Corners(calm).Count} left)");
+            Check(calm[0].X == saw[0].X && calm[calm.Count - 1].X == saw[saw.Count - 1].X && calm[3].Z == saw[3].Z, "polish leaves both ends as laid");
+            var elbow = new List<V2>();
+            for (int i = 0; i <= 40; i++) elbow.Add(new V2(5 + i * 0.05, 20));
+            for (int i = 1; i <= 40; i++) elbow.Add(new V2(7, 20 + i * 0.05));
+            Check(CordShapeAudit.Corners(elbow).Count == 1, "planted right angle reads as one corner");
+            Check(CordShapeAudit.Corners(CordShape.Polish(open, elbow)).Count == 0, "polish rounds the right angle");
+            var coil = new List<V2>();
+            for (int i = 0; i < 160; i++) coil.Add(new V2(10 + 0.3 * Math.Cos(i * 0.16), 10 + 0.3 * Math.Sin(i * 0.16)));
+            Check(CordShapeAudit.Corners(coil).Count == 0 && Geo.Length(CordShape.Polish(open, coil)) > 0.8 * Geo.Length(coil), "a coil of 0.3 cell is no corner and keeps its size");
+            // a Modern T with a battery right beside it: the battery takes the strip's lead, a straight nub, with no hook round the strip's end
+            var w = new CordWorld(30, 20);
+            for (int x = 4; x <= 24; x++) w.SetConduit(new Cell(x, 8));
+            w.SetBlocked(new Cell(14, 9), BlockKind.Device);
+            w.Machines.Add(new MachineInfo { Id = "lamp", Kind = MachineKind.Consumer, X0 = 14, Z0 = 9, W = 1, H = 1, Hookups = new List<Cell> { new Cell(14, 8) } });
+            var b = new CordBuilder();
+            List<LaidPiece> ps = b.Build(w, JunctionStripChecks.Modern(), c => true);
+            LaidPiece lead = ps.FirstOrDefault(p => p.EndA != null && (p.EndA.StartsWith("consumer") || p.EndB.StartsWith("consumer")));
+            Check(lead != null && lead.Strands.Count == 1 && CordShapeAudit.Corners(lead.Strands[0].Pts, 0).Count == 0 && Geo.Length(lead.Strands[0].Pts) < 1.6, "a strip's lead into the machine beside it is one straight nub");
         }
     }
 }

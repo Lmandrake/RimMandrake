@@ -84,12 +84,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 Corners += c.Count;
                 string name = p.EndA == null ? p.Key : p.EndA + "|" + p.EndB;
                 foreach (V2 k in c)
-                    if (rows.Count < 60) rows.Add("{\"sharp\":[" + F(k.X) + "," + F(k.Z) + "],\"piece\":\"" + name + "\"}");
+                    if (rows.Count < 400) rows.Add("{\"sharp\":[" + F(k.X) + "," + F(k.Z) + "],\"piece\":\"" + name + "\"}");
                 double rod = LongestRod(s.Pts, out V2 at);
                 if (rod >= RodLen)
                 {
                     Rods++;
-                    if (rows.Count < 60) rows.Add("{\"rod\":" + F(rod) + ",\"at\":[" + F(at.X) + "," + F(at.Z) + "],\"piece\":\"" + name + "\"}");
+                    if (rows.Count < 400) rows.Add("{\"rod\":" + F(rod) + ",\"at\":[" + F(at.X) + "," + F(at.Z) + "],\"piece\":\"" + name + "\"}");
                 }
             }
 
