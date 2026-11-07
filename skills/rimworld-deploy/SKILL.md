@@ -67,15 +67,8 @@ TRUNCATE it mid-list.** A run that stopped at "Cuisine" would have been read as
 "only Armoury drifts"; the real answer that day was 5 mods including one the
 caller owned. Redirect the run to a file and confirm it printed its final
 `Drift found` / `Everything in sync` line before believing any drift list.
-- **Deploy a CLEAN tree, never while agents edit, and read the Player.log error classes after.** A deploy copies half-written files and the launch gate then refuses. `deploy_custom_mods.py --compose biomes --apply` is a SEPARATE step from plain `--apply`. A full-sweep `--apply` is not proof every mod deployed: before blaming a third-party mod for a fresh-restart crash, run `deploy_custom_mods.py --mod <each mod touched today>` for drift. A stale `CreatureBehaviors.dll` left 6+ XML-registered classes "Could not find type named", one broken def left `PawnKindDef.race` null, and GeneticRim.Core's static constructor dereferences it unguarded (`item.race.tradeTags`), crashing it and every later call (Need Food, `jawa/spawn_pawn`), looking like GeneticRim's own bug.
-- **`--apply --mod X` syncs the WHOLE mod, not just your files.** When a peer is mid-wave in the same mod, a one-file apply also ships their undeployed WIP (275 files where ~8 were yours, and their content then rides the next restart ahead of schedule). Count the files in the plan BEFORE `--apply`; if the count is not yours, stop.
-- **Deploy leaves stale copies, and stale defs load.** Deleting or moving a file in the repo does NOT undeploy it: plain `--apply` keeps `-` strays, a `DEPLOY_HOLD` entry never removes a copy already in the game's Mods tree, and a def that moves between mods leaves the old file as a duplicate creature. `--prune` fixes it but sweeps EVERY stray including peers', so the precise fix is a targeted `rm` of the named files in the Mods folder. Clean deploy = `--apply --prune`, then `--compose biomes --apply --prune`, then delete deployed copies of held paths. Plain `--apply` SKIPS the composed `mandrake.rm.biomes` mod. Effects seen: a held TheSump biome plus 3 held files gave 20 dangling cross-refs; a moved `ThingDefs_Abyss.xml` named a missing comp, left a raceless PawnKind and killed three mods' static ctors; a restart on stale biome files reads as 'the fix did nothing'. A defName rename sweep (`RSW_X -> RM_X`) also rewrites history comments ('Moved here from ...'), which then lie: restore them by hand.
-- **`deploy_custom_mods.py` with no `--mod` can under-report and under-deploy while exiting 0.** A full-tree plan called FlowWorks 'in sync' while a `--mod` plan minutes later found 4 drifted files (a full 635-mod load then ran with every water terrain discarded); a full-sweep apply left `CreatureBehaviors.dll` drifted until `--mod CreatureBehaviors --apply` wrote it. Re-plan and apply per mod before trusting a full-tree result. Root cause not isolated.
-- **A cross-mod check of the game copy must not scope on the live `ModsConfig.xml`** (a 26-mod spike would pass a deploy that breaks the owner's full list). Scope = every deployed `mandrake.*` folder, minus orphan folders (no repo source) that are off `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`; 9 such orphans (GreentideRaidAnt, ManyWaters...) produced false refusals before being scoped out.
-- **Run ONE plan and ONE apply per batch** (`--mod A --mod B` in a single invocation) and trust its 'VERIFIED in sync' line. Do not add md5 / PNG-hash / XML census passes afterward: the plan already compares bytes, and each `/mnt/c` stat costs ~1.7 ms (a re-proof burned ~280 s). A full plan is ~118 s / 72k stats; every extra full pass costs that again.
-- **A checker comparing 'repo == deployed' must apply every transform the deploy tool applies on the way out**, or it reports drift right after a clean deploy: `deploy_custom_mods` ships `biomes_compose.stage_rewritten` copies (folded-id MayRequire/FindMod rewritten) for ordinary mods, and a raw-src compare read ~28 guard sites as drift. When a deploy gains a transform, grep its verifiers (preflight `c_deploy`, `check_load`) in the same commit.
-- **`deploy_custom_mods.py` exits 1 on a Python crash too.** A wrapper must count only rc 0 as deployed, or a crash records the candidate as deployed while the game runs the old build.
-- **Reading a whole large file through `/mnt/c` with `os.read` can raise ENOMEM in WSL**, even with free memory and 64 KiB chunks (it failed again at 477 MB free with 30 GB page cache). The read must wait and retry, as `deploy_custom_mods._read_retry` does; any hash or compare over the Steam Mods mount needs the same.
+
+More traps for this section: [references/traps.md](references/traps.md) § 2. Plan first. Always read the plan..
 
 ## 3. A `-` line means someone hand-edited the deployed copy
 
@@ -149,9 +142,8 @@ is the bar.
 
 ⚠️ **It reads `Patches/` only — never `Defs/`.** New content under `Defs/` is
 unvalidated, so parse every XML in the mod folder yourself, `About.xml` included.
-- **`validate_patch.py` run without `--defs` cannot see ANOTHER mod's texPath coverage.** It checks only the edited mod's own `Textures/`, so a 'missing texture' result is a false positive when an ArtOverride-style mod supplies that texPath and loads later. Always pass `--defs` with the installed mod dirs including the Mods folder (first-party `mandrake.*` lives there), or every cross-mod `ParentName` check against a first-party def reports a false failure.
-- **`validate_patch.py` after a def MOVE/RENAME, and `--live` on an unlisted mod, mislead.** The def dump predates the move, so new names (`RM_Ikee`) read as missing and old ones as fine; `--live` on a mod absent from the live list/dump reports 'does not exist in LIVE game' for every def: that is UNMEASURED, not failed. `--defs src` or `--all-versions` with the workshop path runs past 8 minutes. Recipe that took 2m17s for 8 patch files: a scratch defnames list = dump + every repo defName - every alias `<from>` name; a scratch ModsConfig with only Core+DLCs+harmony+the touched mods (or FULL.LATEST plus the missing mods in load order); a folder of symlinks to those repo mods; then `--mods-config <scratch> --defnames <list> --defs <RimWorld/Data> --defs <symlink folder>`. Remaining errors naming only donor/workshop defs outside that set are conditional no-ops, not defects.
-- **`validate_patch.py --defs` against only the game's Data/workshop/Mods folders sees the DEPLOYED copy of our mods.** A patch on defs new in the clone then shows '0 nodes ... probably CREATED by another mod's patch' as a WARN that reads advisory. Add the clone's own `src/<Group>` folders as extra `--defs` roots (stasis ladder patches went from 22 WARN to 0).
+
+More traps for this section: [references/traps.md](references/traps.md) § 4. Validate BEFORE it goes near the Mods folder — BOTH flags.
 
 ## 5. Files undeployed ON PURPOSE — `DEPLOY_HOLD.txt`
 
@@ -175,7 +167,8 @@ from `ModsConfig.xml` only proves a mod is INERT, never that it is INTENDED.
 🔑 **"Not in the Workshop folder" is not "not available."** Donor mod sources
 are vendored at `vendor/mod_sources/` — check there before concluding a donor
 mod's own XML/source is unreachable.
-- **`DEPLOY_HOLD.txt` keys are `<ModFolder>/<path in mod>` (`deploy_custom_mods.hold_for`), NOT src-relative.** A line starting `RimStarWars/...` or `RimMandrake/...` silently holds nothing. After adding a hold, run `deploy_custom_mods.py --mod <Mod>` and confirm the file shows `H`, not `+`.
+
+More traps for this section: [references/traps.md](references/traps.md) § 5. Files undeployed ON PURPOSE — `DEPLOY_HOLD.txt`.
 
 ## 6. Not every folder is deployable
 
@@ -202,7 +195,8 @@ directory is not identity of a mod.
 ├── About/About.xml          (packageId, name, supportedVersions, description)
 └── Patches/<Something>.xml  (or Defs/ for new content)
 ```
-- **Mod folder basenames must be unique across tiers.** `deploy_custom_mods.py` builds its mod map keyed on the bare folder name while iterating the tiers (`RimMandrake`, `RimStarWars`, `RimUtinni`, `SPLIT_Phase3`) in fixed order; two mods with the same folder name in different tiers silently overwrite each other (later tier wins, no warning) and the shadowed one, even the one carrying the compiled hook, never appears in the plan. The game uses the packageId, so give each mod a distinct folder name.
+
+More traps for this section: [references/traps.md](references/traps.md) § 6. Not every folder is deployable.
 
 ## 7. Assemblies deploy in the shutdown window, not now
 
@@ -277,7 +271,8 @@ and its own word, or it silently becomes a green tick.
 📌 Dump location, freshness and known holes are published by the seat that
 measures them: `observed/LIVE.md`. **Read it; do not
 re-derive it**, and do not copy its numbers into another doc where they will rot.
-- **A stale or mismatched DLL fails silently, so confirm the code is the code you think.** (1) A deployed DLL older than the fix just does not print its startup self-test line: 'no crash' reads old code as a pass, so confirm the line is present. (2) An interrupted or locked `--apply` can update the `.srchash` sidecar but not the binary; only the plan's drift check (`~` line) catches it, and the symptom is unrelated 'missing ThingDef' cross-ref errors. (3) A committed DLL can be stale vs its source ('type missing'): rebuild with `winbuild.py` before trusting a 'type missing' error. (4) A deployed DLL referencing a type that a stale sibling DLL lacks (composed biomes deployed without FlowWorks: FloodedCanyon's DLL named a FlowWorks type, `ReflectionTypeLoadException` at boot) kills the load: dry-run every tier mod for drift before launching. (5) A live session on a DLL older than the repo's gives MOD verdicts on code nobody can name: check assembly identity (type_probe sha vs repo DLL) BEFORE reading any setting, since a newer setting the old build lacks aborts the sweep with a misleading 'No public field'.
+
+More traps for this section: [references/traps.md](references/traps.md) § 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp.
 
 ## 8. After deploying
 
@@ -296,10 +291,8 @@ re-derive it**, and do not copy its numbers into another doc where they will rot
   overwritten within minutes by another clone deploying from an older sha. Before
   calling a fix live, re-run the deploy dry run from a clone AT the fix sha — a
   clean plan (no `~`/`-` lines for your files) is the proof; the earlier report is not.
-A "done" or "reverted" claim about a deploy is only as good as its last re-measure against the live Mods folder. A deployed folder can carry a different mod identity than `ModsConfig.xml` references (a full successor sat under the old packageId for two days, found only when a load check refused). Compare deployed packageId and files with ModsConfig's own references, not the item's prose.
-- **A build/move that says content 'moved' may have COPIED.** TerminalBiomes left 16 byte-identical twins in UtinniPatches and 8 pairs deployed as duplicate defNames. After any move, diff BOTH trees before believing it, and a duplicate-defName load error means look for the old copy.
-- **A new `MapComponent` never activates on a map generated and saved before its DLL was deployed:** `FinalizeInit()` runs once, at map creation, so an older save carries no instance whatever the tick count. Verify its live behaviour on a map generated AFTER the fix is deployed, never by reloading an older save.
-- **A Wave/list deploy must plan BOTH `deploy_custom_mods.py` (whole tree) AND `deploy_custom_mods.py --compose biomes`.** The whole-tree plan does not cover the composed `RimMandrake.Biomes` mod, so a deployed UtinniPatches BiomeDef naming new composed defs xref-failed and aborted a load. `--compose biomes` is all-or-nothing: it ships every committed change in every folded folder whatever seat made it (it once carried another seat's CreatureBehaviors, GelatinousSlime and Webwork DLLs). It has no seat markers, so read its DLL `~` lines before `--apply` and name the seats in the report; only uncommitted work is out of bounds.
+
+More traps for this section: [references/traps.md](references/traps.md) § 8. After deploying.
 
 ## 9. Validation plan — what you owe whoever holds the game
 

@@ -64,7 +64,8 @@ Add `--preview` first to print the per-chain plan and exit. `--rows` runs each c
 
 Read `references/run-checklists.md` before every full-list run. It holds the
 run-start and run-end checklists line by line.
-- **`modcheck run FlowWorks --item <ID>` REFUSES items whose rows live only in `northstar/gravel_live.py` or `shovels_live.py`** (no `validation.py` chain or `DRIVER_BAR_ROWS` entry names them). The targeted live run for those rows is the script itself with `--only <row ids>`; its result JSON is the evidence.
+
+More traps for this section: [references/traps.md](references/traps.md) § The anatomy of a proof.
 
 ## Row semantics: PASS, FAIL, UNMEASURED
 
@@ -102,10 +103,8 @@ A green one becomes a site note (`validation_core.SHARED`).
 ⛔ **Never hand-edit a result JSON** to flip a row, not even to test how modcheck reads
 a status. Fix the harness so it emits the right status and rerun. A result that has
 been edited is deleted and rerun before anything is recorded.
-- **A live re-assert row must FAIL, not UNMEASURED, on any last-reason that only startup writes** (e.g. 'surface placer registered'): seeing it last in a running game proves the FinalizeInit hook never ran. Only reasons a later proof could have written (`proof:`, settings changed) are UNMEASURED.
-- **A live proof's exit 1 is a FAIL only if the proof asked the game and got an answer.** Of 73 historical exit-1 runs scored as mod FAILs only 22 were real: 24 could not read (a traceback after the last verdict, read None, NOT REPRODUCED), 22 were harness faults (IndeterminateError, WSL bridge errors, ENOSPC) and 5 ran on the wrong tier or a stale deploy. Read the log tail before you score a strike (`relentless_live.could_not_ask`). A `k=None` beside real values on the same line is a partial read, not a blind one. But never erase an observed violation: a FAIL line or failed assert that reports None keeps its FAIL (the None may be the defect) and the worker classifies it.
-- **Put precondition checks (map, biome, save) FIRST in a live proof's first command and exit UNMEASURED, never FAIL.** A proof chained `repro && record` hid a wrong-map run as FAIL: the guard that rejects the wrong map lived in the second step, which never ran after the first exited 1.
-- **A live proof of an RM_ standalone behaviour that a RUT/Droidworks campaign patch swaps (FindMod-guarded) must read the RUNNING def state first** (`jawa/get_def` `extra.modExtensions`) and end on 'reload needed: ... lacks <pkg>' (exit 2, a restage) when the swap is live; otherwise a load batched with other items' mods FAILs a sound build. A live-menu/live-toggle proof only measures on a load its own staging ran, so the lane's try-the-running-game shortcuts must skip such items.
+
+More traps for this section: [references/traps.md](references/traps.md) § Row semantics: PASS, FAIL, UNMEASURED.
 
 ## Sites, clearing, calm
 
@@ -215,7 +214,8 @@ after load. Back up the keepers first and stat-diff the Saves folder after: exac
 the new files, 0 changed. Slow the carrier if the job would finish before your read.
 On the full list "Out of Combat ReBoost" walks a colonist at ~2 ticks/cell, and
 BadBack + Frail brings that to ~8. Recipe: `references/sites-and-timing.md`.
-- **The FlowWorks hose census `geometryHash` hashes `r.lay`, which (with `layKey`) is NOT scribed:** a census read right after a reload hashes a null lay until the hose re-lays. A save/load proof must compare it on a settled re-read (`V.settle_census`), never pre-tick; a Carrying hose moves between the before-read and the save by design (SL4 judges it).
+
+More traps for this section: [references/traps.md](references/traps.md) § Pre-port save fixtures.
 
 ## After the run: classify, then go hunting for the mod bug
 
@@ -264,9 +264,8 @@ How to tell the classes apart, the 2026-10-11 tally and the modcheck/walk traps:
 - **Owner rulings.** An owner ruling that *refuses* a behaviour invalidates every
   live site built before it. Re-check scene geometry against the ruling. The offline
   model stays green through that change, because it never modelled the refusal.
-- **A verify run must first prove the tree it imports contains the sha under test** (`git merge-base --is-ancestor <sha> HEAD` in that clone, recorded in the result). A run failed only because the clone's tree at call time predated the fix by 11 s. `WSLENV NAME/u` does NOT export WSL->Windows (`/u` is Win32->WSL only), so a `/u` entry is not a leak route.
-- **Stage-by-stage proof hides the next failure:** each trial relaunch died at a later stage. Prove every arm past several tasks before calling a launch running.
-- **Small mod lists test first; the whole huge list is one final verification pass** (owner: "small mod lists should always be the way to test until a final verification pass on the whole huge mod list"). A live proof declares the mods it needs (`live_proofs/<ID>.txt` line `live-mods: ModA, ModB`; proof side `northstar_driver` `cli.py needs-mods --mod X` reads the RUNNING load, exit 0 held / 2 not held) and passes on ANY game that holds them. A whole-list comparison is a separate clause at level GREEN-FULL: `relentless_live` gates it on the full tier (fewer than half of FULL.LATEST running -> UNMEASURED 'final verification waits for the full list', no proof, no ledger note, no restage) and `relentless_game` parks the item in phase `final`; the oldest final stages ONE full-list load for the batch (`final_batch_min` 4 or `final_wait_s` 8h). A full-list check run on another tier exits 2 (UNMEASURED), never 1 (a 23-mod game FAILed `GRAFFITI_NORTHSTAR_GREEN_FULL_1` A1). Never write a full-list equality as an L1/L2 clause.
+
+More traps for this section: [references/traps.md](references/traps.md) § Before you trust any run.
 
 ## Flyers
 
@@ -287,7 +286,8 @@ and give a named UNMEASURED reason. Read flyers as state only. Declare the small
 tier. `hot_reload_defs` is not a speed path. `relentless_live.py` refuses proof lines
 that break these rules. The full rules, their reasons, and PLANNED tools with today's
 fallback are in `references/lightspeed-authoring.md`.
-- **Most owed live criteria cannot be generated from the suite.** Only 25 of 882 owed Relentless live criteria name a suite row id (2.8%), and 222 are cut at 160 chars on the ledger, where `owed()` refuses every proof for them. Re-recording criteria whole (tool `src/RimMandrake/rimflow/lightspeed_wire.py`) unlocks more lines than any matcher can.
+
+More traps for this section: [references/traps.md](references/traps.md) § Write it so Lightspeed can run it.
 
 ## Writing the plan before the run
 

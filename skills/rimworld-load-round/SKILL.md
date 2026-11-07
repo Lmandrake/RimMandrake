@@ -110,10 +110,10 @@ filing anything this sweep surfaces.
 
 ---
 - **The minimal list is a file, not a number, and it grows; the owner's full list drifts too.** `modlist_swap.MINIMAL` is the path `infrastructure/state/modlists/ModsConfig.MINIMAL.xml`: count its `activeMods` by parsing it, never from this page (13 when the 22 s load above was measured, 27 on 2026-11-07; `modset_builder` tiers add 1-18 over it and `acc_2026*` tiers 31-46). `mandrake.inhabited` loads last; Ideology and `brrainz.rimbridgeserver` are in it, so the beggars Harmony patch has a real target and the bridge works. Never quote a remembered total of the full list (578 drifting to ~593): print it from `activeMods` in `ModsConfig.xml` at that moment. A save, quit, reload soak costs TWO loads: ~45 s on minimal against ~30 min on the full list, which is the whole reason the regime exists. It cannot reproduce the 21,872-tile geometry (`ferny.Worldbuilder` is absent, so a quicktest world comes out 119,904 tiles); anything keyed to real tile IDs needs the full list. Disarm the def dump before swapping to minimal: a dump captured on a debug list reports every real mod's defs as "does not exist in the live game". `modlist_swap.py` is plan-only by default and `--apply` archives the live file first.
-* **A ~20-mod tier cannot load the ~614-mod canonical save cleanly.** It logs thousands of reference errors, `Verse.Log` hits 'Reached max messages limit' and the journal tap loses entries, so a clean donor-ref list from the log is blindness: grade donor refs by the offline save grep. `rimworld/load_game` on a short tier returns `success:false code save.missing_mods` and opens NO dialog; pass `ignoreModCompatibility:true` and always read the reply.
-* **A tier must carry every framework the saved or ported content names, or loads fail quietly.** Vanilla Expanded Framework was missing from `biomes_sprint` while Baroque Biomes' donor ports name VEF classes (undeclared in `About.xml`): defs were dropped and site saves made with VEF died in `Map.FinalizeLoading`, yet a site-save load read 'verified'. Likewise CrackedLands `defs_resolve` fails on a tier without VEF (`RM_CrackedLands_DonorPorts.xml` uses `VEF.Plants.DualCropExtension`; the loader throws and drops `RM_GargantuanLithops`): not a crew bug, run `defs_resolve` on a tier carrying VEF. `load_site` now scans the journal for load-breaking errors. A saved site is only as good as the list it was saved on: rebuild (bump `_vN`) rather than load across a donor retirement.
-- **The owner's full-list load time is disputed: ~15 min (TestPilot brief) vs ~25 min (above).** Any design that prices full-list loads must range both (testpilot_sim `full_load_min` 15-30) until one is re-measured from a Player.log timestamp pair.
-* **`modlist_swap.MINIMAL` is a PATH, not a list:** `mods(MINIMAL)` gives 26 package ids (measured 2026-10-30), not the 13 (or 14) cited above. `modset_builder` tiers add 1-18 extra mods over it; `acc_2026*` tiers add 31-46. Measure the size by parsing, never quote it.
+
+More traps for this section: [references/traps.md](references/traps.md) § ⚠️ What the minimal list CANNOT do.
+
+More traps for this section: [references/traps.md](references/traps.md) § 0. 🟢 FIRST: does this load have to be expensive at all?.
 
 ## 1. Never "restart and see"
 
@@ -130,7 +130,8 @@ then a genuinely FRESH restart, caused deliberately, reproduced the identical
 stall a 4th time (same checkpoint, same CPU-climbing-but-stuck signature).
 Intermittent bugs need a restart YOU cause, not a state you happened to inherit
 already working.
-- **Before killing a live game, spend a minute folding in other game-up work.** Check the queue for anything needing a running game or the bridge (`rimflow next` and its also-waiting list), any red or unresolved finding from this session's `harvest_log.py` run, and anything flagged earlier as still owed for a live check. A restart costs about 25 minutes on the full list, so it should answer everything that is waiting on a live game.
+
+More traps for this section: [references/traps.md](references/traps.md) § 1. Never "restart and see".
 
 ## 2. Write the decision strings BEFORE launching
 
@@ -187,10 +188,8 @@ an unsubscribe done in Steam or RimSort is invisible to it and the exit writes
 nothing. **So check the entry, the folder, and the mtime:**
 
 ```bash
-- **`ModsConfig.xml` is the list for the NEXT launch, never what the running process holds.** A running game keeps what it loaded at startup and the file can be rewritten underneath it (another seat swaps to a minimal list, then restores the full one). To know what is actually loaded call `jawa/mod_inventory`, or grep `Player.log` for `[JawaBench] context: modSet N/<hash>`. Before filing a defect from an instrument, verify the environment the measurement ran in, not just the measurement: a validated instrument on a stale input gives a confident wrong answer (a 0/16 Harmony-attach sweep on a game that had loaded 22 mods and none of the target).
-- **A load-order or ModsConfig fix must touch BOTH the live `ModsConfig.xml` and the committed `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` in the same commit, or say why not.** A fix only in the live file is undone by the next `modlist_swap.py --restore` (it restores FROM FULL.LATEST), which re-broke a ParentName fix and hung the game with the owner watching.
-- **`modset_builder.py --apply` overwrites `deployed/config/ModsConfig.before-tier-*.xml` on every run**, so repeated tier swaps destroy the first backup: copy the original aside before the first swap. It also refuses every `--apply` while a stale `deployed/config/ModsConfig.swap-active.json` from an old swap is present: after checking the live list is the owner's (parsed `activeMods` == FULL.LATEST) move that record aside, then `--apply`; `--restore` deletes `swap-active.json` when done.
-- **A stranded `modlist_swap` 'before' file blocks `./publish`.** If `deployed/config/ModsConfig.before-tier-<tier>.xml` is left dirty in a clone while another seat committed a different version, `./publish` (reset --keep) refuses. `deployed/config/ModsConfig.swap-active.json` records the md5 of the dirty bytes, so do not just overwrite: copy aside, restore HEAD bytes, publish, put the bytes back.
+
+More traps for this section: [references/traps.md](references/traps.md) § 4. Mod-list state on disk: what is authoritative, when.
 # activeMods ONLY. `grep -c "<li>"` counts LINES and returns 6, not a count of mods;
 # `grep -o "<li>" | wc -l` returns activeMods + the 5 knownExpansions. Parse it.
 # Never quote a remembered total — print it, and quote the command with it.
@@ -342,8 +341,8 @@ don't assume it (2026-09-21).
 **Whoever needs the restart calls it, harvests the log, and writes up for
 everyone** — not just its own concerns. Findings go to the per-seat queues;
 anything surprising to the matching `traps-*.md`.
-- **`launch_ready` rotates `Player.log` away BEFORE launch**, so the tps 'Player-prev archive' row cannot be observed on a launch it started (tag dedupe = silent no row). To prove the archive step, launch without launch_ready's rotation.
-- **A candidate named on an item is a hypothesis about each row it covers.** The log-spam item named Intimacy and was half true (Mood Chain Reaction wrote the largest rises alone; one rise was a save load). `Player.log` has no timestamps, but a rise can be pinned to lines by walking messages back from the 'Reached max messages limit' line, which sits at count 10000 (`log_rise_census.py`). `logErr` reads an evicting queue, so during a burst it undercounts: read the log lines too.
+
+More traps for this section: [references/traps.md](references/traps.md) § 8. After the load: harvest the WHOLE log.
 
 ## 9. Before you launch
 
@@ -362,7 +361,8 @@ found 6 of 65 differed). Worth running before every cold load.
 corrupted mods errors"`.** `"Caught exception while loading play data"` is also
 a dead load — a watcher grepping just the first string reports a genuinely
 aborted load as "still loading" (2026-09-08).
-- **Before handing the owner a joint live test, put the game on the item's tier first** (`modset_builder --tier <mod>_solo`, e.g. `weepingstones_solo`) **and have a map up.** Naming a creature on whatever list happens to be loaded wastes the sitting: "you didn't prep me in the right game" (owner).
+
+More traps for this section: [references/traps.md](references/traps.md) § 9. Before you launch.
 
 ## 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading
 
@@ -402,7 +402,9 @@ producing exactly this class of intermittent assembly-version collision.
 def/content change) via `steam.exe -applaunch 294100`, never the bare
 `RimWorldWin64.exe` path**, even though the latter looks like the more direct
 and reliable route.
-- **Steam can ignore or revive launches.** A `steam.exe -applaunch 294100` issued seconds after `Stop-Process` on RimWorld can be silently ignored (no process after 4 min): poll for `RimWorldWin64` within ~60 s and re-issue once. `steam://rungameid` starts a closed Steam and then the game within 9 s, so 'Steam closed' is not a no-launch condition. RimBridge cannot be reached from WSL python: run `python.exe -B` with a `wslpath -w` script.
+
+More traps for this section: [references/traps.md](references/traps.md) § 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading.
 
 ## An idle main menu is not a load hang
-- **An idle main menu looks exactly like a cold-load stall.** A frozen `Player.log` at the last mod's line, steady CPU, a bridge answering `no_game` / `programState=Entry`, and a live main thread are all normal at the menu with no save loaded; `Playing` only comes from loading one. Tell them apart: `rimworld/get_ui_state` returning in ~0 s means the main thread is alive (check `programState`, `inEntryScene`, `hasCurrentGame`); `jawa/load_stall_probe` runs off-thread and is safe during a real hang. Do not kill the process on an idle menu.
+
+More traps for this section: [references/traps.md](references/traps.md) § An idle main menu is not a load hang.

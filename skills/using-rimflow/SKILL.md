@@ -109,7 +109,6 @@ session that closed it — a doc can go stale within hours, not just weeks.
 - **Any seat closes dead items.** (owner) "when any queue item is found to have been completed, totally invalidated or superceded, or otherwise rendered into something no longer worthy of being considered for activity, ANY SEAT may denote this in its log, record which seat ruled this, and CLOSE it completely." `close`/`drop`/`supersede` are `who: "any"`; pass `--reason` with the proof and no owner-quote flag. Done means proven; a subagent's verdict is not the proof.
 
 More traps for this section: [references/traps.md](references/traps.md) § Item hygiene.
-- **`rimflow block` refuses kind other**, written or implied (no `--on` and no `--kind`): name what lifts it with `--on`, `--kind time --lift-at`, `--kind owner`, or `--kind judge|live|external`. An item parked by an owner's card is `--kind owner`.
 
 ## `close` is earned (RO3, ruling D1(b), 2026-11-01)
 
@@ -257,7 +256,6 @@ is called after every folded event, so it tells you which event moved a field
 without re-implementing the verbs.
 
 More traps for this section: [references/traps.md](references/traps.md) § Reading projections.
-- **`rimflow model.read()` with no path reads the ledger under `$CLAUDE_PROJECT_DIR` (`model.ROOT`), not the tree the calling script lives in.** A proof that measures a ledger at a sha must call `model.read_clone` on that tree's frozen ledger head, or it measures whichever clone the session names (a blind check counted 11 ghosts the tree had released). The Relentless checker's `real.patch` also excludes ledger shards (POOL_NOISE), so a ledger-only repair reads to it as no ledger change.
 
 ## Bridge lock
 
