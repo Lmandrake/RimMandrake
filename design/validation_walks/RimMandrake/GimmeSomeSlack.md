@@ -7,7 +7,9 @@ status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_condu
 
 ## must be true
 - M1. The cord graph of the current map exists (`RM_MapComponent_CordGraph`), its node census matches the conduit grid (machines, junctions, terminals at every conduit end, a stub where conduit goes into a wall, a wall terminal where it ends inside one), cords are printed into the section meshes, and `PowerConduit`/`WaterproofConduit` render with the fully transparent texture. (validation.py: M1_conduit_transparent, M1_cords_exist, M1_node_census, M1c_end_pieces)
+- M1e. A machine wired to conduit that runs inside a wall or rock draws one cord, out of the face nearest it and across the floor; on hidden conduit it draws none (M3), and a machine hard against the face has no floor to cross. (live rows M1e_machine_on_inwall_run_draws_a_cord, M1f_machine_on_hidden_conduit_draws_none; offline CordShapeChecks.InWallHookups)
 - M2. No cord edge joins two nodes in different `PowerNet`s (on the built scene AND after the M8 break, where a cord across the gap would be one), and no laid cord vertex lies in an unwalkable cell. (M2_cords_only_within_net, M2b_no_vertex_unwalkable; offline O3 asserts both on 7 oracle scenes)
+- M2c. No laid cord folds back on itself into a spike or a sharp elbow; a heap's tight coils are not folds. (live M2c_no_folded_cords, probe `kinks`; offline CordShapeChecks)
 - M3. Vanilla `HiddenConduit` stays invisible and is never drawn as a cord: it is excluded from the target defs and counts as buried conduit (connectivity kept, nothing drawn). (offline: ConduitVisuals target list; live census `texPaths` lists only PowerConduit and WaterproofConduit)
 - M5. Placing conduit far from a cord does not change that cord's geometry hash, and the rebuild re-plans only the touched edge. (M5_local_invalidation)
 - M6. With the mod on, the power overlay still prints its connector lines (`SectionLayer_ThingsPowerGrid` sub-mesh for `MatConnectorLine` non-empty) while the thin hookup wire is suppressed for our conduit. (M6_overlay_lines_intact)
@@ -33,6 +35,9 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
 
 ## anti-guessing notes
+
+- RULED OUT (2026-11-06, Ralph GSS pass 2): "S8 going red means a mast stamped a style by accident". Its mast auto-linked to a styled mast, and GSS_STYLED_WINNER_FIX deliberately stores the look on a member joining a run that stores one. HARNESS. S8 now stands the mast alone and S8b pins the join.
+- RULED OUT (2026-11-06, Ralph GSS pass 2): "a battery-to-machine cord in another look is a style bug". A cord with no conduit in its run is legacy and draws the Mod Settings default; the staged default was Modern. M13's rule, working.
 
 - RULED OUT (2026-11-03, test pilot GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS): "the snapshot-pool fix still breaks the 20 ms
   slice bar live". Both A1 FAILs (07:42, 08:27) ran on a 28-mod game with no GimmeSomeSlack loaded and the pre-fix DLL

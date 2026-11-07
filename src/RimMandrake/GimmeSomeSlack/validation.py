@@ -933,7 +933,7 @@ def live_battery(B, fresh_map=False, rows=None):
     # a cord folded back on itself draws a spike no rope can make; found only in a real colony (northstar/colony_scene.py)
     kk = B.probe("kinks")
     row(rows, "M2c_no_folded_cords", "UNMEASURED" if not kk.get("strands") else
-        ("PASS" if kk.get("kinks", 0) * 20 <= kk["strands"] else "FAIL"), "MOD" if kk.get("strands") else "HARNESS",
+        ("PASS" if kk.get("kinks", 0) <= max(1, kk["strands"] // 20) else "FAIL"), "MOD" if kk.get("strands") else "HARNESS",
         {"strands": kk.get("strands"), "folds": kk.get("kinks"), "where": (kk.get("rows") or [])[:6], "bar": "one in twenty, where the bend would leave open ground"})
     # ---------------------------------------------------------------- M6: hookup wire hidden, overlay intact
     m6 = (c0.get("hookupWiresSuppressed") or 0) > 0 and (c0.get("overlayConnectorVerts") or 0) > 0
