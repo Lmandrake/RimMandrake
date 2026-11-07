@@ -1,0 +1,48 @@
+[
+ {
+  "id": "arteval_RSW_Nerf__Nerf_f_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nerf__Nerf_f",
+  "prompt": "A creature sprite for RimWorld: the nerf, an alien herd livestock animal raised for milk, meat and hide. Build the body from this description alone. Long, low, barrel-shaped heavy body with a soft rounded back and only a very slight, gentle rise at the shoulders, thick short hoofed legs, and a loose-skinned sagging chest and neck. The head is a broad, flat, blunt wedge, wider than it is deep, carried low and forward, and it stands out in silhouette as distinct from the body. It ends in a very wide, flat, squared muzzle pad as broad as the skull, with two large nostrils set far apart on its flat, nearly vertical front and a heavy, loose, drooping upper lip. The face is short and blunt. The eyes are small and set wide apart, high on the sides of the skull, beneath a heavy sloped brow ridge. The skin around the muzzle and face is bare, wrinkled and grey-brown, with short sparse hair. Four large curving horns, in two pairs rooted well apart on the skull: the upper pair rises from the crown, and the lower pair grows from the cheek ridges, with a clear band of bare skull between them. Each pair sweeps outward and forward at its own angle, so all four horns read as separate shapes at normal zoom, and together they are the dominant feature of the head. Every horn is dark grey, deep charcoal to slate grey, on every facing, with restrained lighter grey highlights tracing the curvature and the ridged ribbing, and shaded dark bases where the horns meet the skull. The coat is a coarse, patchy, shaggy blanket of hair in mottled warm tan and dull brown with paler flanks, hanging loose and ragged, with long drooping fringe along the belly and flanks and short sparse hair on the shoulders and legs. The tail is a long, bare, hairless rope-like cord ending in a small tuft. Front view, eyes toward the viewer: the flat wide muzzle pad, widely spaced nostrils, wide-set eyes and dark grey horns on both sides of the skull. Side view: the full profile showing the long low body, the flat blunt wedge-shaped head, four dark grey horns in two separated pairs, and the rope tail. Rear view, seen from behind: back, haunches and tail, eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Nerf/Nerf_m"
+ },
+ {
+  "id": "arteval_RSW_Runyip__Runyip_j_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Runyip__Runyip_j",
+  "prompt": "A creature sprite for RimWorld: the runyip. A squat forest herbivore from Yavin 4 with branching antlers and a flexible snout. Dark brown stripes cross its pale coat, and its front toes bear claws. Visible features it must show: a squat, low-slung, broad barrel-bodied build on short legs. The body is one fixed heavy volume in every view: a wide, deep barrel, slightly oval, with the same width from the front, the side and the rear. The shoulders carry a rounded hump that is the highest point of the back, and the topline slopes down from the shoulder hump to a lower, rounded rump with full, heavy haunches. The head hangs low in front of the hump on a short neck, so the downturned snout tip nearly reaches the ground. The snout is a shorter, thicker tapir-like proboscis, a broad flexible downturned pig/tapir snout in a pale muzzle with natural skin folds and a clearly defined, heavy thick lower lip beneath it. Branching antler rack of one fixed size and shape, with thick, sturdy branches, the same span, height, branch length and branch thickness in every view. Clawed toes on the front feet instead of hooves. Pale coat crossed by bold dark brown stripes, the same stripe pattern in every view. Side view shows the profile with the shoulder hump as the highest point of the back, the rump lower, and the low-hung head. Front view shows the face with the broad pale snout and heavy lower lip, eyes toward the viewer, with the full thick-branched antler rack and a wide, slightly oval chest as wide as the rear view's haunches. Rear view, seen from behind, shows the full, heavy, barrel-shaped rump and rounded haunches as wide as the front view's chest, the shoulder hump rising above them, the tail toward the viewer, the eyes hidden, and the thick antler rack at the same width, height and branch thickness as in the front view. One consistent heavy body across all views: the same bulk, the same width and the same antlers. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1036",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Runyip/Runyip"
+ }
+]
