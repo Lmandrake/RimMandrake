@@ -233,7 +233,7 @@ Other readers: a Neurotic before a legendary tribute gets Mess -2 and fine art +
 | Temperament clamps at 1.5, `reach` at 1.5, so one thought is at most ×2.25, and only a Volatile victim of an inspired master gets there (-18) | `Give` | Rows stacking without limit |
 | Two separate mood budgets. Negative Graffiti memories stay within -8, or -12 as a named mockery's subject, each × the pawn's `bad`. Positive stay within +8 × `good`. A new thought shrinks to fit. Positives never pay for negatives, so an expiring fine art cannot uncover a breach, and summing single offsets only overstates vanilla's stacked total | `Give` | A wall of many marks |
 | Opinion: all negative Graffiti opinion from one pawn of one other is capped at -30, or -45 for the named victim. `WhatTheWallSays` becomes one stack per pair, his pick. It targets the subject, and two legendary ones would cross into enemy from neutral | `Give`, ThoughtDefs | -73 from `PaintedMe` alone, more with `reach`; gossip making enemies |
-| His Rereads pick: first read gives the full effect, later reads no opinion or grudge, and only the subject keeps a small reminder. **Not yet built:** `ReadAgainTicks` is still 1.5 days at head. Every new thought obeys it, with saved one-time reads | `Filth_Mark`, `GraffitiSocial` | Standing marks as a tax |
+| His Rereads ruling (card 2026-11-07, replaces his earlier pick): "Seeing the same mark repeatedly SHOULD repeatedly affect you, but no more than once per day." `ReadAgainTicks` is still 1.5 days at head, so it becomes one day; the budgets above still cap the sum | `Filth_Mark`, `GraffitiSocial` | Standing marks as a tax |
 | `paint` clamps at 2 and stays under existing room limits | Joy and idle givers | Abrasive colony covering every wall |
 | Fights one per 15 days; Graffiti breaks one per 15 days; both per game | section 7, 8 | Fight and break storms |
 
@@ -264,6 +264,8 @@ Worst honest case: 20 pawns all read one master's slander. The subject sits at -
 Only `numb`, `Give`, the kernel functions and the break are code. A new trait in future is one XML row.
 
 ## 12. LATER
+
+**Revisit whenever personalities change (owner, card 2026-11-07):** "we will likely add additional personality traits later for the different races, so we should revisit these any time we mess with personalities." Item: GRAFFITI_TEMPER_RETHINK_RACES_BRING_TRAITS.
 
 | Row | Idea | Why not now |
 |---|---|---|
