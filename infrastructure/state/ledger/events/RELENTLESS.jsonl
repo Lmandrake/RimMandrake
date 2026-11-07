@@ -1443,3 +1443,7 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:19:19Z","tsn":1794017959284056694}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live canary: read-only harness checks","override":"took the driver lock from a dead or forced holder","ts":"2026-11-07T02:20:09Z","tsn":1794018009611115241}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:20:24Z","tsn":1794018024732459718}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A1 (L1), read-only proof","ts":"2026-11-07T02:21:21Z","tsn":1794018081272447780}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:21:35Z","tsn":1794018095247977115}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: PLANET_ATMOSPHERE_CLOUD_COST_1 A3 (L1), read-only proof","ts":"2026-11-07T02:21:49Z","tsn":1794018109823282995}
+{"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T02:22:00Z","tsn":1794018120148416871}
