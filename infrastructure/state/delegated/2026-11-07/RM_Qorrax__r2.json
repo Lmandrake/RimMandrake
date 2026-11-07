@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 261.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 1.166618
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 47.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Qorrax",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['SCALE_WRONG', 'LEGIB_32']; unreadable ['SCALE']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5fb7d9500afc4e0b3f4298aad2d54b7c87c1b2e2f1e3d0f00dcffb19f84d4173",
+  "east.png": "95debeb4eeaa674bd8662e60467dce69c68d53c00b9f62101ef3c797d8e890e6",
+  "north.png": "09c876edc9fbca89d7e61df852d788a435585535494e6dc996649bac1019adce",
+  "scale.png": "470137c15b10811828ab5a91ece9e94822c425f0a608e02291e8659a8b5e4d37",
+  "facings.png": "21e64292c634aa1b5512cb0c653b1c9109689c3459960d256c0ce2ee0e3130ba"
+ }
+}
