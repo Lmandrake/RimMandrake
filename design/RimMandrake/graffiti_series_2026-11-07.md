@@ -295,6 +295,18 @@ The whole mod moves. RimMandrake keeps the framework with no gods in it: the Dev
 
 **The hand itself:** short reach, low on the wall (a one-metre painter should leave a one-metre-high mark; a real game fact worth testing), scavenged pigments, grease, rust, tar, reused stencils from scrap, repairs drawn over older marks.
 
+### Who paints what among the other factions
+
+Mandrake, 2026-11-07: "For the Utinni layer, you can actually derive which factions would paint particular canon icons based on their write-up. Some sanity checks: moisture farmers would favor starbirds and the Hutts and Bounty Hunters would likely not. But in general, in Utinni, the other factions would likely just paint their faction's symbols on things as well as general Aurebesh scrawl and defacing artwork especially during raids."
+
+So, for each faction on the Utinni slate:
+
+- **Its own symbol, by default.** Most factions paint their own faction symbol on things, plus general Aurebesh scrawl and defacing art. Raids are when this happens most. `RaidExitTagger` and the faction emblem drawn at run time (`targetFaction.def.FactionIcon`) are the existing pieces to start from.
+- **Canon icons, derived from its write-up.** Read each faction's description and decide which canon icons it would paint or refuse, then write that into the data for each faction, with the line of the write-up that justifies it. Do not guess in code. His sanity checks must hold: moisture farmers favour starbirds; Hutts and bounty hunters mostly don't.
+- **The Empire never paints a starbird**, as in loop 2.
+
+Proposed bar: `every_faction_paints_like_itself`: a raid leaves that faction's symbol and scrawl, and a table of faction against canon icon cites each faction's write-up and passes his sanity checks.
+
 ### Tier and naming
 
 RimUtinni. The test in `design/NAMING_SCHEME_PLAN.md` §1 ("Does it name Ash'karr, the Kolyska, the Nine, this clan, or this story?") settles it, as do his words.
