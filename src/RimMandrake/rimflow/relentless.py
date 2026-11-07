@@ -55,6 +55,7 @@ import relentless_game  # noqa: E402
 import relentless_broker  # noqa: E402
 import relentless_expedite  # noqa: E402
 import relentless_repair_slot  # noqa: E402
+import relentless_bindjudge  # noqa: E402
 import relentless_binding  # noqa: E402
 import relentless_block  # noqa: E402
 import relentless_boxrun  # noqa: E402
@@ -1161,10 +1162,12 @@ def rebind_withdraw(store, item, gen, why, now=None):
     store.journal({"at": iso(now), "do": "rebind_withdrawn", "item": item, "gen": gen})
 
 
-def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd=None):
+def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd=None, give_back=False):
     """The independent Setter/Judge's ruling on a pending binding repair. Never a worker session (RELENTLESS_GEN set) and
     never the proposer. approve: the binding moves (binding_version + 1), the obligation does not; reject: the proposal
-    is dropped; ambiguous: it stays pending and unapplied, because ambiguity blocks. -> one line for the caller."""
+    is dropped; ambiguous: it stays pending and unapplied, because ambiguity blocks. `give_back` (the launched judge,
+    relentless_bindjudge): an ambiguous proposal goes back to the worker with the reason instead, unapplied and not barred,
+    since no second ruling would come. A ruling sets binding_ruled: the tick lifts the judge block. -> one line for the caller."""
     r = rules() if r is None else r
     env = os.environ if env is None else env
     now = time.time() if now is None else now
@@ -1227,14 +1230,16 @@ def bind_judge(store, item, judge, verdict, why, env=None, now=None, r=None, cwd
             st.pop("binding_proposal", None)
         else:
             p["ambiguous"] = {"judge": judge, "why": why[:600], "at": iso(now)}
+            if give_back:
+                st.pop("binding_proposal", None)
+                rec["end"] = "rebind_ambiguous_returned"
+        if "binding_proposal" not in st:
+            st["binding_ruled"] = {"verdict": verdict, "at": iso(now)}
         store.attempt(item, rec)
-        store.learn(item, "- %s binding repair %s by %s: %s" % (iso(now), verdict.upper(), judge, why[:300]))
+        store.learn(item, "- %s binding repair %s by %s: %s" % (iso(now), verdict.upper(), judge, why[:1200]))
         store.save(st)
-    store.journal({"at": iso(now), "do": "rebind_" + verdict, "item": item, "judge": judge})
-    tail = ""
-    if verdict == "approve" and st["status"] == "blocked":
-        tail = "; the item waits on a ledger block: `rimflow unblock %s` lets it back in line" % item
-    return "%s: binding repair %s%s" % (item, verdict.upper(), tail)
+    store.journal({"at": iso(now), "do": rec["end"], "item": item, "judge": judge})
+    return "%s: binding repair %s" % (item, verdict.upper())
 
 
 def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0, on=None, blocker=None):
@@ -4049,9 +4054,12 @@ class Effects(relentless_game.GameFx):
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_unblock(self, item, reason):
-        r = self.rimflow("unblock", item, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: reach repair probe passed")
+        r = self.rimflow("unblock", item, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: " + reason[:200])
         self._ledger = None
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
+    def bindjudge_kick(self, store, item, pid, tries):
+        return relentless_bindjudge.kick(store, item, pid, tries)
 
     def run_offbox(self, name, adapter, timeout):
         """One supervisor offbox adapter, run outside the Marker's wall (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE): the reading of
@@ -7853,6 +7861,11 @@ def _tick(store, fx, r, now, prof):
         books_alarm(store, fx, start_sync(fx), now, acts, r)     # `synced` above: pokes before this are read by this tick
         hand_back(store, fx, r, now, acts)       # before any check or launch of this tick: a hand check is never run
         retire(store, fx, store.states(), now, acts, r)
+        try:        # before the block sweep: a repair ruled since the last tick is back in line on this one
+            relentless_bindjudge.sweep(store, fx, now, acts, iso, paused=bool(getattr(fx, "paused", bool)() or owner_pause(fx, store.states())))
+        except Exception as e:  # noqa: BLE001  a judge launch never costs the tick its workers
+            acts.append({"do": "error", "item": None, "why": "bindjudge %s: %s" % (type(e).__name__, e)})
+            store.journal({"at": iso(now), "do": "alarm", "kind": "bindjudge_raised", "why": str(e)[:300]})
         relentless_block.sweep(store, fx, now, acts, iso)
         relentless_cause.sweep(store, fx, now, acts, iso)
         serve_poke()    # a poke waiting at tick start enrols now: live 2026-11-06 the prelude's end came 66 s later

@@ -1,0 +1,1 @@
+A project agent (--agent rm-judge, rm-builder) resolves only from a cwd inside a repo tree holding .claude/agents: from an empty dir the CLI prints 'not found' and exits 1. A faked claude in a selftest never sees it; run one real call before landing a new agent launch (RELENTLESS_WIRE_BINDING_JUDGE_NOBODY_RUNS).
