@@ -19,9 +19,8 @@ namespace RimMandrake.Graffiti
     //      which simply hand back no job when off — the ThinkTree falls
     //      through to whatever else a pawn would otherwise do, same as any
     //      vanilla JobGiver returning null).
-    //   2. Paint interval — how often (in ticks) a painting pawn leaves a
-    //      fresh mark while working (JobDriver_PaintGraffiti's hardcoded
-    //      250-tick PaintIntervalTicks).
+    //   2. Painting pace — scales how long each mark takes to paint
+    //      (RM_GraffitiKernel.PaintTicks; 250 is the base rate).
     //   3. Viewer reaction — the mood/thought effect from noticing a mark
     //      nearby (ThoughtWorker_ViewedGraffitiMark).
     //   4. Breach-bias — raiders funneling their breach target toward a
@@ -70,9 +69,9 @@ namespace RimMandrake.Graffiti
                 list.CheckboxLabeled("Graffiti painting", ref paintingEnabled,
                     "Pawns can paint graffiti marks on walls as a joy activity, and during "
                   + "the painting-spree mental break. Off: no pawn ever paints a mark.");
-                list.Label((TaggedString)("Paint interval: every " + paintIntervalTicks + " ticks while painting"), -1f,
-                    "How often a painting pawn leaves a fresh mark while it works (60 = about 1 s, 1000 = about 17 s "
-                  + "at normal speed). Lower: more marks per painting session. Shipped: 250.");
+                list.Label((TaggedString)("Painting pace: " + paintIntervalTicks), -1f,
+                    "How long a mark takes to paint. At the shipped 250 a tag takes about 8 seconds at normal speed and "
+                  + "a wall piece about 47; 60 is four times faster, 1000 four times slower. Lower: more marks per session.");
                 paintIntervalTicks = (int)list.Slider(paintIntervalTicks, 60f, 1000f);
                 list.GapLine();
             }

@@ -8,7 +8,7 @@ Never deployed (deploy_custom_mods.py excludes `.py` wholesale). Run with:
 Grounded in the mod's source: `RM_GraffitiMod.cs` for the SIX settings toggles
 (`paintingEnabled`, `paintIntervalTicks`, `viewerReactionEnabled`, `breachBiasEnabled`,
 `raidExitTaggingEnabled`, `autoCleanProtectionEnabled`); `JobDriver_PaintGraffiti.cs`
-(goto, then a periodic `Filth_Mark.MakeMark` toil gated on `paintIntervalTicks`, picking
+(goto, then one finished `Filth_Mark.MakeMark` per sitting of work paced by `paintIntervalTicks`, picking
 through `GraffitiPool.PickForSpree`); `JoyGiver_PaintGraffiti.cs` /
 `JobGiver_GraffitiPaintingSpree.cs` (the two places `paintingEnabled` is checked);
 `Defs/ThinkTreeDefs_Graffiti.xml` (the `RM_GraffitiPaintingSpreeState` hook).
@@ -255,14 +255,14 @@ def forced_paint_job(t):
         r = t.bridge_call("jawa/ordered_job", pawnId=walker,
                           jobDef="RM_PaintGraffitiJob",
                           targetAX=mark_x, targetAZ=mark_z,
-                          waitTicks=600, timeoutSeconds=25)
+                          waitTicks=3200, timeoutSeconds=25)
         if t._guard():
             if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 raise ExpectationFailed(
                     "jawa/ordered_job RM_PaintGraffitiJob was not accepted and running: %r" % r)
             # the paused site makes the tool's own waitTicks a no-op (ticksElapsed 0, MEASURED live
             # 2026-10-01), so advance the clock ourselves
-            t.wait_ticks(600)
+            t.wait_ticks(3200)      # one finished mark: a piece, the slowest form, takes 2800
             after = len(_marks_in(t, rect))
             if after <= before:
                 raise ExpectationFailed(
@@ -295,7 +295,7 @@ def mental_break_spree(t):
                 raise ExpectationFailed(
                     "jawa/pawn_force_mental_break did not start RM_GraffitiPaintingSpreeState: %r" % r)
         with _own_spree([walker]):
-            t.wait_ticks(900)
+            t.wait_ticks(1600)      # the walk and one finished mark; a throw-up, the spree's slowest, takes 1200
         if t._guard():
             job = t.bridge_call("jawa/pawn_get", pawn=walker)
             after = len(_marks_in(t, rect))

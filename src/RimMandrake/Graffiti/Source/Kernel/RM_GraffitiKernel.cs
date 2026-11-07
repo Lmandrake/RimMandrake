@@ -221,6 +221,11 @@ namespace RimMandrake.Graffiti
             return bare.Count > 0 ? bare : any;
         }
 
+        /// <summary>An idle colonist reaches for the can on one think in this many: a few times a day for someone with truly nothing to do.</summary>
+        public const float IdleTagChance = 0.012f;
+
+        public static bool IdleHandTags(float roll) { return roll < IdleTagChance; }
+
         /// <summary>Has a room its share of a calm painter's marks? One, and one more for every 15 cells of floor.</summary>
         public static bool RoomHoldsEnough(int marks, int floorCells) { return marks >= 1 + floorCells / 15; }
 

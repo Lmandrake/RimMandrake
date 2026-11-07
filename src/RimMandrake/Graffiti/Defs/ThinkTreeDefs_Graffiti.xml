@@ -35,4 +35,21 @@
     </thinkRoot>
   </ThinkTreeDef>
 
+  <!-- An idle hand tags the wall (JobGiver_IdleTag): after work, before the idle wander. -->
+  <ThinkTreeDef>
+    <defName>RM_GraffitiIdleTagThinkTree</defName>
+    <insertTag>Humanlike_PostMain</insertTag>
+    <insertPriority>1</insertPriority>
+    <thinkRoot Class="ThinkNode_ConditionalColonist">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.Graffiti.JobGiver_IdleTag" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
 </Defs>

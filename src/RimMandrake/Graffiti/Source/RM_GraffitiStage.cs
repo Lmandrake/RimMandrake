@@ -264,8 +264,12 @@ namespace RimMandrake.Graffiti
                     + " can=" + giver.Worker.CanBeGivenTo(p)
                     + " job=" + (p.CurJobDef?.defName ?? "none")
                     + " wall=" + found + (found ? "@" + cell : "")
+                    + " give=" + (giver.Worker.TryGiveJob(p)?.def.defName ?? "null")
+                    + " sched=" + (p.timetable?.CurrentAssignment?.defName ?? "?")
+                    + " medTol=" + (p.needs?.joy?.tolerances?[giver.joyKind].ToString("F2") ?? "?")
+                    + " bored=" + (p.needs?.joy?.tolerances?.BoredOf(giver.joyKind).ToString() ?? "?")
                     + " pos=" + p.Position + " room=" + (p.GetRoom()?.CellCount ?? -1)
-                    + " tol=" + (p.needs?.joy?.tolerances?.ToString() ?? ""));
+                    );
             }
             return "WHO " + string.Join(" || ", rows);
         }

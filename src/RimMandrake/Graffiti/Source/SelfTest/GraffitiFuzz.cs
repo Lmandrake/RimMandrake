@@ -338,6 +338,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 Check(RM_GraffitiKernel.WallMarksOverlap(1f, 1.5f, 0.5f) && RM_GraffitiKernel.WallMarksOverlap(-1f, 1.5f, 0.5f), "a tag beside a piece's middle lies under it");
                 Check(!RM_GraffitiKernel.RoomHoldsEnough(0, 1) && RM_GraffitiKernel.RoomHoldsEnough(1, 1), "a closet takes one mark");
                 Check(!RM_GraffitiKernel.RoomHoldsEnough(4, 160) && RM_GraffitiKernel.RoomHoldsEnough(11, 160), "a hall takes more than a closet");
+                Check(RM_GraffitiKernel.IdleHandTags(0f) && !RM_GraffitiKernel.IdleHandTags(RM_GraffitiKernel.IdleTagChance) && !RM_GraffitiKernel.IdleHandTags(1f), "the idle tag is a low chance, not a certainty");
                 Check(RM_GraffitiKernel.SittingContinues(100, true, 1f), "a spree does not stop for joy");
                 Check(!RM_GraffitiKernel.SittingContinues(RM_GraffitiKernel.MaxMarksPerJoySitting, false, 0f) && !RM_GraffitiKernel.SittingContinues(0, false, 1f) && RM_GraffitiKernel.SittingContinues(0, false, 0f), "a joy sitting ends when satisfied or after its few marks");
             });
