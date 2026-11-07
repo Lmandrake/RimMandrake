@@ -83,6 +83,30 @@ External free workers (nemotron):
 candidate narrowing only, never conclusions, never writing —
 `research/FANOUT_WORKER_EVALUATION.md`.
 
+## Helpers in this repo
+
+The method is the `efficient-subagents` skill (and `agent-fanout-research` for a fan); this adds what's true here.
+
+- **Spawn only the `rm-*` definitions** (`.claude/agents/`, enforced by `.claude/hooks/block_unbounded_agent.py`):
+
+  | type | use | model |
+  |---|---|---|
+  | `rm-fixer` | well-defined fix a selftest/validator proves | sonnet |
+  | `rm-builder` | complex code or design, one item | opus |
+  | `rm-bridge` | live-game section run by script | opus |
+  | `rm-judge` | art/taste judging of work it did not make | opus |
+
+- **Unattended seats: at most 3 helpers per seat** (the allocator's limit). In the Conductor window there is no limit only for work started within
+  20 min of the owner's last typed message; after that two helpers, and one running over an hour raises an alarm (owner: "...only for work started within
+  20 mins of the last time the user typed to conductor. After that it should relax to two subagents only."). Measure:
+  `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
+- **Worktrees are OFF:** never pass `isolation: "worktree"` (`block_worktrees.py` refuses it). A writing helper edits in the window's own clone and the window
+  commits its paths with `./publish`. A helper that needs its own clone gets
+  `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>" --fetch --sparse <the dirs it will touch>`, never `--checkout` (the whole ~4 GB tree).
+- **Cutting claims from a doc:** the two-blind-arms method in `efficient-subagents`, with `src/RimMandrake/Utils/doc_claims.py` numbering the claims.
+- **Cheap read-only fan-out:** `src/RimMandrake/Utils/nemotron_fanout.py` and `nemotron_ceiling.py`; the measured pool, its ranking and the abstention clause are in
+  `research/FANOUT_WORKER_EVALUATION.md`.
+
 ## Subagents — this is where the saving is
 
 🔴 **Every `Agent` call takes `model`. Pass it, every time**

@@ -149,7 +149,7 @@ def main() -> int:
         check(rc == 0 and not (BASE / "scratch" / SEAT / "bare" / "a.txt").exists(), "--no-checkout has no tree")
         here = Path(__file__).resolve().parents[3]
         for doc in ("design/RimMandrake/GIT_WORKFLOW.md", "skills/clone-landing-commits/SKILL.md",
-                    "skills/efficient-subagents/SKILL.md"):
+                    "infrastructure/agents/Agent_Policy.md"):
             txt = (here / doc).read_text()
             check("--sparse" in txt and "scratch_clone.py" in txt, f"{doc} tells helpers to clone sparse")
 

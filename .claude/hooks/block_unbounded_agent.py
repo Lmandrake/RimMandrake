@@ -30,7 +30,7 @@ REASON = (
     "    rm-bridge   opus    live game driver, script-driven\n"
     "    rm-judge    opus    taste/art judging of work it did not make\n"
     "    Explore / web-fetch for read-only lookups.\n"
-    "Why and how: skills/efficient-subagents/SKILL.md §Context burn."
+    "Why and how: the efficient-subagents skill, §Context burn."
 )
 
 

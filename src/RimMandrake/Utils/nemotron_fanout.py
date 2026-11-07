@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Dispatch a bounded read-only question across many files to cheap NVIDIA workers.
 
-The rules from skills/agent-fanout-research/SKILL.md are ENFORCED here rather than
+The rules from the agent-fanout-research skill are ENFORCED here rather than
 left to whoever writes the prompt, because every one of them was learned by paying:
 
   * an abstention clause is appended to every worker prompt      (fabrication 3/7 -> 0-1/7)

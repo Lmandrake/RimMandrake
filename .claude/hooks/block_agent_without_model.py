@@ -6,7 +6,7 @@ spelling and any agent definition here that pins it, even with `fork`-style type
 
 Omitting `model` inherits the parent's tier. Measured 2026-08-24: that is how
 EVERY grep, census and existence check in this project's history came to run on
-Opus, while `skills/efficient-subagents/SKILL.md` had named a cheaper rung since
+Opus, while the `efficient-subagents` skill had named a cheaper rung since
 the day it was written and nobody ever passed it (that rung is since struck: no Haiku).
 
 ⛔ Only the GENERIC built-ins are gated. A named agent type carries its own
