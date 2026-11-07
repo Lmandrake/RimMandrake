@@ -10,6 +10,7 @@
 <Defs>
   <HediffDef>
     <defName>RM_Dehydration</defName>
+    <hediffClass>HediffWithComps</hediffClass>
     <label>dehydration</label>
     <description>Not enough water. It starts as a headache and dry mouth and ends in collapse and death. A drink and a little time reverse it.</description>
     <lethalSeverity>1</lethalSeverity>

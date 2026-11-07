@@ -51,8 +51,8 @@ def main():
     check("patch coord parse sees the Hearth layout ops (AdvancedShowers 2,1; VCE_CondimentsResearch y 0.6)",
           ov.get("AdvancedShowers") == {"researchViewX": 2.0, "researchViewY": 1.0}
           and ov.get("VCE_CondimentsResearch", {}).get("researchViewY") == 0.6, ov.get("AdvancedShowers"))
-    check("HotTubs is pinned off Cocoa's cell (LOAD_RED_BASELINE_DRIFT_1)",
-          ov.get("HotTubs") == {"researchViewX": 5.0, "researchViewY": 1.5}, ov.get("HotTubs"))
+    check("Cocoa is moved off DBH Lite's HotTubs cell (CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD)",
+          ov.get("Cocoa") == {"researchViewY": 1.5}, ov.get("Cocoa"))
     import glob
     import xml.etree.ElementTree as ET
     here = os.path.dirname(os.path.abspath(__file__))
@@ -104,8 +104,10 @@ def main():
         # with the 13 set to their patched values (the post-fix state), so it stays green on either side of the next load.
         vfet13 = frozenset("VFET_" + n for n in ("Fire", "Agriculture", "Cultivation", "Medicine", "AnimalHandling", "Mining",
                                                  "Construction", "Furniture", "Tribalwear", "Hunting", "Weapons", "Bow", "Culture"))
+        # CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD moved Cocoa; a dump from before it shows Cocoa at its old Y, same treatment.
+        vfet13 = vfet13 | {"Cocoa"}
         raw_bad = v.retag_findings(exp, rows)[2]
-        check("raw dump: nothing but the 13 VFET rows is unheld (%d findings)" % len(raw_bad),
+        check("raw dump: nothing but the 13 VFET rows and Cocoa is unheld (%d findings)" % len(raw_bad),
               all(b.split(".")[0] in vfet13 for b in raw_bad), [b for b in raw_bad if b.split(".")[0] not in vfet13][:3])
         rows = copy.deepcopy(rows)
         for (d, f), w in exp.items():

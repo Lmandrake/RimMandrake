@@ -1,0 +1,1 @@
+A hediff with comps and no hediffClass never runs its comps (plain Hediff, engine logs a config error). RM_Dehydration's orphan-heal comp (DEHYDRATION_FIX_STAYS_WHEN_THIRST_OFF) was inert in the game until CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD set HediffWithComps. selftest_config_errors_five walks every src HediffDef for this.

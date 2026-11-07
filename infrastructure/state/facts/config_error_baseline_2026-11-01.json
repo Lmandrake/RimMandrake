@@ -255,16 +255,16 @@
    "kind": "configerror",
    "class": "ours-fixed",
    "expectCount": 0,
-   "fixedOn": "2026-11-01",
-   "note": "HotTubs pinned at (5,1.5) in RUT_ResearchTabAssign.xml; the mover was never identified, so the next full-list load is what proves it."
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Changed 2026-11-06: fixedOn moved from 2026-11-01. Dubs Bad Hygiene Lite's C# writes HotTubs' private x,y to (1,0), so the raw HotTubs pin never reached what the check reads; Cocoa moved to (1,1.5) instead."
   },
   {
    "pattern": "Config error in HotTubs: same research view coords",
    "kind": "configerror",
    "class": "ours-fixed",
    "expectCount": 0,
-   "fixedOn": "2026-11-01",
-   "note": "HotTubs pinned at (5,1.5) in RUT_ResearchTabAssign.xml; the mover was never identified, so the next full-list load is what proves it."
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Changed 2026-11-06: fixedOn moved from 2026-11-01. Dubs Bad Hygiene Lite's C# writes HotTubs' private x,y to (1,0), so the raw HotTubs pin never reached what the check reads; Cocoa moved to (1,1.5) instead."
   },
   {
    "pattern": "Config error in RR_LateralThinking: researchViewX",
@@ -289,6 +289,38 @@
    "expectCount": 0,
    "fixedOn": "2026-11-01",
    "note": "Our PawnFlavor label held {0}; a MentalBreakDef label is never formatted."
+  },
+  {
+   "pattern": "Config error in OuterRim_Beskar: if deepCommonality",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Added 2026-11-06: Armoury zeroed deepCommonality and left Outer Rim's lump range 2~3; the range is now 0~0 too."
+  },
+  {
+   "pattern": "Config error in RM_Dehydration: has comps but hediffClass",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Added 2026-11-06: hediffClass HediffWithComps set; the comp had never run before this."
+  },
+  {
+   "pattern": "Could not resolve cross-reference to RimWorld.BiomeDef named ZBiome_Grasslands",
+   "kind": "crossref",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Added 2026-11-06: src had already dropped it; the stale game copy of StructureInjectionsSW carried it. Deployed by this item."
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named RSW_BrinedCoodlerRoe",
+   "kind": "crossref",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-06",
+   "note": "CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD: Added 2026-11-06: the game folder's ColdStorage DLL predated CompProperties_ColdAging, so the def failed to load. Deployed by this item."
   }
  ]
 }

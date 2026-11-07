@@ -1,0 +1,2 @@
+live-deploy: ColdStorage, StructureInjectionsSW, Armoury, FlowWorks, ResearchRetag
+live-proof A1: python3 src/RimMandrake/rimflow/relentless_live_round.py deployed --item CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD

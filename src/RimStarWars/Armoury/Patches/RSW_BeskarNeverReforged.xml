@@ -79,6 +79,15 @@
             </match>
           </nomatch>
         </li>
+        <!-- The engine wants deepCommonality and deepLumpSizeRange both set or both empty, and Outer Rim ships 2~3
+             (CONFIGERRORS_FIX_FIVE_MORE_ON_LATEST_LOAD). OuterRim_PureBeskar ships none. -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepLumpSizeRange</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]/deepLumpSizeRange</xpath>
+            <value><deepLumpSizeRange>0~0</deepLumpSizeRange></value>
+          </match>
+        </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]/deepCommonality</xpath>
           <match Class="PatchOperationReplace">
