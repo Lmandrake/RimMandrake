@@ -17,6 +17,11 @@ A check is published as evidence plus the appended entry on the change record. k
 a NEW version (tag, change record with revert_of) whose diff undoes the old one's; nothing is deleted. no_signal has
 keep=None and reverts nothing. Only a fresh verdict from this pass is enacted, never an entry already on a record: one
 written before the noise floor (AGENT_IMPROVE_HARDEN_NOISE_CALLED_OVERFIT) had none.
+
+A record naming no source kinds cannot be checked (AGENT_IMPROVE_HARDEN_CADENCE_EMPTY_KINDS): its sample would exclude
+nothing, so a harm reading would not be about kinds the change did not come from, and it cannot regain kinds its pieces
+never named. It spends no check and no slot, writes nothing and reverts nothing; while due it is an `unmeasured` row on
+the pass's packet, so the gap stays visible. A later version with kinds is checked as usual.
 """
 import hashlib
 import json
@@ -34,6 +39,7 @@ import delegated_digest as D  # noqa: E402  (agent_improve put rimflow on the pa
 
 ITEM = "AGENT_IMPROVE_WIRE_GENCHECK_HAND_RUN_ONLY"
 FIFTH, WEEK_DAYS, MAX_CHECKS = 5, 7, 3
+NO_KINDS = "the record names no source kinds, so nothing can be held out; no check run, no revert"
 
 
 def records(changes_dir=None):
@@ -210,6 +216,8 @@ def run_one(item, day, repo, changes_dir, general_dir, check_version, publish, n
         return dict(row, verdict=None, detail="the change record has uncommitted edits; left due")
     try:
         before = open(cpath, encoding="utf-8").read()
+        if not G.named_kinds(json.loads(before).get("source_kinds")):
+            return dict(row, verdict="unmeasured", keep=None, detail=NO_KINDS)
         result, (epath, cpath) = check_version(t, "v%d" % n, repo=repo, changes_dir=changes_dir,
                                                general_dir=general_dir, now=now)
     except Exception as e:   # a crashed check is no verdict, and it stays due
@@ -231,9 +239,10 @@ def run_due(day, level, repo=None, changes_dir=None, check_version=None, publish
     """The pass's generalization step -> its rows. Runs on committed change records only."""
     repo, changes_dir = repo or A.REPO, changes_dir or A.CHANGES
     general_dir = os.path.join(os.path.dirname(os.path.abspath(changes_dir)), "general")
-    due = due_checks(level, now, changes_dir)
+    due, recs = due_checks(level, now, changes_dir), records(changes_dir)
+    checkable = [i for i in due if G.named_kinds(recs[i["target"]][i["version"]].get("source_kinds"))]
     rows = []
-    for item in due[:MAX_CHECKS]:
+    for item in [i for i in due if i not in checkable] + checkable[:MAX_CHECKS]:   # the rest cost no slot: run_one says why
         try:
             rows.append(run_one(item, day, repo, changes_dir, general_dir, check_version or G.run_for_version, publish,
                                 now))

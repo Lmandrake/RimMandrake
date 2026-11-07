@@ -26,6 +26,8 @@ that means 5-0 or 6-0; at 12 with none tied, 10-2 or better.
     gain on the source kind only      -> narrow    (keep, flagged)
     neither past the bars             -> no_signal (keep None: neither reverts nor keeps as general)
     no held-out pair judged           -> unmeasured (source pairs alone never keep a change)
+A change naming no source kinds reads unmeasured before any model runs: nothing would be held out
+(AGENT_IMPROVE_HARDEN_CADENCE_EMPTY_KINDS).
 Every run writes its pairs to infrastructure/state/agent_improve/general/<target>_v<N>_<stamp>.json and appends a
 summary to the change record's `generalization` list (never rewritten). A hand run records a revert verdict; agent_improve_cadence runs
 the check on its cadence and enacts one.
@@ -106,6 +108,12 @@ def closed_items(now, days=DAYS, events_dir=None):
                     "closed_at": e.get("ts"), "sha": e.get("sha"),
                     "close_text": " ".join(str(e.get(x) or "") for x in ("reason", "why", "ownerSaid")).strip()}
     return out
+
+
+def named_kinds(source_kinds):
+    """The kinds a change record really names. None means a sample would exclude nothing, so its "held-out" pairs are
+    not held out."""
+    return [k for k in source_kinds or () if k]
 
 
 def spec_of(it, items_dir=None):
@@ -312,7 +320,8 @@ def check(t, old_text, new_text, source_kinds, now=None, seed=None, runner=None,
     def has_spec(it):
         specs[it["id"]] = spec_of(it, items_dir)
         return len(specs[it["id"]]) >= 40
-    held, src = sample(items, source_kinds, rng, need_spec=has_spec)
+    kinds = named_kinds(source_kinds)
+    held, src = sample(items, kinds, rng, need_spec=has_spec) if kinds else ([], [])
     old_v, new_v = view(res, old_text), view(res, new_text)
     jobs = [(side, it, rng.random() < 0.5, rng.random() < 0.5) for side, group in (("held_out", held), ("source", src))
             for it in group]
@@ -324,7 +333,7 @@ def check(t, old_text, new_text, source_kinds, now=None, seed=None, runner=None,
     nh, ns = null_tally(pairs, "held_out"), null_tally(pairs, "source")
     v = verdict(th, ts, nh, ns)
     return {"target": t, "path": res["path"], "seed": seed, "days": days,
-            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "source_kinds": sorted(source_kinds or ()),
+            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now)), "source_kinds": sorted(kinds),
             "pool": {"closed_items": len(items), "kinds": sorted({i["kind"] for i in items.values()})},
             "held_out": th, "source": ts, "null_held_out": nh, "null_source": ns, "rule": RULE,
             "signal": {"held_out": signal(th, nh), "source": signal(ts, ns)}, "verdict": v, "keep": KEEP[v],

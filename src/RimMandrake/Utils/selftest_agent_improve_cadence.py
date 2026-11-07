@@ -48,7 +48,8 @@ AT = lambda t: dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT
 
 
 def rec(t, n, **kw):
-    return dict({"target": t, "version": n, "tag": "agent/%s/v%d" % (t, n), "diff": "", "generalization": []}, **kw)
+    return dict({"target": t, "version": n, "tag": "agent/%s/v%d" % (t, n), "diff": "", "generalization": [],
+                 "source_kinds": ["REPAIR"]}, **kw)
 
 
 def entry(verdict, t=NOW - DAY):
@@ -180,6 +181,65 @@ with tempfile.TemporaryDirectory() as tmp:
     check("tree clean after", clean(), sh(repo, "git", "status", "--porcelain"))
     check("nothing due after a revert (no ping-pong)", C.due_checks(1, NOW + 30 * DAY, changes) == [])
     rewind()
+
+    # ---- a record naming no source kinds: its sample excluded nothing, so no reading of it is held out
+    def set_kinds(name, **fields):
+        r = {k: v for k, v in json.load(open(os.path.join(changes, "%s_v1.json" % name), encoding="utf-8")).items()
+             if k != "source_kinds"}
+        write(os.path.join(changes, "%s_v1.json" % name), json.dumps(dict(r, **fields), indent=1))
+        sh(repo, "git", "add", "--", os.path.join(changes, "%s_v1.json" % name))
+        sh(repo, "git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "kinds %s" % name)
+
+    for label, fields in (("empty", {"source_kinds": []}), ("absent", {}), ("blank", {"source_kinds": [None, ""]})):
+        set_kinds("foo", **fields)
+        was_head, calls = sh(repo, "git", "rev-parse", "HEAD"), []
+        r = run("overfit", cv=stub_check("overfit", calls))
+        check("%s kinds: no check spent, no revert, nothing published" % label, not calls and not published
+              and "revert" not in r[0] and open(TP).read() == BAD and clean()
+              and not os.path.exists(os.path.join(changes, "foo_v2.json")) and "reverted_by" not in reread()
+              and sh(repo, "git", "rev-parse", "HEAD") == was_head, r)
+        check("%s kinds: reads unmeasured on the pass's row, said why" % label, r[0]["verdict"] == "unmeasured"
+              and r[0]["keep"] is None and "no source kinds" in A.check_line(r[0]), r)
+        check("%s kinds: no entry on the record, so a later version's check is not put off" % label,
+              not reread()["generalization"])
+        one = C.run_one(C.due_checks(1, NOW, changes)[0], "2026-11-19", repo, changes, gdir, stub_check("overfit", calls),
+                        fake_publish, NOW)
+        check("%s kinds: run_one itself refuses, not only the pass that calls it" % label, not calls and not published
+              and "revert" not in one and one["verdict"] == "unmeasured" and open(TP).read() == BAD, one)
+        rewind()
+    # control: the same record with kinds on the same stub reverts (the case above), and the slots go to it
+    set_kinds("foo", source_kinds=[])
+    for name in ("bar", "baz", "qux"):
+        write(os.path.join(changes, "%s_v1.json" % name), json.dumps(rec(name, 1, source_kinds=[])))
+    write(os.path.join(changes, "real_v1.json"), json.dumps(rec("real", 1)))
+    write(os.path.join(repo, "skills", "real", "SKILL.md"), GOOD)
+    sh(repo, "git", "add", "--", "infrastructure", "skills")
+    sh(repo, "git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "many")
+    sh(repo, "git", "tag", "agent/real/v1")
+    calls = []
+    rows = C.run_due("d", 1, repo, changes, stub_check("no_signal", calls), fake_publish, NOW)
+    check("records with no kinds never take a check slot from one that has them", calls == [("real", "v1")]
+          and sorted(x["target"] for x in rows) == ["bar", "baz", "foo", "qux", "real"], (calls, rows))
+    rewind()
+
+    # the check itself, as a hand run reaches it: a real sample, a real count of model calls
+    ev, its = os.path.join(tmp, "ev"), os.path.join(tmp, "its")
+    with_spec = "A closed item whose spec is long enough to be sampled at all."
+    ids = ["WIDGET_AUDIT_SHAPE_NUM_%s" % x for x in ("ONE", "TWO", "SIX")]
+    write(os.path.join(ev, "BENCH.jsonl"), "".join(json.dumps(e) + "\n" for i in ids for e in (
+        {"id": i, "event": "file", "title": with_spec}, {"id": i, "event": "close", "ts": AT(NOW - DAY), "why": "x"})))
+    model_calls = []
+
+    def counted(p):
+        model_calls.append(p)
+        raise OSError("no model in a selftest")
+    for kinds, label in (([], "no kinds"), ([None], "a blank kind")):
+        res = G.check("foo", BAD, GOOD, kinds, now=NOW, seed=1, runner=counted, judge=counted, events_dir=ev, items_dir=its)
+        check("%s: the check reads unmeasured before any model runs" % label, res["verdict"] == "unmeasured"
+              and res["keep"] is None and not model_calls and not res["pairs"] and res["pool"]["closed_items"] == 3, res)
+    res = G.check("foo", BAD, GOOD, ["REPAIR"], now=NOW, seed=1, runner=counted, judge=counted, events_dir=ev, items_dir=its)
+    check("control: with a kind named, the same sample is spent", model_calls and len(res["pairs"]) == 3, res["pairs"])
+
     # ---- refusals leave the tree as it was
     stale = dict(reread(), diff=DIFF.replace("A line the check dislikes", "A line that was never there"))
     write(os.path.join(changes, "foo_v1.json"), json.dumps(stale, indent=1))

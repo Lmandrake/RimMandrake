@@ -137,6 +137,11 @@ the newest version of each target:
   as **general**. Gain on the source kind only, held-out no harm: kept and flagged **narrow** in its change record, so
   a pile-up of narrow changes on one target is visible (the digest line counts a target's narrow changes). Anything
   else is **no_signal**: it neither reverts nor keeps as general.
+- A change record naming no source kinds cannot be checked (`AGENT_IMPROVE_HARDEN_CADENCE_EMPTY_KINDS`): its sample would
+  exclude nothing, so no reading of it is about kinds the change did not come from. The check reads it unmeasured before any
+  model runs, and the cadence spends no slot, writes no entry and reverts nothing, showing it as an `unmeasured` row on the
+  pass's packet while it is due. A record on file cannot regain kinds its pieces do not name; a later version with kinds is
+  checked as usual.
 - The L2 gate (`AGENT_IMPROVE_TUNE_L2_GATE_SAMPLE_POWER`, decided before the ramp first reached L2, with
   two noise-floor checks on record, both no_signal, so mostly from computation: 2 of 2 is no rate). It applies what reads general,
   and a narrow or no_signal that does not lean to harm (wins >= losses on 6 or more judged held-out pairs); it refuses overfit,
