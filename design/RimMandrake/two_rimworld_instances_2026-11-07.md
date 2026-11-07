@@ -1,6 +1,6 @@
 # Two RimWorld instances on one machine (design, 2026-11-07)
 
-Status: design finished, trial ready and NOT run. Nothing here launched, stopped or touched a game, Steam, the bridge or ModsConfig. Every reading was a look at disk or at the running system. It closes `LIVELANE_PROBE_SECOND_GAME_INSTANCE` once the trial has run.
+Status: rung one passed on SteveDesktop on 2026-11-07; see "Trial result, 2026-11-07" below. Archmagi is untested. Parts 1 and 2 were written before the trial, from disk and the running system. The tooling changes are still owed.
 
 Owner's words, 2026-11-07: "design a way to have two instances of Rimworld running. It would likely require running Steam in a protected environment without access to the Web. This might not be required though, so we should try it simply first. Just be prepared that we may have to do so. I'm not sure Steam will be happy with us launching two versions otherwise, so a one-two research punch. Fingers crossed it's easy."
 
@@ -8,7 +8,7 @@ Owner's words, 2026-11-07: "design a way to have two instances of Rimworld runni
 
 Published practice says it is easy, and the protected Steam looks unnecessary. The obstacle people report is Steam's Play button, which a directly started `RimWorldWin64.exe` does not go through. The game's own `-savedatafolder` already splits Config, ModsConfig, Prefs and Saves. Unity's `-logfile` splits the log. The bridge takes its port and token from two environment variables. Our Python tools already follow environment variables for paths and the endpoint.
 
-One thing no source settles: whether Steam gives a second running game a working Steam connection. It matters, because the bridge mod itself is a Workshop item on Archmagi. The trial answers it in about half an hour.
+No source settled whether Steam gives a second running game a working Steam connection. It matters, because the bridge mod itself is a Workshop item on Archmagi. The trial answered yes on SteveDesktop, where the folder holds `steam_appid.txt`.
 
 Recommended: rung one on SteveDesktop, which has 105.9 GB free. Archmagi has 7.3 GB free and cannot take a second game without shrinking the agents' WSL. The real cost is in our tools: about 25 files assume one game, and some of them kill or pick whichever game they find first. A second game is not safe beside a running loop until those are fixed, so the trial needs a quiet machine.
 
@@ -51,14 +51,14 @@ Still shared with `-savedatafolder`:
 
 `Verse.Steam.SteamManager` calls `SteamAPI.RestartAppIfNecessary(AppId_t.Invalid)`, then `SteamAPI.Init()`. If Init fails it logs `[Steamworks.NET] SteamAPI.Init() failed` and carries on. `ModLister` then adds no Workshop items. So a refusal from Steam is not a crash: it is a game with only the local `Mods` folder.
 
-That matters because `SECOND_GAME_BRIDGE_IS_A_WORKSHOP_MOD`: on Archmagi the bridge sits at `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies\Lib.GAB.dll` (MEASURED). A refused game has no bridge, and looks fine on screen.
+That matters because `SECOND_GAME_BRIDGE_IS_A_WORKSHOP_MOD`: on Archmagi the bridge sits at `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3727949765\1.6\Assemblies\Lib.GAB.dll` (MEASURED). A refused game there has no bridge, and looks fine on screen. SteveDesktop differs: its bridge has a copy at `D:\SteamLibrary\steamapps\common\RimWorld\Mods\3727949765` (MEASURED), so a working bridge proves nothing about Steam there. Read `rimworld/list_mods` and count `source` = `SteamWorkshop` instead.
 
 MEASURED 2026-11-07:
 
 - SteveDesktop runs `D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe` directly with no arguments, and that folder holds a `steam_appid.txt`. No script in the repo places it, so it was probably placed by hand. The game logs no Steamworks warning and its bridge answers on 5174. Direct launch with the file is already production there, for one game.
 - Archmagi runs through `steam://rungameid/294100`, parent `steam.exe -silent`, arguments `-disable-compute-shaders`. No repo file mentions that flag, so it is presumably a Steam launch option, and a direct launch must pass it by hand. Its folder has no `steam_appid.txt`.
 
-UNMEASURED, and the one thing the trial exists to learn: a second `SteamAPI.Init()` for the same app while one game is already connected. No source I read tested this and stated the result.
+A second `SteamAPI.Init()` for the same app while one game is already connected: no source I read tested this. MEASURED on SteveDesktop in the trial: it works. On Archmagi it is UNMEASURED.
 
 ### The bridge
 
@@ -68,13 +68,13 @@ UNMEASURED, and the one thing the trial exists to learn: a second `SteamAPI.Init
 - With the pair set it listens on the chosen port and logs `[RimBridge] GABP server connected to GABS on port N`. That wording is only a label; no GABS is involved.
 - `BRIDGE_TOKEN_LINE_GONE_IN_ENV_MODE`: in that mode the `Bridge token:` line is not written. 22 scripts mention that string. Log discovery cannot serve B, but `src/RimMandrake/Utils/rimbridge_client.py` `resolve_endpoint` already takes the env pair ahead of the log.
 
-This source is the published repository; the deployed DLL's version was not compared. Literal-string scans of that DLL (run with `MEASURE_ALLOW_SCAN=1`) found the two variable names and both log lines, and the trial proves the rest.
+This source is the published repository; the deployed DLL's version was not compared. Literal-string scans of that DLL (run with `MEASURE_ALLOW_SCAN=1`) found the two variable names and both log lines. The trial confirmed the port line and the missing token line on a live game.
 
 ### Every place that assumes one game
 
 The good news first. `src/RimMandrake/Utils/game_paths.py` already reads `RM_GAME_USERDATA`, `RM_GAME_LOGDIR` and `RM_STEAMAPPS` (SteveDesktop's `testcentre_env.sh` relies on it). `src/RimMandrake/rimflow/driver_lock.py` reads `RIMFLOW_DRIVER_LOCK`. 187 non-test files use `game_paths` and 179 use `rimbridge_client`; those follow the environment and need no edit. `infrastructure/stevedesktop/rw_game.sh` takes its paths from the same variables, so its `init` can already seed a new data folder.
 
-Keep `Player.log` directly in the instance's data folder, because `src/RimMandrake/Utils/modset_builder.py` builds `PLAYERLOG` from the data folder rather than the log folder. One folder then satisfies both. Whether Unity still rotates to `Player-prev.log` under `-logfile` is UNMEASURED; the trial records it.
+Keep `Player.log` directly in the instance's data folder, because `src/RimMandrake/Utils/modset_builder.py` builds `PLAYERLOG` from the data folder rather than the log folder. One folder then satisfies both. Unity does not rotate under `-logfile` (MEASURED): no `Player-prev.log` appears, and a relaunch overwrites the log, so copy it first if it matters.
 
 File counts below are from `git grep` over `src/RimMandrake` and `*.sh`, excluding selftests (MEASURED; a count says the words occur, not that each is a bug).
 
@@ -106,7 +106,7 @@ SteveDesktop: i9-10900K reporting 9 cores, 18 logical, at 3696 MHz with no turbo
 
 The owner's full list uses about 30 GB and loads in 15 to 21 minutes (`D:\Luke\dev\RimMandrake\design\RimMandrake\mod_audit\OWNER_CARDS.md`, line 253).
 
-`ARCHMAGI_HAS_NO_ROOM`. Archmagi could hold a second small-list game only down to about 3 GB of commit, and no second full list at all without taking WSL's memory. SteveDesktop has room for about three full lists by RAM, or several tier lists; VRAM and CPU interference are UNMEASURED. That machine's own fault also becomes a shared risk: one machine fault now loses two games.
+`ARCHMAGI_HAS_NO_ROOM`. Archmagi could hold a second small-list game only down to about 3 GB of commit, and no second full list at all without taking WSL's memory. SteveDesktop has room for about three full lists by RAM, or several tier lists. Interference on small lists is in the trial result; on full lists it is UNMEASURED. That machine's own fault also becomes a shared risk: one machine fault now loses two games.
 
 Second game folder cost, MEASURED apparent sizes: `Data` 486 MB, `RimWorldWin64_Data` 394 MB, `Mods` 1.6 GB, `MonoBleedingEdge` 8.8 MB, exe and `UnityPlayer.dll` 32 MB. About 2.5 GB in total. It would not repeat Workshop (1269 items; size UNMEASURED because `du` passed 60 s) as long as Steam serves them. Disk is not the limit on either machine.
 
@@ -116,13 +116,13 @@ Stop at the first rung that passes.
 
 ### Rung one: same folder, second game started directly, own data folder, own log, own port
 
-Run in PowerShell on the machine, from a process with no leftover `GABP_` variables. On SteveDesktop:
+Run in PowerShell on the machine, from a process with no leftover `GABP_` variables. First give `<i>\Config\Prefs.xml` a `<screenWidth>1280</screenWidth>` and `<screenHeight>720</screenHeight>` beside `<fullscreen>False</fullscreen>`: without them B runs fullscreen despite the flags (MEASURED). On SteveDesktop:
 
 ```powershell
 $i = 'D:\ClaudeWork\rimmandrake\instances\b'
 $env:GABP_SERVER_PORT = '5175'
 $env:GABP_TOKEN = [guid]::NewGuid().Guid
-Set-Content "$i\bridge_token.txt" $env:GABP_TOKEN
+[IO.File]::WriteAllText("$i\bridge_token.txt", $env:GABP_TOKEN)   # Set-Content wrote nothing here and raised no error (MEASURED)
 Start-Process -FilePath 'D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe' `
   -WorkingDirectory 'D:\SteamLibrary\steamapps\common\RimWorld' `
   -ArgumentList "-savedatafolder=$i", '-logfile', "$i\Player.log", '-screen-fullscreen', '0', '-screen-width', '1280', '-screen-height', '720'
@@ -136,7 +136,7 @@ Expected: no Steam dialog, since the launcher is not involved. B loads its own l
 
 What a refusal looks like, in order of likelihood:
 
-- **Steam refuses B's connection.** `[Steamworks.NET] SteamAPI.Init() failed` in `<i>\Player.log`, Workshop mods missing, a mod-missing list at the main menu, no bridge line at all, and port 5175 not listening. Go to rung three.
+- **Steam refuses B's connection.** `[Steamworks.NET] SteamAPI.Init() failed` in `<i>\Player.log`, Workshop mods missing, a mod-missing list at the main menu. Where the bridge is only a Workshop mod, also no bridge line at all and port 5175 not listening. Go to rung three.
 - **Steam disturbs A.** A's log shows a Steamworks error, or its Workshop calls start failing. Stop B and record it.
 - **Port.** `[RimBridge] Failed to start server` means the variables did not carry. That is a recipe bug, not a refusal.
 - **Pause.** B stops advancing without focus: Prefs was not seeded with runInBackground. Recipe bug.
@@ -208,7 +208,7 @@ The trial itself needs none of the above, because it holds the whole machine.
 
 ## Trial plan for rung one
 
-Not run; ready for a helper to run on the Conductor's word.
+Run on 2026-11-07; the result is in the next section. The steps below carry the trial's corrections, and a repeat on another machine can follow them.
 
 **Where and when.** SteveDesktop, since it has the memory and no one at the desktop. It must be a quiet machine: `rm-ralph-gss-steve` finished or stopped between passes, no `testq` job running, and `rimflow bridge who --host stevedesktop` free. **It is not safe beside a running loop:** that loop's `modset_builder` would see B and refuse to write its list; a `rw_game.sh down` could pick B or A at random; and a `taskkill /IM` would take B with it. So a trial beside a loop puts the loop's game at risk through these tools, before Steam even enters.
 
@@ -216,12 +216,12 @@ Not run; ready for a helper to run on the Conductor's word.
 
 1. `rimflow bridge take --host stevedesktop --for "second game trial"`. Record baselines: `reg export` of the Unity key to the instance folder, md5 of A's `ModsConfig.xml` and `Prefs.xml`, and free RAM, commit and VRAM.
 2. Bring up A with `rw_game.sh up` on the list it already has, and start a quicktest world. Record A's process id, its TPS alone over 2 minutes from `JawaBench\tps`, and working set and private memory.
-3. Create `D:\ClaudeWork\rimmandrake\instances\b`. Seed with `RM_GAME_USERDATA=<wsl path> RM_GAME_LOGDIR=<wsl path> rw_game.sh init`, which writes the companion profile and runInBackground Prefs. Copy `infrastructure/state/modlists/ModsConfig.MINIMAL.xml` to `<i>\Config\ModsConfig.xml`. It has 27 active mods including `brrainz.rimbridgeserver`; confirm with `modset_builder`'s reader that each resolves on this machine, since SteveDesktop has only 64 Workshop items and 33 in `Mods`. If some do not, take that list minus those mods.
+3. Create `D:\ClaudeWork\rimmandrake\instances\b`. Seed with `RM_GAME_USERDATA=<wsl path> RM_GAME_LOGDIR=<wsl path> rw_game.sh init`, which writes the companion profile. With A up it refuses the Prefs half, since its process lookup sees A, so copy `infrastructure/stevedesktop/Prefs.template.xml` to `<i>\Config\Prefs.xml` by hand and add the window size. Copy `infrastructure/state/modlists/ModsConfig.MINIMAL.xml` to `<i>\Config\ModsConfig.xml`. It has 27 active mods including `brrainz.rimbridgeserver`; confirm with `modset_builder`'s reader that each resolves on this machine, since SteveDesktop has only 64 Workshop items and 33 in `Mods`. If some do not, take that list minus those mods.
 4. Run the rung-one command. Note the time and B's process id from its command line. Never use a tool that looks up "the" game while B is up, except by id.
 5. Wait for the port line in `<i>\Player.log`, and read its Steamworks lines and the Workshop mods seen.
 6. Over the env pair, `rimworld/start_debug_game_ready` on B, and check its map from the bridge. Check A on 5174 with its own token, ask each for its colony or map identity and a state read, and advance each a little. Spawn a marker thing on B only and confirm that A does not have it.
 7. Record, with both running, for 2 minutes: A's and B's TPS, working set and private memory, commit free, VRAM, CPU, `Get-NetTCPConnection -State Listen -LocalPort 5174,5175`.
-8. Stop B by id: `taskkill /PID`, then `/F` after 90 s, as `rw_game.sh down` does. Confirm A is still alive, its bridge answering and its Player.log still growing. Stop A with `rw_game.sh down` only when B is gone. Run a final check that A's `ModsConfig.xml` and `Prefs.xml` md5 still match. Then the same round reversed if time allows.
+8. Stop B by id: `taskkill /PID`, then `/F` after 90 s, as `rw_game.sh down` does. Confirm A is still alive, its bridge answering and its `JawaBench\tps` file still growing; its Player.log can sit still for many minutes on a healthy game (MEASURED). Stop A with `rw_game.sh down` only when B is gone. Run a final check that A's `ModsConfig.xml` and `Prefs.xml` md5 still match. Then the same round reversed if time allows.
 
 **Pass:** two games at once; each answers its own bridge on its own port with its own token; each has its own map, shown by the marker; and each log is clean: no Steamworks warning, no bridge failure, no new error attributable to the other game. A's files unchanged.
 
@@ -233,9 +233,49 @@ Not run; ready for a helper to run on the Conductor's word.
 
 **What the trial needs from the Conductor:** a window of about 30 minutes with SteveDesktop quiet, in other words stop `rm-ralph-gss-steve` at a pass boundary or wait until it ends. Also pause `testq` there. One helper to drive it, on rung one's commands.
 
+## Trial result, 2026-11-07
+
+**Rung one passed on SteveDesktop.** Stop at this rung. Three rounds ran from 11:42 to 11:59 PST, with a 10-mod A on 5174 and a 27-mod B on 5175. Readings: `D:\ClaudeWork\rimmandrake\instances_trial\readings.md` on Archmagi. Evidence: `D:\ClaudeWork\rimmandrake\instances\b\trial\` on SteveDesktop. No CPU fault interrupted it.
+
+Against the pass definition:
+
+- **Two games at once, each on its own bridge and token.** Yes. Port owners matched each game's process id.
+- **Own map, shown by the marker.** Yes. A was on an arid shrubland tile and B on a temperate forest tile. Hyperweave spawned on B read 1 there and 0 on A.
+- **Steam.** It did not refuse. There was no Steamworks line in either log, `steamclient64.dll` was loaded in both, and B listed the same 64 `SteamWorkshop` mods as A. Steam's log records B as `Game process updated` and tracks its id. No Steam dialog appeared on the desktop captures. Steam's ordinary Store window was open; whether it was open before the trial is UNMEASURED.
+- **Clean logs.** A logged no error words with B up. B logged no new line of any kind when A joined. B's red load errors are the MINIMAL list's own missing cross-references on this machine, and they were there with B alone.
+- **A's files unchanged.** `ModsConfig.xml` and `Prefs.xml` md5 matched after both rounds.
+- **Either stop order.** Stopping B by id left A answering, and stopping A by id left B answering. Each exit took about 5 s.
+
+Cost, on these small lists:
+
+| | Alone | With the other game | Change |
+|---|---|---|---|
+| A, Superfast (target 360) | held 360 | held 360 | none seen |
+| B, Superfast (target 360) | not read | held 360 | |
+| A, Ultrafast, fresh map, 30 s | 1672.9 TPS | 1452.6 TPS | -13% |
+| B, Ultrafast, fresh map, 30 s | 1347.3 TPS | 1219.0 TPS | -10% |
+
+Together they ran at 2671.6 TPS, 1.6 times A alone. These are short windows on different maps, and TPS climbs as a map settles, so read them as about 10 to 15% each, not to the digit. B used 3.9 to 4.4 GB private memory and about 2 GB VRAM. A used 2.5 to 3.0 GB and 1.06 GB. GPU memory went from about 2.1 to 4.0 GB of 11.3, and commit free from 115 to about 111 GB. B's first bridge reply came at 59 and 64 s, and A's, started second, at 21 s.
+
+What the trial proved false, now corrected above:
+
+- `Set-Content` wrote no token file and raised no error, so round 1's token was lost and B was restarted. Cause UNMEASURED.
+- `-screen-fullscreen 0 -screen-width 1280 -screen-height 720` alone left B fullscreen at 3840x1600. A size in B's `Prefs.xml` gave a 1280x720 window.
+- `rw_game.sh init` cannot seed Prefs for B while A is up.
+- A's Player.log is no sign of life.
+- A working bridge is no sign of Steam on SteveDesktop, because the bridge has a local copy there.
+
+Also learned: `system_screenshot.py` has to run under `python.exe`. `rimworld/step_game_ticks` runs at game speed and timed out at 589 of 3000 ticks, so it is no throughput measure. B's exit does overwrite the Unity key, with fullscreen mode and size, as predicted, and `reg import` restored it. Do the import with no game running, because a game's exit writes the key again.
+
+Still unmeasured: two games on full lists, Archmagi, a deploy with two games up, and headless B.
+
+**What it means for a loop on B.** The game side is ready on SteveDesktop, and the tools are not. The trial held the whole machine and used only pid-based stops. A loop's `rw_game.sh`, `modset_builder` and `taskkill /IM` would still act on the wrong game, so do tooling items 1 and 2 first, then the rest of the first list, then put one loop on B. Keep the writable mods of the two lists disjoint until a deploy with two up has been tried.
+
+**What it means for Archmagi.** This result does not transfer directly. Archmagi launches through Steam, its folder has no `steam_appid.txt`, its bridge is Workshop only, and it had 7.3 GB free at the design reading. B on a small list needs about 4 GB private. Trial it only as a separate decision, with the same checks.
+
 ## What this buys, honestly
 
-At best about twice the game-minutes per machine when both are busy, on SteveDesktop only (ESTIMATE; interference UNMEASURED, and the fault-limited clock leaves less headroom than the core count suggests). More exactly, it removes the queue. Graffiti's loop is sitting on `NEED_GAME` now behind two others, and a second game on SteveDesktop lets one of those proceed. So this is a real, immediate gain.
+At best about 1.6 times the game-ticks per machine when both are busy, on SteveDesktop (MEASURED on small lists in short windows; full lists UNMEASURED, and the fault-limited clock leaves less headroom than the core count suggests). More exactly, it removes the queue. Graffiti's loop is sitting on `NEED_GAME` now behind two others, and a second game on SteveDesktop lets one of those proceed. So this is a real, immediate gain.
 
 What it does not change:
 
@@ -246,4 +286,4 @@ What it does not change:
 - **Deploys.** Shared `Mods` makes the companion DLL a both-games-down event. Rung three cures that at a licence-question cost.
 - **Machine faults.** One SteveDesktop fault now costs two games' runs.
 
-Do the trial next. If it passes, do items 1 and 2 of the tooling first, then the rest, then put one loop on B.
+The trial passed. Do items 1 and 2 of the tooling first, then the rest, then put one loop on B.
