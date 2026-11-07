@@ -157,7 +157,8 @@ His words on what happens between people came later, and add to that:
 - [ ] `making_a_mark_is_its_own_fun` — all mark makers get a small mood buff for
       having made it, and making it counts as a fun activity for recreation.
 - [ ] `rereads_affect_at_most_daily` — seeing the same mark repeatedly repeatedly
-      affects you, but no more than once per day.
+      affects your mood, but no more than once per day. Opinion changes once, on the
+      first read.
 
 **Art skill — his words, 2026-11-07**
 - [ ] `art_skill_goes_into_the_art` — "a poor artist will paint such a bad graffiti
