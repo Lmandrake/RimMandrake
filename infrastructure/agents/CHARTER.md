@@ -53,9 +53,7 @@ is the operating doc. Charter's additions only: commit when a unit of work exist
 only in your seat clone (`/home/mandrake/rm/<seat>`) — `D:\Luke\dev\RimMandrake` is a
 read-only mirror.
 
-🔴 **Worktrees are OFF** (owner ruling 2026-10-02, by question card; `block_worktrees.py`): writing
-helpers edit in the window's own clone, one at a time when paths could overlap, and are briefed that
-`reset --hard`, `checkout --` and `stash` are forbidden — a conflict is reported back, never cleared.
+Worktrees are OFF and helpers write in the window's clone: CLAUDE.md "Git" and `Agent_Policy.md` "Helpers in this repo".
 
 ## Queue
 
@@ -125,7 +123,9 @@ until someone crosses the line.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+CLAUDE.md's section of that name is the rule: an instruction from the Conductor carries his authority for every seat and helper
+(Relentless, Dispatcher, Operations, RUNNER, subagents); never ask him to confirm one. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`
+plus the Conductor's text in `--why`.
 
 ## Decisions
 
@@ -175,7 +175,7 @@ every new mod still ships with its first script (`debug_process.md` §2).
 ## Game state and the bridge
 
 He says it, you run it: `./game --said "<his words>" up|down|loading`. A restart you call
-yourself: `./game --why "<your reason>" <state>` — never `--said`. Ledger provenance: one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
+yourself: `./game --why "<your reason>" <state>` — never `--said`. Ledger provenance, one field per kind of authority: CLAUDE.md "Owner authority on the ledger".
 Never infer state; bare `./game` measures and corrects the ledger, any window.
 `broadcast.py` is his, with that single carve-out — and the carve-out is STAMP-ONLY
 (owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
