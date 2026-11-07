@@ -82,6 +82,7 @@ namespace RimMandrake.Graffiti
                 if (art.passion == Passion.None) art.passion = Passion.Minor;
             }
             p.Notify_DisabledWorkTypesChanged();
+            GraffitiTemperament.Forget(p);
             return p.LabelShort + " [" + string.Join(",", p.story.traits.allTraits.Select(t => t.def.defName + (t.Degree != 0 ? ":" + t.Degree : ""))) + "] art "
                 + p.skills.GetSkill(SkillDefOf.Artistic).Level + (p.WorkTagIsDisabled(WorkTags.Artistic) ? " (art disabled)" : "") + " at " + p.Position;
         }
@@ -96,6 +97,47 @@ namespace RimMandrake.Graffiti
             IntVec3 c = new IntVec3(int.Parse(xz[0]), 0, int.Parse(xz[1]));
             bool ok = p.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Goto, c));
             return w[0] + " sent to " + c + " ok=" + ok;
+        }
+
+        /// <summary>This colonist's temperament as the table reads it, and their paint urge.</summary>
+        public static string Temper(string args)
+        {
+            Pawn p = Named(args);
+            if (p == null) return "error=no such pawn";
+            RM_Temper t = GraffitiTemperament.Of(p);
+            return args + " numb " + t.numb + " bad " + t.bad + " good " + t.good + " fine " + t.fine + " ugly " + t.ugly + " temper " + t.temper + " paint " + t.paint
+                + " neat " + t.neat + " lean " + t.lean + " hot " + GraffitiTemperament.IsHot(p) + " urge " + GraffitiTemperament.Urge(p).ToString("0.00")
+                + " mourns " + (GraffitiSocial.Mourned(p)?.LabelShort ?? "-") + " joy " + (p.needs?.joy?.CurLevelPercentage.ToString("0.00") ?? "-");
+        }
+
+        /// <summary>"a/b": if a confronted b over a mark, the chance it comes to blows (owner's pick: scaled with a's temper), beside the game's
+        /// own chance of a fight over an insult.</summary>
+        public static string Fight(string args)
+        {
+            string[] w = args.Split('/');
+            Pawn a = Named(w[0]), b = Named(w[1]);
+            if (a == null || b == null) return "error=no such pawn";
+            return w[0] + " confronting " + w[1] + ": vanilla insult fight " + a.interactions.SocialFightChance(InteractionDefOf.Insult, b).ToString("0.000")
+                + " temper " + GraffitiTemperament.Of(a).temper + " -> wall fight " + GraffitiSocial.FightChance(a, b).ToString("0.000") + " (opinion " + a.relations.OpinionOf(b) + ")";
+        }
+
+        /// <summary>"Nick/x,z": the player right-clicks the mark at that floor cell and picks Clean, as the float menu does: the cleaning work
+        /// giver is asked, forced, and its refusal reason is what the menu would show.</summary>
+        public static string CleanOrder(string args)
+        {
+            string[] w = args.Split('/');
+            Pawn p = Named(w[0]);
+            if (p == null) return "error=no such pawn";
+            string[] xz = w[1].Split(',');
+            IntVec3 c = new IntVec3(int.Parse(xz[0]), 0, int.Parse(xz[1]));
+            Filth_Mark m = c.GetThingList(p.Map).OfType<Filth_Mark>().FirstOrDefault();
+            if (m == null) return "error=no mark at " + c;
+            var giver = (WorkGiver_CleanFilth)DefDatabase<WorkGiverDef>.GetNamed("CleanFilth").Worker;
+            JobFailReason.Clear();
+            if (!giver.HasJobOnThing(p, m, forced: true)) return w[0] + " REFUSES: " + (JobFailReason.Reason ?? "(no reason given)");
+            Job job = giver.JobOnThing(p, m, forced: true);
+            bool ok = job != null && p.jobs.TryTakeOrderedJob(job);
+            return w[0] + " ordered to clean " + m.def.defName + " ok=" + ok;
         }
 
         /// <summary>This colonist dies (so those who loved them grieve, the game's own way).</summary>
@@ -169,6 +211,11 @@ namespace RimMandrake.Graffiti
             foreach (Filth_Mark m in comp.marks.Where(m => m.subject != null || m.defaced || m.targetFaction != null || m.Meaning != RM_Meaning.None).ToList())
             {
                 sb.AppendLine("  " + m.Position + " " + m.StoryLines());
+            }
+            if (args == "trace")
+            {
+                foreach (string line in GraffitiSocial.trace) sb.AppendLine("  . " + line);
+                GraffitiSocial.trace.Clear();
             }
             foreach (RM_Grudge g in comp.Grudges.ToList())
             {

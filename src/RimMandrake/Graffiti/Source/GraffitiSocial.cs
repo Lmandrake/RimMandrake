@@ -296,10 +296,14 @@ namespace RimMandrake.Graffiti
             if (temper.neat > 0 && !own && GameComponent_Graffiti.Get?.MessDue(v) == true)
             {
                 did |= GraffitiTemperament.Give(v, T.RM_Graffiti_Mess, null, 1f, 2, temper.neat >= 2 ? 1 : 0);
+                Trace(v.LabelShort + " minds the mess at " + m.Position + " (neat " + temper.neat + ")");
             }
             RM_Viewer standing = StandingOf(v, m);
             if (!RM_GraffitiKernel.StillSpeaks(m.defaced, standing.isMaker)) return did;
             RM_Reaction reaction = RM_GraffitiKernel.ReactionOf(m.Meaning, standing);
+            Trace(v.LabelShort + (first ? " reads " : " rereads ") + m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + " by " + (m.maker?.LabelShort ?? "-")
+                + " about " + (m.subject?.LabelShort ?? "-") + " -> " + reaction + " (maker " + standing.isMaker + ", subject " + standing.isSubject + ", of subject "
+                + standing.opinionOfSubject + ", neat " + temper.neat + ")");
             if (reaction == RM_Reaction.None) return did;
             Apply(v, m, reaction, first, m.Reach * again);
             if (Treasures(reaction)) m.NoteValued(v);
@@ -311,6 +315,7 @@ namespace RimMandrake.Graffiti
                 ? RM_GraffitiKernel.AnswerOf(reaction, standing.hot, !v.WorkTagIsDisabled(WorkTags.Violent), makerHere, CanReplyInPaint(v), Rand.Value, temper.lean)
                 : RM_Answer.None;
             comp.AddGrudge(v, m, other, answer);
+            if (answer != RM_Answer.None) Trace(v.LabelShort + " means to " + answer + (other != null ? " against " + other.LabelShort : ""));
             return true;
         }
 
@@ -687,6 +692,7 @@ namespace RimMandrake.Graffiti
             float chance = FightChance(by, painter);
             GameComponent_Graffiti game = GameComponent_Graffiti.Get;
             bool fight = chance > 0f && game != null && game.FightDue && Rand.Value < chance;
+            Trace(by.LabelShort + " confronts " + painter.LabelShort + ": fight chance " + chance.ToString("0.00") + (game != null && !game.FightDue ? " (a fight too recent)" : "") + " -> " + (fight ? "BLOWS" : "words"));
             string where = about != null ? " what " + painter.LabelShort + " painted about " + about.SubjectName : " what's on the wall";
             if (fight)
             {
@@ -719,6 +725,15 @@ namespace RimMandrake.Graffiti
             if (m?.Map == null) return LookTargets.Invalid;
             IntVec3 at = m.wallSide >= 0 ? m.Position + new Rot4(m.wallSide).FacingCell : m.Position;
             return new LookTargets(at, m.Map);
+        }
+
+        /// <summary>The last readings and answers, for a live proof to print (RM_GraffitiSocialProof.Ledger). Costs a string per reading.</summary>
+        internal static readonly List<string> trace = new List<string>();
+
+        internal static void Trace(string line)
+        {
+            trace.Add(Find.TickManager.TicksGame + " " + line);
+            if (trace.Count > 60) trace.RemoveAt(0);
         }
 
         private static void Say(Pawn p, string line, Color tone)

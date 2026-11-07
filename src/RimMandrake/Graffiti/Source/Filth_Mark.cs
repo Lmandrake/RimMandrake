@@ -336,6 +336,8 @@ namespace RimMandrake.Graffiti
             mark.hasCraft = maker?.skills != null && maker.RaceProps.Humanlike;
             // Ordered work may spend an inspiration; a tag dashed off in an idle moment doesn't use one up (personality pass, section 9).
             mark.craft = mark.hasCraft ? (int)QualityUtility.GenerateQualityCreatedByPawn(maker, SkillDefOf.Artistic, ordered) : RM_GraffitiKernel.Normal;
+            ModExtension_Graffiti form = markDef.GetModExtension<ModExtension_Graffiti>();
+            if (form != null) mark.craft = System.Math.Min(mark.craft, RM_GraffitiKernel.CraftCeiling(form.form));
             mark.sigilMatsBuilt = false;
             mark.RebuildSigilMats();
             mark.ChooseLook(cell, map);

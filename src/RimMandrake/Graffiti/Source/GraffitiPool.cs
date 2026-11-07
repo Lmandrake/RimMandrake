@@ -131,13 +131,15 @@ namespace RimMandrake.Graffiti
             HashSet<ThingDef> near = at.HasValue && placer?.Map != null ? DefsNear(at.Value, placer.Map) : null;
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
+            int level = placer?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0;
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
                 if (ext == null || !filter(ext) || WidthOf(d) > maxWidth) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
-                weights.Add(near != null && near.Contains(d) ? ext.poolWeight * RM_GraffitiKernel.NearbySameMarkWeight : ext.poolWeight);
+                float w = ext.poolWeight * RM_GraffitiKernel.FormAffinity(ext.form, level);
+                weights.Add(near != null && near.Contains(d) ? w * RM_GraffitiKernel.NearbySameMarkWeight : w);
             }
             int index = RM_GraffitiKernel.PickIndex(weights, defs.Count == 0 ? 0f : Rand.Range(0f, RM_GraffitiKernel.Total(weights)));
             return index < 0 ? null : defs[index];

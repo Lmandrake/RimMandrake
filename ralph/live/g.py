@@ -66,7 +66,7 @@ def run(s, ticks, chunk=2500):
         r = s.call("jawa/safe_advance", ticks=n)
         done += n
         print("== +%d (%s)" % (done, str(r.get("triggers") if isinstance(r, dict) else r)[:160]), flush=True)
-        print(static(s, SOCIAL, "Ledger"), flush=True)
+        print(static(s, SOCIAL, "Ledger", "trace"), flush=True)
 
 
 CAST = ["Abrasive/12", "Nerves:-2/0", "Psychopath/13"]     # the quicktest's three colonists become: the mocker, her target, the cold one
@@ -84,7 +84,69 @@ def setup(s):
     print("ROLES mocker=%s target=%s cold=%s" % tuple(names))
 
 
+def until(s, pattern, maxticks, step=60):
+    """Advance `step` ticks at a time until a trace line matches `pattern`; leaves the game paused right after it."""
+    import re
+    done = 0
+    while done < maxticks:
+        s.call("jawa/safe_advance", ticks=step)
+        done += step
+        led = str(static(s, SOCIAL, "Ledger", "trace"))
+        hits = [l for l in led.splitlines() if l.startswith("  . ") and re.search(pattern, l)]
+        if hits:
+            print("UNTIL +%d" % done)
+            print("\n".join(hits))
+            return True
+    print("UNTIL gave up after %d" % done)
+    return False
+
+
+def ui(s, name, pawn, tab, cell=None, root=7.4):
+    """Select a pawn, open an inspect tab, frame at about play zoom, take a full-screen shot (UI included)."""
+    s.call("jawa/clear_ui")
+    s.call("jawa/screenshot_mode", enabled=False)
+    if pawn != "-":
+        print(str(s.call("rimworld/select_pawn", pawnName=pawn))[:60])
+        time.sleep(0.8)
+        if tab != "-":
+            for _ in range(5):
+                r = s.call("rimworld/open_inspect_tab", inspectTabId=tab)
+                print(str(r)[:120])
+                if isinstance(r, dict) and r.get("success"):
+                    break
+                time.sleep(0.8)
+    if cell:
+        x, z = (int(v) for v in cell.split(","))
+        s.call("rimworld/jump_camera_to_cell", x=x, z=z)
+    elif pawn != "-":
+        s.call("rimworld/jump_camera_to_pawn", pawnName=pawn)
+    s.call("rimworld/set_camera_zoom", rootSize=root)
+    s.call("rimworld/step_game_ticks", ticks=1)
+    static(s, STAGE, "Settle")
+    time.sleep(1.0)
+    r = s.call("rimworld/take_screenshot", fileName="%s__%d" % (name, int(time.time())), suppressMessage=True)
+    path = r.get("path") if isinstance(r, dict) else None
+    for _ in range(40):
+        if path and os.path.exists(path) and os.path.getsize(path) > 0:
+            break
+        time.sleep(0.5)
+    os.makedirs(SHOTS, exist_ok=True)
+    dest = os.path.join(SHOTS, name + ".png")
+    shutil.copy(path, dest)
+    s.call("jawa/screenshot_mode", enabled=True)
+    print("UISHOT", dest)
+
+
 def one(s, a):
+    if a[0] == "brk":
+        print(str(s.call("jawa/pawn_force_mental_break", pawn=a[1], breakDef=a[2], reason="the walls"))[:400])
+        return
+    if a[0] == "until":
+        until(s, a[1], int(a[2]), int(a[3]) if len(a) > 3 else 60)
+        return
+    if a[0] == "ui":
+        ui(s, a[1], a[2], a[3], a[4] if len(a) > 4 and a[4] != "-" else None, float(a[5]) if len(a) > 5 else 7.4)
+        return
     if a[0] == "setup":
         setup(s)
         return
@@ -98,6 +160,11 @@ def one(s, a):
         shot(s, a[1], tuple(int(v) for v in a[2].split(",")), int(a[3]) if len(a) > 3 else 64)
     elif a[0] == "raw":
         print(json.dumps(s.call(a[1], **json.loads(a[2] if len(a) > 2 else "{}")))[:4000])
+    elif a[0] == "schema":
+        r = s.s.list_tools() if hasattr(s.s, "list_tools") else s.call("tools/list")
+        for t in (r.get("tools") if isinstance(r, dict) else r) or []:
+            if t.get("name") in a[1:]:
+                print(t.get("name"), json.dumps(t.get("inputSchema") or t.get("parameters") or t)[:900])
     elif a[0] == "tools":
         r = s.s.list_tools() if hasattr(s.s, "list_tools") else s.call("tools/list")
         names = [t.get("name") for t in (r.get("tools") if isinstance(r, dict) else r) or []]

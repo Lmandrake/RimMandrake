@@ -906,6 +906,38 @@ namespace RimMandrake.Graffiti
 
         public const int Awful = 0, Poor = 1, Normal = 2, Good = 3, Excellent = 4, Masterwork = 5, Legendary = 6;
 
+        /// <summary>The most a form can be worth as art. Live 2026-11-07: a level-15 hand rolled "excellent" scratches worth +8 Beauty, which no
+        /// player would believe. A tally or a scratch is a tally however good the hand; a tag can have style; a throw-up can be very good;
+        /// a stencil, a poster, a sigil or a piece can be a masterwork.</summary>
+        public static int CraftCeiling(GraffitiForm form)
+        {
+            switch (form)
+            {
+                case GraffitiForm.Scrawl:
+                case GraffitiForm.Glyph: return Normal;
+                case GraffitiForm.Tag: return Good;
+                case GraffitiForm.ThrowUp: return Excellent;
+                default: return Legendary;
+            }
+        }
+
+        /// <summary>How much a hand of this Artistic level favours a form when it picks what to paint: beginners tally, scratch and tag; artists
+        /// paint throw-ups, stencils, posters and pieces. Multiplies the def's poolWeight.</summary>
+        public static float FormAffinity(GraffitiForm form, int level)
+        {
+            int l = level < 0 ? 0 : (level > 20 ? 20 : level);
+            switch (form)
+            {
+                case GraffitiForm.Glyph: return l < 8 ? 1f : 0.35f;
+                case GraffitiForm.Tag: return l < 12 ? 1f : 0.6f;
+                case GraffitiForm.ThrowUp: return 0.6f + 0.06f * l;
+                case GraffitiForm.Stencil:
+                case GraffitiForm.Paste: return 0.5f + 0.05f * l;
+                case GraffitiForm.Piece: return l < 6 ? 0.1f : 0.15f * l;
+                default: return 1f;
+            }
+        }
+
         /// <summary>A mark's net beauty in its cell by craft, wherever it is (Filth_Mark.GetBeauty undoes the roof's 0.3 on filth).</summary>
         public static float CraftBeauty(int quality)
         {

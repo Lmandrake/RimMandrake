@@ -114,6 +114,9 @@ namespace RimMandrake.Graffiti
             return t;
         }
 
+        /// <summary>Drop this pawn's cached temperament: their traits just changed.</summary>
+        internal static void Forget(Pawn p) { if (p != null) cache.Remove(p.thingIDNumber); }
+
         /// <summary>The game's own social-fight factors on this pawn (traits not suppressed, genes): what makes a hot head, with the table's temper.</summary>
         public static float VanillaFightFactors(Pawn p)
         {
