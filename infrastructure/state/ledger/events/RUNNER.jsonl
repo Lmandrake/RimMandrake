@@ -5685,3 +5685,5 @@
 {"seat":"RUNNER","event":"note","id":"STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO","text":"Steve fault window F20261107T061130Z: first bad 2026-11-07T06:24:30Z at uptime 0.22 h, CPUs [6], last clean 2026-11-07T06:19:23Z; cause evidence /mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261107T061130Z.txt","ts":"2026-11-07T06:26:40Z","tsn":1794032800910053818}
 {"seat":"RUNNER","event":"live","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/testq/tick.log is 7845 s old (max 7200)","ts":"2026-11-07T11:33:08Z","tsn":1794051188705463032}
 {"seat":"RUNNER","event":"raise","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-07T11:33:12Z","tsn":1794051192071900739}
+{"seat":"RUNNER","event":"live","id":"TESTQ_MODS_WIRE_BEYOND_FLOWWORKS","result":"kept","detail":"sweep: running again","ts":"2026-11-07T11:48:07Z","tsn":1794052087965267501}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-07T11:48:11Z","tsn":1794052091276277019}
