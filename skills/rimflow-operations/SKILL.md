@@ -26,8 +26,8 @@ bound on usage, and blind), UNMEASURED (nothing to carry, or its window reset). 
 as good as its `measured` age: `stale` means do not act on it. Dormant accounts are read from their
 vault only while the token has 15+ min left (probing never refreshes a token); a live account's
 vault copy is never run. Details, properties per account, Steven's window: `references/accounts.md`.
-- **Exact `/usage` with no model call.** `claude -p /usage --output-format json --no-session-persistence` (num_turns 0, cost 0) puts the session/week % used and reset lines of the interactive `/usage` in `.result`, for whatever login `CLAUDE_CONFIG_DIR` points at. Pair it with `claude auth status` in the same env to prove which login answered. Never run it against a dormant vault login whose access token is near expiry: Claude Code refreshes and rotates the credential under `claude-account`.
-- **`switching_plan.py status` 'The week ahead at R %/h' is the POOL PACING rate** (budget left / hours to deadline: what the plan would like to spend), not the measured burn. Do not quote its times as a forecast. For a switch time, divide pct-to-line by the slope of `week_pct_used` in `/mnt/d/ClaudeWork/rimmandrake/account_usage/series.jsonl` (measured ~2.8%/h when the pacing said 6-7).
+
+More traps for this section: [references/traps.md](references/traps.md) § 1. Check an account's level (read-only, safe anywhere).
 
 ## 2. The standard switching plan (rulings and provenance)
 
@@ -52,7 +52,8 @@ his word. Full state machine, markers and the review history: `references/plan.m
 spends no model tokens and uses no network or Tailscale. Hitting 0% locks nobody out of the
 switcher. What breaks at 0%: every window and helper on that account errors, and the owner cannot
 talk to a seat until the switch lands. Hence waiting accounts keep 2%, leaving accounts burn to 0.
-- **A switch plan that changes WHICH account the owner sits on must cite his words for each leg.** An agent revision ('use it or lose it', no owner quote) kept the fleet on lukas past a planned switch back to system, which refilled to 100% while lukas burned nothing; and every relaunch must start the seats, or the windows open idle.
+
+More traps for this section: [references/traps.md](references/traps.md) § 2. The standard switching plan (rulings and provenance).
 
 ## 3. Switching by hand
 
@@ -78,7 +79,8 @@ claude-account use <acct> --confirm archmagi      # then disarm
 ```
 Check `claude-account --json status` for the live account first. No Claude session is needed
 anywhere in this path.
-- **The Tailscale-SSH-from-the-Mac route can be unavailable** (the laptop had no Tailscale CLI, no 100.x interface, and `archmagi`/`archmagi-wsl` did not resolve). The browser route works: console.tailscale.com > Machines > archmagi-wsl > "SSH to machine" > username Other: `mandrake` (Google re-auth popup) opens a shell as mandrake on Archmagi. Drive it with uiclick plus System Events keystrokes; the cdp extension loses the tab once the SSH popup opens.
+
+More traps for this section: [references/traps.md](references/traps.md) § 4. Recovery when a switch sticks (needs no Claude).
 
 ## 5. Stand-down / stand-up costs (why switches are not free)
 
@@ -90,9 +92,8 @@ anywhere in this path.
   itself (at most once per hour per account, under claude-account's own lock, refused if that login is live here or on
   any remote); `claude-account-warm.timer` (daily) is separate and still warms every account (WARMTIMER_HARDEN_SPARE_LIVE).
 - The relaunched Fleet comes up on the new account; check `slot_allocator now` before assuming capacity.
-- **`claude-account warm <acct>` is NOT safe on the live login.** `warm_one` only observes a LIVE account while Claude processes run; with none running it runs `claude` on the live login (a refresh of the live credential). A dormant-only warm must first prove the account is live nowhere: `account_usage.poll` checks the switcher's own status and every remote's status and skips any live label.
-- **A relaunched Claude window is not a working seat until it gets a first prompt.** The WT seat profiles (`install_wt_seat_profiles.py`) launched `claude` with none, so every boot or account-switch relaunch opened BENCH and FOUNDRY idle until someone typed wake; the fix is `WAKE_PROMPT` as a positional after `--remote-control '<label>'` (measured 2.1.308: not swallowed as the RC name). The live Artist profile had drifted from the installer, so a bare `--apply` rewrites tiles you did not mean to touch: use `--only SEAT,SEAT` and diff live vs `build()` first. A seat restart relaunches in the SAME tile (`seat_loop.sh` execs the killed record's argv) because `launch_fleet` opens a new tab and orphans the old tile; `launch_fleet -Seats <SEAT>` is only the fallback (its path from the systemd-run Dispatcher through WSL interop is UNMEASURED and gets no first prompt). A `/clear`'d idle window reads 'not quiet' and holds.
-- **A Dispatcher-started restart over the hard context limit stays held** ('no boundary yet, last record assistant_tool') for as long as the window sits on an unanswered AskUserQuestion card, and `restart_reconcile` then alarms `OPS_RESTART_UNSTICK_*` after `restart_reconcile_held_s`. Read the tail of the seat transcript first: a pending card means it waits on the owner and nothing is broken.
+
+More traps for this section: [references/traps.md](references/traps.md) § 5. Stand-down / stand-up costs (why switches are not free).
 
 ## 6. Throttles and timers
 
@@ -107,8 +108,8 @@ anywhere in this path.
   `src/RimMandrake/rimflow/testing_policy.json`, reader `testing_policy.py`). Mutation runs (`run_mutation.py`,
   mutmut on SteveDesktop; gate enforced in code): testing_policy_2026-10-28.md §2.6. Nightly sweep: §2.3. testq
   lanes and filler hours: §2.7. Which test for which code: §4. Only D/A tunables may be moved by an agent: §0.
-- **`slot_allocator`'s message-count rate fallback counts only THIS machine's assistant messages;** another machine on the same account (SteveDesktop on system) is invisible to it, so the measured %/h reads low until the `account_usage` series has >=4 points over >=1.5 h and the slope takes over.
-- **Never stop timers for a cutover without a resume armed in the same command** (`systemd-run --user --on-active=6h systemctl --user start $(cat list)`, or `timers_guard.py pause --hours H --all`): a mass stop of every `rm-*`/`testq-*` timer killed the no-LLM lanes for hours, and every watchdog was inside the stopped glob; it also stops `timer-guard`, so the guard cannot see it. To find who stopped a unit: the system journal's tailscaled 'starting non-pty command' lines carry the full remote command, `journalctl -g 'audit: SSH login'` names the peer, and `Unit now frozen` or a same-second mass 'Stopped rm-*.timer' in the user journal means a hand-run pause; search that day's transcripts for `systemctl --user (stop|freeze)` before suspecting systemd or a WSL boot drop.
+
+More traps for this section: [references/traps.md](references/traps.md) § 6. Throttles and timers.
 
 ## 7. Traps
 
@@ -119,5 +120,5 @@ anywhere in this path.
 - A DARK soft line is right while there is nowhere to go and wrong once a fresh account exists.
 - `use` timing out at 600 s mid-switch leaves the journal: recover (section 4).
 - Selftests stub the CLI; the real call needs probing once. More: `references/traps.md`.
-- **Account handover links (`account_handover.py`) are armed one transient systemd link at a time and are allowances that must end.** After a link fires, check the now-live account has its own onward link (`systemctl --user list-units 'rm-account-handover*'`) or it drains to 0% while the next account in order sits full. A one-time link writes `<from>_to_<to>.done` and then ticks forever as a spent timer, and an armed link with no end outlives the grant it carried: arm with `--until <reset ISO with offset>`, end with `account_handover.py retire --why` (stops `rm-account-handover-<from>.timer`). Its `--dry-run` still appends to the real `log.jsonl`, so a proof grepping that log must require dry_run false.
-- **Relentless reach repair.** An UNMEASURED blind check no longer re-checks on a clock and is not cleared by `unhold --offbox` (`relentless_reachfix.py`, rule `reach_repair`): the first blind check blocks the item (wait kind `reach`), the Judge's `--propose` (adapter name or read path) is probed from inside a throwaway Marker wall and applied as a store overlay, then the same sha is checked once. One item per gap class owns the repair and the rest wait on it; a ticket (`reach_classes[].ticket`) is filed only when the probe fails. Do not unhold a reach-blocked item: fix the probe's gap or close its ticket, which triggers one re-probe. Store book: `<store>/reach_gaps.json`.
+
+More traps for this section: [references/traps.md](references/traps.md) § 7. Traps.
