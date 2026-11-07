@@ -69,6 +69,97 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return best;
         }
 
+        /// <summary>A fold is two arms meeting at a point: the heading turns past KinkDeg over KinkArc either side of it, and each arm
+        /// holds its line (within KinkArmDeg) on out to KinkArm. The arms are what tell it from a coil, whose heading never stops
+        /// turning: a heap's tight coils are the art, and a fold is a spike or an elbow the ribbon cannot draw.</summary>
+        public const double KinkArc = 0.1, KinkDeg = 100, KinkArm = 0.3, KinkArmDeg = 45;
+
+        private static double TurnDeg(V2 u, V2 v)
+        {
+            if (u.Len < 1e-6 || v.Len < 1e-6) return 0;
+            double cos = (u.X * v.X + u.Z * v.Z) / (u.Len * v.Len);
+            return Math.Acos(Math.Max(-1, Math.Min(1, cos))) * 180 / Math.PI;
+        }
+
+        private static int AtArc(double[] cum, int from, double arc)
+        {
+            int j = from;
+            if (arc < 0) while (j > 0 && cum[from] - cum[j] < -arc) j--;
+            else while (j < cum.Length - 1 && cum[j] - cum[from] < arc) j++;
+            return j;
+        }
+
+        /// <summary>Where a strand folds back on itself. The ends are skipped: they are the art's (plugs, frays, wall plates).</summary>
+        internal static List<V2> Kinks(List<V2> pts, double skipEnds = 0.25)
+        {
+            var o = new List<V2>();
+            if (pts == null || pts.Count < 5) return o;
+            double[] cum = Geo.CumLen(pts);
+            double L = cum[cum.Length - 1], last = double.MinValue;
+            for (int i = 1; i < pts.Count - 1; i++)
+            {
+                if (cum[i] < skipEnds || cum[i] > L - skipEnds || cum[i] - last < 0.3) continue;
+                int a = AtArc(cum, i, -KinkArc), b = AtArc(cum, i, KinkArc), a2 = AtArc(cum, i, -KinkArm), b2 = AtArc(cum, i, KinkArm);
+                V2 u = pts[i] - pts[a], v = pts[b] - pts[i];
+                if (TurnDeg(u, v) < KinkDeg) continue;
+                if (TurnDeg(pts[a] - pts[a2], u) > KinkArmDeg || TurnDeg(v, pts[b2] - pts[b]) > KinkArmDeg) continue;
+                o.Add(pts[i]);
+                last = cum[i];
+            }
+            return o;
+        }
+
+        /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
+        private const double UnfoldReach = 0.22, UnfoldFlare = 0.13;
+
+        /// <summary>Round every fold into a small bend, leaving the rest of the strand exactly where it lies, so its loops and its
+        /// ends do not move. A fold whose bend would leave walkable ground stays: the floor rule outranks the look.</summary>
+        internal static List<V2> Unfold(CordWorld w, List<V2> pts)
+        {
+            List<V2> P = pts;
+            var stuck = new List<V2>();
+            for (int guard = 0; guard < 60; guard++)
+            {
+                V2? at = null;
+                foreach (V2 k in Kinks(P))
+                    if (!stuck.Any(q => V2.Dist(q, k) < 0.05)) { at = k; break; }
+                if (at == null) return P;
+                List<V2> round = RoundFold(w, P, at.Value);
+                if (round == null) stuck.Add(at.Value); else P = round;
+            }
+            return P;
+        }
+
+        private static List<V2> RoundFold(CordWorld w, List<V2> P, V2 at)
+        {
+            int i = P.IndexOf(at);
+            double[] cum = Geo.CumLen(P);
+            int a = i, b = i;
+            while (a > 1 && cum[i] - cum[a] < UnfoldReach) a--;
+            while (b < P.Count - 2 && cum[b] - cum[i] < UnfoldReach) b++;
+            if (a < 1 || b > P.Count - 2 || a >= b) return null;
+            V2 s = P[a], e = P[b], ts = (P[a] - P[a - 1]).Norm(), te = (P[b + 1] - P[b]).Norm();
+            V2 gap = e - s, axis = ts - te;
+            axis = axis.Len < 1e-6 ? ts : axis.Norm();
+            V2 lat = gap.Len > 1e-6 ? gap.Norm() : axis.Perp;
+            double flare = Math.Max(0, UnfoldFlare - gap.Len / 2), k = Math.Max(0.16, gap.Len * 0.6);
+            V2 c1 = s + axis * k - lat * flare, c2 = e + axis * k + lat * flare;
+            var bend = new List<V2>();
+            const int n = 14;
+            for (int q = 1; q < n; q++)
+            {
+                double t = q / (double)n, it = 1 - t;
+                V2 pt = s * (it * it * it) + c1 * (3 * it * it * t) + c2 * (3 * it * t * t) + e * (t * t * t);
+                if (w != null && !w.IsWalkable(pt.Floor)) return null;
+                bend.Add(pt);
+            }
+            var o = new List<V2>(P.Count);
+            o.AddRange(P.GetRange(0, a + 1));
+            o.AddRange(bend);
+            o.AddRange(P.GetRange(b, P.Count - b));
+            return o;
+        }
+
         /// <summary>The pairwise table per length class, over the cords of the given pieces (end-to-end edges only).</summary>
         public static List<ShapeClass> Table(IEnumerable<LaidPiece> pieces)
         {

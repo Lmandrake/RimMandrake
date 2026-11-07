@@ -57,6 +57,7 @@ ROW_G = [(X0 + 4 * i, Z0 + 8) for i in range(4)]      # god mode
 COPY_AT = (X0 + 20, Z0 + 8)                           # copy of the god-mode Industrial mast
 REINSTALL_AT = (X0 + 20, Z0)                          # the build-mode Futuristic mast moves here
 LEGACY_AT = (X0 + 4, Z0 + 14)                         # built by jawa/build_batch: no designator, no style
+LEGACY_JOINED_AT = (X0 + 12, Z0 + 14)                  # the same, strung to the styled masts by auto-link (S8b)
 TWIN_AT = (X0 + 8, Z0 + 11)                           # a second Modern god mast 3 cells from the first: a same-look span
 
 
@@ -275,8 +276,11 @@ def run_live(args):
           {"reinstall": ri, "after": {k: moved.get(k) for k in ("id", "rawStyle", "graphicPath")}})
 
     # ---------------------------------------------------------------- S8 (scene part): a legacy mast, no designator, no style
+    # stood alone: auto-link would string it to a styled mast, and a member joining a run that stores its look stores it too (S8b)
+    B.ap("set:autoLink=False")
     V_build = B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % LEGACY_AT, faction="player", wipeExisting=False)
     B.ticks(3)
+    B.ap("set:autoLink=True")
     st = B.ap("styles")
     bp = _by_pos(st)
     lg = bp.get(LEGACY_AT) or {}
@@ -285,6 +289,27 @@ def run_live(args):
           and "/Styles/%s/" % dl in (lg.get("graphicPath") or "") else "FAIL", "MOD",
           {"build": V_build.get("success"), "legacy": {k: lg.get(k) for k in ("rawStyle", "style", "graphicPath")}, "defaultLook": dl,
            "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"})
+    # GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK: the same unstyled mast strung to a styled run stores the run's look, so a later
+    # change of the default cannot split the one run into two looks. The other side of S8's coin: it goes red if either rule goes.
+    B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % LEGACY_JOINED_AT, faction="player", wipeExisting=False)
+    B.ticks(3)
+    B.ap("cprocess")
+    st = B.ap("styles")
+    bp = _by_pos(st)
+    lj = bp.get(LEGACY_JOINED_AT) or {}
+    links = (B.ap("census").get("anchors") or [])
+    mine = next((a for a in links if (a.get("x"), a.get("z")) == LEGACY_JOINED_AT), {})
+    linked = bool(mine.get("links"))
+    joined_look = None
+    for o in (mine.get("links") or []):
+        other = next((a for a in links if a.get("id") == o.get("other")), None)
+        if other:
+            joined_look = (bp.get((other.get("x"), other.get("z"))) or {}).get("rawStyle")
+            break
+    V.row(rows, "S8b_legacy_joined_to_styled_stores_look", "UNMEASURED" if not (linked and joined_look) else
+          ("PASS" if lj.get("rawStyle") == joined_look else "FAIL"), "MOD" if linked and joined_look else "SITE",
+          {"linked": linked, "stored": lj.get("rawStyle"), "partner": joined_look,
+           "meaning": "PASS = strung to a styled run, an unstyled mast stores that run's look"})
 
     # ---------------------------------------------------------------- S6: spans draw in their poles' look
     bad, mixed, same = [], 0, 0

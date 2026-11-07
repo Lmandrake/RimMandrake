@@ -955,6 +955,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     P = new List<V2>(C);
                     fell = true;
                 }
+                // the loops and the settle leave folds a cord cannot make: its ribbon spikes there (live, a real colony: 2.9 a strand)
+                if (!fell) P = CordShape.Unfold(w, P);
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
@@ -1055,6 +1057,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (!diveB) P = PastFace(P, false, nb);
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
+                    if (!fell) P = CordShape.Unfold(w, P);
                     piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB });
                     laid += Geo.Length(P);
                 }
@@ -1690,6 +1693,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 P = Geo.Resample(P, 0.05);
                 CordLayer.Smooth(w, P, 3);
                 P[0] = pa.Tip; P[P.Count - 1] = pb.Tip;
+                P = CordShape.Unfold(w, P);
                 if (!P.All(q => w.IsWalkable(q.Floor))) continue;
                 p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
                 used.Add(a); used.Add(b);

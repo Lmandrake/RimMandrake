@@ -37,6 +37,30 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(alike == 0, $"{alike} pairs of one length class under {CordShape.TooAlikeBelow} cells apart; closest pair {worst:0.00}");
             Console.WriteLine($"  cord shape: {cords} cords over 5 seeds, closest pair {worst:0.00} cells apart, {alike} too alike");
 
+            // no strand folds back on itself, in a walled room with machines and a dense block as well as the open runs
+            int strands = 0, folds = 0;
+            foreach (ulong seed in new ulong[] { 1, 2, 3, 7, 19 })
+                foreach (CordWorld w in new[] { Room(), ReviewRound1Checks.PileWorld() })
+                    foreach (LaidPiece p in new CordBuilder().Build(w, new BuildOptions { Seed = seed }, c => true))
+                        foreach (CordStrand s in p.Strands)
+                        {
+                            strands++;
+                            folds += CordShape.Kinks(s.Pts).Count;
+                        }
+            Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
+            Console.WriteLine($"  cord folds: {folds} in {strands} strands");
+
+            // planted: a hairpin reads as a fold, rounding removes it, and the strand's ends stay put
+            {
+                var hair = new List<V2>();
+                for (int k = 0; k <= 40; k++) hair.Add(new V2(5 + k * 0.05, 5));
+                for (int k = 39; k >= 0; k--) hair.Add(new V2(5 + k * 0.05, 5.01));
+                var open = new CordWorld(20, 20);
+                Check(CordShape.Kinks(hair).Count == 1, $"planted hairpin reads {CordShape.Kinks(hair).Count} folds");
+                List<V2> round = CordShape.Unfold(open, hair);
+                Check(CordShape.Kinks(round).Count == 0 && round[0].X == hair[0].X && V2.Dist(round[round.Count - 1], hair[hair.Count - 1]) < 1e-9, "the hairpin rounds, its ends unmoved");
+            }
+
             // planted: the same drawn vertices on two distinct edges, one laid again turned, moved and running the other way
             {
                 List<LaidPiece> ps = new CordBuilder().Build(Room(), new BuildOptions(), c => true);

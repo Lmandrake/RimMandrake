@@ -91,6 +91,8 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "fresh") return Fresh(map, comp);
             if (cmd == "artfit") return ArtFit(map, comp);
             if (cmd == "shapetable") return ShapeTable(comp);
+            if (cmd == "kinks") return KinkTable(comp);
+            if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
             {
@@ -451,6 +453,45 @@ namespace RimMandrake.GimmeSomeSlack
             List<ShapeClass> t = CordShape.Table(comp.Pieces);
             return "{\"success\":true,\"cmd\":\"shapetable\",\"tooAlikeBelow\":" + CordShape.TooAlikeBelow.ToString("0.00", inv) +
                    ",\"classes\":[" + string.Join(",", t.Select(one)) + "]}";
+        }
+
+        /// <summary>Where a laid strand folds back on itself (CordShape.Kinks), grouped by how the piece ends.</summary>
+        private static string KinkTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var rows = new List<string>();
+            int strands = 0, kinks = 0;
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                {
+                    strands++;
+                    foreach (V2 k in CordShape.Kinks(s.Pts))
+                    {
+                        kinks++;
+                        if (rows.Count < 200)
+                            rows.Add("{\"x\":" + k.X.ToString("0.00", inv) + ",\"z\":" + k.Z.ToString("0.00", inv) + ",\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + "}");
+                    }
+                }
+            return "{\"success\":true,\"cmd\":\"kinks\",\"strands\":" + strands + ",\"kinks\":" + kinks + ",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
+        /// <summary>ends:x,z,r -- every strand with an end within r cells of a point: what it is and where its two ends lie.</summary>
+        private static string EndsNear(RM_MapComponent_CordGraph comp, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            var at = new V2(a[0], a[1]);
+            var rows = new List<string>();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 2) continue;
+                    V2 e0 = s.Pts[0], e1 = s.Pts[s.Pts.Count - 1];
+                    if (V2.Dist(e0, at) > a[2] && V2.Dist(e1, at) > a[2]) continue;
+                    rows.Add("{\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + ",\"a\":[" + e0.X.ToString("0.00", inv) + "," + e0.Z.ToString("0.00", inv) + "],\"b\":[" +
+                             e1.X.ToString("0.00", inv) + "," + e1.Z.ToString("0.00", inv) + "],\"overFace\":" + J.B(s.OverFace) + ",\"pts\":" + s.Pts.Count + "}");
+                }
+            return "{\"success\":true,\"cmd\":\"ends\",\"rows\":[" + string.Join(",", rows) + "]}";
         }
 
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)
