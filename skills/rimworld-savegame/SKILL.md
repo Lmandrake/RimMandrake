@@ -19,6 +19,8 @@ counts. The map grids inside it are binary, and that is where the danger lives.
 The second is where *"errors from mods I deleted months ago"* comes from, and **no
 mod change fixes it** — the dead name is inside the file.
 
+**So before deleting or renaming a def the planet uses (a BiomeDef above all), check the live world's tiles**, decoded, not grepped: the world grid's `tileBiome` array is shortHash-encoded, so `grep -c <defName>` on the `.rws` reads 0 while thousands of tiles point at it. The paint-once rule covers a tile on a wrong but existing biome; it doesn't cover a tile whose biome def has been deleted.
+
 **The audit surface is every file RimWorld deserialises at startup**, not just
 saves: `Config/Mod_*.xml` plus `Xenotypes/`, `Ideos/`, `Scenarios/`,
 `PrepareLanding/`. Measured: 16 stale Scribe lines traced to two `.xtp` xenotype
