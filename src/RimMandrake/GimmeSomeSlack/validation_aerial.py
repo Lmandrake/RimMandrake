@@ -385,7 +385,7 @@ def run_live(args):
             ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
                 and not st1.get("designated") and nre["m1"] == nre["m3"] != -1
             V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
-                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre,
+                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre, "jobDef": "RM_RestringSpan",
                    "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
         # HARNESS (runs of 2026-11-06, downed at 108,183, "health 1"): the splicer is left standing on the span's line, and M15f
         # cuts that span again: a live wire falls on him and the shock is the mod working. Back where he came from, held there.
@@ -1283,7 +1283,7 @@ def theft_day(B, rows, res):
     res["day"].update({"goodwill1": gw1, "goodwillCharged1": gc1, "taps": taps})
     dc = int(gc1 or 0) - int(gc0 or 0)
     V.row(rows, "PT_A3_goodwill_day", "PASS" if gw0 is not None and gw1 is not None and dc == -per and gw0 - gw1 == per else "FAIL",
-          "MOD", {"goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
+          "MOD", {"setting": "theftGoodwill", "goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
                   "chargeAtPlayed": st.get("chargeAtPlayed"), "chargeShot": st.get("chargeShot"), "taps": taps})
 
 
