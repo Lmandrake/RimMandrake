@@ -1428,3 +1428,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T00:57:33Z","tsn":1794013053155528743}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless live test: CANAL_OBJECTS_SHEET_BUILD_POSES_AND_STYLES A1 (L2), read-only proof","ts":"2026-11-07T01:05:15Z","tsn":1794013515859610998}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T01:05:29Z","tsn":1794013529311391816}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES: deploy and restart for its live proofs","ts":"2026-11-07T01:21:15Z","tsn":1794014475282058860}
