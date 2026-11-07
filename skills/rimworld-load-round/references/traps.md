@@ -15,6 +15,7 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 
 ## 10. 🔴 Launch through Steam, never the bare `.exe` — bypassing it intermittently corrupts assembly loading
 - **Steam can ignore or revive launches.** A `steam.exe -applaunch 294100` issued seconds after `Stop-Process` on RimWorld can be silently ignored (no process after 4 min): poll for `RimWorldWin64` within ~60 s and re-issue once. `steam://rungameid` starts a closed Steam and then the game within 9 s, so 'Steam closed' is not a no-launch condition. RimBridge cannot be reached from WSL python: run `python.exe -B` with a `wslpath -w` script.
+- **Launching `RimWorldWin64.exe -savedatafolder=<dir>` directly (Steam already running)** keeps Config, ModsConfig, Saves and DefDump in `<dir>`, but Unity still writes Player.log to the Windows user's LocalLow. A fresh savedatafolder lacks `JawaBench/companion_profile.json` (companion reports 'campaign', modcheck refuses) and Prefs.xml `runInBackground True` (game_focus preflight `FocusRefused`); `rw_game.sh init` seeds both. Prefs.xml is written only on a clean game exit, so seed it while the game is down.
 
 ## 8. After the load: harvest the WHOLE log
 - **`launch_ready` rotates `Player.log` away BEFORE launch**, so the tps 'Player-prev archive' row cannot be observed on a launch it started (tag dedupe = silent no row). To prove the archive step, launch without launch_ready's rotation.

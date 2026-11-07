@@ -110,7 +110,8 @@ keyboard, and check `/proc/loadavg` before and during: over ~10 on this box mean
 somebody's frames are being eaten. Applies to any loop over
 `start_debug_game_ready`, `load_game`, `go_to_main_menu` or long `save_game`
 calls.
-- **Never leave a broken game running (owner: "Let's not leave broken games running").** The moment the log shows a Root-level exception storm or a map that failed to set up, stop driving it, close the game, stamp it down, and fix the cause before relaunching; a broken session wastes cycles and its results are not trustworthy.
+
+More traps for this section: [references/traps.md](references/traps.md) § 1. Start one.
 
 ## 2. What a quicktest proves, and what it cannot
 
@@ -133,13 +134,8 @@ anything about the full mod list (2026-09-20).
 
 **The rule of thumb:** a quicktest answers *"does this work?"* It never answers
 *"is this true of our campaign?"*
-- **A def that passes `validate_patch.py` clean can still crash the whole game at startup.** Three new creature defs with invalid diet values crashed GeneticRim and broke ALL pawn and animal creation game-wide (a campaign save loaded with 0 pawns). Offline validation proves the XML resolves, not that the game survives it; only a real load (a quicktest on the minimal list is enough) does, so load once before deploying new creature defs to the owner's list.
-- **A site save is bound to the mod list it was built on.** `RM_TestSite_river_v1`, built on the owner's full list, loaded on the 14-mod minimal list does not degrade: it error-storms every frame (first: `VFEInsectoids.GameComponent_Insectoids` missing) and the game reads as "died". Check the save's mod list against the active list before a bridge driver loads it; sites for the minimal list must be built on it.
-- **RimWorld logs 'researchViewX and/or researchViewY not set' for a ResearchProjectDef at a NEGATIVE coordinate, not only an unset one** (`RR_Organization` at x=-2). A def-dump-vs-patch selftest also goes red for any coordinate move until the next load recaptures the dump.
-- **RimWorld warns (ConfigError) on defNames ending in a digit:** the `titan_test_races` load logged 'RM_TestTitanT2/T3 ends with a numerical digit'. Rename test races (e.g. `RM_TestTitanTierTwo`) before the TITANIC proof's log-budget row counts it.
-- **A clock set BACK leaves `PerformanceOptimizer`'s cached `CurCelestialSunGlow(map)` stale** (refreshTick cache; a constant 0.7535 at five times was the cache, not the tidal lock). Read glow on fresh scratch maps, or step the clock forward only.
-- **The pathfinder grid (walls, superdeep depth, deck) catches up only when the map TICKS.** A `FindPathNow`/`ProofPath` read taken while paused after building walls walked through them (`found=True`) and read `found=False` 10 ticks later. Tick ~10 after any walkability change before a path or job read.
-- **Indoor room temperature is not save/load-exact,** even if trackers are snapped to the 1/16 C save grid: a load rebuilds `RoomTempTracker` with `RegenerateEqualizeCells` (ends in `equalizeCells.Shuffle()`, `Verse.Rand`) and `cycleIndex=0` (unsaved), so `WallEqualizationTempChangePerInterval` samples different wall cells live vs loaded. Any mod state fed by indoor temperature can split a save/load-vs-continue A/B; only outdoor (`TileTemperaturesComp.OutdoorTemperatureAt(tile, ticksAbs)` + condition offsets) is exact. Proof calls that classify via `KindAt` mutate the saved wake record, so call them symmetrically in both A/B arms.
+
+More traps for this section: [references/traps.md](references/traps.md) § 2. What a quicktest proves, and what it cannot.
 
 ## 3. Always say which map a result came from
 
@@ -176,7 +172,6 @@ labelled "gimmesomeslack tier" ran on 550 mods: its preflight only checked the
 mod was PRESENT. Three of its 15 FAILs PASS on the 11-mod list. Before comparing
 two runs, read `len(env.running)` (`jawa/running_mods`) on each; a run that does
 not record the running list cannot be compared at all (2026-10-11).
-A colony looking real is not evidence it is real: 37 named colonists do not make a map the campaign. Only an explicit announcement does; "DO NOT MAINTAIN THE PURITY OF TEST COLONIES! This is a throw-away game." (owner)
 
 ## 3a. 🔴 One crash signature that looks like several: a missing `thingClass` blocks EVERY route to a `Game`
 
@@ -243,8 +238,8 @@ box labelled Pit. Any suite that asserts only state will certify a mod whose
 state is correct and whose in-game EXPERIENCE is absent or wrong. A
 mechanism-correctness pass (this skill) is not a substitute for a look
 (`rimworld-live-review`) — run both before calling a feature done.
-🔴 **A trimmed-tier quicktest can be FALSE-CLEAN.** `modset_builder.py --tier baroque_wave0` ran clean for months while `mandrake.rm.biomes` NRE'd in `ThingDefGenerator_Corpses.CalculateMarketValue` on an unguarded cross-tier reference (an RM-tier def naming a RUT-only item with no `MayRequire`); RimWorld's corrupted-mods recovery then silently strips EVERY custom mod and continues, so a map generates and every bridge call says `success: true` while every custom def reads "not found". Fix the missing `MayRequire` (the RM tier must stay dependency-free of the RUT tier), never widen the tier. On any trimmed-tier quicktest grep `Player.log` for "Caught exception while loading play data" and confirm `jawa/get_defs` resolves a real custom def.
-- **Log-watch patterns must be exact signatures.** The substring `Crashed` matched a texture path (`CrashedThemisShuttle`); match the full crash line, not a word.
+
+More traps for this section: [references/traps.md](references/traps.md) § 4. A clean log is not evidence.
 
 ## 4b. Live proofs and validation scripts → `live-debugging-proof-harness`
 
@@ -361,7 +356,8 @@ single most expensive confusion in this project and it has three distinct shapes
 The third is the newest and the nastiest, because nothing about the dump looks wrong. The
 in-game info card is the arbiter, and reading one costs no map, no spawn and no bridge
 privileges.
-- **The def dump has holes: "absent from the dump" is not evidence of absence.** Many def-type files are empty (`"count":0`, `AbilityDef` among them), so a `--defs` or dump-based check on those types is UNMEASURED, not passed: give unmeasurable its own word and exit code so it never reads as a green tick. The current list is in `infrastructure/state/observed/LIVE.md`; regenerate with `validate_save_artifact.py --rebuild-index`. `defs.sqlite` also carries no `size`, so it cannot say how many cells a building occupies: `src/RimMandrake/Utils/rimplace/defsize.py` resolves it from the active mods' XML with parent-chain inheritance. A def that declares no `<size>` really is 1x1, so found-and-silent is a fact, and only absent-from-the-index is UNMEASURED; do not collapse the two.
+
+More traps for this section: [references/traps.md](references/traps.md) § 5. 🔴 A def dump is DISK. The running game is RUNTIME. They differ..
 
 ## 6. Choosing: bridge test, quicktest, or a real load
 
@@ -464,3 +460,5 @@ finally built.** The same failure hides behind any "best available source" rule.
 head-forcing gene is a GENERIC one (`Outland_ScaleSkin`) has a head type, resolves
 clean, and still renders as the wrong creature. Ask the running game for
 `forcedHeadTypes` per gene and check WHICH head it forces, not whether one exists.
+
+More traps for this section: [references/traps.md](references/traps.md) § **A quicktest finding and a campaign finding are different claims.** Report which.

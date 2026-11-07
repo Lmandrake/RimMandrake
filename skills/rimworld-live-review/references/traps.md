@@ -32,6 +32,7 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 ## 9. When a shot still comes out wrong — the checklist
 
 - **Before offering any map for review, check that the running mod list matches the tier under review, then screenshot and READ the result yourself.** A map opened on the wrong tier's list never spawned its conduit, and the owner caught three visible defects the agent never looked at.
+- **A walk preview shown to the owner must include a zoomed capture of every connection point and every hose path,** each judged against 'does this connect / does it cross anything' (hoses meet reels, joints line up, hoses avoid buildings and walls). Per-stop framing judged 'lands on subject, lit, nothing dead' misses this: "Obviously not even checked before showing us." (owner)
 
 ## 4. Placement — verify every cell is open and the right terrain
 

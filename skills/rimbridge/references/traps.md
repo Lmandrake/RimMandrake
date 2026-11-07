@@ -1235,3 +1235,21 @@ After `Actions\Regenerate Current Map` `programState` stays `Playing`, so a wait
 
 ## `jawa/power_net` units
 - **`jawa/power_net` reports watt-days per tick (1/60000 W),** so tiny numbers like 1.67e-05 are normal. Scale before judging a gain.
+
+## Census the companion before you trust any `jawa/` call
+- **Check the bridge tool list before declaring a mechanism unreachable.** `jawa/gravship_launch` and `jawa/gravship_land` are closed, proven tools reaching the real vanilla path (`WorldComponent_GravshipController.InitiateTakeoff` -> `GravshipUtility.GenerateGravship`; `Gravship.TickInterval` fires ArriveExistingMap/ArriveNewMap by itself). Six passes concluded "no debug shortcut exists" because they checked only the debug-action tree, never the `jawa/` surface. Proven ~10 minute route: `prove_gravship.py` minimal-ship recipe, then `gravship_launch`, `step_game_ticks`, `gravship_land`.
+- **ModsConfig can hold a phantom id** such as `rimmandrake.biomes` next to the real `mandrake.rm.biomes` (suspected: `modlist_swap --enable` keeps a lowercased folder name when no About resolves). Harmless to the load, but "every one is already active" then proves nothing about that mod: read `jawa/running_mods` for the real packageId (the deployed About.xml).
+
+## 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`
+- **Never `--force-take` the bridge from a stale-looking lock.** First check `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` for a live foreign client: a force-take once loaded another seat's walk save over a running test site.
+- **Never hand game or bridge powers to a subagent** without checking `rimflow bridge who` and the driver lock first. After any launch, compare `jawa/running_mods` to `ModsConfig.xml` (a 26-mod game ran while the file said 544). Windows case-twin texture files (`PaleTree_B` / `PaleTree_b`) block the art compose: retire the stray twin via `artledger.retire`.
+
+## 4. Debug actions are the real surface
+- **Selection ids carry a `Thing_` prefix.** `rimworld/get_selection_semantics` names a thing `Thing_<def><idNumber>` (`selectedObjects[].id`, `details.thingId`) while `jawa/list_things` names it `<def><idNumber>`. Code binding a selection to a listed thing must strip `Thing_` (or compare `details.thingIdNumber`); a selftest stub that invented a bare-id shape passed 660/660 while the live read was blind.
+- **`jawa/clear_ui` defaults `hideHud=true`:** it switches on vanilla screenshot mode for 20 s, and in screenshot mode RimWorld draws no gizmo grid, no inspect tabs and no tooltips, so `get_ui_layout` returns only an empty Inspect surface. A probe that clears the UI before reading gizmos, tabs or hover text must pass `hideHud:false` and wait out a lease still on (reply `hudHidden`). Before calling a proof_or_site NO VERDICT an environment fault, read the probe's own call log (`result_*.json` calls) for `hudHidden`. Guarded by `bridgetools/selftest_hover_probe_hud.py`.
+
+## 1. Connect
+- **A second RimWorld on one machine gets its own bridge only if BOTH `GABP_SERVER_PORT` and `GABP_TOKEN` are set before launch.** RimBridgeServer has no port fallback: without them it logs `[RimBridge] Failed to start server` and the game runs with no bridge. In env mode the `Bridge token:` line is not written, so log-waiters must accept the port line. On a machine where the bridge mod is a Workshop item (not a local Mods folder), a failed `SteamAPI.Init` makes the game carry on without Workshop mods, so it has no bridge and looks fine on screen; whether a second concurrent game gets Init must be measured.
+
+## Spawning pawns — `jawa/spawn_pawn` works; the `GenSpawn` routes NPE
+- **The `Spawn Pawn...` debug action NPEs on every pawn defName on a VEF-loaded list, same as `rimworld/spawn_thing`; use `jawa/spawn_pawn`.** Do not "fix" it by removing `sarg.alphaanimals`: that breaks `ScenPart_StartingAnimal` with a different NPE, because some SWBestiary defs inherit from an Alpha-Animals parent or field.

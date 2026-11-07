@@ -69,7 +69,8 @@ LONGER defName that contains it.** `guy762_ResearchKotOR_workbench` matched 9 ti
 resave that had genuinely purged it — all 9 were the substring inside
 `Techprint_guy762_ResearchKotOR_workbench`, a different and still-valid ThingDef.
 **Always check what matched, not just whether it did** (2026-09-14).
-- **A save's `HistoryEventsManager` DefMap stores `<vals>` by def index with no names, so a bare grep for an event defName is blind.** Map indexes with `jawa/get_defs defs='HistoryEventDef/X;...' fields=index`, and read `eventsAffectingFaction` as well as `colonistEvents`: faction events land only there.
+
+More traps for this section: [references/traps.md](references/traps.md) § 2. Grep a save with `<def>NAME</def>`, never the bare defName.
 
 ## 3. Anatomy — what is safe to edit, and what is not
 
@@ -117,7 +118,8 @@ features with all-None names and sizes — reading as "the save has no data" —
 because the children carrying the name/size text had already been cleared by
 the time the parent's own handler ran. Clear only the element you just finished
 reading, never a parent while its children are still in flight.
-- **`Scribe_Collections` writes a Dictionary as `<name><keys><li>K</li></keys><values><li>V</li></values></name>` (parallel lists), never `<key>/<value>` pairs.** A regex for `<key>K</key><value>V</value>` never matches and reads every toggle as absent; parse with ElementTree.
+
+More traps for this section: [references/traps.md](references/traps.md) § 3a. Two parsing traps that produce a save that "has no data".
 
 ## 4. Map grids: base64 + raw DEFLATE arrays of 2-byte shortHashes
 
@@ -169,7 +171,8 @@ edit. Measured: it reported 6 genes missing from a `.xtp` xenotype preset that
 existed correctly on disk — the capture, not the preset, was stale. Check the
 capture's timestamp against the rename commit, not just its `modCount`, before
 trusting a validator's verdict (2026-08-31, FOUNDRY).
-- **Old and renamed hashes need care.** Dev saves written before the biome defName migration store biome hashes 18404/21915 = exact `StableStringHash%65535` of `RM_Wasteland`/`RM_NightsideIce`; no post-rename dump decodes them. Alias them only by exact recomputed hash to a name present in the dump (`geo_landmarks.py RENAMED_BIOMES`) and fail on any other undecoded hash; never treat `?NNNN` tiles as 'not a sea'. DefDump captures from 2026-11 write shortHash as a STRING ('55987'): `int()` it at read (`capture_hashes` does). A save's own capture can vanish; infer old `TileMutatorDef` hashes by `ShortHashGiver` over the SUPERSET of every captured name (`vee_world_stamp.raw_old_hashes`).
+
+More traps for this section: [references/traps.md](references/traps.md) § 5. The shortHash table must come from a dump of the SAME mod set.
 
 ## 6. 🔴 `fogGrid` — leave it untouched
 
@@ -225,8 +228,5 @@ that restores terrain *and* everything the terrain write destroyed. Bridge-injec
 content does survive the save/reload round trip.
 
 ## Census a save before removing a def or a donor
-- **Removing a def needs a save THING census first:** a test-site save kept 1528 `RM_TreeMartyr` plants after the def was cut and threw 100 'Exception spawning loaded thing null' on load. Run `src/RimMandrake/Utils/save_def_census.py <saves>` (the donor census knows only retired donors).
-- **A retired donor mod leaves CLASS names in saves, not just def names.** `<li Class="VFEInsectoids.Area_Hive">` under `areaManager` made the map lose its whole AreaManager; Vehicle Framework's `VehiclePathFinder` then NRE'd on every map and the map never finished setting up (blank screen). The donor census checks defNames only: scan `Class=` values against the active assemblies (`save_class_census.py`) before loading any save on a donor-removed list, and read the FIRST exception, never the Vehicle Framework one that follows.
-- **VEF's new-faction dialog:** 'Do nothing' (Skip) writes nothing and the pop-up returns on every load; only 'Don't ask for this faction again' (Ignore) writes `NewFactionSpawningState.ignoredFactions`, and only a save made AFTER it keeps it.
-- **A defName rename's live-tile check must cover EVERY keeper save, not only the canonical one.** The 2026-10-20 dev saves (`ASHKARR_DEV_*`) carry `RM_Wasteland` x1853 / `RM_NightsideIce` x1506 on tiles while the canonical carries the RUT_ twins. `worldmap.WorldGrid(save).census()` against today's dump answers it offline in seconds; `unresolved()==[]` is the sanity probe. `save_def_census.py` caches each mod's defNames; its key must be a content fingerprint (count:size:max-mtime over every xml), because folder mtime never changes for composed mods with defs in LoadFolders sub-roots (defs cut weeks earlier read as DEFINED).
-- **A creature defName under `maps/autoSlaughterManager/configs` or `priceHistoryRecorders` is a registry row, not an animal** (R3 had 563 such rows). Split save hits by XML path before counting. And a `grep -r` over the ~1269-mod workshop root can die with 'Cannot allocate memory' leaving an empty result that reads as zero hits: check stderr, and use a Python walk.
+
+More traps for this section: [references/traps.md](references/traps.md) § Census a save before removing a def or a donor.
