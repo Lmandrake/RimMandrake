@@ -380,7 +380,7 @@ instinct gets wrong:
   predicting it from stats.
 
 Detect: a result that flips when you change the step size is a timing artefact, not a verdict.
-- **Throughput is far below real time on a big list.** `jawa/step_game_ticks` advances only ~50 ticks/s on the 325-mod full list (506 of 2000 in a 10 s call), so an 8-day plant survival run is ~2.6 h. Prove plant-light mechanics from the inspect string instead (a light-limited plant reads "needs light level N%").
+- **Throughput is far below real time on a big list.** `rimworld/step_game_ticks` advances only ~50 ticks/s on the 325-mod full list (506 of 2000 in a 10 s call), so an 8-day plant survival run is ~2.6 h. Prove plant-light mechanics from the inspect string instead (a light-limited plant reads "needs light level N%").
 
 ## `rimbridge/list_logs` is a ring, not the log — a long session loses its startup lines
 

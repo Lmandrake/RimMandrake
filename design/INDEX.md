@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1378 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1385 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -990,6 +990,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `map_content_injection_research.md` | Map content injection — the research path |  |
 | `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
 | `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
+| `mattpocock_design_suggestions.md` | Matt Pocock's design skills: what they do, what to keep | — |
 | `memory_clones_drives_2026-10-08.md` | Memory, clones, drives and configuration — audit and redesign (2026-10-08) | — |
 | `messy_conduit_design_2026-10-02.md` | Messy Conduit — design pass (2026-10-02) | — |
 | `messy_conduit_phase2_design_2026-10-02.md` | Messy Conduit — Phase 2 design (1b polish, aerial lines, flexible hoses, Northstar fast-track) | — |
@@ -1207,6 +1208,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `work_allocation_framework_2026-10-26.md` | Work allocation: where Archmagi, SteveDesktop and the agents should spend their time (2026-10-26) | — |
 | `world_physics_audit_2026-10-20.md` | World physics audit — tidal lock, sun per tile, temperatures, Rings (2026-10-20) | — |
 | `world_remake_reinstate_list.md` | World remake: the mods to reinstate, and how | — |
+
+### `design/RimMandrake/2026-11-07-pocock-design/`
+
+| doc | title | status |
+|---|---|---|
+| `01-design.md` | Pass 1: where Pocock's ideas could earn a trial in RimMandrake, and in Artisan | — |
+| `02-gpt.md` | Pass 2, step 2: the second model's critique of the design | — |
+| `02a-gpt-blind-prompt.md` | Blind prompt sent to the second model (pass 2, step 1), 2026-11-07 | — |
+| `02a-gpt-blind.md` | Pass 2, step 1: the second model's blind answer | — |
+| `02m-remeasure.md` | Re-measure of the starred claims, and of the claims the critique disputed | — |
+| `status.md` | Run status: Pocock design pass (Deep-Design-3x2), 2026-11-07 | — |
 
 ### `design/RimMandrake/agent_visibility_2026-11-04/`
 

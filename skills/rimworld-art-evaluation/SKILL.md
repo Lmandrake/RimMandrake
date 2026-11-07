@@ -42,7 +42,7 @@ REGEN: the unrefuted blocking findings become explicit prompt edits (regen_promp
 every decision → decisions.jsonl (prompt versions, model ids read back, image shas) → SHADOW SHEET after the run
 ```
 
-Each guard, as "owner's rule + guard", with its reason: `references/pipeline.md`.
+Each guard, as "owner's rule + guard", with its reason: `references/pipeline.md`. The records behind measured claims (the first pilot's score): `references/history.md`.
 
 ## Run it
 

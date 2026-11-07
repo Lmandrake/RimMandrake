@@ -9,7 +9,7 @@ The method is in `artisan`, `artisan-head` and `artisan-judge`. This file adds o
 line: if it would still be true with RimWorld removed, it belongs in those skills.
 
 Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update it on every claim, verdict and owner's look; the
-`Acceptances` line that `artisan_now.py` reads is in the general skill's `references/learned.md`.
+`Acceptances` line that `artisan_now.py` reads is in `~/.claude/skills/artisan/references/learned.md`.
 
 ## Where things are
 
