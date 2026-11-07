@@ -1,0 +1,1 @@
+rimworld-review-sheets tools cannot carry a blind flip-book page: art_sheet.py keys on defs and the art ledger, not hidden planted scratch PNGs, so scaled_review_gate, game_art deliver and prereview init all refuse a hand page (no ITEMS block, no stamp). A hidden-name animated page has no sanctioned builder (FireHawk replay page, 2026-11-07).

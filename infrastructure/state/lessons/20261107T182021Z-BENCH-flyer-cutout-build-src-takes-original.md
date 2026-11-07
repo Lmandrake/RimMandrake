@@ -1,0 +1,1 @@
+flyer_cutout build --src takes the ORIGINAL frames, not its own output: feeding baked frames passes the build with PASS and yields clipped, detached wings, and stabilize still reads north and south GREEN on them. MEASURED: before-frames plus the shipped config rebuild the shipped FireHawk 15 of 15 byte-identical.

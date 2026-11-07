@@ -1,0 +1,1 @@
+flier_body_stabilize's near-wing envelope is tied to frame index, so a cycle started on another frame goes RED in east (false alarm) and the same reason makes east permutations red: it is not a check of order. North permutations pass stabilize, motion, frames-present and a blind image judge alike.
