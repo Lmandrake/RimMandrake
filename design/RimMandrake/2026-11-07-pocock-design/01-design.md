@@ -1,6 +1,6 @@
 # Pass 1: where Pocock's ideas could earn a trial in RimMandrake, and in Artisan
 
-*2026-11-07, written 14:05 to 14:40 PST by the detached helper on item `RIMMASTER_WEIGH_POCOCK_SKILLS_TRIAL_BEFORE_INSTALL`.
+*2026-11-07, committed 14:07 PST by the detached helper on item `RIMMASTER_WEIGH_POCOCK_SKILLS_TRIAL_BEFORE_INSTALL`.
 Companion assessment: `D:\Luke\dev\RimMandrake\design\RimMandrake\mattpocock_design_suggestions.md`.*
 
 **Independence note.** The brief allowed no subagents, so this pass is the helper's own. The second model's blind answer
