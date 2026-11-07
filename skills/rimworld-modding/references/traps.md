@@ -41,3 +41,12 @@ it in `SKILL.md` instead and do not log it here.
 
 ## Searching for our own work
 - **A mod NAME match is not a mechanism match, and an installed-mod `About.xml` sweep cannot find our own mods.** `Terramorph` in the Mods folder is OUR art override for the `AA_Terramorph` creature, not a terraforming mod (the real slow-terraform donor is Fertile Fields 1.6, workshop 3225843229, license unstated: pattern only). 'Moving dunes' and 'sand swimmers' are our mods (`mandrake.rm.movingdunes`; the sand-swimmer work is spread across FlowWorks and SWBestiary). Search `src/` and item ids for our own work, not installed mods.
+
+## Reading a stack trace
+- **A Harmony prefix named in a stack trace is not the thrower.** Harmony lists every patch on the patched frame, so a vanilla NRE inside `DefGenerator.GenerateImpliedDefs_PreResolve` (`RecipeDefGenerator.SetIngredients`) shows an unrelated mod's `GenerateAutoProcesses` prefix while the cause is a def with an unresolved cost. Read the innermost frame and decompile the prefix (`ilspycmd`) before bisecting that mod's siblings.
+
+## Compatibility with other mods
+- **Facial Animation's per-race ignore list is a USER Config file (`Mod_1635901197_FacialAnimationMod.xml`), not shipped content.** Editing it fixes only the owner's game; every player install would draw FA faces over our painted heads. Ship the exclusion in a mod.
+
+## Retired donor references
+- **`retired_donor_refs check --pid sarg.alphaanimals` leaves 2 reported-not-deleted hits:** `RM_DeepHomeTable.xml` values `AA_SkySteel` and `AA_UraniumCrystals`, generated from the mineral registry CSV (a live roster-style row, not a patch op). The generator should drop retired `AA_` rows, so fix the CSV, not the XML.

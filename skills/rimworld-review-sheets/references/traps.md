@@ -43,6 +43,7 @@ An offline art sheet composited on a stand-in background can win owner approval 
 
 ## The sheet hook and Bash
 - **The biome-sheet PreToolUse hook refuses a Bash call whose inline script names a `Transient/biome_ffar/*_sheet_*.html` path and writes ANY file** (even filling `<stem>.prereview.json`, or a heredoc, or a pin). Put the writer in a script file, pass the path as an argument, and pin in a separate call.
+- **A Windows exe launched from WSL (msedge, codex) survives a Python subprocess timeout:** only the WSL-side handle dies. The sheet gate leaked 915 `msedge.exe` (110 headless roots) and every later render timed out (UNMEASURED). Give each run a unique marker on the Windows command line (`--user-data-dir`), stop by marker afterwards (`gate_browser.stop_marked`), and count with `Get-CimInstance Win32_Process`, not `tasklist` guesses.
 
 ## Auditing GPT redo lists
 - **Before filing or acting on a GPT redo list, run `art.py status` + `regen_eligibility.Gate.classify` per def, and grep `art_eval/runs/*/decisions.jsonl` (subject prefix before `__`).** A GPT biome audit listed "no owner keep" rows that carried 39 and 11 `trust=ruled` keep events (RSW_LongtailGorg, RSW_Worrt), and every redo slot was REFUSED_REGEN.

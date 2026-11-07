@@ -43,7 +43,7 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 ## Tools with surprising side effects
 
-By tool family: Git, publish and clones (45) · Ledger, rimflow, handoffs and lessons (33) · Selftests and the test runner (43) · GPT, Codex and image tools (7) · Windows, WSL and paths (22) · Units, timers, hooks and processes (30) · Bridge and the live game (22) · Deploy, builds and mod lists (16) · Art and review-sheet tools (8) · Everything else (38).
+By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and lessons (1) · GPT, Codex and image tools (7) · Windows, WSL and paths (25) · Units, timers, hooks and processes (4) · Everything else (11).
 
 ### Git, publish and clones
 
@@ -54,9 +54,6 @@ By tool family: Git, publish and clones (45) · Ledger, rimflow, handoffs and le
 ### Ledger, rimflow, handoffs and lessons
 
 - **`codex exec --json` doubles every backslash in a command_execution's command** (`C:\\WINDOWS...`), and a refused tool under disabled features appears only as an `error` item ('Code Mode is unavailable...') plus stderr `tools::router: error=`. Never vet what shell code touched by regexing that string; a transcript-vetting tool must treat ANY command_execution as a violation when tools are meant to be off.
-
-### Selftests and the test runner
-
 
 ### GPT, Codex and image tools
 
@@ -109,72 +106,19 @@ By tool family: Git, publish and clones (45) · Ledger, rimflow, handoffs and le
 - **`safe_load` never complains about duplicate YAML keys; hunt them with `yaml.compose` plus a duplicate-key walk.** An insert in `canon.yml` replaced the `cradle_memory:` header line, leaving the owner's ship-memory ruling as a second ruled/src pair under `cathedral_voice`, and every YAML reader silently dropped one.
 - **A polling loop that reads a growing file with `tail -c +$((START_SIZE+1))` must update `START_SIZE` after every read.** Otherwise each poll re-reads from the original offset and re-emits the same matched lines forever (seen watching Player.log for a restart to finish).
 
-### Bridge and the live game
-
-
-### Deploy, builds and mod lists
-
-
-### Art and review-sheet tools
-
-
 ### Everything else
 
-- 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
-  that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
-  cost a whole run rather than being truncated; the two that survived streamed output at 385 s
-  and 575 s. **Brief every writing subagent to create its output file as a skeleton FIRST and
-  fill it section by section** — a file write emits progress and persists partial work. A long
-  read-then-write brief is the shape that trips it.
-  🔴 **It happened AGAIN 2026-09-23** on a mechanical creature census, and the cheaper lesson is:
-  for a **mechanical** census (glob, parse, count, tabulate), writing the script inline costs less
-  than briefing an agent to survive the watchdog. Reserve subagents for work that needs judgement.
-- ⚠️ **Two `PreToolUse` gates refuse tool calls outright and are easy to trip:**
-  the `Agent` tool **refuses without an explicit `model`** (omitting it silently inherits this
-  seat's tier, which is how past censuses ran on Opus; named agent types and `fork` are exempt) —
-  ladder in `infrastructure/agents/Agent_Policy.md`. And `AskUserQuestion` is validated by
-  `validate-question-card.py`: a `header` longer than **12 characters**, or a question not ending
-  in `?`, refuses the **whole card**. Count the header before calling.
-- ⚠️ **`src/RimMandrake/Utils/modcheck/required_checks.py` ignores `--help`:** any argv other than `--check`/`--mod` REBUILDS and writes `required_checks.json` (~90 s). Read its docstring for usage and use `--check` to test staleness.
-- **`claude-account enroll`: the OAuth link's `login_hint` is ignored.** The browser authorizes as whoever is signed in to claude.ai (a code for the wrong account was handed twice). Log that browser out of claude.ai, or use a private window, before opening the link; `claude-account code` checks the account and discards a mismatch.
-- ⚠️ **`code_review_status.py list` (bare) silently omits every never-entered file; use `--show-untracked` for the true DIRTY pool.** A standing loop run without it reported "0 DIRTY" for 43 waves while 346 files were invisible. A filed lesson that never reaches the thing that enforces it is not learned. Do not compare the raw file count with the CLEAN count: CLEAN entries can exceed the current file count (`[x2]`-style repeat marks on renamed or moved paths); judge the remaining pool by `--show-untracked`'s own reported count.
-- ⚠️ **A Harmony prefix named in a stack trace is not the thrower.** Harmony lists every patch on the patched frame, so a vanilla NRE inside `DefGenerator.GenerateImpliedDefs_PreResolve` (`RecipeDefGenerator.SetIngredients`) shows an unrelated mod's `GenerateAutoProcesses` prefix while the cause is a def with an unresolved cost. Read the innermost frame and decompile the prefix (`ilspycmd`) before bisecting that mod's siblings.
-- **`pulse.py metrics` reads only the last 8 MB of `metrics.jsonl`**, so a figure over the whole log can be wrong: it once reported 'alert precision: no acks yet' and red time-to-notice n=60246 while the full 253 MB file held 17 acks (all one agent's bulk 'noise' acks) and only 25 distinct red incidents. A metric over an append log must state the time span it covered; stream the whole file or keep a rolled summary. An ack label an agent wrote is not owner-precision data.
-- **`claude -p --json-schema` takes the schema TEXT, not a file path** (`claude -p --help`). With `--output-format json` the validated object is the top-level key `structured_output` (`result` also holds it as a string). A schema using `/pattern/` and `anyOf` is accepted.
-- **`set_agent_window.sh SEAT "detail"` must not put the detail in the role file.** `set_session_title.py seat_of()` takes the LAST token (uppercased) of the recorded key as the seat, so a detail's last word became the seat (HARVEST) and no identity was injected; its docstring's claim that a suffix 'simply stops matching' is false because `.upper()` makes any word match `[A-Z]{2,16}`. The detail now goes on the window title only; a recorded key must stay exactly `AGENT <SEAT>`.
-- **`save_def_census.py` reports code-generated defs as unresolved 'other refs' on every save:** `Aptitude*_<Skill>`, `ChemicalDependency_*` and `AddictionImmune_*` genes are built by `GeneDefGenerator` at runtime and never exist in XML. They are not dead content; ignore them or teach the tool's IMPLIED list about them.
-- **Facial Animation's per-race ignore list is a USER Config file (`Mod_1635901197_FacialAnimationMod.xml`), not shipped content.** Editing it fixes only the owner's game; every player install would draw FA faces over our painted heads. Ship the exclusion in a mod.
 - **Parsing a UTC `...Z` timestamp with `time.mktime(strptime(...)) + time.timezone` is an hour off whenever DST is in force** (`time.timezone` is the STANDARD offset; `mktime` applies DST). Use `calendar.timegm(time.strptime(s, fmt))`. Grep for `mktime` near `timezone` when an age looks exactly 1 h too big.
 - **`canon.yml` can hold two keys of one name (it had two `start_tile`, one a struck `null`); YAML keeps the LAST,** so every parser read `start_tile=None` while a human grep saw 17007. Read canon values with `yaml.safe_load`, never grep; a struck value is deleted, not re-keyed beside its successor.
-- **ExplosiveGrowth ships inside `mandrake.rm.biomes` (composed), so grepping running_mods for a mod's own packageId falsely says it is not loaded.** For composed mods check the composed member list or the live def.
 - **In bash, `"$(basename $x) exit=$?"` always reads exit=0:** the command substitution runs first and resets `$?`. Capture `rc=$?` on the line right after the command, then echo it.
-- **A `testq --rows` job runs each chain only up to the requested row; every later row in that chain reads `NOT_RUN`.** That is by design: read NOT_RUN on a `--rows` job as 'not asked for', not a failed run.
 - **A nightly traceback describes the code as of its run (03:00), not HEAD.** Compare its line numbers with the file at the run's commit before theorising: a hold that looked escaped for a day had been placed after the crashing run.
-- **When code ships as a set of copied files, take every file from the same moment.** The Steve worker's outer copy took the worker and schema from disk after the pull but `contracts/models.py` from bytes loaded before it, so the first job after a landing that added a result field failed INVALID HARNESS 'Extra inputs are not permitted'. The contract is now reloaded after the pull.
-- **A validation live row blamed on a driver that never writes it (not in the driver's `PLAN`) reads 'no <driver> result at the current mod hash'** and `testq/retest.py` calls it `driver_undelivered`, holding the chain forever. `validation.driver_emits()` now reads the PLAN and reports such rows as an honest live-check-owed GAP; a new driver should declare `PLAN` so the check applies.
 - **A deadline written as a wall-clock time can straddle DST.** '8 AM PDT Sunday Nov 1' fell after DST ended at 2 AM, so 15:00Z read 7:00 AM PST. State a deadline as an instant with its UTC offset and display it that way.
-- **`csuite_tps.py --pawn-band` stays OPT-IN (default 0 = exact pawn count).** The exact key is the like-for-like guard and pawn count moves TPS; on real records a 10% band only cut census rows 826 to 561 (32%), so pawn drift is not the main row splitter. Use `--pawn-band 10` for one drifting colony save; banded rows are labelled `pawns=lo..hi~PCT%` so they never pass for exact ones.
 - **Rerunning stored proof commands in a bash `while read i c` loop mangles them:** `read` without `-r` turns a `\n` in the command (e.g. `tr '\n' ' '`) into `n`, so a green proof reads red. Use `while IFS=$'\t' read -r`, or run each from Python with `subprocess`.
-- **testq standing host items (`STEVE_LANE_MONITOR_PAUSE_FINDINGS`, `STEVE_FILLER_MONITOR_FAIL_FINDINGS`) are ordinary `ready` items with no standing marker.** Nothing stops a builder claiming and closing one, and a fail verify on a closed host reopens it. Their runs must use a config listed in `testpilot_route.NOT_A_TEST`, or TestPilot routes them on a 3-fail streak.
 - **zsh word-expansion traps kill a compound command.** A bare all-equals token (`echo ===`) is command-path expansion and errors `== not found`; quote it. `L="python3 x.py add"; $L "..."` fails (`no such file or directory: python3 x.py add`) because zsh does not word-split variables: use a shell function or write the command out.
 - **A Bash call with a timeout above 600 s is clamped and killed at 600 s, and a Python `finally` cleanup may not run.** A control run left its daemon alive and 120 job files held aside. Split long runs into separate start / poll / collect calls.
 - **`WebFetch` can be dead for the whole model group:** every call fails `400 Invalid model name passed in model=us.anthropic.claude-haiku-4-5…` because the summarizer model is unavailable to the key, and the error says nothing about the URL. Use `curl -sS --max-time 25 <url>` directly; Mintlify-hosted docs serve clean markdown if `.md` is appended to the page path.
-- **A `/proc` scan that treats EACCES as blind must skip dead processes.** Under load an exiting process reads Permission denied about one scan in ten, and a whole reaper firing refused everything on a stranger's zombie. Test all threads, since a Z leader can have live threads.
-- **Headless `claude -p` CAN use ArtifactData (measured):** set `CLAUDE_CODE_ARTIFACT=1` and unset the inherited `CLAUDE_CODE_ENTRYPOINT=sdk-cli` (CLI gate `sdk_default_off`); keep the Artifact tool enabled (ArtifactData vanishes without it); a parts write by `file_path` is a Read, so allow `Read(//<dir>/**)`; overwriting an existing doc needs `if_version`. `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` + `--disable-slash-commands` cut ~8k uncached tokens/run. Working example: `src/RimMandrake/Utils/fleet_refresh.py`.
-- **Never store list position inside a per-doc hashed record.** `fleet_refresh.py` writes only changed docs by hash, but every row carried `order=i`, so one row ending shifted every later row's hash and the board rewrote ~31 unchanged rows every 5 minutes (~5k output tokens, $0.10 a run). Let the reader sort by a stable key (started, last_at).
-- **Typora: a click on a `<details>` summary toggles it but marks the document modified,** so a page rewritten every minute then prompts Save on close; put no click-to-open sections on RUNNING_NOW. An SVG `<title>` tooltip does show on hover.
-- **`ops_lives.check` tests the md's generation with a substring test (`reg['generation'] not in md`):** an md of generation `T-P7` passes for json generation `T-P` (pid prefix, same second). A fix would match the exact `generation <id>.` token. Narrow; outside OPS_LIVES_CENSUS_EVERY_DEATH_READ_ONLY's clauses.
 - **`broadcast.py` stores some emoji in comments as LITERAL `\uXXXX` escape text, and the Edit tool fails to match those regions** in both raw and rendered form. Patch such comment blocks with a python `re.sub` instead.
-- **`src/RimMandrake/Utils/mockups/messy_conduit/reel_intake_geometry.py` has no argparse: `--help` RUNS the generator** and rewrites `Source/Hose/ReelIntakeGeometry.cs` (byte-identical when the art is current, a silent C# change when not). Read the file header instead.
-- **`retired_donor_refs check --pid sarg.alphaanimals` leaves 2 reported-not-deleted hits:** `RM_DeepHomeTable.xml` values `AA_SkySteel` and `AA_UraniumCrystals`, generated from the mineral registry CSV (a live roster-style row, not a patch op). Minerals owns the CSV binding; the generator should drop retired `AA_` rows, so fix the CSV, not the XML.
-- **Builders mark their OWN new files CLEAN in `code_review_status`, and a reviewer then found 3 real bugs in files the builder had marked clean.** A self-mark is not a review: briefs must say 'do not mark your own files CLEAN', and independent reviewers re-read author-marked files in full rather than trusting the mark.
-- **A `claude -p` loop launched with `--setting-sources project` skips the user's effort setting and runs at medium with no warning:** pass `--effort`. A running pass does not take a changed settings file; its next pass does (measured 4 min after the edit).
-- **`expectations_manifest.py` path parser splits on every '.'**, so a `[key=1.5]` filter with a decimal value is rejected as malformed (walk_path does `path.split(".")`), and a bad bracket index can escape walk_path as an uncaught exception. Use integer or string filter values until fixed.
-- **`expectations_l2.verdict` emits only LOG-BLIND when the tap lost entries or the log-alive sentinel failed**, even if it also saw unattributed errors (`if not log_alive or tap_lost` precedes `elif unattributed`): a definite error reads as UNMEASURED (exit 2, not 1) for callers (art_fold_live.py, run_expectations --l2). Not a false green, but both rows should be emitted.
-- **A Windows exe launched from WSL (msedge, codex) survives a Python subprocess timeout:** only the WSL-side handle dies. The sheet gate leaked 915 `msedge.exe` (110 headless roots) and every later render timed out (UNMEASURED). Give each run a unique marker on the Windows command line (`--user-data-dir`), stop by marker afterwards (`gate_browser.stop_marked`), and count with `Get-CimInstance Win32_Process`, not `tasklist` guesses.
-- **`winbuild.py` can hang after `dotnet.exe` prints `Build succeeded`** (a lingering MSBuild node or build server keeps the process alive), so it hits the 400 s timeout before copy-back: the repo DLL stays stale, exit 124. Rerun with `MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0` exported through `WSLENV` (`.../w`); that finished in 3 s with BUILT. `winbuild` could pass `-nodeReuse:false` itself.
 - **robocopy's default `/R:1000000 /W:30` turns one unreadable file into a hang of hours** (a background robocopy of a USB stick held a seat past its hard restart for 3.6 h). Always pass `/R:2 /W:5`.
-- **FlowWorks Dump drain (`RM_LiquidNet` `DumpTake`) offers a Channel outlet a whole level only,** even with exact-level water where Outlet picks a channel on any dL of room; a part-full canal then refuses the move with no gravity fallback. Same shape as the Body-only fix for pond outlets. Known baseline reds: `review1022_liquidnet` 'outside origin', `gpt_b` acid swim tiers, `hose_offline` HO7 CacheFresh.
 
 ## NVIDIA free-tier endpoint (Nemotron workforce)
 - **Nemotron is the viable free NVIDIA workforce, not Kimi.** Re-run `src/RimMandrake/Utils/nemotron_probe.py` before trusting any model name: the catalog shrinks daily (102 models then 83 the next day; models that answered 200 vanished) and listed names can 404 for this account (`kimi-k2.6`). Pick `nvidia/nemotron-3-super-120b-a12b` (20/20 tool calls, ~1.2 s, retrieves a needle at 616k prompt tokens). 503 `ResourceExhausted` is shared capacity: transient, retryable, a seat degrades. A 429 on `moonshotai/kimi-k3` is a per-model quota wall (15 of 20 rapid calls) that retrying worsens, a seat stalls. The endpoint never errors on an over-long prompt, so acceptance proves nothing: only a retrieval test separates long context from silent truncation.
