@@ -92,6 +92,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "artfit") return ArtFit(map, comp);
             if (cmd == "shapetable") return ShapeTable(comp);
             if (cmd == "kinks") return KinkTable(comp);
+            if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));

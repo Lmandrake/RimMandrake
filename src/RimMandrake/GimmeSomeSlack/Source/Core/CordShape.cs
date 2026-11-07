@@ -226,6 +226,29 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return hits * DoubledStep;
         }
 
+        /// <summary>Times a strand goes under a door beyond what its route asks: once for a door the planned line runs through, never for any other. A slack excursion that wanders under a door
+        /// comes out the far side and back again, and from above each pass is one more cable out of that doorway (owner 2026-11-07: "three separate cables coming out of a doorway").</summary>
+        internal static int DoorStrays(CordWorld w, List<V2> pts, List<V2> plan)
+        {
+            if (pts == null || pts.Count == 0) return 0;
+            var planned = new HashSet<Cell>();
+            if (plan != null)
+                foreach (V2 p in plan)
+                    if (w.IsDoor(p.Floor)) planned.Add(p.Floor);
+            var entered = new HashSet<Cell>();
+            int strays = 0;
+            bool any = false;
+            Cell prev = default(Cell);
+            foreach (V2 p in pts)
+            {
+                Cell c = p.Floor;
+                if ((!any || !c.Equals(prev)) && w.IsDoor(c) && (!planned.Contains(c) || !entered.Add(c))) strays++;
+                prev = c;
+                any = true;
+            }
+            return strays;
+        }
+
         /// <summary>How far either side of a fold the rounding reaches, and the widest it opens a fold that doubles straight back.</summary>
         private const double UnfoldReach = 0.3, UnfoldFlare = 0.13;
 

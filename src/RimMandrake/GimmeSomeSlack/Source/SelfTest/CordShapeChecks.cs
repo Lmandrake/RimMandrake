@@ -157,6 +157,41 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Check(CordShape.Doubled(ring) < 0.01, $"a coil is not doubled ({CordShape.Doubled(ring):0.00})");
             }
 
+            // a cord's slack stays out of a door its route does not run through (owner 2026-11-07, three cables out of a doorway): a run along a wall of doors, a route through one door
+            {
+                Func<CordWorld> doors = () =>
+                {
+                    var w = new CordWorld(40, 26);
+                    for (int x = 3; x <= 36; x++)
+                    {
+                        if (x % 5 == 0) w.SetDoor(new Cell(x, 13)); else w.SetBlocked(new Cell(x, 13), BlockKind.Wall);
+                        w.SetConduit(new Cell(x, 11));
+                    }
+                    for (int z = 11; z <= 19; z++) w.SetConduit(new Cell(20, z));
+                    return w;
+                };
+                int strands2 = 0, strays = 0, oldStrays = 0;
+                foreach (ulong seed in new ulong[] { 1, 2, 3, 7, 19, 23, 41, 57, 88, 101, 133, 200 })
+                {
+                    foreach (LaidPiece p in new CordBuilder().Build(doors(), new BuildOptions { Seed = seed }, c => true))
+                        foreach (CordStrand s in p.Strands) { strands2++; strays += s.DoorStrays; }
+                    // the plain draw, with no second look, as the control: this scene must be able to fail
+                    var line = new List<V2>();
+                    for (double x = 4; x <= 35; x += 0.05) line.Add(new V2(x, 11.5));
+                    oldStrays += CordShape.DoorStrays(doors(), CordLayer.Sprawl(doors(), line, new BuildOptions().Lay, 0.8, 8, CordRng.Of(seed, "b"), CordRng.Of(seed, "s"), 1), line);
+                }
+                Console.WriteLine($"  door strays: {strays} in {strands2} strands; plain draw {oldStrays}");
+                Check(oldStrays > 0, $"can-fail: the plain draw goes under doors {oldStrays} times");
+                Check(strands2 > 40 && strays <= strands2 / 50, $"{strays} stray passes under a door in {strands2} strands");
+                var pl = new CordWorld(12, 12);
+                pl.SetDoor(new Cell(6, 6));
+                var through = new List<V2> { new V2(6.5, 4), new V2(6.5, 5), new V2(6.5, 6.5), new V2(6.5, 8) };
+                var thrice = new List<V2> { new V2(6.5, 4), new V2(6.5, 6.5), new V2(6.5, 8), new V2(6.5, 6.5), new V2(6.5, 4), new V2(6.5, 6.5), new V2(6.5, 8) };
+                Check(CordShape.DoorStrays(pl, through, through) == 0, "a cord through a door its route runs through is no stray");
+                Check(CordShape.DoorStrays(pl, through, new List<V2>()) == 1, "under a door off its route: one stray");
+                Check(CordShape.DoorStrays(pl, thrice, through) == 2, "three passes under its one door: two strays");
+            }
+
             // planted: a sawtooth reads as jags, relaxing removes them, the strand's ends stay put, a one-way coil is not one
             {
                 var saw = new List<V2>();

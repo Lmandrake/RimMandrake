@@ -52,6 +52,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public bool OverFace;
         /// <summary>The slack could not be laid clear of obstacles; this is the planned centreline.</summary>
         public bool FellBack;
+        /// <summary>Times this strand goes under a door its route does not run through (<see cref="CordShape.DoorStrays"/>). Laying avoids it; the probe reads what is left.</summary>
+        public int DoorStrays;
         /// <summary>Points at the start / end of Pts that form a live terminal's whipping tail (phase 1b
         /// B3): the section layer leaves them out of the static mesh while whipping is on, and the map
         /// component draws them bent per frame. 0 = no tail.</summary>
@@ -940,7 +942,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 SettleStats settle = null;
                 if (pl.Ok && L > 1.2 && prm.SlackScale > 0)
-                    P = SprawlOnce(w, P, prm, slack, maxExtra, opt.Seed, key, i, n, out settle);
+                    P = SprawlOnce(w, P, C, prm, slack, maxExtra, opt.Seed, key, i, n, null, out settle);
                 else
                 {
                     int sgn = rr.Sign();
@@ -979,7 +981,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // the overrun. Appended after the floor rule like IntoArt: these points lie in the wall cell by design.
                 P = PastFace(P, true, na);
                 P = PastFace(P, false, nb);
-                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle });
+                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C) });
                 laid += Geo.Length(P);
             }
             piece.PathLen = L;
@@ -1048,7 +1050,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     double maxExtra = prm.SlackScale <= 0 ? 0 : Math.Min(Math.Max(slack * L, prm.MinExtra * Math.Min(1, prm.SlackScale)), prm.MaxExtra);
                     SettleStats settle = null;
                     if (L > 1.2 && prm.SlackScale > 0)
-                        P = CordLayer.Sprawl(w, P, prm, slack, maxExtra, CordRng.Of(opt.Seed, "bundle", key, si), CordRng.Of(opt.Seed, "strand", key, i, si), n, out settle);
+                        P = SprawlOnce(w, P, C, prm, slack, maxExtra, opt.Seed, key, i, n, si, out settle);
                     bool diveA = si > 0, diveB = si < nsec - 1;
                     if (!diveA) P = AttachEnd(w, g, e, true, P, i, n, opt);
                     if (!diveB) P = AttachEnd(w, g, e, false, P, i, n, opt);
@@ -1070,7 +1072,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
-                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB });
+                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C) });
                     laid += Geo.Length(P);
                 }
             }
@@ -1558,22 +1560,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
         }
 
-        /// <summary>Lay a strand's slack; if it comes out running back alongside itself (<see cref="CordShape.Doubled"/>), so that one cord reads as three, lay it again on the next
-        /// draw with a little less slack, and keep the first that reads as one cord, or the least doubled. Try 0 is the old draw, so a cord that was fine has not moved.</summary>
-        private static List<V2> SprawlOnce(CordWorld w, List<V2> P, LayParams prm, double slack, double maxExtra, ulong seed, string key, int i, int n, out SettleStats settle)
+        /// <summary>Lay a strand's slack; if it comes out running back alongside itself (<see cref="CordShape.Doubled"/>), so that one cord reads as three, or goes under a door its route
+        /// does not run through (<see cref="CordShape.DoorStrays"/>), so that it reads as more cables out of that doorway, lay it again on the next draw with a little less slack, and keep
+        /// the first that reads as one cord, or the least wrong, a stray door counting first. Try 0 is the old draw, so a cord that was fine has not moved. <paramref name="section"/> is a diving cord's surface section.</summary>
+        private static List<V2> SprawlOnce(CordWorld w, List<V2> P, List<V2> plan, LayParams prm, double slack, double maxExtra, ulong seed, string key, int i, int n, int? section, out SettleStats settle)
         {
             List<V2> best = null;
             SettleStats bestSettle = null;
+            int bestStrays = int.MaxValue;
             double bestD = double.MaxValue;
             for (int t = 0; t < SlackRetries; t++)
             {
                 double k = 1 - 0.1 * t;
-                List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k,
-                    t == 0 ? CordRng.Of(seed, "bundle", key) : CordRng.Of(seed, "bundle", key, t),
-                    t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t), n, out SettleStats st);
+                CordRng bundle = section.HasValue ? (t == 0 ? CordRng.Of(seed, "bundle", key, section.Value) : CordRng.Of(seed, "bundle", key, section.Value, t))
+                    : (t == 0 ? CordRng.Of(seed, "bundle", key) : CordRng.Of(seed, "bundle", key, t));
+                CordRng strand = section.HasValue ? (t == 0 ? CordRng.Of(seed, "strand", key, i, section.Value) : CordRng.Of(seed, "strand", key, i, section.Value, t))
+                    : (t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t));
+                List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k, bundle, strand, n, out SettleStats st);
                 double d = CordShape.Doubled(Q);
-                if (d < bestD) { best = Q; bestD = d; bestSettle = st; }
-                if (d <= CordShape.DoubledMax) break;
+                int strays = CordShape.DoorStrays(w, Q, plan);
+                if (strays < bestStrays || (strays == bestStrays && d < bestD)) { best = Q; bestStrays = strays; bestD = d; bestSettle = st; }
+                if (strays == 0 && d <= CordShape.DoubledMax) break;
             }
             settle = bestSettle;
             return best;
