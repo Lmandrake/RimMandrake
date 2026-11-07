@@ -488,7 +488,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down
         /// tangent-free to a touchdown point and lies on the ground the rest of the way to the break at
         /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the break point. The ground path is the
-        /// straight line base -> break with one gentle seeded bow (at most 0.22 cell; no wiggle), checked cell by cell:
+        /// line base -> break with a seeded slack S across it (up to about 1 cell, by length), so it reads as cable lying on the ground and
+        /// not as a span still strung (a wire pulled straight along its own line looked up: north star downed_span_lies_on_ground), checked cell by cell:
         /// the first unwalkable cell stops it (Blocked; the rest "is over the wall"). Height above the ground path is
         /// h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0.
         /// <paramref name="length"/> (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance.
@@ -504,10 +505,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (dist < 1e-6 || length <= 0) return lay;
             double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
             double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
-            double bow = (U(seed, 9) < 0.5 ? -1 : 1) * Math.Min(0.22, 0.06 + 0.02 * want) * (0.6 + 0.4 * U(seed, 10));
+            double bow = (U(seed, 9) < 0.5 ? -1 : 1) * Math.Min(0.9, 0.08 + 0.11 * want) * (0.6 + 0.4 * U(seed, 10));
+            double bow2 = bow * (U(seed, 11) < 0.5 ? -1 : 1) * (0.25 + 0.3 * U(seed, 12));
             Func<double, double, P2> ground = (s, r) =>
             {
-                double off = bow * Math.Sin(Math.PI * Math.Min(1, s / r));
+                double u = Math.Min(1, s / r);
+                double off = bow * Math.Sin(Math.PI * u) + bow2 * Math.Sin(2 * Math.PI * u);
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
             // pass 1: how far the ground path is open

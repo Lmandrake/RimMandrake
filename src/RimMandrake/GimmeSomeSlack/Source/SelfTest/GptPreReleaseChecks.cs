@@ -166,7 +166,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int ground = Enumerable.Range(0, f.Pts.Count).Count(i => AerialMath.FallenPointOnGround(f, i));
             Check(ground > 0 && ground < f.Pts.Count && !AerialMath.FallenPointOnGround(f, 0) && AerialMath.FallenPointOnGround(f, f.Pts.Count - 1),
                   "C4 the insulator end hangs (span altitude), the tail lies on the ground (under pawns): " + ground + " of " + f.Pts.Count + " on the ground");
-            Check(Enumerable.Range(0, f.Pts.Count).Where(i => AerialMath.FallenPointOnGround(f, i)).All(i => Math.Abs(f.Pts[i].Z - 10.5) <= 0.25),
+            Check(Enumerable.Range(0, f.Pts.Count).Where(i => AerialMath.FallenPointOnGround(f, i)).All(i => Math.Abs(f.Pts[i].Z - 10.5) <= 1.3),
                   "C4 every point drawn on the ground lies on the ground path");
             Check(ground != 0, "C4 can-fail: the old mesh drew all " + f.Pts.Count + " points at the span altitude, the grounded ones included");
         }
@@ -348,8 +348,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var brk = new P2(16.5, 10.5);                                  // the break lies due east
             FallenLay f = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, open);
             List<P2> ground = AerialMath.GroundPts(f).ToList();
-            // C3: every contact point lies on the ground path (base -> break, bow <= 0.22), never north of the mast
-            Check(f.TipGrounded && ground.Count > 0 && ground.All(p => Math.Abs(p.Z - 10.5) <= 0.25) && P2.Dist(ground[ground.Count - 1], f.Tip) < 1e-12,
+            // C3: every contact point lies on the ground path (base -> break, slack S <= 1.3), never the air north of the mast at insulator height
+            Check(f.TipGrounded && ground.Count > 0 && ground.All(p => Math.Abs(p.Z - 10.5) <= 1.3) && P2.Dist(ground[ground.Count - 1], f.Tip) < 1e-12,
                   "C3 contact points are the grounded part only (" + ground.Count + " of " + f.Pts.Count + ")");
             Check(f.Pts.Any(p => Math.Floor(p.Z) >= 12), "C3 can-fail: the old rule (every Pts point) reaches cells 1-3 north of the mast");
             // a cable stopped at once by a wall still hangs: it touches nothing

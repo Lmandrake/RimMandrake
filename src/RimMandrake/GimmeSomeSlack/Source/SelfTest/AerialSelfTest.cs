@@ -327,9 +327,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(f.Pts.Count >= 10 && P2.Dist(f.Pts[0], top) < 1e-9 && P2.Dist(f.Tip, f.Pts[f.Pts.Count - 1]) < 1e-9 &&
               P2.Dist(f.Tip, brk) < 1e-9 && maxSeg <= 0.3 && !f.Blocked,
               "B21 cut wire is ONE polyline from the insulator to the break point (start " + f.Pts[0] + " tip " + f.Tip + " break " + brk + ", max gap " + maxSeg.ToString("0.00") + ")");
-            int touch = f.Pts.FindIndex(p => Math.Abs(p.Z - 10.5) <= 0.25);
-            C(f.Pts.All(p => p.Z <= top.Z + 1e-9) && touch > 0 && f.Pts.Skip(touch).All(p => Math.Abs(p.Z - 10.5) <= 0.25) && len < 1.4 * (P2.Dist(basePt, brk) + 3.22),
-              "it hangs down from the top, then lies on the ground (no wiggle wider than 0.25) to the break, length " + len.ToString("0.00"));
+            int touch = f.GroundFrom;
+            C(f.Pts.All(p => p.Z <= top.Z + 1e-9) && touch > 0 && len < 1.4 * (P2.Dist(basePt, brk) + 3.22),
+              "it hangs down from the top, then lies on the ground to the break, length " + len.ToString("0.00"));
+            for (int seed = 1; seed <= 40; seed++)
+            {
+                FallenLay q = AerialMath.LayFallen(top, basePt, new P2(10.5, 17.5), 7.35, seed, open);
+                double dev = q.Pts.Skip(q.GroundFrom).Max(p => Math.Abs(p.X - 10.5));
+                C(dev >= 0.3 && dev <= 1.5, "seed " + seed + ": a 7-cell wire lying along its own span's line leaves that line, by " + dev.ToString("0.00") + " cells");
+            }
             FallenLay g = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, (x, z) => x != 14);
             C(g.Blocked && g.Tip.X < 14 && g.Pts.Skip(1).All(p => (int)Math.Floor(p.X) != 14 || p.Z > 11.2), "a wall stops the lying wire before the wall (tip " + g.Tip + ")");
             FallenLay h = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, open);
