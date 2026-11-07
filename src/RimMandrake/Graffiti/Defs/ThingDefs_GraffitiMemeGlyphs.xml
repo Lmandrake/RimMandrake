@@ -74,7 +74,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_MaleSupremacy</defName>
     <label>male supremacy glyph</label>
-    <description>A crowned gender mark - a claim of dominance painted where it will be seen.</description>
+    <description>A crowned man's face, scowling - a claim of dominance painted where it will be seen.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_MaleSupremacy</texPath>
@@ -100,7 +100,7 @@
   <ThingDef ParentName="RM_BaseGraffiti" MayRequire="Ludeon.RimWorld.Ideology">
     <defName>RM_Graffiti_Glyph_FemaleSupremacy</defName>
     <label>female supremacy glyph</label>
-    <description>A crowned gender mark - a claim of dominance painted where it will be seen.</description>
+    <description>A crowned woman's face, unsmiling - a claim of dominance painted where it will be seen.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FemaleSupremacy</texPath>

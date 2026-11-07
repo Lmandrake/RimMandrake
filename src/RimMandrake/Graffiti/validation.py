@@ -363,8 +363,10 @@ def spree_wall(t):
     with t.component("wall_closeup", shows=["mark_sits_on_the_wall"]):
         if t._guard():
             ln = lanes[0]
+            # cardinal to the run: either long face, or either end cap of it
             bad = [m for m in per_lane[0]
-                   if abs(m["z"] - ln["wall_z"]) != 1 or not (ln["x0"] <= m["x"] < ln["x0"] + LANE_LEN)]
+                   if not ((abs(m["z"] - ln["wall_z"]) == 1 and ln["x0"] <= m["x"] < ln["x0"] + LANE_LEN)
+                           or (m["z"] == ln["wall_z"] and m["x"] in (ln["x0"] - 1, ln["x0"] + LANE_LEN)))]
             if not per_lane[0] or bad:
                 raise ExpectationFailed("lane 0 marks not on cells cardinal to the wall run: %s" % bad[:5])
             m0 = per_lane[0][0]
