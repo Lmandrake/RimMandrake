@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        internal LayParams Lay = new LayParams();
+        internal LayParams Lay = new LayParams { FillFlats = true };
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
@@ -1624,15 +1624,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     : (t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t));
                 List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k, bundle, strand, n, out SettleStats st);
                 double d = CordShape.Doubled(Q);
-                int strays = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan) + CordShape.RingReturns(w, Q);
+                int rings = CordShape.RingReturns(w, Q, out int atDoors), hard = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan) + atDoors, strays = hard + rings - atDoors;
                 if (strays < bestStrays || (strays == bestStrays && d < bestD)) { best = Q; bestStrays = strays; bestD = d; bestSettle = st; }
                 if (strays == 0 && d <= CordShape.DoubledMax) break;
+                // on a long cord a coil at its own end is worth a few more draws, not six: each is a settle, and a long one is what a frame's budget feels. A coil at a door gets all six
+                if (t + 1 >= SoftRetries && hard == 0 && d <= CordShape.DoubledMax && Q.Count > SoftRetryPoints) break;
             }
             settle = bestSettle;
             return best;
         }
 
-        private const int SlackRetries = 6;
+        private const int SlackRetries = 6, SoftRetries = 3, SoftRetryPoints = 500;
 
         /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose, and a live end sticks straight out.</summary>
         private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>

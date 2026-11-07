@@ -56,12 +56,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 {
                     LaidPiece lp = new CordBuilder().Build(LongRun(wall ? 63 : 0), new BuildOptions { Seed = seed }, c => true).Single(p => p.EndA != null);
                     foreach (CordStrand st in lp.Strands.Where(x => x.Settle != null))
+                    {
+                        // read at the door itself: the cord may wander before it gets there, so the distance along it no longer says where the door is
+                        if (wall && CordShape.Crossings(Geo.Resample(st.Pts, 0.075), new V2(63.5, 5.5), CordShape.DoorRing) > 2) onDoor++;
                         foreach (double fe in st.Settle.HeapsFromEnd)
                         {
-                            bool near = Math.Abs(fe - 3.0) < 1.0;
-                            if (wall) { heaps++; if (near) onDoor++; }
-                            else if (near) onDoorNoWall++;
+                            if (wall) heaps++;
+                            else if (Math.Abs(fe - 3.0) < 1.0) onDoorNoWall++;
                         }
+                    }
                 }
             }
             Check(onDoor == 0 && heaps > 0, "A9 no long-run end heap within a cell of the doorway (" + onDoor + " of " + heaps + " heaps)");

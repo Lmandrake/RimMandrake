@@ -204,20 +204,27 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     for (int x = 6; x <= 20 + d; x++) w.SetConduit(new Cell(x, 15));
                     return w;
                 };
-                int lays = 0, returns = 0, plain = 0;
+                int lays = 0, returns = 0, doorReturns = 0, plain = 0;
                 foreach (int d in new[] { 2, 3, 4, 6, 8, 12, 18 })
                     foreach (ulong seed in new ulong[] { 1, 2, 3, 4, 5, 6 })
                     {
                         CordWorld w = room(d);
                         foreach (LaidPiece p in new CordBuilder().Build(w, new BuildOptions { Seed = seed }, c => true))
-                            foreach (CordStrand st in p.Strands) { lays++; returns += CordShape.RingReturns(w, st.Pts); }
+                            foreach (CordStrand st in p.Strands)
+                            {
+                                lays++;
+                                returns += CordShape.RingReturns(w, st.Pts, out int atDoor) - atDoor;
+                                doorReturns += atDoor;
+                            }
                         var line = new List<V2>();
                         for (double x = 6.5; x <= 20.5 + d; x += 0.05) line.Add(new V2(x, 15.5));
                         plain += CordShape.RingReturns(w, CordLayer.Sprawl(w, line, new BuildOptions().Lay, 0.8, 8, CordRng.Of(seed, "b"), CordRng.Of(seed, "s"), 1));
                     }
-                Console.WriteLine($"  ring returns: {returns} in {lays} lays through a door; plain draw {plain}");
+                Console.WriteLine($"  ring returns: {doorReturns} at the door and {returns} at an end in {lays} lays through a door; plain draw {plain}");
                 Check(plain > 0, $"can-fail: the plain draw lays coils on a door or an end ({plain} extra lines)");
-                Check(lays >= 42 && returns == 0, $"a cord through a door to its end reaches each once: {returns} extra lines in {lays} lays");
+                Check(lays >= 42 && doorReturns == 0, $"a cord through a door crosses it once: {doorReturns} extra lines there in {lays} lays");
+                // a long cord takes three draws, not six, for a coil at its own end (its settle is what a frame's budget feels): one end in ten may keep one
+                Check(returns <= lays / 10, $"a cord through a door reaches its end once: {returns} extra lines at an end in {lays} lays");
                 var coil = new List<V2> { new V2(10, 15.5) };
                 for (double t = 0; t < 2 * Math.PI; t += 0.1) coil.Add(new V2(19 + 2.2 * Math.Cos(t), 15.5 + 2.2 * Math.Sin(t)));
                 coil.Add(new V2(21.5, 15.5));

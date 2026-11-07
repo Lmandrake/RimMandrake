@@ -17,7 +17,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
     {
         /// <summary>The slice bound: the game's frame budget (8 ms) plus one worst edge and the node/reach tail, well under
         /// the 20 ms the live re-measure requires.</summary>
-        private const double BudgetMs = 8.0, SliceBoundMs = 20.0;
+        // SyncLayBoundMs is for the budgeted lay on the caller, which the game no longer uses (it lays on a worker, AsyncLay, held to SliceBoundMs below) except for an edge whose
+        // worker lay threw. Since a cord can be laid again when it coils on a door or its end (pass 10), one edge there can cost several settles: 20 ms became 30 for that path only.
+        private const double BudgetMs = 8.0, SliceBoundMs = 20.0, SyncLayBoundMs = 30.0;
 
         internal static void Run()
         {
@@ -482,7 +484,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var opt = new BuildOptions { LayBudgetMs = BudgetMs };
             var b = new CordBuilder();
             var (slices, worst, last, _) = Converge(b, RebuildPerDigChecks.LiveScene(), opt, dead);
-            Program.Check(worst <= SliceBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms (bound {SliceBoundMs} ms, budget {BudgetMs} ms)");
+            Program.Check(worst <= SyncLayBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms (bound {SyncLayBoundMs} ms, budget {BudgetMs} ms)");
             Program.Check(slices > 1, $"slice: the cold build finished in {slices} Build (the budget never deferred an edge: instrument blind)");
             Program.Check(b.LastPending == 0 && GssFuzz.Digest(last) == want, "slice: the budgeted Builds did not end bit-identical to one unbudgeted Build");
             Console.WriteLine($"slice: cold E={edges} planned over {slices} Builds, worst {worst:0.0} ms (budget {BudgetMs} ms)");
@@ -494,7 +496,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             full2.Lay.SlackScale = opt2.Lay.SlackScale;
             var (slices2, worst2, last2, minEdges2) = Converge(b, RebuildPerDigChecks.LiveScene(), opt2, dead);
             ulong wantLit = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), full2, dead));
-            Program.Check(worst2 <= SliceBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
+            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");
 

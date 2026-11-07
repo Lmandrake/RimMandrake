@@ -37,6 +37,8 @@ namespace RimMandrake.Shared.Slack
         public double SampleStep = 0.05;
         /// <summary>Broad lateral excursions: length range along the cord (cells), and the small wobble.</summary>
         public double ExcursionLo = 1.2, ExcursionHi = 2.6, Wobble = 0.06;
+        /// <summary>Give any stretch the random excursions missed one of its own. Floor cords only: a hose is meant to run straighter.</summary>
+        public bool FillFlats;
 
         /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
@@ -208,6 +210,7 @@ namespace RimMandrake.Shared.Slack
                     lat[i] += side * amp * Math.Exp(-u * u);
                 }
             }
+            double spent = prm.FillFlats ? FillFlats(w, P, N, s, pin, lat, cap, prm, rrBundle) : 0;
             double kAmp = rrStrand.Range(0.85, 1.1), wav = rrStrand.Range(0.35, 0.6), ph = rrStrand.Range(0, 6);
             for (int i = 0; i < n; i++) lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * prm.Wobble * Math.Sin(s[i] / wav + ph);
             double[] up = FreeReach(w, P, N, 1, cap), down = FreeReach(w, P, N, -1, cap);
@@ -222,7 +225,7 @@ namespace RimMandrake.Shared.Slack
                     gotLen += V2.Dist(Q[i - 1], Q[i]);
                 }
             }
-            double target = Math.Min(L * (1 + slack), L + maxExtra);
+            double target = Math.Min(L * (1 + slack), L + maxExtra) + spent;   // a filled stretch does not take the length a loop or an end heap was to have
             // what an excursion could not spend sideways (it met a wall) it keeps as LENGTH; the
             // settle buckles that into a bunch against the obstacle (rope.sprawl's `lost`)
             double lost = Math.Max(0, wantLen - gotLen);
@@ -237,6 +240,53 @@ namespace RimMandrake.Shared.Slack
             stats = Settle(w, Q, PinMask(w, Q), restLen, prm, st);
             return Q;
         }
+
+        /// <summary>The excursions fall at random, so two can land together and leave a stretch that nothing bends: six cells dead straight from a door to a heater, on a played map. Any stretch
+        /// longer than <see cref="FlatMax"/> that stays within <see cref="FlatLat"/> of the planned line gets broad, gentle excursions of its own, spaced along it. Returns the length that added.</summary>
+        private static double FillFlats(CordWorld w, List<V2> P, List<V2> N, double[] s, bool[] pin, double[] lat, double cap, LayParams prm, CordRng rr)
+        {
+            int n = P.Count, from = -1;
+            var more = new double[n];
+            bool any = false;
+            for (int i = 0; i <= n; i++)
+            {
+                bool flat = i < n && !pin[i] && Math.Abs(lat[i]) < FlatLat;
+                if (flat) { if (from < 0) from = i; continue; }
+                if (from < 0) continue;
+                double a = s[from], len = s[i - 1] - a;
+                from = -1;
+                if (len <= FlatMax) continue;
+                any = true;
+                int count = Math.Max(1, (int)Math.Round(len / Math.Max(2.6, prm.ExcursionHi)));
+                for (int k = 0; k < count; k++)
+                {
+                    double c = a + len * (k + rr.Range(0.35, 0.65)) / count, wdt = rr.Range(prm.ExcursionHi, prm.ExcursionHi + 1.4);
+                    int j = Array.BinarySearch(s, c);
+                    if (j < 0) j = ~j;
+                    j = Math.Min(Math.Max(j, 0), n - 1);
+                    double sp = w.Clearance(P[j] + N[j] * (cap * 0.8)), sm = w.Clearance(P[j] - N[j] * (cap * 0.8));
+                    int side = sp >= sm ? 1 : -1;
+                    if (rr.Value() < 0.3) side = -side;
+                    double amp = side * cap * rr.Range(0.25, 0.55);
+                    for (int q = 0; q < n; q++)
+                    {
+                        double u = (s[q] - c) / (wdt / 2);
+                        more[q] += amp * Math.Exp(-u * u);
+                    }
+                }
+            }
+            if (!any) return 0;
+            double before = 0, after = 0;
+            for (int i = 1; i < n; i++)
+            {
+                before += V2.Dist(P[i - 1] + N[i - 1] * lat[i - 1], P[i] + N[i] * lat[i]);
+                after += V2.Dist(P[i - 1] + N[i - 1] * (lat[i - 1] + more[i - 1]), P[i] + N[i] * (lat[i] + more[i]));
+            }
+            for (int i = 0; i < n; i++) lat[i] += more[i];
+            return Math.Max(0, after - before);
+        }
+
+        private const double FlatMax = 2.0, FlatLat = 0.35;
 
         /// <summary>Pins: both ends (0.45 cell) and 0.55 cell either side of any doorway point (rope.pin_mask).</summary>
         public static bool[] PinMask(CordWorld w, List<V2> Q)

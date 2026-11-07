@@ -275,8 +275,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>Lines this strand draws at its own ends and at any door beyond what it needs: one at each end, two at a door (in and out). A coil laid on the end or the door crosses the ring
         /// three times or more, and from above that is more cables reaching one place (owner 2026-11-07: "three separate cables coming out of a doorway to go to a single terminal node").</summary>
-        internal static int RingReturns(CordWorld w, List<V2> pts)
+        internal static int RingReturns(CordWorld w, List<V2> pts) => RingReturns(w, pts, out _);
+
+        /// <summary><see cref="RingReturns(CordWorld, List{V2})"/>, and how many of those extra lines are at a door.</summary>
+        internal static int RingReturns(CordWorld w, List<V2> pts, out int atDoors)
         {
+            atDoors = 0;
             if (pts == null || pts.Count < 3) return 0;
             List<V2> q = Geo.Resample(pts, DoubledStep / 2);
             int extra = Math.Max(0, Crossings(q, pts[0], EndRing) - 1) + Math.Max(0, Crossings(q, pts[pts.Count - 1], EndRing) - 1);
@@ -294,11 +298,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         if (w.InBounds(d) && w.IsDoor(d)) doors.Add(d);
                     }
             }
-            foreach (Cell d in doors) extra += Math.Max(0, Crossings(q, d.Centre, DoorRing) - 2);
-            return extra;
+            foreach (Cell d in doors) atDoors += Math.Max(0, Crossings(q, d.Centre, DoorRing) - 2);
+            return extra + atDoors;
         }
 
-        private static int Crossings(List<V2> q, V2 at, double r)
+        internal static int Crossings(List<V2> q, V2 at, double r)
         {
             int n = 0;
             bool inside = false, any = false;
