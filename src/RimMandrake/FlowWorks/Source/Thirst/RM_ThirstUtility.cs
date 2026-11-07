@@ -468,7 +468,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 			bool found = false;
 			int reachFails = 0;
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, SearchRadius, true))
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, RM_ThirstGrassWateredExtension.For(pawn)?.searchRadius ?? SearchRadius, true))
 			{
 				if (!c.InBounds(map))
 				{

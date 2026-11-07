@@ -350,7 +350,8 @@ namespace RimMandrake.ExplosiveGrowth
         {
             IntVec3 c = plant.Position;
             bool wet = prof.archetype != RM_Archetype.WetNative && RM_WetSources.IsWet(this, c, prof.liquids, now);
-            bool ash = prof.archetype == RM_Archetype.FireAdapted && !wet && AshFresh(c, now);
+            // A gentle carpet bursts only on real water (owner, 2026-11-07, "I don't think grass should burst unless wet"): fresh ash feeds its growth, not its cycle.
+            bool ash = prof.archetype == RM_Archetype.FireAdapted && !prof.gentleBurst && !wet && AshFresh(c, now);
             return RM_ExplosiveGrowthKernel.CycleWet(prof.archetype, wet, ash);
         }
 
