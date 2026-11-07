@@ -76,8 +76,11 @@ def _root(env, win, wsl):
     user data (the game there is ours outright, owner 2026-10-25). WSLENV `/p` hands Windows python the Windows form and WSL the /mnt form,
     so both forms are accepted here."""
     v = os.environ.get(env, "").strip()
-    if not v:
-        return win, wsl
+    return _forms(v) if v else (win, wsl)
+
+
+def _forms(v):
+    """(win, wsl) of one path given in either form."""
     if v.startswith("/"):
         return wsl_to_win(v), v
     return v, win_to_wsl(v)
@@ -95,6 +98,14 @@ _LOW_WIN, _LOW_WSL = _root("RM_GAME_USERDATA", _DEF_LOW_WIN, _DEF_LOW_WSL)
 _LOG_WIN, _LOG_WSL = _root("RM_GAME_LOGDIR", _DEF_LOW_WIN, _DEF_LOW_WSL)
 _STEAM_WIN, _STEAM_WSL = _root("RM_STEAMAPPS", r"C:\Program Files (x86)\Steam\steamapps",
                                "/mnt/c/Program Files (x86)/Steam/steamapps")
+# A named game (RM_GAME_INSTANCE=b, game_instance.py) beats both path variables: SteveDesktop's .bashrc exports game a's
+# folder into every shell, and a tool following that would write a's ModsConfig on b's behalf. Nothing set imports nothing.
+if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):
+    import sys
+    if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import game_instance as _instance
+    _LOW_WIN, _LOW_WSL = _LOG_WIN, _LOG_WSL = _forms(_instance.data_dir())
 
 LOCALLOW = resolve(_LOW_WIN, _LOW_WSL)
 STEAM = resolve(_STEAM_WIN, _STEAM_WSL)
