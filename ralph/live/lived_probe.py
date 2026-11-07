@@ -6,6 +6,7 @@ s = json.load(open("ralph/live/lived_state.json")); ox, oz = s["ox"], s["oz"]
 def rd(tag):
     m = B.probe("motion"); c = B.probe("census")
     print(tag, {k: m.get(k) for k in ("liveFloorEnds","deadFloorEnds","liveEndsAll","whipTails")}, {k: c.get(k) for k in ("builds","conduitCells","cordEdges","pending")}, "ends", len(c.get("ends") or []), json.dumps(c.get("ends") or [])[:400])
+print(B.probe("doorstrays"))
 rd("before")
 B.probe("rebuild")
 rd("rebuilt")

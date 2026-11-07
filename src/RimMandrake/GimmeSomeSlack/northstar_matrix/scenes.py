@@ -561,11 +561,31 @@ def footprint(d):
 def transmitter_hookups(sc, d):
     cs = {tuple(p) for p in sc["conduit"]}
     fp = set(footprint(d))
-    out = []
+    touching = []
     for f in sorted(fp):
         for q in _nb4(f):
-            if q in cs and q not in fp and q not in out:
-                out.append(q)
+            if q in cs and q not in fp and q not in touching:
+                touching.append(q)
+    if len(touching) <= 1:
+        return sorted(touching)
+    # HookupPick.PickCarrier: one cord per conduit run into a building that carries power, plus every conduit end beside it (a free end would spark)
+    runs = {}
+    for c in sorted(cs):
+        if c in runs:
+            continue
+        runs[c] = c
+        stack = [c]
+        while stack:
+            for n in _nb4(stack.pop()):
+                if n in cs and n not in runs:
+                    runs[n] = c
+                    stack.append(n)
+    out = [c for c in touching if sum(1 for n in _nb4(c) if n in cs) <= 1]
+    served = {runs[c] for c in out}
+    for c in touching:
+        if runs[c] not in served:
+            served.add(runs[c])
+            out.append(c)
     return sorted(out)
 
 

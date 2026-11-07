@@ -1182,7 +1182,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
         public const double StripSkew = 0.22;
         /// <summary>How far past the strip's free end a cord from behind swings to come round to the sockets.</summary>
-        public const double StripWrap = 0.3;
+        public const double StripWrap = 0.45;
         /// <summary>How far out from its socket a cord coming in from the side has straightened up to arrive square.</summary>
         public const double StripSwing = 0.3;
 
@@ -1271,7 +1271,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             CordNode nd = g.Nodes[v];
             double lat = n == 1 ? 0 : (i - (n - 1) / 2.0);
             V2 target, arrive;
-            double straight = 0.15;
+            double straight = 0.15, roomy = 0;
             if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
                 StripPose sp = PoseStrip(g, v, opt.Seed);
@@ -1291,6 +1291,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     target = sp.Tip(socket);
                     arrive = -sp.Side;
                     straight = 0.22;
+                    roomy = 1.2;
                     V2 onSide = target + sp.Side * StripSwing;
                     // from behind: first out past the free end, so the cord comes round the strip instead of under it
                     if (arm == sp.BackArm) P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap, onSide - sp.Along * 0.15);
@@ -1345,7 +1346,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 straight = 0.6;
             }
             else return P;
-            return CordLayer.Approach(w, P, !atA, target, arrive, straight);
+            return CordLayer.Approach(w, P, !atA, target, arrive, straight, roomy);
         }
 
         /// <summary>Bend a cord that does not arrive from the sockets' side out through the given points, so it comes round to its

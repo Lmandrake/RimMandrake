@@ -20,7 +20,7 @@ KEY = {"Scrapper": "Scrapper", "Industrial": "Industrial", "Modern": "Modern_Mul
 STATE = "ralph/live/lived_state.json"
 SPAN_W, SPAN_H = 76, 26
 FRAMES = {"all": (-3, -6, 80, 30), "house": (-2, -3, 30, 20), "kitchen": (0, 0, 16, 10), "rec": (13, 0, 13, 11), "beds": (0, 9, 26, 8),
-          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14), "spanpawn": (40, -3, 14, 9)}
+          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14), "spanpawn": (40, -3, 14, 9), "dense": (38, -11, 24, 12)}
 
 
 def line(x0, z0, x1, z1):
@@ -40,7 +40,10 @@ def plan():
     walls = sorted(set(c for c in walls if c not in doors))
     conduit = line(35, 13, 44, 13) + line(29, 13, 34, 13) + line(25, 13, 28, 13) + line(1, 13, 24, 13) \
         + line(13, 1, 13, 12) + line(2, 5, 12, 5) + line(14, 7, 22, 7) \
-        + line(26, 5, 26, 12) + line(27, 5, 37, 5) + line(38, 5, 39, 5) + line(39, 3, 39, 4)
+        + line(26, 5, 26, 12) + line(27, 5, 37, 5) + line(38, 5, 39, 5) + line(39, 3, 39, 4) \
+        + line(40, -5, 40, 5) + line(41, -5, 41, -5) + [(x, z) for x in range(42, 47) for z in range(-9, -4)]  # a dense block fed off the mast's run
+    second = line(50, -8, 58, -8) + line(54, -8, 54, -6)  # a second, separate run in another look, with its own battery
+    second_machines = [("Battery", (49, -9), 0, None), ("Heater", (54, -5), None, None), ("StandingLamp", (58, -6), None, None), ("StandingLamp", (51, -6), None, None)]
     machines = [("ElectricStove", (3, 7), 0, None), ("TableButcher", (8, 7), 0, "Steel"), ("StandingLamp", (6, 3), None, None), ("Heater", (11, 2), None, None),
                 ("Table2x2c", (18, 3), None, "WoodLog"), ("DiningChair", (17, 3), 1, "WoodLog"), ("DiningChair", (20, 3), 3, "WoodLog"),
                 ("TubeTelevision", (20, 8), 2, None), ("ChessTable", (16, 8), None, "WoodLog"), ("StandingLamp", (22, 2), None, None), ("HorseshoesPin", (22, 5), None, None),
@@ -51,7 +54,7 @@ def plan():
     masts = [("RM_AerialMast", (39, 2)), ("RM_AerialLampMast", (53, 1)), ("RM_AerialMast", (67, 2))]
     hut = [("StandingLamp", (70, 3)), ("Heater", (70, -2)), ("Battery", (72, 1))]
     hut_conduit = line(68, 2, 71, 2) + line(71, -1, 71, 3)
-    return dict(doors=doors, walls=walls, conduit=sorted(set(conduit)), machines=machines, masts=masts, hut=hut, hut_conduit=hut_conduit)
+    return dict(doors=doors, walls=walls, conduit=sorted(set(conduit)), machines=machines, masts=masts, hut=hut, hut_conduit=hut_conduit, second=second, second_machines=second_machines)
 
 
 class Run(object):
@@ -132,7 +135,7 @@ class Run(object):
         self.ap("clearpicks")
         self.ap("cclearpicks")
         self.ap("set:autoLink=False")
-        self.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % (c[0] + ox, c[1] + oz) for c in p["conduit"] + p["hut_conduit"]), categories="Plant,Item,Filth")
+        self.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % (c[0] + ox, c[1] + oz) for c in p["conduit"] + p["hut_conduit"] + p["second"]), categories="Plant,Item,Filth")
         for c in p["conduit"]:
             self.ap("cplace:PowerConduit:%s:%d,%d:god" % (key, c[0] + ox, c[1] + oz))
             if key.endswith("_Multi"):
@@ -140,8 +143,12 @@ class Run(object):
         for c in p["hut_conduit"]:
             self.ap("cplace:PowerConduit:%s:%d,%d:god" % (key, c[0] + ox, c[1] + oz))
         self.ap("cprocess")
-        for d, c, rot, stuff in p["machines"]:
-            clear([c, (c[0] + 1, c[1]), (c[0], c[1] + 1), (c[0] + 1, c[1] + 1)] if d == "SolarGenerator" else [c])
+        other = KEY["Futuristic" if look == "Scrapper" else "Scrapper"]
+        for c in p["second"]:
+            self.ap("cplace:PowerConduit:%s:%d,%d:god" % (other, c[0] + ox, c[1] + oz))
+        self.ap("cprocess")
+        for d, c, rot, stuff in p["machines"] + p["second_machines"]:
+            clear([c, (c[0] + 1, c[1]), (c[0], c[1] + 1), (c[0] + 1, c[1] + 1)] if d in ("SolarGenerator", "Battery") else [c])
             batch(d, [c], rot=rot, stuff=stuff)
         for d, c in p["hut"]:
             clear([c])

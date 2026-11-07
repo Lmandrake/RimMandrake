@@ -661,8 +661,9 @@ namespace RimMandrake.Shared.Slack
 
         /// <summary>Replace the last stretch of a strand (its first stretch when atEnd is false) with a
         /// smooth curve that ends exactly at target travelling along arrive, finishing with a straight
-        /// run of `straight` cells. Left unchanged if the curve would touch unwalkable ground.</summary>
-        public static List<V2> Approach(CordWorld w, List<V2> P, bool atEnd, V2 target, V2 arrive, double straight)
+        /// run of `straight` cells. Left unchanged if the curve would touch unwalkable ground. A strand heading well away from the way it must arrive
+        /// turns in the last half cell, a hook beside the plug (blind judge, pass 1); with `roomy` above 0 it takes that many cells to come round instead.</summary>
+        public static List<V2> Approach(CordWorld w, List<V2> P, bool atEnd, V2 target, V2 arrive, double straight, double roomy = 0)
         {
             var Q = new List<V2>(P);
             if (!atEnd) Q.Reverse();
@@ -680,14 +681,16 @@ namespace RimMandrake.Shared.Slack
             }
             double[] cl = Geo.CumLen(Q);
             double L = cl[cl.Length - 1];
-            foreach (double frac in new[] { 1.0, 0.6 })
+            foreach (double frac in new[] { roomy / (0.45 + straight), 1.0, 0.6 })
             {
+                if (frac <= 0) continue;
                 double use = Math.Min((0.45 + straight) * frac, Math.Max(L * 0.4, straight + 0.3));
                 // cut back to the last point a full `use` from the TARGET (not from the old end: a
                 // junction cord ran on to the node centre, past the arm tip it must now stop at)
                 int j = Q.Count - 2;
                 while (j > 1 && V2.Dist(Q[j], target) < use) j--;
                 V2 s0 = Q[j], tS = (Q[j] - Q[j - 1]).Norm();
+                if (frac > 1 && tS.X * arrive.X + tS.Z * arrive.Z > -0.17) continue;
                 double st = Math.Min(straight, Math.Max(0, V2.Dist(s0, target) - 0.15));
                 V2 bend = target - arrive * st;
                 double k = V2.Dist(s0, bend) * 0.45;

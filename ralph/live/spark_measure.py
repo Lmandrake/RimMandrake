@@ -30,6 +30,9 @@ for r in meta["rows"]:
             if a > 225 and b > 150 and c < 170:
                 best.append((x, y))
     if best:
+        # only the spark nearest the tip: the window can catch a neighbouring wire's spark
+        nx, ny = min(best, key=lambda q: (q[0] - px) ** 2 + (q[1] - py) ** 2)
+        best = [q for q in best if (q[0] - nx) ** 2 + (q[1] - ny) ** 2 <= (0.55 * sx) ** 2]
         cx, cy = sum(p[0] for p in best) / len(best), sum(p[1] for p in best) / len(best)
         wx, wz = x0 + cx / sx, z0 + (H - cy) / sz
         dist = math.hypot(wx - t[0], wz - t[1])

@@ -804,14 +804,14 @@ def owner_change_verdict(cut_on, linked_before, a_after, b_after, id_a, id_b):
 
 def drip_expected_points(ax, az, bx, bz, drip, depth=0.12, reach=0.45, step=DRIP_STEP):
     """The point count AerialMath builds for one strand A->B: SpanCurve n+1 with n = max(4, ceil(len/step));
-    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 6 loop samples + (n'+1) + 6 with reach' = min(reach, len/4),
+    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 12 loop samples + (n'+1) + 12 with reach' = min(reach, len/4),
     n' = max(2, ceil((1 - 2 reach'/len) len / step))."""
     ln = math.hypot(bx - ax, bz - az)
     if not drip or not (depth > 0) or not (reach > 0) or ln < 1e-6:
         return max(4, int(math.ceil(ln / max(0.05, step)))) + 1
     r = min(reach, ln / 4)
     n = max(2, int(math.ceil((1 - 2 * r / ln) * ln / max(0.05, step))))
-    return n + 13
+    return n + 25
 
 
 def drip_verdict(spans, drip_on, depth=0.12, reach=0.45):
