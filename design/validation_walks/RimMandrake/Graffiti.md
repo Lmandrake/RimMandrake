@@ -138,7 +138,8 @@ His words on what happens between people came later, and add to that:
 - [ ] `mockery_changes_regard` — a mockery names someone, hurts or amuses the right
       people, and changes how they regard its painter.
 - [ ] `tribute_and_memorial_mean_it` — a tribute can warm someone, make someone
-      jealous, or annoy an enemy; a memorial comes from someone actually grieving.
+      jealous, or annoy an enemy; a memorial comes from someone actually grieving
+      and helps them feel better.
 - [ ] `pawns_answer_the_wall` (change) — pawns answer what is on the wall: the player
       sees the scrub, the cross-out, the reply or the confrontation finish.
 - [ ] `raid_mark_troubles_until_retaken` (change) — a raid's mark left standing
@@ -152,6 +153,11 @@ His words on what happens between people came later, and add to that:
       restrictions.
 - [ ] `stands_alone_and_obeys_settings` — graffiti works alone, without an
       ideoligion, survives saving, and stops when its settings say it stops.
+
+- [ ] `making_a_mark_is_its_own_fun` — all mark makers get a small mood buff for
+      having made it, and making it counts as a fun activity for recreation.
+- [ ] `rereads_affect_at_most_daily` — seeing the same mark repeatedly repeatedly
+      affects you, but no more than once per day.
 
 **Art skill — his words, 2026-11-07**
 - [ ] `art_skill_goes_into_the_art` — "a poor artist will paint such a bad graffiti
