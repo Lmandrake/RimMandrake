@@ -1,1 +1,0 @@
-Running a proof wrapper that lives in infrastructure/state/live_proofs/ (e.g. PLANET_ATMOSPHERE_CLOUD_COST_1_selftest.py importing _live.py) without python -B leaves a __pycache__/ dir there, and selftest_relentless_live_round t_proofs_file then crashes with IsADirectoryError. Run them with -B / PYTHONDONTWRITEBYTECODE=1.

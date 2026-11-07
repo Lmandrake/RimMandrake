@@ -1,1 +1,0 @@
-A live proof that needs WORKSHOP mods cannot name them on a live_proofs 'live-mods:' line: relentless_live_round.mod_gap plans them through deploy_custom_mods (repo folders only). modlist_swap.py --enable does accept bare packageIds, so a staging note in the .txt is the only route today (HEAVY_TEXTURES_MEASURE_REAL_VRAM, 2026-11-03).

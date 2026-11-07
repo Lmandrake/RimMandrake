@@ -1,1 +1,0 @@
-Closing an unstick item on a cause other than the one its alarm named left the real jam running ~11 h (OPS_RELENTLESS_UNSTICK_XARX closed on checkout fetch; FlowWorks mod-lock filling ran on until a3208a41e3). Close an unstick item only when the alarm's own reading clears.

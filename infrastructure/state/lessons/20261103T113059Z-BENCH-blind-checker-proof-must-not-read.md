@@ -1,1 +1,0 @@
-A blind-checker proof must not read infrastructure/state/items (walls.marker.tree_exclude drops it; read the ledger file event instead) nor an agent-storage scratch path (tmpfs/denied in the box; use tempfile for offline mocks). Also: /tmp on archmagi is an 18G tmpfs that sat 98% full on 2026-11-03 - never stage a tree copy there; cp/tar silently wrote 0-byte files.

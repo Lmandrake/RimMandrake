@@ -1,1 +1,0 @@
-INCIDENTS_FIX_ONE_READER_ELEVEN_OPEN: on origin/main 2026-11-04 (f422031ca1) selftest_metronome FAILs 'shipped table: sense's round robin covers exactly ops_watch.FAMILIES' and selftest_priority_list CRASHes (AttributeError in selftest_relentless tick via pool()); both outside the alarm census, unfixed by this item.

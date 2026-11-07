@@ -1,1 +1,0 @@
-selftest_l1_donor_off_round.py check 'donor rename names read for the save row' reads Transient/phase0_sarlacc_save_renames.md (l1_donor_off_round.py:65 SARLACC_RENAMES); Transient is untracked since 2026-10-18, so the selftest FAILs in every fresh/relentless clone regardless of the change under test. Fix: commit the renames as data outside Transient or fixture it in the test.

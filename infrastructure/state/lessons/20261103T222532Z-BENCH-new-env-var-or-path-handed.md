@@ -1,1 +1,0 @@
-A new env var or path handed to every launched run must be checked against relentless_rules.json walls: 11312ebfc6's per-run TMPDIR sat under the walled ~/.seat-tmp and killed every Marker for hours, and a unit that starts and dies is silent: systemd-run exits 0, so launch_failed never fires and each check just reads checker_lost.

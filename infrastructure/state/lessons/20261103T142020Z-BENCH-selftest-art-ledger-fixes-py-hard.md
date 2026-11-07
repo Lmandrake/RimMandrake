@@ -1,1 +1,0 @@
-selftest_art_ledger_fixes.py hard-codes the BUILD shard (events/BUILD.jsonl) but artledger.seat() reads RIMFLOW_SEAT/AGENT_SEAT first: under a seat env (BENCH, relentless workers) it CRASHes on 'git add' pathspec; RIMFLOW_SEAT=BUILD passes. Same on HEAD 878041a2f9, not a code regression. Fix: the test should set RIMFLOW_SEAT=BUILD itself.

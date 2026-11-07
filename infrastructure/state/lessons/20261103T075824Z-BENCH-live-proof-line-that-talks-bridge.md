@@ -1,1 +1,0 @@
-A live-proof line that talks to the bridge must run under python.exe, never WSL python3: RimBridge binds Windows loopback and WSL2 NAT refuses it (ConnectionRefused). relentless_live's gate does not catch it, so the run lands as a game_fail that is really a harness failure (GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS A1, 2026-11-03 07:42).

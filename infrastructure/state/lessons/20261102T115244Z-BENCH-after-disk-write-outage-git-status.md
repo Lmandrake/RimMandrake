@@ -1,1 +1,0 @@
-After a disk write outage, git status is blind to tracked files zeroed in place (stat cache still matches the index): the 2026-11-01 WSL incident left 369 NUL-filled files in each of two relentless clones while git status showed 2 changes. Check content (zero-tail scan or git hash-object vs ls-files -s), never git status.

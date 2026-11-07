@@ -1,1 +1,0 @@
-A live proof line that reads a recorded verdict (modcheck_status.json via env_verify_check.py) is unmeasurable in the Relentless game lane unless something in that lane produces the verdict: MODCHECK_DONOR_ENVIRONMENTS_1 spent 12 generations / 3.7M tokens because no step ever ran 'modcheck run Armoury'. When a proof reads a record, name the step that writes it.

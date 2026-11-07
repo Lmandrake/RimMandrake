@@ -1,1 +1,0 @@
-A selftest that calls steward_pass must isolate RIMFLOW_LEDGER, RIMFLOW_ITEMS, RM_PULSE_STATE and TESTQ_STEWARD_WAKE even if its green path never escalates: a mutant of it reached the real ledger and noted on a live STEVE_LANE_UNSTICK item. Check git status for ledger shards after a mutation run.

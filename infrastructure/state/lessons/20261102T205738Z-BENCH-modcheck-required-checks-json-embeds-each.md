@@ -1,1 +1,0 @@
-modcheck/required_checks.json embeds each mod's load_error with the ABSOLUTE clone path (DeepDrill, TileFeatures: /home/mandrake/rm/relentless/clones/<ITEM>/...), so every rebuild from a different clone churns two rows and manifest_hash. Seen 2026-11-02 in EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY; fix = repo-relative path in load_error.

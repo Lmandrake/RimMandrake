@@ -1,1 +1,0 @@
-Intermittent 'Permission denied (publickey)' from GitHub with the SAME key accepted on retry (2026-11-04 ~09:37Z on, 2-of-8 success) was a GitHub Git Operations outage, not our key: check https://www.githubstatus.com/api/v2/summary.json before touching ~/.ssh. Relentless shows it as books_stale + publish_unknown and builds nothing new while it lasts.

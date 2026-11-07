@@ -1,1 +1,0 @@
-run_selftests.py --only src/RimMandrake/Utils/selftest_flowworks_stock.py can run past 530 s with no output (whole 1171-case FlowWorks SelfTest plus a shared dotnet lock). As a relentless contract proof, use selftest_flowworks_stock.py --only '<CasePrefix>_*' (~110 s); the contract cannot be changed once set. (IMMERSION_DAMAGE_WIRE_NEVER_APPLIED, 2026-11-02)

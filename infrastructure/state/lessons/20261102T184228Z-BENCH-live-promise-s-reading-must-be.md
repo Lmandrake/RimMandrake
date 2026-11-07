@@ -1,1 +1,0 @@
-A live promise's reading= must be a file the unit itself rewrites every run (e.g. relentless store/reading.json), never a snapshot copied into scratch at verify time: a snapshot goes stale by construction and the deadman reopens the item (RELENTLESS_SLOTS_UNSTICK_BLOCKED_PUT_DOWN, 2026-11-02).

@@ -1,2 +1,0 @@
-2026-11-03: a Relentless staging worker that stays alive after its game is UP holds the bridge for nothing: ART_OVERRIDE_FAMILY_SCRIPT_1 staged 18:20Z, its game UP 19:12Z, and it held the one live game until stage_max (19:22:51Z) while ~40 game items waited; no live run 18:16-19:22Z. Fix 96242d6511: staged_idle ends the staging stage_idle_s (600 s) after the staged game is UP. Measure idle by the game's state, not by the worker's liveness.
-home: src/RimMandrake/rimflow/relentless_game.py

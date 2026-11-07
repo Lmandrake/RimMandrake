@@ -1,2 +1,0 @@
-The relentless books stopped levelling ('books N behind: dirty outside the ledger: infrastructure/state/code_review/BENCH.jsonl'): the file in the books was a pure line REORDER of HEAD (same 3835 lines). Something in the books rewrites code_review shards in a different order; restoring HEAD content unblocked it. The levelling check should treat a same-set reorder of an append-only shard as clean, or the writer should append only.
-home: src/RimMandrake/rimflow/relentless.py books levelling
