@@ -21,21 +21,51 @@ namespace RimMandrake.Graffiti
         // don't already carry the mark, and picks one at random; only falls
         // back to an already-marked cell if nothing bare was found.
 
-        public static bool TryFindWallMarkCell(Pawn pawn, out IntVec3 result)
+        // A calm painter (roomCap) leaves a room alone once it carries its share: a colony's own marks are never
+        // cleaned, so without this every bedroom ended up hideous by midgame. A spree has no such manners.
+        public static bool TryFindWallMarkCell(Pawn pawn, out IntVec3 result, bool roomCap = false)
         {
             Map map = pawn.Map;
             var cells = new List<IntVec3>();
             var states = new List<RM_MarkCell>();
+            var marksInRoom = roomCap ? CountMarksByRoom(map) : null;
             int bareSeen = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, SearchRadius, useCenter: false))
             {
-                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && pawn.CanReserveAndReach(c, PathEndMode.Touch, Danger.None);
+                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)
+                    && (!roomCap || !RoomFull(c, map, marksInRoom));
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
                 states.Add(new RM_MarkCell(usable, marked));
                 if (usable && !marked && ++bareSeen >= RM_GraffitiKernel.MaxCandidates) break;
             }
             return PickFrom(cells, states, out result);
+        }
+
+        private static Dictionary<Room, int> CountMarksByRoom(Map map)
+        {
+            var counts = new Dictionary<Room, int>();
+            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Filth))
+            {
+                if (t is Filth_Mark)
+                {
+                    Room room = t.Position.GetRoom(map);
+                    if (room != null)
+                    {
+                        counts.TryGetValue(room, out int n);
+                        counts[room] = n + 1;
+                    }
+                }
+            }
+            return counts;
+        }
+
+        private static bool RoomFull(IntVec3 c, Map map, Dictionary<Room, int> counts)
+        {
+            Room room = c.GetRoom(map);
+            if (room == null) return false;
+            counts.TryGetValue(room, out int n);
+            return RM_GraffitiKernel.RoomHoldsEnough(n, room.CellCount);
         }
 
         private static bool PickFrom(List<IntVec3> cells, List<RM_MarkCell> states, out IntVec3 result)

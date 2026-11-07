@@ -193,6 +193,7 @@
         <form>ThrowUp</form>
         <poolWeight>3</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -215,8 +216,9 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
         <form>Tag</form>
-        <poolWeight>2</poolWeight>
+        <poolWeight>1</poolWeight>
         <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>

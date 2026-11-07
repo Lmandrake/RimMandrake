@@ -14,7 +14,7 @@ namespace RimMandrake.Graffiti
         {
             if (!RM_GraffitiSettings.paintingEnabled) return null;
             if (pawn.Map == null) return null;
-            if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell)) return null;
+            if (!GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 cell, roomCap: true)) return null;
             return JobMaker.MakeJob(def.jobDef, cell);
         }
     }

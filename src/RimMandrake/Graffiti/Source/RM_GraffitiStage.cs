@@ -114,9 +114,10 @@ namespace RimMandrake.Graffiti
             List<Pawn> pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             for (int i = 0; i < pawns.Count; i++)
             {
+                // respawned, not teleported: Position plus Notify_Teleported left the drawn pawn behind at this spot for good
                 pawns[i].jobs?.StopAll();
-                pawns[i].Position = C(12 + 2 * i, 18);
-                pawns[i].Notify_Teleported(true, true);
+                pawns[i].DeSpawn();
+                GenSpawn.Spawn(pawns[i], C(12 + 2 * i, 18), map);
             }
             return "COLONY origin " + origin.x + "," + origin.z + " | pawns " + pawns.Count;
         }
@@ -199,6 +200,27 @@ namespace RimMandrake.Graffiti
                 if (p.mindState.mentalStateHandler.TryStartMentalState(RMGraffitiDefOf.RM_GraffitiPaintingSpreeState, "stage", forced: true, forceWake: true)) k++;
             }
             return "SPREE started " + k + " of " + want;
+        }
+
+        /// <summary>WHO: each colonist's joy, tolerance for this mark's kind, current job, and what the paint joy giver answers now.</summary>
+        public static string Who(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            JoyGiverDef giver = DefDatabase<JoyGiverDef>.GetNamed("RM_PaintGraffitiJoy");
+            var rows = new List<string>();
+            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+            {
+                bool found = GraffitiJobUtility.TryFindWallMarkCell(p, out IntVec3 cell);
+                rows.Add(p.LabelShort + " joy=" + (p.needs?.joy?.CurLevelPercentage.ToString("F2") ?? "none")
+                    + " chance=" + giver.Worker.GetChance(p).ToString("F2")
+                    + " can=" + giver.Worker.CanBeGivenTo(p)
+                    + " job=" + (p.CurJobDef?.defName ?? "none")
+                    + " wall=" + found + (found ? "@" + cell : "")
+                    + " pos=" + p.Position + " room=" + (p.GetRoom()?.CellCount ?? -1)
+                    + " tol=" + (p.needs?.joy?.tolerances?.ToString() ?? ""));
+            }
+            return "WHO " + string.Join(" || ", rows);
         }
 
         /// <summary>COUNT: marks on the map by def, and how many stand with no wall behind them.</summary>

@@ -149,7 +149,7 @@ namespace RimMandrake.Graffiti
             }
             marksThisSitting++;
             if (!RM_GraffitiKernel.SittingContinues(marksThisSitting, pawn.InMentalState, pawn.needs?.joy?.CurLevelPercentage ?? 1f)
-                || !GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 next)
+                || !GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 next, roomCap: !pawn.InMentalState)
                 || !pawn.CanReserve(next))
             {
                 EndJobWith(JobCondition.Succeeded);

@@ -306,6 +306,43 @@ namespace RimMandrake.Graffiti.SelfTest
             });
         }
 
+        // The hand, the pace and the wall's manners: a mark may tilt and shrink but never grow out of its wall cell, every form takes
+        // real time, overlap is symmetric, and a room's share grows with the room.
+        private static List<string> Paint()
+        {
+            return Loop("paint", 1, 1, r =>
+            {
+                foreach (GraffitiForm form in Enum.GetValues(typeof(GraffitiForm)))
+                {
+                    foreach (int pace in new[] { int.MinValue, 0, 60, 250, 1000, int.MaxValue })
+                    {
+                        Cases++; Steps++;
+                        int t = RM_GraffitiKernel.PaintTicks(form, pace);
+                        Check(t >= 30 && t <= RM_GraffitiKernel.PaintTicksBase(form) * 4, $"{form} at pace {pace}: {t} ticks");
+                    }
+                    Check(RM_GraffitiKernel.JoyForm(form) || !RM_GraffitiKernel.SpreeForm(form), $"{form}: in the spree pool but not the joy pool");
+                }
+                for (int id = -2000; id < 200000; id += 37)
+                {
+                    foreach (float width in new[] { 1f, 2f, 3f })
+                    {
+                        Cases++; Steps++;
+                        RM_GraffitiKernel.HandOf(id, width, out float tilt, out float scale, out float slide);
+                        Check(scale > 0.5f && scale <= 1f, $"id {id}: scale {scale} grows out of the wall");
+                        Check(Math.Abs(tilt) <= 9f && Math.Abs(slide) <= 0.1f, $"id {id}: tilt {tilt}, slide {slide}");
+                        RM_GraffitiKernel.HandOf(id, width, out float tilt2, out float scale2, out float slide2);
+                        Check(tilt == tilt2 && scale == scale2 && slide == slide2, $"id {id}: the hand is not stable across redraws");
+                    }
+                }
+                Check(RM_GraffitiKernel.WallMarksOverlap(0f, 0.5f, 0.5f) && !RM_GraffitiKernel.WallMarksOverlap(1f, 0.5f, 0.5f), "one-cell neighbours must not count as overlapping");
+                Check(RM_GraffitiKernel.WallMarksOverlap(1f, 1.5f, 0.5f) && RM_GraffitiKernel.WallMarksOverlap(-1f, 1.5f, 0.5f), "a tag beside a piece's middle lies under it");
+                Check(!RM_GraffitiKernel.RoomHoldsEnough(0, 1) && RM_GraffitiKernel.RoomHoldsEnough(1, 1), "a closet takes one mark");
+                Check(!RM_GraffitiKernel.RoomHoldsEnough(4, 160) && RM_GraffitiKernel.RoomHoldsEnough(11, 160), "a hall takes more than a closet");
+                Check(RM_GraffitiKernel.SittingContinues(100, true, 1f), "a spree does not stop for joy");
+                Check(!RM_GraffitiKernel.SittingContinues(RM_GraffitiKernel.MaxMarksPerJoySitting, false, 0f) && !RM_GraffitiKernel.SittingContinues(0, false, 1f) && RM_GraffitiKernel.SittingContinues(0, false, 0f), "a joy sitting ends when satisfied or after its few marks");
+            });
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -321,6 +358,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("cells", () => Cells(N(6000), S(1))),
                 ("lure", () => Lure(N(4000), S(1))),
                 ("wall", () => Wall()),
+                ("paint", () => Paint()),
             };
             foreach (var f in fam)
             {

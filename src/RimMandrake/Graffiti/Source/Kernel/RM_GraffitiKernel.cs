@@ -221,6 +221,9 @@ namespace RimMandrake.Graffiti
             return bare.Count > 0 ? bare : any;
         }
 
+        /// <summary>Has a room its share of a calm painter's marks? One, and one more for every 15 cells of floor.</summary>
+        public static bool RoomHoldsEnough(int marks, int floorCells) { return marks >= 1 + floorCells / 15; }
+
         /// <summary>Two marks on one line of wall, centres `distance` cells apart with half-widths a and b, cover each other.</summary>
         public static bool WallMarksOverlap(float distance, float halfWidthA, float halfWidthB)
         {
