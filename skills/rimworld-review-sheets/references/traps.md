@@ -36,6 +36,7 @@ An offline art sheet composited on a stand-in background can win owner approval 
 
 ## A sheet built from stale inputs
 - **A sheet built from `art_sheet` subjects can resolve art from a stale live def dump** and show the stand-in (the dragonsnake sheet showed the olive stand-in four times and a white albino swim graphic) while the four real renders sat unshown in `_artpipe/_artsrc`. Before offering any sheet, render what it displays and LOOK at it.
+- **A collection builder re-run for a SUBSET (e.g. keep = reels only) can silently overwrite the other subjects' summary sheets with empty ones,** voiding every earlier 'looked at it' check. Make builders skip subjects with nothing kept, and re-Read the final folder (sizes + images) as the LAST step before publishing.
 
 ## Agent guesses on a decisions file
 - **A `decisions.json` row whose decision equals its prefill, on a sheet with `reviewStatus.state=prefill` and no `savedBy`, is an AGENT GUESS, not an owner pick.** A handoff called two closed gate renders "picked A" from exactly that. Before installing a "pick", find the art-ledger ruling event (`by=owner`) or a ledger `ownerSaid`/`byCard`.

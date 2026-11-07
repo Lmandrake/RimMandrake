@@ -98,6 +98,7 @@ minutes and would have bought nothing here.
 
 ---
 - **Never `--force-take` the bridge from a stale-looking lock.** First check `D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl` for a live foreign client: a force-take once loaded another seat's walk save over a running test site.
+- **Never hand game or bridge powers to a subagent** without checking `rimflow bridge who` and the driver lock first. After any launch, compare `jawa/running_mods` to `ModsConfig.xml` (a 26-mod game ran while the file said 544). Windows case-twin texture files (`PaleTree_B` / `PaleTree_b`) block the art compose: retire the stray twin via `artledger.retire`.
 
 ## 1. Connect
 

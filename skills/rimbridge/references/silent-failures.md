@@ -83,7 +83,7 @@ happened to match. **Treat the written path as a claim and stat the Saves folder
 | **`Tile.HillinessLabel`, `MinTemperature`, `MaxTemperature`, `Biomes`** | lazily cached with **no reset method anywhere in RimWorld** — stale for the session after any write | the raw fields: `hilliness`, `temperature`, `PrimaryBiome` |
 | **`SurfaceTile.Roads` / `Rivers`** | biome-FILTERED views — `allowRoads ? potentialRoads : null`. A water biome **hides** links without deleting them | `potentialRoads` / `potentialRivers` to validate; the views only to answer "what does the player see" |
 | **`RaidStrategyDef.Worker.CanUseWith`** | meaningless while `parms.faction` is **null** — every strategy reports unusable | resolve an attacker first |
-| **`IncidentWorker.CanFireNow`** | carries storyteller **pacing** that `TryExecute` never consults | `false` does **not** block a raid. Just fire it |
+| **`IncidentWorker.CanFireNow`** | carries storyteller **pacing** that `TryExecute` never consults | `false` does **not** block a raid. Just fire it | It also caches its result (and `CanFireNowSub`) per worker per game tick (`lastCheckCanRunTick`), forced calls included: a dry run re-asked in the same tick, e.g. after flipping a toggle on a paused game, replays the first answer. Step a tick (`S.run(5)`) between asks.
 
 ---
 
@@ -411,6 +411,7 @@ filth had expired before the first sample and read as a mod FAIL
 (`PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST`). ⇒ **Set the clock BEFORE the map exists**
 (the map is then born at that date), never on a populated or staged map whose time-dated
 things are under test. `monitor_governor_build.md` gates it on a map with a free colonist.
+- **A timer the FlowWorks sheet kernel counts in engine PULSES** (`RM_SheetMath Params.CropKillPulses`, the 1-week crop drowning) cannot be aged by a `jawa/time_set_ticks` jump, since a jump runs no pulse. Test it by compressing the delay (a setting) per debug_process 'compress first', never by jumping the clock.
 
 ## 🔴 The game-over letter cannot be dismissed through the bridge
 

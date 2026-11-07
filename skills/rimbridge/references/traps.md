@@ -1232,3 +1232,6 @@ After `Actions\Regenerate Current Map` `programState` stays `Playing`, so a wait
 
 ## VEF Dialog_NewFactionSpawning windows stack after a donor-free save load
 - **After the donor-free save loads on a short tier, VEF `Dialog_NewFactionSpawning` windows stack:** close each with `rimworld/close_window`. `go_to_main_menu` then NREs, so restart the game (~80 s on 21 mods) rather than fight it.
+
+## `jawa/power_net` units
+- **`jawa/power_net` reports watt-days per tick (1/60000 W),** so tiny numbers like 1.67e-05 are normal. Scale before judging a gain.

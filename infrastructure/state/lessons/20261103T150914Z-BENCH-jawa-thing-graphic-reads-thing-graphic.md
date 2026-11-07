@@ -1,1 +1,0 @@
-jawa/thing_graphic reads Thing.Graphic: for any Pawn that is the ThingDef's null graphicData, so badTex=true and graphicPath UI/Misc/BadTexture for EVERY pawn regardless of its art. Judge pawn art with jawa/thing_explain appearance (life-stage paths, packsHoldingPath, OBSERVED provider) instead. Found GELATINOUSSLIME_KIT_ART_1 gen7.
