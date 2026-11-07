@@ -258,6 +258,15 @@ namespace RimMandrake.Pyrelands
             return perTick * delta;
         }
 
+        /// <summary>The share of a burn scar's cells that may hold a loose-ash drift.</summary>
+        public const float ScarAshShare = 0.33f;
+
+        /// <summary>Whether a scar cell may hold a drift, from its fixed per-cell roll (0..1).</summary>
+        public static bool ScarAshCell(float cellRoll, float share)
+        {
+            return cellRoll < share;
+        }
+
         public static bool UnderFruitCap(int existing, int cap)
         {
             return existing < cap;

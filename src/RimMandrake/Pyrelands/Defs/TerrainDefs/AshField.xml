@@ -37,6 +37,12 @@
       <li>GrowSoil</li>
       <li>Diggable</li>
     </affordances>
+    <!-- Vanilla's own soils carry this tag (TerrainDef.IsSoil). FlowWorks' canal gate asks it, so without it no canal could be
+         dug anywhere on a map that is almost all deep ash, and the watered-ash crop was out of a player's reach. Vanilla reads
+         it only for pen-food stats. -->
+    <tags>
+      <li>Soil</li>
+    </tags>
     <fertility>0.70</fertility>
     <pathCost>2</pathCost>
     <statBases>

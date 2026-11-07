@@ -11,9 +11,13 @@
   <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the old camps here pave a strip instead of raising a fence. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
 
   <!-- The burn nearing home (MapComponent_BurnLine.WatchApproach). {0} cells, {1} a compass word. -->
+  <RM_WithersUnderRoof>Withering: it needs open sky.</RM_WithersUnderRoof>
   <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>
-  <RM_BurnApproachLetter>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Walls and a roof keep it out. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
+  <RM_BurnApproachLead>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.</RM_BurnApproachLead>
+  <RM_BurnApproachLeadEdge>A burn line has reached the edge of your home, on the {0} side.</RM_BurnApproachLeadEdge>
+  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Walls and a roof keep it out. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
   <RM_BurnApproachMessage>The burn is {0} cells from home, out to the {1}.</RM_BurnApproachMessage>
+  <RM_BurnApproachMessageEdge>The burn has reached home, on the {0} side.</RM_BurnApproachMessageEdge>
   <RM_Compass0>north</RM_Compass0>
   <RM_Compass1>north-east</RM_Compass1>
   <RM_Compass2>east</RM_Compass2>

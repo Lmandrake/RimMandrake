@@ -292,7 +292,12 @@ namespace RimMandrake.Pyrelands
                 if (RM_PyrelandsSettings.ashDustingEnabled)
                 {
                     ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta))
+                    // Only about a third of a scar's cells may hold a drift, fixed per cell so a long burn cannot re-roll its way in:
+                    // with a drift on 92% of cells the scar read as pale camouflage blotches, not char with ash on it (map p,
+                    // 2026-11-07, p_scar_d15_64.png).
+                    if (ashFilth != null && RM_FireEcoKernel.ScarAshCell(Rand.ValueSeeded(Gen.HashCombineInt(pos.x * 7919 + pos.z, map.uniqueID + 1543)),
+                            RM_FireEcoKernel.ScarAshShare)
+                        && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta))
                         && pos.GetFirstThing(map, ashFilth) == null)
                     {
                         FilthMaker.TryMakeFilth(pos, map, ashFilth, 1, FilthSourceFlags.None, false);

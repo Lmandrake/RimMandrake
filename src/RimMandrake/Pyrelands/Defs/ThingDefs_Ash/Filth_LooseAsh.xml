@@ -49,13 +49,16 @@
       a soft grey fog over every cell. Our own crisp drifts instead (Textures/Things/Filth/RM_FE_LooseAsh, 256 px for 1.5 cells),
       so a thin scatter shows the dark ground between them and a deep drift reads as heaped ash, not haze. Tinted down to a mid-light
       grey: at full white a burned cell at x4 read as snow.
+      Same day, at play zoom on map p: one 1.5-cell drift on 92% of a scar's cells still read as pale camouflage blotches. A fire
+      now leaves a drift on about a third of its cells (FireEcologyHook, ScarAshShare), drawn at 1.25 and a little darker, so the
+      scar reads as char with ash lying on it.
     -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
       <texPath>Things/Filth/RM_FE_LooseAsh</texPath>
-      <color>(196, 192, 184, 215)</color>
-      <drawSize>1.5</drawSize>
+      <color>(184, 180, 172, 200)</color>
+      <drawSize>1.25</drawSize>
     </graphicData>
     <statBases>
       <!-- Under open sky ash is the ground's own colour here: a burn must not read as an ugly environment for days. Indoors it is dirt. -->

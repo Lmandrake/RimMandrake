@@ -79,6 +79,9 @@
     <fertility>0.28</fertility>
     <passability>Standable</passability>
     <pathCost>2</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
@@ -91,6 +94,9 @@
     <fertility>0.7</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
@@ -103,6 +109,9 @@
     <fertility>1.4</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 

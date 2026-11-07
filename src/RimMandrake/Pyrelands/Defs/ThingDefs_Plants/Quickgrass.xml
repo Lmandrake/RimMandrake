@@ -94,6 +94,10 @@
       half therefore need SEPARATE folders — four PNGs in one folder would
       be a single four-way random mixing both stages.
     -->
+    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <comps>
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.PlantGrowthStages">
         <sproutGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Sprout</sproutGraphicPath>

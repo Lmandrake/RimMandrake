@@ -70,7 +70,7 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
     "pyrelandsEnabled": True,
-    "ashDustingEnabled": True, "ashDustingChance": 0.02,
+    "ashDustingEnabled": True, "ashDustingChance": 0.004,
     "scorchFruitEnabled": True, "scorchFruitChance": 0.05, "scorchFruitMapCap": 40,
     "ashfallAccumulationEnabled": True, "ashfallRateMultiplier": 1.0,
     "biomeGenerationEnabled": True, "wildPlantAllowlistEnabled": True,

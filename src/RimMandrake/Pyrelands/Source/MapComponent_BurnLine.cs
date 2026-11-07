@@ -339,6 +339,7 @@ namespace RimMandrake.Pyrelands
         private int lastApproachCheckTick = -999999;
         private int homeSampleTick = -999999;
         private readonly List<IntVec3> homeSample = new List<IntVec3>();
+        private IntVec3 homeCentre = IntVec3.Invalid;
 
         /// <summary>A front gave no sign to a player watching their base until flames stood on the home area. Say so about
         /// half a day out: the first time as a letter that says what a burn takes and what stops it, then as a message.</summary>
@@ -359,6 +360,9 @@ namespace RimMandrake.Pyrelands
                 {
                     if (c.x % 4 == 0 && c.z % 4 == 0) homeSample.Add(c);
                 }
+                int sx = 0, sz = 0;
+                foreach (IntVec3 h in homeSample) { sx += h.x; sz += h.z; }
+                homeCentre = homeSample.Count > 0 ? new IntVec3(sx / homeSample.Count, 0, sz / homeSample.Count) : IntVec3.Invalid;
             }
             if (homeSample.Count == 0)
             {
@@ -390,16 +394,22 @@ namespace RimMandrake.Pyrelands
                 return;
             }
             lastApproachWarnTick = now;
-            string from = ("RM_Compass" + RM_BurnKernel.CompassIndex(nearestFire.x - nearestHome.x, nearestFire.z - nearestHome.z)).Translate();
+            // The side of home the fire is on, read from home's middle: read from the nearest home cell, a front already
+            // lapping the west edge came out "east" (map p, 2026-11-07: "1 cells from your home, out to the east").
+            IntVec3 from0 = homeCentre.IsValid ? homeCentre : nearestHome;
+            string from = ("RM_Compass" + RM_BurnKernel.CompassIndex(nearestFire.x - from0.x, nearestFire.z - from0.z)).Translate();
+            bool atEdge = nearest <= PyrelandsTuning.BurnApproachAtEdgeCells;
             if (!approachLetterSent)
             {
                 approachLetterSent = true;
-                Find.LetterStack.ReceiveLetter("RM_BurnApproachLabel".Translate(), "RM_BurnApproachLetter".Translate(nearest, from),
+                string lead = atEdge ? "RM_BurnApproachLeadEdge".Translate(from) : "RM_BurnApproachLead".Translate(nearest, from);
+                Find.LetterStack.ReceiveLetter("RM_BurnApproachLabel".Translate(), "RM_BurnApproachLetter".Translate(lead),
                     LetterDefOf.ThreatSmall, new TargetInfo(nearestFire, map));
             }
             else
             {
-                Messages.Message("RM_BurnApproachMessage".Translate(nearest, from), new TargetInfo(nearestFire, map), MessageTypeDefOf.ThreatSmall);
+                Messages.Message(atEdge ? "RM_BurnApproachMessageEdge".Translate(from) : "RM_BurnApproachMessage".Translate(nearest, from),
+                    new TargetInfo(nearestFire, map), MessageTypeDefOf.ThreatSmall);
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using RimWorld;
 using Verse;
+using Verse.Noise;
 
 namespace RimMandrake.Pyrelands
 {
@@ -31,8 +32,34 @@ namespace RimMandrake.Pyrelands
             if (!PyrelandsMechanicsGate.On) return;
             TerrainDef deep = TerrainDefOf.WaterDeep, shallow = TerrainDefOf.WaterShallow, mud = TerrainDefOf.Mud;
             TerrainDef rich = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ground_SoilRich") ?? TerrainDefOf.Soil;
-            if (WaterCells(map) >= minWaterCells) return;
+            if (WaterCells(map) < minWaterCells) DigPonds(map, deep, shallow, mud, rich);
+            FirmBanks(map, mud, rich);
+        }
 
+        /// <summary>
+        /// Firm stretches of bank. Every pond, the noise ponds and the dug ones alike, came ringed all the way round in vanilla Mud,
+        /// and FlowWorks will neither dig Mud (it slides back) nor pass water through it, so no canal could ever reach the water and
+        /// a watered strip of ash was out of a player's reach (map p, 2026-11-07). Where a coarse noise says so, a Mud cell is rich
+        /// soil instead: about four banks in ten are firm, in runs several cells long, and the rest stay muddy.
+        /// </summary>
+        private static void FirmBanks(Map map, TerrainDef mud, TerrainDef rich)
+        {
+            var bank = new Perlin(0.07, 2.0, 0.5, 2, Rand.Int, QualityMode.Medium);
+            TerrainGrid g = map.terrainGrid;
+            for (int i = 0; i < map.cellIndices.NumGridCells; i++)
+            {
+                if (g.TerrainAt(i) != mud) continue;
+                IntVec3 c = map.cellIndices.IndexToCell(i);
+                if (c.GetEdifice(map) != null) continue;
+                if (bank.GetValue(c.x, 0, c.z) > FirmBankNoise) g.SetTerrain(c, rich);
+            }
+        }
+
+        /// <summary>Bank noise above this is firm ground; about 40% of a Perlin field lies above 0.1.</summary>
+        public const double FirmBankNoise = 0.1;
+
+        private void DigPonds(Map map, TerrainDef deep, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
+        {
             int wanted = pondCount.RandomInRange;
             var centres = new System.Collections.Generic.List<IntVec3>();
             IntVec3 mid = map.Center;
@@ -92,13 +119,17 @@ namespace RimMandrake.Pyrelands
             float p1 = Rand.Range(0f, 6.283f), p2 = Rand.Range(0f, 6.283f);
             float a1 = Rand.Range(0.12f, 0.24f), a2 = Rand.Range(0.06f, 0.16f);
             float reach = Math.Min(r * 2.4f, GenRadial.MaxRadialPatternRadius - 1f);
+            // Shore grain at a few cells' scale. A smooth wobble snapped to whole cells drew as long straight terraces at play
+            // zoom (map p, 2026-11-07); vanilla only fades a shore half a cell, so the outline itself has to be ragged.
+            var grain = new Perlin(0.28, 2.0, 0.5, 2, Rand.Int, QualityMode.Medium);
             foreach (IntVec3 x in GenRadial.RadialCellsAround(c, reach, true))
             {
                 if (!x.InBounds(map) || x.GetEdifice(map) != null) continue;
                 float dx = x.x - c.x, dz = x.z - c.z;
                 double th = Math.Atan2(dz, dx);
                 float rr = r * (1f + a1 * (float)Math.Sin(2 * th + p1) + a2 * (float)Math.Sin(3 * th + p2));
-                int ring = Ring((float)Math.Sqrt(dx * dx + dz * dz) / rr, r);
+                float d = (float)Math.Sqrt(dx * dx + dz * dz) / rr + ShoreGrain * (float)grain.GetValue(x.x, 0, x.z);
+                int ring = Ring(Math.Max(0f, d), r);
                 if (ring < 0) continue;
                 TerrainDef want = ring == 0 ? deep : ring == 1 ? shallow : ring == 2 ? mud : rich;
                 TerrainDef cur = x.GetTerrain(map);
@@ -107,6 +138,9 @@ namespace RimMandrake.Pyrelands
                 map.terrainGrid.SetTerrain(x, want);
             }
         }
+
+        /// <summary>How far the shore grain moves a band edge, as a share of the pond's radius.</summary>
+        public const float ShoreGrain = 0.16f;
 
         /// <summary>0 deep water (big ponds only), 1 shallow water, 2 mud, 3 rich soil, -1 outside; d is distance over the
         /// pond's own radius at that angle.</summary>

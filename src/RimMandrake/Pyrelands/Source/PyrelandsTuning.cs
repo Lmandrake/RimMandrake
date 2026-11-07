@@ -147,6 +147,8 @@ namespace RimMandrake.Pyrelands
         // real colony), and a player watching their base got no word of it until vanilla's Fire! alert, with flames
         // already on the home area and the food stacked outside lost. 30 cells is about half a day. [INVENTED, played once]
         public const int BurnApproachWarnCells = 30;
+        /// <summary>At or inside this many cells the warning says the burn has reached home's edge, not how far off it is.</summary>
+        public const int BurnApproachAtEdgeCells = 3;
         public const int BurnApproachCheckTicks = 600;
         public const int BurnApproachCooldownTicks = 90000;
         public const int BurnApproachHomeResampleTicks = 2500;

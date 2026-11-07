@@ -612,6 +612,8 @@ def test_defaults_match_source():
         cm = re.match(r"PyrelandsTuning\.(\w+)", val)
         if cm:
             val = re.search(r"const \w+ %s = ([^;]+);" % cm.group(1), tun).group(1)
+        elif re.fullmatch(r"[A-Z]\w*", val):   # a const of the settings class itself (AshDustingDefault)
+            val = re.search(r"const \w+ %s = ([^;]+);" % val, src).group(1)
         val = val.rstrip("f").strip('"')
         found[name] = (val == "true") if typ == "bool" else (val if typ == "string" else float(val))
     check("DEFAULTS covers every static settings field", set(found) == set(P.DEFAULTS),

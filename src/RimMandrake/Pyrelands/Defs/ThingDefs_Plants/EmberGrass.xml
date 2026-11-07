@@ -40,6 +40,10 @@
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <comps>
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+    </comps>
     <ingestible />
     <plant>
       <!-- Grows on almost anything, dry deep ash (0.70) included; it

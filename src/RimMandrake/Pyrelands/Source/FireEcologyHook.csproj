@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
+    <Compile Include="CompWithersUnderRoof.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />
     <Compile Include="GenStep_PyrelandsFireCast.cs" />
     <Compile Include="GenStep_PyrelandsStandingWater.cs" />
