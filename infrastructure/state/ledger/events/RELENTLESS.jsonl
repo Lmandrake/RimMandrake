@@ -1431,3 +1431,4 @@
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless staging CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES: deploy and restart for its live proofs","ts":"2026-11-07T01:21:15Z","tsn":1794014475282058860}
 {"seat":"RELENTLESS","event":"bridge","state":"released","ts":"2026-11-07T01:33:16Z","tsn":1794015196547426143}
 {"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (free)","purpose":"relentless showing BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT: review savegame for the owner's look","override":"took the driver lock from a dead or forced holder","ts":"2026-11-07T01:38:28Z","tsn":1794015508167608162}
+{"seat":"RELENTLESS","event":"bridge","state":"taken","why":"delegated: bridge idle (ours)","purpose":"relentless showing BEER_CUT_DECIDE_BARREL_STILL_BREWS_IT (renew)","override":"took the driver lock from a dead or forced holder","ts":"2026-11-07T01:57:26Z","tsn":1794016646670809359}
