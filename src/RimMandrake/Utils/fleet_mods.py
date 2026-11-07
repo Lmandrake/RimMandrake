@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""fleet_mods.py — the slow half of RUNNING_NOW (running_now.py): receipts, mods worked on lately, the factory line.
+"""fleet_mods.py — the slow half of RELENTLESS_NOW (running_now.py): receipts, mods worked on lately, the factory line.
 
 FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS (owner, by card 2026-11-02): "there should be a lower section that has a
 list of all Mods worked on in the past week or so and where they stand. What was done? Each task that contributed to

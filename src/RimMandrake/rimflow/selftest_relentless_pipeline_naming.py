@@ -51,9 +51,9 @@ rules = json.loads(read("src/RimMandrake/rimflow/relentless_rules.json"))
 check("relentless_rules.json: worker_agent rm-builder, checker_agent rm-judge",
       rules.get("worker_agent") == "rm-builder" and rules.get("checker_agent") == "rm-judge")
 
-# 3. The RUNNING_NOW page's Relentless panel and text say Pipeline, Builders and Judges.
+# 3. The RELENTLESS_NOW page's Relentless panel and text say Pipeline, Builders and Judges.
 page = read("src/RimMandrake/Utils/running_now.py")
-check("RUNNING_NOW panel: RELENTLESS PIPELINE with Builders and Judges",
+check("RELENTLESS_NOW panel: RELENTLESS PIPELINE with Builders and Judges",
       '"PIPELINE"' in page and "RELENTLESS PIPELINE" in page and "Builders %d, Judges %d" in page)
 
 # 4. No live doc names the system the Relentless Agent, except a quote or a dated history/design-record line.

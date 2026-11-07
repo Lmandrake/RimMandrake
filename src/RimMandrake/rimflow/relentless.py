@@ -5419,7 +5419,7 @@ def owner_hold(r, item, first, st=None):
 
 
 def write_queue_next(store, fx, r, now, shown=8):
-    """The next names in the line, for RUNNING_NOW: the order needs this tick's plan and Operations' verdict, so the page
+    """The next names in the line, for RELENTLESS_NOW: the order needs this tick's plan and Operations' verdict, so the page
     reads it here instead of recomputing it. `free` may start at the next room; `waiting` are next but stopped by the token
     pause, a degraded verdict or their own not_before (the same tests lease applies). A reading: nothing acts on it."""
     states = store.states()

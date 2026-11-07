@@ -49,8 +49,8 @@ RULES_FILE = os.path.join(HERE, "..", "rimflow", "relentless_rules.json")     # 
 PAUSE_WORDS = "Relentless starts no new content work. System items, expedited items, live-failure fixes, checks of finished builds and the game phase go on."
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"
-OUT = OUT_DIR + "/RUNNING_NOW.md"
-PHONE_OUT = OUT_DIR + "/RUNNING_NOW_PHONE.md"
+OUT = OUT_DIR + "/RELENTLESS_NOW.md"
+PHONE_OUT = OUT_DIR + "/RELENTLESS_NOW_PHONE.md"
 HIST = OUT_DIR + "/running_history.jsonl"
 STATE = OUT_DIR + "/running_state.json"
 STEVE_CACHE = OUT_DIR + "/running_steve.json"
@@ -3128,9 +3128,9 @@ def check():
     try:
         age = time.time() - os.stat(OUT).st_mtime
     except OSError as e:
-        print("RUNNING_NOW.md: UNMEASURED (%s)" % e)
+        print("RELENTLESS_NOW.md: UNMEASURED (%s)" % e)
         return 1
-    print("RUNNING_NOW.md is %s old%s" % (ago(age), "" if age <= STALE_AFTER else " - STALE (limit 3 min)"))
+    print("RELENTLESS_NOW.md is %s old%s" % (ago(age), "" if age <= STALE_AFTER else " - STALE (limit 3 min)"))
     return 0 if age <= STALE_AFTER else 1
 
 

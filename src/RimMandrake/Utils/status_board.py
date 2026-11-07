@@ -5,7 +5,7 @@ the last week went. Built by a script from readings other programs already write
 STATUS_PAGES_BUILD_REPLACE_RIMPULSE. Owner, by card 2026-11-03, on the hand-written mockup: "The English write-up you
 provided here is superb." Every STUCK line says what is planned to unstick it and who it waits on; "Needs you (N)"
 matches every needs-you tag below it; no cryptic lines; the project's dark 70s-brown look, not white ("The white is
-glaring."); readable on a phone. RimPulse is retired for this page plus RUNNING_NOW.md (owner, 2026-11-03), carrying
+glaring."); readable on a phone. RimPulse is retired for this page plus RELENTLESS_NOW.md (owner, 2026-11-03), carrying
 its trend lines: errors handled and unhandled, output per day, live-test yield.
 
 Sources (read-only): running_fleet.json (fleet_mods.gather: mods, stuck lines, Needs you; refreshed by running_now.py

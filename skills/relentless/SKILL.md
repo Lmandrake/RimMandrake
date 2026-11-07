@@ -141,7 +141,7 @@ Read before you redesign anything. Each of these has cost generations.
 ## Operating it
 
 - **Reading the system:** `relentless.py reading`, the `rm-relentless.service` journal,
-  `D:\ClaudeWork\rimmandrake\conductor\RUNNING_NOW.md`. Only the Conductor sets expedite.
+  `D:\ClaudeWork\rimmandrake\conductor\RELENTLESS_NOW.md`. Only the Conductor sets expedite.
 - 🔴 **Stopping takes more than its units and the Dispatcher PAUSE.** `relentless_live_round.py` is a bare
   `Popen` from the tick, in no unit. On 2026-11-06 it kept calling `game_next` and launched the game 11 minutes
   after the stop, and the owner caught it. Kill it by pid and check the journal. `dispatcher stop-runs` also

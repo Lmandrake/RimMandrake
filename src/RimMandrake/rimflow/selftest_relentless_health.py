@@ -98,7 +98,7 @@ def store():
     return d, R.Store(d)
 
 
-# --- the reading RUNNING_NOW lists as "next": the same order and the same stops as lease
+# --- the reading RELENTLESS_NOW lists as "next": the same order and the same stops as lease
 def queue_next(fx, r, states):
     d, s = store()
     for st in states:

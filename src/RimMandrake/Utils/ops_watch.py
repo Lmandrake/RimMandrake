@@ -2563,7 +2563,7 @@ def fails_since_close(fails, rows):
 
 
 def in_churn(st, fails, now, cfg, waits=0, resumed=None):
-    """rl_churn's per-item rule, the one churn definition (RUNNING_NOW's row colours read it too): fails is
+    """rl_churn's per-item rule, the one churn definition (RELENTLESS_NOW's row colours read it too): fails is
     [(epoch, class)] of the item's failed attempts; in churn when one is inside churn_window_h and state.json returns >=
     churn_returns or one class failed it churn_same_class times. waits: the item's wait rows (attempt_waited), whose
     returns state.json counts too and churn does not. resumed: attempts_resumed of its rows."""
@@ -2621,7 +2621,7 @@ def churn_why(st, fails, now, cfg, waits=0, resumed=None):
 
 def stage_since(st):
     """When an item entered the stage it is in, by the field each stage writes; None when the stage has no clock. The one
-    definition: RUNNING_NOW's time-in-place and churn_item's stuck reason both read it."""
+    definition: RELENTLESS_NOW's time-in-place and churn_item's stuck reason both read it."""
     def field(d, k):
         v = d.get(k) if isinstance(d, dict) else None
         return float(v) if is_num(v) else None
@@ -2671,7 +2671,7 @@ def churn_item_points(per, now, cfg, spend_known, held="read"):
     costing more and more, or stuck in testing a very very long time without progress"): one relentless.churn_item.<ID>
     reading per item, its value the number of reasons it churns, for the wildcard alarm OPS_CHURN_DIAGNOSE_* (one fixed
     item per churning item, routed to Operations by its OPS_ name). per: {item: (state, fails, spend placed in the
-    tokens window)}. Reasons, numbers from relentless.item_bands (shared with RUNNING_NOW's row colours):
+    tokens window)}. Reasons, numbers from relentless.item_bands (shared with RELENTLESS_NOW's row colours):
       bouncing: churn_why (returns, or a class repeated that failed it inside the window);
       spend rising: not done, retired, closing, in the game phase or put down (held, blocked), state.json spent at the hot `spent` band, and
         spend placed in the window;
