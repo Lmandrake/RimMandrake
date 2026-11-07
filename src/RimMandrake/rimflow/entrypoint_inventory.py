@@ -53,7 +53,6 @@ KEPT = {
     "audit_prescreen": "role_launch imports it at module top (AP.STAMP); the Auditor's pre_launch runs it; only switched off",
     "relentless_head_age": "a lesson tells agents to run it before calling the pool order a defect; written 2026-11-05",
     "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
-    "evidence_metrics": "the owner's record of how Relentless does (2026-11-03); by hand, no caller yet: EVIDENCE_METRICS_WIRE_ONE_ROW_EVER",
     "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
     "replay_unreached_closes": "open CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS's contract proof runs its --selftest; judge again when that closes",
     "relentless_tickp95": "by-hand tick report and check; RELENTLESS_REMEASURE_TICK_P95_DETACH_NEXT and its detach items are open",

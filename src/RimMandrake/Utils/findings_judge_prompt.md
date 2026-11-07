@@ -27,13 +27,17 @@ Daily judging:
    (`python3 src/RimMandrake/Utils/gpt_consult.py "..." -f <files>`), recorded `--by gpt-consult`. Never chase a single
    disagreement: only an `ACT` line in the report is acted on, by filing ONE item (`rimflow namecheck`, then `file`)
    that names the report line. Bulk output to files under /mnt/d/ClaudeWork/rimmandrake/findings_judge/.
-4. Commit by explicit path only, with ./publish:
+4. Evidence record (item EVIDENCE_METRICS_WIRE_ONE_ROW_EVER; owner 2026-11-03: "we're just keeping a record of them as
+   evidence."). Run `python3 src/RimMandrake/rimflow/evidence_metrics.py record` once, whatever steps 1-3 found. It appends
+   one row to infrastructure/state/evidence_metrics.jsonl. Nothing here is a target: do not read, judge or act on the row.
+5. Commit by explicit path only, with ./publish:
    `./publish -m "findings judge <date>: <n> decided" infrastructure/state/findings/decisions.jsonl
-   infrastructure/state/ledger/events/BENCH.jsonl infrastructure/state/close_audits.jsonl` (plus any skill/fact file you edited). Never git add -A, stash,
+   infrastructure/state/ledger/events/BENCH.jsonl infrastructure/state/close_audits.jsonl
+   infrastructure/state/evidence_metrics.jsonl` (plus any skill/fact file you edited). Never git add -A, stash,
    reset --hard, --force.
 
 Rules: no game, no bridge, no deploy, no subagents, foreground commands with timeouts under 540 s, bulk output to
 files under /mnt/d/ClaudeWork/rimmandrake/findings_judge/. Nothing you write reaches the owner. If the fold has
-nothing NEW, no contradiction you can act on and nothing failed again, say so and still do step 3.
+nothing NEW, no contradiction you can act on and nothing failed again, say so and still do steps 3, 4 and 5.
 
 End with ONE line: `JUDGED new=<n> contradictions=<n> again=<n> decided=<n> spawned=<n> memory=<n> regraded=<n> published=<sha|none>`.

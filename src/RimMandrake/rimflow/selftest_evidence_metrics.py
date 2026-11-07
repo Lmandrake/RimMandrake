@@ -179,6 +179,15 @@ def main():
     check(rc == 0 and len(got) == 1 and "jams_by_class" in got[0] and got[0]["stays_done"]["by_lane"]["offline"]["did_not"] == 3,
           "record appends one JSON row, read from the ledger it is pointed at, to the record file")
 
+    # wired: the daily findings judge calls record and publishes the file record writes
+    with open(os.path.join(em.REPO, "src", "RimMandrake", "Utils", "findings_judge_prompt.md"), encoding="utf-8") as fh:
+        p = fh.read()
+    call, pub = p.find("rimflow/evidence_metrics.py record"), p.find("./publish -m")
+    rel = os.path.relpath(em.RECORD, em.REPO).replace(os.sep, "/")
+    check(0 <= call < pub, "wired: the daily findings judge prompt runs record before its commit step")
+    check(rel in p[pub:], "wired: the judge's commit step publishes %s, the file record appends to" % rel)
+    check("still do steps 3, 4 and 5" in p, "wired: a day with nothing new to judge still records and publishes")
+
     print("selftest_evidence_metrics: %s" % ("PASS" if not FAILS else "%d FAIL" % len(FAILS)))
     return 1 if FAILS else 0
 

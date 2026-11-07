@@ -127,6 +127,9 @@ check(E.classify("src/RimMandrake/Utils/hook_latency_corpus.json") is None, "rec
 inv, _ = E.inventory(E.ROOT, ["regrade"])
 check(any(k == "doc" and f.endswith("findings_judge_prompt.md") for k, f, _l in inv["regrade"]),
       "regrade's daily caller, the findings judge prompt, is read as an entry point")
+inv, _ = E.inventory(E.ROOT, ["evidence_metrics"])
+check(any(k == "doc" and f.endswith("findings_judge_prompt.md") for k, f, _l in inv["evidence_metrics"]),
+      "evidence_metrics' daily caller, the findings judge prompt, is read as an entry point")
 check(os.path.exists(os.path.join(E.ROOT, E.RIMFLOW, "close_audit.py")), "close_audit stays (redesign_final.md G20)")
 inv, _ = E.inventory(E.ROOT, ["audit_prescreen"])
 check(any(k == "import" and f.endswith("role_launch.py") for k, f, _l in inv["audit_prescreen"]),

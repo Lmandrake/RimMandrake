@@ -25,6 +25,8 @@ The four records, all read-only from their sources:
 
     python3 src/RimMandrake/rimflow/evidence_metrics.py [report] [--json]
     python3 src/RimMandrake/rimflow/evidence_metrics.py record      # append today's reading to RECORD
+
+The daily caller of `record` is the findings judge (src/RimMandrake/Utils/findings_judge_prompt.md).
 """
 from __future__ import annotations
 
