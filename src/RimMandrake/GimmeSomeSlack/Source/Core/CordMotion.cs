@@ -10,8 +10,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
 {
     public static class CordMotion
     {
-        /// <summary>How long the whipping end of a live floor terminal is, cells (design §8.5: ~0.4).</summary>
-        public const double WhipLen = 0.4;
+        /// <summary>How long the whipping end of a live floor terminal is, cells (was 0.4, shorter than its own glow: the owner, 2026-11-07,
+        /// saw the end move while the spark stayed put).</summary>
+        public const double WhipLen = 0.7;
+        /// <summary>The whip's bend, cells: the tip's swing is up to 1.9 x this.</summary>
+        public const double WhipAmp = 0.18;
+        /// <summary>A fallen overhead wire is heavier and longer: its writhing end, and its bend.</summary>
+        public const double WireWhipLen = 1.0, WireWhipAmp = 0.26;
 
         /// <summary>The first Value() of new CordRng(seed ^ k*golden), computed without allocating: Whip calls this
         /// per snap interval every frame (thousands of times late in a session), so a CordRng per call was per-frame garbage.</summary>
@@ -44,6 +49,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// the cut powerline should follow the writhing edge of the cable"). No tail near it (whip off, far zoom, past the motion cap): the laid tip.</summary>
         internal static V2 RideTail(V2 laidTip, IList<V2> laid, IList<V2> now)
         {
+            int best = RideIndex(laidTip, laid);
+            return best >= 0 ? now[best] : laidTip;
+        }
+
+        /// <summary>The whip tail or swaying wall tail laid nearest this tip, or -1.</summary>
+        internal static int RideIndex(V2 laidTip, IList<V2> laid)
+        {
             int best = -1;
             double bd = 0.75 * 0.75;
             for (int i = 0; i < laid.Count; i++)
@@ -51,7 +63,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double dx = laid[i].X - laidTip.X, dz = laid[i].Z - laidTip.Z, d = dx * dx + dz * dz;
                 if (d < bd) { bd = d; best = i; }
             }
-            return best >= 0 ? now[best] : laidTip;
+            return best;
         }
 
         /// <summary>Where the last <see cref="WhipInto"/> call found its snap interval (GPT pre-release B15). The schedule is

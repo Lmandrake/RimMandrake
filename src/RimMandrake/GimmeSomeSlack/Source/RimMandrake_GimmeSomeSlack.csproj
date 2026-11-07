@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="TipSparks.cs" />
     <Compile Include="Core\CordGraph.cs" />
     <Compile Include="Core\SnapshotBlock.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />

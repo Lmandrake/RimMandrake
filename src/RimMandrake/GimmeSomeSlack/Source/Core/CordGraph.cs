@@ -830,6 +830,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : new HashSet<Cell>();
         }
 
+        private Dictionary<VId, HashSet<Cell>> machineArmTable;
+        /// <summary>How far a machine's plug may be from a junction for the machine to count as right beside it, cells.</summary>
+        public const double BesideMachine = 1.6;
+
+        /// <summary>The arms of a junction whose cord is a short lead into a machine right beside it.</summary>
+        internal HashSet<Cell> MachineArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref machineArmTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, VId other, CordEdge e, bool atA)
+                {
+                    if (Nodes[n].Type != NodeType.Junction || !Nodes[other].IsMachine) return;
+                    if (V2.Dist(Nodes[n].Pos, atA ? e.PB : e.PA) > BesideMachine) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e.B, e, true); Arm(e.B, e.A, e, false); }
+                System.Threading.Volatile.Write(ref machineArmTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : NoArms;
+        }
+        private static readonly HashSet<Cell> NoArms = new HashSet<Cell>();
+
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>
         internal Cell CellOf(VId v) => Nodes[v].Cell;
     }

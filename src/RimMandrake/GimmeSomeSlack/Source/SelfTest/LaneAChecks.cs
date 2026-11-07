@@ -52,7 +52,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                             if (cnt <= 0) continue;
                             List<V2> tail = side == 0 ? st.Pts.GetRange(0, cnt) : st.Pts.GetRange(st.Pts.Count - cnt, cnt);
                             double len = Geo.Length(tail);
-                            if (len < 0.3 || len > 0.5) badLen++;
+                            if (len < 0.5 || len > 0.85) badLen++;
                         }
                         if (st.Lifted)
                         {
@@ -70,7 +70,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
             Check(liveTails > 0, $"whip: no live floor terminal strand has a whip tail ({liveTails})");
             Check(deadTails == 0, $"whip: {deadTails} DEAD terminal strands carry a whip tail (dead ends lie still)");
-            Check(badLen == 0, $"whip: {badLen} whip tails outside 0.3-0.5 cell");
+            Check(badLen == 0, $"whip: {badLen} whip tails outside 0.5-0.85 cell");
             Check(fray > 0, "whip: no live fray decal rides the whip (OnWhip)");
             Check(lifted > 0 && badW == 0, $"sway: {lifted} lifted (wall-hanging) strands, {badW} with bad sway weights (0 at the hole, ~1 at the tip)");
             Console.WriteLine($"  whip: {liveTails} live tails, {deadTails} dead, {fray} riding fray decals; lifted strands {lifted}");

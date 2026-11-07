@@ -6,6 +6,8 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
@@ -471,12 +473,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (FallenCord f in a.fallen)
                 {
                     if (++n > MaxSparkingEnds) return;
-                    int period = Mathf.Max(12, Mathf.RoundToInt(60 / GimmeSomeSlackSettings.sparkIntensity));
-                    if ((tick + (f.seed & 0x7fff)) % period != 0) continue;
-                    FallenLay l = Lay(a, f);
-                    var at = new Vector3((float)l.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)l.Tip.Z);
-                    FleckMaker.ThrowMicroSparks(at, map);
-                    if (((tick / period + f.seed) & 3) == 0) FleckMaker.ThrowLightningGlow(at, map, 0.5f);
+                    int period = Mathf.Max(8, Mathf.RoundToInt(TipSparks.Period / GimmeSomeSlackSettings.sparkIntensity));
+                    List<FallenLay> ls = Lays(a, f);
+                    // every wire's own end sparks, each in its turn
+                    for (int w = 0; w < ls.Count; w++)
+                    {
+                        if ((tick + (f.seed & 0x7fff) + w * period / ls.Count) % period != 0) continue;
+                        FallenLay l = ls[w];
+                        TipSparks.Throw(map, (float)l.TipNow.X, (float)l.TipNow.Z, (float)l.OutNow.X, (float)l.OutNow.Z);
+                    }
                 }
             }
         }
@@ -585,6 +590,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!AerialSettings.enabled) return;   // drops, clamps and live-end glow are power-only
             DrawLocalDrops(view);
             DrawTaps(view);
+            DrawFallenTails(view);
             DrawFallenGlow();
         }
 
@@ -727,7 +733,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over, float width)
         {
-            List<P2> pts = AerialMath.SpanCurve(from, tip, 0.04, 0.2);
+            List<P2> pts = AerialMath.LooseDrop(from, tip, d.thingIDNumber);
             int split = 0;
             while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;
             var lo = pts.GetRange(0, Math.Min(pts.Count, split + 1));
@@ -780,11 +786,91 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (FallenCord f in a.fallen)
                 {
                     if (++n > MaxSparkingEnds) return;
-                    FallenLay l = Lay(a, f);
-                    float k = Mathf.PerlinNoise(t * 9f, (f.seed & 0xff) * 0.37f);
-                    float size = (0.38f + 0.42f * k * k) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
-                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)l.Tip.X, y, (float)l.Tip.Z), Quaternion.identity, new Vector3(size, 1f, size)), AerialMaterials.Glow, 0);
-                    lastGlowDraws++;
+                    List<FallenLay> ls = Lays(a, f);
+                    for (int w = 0; w < ls.Count; w++)
+                    {
+                        FallenLay l = ls[w];
+                        float k = Mathf.PerlinNoise(t * 9f, ((f.seed + w * 37) & 0xff) * 0.37f);
+                        float pop = Mathf.Repeat(t * 0.8f + ((f.seed + w * 37) & 0xff) * 0.0173f, 1f);
+                        float size = (0.30f + 0.32f * k * k + (pop < 0.09f ? 0.45f * (1f - pop / 0.09f) : 0f)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
+                        Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)l.TipNow.X, y, (float)l.TipNow.Z), Quaternion.identity, new Vector3(size, 1f, size)), AerialMaterials.Glow, 0);
+                        lastGlowDraws++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Do this anchor's fallen wires writhe? Live, and the Cables tab's whip setting on: the same rule as a floor cord's live end.</summary>
+        public bool FallenWrithes(CompAerialAnchor a) =>
+            GimmeSomeSlackSettings.whip && GimmeSomeSlackSettings.breakReadout && (FallenLiveCached(a) ?? false);
+
+        private readonly Dictionary<FallenCord, Mesh> tailMeshes = new Dictionary<FallenCord, Mesh>();
+        private readonly Dictionary<FallenLay, CordMotion.WhipCursor> tailCursors = new Dictionary<FallenLay, CordMotion.WhipCursor>();
+        private readonly List<V2> tailLaid = new List<V2>(), tailBent = new List<V2>();
+        private readonly List<Vector3> tailV = new List<Vector3>();
+        private readonly List<Vector2> tailU = new List<Vector2>();
+        private readonly List<int> tailT = new List<int>();
+
+        /// <summary>The writhing end of every live fallen wire, drawn per frame like a floor cord's whip tail (<see cref="WireMesh"/> stops where it starts), with its
+        /// frayed end on it. The spark and glow read TipNow (owner 2026-11-07: "the spark of the cut powerline should follow the writhing edge of the cable").</summary>
+        private void DrawFallenTails(CellRect view)
+        {
+            if (AerialMaterials.FrayLive == null) return;
+            float now = Time.realtimeSinceStartup;
+            float y = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
+            bool still = SectionLayer_RM_MessyCords.FarNow;
+            int n = 0;
+            foreach (CompAerialAnchor a in Anchors)
+            {
+                if (a.fallen.Count == 0 || !FallenWrithes(a)) continue;
+                AerialMaterials.LookMats lm = AerialMaterials.AnchorMats(a);
+                foreach (FallenCord f in a.fallen)
+                {
+                    tailV.Clear(); tailU.Clear(); tailT.Clear();
+                    bool animate = !still && ++n <= MaxSparkingEnds;
+                    bool seen = false;
+                    foreach (FallenLay l in Lays(a, f))
+                    {
+                        int cnt = AerialMath.WireTailCount(l, CordMotion.WireWhipLen);
+                        if (cnt == 0) continue;
+                        tailLaid.Clear();
+                        for (int i = l.Pts.Count - cnt; i < l.Pts.Count; i++) tailLaid.Add(new V2(l.Pts[i].X, l.Pts[i].Z));
+                        List<V2> bent = tailLaid;
+                        if (animate)
+                        {
+                            tailCursors.TryGetValue(l, out CordMotion.WhipCursor cur);
+                            CordMotion.WhipInto(tailLaid, now, unchecked((ulong)(long)(f.seed * 2654435761L + l.Pts.Count)), CordMotion.WireWhipAmp, tailBent, ref cur);
+                            tailCursors[l] = cur;
+                            bent = tailBent;
+                        }
+                        V2 tip = bent[bent.Count - 1], way = (tip - bent[Math.Max(0, bent.Count - 4)]).Norm();
+                        l.TipNow = new P2(tip.X, tip.Z);
+                        l.OutNow = new P2(way.X, way.Z);
+                        if (!view.Contains(new IntVec3((int)tip.X, 0, (int)tip.Z))) continue;
+                        seen = true;
+                        int v0 = tailV.Count;
+                        for (int i = 0; i < bent.Count; i++)
+                        {
+                            V2 p0 = bent[Math.Max(0, i - 1)], p1 = bent[Math.Min(bent.Count - 1, i + 1)];
+                            V2 d = (p1 - p0).Norm();
+                            float w = lm.Width / 2f;
+                            tailV.Add(new Vector3((float)bent[i].X - (float)d.Z * w, y, (float)bent[i].Z + (float)d.X * w));
+                            tailV.Add(new Vector3((float)bent[i].X + (float)d.Z * w, y, (float)bent[i].Z - (float)d.X * w));
+                            float u = i * 0.15f / (lm.Width * 4f);
+                            tailU.Add(new Vector2(u, 1f)); tailU.Add(new Vector2(u, 0f));
+                            if (i == 0) continue;
+                            int q = v0 + 2 * (i - 1);
+                            tailT.Add(q); tailT.Add(q + 2); tailT.Add(q + 3);
+                            tailT.Add(q); tailT.Add(q + 3); tailT.Add(q + 1);
+                        }
+                        float ang = (float)Math.Atan2(way.Z, way.X) * Mathf.Rad2Deg;
+                        Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)tip.X, y + 0.002f, (float)tip.Z), Quaternion.Euler(0f, -ang, 0f), new Vector3(0.55f, 1f, 0.55f)), AerialMaterials.FrayLive, 0);
+                    }
+                    if (!seen || lm.Span == null) continue;
+                    if (!tailMeshes.TryGetValue(f, out Mesh m) || m == null) tailMeshes[f] = m = new Mesh { name = "RM_AerialFallenTail" };
+                    m.Clear();
+                    m.SetVertices(tailV); m.SetUVs(0, tailU); m.SetTriangles(tailT, 0); m.RecalculateBounds();
+                    Graphics.DrawMesh(m, Matrix4x4.identity, lm.Span, 0);
                 }
             }
         }
@@ -800,6 +886,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             float w = AerialMaterials.AnchorMats(a).Width;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(w * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.AttachZ(a) * 1000f));
+            bool writhes = FallenWrithes(a);
+            sig = Gen.HashCombineInt(sig, writhes ? 1 : 0);
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
             float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the ground layer's cordY: under pawns, like any floor cord
@@ -807,6 +895,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
             List<P2> pts = lay.Pts;
             if (pts.Count < 2) continue;
+            // the writhing end is drawn per frame and starts on this mesh's last point
+            int tail = writhes ? AerialMath.WireTailCount(lay, CordMotion.WireWhipLen) : 0;
+            if (tail > 0) pts = pts.GetRange(0, pts.Count - tail + 1);
+            lay.TipNow = lay.Tip;
             int v0 = verts.Count;
             double u = 0;
             for (int i = 0; i < pts.Count; i++)

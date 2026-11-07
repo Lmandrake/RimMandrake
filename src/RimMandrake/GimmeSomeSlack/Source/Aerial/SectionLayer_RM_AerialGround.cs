@@ -63,6 +63,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                         foreach (FallenLay lay in comp.Lays(a, f))
                         {
                             if (lay.Pts.Count < 2) continue;      // the wire itself is drawn per frame (one piece, B21); only its frayed end here
+                            if (comp.FallenWrithes(a) && AerialMath.WireTailCount(lay, RimMandrake.GimmeSomeSlack.Core.CordMotion.WireWhipLen) > 0) continue;   // a writhing end's fray rides it, per frame
                             Material fray = live ? AerialMaterials.FrayLive : AerialMaterials.FrayDead;
                             if (fray != null)
                             {

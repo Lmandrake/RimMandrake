@@ -33,6 +33,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public double Squash;
         /// <summary>A live fray that rides the whipping tail: printed statically only with whip off.</summary>
         public bool OnWhip;
+        /// <summary>The fray on a wall end's hanging tail: it sways with that tail, so while the tail sways the component draws it, not the section.</summary>
+        public bool OnSwayTail;
         /// <summary>Round 4: the art sub-rectangle printed (u along art X, v along art Z); U1 = 0 means the whole canvas. A wall
         /// plate prints only its plate, never the art's own curl of cord (WallMount).</summary>
         public double U0, U1, V0, V1;
@@ -1222,6 +1224,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // fewer than three arms: keep the sockets on a side a cord really arrives from, and the lead on its own arm
                 foreach (Cell c in order) if (arms.Contains(c) && arms.Contains(new Cell(c.Z, -c.X))) { faces = c; break; }
             }
+            // a machine right beside the strip takes the strip's own lead: with the sockets facing it, a through cord plugging in ran along
+            // the machine's edge and read as a second cord into it (blind judge; owner 2026-11-07, "multiple cables for no reason")
+            foreach (Cell c in order)
+                if (g.MachineArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); break; }
             Cell lead = new Cell(faces.Z, -faces.X);                                         // -90 degrees from the sockets
             Cell free = new Cell(-lead.X, -lead.Z), back = new Cell(-faces.X, -faces.Z);
             bool hasBack = arms.Contains(back), hasFree = arms.Contains(free), hasFace = arms.Contains(faces);
@@ -1546,7 +1552,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     for (int k = 0; k < sw.Length; k++) sw[k] = Math.Pow(k / (double)(sw.Length - 1), 1.3);
                     piece.Strands.Add(new CordStrand { Pts = tail, OverFace = true, S0 = 0.3, Lifted = true, SwayW = sw });
                     V2 tt = tail[tail.Count - 1];
-                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.FrayLive : DecalKind.FrayDead, tt, -Math.PI / 2, 0.5));
+                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.FrayLive : DecalKind.FrayDead, tt, -Math.PI / 2, 0.5) { OnSwayTail = true });
                     piece.Ends.Add(new CordEnd { Tip = tt, Dir = new V2(0, -1), NetCell = nd.Cell, Wall = true });
                 }
             }

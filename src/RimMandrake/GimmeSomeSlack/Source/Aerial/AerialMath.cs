@@ -108,6 +108,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         public List<P2> Pts = new List<P2>();
         public P2 Tip;
+        /// <summary>Where the end is on screen now, and which way it points: the writhing end moves, its spark and glow go with it. Tip while it is still.</summary>
+        public P2 TipNow, OutNow;
         /// <summary>True when an unwalkable cell stopped the cord before its length ran out ("the rest is over the wall").</summary>
         public bool Blocked;
         /// <summary>Index into <see cref="Pts"/> of the first point that lies ON THE GROUND (the touchdown); points before it
@@ -486,64 +488,106 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>
         /// A cut or orphaned wire as ONE continuous cable (owner review 2026-10-04 B21: never a hanging drop joined to a
         /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down
-        /// tangent-free to a touchdown point and lies on the ground the rest of the way to the break at
-        /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the break point. The ground path is the
-        /// line base -> break with a seeded slack S across it (up to about 1 cell, by length), so it reads as cable lying on the ground and
-        /// not as a span still strung (a wire pulled straight along its own line looked up: north star downed_span_lies_on_ground), checked cell by cell:
-        /// the first unwalkable cell stops it (Blocked; the rest "is over the wall"). Height above the ground path is
-        /// h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0.
-        /// <paramref name="length"/> (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance.
-        /// The first 0.75 cell is never checked: a wall bracket's base sits on its wall face.
+        /// tangent-free to a touchdown point and lies on the ground the rest of the way to its end at
+        /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the end. On the ground it is a loose cut cord
+        /// (blind judge, pass 1: "a downed wire must read as a loose cut cord lying there"): wide seeded bends, a coil on
+        /// anything over 3 cells, and no pull toward anything. Slack that would cross an unwalkable cell is halved and
+        /// halved again before giving up; then the first unwalkable cell on the bare line stops it (Blocked; the rest "is
+        /// over the wall"). Height above the ground path is h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's
+        /// sideways offset on the crossarm fades out by s0. <paramref name="length"/> (cable length, span x 1.05) caps the
+        /// reach only when it is under 0.8 x the distance. The first 0.75 cell is never checked: a wall bracket's base sits
+        /// on its wall face. <paramref name="side"/> picks the first bend's side (0 = by seed).
         /// </summary>
-        public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable)
+        public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable, int side = 0)
         {
             var lay = new FallenLay();
             lay.Pts.Add(top);
-            lay.Tip = top;
+            lay.Tip = lay.TipNow = top;
             double dist = P2.Dist(basePt, toward);
             double h = top.Z - basePt.Z, ix = top.X - basePt.X;
             if (dist < 1e-6 || length <= 0) return lay;
             double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
             double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
-            double bow = (U(seed, 9) < 0.5 ? -1 : 1) * Math.Min(0.9, 0.08 + 0.11 * want) * (0.6 + 0.4 * U(seed, 10));
-            double bow2 = bow * (U(seed, 11) < 0.5 ? -1 : 1) * (0.25 + 0.3 * U(seed, 12));
-            Func<double, double, P2> ground = (s, r) =>
+            int sgn = side != 0 ? Math.Sign(side) : U(seed, 9) < 0.5 ? -1 : 1;
+            double bow = sgn * Math.Min(1.9, 0.22 + 0.24 * want) * (0.65 + 0.35 * U(seed, 10));
+            double bow2 = (U(seed, 11) < 0.5 ? -1 : 1) * Math.Abs(bow) * (0.3 + 0.3 * U(seed, 12));
+            double bow3 = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Abs(bow) * 0.18;
+            double coilAt = want >= 3 ? want * (0.5 + 0.3 * U(seed, 14)) : -1, coilR = 0.3 + 0.2 * U(seed, 15);
+            int coilSide = U(seed, 16) < 0.5 ? -1 : 1;
+            Func<double, double, P2> ground = (s, k) =>
             {
-                double u = Math.Min(1, s / r);
-                double off = bow * Math.Sin(Math.PI * u) + bow2 * Math.Sin(2 * Math.PI * u);
+                double u = Math.Min(1, s / want);
+                double off = k * (bow * Math.Sin(Math.PI * u) + bow2 * Math.Sin(2 * Math.PI * u) + bow3 * Math.Sin(3 * Math.PI * u));
+                off = Geo2Clamp(off, 0.4 * want + 0.3);
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
-            // pass 1: how far the ground path is open
-            double reach = want;
-            for (double s = 0.25; s <= want + 1e-9; s += 0.25)
+            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
+            // the widest slack this ground takes
+            double slack = 0;
+            foreach (double k in new[] { 1.0, 0.5, 0.25 })
             {
-                P2 g = ground(s, want);
-                if (s > 0.75 && !walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z))) { lay.Blocked = true; reach = Math.Max(0, s - 0.25); break; }
+                bool clear = true;
+                for (double s = 0.2; s <= want + 1e-9 && clear; s += 0.2)
+                    if (s > 0.75 && !open(ground(s, k))) clear = false;
+                if (clear) { slack = k; break; }
             }
+            // how far the ground path is open at that slack (with none left, this is the bare line and may stop short)
+            double reach = want;
+            for (double s = 0.2; s <= want + 1e-9; s += 0.2)
+                if (s > 0.75 && !open(ground(s, slack))) { lay.Blocked = true; reach = Math.Max(0, s - 0.2); break; }
             if (reach < 0.05) return lay;
-            double s0 = Math.Min(reach * 0.75, Math.Max(0.9, Math.Abs(h) * 0.85));
-            // pass 2: the one cable, insulator -> touchdown -> break (0.1 cell samples while hanging, 0.25 lying)
+            double s0 = Math.Min(reach * 0.6, Math.Max(0.7, Math.Abs(h) * 0.45));
+            // the one cable, insulator -> touchdown -> end
             double sPos = 0;
+            bool coiled = coilAt <= s0 || coilAt >= reach - 0.8;
             while (true)
             {
-                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.1 : 0.25));
+                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.06 : 0.15));
                 double k = sPos < s0 ? 1 - sPos / s0 : 0;
-                P2 g = ground(sPos, want);   // GPT review #18: the curve pass 1 checked (ground(s, reach) bowed differently)
+                P2 g = ground(sPos, slack);
                 lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
                 if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
+                if (k == 0 && !coiled && sPos >= coilAt)
+                {
+                    coiled = true;
+                    AddCoil(lay.Pts, ground(sPos + 0.05, slack), coilR * Math.Max(0.5, slack), coilSide, open);
+                }
                 if (sPos >= reach - 1e-9) break;
             }
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
+            lay.TipNow = lay.Tip;
             return lay;
+        }
+
+        private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
+
+        /// <summary>One closed turn of slack on the end of <paramref name="pts"/>, leaving the way the cable was heading. Left out if the turn would cross an unwalkable cell.</summary>
+        private static void AddCoil(List<P2> pts, P2 next, double r, int side, Func<P2, bool> open)
+        {
+            P2 p = pts[pts.Count - 1];
+            double tx = next.X - p.X, tz = next.Z - p.Z, tl = Math.Sqrt(tx * tx + tz * tz);
+            if (tl < 1e-9 || r < 0.1) return;
+            tx /= tl; tz /= tl;
+            double cx = p.X - tz * side * r, cz = p.Z + tx * side * r;
+            double a0 = Math.Atan2(p.Z - cz, p.X - cx);
+            var turn = new List<P2>();
+            for (int i = 1; i <= 16; i++)
+            {
+                double a = a0 + side * 2 * Math.PI * i / 16.0, rr = r * (1 - 0.15 * Math.Sin(Math.PI * i / 16.0));
+                var q = new P2(cx + Math.Cos(a) * rr, cz + Math.Sin(a) * rr);
+                if (!open(q)) return;
+                turn.Add(q);
+            }
+            pts.AddRange(turn);
         }
 
         /// <summary>
         /// Round 3 (owner 2026-10-04: "If we're going to have three wires connecting between poles, then three wires should be
         /// laying on the ground when broken by explosion"): a broken span drops EVERY one of its <paramref name="count"/>
         /// wires. Wire i leaves the insulator the span's strand i used on this anchor (<see cref="InsulatorIndex"/>, the same
-        /// fan as <see cref="SpanStrands"/>), lies toward the break offset sideways by (i - (count-1)/2) x
-        /// <see cref="FallenSpread"/> so the wires lie side by side rather than on top of each other, and gets its own seed
-        /// (its own bow). Each lay is <see cref="LayFallen"/>'s one continuous cable.
+        /// fan as <see cref="SpanStrands"/>) and is its own cut cord, with its own seed: it bends out to its own side and ends
+        /// on its own spot, <see cref="FallenSpread"/> from its neighbour's and short of the break by its own amount, so the wires
+        /// never pinch to one point (blind judge, pass 1). Each lay is <see cref="LayFallen"/>'s one continuous cable.
         /// </summary>
         public static List<FallenLay> LayFallenStrands(IList<P2> tips, P2 basePt, P2 toward, double length, int seed, int count, Func<int, int, bool> walkable)
         {
@@ -551,14 +595,59 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int n = Math.Max(1, count);
             double dist = P2.Dist(basePt, toward);
             double ux = dist > 1e-6 ? (toward.X - basePt.X) / dist : 1, uz = dist > 1e-6 ? (toward.Z - basePt.Z) / dist : 0;
+            double spread = FallenSpread * Math.Min(1, dist / 4);
             for (int i = 0; i < n; i++)
             {
+                int wseed = unchecked(seed + 7919 * i);
                 P2 top = tips.Count > 0 ? tips[InsulatorIndex(i, n, tips.Count)] : basePt;
-                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * FallenSpread;
-                var to = new P2(toward.X - uz * lat, toward.Z + ux * lat);
-                r.Add(LayFallen(top, basePt, to, length, unchecked(seed + 7919 * i), walkable));
+                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * spread;
+                // one wire alone reaches the break; of several, each stops short by its own amount
+                double shortBy = n == 1 ? 0 : dist * (0.06 + 0.2 * U(wseed, 17));
+                var to = new P2(toward.X - ux * shortBy - uz * lat, toward.Z - uz * shortBy + ux * lat);
+                r.Add(LayFallen(top, basePt, to, length, wseed, walkable, Math.Sign(lat)));
             }
             return r;
+        }
+
+        /// <summary>How many points of a fallen wire's end writhe, or 0 if it has too little lying on the ground.</summary>
+        public static int WireTailCount(FallenLay l, double len)
+        {
+            if (l.GroundFrom < 0) return 0;
+            double acc = 0;
+            int c = 1;
+            for (int i = l.Pts.Count - 1; i > l.GroundFrom; i--)
+            {
+                acc += P2.Dist(l.Pts[i], l.Pts[i - 1]);
+                if (acc > len) break;
+                c++;
+            }
+            return c >= 3 ? c : 0;
+        }
+
+        /// <summary>
+        /// A mast's local drop as a too-long cord, not a rod (blind judge, pass 1: "a taut, rod-like cord runs from the mast crossarm to the
+        /// lamp"): it hangs down from the insulator at <paramref name="tip"/>, bellies well out to one side, and comes back into the device
+        /// at <paramref name="from"/>. A short drop keeps a belly of at least a third of a cell. Polyline from the device to the insulator.
+        /// </summary>
+        public static List<P2> LooseDrop(P2 from, P2 tip, int seed, double step = 0.08)
+        {
+            double dx = tip.X - from.X, dz = tip.Z - from.Z, d = Math.Sqrt(dx * dx + dz * dz);
+            var o = new List<P2>();
+            if (d < 1e-6) { o.Add(from); o.Add(tip); return o; }
+            double nx = -dz / d, nz = dx / d;
+            int sgn = U(seed, 31) < 0.5 ? -1 : 1;
+            double belly = Math.Max(0.35, 0.34 * d) * (0.85 + 0.3 * U(seed, 32)) * sgn;
+            // a cubic: out of the device to the side, then up under the insulator from straight below it
+            var c1 = new P2(from.X + dx * 0.2 + nx * belly * 1.5, from.Z + dz * 0.2 + nz * belly * 1.5 - 0.1 * d);
+            var c2 = new P2(tip.X - nx * belly * 0.2, tip.Z - 0.75 * d);
+            int n = Math.Max(8, (int)Math.Ceiling(1.6 * d / step));
+            for (int i = 0; i <= n; i++)
+            {
+                double t = i / (double)n, m = 1 - t;
+                double a = m * m * m, b = 3 * m * m * t, c = 3 * m * t * t, e = t * t * t;
+                o.Add(new P2(a * from.X + b * c1.X + c * c2.X + e * tip.X, a * from.Z + b * c1.Z + c * c2.Z + e * tip.Z));
+            }
+            return o;
         }
 
         /// <summary>The points of <paramref name="l"/> that lie on the ground: the only ones a pawn can touch (GPT pre-release
@@ -597,7 +686,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static readonly (int dx, int dz)[] Ring8 = { (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1) };
 
         /// <summary>Sideways gap between neighbouring fallen wires at the break (cells). PROVISIONAL.</summary>
-        public const double FallenSpread = 0.22;
+        public const double FallenSpread = 1.15;
 
         // ------------------------------------------------------------------ explosion hit test (design 2.6)
         public static double ClosestT(P2 a, P2 b, P2 c)

@@ -572,7 +572,9 @@ namespace RimMandrake.GimmeSomeSlack
                 {
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     float f = Mathf.PerlinNoise(t * 9f, (h & 0xff) * 0.37f);
-                    float size = (0.38f + 0.42f * f * f) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
+                    // a pop now and then, drawn here so it stays on the moving end; vanilla's glow fleck stays where it was thrown
+                    float pop = Mathf.Repeat(t * 0.8f + (h & 0xff) * 0.0173f, 1f);
+                    float size = (0.30f + 0.32f * f * f + (pop < 0.09f ? 0.45f * (1f - pop / 0.09f) : 0f)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
                     // a downed wire's glow follows its burst schedule: a 2x flash, brief pops, an ember between
                     if (e.Wall && GimmeSomeSlackSettings.downedWire && downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
                         size = (float)(0.45 * dw.Glow(t)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
@@ -584,9 +586,18 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>The whip tails drawn this frame: laid outer point, outer point now. The glow and the thrown sparks ride these.</summary>
-        private readonly List<V2> whipLaid = new List<V2>(), whipNow = new List<V2>();
+        private readonly List<V2> whipLaid = new List<V2>(), whipNow = new List<V2>(), whipOut = new List<V2>();
 
         internal V2 SparkTipNow(CordEnd e) => CordMotion.RideTail(e.Tip, whipLaid, whipNow);
+
+        /// <summary>Throw a spark off the end as it is now, the way that end points now.</summary>
+        private void ThrowTipSpark(CordEnd e)
+        {
+            int i = CordMotion.RideIndex(e.Tip, whipLaid);
+            V2 at = i >= 0 ? whipNow[i] : e.Tip, way = i >= 0 ? whipOut[i] : e.Dir;
+            TipSparks.Throw(map, (float)at.X, (float)at.Z, (float)way.X, (float)way.Z);
+            SparksThrown++;
+        }
 
         private void Sparks(int tick)
         {
@@ -596,13 +607,9 @@ namespace RimMandrake.GimmeSomeSlack
                     // the drip schedule owns wall ends (they are in the shared budget already)
                     if (e.Wall && GimmeSomeSlackSettings.downedWire) continue;
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
-                    int period = Mathf.Max(12, Mathf.RoundToInt((e.Wall ? 50 : 80) / k));
+                    int period = Mathf.Max(8, Mathf.RoundToInt(TipSparks.Period / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
-                    V2 tipNow = SparkTipNow(e);
-                    var at = new Vector3((float)tipNow.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z);
-                    FleckMaker.ThrowMicroSparks(at, map);
-                    SparksThrown++;
-                    if (((tick / period + h) & 3) == 0) FleckMaker.ThrowLightningGlow(at, map, e.Wall ? 0.6f : 0.4f);
+                    ThrowTipSpark(e);
                 }
         }
 
@@ -769,7 +776,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
             WhipDraws = 0; WhipStillDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
-            whipLaid.Clear(); whipNow.Clear();
+            whipLaid.Clear(); whipNow.Clear(); whipOut.Clear();
             if (!GimmeSomeSlackSettings.enabled || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             float now = Time.realtimeSinceStartup;
@@ -818,7 +825,7 @@ namespace RimMandrake.GimmeSomeSlack
                             {
                                 ulong seed = MotionSeed(p, s, atStart ? 0 : 1, 0);
                                 whipCursors.TryGetValue(seed, out CordMotion.WhipCursor cur);
-                                CordMotion.WhipInto(tail, now, seed, 0.12, bentBuf, ref cur);
+                                CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur);
                                 whipCursors[seed] = cur;
                                 bent = bentBuf;
                             }
@@ -826,6 +833,7 @@ namespace RimMandrake.GimmeSomeSlack
                             if (animate) WhipDraws++; else WhipStillDraws++;
                             whipLaid.Add(tail[tail.Count - 1]);
                             whipNow.Add(bent[bent.Count - 1]);
+                            whipOut.Add((bent[bent.Count - 1] - bent[Math.Max(0, bent.Count - 4)]).Norm());
                             Material fray = CordMaterials.DecalG(DecalKind.FrayLive, v);
                             if (fray != null)
                             {
@@ -858,6 +866,18 @@ namespace RimMandrake.GimmeSomeSlack
                     List<V2> sw = swayBuf;
                     CordMotion.SwayInto(s.Pts, s.SwayW, gt, MotionSeed(p, s, 3, 0), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind, sw);
                     SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0);
+                    // a wall end's tail sways, so its fray and its sparks go with it
+                    V2 swTip = sw[sw.Count - 1];
+                    whipLaid.Add(s.Pts[s.Pts.Count - 1]);
+                    whipNow.Add(swTip);
+                    whipOut.Add((swTip - sw[Math.Max(0, sw.Count - 4)]).Norm());
+                    foreach (CordDecal d in p.Decals)
+                    {
+                        if (!d.OnSwayTail || V2.Dist(d.Pos, s.Pts[s.Pts.Count - 1]) > 0.01) continue;
+                        Material swFray = CordMaterials.DecalG(d.Kind, v);
+                        if (swFray != null)
+                            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)swTip.X, baseY + 0.009f, (float)swTip.Z), Quaternion.Euler(0f, -(float)d.Angle * Mathf.Rad2Deg, 0f), new Vector3((float)d.Scale, 1f, (float)d.Scale)), swFray, 0);
+                    }
                     foreach (V2 q in sw)
                     {
                         h = (h ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
@@ -932,7 +952,10 @@ namespace RimMandrake.GimmeSomeSlack
                         DripEvents++;
                         thrownOf[e.NetCell] = 0;
                         if (!paused && dw.State == DripState.Flash)
-                            FleckMaker.ThrowLightningGlow(new Vector3((float)e.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z), map, 0.8f * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity));
+                        {
+                            V2 tipNow = SparkTipNow(e);
+                            FleckMaker.ThrowLightningGlow(new Vector3((float)tipNow.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z), map, 0.8f * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity));
+                        }
                     }
                     if (paused) continue;
                     thrownOf.TryGetValue(e.NetCell, out int done);
@@ -959,7 +982,8 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void ThrowDownedSpark(CordEnd e)
         {
-            var loc = new Vector3((float)e.Tip.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
+            V2 tipNow = SparkTipNow(e);
+            var loc = new Vector3((float)tipNow.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z);
             if (!loc.ShouldSpawnMotesAt(map)) return;
             FleckCreationData d = FleckMaker.GetDataStatic(loc, map, FleckDefOf.MicroSparks, Rand.Range(0.7f, 1.1f));
             d.rotationRate = Rand.Range(-12f, 12f);
@@ -1051,12 +1075,12 @@ namespace RimMandrake.GimmeSomeSlack
                 OffscreenRebuilds++;
             }
             GimmeSomeSlackProbe.Service(map, this);
-            DrawLiveGlow();
             try { DrawMotion(); }
             catch (Exception ex)
             {
                 if (!motionErrorLogged) { motionErrorLogged = true; Log.Error("[GimmeSomeSlack] per-frame cord motion failed, skipping it: " + ex); }
             }
+            DrawLiveGlow();     // after the motion: the glow sits on this frame's tips, not the last
             if (!GimmeSomeSlackSettings.enabled || !GimmeSomeSlackSettings.debugDraw || Find.CurrentMap != map) return;
             CordGraph g = builder.Graph;
             if (g == null) return;

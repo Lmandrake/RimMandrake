@@ -183,6 +183,7 @@ namespace RimMandrake.GimmeSomeSlack
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
+                        if (d.OnSwayTail && p.Strands.Any(s => s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s))) continue;   // and a wall tail's rides that tail
                         Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);

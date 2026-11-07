@@ -87,7 +87,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(Regex.IsMatch(comp, @"void MapComponentUpdate\(\)[\s\S]{0,400}!AerialLineProfiles\.AnyKindOn")
                   && Regex.IsMatch(comp, @"foreach \(CompAerialAnchor a in Anchors\)\s*\{\s*if \(!AerialLineProfiles\.KindOn\(a\.Kind\)\) continue;"),
                   "span draw: runs while any kind is on, skips an anchor whose kind is off");
-            Check(Regex.IsMatch(comp, @"if \(!AerialSettings\.enabled\) return;[^\n]*\n\s*DrawLocalDrops\(view\);\s*DrawTaps\(view\);\s*DrawFallenGlow\(\);"),
+            Check(Regex.IsMatch(comp, @"if \(!AerialSettings\.enabled\) return;[^\n]*\n\s*DrawLocalDrops\(view\);\s*DrawTaps\(view\);\s*DrawFallenTails\(view\);\s*DrawFallenGlow\(\);"),
                   "drops, clamps and live-end glow stay behind the power master");
             Check(comp.Contains("if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.autoLink)) continue;")
                   && anchor.Contains("AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);"),

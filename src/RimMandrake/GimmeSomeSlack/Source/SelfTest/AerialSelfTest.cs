@@ -144,9 +144,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int n3 = AerialMath.StrandCount(3, 3, 3);
             List<FallenLay> three = AerialMath.LayFallenStrands(tips, basePt, brk, 6.3, 42, n3, open);
             bool fromEach = three.Count == 3 && Enumerable.Range(0, 3).All(i => P2.Dist(three[i].Pts[0], tips[i]) < 1e-9);
-            bool toBreak = three.All(l => P2.Dist(l.Tip, brk) <= 0.3 + 1e-9 && !l.Blocked);
+            bool toBreak = three.All(l => P2.Dist(l.Tip, brk) <= 3.0 && !l.Blocked);
             double gap = three.Count == 3 ? Math.Min(P2.Dist(three[0].Tip, three[1].Tip), P2.Dist(three[1].Tip, three[2].Tip)) : 0;
-            C(n3 == 3 && fromEach && toBreak && gap > 0.1, "round 3: a broken 3-wire span drops " + three.Count + " wires, one from each insulator, to the break, " + gap.ToString("0.00") + " apart");
+            C(n3 == 3 && fromEach && toBreak && gap > 0.9, "round 3: a broken 3-wire span drops " + three.Count + " wires, one from each insulator, each ending on its own spot near the break, " + gap.ToString("0.00") + " apart");
             C(AerialMath.StrandCount(3, 1, 3) == 1 && AerialMath.LayFallenStrands(tips, basePt, brk, 6.3, 42, AerialMath.StrandCount(3, 1, 3), open).Count == 1 &&
               AerialMath.StrandCount(3, 3, 2) == 2,
               "fallen wire count = the span's own strand count (mast-bracket 1, wires-per-span setting 2 -> 2)");
@@ -334,7 +334,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             {
                 FallenLay q = AerialMath.LayFallen(top, basePt, new P2(10.5, 17.5), 7.35, seed, open);
                 double dev = q.Pts.Skip(q.GroundFrom).Max(p => Math.Abs(p.X - 10.5));
-                C(dev >= 0.3 && dev <= 1.5, "seed " + seed + ": a 7-cell wire lying along its own span's line leaves that line, by " + dev.ToString("0.00") + " cells");
+                C(dev >= 0.6 && dev <= 4.2, "seed " + seed + ": a 7-cell wire lying along its own span's line leaves that line, by " + dev.ToString("0.00") + " cells");
             }
             FallenLay g = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, (x, z) => x != 14);
             C(g.Blocked && g.Tip.X < 14 && g.Pts.Skip(1).All(p => (int)Math.Floor(p.X) != 14 || p.Z > 11.2), "a wall stops the lying wire before the wall (tip " + g.Tip + ")");
