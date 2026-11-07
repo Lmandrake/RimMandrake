@@ -266,8 +266,9 @@ namespace RimMandrake.Graffiti
 
         private static readonly Dictionary<Texture, Texture2D> Painted = new Dictionary<Texture, Texture2D>();
 
-        /// <summary>The game's ideoligion icons are crisp vectors. Here each is dragged through a dry brush: its strokes keep their shape,
-        /// its coverage goes streaky and patched like everything else on a wall. Null if the icon can't be read.</summary>
+        /// <summary>The game's ideoligion icons are crisp vectors with soft UI shading (a blind judge saw "a shaded grey-white dome, rendered
+        /// and dropped in"). Here each is cut like a stencil and dragged through a dry brush: its shading goes to two flat tones of one
+        /// paint, its strokes keep their shape, its coverage goes streaky and patched like everything else on a wall. Null if unreadable.</summary>
         internal static Texture2D PaintedIcon(Texture2D icon)
         {
             if (icon == null) return null;
@@ -284,6 +285,11 @@ namespace RimMandrake.Graffiti
                     for (int x = 0; x < size; x++)
                     {
                         Color32 c = px[y * size + x];
+                        // Two tones, never a gradient: the light of the icon is the paint's full colour, its shade the same paint thinned.
+                        float lum = (c.r + c.g + c.b) / 765f;
+                        byte tone = (byte)(lum > 0.55f ? 255 : 150);
+                        c.r = c.g = c.b = tone;
+                        c.a = (byte)(c.a > 110 ? 255 : (c.a > 40 ? 120 : 0));
                         float streak = Mathf.PerlinNoise(seed + x * scale * 0.012f, seed + y * scale * 0.34f);
                         float patch = Mathf.PerlinNoise(seed * 2f + x * scale * 0.045f, seed + y * scale * 0.05f);
                         float grit = Mathf.PerlinNoise(seed + x * scale * 0.6f, seed * 3f + y * scale * 0.6f);

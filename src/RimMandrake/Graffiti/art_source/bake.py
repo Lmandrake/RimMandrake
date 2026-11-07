@@ -51,7 +51,10 @@ def bake(name, m):
     can[y0:y0 + h, x0:x0 + w] = s
     rgb, alpha = can[..., :3], can[..., 3] / 255
     rng = np.random.default_rng(abs(hash_name(name)) % 2 ** 31)
-    # Option D: loaded paint. Strengthen what's there before weathering takes some of it.
+    # Option D: loaded paint. Strengthen what's there before weathering takes some of it. A mark with a `floor` first drops the
+    # generator's near-invisible alpha haze, which the strengthening would otherwise lift into a pale film like a backing sheet.
+    if m.get("floor"):
+        alpha = np.clip((alpha - m["floor"]) / (1 - m["floor"]), 0, 1)
     alpha = np.clip(alpha, 0, 1) ** 0.42
     if not m["pigmented"] and m["mode"] != "scratch":
         rgb = P.to_pigment(rgb, 0.25)

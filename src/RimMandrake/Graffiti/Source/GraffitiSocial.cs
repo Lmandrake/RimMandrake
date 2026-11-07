@@ -231,23 +231,30 @@ namespace RimMandrake.Graffiti
             bool ours = viewer.Faction == Faction.OfPlayer || viewer.IsPrisonerOfColony;
             bool visitor = !ours && viewer.Faction != null && !viewer.Faction.HostileTo(Faction.OfPlayer);
             if (!ours && !visitor) return;
-            for (int i = 0; i < comp.marks.Count; i++)
+            // A mark about you jumps out at you: on a wall full of tags, the one with your face on it is what you see first.
+            for (int pass = 0; pass < 2; pass++)
             {
-                Filth_Mark mark = comp.marks[i];
-                if ((mark.Position - viewer.Position).LengthHorizontalSquared > RM_GraffitiKernel.SightRadiusSq) continue;
-                if (mark.Position.Fogged(map) || mark.Position.GetRoom(map) != room) continue;
-                if (ours && !mark.ReadyToBeRead(viewer, now)) continue;
-                if (visitor && mark.FactionHasRead(viewer.Faction)) continue;
-                if (!GenSight.LineOfSight(viewer.Position, mark.Position, map, skipFirstCell: true)) continue;
-                if (visitor)
+                for (int i = 0; i < comp.marks.Count; i++)
                 {
-                    if (VisitorReads(viewer, mark, comp)) return;
-                    continue;
+                    Filth_Mark mark = comp.marks[i];
+                    if ((mark.subject == viewer) != (pass == 0)) continue;
+                    if (LooksAt(viewer, mark, comp, map, room, now, ours, visitor)) return;
                 }
-                bool first = mark.FirstReadBy(viewer);
-                mark.NoteRead(viewer, now);
-                if (Reads(viewer, mark, comp, first)) return;   // one thing at a time: the next look finds the next mark
             }
+        }
+
+        /// <summary>One viewer, one mark: true if the look is used up (one thing at a time: the next look finds the next mark).</summary>
+        private static bool LooksAt(Pawn viewer, Filth_Mark mark, MapComponent_GraffitiSocial comp, Map map, Room room, int now, bool ours, bool visitor)
+        {
+            if ((mark.Position - viewer.Position).LengthHorizontalSquared > RM_GraffitiKernel.SightRadiusSq) return false;
+            if (mark.Position.Fogged(map) || mark.Position.GetRoom(map) != room) return false;
+            if (ours && !mark.ReadyToBeRead(viewer, now)) return false;
+            if (visitor && mark.FactionHasRead(viewer.Faction)) return false;
+            if (!GenSight.LineOfSight(viewer.Position, mark.Position, map, skipFirstCell: true)) return false;
+            if (visitor) return VisitorReads(viewer, mark, comp);
+            bool first = mark.FirstReadBy(viewer);
+            mark.NoteRead(viewer, now);
+            return Reads(viewer, mark, comp, first);
         }
 
         internal static RM_Viewer StandingOf(Pawn v, Filth_Mark m)
@@ -446,6 +453,7 @@ namespace RimMandrake.Graffiti
             if (delta == 0) return false;
             delta = comp.ChargeVisit(v.Faction, delta);
             if (delta == 0) return false;
+            Trace(v.LabelShort + " of " + v.Faction.Name + " reads " + m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + ": goodwill " + delta);
             HistoryEventDef reason = delta > 0 ? RMGraffitiDefOf.RM_Graffiti_SharedSign : RMGraffitiDefOf.RM_Graffiti_WallInsult;
             v.Faction.TryAffectGoodwillWith(Faction.OfPlayer, delta, canSendMessage: true, canSendHostilityLetter: true, reason, new GlobalTargetInfo(v));
             Say(v, delta > 0 ? "A good sign, that." : "So that's what they think of us.", delta > 0 ? Tone.Warm : Tone.Angry);
@@ -546,6 +554,8 @@ namespace RimMandrake.Graffiti
         {
             if (painter == null || !RM_GraffitiSettings.socialEnabled) return;
             RM_Meaning meaning = mark.Meaning;
+            Trace(painter.LabelShort + " painted " + mark.def.defName.Replace("RM_Graffiti_", "") + "@" + mark.Position + " (" + (mark.CraftLabel ?? "-") + ")"
+                + (mark.subject != null ? " about " + mark.SubjectName : "") + (mark.targetFaction != null ? " insulting " + mark.targetFaction.Name : ""));
             if (painter.Faction == Faction.OfPlayer)
             {
                 if (mark.subject != null && meaning == RM_Meaning.Mockery) GraffitiTemperament.Give(painter, T.RM_Graffiti_StuckItToThem, mark.subject);
@@ -649,6 +659,7 @@ namespace RimMandrake.Graffiti
             string whose = enemy ? "the enemy's mark" : (maker != null && maker != by ? maker.LabelShort + "'s mark" : "a mark");
             string about = subject != null && subject != by ? " about " + mark.SubjectName : "";
             string text = by.LabelShort + verb + whose + about + "." + (rescued ? " " + mark.SubjectName + " won't forget that." : "");
+            Trace(text + " @" + mark.Position + (fit ? " (in a cleaning fit)" : ""));
             Log(by, rescued ? subject : maker, text);
             Say(by, crossedOut ? "Not on my wall." : "There. Gone.", Tone.Neutral);
             if (RM_GraffitiSettings.socialMessagesEnabled && by.Faction == Faction.OfPlayer && (enemy || subject != null || fit))
@@ -672,6 +683,7 @@ namespace RimMandrake.Graffiti
                     return;
                 }
             }
+            Trace(mark.def.defName.Replace("RM_Graffiti_", "") + "@" + mark.Position + " by " + (mark.maker?.LabelShort ?? "-") + " is gone, and no cleaner held the rag");
         }
 
         /// <summary>Owner, card 2026-11-07: "if a person hates the subject, they will refuse to clean the insult". Null if they'd clean it.</summary>

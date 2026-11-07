@@ -99,6 +99,24 @@ namespace RimMandrake.Graffiti
             return w[0] + " sent to " + c + " ok=" + ok;
         }
 
+        /// <summary>"a/b": a and b become lovers, the game's own relation (so a tribute by one to someone else can make the other jealous).</summary>
+        public static string Lovers(string args)
+        {
+            string[] w = args.Split('/');
+            Pawn pa = Named(w[0]), pb = Named(w[1]);
+            if (pa == null || pb == null) return "error=no such pawn";
+            if (!pa.relations.DirectRelationExists(PawnRelationDefOf.Lover, pb)) pa.relations.AddDirectRelation(PawnRelationDefOf.Lover, pb);
+            return w[0] + " and " + w[1] + " lovers=" + LovePartnerRelationUtility.LovePartnerRelationExists(pa, pb) + " opinion " + pa.relations.OpinionOf(pb) + "/" + pb.relations.OpinionOf(pa);
+        }
+
+        /// <summary>The last n lines the walls wrote into the colony's social log, newest last: what a player reads in a pawn's Log tab.</summary>
+        public static string PlayLog(string args)
+        {
+            int n = int.TryParse(args, out int k) ? k : 20;
+            var lines = Find.PlayLog.AllEntries.OfType<PlayLogEntry_Graffiti>().Take(n).Reverse().Select(e => e.Age + " ticks ago: " + e.ToGameStringFromPOV(null));
+            return string.Join("\n", lines);
+        }
+
         /// <summary>This colonist's temperament as the table reads it, and their paint urge.</summary>
         public static string Temper(string args)
         {

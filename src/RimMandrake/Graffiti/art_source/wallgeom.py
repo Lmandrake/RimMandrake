@@ -158,9 +158,16 @@ def cap_poly(links, g):
 
 
 def climb_max(face, g, H):
-    """World height a mark can reach on this face: its whole face, then the top as far as the lip (front) or the cap's middle (side,
-    the other half belongs to the wall's other side)."""
-    return H + (0.95 - CAP_LIP - g["crease"] if face == FRONT else 0.5 - g["side"]) / CAP_RATE
+    """World height a mark can reach on this face: its whole face, then the top as far as the lip (front), or for a side face (seen
+    almost edge-on) most of the way across the top, its paint starting high on the bevel (foot_of)."""
+    return H + (0.95 - CAP_LIP - g["crease"] if face == FRONT else 1 - 2 * g["side"] - SIDE_TOP_LIP) / CAP_RATE
+
+
+SIDE_FACE_SHARE, SIDE_TOP_LIP = 0.22, 0.05   # RM_GraffitiKernel.SideFaceShare, SideTopLip: a side mark is painted high, over the bevel and across the top
+
+
+def foot_of(face, H):
+    return FOOT if face == FRONT else H - SIDE_FACE_SHARE
 
 
 def plane_to_screen(face, s, t, g, H):
@@ -194,8 +201,9 @@ def mark_polys(wall, anchor, face, g, H, width, height, slide=0.0, slope=0.0, li
     halfw = width / 2
     room = abs(slope) * halfw
     top = climb_max(face, g, H) if climb else H
-    hh = min(height, top - FOOT - 2 * room)
-    t0 = FOOT + room + (top - FOOT - hh - 2 * room) * lift
+    foot = foot_of(face, H) if climb else FOOT
+    hh = min(height, top - foot - 2 * room)
+    t0 = foot + room + (top - foot - hh - 2 * room) * lift
     plane = []
     for u, v in ((0, 0), (1, 0), (1, 1), (0, 1)):
         s = slide + (u - 0.5) * width

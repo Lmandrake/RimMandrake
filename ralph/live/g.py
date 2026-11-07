@@ -4,6 +4,7 @@
     g.py run <ticks> [chunk]        advance the clock, print the social ledger after each chunk
     g.py shot <name> x,z,w,h [ppc]  measured-zoom shot into Transient/gshots
     g.py raw <tool> [json]          any bridge tool
+    g.py kv <tool> k=v k=v          any bridge tool, args as key=value (true/false/ints coerced)
     g.py tools [filter]             list bridge tools
 Several commands can be chained with " @ " between them."""
 import json, os, shutil, sys, time
@@ -92,10 +93,11 @@ def until(s, pattern, maxticks, step=60):
         s.call("jawa/safe_advance", ticks=step)
         done += step
         led = str(static(s, SOCIAL, "Ledger", "trace"))
-        hits = [l for l in led.splitlines() if l.startswith("  . ") and re.search(pattern, l)]
-        if hits:
+        lines = [l for l in led.splitlines() if l.startswith("  . ")]
+        if lines:
+            print("\n".join(lines), flush=True)
+        if any(re.search(pattern, l) for l in lines):
             print("UNTIL +%d" % done)
-            print("\n".join(hits))
             return True
     print("UNTIL gave up after %d" % done)
     return False
@@ -158,6 +160,15 @@ def one(s, a):
         run(s, int(a[1]), int(a[2]) if len(a) > 2 else 2500)
     elif a[0] == "shot":
         shot(s, a[1], tuple(int(v) for v in a[2].split(",")), int(a[3]) if len(a) > 3 else 64)
+    elif a[0] == "gw":
+        r = s.call("jawa/list_factions")
+        print("GOODWILL t=%s " % s.call("rimworld/get_game_info").get("ticksGame") + " ".join("%s=%s" % (f.get("name"), f.get("goodwill")) for f in r.get("factions", []) if not a[1:] or f.get("name") in a[1:]))
+    elif a[0] == "kv":
+        kw = {}
+        for pair in a[2:]:
+            k, v = pair.split("=", 1)
+            kw[k] = True if v == "true" else False if v == "false" else int(v) if v.lstrip("-").isdigit() else v
+        print(json.dumps(s.call(a[1], **kw))[:4000])
     elif a[0] == "raw":
         print(json.dumps(s.call(a[1], **json.loads(a[2] if len(a) > 2 else "{}")))[:4000])
     elif a[0] == "schema":

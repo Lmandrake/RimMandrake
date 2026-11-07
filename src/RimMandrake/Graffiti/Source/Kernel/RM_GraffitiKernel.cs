@@ -476,13 +476,21 @@ namespace RimMandrake.Graffiti
             return new List<RM_PlaneVert> { new RM_PlaneVert(x0, z0), new RM_PlaneVert(x1, z0), new RM_PlaneVert(x1, z1), new RM_PlaneVert(x0, z1) };
         }
 
-        /// <summary>How high a mark can reach in world cells: its whole face, then the top up to the lip. A side face takes the cap only
-        /// to its middle: the other half belongs to the wall's other side.</summary>
+        /// <summary>How high a mark can reach in world cells: its whole face, then the top up to the lip. A side face is a bevel the camera
+        /// sees almost edge-on, so a mark there is painted high, over the edge, and carried most of the way across the top: that is the
+        /// only way it reads (owner, 2026-11-07: "A side face stays a scrap unless you find better"; measured offline and live, a side
+        /// mark kept to its bevel and half the cap was about 20 px across at play zoom, carried across the top about 38).</summary>
         public static float ClimbMax(int face, float crease, float sideW)
         {
-            float over = face == FaceFront ? 1f - RimX - RimZ - TopLip - crease : 0.5f - sideW;
+            float over = face == FaceFront ? 1f - RimX - RimZ - TopLip - crease : 1f - 2f * sideW - SideTopLip;
             return WallWorldHeight + over / TopRate;
         }
+
+        /// <summary>Of a side face's mark, this much (world cells) is on the bevel; the rest is on the top. Bare top a side mark leaves at the far edge.</summary>
+        public const float SideFaceShare = 0.22f, SideTopLip = 0.05f;
+
+        /// <summary>The lowest a mark's paint starts on this face, world cells up from the foot.</summary>
+        public static float FootOf(int face) { return face == FaceFront ? MarkFoot : WallWorldHeight - SideFaceShare; }
 
         /// <summary>The wall's plane -> screen cell coordinates: below the crease on the foreshortened face (PlaneToCell), above it on the top.</summary>
         public static void BentToCell(int face, float s, float t, float crease, float sideW, out float x, out float z)
@@ -504,8 +512,9 @@ namespace RimMandrake.Graffiti
         {
             float room = Math.Abs(slope) * width / 2f;
             float top = ClimbMax(face, crease, sideW);
-            float hh = Math.Min(height, top - MarkFoot - 2f * room);
-            return MarkFoot + room + hh / 2f + (top - MarkFoot - hh - 2f * room) * lift;
+            float foot = FootOf(face);
+            float hh = Math.Min(height, top - foot - 2f * room);
+            return foot + room + hh / 2f + (top - foot - hh - 2f * room) * lift;
         }
 
         /// <summary>One mark laid in its wall's plane, bent at the crease onto the wall's top, and cut to what the wall shows, cell by cell.
@@ -521,7 +530,7 @@ namespace RimMandrake.Graffiti
             float halfW = width / 2f;
             float room = Math.Abs(slope) * halfW;
             float top = ClimbMax(face, crease, sideW);
-            float hh = Math.Min(height, top - MarkFoot - 2f * room);
+            float hh = Math.Min(height, top - FootOf(face) - 2f * room);
             float tc = centerT >= 0f ? centerT : MarkCenterT(face, crease, sideW, width, height, slope, lift);
             // In the plane: x = s, z = t. Cut at the crease there, where the map from plane to screen bends.
             var plane = new List<RM_PlaneVert>(4);

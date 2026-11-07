@@ -75,7 +75,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Vandal</defName>
     <label>graffiti</label>
-    <description>A hateful smear of tar and filth, flung on by an idle or unhappy hand. Nobody will call it art.</description>
+    <description>A sloppy, over-loaded scrawl of clashing paint, sprayed or slapped on by an idle or unhappy hand and left to run down the wall. Nobody will call it art.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
@@ -242,8 +242,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Paste_Gig</defName>
-    <label>pasted-up posters</label>
-    <description>Two cheap posters slapped up side by side with flour glue: a scream and a many-eyed thing, and whatever they advertise, it is not for you.</description>
+    <label>fight-night stencil</label>
+    <description>Two heads sprayed big through hacked card side by side, a screaming one and a snarling beast, a jagged sunburst misted behind them. Whatever fight it calls for, it is not for you.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Gig</texPath>
@@ -562,8 +562,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Paste_Flyer</defName>
-    <label>pasted flyer</label>
-    <description>A wheat-pasted paper flyer, asemic headline over a rough sketch - it peels in the rain and won't last the season.</description>
+    <label>stencil portrait</label>
+    <description>A howling head or a many-eyed beast sprayed big through hacked card over a mist of colour, the bare wall showing through it. Sprayed thin, it won't last the season.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Flyer</texPath>
@@ -589,8 +589,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Paste_Wanted</defName>
-    <label>torn wanted poster</label>
-    <description>A torn poster, a silhouette above asemic lettering - a threat left where the target will find it. It peels in the rain.</description>
+    <label>wanted stencil</label>
+    <description>A face sprayed big through hacked card, masked or crossed out - a threat left where the target will find it. Sprayed thin, the weather takes it within days.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Wanted</texPath>

@@ -23,8 +23,9 @@ SQ = "Landscape format about four to three, filling the picture. "
 PALE = "One colour only: pale off-white paint, so it can be tinted later. "
 
 M = {}
-def add(name, folder, width, mode, wear, prompt, pigmented=False, height=1.0):
-    M[name] = dict(folder=folder, width=width, mode=mode, wear=wear, prompt=BASE + prompt, pigmented=pigmented, height=height)
+def add(name, folder, width, mode, wear, prompt, pigmented=False, height=1.0, floor=0.0):
+    """floor: raw alpha below it is dropped before bake strengthens the paint (generator haze would become a pale film)."""
+    M[name] = dict(folder=folder, width=width, mode=mode, wear=wear, prompt=BASE + prompt, pigmented=pigmented, height=height, floor=floor)
 
 F = "RM_Graffiti_"
 # ------ tags: a pale hand, each mark writes it in its own pigment. Three hands per tag def.
@@ -45,11 +46,23 @@ for i, (t, c) in enumerate([("fat round bubble shapes in a row", "chalk fill, so
 for i, (t, c) in enumerate([("sharp interlocking angular shapes like shattered letters, arrows thrown off them", "rust red, burnt orange, soot black, chalk"), ("huge rounded interlocked shapes with a hard second colour fading through them", "dull blue, lime white, soot black"),
                             ("tall spiky shapes leaning into each other, a crude sun behind", "ochre, oxblood, soot black"), ("flowing ribbon shapes knotting through each other", "oxide green, chalk, dull violet")]):
     add(f"piece_{'abcd'[i]}", F + "Piece", 3, "brush", 0.16, f"A full graffiti piece by someone good, a long wall-burner: {t}, that look like letters but spell nothing. Careful hand, rough materials. Painted with brush and can together: dense coverage, streaky fills, a soft misted glow behind, thin runs falling straight down. " + PIG.format(c=c) + L3)
-# ------ vandal: the ugliest things on any wall. Violent, filthy, carelessly huge.
-for i, t in enumerate(["furious tangled tar strokes with a brown filth smear dragged across them", "a mess of crossed-out slashes, black tar over sick yellow-brown, hand-prints wiped through it",
-                       "a crude ugly face of three gashes and a smeared mouth, in tar and rust, wiped half away", "dozens of hateful stabbing strokes radiating from a blot of tar, filthy brown drips",
-                       "a huge careless wipe of filth with a stick-drawn scribble dragged through it while wet", "black tar flung and scraped in big arcs, greasy brown underneath, disgusting"]):
-    add(f"vandal_{i}", F + "Vandal", 2, "brush", 0.08, "The ugliest vandalism imaginable, hateful, filthy, no skill at all: " + t + ". " + RAG + PIG.format(c="soot black tar, sick greasy brown, dull rust") + SQ)
+# ------ vandal: the ugliest, crudest thing on any wall, and plainly paint someone put there on purpose, never filth.
+VANDAL = ("The ugliest, crudest graffiti on any wall, no skill at all, done in a hurry by someone who wanted to ruin the wall. It is plainly paint put there on purpose: "
+          "bold fat lines of paint in colours that clash horribly, never dirt, never a stain, never scorch, never a smudge, never brown, no speckled grime. "
+          "The colours are dirty and dulled, cheap old paint greyed down by sun and grime, never clean, never cheerful. ")
+HEAVY = "Far too much paint: heavy runs falling straight down from every thick part. "
+for i, (t, tool, c) in enumerate([
+        ("one huge sloppy over-loaded scribble, a mass of fat round loops and knots scrawled over and over on the spot like a child scribbling out a mistake, no letter shapes, no numbers, "
+         "sprayed far too heavy so the paint pooled", SPRAY, "sour dull bile yellow-green over a fat underlayer of dark oxblood"),
+        ("a crude stick figure sprayed huge and lopsided, sticking its tongue out and showing its bare backside, wobbly limbs, made to offend", SPRAY, "dull bruised violet over a sloppy patch of dusty brick orange"),
+        ("three scrawled tags that spell no letters of any alphabet, sprayed right over each other in three clashing colours until they knot into one muddy tangle", SPRAY, "sour mustard-green, dull bruised violet and dusty brick orange"),
+        ("one giant careless loop of spray swung across the whole picture, a fat line dragged round in big uneven loops and back again", SPRAY, "a dull bruised violet loop over a second loop of sour mustard-green"),
+        ("a crude lopsided leering face sprayed badly, with no circle or outline around it: two uneven eye blobs, one much bigger than the other, a shapeless round dab for a nose "
+         "and a huge wonky grin of uneven teeth with paint running off every tooth. Ugly and stupid, not cute, not a smiley", SPRAY, "dusty brick orange and dull bruised violet"),
+        ("one furious scribble like a seismograph gone mad, a single continuous line hacked back and forth with an over-loaded brush, sharp peaks of wildly different heights and widths "
+         "crossing over themselves into a dense tangle, never forming letters, a second messier scribble dragged over it", BRUSH, "dull bruised violet over dusty brick orange"),
+]):
+    add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + PIG.format(c=c) + L2, floor=0.04)
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs
 for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)
@@ -60,15 +73,26 @@ for i, (t, c) in enumerate([("a jagged eye with a slash through it, meaning keep
 for i, t in enumerate(["two great angry slashes crossed over a scribble", "a big scrubbing back and forth scribble blotting something out"]):
     add(f"crossout_{i}", F + "CrossOut", 1.3, "brush", 0.15, "Someone's mark furiously crossed out: " + t + ". " + BRUSH + PIG.format(c="oxblood over soot") + SQ)
 # ------ stencils
-add("stencil_crown_0", F + "Stencil_Crown", 1.25, "spray", 0.3, "A crude crown of five blunt spikes with a slash of paint knocked through it, an insult to nobility. " + STENCIL + PIG.format(c="soot black") + SQ)
-add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A blunt-toothed cog with a hole in the middle, a work gang's emblem. " + STENCIL + PIG.format(c="dull blue") + SQ)
+add("stencil_crown_0", F + "Stencil_Crown", 1.25, "spray", 0.3, "A crude crown of five blunt uneven spikes, an insult to nobility, sprayed badly through a torn cardboard stencil: one spike broken short where the card tore, ragged gaps, "
+    "a misted double edge along one side where the card slipped, and a thick sloppy slash of paint sprayed right through it on the diagonal. Not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="pale lime white crown, the slash in rust red") + SQ, floor=0.04)
+add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's emblem: a crude cog hacked out of cardboard with a knife, lopsided and knocked off-true, blunt uneven teeth of different sizes, a ragged hole in the middle, "
+    "sprayed through the card; then a careless second burst in another colour sprayed and dragged half across it. Not clean, not symmetrical, not clip-art. " + STENCIL + PIG.format(c="dull blue cog, a smeared burst of rust red sprayed over one side") + SQ, floor=0.04)
 add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A brawler's knuckles seen from the front, four blunt lumps above a block, bloody-minded. " + STENCIL + PIG.format(c="oxblood") + SQ)
-# ------ paste-ups
-for i, t in enumerate(["a howling wild-haired head printed huge", "a hunched beast with too many eyes"]):
-    add(f"paste_flyer_{i}", F + "Paste_Flyer", 1.1, "paste", 0.3, PASTE + "The picture: " + t + ". Inks: soot black on dirty ochre paper. Portrait sheet, slightly taller than wide.")
-for i, t in enumerate(["a blunt masked face looking straight out", "a crude figure with its head crossed through"]):
-    add(f"paste_wanted_{i}", F + "Paste_Wanted", 1.1, "paste", 0.35, PASTE + "A wanted poster. The picture: " + t + ". Inks: soot black and oxblood on grimy lime-white paper. Portrait sheet, slightly taller than wide.")
-add("gig_0", F + "Paste_Gig", 2, "paste", 0.28, PASTE + "Two sheets pasted edge to edge advertising a fight or a noise night: a screaming wild head on one, a snarling beast on the other, jagged sunburst behind both. Inks: soot black and rust red on dirty ochre paper. Twice as wide as tall.")
+# ------ stencil portraits (the defs keep their Paste_ names): sprayed straight onto the wall, no paper, the wall between every part.
+PORTRAIT = ("A big street stencil portrait sprayed straight onto a bare wall. No paper, no sheet, no poster, no rectangle, no backing, no border, no frame, no background panel. "
+            "First a few loose patchy clouds of the second colour were misted on with a can, thin, uneven, fading out at their edges, never a block. "
+            "Then the subject was sprayed over them in soot black through a crude hand-cut cardboard stencil: separate islands of black paint with blunt bridges, "
+            "soft misted edges where the card lifted, speckled overspray. Bare wall, left fully transparent, shows between every part: in the face's highlights, "
+            "between the black shapes, through the mist and all around the outside. Only the sprayed paint. ")
+SQP = "About as wide as it is tall, the subject filling the picture. "
+for i, (t, c) in enumerate([("a howling head with wild flying hair, mouth wide open, hair thrown out in jagged spikes", "ochre"),
+                            ("a hunched crouching beast with far too many eyes, claws hanging down", "rust red")]):
+    add(f"paste_flyer_{i}", F + "Paste_Flyer", 1.1, "spray", 0.3, PORTRAIT + "The subject: " + t + ". " + SPRAY + PIG.format(c="soot black over misted " + c) + SQP, floor=0.04)
+for i, (t, c) in enumerate([("a blunt masked face looking straight out, a cloth mask over the lower face, hard flat eyes", "soot black over a heavy patchy mist of rust red, wider than the head"),
+                            ("a crude figure seen from the chest up, its head crossed out by a big fat X sprayed over it in the second colour", "soot black over misted ochre, the X in heavy ochre")]):
+    add(f"paste_wanted_{i}", F + "Paste_Wanted", 1.1, "spray", 0.35, PORTRAIT + "The subject: " + t + ". " + SPRAY + PIG.format(c=c) + SQP, floor=0.04)
+add("gig_0", F + "Paste_Gig", 2, "spray", 0.28, PORTRAIT + "The subject, for a fight night: two big heads side by side, on the left a screaming wild-haired head, on the right a snarling beast's head, "
+    "and behind both a jagged sunburst of sprayed rays in the second colour, separate spikes with bare wall between them. " + SPRAY + PIG.format(c="soot black over misted rust red") + L2, floor=0.04)
 # ------ sigil frames (ideoligion icon goes in the middle, leave it empty)
 add("halo_0", F + "SigilFrame_Halo", 1.3, "brush", 0.2, "A rough ring of short radiating stabs around an empty middle, the middle left completely empty and transparent. " + BRUSH + PIG.format(c="chalk white") + SQ)
 add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "A rough hand-sprayed box frame with broken corners around an empty middle, the middle left completely empty and transparent. " + SPRAY + PIG.format(c="soot black") + SQ)
@@ -96,7 +120,7 @@ G = [
  ("NaturePrimacy", "a thick twisted root system clawing down, dragged in three strokes", BRUSH, "oxide green and soot"),
  ("AnimalPersonhood", "the head of a wolf in five thick strokes, its eye the same size as a person's", BRUSH, "soot and ochre"),
  ("Rancher", "the wide horns and long face of a muskox, daubed fast", RAG, "burnt orange and soot"),
- ("Tunneler", "a black hole rammed into a mound, pick-gouged rays fanning out of it", BRUSH, "soot and ochre"),
+ ("Tunneler", "a ragged hole rammed into a heaped mound: the mound three or four rough dry strokes, the hole a jagged flat black gouge in it, not round, and short rays scratched and brushed out of the hole like pick strikes. Flat paint only: no sphere, no dome, no ball, no highlight, no shading", BRUSH, "soot and ochre"),
  ("TreeConnection", "a huge gnarled tree trunk dragged with a filthy rag, branches like arms, its crown wiped out", RAG, "oxide green and soot"),
  ("HighLife", "a long curling plume of smoke rising and thickening into a blot, the plume made with one wet drag", SPRAY, "oxide green and ash grey"),
  ("Proselytizer", "a screaming open mouth in profile with three thick lines of shout flying out of it", BRUSH, "ochre and soot"),
@@ -104,7 +128,8 @@ G = [
  ("Shipborn", "a blunt star-tailed ship shape rising over a wiped curve of a planet", SPRAY, "dull blue and lime white"),
 ]
 for name, t, tool, c in G:
-    add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"))
+    add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"),
+        floor=0.04 if name == "Tunneler" else 0.0)
 
 
 # ------ marks about somebody: the subject's own head goes in the gap, painted at runtime (WallPlane.PaintedPortrait).

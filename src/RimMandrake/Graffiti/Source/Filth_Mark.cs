@@ -541,7 +541,12 @@ namespace RimMandrake.Graffiti
                 if (!floor.InBounds(map)) continue;
                 foreach (Thing t in floor.GetThingList(map).ToArray())
                 {
-                    if (t is Filth_Mark m && m.wallSide == i && !m.Destroyed) m.Destroy();
+                    if (t is Filth_Mark m && m.wallSide == i && !m.Destroyed)
+                    {
+                        GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + " went with its wall at " + wall);
+                        m.SkipCleanNotice();
+                        m.Destroy();
+                    }
                 }
             }
         }
