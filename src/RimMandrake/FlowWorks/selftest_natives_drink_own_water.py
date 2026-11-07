@@ -162,6 +162,7 @@ public static class Find { public static TickManager TickManager = new TickManag
 public class RaceProperties { public bool Humanlike; }
 public class Need_RM_Thirst { public float CurLevel = 0.1f; }
 public class RotationTracker { public void FaceCell(IntVec3 c) {} }
+public class RM_ThirstGrassWateredExtension { public float searchRadius = 150f; public static RM_ThirstGrassWateredExtension For(Pawn p) { return null; } }
 public class Pawn : Thing { public static int next = 1; public Map Map; public PawnKindDef kindDef; public RaceProperties RaceProps = new RaceProperties();
     public IntVec3 Position; public bool Dead; public int thingIDNumber = next++; public Need_RM_Thirst need = new Need_RM_Thirst();
     public int consequences; public RotationTracker rotationTracker = new RotationTracker();

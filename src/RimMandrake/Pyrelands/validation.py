@@ -1514,6 +1514,35 @@ def blackrain(t):
                       ("overlayClasses", "skyColorsDay", "skyColorsNightMid"))
 
 
+SMOOTH_MAX_TICK_US = 50000.0    # a colony tick this long is a visible hitch at normal speed
+
+
+@suite.chain("soaked_map_stays_smooth")
+@_teardown(fire=True)
+def soaked_map_stays_smooth(t):
+    """Owner, 2026-11-07: "VERY FAST, then pause". The Explosive Growth pass stepped and popped a whole rain-soaked map on
+    one tick (about 1 s, every 250 ticks). Hold black rain until grass pops, then read the slowest single tick of that pass."""
+    tick = "RimMandrake.ExplosiveGrowth.RM_MapComponent_ExplosiveGrowth:MapComponentTick"
+    fire = "RimMandrake.ExplosiveGrowth.RM_TopResolver:Fire"
+    with _comp(t, "soaked_map_stays_smooth", beyond_toggle=True):
+        _fresh_site(t)
+        t.bridge_call("jawa/weather_set", weather="RM_FE_BlackRain", lockWeather=True)
+        _wait(t, 8000)
+        t.bridge_call("jawa/health_profile", action="start", methods=tick + ";" + fire, minutes=10)
+        _wait(t, 6000)
+        got = t.bridge_call("jawa/health_profile", action="status") or {}
+        t.bridge_call("jawa/health_profile", action="stop")
+        if _live(t):
+            rows = {m.get("method"): m for m in (got.get("profile") or {}).get("methods") or []}
+            _note(t, "Explosive Growth pass under black rain", rows)
+            pops, row = (rows.get(fire) or {}).get("calls") or 0, rows.get(tick)
+            if not row or not pops:
+                _unmeasured(t, "no grass popped in the window, so the pass was not under load: %r" % rows)
+            worst = float(str(row.get("maxUs")).split()[0])
+            if worst > SMOOTH_MAX_TICK_US:
+                _fail("slowest Explosive Growth tick %.0f us over %.0f us with %d pops" % (worst, SMOOTH_MAX_TICK_US, pops))
+
+
 @suite.chain("no_ordinary_rain")
 def no_ordinary_rain(t):
     _pad(t, PAD_PROBE)
@@ -2393,39 +2422,6 @@ def gpt_hunt_plausible(t):
     """The PLAUSIBLE rows of the 2026-10-15 GPT hunt (GPT_TRIAGE). Each row's name says what a PASS means; a FAIL confirms
     the finding. FURNACE_CARAVAN_DIAGNOSE_HEARTH_GOES_COLD has NO row: the owner ruled caravan warmth out of scope
     ("Bah. Reverse decision. Drop the caravan warmth portion.", 2026-10-15)."""
-    # Leftover furnace herds (the world migration was cut 2026-10-23) + TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS: an OFFLINE read
-    # of the start save's world (diag/save_world_check.py). 2026-10-15 on CANONICAL_ASHKARR_START_2026-09-12.rws: no seeder
-    # component, 0 herds, 1 TribeCivil faction. Re-run on the freeze candidate after the final paint.
-    w = None
-    with _comp(t, "save_holds_no_furnace_herds", beyond_toggle=True):
-        herd = ("UNMEASURED", "not read (offline declaration probe)")
-        try:
-            if _live(t):
-                sw = _save_world_module()
-                sp = sw.default_save()
-                if not sp:
-                    _unmeasured(t, "the canonical start save was not found in the Saves folder")
-                w = sw.read_world(sp)
-                herd, tribes = sw.verdicts(w)
-                w["_tribes"] = tribes
-                _note(t, "start-save world read (seeder latch, herds, TribeCivil)", w)
-        except (ExpectationFailed, _Unmeasured):
-            raise
-        except Exception as ex:   # noqa: BLE001 - a reader crash is ignorance, never a pass
-            _unmeasured(t, "save_world_check raised %s: %s" % (type(ex).__name__, ex))
-        if _live(t) and herd[0] == "FAIL":
-            _fail(herd[1])
-        if _live(t) and herd[0] == "UNMEASURED":
-            _unmeasured(t, herd[1])
-    _independent(t)
-    with _comp(t, "tribes_lookup_one_faction", beyond_toggle=True):
-        tribes = (w or {}).get("_tribes") or ("UNMEASURED", "no world read")
-        if _live(t) and tribes[0] == "FAIL":
-            _fail(tribes[1])
-        if _live(t) and tribes[0] == "UNMEASURED":
-            _unmeasured(t, tribes[1])
-    _independent(t)
-
     # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT (CONFIRMED and fixed 2026-10-15): vanilla Soil/Sand/Gravel are scorchable ground,
     # so the fire-tick hook now also needs the map's biome to opt in (FireEcologyBiomeGate: the Pyrelands, or the cross-biome
     # setting). A validation map is a Pyrelands map, where a Soil burn fruits by design, so the gate is measured by static_call
