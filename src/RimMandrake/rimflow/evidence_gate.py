@@ -149,51 +149,148 @@ def reason_class(reason):
 # ---------------------------------------------------------------- the shadow call
 
 def _git(cwd, *a):
-    r = subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, timeout=GIT_TIMEOUT_S, stdin=subprocess.DEVNULL)
+    r = subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, errors="replace",
+                       timeout=GIT_TIMEOUT_S, stdin=subprocess.DEVNULL)
     return r.returncode, r.stdout.strip()
+
+
+def _hunks(diff):
+    """Pure. `git diff -U0` -> [(old start, old count, new start, new count)]."""
+    return [(int(m[0]), 1 if m[1] == "" else int(m[1]), int(m[2]), 1 if m[3] == "" else int(m[3]))
+            for m in re.findall(r"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@", diff, re.M)]
+
+
+def _old_lines(diff):
+    """Pure. `git diff -U0` of one path -> the line numbers at the old side that the diff touches, or None when it holds
+    no hunk (binary, mode only: it cannot say). A pure insertion after line N touches N and N+1: it lands between them."""
+    lines = set()
+    for start, count, _, _ in _hunks(diff):
+        lines.update((start, start + 1) if count == 0 else range(start, start + count))
+    return lines or None
+
+
+def _moved_gap(site, moved):
+    """Pure. The gap after line `site` of one version, and `moved` the -U0 diff from it to a later one -> the later
+    version's lines around that gap. A hunk spanning the gap: all of that hunk's lines, it may have rewritten the place."""
+    delta = 0
+    for start, count, new, new_count in _hunks(moved):
+        if count == 0 and start < site or count and start + count - 1 <= site:
+            delta += new_count - count
+        elif start <= site:     # a hunk with no new lines names the line before it, one with some its first (git's -U0)
+            return {new, new + 1} if new_count == 0 else set(range(new - 1, new + new_count + 1))
+        else:
+            break
+    return {site + delta, site + delta + 1}
+
+
+def _deleted_at(cwd, full, path, commits):
+    """-> the lines of `path` at `full` around each place a commit in `commits` deleted lines and wrote none: such work
+    leaves no line for blame to name. None when git cannot say."""
+    gaps = set()
+    for h in commits:
+        rc, shown = _git(cwd, "show", "-U0", "--no-renames", "--format=", h, "--", path)
+        if rc:
+            return None
+        sites = [new for _, _, new, new_count in _hunks(shown) if new_count == 0]
+        if sites and h != full:
+            rc, moved = _git(cwd, "diff", "-U0", "--no-renames", h, full, "--", path)
+            if rc:
+                return None
+            for site in sites:
+                gaps |= _moved_gap(site, moved)
+        elif sites:
+            gaps.update(n for site in sites for n in (site, site + 1))
+    return gaps
+
+
+def _lines_untouched(cwd, full, cand, path, mine, touching):
+    """-> True when the diff full..cand leaves as it was every line of `path` a commit in `mine` last wrote at `full`,
+    every place one in `touching` (those that touched `path`) deleted from, and the file's mode. Git that
+    cannot say is False."""
+    rc, diff = _git(cwd, "diff", "-U0", "--no-renames", full, cand, "--", path)
+    touched = _old_lines(diff) if rc == 0 else None
+    if touched is None or re.search(r"^(old mode|deleted file mode|new file mode) ", diff, re.M):
+        return False
+    gaps = _deleted_at(cwd, full, path, touching)
+    if gaps is None or touched & gaps:
+        return False
+    rc, blame = _git(cwd, "blame", "--incremental", "--root", full, "--", path)     # no file content: no line to misread
+    if rc:
+        return False
+    for h, start, count in re.findall(r"^([0-9a-f]{40}) \d+ (\d+) (\d+)$", blame, re.M):
+        if h in mine and not touched.isdisjoint(range(int(start), int(start) + int(count))):
+            return False
+    return True
 
 
 def _same_work(cwd, item, full, cand):
     """-> True when the candidate `cand` (a descendant of `full`) tested this item's work exactly as it stands at
-    `full`: every path that differs between them outside the bookkeeping is a path no commit naming the item touched
-    (another item's landing in between). A fix of this item after `full` - or anyone's edit of this item's files -
-    differs, and the candidate's record does not speak for `full` (A broken, B fixed and passed: closing at A is not
-    B's pass). Git that cannot say is False."""
-    rc, out = _git(cwd, "diff", "--name-only", full, cand)
+    `full`: nothing between them outside the bookkeeping changed what a commit naming the item wrote. Another item's
+    landing differs elsewhere, in another file or in other lines of a busy file both items touch; its lines are the same
+    kind of neighbour either way. A later commit naming the item in a path that differs - or anyone's edit of this item's
+    lines, of a place it deleted from, or of a shared file's mode - and the candidate's record does not speak for `full` (A broken, B fixed and passed: closing at A is not B's
+    pass). An item with no commit naming it has no known work, so any code between refuses. Git that cannot say is False.
+    Known limit: blame names a line's last writer, so a neighbour's edit of the item's line before `full` takes that line
+    out of the item's work, and a third commit repairing it reads as a neighbour. Counting every line written since the
+    item began closes that and refuses RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN's busy file again; it would take a blame per
+    commit in the file."""
+    rc, out = _git(cwd, "diff", "--name-only", "--no-renames", full, cand)
     if rc:
         return False
     changed = {p for p in out.splitlines() if p and not p.startswith(BOOKKEEPING)}
     if not changed:
         return True
-    rc, out = _git(cwd, "log", "--format=%x01%s", "--name-only", "-F", "--grep=" + item, "-n", str(WORK_DEPTH), cand)
+    rc, out = _git(cwd, "log", "--no-renames", "--diff-merges=first-parent", "--format=%x01%H\t%P\t%s", "--name-only",
+                   "-F", "--grep=" + item, "-n", str(WORK_DEPTH), cand)
     if rc:
         return False
     name = re.compile(r"(?<![A-Z0-9_])%s(?![A-Z0-9_])" % re.escape(item))
-    mine, keep = set(), False
+    deep = out.count("\x01") >= WORK_DEPTH     # the log stopped at its depth: an older commit naming the item may own any line
+    paths, merges, h = {}, set(), None         # commit naming the item -> the work paths it touched; those that merge
     for line in out.splitlines():
         if line.startswith("\x01"):
-            keep = bool(name.search(line[1:]))
-        elif line and keep and not line.startswith(BOOKKEEPING):
-            mine.add(line)
-    return bool(mine) and not (changed & mine)
+            h, parents, subject = line[1:].split("\t", 2)
+            if name.search(subject):
+                paths[h] = set()
+                if " " in parents:
+                    merges.add(h)
+            else:
+                h = None
+        elif line and h and not line.startswith(BOOKKEEPING):
+            paths[h].add(line)
+    if deep:
+        return False
+    shared = changed & set().union(*paths.values(), set())
+    if not shared:
+        return any(paths.values())
+    if any(paths[h] & shared for h in merges):      # blame names the branch commits under a merge, never the merge
+        return False
+    rc, out = _git(cwd, "rev-list", full + ".." + cand)
+    if rc:
+        return False
+    if any(paths[h] & shared for h in set(out.split()) & set(paths)):
+        return False
+    return all(_lines_untouched(cwd, full, cand, p, paths.keys(), [h for h in paths if p in paths[h]]) for p in sorted(shared))
 
 
 def _record_for(sd, item, sha, cand, no_code, cwd):
-    """-> the sha whose record speaks for this close, or None. The close's own sha; else the store's candidate (where
-    the Marker ran) when the close is --no-code, is that sha, or is a descendant that holds the same work for this item
-    (relentless closes at the work commit under a bookkeeping candidate; `_same_work`)."""
+    """-> the sha whose record speaks for this close, or None. The store's candidate (where the Marker ran) first when
+    the close is that sha or a descendant holds the same work for this item (relentless closes at the work commit under a
+    bookkeeping candidate; `_same_work`): the work's own record may hold only an older run. Else the close's own sha; else
+    the candidate when the close is --no-code."""
     full = sha
     if sha and not evidence._SHA.match(sha):
         rc, out = _git(cwd, "rev-parse", "--verify", "-q", sha + "^{commit}")
         full = out if rc == 0 and out else sha
-    if full and evidence._SHA.match(full) and os.path.exists(evidence.record_path(sd, item, full)):
-        return full
+    is_sha = bool(full and evidence._SHA.match(full))
     if cand and evidence._SHA.match(cand) and os.path.exists(evidence.record_path(sd, item, cand)):
-        if no_code or full == cand:
+        if full == cand:
             return cand
-        if full and _git(cwd, "merge-base", "--is-ancestor", full, cand)[0] == 0 and _same_work(cwd, item, full, cand):
+        if is_sha and _git(cwd, "merge-base", "--is-ancestor", full, cand)[0] == 0 and _same_work(cwd, item, full, cand):
             return cand
-    return None
+        if no_code and not (is_sha and os.path.exists(evidence.record_path(sd, item, full))):
+            return cand
+    return full if is_sha and os.path.exists(evidence.record_path(sd, item, full)) else None
 
 
 def judge(sd, item, sha, no_code, live=None, cwd=None, first_at=READ_INDEX):

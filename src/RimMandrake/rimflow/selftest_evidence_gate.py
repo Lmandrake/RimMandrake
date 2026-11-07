@@ -194,6 +194,165 @@ def rules():
           "green: the newest Marker verdict stands (a PASS after a FAIL)")
 
 
+def work_sha_shapes(sd):
+    """EVIDENCE_GATE_FIX_WORK_SHA_HIDES_CANDIDATE: the two supervisor closes of 2026-11-06 the shadow rejected, and the
+    A-broken-B-fixed shapes they must not let through."""
+    busy = "".join("line %d\n" % i for i in range(1, 21))
+    edit = lambda text, n, new: text.replace("line %d\n" % n, new)      # noqa: E731
+    rp = toy_repo()
+    commit(rp, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    # RELENTLESS_VET_FULL_FILE_BEFORE_CLEAN at 88360b38: the work commit's own record holds an old red run
+    work = commit(rp, "ITEM_OLD_RED: the work", {"infrastructure/state/lessons/l.md": "1"})
+    record(sd, "ITEM_OLD_RED", work, None, exit_=1)
+    commit(rp, "ledger: relentless supervisor", {"infrastructure/state/ledger/events/X.jsonl": "{}"})
+    cand = commit(rp, "ITEM_OLD_RED: the outcome", {"infrastructure/state/items/ITEM_OLD_RED.md": "1"})
+    hold(sd, "ITEM_OLD_RED", cand)
+    record(sd, "ITEM_OLD_RED", cand, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_OLD_RED", work, "", [], sd=sd, cwd=rp)
+    check(row and row["record"] == cand and row["predicate"] == "accept",
+          "work sha: an old red run on the work commit does not hide the candidate's green (%s)" % (row and row["reasons"]))
+    # RELENTLESS_CORE_FIX_CODEX_FOUND_SEVEN at e8c7158e: another item lands in the file the work touched, in other lines
+    text = edit(busy, 3, "line 3 mine\n")
+    work = commit(rp, "ITEM_BUSY: the work", {"src/busy.py": text})
+    text = edit(edit(text, 15, "line 15 theirs\n"), 16, "line 16 theirs\nextra\n")
+    commit(rp, "OTHER_ITEM: lands in the busy file", {"src/busy.py": text, "src/other.py": "1"})
+    cand = commit(rp, "ITEM_BUSY: the outcome", {"infrastructure/state/items/ITEM_BUSY.md": "1"})
+    hold(sd, "ITEM_BUSY", cand)
+    record(sd, "ITEM_BUSY", cand, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_BUSY", work, "", [], sd=sd, cwd=rp)
+    check(row and row["record"] == cand and row["predicate"] == "accept",
+          "work sha: another item's landing in other lines of a shared file is not this item's work (%s)"
+          % (row and row["reasons"]))
+    # a form feed in the file is a line to str.splitlines, not to git: the item's line must not read one line down
+    rp3 = toy_repo()
+    fed = edit(busy, 2, "line 2\x0cfed\n")
+    commit(rp3, "OLDER_ITEM: the busy file", {"src/busy.py": fed})
+    work = commit(rp3, "ITEM_FED: the work", {"src/busy.py": edit(fed, 5, "line 5 mine\n")})
+    cand = commit(rp3, "OTHER_ITEM: the next line", {"src/busy.py": edit(edit(fed, 5, "line 5 mine\n"), 6, "line 6 theirs\n")})
+    hold(sd, "ITEM_FED", cand)
+    record(sd, "ITEM_FED", cand, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_FED", work, "", [], sd=sd, cwd=rp3)
+    check(row and row["record"] == cand, "work sha: line numbers are git's, a form feed in the file does not shift them")
+    # the protection, each shape in a shared file: none of these may read the fix's pass for the broken commit
+    before = edit(busy, 5, "line 5\n")
+    broken_text = edit(busy, 5, "line 5 broken\n")
+    cases = [("another item's edit of its line", "ANYONE: rewrites the line", edit(busy, 5, "line 5 fixed\n")),
+             ("its own later fix in other lines", "ITEM_FIXED: fix elsewhere", edit(broken_text, 18, "line 18 fix\n")),
+             ("a line inserted inside its work", "ANYONE: inserts", edit(broken_text, 6, "guard\nline 6\n"))]
+    for what, subject, content in cases:
+        rp2 = toy_repo()
+        commit(rp2, "OLDER_ITEM: the busy file", {"src/busy.py": before})
+        commit(rp2, "ITEM_FIXED: the block above", {"src/busy.py": edit(before, 4, "line 4 mine\n")})
+        broken = commit(rp2, "ITEM_FIXED: broken", {"src/busy.py": edit(broken_text, 4, "line 4 mine\n")})
+        fix = commit(rp2, subject, {"src/busy.py": edit(content, 4, "line 4 mine\n")})
+        hold(sd, "ITEM_FIXED", fix)
+        record(sd, "ITEM_FIXED", fix, "PASS")
+        row, _ = quiet(G.shadow, "ITEM_FIXED", broken, "", [], sd=sd, cwd=rp2)
+        check(row is not None and row["record"] is None and row["predicate"] == "reject",
+              "work sha: A broken, B fixed: %s still rejects closing at A (%s)" % (what, row and row["record"]))
+    # GPT review of this fix: work that is only a deletion leaves no line for blame; another item restores it
+    rp4 = toy_repo()
+    commit(rp4, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    commit(rp4, "THIRD_ITEM: above the deletion", {"src/busy.py": "new top\n" + busy})
+    deleted = edit("new top\n" + busy, 10, "")
+    broken4 = commit(rp4, "ITEM_DELETES: broken, one line too many", {"src/busy.py": deleted})
+    shifted = "newer top\n" * 5 + deleted.replace("new top\n", "")
+    close_at = commit(rp4, "THIRD_ITEM: shifts it down", {"src/busy.py": shifted})
+    fix = commit(rp4, "ANYONE: restores it", {"src/busy.py": shifted.replace("line 9\n", "line 9\nline 10\n")})
+    hold(sd, "ITEM_DELETES", fix)
+    record(sd, "ITEM_DELETES", fix, "PASS")
+    for at, what in ((broken4, "at the deleting commit"), (close_at, "with lines moved since")):
+        row, _ = quiet(G.shadow, "ITEM_DELETES", at, "", [], sd=sd, cwd=rp4)
+        check(row is not None and row["record"] is None,
+              "work sha: A deleted, B restored: closing %s still rejects (%s)" % (what, row and row["record"]))
+    rp6 = toy_repo()
+    commit(rp6, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    gone = commit(rp6, "ITEM_DELETES2: one line", {"src/busy.py": edit(busy, 10, "")})
+    far = commit(rp6, "ANYONE: far from it", {"src/busy.py": edit(edit(busy, 10, ""), 19, "line 19 far\n")})
+    hold(sd, "ITEM_DELETES2", far)
+    record(sd, "ITEM_DELETES2", far, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_DELETES2", gone, "", [], sd=sd, cwd=rp6)
+    check(row and row["record"] == far, "work sha: a landing far from the place the item deleted from is not its work")
+    check(G._moved_gap(5, "@@ -1 +1,3 @@\n@@ -9 +11 @@\n") == {7, 8} and G._moved_gap(5, "@@ -4,3 +4 @@\n") == {3, 4, 5} \
+          and G._moved_gap(2, "@@ -2,2 +1,0 @@\n") == {1, 2} and G._moved_gap(5, "@@ -5,0 +6,2 @@\n") == {5, 6, 7, 8},
+          "work sha: a deletion's place moves with the lines above it; a hunk over it takes the whole hunk")
+    # GPT review: a mode repair beside a text hunk elsewhere
+    rp5 = toy_repo()
+    commit(rp5, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    broken5 = commit(rp5, "ITEM_MODE: the work", {"src/busy.py": edit(busy, 3, "line 3 mine\n")})
+    with open(os.path.join(rp5, "src/busy.py"), "w") as f:
+        f.write(edit(edit(busy, 3, "line 3 mine\n"), 19, "line 19 theirs\n"))
+    os.chmod(os.path.join(rp5, "src/busy.py"), 0o755)
+    git_in(rp5, "add", "src/busy.py")
+    git_in(rp5, "commit", "-q", "--no-verify", "-m", "ANYONE: makes it runnable")
+    fix = git_in(rp5, "rev-parse", "HEAD")
+    hold(sd, "ITEM_MODE", fix)
+    record(sd, "ITEM_MODE", fix, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_MODE", broken5, "", [], sd=sd, cwd=rp5)
+    check(row is not None and row["record"] is None, "work sha: a mode change on a shared path beside a far hunk still rejects")
+    # GPT review, round 2: a merge naming the item that deleted a line; a type change; a log cut at its depth
+    rp7 = toy_repo()
+    commit(rp7, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    commit(rp7, "ITEM_MERGE: a far line", {"src/busy.py": edit(busy, 19, "line 19 mine\n")})
+    git_in(rp7, "checkout", "-q", "-b", "side")
+    commit(rp7, "OLDER_ITEM: a side file", {"src/side.py": "1"})
+    git_in(rp7, "checkout", "-q", "main")
+    git_in(rp7, "merge", "-q", "--no-ff", "--no-commit", "side")
+    with open(os.path.join(rp7, "src/busy.py"), "w") as f:
+        f.write(edit(edit(busy, 19, "line 19 mine\n"), 10, ""))
+    git_in(rp7, "add", "src/busy.py")
+    git_in(rp7, "commit", "-q", "--no-verify", "-m", "ITEM_MERGE: merge, resolved by a deletion")
+    merged = git_in(rp7, "rev-parse", "HEAD")
+    fix = commit(rp7, "ANYONE: restores it", {"src/busy.py": edit(busy, 19, "line 19 mine\n")})
+    hold(sd, "ITEM_MERGE", fix)
+    record(sd, "ITEM_MERGE", fix, "PASS")
+    row, _ = quiet(G.shadow, "ITEM_MERGE", merged, "", [], sd=sd, cwd=rp7)
+    check(row is not None and row["record"] is None, "work sha: a merge naming the item deleted a line, B restored it: rejects")
+    rp8 = toy_repo()
+    commit(rp8, "OLDER_ITEM: the busy file", {"src/busy.py": busy})
+    os.chmod(os.path.join(rp8, "src/busy.py"), 0o755)
+    git_in(rp8, "add", "src/busy.py")
+    git_in(rp8, "commit", "-q", "--no-verify", "-m", "ITEM_TYPE: makes it runnable")
+    typed = git_in(rp8, "rev-parse", "HEAD")
+    os.remove(os.path.join(rp8, "src/busy.py"))
+    os.symlink("other", os.path.join(rp8, "src/busy.py"))
+    git_in(rp8, "add", "src/busy.py")
+    git_in(rp8, "commit", "-q", "--no-verify", "-m", "ANYONE: a symlink now")
+    fix = git_in(rp8, "rev-parse", "HEAD")
+    check(not G._same_work(rp8, "ITEM_TYPE", typed, fix), "work sha: a type change on a shared path is not the same work")
+    rp9 = toy_repo()
+    lines = edit(busy, 3, "line 3 mine\n")
+    commit(rp9, "ITEM_DEEP: the first of many", {"src/busy.py": lines})
+    for i in range(G.WORK_DEPTH):
+        last = commit(rp9, "ITEM_DEEP: note %d" % i, {"src/busy.py": edit(lines, 19, "line 19 v%d\n" % i)})
+    fix = commit(rp9, "ANYONE: fixes its first line", {"src/busy.py": edit(lines.replace("line 3 mine\n", "line 3 fixed\n"), 19, "line 19 v%d\n" % (G.WORK_DEPTH - 1))})
+    check(not G._same_work(rp9, "ITEM_DEEP", last, fix), "work sha: a log cut at its depth cannot say who owns the line")
+    rp10 = toy_repo()
+    commit(rp10, "ITEM_MERGE2: a far line", {"src/busy.py": busy})
+    git_in(rp10, "checkout", "-q", "-b", "side")
+    commit(rp10, "OTHER_ITEM: the branch's line", {"src/busy.py": edit(busy, 3, "line 3 side\n")})
+    git_in(rp10, "checkout", "-q", "main")
+    commit(rp10, "OLDER_ITEM: elsewhere", {"src/g.py": "1"})
+    git_in(rp10, "merge", "-q", "--no-ff", "-m", "ITEM_MERGE2: merge the side", "side")
+    merged2 = git_in(rp10, "rev-parse", "HEAD")
+    fix = commit(rp10, "ANYONE: fixes the line", {"src/busy.py": edit(busy, 3, "line 3 fixed\n")})
+    check(not G._same_work(rp10, "ITEM_MERGE2", merged2, fix), "work sha: lines a merge naming the item brought in stay its work")
+    rp11 = toy_repo()
+    commit(rp11, "ITEM_DEEP2: the first, in f", {"src/f.py": "1"})
+    for i in range(G.WORK_DEPTH):
+        last = commit(rp11, "ITEM_DEEP2: note %d" % i, {"src/g.py": str(i)})
+    fix = commit(rp11, "ANYONE: fixes f", {"src/f.py": "2"})
+    check(not G._same_work(rp11, "ITEM_DEEP2", last, fix), "work sha: a log cut at its depth may not see the path either")
+    # its old red run stays its word when the fix's record cannot speak for it
+    record(sd, "ITEM_FIXED", broken, None, exit_=1)
+    row, _ = quiet(G.shadow, "ITEM_FIXED", broken, "", [], sd=sd, cwd=rp2)
+    check(row and row["record"] == broken and "run not green" in [G.reason_class(r) for r in row["reasons"]],
+          "work sha: A broken, its own red run, B fixed: closing at A reads A's red")
+    check(G._old_lines("@@ -7 +7 @@\n-a\n+b\n@@ -10,2 +10 @@\n@@ -20,0 +21 @@\n") == {7, 10, 11, 20, 21},
+          "work sha: hunks at the old side; an insertion touches both neighbours")
+    check(G._old_lines("Binary files a/x and b/x differ\n") is None, "work sha: a diff with no hunk cannot say")
+
+
 def shadow():
     sd = store("shadow")
     a, b = "a" * 40, "b" * 40
@@ -238,10 +397,11 @@ def shadow():
     row, _ = quiet(G.shadow, "ITEM_WORK2", fixed, "", [], sd=sd, cwd=rp)
     check(row is not None and row["record"] is None,
           "shadow: no commit naming the item (ITEM_WORK2) leaves its work unknown: code between refuses the ancestor")
+    work_sha_shapes(sd)
     row, _ = quiet(G.shadow, "NOT_RELENTLESS", a, "", [], sd=sd)
     check(row is None, "shadow: an item the store does not hold is not judged")
     n = len(G.rows(sd))
-    check(n == 7, "shadow: one row per judged close (%d)" % n)
+    check(n == 19, "shadow: one row per judged close (%d)" % n)
     # finding 4: a torn last row (crash mid-append) must not swallow the next whole observation
     with open(os.path.join(sd, G.SHADOW), "a") as f:
         f.write('{"item": "TORN", "sha": "x", "gate": "acc')
