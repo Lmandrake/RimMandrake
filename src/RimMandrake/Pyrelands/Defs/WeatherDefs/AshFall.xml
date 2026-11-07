@@ -10,8 +10,8 @@
     `curSky.colors.overlay` for any SkyOverlay that does not declare a
     ForcedOverlayColor, and WeatherOverlay_SnowGentle declares none
     (RimSage, RimWorld/WeatherOverlay_SnowGentle.cs). So borrowing the
-    gentle-snow particle sheet and setting `<overlay>` to a warm dark grey
-    below gives grey ash drifting down at snow's pace and snow's density —
+    gentle-snow particle sheet and setting `<overlay>` to a pale warm grey (a dark one could not be seen against the dimmed ground)
+    below gives pale grey ash drifting down at snow's pace and snow's density —
     the ruling's own comparison, delivered by the field that already
     exists. `curSky.colors.overlay` is read nowhere else in the engine, so
     darkening it has no side effects.
@@ -58,7 +58,7 @@
       <li>Ambient_Wind_Fog</li>
     </ambientSounds>
     <overlayClasses>
-      <li>WeatherOverlay_SnowGentle</li>
+      <li>WeatherOverlay_SnowHard</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <!-- `overlay` is the ash colour itself — see the header. `saturation`
@@ -66,25 +66,25 @@
     <skyColorsDay>
       <sky>(0.62,0.58,0.54)</sky>
       <shadow>(0.90,0.90,0.90)</shadow>
-      <overlay>(0.42,0.39,0.35)</overlay>
+      <overlay>(0.78,0.75,0.70)</overlay>
       <saturation>0.55</saturation>
     </skyColorsDay>
     <skyColorsDusk>
       <sky>(0.66,0.54,0.46)</sky>
       <shadow>(0.90,0.90,0.90)</shadow>
-      <overlay>(0.40,0.36,0.32)</overlay>
+      <overlay>(0.72,0.66,0.60)</overlay>
       <saturation>0.55</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
       <sky>(0.26,0.26,0.27)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.30,0.28,0.26)</overlay>
+      <overlay>(0.40,0.38,0.36)</overlay>
       <saturation>0.55</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.24,0.24,0.25)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.28,0.26,0.24)</overlay>
+      <overlay>(0.34,0.32,0.30)</overlay>
       <saturation>0.55</saturation>
     </skyColorsNightMid>
   </WeatherDef>
@@ -115,25 +115,25 @@
     <skyColorsDay>
       <sky>(1,1,1)</sky>
       <shadow>(0.718,0.745,0.757)</shadow>
-      <overlay>(0.42,0.39,0.35)</overlay>
+      <overlay>(0.78,0.75,0.70)</overlay>
       <saturation>1.25</saturation>
     </skyColorsDay>
     <skyColorsDusk>
       <sky>(0.858,0.650,0.423)</sky>
       <shadow>(0.955,0.886,0.914)</shadow>
-      <overlay>(0.40,0.36,0.32)</overlay>
+      <overlay>(0.72,0.66,0.60)</overlay>
       <saturation>1.25</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
       <sky>(0.482,0.603,0.682)</sky>
       <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.30,0.28,0.26)</overlay>
+      <overlay>(0.40,0.38,0.36)</overlay>
       <saturation>1.25</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.482,0.603,0.682)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.28,0.26,0.24)</overlay>
+      <overlay>(0.34,0.32,0.30)</overlay>
       <saturation>1.25</saturation>
     </skyColorsNightMid>
   </WeatherDef>

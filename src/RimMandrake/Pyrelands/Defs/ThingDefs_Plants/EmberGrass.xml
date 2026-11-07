@@ -29,7 +29,7 @@
          (Plant.Resting: DayPercent 0.25-0.8), so full growth takes about a day and a half, not under one. -->
     <description>A coarse bunchgrass that regrows on burned ground in a day or two. Its tall stems dry to dull orange almost as quickly, laying fresh tinder over the ash before grazers can clear it.</description>
     <statBases>
-      <MaxHitPoints>70</MaxHitPoints>
+      <MaxHitPoints>28</MaxHitPoints>
       <!-- Above every Core plant (grass tops out at 1.3): this is the
            thing the biome's fires are actually made of. -->
       <Flammability>1.6</Flammability>
@@ -42,7 +42,7 @@
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />
     <plant>
-      <!-- Grows on almost anything, dry deep ash (0.40) included; it
+      <!-- Grows on almost anything, dry deep ash (0.70) included; it
            grows fastest where the ash is watered or freshly burned
            (AshField.xml). -->
       <fertilityMin>0.08</fertilityMin>

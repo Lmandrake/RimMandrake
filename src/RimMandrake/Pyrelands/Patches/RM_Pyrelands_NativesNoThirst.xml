@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- The fire cast takes its water from the grass. FlowWorks gives every animal thirst and a 60-cell search for water, and a
+       Pyrelands map has a few ponds on 250x250 cells: every grazer more than 60 cells from one sat at zero and reached
+       dehydration 0.65 by day 3 (lethal at 1.0), so the wild cast died off within a week. Both mods stay optional. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <success>Always</success>
+      <xpath>Defs/ThingDef[defName="RM_FireHawk" or defName="RM_FurnaceBeast" or defName="RM_Ullai" or defName="RM_Emberscythe" or defName="RM_Sytheclaw" or defName="RM_Barbslinger" or defName="RM_FireWasp" or defName="RM_Flamefang" or defName="RM_Ashwallow" or defName="RSW_Anooba" or defName="RSW_Iriaz" or defName="RSW_Nuna" or defName="RSW_Orray" or defName="RSW_Zeer" or defName="RSW_Dalgo" or defName="RSW_Gizka"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_ThirstExemptExtension" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -44,7 +44,7 @@
     <label>quickgrass</label>
     <description>A low, dense forage grass engineered twenty-five thousand years ago to feed grazing animals. Deep roots reach the water table, bringing nutritious green shoots back through warm ash within a day or two. The gardeners are gone; the lawn still works.</description>
     <statBases>
-      <MaxHitPoints>85</MaxHitPoints>
+      <MaxHitPoints>32</MaxHitPoints>
       <!-- An ordinary lawn's burn, not the fuel bed's: the fire chain
            needs it back two days after the front passes, and it is the
            water-carrier of the pair. -->

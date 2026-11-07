@@ -56,27 +56,27 @@
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <skyColorsDay>
-      <sky>(0.22,0.20,0.20)</sky>
+      <sky>(0.30,0.27,0.27)</sky>
       <shadow>(0.5,0.5,0.5)</shadow>
-      <overlay>(0.3,0.28,0.28)</overlay>
+      <overlay>(0.55,0.50,0.50)</overlay>
       <saturation>0.4</saturation>
     </skyColorsDay>
     <skyColorsDusk>
-      <sky>(0.26,0.22,0.22)</sky>
+      <sky>(0.28,0.24,0.24)</sky>
       <shadow>(0.5,0.5,0.5)</shadow>
-      <overlay>(0.25,0.22,0.22)</overlay>
+      <overlay>(0.50,0.45,0.45)</overlay>
       <saturation>0.4</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
-      <sky>(0.12,0.11,0.11)</sky>
+      <sky>(0.14,0.13,0.13)</sky>
       <shadow>(0.4,0.4,0.4)</shadow>
-      <overlay>(0.18,0.16,0.16)</overlay>
+      <overlay>(0.30,0.28,0.28)</overlay>
       <saturation>0.4</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.12,0.11,0.11)</sky>
       <shadow>(0.4,0.4,0.4)</shadow>
-      <overlay>(0.18,0.16,0.16)</overlay>
+      <overlay>(0.28,0.26,0.26)</overlay>
       <saturation>0.4</saturation>
     </skyColorsNightMid>
     <temperatureRange>-40~999</temperatureRange>

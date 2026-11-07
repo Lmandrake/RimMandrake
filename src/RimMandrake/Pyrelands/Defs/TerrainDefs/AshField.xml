@@ -36,7 +36,7 @@
       <li>GrowSoil</li>
       <li>Diggable</li>
     </affordances>
-    <fertility>0.40</fertility>
+    <fertility>0.70</fertility>
     <pathCost>2</pathCost>
     <statBases>
       <Beauty>0</Beauty>
@@ -47,7 +47,7 @@
   <TerrainDef ParentName="RM_FE_AshBase">
     <defName>RM_FE_Ash_Deep</defName>
     <label>deep ash</label>
-    <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds little; watered, it grows almost anything.</description>
+    <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds thin crops; watered, it grows almost anything.</description>
     <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
     <color>(48, 46, 43, 255)</color>
     <modExtensions>

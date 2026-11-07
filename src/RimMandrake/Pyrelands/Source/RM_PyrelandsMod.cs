@@ -101,9 +101,9 @@ namespace RimMandrake.Pyrelands
         public static float sandShovelYieldMultiplier = 1f;
 
         // PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md §5, §5a). Every number
-        // PROVISIONAL. All off: deep ash reads its XML 0.40 and nothing else changes. None affects worldgen.
+        // PROVISIONAL. All off: deep ash reads its XML 0.70 and nothing else changes. None affects worldgen.
         public static bool ashWaterFertilityEnabled = true;
-        public static float ashDryFertility = 0.40f;
+        public static float ashDryFertility = 0.70f;
         public static float ashWateredFertility = 1.40f;
         public static int ashNaturalWaterRadius = 2;
         public static bool freshBurnBonusEnabled = true;
@@ -168,7 +168,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
             Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
             Scribe_Values.Look(ref ashWaterFertilityEnabled, "ashWaterFertilityEnabled", true);
-            Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.40f);
+            Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.70f);
             Scribe_Values.Look(ref ashWateredFertility, "ashWateredFertility", 1.40f);
             Scribe_Values.Look(ref ashNaturalWaterRadius, "ashNaturalWaterRadius", 2);
             Scribe_Values.Look(ref freshBurnBonusEnabled, "freshBurnBonusEnabled", true);

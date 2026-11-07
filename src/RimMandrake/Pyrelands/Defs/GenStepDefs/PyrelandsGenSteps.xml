@@ -37,4 +37,10 @@
     <order>965</order>
   </GenStepDef>
 
+  <!-- The fire cast is met on every fresh map; see GenStep_PyrelandsFireCast. Right after Animals (1200). -->
+  <GenStepDef>
+    <defName>RM_FE_FireCast</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsFireCast" />
+    <order>1210</order>
+  </GenStepDef>
 </Defs>

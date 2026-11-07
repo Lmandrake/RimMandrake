@@ -29,7 +29,7 @@
   <BiomeDef>
     <defName>RM_Pyrelands</defName>
     <label>the Pyrelands</label>
-    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds thin crops; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_Pyrelands</texture>
 
@@ -52,6 +52,7 @@
          GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) for the mechanism. -->
     <extraGenSteps>
       <li>RM_FE_ScorchRuins</li>
+      <li>RM_FE_FireCast</li>
       <li>RM_FE_ScorchRuinsLate</li>
     </extraGenSteps>
 
@@ -118,7 +119,7 @@
          per cell is min(plantDensity * fertility^2, 1) — fertility multiplies in
          TWICE (WildPlantSpawner.GetDesiredPlantsCountAt x GetBaseDesiredPlantsCountAt),
          so density 3 held only ~58% of plantable ground ("Way too sparse").
-         16 saturates gravel (0.28 fert, needs >=13) and dry deep ash (0.40),
+         16 saturates gravel (0.28 fert, needs >=13) and dry deep ash (0.70),
          holding ~96% of plantable cells — the approved painted look; rock and
          water stay bare. Map Designer (zylle.mapdesigner, bisected
          2026-09-18) rewrites this at startup — caps it at 1.0 and folds the

@@ -510,6 +510,10 @@ namespace RimMandrake.ExplosiveGrowth
             public void OnArmed(IntVec3 c)
             {
                 if (!ExplosiveGrowthSettings.groundTellEnabled) return;
+                // A gentle carpet has no tell: black rain arms every grass cell at once, which laid 50,000 puddles a storm
+                // and took the map from 350 ticks/s to under 100 while they were destroyed.
+                Plant plant = c.GetPlant(comp.map);
+                if (plant != null && RM_ExplosiveGrowthRegistry.For(plant.def).gentleBurst) return;
                 FilthMaker.TryMakeFilth(c, comp.map, ThingDefOf.Filth_Water);
             }
 
