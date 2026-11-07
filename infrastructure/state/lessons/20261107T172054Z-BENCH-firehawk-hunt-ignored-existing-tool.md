@@ -1,0 +1,2 @@
+FIREHAWK_FLIGHT_BEHAVIOR_1's failed 2026-09-24/25 hunt closes by asking for a Pawn_FlightTracker state tool, but jawa/pawn_flight had been committed 2026-09-21 (ddd11854e3). The evidence behind 'It doesn't work' is one hunt, one pawn, position proxy, not a measured failure of deterministic recording. The ruling stands on his live eye finding the faults; do not cite that pass as proof that state reads or recording cannot work.
+home: NONE
