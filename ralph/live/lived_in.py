@@ -20,7 +20,7 @@ KEY = {"Scrapper": "Scrapper", "Industrial": "Industrial", "Modern": "Modern_Mul
 STATE = "ralph/live/lived_state.json"
 SPAN_W, SPAN_H = 76, 26
 FRAMES = {"all": (-3, -6, 80, 30), "house": (-2, -3, 30, 20), "kitchen": (0, 0, 16, 10), "rec": (13, 0, 13, 11), "beds": (0, 9, 26, 8),
-          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14), "spanpawn": (40, -3, 14, 9), "dense": (38, -11, 24, 12)}
+          "work": (26, -2, 18, 12), "yard": (24, 9, 26, 12), "span": (36, -6, 40, 18), "cutspan": (46, -6, 26, 16), "stock": (-2, -9, 26, 14), "spanpawn": (40, -3, 14, 9), "dense": (38, -11, 24, 12), "drop": (47, -3, 13, 9), "hut": (64, -4, 13, 9), "strips": (29, 11, 16, 9), "kit2": (6, 0, 9, 7)}
 
 
 def line(x0, z0, x1, z1):
@@ -52,7 +52,8 @@ def plan():
                 ("ElectricSmithy", (31, 7), 0, None), ("ElectricTailoringBench", (35, 7), 0, None), ("HiTechResearchBench", (33, 2), 2, None), ("StandingLamp", (37, 1), None, None),
                 ("Battery", (30, 14), 0, None), ("Battery", (32, 14), 0, None), ("SolarGenerator", (41, 16), None, None), ("SolarGenerator", (46, 16), None, None), ("SolarGenerator", (41, 10), None, None)]
     masts = [("RM_AerialMast", (39, 2)), ("RM_AerialLampMast", (53, 1)), ("RM_AerialMast", (67, 2))]
-    hut = [("StandingLamp", (70, 3)), ("Heater", (70, -2)), ("Battery", (72, 1))]
+    hut = [("StandingLamp", (70, 3)), ("Heater", (70, -2)), ("Battery", (72, 1)),
+           ("StandingLamp", (56, -1)), ("StandingLamp", (50, 3))]  # no conduit near: each takes a mast's own drop
     hut_conduit = line(68, 2, 71, 2) + line(71, -1, 71, 3)
     return dict(doors=doors, walls=walls, conduit=sorted(set(conduit)), machines=machines, masts=masts, hut=hut, hut_conduit=hut_conduit, second=second, second_machines=second_machines)
 
@@ -115,7 +116,7 @@ class Run(object):
             return "%d,%d,%d,%d" % (ox + x, oz + z, w, h)
 
         def clear(cells):
-            self.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % (c[0] + ox, c[1] + oz) for c in cells), categories="Plant,Item,Filth,Building")
+            self.call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % (c[0] + ox, c[1] + oz) for c in cells), categories="Plant,Item,Filth")  # never Building: a machine's clear once took the conduit cell beside it, and the battery drew no cord because it had none
 
         def batch(d, cells, rot=None, stuff=None):
             kw = {"ops": ";".join("%s:%d,%d%s" % (d, c[0] + ox, c[1] + oz, "" if rot is None else ",%d" % rot) for c in cells), "wipeExisting": False}
@@ -261,6 +262,11 @@ def main():
         R.spanpawn()
     elif a.cmd == "shots":
         R.shots(a.tag, a.frames.split(","))
+    elif a.cmd == "rect":  # rect TAG name:x,z,w,h[;...]  an ad-hoc frame, in the site's own cells
+        for f in a.frames.split(";"):
+            nm, q = f.split(":")
+            FRAMES[nm] = tuple(int(v) for v in q.split(","))
+            R.shots(a.tag, [nm])
     if R.notes:
         print("NOTES (%d):\n  %s" % (len(R.notes), "\n  ".join(R.notes[:30])))
 

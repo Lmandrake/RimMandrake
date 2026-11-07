@@ -84,6 +84,9 @@ def main(argv):
     if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
         i = argv.index("--unroutable-census")
         args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
+    if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
+        i = argv.index("--lab")
+        args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
     return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)

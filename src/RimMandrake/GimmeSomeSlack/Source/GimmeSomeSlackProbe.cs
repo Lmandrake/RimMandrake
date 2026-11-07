@@ -92,6 +92,9 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "artfit") return ArtFit(map, comp);
             if (cmd == "shapetable") return ShapeTable(comp);
             if (cmd == "kinks") return KinkTable(comp);
+            if (cmd == "shapeaudit") return ShapeAudit(comp);
+            if (cmd.StartsWith("worlddump:")) return WorldDump(map, comp, cmd.Substring(10));
+            if (cmd.StartsWith("strandsnear:")) return StrandsNear(comp, cmd.Substring(12));
             if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
@@ -490,6 +493,68 @@ namespace RimMandrake.GimmeSomeSlack
         {
             return "{\"success\":true,\"cmd\":\"statics\",\"resets\":" + GssSessionReset.resets + ",\"taps\":" + Aerial.TapRegistry.Count +
                    ",\"conduitPick\":" + J.S(Aerial.ConduitStylePicker.LastPicked(ThingDefOf.PowerConduit) ?? "") + ",\"skipReseed\":" + J.B(Aerial.CompAerialAnchor.debugSkipReseed) + "}";
+        }
+
+        /// <summary>Sharp corners and straight rods on every laid strand (CordShapeAudit), as drawn.</summary>
+        private static string ShapeAudit(RM_MapComponent_CordGraph comp)
+        {
+            var t = new CordShapeAudit.Tally();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands) t.Add(p, s);
+            return "{\"success\":true,\"cmd\":\"shapeaudit\",\"audit\":" + t.Json() + "}";
+        }
+
+        /// <summary>strandsnear:x,z,r -- the polyline of every strand passing within r cells of a point.</summary>
+        private static string StrandsNear(RM_MapComponent_CordGraph comp, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            var at = new V2(a[0], a[1]);
+            var rows = new List<string>();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                    if (s.Pts != null && s.Pts.Any(q => V2.Dist(q, at) <= a[2]))
+                        rows.Add("{\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + ",\"pts\":[" + string.Join(",", s.Pts.Select(q => "[" + q.X.ToString("0.###", inv) + "," + q.Z.ToString("0.###", inv) + "]")) + "]}");
+            return "{\"success\":true,\"cmd\":\"strandsnear\",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
+        /// <summary>worlddump:NAME -- this map's cord world, options and live cells as JSON beside the game's saves, for the offline shape lab (SelfTest --lab).</summary>
+        private static string WorldDump(Map map, RM_MapComponent_CordGraph comp, string name)
+        {
+            CordWorld w = CordWorldAdapter.Snapshot(map);
+            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
+            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
+            var inv = CultureInfo.InvariantCulture;
+            string L(IEnumerable<Cell> cs) => "[" + string.Join(",", cs.Select(c => "[" + c.X + "," + c.Z + "]")) + "]";
+            var conduit = w.ConduitCells().ToList();
+            var blocked = new List<string>();
+            var doors = new List<Cell>();
+            var buried = new List<Cell>();
+            var busy = new List<Cell>();
+            for (int z = 0; z < w.Height; z++)
+                for (int x = 0; x < w.Width; x++)
+                {
+                    var c = new Cell(x, z);
+                    if (!w.IsWalkable(c)) blocked.Add("[" + x + "," + z + "," + (int)w.BlockAt(c) + "]");
+                    if (w.IsDoor(c)) doors.Add(c);
+                    if (w.IsWalkable(c) && w.IsBuried(c)) buried.Add(c);
+                    if (w.IsBusy(c)) busy.Add(c);
+                }
+            var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
+                + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
+                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + "}");
+            string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy)
+                + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
+                + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))
+                + ",\"opt\":{\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)
+                + ",\"slide\":" + J.B(opt.SlideUnder) + ",\"seed\":" + opt.Seed + ",\"slack\":" + opt.Lay.SlackScale.ToString(inv) + ",\"maxExtra\":" + opt.Lay.MaxExtra.ToString(inv) + ",\"cordsMax\":" + opt.Lay.CordsMax
+                + ",\"straight\":[" + string.Join(",", opt.StraightPlugIds.Select(J.S)) + "]}}";
+            string dir = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath, "GssWorlds");
+            System.IO.Directory.CreateDirectory(dir);
+            string path = System.IO.Path.Combine(dir, name + ".json");
+            System.IO.File.WriteAllText(path, text);
+            return "{\"success\":true,\"cmd\":\"worlddump\",\"path\":" + J.S(path) + ",\"bytes\":" + text.Length + "}";
         }
 
         /// <summary>Where a laid strand folds back on itself (CordShape.Kinks), grouped by how the piece ends.</summary>

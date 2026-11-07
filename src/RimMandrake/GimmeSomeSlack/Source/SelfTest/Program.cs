@@ -40,6 +40,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         private static int Main(string[] args)
         {
+            int lab = Array.IndexOf(args, "--lab");
+            if (lab >= 0) return LabWorld.Run(args[lab + 1], args[lab + 2]);
             int uc = Array.IndexOf(args, "--unroutable-census");
             if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
