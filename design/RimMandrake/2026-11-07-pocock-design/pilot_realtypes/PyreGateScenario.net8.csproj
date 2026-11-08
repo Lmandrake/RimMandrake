@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Real-types pilot (06-mined-live-bugs.md): the REAL ThinkNode_ConditionalPyrelandsColonist.cs compiled against the real
+    Assembly-CSharp.dll and the mod's own built FireEcologyHook.dll (for PyrelandsMechanicsGate and the settings), no fake
+    Verse. The same build on .NET 8 (default interface methods load there), run by dotnet.exe, outside the game.
+    Run: python3 design/RimMandrake/2026-11-07-pocock-design/pilot_realtypes/run_pilot.py
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>PyreGateScenario</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <NoWarn>CS0436</NoWarn>
+    <BaseOutputPath>bin8\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj8\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- run_pilot.py copies today's caller here (from src/, or from origin/ralph/pyrelands until that lands). -->
+    <Compile Include="caller\ThinkNode_ConditionalPyrelandsColonist.cs" />
+    <Compile Include="Scenario.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="FireEcologyHook">
+      <HintPath>..\..\..\..\src\RimMandrake\Pyrelands\Assemblies\FireEcologyHook.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
