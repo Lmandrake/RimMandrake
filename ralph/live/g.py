@@ -215,6 +215,15 @@ def load(s, save):
             continue
         if isinstance(gi, dict) and gi.get("ticksGame") and (gi.get("programState") in (None, "Playing")) and gi.get("mapCount", gi.get("maps", 1)):
             print("LOADED", save, "tick", gi.get("ticksGame"), str(gi)[:200])
+            # The load reports done before the map is finalised: the first read can see an empty map. Wait for two equal mark counts.
+            last = None
+            for _ in range(30):
+                time.sleep(1.0)
+                c = str(static(s, STAGE, "Count"))
+                if c == last and not c.startswith("REFUSED"):
+                    break
+                last = c
+            print("MAP", last)
             return
     print("LOAD timed out", save)
 

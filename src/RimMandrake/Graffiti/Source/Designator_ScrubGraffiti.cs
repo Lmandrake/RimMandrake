@@ -15,7 +15,7 @@ namespace RimMandrake.Graffiti
         public Designator_ScrubGraffiti()
         {
             defaultLabel = "Scrub graffiti";
-            defaultDesc = "Mark graffiti on a wall to be scrubbed off by a colonist doing cleaning work, even your own colony's work, which the cleaning rounds leave alone. Drag over the walls. Someone who hates the person an insult is about won't scrub it.";
+            defaultDesc = "Mark graffiti on a wall to be scrubbed off by a colonist doing cleaning work, even your own colony's work, which the cleaning rounds leave alone. Drag over the walls. Your colonists leave a scrubbed wall alone for ten days. Someone who hates the person an insult is about won't scrub it.";
             icon = ContentFinder<Texture2D>.Get("UI/Designators/RemovePaint", reportFailure: false);
             useMouseIcon = true;
             soundDragSustain = SoundDefOf.Designate_DragStandard;

@@ -47,7 +47,29 @@ namespace RimMandrake.Graffiti
         private Dictionary<int, int> visitStart = new Dictionary<int, int>();
         private Dictionary<int, int> visitLost = new Dictionary<int, int>();
         private Dictionary<int, int> visitGained = new Dictionary<int, int>();
+        // Walls the player had scrubbed (Designator_ScrubGraffiti): the floor cells before them and two cells either way, with the tick.
+        // Live 2026-11-08: the corridor ordered clean after Mo's spree took ten new marks in two days, and the order looked pointless.
+        private Dictionary<IntVec3, int> scrubbedHold = new Dictionary<IntVec3, int>();
+        internal const int ScrubHoldTicks = 10 * GenDate.TicksPerDay;
+        private const float ScrubHoldRadius = 2.9f;
         private static bool forgotten;
+
+        /// <summary>The player ordered this mark scrubbed: the wall around it is left clean by our own painters for a while.</summary>
+        internal void HoldScrubbed(Filth_Mark m)
+        {
+            int now = Find.TickManager.TicksGame;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(m.Position, ScrubHoldRadius, useCenter: true))
+            {
+                if (c.InBounds(map)) scrubbedHold[c] = now;
+            }
+            if (scrubbedHold.Count > 4000) scrubbedHold.RemoveAll(kv => now - kv.Value >= ScrubHoldTicks);
+        }
+
+        /// <summary>Is this floor cell before a wall the player had scrubbed in the last ten days?</summary>
+        internal bool HeldClean(IntVec3 c)
+        {
+            return scrubbedHold.TryGetValue(c, out int at) && Find.TickManager.TicksGame - at < ScrubHoldTicks;
+        }
 
         public MapComponent_GraffitiSocial(Map map) : base(map)
         {
@@ -196,8 +218,11 @@ namespace RimMandrake.Graffiti
             Scribe_Collections.Look(ref visitStart, "rmVisitStart", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref visitLost, "rmVisitLost", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref visitGained, "rmVisitGained", LookMode.Value, LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.Saving) scrubbedHold.RemoveAll(kv => Find.TickManager.TicksGame - kv.Value >= ScrubHoldTicks);
+            Scribe_Collections.Look(ref scrubbedHold, "rmScrubbedHold", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                scrubbedHold = scrubbedHold ?? new Dictionary<IntVec3, int>();
                 grudges = grudges ?? new List<RM_Grudge>();
                 lastAnswered = lastAnswered ?? new Dictionary<int, int>();
                 visitStart = visitStart ?? new Dictionary<int, int>();

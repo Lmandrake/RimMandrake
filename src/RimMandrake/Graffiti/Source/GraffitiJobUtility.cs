@@ -129,9 +129,11 @@ namespace RimMandrake.Graffiti
         private const float MeaningRadius = 12f;
 
         /// <summary>Owner's pick, 2026-11-07: nobody paints a hospital or a kitchen on their own. A mark is filth, and filth there is infection and
-        /// food poisoning. The player's own order may still paint there.</summary>
+        /// food poisoning. Nor, for ten days, a wall the player ordered scrubbed (MapComponent_GraffitiSocial.HeldClean). The player's own order
+        /// may still paint there.</summary>
         internal static bool KeptClean(IntVec3 c, Map map)
         {
+            if (MapComponent_GraffitiSocial.For(map)?.HeldClean(c) == true) return true;
             RoomRoleDef role = c.GetRoom(map)?.Role;
             return role != null && (role == RoomRoleDefOf.Hospital || role == KitchenRole);
         }
