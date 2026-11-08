@@ -1,0 +1,2 @@
+selftest_gss_proof_drivers.py M21d rows ('12-cell span ON is 36 points', 'ON counts pass ON') are stale: validation_aerial.drip_expected_points(0,0,12,0,True) returns 48 (OFF 25) since commit 4b7360e73c changed the drip loops, but the test hardcodes 36. C# core matches the Python oracle (aerial 166/166, 1178/1178), so it is a harness expectation drift, not a mod defect. Fix: update the expected count in the test to 48 after confirming against the C# drip loop. Found 2026-11-08 during GSS sitting prep in ralph_gss clone.
+home: NONE
