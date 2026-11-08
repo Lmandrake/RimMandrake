@@ -140,6 +140,11 @@ namespace RimMandrake.Graffiti
         /// <summary>How far the weather has eaten in at each step (RM_GraffitiKernel.WeatherStep, 1..4): the share of the noise field gone.</summary>
         private static readonly float[] Eaten = { 0f, 0.22f, 0.38f, 0.53f, 0.68f };
 
+        /// <summary>What paint soaks into a wall and keeps even where the weather has taken the coat, at each step: a share of the
+        /// drawing's own opacity. Live pass 14, a blind judge on Ashgate's day-18 walls: flaked marks with nothing between the flakes
+        /// read as "spilled debris", "mould", "a soot stain". With the whole shape still faintly there, it reads as an old mark.</summary>
+        private static readonly float[] Stain = { 1f, 0.34f, 0.28f, 0.22f, 0.16f };
+
         /// <summary>Paint as the weather leaves it. Live pass 13: a mark late in its life read as faint new paint, a pale ghost, because the
         /// fade only thinned it. Old paint goes in patches: blotches flake off, rain runs wash it in vertical streaks, and the edges of
         /// what's left are ragged with grit; what stays is chalkier. The same noise field at every step, eaten further each time, so a mark
@@ -180,7 +185,7 @@ namespace RimMandrake.Graffiti
                     Color32 c = px[i];
                     if (c.a == 0) continue;
                     float m = Mathf.Clamp01((n[i] - lo) / span);
-                    float keep = Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f));
+                    float keep = Mathf.Max(Stain[step], Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f)));
                     float lum = (c.r + c.g + c.b) / 3f;
                     float pale = lum * 0.85f + 38f;
                     px[i] = new Color32((byte)Mathf.Lerp(c.r, pale, chalk * 3f), (byte)Mathf.Lerp(c.g, pale, chalk * 3f), (byte)Mathf.Lerp(c.b, pale, chalk * 3f), (byte)(c.a * keep));

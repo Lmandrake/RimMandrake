@@ -39,3 +39,12 @@ Pass 13 (64 px unless marked):
 - `lived_in_corridor_day18_playzoom.png`: the corridor and the stockroom wall on day 18.
 
 Least sure of: whether the painted heads still say who is mocked at 64 px (the hat and hair carry it, muted), and whether marks squeezed to 80% into a gap look like a different hand or just smaller.
+
+## Pass 14 (2026-11-08)
+- `p14_lived_in_corridor_east_playzoom.png`, `p14_lived_in_*_playzoom.png`: Ashgate day 18 at noon on this build, the shots a blind judge read (verdicts in PROGRESS).
+- `p14_lived_in_raised_fist_playzoom.png`: the south wall; the fist stencil, a red blob that read as blood before, is now a black raised fist on an ochre disc.
+- `p14_dirt_vs_paint_left_playzoom.png` / `_right_`: the staged dirt wall: awful scrawl and glyph, poor tag and glyph, tally, faded tag, scratches, good piece; vanilla filth on the soil in front. Two doors put in: the scrawl's wall cell (its paint went with it) and beside the piece (it stops at the door).
+- `p14_smear_before_above_after_below_*.png`: a clumsy hand's second go, over the mark (pass 13, above) and under it (now, below).
+- `p14_weathered_w2_w3_playzoom.png`, `p14_weathered_w3_128.png`: weathered marks keep a faint stain of their whole shape under what's left.
+
+Least sure of: the darkest tags on dark walls in unlit rooms (a black tag on the corridor's west wall is close to invisible), and the tribute's laurel and sun frames, which the blind judge read as badges.

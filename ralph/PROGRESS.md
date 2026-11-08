@@ -1,65 +1,44 @@
 # Graffiti: where the last pass got to
 
-Pass 13 (2026-11-08). Everything is committed and pushed. **Game B is down**: it crashed natively at engine start (Mono "DLL initialization routine failed", before any mod loaded) on two `up` tries after the last deploy. So the newest build (`ralph/NEED_GAME`) is deployed on Steve's disk but not yet seen running. A DONE draft is in `ralph/history/DONE_draft_pass13.md`; it is not a claim.
+Pass 14 (2026-11-08). Committed and pushed. The last build (`ralph/live` wording of the spree summary, one string) is built but not deployed; everything else below ran live on game B. Not done: two look bars still owe a fresh blind read (below), and `ralph/DONE.md` is not written.
 
 ## Weather this pass
-- 6 deploy/up cycles were fine. Then 2 failed starts at about 01:31 PST (native crash at engine init, uptime 15.6 h, `bad_cpus=[2]`). No ssh drops.
-- An **eclipse** made one batch of shots dark. The helper's run saw `bad_cpus=[2]` throughout, and nothing it measured surprised me.
+- 1 native crash during play (Mono, in vanilla `GrammarResolver` while recording a horseshoes tale; no Graffiti frame; `bad_cpus=[2]`, uptime ~16 h). Brought back with `up`, the rerun was clean.
+- 1 `up` that printed STEVE_UNREACHABLE while the game came up fine (bridge on 5175 a minute later).
+- No ssh drops. Six deploy/up cycles otherwise fine.
 
-## Bars, with evidence anyone can re-check (Conductor ruling 1:23 AM: a proven bar stays true unless a later change touched what it rests on)
-Builds: `93d8b15` = pass 13's first build, the one the helper ran on. Raw output: `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/p13/` (01a..07f). Shots: `.../ralph_graffiti/shots/`.
-- mark_actually_appears: true (trace `1094343 Vex painted IdeoSigil_StencilBox@(127,0,113) (poor)`, visible at x~480 in `lived_in_south_wall_day19_playzoom.png`; 93d8b15)
-- mark_reads_as_deliberate: true (`lived_in_south_wall_day19_playzoom.png`, `lived_in_corridor_day18_playzoom.png`; 93d8b15)
-- mark_reads_at_play_zoom: true for every face-on mark; a mark on an edge-on wall is a narrow scrap, as option D allows ("a side face stays a scrap"). The audit calls this WRONG BAR wording ("every mark"); it needs the owner's rewording, not more work.
-- mark_sits_on_the_wall: true (`optionD_materials_close128.png`, `perspective_sweep_wood.png`; geometry unchanged since pass 11)
-- marks_visibly_various: true (70 marks of 20 kinds at load, `p13/01a_load.txt`). The skew (37 of 70 tallies, scratches and rude little men) is fixed in 38601eb (marks squeeze to 80% to fit a gap); the fix isn't seen live yet.
-- mark_register_is_punk_urban: CONTESTED. It rests on pass 8's gallery. Owed: a blind look (an rm-judge subagent, not me) at the current art on a lived-in wall.
-- mark_carries_no_earth_signage: true (warn_0..3.png viewed this pass: crossed eye, arrows to a splat, skull, maw)
-- mark_ugliness_is_visible: NOT PROVEN. Owed: a scrawl beside a tally on a lived-in wall in daylight at 64 px.
-- mockery_changes_regard: true (`social_regard_brick_on_karen.png` "Painted me on the wall x2: -38"; `p13_wall_inspect_mockery.png` "(5 angered)"; `p13_mocked_needs.png` "Mocked on the wall by Lark -5"; 93d8b15)
-- tribute_and_memorial_mean_it: true (pass 7: tribute +6.6 mood/+22 opinion, jealous -3.7/-14; `memorial_lark_grief_half.png`; Said `1134188 Karen found the tribute Vex painted for them and stood looking at it`, 93d8b15). Owed: a memorial kept across a save. New in 38601eb, not seen live: a tribute to someone who has died since reads as their memorial.
-- pawns_answer_the_wall: true (Said `1094143 Lark painted a mockery of Karen on the wall, over Karen's work.`, `1115046 Brick confronted Karen about Karen's scratch marks on the wall.`; `scrub_order_done.png`; trace "Karen means to Deface"; 93d8b15)
-- raid_mark_troubles_until_retaken: true (`p13/02*`: Gaup painted IdeoSigil_StencilBox@(149,119) at 1272646; Karen "Enemy marks on our walls -1" at 1284266; Fringe scrubbed it at 1286157, "Reclaimed +4.5", the penalty gone; `p13_raid_mark_playzoom.png`, `p13_raid_mark_needs.png`, `p13_raid_retaken.png`; 93d8b15. The exit was forced with lord_set_job.)
-- visitors_read_without_recharging: true (`p13/03d_caravan2.txt`: the insult cost -11 and reached the 12-per-visit cap, "read the insult" x1, Hatlencaora -4 to -16; 93d8b15). The wrong-faction charge (a Berro Pact visitor took -1 at 1381539) is fixed in the last commit, not yet seen live.
-- stories_not_a_tax: NOT YET. 11 messages in 3 days on 93d8b15, a burst around the Karen–Lark feud (`p13/01c_days2.txt`). Wall mood stays within about +6/-15 and expires. Two message leaks are fixed in the last commit, not yet seen live: a grudge painting over a last word, and a cleaning fit sending 6 messages in 2290 ticks.
-- fights_have_people_and_reasons: true, thin (`social_fight_blows.png`; drafted pawns excluded in code; trace "fight chance 0.39 (a fight too recent) -> words"). The new fight message (our own, naming both and the wall) isn't seen live.
-- stands_alone_and_obeys_settings: true (classic mode, helper item 5: Karen's spree painted 18 marks, none IdeoSigil or Glyph, no "Our sign", 93d8b15; pass 12: painting off for 19000 ticks gave 0 marks, and save/reload left 60 marks and every total identical; pass 7: social off sent wall mood to 0)
-- making_a_mark_is_its_own_fun: true, thin (pass 7 joy 0.56 to 0.63 over one paint; "Left my mark" in traces passes 7-13)
-- rereads_affect_at_most_daily: true (helper item 6: 401 reads over 222 pairs, 103 pairs read twice or more, shortest gap 60120 ticks; positive control: Karen "Lark's tag on the wall (age 52500)" on a mark older than a day; 93d8b15)
-- art_skill_goes_into_the_art: true (`old/pass11/art_skill_crafts_ladder_beauty.png` Beauty -6..+30; FineArt +0.9 / UglyMark -0.9; `art_skill_ladder_*_64.png`)
-- each_takes_it_like_themselves: true (`personality_psychopath_cathryn_needs.png`, `personality_sensitive_kinso_needs.png` -13; clean freak: Mo scrubbed 6 marks in a fit, 1402000-1404290, `p13_cleanfreak_fit.png`, 93d8b15). Not shown: the sensitive "both ways" positive side. The forced break refused while Mo lay down; the helper started the state directly.
-- never_real_world_english: true (vandal_0..5.png viewed this pass)
-- never_reads_as_dirt: NOT PROVEN. On the day-19 wall, a poor green glyph reads like a smoke blob; `dirt_vs_paint_a.png` is old art. Owed: an awful scrawl, a mid-fade mark and vanilla filth on one lit wall at 64 px (`st Compare` builds most of it).
+## Fixed this pass (live evidence; raw runs in /tmp were not kept, the numbers are here)
+- **Edge-on walls**: 24 of Ashgate's 77 marks were on walls seen edge-on, drawn turned along the top strip; a fist, two mockeries and a memorial were blots that read as blood or mould. Now `RM_GraffitiKernel.ReadsEdgeOn`: only letters and strokes (Tag, ThrowUp, Scrawl, tallies, scratches; `edgeOn` in the def overrides) go there, and nothing about a person ever does (meaning and reply finders look further for a face instead). Live: a 3-colonist spree laid 11 new edge-on marks, all tags, scrawls or cross-outs.
+- **Spree messages**: 16 "X painted over Y's work" in 5 game-hours from one spree, one twice on a tick. Now going-over during a spree is told once when it ends (`MentalState_GraffitiSpree.PostEnd` -> `GraffitiSocial.SpreeEnded`); outside a spree, one painter over one maker's work is told once a day. Live: 3 summaries ("Brick's spree went over 10 marks of Lark, Vex and Mo's work"; wording since changed to "painted over 10 marks by ...", not yet seen).
+- **Death messages**: Brick's death sent 7 "X stopped at Y's memorial" in an hour. Now one mourning message per dead pawn per day. Live after the fix: two memorials, no mourning flood (a mourning read with its one message not yet seen).
+- **Clumsy hands**: the smeared second go was drawn over the mark with its own wall show-through and washed a poor glyph into a smudge; mud 0.65 made awful paint the colour of the ground. Now the second go lies under the shape in thin paint, mud 0.4/0.2. `st Smear old|new` shows both on one wall: `p14_smear_before_above_after_below_*.png`.
+- **Art**: Glyph_HighLife was a soft green smoke cloud (a smudge whatever the hand); now a grinning spiral-eyed face blowing a ring (`bake.py` gained `rim=False` so its black grin isn't knocked out as an outline). Stencil_Fist was oxblood knuckles (a blood smear at 64 px); now a black raised fist on an ochre disc (the game's own FistRaised ideoligion icon is the same idea). `p14_lived_in_raised_fist_playzoom.png`.
+- **Weathering**: a blind judge read flaked marks as "spilled debris", "mould", "soot". Paint now keeps a stain of its whole shape (`WallPlane.Stain`, 0.34 to 0.16 by step). `p14_weathered_w2_w3_playzoom.png`, `p14_weathered_w3_128.png`.
+- **Doors** (GPT lead 5): a door put into a painted wall takes the paint on that wall cell, and a wide piece beside it stops at the door. `p14_door_into_painted_wall_128.png` (staged, `st Dirt BlocksGranite,door`).
 
-## Built this pass (all committed)
-- **Feuds end.** Before: a mockery over each other's every few hours, 7 messages in 7 hours. A reply in paint is the last word (`Filth_Mark.lastWord`): its subject may scrub, cross it out or confront, but not paint back. A mockery covering its subject's mockery of the painter counts as one. One mockery of a person per painter per 6 days (`GameComponent_Graffiti.MockeryDue`), seeded at load from the mockeries on the walls (`LoadedGame`). A last word about you is never spared by your gap measure (`BareRoom`).
-- One act, one message: a reply's going-over rides in its own message. A fight sends our own message ("..., and it came to blows.") at both pawns and the wall.
-- Weathering flakes in patches (`WallPlane.Weathered`). Seen live: `weather_flaking_and_painted_heads_128.png`; before: `old/weather_ghost_before_p13.png`.
-- A mockery's head is painted, not the crisp sprite (`WallPlane.PaintedPortrait`). Seen live: same shot.
-- Marks squeeze to 80% to fit a gap (`Filth_Mark.fit`, `Width`, `GraffitiPool.FitFor`); pieces and social marks keep full size. Not seen live.
-- A tribute to someone who has since died reads as their memorial; the wall pane says "(dead since)". Not seen live.
-- An insult charges only the faction it names (`GoodwillOf`). A cleaning fit tells its first scrub and its end with a count. Not seen live.
-- `so Marks` shows WEATHERn, FIT and LASTWORD.
+## Bars ("- bar: state (evidence, build)"; builds: 93d8b15 = pass 13, d5e8d31 = pass 14)
+- mark_actually_appears, mark_reads_as_deliberate, mark_sits_on_the_wall, art_skill_goes_into_the_art, never_real_world_english, visitors_read_without_recharging, raid_mark_troubles_until_retaken, rereads_affect_at_most_daily, making_a_mark_is_its_own_fun, stands_alone_and_obeys_settings, mockery_changes_regard: true, unchanged from pass 13's list (see git history of this file, 36255af). Nothing this pass touched what they rest on, except: edge-on marks no longer carry pictures (mark_reads_at_play_zoom now true without the "scrap" caveat for new marks).
+- marks_visibly_various: true (pass 13 census; this pass's spree painted 19 marks of 14 kinds; fitted marks seen: FIT0.80-0.83 on tags and a glyph, d5e8d31).
+- tribute_and_memorial_mean_it: true (Brick killed: Karen painted a memorial 1500 ticks later, Mo, Vex, Fringe, Lark each read one as Mourning; Mo painted a second; 93d8b15+mourning fix).
+- pawns_answer_the_wall: true (pass 13; this pass also "Fringe confronted Karen about what's on the wall", "Lark scrubbed away Karen's mark").
+- stories_not_a_tax: true on ordinary days (3 unstaged days: 6 messages; 2 more days: 5), now also for a death and a spree (fixed above). Wall mood stays within about +6/-11.
+- fights_have_people_and_reasons, each_takes_it_like_themselves: true as in pass 13. Clean-freak fit seen again: Mo scrubbed 6 marks, 2 messages (first scrub, "calmed down after scrubbing 6 marks").
+- mark_carries_no_earth_signage: true (blind judge, pass 14 shots: "no hazard triangle, exit sign or traffic glyph").
+- mark_ugliness_is_visible: true (blind judge on `p14_dirt_vs_paint_*`: the awful glyph, the red scrawl and the splatter "all look worse at a glance than the clean cream tally").
+- mark_register_is_punk_urban: MIXED (blind judge): pieces, bubble letters, tags, the fist, crossed-out portraits, horned mockeries read as graffiti; the colony's teal ideoligion sigil (3 times), the tribute's laurel wreath and winged sun frame round a portrait, and an orange smiley sun read as badges or clip-art.
+- never_reads_as_dirt: was FALSE on the judge's shots (weathered flakes, a dark tag on a dark wall, the W2 tag's orange specks, a weathered edge mark); weathering, edge-on and art fixed since. Owes a fresh blind read.
 
-## GPT broaden (pass 13)
-Asked: `ralph/live/broaden_ask_pass13.md` with six shots. Answer: `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gpt_help_pass013.md`. Acted on lead 6 (a tribute whose subject dies), fixed in code. Lead 5 (put a door into a painted wall) is checked by code (`MarkPieces` clips per cell by wall links) but not seen. Not tried: lead 2 (a newcomer who reads nothing), lead 3 (a player ending a feud by hand), lead 4 (farming tributes).
-
-## Do next (game first: `ralph/steve.sh deploy`, `up`)
-1. Load `graffiti_p12_ash_day18`, Clear weather, then `days 180000 30000`, `so Said 40`, `so Tally`. Expect the Karen–Lark feud to stop at one reply, and count messages (stories_not_a_tax).
-2. `so Marks | grep FIT`; then shoot a wall carrying fitted marks at 64 and 128 px. Is a squeezed tag a smaller hand, or a stamp?
-3. Mo's fit: `kv jawa/pawn_mental` start (the helper's route, in `p13/04h_start.txt`), then `so Said`: expect 2 messages, not 6.
-4. `so Kill Brick` (Lark's tribute at 113,113 is about Brick), then wait for a friend's read: the trace should say "-> Mourning", and `wallui` should show "(dead since)".
-5. `st Compare` plus a weathered mark, at 64 px in daylight: an awful scrawl, tallies, vanilla filth (never_reads_as_dirt, mark_ugliness_is_visible). Also a scrawl beside a tally on a lived-in wall.
-6. A blind rm-judge on the current lived-in shots for the punk register.
-7. A door into a wall under a wide mark: one 128 px shot.
-8. Then turn `ralph/history/DONE_draft_pass13.md` into `ralph/DONE.md`, filling in the social side and the bar list above.
+## Do next
+1. Deploy (last build not deployed), `up`, load `graffiti_p14_ash_powered` (noon power: the generator is fuelled and wood stocked, but the lamps still show the no-power bolt: find the break with `jawa/power_net` on a lamp, or the shots stay dim indoors).
+2. Read GPT's answer to `ralph/live/broaden_ask_pass14.md` (the pass-14 broaden call, made at the end of this pass): `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gpt_help_pass014.md`. Act on one lead; that satisfies the broaden rule for DONE.
+3. Punk register: the tribute frames (`RM_Graffiti_Tribute` textures: laurel, winged sun) read as badges; a rougher, painted frame is the fix. The colony sigil repeating is the faith's sign, so keep it but consider a hand-cut variant per painter.
+4. Fresh shots of this build, then a second blind rm-judge (no verdicts given) on never_reads_as_dirt and the punk register.
+5. Then write `ralph/DONE.md` (draft: `ralph/history/DONE_draft_pass13.md`).
 
 ## Traps
-- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with the Write or Edit tool. `g.py` is the driver; `ralph/steve.sh sync` after editing it. The helper's scripts in `p13/` (`needs_scroll.py` scrolls the Needs tab; `raid.py`; `fit.py`) work.
-- `kv jawa/game_condition action=end condition=Eclipse` before shooting.
-- `brk` refuses while a pawn is in another mental state or lying down; `pawn_mental start forced=false forceWake=true` works.
-- `shot` refuses a rect wider than one screen: 20 cells at 64 px, 8 at 128.
-- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500. Clear weather (`kv jawa/weather_set weather=Clear lockWeather=true`) after every load. Stock food before long runs: `kv rimworld/spawn_thing defName=MealSurvivalPack x=120 z=131 stackCount=10`.
-- A staged answer is random: sending a pawn to a mark started one in two of three tries.
-- Saves on game B: `graffiti_p12_ash_day18`, `graffiti_p13_ash_3days` (helper, after the 3-day run), `graffiti_p11_rust_memorial`.
+- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; `ralph/steve.sh sync` after editing it. `kvall` prints a tool's whole answer (`kv` cuts at 4000 chars).
+- `st Dirt <stuff>[,door]` builds the dirt wall at (10,40) 32x7; `shot` refuses more than 20 cells at 64 px. A stage mark dated before tick 0 gets no weather (the fist's W4 in the Dirt stage).
+- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500; load then `kv jawa/safe_advance ticks=22000` reaches noon from the day-18 save. Clear weather after every load. Stock food before long runs.
+- `days` prints TALLY lines per chunk; use `st Count` as a separator when diffing `so Marks`.
+- Saves on game B: `graffiti_p14_ash_powered` (day 18 noon, fuelled), `graffiti_p12_ash_day18`, `graffiti_p13_ash_3days`, `graffiti_p11_rust_memorial`.
 - Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse,RimWorld.Planet}/`.

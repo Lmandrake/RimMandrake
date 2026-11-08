@@ -385,7 +385,7 @@ namespace RimMandrake.Graffiti
             ThingDef stuff = DefDatabase<ThingDef>.GetNamedSilentFail(a[0].NullOrEmpty() || a[0] == "x" ? "BlocksGranite" : a[0]) ?? ThingDefOf.BlocksGranite;
             bool doors = a.Contains("door");
             origin = new IntVec3(10, 0, 40);
-            const int Len = 30;
+            const int Len = 32;
             Clear(map, new CellRect(origin.x, origin.z, Len, 8), TerrainDefOf.Soil);
             WallRun(map, stuff, 0, 5, Len - 1, 5);
             foreach (IntVec3 c in new CellRect(origin.x, origin.z, Len, 8)) map.areaManager.Home[c] = false;
@@ -394,6 +394,7 @@ namespace RimMandrake.Graffiti
                 ("RM_Graffiti_Vandal", RM_GraffitiKernel.Awful, 0), ("RM_Graffiti_Glyph_HighLife", RM_GraffitiKernel.Awful, 0), ("RM_Graffiti_Tag_A", RM_GraffitiKernel.Poor, 0),
                 ("RM_Graffiti_TallyMarks", RM_GraffitiKernel.Normal, 0), ("RM_Graffiti_Glyph_AnimalPersonhood", RM_GraffitiKernel.Poor, 0),
                 ("RM_Graffiti_Tag_B", RM_GraffitiKernel.Normal, 2), ("RM_Graffiti_Scratches", RM_GraffitiKernel.Normal, 0), ("RM_Graffiti_Piece", RM_GraffitiKernel.Good, 0),
+                ("RM_Graffiti_ThrowUp_A", RM_GraffitiKernel.Normal, 3), ("RM_Graffiti_Stencil_Fist", RM_GraffitiKernel.Normal, 4),
             };
             int cursor = 1, now = Find.TickManager.TicksGame;
             var parts = new List<string>();

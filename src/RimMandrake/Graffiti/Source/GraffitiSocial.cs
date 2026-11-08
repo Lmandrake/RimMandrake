@@ -783,7 +783,7 @@ namespace RimMandrake.Graffiti
             string whose = names.Count == 1 ? names[0] : string.Join(", ", names.Take(names.Count - 1)) + " and " + names.Last();
             var at = new List<GlobalTargetInfo> { by };
             at.AddRange(makers.Distinct().Where(p => p.Spawned).Select(p => (GlobalTargetInfo)p));
-            Tell(by.LabelShort + "'s spree went over " + makers.Count + (makers.Count == 1 ? " mark" : " marks") + " of " + whose + "'s work.", new LookTargets(at), MessageTypeDefOf.NegativeEvent);
+            Tell(by.LabelShort + "'s spree painted over " + makers.Count + (makers.Count == 1 ? " mark" : " marks") + " by " + whose + ".", new LookTargets(at), MessageTypeDefOf.NegativeEvent);
         }
 
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
