@@ -64,8 +64,8 @@ namespace RimMandrake.Graffiti
 
         /// <summary>Since pass 14 nobody paints a picture or a message on a wall seen edge-on, where it prints turned along the wall's top strip
         /// as a blot; a save from before still carries them there (live pass 15, Ashgate: a fist, painted heads, a ring and cogs drawn sideways on
-        /// wall tops, which a blind judge read as "a scorched hole"). Once a load, each moves to the nearest free face in its own room, as if it
-        /// had been painted there; with none within a few cells it stays where it is.</summary>
+        /// wall tops, which a blind judge read as "a scorched hole"). Once a load, each moves to the nearest free face, in its own room
+        /// if it can, as if it had been painted there; with none within a few cells it stays where it is.</summary>
         private void MoveOffEdges()
         {
             foreach (Filth_Mark m in marks.ToArray())
@@ -76,16 +76,22 @@ namespace RimMandrake.Graffiti
                 if (ext == null || RM_GraffitiKernel.ReadsEdgeOn(ext.form, ext.edgeOn, ext.hasSubject)) continue;
                 Room room = m.Position.GetRoom(map);
                 IntVec3 to = IntVec3.Invalid;
-                foreach (IntVec3 c in GenRadial.RadialCellsAround(m.Position, MoveOffEdgeRadius, useCenter: false))
+                // Its own room first. Live pass 16: a room's only face-on wall is its north one, and most were full, so six of nine stayed;
+                // then the nearest free face through a door, as if it had been painted there.
+                for (int pass = 0; pass < 2 && !to.IsValid; pass++)
                 {
-                    if (!c.InBounds(map) || !c.Standable(map) || c.GetRoom(map) != room || !GraffitiJobUtility.OnFace(c, map)) continue;
-                    if (m.Width > System.Math.Min(GraffitiJobUtility.WallRoom(c, map), GraffitiJobUtility.BareRoom(c, map))) continue;
-                    to = c;
-                    break;
+                    foreach (IntVec3 c in GenRadial.RadialCellsAround(m.Position, MoveOffEdgeRadius, useCenter: false))
+                    {
+                        if (!c.InBounds(map) || !c.Standable(map) || (pass == 0 && c.GetRoom(map) != room) || !GraffitiJobUtility.OnFace(c, map)) continue;
+                        if (GraffitiJobUtility.KeptClean(c, map)) continue;
+                        if (m.Width > System.Math.Min(GraffitiJobUtility.WallRoom(c, map), GraffitiJobUtility.BareRoom(c, map))) continue;
+                        to = c;
+                        break;
+                    }
                 }
                 if (!to.IsValid)
                 {
-                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " stays on an edge-on wall at " + m.Position + ": no free face in its room within " + MoveOffEdgeRadius);
+                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " stays on an edge-on wall at " + m.Position + ": no free face within " + MoveOffEdgeRadius);
                     continue;
                 }
                 IntVec3 from = m.Position;
