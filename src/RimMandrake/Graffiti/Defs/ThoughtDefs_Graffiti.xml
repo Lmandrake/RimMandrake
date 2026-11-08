@@ -76,6 +76,13 @@
         <description>{0} painted me up there, for everyone to read. Everyone has read it.</description>
         <baseMoodEffect>-8</baseMoodEffect>
       </li>
+      <!-- Stage 1: the mockery is off the wall (scrubbed, crossed out, painted over, or its wall gone): GraffitiSocial.Notify_MockeryGone.
+           Half as sharp, and a day at most from then, so cleaning it visibly helps the person it hurt. -->
+      <li>
+        <label>mocked on the wall by {0} (gone now)</label>
+        <description>{0} painted me up there. It's off the wall now, but people saw it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
     </stages>
   </ThoughtDef>
   <ThoughtDef>

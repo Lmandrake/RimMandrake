@@ -123,6 +123,68 @@ def until(s, pattern, maxticks, step=60):
     return False
 
 
+def need(s, pawn, which):
+    r = s.call("jawa/pawn_need", pawn=pawn)
+    for n in (r.get("needs") or []) if isinstance(r, dict) else []:
+        if n.get("need") == which:
+            return n.get("level")
+    return None
+
+
+def memories(s, pawn, prefix="RM_Graffiti"):
+    """A pawn's memories off the walls with their ages in ticks: a reread renews one, so an age under a day on a mark seen for days is the evidence."""
+    r = s.call("jawa/pawn_need", pawn=pawn)
+    mem = [m for m in (r.get("memories") or []) if str(m.get("def", "")).startswith(prefix)] if isinstance(r, dict) else []
+    print("MEMORIES", pawn, " ".join("%s:%s%s" % (m.get("def", "").replace("RM_Graffiti_", ""), m.get("age"), ("/" + str(m.get("otherPawn"))) if m.get("otherPawn") else "") for m in mem))
+
+
+def painting(s, name, maxticks, step=60):
+    """Run until a colonist is painting on their own (a joy paint job), shoot their Needs tab mid-job (recreation rising), then run
+    until they finish and shoot it again ("Left my mark")."""
+    import re
+    done = 0
+    who = None
+    while done < maxticks and not who:
+        s.call("jawa/safe_advance", ticks=step, stopOn=STOP)
+        done += step
+        w = str(static(s, STAGE, "Who"))
+        for part in w.replace("WHO ", "").split(" || "):
+            m = re.match(r"(\S+) joy=([\d.]+).*?job=(\S+)", part)
+            if m and "Paint" in m.group(3):
+                who, joy = m.group(1), m.group(2)
+                print("PAINTING", who, "joy", joy, "job", m.group(3), "after", done)
+                break
+    if not who:
+        print("PAINTING none after", done)
+        return
+    # Recreation only rises once the brush is on the wall: wait for the joy to climb between two reads, then shoot.
+    last, cell = None, None
+    for _ in range(80):
+        s.call("jawa/safe_advance", ticks=20, stopOn=STOP)
+        joy = need(s, who, "Joy")
+        w = str(static(s, STAGE, "Who"))
+        m = re.search(re.escape(who) + r" joy=.*?pos=\((\d+), 0, (\d+)\)", w)
+        if m:
+            cell = "%s,%s" % (m.group(1), m.group(2))
+        if last is not None and joy is not None and joy > last + 1e-5:
+            print("RISING", who, last, "->", joy)
+            break
+        last = joy
+    ui(s, name + "_mid", who, "Needs", cell)
+    print("MID", who, "joy", need(s, who, "Joy"))
+    for _ in range(60):
+        s.call("jawa/safe_advance", ticks=120, stopOn=STOP)
+        led = str(static(s, SOCIAL, "Ledger", "trace"))
+        hit = [l for l in led.splitlines() if l.startswith("  . ") and (who + " painted") in l]
+        if hit:
+            print("\n".join(hit))
+            break
+    w = str(static(s, STAGE, "Who"))
+    m = re.search(re.escape(who) + r" joy=([\d.]+).*?pos=\((\d+), 0, (\d+)\)", w)
+    print("AFTER", who, "joy", need(s, who, "Joy"))
+    ui(s, name + "_after", who, "Needs", "%s,%s" % (m.group(2), m.group(3)) if m else None)
+
+
 def close_naming(s):
     for _ in range(6):
         if not s.call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement").get("changed"):
@@ -287,6 +349,20 @@ def one(s, a):
         return
     if a[0] == "hover":
         print(json.dumps(s.call("rimworld/set_hover_target", targetId=a[1], anchor=a[2] if len(a) > 2 else "center"))[:300])
+        return
+    if a[0] == "mem":
+        for p in a[1:]:
+            memories(s, p)
+        return
+    if a[0] == "setjoy":
+        for p in a[2:]:
+            print(str(s.call("jawa/pawn_need", pawn=p, action="need", need="Joy", level=float(a[1])))[:120])
+        return
+    if a[0] == "painting":
+        painting(s, a[1], int(a[2]) if len(a) > 2 else 30000)
+        return
+    if a[0] == "save":
+        print(json.dumps(s.call("rimworld/save_game", saveName=a[1]))[:300])
         return
     if a[0] == "days":
         days(s, int(a[1]), int(a[2]) if len(a) > 2 else 15000)

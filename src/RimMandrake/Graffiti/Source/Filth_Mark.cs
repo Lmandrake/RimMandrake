@@ -108,6 +108,7 @@ namespace RimMandrake.Graffiti
             {
                 GraffitiSocial.Notify_Cleaned(this);
             }
+            if (Spawned) GraffitiSocial.Notify_MockeryGone(this);
             base.Destroy(mode);
         }
 
@@ -537,6 +538,7 @@ namespace RimMandrake.Graffiti
                     WallPlane.Print(layer, this, mat, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
                         -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, Mathf.Clamp(through + 0.22f, 0.04f, 0.6f), 0.0015f);
                 }
+                if (!defaced && !string.IsNullOrEmpty(g.path)) PrintSkill(layer, g, mat, look, width, height, slide, slope, lift, flip && cachedHeadMat == null);
                 PrintCrossOut(layer, width, height, slide, slope, lift);
                 return;
             }
@@ -551,6 +553,36 @@ namespace RimMandrake.Graffiti
                 WallPlane.Print(layer, this, cachedIconMat, iconH * 0.8f, iconH, slide, slope, lift, false, through, 0.001f, WallPlane.CenterT(this, width, height, slope, lift));
             }
             PrintCrossOut(layer, width, height, slide, slope, lift);
+        }
+
+        /// <summary>A skilled hand's piece stands off the wall: its block shadow under the paint, down and along, in the paint's own darkest
+        /// shade; a master's carries shine glints on its letters' top edges. Nothing for normal work or worse.</summary>
+        private void PrintSkill(SectionLayer layer, Graphic g, Material paint, int look, float width, float height, float slide, float slope, float lift, bool flip)
+        {
+            RM_GraffitiKernel.CraftDepth(look, out float drop, out int steps, out int glints);
+            if (steps <= 0) return;
+            Color tone = paint.color;
+            Color dark = new Color(0.05f + tone.r * 0.16f, 0.045f + tone.g * 0.14f, 0.05f + tone.b * 0.16f, 0.88f);
+            // A queue under the paint's, so only the block's edge shows past the letters. An altitude bump alone doesn't decide it: live, the
+            // block drew over the letters and a masterwork went to a dark mass.
+            Material shadow = MaterialPool.MatFrom(new MaterialRequest((Texture2D)paint.mainTexture, g.Shader, dark) { renderQueue = paint.renderQueue - 1 });
+            float tc = WallPlane.CenterT(this, width, height, slope, lift);
+            for (int i = 1; i <= steps; i++)
+            {
+                float d = drop * i / steps;
+                WallPlane.Print(layer, this, shadow, width, height, slide + d, slope, lift, flip, 0f, 0.0005f, tc - d * 1.4f);
+            }
+            if (glints <= 0) return;
+            Texture tex = paint.mainTexture;
+            float[] grid = WallPlane.AlphaGrid(tex, out int cols, out int rows);
+            if (grid == null) return;
+            Material shine = MaterialPool.MatFrom(new MaterialRequest(WallPlane.GlintTexture(), ShaderDatabase.Mote, new Color(1f, 1f, 1f, 0.95f)) { renderQueue = paint.renderQueue + 2 });
+            foreach (float[] p in RM_GraffitiKernel.ShinePoints(grid, cols, rows, glints, thingIDNumber))
+            {
+                WallPlane.PointOn(this, width, height, slide, slope, lift, flip, p[0], p[1], out float s, out float t);
+                float size = 0.2f + 0.05f * (look - RM_GraffitiKernel.Masterwork);
+                WallPlane.Print(layer, this, shine, size, size, s, 0f, lift, false, 0f, 0.003f, t);
+            }
         }
 
         private void PrintCrossOut(SectionLayer layer, float width, float height, float slide, float slope, float lift)

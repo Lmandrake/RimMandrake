@@ -68,7 +68,32 @@ namespace RimMandrake.Graffiti
         /// <summary>Is this floor cell before a wall the player had scrubbed in the last ten days?</summary>
         internal bool HeldClean(IntVec3 c)
         {
-            return scrubbedHold.TryGetValue(c, out int at) && Find.TickManager.TicksGame - at < ScrubHoldTicks;
+            int now = Find.TickManager.TicksGame;
+            if (scrubbedHold.TryGetValue(c, out int at) && now - at < ScrubHoldTicks) return true;
+            for (int i = 0; i < heldStretches.Count; i++)
+            {
+                if (now - heldSince[i] < ScrubHoldTicks && heldStretches[i].Contains(c)) return true;
+            }
+            return false;
+        }
+
+        // The stretches the player dragged a scrub over, from the first mark to the last, three cells wider (a mark is wider than its cell:
+        // live, with two, painters lined up a cell past each end and their paint reached back over the scrubbed wall). The ring round each scrubbed
+        // mark alone left gaps: live 2026-11-08, a corridor wall dragged clean took a tag and a mockery in the next day, each three cells
+        // from a scrubbed mark, right where the player had just ordered clean.
+        private List<CellRect> heldStretches = new List<CellRect>();
+        private List<int> heldSince = new List<int>();
+
+        /// <summary>The player ordered every mark in this stretch scrubbed: our painters leave all of it alone for ten days.</summary>
+        internal void HoldStretch(CellRect r)
+        {
+            int now = Find.TickManager.TicksGame;
+            for (int i = heldStretches.Count - 1; i >= 0; i--)
+            {
+                if (now - heldSince[i] >= ScrubHoldTicks) { heldStretches.RemoveAt(i); heldSince.RemoveAt(i); }
+            }
+            heldStretches.Add(r.ExpandedBy(3).ClipInsideMap(map));
+            heldSince.Add(now);
         }
 
         public MapComponent_GraffitiSocial(Map map) : base(map)
@@ -220,9 +245,14 @@ namespace RimMandrake.Graffiti
             Scribe_Collections.Look(ref visitGained, "rmVisitGained", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.Saving) scrubbedHold.RemoveAll(kv => Find.TickManager.TicksGame - kv.Value >= ScrubHoldTicks);
             Scribe_Collections.Look(ref scrubbedHold, "rmScrubbedHold", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref heldStretches, "rmHeldStretches", LookMode.Value);
+            Scribe_Collections.Look(ref heldSince, "rmHeldSince", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 scrubbedHold = scrubbedHold ?? new Dictionary<IntVec3, int>();
+                heldStretches = heldStretches ?? new List<CellRect>();
+                heldSince = heldSince ?? new List<int>();
+                if (heldSince.Count != heldStretches.Count) { heldStretches.Clear(); heldSince.Clear(); }
                 grudges = grudges ?? new List<RM_Grudge>();
                 lastAnswered = lastAnswered ?? new Dictionary<int, int>();
                 visitStart = visitStart ?? new Dictionary<int, int>();
@@ -777,6 +807,24 @@ namespace RimMandrake.Graffiti
             if (lastChoreLog.TryGetValue(key, out int last) && now - last < GenDate.TicksPerDay && now >= last) return false;
             lastChoreLog[key] = now;
             return true;
+        }
+
+        /// <summary>A mockery is off the wall (scrubbed, crossed out, painted over, its wall gone): its subject's humiliation over it eases at
+        /// once to its "gone now" stage, half as sharp, and lasts a day at most from here. Unless the same painter's other mockery of them still
+        /// stands. GPT broaden, pass 12: a player who has it cleaned should see that help the person it hurt, not the same -13 for three days.</summary>
+        internal static void Notify_MockeryGone(Filth_Mark mark)
+        {
+            Pawn subject = mark.subject, maker = mark.maker;
+            if (mark.Meaning != RM_Meaning.Mockery || subject?.needs?.mood == null || subject.Dead || T.RM_Graffiti_Humiliated == null) return;
+            MapComponent_GraffitiSocial comp = mark.Map != null ? MapComponent_GraffitiSocial.For(mark.Map) : null;
+            if (comp != null && comp.marks.Any(o => o != mark && !o.defaced && o.Meaning == RM_Meaning.Mockery && o.subject == subject && o.maker == maker)) return;
+            foreach (Thought_Memory m in subject.needs.mood.thoughts.memories.Memories)
+            {
+                if (m.def != T.RM_Graffiti_Humiliated || m.otherPawn != maker || m.CurStageIndex != 0) continue;
+                m.SetForcedStage(1);
+                m.age = System.Math.Max(m.age, m.DurationTicks - GenDate.TicksPerDay);
+                Trace(subject.LabelShort + "'s humiliation over " + (maker?.LabelShort ?? "-") + "'s mockery eases: it's off the wall");
+            }
         }
 
         /// <summary>A mark wiped by the cleaning job (the player's order, or the rounds): the same story, with whoever held the rag.</summary>

@@ -211,6 +211,8 @@ namespace RimMandrake.Graffiti
                 float fit = apart ? 1f : Fit(already, ambientAlready, System.Math.Abs(baseValue) * factor, t, positive, victim, ambient);
                 if (fit <= 0f) return false;
                 existing.moodPowerFactor = System.Math.Max(had, factor * fit);
+                // A fresh read is the mark's first stage again: a mockery eased when it went is sharp again if it's painted back.
+                if (existing.CurStageIndex != stage) existing.SetForcedStage(stage);
                 existing.Renew();
                 return true;
             }

@@ -154,6 +154,79 @@ namespace RimMandrake.Graffiti
             return RM_GraffitiKernel.MarkCenterT(face, geom.crease, geom.side, width, height, slope, lift);
         }
 
+        /// <summary>Where a point of the drawing (u, v of its texture) lies on the mark's wall plane: s along, t up.</summary>
+        internal static void PointOn(Filth_Mark mark, float width, float height, float slide, float slope, float lift, bool flip, float u, float v, out float s, out float t)
+        {
+            int face = RM_GraffitiKernel.FaceOfSide(mark.wallSide);
+            Geom geom = GeomOf(AtlasOf(mark.Position + new Rot4(mark.wallSide).FacingCell, mark.Map));
+            RM_GraffitiKernel.MarkPoint(face, geom.crease, geom.side, width, height, slide, slope, lift, flip, u, v, out s, out t);
+        }
+
+        private const int GridCols = 24, GridRows = 12;
+        private static readonly Dictionary<Texture, float[]> AlphaGrids = new Dictionary<Texture, float[]>();
+
+        /// <summary>A drawing's coverage on a coarse grid (row 0 at the bottom), for finding where on it the paint is. Null if unreadable.</summary>
+        internal static float[] AlphaGrid(Texture tex, out int cols, out int rows)
+        {
+            cols = GridCols;
+            rows = GridRows;
+            if (tex == null) return null;
+            if (AlphaGrids.TryGetValue(tex, out float[] done)) return done;
+            float[] grid = null;
+            try
+            {
+                Color32[] px = ReadTexture(tex, out int size);
+                int h = px.Length / size;
+                grid = new float[GridCols * GridRows];
+                for (int r = 0; r < GridRows; r++)
+                {
+                    for (int c = 0; c < GridCols; c++)
+                    {
+                        int x0 = c * size / GridCols, x1 = (c + 1) * size / GridCols, y0 = r * h / GridRows, y1 = (r + 1) * h / GridRows;
+                        float sum = 0f;
+                        int n = 0;
+                        for (int y = y0; y < y1; y += 2)
+                        {
+                            for (int x = x0; x < x1; x += 2) { sum += px[y * size + x].a; n++; }
+                        }
+                        grid[r * GridCols + c] = n > 0 ? sum / (255f * n) : 0f;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[Graffiti] couldn't read mark art " + tex.name + ": " + e.Message, tex.GetInstanceID() ^ 0x414c5048);
+            }
+            AlphaGrids[tex] = grid;
+            return grid;
+        }
+
+        private static Texture2D glintTex;
+
+        /// <summary>A writer's shine: a small four-pointed white star, soft-cored, its long arms up and across. Made once, in code.</summary>
+        internal static Texture2D GlintTexture()
+        {
+            if (glintTex != null) return glintTex;
+            const int n = 64;
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++)
+            {
+                for (int x = 0; x < n; x++)
+                {
+                    float dx = Mathf.Abs((x + 0.5f) / n - 0.5f) * 2f, dy = Mathf.Abs((y + 0.5f) / n - 0.5f) * 2f;
+                    // Two tapered arms crossing, and a round core where they meet.
+                    float arms = Mathf.Max(Mathf.Clamp01(1f - dx * 6f / Mathf.Max(0.05f, 1f - dy)) * (1f - dy), Mathf.Clamp01(1f - dy * 6f / Mathf.Max(0.05f, 1f - dx)) * (1f - dx));
+                    float core = Mathf.Clamp01(1f - Mathf.Sqrt(dx * dx + dy * dy) * 3.2f);
+                    float a = Mathf.Clamp01(Mathf.Max(arms * 1.4f, core * 1.6f));
+                    px[y * n + x] = new Color32(255, 253, 240, (byte)(255f * a));
+                }
+            }
+            glintTex = new Texture2D(n, n, TextureFormat.RGBA32, true) { name = "RM_Graffiti_Glint", filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+            glintTex.SetPixels32(px);
+            glintTex.Apply(true, false);
+            return glintTex;
+        }
+
         /// <summary>Print a mark on its wall, on the face and bent over onto the top. width and height are world cells on the wall's plane; through is the wall's show-through.</summary>
         internal static void Print(SectionLayer layer, Filth_Mark mark, Material mat, float width, float height, float slide, float slope, float lift, bool flip, float through, float bump = 0f, float centerT = -1f)
         {

@@ -269,11 +269,12 @@ namespace RimMandrake.Graffiti
                 p.needs.mood.thoughts.GetAllMoodThoughts(thoughts);
                 foreach (Thought t in thoughts.Where(t => t.def.defName.StartsWith("RM_Graffiti")))
                 {
-                    sb.AppendLine("  mood " + t.MoodOffset().ToString("+0.#;-0.#") + " " + t.LabelCap);
+                    // A memory's age is how long since it was last renewed: a reread renews it at most once a day.
+                    sb.AppendLine("  mood " + t.MoodOffset().ToString("+0.#;-0.#") + " " + t.LabelCap + (t is Thought_Memory mem ? " (age " + mem.age + ")" : ""));
                 }
                 foreach (Thought_Memory t in p.needs.mood.thoughts.memories.Memories.Where(t => t is Thought_MemorySocial && t.def.defName.StartsWith("RM_Graffiti")).ToList())
                 {
-                    sb.AppendLine("  opinion of " + t.otherPawn?.LabelShort + " " + ((Thought_MemorySocial)t).OpinionOffset().ToString("+0.#;-0.#") + " " + t.LabelCap);
+                    sb.AppendLine("  opinion of " + t.otherPawn?.LabelShort + " " + ((Thought_MemorySocial)t).OpinionOffset().ToString("+0.#;-0.#") + " " + t.LabelCap + " (age " + t.age + ")");
                 }
             }
             sb.AppendLine("marks " + comp.marks.Count);

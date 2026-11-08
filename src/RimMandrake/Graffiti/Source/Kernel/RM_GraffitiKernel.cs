@@ -1057,6 +1057,67 @@ namespace RimMandrake.Graffiti
             return quality == Awful ? 1f : quality == Poor ? 0.5f : 0f;
         }
 
+        /// <summary>What a writer who can paint adds that a beginner doesn't: the piece's 3D block, its letters' shadow cast down and along
+        /// the wall, deeper the better the hand (drop in world cells, in `steps` coats so it reads as a solid block, not a ghost); and from
+        /// masterwork, the white shine glints a finished piece carries. Live, pass 11: a masterwork and a normal piece side by side differed
+        /// by a little show-through, so the owner's "a highly skilled artist is actually making art" wasn't on the wall.</summary>
+        public static void CraftDepth(int quality, out float drop, out int steps, out int glints)
+        {
+            switch (quality)
+            {
+                case Good: drop = 0.03f; steps = 1; glints = 0; return;
+                case Excellent: drop = 0.045f; steps = 2; glints = 0; return;
+                case Masterwork: drop = 0.06f; steps = 3; glints = 2; return;
+                case Legendary: drop = 0.075f; steps = 3; glints = 3; return;
+                default: drop = 0f; steps = 0; glints = 0; return;
+            }
+        }
+
+        /// <summary>A point of the drawing (u across, v up, 0..1 of the texture) as it lies on the wall's plane: s along the wall, t up it,
+        /// for the mark MarkPieces would lay with the same arguments. Lets a glint or a head be put on the paint, not beside it.</summary>
+        public static void MarkPoint(int face, float crease, float sideW, float width, float height, float slide, float slope, float lift, bool flip, float u, float v, out float s, out float t)
+        {
+            float halfW = width / 2f;
+            float room = Math.Abs(slope) * halfW;
+            float top = ClimbMax(face, crease, sideW);
+            float hh = Math.Min(height, top - FootOf(face) - 2f * room);
+            float tc = MarkCenterT(face, crease, sideW, width, height, slope, lift);
+            float c0 = flip ? 1f - u : u;
+            s = slide + (c0 - 0.5f) * width;
+            t = tc + (v - 0.5f) * hh + slope * (s - slide);
+        }
+
+        /// <summary>Where shine glints go on a drawing: cells of an alpha grid (cols x rows, row 0 at the bottom, values 0..1) that are solid
+        /// paint with open wall right above them, the top edges of letters where a writer puts his highlights. Spread across the width, picked
+        /// by seed; fewer than `n` if the drawing has fewer edges. Each point is (u, v) at the cell's middle.</summary>
+        public static List<float[]> ShinePoints(float[] alpha, int cols, int rows, int n, int seed)
+        {
+            var found = new List<float[]>();
+            if (n <= 0 || alpha == null || alpha.Length < cols * rows) return found;
+            uint h = (uint)seed * 2654435761u + 977u;
+            for (int band = 0; band < n; band++)
+            {
+                int c0 = cols * band / n, c1 = cols * (band + 1) / n;
+                var candidates = new List<int>();
+                for (int c = Math.Max(c0, 1); c < Math.Min(c1, cols - 1); c++)
+                {
+                    for (int r = rows / 3; r < rows - 2; r++)
+                    {
+                        float here = alpha[r * cols + c];
+                        float below = alpha[(r - 1) * cols + c];
+                        float left = alpha[r * cols + c - 1], right = alpha[r * cols + c + 1];
+                        float above = alpha[(r + 2) * cols + c];
+                        if (here > 0.6f && below > 0.6f && left > 0.45f && right > 0.45f && above < 0.25f) candidates.Add(r * cols + c);
+                    }
+                }
+                if (candidates.Count == 0) continue;
+                h = h * 2654435761u + 40503u;
+                int pick = candidates[(int)((h >> 8) % (uint)candidates.Count)];
+                found.Add(new[] { (pick % cols + 0.5f) / cols, (pick / cols + 0.5f) / rows });
+            }
+            return found;
+        }
+
         /// <summary>The muddy brown a cheap, overmixed paint goes.</summary>
         public static readonly RM_Rgb Mud = new RM_Rgb(0.36f, 0.30f, 0.24f);
 

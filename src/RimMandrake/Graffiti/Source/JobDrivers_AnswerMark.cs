@@ -136,6 +136,7 @@ namespace RimMandrake.Graffiti
         {
             mark.CrossOut(pawn);
             GraffitiSocial.Notify_Answered(mark, pawn, crossedOut: true);
+            GraffitiSocial.Notify_MockeryGone(mark);
         }
 
         public override string GetReport()

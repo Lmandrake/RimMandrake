@@ -39,6 +39,20 @@ namespace RimMandrake.Graffiti
             return "Drag over graffiti on a wall.";
         }
 
+        /// <summary>The whole stretch dragged over is held clean, not only the walls around each mark it took.</summary>
+        public override void DesignateMultiCell(IEnumerable<IntVec3> cells)
+        {
+            List<IntVec3> list = new List<IntVec3>(cells);
+            base.DesignateMultiCell(list);
+            if (list.Count == 0) return;
+            int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
+            foreach (IntVec3 c in list)
+            {
+                x0 = Mathf.Min(x0, c.x); z0 = Mathf.Min(z0, c.z); x1 = Mathf.Max(x1, c.x); z1 = Mathf.Max(z1, c.z);
+            }
+            MapComponent_GraffitiSocial.For(Map)?.HoldStretch(CellRect.FromLimits(x0, z0, x1, z1));
+        }
+
         public override void DesignateSingleCell(IntVec3 c)
         {
             foreach (Filth_Mark m in MarksAt(c, Map))
