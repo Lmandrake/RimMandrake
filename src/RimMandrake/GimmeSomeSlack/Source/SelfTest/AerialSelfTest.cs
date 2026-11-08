@@ -521,8 +521,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             var basePt = new P2(20.5, 20.5);
             var top = new P2(20.6, 24.2);
-            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0;
+            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0, tight = 0;
             double worst = 0, worstRatio = 99;
+            string missed = "";
             for (int dir = 0; dir < 8; dir++)
                 for (int seed = 0; seed < 10; seed++)
                 {
@@ -532,29 +533,47 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     FallenLay l = AerialMath.LayDrop(top, basePt, dev, 1000 + 37 * seed + dir, (x, z) => true);
                     List<P2> old = AerialMath.LooseDrop(dev, top, 1000 + 37 * seed + dir);
                     if (PathLen(old, 0) < 1.3 * P2.Dist(dev, top)) oldTaut++;
-                    if (l == null || l.GroundFrom <= 0) continue;
+                    if (l == null || l.GroundFrom <= 0) { missed += $" d{d:0.0}@{dir}"; continue; }
                     laid++;
                     if (P2.Dist(l.Pts[0], top) < 1e-9 && P2.Dist(l.Pts[l.Pts.Count - 1], dev) < 1e-6) ends++;
                     double ratio = PathLen(l.Pts, l.GroundFrom) / Math.Max(1e-6, P2.Dist(l.Pts[l.GroundFrom], dev));
                     worstRatio = Math.Min(worstRatio, ratio);
                     if (ratio >= 1.3) loose++;
-                    double run = AerialMath.LongestStraight(l.Pts.GetRange(l.GroundFrom, l.Pts.Count - l.GroundFrom), 0.15);
+                    List<P2> g = l.Pts.GetRange(l.GroundFrom, l.Pts.Count - l.GroundFrom);
+                    double run = AerialMath.LongestStraight(g, AerialMath.DeadStraight);
                     worst = Math.Max(worst, run);
                     if (run > 2.5) rods++;
+                    if (MinRadius(g) < 0.4) tight++;
                     // the J: the top 35% of the hang comes down, it does not slant off toward the device
                     int k = Math.Max(1, (int)(l.GroundFrom * 0.35));
                     if (Math.Abs(l.Pts[k].X - top.X) <= 0.45 && top.Z - l.Pts[k].Z >= 0.6) hangs++;
                 }
-            C(laid == total, $"every drop on open ground lies as a cord ({laid}/{total})");
+            C(laid == total, $"every drop on open ground lies as a cord ({laid}/{total}{missed})");
             C(ends == laid, $"each leaves its insulator and ends on its device ({ends}/{laid})");
             C(loose == laid, $"each ground run is at least 1.3x the ground it covers ({loose}/{laid}, worst {worstRatio:0.00}x)");
-            C(rods == 0, $"no ground run has a straight stretch over 2.5 cells, the floor cords' rod ({rods}, worst {worst:0.00})");
+            C(rods == 0, $"no ground run has a dead-straight stretch over 2.5 cells ({rods}, worst {worst:0.00})");
+            // owner, 2026-11-07: "what they avoid are sharp curves unless they must": slow wide curves, not kinks and hairpins
+            C(tight <= laid / 10, $"at most one ground run in ten bends tighter than a 0.4-cell radius ({tight}/{laid})");
             C(hangs == laid, $"each hangs straight down from its insulator before it curves out ({hangs}/{laid})");
             C(oldTaut > total / 2, $"can fail: the old hanging drop, one arc from insulator to device, is under 1.3x its reach in {oldTaut}/{total}");
             // a wall between the mast and the device (vanilla wires a lamp indoors to a mast outside): no ground drop, the caller hangs it
             FallenLay walled = AerialMath.LayDrop(top, basePt, new P2(24.5, 20.5), 7, (x, z) => x != 22);
             C(walled == null, "a wall between the mast and its device: no cord laid through it");
             C(AerialMath.LayDrop(top, basePt, new P2(21.2, 20.9), 7, (x, z) => true) == null, "a device beside the mast keeps the hanging drop");
+        }
+
+        /// <summary>The tightest radius of curvature along a dense run, over half-cell windows, its first and last half cell left out.</summary>
+        private static double MinRadius(List<P2> p)
+        {
+            double worst = double.MaxValue;
+            for (int i = 20; i < p.Count - 20; i += 2)
+            {
+                P2 a = p[i - 10], b = p[i], c = p[i + 10];
+                double ab = P2.Dist(a, b), bc = P2.Dist(b, c), ca = P2.Dist(c, a);
+                double ar = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X)) / 2;
+                if (ar > 1e-9) worst = Math.Min(worst, ab * bc * ca / (4 * ar));
+            }
+            return worst;
         }
 
         private static double PathLen(List<P2> p, int from)

@@ -808,12 +808,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         /// <summary>
         /// A loose cord lying on the ground from <paramref name="from"/> to <paramref name="to"/>, 1.5-1.9x as long as the distance plus a little:
-        /// its heading bends by a curvature made of two slow waves of uneven length, so it swings in arcs of uneven size and now and then throws
-        /// a loop, drawn gently toward the far end; the whole lay is then turned and scaled about its start so it ends exactly there, which
-        /// keeps every bend (steering it in hard flattened the last stretch into a straight). A gentle sweep that still reads straight over
-        /// more than 2.2 cells gets a soft bow of a third to half a cell across it (half the draws had one). Up to twelve draws: none whose
-        /// cord crosses an unwalkable cell, none that loops round its own end or coils on it (the doorway lesson: a coil at an end reads as
-        /// more cables), the first with no stretch over 2.2 cells straight, else the least straight. Null when no draw lies on open ground.
+        /// its heading bends by a curvature made of two slow waves of uneven length, so it swings in wide arcs of uneven size, drawn gently toward
+        /// the far end; the whole lay is then turned and scaled about its start so it ends exactly there, which keeps every bend (steering it in
+        /// hard flattened the last stretch into a straight). Owner, 2026-11-07 7:07 PM: "cords take slowly curving paths rather than straight
+        /// lines often: what they avoid are sharp curves unless they must", so the bends are wide (radius mostly over a cell) and a long gentle
+        /// sweep is kept; only a dead-straight stretch over 2.2 cells gets a wide, shallow bow. Up to twelve draws: none whose cord crosses an
+        /// unwalkable cell, none that loops round its own end or coils on it (the doorway lesson: a coil at an end reads as more cables), the
+        /// first with no dead-straight stretch, else the least straight. Null when no draw lies on open ground.
         /// </summary>
         public static List<P2> LooseRun(P2 from, P2 to, int seed, Func<P2, bool> open, double ds = 0.05)
         {
@@ -826,27 +827,27 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double bestStraight = double.MaxValue, nearEnd = Math.Min(0.75, 0.4 * dist);
             var pts = new List<P2>();
             var hs = new List<double>();
-            for (int attempt = 0; attempt < 16 && (attempt < 12 || best == null); attempt++)
+            for (int attempt = 0; attempt < 24 && (attempt < 12 || best == null); attempt++)
             {
                 int sgn = rnd() < 0.5 ? -1 : 1;
-                // the last four draws, only when none of the first twelve lay clear: a shorter, gentler cord for a tight spot
+                // the later draws, only when none of the first twelve lay clear: a shorter, gentler cord for a tight spot
                 double tight = attempt < 12 ? 1 : 0.7;
-                double A = (1.3 + 0.6 * rnd()) * tight, l1 = 2.2 + 1.0 * rnd(), l2 = 4.0 + 2.0 * rnd(), p1 = 6.283 * rnd(), p2 = 6.283 * rnd();
-                double want = attempt < 12 ? dist * (1.55 + 0.35 * rnd()) + 0.8 : dist * (1.3 + 0.2 * rnd()) + 0.3;
+                double A = (0.75 + 0.35 * rnd()) * tight, l1 = 3.2 + 1.4 * rnd(), l2 = 5.5 + 2.5 * rnd(), p1 = 6.283 * rnd(), p2 = 6.283 * rnd();
+                double want = attempt < 12 ? dist * (1.55 + 0.35 * rnd()) + 0.8 : dist * (1.4 + 0.2 * rnd()) + 0.4;
                 double h = baseA + sgn * (0.5 + 0.5 * rnd()), x = from.X, z = from.Z, L = 0;
                 pts.Clear(); hs.Clear();
                 pts.Add(from); hs.Add(h);
                 while (L < want)
                 {
                     double err = WrapPi(Math.Atan2(to.Z - z, to.X - x) - h);
-                    h += (A * (0.65 * Math.Sin(6.283 * L / l1 + p1) + 0.35 * Math.Sin(6.283 * L / l2 + p2)) + 0.7 * err) * ds;
+                    h += (A * (0.65 * Math.Sin(6.283 * L / l1 + p1) + 0.35 * Math.Sin(6.283 * L / l2 + p2)) + 0.45 * err) * ds;
                     x += ds * Math.Cos(h); z += ds * Math.Sin(h); L += ds;
                     pts.Add(new P2(x, z)); hs.Add(h);
                 }
                 double ex = x - from.X, ez = z - from.Z, el = Math.Sqrt(ex * ex + ez * ez);
                 if (el < 1e-6) continue;
                 double sc = dist / el;
-                if (sc < 0.75 || sc > 1.35) continue;
+                if (sc < 0.75 || sc > (attempt < 12 ? 1.35 : 1.8)) continue;
                 double rot = baseA - Math.Atan2(ez, ex), c = Math.Cos(rot), sn = Math.Sin(rot);
                 var o = new List<P2>(pts.Count);
                 bool ok = true;
@@ -863,14 +864,31 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (Math.Abs(hs[n - 1] - hs[Math.Max(0, n - 1 - (int)(1.6 / ds))]) > 4.2) continue;   // a coil on its own end
                 for (int b = 0; b < 5; b++)
                 {
-                    if (StraightAt(o, 0.15, out int i0, out int i1) <= 2.2) break;
+                    if (StraightAt(o, DeadStraight, out int i0, out int i1) <= 2.2) break;
                     o = Bowed(o, i0, i1, rnd, open) ?? o;
                 }
-                double st = LongestStraight(o, 0.15);
+                double st = LongestStraight(o, DeadStraight);
                 if (st < bestStraight) { bestStraight = st; best = new List<P2>(o); }
                 if (st <= 2.2) break;
             }
-            return best;
+            if (best != null) return best;
+            // a short run that no draw lays clear of its own end: one wide, lazy arc to whichever side is open
+            double ux = (to.X - from.X) / dist, uz = (to.Z - from.Z) / dist, b0 = Math.Max(0.35, 0.45 * dist) * (rnd() < 0.5 ? -1 : 1);
+            for (int side = 0; side < 2; side++, b0 = -b0)
+            {
+                var arc = new List<P2>();
+                int m = Math.Max(8, (int)(dist / ds));
+                bool ok = true;
+                for (int i = 0; i <= m && ok; i++)
+                {
+                    double t = i / (double)m, off = b0 * Math.Sin(Math.PI * t);
+                    var q = i == m ? to : new P2(from.X + ux * dist * t - uz * off, from.Z + uz * dist * t + ux * off);
+                    ok = open(q);
+                    arc.Add(q);
+                }
+                if (ok) return arc;
+            }
+            return null;
         }
 
         /// <summary>The longest stretch of a dense polyline (points a twentieth of a cell apart) within <paramref name="tol"/> of its chord, and its ends.</summary>
@@ -898,7 +916,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double L = P2.Dist(p[i0], p[i1]);
             if (L < 1e-6 || i1 <= i0) return null;
             double nx = -(p[i1].Z - p[i0].Z) / L, nz = (p[i1].X - p[i0].X) / L;
-            double amp = (0.3 + 0.2 * rnd()) * Math.Min(1, L / 2.5) * (rnd() < 0.5 ? -1 : 1);
+            double amp = (0.22 + 0.13 * rnd()) * Math.Min(1, L / 3) * (rnd() < 0.5 ? -1 : 1);
             for (int side = 0; side < 2; side++, amp = -amp)
             {
                 var o = new List<P2>(p);
@@ -913,6 +931,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
             return null;
         }
+
+        /// <summary>Within this of its chord a stretch is dead straight, a rod (a gentle sweep bends further than this over 2 cells).</summary>
+        public const double DeadStraight = 0.06;
 
         private static double WrapPi(double a)
         {
