@@ -59,9 +59,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static readonly double[] TapeArms = { 0, Math.PI, -Math.PI / 2 };
         private static readonly double[] TinArms = { 0, Math.PI / 2, Math.PI, -Math.PI / 2 };
         private const double TapeAnchorZ = 0.152, PlugFace = 0.46;
-        //   PowerStrip: four plugs on art +Z, heads at these canvas-width X and -0.03 Z; its lead leaves +X at (0.46, -0.04).
-        private static readonly double[] StripHeadX = { -0.34, -0.14, 0.06, 0.26 };
-        private const double StripHeadZ = -0.03, StripLeadX = 0.46, StripLeadZ = -0.04, StripNodeReach = 0.15;
+        //   PowerStrip (256x128): four sockets on art +Z, centres at these canvas-width X and -0.049 Z; its lead ends under the
+        //   +X end cap at (0.39, -0.05). Copies of CordBuilder.StripHeads / StripHeadZ / StripLeadX / StripLeadZ: change in step.
+        private static readonly double[] StripHeadX = { -0.328, -0.128, 0.065, 0.264 };
+        private const double StripHeadZ = -0.049, StripLeadX = 0.39, StripLeadZ = -0.05, StripNodeReach = 0.15;
 
         /// <summary>Do the cords at a junction fit its strip? Read off the decal alone, not the builder's pose: each cord end
         /// lands on the lead's nub arriving along the strip, or on a socket with a plug on it arriving along that socket. A
@@ -90,7 +91,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (pi < 0) { ok = false; msg.Add($"{at} a cord on a socket wears no plug"); continue; }
                 CordDecal plug = decals[pi];
                 V2 into = Dir(plug.Angle);
-                V2 head = plug.Pos + into * (PlugFace * CordBuilder.PilePlugScale);
+                V2 head = plug.Pos + into * (CordBuilder.PlugHeadCentre * CordBuilder.PilePlugScale);   // the head's centre on the socket's
                 double near = StripHeadX.Min(x => V2.Dist(head, Art(x, StripHeadZ)));
                 if (near > 0.08) { ok = false; msg.Add($"{at} cord end {near:0.00} off every socket"); continue; }
                 plugged++;

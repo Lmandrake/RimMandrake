@@ -1281,8 +1281,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (site == null) continue;
                 List<V2> q = atA ? new List<V2>(P) : Enumerable.Reverse(P).ToList();
                 if (V2.Dist(q[0], site.Tip) > 0.12) continue;
-                // a short cord plugged in at both ends: each end has its own half to lay again
-                double maxJ = siteA != null && siteB != null ? L / 2 : L;
+                // a short cord plugged in at both ends: each end has its own half to lay again (a join up to the middle; Lay is handed JoinRest more
+                // so a join at the middle still has old cord past it, and the two ends' new lays never overlap)
+                double maxJ = siteA != null && siteB != null ? Math.Min(L, L / 2 + CordPlugExit.JoinRest) : L;
                 List<V2> head = new List<V2>(), keep = new List<V2>();
                 double s = 0;
                 for (int i = 0; i < q.Count; i++) { if (i > 0) s += V2.Dist(q[i], q[i - 1]); if (s <= maxJ || head.Count < 3) head.Add(q[i]); else keep.Add(q[i]); }
@@ -1336,13 +1337,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 V2 hd = sp.At(StripHeads[k], StripHeadZ);
                 site.Neighbours.Add(new[] { hd, sp.PlugTip(a, k) + sp.PlugOut(a) * 0.25 });
             }
-            // the strip's own body (the art about +-0.405 along, +-0.11 across, its middle 0.027 out from the sockets' line toward the plugs)
-            V2 body = sp.At(0, StripHeadZ) + sp.Side * 0.027;
+            // the strip's own body, read off PowerStrip.png (256x128): the bar x 12..232, y 56..100, so its middle at canvas widths
+            // (StripBarX, StripBarZ) and half StripBarHalfAlong x StripBarHalfAcross. A plug's centre stands only PlugHeadCentre plug widths
+            // off its socket, so a looser box (the old +-0.11 across about the canvas centre) swallowed the first stiff length of every
+            // exit and left the raw heap's hairpin at the plug (lab4 Modern, junction 210,102).
+            V2 body = sp.At(StripBarX, StripBarZ);
             bool InBody(V2 q, double m)
             {
                 V2 d = q - body;
                 double al = d.X * sp.Along.X + d.Z * sp.Along.Z, si = d.X * sp.Side.X + d.Z * sp.Side.Z;
-                return Math.Abs(al) <= 0.405 + m && Math.Abs(si) <= 0.11 + m;
+                return Math.Abs(al) <= StripBarHalfAlong * JunctionStripScale + m && Math.Abs(si) <= StripBarHalfAcross * JunctionStripScale + m;
             }
             Func<V2, bool> arrive = ArriveClear(w, P, tip, null);
             List<V2> boxes = OtherBoxes(g, e);
@@ -1913,10 +1917,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         // ---------------------------------------------------------------- the Modern junction strip (d_modern_junction_strip)
-        // PowerStrip.png (64x32), read off the PNG in canvas widths from its centre: four plugs on art +Z, their heads at these X
-        // and StripHeadZ; the strip's own lead leaves its +X end at (StripLeadX, StripLeadZ).
-        public const double JunctionStripScale = 0.9, StripHeadZ = -0.03, StripLeadX = 0.46, StripLeadZ = -0.04;
-        public static readonly double[] StripHeads = { -0.34, -0.14, 0.06, 0.26 };
+        // PowerStrip.png (256x128, the art helper's redraw 2026-11-08), read off the PNG in canvas widths from its centre: four
+        // sockets on art +Z, their dark-pixel centres at these X and StripHeadZ (a plug's head sits centred on its socket); no cord
+        // is drawn on the strip, the strip's own lead ends under its +X end cap at (StripLeadX, StripLeadZ).
+        public const double JunctionStripScale = 0.9, StripHeadZ = -0.049, StripLeadX = 0.39, StripLeadZ = -0.05;
+        public static readonly double[] StripHeads = { -0.328, -0.128, 0.065, 0.264 };
+        /// <summary>The plug head's centre (the tan box in Styles/ExtCord/Plug.png, x 94..122 of 128), in plug widths from the
+        /// texture centre: a plug's centre stands this far out from its socket.</summary>
+        public const double PlugHeadCentre = 0.344;
+        /// <summary>The strip's bar in PowerStrip.png, canvas widths from the centre: middle (X, Z) and half sizes.</summary>
+        public const double StripBarX = -0.0234, StripBarZ = -0.0547, StripBarHalfAlong = 0.43, StripBarHalfAcross = 0.086;
         /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
         public const double StripSkew = 0.22;
         /// <summary>How far past the strip's free end a cord from behind swings to come round to the sockets.</summary>
@@ -1948,7 +1958,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return Side * Math.Cos(t) - Along * Math.Sin(t);
             }
             /// <summary>Where a cord from this arm plugged into socket k ends: the plug's own centre, its head on the socket.</summary>
-            internal V2 PlugTip(Cell arm, int k) => At(StripHeads[k], StripHeadZ) + PlugOut(arm) * (0.46 * PilePlugScale);
+            internal V2 PlugTip(Cell arm, int k) => At(StripHeads[k], StripHeadZ) + PlugOut(arm) * (PlugHeadCentre * PilePlugScale);
             internal V2 LeadTip => At(StripLeadX, StripLeadZ);
 
             internal int SocketFor(Cell arm) =>

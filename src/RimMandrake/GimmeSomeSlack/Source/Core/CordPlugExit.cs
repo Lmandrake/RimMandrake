@@ -25,6 +25,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double HookNear = 0.6, StiffNear = 0.5, ForcedNear = 0.4, ForcedLook = 0.6;
         /// <summary>Where along the old cord the new exit rejoins it (cells from the plug), in the order tried: the sweep's rule (1.0, else 1.6, else 0.6), then 2.2.</summary>
         public static readonly double[] Joins = { 1.0, 1.6, 0.6, 2.2 };
+        /// <summary>Old cord kept past a join, cells: a join this near the end of the run handed to <see cref="Lay"/> is not tried.</summary>
+        public const double JoinRest = 0.3;
         private static readonly double[] NatStraight = { 0.25, 0.35, 0.5 }, NatR = { 0.7, 1.0, 0.45 };
         private static readonly double[] LoopStraight = { 0.25, 0.35 }, LoopR = { 0.17, 0.19 };
         private static readonly double[] LoopPsi = { 45, 60, 90, 120 };
@@ -69,7 +71,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int leastFails = oldFails;
             foreach (double J in Joins)
             {
-                if (J > L - 0.3) continue;
+                if (J > L - JoinRest) continue;
                 V2 P = PointAt(q, cum, J, out V2 tan);
                 double h1 = Math.Atan2(tan.Z, tan.X);
                 double theta = Wrap(h1 - hOut) * 180 / Math.PI;
