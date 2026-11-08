@@ -56,3 +56,12 @@ Least sure of: the darkest tags on dark walls in unlit rooms (a black tag on the
 - `p15_dirt_vs_paint_left.png` / `_right.png` / `_awful_tally_128.png`: the staged dirt wall in daylight, vanilla filth on the soil in front.
 
 Least sure of: the portraits (a blind judge read every one as a UI sticker), weathered marks reading as grime, and the awful hand's olive and black reading as mould or soot. Those are the next pass's work.
+
+Pass 16 (build after 08b75451f4, game B, `graffiti_p15_ash_lit` loaded at noon and migrated on load; pass 15's `p15_*` moved to `old\pass15\`):
+- `p16_lived_south_wall_west.png`: the halo sigil is one sprayed loop now, and the two tributes carry stencilled heads in the mark's own pigment (black, colour, pale) instead of the game's portrait.
+- `p16_lived_south_wall_east.png`: the fist is a pale one-colour stencil with no disc; a W4 tag has gone pale and chalky instead of grey; a fist and the halo sigil moved here off the edge-on divider.
+- `p16_lived_corridor_west.png` / `_east.png`: the soot tally on grey stone went orange (pigment re-picked on load); no fist on the divider any more.
+- `p16_lived_storeroom.png`: the storeroom's east wall is clear (its memorial, two cogs and a rude man moved to face-on walls); the throw-up on the south wall is dusty magenta, not grey lumps.
+- `p16_lived_west_edge.png`: the sideways scraps on the west bedroom's outer wall are gone (taken down: no free face near).
+- `p16_dirt_vs_paint_left.png` / `_right.png` / `_awful_128.png`: the dirt wall: awful Vandal in pink and mustard beside real blood, vomit and ash.
+Least sure of: the awful HighLife glyph (oxide green and soot, its art's own colours) and the poor wolf glyph (soot and ochre) on the dirt wall, which may still read as mould and soot; and how small the stencilled heads are at play zoom.
