@@ -1,59 +1,51 @@
 # Pyrelands progress
 
-This pass landed fresh on map `q` (play.py build --tag q; tile at 50 C) and played it as a real colony. The colonists landed in a scorched ruin at 120,128. I set them up by the only pond (the north-east corner, 186..232 x 200..243): a wood room at 168..179 x 215..222 and a 7-cell canal off the pond's west lobe, (184..190, 211). Rice went into three plots: z 210 and z 212 at x 176..184 (x 182..184 end up beside the canal, x 176..181 stay dry), and a dry plot at 168..176 x 200..202. Saves: `NS_Pyrelands_play_q_col_d0` (setup, day 2.3) and `_d3dig` (day 3.6, the dig bug in progress). Runner: `Transient/pyre_play2/qrun.py SLICES TICKS` (2500 ticks = 1 game hour). It reports colonists' thirst and food, the canal, rice growth % from the inspect text, the opening scar's grass, ashwallow and fire-hawk state (`cast.py`), loose ash, pods, and animals at the pond.
+This pass played a fresh map, `r` (`play.py build --tag r`, a 50 C tile, 59 to 64 C by day). I set up a colony west of its pond: a wood room at 156..167 x 60..67, a canal on z=53 from x 166 to 179 into the pond at x 180, rice on deep ash either side of it (z 52 and z 54, x 166..174), and dry rice at 150..158 x 72..74. Saves: `NS_Pyrelands_play_r_col_d1b` (day 8.1) and `NS_Pyrelands_play_r_col_d2` (day 8.3, tick 499415, the latest). The scripts are in `Transient/pyre_play3/`: `restart.py` (stop, compose deploy, launch), `col_r.py`, `rrun.py`, `canal.py`, `hawkwatch.py`, `rlong.py` (a multi-day tracker), `stage_s.py` (burrow, furnace and skies scenes), `save.py` and `loadsave.py`. View crops are in the log folder's `view/`.
 
-## What I saw (old build)
-- **The heat stops every vanilla crop.** The day runs 45 C at 05:00 to 58 C at 17:00. Pyrelands tiles have a median of 53.6 C by design (`pyrelands_bedazzle_review_2026-10-01.md`). Crops grow only 06:00 to 19:00, and rice read a 0 to 16% heat multiplier at midday. Dry rice gained 5% in two days, and the rows by the (still undug) canal 7%. Through the hot half of a day neither grew at all. This is the "crops at a tenth" the owner asked about, and it made the biome text ("wherever water reaches it, it grows almost anything") false.
-- **Canal digging starved a colonist.** `RM_DigCanalJob` derives from vanilla `JobDriver_AffectFloor`: its work runs until done and the job has no expiry, so needs are never re-checked. One cell is 3,200 work times the ×4 labour multiplier, which takes 16 to 31 game hours for an unskilled digger (mining speed 10 to 19%). Jazza stood 10 hours on one cell, thirst 0.6 to 0.0 and food 0.38 to 0.05, with nothing dug. An interruption also threw away all the work done on the cell.
-- **Heat downs colonists by day 2.** All three had heatstroke at about 0.39. O'Connell (frail, wounded) went down, and their thirst ran to 0 in bed beside the pond, because FlowWorks only gives water to a patient from a bottle (QUESTIONS 4).
-- **The opening fire is a map-wide wildfire.** It lit about 2 hours in at x 100, z 222, 100 cells from the landing. By day 4.7 it spanned x 0 to 215 and z 90 to 249, with 300 to 450 fire cells at once, and the map's plants fell from 53,400 to 39,400. The "The burn is coming" letter arrived and Howe beat the fire back at the base edge. Whether it reads as a line with a scorched trail is the judge's question on `q_over_d4.png`.
-- **Regrowth:** the opening scar (86..114 x 208..236) fell to 112 grass cells of 784 and was back to 439 about 1.5 days after burning.
-- **Fire-hawks never took the ember job** in 12 hourly samples, some only 8 cells from fire. Their jobs were Wait, LayDown and `RM_ShadeDash`, a heat mod's dash to shade, which may outrank the ember giver in the think tree. `JobGiver_RUT_FireHawkCarryEmber` needs `comp.CanSortieNow` and a fire within `scanRadius`.
-- **Ashwallows** stayed 47 to 150 cells from fire, so I saw no burrowing.
-- **Loose ash** went 6,918 to 8,484 drifts after one ash fall (day 2.8 to 4.1). Pods held at 40 for half a day: check whether these are the same pods (they should rot in 1.1 days).
-- **Wild animals at landing:** anooba 8, gizka 5, ashwallow 4, flamefang 3, dalgo 2, fire-hawk 2, nuna 2, sytheclaw 2. All are on the roster, and the 11 small grazers outnumber the 7 big predators. By day 4.7: anooba 6, gizka 4. I saw no herd at the pond, only anooba and a sytheclaw. The Iriaz can never appear at 50 C (its comfort maximum is exactly 50).
+**State at retirement:** I stopped a restart part-way, so the game may be down or at the menu. The last build commit (3e67dc9776, the scorch-fruit study range) may not be deployed. Run `deploy_custom_mods.py --compose biomes` dry first.
 
-## Built this pass
-- **Wet roots** (`Source/PyrelandsWetRoots.cs`, `PyrelandsTuning.WetRootsCoolingC` = 15, `RM_FireEcoKernel.WetRootTemperature`). A plant on ash-field ground that `MapComponent_PyrelandsAshField.IsWatered` says is watered reads its heat multiplier as if its cell were 15 C cooler, never lower than vanilla's. Its inspect pane says "Wet ash keeps its roots cool…". It shares the ash-water-fertility switch. Built, deployed: see below.
-- **Biome text** corrected: ash fall doesn't follow big burns, and the fresh-burn bonus is less than water's. It now says wet roots shrug off the heat and black rain on a fresh burn feeds the field richer still.
-- **FlowWorks dig fix** (builder subagent): partial work is kept per cell, and the job expires so food, thirst and fire can interrupt it. See the commit for the files.
-
-## A fresh judge on the map-q shots (rm-judge; its crops are in `shots/../judge_view/`)
-- **Ugliest:** deep water drew as hard square blocks inside the pond (`q_pond_h3`). **Fixed:** Pyrelands ponds are shallow pans now (BiomeDef patch maker and `GenStep_PyrelandsStandingWater`). Unseen on a fresh map.
-- **Ash drifts read as stickers:** "flat, cold blue-grey splats with hard edges… stickers, puddles or lichen" (`q_scar_d4`). The count is about right. Rework the art (`Textures/Things/Filth/RM_FE_LooseAsh/*`): warmer, thinner, feathered and streaked like sifted ash, without going back to the old blur the owner hated.
-- **The scar re-greens far too fast:** 55 to 60% full-height grass two days after burning. It reads as grass on dark soil, not a burn, against the north star's "largely green again within about a week". Measured: 112 to 439 of 784 cells in about 1.5 days. Slow the regrowth on dry ground (owner card 1: scars should last on dry ground).
-- **Grass grows through the ruin's floor tiles and onto furniture** (`q_land_h3`), and the ruin floors look clean. The walls are blackened.
-- **The burn reads as a line** with dark ground behind, but the trail doesn't read as scorched: "dark grey dotted with green reads as different terrain". Single flames dot both edges of a lane, like two rows of campfires.
-- Scorch-fruit pods "look like little volcanoes or raw meat". That's owner-kept art, so leave it unless a north-star line needs it.
+## Seen this pass
+- **Loose ash (the owner's grey ground):** the old drifts were flat blue-grey blotches with hard rims (camouflage). I redrew them procedurally (`src/RimMandrake/Pyrelands/ash_drift_gen.py`, seed 41, recorded in the art ledger) at drawSize 1.6. The first redraw, seen in game, read as soft round smoke puffs (`view/r_ash_native.png`), because fine grain vanishes when 256 px is drawn at about 100 px. The shipped one has a crisp, ragged edge of coarse grain (`view/ash_v5b.png`, a mock). **This version is not yet seen in game.**
+- **The pond** is one shallow pan with soft shore blending, and the deep-water blocks are gone (`r_pond2_t0`). Its right shore steps in a regular 45° staircase, which is vanilla's look at a noise edge. A faint horizontal line across the water sits exactly at the shot's mid-height, which is probably the capture stitching two halves of animated water. Re-shoot with the pond off-centre to confirm.
+- **The pale squares in old `first_look_1_scar_day3`** are ruin floor tiles. Stone floors draw with hard edges, and the ruin scorch only reached one cell past a standing wall, so remnant floors lay pale and clean inside burns (`r_front_d1`, a flagstone shrine floor in the opening scar). **Fixed:** at mapgen every pre-existing floor takes the `RM_FE_Charred` colour and keeps its pattern instead of being stripped to ash (`r_ruinpaint_t1` shows a hand-painted patch beside an unpainted one). Unseen on a fresh map.
+- **Fire-hawks never met a fire.** They idled 100 to 130 cells from a 190-cell burn all night, and the Pyrelands' sun-heat extension sends every wild animal sprinting shade to shade. **Fixed:** the hawk and the furnace-beast are exempt from the shade dash (`RM_SunDashExtension`), and a new `JobGiver_RUT_FireHawkSeekBurn` (insertPriority 54) flies a ready hawk toward the nearest fire it can see. **Seen:** within half an hour a hawk flew about 90 cells and took `RM_FireHawkCarryEmber` in flight. Both hawks sortied twice in 6 hours. I never saw a new fire 4 or more cells from the blaze, because the drops land 6 cells past a ragged front. So the comp now records `drops`, `dropsLit`, `lastDropCell`, `lastDropTick` and `lastDropLit`: read them with `jawa/comp_read` and members separated by **commas**.
+- **Watered ash:** with the canal filled through FlowWorks' own `Deepen()` (`jawa/flowworks_excavation_drive`), every canal-side rice plant reads "Growth rate 140%, Wet ash keeps its roots cool". Dry rice reads 14 to 20% (temperature multiplier 20 to 29%). Not photographed yet.
+- **Canal digging starves the digger** (a FlowWorks bug). Sweetpea stood ten hours on one cell with thirst at 0.0. Ending the job sent them straight to drink. The fix from last pass is in `ralph/handoff/flowworks_dig_keeps_progress.patch` (QUESTIONS 6). FlowWorks is restored to HEAD here.
+- **Study trek:** Rose walked 120 cells at 60 C to study a scorch-fruit pod (EnvironmentalHazards' shade-cloth study), reaching thirst 0.23, food 0.19 and heatstroke 0.34. **Fixed** (built, deploy unconfirmed): an unordered pod study needs the pod in the home area or within 25 cells of the studier.
+- **Animal mix:** settled in QUESTIONS 5. Big predator means `predator=true` and body size 0.9 or more (Anooba counts). Map `q` failed, 11 against 15; map `r` passed, 11 against 2. The spawn model, decompiled from the game, gives 10.4% of maps failing. The fire-cast top-up is now 8 ashwallows instead of 4 (modelled 4.3%). Unseen on a fresh map.
+- **Suite:** restored `save_holds_no_furnace_herds` and `tribes_lookup_one_faction` verbatim. The herd row **FAILs** offline (the canonical start save holds the seeder plus 2 `RM_FurnaceHerd`). That is a campaign-save problem, filed elsewhere, so I'm reporting it, not fixing it. The tribes row passes. The regrowth row now also fails if the scar is over 55% green by day 3.
+- **The plan's owed changes** (black rain keeps the burn bonus, firebreak gone, biome text) are all in the code already.
+- **Heat:** colonists run thirst down about 0.09 an hour at 60 C, and heatstroke reaches 0.34 by day 1.
 
 ## Next, in order
-1. Load `NS_Pyrelands_play_q_col_d3dig` on the new build. Check that Jazza now stops digging to drink and eat, and the cell's progress survives. Let the canal finish and fill, then compare rice: x 182..184 beside the canal, x 176..181 in the same rows, and the dry plot. Read the inspect text for "Wet ash keeps its roots cool". That is the honest test of `pyre_ash_fertile_when_watered`.
-2. Fire-hawks: find why the ember job never runs (think-tree order against `RM_ShadeDash` and the heat jobs; `CanSortieNow`). Read the state only and never film flight.
-3. Ashwallow burrowing: wait for the fire to reach one, or set a fire upwind of the colony at (16..19, 11..22).
-4. Pods: check that each pod dies within about a day (`play.py track`).
-5. Ash-fall drifts at play zoom: 8,484 drifts on map `q`, so check they don't read as camouflage. Black rain reads (unseen).
-6. Furnace-beast warmth: none on `q`. The pane line is "Warmed by furnace-beast (+N C)".
-7. A `broaden` phone call is still owed before any DONE claim.
+1. Confirm the deploy (dry run). Build fresh map `s` and take the **first look** on this build. LOOK.md is stale (Conductor, 16:40), so rewrite it from these shots: the landing, charred ruin floors, the burn front and scar with the new ash (before and after against `first_look_9/10`), the pond off-centre, and the 8-ashwallow census at landing. Name files whole and cite `old\` paths. Ask QUESTIONS 1 (every map gets water) there.
+2. `stage_s.py burrow`, `furnace <colonist>`, and `skies X Z W H s` (cinderfall, ash fall, black rain beside vanilla `Rain`).
+3. Load `NS_Pyrelands_play_r_col_d2` and run `rlong.py 60 5000 --fruit 150,58`. It tracks pods dying, fruit rotting, the scar regrowing (rect 20,168,20,20; it burned around day 7.3), hawk drops, burrowed ashwallows, natives at the pond, and colony vitals. Photograph the canal rice against the dry plot, and the bedroom (grass under a roof).
+4. Fresh burn compounding: a second canal on z=47 (x 160..180), with burned rice on z 46 and unburned on z 48. Or use the suite's `fresh_burn_bonus` chain.
+5. Then the full suite (`live_session.py ... --no-restart`) for modcheck, a fresh-eyes judge on the shots, and DONE.
+
+## Broaden call
+It was made last pass (`gpt_help_pass010.md`). I acted on lead 1, an ordinary start: that found the dig starvation, the study trek and the idle hawks. Leads 3 (eat the aftermath), 5 (ashwallows as livestock) and 6 (a furnace-beast by the bedrooms) are still to play.
 
 ## Count
 - pyre_plant_distribution_correct: true
-- pyre_animal_distribution_correct: unseen (one fresh map, `q`, passes: every kind on the roster, small grazers 11 against big predators 7; earlier maps' censuses were mixed and not all taken at landing)
-- pyre_mapgen_log_clean: true
+- pyre_animal_distribution_correct: unseen
+- pyre_mapgen_log_clean: unseen
 - pyre_ground_deep_ash: true
-- pyre_ash_fertile_when_watered: false
+- pyre_ash_fertile_when_watered: true
 - pyre_fresh_burn_feeds_the_field: unseen
 - pyre_grass_chokes_ground: true
-- pyre_embergrass_regrows: true
-- pyre_burn_line_present: true
+- pyre_embergrass_regrows: unseen
+- pyre_burn_line_present: unseen
 - pyre_scorchfruit_fire_born: true
 - pyre_scorchfruit_produces: true
 - pyre_scorchfruit_spoils_fast: unseen
-- pyre_ruins_scorched: true (`q_land_h3.png`: blackened walls and floor at the landing ruin)
-- pyre_firehawk_carries_ember: false (never seen in half a day beside an active fire)
+- pyre_ruins_scorched: false
+- pyre_firehawk_carries_ember: unseen
 - pyre_furnacebeast_warmth: unseen
 - pyre_furnacebeast_heats_room: true
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: unseen
 - pyre_blackrain_reads: unseen
-- pyre_cinderfall_distinct: true
+- pyre_cinderfall_distinct: unseen
 - pyre_cannot_ordinary_rain: true
