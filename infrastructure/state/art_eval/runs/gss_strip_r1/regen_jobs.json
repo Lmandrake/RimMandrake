@@ -1,0 +1,20 @@
+[
+ {
+  "id": "arteval_GSS_PowerStrip_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "GSS_PowerStrip",
+  "prompt": "A floor power strip sprite, drawn flat on a transparent background in a painterly vanilla RimWorld style, realistic, with a clean dark outline and no cast shadow. The strip is a slim rounded rectangle with a 2:1 length-to-width proportion, long axis horizontal, in worn off-white or pale grey plastic with a subtle highlight along the upper edge and soft shading toward the lower edge. Four identical sockets sit in one evenly spaced row along the strip's long centre line, each a small compact dark rectangular face about one quarter of the strip's length wide and no more than two thirds of the strip's width tall, with a thin lighter bezel around it. Each socket is centred exactly on the strip's mid-line at its slot position, with a flat face, matte dark interior, no deep recess, no inner shadow reaching beyond the bezel, and no lower lip, so a plug head centred on the socket covers its whole face with a margin of bezel all round. One end of the strip is a plain rounded cap, clear of any cord. A small rocker switch sits on the strip body in the free space beside the sockets, clear of them. Lit variant: the rocker switch glows warm amber-green with a soft small halo on the plastic around it. Off variant: identical strip with the rocker switch unlit, dull grey. Body, socket layout and outline are identical in both variants; only the rocker switch differs. Crisp readable shapes at small size, transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: PORT_MISFIT, PORT_MISFIT; canvas 1024: the spec has no drawSize; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "gss_strip_r1",
+  "module": "part"
+ }
+]
