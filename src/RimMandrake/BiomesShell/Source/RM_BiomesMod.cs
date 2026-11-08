@@ -49,10 +49,6 @@ namespace RimMandrake.Biomes
         // patch time, so a change takes effect on the NEXT game start.
         public static bool ownedCaravanCarriers = true;
 
-        // GIANT_MUSHROOM_DRAW_FIX_SOUTH_GOES_FRONT (owner 2026-10-16): on maps in our biomes, of two overlapping plants the
-        // more southern one draws in front (RM_PlantDrawOrder.cs). Draw order only; applies at once on running maps.
-        public static bool plantDrawOrderSouthInFront = true;
-
         // CANOPY_LAYER_BUILD_ROOF_OF_THE_WORLD (owner 2026-10-18): trees whose def carries RM_CanopyExtension (the Titanic
         // tier) draw their trunk always and their canopy only when zoomed out below canopyThresholdPx screen pixels per
         // cell, fading in over canopyFadePx (RM_Canopy.cs). Off = the vanilla whole-tree picture. Applies at once.
@@ -135,7 +131,6 @@ namespace RimMandrake.Biomes
             base.ExposeData();
             Scribe_Collections.Look(ref enabled, "enabled", LookMode.Value, LookMode.Value);
             Scribe_Values.Look(ref ownedCaravanCarriers, "ownedCaravanCarriers", true);
-            Scribe_Values.Look(ref plantDrawOrderSouthInFront, "plantDrawOrderSouthInFront", true);
             Scribe_Values.Look(ref canopyEnabled, "canopyEnabled", true);
             Scribe_Values.Look(ref canopyThresholdPx, "canopyThresholdPx", CanopyMath.DefaultThresholdPx);
             Scribe_Values.Look(ref canopyFadePx, "canopyFadePx", CanopyMath.DefaultFadePx);
@@ -172,7 +167,6 @@ namespace RimMandrake.Biomes
             // What the planet was last drawn with = the loaded settings, so the first change after a load redraws it.
             worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
             peaksShown = RM_BiomesSettings.worldSunPeaks;
-            plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
             canopyShown = RM_BiomesSettings.canopyEnabled;
             // seeded from the SAVED settings: an all-on seed missed the redraw when a saved-off toggle was turned on
             worldLookShown = WorldLookKey();
@@ -215,11 +209,6 @@ namespace RimMandrake.Biomes
         {
             base.WriteSettings();
             RM_BiomesGate.Apply("settings changed");
-            if (plantDrawOrderShown != RM_BiomesSettings.plantDrawOrderSouthInFront)
-            {
-                plantDrawOrderShown = RM_BiomesSettings.plantDrawOrderSouthInFront;
-                RM_PlantDrawOrder.Reprint();
-            }
             if (canopyShown != RM_BiomesSettings.canopyEnabled)
             {
                 canopyShown = RM_BiomesSettings.canopyEnabled;
@@ -256,7 +245,6 @@ namespace RimMandrake.Biomes
         // listed in RM_BiomesSettings.mechanicsGated (live: those mechanics stop on existing maps). An entry with no BiomeDefs and no
         // mechanics reader (every engine/mechanic entry today) gates nothing yet: DEAD.
         private float viewHeight = 1200f;
-        private static bool plantDrawOrderShown = true;
         private static bool canopyShown = true;
         private string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
@@ -312,17 +300,6 @@ namespace RimMandrake.Biomes
                 list.GapLine();
             }
 
-            if (string.IsNullOrWhiteSpace(searchQuery)
-                || RimMandrake.Shared.SettingsKitCore.Matches("plants draw order south front mushrooms overlap", searchQuery))
-            {
-                list.CheckboxLabeled("Southern plants draw in front [now]", ref RM_BiomesSettings.plantDrawOrderSouthInFront,
-                    "On maps in our biomes, where two plants overlap, the one standing further south is drawn in front, "
-                    + "whatever their sizes. Without it a giant mushroom on a higher draw layer covers a southern neighbour.\n\n"
-                    + "Draw order only. Ground cover stays under every plant; pawns and items stay on top. "
-                    + "Other mods' biomes are not touched.\n\nDefault: on. Takes effect at once on running maps.");
-                RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => RM_BiomesSettings.plantDrawOrderSouthInFront = true);
-                list.GapLine();
-            }
 
             if (string.IsNullOrWhiteSpace(searchQuery)
                 || RimMandrake.Shared.SettingsKitCore.Matches("canopy trees titanic trunk zoom forest crown", searchQuery))

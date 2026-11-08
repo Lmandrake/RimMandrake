@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Scenario test of RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES at its caller (Pocock trial 1 policy,
+    design/RimMandrake/2026-11-07-pocock-design/04-trial1-callers.md): the REAL SouthDrawsFrontPawn.cs (what
+    Pawn_DrawTracker.DrawPos calls in place of SeededYOffset) and the real kernel, compiled against a small fake
+    Verse (Stubs.cs) whose DrawPos is vanilla's line, and driven by literal scenarios (Scenarios.cs). Plain net8.0.
+    Run: python3 src/RimMandrake/MandrakePatches/selftest_south_draws_front_scenarios.py
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SouthDrawsFrontScenario</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Source\SouthDrawsFront\SouthDrawsFrontPawn.cs" />
+    <Compile Include="..\..\Source\SouthDrawsFront\SouthDrawsFrontKernel.cs" />
+    <Compile Include="Stubs.cs" />
+    <Compile Include="Scenarios.cs" />
+  </ItemGroup>
+
+</Project>

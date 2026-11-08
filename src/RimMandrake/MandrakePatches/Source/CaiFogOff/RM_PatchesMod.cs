@@ -17,6 +17,8 @@ namespace RimMandrake.Patches
         public static bool quietThirdPartyLogSpam = true;
         // METAL_STONE_NONFLAMMABLE (owner order 2026-11-08): metal, stone and gem materials cannot burn.
         public static bool metalStoneNonFlammable = true;
+        // RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES (owner 2026-10-16, 2026-11-08): more south draws in front.
+        public static bool southDrawsFront = true;
 
         public override void ExposeData()
         {
@@ -26,6 +28,7 @@ namespace RimMandrake.Patches
             Scribe_Values.Look(ref cutDrugPolicyGuard, "cutDrugPolicyGuard", true);
             Scribe_Values.Look(ref quietThirdPartyLogSpam, "quietThirdPartyLogSpam", true);
             Scribe_Values.Look(ref metalStoneNonFlammable, "metalStoneNonFlammable", true);
+            Scribe_Values.Look(ref southDrawsFront, "southDrawsFront", true);
         }
     }
 
@@ -44,6 +47,7 @@ namespace RimMandrake.Patches
             var l = new Listing_Standard();
             l.Begin(inRect);
             bool before = RM_PatchesSettings.caiFogForcedOff;
+            bool southBefore = RM_PatchesSettings.southDrawsFront;
             l.CheckboxLabeled("Keep CAI 5000's fog of war off", ref RM_PatchesSettings.caiFogForcedOff,
                 "CAI 5000 (Advanced AI + Fog Of War) ships its own fog layer. While this is on, that fog stays off at every " +
                 "start and whenever CAI's settings are saved; CAI's combat AI is untouched. Turn it off to let CAI's own " +
@@ -77,7 +81,17 @@ namespace RimMandrake.Patches
                 + "flammability set to 0 at game start, so walls and furniture built from them cannot burn. Wood, cloth and "
                 + "leather are untouched. Off = vanilla values. Takes effect at the next game start.");
             l.Label(MetalNonFlammable.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Southern things draw in front", ref RM_PatchesSettings.southDrawsFront,
+                "Where two big things overlap, the one standing further south (lower on screen) is drawn in front, on "
+                + "every map: pawns among pawns (vanilla picks by a random seed, so a big animal can draw over the one "
+                + "in front of it), buildings among buildings, and plants among plants and buildings on the top "
+                + "building layer. A pawn still draws over buildings and trees, as in vanilla. Off = vanilla order. "
+                + "Takes effect at once.");
+            l.Label(SouthDrawsFrontPatches.Status);
             l.End();
+            if (RM_PatchesSettings.southDrawsFront != southBefore)
+                SouthDrawsFrontPatches.Reprint();
             if (RM_PatchesSettings.caiFogForcedOff && !before)
                 CaiFogOff.Force("settings toggle");
         }

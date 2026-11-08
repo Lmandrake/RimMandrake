@@ -15,7 +15,7 @@ namespace RimMandrake.Biomes
     //
     // A tree whose def carries RM_CanopyExtension draws two pictures:
     //   * its TRUNK, always: Plant.Graphic is swapped for the trunk pool, so vanilla Plant.Print (growth size, wind,
-    //     variant pick, shadow, RM_PlantDrawOrder) prints the trunk exactly where the whole tree used to stand;
+    //     variant pick, shadow, MandrakePatches' SouthDrawsFront) prints the trunk exactly where the whole tree used to stand;
     //   * its CANOPY, in RM_SectionLayer_Canopy: one quad per tree at the same centre, size and variant index as the
     //     trunk, on ItemImportant+5 (above every plant, BELOW LayingPawn and Pawn, so pawns stay on top). The layer's
     //     DrawLayer runs only when the camera shows fewer than canopyThresholdPx screen pixels per cell, fading in
@@ -250,7 +250,7 @@ namespace RimMandrake.Biomes
             CellRect rect = section.CellRect;
             float y = AltitudeLayer.ItemImportant.AltitudeFor(5f);
             // North rows first: within one variant's sub-mesh a later quad draws over an earlier one (Transparent writes
-            // no depth), so the more southern crown is in front, as RM_PlantDrawOrder orders the trunks. KNOWN LIMIT
+            // no depth), so the more southern crown is in front, as MandrakePatches' SouthDrawsFront orders the trunks. KNOWN LIMIT
             // (design §4.4; GPT review 2026-11-03): crowns of DIFFERENT variants sit in different sub-meshes, and other
             // sections in other meshes, so where two such crowns overlap their order is the draw order, not N->S.
             for (int z = rect.maxZ; z >= rect.minZ; z--)

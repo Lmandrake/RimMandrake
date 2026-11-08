@@ -8,8 +8,8 @@
     copies ../Assemblies/RimMandrake.Biomes.dll (+ .srchash) into the composed
     mod's ROOT Assemblies/, the only DLL that lives there.
 
-    HARMONY: one transpiler, RM_PlantDrawOrder.cs (Plant.Print draw order on
-    our biomes' maps). The biome gate itself is still a def field
+    The plant draw order (more south draws in front) moved to MandrakePatches'
+    SouthDrawsFront, game-wide, 2026-11-08. The biome gate itself is still a def field
     (BiomeDef.generatesNaturally), set at startup and on settings write.
 
     Build from a clone (never the read-only D:\Luke\dev\RimMandrake mirror):
@@ -41,7 +41,6 @@
 
   <ItemGroup>
     <Compile Include="RM_BiomesMod.cs" />
-    <Compile Include="RM_PlantDrawOrder.cs" />
     <Compile Include="RM_Canopy.cs" />
     <Compile Include="RM_WorldTerrainShader.cs" />
     <Compile Include="RM_WorldLook.cs" />

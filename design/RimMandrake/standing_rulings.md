@@ -220,6 +220,12 @@ review is now a secondary priority."* All biome art currently in game is ACCEPTE
 for later, and no build, deploy, sprint gate or item waits on an art pick. Art work is picked up only after
 FlowWorks, which is force-advanced to finished first.
 
+## Draw order — owner, 2026-10-16 and 2026-11-08
+
+More south draws in front, for every large pawn, building and plant, game-wide (owner 2026-10-16, 2026-11-08): *"if you
+are more south, you go in front."* Built in `src/RimMandrake/MandrakePatches/Source/SouthDrawsFront/` (setting "Southern
+things draw in front"); its measured limits: `infrastructure/state/items/RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES.md`.
+
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
 *"It is WORSE to leave incorrect information that belongs to another seat than it is

@@ -730,6 +730,7 @@ READ_ONLY_STATIC_CALLS = frozenset((
     ("RimMandrake.Biomes.RM_WorldDecals", "Probe"),               # ContentFinder lookup, no cache, no build
     ("RimMandrake.Biomes.RM_BiomesSettings", "Enabled"),          # a dictionary TryGetValue
     ("RimMandrake.Patches.MetalNonFlammable", "Probe"),           # Flammability.Worker.GetValueAbstract of Wall x some stuffs
+    ("RimMandrake.Patches.SouthDrawsFrontPatches", "Probe"),      # reads spawned pawns' DrawPos (the tween drawing runs each frame)
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellPresent"),   # a null test on a cached delegate
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_ShellOn"),        # the delegate above, i.e. Enabled
     ("RimMandrake.Pyrelands.PyrelandsMechanicsGate", "get_On"),             # pure RM_FireEcoKernel.MechanicsOn
