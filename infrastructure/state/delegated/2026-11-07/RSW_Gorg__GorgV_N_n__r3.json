@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.41281480000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 39.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1411562
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gorg__GorgV_N_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_EARTHLY', 'CANON_MISS', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_EARTHLY', 'CANON_MISS']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4b64ea210229da183bd04e31fb1ef27f27e08a90eb28a9bdd808c737dea100aa",
+  "east.png": "225b892c3c46353888f131cd70ec30c57498970536d5a967c1aba213cbf354a1",
+  "north.png": "50044af145534bf3da123defab584ed6c39b68aded381365fd1f3463117dd7c6",
+  "scale.png": "9e86f3add559fceef918b1c2158b08bf538b90e1f3b80f7e2117adcd505cba63",
+  "facings.png": "7f07c296bdc05b66a1b138051a91124ca966f82bd9578f0886f10849057baa48"
+ }
+}
