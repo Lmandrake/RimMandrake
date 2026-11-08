@@ -125,7 +125,7 @@ namespace RimMandrake.Shared.Slack
         /// <summary>The one search behind <see cref="AStar"/> and <see cref="AStarDive"/>. into is cleared and receives the
         /// route start..goal; false = no route within maxExpand. Allocation-free once this thread's scratch fits the map and
         /// into has the capacity (a re-entrant call, from a callback, takes a fresh scratch).</summary>
-        private static bool Search(CordWorld w, Cell start, Cell goal, bool dive, Func<Cell, bool> exempt, int maxExpand, List<Cell> into)
+        private static bool Search(CordWorld w, Cell start, Cell goal, bool dive, Func<Cell, bool> exempt, int maxExpand, List<Cell> into, double diveCost = DiveCost)
         {
             into.Clear();
             if (start == goal) { into.Add(start); return true; }
@@ -171,7 +171,7 @@ namespace RimMandrake.Shared.Slack
                                           && Open(w, new Cell(c.X + d.X, c.Z), start, goal, exempt)
                                           && Open(w, new Cell(c.X, c.Z + d.Z), start, goal, exempt))) continue;
                             if (!w.StepAllowed(c, q)) continue;
-                            step = cg + (diag ? 1.414 : 1.0) + (Open(w, q, start, goal, exempt) ? w.ExtraCost(q) : DiveCost);
+                            step = cg + (diag ? 1.414 : 1.0) + (Open(w, q, start, goal, exempt) ? w.ExtraCost(q) : diveCost);
                         }
                         int qi = s.Index(q, w);
                         if (!s.Seen(qi) || step < s.G[qi] - 1e-12) s.Visit(qi, step, step + H(q, goal), ci);
@@ -224,6 +224,33 @@ namespace RimMandrake.Shared.Slack
             return AStarDive(w, start, goal, exempt);
         }
 
+        /// <summary>The way through, when a walk goes a long way round a barrier (GSS, the eighth cause of extra cables at a doorway:
+        /// vanilla wires a lamp to conduit through a wall, and its cord walked out of the room, along the house and back in at a door).
+        /// A dive search that prices a barrier cell at <see cref="ShortDiveCost"/>; its route is taken when it crosses a barrier and the
+        /// walk is at least <see cref="ShortDiveSaves"/> cells and <see cref="ShortDiveRatio"/> times longer. Only searched when the walk
+        /// is that much longer than the straight line. Null = keep the walk.</summary>
+        internal static List<Cell> ShortDive(CordWorld w, List<Cell> walk, Func<Cell, bool> exempt)
+        {
+            Cell a = walk[0], b = walk[walk.Count - 1];
+            double walkLen = RouteLen(walk), line = H(a, b);
+            if (walkLen < line + ShortDiveSaves || walkLen < ShortDiveRatio * line) return null;
+            var dp = new List<Cell>();
+            if (!Search(w, a, b, true, exempt, 60000, dp, ShortDiveCost)) return null;
+            bool crosses = false;
+            for (int k = 1; k < dp.Count - 1 && !crosses; k++) crosses = !w.IsWalkable(dp[k]) && !(exempt != null && exempt(dp[k]));
+            if (!crosses) return null;
+            double diveLen = RouteLen(dp);
+            return walkLen >= diveLen + ShortDiveSaves && walkLen >= ShortDiveRatio * diveLen ? dp : null;
+        }
+        /// <summary><see cref="ShortDive"/>: a barrier cell's price in the search, and how much shorter the way through must be.</summary>
+        public const double ShortDiveCost = 4.0, ShortDiveSaves = 6.0, ShortDiveRatio = 1.8;
+        private static double RouteLen(List<Cell> p)
+        {
+            double L = 0;
+            for (int k = 1; k < p.Count; k++) L += p[k].X != p[k - 1].X && p[k].Z != p[k - 1].Z ? 1.414 : 1.0;
+            return L;
+        }
+
         private static bool Clear(CordWorld w, V2 a, V2 b, V2 p0, V2 p1, HashSet<Cell> onPath = null)
         {
             int n = (int)(V2.Dist(a, b) / 0.05) + 2;
@@ -265,9 +292,10 @@ namespace RimMandrake.Shared.Slack
         }
 
         /// <summary>Plan one cord edge from pa to pb through mandatory stops (knots, a ring's via). dive: a leg with no walkable
-        /// route dives through the barrier (<see cref="AStarDive"/>); exempt = the ends' own footprints.</summary>
+        /// route dives through the barrier (<see cref="AStarDive"/>); exempt = the ends' own footprints. diveShort (with dive): a leg
+        /// whose walk is a long way round also dives (<see cref="ShortDive"/>).</summary>
         public static CordPlan Plan(CordWorld w, V2 pa, V2 pb, IList<KeyValuePair<V2, WaypointKind>> mids,
-                                    bool dive = false, Func<Cell, bool> exempt = null)
+                                    bool dive = false, Func<Cell, bool> exempt = null, bool diveShort = false)
         {
             var stops = new List<V2> { pa };
             foreach (var m in mids) stops.Add(m.Key);
@@ -279,6 +307,7 @@ namespace RimMandrake.Shared.Slack
                 V2 p0 = stops[si], p1 = stops[si + 1];
                 List<Cell> path = AStar(w, p0.Floor, p1.Floor);
                 if (path == null && dive) path = AStarDive(w, p0.Floor, p1.Floor, exempt);
+                else if (path != null && dive && diveShort) path = ShortDive(w, path, exempt) ?? path;
                 if (path == null)
                 {
                     plan.Ok = false;

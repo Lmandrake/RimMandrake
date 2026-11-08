@@ -88,6 +88,30 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(plan.Ok && treeHits == 0, "A5 the pulled route keeps the A* detour round the trees (" + treeHits + " samples in trees off the route)");
             Check(straightHits && path.All(c => tw.ExtraCost(c) == 0), "A5 can-fail: the straight line crosses the trees and A* went round them");
 
+            // D8, the eighth cause of extra cables at a doorway (owner 2026-11-07): vanilla wires a lamp to conduit through a wall; its cord
+            // walked out of the room, round the house and back in. A long way round dives through the wall; a door beside it is walked through.
+            {
+                CordWorld House(bool doorBeside)
+                {
+                    var hw = new CordWorld(26, 18);
+                    for (int x = 5; x <= 15; x++) { hw.SetBlocked(new Cell(x, 4), BlockKind.Wall); hw.SetBlocked(new Cell(x, 13), BlockKind.Wall); }
+                    for (int z = 4; z <= 13; z++) { hw.SetBlocked(new Cell(5, z), BlockKind.Wall); hw.SetBlocked(new Cell(15, z), BlockKind.Wall); }
+                    var door = doorBeside ? new Cell(15, 9) : new Cell(8, 4);
+                    hw.SetBlocked(door, BlockKind.None); hw.SetDoor(door);
+                    return hw;
+                }
+                var lamp = new V2(14.5, 10.5); var cond = new V2(17.5, 10.5);
+                var none = new List<KeyValuePair<V2, WaypointKind>>();
+                CordPlan far = CordPlanner.Plan(House(false), lamp, cond, none, true, null, diveShort: true);
+                CordPlan farOld = CordPlanner.Plan(House(false), lamp, cond, none, true, null);
+                CordPlan near = CordPlanner.Plan(House(true), lamp, cond, none, true, null, diveShort: true);
+                double Len(CordPlan pl) { double L = 0; for (int i = 1; i < pl.Points.Count; i++) L += V2.Dist(pl.Points[i - 1], pl.Points[i]); return L; }
+                Console.WriteLine($"  D8 lamp through a wall: way round {Len(farOld):0.0} cells, now {Len(far):0.0} with {far.Dives.Count} dive; door beside {Len(near):0.0} with {near.Dives.Count} dive");
+                Check(far.Ok && far.Dives.Count == 1 && Len(far) < 5, $"D8 a lamp wired through a wall, the door far round: its cord dives through the wall ({far.Dives.Count} dives, {Len(far):0.0} cells)");
+                Check(near.Ok && near.Dives.Count == 0, $"D8 the same lamp with a door beside it walks through the door ({near.Dives.Count} dives)");
+                Check(farOld.Ok && farOld.Dives.Count == 0 && Len(farOld) > 15, $"D8 can-fail: planned as before, the cord walks {Len(farOld):0.0} cells round the house");
+            }
+
             // A3: a closed conduit ring with no device: no Terminal node, no frayed end
             var rw = new CordWorld(20, 20);
             for (int i = 5; i <= 12; i++) { rw.SetConduit(new Cell(i, 5)); rw.SetConduit(new Cell(i, 12)); rw.SetConduit(new Cell(5, i)); rw.SetConduit(new Cell(12, i)); }

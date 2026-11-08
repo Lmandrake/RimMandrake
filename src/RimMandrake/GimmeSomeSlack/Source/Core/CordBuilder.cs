@@ -913,7 +913,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             MachineInfo ma = na.IsMachine ? na.Machine : null, mb = nb.IsMachine ? nb.Machine : null;
             Func<Cell, bool> exempt = c => (ma != null && ma.Contains(c)) || (mb != null && mb.Contains(c));
-            CordPlan pl = CordPlanner.Plan(w, e.PA, e.PB, mids, opt.DiveThrough, exempt);
+            CordPlan pl = CordPlanner.Plan(w, e.PA, e.PB, mids, opt.DiveThrough, exempt, diveShort: true);
             piece.Unroutable = !pl.Ok;
             if (pl.Ok && pl.Dives.Count > 0) return LayDiving(w, g, e, key, opt, isLive, piece, pl, na, nb);
             List<V2> C = CordPlanner.RoundCorners(pl.Points);
