@@ -11,3 +11,14 @@ Pass 10, Ashgate (a colony on its 8th and 9th day, six colonists; one spree forc
 - `social_story_karen_needs.png`: Karen, after Mo's spree painted over her work: "Showed the wall what Mo is +3", hovered: "I painted what I think of Mo where everyone can see it. Felt good." Also "Mo painted over my work -4", "Brick wiped out my work -2".
 
 Least sure of: whether Mo, the vandal, now spirals (the colony's mockeries of him put him at -13 from the walls, and another break could mean another spree); whether a scrawl reads as uglier than a tally beside it (I still have no shot of the two side by side in a lived-in colony); and whether the bolder face paint is now too loud on light walls.
+
+Pass 11 (current build, 64 px unless marked):
+- `optionD_materials_playzoom.png` / `optionD_materials_close128.png` (128 px): six wall materials in daylight. The face paint holds its colour over the crease on each; light walls aren't too loud.
+- `scrub_order_designated.png` / `scrub_order_done.png`: the new Scrub graffiti order over Mo's spree corridor (icons on the paint), and the corridor after.
+- `personality_psychopath_cathryn_needs.png`: Cathryn, a psychopath, has been mocked on a wall and carries no wall thought.
+- `personality_sensitive_kinso_needs.png`: Kinso (Volatile), "Mocked on the wall by Brandt -13", at the bottom of the list.
+- `tribute_jealous_kinso_message.png`: Kinso is jealous of his lover Lark's tribute to Brick (the message; the thought is below the cut).
+- `memorial_lark_grief_half.png`: Lark's memorial to Pell eases +1 against "My friend Pell died -2".
+- `art_skill_crafts_ladder_beauty.png`: a Piece at every craft, Beauty -6 to +30 (not yet looked at).
+
+Least sure of: whether the ten-day hold on scrubbed walls feels right in play (not yet seen), and the jealousy line, which isn't on screen.
