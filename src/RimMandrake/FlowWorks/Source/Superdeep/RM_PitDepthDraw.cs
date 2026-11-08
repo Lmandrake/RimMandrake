@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -119,7 +120,11 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Sink on cell <paramref name="c"/> of dug depth <paramref name="d"/>, held so the drawn centre
-		/// stays north of the near lip in that column (<see cref="RM_PitDrawMath.ClampSinkToLip"/>).</summary>
+		/// stays north of the near lip in that column (<see cref="RM_PitDrawMath.ClampSinkToLip"/>).
+		/// PIT_DEPTH_ONE_DRAWING: with the clamp on, the sink is first eased into the column's opening by the far face's own
+		/// cap (RM_PitDrawMath.OccupantSink), so on the north row the occupant's floor line is the face's foot; the lip is
+		/// riser-aware (a shallower hole south of him has its own floor drawn lower) and the drawn centre is held
+		/// pitSinkHoldAbove over it.</summary>
 		private static float Clamped(RM_MapComponent_Excavation ex, Map map, IntVec3 c, int d, float perLevel)
 		{
 			float sink = RM_PitDrawMath.SinkFor(d, perLevel);
@@ -131,15 +136,64 @@ namespace RimMandrake.FlowWorks
 			{
 				return sink;
 			}
-			float lipZ = RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth, RM_PitDrawMath.SinkCapLevels * 2);
-			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f, lipZ);
+			// = RM_PitDrawMath.OccupantSink(d, perLevel, run, ObliqueMinFloor) without computing SinkFor twice
+			sink = RM_PitDrawMath.SoftCap(sink, RM_PitDrawMath.OpeningRoom(OpeningRun(ex, map, c), RM_PitLookMath.ObliqueMinFloor));
+			float lipZ = RM_PitDrawMath.LipZBelow(c.x, c.z, d, SeenDepth, RM_PitDrawMath.SinkCapLevels * 2, perLevel);
+			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f, lipZ, RimMandrakeFlowWorksSettings.pitSinkHoldAbove);
+		}
+
+		private const int RunSlots = 64;
+
+		// a small direct-mapped memo of each square's opening run, per thread (pawns are drawn in parallel, ParallelPreDraw):
+		// allocated once a thread, never per frame; an entry is good for one map, one excavation generation and one tick
+		[ThreadStatic] private static int[] runKeys;
+		[ThreadStatic] private static int[] runGens;
+		[ThreadStatic] private static int[] runTicks;
+		[ThreadStatic] private static float[] runVals;
+		[ThreadStatic] private static int runMapId;
+
+		/// <summary>The opening over <paramref name="c"/>'s column (SectionLayer_RMExcavationWalls.OpeningRunAt), memoised:
+		/// DrawPos is read several times a frame per pawn.</summary>
+		private static float OpeningRun(RM_MapComponent_Excavation ex, Map map, IntVec3 c)
+		{
+			int[] keys = runKeys;
+			if (keys == null)
+			{
+				keys = runKeys = new int[RunSlots];
+				runGens = new int[RunSlots];
+				runTicks = new int[RunSlots];
+				runVals = new float[RunSlots];
+				runMapId = map.uniqueID;
+			}
+			else if (runMapId != map.uniqueID)
+			{
+				Array.Clear(keys, 0, RunSlots);
+				runMapId = map.uniqueID;
+			}
+			int idx = map.cellIndices.CellToIndex(c);
+			int slot = idx & (RunSlots - 1);
+			int gen = ex.ClimbGeneration;
+			int tick = Find.TickManager != null ? Find.TickManager.TicksGame : 0;
+			if (keys[slot] == idx + 1 && runGens[slot] == gen && runTicks[slot] == tick)
+			{
+				return runVals[slot];
+			}
+			float run = SectionLayer_RMExcavationWalls.OpeningRunAt(map, ex, c);
+			keys[slot] = idx + 1;
+			runGens[slot] = gen;
+			runTicks[slot] = tick;
+			runVals[slot] = run;
+			return run;
 		}
 
 		/// <summary>The drawn-centre hold (RM_PitDrawMath.HoldToDrawnLip) under the same switch as the per-cell clamp: with the
 		/// clamp off (validation_v2's X rows measure the sink by depth) the sink is left whole.</summary>
 		private static float Held(float sink, Vector3 drawPos, int d)
 		{
-			return RimMandrakeFlowWorksSettings.pitSinkClampEnabled ? RM_PitDrawMath.HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth) : sink;
+			return RimMandrakeFlowWorksSettings.pitSinkClampEnabled
+				? RM_PitDrawMath.HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth, RimMandrakeFlowWorksSettings.pitSinkPerLevel,
+					RimMandrakeFlowWorksSettings.pitSinkHoldAbove)
+				: sink;
 		}
 
 		/// <summary>The lip finder's depth lookup (RM_PitDrawMath.LipZBelow) on the map <see cref="ExcavationOf"/> last cached
@@ -150,6 +204,38 @@ namespace RimMandrake.FlowWorks
 			IntVec3 q = new IntVec3(x, 0, z);
 			return cachedComp != null && q.InBounds(cachedMap) ? Pits.RM_SuspensionUnderpass.SeenDepthAt(cachedMap, cachedComp, q) : -1;
 		};
+
+		/// <summary>PIT_DEPTH_ONE_DRAWING: one pawn's depth drawing as text (RM_PitDepthDraw.DepthDrawState). The drawn z is
+		/// read from the real getter, the sink as the unsunk getter (sink switched off as when a verb fires) less it.</summary>
+		internal static string StateOf(Pawn pawn)
+		{
+			float k = RimMandrakeFlowWorksSettings.pitSinkPerLevel;
+			float hold = RimMandrakeFlowWorksSettings.pitSinkHoldAbove;
+			RM_MapComponent_Excavation ex = pawn != null && pawn.Spawned ? ExcavationOf(pawn.Map) : null;
+			if (ex == null)
+			{
+				return RM_PitDepthDraw.FormatState(float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, float.NaN, hold, k);
+			}
+			IntVec3 c = pawn.Position;
+			int d = Pits.RM_SuspensionUnderpass.DrawDepth(pawn, c, DrawHollow(pawn, ex, c));
+			Vector3 drawn = pawn.DrawPos;
+			Vector3 unsunk;
+			RM_Patch_PitDepthDrawCombatOrigin.Firing++;
+			try
+			{
+				unsunk = pawn.DrawPos;
+			}
+			finally
+			{
+				RM_Patch_PitDepthDrawCombatOrigin.Firing--;
+			}
+			ExcavationOf(pawn.Map);   // the lip lookup reads the cached map
+			float lipZ = d > 0
+				? RM_PitDrawMath.LipZBelow(Mathf.FloorToInt(unsunk.x), Mathf.FloorToInt(unsunk.z), d, SeenDepth, RM_PitDrawMath.SinkCapLevels * 2, k)
+				: float.NaN;
+			float face = d > 0 ? SectionLayer_RMExcavationWalls.ObliqueFaceAt(pawn.Map, ex, c, out _, out _) : float.NaN;
+			return RM_PitDepthDraw.FormatState(c.x, c.z, d, unsunk.z - drawn.z, drawn.z, lipZ, face, hold, k);
+		}
 
 		private static RM_MapComponent_Excavation ExcavationOf(Map map)
 		{
@@ -270,6 +356,84 @@ namespace RimMandrake.FlowWorks
 			{
 				Firing--;
 			}
+		}
+	}
+
+	/// <summary>PIT_DEPTH_ONE_DRAWING: the depth drawing's handles for the bridge (jawa/static_call, type
+	/// RimMandrake.FlowWorks.RM_PitDepthDraw): read one pawn's sink, lip and face, and set the sink scale and the hold.
+	/// Not a patch.</summary>
+	public static class RM_PitDepthDraw
+	{
+		/// <summary>"cell=x,z depth=D sink=S drawnZ=Z lipZ=L face=F hold=H k=K" for the spawned pawn with thingIDNumber
+		/// <paramref name="thingIdNumber"/> (the current map first, then any map): depth in notches as the sink reads it, sink
+		/// and drawn z as drawn this frame, the riser-aware near lip in the drawn column, the oblique far face over his square
+		/// (cells). NaN where a value is not found (no such pawn, no lip, not in a hole).</summary>
+		public static string DepthDrawState(int thingIdNumber)
+		{
+			return RM_Patch_PitDepthDrawOffset.StateOf(FindPawn(thingIdNumber));
+		}
+
+		/// <summary>Set the sink scale k (setting pitSinkPerLevel; the 2 m sink is 4k) and redraw the pit faces, which hang
+		/// on the same curve. Not saved to the settings file (DepthDrawState reads it back).</summary>
+		public static void SetSinkPerLevel(float k)
+		{
+			RimMandrakeFlowWorksSettings.pitSinkPerLevel = k < 0f ? 0f : k;
+			SectionLayer_RMExcavationWalls.RedrawAll();
+		}
+
+		/// <summary>Set how far (cells) the drawn centre is held above the near lip (setting pitSinkHoldAbove). Not saved to
+		/// the settings file (DepthDrawState reads it back).</summary>
+		public static void SetSinkHoldAbove(float cells)
+		{
+			RimMandrakeFlowWorksSettings.pitSinkHoldAbove = cells < 0f ? 0f : cells;
+		}
+
+		internal static string FormatState(float x, float z, float depth, float sink, float drawnZ, float lipZ, float face, float hold, float k)
+		{
+			CultureInfo inv = CultureInfo.InvariantCulture;
+			string cell = float.IsNaN(x) ? "NaN" : ((int)x).ToString(inv) + "," + ((int)z).ToString(inv);
+			return "cell=" + cell
+				+ " depth=" + (float.IsNaN(depth) ? "NaN" : ((int)depth).ToString(inv))
+				+ " sink=" + sink.ToString("0.0###", inv)
+				+ " drawnZ=" + drawnZ.ToString("0.0###", inv)
+				+ " lipZ=" + lipZ.ToString("0.0###", inv)
+				+ " face=" + face.ToString("0.0###", inv)
+				+ " hold=" + hold.ToString("0.0###", inv)
+				+ " k=" + k.ToString("0.0###", inv);
+		}
+
+		private static Pawn FindPawn(int id)
+		{
+			Pawn hit = PawnOn(Verse.Find.CurrentMap, id);
+			if (hit != null || Verse.Find.Maps == null)
+			{
+				return hit;
+			}
+			foreach (Map m in Verse.Find.Maps)
+			{
+				hit = PawnOn(m, id);
+				if (hit != null)
+				{
+					return hit;
+				}
+			}
+			return null;
+		}
+
+		private static Pawn PawnOn(Map map, int id)
+		{
+			if (map?.mapPawns == null)
+			{
+				return null;
+			}
+			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+			{
+				if (p.thingIDNumber == id)
+				{
+					return p;
+				}
+			}
+			return null;
 		}
 	}
 }

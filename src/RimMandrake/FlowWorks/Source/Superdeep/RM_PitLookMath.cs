@@ -8,24 +8,37 @@ namespace RimMandrake.FlowWorks
 	{
 		public const int Bevel = 0, Oblique = 1, Well = 2;
 
+		/// <summary>The floor kept at the near lip of every opening when the far face and the occupant are eased into it (cells).</summary>
+		public const float ObliqueMinFloor = 0.15f;
+
+		/// <summary>What a drop past 4 m (<see cref="RM_PitDrawMath.SinkCapLevels"/>) adds to the far face, where the occupant no
+		/// longer sinks: 0.35 (k / 0.3) (1 - e^(-(drop - 8) / 8)), so an 8 m face hangs lower than a 4 m one (0.22 more at k 0.3)
+		/// and the extra never passes 0.35 (k / 0.3). 0 for drop &lt;= 8 or k 0.</summary>
+		public static float DeepFaceExtra(int drop, float perLevel)
+		{
+			if (drop <= RM_PitDrawMath.SinkCapLevels || !(perLevel > 0f))
+			{
+				return 0f;
+			}
+			return 0.35f * (perLevel / 0.3f) * (1f - (float)Math.Exp(-(drop - RM_PitDrawMath.SinkCapLevels) / 8.0));
+		}
+
 		/// <summary>Far-face height (cells) for an exposed drop of <paramref name="drop"/> notches in an opening
-		/// <paramref name="run"/> cells deep north to south: the drop at the sink's own scale (<paramref name="perLevel"/> a
-		/// notch), eased into the room the opening has once <paramref name="minFloor"/> of floor is kept at the near lip:
-		/// room x (1 - e^(-drop x perLevel / room)). Shallow cuts keep about their true height; deep ones compress, and every
-		/// deeper drop still hangs lower (a 2-row pit: 2 m 1.01, 4 m 1.35, 8 m 1.71), so 4 m and 8 m stay apart where a hard
-		/// cap made them one look.</summary>
+		/// <paramref name="run"/> cells deep north to south (PIT_DEPTH_ONE_DRAWING): the occupant's own sink for that depth
+		/// (<see cref="RM_PitDrawMath.SinkFor"/> at scale <paramref name="perLevel"/>, to 4 m) plus <see cref="DeepFaceExtra"/>
+		/// past 4 m, through <see cref="RM_PitDrawMath.SoftCap"/> into the room the opening has once
+		/// <paramref name="minFloor"/> of floor is kept at the near lip (never below a quarter of the run). The occupant's sink
+		/// goes through the same cap, so on the north row the face's foot is his floor line. At k 0.3: a 3-row or deeper pit
+		/// 2 m 1.20, 4 m 1.50, 8 m 1.72; a 2-row pit 1.20, 1.49, 1.63; a 1-row pit compresses to 0.84, 0.85, 0.85.</summary>
 		public static float ObliqueFace(int drop, float run, float perLevel, float minFloor)
 		{
 			if (drop <= 0 || !(perLevel > 0f) || !(run > 0f))
 			{
 				return 0f;
 			}
-			float room = run - minFloor;
-			if (room < 0.25f * run)
-			{
-				room = 0.25f * run;
-			}
-			return room * (1f - (float)Math.Exp(-drop * perLevel / room));
+			int toCap = drop < RM_PitDrawMath.SinkCapLevels ? drop : RM_PitDrawMath.SinkCapLevels;
+			float t = RM_PitDrawMath.SinkFor(toCap, perLevel) + DeepFaceExtra(drop, perLevel);
+			return RM_PitDrawMath.SoftCap(t, RM_PitDrawMath.OpeningRoom(run, minFloor));
 		}
 
 		/// <summary>0..1 darkness laid over a dry floor of depth <paramref name="depth"/> notches: the light that reaches the

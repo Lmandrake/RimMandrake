@@ -214,7 +214,20 @@ namespace RimMandrake.FlowWorks
 			rim = FarRim(map, eng, c, d, out int rimDepth);
 			near = NearRim(map, eng, c, d);
 			int drop = RM_WallFaceMath.ExposedDrop(d, rimDepth, eng.FillAt(c));
-			return RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, 0.15f);
+			return RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, RM_PitLookMath.ObliqueMinFloor);
+		}
+
+		/// <summary>PIT_DEPTH_ONE_DRAWING: the opening over <paramref name="c"/>'s column, far rim minus near rim, in cells, as
+		/// <see cref="ObliqueFaceAt"/> measures it: the run the occupant's sink is eased into (RM_PitDrawMath.OccupantSink).
+		/// NaN where <paramref name="c"/> is not dug.</summary>
+		public static float OpeningRunAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			int d = eng.HollowDepthAt(c);
+			if (d <= 0)
+			{
+				return float.NaN;
+			}
+			return FarRim(map, eng, c, d, out _) - NearRim(map, eng, c, d);
 		}
 
 		/// <summary>The near rim under <paramref name="c"/>'s column: the z of the north edge of the first square south of it
@@ -237,15 +250,15 @@ namespace RimMandrake.FlowWorks
 		private static Color32 Black(float a) => new Color32(0, 0, 0, (byte)(255f * Mathf.Clamp01(a)));
 		private static Color32 Cream(float a) => new Color32(255, 248, 232, (byte)(255f * Mathf.Clamp01(a)));
 
-		/// <summary>OBLIQUE CUT: this square's share of a far face that hangs <c>pitSinkPerLevel</c> a notch from the column's
-		/// far rim (the pawn's own sink, so its foot is the occupant's floor line), the floor below it in the hole's light, soft
+		/// <summary>OBLIQUE CUT: this square's share of a far face that hangs RM_PitLookMath.ObliqueFace from the column's
+		/// far rim (the pawn's own sink through the same cap, so its foot is the occupant's floor line), the floor below it in the hole's light, soft
 		/// shade along the side walls, shade just inside the near lip and a lit lip edge.</summary>
 		private void ObliqueCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int west, int east, int south, float y, float scorch)
 		{
 			float rim = FarRim(map, eng, c, d, out int rimDepth);
 			float near = NearRim(map, eng, c, d);
 			int drop = RM_WallFaceMath.ExposedDrop(d, rimDepth, f);
-			float face = RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, 0.15f);
+			float face = RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, RM_PitLookMath.ObliqueMinFloor);
 			float foot = rim - face;
 			float z0 = c.z, z1 = c.z + 1f;
 			float dark = f > 0 ? 0f : RM_PitLookMath.FloorDark(d, RM_PitLookMath.Oblique);
@@ -270,7 +283,8 @@ namespace RimMandrake.FlowWorks
 				float perLevel = RimMandrakeFlowWorksSettings.pitSinkPerLevel;
 				for (int k = 1; k < 32; k++)
 				{
-					float lz = rim - RM_PitLookMath.StrataLineNotches(k) * perLevel;
+					// on the face's own curve (PIT_DEPTH_ONE_DRAWING): the 2 m line is where a 2 m floor's occupant stands
+					float lz = rim - RM_PitLookMath.ObliqueFace(RM_PitLookMath.StrataLineNotches(k), rim - near, perLevel, RM_PitLookMath.ObliqueMinFloor);
 					if (lz <= foot + 0.06f)
 					{
 						break;
