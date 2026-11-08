@@ -1,0 +1,2 @@
+On SteveDesktop the flowworks tier loads GimmeSomeSlack (shared JawaBench partial class), and RimWorld locks a loaded assembly. So while FlowWorks runs game A, a GSS deploy on game B cannot write RimMandrakeGimmeSomeSlack.dll (deploy_custom_mods prints NOT written ... locked and writes the rest: a mixed mod). A GSS deploy needs both games down. The GSS loop's steve.sh deploy now refuses while FlowWorks holds A and waits on ralph/NEED_GAME_A.
+home: design/RimMandrake/two_rimworld_instances_2026-11-07.md
