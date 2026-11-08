@@ -12,7 +12,7 @@ namespace RimMandrake.Pyrelands
     // "roll a chance, spawn a prop nearby" while a fire burns.
     //
     // Everything else in FIRE_ECOLOGY_LOOP_1 (the weather-table strip, Black
-    // Rain's trigger, burnedDef to deep ash, the firebreak) is pure XML riding
+    // Rain's trigger, burnedDef to deep ash) is pure XML riding
     // vanilla mechanisms that already exist — see the .xml files' own
     // comments for the RimSage citations. Only "a specific prop appears at a
     // specific cell because a specific event just happened here" has no
@@ -34,8 +34,14 @@ namespace RimMandrake.Pyrelands
 
             Apply(h, AccessTools.Method(typeof(Fire), "TickInterval"),
                   typeof(Patch_FireTick_AshAndScorchFruit), "fire-tick-ash-scorchfruit",
-                  "armed; burning cells on scorchable ground may dust loose ash "
+                  "armed; burning cells on scorchable ground lay ash (sand depth) "
                   + "and rarely seed a scorch-fruit pod");
+            Apply(h, AccessTools.Method(typeof(FilthMaker), nameof(FilthMaker.CanMakeFilth)),
+                  typeof(Patch_FilthMaker_NoAshOnAsh), "no-vanilla-ash-on-natural-ground",
+                  "armed; flame leaves no Filth_Ash on natural ground here, the biome's own ash marks a burn");
+            Apply(h, AccessTools.Method(AccessTools.TypeByName("RimWorld.WorkGiver_StudyInteract"), "HasJobOnThing"),
+                  typeof(Patch_StudyInteract_NotInTheFire), "no-study-in-the-fire",
+                  "armed; nobody walks into a live front to study a scorch-fruit unless ordered");
         }
 
         private static void Apply(Harmony h, MethodBase target, Type patchClass,
@@ -60,7 +66,7 @@ namespace RimMandrake.Pyrelands
         }
 
         // Scorchable ground: ANY Pyrelands ground (RM_FE_*, deep ash included,
-        // not the firebreak) OR vanilla Soil/Sand/Gravel/SoilRich. The ground
+        // not a floor) OR vanilla Soil/Sand/Gravel/SoilRich. The ground
         // alone opts no map in: the fire-tick hook also needs FireEcologyBiomeGate.
         internal static bool IsScorchableGround(TerrainDef terrain)
         {
@@ -163,6 +169,145 @@ namespace RimMandrake.Pyrelands
         }
     }
 
+    /// <summary>Vanilla's flame drops Filth_Ash (beauty -12) on all it destroys. Here that is every grass plant, so one burn laid
+    /// 50,000 of them over 62,500 cells beside our 50,000 loose ash (live, 2026-11-07): ash on deep ash, a cell reading "Ash,
+    /// Loose ash, Deep ash", colonists at "Ugly environment" and cleaning for days after every front. Natural ground takes
+    /// only the biome's own ash (sand depth, PyrelandsAsh); a floor still gets vanilla's.</summary>
+    public static class Patch_FilthMaker_NoAshOnAsh
+    {
+        public static void Postfix(ref bool __result, IntVec3 cell, Map map, ThingDef filthDef)
+        {
+            if (!__result || filthDef != ThingDefOf.Filth_Ash || map == null || !PyrelandsMechanicsGate.On) return;
+            MapComponent_BurnLine line = MapComponent_BurnLine.For(map);
+            if (line == null || !line.IsPyrelandsMap || !cell.InBounds(map)) return;
+            if (!map.terrainGrid.TerrainAt(cell).IsFloor) __result = false;
+        }
+    }
+
+    /// <summary>Scorch-fruit only stands in a fresh burn, right behind the front, and its shade-cloth study (EnvironmentalHazards'
+    /// found-tech comp) is served automatically by vanilla's study work giver, which knows nothing of fire. On map n
+    /// (2026-11-07) two colonists walked 70 cells into the opening front on day 0 and one came back with three burns. A pod
+    /// with fire within FireClear cells is not studied unless the player orders it.
+    /// Nor is one far from home: on map r (2026-11-07) a colonist walked 120 cells across open ground at 60 C to study a pod
+    /// beside the burn, with thirst 0.23, food 0.19 and heatstroke 0.34. A pod outside the home area is studied unordered only
+    /// within StudyReach cells of the studier.</summary>
+    public static class Patch_StudyInteract_NotInTheFire
+    {
+        private const int FireClear = 6;
+        private const int StudyReach = 25;
+        private static ThingDef pod;
+
+        public static void Postfix(ref bool __result, Pawn pawn, Thing t, bool forced)
+        {
+            if (!__result || forced || t == null || !t.Spawned) return;
+            if (pod == null) pod = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
+            if (t.def != pod) return;
+            Map map = t.Map;
+            bool atHome = map.areaManager?.Home != null && map.areaManager.Home[t.Position];
+            if (!atHome && (pawn == null || !t.Position.InHorDistOf(pawn.Position, StudyReach))) { __result = false; return; }
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(t.Position, FireClear, true))
+            {
+                if (c.InBounds(map) && c.ContainsStaticFire(map)) { __result = false; return; }
+            }
+        }
+    }
+
+    /// <summary>The pod rots through CompRottable, which runs in base.TickInterval; a rot landing on the pod's long-tick hash
+    /// destroys it and Plant.TickInterval then calls TickLong on a thing with no map (NRE in CheckMakeLeafless).</summary>
+    public class Plant_ScorchFruitPod : Plant
+    {
+        public override void TickLong()
+        {
+            if (Destroyed) return;
+            base.TickLong();
+        }
+    }
+
+    /// <summary>One static drift field per map: a low-frequency noise giving every cell a target ash level 0..3
+    /// (RM_FireEcoKernel.DriftTarget, AshDepthPerLevel of sand depth each), shared by the fire's scar ash, yesterday's fire and the
+    /// ruins. Ash fall no longer reads it: it lays vanilla's sand fall, snow's even sheet (PyrelandsAsh). Conductor ruling 2026-11-07
+    /// on map s: "make the drifts fewer, of varied size and clustered (pooled against walls and along the burn edge), rather than
+    /// redrawing the grain again." Unsaved: rebuilt from the map's own uniqueID, so a reload puts every drift's ceiling back.</summary>
+    public static class PyrelandsDriftField
+    {
+        private sealed class Field
+        {
+            public int mapId;
+            public Verse.Noise.Perlin noise;
+            public RM_DriftCuts cuts;
+        }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, Field> fields =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Map, Field>();
+
+        // ~10-cell features: a clump is a few cells across with a core, and a wide bare stretch lies between clumps. The old
+        // ash-fall field (0.045) banked over 20-cell sweeps, wider than a burn scar's own width.
+        private const double Frequency = 0.1;
+        // A 48x48 lattice of samples sets the cuts: enough for stable quantiles, never a scan of every cell.
+        private const int SampleSide = 48;
+
+        private static Field For(Map map)
+        {
+            if (fields.TryGetValue(map, out Field f) && f.mapId == map.uniqueID) return f;
+            if (f != null) fields.Remove(map);
+            f = new Field { mapId = map.uniqueID };
+            f.noise = new Verse.Noise.Perlin(Frequency, 2.0, 0.5, 3, map.uniqueID * 7919 + 1543, Verse.Noise.QualityMode.Medium);
+            var samples = new float[SampleSide * SampleSide];
+            for (int i = 0; i < SampleSide; i++)
+            {
+                for (int j = 0; j < SampleSide; j++)
+                {
+                    double x = (i + 0.5) * map.Size.x / SampleSide;
+                    double z = (j + 0.5) * map.Size.z / SampleSide;
+                    samples[i * SampleSide + j] = (float)f.noise.GetValue(x, 0.0, z);
+                }
+            }
+            f.cuts = RM_FireEcoKernel.DriftCuts(samples);
+            fields.Add(map, f);
+            return f;
+        }
+
+        /// <summary>True when a cardinal neighbour holds an edifice (rock, a wall, a ruin): the lee ash banks against.</summary>
+        public static bool Lee(Map map, IntVec3 c)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[k];
+                if (n.InBounds(map) && n.GetEdifice(map) != null) return true;
+            }
+            return false;
+        }
+
+        /// <summary>True when a cardinal neighbour still holds standing grass that is not burning: the scar's rim.</summary>
+        public static bool BurnEdge(Map map, IntVec3 c)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[k];
+                if (!n.InBounds(map)) continue;
+                Plant p = n.GetPlant(map);
+                if (p != null && !p.def.plant.IsTree && !n.ContainsStaticFire(map)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>The cell's target thickness 0..3: the field's height, plus the lee, plus the burn edge when it may count.</summary>
+        public static int Target(Map map, IntVec3 c, bool countEdge)
+        {
+            Field f = For(map);
+            float n = (float)f.noise.GetValue(c.x, 0.0, c.z);
+            return RM_FireEcoKernel.DriftTarget(n, f.cuts, Lee(map, c), countEdge && BurnEdge(map, c));
+        }
+
+        /// <summary>Lays a burned cell's whole scar ash at once (yesterday's fire, GenStep_PyrelandsYesterdayFire): its drift-field
+        /// target with the lee and the burn edge, never spilling, never thinning a deeper drift already there.</summary>
+        public static void LayScarAsh(Map map, IntVec3 c)
+        {
+            if (map == null || !c.InBounds(map)) return;
+            PyrelandsAsh.RaiseTo(map, c, RM_FireEcoKernel.ScarAshLaid(PyrelandsAsh.Depth(map, c), Target(map, c, true)));
+        }
+    }
+
     // Postfix on the PROTECTED instance Fire.TickInterval(int delta). Runs
     // once per live Fire thing per tick-interval batch — cheap, low-chance
     // rolls only, never per-frame. `delta` is the batch's tick-interval size
@@ -231,15 +376,20 @@ namespace RimMandrake.Pyrelands
                 if (!RM_FireEcoKernel.FireTickMayRoll(PyrelandsMechanicsGate.On, RM_PyrelandsSettings.ashDustingEnabled,
                         RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null, scorchable)) return;
 
-                // Loose ash dusting — rides alongside vanilla's own
-                // unconditional Filth_Ash spawn (DamageWorker_Flame), does
-                // not replace it.
-                if (RM_PyrelandsSettings.ashDustingEnabled)
+                // Ash dusting: the scar's ash, as sand depth (PyrelandsAsh; vanilla's Filth_Ash is kept off natural ground here,
+                // Patch_FilthMaker_NoAshOnAsh). A fire heaps its own cell up to that cell's drift-field target and never spills: rolled
+                // per tick with no target, a long burn filled every cell to the cap and the scar read as one pale sheet (map n,
+                // 2026-11-07). Ash fall lays the even sheet over all of it.
+                if (RM_PyrelandsSettings.ashDustingEnabled && map.sandGrid != null)
                 {
-                    ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta)))
+                    // The target is fixed per cell (PyrelandsDriftField), so a long burn cannot re-roll its way in or past it. A
+                    // hashed third of the cells at x1 read as polka dots (map s, 2026-11-07): every drift alone and one size. Now most
+                    // cells take none and the rest lie in clumps with x2-x3 cores, pooled in the lee and along the rim. The rim counts
+                    // only once the fire has burned a while: early on, the grass ahead of the front has not caught yet.
+                    if (Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta)))
                     {
-                        FilthMaker.TryMakeFilth(pos, map, ashFilth);
+                        int target = PyrelandsDriftField.Target(map, pos, __instance.TicksSinceSpawn >= RM_FireEcoKernel.ScarEdgeSettleTicks);
+                        PyrelandsAsh.RaiseTo(map, pos, RM_FireEcoKernel.ScarAshStep(PyrelandsAsh.Depth(map, pos), target));
                     }
                 }
 
@@ -284,6 +434,9 @@ namespace RimMandrake.Pyrelands
                         {
                             IntVec3 spot = pos + new IntVec3(RM_FireEcoKernel.FruitSpotDx[spotIndex], 0, RM_FireEcoKernel.FruitSpotDz[spotIndex]);
                             Thing fruit = ThingMaker.MakeThing(fruitDef);
+                            // Ripe at birth: the crack IS the ripening. Left to grow it starts at 0.15 of a 0.65 harvest line,
+                            // rests at night and stops dead above its 58C ceiling, so at this biome's heat it could rot unripe.
+                            if (fruit is Plant pod) pod.Growth = 1f;
                             GenSpawn.Spawn(fruit, spot, map);
                         }
                     }
@@ -357,121 +510,6 @@ namespace RimMandrake.Pyrelands
     }
 
     // ════════════════════════════════════════════════════════════════════
-    // ASH ACCUMULATION DURING ASH FALL — the third thing XML cannot do.
-    //
-    // TRIGGERED BY: WeatherDef RM_FE_Weather_AshFall (and, at under half
-    // the rate, RM_FE_Weather_Cinderfall) being the map's current weather.
-    //
-    // WHY NOT `snowRate`. That is the vanilla field for "falling weather
-    // that piles up", and it piles into map.snowGrid: white, drawn white,
-    // and melted the instant outdoor temperature is above freezing
-    // (RimSage, SteadyEnvironmentEffects.cs:96 AddFallenSnowAt). This
-    // biome's placement band starts at 25 degC, so snowRate would deposit
-    // nothing at all, and would look like snow if it did. `sandRate` is
-    // Odyssey-gated (SteadyEnvironmentEffects.cs:101 checks
-    // ModsConfig.OdysseyActive) and deposits sand, not ash.
-    //
-    // So the drifts are laid as RM_FE_Filth_LooseAsh — the SAME filth the
-    // fire-tick hook above already drops, deliberately: a bank left by
-    // weather and a bank left by a fire are one thing, they thicken into
-    // each other, and both are washed off by RM_FE_BlackRain through
-    // vanilla's own rainWashes handling. No new grid, no new save data.
-    // ════════════════════════════════════════════════════════════════════
-    public class MapComponent_PyrelandsAshfall : MapComponent
-    {
-        // A batch every 250 ticks (~4 per in-game hour) rather than a
-        // per-tick roll: this component exists on EVERY map in every save,
-        // including ones with no Pyrelands anywhere, so the not-my-weather
-        // path has to be nearly free.
-        private const int CheckIntervalTicks = 250;
-
-        // One deposit attempt per this many map cells per batch. A 250x250
-        // map (62,500 cells) gets ~15 per batch, ~60 per in-game hour —
-        // visible drifts over an afternoon, not a filth explosion.
-        private const float CellsPerDepositAttempt = 4000f;
-
-        private const float CinderfallRateFactor = 0.45f;
-
-        private static ThingDef ashFilthDef;
-        private static WeatherDef ashFallWeather;
-        private static WeatherDef cinderfallWeather;
-        private static bool defsResolved;
-
-        public MapComponent_PyrelandsAshfall(Map map)
-            : base(map)
-        {
-        }
-
-        private static void ResolveDefs()
-        {
-            defsResolved = true;
-            ashFilthDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-            ashFallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_AshFall");
-            cinderfallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_Cinderfall");
-        }
-
-        public override void MapComponentTick()
-        {
-            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.ashfallAccumulationEnabled)
-            {
-                return;
-            }
-            if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
-            {
-                return;
-            }
-            if (!defsResolved)
-            {
-                ResolveDefs();
-            }
-            if (ashFilthDef == null)
-            {
-                return;
-            }
-
-            WeatherManager wm = map.weatherManager;
-            WeatherDef current = (wm != null) ? wm.curWeather : null;
-
-            bool isNativeBiome = map.Biome != null && map.Biome.defName == "RM_Pyrelands";
-
-            // Cross-biome opt-in (MOD_OPTIONS_RETROFIT_1 §6a): an opted-in non-Pyrelands biome gets ambient ash drift regardless
-            // of its own current weather, scaled by crossBiomeCoverage. Off by default; never fires unless the owner names this
-            // biome or ticks "every biome". A rate of zero (coverage slider at 0) deposits nothing.
-            float rate = RM_FireEcoKernel.AshRate(current != null && current == ashFallWeather, current != null && current == cinderfallWeather,
-                CinderfallRateFactor, isNativeBiome, !isNativeBiome && RM_PyrelandsSettings.AppliesToBiome(map.Biome),
-                RM_PyrelandsSettings.crossBiomeCoverage, RM_PyrelandsSettings.ashfallRateMultiplier);
-            if (rate < 0f)
-            {
-                return;
-            }
-
-            int attempts = RM_FireEcoKernel.AshAttempts(map.Area, CellsPerDepositAttempt, rate);
-
-            try
-            {
-                for (int i = 0; i < attempts; i++)
-                {
-                    IntVec3 c = CellFinder.RandomCell(map);
-                    // Under a roof the ash never lands; on water it sinks.
-                    // FilthMaker itself rejects unwalkable cells, and
-                    // shouldPropagate:false stops it hunting an 8-way
-                    // neighbour every time it hits a wall.
-                    if (map.roofGrid.Roofed(c) || c.GetTerrain(map).IsWater)
-                    {
-                        continue;
-                    }
-                    FilthMaker.TryMakeFilth(c, map, ashFilthDef, 1, FilthSourceFlags.None, false);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.WarningOnce("[RimMandrake.Pyrelands] ashfall-accumulation: "
-                                + e.Message, 0x46E03);
-            }
-        }
-    }
-
-    // ════════════════════════════════════════════════════════════════════
     // SCORCHED RUINS (PYRELANDS_SCORCHED_RUINS_1) — the fourth thing XML
     // cannot do: react to WHERE another genstep just built something.
     //
@@ -496,11 +534,12 @@ namespace RimMandrake.Pyrelands
     // of what happens here"), not scoped narrowly to GenStep_ScatterRuinsSimple
     // alone.
     //
-    // No new art: the burn reads through terrain and filth defs this mod
-    // already ships (AshField.xml's RM_FE_Ash_Deep, Filth_LooseAsh.xml) —
-    // deep ash on the footprint and its rim (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED
-    // retired the light/heavy rungs; most cells are deep ash already, so the
-    // loose-ash filth, denser on the footprint, is the visible scorch).
+    // No new art: the burn reads through the deep-ash terrain this mod
+    // already ships (AshField.xml's RM_FE_Ash_Deep) and its ash on the ground
+    // (sand depth, PyrelandsAsh) — deep ash on the footprint and its rim
+    // (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED retired the light/heavy rungs; most
+    // cells are deep ash already, so the ash lying on it, denser on the
+    // footprint, is the visible scorch).
     // ════════════════════════════════════════════════════════════════════
     //
     // LATE SWEEP (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE, 2026-10-12). The
@@ -513,7 +552,7 @@ namespace RimMandrake.Pyrelands
     // never adds its own. So a second GenStepDef (RM_FE_ScorchRuinsLate, order
     // 965, after every 960 scatter) runs this class with sweepUnownedBuildings
     // set: every unowned artificial building's footprint and a one-cell rim go to
-    // deep ash with loose-ash filth, whichever genstep placed it.
+    // deep ash with ash lying on it, whichever genstep placed it.
     public class GenStep_ScorchPyrelandsRuins : GenStep
     {
         // XML-set: false = the UsedRects pass (order 760), true = the late sweep.
@@ -538,12 +577,7 @@ namespace RimMandrake.Pyrelands
                 return; // no ruin (or other used-rect structure) placed on this map — nothing to scorch
             }
 
-            ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
             TerrainDef ashDeep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
-            if (ashDeep == null && ashFilth == null)
-            {
-                return; // defs not loaded — no-op, not a crash
-            }
 
             try
             {
@@ -557,16 +591,19 @@ namespace RimMandrake.Pyrelands
                         bool atRim = c.x == clipped.minX || c.x == clipped.maxX
                                   || c.z == clipped.minZ || c.z == clipped.maxZ;
                         TerrainDef cur = map.terrainGrid.TerrainAt(c);
-                        if (ashDeep != null && RM_FireEcoKernel.RuinScorchLays(cur != null && cur.IsWater, cur?.defName))
+                        if (CharFloor(map, c, cur))
+                        {
+                            // a ruin's floor stays a floor, blackened (CharFloor)
+                        }
+                        else if (ashDeep != null && RM_FireEcoKernel.RuinScorchLays(cur != null && cur.IsWater, cur?.defName))
                         {
                             map.terrainGrid.SetTerrain(c, ashDeep);
                         }
-                        if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
+                        if (Rand.Chance(atRim ? 0.35f : 0.7f))
                         {
-                            // shouldPropagate:false — a wall cell (unwalkable)
-                            // simply gets no filth rather than pushing it onto
-                            // a neighbour outside the ruin's own footprint.
-                            FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);
+                            // a wall cell (Fillage Full) holds no sand, so it
+                            // simply gets none, and nothing spills past the ruin.
+                            PyrelandsAsh.RaiseTo(map, c, RM_FireEcoKernel.AshDepthPerLevel);
                         }
                     }
                 }
@@ -577,9 +614,20 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // pyre_ruins_scorched: the ruin itself stands black and damaged, not just the ground under it. Vanilla's paint slot
+        // (Building.ChangePaint) replaces the stuff colour on any building with no comp and no new graphic.
+        private static void CharRuinBuilding(Building b)
+        {
+            ColorDef charred = DefDatabase<ColorDef>.GetNamedSilentFail("RM_FE_Charred");
+            if (charred != null) b.ChangePaint(charred);
+            if (b.def.useHitPoints && b.MaxHitPoints > 1)
+            {
+                b.HitPoints = Math.Max(1, (int)(b.MaxHitPoints * Rand.Range(0.35f, 0.8f)));
+            }
+        }
+
         private static void SweepUnownedBuildings(Map map)
         {
-            ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
             TerrainDef ashDeep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
             if (ashDeep == null)
             {
@@ -600,6 +648,7 @@ namespace RimMandrake.Pyrelands
                         continue;
                     }
                     rects.Add(b.OccupiedRect());
+                    CharRuinBuilding(b);
                 }
 
                 foreach (CellRect occupied in rects)
@@ -615,10 +664,11 @@ namespace RimMandrake.Pyrelands
                         TerrainDef cur = map.terrainGrid.TerrainAt(c);
                         bool atRim = !occupied.Contains(c);
                         if (cur != null && cur.IsWater) continue;
-                        if (RM_FireEcoKernel.RuinScorchLays(false, cur?.defName)) map.terrainGrid.SetTerrain(c, ashDeep);
-                        if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
+                        if (CharFloor(map, c, cur)) { }
+                        else if (RM_FireEcoKernel.RuinScorchLays(false, cur?.defName)) map.terrainGrid.SetTerrain(c, ashDeep);
+                        if (Rand.Chance(atRim ? 0.35f : 0.7f))
                         {
-                            FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);
+                            PyrelandsAsh.RaiseTo(map, c, RM_FireEcoKernel.AshDepthPerLevel);
                         }
                     }
                 }
@@ -627,6 +677,31 @@ namespace RimMandrake.Pyrelands
             {
                 Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruins-sweep: " + e.Message, 0x46E05);
             }
+            try
+            {
+                // Every floor left on the map at generation is a ruin's (a ruin whose walls fell, an ancient slab): the sweep
+                // above only reaches one cell past a standing building, so the rest lay pale and clean in a burned land
+                // (map r: a flagstone shrine floor in the middle of the opening scar; the judge: "the ruin floors look clean").
+                foreach (IntVec3 c in map.AllCells)
+                {
+                    CharFloor(map, c, map.terrainGrid.TerrainAt(c));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruin-floors: " + e.Message, 0x46E06);
+            }
+        }
+
+        /// <summary>A built floor (not a road, not water) keeps its pattern and takes the charred paint, the same ColorDef the
+        /// ruin walls get: blackened flagstone, not bare ash where a floor plan was. True when the cell is such a floor.</summary>
+        private static bool CharFloor(Map map, IntVec3 c, TerrainDef cur)
+        {
+            if (cur == null || !cur.IsFloor || cur.IsRoad || cur.IsWater) return false;
+            ColorDef charred = DefDatabase<ColorDef>.GetNamedSilentFail("RM_FE_Charred");
+            if (charred == null) return false;
+            if (map.terrainGrid.ColorAt(c) != charred) map.terrainGrid.SetTerrainColor(c, charred);
+            return true;
         }
     }
 }

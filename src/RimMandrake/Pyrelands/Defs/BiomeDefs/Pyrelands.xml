@@ -4,8 +4,7 @@
   <!--
     RM_Pyrelands — the mod's OWN biome. Until this def existed, every
     piece of fire-ecology machinery in this mod (the ash field, the
-    scorchable ground clones, black rain, the scorch-fruit pod, the
-    firebreak) had to be patched onto somebody else's BiomeDef by a
+    scorchable ground clones, black rain, and the scorch-fruit pod) had to be patched onto somebody else's BiomeDef by a
     separate wiring mod. This def is what makes the mod self-contained:
     the terrains, the plants and the weather it ships are the terrains,
     plants and weather THIS biome uses, with no patch and no donor.
@@ -30,7 +29,7 @@
   <BiomeDef>
     <defName>RM_Pyrelands</defName>
     <label>the Pyrelands</label>
-    <description>A hot, wind-scoured savanna that burns on a schedule of its own. Coarse fast grass carpets the ground faster than anything can eat it, dries out within days of growing, and goes up at the first dry-storm strike. What is left behind is ash: falling out of the sky for days after a big burn, banking into drifts, and lying deep over all of it. Dry, the ash feeds little; wherever water reaches it, it grows almost anything. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
+    <description>A hot, wind-scoured savanna, genetically engineered in a forgotten age to feed grazing herds, that has gone on burning on a schedule of its own for millennia. Coarse fast grass carpets the ground again within days of a burn, dries out soon after, and goes up at the first dry-storm strike. What is left behind is ash: drifting on every wind, falling in grey storms, banking into drifts, and lying deep over all of it. Dry, the ash barely feeds a crop and the heat stunts it; wherever water reaches it, wet roots shrug off the heat and it grows almost anything. For a few days after a burn the ash itself feeds a field, and black rain on a fresh burn feeds it richer still. The rare rain here is black with it. Little grows tall enough to matter, so the horizon is nothing but grass, scars and smoke.</description>
     <workerClass>RimMandrake.Pyrelands.BiomeWorker_Pyrelands</workerClass>
     <texture>World/Biomes/RM_Pyrelands</texture>
 
@@ -40,6 +39,10 @@
     <preventGenSteps>
       <li>RockChunks</li>
       <li>ScatterShrines</li>
+      <!-- pyre_plant_distribution_correct: these special trees are placed by name and never pass WildPlantAllowlist. -->
+      <li>AnimaTrees</li>
+      <li>PoluxTrees</li>
+      <li>HarbingerTrees</li>
     </preventGenSteps>
 
     <!-- PYRELANDS_SCORCHED_RUINS_1 — owner: ruins "should be scorched and
@@ -48,8 +51,12 @@
          see GenStep_ScorchPyrelandsRuins (Source/FireEcologyHook.cs) and its
          GenStepDef (Defs/GenStepDefs/PyrelandsGenSteps.xml) for the mechanism. -->
     <extraGenSteps>
+      <li>RM_FE_StandingWater</li>
       <li>RM_FE_ScorchRuins</li>
+      <li>RM_FE_FireCast</li>
       <li>RM_FE_ScorchRuinsLate</li>
+      <li>RM_FE_GreenRing</li>
+      <li>RM_FE_YesterdayFire</li>
     </extraGenSteps>
 
     <modExtensions>
@@ -106,7 +113,32 @@
            (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Pyrelands</letterLabel>
-        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It grows back faster than anything can eat it and dries within days, and the first dry storm sets it off. Keep a firebreak. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It greens over within days of a burn and dries out soon after, and the first dry storm sets it off. Keep bare paving between the grass and your walls. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+      </li>
+      <!-- The ash field (PyrelandsAshField.cs) already makes water matter to a crop here: dry deep ash 70%, watered 140%, rich
+           soil by the ponds its own 140%. Explosive Growth's vanilla-crop rule (x0.1 beyond 2 cells of water) would multiply on
+           top and crawl a dry-ash crop at 7% (owner 2026-11-07: "Dry deep ash stays at 70%, sowable"). Pyrelands only. -->
+      <li Class="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthBiomeExtension" MayRequire="mandrake.rm.biomes">
+        <vanillaCropsNeedWater>false</vanillaCropsNeedWater>
+      </li>
+      <!-- Footprints in the ash (owner 2026-11-08: "footprints were already built by us in the desert ... reuse that"): the
+           Stillsand's track grid (CreatureBehaviors, FOOTPRINT_TRACK_GRID_1), with the ash itself as the print surface. Ash is
+           Odyssey sand depth here (Source/PyrelandsAshSand.cs): a walker on ash at least minSandDepth deep leaves a print, a print
+           is buried once buryDepth of ash has fallen or washed over it, and goes when the ash under it thins below minSandDepth.
+           0.1 is about two hours of ash fall; vanilla's snow takes prints from 0.4 (PawnFootprintMaker).
+           Owner 2026-11-08 on the first build: "I don't see any footprints, alas." The grid held 1,603 live prints then
+           (13,980 laid): they were drawn but unseen. The track grid's own sprites are for pale sand (human 99/255 grey, animal
+           58, at most 0.67 alpha x 0.7 opacity); on ash (cover 167 x 0.48 tint = 80) that moves the ground 8-12 levels. Ash
+           prints are pressed dark: the same shapes at 0.35 x their colour and 1.4 x their alpha (Textures/Things/Tracks/
+           RM_Ash*, guard Utils/selftest_pyrelands_track_contrast.py). buryDepth 0.12 buried a print in ~2 h of AshFall (about
+           30 s of play at speed 3); 0.3 keeps it ~5 h of AshFall and ~3 days dry. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" MayRequire="mandrake.rm.biomes">
+        <minSandDepth>0.1</minSandDepth>
+        <buryDepth>0.3</buryDepth>
+        <humanTexPath>Things/Tracks/RM_AshPrint_Human</humanTexPath>
+        <animalTexPath>Things/Tracks/RM_AshPrint_Animal</animalTexPath>
+        <largeTexPath>Things/Tracks/RM_AshPrint_Large</largeTexPath>
+        <dragTexPath>Things/Tracks/RM_AshDrag</dragTexPath>
       </li>
     </modExtensions>
 
@@ -115,7 +147,7 @@
          per cell is min(plantDensity * fertility^2, 1) — fertility multiplies in
          TWICE (WildPlantSpawner.GetDesiredPlantsCountAt x GetBaseDesiredPlantsCountAt),
          so density 3 held only ~58% of plantable ground ("Way too sparse").
-         16 saturates gravel (0.28 fert, needs >=13) and dry deep ash (0.40),
+         16 saturates gravel (0.28 fert, needs >=13) and dry deep ash (0.70),
          holding ~96% of plantable cells — the approved painted look; rock and
          water stay bare. Map Designer (zylle.mapdesigner, bisected
          2026-09-18) rewrites this at startup — caps it at 1.0 and folds the
@@ -130,8 +162,13 @@
          regrow fastest). -->
     <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <!-- Fast: the whole point of the grass below is that the fuel bed
-         comes back before the scar has cooled. Vanilla savanna is 26-27. -->
-    <wildPlantRegrowDays>9</wildPlantRegrowDays>
+         comes back before the scar has cooled. Vanilla savanna is 26-27. This is an MTB per empty cell
+         (RimSage, WildPlantSpawner.cs:310): at 3, 63% of a scar has sprouted by day 3 and 81% holds grown grass
+         by day 7 (sprout + ~2 days); at the old 9 only 43% did, and lifespan outran reseeding. -->
+    <!-- 5 (2026-11-07): at 3, map q's opening scar held grass on 56% of its cells 1.5 days after burning (112 -> 439 of 784)
+         and a fresh judge read a two-day scar as "grass on dark soil, not a burn". At 5: about 26% sprouted by day 1.5, 45% by
+         day 3, 75% by day 7 (1 - e^(-t/5)), so a scar greens visibly within days and is largely green in about a week. -->
+    <wildPlantRegrowDays>5</wildPlantRegrowDays>
     <settlementSelectionWeight>0.7</settlementSelectionWeight>
     <movementDifficulty>1</movementDifficulty>
     <forageability>0.45</forageability>
@@ -233,14 +270,11 @@
             <min>0.90</min>
             <max>1.00</max>
           </li>
+          <!-- Shallow only (2026-11-07): vanilla draws the deep/shallow seam as hard whole-cell blocks under the ash light, the
+               ugliest thing a judge found on a fresh map (q_pond_h3). A savanna pan is shallow anyway. -->
           <li>
             <terrain>WaterShallow</terrain>
             <min>1.00</min>
-            <max>1.10</max>
-          </li>
-          <li>
-            <terrain>WaterDeep</terrain>
-            <min>1.10</min>
             <max>999</max>
           </li>
         </thresholds>
@@ -306,15 +340,16 @@
       rows (UtinniPatches WildAnimals_Pyrelands.xml). Shorthand form is the only one the loader reads.
     -->
     <wildAnimals>
-      <RM_FireHawk>0.15</RM_FireHawk>
+      <!-- Raised from 0.15 / 0.18: five fresh maps in a row landed without a hawk and most without a burrower, so a player never met the fire cast. -->
+      <RM_FireHawk>0.5</RM_FireHawk>
       <RM_FurnaceBeast>0.04</RM_FurnaceBeast>
       <RM_Ullai>0.35</RM_Ullai>
       <RM_Emberscythe>0.05</RM_Emberscythe>
       <RM_Sytheclaw>0.2</RM_Sytheclaw>
       <RM_Barbslinger>0.15</RM_Barbslinger>
       <RM_FireWasp>0.4</RM_FireWasp>
-      <RM_Flamefang>0.5</RM_Flamefang>
-      <RM_Ashwallow>0.18</RM_Ashwallow>
+      <RM_Flamefang>0.3</RM_Flamefang>
+      <RM_Ashwallow>0.4</RM_Ashwallow>
     </wildAnimals>
 
     <allowedPackAnimals>

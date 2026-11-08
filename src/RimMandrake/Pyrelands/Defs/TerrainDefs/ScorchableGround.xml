@@ -23,6 +23,7 @@
   <TerrainDef Name="RM_FE_ScorchableGroundBase" Abstract="true">
     <researchPrerequisites/>
     <renderPrecedence>100</renderPrecedence>
+    <edgeType>FadeRough</edgeType>
     <fertility>0</fertility>
     <!-- Vanilla Soil/Gravel's set (Core Terrain_Natural.xml); the sand clone drops GrowSoil as vanilla Sand does.
          ASH_TERRAIN_FIX_NO_MEDIUM_GROUND, 2026-10-15: without Medium, ~35 vanilla+DLC buildings could not be placed. -->
@@ -74,10 +75,15 @@
     <label>gravel</label>
     <description>Loose stone chips over hardpan. Sparse fuel, but what grows in it still burns.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
-    <color>(140, 130, 120)</color>
+    <!-- 2026-11-08: was (140,130,120), which drew a pale grey-green slab like poured concrete against the deep ash (map w,
+         first_look_2). A darker, warmer stony brown still reads as unburned ground beside the ash without glaring. -->
+    <color>(110, 98, 84)</color>
     <fertility>0.28</fertility>
     <passability>Standable</passability>
     <pathCost>2</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
@@ -90,6 +96,9 @@
     <fertility>0.7</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 
@@ -102,6 +111,9 @@
     <fertility>1.4</fertility>
     <passability>Standable</passability>
     <pathCost>1</pathCost>
+    <tags>
+      <li>Soil</li>
+    </tags>
     <burnedDef>RM_FE_Ash_Deep</burnedDef>
   </TerrainDef>
 

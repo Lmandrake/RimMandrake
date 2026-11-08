@@ -5,15 +5,45 @@
        (PYRELANDS_RM_MOD_BUILD_1 §6). No {0}: the front is nobody's, and naming
        an instigator would contradict the null instigator it is actually lit
        with. Keys renamed RUT_ -> RM_ at the move. -->
+  <RM_BurrowedMote>Burrowed!</RM_BurrowedMote>
+  <RM_BurrowedInspect>Burrowed: sealed under the ash until the fire passes.</RM_BurrowedInspect>
+
+  <!-- The fire-hawk's ember (CompFireHawkSpread): a text mote at the fire a drop lit, and two inspect lines. {0} is a period
+       the game formats ("3 hours"). -->
+  <RM_EmberDroppedMote>Ember dropped!</RM_EmberDroppedMote>
+  <RM_FireHawkCarrying>Carrying a burning twig</RM_FireHawkCarrying>
+  <RM_FireHawkLastDrop>Last ember dropped {0} ago</RM_FireHawkLastDrop>
   <RM_FireFrontLetterLabel>The grass has gone up</RM_FireFrontLetterLabel>
-  <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the Tribes plant firebreaks instead of fences. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
+  <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the old camps here pave a strip instead of raising a fence. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
+  <!-- Yesterday's fire (PyrelandsFireFront.TickOpeningFront): a fresh map's opening front lights the leading arc of the scar
+       laid at generation. A message, not a letter, like the plain opening front. {0} is a compass word (RM_Compass*). -->
+  <RM_YesterdayFireMessage>Smoke to the {0}: yesterday's grass fire is still burning along the edge of its scar.</RM_YesterdayFireMessage>
+
+  <!-- The burn nearing home (MapComponent_BurnLine.WatchApproach). {0} cells, {1} a compass word. -->
+  <RM_WithersUnderRoof>Withering: it needs open sky.</RM_WithersUnderRoof>
+  <RM_DryLandLabel>No water here</RM_DryLandLabel>
+  <RM_DryLandLetter>There is no open water anywhere on this map.\n\nWithout water your colonists will be down with thirst in about a day. Form a caravan and go looking for water while they can still walk.</RM_DryLandLetter>
+  <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>
+  <RM_BurnApproachLead>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.</RM_BurnApproachLead>
+  <RM_BurnApproachLeadEdge>A burn line has reached the edge of your home, on the {0} side.</RM_BurnApproachLeadEdge>
+  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Stone walls and a roof keep it out, but wood and steel walls catch, and a burning wall lights the beds and stores against it inside. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
+  <RM_BurnApproachMessage>The burn is {0} cells from home, out to the {1}.</RM_BurnApproachMessage>
+  <RM_BurnApproachMessageEdge>The burn has reached home, on the {0} side.</RM_BurnApproachMessageEdge>
+  <RM_Compass0>north</RM_Compass0>
+  <RM_Compass1>north-east</RM_Compass1>
+  <RM_Compass2>east</RM_Compass2>
+  <RM_Compass3>south-east</RM_Compass3>
+  <RM_Compass4>south</RM_Compass4>
+  <RM_Compass5>south-west</RM_Compass5>
+  <RM_Compass6>west</RM_Compass6>
+  <RM_Compass7>north-west</RM_Compass7>
 
   <!-- FURNACEBEAST_THERMAL_CYCLE_1. Inspect-pane label for the capacitor. -->
   <RM_FurnaceHeatCharge>Heat charge</RM_FurnaceHeatCharge>
 
   <!-- FURNACE_WARMTH_FIX_NO_SIGN_TO_READ (owner by card 2026-10-15, "Add a small sign"). Inspect-pane line on a pawn the
        furnace-beast's open-field aura is warming; {0} is the felt-temperature offset (e.g. +8 C). -->
-  <RM_FurnaceWarmedBy>Warmed by furnace-beast ({0})</RM_FurnaceWarmedBy>
+  <RM_FurnaceWarmedBy>Warmed by furnace-beast (+{0})</RM_FurnaceWarmedBy>
 
   <!-- PYRELANDS_SAND_TERRAIN_YIELD_1. The sand-shovel designator (Designator_RM_ShovelTerrain) and its refusals. -->
   <RM_ShovelSandLabel>Shovel sand</RM_ShovelSandLabel>
@@ -25,6 +55,14 @@
   <!-- PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3. The ash-field mouseover sign after the terrain line (MapComponent_PyrelandsAshField.SignFor);
        {0} is the fresh-burn fertility bonus (e.g. 0.32), {1} the days it has left on the clock. -->
   <RM_AshSignWatered>watered</RM_AshSignWatered>
+  <!-- PyrelandsWetRoots: a plant on watered ash-field ground reads its heat growth factor as if {0} cooler; {1} is the
+       temperature growth multiplier it would have dry. -->
+  <RM_WetRootsInspect>Wet ash keeps its roots cool: grows as if {0} cooler (dry it would grow at {1}).</RM_WetRootsInspect>
   <RM_AshSignFreshBurn>fresh burn +{0} ({1} days)</RM_AshSignFreshBurn>
+
+  <!-- Ash is Odyssey's sand grid on an ash map (Source/PyrelandsAshSand.cs); these replace Odyssey's "Sand" / "Sand_Label"
+       ("Windswept sand") in the mouseover readout and the cell inspector there. Vanilla's depth words follow: "Ash (thin)". -->
+  <RM_Ash>Ash</RM_Ash>
+  <RM_Ash_Label>Ash</RM_Ash_Label>
 
 </LanguageData>

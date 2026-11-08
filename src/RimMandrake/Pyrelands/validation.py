@@ -31,7 +31,7 @@ puts `terrainPatchMakers` under `extra`; `jawa/get_defs` reads `wildPlants` and
 animal manifest is read through `jawa/biome_probe` (the resolved roster). A component that cannot measure
 calls `_unmeasured()`, which records UNMEASURED with its reason; it never passes.
 
-Fire hygiene: every fire burns on its own pad, ringed by `RM_FE_FirebreakLine`. Pads sit away
+Fire hygiene: every fire burns on its own pad, ringed by a vanilla floor (concrete). Pads sit away
 from the colonists at the map centre.
 
 Teardown (`@_teardown`): settings fields are `public static`
@@ -66,7 +66,7 @@ suite.toggles = ["ashDustingEnabled", "scorchFruitEnabled",
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 SOIL = "RM_FE_Ground_Soil"
-FIREBREAK = "RM_FE_FirebreakLine"
+FIREBREAK = "Concrete"
 TEST_SIZE = 24
 
 # Immutable manifests (plan 1.3). 3 plants; 16 animal kinds (RM_Ullai added by PYRELANDS_ULLAI_GIANT_BUILD_1;
@@ -80,8 +80,10 @@ ANIMAL_MANIFEST = frozenset([
     "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
     "RM_Ashwallow", "RM_Ullai"])
 DEEP_ASH = "RM_FE_Ash_Deep"   # the ash field (AshField.xml): the biome's ordinary ground
-LEGACY_ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy")   # retired rungs: hidden aliases, re-laid on load
 ASH_FIELD = "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField"     # jawa/static_call probes (PyrelandsAshField.cs)
+# Ash on the ground is Odyssey's sand depth since 2026-11-08 (owner by card, "Rebuild ash on vanilla sand?" -> "Yes"), not a
+# thing: list_things cannot see it. PyrelandsAsh.ProbeAsh reads it, ClearAsh zeroes it (Source/PyrelandsAshSand.cs).
+ASH_SAND = "RimMandrake.Pyrelands.PyrelandsAsh"
 STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
 # Mechanics that must be OFF during the controlled bars (plan 2.3a isolation).
@@ -107,6 +109,7 @@ PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
 PAD_HERD_OLD = (30, 100)   # herd_follows_two_day_old_burn: burn A, backdated two days
 PAD_HERD_NEW = (220, 100)  # burn B, fresh: present in the history and NOT the anchor
+PAD_SLEEP = (220, 160)     # furnace_sleep: a beast asleep in grass lights it (owner card 2026-11-08 01:01)
 HERD_SPAWN = (125, 215)    # the wild ullai herd starts ~150 cells from A and ~140 from B
 HERD_SIZE = 10
 HERD_RACE = "RM_Ullai"
@@ -120,16 +123,23 @@ FOLLOW_BURN = "RimMandrake.Pyrelands.RM_JobGiver_FollowBurn"
 BURN_QUIET_TICKS = 120000      # PyrelandsTuning.StandingBurnQuietTicks (selftest_pyrelands_site pins both to the C#)
 BURN_WATCH_TICKS = 60          # PyrelandsTuning.BurnWatchIntervalTicks
 BURN_LINE_WAIT_TICKS = BURN_QUIET_TICKS + 6 * BURN_WATCH_TICKS   # quiet window + a few watch intervals
-REGROW_OVERRIDE_DAYS = 0.1
-REGROW_SHORT_STEP = 1500   # two steps of this, through safe_advance
+COMMON_GRAZERS = ("RM_Ullai", "RM_Ashwallow", "RSW_Nuna", "RSW_Iriaz", "RSW_Gizka")
+BIG_PREDATORS = ("RM_Flamefang", "RM_Barbslinger", "RM_Emberscythe", "RM_Sytheclaw", "RSW_Anooba", "RSW_Orray", "RSW_Dalgo")
+REGROW_SAMPLE_DAYS = (3, 7)
+REGROW_FIRST_DAYS_FRAC = 0.25
+# Ceiling (Conductor, 2026-11-07: "too-fast can never fail it"): a scar already more than half green at day 3 was largely green
+# well before "about a week". Map q measured 56% two days after its burn, which read as grass on dark soil, not a burn.
+REGROW_FIRST_DAYS_MAX = 0.55
+REGROW_WEEK_FRAC = 0.6
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
-FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW)
+FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW,
+             PAD_SLEEP)
 DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
-WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.40)
+WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.70)
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
 RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
-RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying loose-ash filth in their 3x3 (the visible scorch; 70% per footprint cell)
+RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying ash in their 3x3
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
 
@@ -453,6 +463,31 @@ def _count(t, defName, rect=None):
     return r["countMatched"]
 
 
+def _ash(t, rect=None):
+    """The ash (sand depth) over `rect` ('x,z,w,h') or the whole map -> {cells, ashed, deep, depthSum, max, ashMap, ...};
+    ashed = cells at the visible depth (0.03) or deeper. {} offline. Raises on an unreadable result."""
+    r = t.bridge_call("jawa/static_call", type=ASH_SAND, method="ProbeAsh", args=rect or "all")
+    if not _live(t):
+        return {}
+    _ok(r, "ProbeAsh(%s)" % (rect or "all"))
+    out = {}
+    for part in str(r.get("result") or "").split(";"):
+        k, _, v = part.partition("=")
+        try:
+            out[k] = float(v) if "." in v else int(v)
+        except ValueError:
+            out[k] = v
+    if "ashed" not in out or not out.get("cells"):
+        _fail("ProbeAsh(%s) unreadable: %r" % (rect or "all", r))
+    return out
+
+
+def _clear_ash(t):
+    """Every cell of the current map to no ash (PyrelandsAsh.ClearAsh); the cleared count, or None offline."""
+    r = t.bridge_call("jawa/static_call", type=ASH_SAND, method="ClearAsh")
+    return (r or {}).get("result") if _live(t) else None
+
+
 def _things(t, defName, rect=None, limit=500):
     kw = {"defName": defName, "limit": limit}
     if rect:
@@ -526,7 +561,7 @@ def _probe(t, x, z):
             out[k] = v
     if "fertility" not in out:
         _fail("ProbeCell(%d,%d) returned no fertility: %r" % (x, z, r))
-    for k in ("fertility", "bonus", "rainAcc"):
+    for k in ("fertility", "bonus", "base", "wateredFertility"):
         out[k] = float(out.get(k, "nan"))
     out["watered"] = out.get("watered") == "True"
     return out
@@ -617,7 +652,7 @@ def burn_cleared(pre, after_fire, min_cleared=0.5):
 
 
 def _firebreak(t, rect, width=4):
-    """Ring `rect` with the biome's own non-flammable firebreak terrain and strip its plants."""
+    """Ring `rect` with a non-flammable vanilla floor and strip its plants."""
     x, z, w, h = rect
     ring = [(x - width, z - width, w + 2 * width, width), (x - width, z + h, w + 2 * width, width),
             (x - width, z, width, h), (x + w, z, width, h)]
@@ -976,6 +1011,11 @@ def animal_census(t):
                 _fail("foreign wild animal kinds on the site: %r" % foreign)
             if len(wild) < 12:
                 _fail("only %d wild animals on the site (need >=12)" % len(wild))
+            grazers = sum(v for k, v in counts.items() if k in COMMON_GRAZERS)
+            big = sum(v for k, v in counts.items() if k in BIG_PREDATORS)
+            _note(t, "small common grazers against big predators", {"grazers": grazers, "bigPredators": big})
+            if grazers <= big:
+                _fail("the big predators (%d) are not outnumbered by the small grazers (%d): %r" % (big, grazers, counts))
             wa, why = biome_probe_animals(probe, "RM_Pyrelands")
             if wa is None:
                 _unmeasured(t, "census clean (%d wild, %d kinds, none foreign) but the live "
@@ -1019,7 +1059,7 @@ def grass_cover(t):
 def ruins(t):
     """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
     the ruin's own floors' structures) -- and their footprint is read for what GenStep_ScorchPyrelandsRuins
-    lays (deep ash on the footprint and rim, loose-ash filth over it). The earlier probe listed
+    lays (deep ash on the footprint and rim, ash on the ground over it). The earlier probe listed
     things named `RM_FE_ScorchRuins`, which is the GENSTEP def, never a Thing, so it read UNMEASURED on
     every site by construction (2026-10-11 pilot: the map carried 600+ cells of ruin floors)."""
     _pad(t, PAD_PROBE)
@@ -1047,18 +1087,18 @@ def ruins(t):
                   [(x.get("def"), x["x"], x["z"]) for x in picks])
             got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
             frac = sum(v for k, v in got.items() if k == DEEP_ASH or "Water" in k) / float(max(1, sum(got.values())))
-            filthy = sum(1 for x in picks if _count(t, "RM_FE_Filth_LooseAsh", "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)) > 0)
-            _note(t, "ruin footprint terrain + loose ash (3x3 at %d sampled ruin buildings)" % len(picks),
-                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithLooseAsh": filthy})
+            filthy = sum(1 for x in picks if _ash(t, "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)).get("ashed", 0) > 0)
+            _note(t, "ruin footprint terrain + ash on the ground (3x3 at %d sampled ruin buildings)" % len(picks),
+                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithAsh": filthy})
             # Deep ash is ~85% of the map, so terrain alone barely marks a ruin; the genstep lays deep ash on EVERY
-            # footprint cell (ruin floors included) and loose-ash filth on ~70% of them, which is the visible scorch.
+            # footprint cell (ruin floors included) and ash (sand depth 0.25) on ~70% of them, which is the visible scorch.
             if frac < RUIN_ASH_MIN:
                 _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
             # The site builder now sets the season BEFORE the map is generated (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST),
             # so loose ash (6~9 day lifetime, absolute growTick) is minutes old here and 2-of-10 is a genstep finding.
             # A fixture built before that change still carries the old 6-10 day gap: rebuild it, do not excuse it.
             if filthy < RUIN_FILTH_MIN * len(picks):
-                _fail("%d of %d sampled ruins carry loose ash, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
+                _fail("%d of %d sampled ruins carry ash on the ground, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
 
 
@@ -1163,8 +1203,6 @@ def startup_and_def_wiring(t):
             if "RM_FE_Ground_Soil" not in names:
                 _fail("first terrainPatchMaker (unburned pockets) lacks RM_FE_Ground_Soil: %r" % names)
             every = [th.get("terrain") for m in makers for th in ((m or {}).get("thresholds") or [])]
-            if any(a in every for a in LEGACY_ASH):
-                _fail("a retired ash rung is still painted by a patchmaker: %r" % every)
         t.screenshot()
 
 
@@ -1185,9 +1223,6 @@ def ground_deep_ash(t):
             stock = dict((s_, gen[s_]) for s_ in STOCK_GROUND if gen.get(s_))
             if stock:
                 _fail("stock ground terrains present on a Pyrelands map: %r" % stock)
-            legacy = dict((a_, gen[a_]) for a_ in LEGACY_ASH if gen.get(a_))
-            if legacy:
-                _fail("retired ash rungs on the map (the load re-lay missed them): %r" % legacy)
             if share is None:
                 _unmeasured(t, "no open land read: %r" % gen)
             if share < DEEP_ASH_MIN:
@@ -1288,8 +1323,8 @@ def ash_fertility_watered(t):
 def fresh_burn_bonus(t):
     """LONG SPLIT (~100k ticks). pyre_fresh_burn_feeds_the_field, a STATE read of FertilityAt on a burned deep-ash cell:
     before the burn, right after it, +1 day (the linear decay; the design's +3 days costs another 120k ticks for a point
-    the kernel selftest already pins), then after ~15 h of forced RM_FE_BlackRain (rain budget 12 h at rate 1.1: the bonus
-    must be gone, and the Black Rain must have watered the field). The fire burning on DEEP ASH is also the live proof of
+    the kernel selftest already pins), then after ~15 h of forced RM_FE_BlackRain: the bonus must still be on its own clock
+    and the Black Rain must have watered the field, so burned-and-rained beats burned alone and rained alone. The fire burning on DEEP ASH is also the live proof of
     the widened fire-tick gate (the stamp fires only through it)."""
     _pad(t, PAD_BURN)
     t.clear_area(size=TEST_SIZE)
@@ -1324,10 +1359,12 @@ def fresh_burn_bonus(t):
                       % (after["bonus"], before["fertility"], after["fertility"], BURN_BONUS_MIN))
             if not (0 < day1["bonus"] < after["bonus"]):
                 _fail("the bonus did not fade over a day: %.3f -> %.3f" % (after["bonus"], day1["bonus"]))
-            if rained["bonus"] > 0.01:
-                _fail("~15 h of Black Rain left a burn bonus of %.3f (rain budget 12 h)" % rained["bonus"])
             if not rained["watered"]:
                 _fail("Black Rain did not water the field: %r" % rained)
+            if not (0 < rained["bonus"] < day1["bonus"]):
+                _fail("~15 h of Black Rain moved the bonus off its clock: day1 %.3f, rained %.3f" % (day1["bonus"], rained["bonus"]))
+            if rained["fertility"] < rained["wateredFertility"] + rained["bonus"] - 0.01:
+                _fail("the bonus did not stack on the watered lift: %r" % rained)
         t.screenshot(rect=burn)
 
 
@@ -1382,9 +1419,9 @@ def fire_tick_effects(t):
     with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
         _fire(t, rect)
         _wait(t, 2600)
-        n = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
+        n = _ash(t, _rs(rect)).get("ashed", 0)
         if _live(t) and n < 1:
-            _fail("expected >=1 RM_FE_Filth_LooseAsh in %s after 2600 ticks of fire, got %d"
+            _fail("expected >=1 ashed cell (sand depth >= 0.03) in %s after 2600 ticks of fire, got %d"
                   % (_rs(rect), n))
         t.screenshot(rect=rect)
 
@@ -1429,24 +1466,26 @@ def _clear_scorchfruit(t):
 @suite.chain("ashfall_weather_accumulation")
 @_teardown(weather=True)
 def ashfall_weather_accumulation(t):
-    """Ashfall counted over the WHOLE map from ZERO: deposits land on
-    `CellFinder.RandomCell(map)`, so a 24x24 rect expected ~0 hits (the 2026-09-13 false RED)."""
+    """Ash fall counted over the WHOLE map from ZERO. Since 2026-11-08 it is vanilla sand fall (sandRate 1.2, heavy snow's
+    pace), so every open cell gains depth on each visit; 2600 ticks is ~1.5 visits, a dusting where it has landed."""
     _pad(t, PAD_PROBE)
     with _comp(t, "ashfall_accumulates", toggle="ashfallAccumulationEnabled"):
         _extinguish(t)
-        t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
-        start = _count(t, "RM_FE_Filth_LooseAsh")
+        _clear_ash(t)
+        start = _ash(t).get("ashed", 0)
         if _live(t) and start != 0:
-            _fail("could not clear ash to zero before the run: %d remain" % start)
+            _fail("could not clear ash to zero before the run: %d cells remain" % start)
         try:
             t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
             _wait(t, 2600)
-            n = _count(t, "RM_FE_Filth_LooseAsh")
+            got = _ash(t)
         finally:
             t.bridge_call("jawa/weather_set", unlock=True)
+        n = got.get("ashed", 0)
+        _note(t, "whole-map ash after 2600 ticks of ash fall", got)
         if _live(t) and n < 1:
-            _fail("expected >=1 NEW RM_FE_Filth_LooseAsh over the whole map after 2600 ticks "
-                  "under RM_FE_Weather_AshFall, got %d" % n)
+            _fail("expected >=1 NEW ashed cell over the whole map after 2600 ticks "
+                  "under RM_FE_Weather_AshFall, got %d (%r)" % (n, got))
         t.screenshot()
 
 
@@ -1458,17 +1497,19 @@ def ashfall_drifts(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "ashfall_darkens_drifts", shows=["pyre_ashfall_darkens_drifts"]):
         _extinguish(t)
-        t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
+        _clear_ash(t)
         t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
         _wait(t, 4000)
-        series = []
+        series, cells = [], []
         for _ in range(4):
-            series.append(_count(t, "RM_FE_Filth_LooseAsh"))
+            a = _ash(t)
+            series.append(a.get("depthSum", 0.0))
+            cells.append(a.get("ashed", 0))
             _wait(t, 2500)
-        _note(t, "whole-map LooseAsh at t=0/2500/5000/7500 after settle", series)
+        _note(t, "whole-map ash depth sum / ashed cells at t=0/2500/5000/7500 after settle", {"depthSum": series, "ashed": cells})
         if _live(t):
-            if any(b < a for a, b in zip(series, series[1:])) or series[-1] < 20:
-                _fail("ash series %r not monotone or < 20 at the end" % series)
+            if any(b < a for a, b in zip(series, series[1:])) or cells[-1] < 20:
+                _fail("ash depth series %r not monotone, or %r ashed cells < 20 at the end" % (series, cells))
         t.screenshot()
 
 
@@ -1502,6 +1543,35 @@ def blackrain(t):
     with _comp(t, "blackrain_reads", shows=["pyre_blackrain_reads"]):
         _weather_pair(t, "RM_FE_BlackRain", "Rain",
                       ("overlayClasses", "skyColorsDay", "skyColorsNightMid"))
+
+
+SMOOTH_MAX_TICK_US = 50000.0    # a colony tick this long is a visible hitch at normal speed
+
+
+@suite.chain("soaked_map_stays_smooth")
+@_teardown(fire=True)
+def soaked_map_stays_smooth(t):
+    """Owner, 2026-11-07: "VERY FAST, then pause". The Explosive Growth pass stepped and popped a whole rain-soaked map on
+    one tick (about 1 s, every 250 ticks). Hold black rain until grass pops, then read the slowest single tick of that pass."""
+    tick = "RimMandrake.ExplosiveGrowth.RM_MapComponent_ExplosiveGrowth:MapComponentTick"
+    fire = "RimMandrake.ExplosiveGrowth.RM_TopResolver:Fire"
+    with _comp(t, "soaked_map_stays_smooth", beyond_toggle=True):
+        _fresh_site(t)
+        t.bridge_call("jawa/weather_set", weather="RM_FE_BlackRain", lockWeather=True)
+        _wait(t, 8000)
+        t.bridge_call("jawa/health_profile", action="start", methods=tick + ";" + fire, minutes=10)
+        _wait(t, 6000)
+        got = t.bridge_call("jawa/health_profile", action="status") or {}
+        t.bridge_call("jawa/health_profile", action="stop")
+        if _live(t):
+            rows = {m.get("method"): m for m in (got.get("profile") or {}).get("methods") or []}
+            _note(t, "Explosive Growth pass under black rain", rows)
+            pops, row = (rows.get(fire) or {}).get("calls") or 0, rows.get(tick)
+            if not row or not pops:
+                _unmeasured(t, "no grass popped in the window, so the pass was not under load: %r" % rows)
+            worst = float(str(row.get("maxUs")).split()[0])
+            if worst > SMOOTH_MAX_TICK_US:
+                _fail("slowest Explosive Growth tick %.0f us over %.0f us with %d pops" % (worst, SMOOTH_MAX_TICK_US, pops))
 
 
 @suite.chain("no_ordinary_rain")
@@ -1580,10 +1650,17 @@ def scorchfruit_produces(t):
                 _fail("set_plants placed no RM_FE_Plant_ScorchFruit in %s" % _rs(rect))
             t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant",
                           rect=_rs(rect))
-            for p in plants[:3]:
+            # The first order must interrupt: queued behind a sleeper it never starts. A colonist's harvest can fail
+            # (PlantHarvestYield 0.7) and one pod takes ~1100 ticks, so three pods need ~3500.
+            for i, p in enumerate(plants[:3]):
                 t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest",
-                              targetAId=p["id"], queue=True, waitTicks=60)
-            _wait(t, 2500)
+                              targetAId=p["id"], queue=i > 0, waitTicks=0)
+            _wait(t, 3600)
+            gone = [p["id"] for p in plants[:3]
+                    if p["id"] not in set(x.get("id") for x in _things(t, "RM_FE_Plant_ScorchFruit", _rs(rect), limit=20))]
+            _note(t, "pods taken by the harvest", gone)
+            if not gone:
+                _fail("a harvest left every pod standing: it would regrow and be picked again")
             made = [x for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)
                     if x.get("id") not in before]
             _note(t, "yield made by the harvest", made)
@@ -1856,11 +1933,32 @@ def furnace_warmth(t):
         t.screenshot()
 
 
+# Owner card 2026-11-08 01:01 "heat with no cap": a closed pen settles at the weather plus this (PyrelandsTuning.
+# FurnaceRoomAboveOutdoorC, pinned by selftest_pyrelands_site): a 75 C oven at a 50 C site, heatstroke over hours.
+FURNACE_ROOM_ABOVE_C = 25.0
+FURNACE_ROOM_MIN_OVER = 10.0   # "clearly hotter": the 5x5 inside reaches the ceiling in ~2,600 of the series' 12,600 ticks
+FURNACE_ROOM_SLACK = 8.0       # over the ceiling: with no ceiling at all the same room runs to ~+64 C
+
+
+def room_heat_verdict(end, above=FURNACE_ROOM_ABOVE_C, min_over=FURNACE_ROOM_MIN_OVER, slack=FURNACE_ROOM_SLACK):
+    """pyre_furnacebeast_heats_room on the last (beast room, control room) read -> (ok, why): the beast room is clearly
+    hotter than the control, which stands at the weather, and the outdoor-relative ceiling held."""
+    if not end or None in end:
+        return False, "temperature unread at the end of the series: %r" % (end,)
+    over = end[0] - end[1]
+    if over < min_over:
+        return False, "beast room is not clearly hotter than the matched control (%+.1f C, under %+.0f)" % (over, min_over)
+    if over > above + slack:
+        return False, "beast room ran %+.1f C over the control: the %+.0f C ceiling did not hold" % (over, above)
+    return True, "beast room %+.1f C over the control (ceiling %+.0f C)" % (over, above)
+
+
 @suite.chain("furnace_room")
 @_teardown()
 def furnace_room(t):
-    """Two matched 7x7 rooms. The gating arm starts both at 10 C (below the pusher's 24 C cap,
-    where the beast is designed to heat); the ambient arm at the site's own heat is recorded."""
+    """Two matched 7x7 rooms at the site's own temperature, one holding a furnace-beast. Owner card 2026-11-08 01:01
+    ("heat with no cap"): the beast room climbs past the weather to the ceiling, FURNACE_ROOM_ABOVE_C over it, so it
+    must read clearly hotter than the control and no more than the ceiling plus slack over it (room_heat_verdict)."""
     _pad(t, PAD_ROOMS)
     t.clear_area(size=TEST_SIZE)
     x, z = t.anchor
@@ -1881,13 +1979,9 @@ def furnace_room(t):
         rooms = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
         beast = _pawn_row(t, bid) or {}
         amb = [tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c)) for c in (ca, cb)]
-        heat = [t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
-                for c in (ca, cb)]
-        if _live(t):
-            _note(t, "room_heat set 10 C (A, B)", heat)
         series = []
-        for _ in range(10):
-            _wait(t, 250)
+        for _ in range(12):
+            _wait(t, 1000)
             series.append([tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c))
                            for c in (ca, cb)])
         after = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
@@ -1896,7 +1990,7 @@ def furnace_room(t):
                                                             if k not in ("operation", "state")) for r in after])
             inside = (beast.get("x") is not None and a[0] < beast["x"] < a[0] + 6
                       and a[1] < beast["z"] < a[1] + 6)
-            _note(t, "room temperatures", {"ambient": amb, "coldStartSeries": series,
+            _note(t, "room temperatures", {"ambient": amb, "series": series,
                                            "beastAt": (beast.get("x"), beast.get("z")),
                                            "beastInsideRoomA": inside,
                                            "roomsFound": [(r or {}).get("roomsFound") for r in rooms]})
@@ -1905,13 +1999,177 @@ def furnace_room(t):
             if not inside:
                 _unmeasured(t, "spawn_pawn scattered the beast out of room A (at %r)"
                             % ((beast.get("x"), beast.get("z")),))
-            cold = [sa - sb for sa, sb in series if None not in (sa, sb) and sb < 24.0]
-            if not cold:
-                _unmeasured(t, "the control room never sat below the pusher's 24 C cap: %r" % series)
-            if sum(cold) / len(cold) <= 0.5:
-                _fail("beast room is not warmer than the matched control while below 24 C: "
-                      "mean delta %.2f C over %r" % (sum(cold) / len(cold), series))
+            # Both rooms stay at the map's own temperature: the first version chilled them to 10 C, under the pusher's old
+            # 24 C cap, and so passed while the beast heated nothing at the biome's real 50 C.
+            end = series[-1]
+            if None in end:
+                _unmeasured(t, "no temperature read at the end of the series: %r" % (series,))
+            ok, why = room_heat_verdict(end)
+            if not ok:
+                _fail("%s: %r" % (why, series))
         t.screenshot(rect=(a[0], a[1], 18, 7))
+
+
+# Owner card 2026-11-08 01:01 "it ignites grass it sleeps in" (pyre_furnacebeast_sleep_ignites).
+FURNACE_BED = "RimMandrake.Pyrelands.CompFurnaceBedIgnition"   # ProbeSleep: the sleeper's state read
+SLEEP_GRACE_TICKS = 1250     # PyrelandsTuning.FurnaceSleepIgnitionGraceTicks (these three pinned by selftest_pyrelands_site)
+SLEEP_MTB_TICKS = 3750       # PyrelandsTuning.FurnaceSleepIgnitionMtbTicks: with the grace, ~2 h of sleep on average
+SLEEP_POLL_TICKS = 250       # PyrelandsTuning.FurnaceSleepIgnitionCheckTicks: one poll per roll
+SLEEP_FAIL_ROLL_TICKS = 5 * SLEEP_MTB_TICKS      # ~7.5 h rolling on grass with no fire FAILS (a working roll: e^-5, 0.7%)
+SLEEP_CONTROL_ROLL_TICKS = 3 * SLEEP_MTB_TICKS   # the bare-ground span: a roll that ignored the plant lights it 95% of runs
+SLEEP_WAIT_TICKS = 30000     # the row's ceiling: the grace, the FAIL span and one re-sleep
+SLEEP_REORDERS = 4           # LayDown re-orders per beast (it woke, or lay down off its plot)
+
+
+def _kv_int(v, default=-1):
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return default
+
+
+def _slept_through(prev, cur):
+    """Two ProbeSleep polls asleep on one cell with the rest clock still running: it lay there the whole interval."""
+    return (prev.get("awake") == "False" and cur.get("awake") == "False" and prev.get("cell") == cur.get("cell")
+            and _kv_int(cur.get("restingTicks")) > _kv_int(prev.get("restingTicks")) >= 0)
+
+
+def sleep_ignition_verdict(a, b, step=SLEEP_POLL_TICKS, grace=SLEEP_GRACE_TICKS, fail_roll=SLEEP_FAIL_ROLL_TICKS,
+                           control_roll=SLEEP_CONTROL_ROLL_TICKS):
+    """pyre_furnacebeast_sleep_ignites over the two sleepers' polls (ProbeSleep fields plus 'fire', the Fire count within
+    2 cells of the sleeper) -> (verdict, why, spans), verdict 'PASS', 'FAIL' or None (keep polling). a lies in grass,
+    b (the control) on bare ground. An interval counts only when the beast slept through it past the grace: on a
+    flammable plant for a, on a plantless cell for b. A fire, or the sleep roll's own record (litAfterTicks), appearing
+    beside b over such an interval FAILS; a PASSES once its sleep roll's record stands with a Fire seen beside it by the
+    next poll and b has slept control_roll ticks; a FAILS after fail_roll ticks of rolling with no light."""
+    roll_b = 0
+    for prev, cur in zip(b, b[1:]):
+        if not _slept_through(prev, cur) or prev.get("plant") != "none":
+            continue
+        if cur.get("litAfterTicks") != prev.get("litAfterTicks") and _kv_int(cur.get("litAfterTicks")) >= 0:
+            return "FAIL", "the sleep roll lit the bare-ground control at cell %s (%r)" % (cur.get("cell"), cur), {"rollB": roll_b}
+        if cur.get("fire", 0) > 0 and not prev.get("fire", 0):
+            return "FAIL", "fire beside the control asleep on bare ground at cell %s (%r)" % (cur.get("cell"), cur), {"rollB": roll_b}
+        if _kv_int(prev.get("restingTicks")) >= grace:
+            roll_b += step
+    roll_a = 0
+    for prev, cur in zip(a, a[1:]):
+        if _slept_through(prev, cur) and prev.get("flammablePlant") == "True" and _kv_int(prev.get("restingTicks")) >= grace:
+            roll_a += step
+    lit = next((i for i, s in enumerate(a) if _kv_int(s.get("litAfterTicks")) >= 0), None)
+    spans = {"rollA": roll_a, "rollB": roll_b, "litAfterTicks": _kv_int(a[lit].get("litAfterTicks")) if lit is not None else None}
+    if lit is not None:
+        seen = [s.get("fire", 0) for s in a[lit:lit + 2]]
+        if not any(seen):
+            if len(seen) < 2:
+                return None, "lit after %s ticks asleep, fire not yet read" % spans["litAfterTicks"], spans
+            return "FAIL", "the sleep roll lit the grass (after %s ticks asleep) but no Fire stood beside the beast by the next poll" \
+                   % spans["litAfterTicks"], spans
+        if roll_b >= control_roll:
+            return "PASS", "grass caught after %s ticks (%.1f h) asleep; the control slept %d ticks on bare ground, no fire" \
+                   % (spans["litAfterTicks"], spans["litAfterTicks"] / 2500.0, roll_b), spans
+        return None, "lit; the control has slept %d of %d ticks" % (roll_b, control_roll), spans
+    if roll_a >= fail_roll:
+        return "FAIL", "the beast slept %d ticks (%.1f h) past the grace on a flammable plant and never lit it" \
+               % (roll_a, roll_a / 2500.0), spans
+    return None, "rolled %d of %d ticks on grass, the control %d of %d on bare ground" % (roll_a, fail_roll, roll_b, control_roll), spans
+
+
+@suite.chain("furnace_sleep")
+@_teardown(fire=True, weather=True)
+def furnace_sleep(t):
+    """Owner card 2026-11-08 01:01: a furnace-beast asleep on a cell holding grass (any flammable plant) sets it alight,
+    after ~2 h of sleep on average, never at once and never on a cell with no plant. Two wild beasts are laid down on a
+    concrete pad: A on a 5x5 of ember grass, B (the control) on a 5x5 of bare RM_FE_Ground_Soil, which burns
+    (Flammability 0.6), so a roll that ignored the plant would light it. Every SLEEP_POLL_TICKS both are read with
+    CompFurnaceBedIgnition.ProbeSleep and the Fire within 2 cells of each is counted; sleep_ignition_verdict grades.
+    The wake-up smoulder (any ground, 18%) is the older, separate roll: a fire beside a woken B is put out before it
+    lies down again, and only the sleep roll's own record can pass A. Weather locked Clear: rain would put a small
+    grass fire out before a poll saw it.
+    Lessons from runs go here."""
+    _pad(t, PAD_SLEEP)
+    t.clear_area(size=TEST_SIZE)
+    rect = _rect(t)
+    x, z = t.anchor
+    plots = {"A": (x - 8, z - 2, 5, 5), "B": (x + 3, z - 2, 5, 5)}
+    beds = dict((k, (r[0] + 2, r[1] + 2)) for k, r in plots.items())
+    # shows=[] until pyre_furnacebeast_sleep_ignites is a bar of the walk's north star (an orphan shows= id refuses the
+    # run, floor.orphan_shows); this component then claims it.
+    with _comp(t, "furnacebeast_sleep_ignites", shows=[]):
+        _set(t, {"furnaceThermalEnabled": True})
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        # All concrete but the two plots, 6 cells apart: A's fire cannot reach B, nor the site's own grass.
+        t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=FIREBREAK, width=rect[2], height=rect[3],
+                      layer="top")
+        t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(rect))
+        for r in plots.values():
+            _soil(t, r)
+        _plants(t, "RM_FE_Plant_EmberGrass", plots["A"])
+        planted = _GEN.get("last_plants")
+        ids = dict((k, _spawn_wild(t, "RM_FurnaceBeast", c[0], c[1])) for k, c in beds.items())
+        orders = dict((k, []) for k in beds)
+
+        def lay_down(k):
+            t.bridge_call("jawa/pawn_need", pawn=ids[k], action="need", need="Food", level=1.0)
+            t.bridge_call("jawa/pawn_need", pawn=ids[k], action="need", need="Rest", level=0.05)
+            r = t.bridge_call("jawa/ordered_job", pawnId=ids[k], jobDef="LayDown", targetAX=beds[k][0],
+                              targetAZ=beds[k][1], waitTicks=0)
+            orders[k].append(dict((f, (r or {}).get(f)) for f in ("success", "accepted", "afterJobDef", "message")))
+
+        def probe(k, tick):
+            r = t.bridge_call("jawa/static_call", type=FURNACE_BED, method="ProbeSleep", args=ids[k])
+            if not _live(t):
+                return {}
+            if not (r or {}).get("success"):
+                _unmeasured(t, "static_call ProbeSleep refused - is the sleep-ignition build deployed? %r" % r)
+            kv = parse_kv(r.get("result"))
+            c = xz_of(kv.get("cell"))
+            if kv.get("spawned") != "true" or c is None:
+                _unmeasured(t, "furnace-beast %s is not on the map: %r" % (k, kv))
+            kv["fire"] = _count(t, "Fire", "%d,%d,5,5" % (c[0] - 2, c[1] - 2))
+            kv["tick"] = tick
+            return kv
+
+        for k in beds:
+            lay_down(k)
+        samples = dict((k, []) for k in beds)
+        verdict, why, spans, waited = None, "", {}, 0
+        while waited < SLEEP_WAIT_TICKS:
+            _wait(t, SLEEP_POLL_TICKS)
+            waited += SLEEP_POLL_TICKS
+            for k in beds:
+                samples[k].append(probe(k, waited))
+            if not _live(t):
+                break
+            verdict, why, spans = sleep_ignition_verdict(samples["A"], samples["B"])
+            if verdict:
+                break
+            for k in beds:
+                sm = samples[k][-1]
+                if len(orders[k]) > SLEEP_REORDERS:
+                    continue
+                if k == "A":
+                    stray = _kv_int(sm.get("litAfterTicks")) < 0 and sm.get("awake") == "False" and sm.get("flammablePlant") != "True"
+                else:
+                    stray = spans.get("rollB", 0) < SLEEP_CONTROL_ROLL_TICKS and sm.get("awake") == "False" and sm.get("plant") != "none"
+                woke = sm.get("job") != "LayDown" and (k == "B" or _kv_int(sm.get("litAfterTicks")) < 0)
+                if not (stray or woke):
+                    continue
+                if k == "B" and sm.get("fire"):   # the wake-up smoulder, not this row's roll: put out before it lies down
+                    t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs((plots["B"][0] - 3, plots["B"][1] - 3, 11, 11)))
+                lay_down(k)
+        _note(t, "grass plot planting (A)", planted)
+        _note(t, "LayDown orders", orders)
+        _note(t, "sleeper polls (tick, awake, job, restingTicks, cell, plant, litAfterTicks, fire within 2)",
+              dict((k, [(s.get("tick"), s.get("awake"), s.get("job"), s.get("restingTicks"), s.get("cell"), s.get("plant"),
+                         s.get("litAfterTicks"), s.get("fire")) for s in v]) for k, v in samples.items()))
+        if _live(t):
+            _note(t, "sleep ignition spans (ticks)", spans)
+            if verdict == "FAIL":
+                _fail(why)
+            if verdict != "PASS":
+                _unmeasured(t, "no verdict in %d ticks: %s" % (waited, why))
+        t.screenshot(rect=(plots["A"][0] - 1, plots["A"][1] - 1, 18, 7))
 
 
 @suite.chain("burrowers")
@@ -2044,6 +2302,8 @@ def heat_dome(t):
         _wait(t, 5)
         domed = _dome_probe(t, g)
         _wait(t, 60)
+        # bodyGraphic is the graphic of the LAST draw, and an off-screen pawn is not drawn: frame it first.
+        t.screenshot(rect=(x - 6, z - 6, 12, 12))
         drawn = _dome_probe(t, g)
         _wait(t, DOME_HOLD_TICKS + 300)
         after = _dome_probe(t, g)
@@ -2116,52 +2376,25 @@ def embergrass_regrow(t):
         def new_count():
             return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                            inner, limit=2000) if p.get("id") not in pre_ids])
-        # PYRE_REGROW_BUILD_A_WEEK_IN_MINUTES: COMPRESSED. The shipped regrow pace is wildPlantRegrowDays 9; the
-        # override 0.1 runs the spawner 90x faster, so REGROW_SHORT_STEP*2 ticks stand in for ~4.5 shipped days.
-        # The override is flipped AFTER the burn check (it only paces new spawns) and restored + read back below.
-        _set(t, {"wildPlantRegrowDaysOverride": REGROW_OVERRIDE_DAYS})
+        # The real clock at the shipped settings: a compressed override cannot stand in here, because the bursts, not the
+        # spawner, carry the scar (measured: 9 regrow days filled a scar as fast as 3).
         d0 = new_count()
-        _wait(t, REGROW_SHORT_STEP)
-        d3 = new_count()
-        live_ovr = (_get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlantRegrowDays").get("RM_Pyrelands") or {}).get(
-            "wildPlantRegrowDays")
-        _wait(t, REGROW_SHORT_STEP)
-        d7 = new_count()
+        fracs = []
+        for days in REGROW_SAMPLE_DAYS:
+            _wait(t, int(days * 60000) - (fracs[-1][0] * 60000 if fracs else 0))
+            fracs.append((days, (float(new_count()) / len(pre_ids)) if pre_ids else None))
         temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
-        pre = len(pre_ids)
-        bad = _restore(t)
-        shipped = _live_setting(t, "wildPlantRegrowDaysOverride")
-        _wait(t, 300)   # the enforcer re-asserts on 250-tick boundaries
-        live_after = (_get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlantRegrowDays").get("RM_Pyrelands") or {}).get(
-            "wildPlantRegrowDays")
-        _note(t, "COMPRESSED regrow (override %s days vs shipped 9; ~90x). Shipped constant read back after restore"
-              % REGROW_OVERRIDE_DAYS,
-              {"pre": pre, "afterBurn": d0, "step1": d3, "step2": d7, "stepTicks": REGROW_SHORT_STEP,
-               "step1Frac": (float(d3) / pre) if pre else None,
-               "step2Frac": (float(d7) / pre) if pre else None, "temp": temp,
-               "overrideReadBack": shipped, "biomeRegrowDaysDuringOverride": live_ovr,
-               "biomeRegrowDaysAfterRestore": live_after, "restoreFailures": [str(x) for x in bad]})
+        _note(t, "regrow on the real clock", {"pre": len(pre_ids), "afterBurn": d0, "fractions": fracs, "temp": temp})
         if _live(t):
-            if pre <= 0:
+            if not pre_ids:
                 _fail("regrow cohort had no pre-burn plants")
-            def _num(v):
-                try:
-                    return float(v)
-                except (TypeError, ValueError):
-                    return None
-            if bad or _num(shipped) != 0.0:
-                _fail("regrow override did not restore to the shipped 0: readback %r, failures %r" % (shipped, bad))
-            if _num(live_ovr) is None or abs(_num(live_ovr) - REGROW_OVERRIDE_DAYS) > 1e-4:
-                _fail("override did not reach the live biome: wildPlantRegrowDays %r, wanted %r"
-                      % (live_ovr, REGROW_OVERRIDE_DAYS))
-            if _num(live_after) is None or abs(_num(live_after) - 9.0) > 1e-4:
-                _fail("shipped biome wildPlantRegrowDays 9 not restored: live %r" % (live_after,))
-            if d7 <= d0:
-                _fail("no new plants appeared during the COMPRESSED regrow window: afterBurn=%d step2=%d" % (d0, d7))
-            _unmeasured(t, "COMPRESSED (override %s days, 2x%d ticks): new roster plants in the burned 16x16 cohort "
-                           "pre=%d afterBurn=%d step1=%d step2=%d; shipped 7-day fractions stay INFERRED/CALIBRATING "
-                           "(plan targets 25%%/60%%); override restored to %r"
-                        % (REGROW_OVERRIDE_DAYS, REGROW_SHORT_STEP, pre, d0, d3, d7, shipped))
+            if not fracs[0][1] or fracs[0][1] < REGROW_FIRST_DAYS_FRAC:
+                _fail("not visibly re-greening within a few days: %r" % (fracs,))
+            if fracs[0][1] > REGROW_FIRST_DAYS_MAX:
+                _fail("re-greens too fast: over %.0f%% green by day %s, so it is largely green long before about a week: %r"
+                      % (REGROW_FIRST_DAYS_MAX * 100, fracs[0][0], fracs))
+            if not fracs[-1][1] or fracs[-1][1] < REGROW_WEEK_FRAC:
+                _fail("not largely green again within about a week: %r" % (fracs,))
         t.screenshot(rect=regrow)
 
 

@@ -50,6 +50,19 @@
 
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
+    <Compile Include="JobGiver_RUT_FireHawkSeekBurn.cs" />
+    <Compile Include="CompWithersUnderRoof.cs" />
+    <Compile Include="ThinkNode_ConditionalPyrelandsColonist.cs" />
+    <Compile Include="PyrelandsFireSense.cs" />
+    <Compile Include="PyrelandsWetRoots.cs" />
+    <Compile Include="PyrelandsWeatherOverlays.cs" />
+    <Compile Include="PyrelandsAshCover.cs" />
+    <Compile Include="PyrelandsAshDust.cs" />
+    <Compile Include="PyrelandsAshSand.cs" />
+    <Compile Include="PyrelandsHerdThirst.cs" />
+    <Compile Include="PyrelandsForeignArrivals.cs" />
+    <Compile Include="GenStep_PyrelandsFireCast.cs" />
+    <Compile Include="GenStep_PyrelandsStandingWater.cs" />
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />

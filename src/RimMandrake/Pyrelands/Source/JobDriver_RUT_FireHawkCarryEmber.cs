@@ -19,17 +19,28 @@ namespace RimMandrake.Pyrelands
     /// deteriorate) for a visual that lasts ninety ticks. The flecks thrown in the
     /// take toil are the visual; the job itself is the mechanism.
     ///
-    /// FAILURE IS SILENT AND SAFE. If the source fire goes out before the hawk
-    /// reaches it, the job fails and nothing is lit — the spread-only law holds on
-    /// the way out as well as at the decision (§7c). If the destination has
-    /// stopped being flammable by the time the hawk arrives, TryStartFireIn simply
-    /// returns false. Either way the cooldown was already charged by the
-    /// job-giver, so a hawk cannot thrash against a bad target.
+    /// FAILURE IS SILENT AND SAFE. If no free fire still burns at the source cell
+    /// when the hawk gets there, the job ends and nothing is lit: the spread-only
+    /// law (§7c) holds at the take. If the destination has stopped being flammable
+    /// by the time the hawk arrives, TryStartFireIn simply returns false. Either
+    /// way the cooldown was already charged by the job-giver, so a hawk cannot
+    /// thrash against a bad target.
+    ///
+    /// The take reads the source CELL (TargetC), not the Fire thing (map t,
+    /// 2026-11-07): a grass fire burns out in seconds, and the job failed the
+    /// moment its one Fire despawned, on the way in or with the ember already in
+    /// the beak. Two hawks over a 700-fire burn started sorties for 2.75 days and
+    /// dropped one ember. Now any fire still burning beside that cell gives the
+    /// ember, and once taken it is carried whatever its source does.
     /// </summary>
     public class JobDriver_RUT_FireHawkCarryEmber : JobDriver
     {
         private const TargetIndex SourceFireInd = TargetIndex.A;
         private const TargetIndex IgniteCellInd = TargetIndex.B;
+        private const TargetIndex SourceCellInd = TargetIndex.C;
+
+        /// <summary>How near the source cell a fire must still burn when the hawk arrives to give it an ember.</summary>
+        private const float EmberReach = 2.9f;
 
         /// <summary>Script probe (jawa/static_call, FIREHAWK_EMBER_FIX_WALKS_ITS_TWIG): the hawk's flight STATE, never a
         /// visual. jobFlying is what Pawn_FlightTracker.Notify_JobStarted decided for the current job; cooldown &gt; 0 means
@@ -52,15 +63,24 @@ namespace RimMandrake.Pyrelands
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            // No source fire, no job — this is the spread-only law expressed as a
-            // fail condition rather than a decision.
-            this.FailOnDespawnedOrNull(SourceFireInd);
+            // A job saved before TargetC existed takes its source cell from the fire, if that is still there.
+            if (!job.GetTarget(SourceCellInd).IsValid && job.GetTarget(SourceFireInd).HasThing && job.GetTarget(SourceFireInd).Thing.Spawned)
+            {
+                job.SetTarget(SourceCellInd, job.GetTarget(SourceFireInd).Thing.Position);
+            }
+            this.FailOn(() => !job.GetTarget(SourceCellInd).IsValid);
 
-            yield return Toils_Goto.GotoThing(SourceFireInd, PathEndMode.Touch)
-                                   .FailOnDespawnedOrNull(SourceFireInd);
+            yield return Toils_Goto.GotoCell(SourceCellInd, PathEndMode.Touch);
 
-            Toil takeEmber = Toils_General.Wait(PyrelandsTuning.FireHawkTakeEmberTicks, SourceFireInd);
-            takeEmber.FailOnDespawnedOrNull(SourceFireInd);
+            // No fire left at the source, no ember: the spread-only law expressed as a fail condition rather than a decision.
+            Toil takeEmber = Toils_General.Wait(PyrelandsTuning.FireHawkTakeEmberTicks, SourceCellInd);
+            takeEmber.AddPreInitAction(delegate
+            {
+                if (!FireStillBurns(job.GetTarget(SourceCellInd).Cell, pawn.Map))
+                {
+                    EndJobWith(JobCondition.Incompletable);
+                }
+            });
             takeEmber.tickAction = delegate
             {
                 if (pawn.IsHashIntervalTick(15))
@@ -70,7 +90,15 @@ namespace RimMandrake.Pyrelands
             };
             yield return takeEmber;
 
-            yield return Toils_Goto.GotoCell(IgniteCellInd, PathEndMode.OnCell);
+            Toil carry = Toils_Goto.GotoCell(IgniteCellInd, PathEndMode.OnCell);
+            carry.AddPreTickAction(delegate
+            {
+                if (pawn.IsHashIntervalTick(20) && pawn.Map != null)
+                {
+                    FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);
+                }
+            });
+            yield return carry;
 
             Toil dropEmber = ToilMaker.MakeToil("RUT_FireHawkDropEmber");
             dropEmber.defaultCompleteMode = ToilCompleteMode.Instant;
@@ -89,12 +117,32 @@ namespace RimMandrake.Pyrelands
                 CompFireHawkSpread comp = pawn.TryGetComp<CompFireHawkSpread>();
                 float size = comp?.Props.startFireSize ?? PyrelandsTuning.SmoulderFireSize;
 
-                if (FireUtility.TryStartFireIn(cell, pawn.Map, size, pawn))
+                bool lit = FireUtility.TryStartFireIn(cell, pawn.Map, size, pawn);
+                if (lit)
                 {
                     FleckMaker.ThrowFireGlow(cell.ToVector3Shifted(), pawn.Map, 1f);
                 }
+                comp?.Notify_EmberDropped(cell, lit);
             };
             yield return dropEmber;
+        }
+
+        /// <summary>A free ground fire (not a burning pawn or wall) within EmberReach of the source cell.</summary>
+        private static bool FireStillBurns(IntVec3 cell, Map map)
+        {
+            if (map == null || !cell.IsValid) return false;
+            int n = GenRadial.NumCellsInRadius(EmberReach);
+            for (int i = 0; i < n; i++)
+            {
+                IntVec3 c = cell + GenRadial.RadialPattern[i];
+                if (!c.InBounds(map)) continue;
+                List<Thing> here = map.thingGrid.ThingsListAtFast(c);
+                for (int k = 0; k < here.Count; k++)
+                {
+                    if (here[k] is Fire { parent: null } f && f.Spawned) return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -106,6 +106,12 @@ def source_faults(util: str, jobs: str, liq: str) -> list[str]:
         f.append("TryFindDrinkCell lets home water of use class Never rank as Never (or above potable water)")
     if "home ? DrinkLiquidAt(t, pawn) : DrinkLiquidAt(t)" not in find:
         f.append("TryFindDrinkCell does not read the native's liquid at home water")
+    # THIRST_FIX_FAR_WATER_NEVER_FOUND: map x's colony died 94 cells from the only pond; the walk must not ask GenRadial past its
+    # pattern (it logs an error per call) and must fall back to the map's drinkable cells, nearest first, when the walk finds none
+    if "GenRadial.MaxRadialPatternRadius" not in find:
+        f.append("TryFindDrinkCell asks GenRadial for a radius past its pattern (Not enough squares, every call)")
+    if "foreach (IntVec3 c in DrinkableCells(map))" not in find or "far.Sort(" not in find:
+        f.append("TryFindDrinkCell never looks past the radial walk: water further than the radius is never found")
     drv = flat(body(jobs, "class JobDriver_RM_DrinkFromTerrain"))
     if drv.count("DrinkLiquidAt(Map.terrainGrid.TerrainAt(job.targetA.Cell), pawn)") != 1:
         f.append("the drink job's FailOn drops a native at home water (no pawn passed)")
@@ -162,19 +168,21 @@ public static class Find { public static TickManager TickManager = new TickManag
 public class RaceProperties { public bool Humanlike; }
 public class Need_RM_Thirst { public float CurLevel = 0.1f; }
 public class RotationTracker { public void FaceCell(IntVec3 c) {} }
+public class RM_ThirstGrassWateredExtension { public float searchRadius = 150f; public static RM_ThirstGrassWateredExtension For(Pawn p) { return null; } }
 public class Pawn : Thing { public static int next = 1; public Map Map; public PawnKindDef kindDef; public RaceProperties RaceProps = new RaceProperties();
     public IntVec3 Position; public bool Dead; public int thingIDNumber = next++; public Need_RM_Thirst need = new Need_RM_Thirst();
     public int consequences; public RotationTracker rotationTracker = new RotationTracker();
     public bool CanReach(IntVec3 c, PathEndMode m, Danger d) { return true; } }
 public struct IntVec3 { public int x; public IntVec3(int x) { this.x = x; } public static readonly IntVec3 Invalid = new IntVec3(-999);
-    public bool InBounds(Map m) { return x >= 0 && x < m.cells.Length; } public bool IsForbidden(Pawn p) { return false; } }
+    public bool InBounds(Map m) { return x >= 0 && x < m.cells.Length; } public bool IsForbidden(Pawn p) { return false; }
+    public static IntVec3 operator -(IntVec3 a, IntVec3 b) { return new IntVec3(a.x - b.x); } public int LengthHorizontalSquared { get { return x * x; } } }
 public enum PathEndMode { Touch } public enum Danger { Some } public enum TargetIndex { A } public enum ToilCompleteMode { Instant }
 public class TerrainGrid { public Map map; public TerrainDef TerrainAt(IntVec3 c) { return map.cells[c.x]; } }
 public class RM_MapComponent_Excavation { public object Stock; }
 public class Map { public BiomeDef Biome; public TerrainDef[] cells; public TerrainGrid terrainGrid;
     public Map(BiomeDef b, params TerrainDef[] cells) { Biome = b; this.cells = cells; terrainGrid = new TerrainGrid { map = this }; }
     public T GetComponent<T>() where T : class { return null; } }
-public static class GenRadial { public static IEnumerable<IntVec3> RadialCellsAround(IntVec3 p, float r, bool self) { for (int i = 0; i < 60; i++) yield return new IntVec3(i); } }
+public static class GenRadial { public const float MaxRadialPatternRadius = 79.81228f; public static IEnumerable<IntVec3> RadialCellsAround(IntVec3 p, float r, bool self) { for (int i = 0; i < 60; i++) yield return new IntVec3(i); } }
 public static class RM_Volume { public static int Units(float l) { return (int)(l * 10f); } }
 public static class RM_ThirstProvider { public static bool OursLive = true; }
 public static class RM_ThirstSettings { public static bool waterQualityEffects = true, lastResortDrinking = true; }
@@ -220,6 +228,7 @@ public static class RM_ThirstUtility {
     internal const int NoTerrainMarkTicks = 600;
     private static readonly Dictionary<int, int> noTerrainUntil = new Dictionary<int, int>();
     private static readonly System.WeakReference<Game> marksGame = new System.WeakReference<Game>(null);
+    public static List<IntVec3> DrinkableCells(Map m) { return new List<IntVec3>(); }   // the far search: the radial stub covers the map
     public static Need_RM_Thirst NeedOf(Pawn p) { return p == null ? null : p.need; }
     public static void QualityEffects(Pawn p, RM_WaterQuality q, Thing s) { p.consequences++; }
     public static void RowEffects(Pawn p, LiquidDef l, Thing s) { p.consequences++; }

@@ -530,7 +530,7 @@ def test_tier():
     if not t:
         return
     check("tier dlc True (owner 2026-09-19)", t["dlc"] is True)
-    check("tier want = plan 3.1", set(t["want"]) == {mb.BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
+    check("tier want = plan 3.1 + mandrake.rm.patches (285a403024)", set(t["want"]) == {mb.BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rm.patches",
                                                     "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"})
     ex = set(t["forbid"])
     check("tier excludes transitions/mapdesigner/BCP", {"m00nl1ght.geologicallandforms",
@@ -542,7 +542,7 @@ def test_tier():
 
     def rec(pid, deps=()):
         return {"packageId": pid, "name": pid, "deps": list(deps), "after": [], "before": []}
-    inst = {p: rec(p) for p in ["ludeon.rimworld", "brrainz.harmony", mb.BRIDGE, "mandrake.rut.patches",
+    inst = {p: rec(p) for p in ["ludeon.rimworld", "brrainz.harmony", mb.BRIDGE, "mandrake.rut.patches", "mandrake.rm.patches",
                                 "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"]
             + list(P.DLCS)}
     inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes")
@@ -612,6 +612,8 @@ def test_defaults_match_source():
         cm = re.match(r"PyrelandsTuning\.(\w+)", val)
         if cm:
             val = re.search(r"const \w+ %s = ([^;]+);" % cm.group(1), tun).group(1)
+        elif re.fullmatch(r"[A-Z]\w*", val):   # a const of the settings class itself (AshDustingDefault)
+            val = re.search(r"const \w+ %s = ([^;]+);" % val, src).group(1)
         val = val.rstrip("f").strip('"')
         found[name] = (val == "true") if typ == "bool" else (val if typ == "string" else float(val))
     check("DEFAULTS covers every static settings field", set(found) == set(P.DEFAULTS),
@@ -927,7 +929,7 @@ def test_suite_reads_no_genstep_as_a_thing():
     src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
     used = set(re.findall(r'(?:_things|_count|_ids_on_map)\(t, "([^"]+)"', src))
     used |= set(re.findall(r'list_things", defName="([^"]+)"', src))
-    check("validation.py thing reads were found (the instrument can see)", "RM_FE_Filth_LooseAsh" in used, used)
+    check("validation.py thing reads were found (the instrument can see)", "RM_FE_Plant_ScorchFruit" in used, used)
     check("no thing read names a GenStepDef", not (used & gensteps), used & gensteps)
 
 
@@ -1395,12 +1397,97 @@ def test_ash_control_and_herd_drive_2026_10_14():
           "static readonly HashSet<int> rolledFires" not in hook and "RM_FireEcoKernel.RollSetFor(rolledFiresByMap, map)" in hook)
 
 
+def test_furnace_heat_and_sleep_2026_11_08():
+    """Owner card 2026-11-08 01:01: the furnace-beast heats a closed room past the weather to a ceiling (room_heat_verdict)
+    and lights grass it sleeps in (sleep_ignition_verdict over the furnace_sleep chain's ProbeSleep polls). Pins the
+    row constants to PyrelandsTuning, grades both verdicts on synthetic series, and checks the chain's wiring."""
+    v = _load_validation("pyre_validation_furnace")
+    tun = open(os.path.join(HERE, "Source", "PyrelandsTuning.cs"), encoding="utf-8").read()
+
+    def const(name):
+        m = re.search(r"%s\s*=\s*([\d_.]+)f?;" % name, tun)
+        return float(m.group(1).replace("_", "")) if m else None
+    check("sleep row constants == PyrelandsTuning (grace / mtb / check)",
+          (const("FurnaceSleepIgnitionGraceTicks"), const("FurnaceSleepIgnitionMtbTicks"), const("FurnaceSleepIgnitionCheckTicks"))
+          == (v.SLEEP_GRACE_TICKS, v.SLEEP_MTB_TICKS, v.SLEEP_POLL_TICKS))
+    check("room row ceiling == PyrelandsTuning.FurnaceRoomAboveOutdoorC", const("FurnaceRoomAboveOutdoorC") == v.FURNACE_ROOM_ABOVE_C)
+    check("the sleep FAIL span is >= 5 MTB (a working roll fails a run < 1%) and fits the wait",
+          v.SLEEP_FAIL_ROLL_TICKS >= 5 * v.SLEEP_MTB_TICKS
+          and v.SLEEP_GRACE_TICKS + v.SLEEP_FAIL_ROLL_TICKS < v.SLEEP_WAIT_TICKS)
+
+    check("room +25 C over the control passes", v.room_heat_verdict((75.0, 50.0))[0])
+    check("room +5 C over the control fails (not clearly hotter)", not v.room_heat_verdict((55.0, 50.0))[0])
+    check("room +60 C over the control fails (ceiling did not hold)", not v.room_heat_verdict((110.0, 50.0))[0])
+    check("an unread room fails", not v.room_heat_verdict((None, 50.0))[0] and not v.room_heat_verdict(None)[0])
+
+    step = v.SLEEP_POLL_TICKS
+
+    def series(n, plant, lit_at=None, fire_at=None, wake_at=None):
+        out = []
+        for i in range(n):
+            awake = wake_at is not None and i >= wake_at
+            out.append({"awake": str(awake), "job": "Wait_Wander" if awake else "LayDown", "cell": "3,4",
+                        "restingTicks": str(0 if awake else i * step), "plant": plant,
+                        "flammablePlant": str(plant != "none"), "litAfterTicks": str(lit_at * step if lit_at is not None
+                                                                                     and i >= lit_at else -1),
+                        "fire": 1 if fire_at is not None and i >= fire_at else 0, "tick": (i + 1) * step})
+        return out
+    grass, bare = "RM_FE_Plant_EmberGrass", "none"
+    nb = (v.SLEEP_GRACE_TICKS + v.SLEEP_CONTROL_ROLL_TICKS) // step + 1
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, 16), series(nb, bare))
+    check("lit grass with Fire seen, control slept 3 MTB clean -> PASS", verdict[0] == "PASS", verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, 17), series(nb - 1, bare))
+    check("the control one poll short -> no verdict yet", verdict[0] is None, verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, None), series(nb, bare))
+    check("the sleep roll lit but no Fire by the next poll -> FAIL", verdict[0] == "FAIL", verdict)
+    verdict = v.sleep_ignition_verdict(series(17, grass, 16, None), series(nb, bare))
+    check("lit on the last poll, Fire not yet read -> no verdict", verdict[0] is None, verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, 16), series(nb, bare, fire_at=20))
+    check("fire beside the control asleep on bare ground -> FAIL", verdict[0] == "FAIL", verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, 16), series(nb, bare, lit_at=20))
+    check("the sleep roll's record on the control -> FAIL", verdict[0] == "FAIL", verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass), series(nb, grass, fire_at=20))
+    check("fire beside a control lying on a plant is not graded", verdict[0] is None, verdict)
+    verdict = v.sleep_ignition_verdict(series(nb, grass, 16, 16), series(nb, bare, fire_at=21, wake_at=21))
+    check("the wake smoulder beside a woken control is not this row's fire", verdict[0] is None, verdict)
+    nf = (v.SLEEP_GRACE_TICKS + v.SLEEP_FAIL_ROLL_TICKS) // step + 1
+    verdict = v.sleep_ignition_verdict(series(nf, grass), series(nf, bare))
+    check("5 MTB rolling on grass with no light -> FAIL", verdict[0] == "FAIL" and "never lit" in verdict[1], verdict)
+    verdict = v.sleep_ignition_verdict(series(nf - 1, grass), series(nf, bare))
+    check("one poll short of the FAIL span -> no verdict", verdict[0] is None, verdict)
+    verdict = v.sleep_ignition_verdict(series(nf, bare), series(nf, bare))
+    check("a beast asleep off the grass is not rolling (no FAIL)", verdict[0] is None and verdict[2]["rollA"] == 0, verdict)
+
+    pads = [(k, getattr(v, k)) for k in dir(v) if k.startswith("PAD_") and isinstance(getattr(v, k), tuple)]
+    near = [(a, b) for (a, pa) in pads for (b, pb) in pads if a < b and pa != pb
+            and abs(pa[0] - pb[0]) < v.TEST_SIZE and abs(pa[1] - pb[1]) < v.TEST_SIZE]
+    check("PAD_SLEEP is a fire pad and overlaps no other pad", v.PAD_SLEEP in v.FIRE_PADS
+          and not [p for p in near if "PAD_SLEEP" in p], near)
+    check("furnace_sleep is a registered chain", any(c[0] == "furnace_sleep" for c in v.suite.chains),
+          [c[0] for c in v.suite.chains])
+    src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    body = src.split("def furnace_sleep")[1].split("\ndef ")[0]
+    check("furnace_sleep tears down its fires and weather lock", "@_teardown(fire=True, weather=True)\ndef furnace_sleep" in src)
+    check("furnace_sleep grades with sleep_ignition_verdict, reads ProbeSleep, controls on bare soil",
+          "sleep_ignition_verdict(" in body and '"ProbeSleep"' in body and "_soil(t, r)" in body
+          and '_plants(t, "RM_FE_Plant_EmberGrass", plots["A"])' in body)
+    room = src.split("def furnace_room")[1].split("\ndef ")[0]
+    check("furnace_room grades with room_heat_verdict", "room_heat_verdict(" in room)
+    bed = open(os.path.join(HERE, "Source", "CompFurnaceBedIgnition.cs"), encoding="utf-8").read()
+    check("ProbeSleep reports the sleep roll's own record (litAfterTicks)",
+          "public static string ProbeSleep(Pawn pawn)" in bed and ";litAfterTicks=" in bed and "sleepLitAfterTicks = restingTicks" in bed)
+    patch = open(os.path.join(HERE, "Patches", "RM_PyrelandsIgniters_Comps.xml"), encoding="utf-8").read()
+    check("the heat pusher's def cap is lifted (the ceiling lives in the postfix)",
+          "<heatPushMaxTemperature>1000</heatPushMaxTemperature>" in patch)
+
+
 def main():
     for t in (test_tier, test_manifests_match_suite, test_defaults_match_source, test_gate_a, test_gate_b,
               test_gate_c, test_site_pure, test_site_build, test_site_offsite_refused, test_naming_dialog_lesson, test_plan_refuses_on_gate_b,
               test_suite_reads_no_genstep_as_a_thing, test_suite_wait_names_colony_and_reasserts_site,
               test_harness_fixes_2026_10_12, test_probe_skips_rock_and_food_and_clock, test_fixture_tag, test_tick_rate_probe_math, test_plan_offline, test_menu_guard_refuses_foreign_client,
-              test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15):
+              test_ash_control_and_herd_drive_2026_10_14, test_heat_guard_2026_10_15,
+              test_furnace_heat_and_sleep_2026_11_08):
         try:
             t()
         except Exception as ex:

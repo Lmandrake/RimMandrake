@@ -19,7 +19,8 @@ namespace RimMandrake.Pyrelands
     /// ships the vanilla pusher for barns and rooms; this comp is the open-field half, and enforces it
     /// (FURNACE_AURA_FIX_WARMS_THROUGH_WALLS): a pawn in an enclosed room gets no aura (the pusher already
     /// warms that room), and a wall between pawn and beast blocks it (line of sight). The vanilla pusher obeys
-    /// the same "Furnace-beast thermal circuit" switch (Postfix_ShouldPushHeatNow).
+    /// the same "Furnace-beast thermal circuit" switch, and heats a closed room past ambient up to the outdoor-relative
+    /// ceiling (Postfix_ShouldPushHeatNow; owner card 2026-11-08 01:01).
     ///
     /// The aura radius is the thermal charge's output (FURNACEBEAST_THERMAL_CYCLE_1), exactly as before.
     /// </summary>
@@ -134,11 +135,28 @@ namespace RimMandrake.Pyrelands
         /// circuit off the beast is "an ordinary heat-immune grazer" and warms no room either.</summary>
         public static void Postfix_ShouldPushHeatNow(CompHeatPusher __instance, ref bool __result)
         {
-            if (__result && __instance.parent is Pawn p && (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
-                && p.TryGetComp<CompFurnaceWarmthAura>() != null)
+            if (!(__instance.parent is Pawn p) || p.TryGetComp<CompFurnaceWarmthAura>() == null)
+            {
+                return;
+            }
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 __result = false;
+                return;
             }
+            // Owner card 2026-11-08 01:01 "heat with no cap": the def's cap is off (heatPushMaxTemperature 1000), so a closed
+            // pen heats past the weather and at the Pyrelands' 50 C becomes an oven. The ceiling lives here instead, so a small
+            // room cannot run away (vanilla's equilibrium in a 3x3 is ~+120 C): FurnaceRoomAboveOutdoorC over outdoors, never
+            // under FurnaceRoomFloorC (a cold-biome barn still warms). Held, not just spawned: a carried beast heats its carrier's room.
+            Map map = p.MapHeld;
+            if (!__result || map == null)
+            {
+                __result = false;
+                return;
+            }
+            float room = p.PositionHeld.GetTemperature(map);
+            __result = room < FurnaceWarmthMath.RoomHeatCeiling(PyrelandsTuning.FurnaceRoomFloorC, map.mapTemperature.OutdoorTemp,
+                PyrelandsTuning.FurnaceRoomAboveOutdoorC);
         }
 
         // The game the registry belongs to: quitting to the menu despawns nothing, so a new Game clears every old Map out.

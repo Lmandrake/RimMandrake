@@ -539,6 +539,16 @@ namespace RimMandrake.Pyrelands.Fuzz
                 float c0 = (float)r.NextDouble() * 3f - 1f;
                 float rr = FurnaceWarmthMath.Radius(5f, 0.3f, true, c0);
                 Check(rr >= 5f * 0.3f - 1e-5f && rr <= 5f + 1e-5f && FurnaceWarmthMath.Radius(5f, 0.3f, false, c0) == 5f, "warmth radius bounds");
+                // owner card 2026-11-08 01:01: the room ceiling follows the weather and never falls under the floor
+                float fl = T.F("FurnaceRoomFloorC"), above = T.F("FurnaceRoomAboveOutdoorC"), outd = (float)(r.NextDouble() * 140.0 - 60.0);
+                float ceil = FurnaceWarmthMath.RoomHeatCeiling(fl, outd, above);
+                Check(ceil >= fl && ceil >= outd + above - 1e-4f && (ceil == fl || ceil == outd + above), $"room ceiling {ceil} at outdoor {outd}");
+                Check(FurnaceWarmthMath.RoomHeatCeiling(fl, outd + 1f, above) >= ceil, "a hotter day lowered the room ceiling");
+                // ... and asleep in grass, the roll is due only asleep, past the grace, on a plant that can burn
+                int grace = T.I("FurnaceSleepIgnitionGraceTicks"), slept = r.Next(0, 3 * grace);
+                bool aw = r.Next(2) == 0, plant = r.Next(2) == 0;
+                Check(RM_FurnaceKernel.SleepIgnitionDue(aw, slept, plant, grace) == (!aw && plant && slept >= grace), "SleepIgnitionDue");
+                Check(!RM_FurnaceKernel.SleepIgnitionDue(false, int.MaxValue, false, grace), "a bare floor rolled for fire");
             }));
             return fails;
         }
@@ -575,17 +585,17 @@ namespace RimMandrake.Pyrelands.Fuzz
                 float a2 = RM_FireEcoKernel.BiomeScore(true, true, false, Math.Min(tMax, t2 + 1f), r2 + 10f, 100f, false, tMin, tMax, rMin, rMax, eMin, eMax, bs, dw, div);
                 Check(a2 >= a1, "a warmer, wetter tile scored lower");
                 // the vanilla rival (arid shrubland) at the same tile: report where the Pyrelands out-bids it
-                // ash-fall rate / attempts
-                bool ashFall = r.Next(4) == 0, cinder = !ashFall && r.Next(4) == 0, nativeB = r.Next(2) == 0, cross = r.Next(2) == 0;
-                float cov = r.Next(0, 5) / 4f, mult = 0.25f + r.Next(0, 12) / 4f;
-                float rate = RM_FireEcoKernel.AshRate(ashFall, cinder, 0.45f, nativeB, cross, cov, mult);
-                float specRate = ashFall ? mult : cinder ? 0.45f * mult : !nativeB && cross ? cov * mult : -1f;
-                Check(rate == specRate, $"ash rate {rate}, spec {specRate}");
-                int area = 100 + r.Next(250000);
-                int att = RM_FireEcoKernel.AshAttempts(area, 4000f, rate < 0 ? 0f : rate);
-                if (rate <= 0f) { Check(att == 0, $"a rate of {rate} still deposits {att} ash"); AshSkips++; }
-                else { Check(att >= 1 && att >= (int)((float)area / 4000f * rate), "ash attempts below the floor"); AshAttemptsTotal += att; }
-                Check(RM_FireEcoKernel.AshAttempts(area * 2, 4000f, 1f) >= RM_FireEcoKernel.AshAttempts(area, 4000f, 1f), "a bigger map got fewer ash attempts");
+                // ash on sand: the ash weathers' sand rate and an opted-in biome's ambient ash
+                bool ashMapR = r.Next(2) == 0, accOn = r.Next(4) != 0, nativeB = r.Next(2) == 0, cross = r.Next(2) == 0;
+                float weatherRate = r.Next(0, 5) * 0.3f, cov = r.Next(0, 5) / 4f, mult = r.Next(0, 13) / 4f, mean = (float)r.NextDouble() * 0.2f;
+                float rate = RM_FireEcoKernel.AshWeatherSandRate(weatherRate, ashMapR, accOn, mult);
+                float specRate = ashMapR && accOn && weatherRate > 0f && mult > 0f ? weatherRate * mult : 0f;
+                Check(rate == specRate, $"ash weather sand rate {rate}, spec {specRate}");
+                if (rate <= 0f) AshSkips++; else AshAttemptsTotal++;
+                float amb = RM_FireEcoKernel.AmbientAshSandRate(cross, nativeB, accOn, cov, 1.2f, mult, mean);
+                float specAmb = !nativeB && cross && accOn && cov > 0f && mean < RM_FireEcoKernel.AmbientMeanDepthCap
+                    ? cov * RM_FireEcoKernel.AmbientAshShare * 1.2f * mult : 0f;
+                Check(amb == specAmb, $"ambient ash rate {amb}, spec {specAmb}");
                 // once-per-fire roll set
                 var set = new HashSet<int>(); int bound = 50;
                 for (int k = 0; k < 400; k++)
@@ -744,10 +754,24 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.WateredExpiredWithin(3900, 4000, 250) && RM_FireEcoKernel.WateredExpiredWithin(4000, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(3750, 4000, 250) && !RM_FireEcoKernel.WateredExpiredWithin(4001, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(0, 100, 250) && !RM_FireEcoKernel.WateredExpiredWithin(-1, 100, 250), "WateredExpiredWithin boundaries");
+                    {   // PyrelandsWetRoots growth season (map w 2026-11-08): wet roots open the season on the hot side only, never shut it
+                        float mn = (float)(r.NextDouble() * 20.0) - 5f, mx = mn + 10f + (float)(r.NextDouble() * 50.0);
+                        float t = mn - 20f + (float)(r.NextDouble() * (mx - mn + 60f)), cool = (float)(r.NextDouble() * 30.0) - 5f;
+                        bool van = t > mn && t < mx, wet = RM_FireEcoKernel.WetRootGrowthSeason(t, mn, mx, cool);
+                        float roots = RM_FireEcoKernel.WetRootTemperature(t, cool);
+                        Check(!van || wet, "wet roots shut a growth season vanilla had open");
+                        Check(t >= mx || wet == van, "wet roots moved the season below the heat stop (a cold cell counted warmer)");
+                        Check(cool > 0f || wet == van, "no cooling, yet the season moved");
+                        Check(van || !wet || (roots > mn && roots < mx), "wet roots opened a season the cooled roots do not stand in");
+                    }
+                    Check(RM_FireEcoKernel.WetRootGrowthSeason(58.8f, 0f, 58f, 15f) && RM_FireEcoKernel.WetRootGrowthSeason(58f, 0f, 58f, 15f)
+                          && !RM_FireEcoKernel.WetRootGrowthSeason(58.8f, 0f, 58f, 0f) && !RM_FireEcoKernel.WetRootGrowthSeason(73f, 0f, 58f, 15f)
+                          && !RM_FireEcoKernel.WetRootGrowthSeason(-2f, 0f, 58f, 15f) && RM_FireEcoKernel.WetRootGrowthSeason(30f, 0f, 58f, 15f),
+                          "WetRootGrowthSeason: map w's 58.8 C rice grows wet, the 73 C stop and the cold side stay vanilla");
                     for (int m = 0; m < 16; m++)   // SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: only bare standable Pyrelands ground takes a pod
                         Check(RM_FireEcoKernel.FruitLandingLegal((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 11), "FruitLandingLegal table " + m);
-                    Check(!RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.FirebreakDefName) && RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
-                          && !RM_FireEcoKernel.IsScorchableGround("WoodPlankFloor"), "a pod could land on a firebreak or a floor");
+                    Check(RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
+                          && !RM_FireEcoKernel.IsScorchableGround("WoodPlankFloor"), "a pod could land on a floor");
                     var rsKeep = RM_FireEcoKernel.RolledStillBurning(new HashSet<int> { 1, 2, 3 }, new[] { 2, 3, 4 });
                     Check(rsKeep.Count == 2 && rsKeep.Contains(2) && rsKeep.Contains(3) && RM_FireEcoKernel.RolledStillBurning(null, new[] { 1 }).Count == 0,
                           "RolledStillBurning keeps exactly the rolled fires still burning");
@@ -768,23 +792,19 @@ namespace RimMandrake.Pyrelands.Fuzz
                 }
                 // ash field (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED §3-§4): fresh-burn bonus vs its spec formula, then the invariants
                 {
-                    float af_bonus = (float)(r.NextDouble() * 1.5), af_budget = (float)(0.5 + r.NextDouble() * 48);
+                    float af_bonus = (float)(r.NextDouble() * 1.5);
                     int af_dur = 60000 * (1 + r.Next(20)), af_burn = r.Next(4) == 0 ? -1 : r.Next(1000000), af_now = Math.Max(0, af_burn) + r.Next(-1000, 2 * af_dur);
-                    float af_rain = r.Next(3) == 0 ? 0f : (float)(r.NextDouble() * 2 * af_budget); bool af_fade = r.Next(2) == 0;
-                    float bGot = RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, af_fade);
-                    double bF = af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : 1 - (double)(af_now - af_burn) / af_dur - (af_fade && af_rain > 0f ? af_rain / af_budget : 0);
+                    float bGot = RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur);
+                    double bF = af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : 1 - (double)(af_now - af_burn) / af_dur;
                     double bSpec = Math.Max(0, Math.Min(1, bF)) * (af_burn < 0 || af_now < af_burn || af_bonus <= 0f ? 0 : af_bonus);
-                    Check(Math.Abs(bGot - bSpec) < 1e-4, $"BurnBonus af_burn={af_burn} af_now={af_now} af_bonus={af_bonus} af_dur={af_dur} af_rain={af_rain}/{af_budget} af_fade={af_fade}: {bGot}, bSpec {bSpec}");
+                    Check(Math.Abs(bGot - bSpec) < 1e-4, $"BurnBonus af_burn={af_burn} af_now={af_now} af_bonus={af_bonus} af_dur={af_dur}: {bGot}, bSpec {bSpec}");
                     Check(bGot >= 0f && bGot <= af_bonus + 1e-6f, "bonus outside [0, base]");
                     if (af_burn >= 0 && af_now >= af_burn)
                     {
-                        // decay: later never larger; af_rain never adds; re-af_burn resets to full
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now + 2500, af_bonus, af_dur, af_rain, af_budget, af_fade) <= bGot + 1e-6f, "the bonus grew with time");
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain + 1f, af_budget, af_fade) <= bGot + 1e-6f, "more rain raised the bonus");
-                        Check(Math.Abs(RM_FireEcoKernel.BurnBonus(af_now, af_now, af_bonus, af_dur, 0f, af_budget, af_fade) - af_bonus) < 1e-6f, "a re-burn did not restart at full");
-                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_burn + af_dur, af_bonus, af_dur, 0f, af_budget, af_fade) == 0f, "the bonus outlived its duration");
-                        Check(!af_fade || af_rain < af_budget || RM_FireEcoKernel.BurnBonus(af_burn, af_burn, af_bonus, af_dur, af_rain, af_budget, true) == 0f, "a full rain budget left a bonus");
-                        Check(af_fade || RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, af_rain, af_budget, false) == RM_FireEcoKernel.BurnBonus(af_burn, af_now, af_bonus, af_dur, 0f, af_budget, false), "rain faded the bonus with the fade off");
+                        // decay: later never larger; re-af_burn resets to full
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_now + 2500, af_bonus, af_dur) <= bGot + 1e-6f, "the bonus grew with time");
+                        Check(Math.Abs(RM_FireEcoKernel.BurnBonus(af_now, af_now, af_bonus, af_dur) - af_bonus) < 1e-6f, "a re-burn did not restart at full");
+                        Check(RM_FireEcoKernel.BurnBonus(af_burn, af_burn + af_dur, af_bonus, af_dur) == 0f, "the bonus outlived its duration");
                     }
                     float af_dry = (float)r.NextDouble(), af_wat = af_dry + (float)r.NextDouble() * 1.5f, af_b = (float)r.NextDouble();
                     bool af_w = r.Next(2) == 0, af_on = r.Next(2) == 0;
@@ -800,12 +820,11 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(Math.Abs(RM_FireEcoKernel.BonusDaysLeft(0, 180000, 360000) - 3f) < 1e-6f && RM_FireEcoKernel.BonusDaysLeft(-1, 5, 360000) == 0f, "BonusDaysLeft");
                 }
                 // 🔴 THE REGRESSION (design §4): the fire-tick gate must admit deep ash (~85% of the biome) or ash dusting,
-                // scorch-fruit and the burn stamp go silent there. It still refuses the firebreak.
+                // scorch-fruit and the burn stamp go silent there. It still refuses paved floors.
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep"), "the fire-tick gate refuses RM_FE_Ash_Deep: dusting, scorch-fruit and the burn stamp would stop on ~85% of the Pyrelands");
                 Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash does not roll");
                 Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash is not stamped");
-                Check(!RM_FireEcoKernel.IsScorchableGround("RM_FE_FirebreakLine"), "the firebreak counts as scorchable ground");
-                Check(RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Heavy") && !RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsLegacyAsh(null), "IsLegacyAsh");
+                Check(!RM_FireEcoKernel.IsScorchableGround("Concrete"), "a paved floor counts as scorchable ground");
                 // list parser vs spec
                 string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
                 var sb = new System.Text.StringBuilder(); int parts = r.Next(0, 8);
@@ -846,6 +865,13 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_FireEcoKernel.BurrowMayEmerge(1000, -1, false) && !RM_FireEcoKernel.BurrowMayEmerge(1000, -1, true), "BurrowMayEmerge: never hit, fire decides");
                 Check(!RM_FireEcoKernel.BurrowMayEmerge(1599, 1600, false) && RM_FireEcoKernel.BurrowMayEmerge(1600, 1600, false), "BurrowMayEmerge: hold boundary");
                 Check(!RM_FireEcoKernel.BurrowMayEmerge(9000, 1600, true), "BurrowMayEmerge: hold over but fire near");
+                // BURROWER_FLEES_LARGE_FIRE: a burrower never flees fire; domed it flees nothing; any other animal keeps vanilla.
+                for (int m = 0; m < 16; m++)
+                {
+                    bool bur = (m & 1) != 0, domed = (m & 2) != 0, fromFire = (m & 4) != 0, would = (m & 8) != 0;
+                    int answer = !bur ? 0 : domed ? 1 : !fromFire ? 0 : would ? 2 : 1;
+                    Check(RM_FireEcoKernel.BurrowerFleeAnswer(bur, domed, fromFire, would) == answer, "BurrowerFleeAnswer table " + m);
+                }
                 // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the dive nudge fires only for an idling would-dive burrower under a burn.
                 for (int m = 0; m < 16; m++)
                 {
@@ -875,16 +901,159 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, here) == want4, "forest fire ash/fruit roll " + m);
                     Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, here) == want4, "forest fire burn stamp " + m);
                 }
-                Check(!RM_FireEcoKernel.ScorchableHere(true, "RM_FE_FirebreakLine") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
+                Check(!RM_FireEcoKernel.ScorchableHere(true, "Concrete") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
                     && RM_FireEcoKernel.ScorchableHere(true, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.ScorchableHere(true, null), "ScorchableHere corners");
                 Check(RM_FireEcoKernel.FireEcologyOnMap(true, false) && RM_FireEcoKernel.FireEcologyOnMap(false, true) && !RM_FireEcoKernel.FireEcologyOnMap(false, false), "FireEcologyOnMap table");
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround("RM_FE") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
                 Check(RM_FireEcoKernel.DustChance(0.02f, 15) == 0.02f * 15 && RM_FireEcoKernel.UnderFruitCap(39, 40) && !RM_FireEcoKernel.UnderFruitCap(40, 40), "dust chance / fruit cap");
+
+                // The drift field (map s polka dots, 2026-11-07): about a fifth of a scar holds ash whatever the noise's spread,
+                // with ~10% lee/rim cells, monotonic in the noise, a bonus never lowers it, never past 3.
+                int ns = 400 + r.Next(2000), shape = r.Next(3);
+                float[] samples = new float[ns];
+                for (int i = 0; i < ns; i++)
+                {
+                    double u = r.NextDouble();
+                    samples[i] = shape == 0 ? (float)(u * 2 - 1) : shape == 1 ? (float)((r.NextDouble() + u + r.NextDouble() - 1.5) / 1.5) : (float)(u * u * u);
+                }
+                float[] kept = (float[])samples.Clone();
+                RM_DriftCuts cuts = RM_FireEcoKernel.DriftCuts(samples);
+                Check(cuts.Pool <= cuts.Fringe && cuts.Fringe <= cuts.Bank && cuts.Bank <= cuts.Core, "drift cuts out of order");
+                int holding = 0;
+                for (int i = 0; i < ns; i++)
+                {
+                    bool lee = r.Next(20) == 0, edge = r.Next(20) == 0;
+                    int t0 = RM_FireEcoKernel.DriftTarget(kept[i], cuts, false, false);
+                    int tb = RM_FireEcoKernel.DriftTarget(kept[i], cuts, lee, edge);
+                    Check(t0 >= 0 && tb >= t0 && tb <= RM_FireEcoKernel.DriftTargetMax, "drift target out of range or lowered by a bonus");
+                    Check(RM_FireEcoKernel.DriftTarget(kept[i] + 0.05f, cuts, false, false) >= t0, "drift target not monotonic in noise");
+                    if (tb > 0) holding++;
+                }
+                float share = (float)holding / ns;
+                Check(share >= 0.15f && share <= 0.30f, "scar ash share " + share + " outside 15-30% (shape " + shape + ")");
+                RM_DriftCuts none = RM_FireEcoKernel.DriftCuts(new float[0]);
+                Check(RM_FireEcoKernel.DriftTarget(1e6f, none, true, true) == 0, "an empty field laid ash");
+                float have = (float)r.NextDouble(); int wantAsh = r.Next(4);
+                float step = RM_FireEcoKernel.ScarAshStep(have, wantAsh), laid = RM_FireEcoKernel.ScarAshLaid(have, wantAsh);
+                float wantD = wantAsh * RM_FireEcoKernel.AshDepthPerLevel;
+                Check(step >= have && (step <= wantD + 1e-5f || step == have), "scar ash thinned or thickened past its target");
+                Check(step - have <= RM_FireEcoKernel.AshDepthPerLevel + 1e-5f, "a dusting laid more than one drift level");
+                Check(laid == Math.Max(have, wantD), "a laid scar thinned a deeper drift or missed its target");
+
+                // Ash on sand: wear off an ash map is vanilla's, on one half of it dry plus the rain's wash; the cover's opacity and
+                // the grass dust rise with depth.
+                float rainA = (float)r.NextDouble() * 1.5f, dA = (float)r.NextDouble(), dB = dA + (float)r.NextDouble() * (1f - dA);
+                Check(RM_FireEcoKernel.OutdoorSandWear(false, rainA) == RM_FireEcoKernel.VanillaSandWear, "a non-ash map's sand wear is not vanilla's");
+                Check(RM_FireEcoKernel.OutdoorSandWear(true, 0f) < RM_FireEcoKernel.VanillaSandWear, "dry ash wears as fast as vanilla sand");
+                Check(RM_FireEcoKernel.OutdoorSandWear(true, rainA) >= RM_FireEcoKernel.OutdoorSandWear(true, 0f), "rain slowed the ash's wear");
+                Check(RM_FireEcoKernel.AshCoverOpacity(dB) >= RM_FireEcoKernel.AshCoverOpacity(dA) && RM_FireEcoKernel.AshCoverOpacity(dB) <= 1f,
+                      "ash cover opacity not monotonic or above 1");
+                Check(RM_FireEcoKernel.AshCoverOpacity(RM_FireEcoKernel.AshVisibleDepth * 0.99f) == 0f, "ash below the visible depth drew");
+                Check(RM_FireEcoKernel.AshDustLevel(dB) >= RM_FireEcoKernel.AshDustLevel(dA), "grass dust not monotonic in depth");
             });
         }
 
         // ════════════════════════ units ════════════════════════
+        // ════════════════════════ ash on sand, in play terms ════════════════════════
+        // Owner by card 2026-11-08, "Rebuild ash on vanilla sand?" -> "Yes". One open-sky cell per noise sample, visited on vanilla's
+        // schedule (SteadyEnvironmentEffects: 0.0006 of the map a tick, so every ~1,667 ticks, 1.5 visits a game hour), each visit
+        // doing what vanilla does with the rate PyrelandsAsh.Postfix_SandRate composes and the wear Prefix_AddDepth puts in:
+        // sand falling (rate > 0.001) adds 0.046 x rate x noise(0.5..1), otherwise the cell wears. The rate and wear come from the
+        // kernel exactly as the caller asks for them; the vanilla side is written out from the decompile, literal for literal.
+        private const float VanillaFall = 0.046f, VanillaWear = 1f / 180f, VisitsPerHour = 2500f / (1f / 0.0006f);
+
+        private static float VanillaVisit(float depth, float sandRate, float noise)
+        {
+            float d = sandRate > 0.001f ? depth + VanillaFall * sandRate * noise : depth - VanillaWear;
+            return d < 0f ? 0f : d > 1f ? 1f : d;
+        }
+
+        private static float OurVisit(float depth, float otherSandRate, float ashWeatherRate, bool ashMap, float rainRate, float noise, float mult = 1f)
+        {
+            float rate = otherSandRate + RM_FireEcoKernel.AshWeatherSandRate(ashWeatherRate, ashMap, true, mult);
+            float d = rate > 0.001f ? depth + VanillaFall * rate * noise : depth - RM_FireEcoKernel.OutdoorSandWear(ashMap, rainRate);
+            return d < 0f ? 0f : d > 1f ? 1f : d;
+        }
+
+        private static List<string> AshScenario()
+        {
+            var fails = new List<string>();
+            try
+            {
+                const int cells = 400;
+                const float AshFallRate = 1.2f, SandstormRate = 1.6f, BlackRainRate = 1.1f;   // AshFall.xml, Odyssey Sandstorm, BlackRain.xml
+                var rng = new Random(20261108);
+                var noise = new float[cells];
+                for (int i = 0; i < cells; i++) noise[i] = 0.5f + 0.5f * (float)rng.NextDouble();
+                int Visits(float hours) => (int)Math.Round(hours * VisitsPerHour);
+                float Mean(float[] a) { double t = 0; foreach (float v in a) t += v; return (float)(t / a.Length); }
+
+                // 1. A Pyrelands map under ash fall for twelve hours: every open cell holds ash, piled at about heavy snow's pace.
+                var ash = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, AshFallRate, true, 0f, noise[i]);
+                Cases++;
+                float m12 = Mean(ash);
+                int bare = 0; foreach (float d in ash) if (d < RM_FireEcoKernel.AshVisibleDepth) bare++;
+                Check(bare == 0, $"after 12 hours of ash fall {bare} of {cells} open cells hold no ash");
+                Check(m12 / 12f >= 0.03f && m12 / 12f <= 0.07f, $"ash fall piled {m12 / 12f:0.000} a game hour; heavy snow piles ~0.049");
+                var hardSnow = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) hardSnow[i] = VanillaVisit(hardSnow[i], 1.2f, noise[i]);   // SnowHard's snowRate, snow's formula
+                Check(Math.Abs(m12 - Mean(hardSnow)) < 1e-4f, $"ash fall {m12:0.000} after 12 h does not match heavy snow {Mean(hardSnow):0.000}");
+
+                // 2. Then a dry day: the ash stays (vanilla sand would have worn 0.2 off).
+                for (int v = 0; v < Visits(24f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, 0f, true, 0f, noise[i]);
+                Cases++;
+                float m36 = Mean(ash);
+                Check(m12 - m36 <= 0.11f && m12 - m36 >= 0.09f, $"a dry day took {m12 - m36:0.000} off the ash, want ~0.1 (vanilla sand: 0.2)");
+
+                // 3. Then three hours of black rain: the ash is gone.
+                for (int v = 0; v < Visits(3f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, 0f, true, BlackRainRate, noise[i]);
+                Cases++;
+                int left = 0; foreach (float d in ash) if (d >= RM_FireEcoKernel.AshVisibleDepth) left++;
+                Check(left == 0, $"after 3 hours of black rain {left} of {cells} cells still hold ash");
+
+                // 4. A desert map (no fire ecology): twelve hours of sandstorm, then a day clear, exactly as vanilla.
+                var ours = new float[cells]; var vanilla = new float[cells];
+                for (int v = 0; v < Visits(36f); v++)
+                {
+                    bool storm = v < Visits(12f);
+                    for (int i = 0; i < cells; i++)
+                    {
+                        ours[i] = OurVisit(ours[i], storm ? SandstormRate : 0f, 0f, false, 0f, noise[i]);
+                        vanilla[i] = VanillaVisit(vanilla[i], storm ? SandstormRate : 0f, noise[i]);
+                    }
+                }
+                Cases++;
+                for (int i = 0; i < cells; i++)
+                {
+                    if (ours[i] != vanilla[i]) { Check(false, $"desert sand cell {i}: {ours[i]} where vanilla has {vanilla[i]}"); break; }
+                }
+                Check(Mean(vanilla) > 0f, "the desert control laid no sand: the scenario is blind");
+
+                // 5. Ash fall forced onto that desert map: it lays nothing (its sand would be drawn as sand, beige).
+                var forced = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) forced[i] = OurVisit(forced[i], 0f, AshFallRate, false, 0f, noise[i]);
+                Cases++;
+                Check(Mean(forced) == 0f, $"ash fall on a map that does not draw ash laid {Mean(forced):0.000}");
+
+                // 6. The rate setting at 2x lays twice the first hour's ash.
+                float one = 0f, two = 0f;
+                for (int v = 0; v < Visits(1f); v++) { one = OurVisit(one, 0f, AshFallRate, true, 0f, 0.75f); two = OurVisit(two, 0f, AshFallRate, true, 0f, 0.75f, 2f); }
+                Cases++;
+                Check(one > 0f && Math.Abs(two - 2f * one) < 1e-5f, $"2x ash fall laid {two:0.0000} against 1x {one:0.0000}");
+                Console.WriteLine($"ash scenario: 12 h ash fall mean {m12:0.000} ({m12 / 12f:0.000}/h, heavy snow {Mean(hardSnow) / 12f:0.000}/h), after a dry day {m36:0.000}, "
+                                  + $"after 3 h black rain {Mean(ash):0.000}; desert sand {Mean(vanilla):0.000} = vanilla");
+            }
+            catch (Exception e) { fails.Add("ash scenario: " + e.Message); }
+            return fails;
+        }
+
         private static List<string> Units()
         {
             var fails = new List<string>();
@@ -986,6 +1155,12 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FurnaceKernel.RestStep(ref rest, true, 30, 2500) == RM_RestOutcome.WokeRested, "RestStep: a rest of exactly the minimum counts");
                     rest = 0; RM_FurnaceKernel.RestStep(ref rest, false, 2499, 2500);
                     Check(RM_FurnaceKernel.RestStep(ref rest, true, 30, 2500) == RM_RestOutcome.WokeTooShort, "RestStep: one tick under the minimum is too short");
+                    int g = T.I("FurnaceSleepIgnitionGraceTicks");
+                    Check(RM_FurnaceKernel.SleepIgnitionDue(false, g, true, g) && !RM_FurnaceKernel.SleepIgnitionDue(false, g - 1, true, g)
+                          && !RM_FurnaceKernel.SleepIgnitionDue(true, g, true, g), "SleepIgnitionDue: due at exactly the grace, not a tick before, never awake");
+                    Check(T.I("FurnaceSleepIgnitionGraceTicks") + T.I("FurnaceSleepIgnitionMtbTicks") <= 2 * 2500
+                          && T.I("FurnaceSleepIgnitionGraceTicks") + T.I("FurnaceSleepIgnitionMtbTicks") >= 2500, "sleep ignition mean is not 1-2 h of sleep (owner card 2026-11-08 01:01)");
+                    Check(FurnaceWarmthMath.RoomHeatCeiling(24f, 50f, 25f) == 75f && FurnaceWarmthMath.RoomHeatCeiling(24f, -30f, 25f) == 24f, "RoomHeatCeiling corners");
                 }
                 Check(RM_FireEcoKernel.IsScorchableGround("Gravel") && RM_FireEcoKernel.IsScorchableGround("Soil") && RM_FireEcoKernel.IsScorchableGround("Sand") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Gravel"), "scorchable ground names");
                 int ts = 0;
@@ -1017,6 +1192,89 @@ namespace RimMandrake.Pyrelands.Fuzz
                         Check(done && took <= 1, "OpeningFront did not settle, or took more than once, on map " + map);
                     }
                 }
+                {
+                    // Yesterday's fire (PyrelandsYesterdayFire, 2026-11-07): the scar's shape, ages, arc and site rules
+                    float rag = T.F("YesterdayFireRagged"), clr = T.F("YesterdayFireFrontClearance"), floor = T.F("YesterdayFireFloorRadius");
+                    float rMin = T.F("YesterdayFireMinRadius"), rMax = T.F("YesterdayFireMaxRadius");
+                    Check(Math.Abs(RM_BurnKernel.ScarRadius(50f, 125f, 70f, 0.22f, 20f) - 55f / 1.22f) < 1e-3f && RM_BurnKernel.ScarRadius(40f, 125f, 70f, 0.22f, 20f) == 40f
+                        && RM_BurnKernel.ScarRadius(50f, 75f, 70f, 0.22f, 20f) == 0f && RM_BurnKernel.ScarRadius(50f, 10f, 70f, 0.22f, 20f) == 0f, "ScarRadius: a 250 map's edge middle shrinks a 50 to 45, a 150 map gets none");
+                    var yr = new Random(11);
+                    for (int i = 0; i < 2000; i++)
+                    {
+                        float rolled = rMin + (float)yr.NextDouble() * (rMax - rMin), clearance = (float)yr.NextDouble() * 300f;
+                        float r = RM_BurnKernel.ScarRadius(rolled, clearance, clr, rag, floor);
+                        Check(r == 0f || (r >= floor && r <= rolled && r * (1f + rag) <= clearance - clr + 1e-3f), "ScarRadius: reach past the clearance, or over the roll, at " + rolled + "/" + clearance);
+                        float noise = (float)(yr.NextDouble() * 6 - 3), b = RM_BurnKernel.ScarBoundary(rolled, noise, rag);
+                        Check(b >= rolled * (1f - rag) - 1e-3f && b <= rolled * (1f + rag) + 1e-3f, "ScarBoundary outside radius +- ragged at noise " + noise);
+                        float dx = (float)(yr.NextDouble() * 2 - 1), dz = (float)yr.NextDouble();
+                        float bear = RM_BurnKernel.ScarBearing(dx, dz, 0f, 1f), cos = (float)Math.Cos(bear);
+                        Check(Math.Abs(bear) <= Math.PI / 2 + 1e-4, "ScarBearing: a cell on the map side reads past +-pi/2");
+                        Check(Math.Abs(cos - 0.5f) < 1e-3f || RM_BurnKernel.ArcFacing(dx, dz, 0f, 1f, 0.5f) == (cos >= 0.5f) || dx * dx + dz * dz < 1e-10f, "ArcFacing disagrees with ScarBearing's cone at " + dx + "," + dz);
+                    }
+                    Check(RM_BurnKernel.ScarBoundary(40f, 0f, 0.22f) == 40f, "ScarBoundary: no noise is the radius");
+                    Check(RM_BurnKernel.ScarStampTick(100000, 0f, 45000, 1250) == 55000 && RM_BurnKernel.ScarStampTick(100000, 1f, 45000, 1250) == 98750
+                        && RM_BurnKernel.ScarStampTick(100000, -5f, 45000, 1250) == 55000 && RM_BurnKernel.ScarStampTick(100000, 7f, 45000, 1250) == 98750
+                        && RM_BurnKernel.ScarStampTick(0, 0.5f, 45000, 1250) == 0, "ScarStampTick: oldest at the edge, youngest at the front, clamped in depth and at tick 0");
+                    int lastStamp = int.MinValue;
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        int st = RM_BurnKernel.ScarStampTick(30000, i / 100f, 45000, 1250);
+                        Check(st >= lastStamp && st >= 0, "ScarStampTick not monotone (or negative) at depth " + i / 100f);
+                        lastStamp = st;
+                    }
+                    double r59 = 59 * Math.PI / 180, r61 = 61 * Math.PI / 180;
+                    Check(RM_BurnKernel.ArcFacing(0f, 5f, 0f, 1f, 0.5f) && RM_BurnKernel.ArcFacing((float)Math.Sin(r59), (float)Math.Cos(r59), 0f, 1f, 0.5f)
+                        && !RM_BurnKernel.ArcFacing((float)Math.Sin(r61), (float)Math.Cos(r61), 0f, 1f, 0.5f) && !RM_BurnKernel.ArcFacing(1f, 0f, 0f, 1f, 0.5f)
+                        && !RM_BurnKernel.ArcFacing(0f, 0f, 0f, 1f, 0.5f) && !RM_BurnKernel.ArcFacing(0f, -1f, 0f, 1f, 0.5f), "ArcFacing: straight in and 59 deg are arc; 61, 90, behind and the centre are not");
+                    Check(RM_BurnKernel.ArcStride(10, 32, 2) == 2 && RM_BurnKernel.ArcStride(94, 32, 2) == 3 && RM_BurnKernel.ArcStride(5, 32, 0) == 1, "ArcStride table");
+                    for (int n = 0; n <= 2000; n++)
+                    {
+                        int s = RM_BurnKernel.ArcStride(n, 32, 2), fires = 0;
+                        for (int i = s / 2; i < n; i += s) fires++;
+                        Check(s >= 2 && fires <= 32 && (n < 2 || fires >= 1), "ArcStride: " + fires + " fires at stride " + s + " on " + n + " arc cells");
+                    }
+                    Check(!RM_BurnKernel.ScarSiteUsable(0, 0, 0.6f) && !RM_BurnKernel.ScarSiteUsable(38, 64, 0.6f) && RM_BurnKernel.ScarSiteUsable(39, 64, 0.6f)
+                        && RM_BurnKernel.ScarSiteUsable(64, 64, 1f), "ScarSiteUsable: 38.4 of 64 is the 0.6 line");
+                    int[][] sizes = { new[] { 250, 250 }, new[] { 200, 275 } };
+                    foreach (int[] sz in sizes)
+                    {
+                        for (int e = 0; e < 5; e++)
+                        {
+                            foreach (float along in new[] { 0f, 0.3f, 0.5f, 1f, 1.5f })
+                            {
+                                RM_BurnKernel.ScarEdgeFrame(e, along, sz[0], sz[1], out int ex, out int ez, out int enx, out int enz);
+                                bool inb = ex >= 0 && ex < sz[0] && ez >= 0 && ez < sz[1];
+                                int ix = ex + enx, iz = ez + enz, ox = ex - enx, oz = ez - enz;
+                                Check(inb && Math.Abs(enx) + Math.Abs(enz) == 1 && ix >= 0 && ix < sz[0] && iz >= 0 && iz < sz[1]
+                                    && !(ox >= 0 && ox < sz[0] && oz >= 0 && oz < sz[1]), "ScarEdgeFrame: edge " + e + " along " + along + " not on the edge with an inward normal");
+                            }
+                        }
+                    }
+                    RM_BurnKernel.ScarEdgeFrame(0, 0.5f, 250, 250, out int nxc, out int nzc, out int nnx, out int nnz);
+                    Check(nzc == 249 && nnz == -1 && nnx == 0 && (nxc == 124 || nxc == 125), "ScarEdgeFrame: 0 is north (top row, normal south), mid-edge");
+                    Check(Math.Abs(RM_BurnKernel.ScarBearing(0f, 3f, 0f, 1f)) < 1e-6f && Math.Abs(RM_BurnKernel.ScarBearing(1f, 0f, 0f, 1f) + Math.PI / 2) < 1e-5
+                        && Math.Abs(RM_BurnKernel.ScarBearing(-1f, 0f, 0f, 1f) - Math.PI / 2) < 1e-5, "ScarBearing: 0 straight in, -+pi/2 along the edge");
+                    Check(Math.Abs(RM_BurnKernel.ScarSproutChance(0f, 0.15f, 0.6f) - 0.15f) < 1e-6f && Math.Abs(RM_BurnKernel.ScarSproutChance(0.3f, 0.15f, 0.6f) - 0.075f) < 1e-6f
+                        && RM_BurnKernel.ScarSproutChance(0.6f, 0.15f, 0.6f) == 0f && RM_BurnKernel.ScarSproutChance(0.9f, 0.15f, 0.6f) == 0f
+                        && Math.Abs(RM_BurnKernel.ScarSproutChance(-1f, 0.15f, 0.6f) - 0.15f) < 1e-6f && RM_BurnKernel.ScarSproutChance(0.1f, 0.15f, 0f) == 0f, "ScarSproutChance table");
+                    float lastSprout = float.MaxValue;
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        float ch = RM_BurnKernel.ScarSproutChance(i / 100f, 0.15f, 0.6f);
+                        Check(ch <= lastSprout && ch >= 0f, "ScarSproutChance rises with depth at " + i / 100f);
+                        lastSprout = ch;
+                    }
+                    Check(rMin > floor && rMin <= rMax && clr >= 70f && rag > 0f && rag < 0.5f
+                        && RM_BurnKernel.ScarRadius(rMax, 125f, clr, rag, floor) >= rMin && RM_BurnKernel.ScarRadius(rMax, 75f, clr, rag, floor) == 0f
+                        && T.F("YesterdayFireSiteMinAlong") * 249f >= rMax * (1f + rag) && T.F("YesterdayFireSiteMinAlong") < T.F("YesterdayFireSiteMaxAlong")
+                        && T.F("YesterdayFireSiteMaxAlong") < 1f && T.I("YesterdayFireSiteSamples") >= 16 && T.F("YesterdayFireSiteMinBurnable") > 0f && T.F("YesterdayFireSiteMinBurnable") <= 1f
+                        && T.I("YesterdayFireOldestAgeTicks") > T.I("YesterdayFireYoungestAgeTicks") && T.I("YesterdayFireYoungestAgeTicks") > 0 && T.I("YesterdayFireOldestAgeTicks") <= 120000
+                        && T.F("YesterdayFireArcMinCos") > 0f && T.F("YesterdayFireArcMinCos") < 1f && T.I("YesterdayFireArcStride") >= 1 && T.I("YesterdayFireArcFireCap") >= 1
+                        && T.I("YesterdayFirePods") >= 1 && T.F("YesterdayFireYoungDepth") > T.F("YesterdayFireSproutEndDepth") && T.F("YesterdayFireYoungDepth") < 1f
+                        && T.F("YesterdayFireSproutChance") > 0f && T.F("YesterdayFireSproutChance") < 0.5f && T.F("YesterdayFireSproutGrowthMin") > 0f
+                        && T.F("YesterdayFireSproutGrowthMin") < T.F("YesterdayFireSproutGrowthMax") && T.F("YesterdayFireSproutGrowthMax") <= 1f && T.F("YesterdayFireWetReach") > 0f,
+                        "YesterdayFire tuning: a 250 map's edge middle gets a full scar and a 150 map none, the scar clears the corners, ages run edge to front, pods past the sprouts");
+                }
                 Check(RM_BurnKernel.ScheduleTicks(2f, 4f, 0f, 60000) == 120000 && RM_BurnKernel.ScheduleTicks(2f, 4f, 1f, 60000) == 240000, "ScheduleTicks ends");
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
@@ -1041,6 +1299,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 ("furnace", () => Furnace(N(800), S(1))),
                 ("eco", () => Eco(N(4000), S(1))),
                 ("units", () => Units()),
+                ("ashscenario", () => AshScenario()),
             };
             foreach (var f in fam)
             {

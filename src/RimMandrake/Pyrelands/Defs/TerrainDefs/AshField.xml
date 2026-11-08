@@ -15,16 +15,12 @@
     A burn is ONE step: every RM_FE_Ground_* burnedDef is RM_FE_Ash_Deep (ScorchableGround.xml). Deep ash is not
     flammable and has no burnedDef, so Fire.TryBurnFloor has nothing to escalate, and vanilla's "burnedDef is flammable"
     config check has nothing to flag.
-
-    LEGACY ALIASES (design §7): RM_FE_Ash_Trace / Light / Heavy are the retired ladder rungs, kept ONE cycle so a keeper or
-    review save holding them loads (terrain saves by shortHash; a deleted def would lose the cells with a load error).
-    Same stats as deep ash, in no mapgen; MapComponent_PyrelandsAshField.FinalizeInit re-lays every one of them to deep
-    ash on load. Delete them once the Saves folder has been loaded through once.
   -->
 
   <TerrainDef Name="RM_FE_AshBase" Abstract="true">
     <researchPrerequisites/>
     <renderPrecedence>101</renderPrecedence>
+    <edgeType>FadeRough</edgeType>
     <passability>Standable</passability>
     <!-- Vanilla Soil's set (Core Terrain_Natural.xml): Medium is NOT implied by Heavy (GenConstruct.CanBuildOnTerrain is an
          exact affordances.Contains), and Diggable is what a grave needs. ASH_TERRAIN_FIX_NO_MEDIUM_GROUND, 2026-10-15. -->
@@ -36,7 +32,13 @@
       <li>GrowSoil</li>
       <li>Diggable</li>
     </affordances>
-    <fertility>0.40</fertility>
+    <!-- Vanilla's own soils carry this tag (TerrainDef.IsSoil). FlowWorks' canal gate asks it, so without it no canal could be
+         dug anywhere on a map that is almost all deep ash, and the watered-ash crop was out of a player's reach. Vanilla reads
+         it only for pen-food stats. -->
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <fertility>0.70</fertility>
     <pathCost>2</pathCost>
     <statBases>
       <Beauty>0</Beauty>
@@ -47,39 +49,14 @@
   <TerrainDef ParentName="RM_FE_AshBase">
     <defName>RM_FE_Ash_Deep</defName>
     <label>deep ash</label>
-    <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds little; watered, it grows almost anything.</description>
+    <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds thin crops; watered, it grows almost anything.</description>
     <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(48, 46, 43, 255)</color>
+    <color>(204, 204, 204, 255)</color>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.RM_AshFieldExtension">
         <wateredFertility>1.40</wateredFertility>
       </li>
     </modExtensions>
-  </TerrainDef>
-
-  <!-- Legacy aliases: re-laid to RM_FE_Ash_Deep on load. Not painted. -->
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Trace</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(48, 46, 43, 255)</color>
-  </TerrainDef>
-
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Light</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(48, 46, 43, 255)</color>
-  </TerrainDef>
-
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Heavy</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(48, 46, 43, 255)</color>
   </TerrainDef>
 
 </Defs>

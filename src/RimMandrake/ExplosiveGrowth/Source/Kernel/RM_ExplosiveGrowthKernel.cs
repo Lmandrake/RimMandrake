@@ -54,6 +54,12 @@ namespace RimMandrake.ExplosiveGrowth
         public const float MatureGrowth = 0.999f;
         public const float ArmedCharge = 0.0001f;
         public const int SliceCount = 8;
+        /// <summary>Most charged plants stepped in one tick (about 3 us each); past this the sweep takes longer and its dt grows.</summary>
+        public const int MaxChargeStepsPerTick = 120;
+        /// <summary>Most plants that may pop in one tick. A pop destroys a plant, about 1.8 ms on a grass-covered map (live,
+        /// 2026-11-07), and a soaked map's cells come ripe together: up to 1 s every 250 ticks when they all went at once. A
+        /// plant over the limit stays ripe and pops on a later sweep.</summary>
+        public const int MaxPopsPerTick = 3;
         public const float SurgeFreshMin = 0.25f;
         public const float SurgeFreshMax = 0.48f;
 
@@ -470,83 +476,109 @@ namespace RimMandrake.ExplosiveGrowth
             for (int i = 0; i < tmp.Count; i++) d.Remove(tmp[i]);
         }
 
-        /// <summary>Step 1: arm every candidate that cycles, is mature, has its water, is lit and growing (and, with the
-        /// stagger on, is in its hour). The full-map wave (PF1 option 2): candidates are a slice of every plant on the map.
-        /// Step 2: the charge. Re-mesh only on a tell-stage or size-step change, plus the tremble wobble on a reprint.</summary>
+        /// <summary>One whole pass in a single call: arm, then step every charge. The live map spreads the same two steps over
+        /// ticks (Arm, BeginSweep, StepSweep); this form is the fuzz's reference.</summary>
         public void Pass<S>(S sink, IList<K> candidates, int now, int dt, bool reprint, float chargeTicks, bool tellSounds,
                             bool stagger) where S : IEgSink<K>
         {
-            if (candidates != null)
+            Arm(sink, candidates, now, stagger);
+            BeginSweep(dt, reprint);
+            StepSweep(sink, now, int.MaxValue, int.MaxValue, chargeTicks, tellSounds);
+        }
+
+        /// <summary>Step 1: arm every candidate that cycles, is mature, has its water, is lit and growing (and, with the
+        /// stagger on, is in its hour). The full-map wave (PF1 option 2): candidates are a slice of every plant on the map.</summary>
+        public void Arm<S>(S sink, IList<K> candidates, int now, bool stagger) where S : IEgSink<K>
+        {
+            if (candidates == null) return;
+            for (int i = 0; i < candidates.Count; i++)
             {
-                for (int i = 0; i < candidates.Count; i++)
-                {
-                    K c = candidates[i];
-                    if (charges.ContainsKey(c)) continue;
-                    int id; float growth; bool cycles;
-                    if (!sink.TryGetPlant(c, out id, out growth, out cycles) || !cycles) continue;
-                    if (growth < RM_ExplosiveGrowthKernel.MatureGrowth) continue;
-                    if (IsSuppressed(c, now) || !sink.CycleWet(c)) continue;
-                    if (stagger && !RM_ExplosiveGrowthKernel.StaggerOpen(sink.Hash(c), now)) continue;
-                    if (!(sink.GrowthRate(c) > 0f)) continue;
-                    charges[c] = new RM_ChargeRecord { plantId = id, charge = RM_ExplosiveGrowthKernel.ArmedCharge, stage = RM_TellStage.Ground, clockFactor = sink.NewClockFactor(c) };
-                    sink.OnArmed(c);
-                }
+                K c = candidates[i];
+                if (charges.ContainsKey(c)) continue;
+                int id; float growth; bool cycles;
+                if (!sink.TryGetPlant(c, out id, out growth, out cycles) || !cycles) continue;
+                if (growth < RM_ExplosiveGrowthKernel.MatureGrowth) continue;
+                if (IsSuppressed(c, now) || !sink.CycleWet(c)) continue;
+                if (stagger && !RM_ExplosiveGrowthKernel.StaggerOpen(sink.Hash(c), now)) continue;
+                if (!(sink.GrowthRate(c) > 0f)) continue;
+                charges[c] = new RM_ChargeRecord { plantId = id, charge = RM_ExplosiveGrowthKernel.ArmedCharge, stage = RM_TellStage.Ground, clockFactor = sink.NewClockFactor(c) };
+                sink.OnArmed(c);
             }
+        }
 
-            if (charges.Count > 0)
+        private readonly List<K> sweep = new List<K>();
+        private int sweepIndex;
+        private int sweepDt;
+        private bool sweepReprint;
+
+        public bool SweepDone => sweepIndex >= sweep.Count;
+        public int SweepCount => sweep.Count;
+
+        /// <summary>Snapshot the charges to step. dt is the ticks since the last sweep began, however long that one took.</summary>
+        public void BeginSweep(int dt, bool reprint)
+        {
+            sweep.Clear();
+            sweep.AddRange(charges.Keys);
+            sweepIndex = 0;
+            sweepDt = dt;
+            sweepReprint = reprint;
+        }
+
+        /// <summary>Step 2: the charge, for up to budget plants of the current sweep. Re-mesh only on a tell-stage or size-step
+        /// change, plus the tremble wobble on a reprint.</summary>
+        public void StepSweep<S>(S sink, int now, int budget, int pops, float chargeTicks, bool tellSounds) where S : IEgSink<K>
+        {
+            for (; budget > 0 && sweepIndex < sweep.Count; budget--)
             {
-                tmp.Clear();
-                tmp.AddRange(charges.Keys);
-                for (int i = 0; i < tmp.Count; i++)
+                K c = sweep[sweepIndex++];
+                RM_ChargeRecord rec;
+                if (!charges.TryGetValue(c, out rec)) continue;   // gone since the snapshot
+                int id; float growth; bool cycles;
+                if (!sink.TryGetPlant(c, out id, out growth, out cycles) || id != rec.plantId)
                 {
-                    K c = tmp[i];
-                    RM_ChargeRecord rec = charges[c];
-                    int id; float growth; bool cycles;
-                    if (!sink.TryGetPlant(c, out id, out growth, out cycles) || id != rec.plantId)
-                    {
-                        charges.Remove(c);
-                        continue;
-                    }
-                    if (!cycles)
-                    {
-                        charges.Remove(c);
-                        sink.OnDirty(c);
-                        continue;
-                    }
-
-                    bool wet = !IsSuppressed(c, now) && sink.CycleWet(c);
-                    rec.charge = RM_ExplosiveGrowthKernel.StepCharge(rec.charge, wet, sink.GrowthRate(c) > 0f, dt, chargeTicks, rec.clockFactor);
-
-                    if (rec.charge <= 0f)
-                    {
-                        charges.Remove(c);
-                        sink.OnDirty(c);
-                        continue;
-                    }
-
-                    bool dirty = false;
-                    RM_TellStage want = RM_ExplosiveGrowthKernel.StageFor(rec.charge);
-                    if (want != rec.stage)
-                    {
-                        // EGROWTH_TELL_FIX_STAGE_RATCHET_STUCK: the stage follows the charge down as well as up.
-                        if (want >= RM_TellStage.Creak && rec.stage < RM_TellStage.Creak && tellSounds) sink.OnCreak(c);
-                        rec.stage = want;
-                        dirty = true;
-                    }
-                    byte step = RM_ExplosiveGrowthKernel.SizeStep(rec.charge);
-                    if (step != rec.sizeStep) { rec.sizeStep = step; dirty = true; }
-                    bool trembling = rec.stage == RM_TellStage.Tremble || rec.stage == RM_TellStage.Creak;
-                    if (trembling) sink.OnTellPuff(c);
-
-                    if (rec.charge >= 1f)
-                    {
-                        charges.Remove(c);
-                        sink.OnFire(c);
-                        continue;
-                    }
-
-                    if (dirty || (reprint && trembling)) sink.OnDirty(c);
+                    charges.Remove(c);
+                    continue;
                 }
+                if (!cycles)
+                {
+                    charges.Remove(c);
+                    sink.OnDirty(c);
+                    continue;
+                }
+
+                bool wet = !IsSuppressed(c, now) && sink.CycleWet(c);
+                rec.charge = RM_ExplosiveGrowthKernel.StepCharge(rec.charge, wet, sink.GrowthRate(c) > 0f, sweepDt, chargeTicks, rec.clockFactor);
+
+                if (rec.charge <= 0f)
+                {
+                    charges.Remove(c);
+                    sink.OnDirty(c);
+                    continue;
+                }
+
+                bool dirty = false;
+                RM_TellStage want = RM_ExplosiveGrowthKernel.StageFor(rec.charge);
+                if (want != rec.stage)
+                {
+                    // EGROWTH_TELL_FIX_STAGE_RATCHET_STUCK: the stage follows the charge down as well as up.
+                    if (want >= RM_TellStage.Creak && rec.stage < RM_TellStage.Creak && tellSounds) sink.OnCreak(c);
+                    rec.stage = want;
+                    dirty = true;
+                }
+                byte step = RM_ExplosiveGrowthKernel.SizeStep(rec.charge);
+                if (step != rec.sizeStep) { rec.sizeStep = step; dirty = true; }
+                bool trembling = rec.stage == RM_TellStage.Tremble || rec.stage == RM_TellStage.Creak;
+                if (trembling) sink.OnTellPuff(c);
+
+                if (rec.charge >= 1f && pops > 0)
+                {
+                    pops--;
+                    charges.Remove(c);
+                    sink.OnFire(c);
+                    continue;
+                }
+
+                if (dirty || (sweepReprint && trembling)) sink.OnDirty(c);
             }
         }
     }

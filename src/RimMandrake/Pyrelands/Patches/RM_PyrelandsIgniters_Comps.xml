@@ -39,7 +39,7 @@
               <li Class="RimMandrake.Pyrelands.CompProperties_FireHawkSpread">
                 <scanRadius>18</scanRadius>
                 <spreadDistance>6</spreadDistance>
-                <startFireSize>0.1</startFireSize>
+                <startFireSize>0.35</startFireSize>
               </li>
             </comps>
           </value>
@@ -54,8 +54,11 @@
                 room or a walled waystation genuinely heats it, because the
                 vanilla temperature model spends pushed heat on the containing
                 room. Calibrated against Campfire (MEASURED: heatPerSecond 21,
-                heatPushMaxTemperature 28) — a little under a campfire, and it
-                stops pushing once the room is comfortable. compClass
+                heatPushMaxTemperature 28) — a little under a campfire. No cap
+                in the def (owner card 2026-11-08 01:01 "heat with no cap"):
+                a closed pen heats past the weather, to outdoors +25 C (never
+                under 24 C), a ceiling held in Postfix_ShouldPushHeatNow
+                (Source/CompFurnaceWarmthAura.cs). compClass
                 CompPawnHeatPusher, not the default CompHeatPusher: vanilla
                 pushes from CompTick AND CompTickRare and a pawn runs both, so
                 the default class heated at twice heatPerSecond
@@ -68,7 +71,8 @@
                 around the beast instead (no hediff): see
                 Source/CompFurnaceWarmthAura.cs.
 
-             3. CompFurnaceBedIgnition — OURS. The bed-down smoulder.
+             3. CompFurnaceBedIgnition — OURS. The bed-down smoulder, and
+                the grass it sleeps in catching (owner card 2026-11-08 01:01).
                 🔴 NO TAMED EXEMPTION, by ruling. Do not add one.
 
              4. CompFurnaceThermalCharge — OURS, FURNACEBEAST_THERMAL_CYCLE_1.
@@ -84,7 +88,7 @@
               <li Class="CompProperties_HeatPusher">
                 <compClass>RimMandrake.Pyrelands.CompPawnHeatPusher</compClass>
                 <heatPerSecond>18</heatPerSecond>
-                <heatPushMaxTemperature>24</heatPushMaxTemperature>
+                <heatPushMaxTemperature>1000</heatPushMaxTemperature>
               </li>
               <li Class="RimMandrake.Pyrelands.CompProperties_FurnaceWarmthAura" />
               <li Class="RimMandrake.Pyrelands.CompProperties_FurnaceBedIgnition" />

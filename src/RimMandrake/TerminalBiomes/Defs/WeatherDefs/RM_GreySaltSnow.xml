@@ -35,9 +35,10 @@
   map.snowGrid: literal white snow, drawn as snow, melting above freezing
   (SteadyEnvironmentEffects AddFallenSnowAt). The Grey's floor sits at +12 degC,
   so it would melt on contact AND would read as water-snow, which is exactly
-  what terminator_sea.md §6 bans. Accumulation, if ever wanted, is a filth or
-  a terrain tint laid by a map component — the shape the Pyrelands already
-  uses for RM_FE_Filth_LooseAsh — never snowRate.
+  what terminator_sea.md §6 bans. Accumulation, if ever wanted, is a filth, a
+  terrain tint laid by a map component, or Odyssey's sand grid drawn in its own
+  colour (the Pyrelands' ash since 2026-11-08, Pyrelands/Source/PyrelandsAshSand.cs)
+  — never snowRate.
 
   rainRate 0 because this is a precipitate out of supersaturated brine, not
   water falling, and because rainRate > 0.1 changes fire, growth and mood

@@ -96,6 +96,14 @@ namespace RimMandrake.ExplosiveGrowth
         public bool fireAdapted;
     }
 
+    /// <summary>A biome's own say over the vanilla-crop water rule. A biome whose ground already carries its own water rule for
+    /// crops (Pyrelands' ash field: dry deep ash 70%, watered 140%, owner 2026-11-07 "Dry deep ash stays at 70%, sowable")
+    /// opts out, so the two rules do not multiply into a crop that crawls at 7%. Absent = the Mod Setting decides.</summary>
+    public class RM_ExplosiveGrowthBiomeExtension : DefModExtension
+    {
+        public bool vanillaCropsNeedWater = true;
+    }
+
     /// <summary>A sheet row's archetype decision; Auto = the seed.</summary>
     public enum RM_ArchetypeChoice : byte { Auto = 0, DryNative = 1, WetNative = 2, FireAdapted = 3, Exempt = 4 }
 
@@ -110,6 +118,15 @@ namespace RimMandrake.ExplosiveGrowth
         public RM_ArchetypeChoice archetype = RM_ArchetypeChoice.Auto;
         public float ruptureChance = -1f;
         public IntRange sproutCount = IntRange.Zero;
+
+        /// <summary>A burst that only pops and sows: no husk hay, no scattered filth, no blow to pawns and no message.
+        /// For a groundcover that carpets a map, where one plant in three bursting would bury the map in hay and beat up
+        /// anyone crossing it (Pyrelands, live 2026-11-07: 11,039 hay stacks and colonists downed by bruises in 3 days).</summary>
+        public bool gentleBurst;
+
+        /// <summary>The plant never reaches its top by itself; only a forced top (debug action, API) fires it. For a plant
+        /// that must stand until its own clock ends it (the scorch-fruit pod: harvestable, rots within about a day).</summary>
+        public bool noCycle;
         public List<string> adaptedLiquids = new List<string>();
         public bool fireAdapted;
     }

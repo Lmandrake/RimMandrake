@@ -137,9 +137,15 @@
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Herbivore_Eat</soundEating>
     </race>
+    <comps>
+      <li><compClass>RimMandrake.Pyrelands.CompBurrowStatus</compClass></li>
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.RM_BurrowOnFireExtension">
-        <detectionRadius>15</detectionRadius>
+        <!-- 6, was 15 (map t, 2026-11-07): at 15 a herd dove in the open with the front still a quarter-day off, sat out of sight
+             for hours, and one dove twice on char the fire had already left. At 6 it dives beside the flames, where the player
+             sees it, and surfaces soon after the front has passed. -->
+        <detectionRadius>6</detectionRadius>
         <!-- ASHWALLOW_HEAT_DOME_WIRE_CURLS_UP_LATE: a heat hit domes it at once; the dome pose draws while RM_Burrowed holds -->
         <domeOnHeatHit>true</domeOnHeatHit>
         <domeTexPath>Things/Pawn/Animal/Pyrelands/Ashwallow/AshwallowDome</domeTexPath>

@@ -51,32 +51,36 @@
     <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
     <perceivePriority>3</perceivePriority>
     <rainRate>1.1</rainRate>
+    <!-- 2026-11-08: our own sooty streaks (Source/PyrelandsWeatherOverlays.cs). Vanilla's light rain streaks captured as nothing
+         on this ground under this sky, so black rain read only as a dark hour. -->
     <overlayClasses>
-      <li>WeatherOverlay_Rain</li>
+      <li>RimMandrake.Pyrelands.WeatherOverlay_RM_BlackRain</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
+    <!-- Lifted 2026-11-07: noon at sky 0.30 read as night (map s, sky_s_3blackrain): the colony could hardly be seen. Now a dim
+         brown storm light, about 60% of vanilla rain's (0.8 grey), with darker, dirtier streaks than its 0.7. -->
     <skyColorsDay>
-      <sky>(0.22,0.20,0.20)</sky>
-      <shadow>(0.5,0.5,0.5)</shadow>
-      <overlay>(0.3,0.28,0.28)</overlay>
-      <saturation>0.4</saturation>
+      <sky>(0.50,0.45,0.42)</sky>
+      <shadow>(0.6,0.6,0.6)</shadow>
+      <overlay>(0.40,0.36,0.34)</overlay>
+      <saturation>0.5</saturation>
     </skyColorsDay>
     <skyColorsDusk>
-      <sky>(0.26,0.22,0.22)</sky>
-      <shadow>(0.5,0.5,0.5)</shadow>
-      <overlay>(0.25,0.22,0.22)</overlay>
-      <saturation>0.4</saturation>
+      <sky>(0.45,0.39,0.36)</sky>
+      <shadow>(0.6,0.6,0.6)</shadow>
+      <overlay>(0.37,0.33,0.31)</overlay>
+      <saturation>0.5</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
-      <sky>(0.12,0.11,0.11)</sky>
+      <sky>(0.20,0.18,0.18)</sky>
       <shadow>(0.4,0.4,0.4)</shadow>
-      <overlay>(0.18,0.16,0.16)</overlay>
+      <overlay>(0.30,0.28,0.28)</overlay>
       <saturation>0.4</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
-      <sky>(0.12,0.11,0.11)</sky>
+      <sky>(0.18,0.17,0.17)</sky>
       <shadow>(0.4,0.4,0.4)</shadow>
-      <overlay>(0.18,0.16,0.16)</overlay>
+      <overlay>(0.28,0.26,0.26)</overlay>
       <saturation>0.4</saturation>
     </skyColorsNightMid>
     <temperatureRange>-40~999</temperatureRange>

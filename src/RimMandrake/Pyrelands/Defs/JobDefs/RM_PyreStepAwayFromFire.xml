@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A person on a Pyrelands map moving off a cell the fire has reached (JobGiver_RM_StepAwayFromFire, PyrelandsFireSense.cs).
+       A plain goto, so a downed colonist who can crawl uses it too; its own def so the giver does not reissue it every check and
+       the pawn's pane says why it dropped its work. Fields as Core's Flee (Jobs_Misc.xml). -->
+  <JobDef>
+    <defName>RM_PyreStepAwayFromFire</defName>
+    <driverClass>JobDriver_Goto</driverClass>
+    <reportString>stepping clear of the fire.</reportString>
+    <checkOverrideOnDamage>OnlyIfInstigatorNotJobTarget</checkOverrideOnDamage>
+  </JobDef>
+</Defs>

@@ -4,28 +4,29 @@
   <!--
     Ash fall — "ash that blows like snow" (owner's ruling, 2026-09-09).
 
+    (2026-11-08: ash fall now draws its own flakes, WeatherOverlay_RM_AshFall; the note below still holds for ash drift.)
     THE FALLING VISUAL IS PURE XML, NO NEW OVERLAY CLASS. Vanilla tints
     every active weather overlay with the CURRENT WEATHER'S OWN sky
     `overlay` colour: Verse/SkyManager.cs:117 takes
     `curSky.colors.overlay` for any SkyOverlay that does not declare a
     ForcedOverlayColor, and WeatherOverlay_SnowGentle declares none
     (RimSage, RimWorld/WeatherOverlay_SnowGentle.cs). So borrowing the
-    gentle-snow particle sheet and setting `<overlay>` to a warm dark grey
-    below gives grey ash drifting down at snow's pace and snow's density —
+    gentle-snow particle sheet and setting `<overlay>` to a pale warm grey (a dark one could not be seen against the dimmed ground)
+    below gives pale grey ash drifting down at snow's pace and snow's density —
     the ruling's own comparison, delivered by the field that already
     exists. `curSky.colors.overlay` is read nowhere else in the engine, so
     darkening it has no side effects.
 
-    ⚠️ WHAT THE ENGINE WILL NOT DO FOR US. `snowRate` is the field that
-    makes falling weather ACCUMULATE, and it accumulates into
-    map.snowGrid — white snow, drawn white, melting above freezing
-    (SteadyEnvironmentEffects.cs:96 AddFallenSnowAt). On a 25 degC+ biome
-    it would both look wrong and melt instantly, so snowRate stays 0 and
-    the accumulation is done instead by MapComponent_PyrelandsAshfall
-    (Source/FireEcologyHook.cs), which lays down this mod's own
-    RM_FE_Filth_LooseAsh — the same filth the fire hook already drops, so
-    a drift laid by weather and a drift laid by a fire are the same thing
-    and both wash away under RM_FE_BlackRain.
+    ⚠️ WHERE THE ASH GOES. `snowRate` accumulates into map.snowGrid: white,
+    and melted at once on a 25 degC+ biome, so it stays 0. Since 2026-11-08
+    (owner, by card: "Rebuild ash on vanilla sand?" -> "Yes") the ash is
+    Odyssey's SAND grid: `sandRate` below is deposited by vanilla
+    SteadyEnvironmentEffects.AddFallenSandAt, snow's own code path
+    (0.046 x rate x noise 0.5..1 a visit, a visit every ~1,667 ticks).
+    1.2 is heavy snow's snowRate (SnowHard), so ash piles as heavy snow
+    does: ~0.048 depth a game hour, a full cover in about a day. On an ash
+    map it is drawn as ash, keeps ~10 days dry and washes off under
+    RM_FE_BlackRain (Source/PyrelandsAshSand.cs); the rate setting scales it.
 
     🔑 rainRate STAYS 0. Anything above 0.1 would (a) put out the fires
     this biome exists to have, via Fire.TickInterval's rain extinguish,
@@ -51,14 +52,18 @@
     <moveSpeedMultiplier>0.95</moveSpeedMultiplier>
     <rainRate>0</rainRate>
     <snowRate>0</snowRate>
+    <sandRate>1.2</sandRate>
     <windSpeedFactor>1.2</windSpeedFactor>
     <windSpeedOffset>0.5</windSpeedOffset>
     <preventSkygaze>true</preventSkygaze>
     <ambientSounds>
       <li>Ambient_Wind_Fog</li>
     </ambientSounds>
+    <!-- 2026-11-08: our own flakes (Source/PyrelandsWeatherOverlays.cs). SnowHard's light flakes captured as nothing on map w at
+         noon, and in motion they streaked by fast enough to read as brown rain. These are alpha-blended pale ash, two layers,
+         drifting at snow-gentle speed on a sideways wind. -->
     <overlayClasses>
-      <li>WeatherOverlay_SnowGentle</li>
+      <li>RimMandrake.Pyrelands.WeatherOverlay_RM_AshFall</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <!-- `overlay` is the ash colour itself — see the header. `saturation`
@@ -66,25 +71,25 @@
     <skyColorsDay>
       <sky>(0.62,0.58,0.54)</sky>
       <shadow>(0.90,0.90,0.90)</shadow>
-      <overlay>(0.42,0.39,0.35)</overlay>
+      <overlay>(0.78,0.75,0.70)</overlay>
       <saturation>0.55</saturation>
     </skyColorsDay>
     <skyColorsDusk>
       <sky>(0.66,0.54,0.46)</sky>
       <shadow>(0.90,0.90,0.90)</shadow>
-      <overlay>(0.40,0.36,0.32)</overlay>
+      <overlay>(0.72,0.66,0.60)</overlay>
       <saturation>0.55</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
       <sky>(0.26,0.26,0.27)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.30,0.28,0.26)</overlay>
+      <overlay>(0.40,0.38,0.36)</overlay>
       <saturation>0.55</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.24,0.24,0.25)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.28,0.26,0.24)</overlay>
+      <overlay>(0.34,0.32,0.30)</overlay>
       <saturation>0.55</saturation>
     </skyColorsNightMid>
   </WeatherDef>
@@ -93,7 +98,7 @@
     Ash drift — the Pyrelands' CLEAR weather (owner, 2026-10-12: "a LOT of free-flying ash blowing around like snow";
     design pyrelands_ash_redesign_2026-10-12.md §5a). Replaces Clear in the biome table at the same weight. The same
     gentle-snow sheet tinted by the sky `overlay` colour as ash fall (header above), but no fog, no penalties, sunny sky,
-    and NO accumulation (MapComponent_PyrelandsAshfall lays drifts only for ash fall / cinderfall). The ambientAshHeavy
+    and NO accumulation (sandRate 0: only ash fall and cinderfall lay ash). The ambientAshHeavy
     setting layers WeatherOverlay_SnowHard on at startup (the "LOT" setting).
   -->
   <WeatherDef>
@@ -115,25 +120,25 @@
     <skyColorsDay>
       <sky>(1,1,1)</sky>
       <shadow>(0.718,0.745,0.757)</shadow>
-      <overlay>(0.42,0.39,0.35)</overlay>
+      <overlay>(0.78,0.75,0.70)</overlay>
       <saturation>1.25</saturation>
     </skyColorsDay>
     <skyColorsDusk>
       <sky>(0.858,0.650,0.423)</sky>
       <shadow>(0.955,0.886,0.914)</shadow>
-      <overlay>(0.40,0.36,0.32)</overlay>
+      <overlay>(0.72,0.66,0.60)</overlay>
       <saturation>1.25</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
       <sky>(0.482,0.603,0.682)</sky>
       <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.30,0.28,0.26)</overlay>
+      <overlay>(0.40,0.38,0.36)</overlay>
       <saturation>1.25</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.482,0.603,0.682)</sky>
       <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.28,0.26,0.24)</overlay>
+      <overlay>(0.34,0.32,0.30)</overlay>
       <saturation>1.25</saturation>
     </skyColorsNightMid>
   </WeatherDef>

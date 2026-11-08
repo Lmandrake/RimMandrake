@@ -70,7 +70,7 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
     "pyrelandsEnabled": True,
-    "ashDustingEnabled": True, "ashDustingChance": 0.02,
+    "ashDustingEnabled": True, "ashDustingChance": 0.004,
     "scorchFruitEnabled": True, "scorchFruitChance": 0.05, "scorchFruitMapCap": 40,
     "ashfallAccumulationEnabled": True, "ashfallRateMultiplier": 1.0,
     "biomeGenerationEnabled": True, "wildPlantAllowlistEnabled": True,
@@ -82,9 +82,9 @@ DEFAULTS = {
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,
     "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
-    "ashWaterFertilityEnabled": True, "ashDryFertility": 0.4, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
-    "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0, "rainFadesBurnBonus": True,
-    "rainFadeBudgetHours": 12.0, "blackRainWaterHours": 24,
+    "ashWaterFertilityEnabled": True, "ashDryFertility": 0.7, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
+    "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0,
+    "blackRainWaterHours": 24,
     "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False, "wildPlantRegrowDaysOverride": 0.0,
 }
 

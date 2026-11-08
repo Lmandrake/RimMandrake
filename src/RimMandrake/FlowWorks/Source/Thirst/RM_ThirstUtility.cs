@@ -421,6 +421,42 @@ namespace RimMandrake.FlowWorks.Thirst
 			return best;
 		}
 
+		/// <summary>Every cell of a map whose terrain any pawn could drink (a drink row, fresh water, or a biome's own water),
+		/// for the far search past the radial walk. Rebuilt at most once per <see cref="DrinkableCellsTicks"/>: terrain
+		/// changes are rare (a dug canal joins within the hour), and a scan is one TerrainAt per cell.</summary>
+		private const int DrinkableCellsTicks = 2500;
+		private sealed class DrinkableCellsEntry
+		{
+			public System.WeakReference<Map> map;   // map IDs restart with each game: the entry must be this very map
+			public int at;
+			public List<IntVec3> cells;
+		}
+
+		private static readonly Dictionary<int, DrinkableCellsEntry> drinkableCells = new Dictionary<int, DrinkableCellsEntry>();
+
+		public static List<IntVec3> DrinkableCells(Map map)
+		{
+			int now = Find.TickManager.TicksGame;
+			if (drinkableCells.TryGetValue(map.uniqueID, out DrinkableCellsEntry e) && e.map.TryGetTarget(out Map m) && m == map
+				&& now >= e.at && now - e.at < DrinkableCellsTicks)
+			{
+				return e.cells;
+			}
+			List<IntVec3> cells = new List<IntVec3>();
+			TerrainGrid grid = map.terrainGrid;
+			foreach (IntVec3 c in map.AllCells)
+			{
+				TerrainDef t = grid.TerrainAt(c);
+				if (DrinkLiquidAt(t) != null
+					|| t?.GetModExtension<RM_DrinkableTerrainExtension>() is RM_DrinkableTerrainExtension ext && ext.nativeWater && ext.liquid != null)
+				{
+					cells.Add(c);
+				}
+			}
+			drinkableCells[map.uniqueID] = new DrinkableCellsEntry { map = new System.WeakReference<Map>(map), at = now, cells = cells };
+			return cells;
+		}
+
 		internal const int NoTerrainMarkTicks = 600;
 		private static readonly Dictionary<int, int> noTerrainUntil = new Dictionary<int, int>();
 		/// <summary>The game the marks belong to. Thing IDs and the tick both restart on a load, so a mark from the game
@@ -468,47 +504,84 @@ namespace RimMandrake.FlowWorks.Thirst
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 			bool found = false;
 			int reachFails = 0;
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, SearchRadius, true))
+			IntVec3 bestCell = IntVec3.Invalid;
+			LiquidDef bestLiquid = null;
+			RM_DrinkUse bestUse = RM_DrinkUse.Never;
+			RM_WaterQuality bestQuality = RM_WaterQuality.Slime;
+			// One cell of the search, nearest first. False = stop walking (a Potable hit, the narrowed search's first hit, or
+			// 40 unreachable cells).
+			bool Consider(IntVec3 c)
 			{
 				if (!c.InBounds(map))
 				{
-					continue;
+					return true;
 				}
 				TerrainDef t = map.terrainGrid.TerrainAt(c);
 				bool home = !only.HasValue && HomeWater(pawn, t);   // the break's salt search is never widened
 				LiquidDef l = home ? DrinkLiquidAt(t, pawn) : DrinkLiquidAt(t);
 				if (l == null || !(home || MayDrink(pawn, l, level, only)))
 				{
-					continue;
+					return true;
 				}
 				RM_DrinkUse u = home && UseOf(l) == RM_DrinkUse.Never ? RM_DrinkUse.LastResort : UseOf(l);   // ranks below potable
 				RM_WaterQuality q = Effective(l);
-				if (found && !RM_ThirstMath.Better(u, q, 1f, use, quality, 0f))   // same class and quality further out never wins
+				if (found && !RM_ThirstMath.Better(u, q, 1f, bestUse, bestQuality, 0f))   // same class and quality further out never wins
 				{
-					continue;
+					return true;
 				}
 				if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))
 				{
-					continue;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: a body that cannot pay the drink the job debits gives nothing
+					return true;   // TERRAIN_DRINK_FIX_SMALL_POND_REFUSED: a body that cannot pay the drink the job debits gives nothing
 				}
 				if (c.IsForbidden(pawn) || !pawn.CanReach(c, PathEndMode.Touch, Danger.Some))
 				{
-					if (++reachFails > 40)
-					{
-						break;
-					}
-					continue;
+					return ++reachFails <= 40;
 				}
-				cell = c;
-				liquid = l;
-				use = u;
-				quality = q;
+				bestCell = c;
+				bestLiquid = l;
+				bestUse = u;
+				bestQuality = q;
 				found = true;
-				if (u == RM_DrinkUse.Potable && (int)q <= (int)RM_WaterQuality.Potable || only.HasValue)
+				return !(u == RM_DrinkUse.Potable && (int)q <= (int)RM_WaterQuality.Potable || only.HasValue);
+			}
+			// GenRadial's pattern ends at MaxRadialPatternRadius (79.8 in 1.6); asking for more logs "Not enough squares" every
+			// call (the grass-watered natives' 150 did, 118 times on Pyrelands map x) and still stops there.
+			float radius = System.Math.Min(RM_ThirstGrassWateredExtension.For(pawn)?.searchRadius ?? SearchRadius, GenRadial.MaxRadialPatternRadius - 0.01f);
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, radius, true))
+			{
+				if (!Consider(c))
 				{
 					break;
 				}
 			}
+			// THIRST_FIX_FAR_WATER_NEVER_FOUND: a colony landed 94 cells from the only pond on Pyrelands map x died of thirst
+			// wandering beside its beds (thirst 0.00, dehydrating, no job ever offered), because the walk above ends at 60 cells.
+			// Past it, the rest of the map's drinkable cells, nearest first; a drink that far is a long walk, never none.
+			if (!found && !only.HasValue && reachFails <= 40)
+			{
+				float r2 = radius * radius;
+				List<IntVec3> far = new List<IntVec3>();
+				foreach (IntVec3 c in DrinkableCells(map))
+				{
+					if ((c - pawn.Position).LengthHorizontalSquared > r2)
+					{
+						far.Add(c);
+					}
+				}
+				IntVec3 from = pawn.Position;
+				far.Sort((a, b) => (a - from).LengthHorizontalSquared.CompareTo((b - from).LengthHorizontalSquared));
+				foreach (IntVec3 c in far)
+				{
+					if (!Consider(c))
+					{
+						break;
+					}
+				}
+			}
+			cell = bestCell;
+			liquid = bestLiquid;
+			use = bestUse;
+			quality = bestQuality;
 			if (!found && !only.HasValue)
 			{
 				noTerrainUntil[pawn.thingIDNumber] = now + NoTerrainMarkTicks;

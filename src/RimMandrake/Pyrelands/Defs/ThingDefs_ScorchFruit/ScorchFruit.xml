@@ -11,8 +11,8 @@
     "is fire nearby" check at harvest time (which vanilla has no XML hook
     for — no Plant field reads GameCondition or nearby Fire things), this
     plant simply DOES NOT EXIST until the C# hook spawns it (already at
-    harvestAfterGrowth, via the same fire-tick hook that places
-    RM_FE_Filth_LooseAsh) directly on a burning cell. It never appears in
+    harvestAfterGrowth, via the same fire-tick hook that lays the
+    scar's ash) directly on a burning cell. It never appears in
     any biome's wildPlants list — RimUtinni: Fire Ecology does NOT add it
     there, deliberately. "Inert and worthless unburned" is delivered by the
     plant simply not existing unburned, which is stronger than a gate.
@@ -71,9 +71,10 @@
       <visualSizeRange>0.8~1.1</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <growDays>0.05</growDays>
+      <!-- Off: the vanilla span (0.05 x 8 days) would kill the pod in half a day, before its 1.1-day rot. -->
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
       <harvestYield>5</harvestYield>
       <harvestTag>Standard</harvestTag>
-      <harvestAfterGrowth>0.01</harvestAfterGrowth>
       <harvestedThingDef>RM_FE_ScorchFruitYield</harvestedThingDef>
       <wildOrder>2</wildOrder>
       <purpose>Food</purpose>
@@ -86,7 +87,7 @@
       <MaxHitPoints>40</MaxHitPoints>
       <Nutrition>0.5</Nutrition>
     </statBases>
-    <thingClass>Plant</thingClass>
+    <thingClass>RimMandrake.Pyrelands.Plant_ScorchFruitPod</thingClass>
     <tickerType>Normal</tickerType>
     <useHitPoints>True</useHitPoints>
   </ThingDef>

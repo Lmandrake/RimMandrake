@@ -137,12 +137,33 @@ namespace RimMandrake.Pyrelands
         public const int FurnaceBedIgnitionMinCells = 1;
         public const int FurnaceBedIgnitionMaxCells = 2;
 
+        /// <summary>Owner card 2026-11-08 01:01 "it ignites grass it sleeps in": asleep on a flammable plant, the beast
+        /// sets it alight. Never at once: the first half hour of sleep is safe, then a mean of 1.5 h more, so about two
+        /// hours of sleep on average (63% by 2 h, 81% by 3 h, ~99% by a night of 8 h). Never on a bare floor. [INVENTED, ruled behaviour]</summary>
+        public const int FurnaceSleepIgnitionGraceTicks = 1250;
+        public const int FurnaceSleepIgnitionMtbTicks = 3750;
+        public const int FurnaceSleepIgnitionCheckTicks = 250;
+
+        /// <summary>The sleeping-in-grass fire is a fire, not the bed-down smoulder: a 0.1 start in grass usually dies
+        /// before it spreads, so the fire-front's size. [INVENTED]</summary>
+        public const float FurnaceSleepIgnitionFireSize = 0.35f;
+
         // ---------------------------------------------------------------
         // PYRELANDS_FIRE_CADENCE_1 — the biome's fire clock (PyrelandsFireFront).
         // Owner, 2026-09-14: "the fires should come every few days, not a rare
         // event." The range below IS that sentence; do not widen it into
         // "occasionally" without a ruling.
         // ---------------------------------------------------------------
+        // The burn approaching home. A front walks about 60 cells a day (measured 2026-11-07, 250x250 map, day 1 of a
+        // real colony), and a player watching their base got no word of it until vanilla's Fire! alert, with flames
+        // already on the home area and the food stacked outside lost. 30 cells is about half a day. [INVENTED, played once]
+        public const int BurnApproachWarnCells = 30;
+        /// <summary>At or inside this many cells the warning says the burn has reached home's edge, not how far off it is.</summary>
+        public const int BurnApproachAtEdgeCells = 3;
+        public const int BurnApproachCheckTicks = 600;
+        public const int BurnApproachCooldownTicks = 90000;
+        public const int BurnApproachHomeResampleTicks = 2500;
+
         public const float FireFrontMinDays = 2f;
         public const float FireFrontMaxDays = 4f;
 
@@ -175,6 +196,69 @@ namespace RimMandrake.Pyrelands
         /// <summary>How long after map generation the opening front may still be lit (it retries each watch interval
         /// when no lawful cell takes); past it the map is no longer fresh and the opening front is dropped. One hour.</summary>
         public const int OpeningFrontWindowTicks = 2500;
+
+        // Yesterday's fire (PyrelandsYesterdayFire, 2026-11-07): on map s the 5-cell opening line lit in thick grass and read
+        // as a camp fire, with no trail behind it. The map is now generated with a half-disc scar on one edge and the opening
+        // front lights along its leading arc. Conductor brief: radius ~35-50, front at least ~70 cells from the map centre
+        // and the landing spot, away from corners and rock, the arc lit enough to read as a line but not every cell.
+
+        /// <summary>The scar's nominal radius, rolled per map; its ragged edge reaches up to YesterdayFireRagged further.</summary>
+        public const float YesterdayFireMinRadius = 35f;
+        public const float YesterdayFireMaxRadius = 50f;
+
+        /// <summary>Below this the scar is not built (a small map has no room 70 cells from its centre): the opening front
+        /// falls back to its plain line. [INVENTED]</summary>
+        public const float YesterdayFireFloorRadius = 20f;
+
+        /// <summary>The front's farthest ragged reach stays this far from the map centre and from the landing spot.</summary>
+        public const float YesterdayFireFrontClearance = 70f;
+
+        /// <summary>How far, as a share of the radius, the noise pushes the edge in or out at a bearing. [INVENTED]</summary>
+        public const float YesterdayFireRagged = 0.22f;
+
+        /// <summary>Perlin frequency of the edge's raggedness along the arc: about one bulge per 12 cells of a 45-cell arc
+        /// (2 pi 45 x 0.08 = 23 per turn) before the finer octaves. [INVENTED]</summary>
+        public const double YesterdayFireEdgeFrequency = 0.08;
+
+        /// <summary>The burn's age where it started (the map edge) and at its front: about the last day. A new game's scar is
+        /// stamped at tick 0 throughout (RM_BurnKernel.ScarStampTick). [INVENTED]</summary>
+        public const int YesterdayFireOldestAgeTicks = 45000;
+        public const int YesterdayFireYoungestAgeTicks = 1250;
+
+        /// <summary>The arc is the leading edge: bearings within 60 degrees of the inward normal (cos 60 = 0.5); the flanks
+        /// running back to the map edge stay quiet char.</summary>
+        public const float YesterdayFireArcMinCos = 0.5f;
+
+        /// <summary>One fire per second arc cell at least, and at most this many fires: a 45-cell scar's arc holds about 50-60
+        /// grass cells, so about 25-30 fires, three scheduled fronts' worth. [INVENTED]</summary>
+        public const int YesterdayFireArcStride = 2;
+        public const int YesterdayFireArcFireCap = 32;
+
+        /// <summary>The scar's age you can see: where it started, YesterdayFireSproutChance of its cells have re-sprouted young
+        /// grass (ember-grass and quickgrass at the biome's own wild ratio, growth between the two bounds), falling straight to
+        /// none at YesterdayFireSproutEndDepth, so the char right behind the front is bare. Conductor brief: "a scar ~0.75 day
+        /// old held about 15% of its cells re-sprouted (small grass, growth ~0.05-0.2)" in ordinary play.</summary>
+        public const float YesterdayFireSproutChance = 0.15f;
+        public const float YesterdayFireSproutEndDepth = 0.6f;
+        public const float YesterdayFireSproutGrowthMin = 0.05f;
+        public const float YesterdayFireSproutGrowthMax = 0.2f;
+
+        /// <summary>Scorch-fruit pods laid on the young part of the scar (depth from the edge at least YesterdayFireYoungDepth);
+        /// the burn's landing rule (FruitLandingLegal) and the map cap (scorchFruitMapCap) still apply. "A few". [INVENTED]</summary>
+        public const int YesterdayFirePods = 4;
+        public const float YesterdayFireYoungDepth = 0.7f;
+
+        /// <summary>Site search: candidate centres per map edge, along the middle of it (away from the corners), cells sampled
+        /// in each half-disc, and the share that must be burnable ground (not rock, roof or water). [INVENTED]</summary>
+        public const int YesterdayFireSitesPerEdge = 3;
+        public const float YesterdayFireSiteMinAlong = 0.3f;
+        public const float YesterdayFireSiteMaxAlong = 0.7f;
+        public const int YesterdayFireSiteSamples = 64;
+        public const float YesterdayFireSiteMinBurnable = 0.6f;
+
+        /// <summary>Ground this close to water did not burn: the green ring (GenStep_PyrelandsGreenRing's ringReach, 7.5), which
+        /// map t showed green around its ponds, stays green inside a scar too.</summary>
+        public const float YesterdayFireWetReach = 7.5f;
 
         // ---------------------------------------------------------------
         // DEEP_TRIBES_FIRE_RITE_1 — the Deep Tribes come to light it.
@@ -233,6 +317,14 @@ namespace RimMandrake.Pyrelands
         /// <summary>Charge is re-evaluated ~every 6 in-game minutes. Rare-tick
         /// cadence: this is a weeks-long cycle, not a combat stat.</summary>
         public const int FurnaceChargeIntervalTicks = 250;
+
+        /// <summary>How far above outdoors a furnace-beast can heat an enclosed room: the oven's ceiling (owner card
+        /// 2026-11-08 01:01, "heat with no cap", a pen at 50 C ambient settles 15-30 C over it). 75 C gives an unprotected
+        /// colonist extreme heatstroke in ~7 h, death in ~11 h: a hazard to read, not a trap. The beast is immune.</summary>
+        public const float FurnaceRoomAboveOutdoorC = 25f;
+
+        /// <summary>The ceiling never falls under this, so a barn in a cold biome still warms to comfortable (the old def cap).</summary>
+        public const float FurnaceRoomFloorC = 24f;
 
         /// <summary>Above this ambient temperature the beast charges. Chosen at
         /// the Deep Desert's daytime floor, so basking genuinely works out there
@@ -297,8 +389,14 @@ namespace RimMandrake.Pyrelands
         /// extension-carrying race goes to ground. Comfortably wider than a
         /// fire front's own width (FireFrontWidthCells, 9 cells) so the
         /// animal burrows ahead of the line reaching it rather than at the
-        /// last possible cell. [INVENTED]</summary>
-        public const float BurrowDetectionRadius = 15f;
+        /// last possible cell. [INVENTED] 6, was 15 (map t, 2026-11-07): at 15 a herd dove with the front a quarter-day off
+        /// and sat out of sight for hours; MapComponent_BurnLine now also pulls a grazing or sleeping burrower down.</summary>
+        public const float BurrowDetectionRadius = 6f;
+
+        /// <summary>PyrelandsWetRoots: degrees a plant on WATERED ash-field ground is spared when its heat growth factor is read.
+        /// At the biome's 53.6 C median a vanilla crop's 42-58 C falloff zeroes the growing day; 15 C brings a 45-62 C day
+        /// to 30-47 C, so a watered crop grows nearly all day and a dry one hardly at all. [INVENTED, 2026-11-07]</summary>
+        public const float WetRootsCoolingC = 15f;
 
         /// <summary>PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: least gap between two dive nudges of one pawn
         /// (MapComponent_BurnLine re-asks an idling burrower's think tree while a fire is near). Normally one nudge

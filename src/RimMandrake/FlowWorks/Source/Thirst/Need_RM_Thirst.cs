@@ -39,7 +39,7 @@ namespace RimMandrake.FlowWorks.Thirst
 						true);
 				}
 				return RM_ThirstMath.FallPerDay(RM_ThirstSettings.RateMultiplier, heat, IsHardLabour(pawn), !pawn.Awake())
-					* HediffFactor(pawn);
+					* HediffFactor(pawn) * (RM_ThirstGrassWateredExtension.For(pawn)?.fallFactor ?? 1f);
 			}
 		}
 
@@ -51,6 +51,10 @@ namespace RimMandrake.FlowWorks.Thirst
 			}
 			CurLevel -= RM_ThirstMath.FallPerInterval(FallPerDayNow);
 			float delta = RM_ThirstMath.DehydrationDelta(CurLevel, RM_ThirstMath.NeedIntervalTicks);
+			if (delta > 0f && RM_ThirstGrassWateredExtension.For(pawn) != null)
+			{
+				return;   // the grass keeps it alive: an empty need only sends it looking for water
+			}
 			if (delta != 0f)
 			{
 				HealthUtility.AdjustSeverity(pawn, RM_ThirstDefOf.RM_Dehydration, delta);
@@ -137,6 +141,16 @@ namespace RimMandrake.FlowWorks.Thirst
 
 	/// <summary>On a HediffDef: while the hediff is at or above <see cref="minSeverity"/>, thirst falls <see cref="factor"/>
 	/// times as fast (Own mode). Data, so any mod's hediff can say it costs water.</summary>
+	/// <summary>On a race ThingDef (by patch): a native that takes nearly all its water from what it grazes. Its thirst falls
+	/// at fallFactor, it looks for water out to searchRadius when it runs low, and it never dehydrates.</summary>
+	public class RM_ThirstGrassWateredExtension : DefModExtension
+	{
+		public float fallFactor = 0.04f;
+		public float searchRadius = 150f;
+
+		public static RM_ThirstGrassWateredExtension For(Pawn pawn) => pawn.def.GetModExtension<RM_ThirstGrassWateredExtension>();
+	}
+
 	public class RM_ThirstFallExtension : DefModExtension
 	{
 		public float factor = 1f;

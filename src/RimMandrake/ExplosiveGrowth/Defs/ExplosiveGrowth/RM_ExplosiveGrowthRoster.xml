@@ -26,12 +26,15 @@
       <!-- TINDER — fire-loop genetics (roster §TINDER). Ring: quickgrass. -->
       <!-- PYRELANDS GRASS (C3, owner 2026-10-16: "grow violently quickly and spread itself super-fast"): no Tinder, many
            sprouts, fresh ash waters it (C5). It BURSTS at the default 1 in 3 (tree_burst_design_2026-10-17.md §5, Q7 by card:
-           "Let Pyrelands grass burst too", keeping 6-9 sprouts), reversing the build's reading of C3. -->
-      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
-      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted></li>
+           "Let Pyrelands grass burst too", keeping 6-9 sprouts), reversing the build's reading of C3. gentleBurst: on a carpet the
+           husk hay and the blow to pawns buried the map and downed colonists, so these bursts only pop and sow. -->
+      <li><plant>RM_FE_Plant_Quickgrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted><gentleBurst>true</gentleBurst></li>
+      <li><plant>RM_FE_Plant_EmberGrass</plant><top>Churn</top><sproutCount>6~9</sproutCount><fireAdapted>true</fireAdapted><gentleBurst>true</gentleBurst></li>
       <!-- fireAdapted decides its kind: growDays 0.05 is under minGrowDaysToSoak, and an undecided row that short is Exempt,
            whose top is None, so its Tinder never fired (EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY, live 2026-11-03). -->
-      <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant><fireAdapted>true</fireAdapted></li>
+      <!-- noCycle: pyre_scorchfruit_produces and _spoils_fast want a ripe pod standing to be harvested for about a day. Cycling on
+           its own fresh ash, a pod (growDays 0.05) burst within hours into scattered fruit and hay, and nobody could harvest one. -->
+      <li><plant>RM_FE_Plant_ScorchFruit</plant><top>Tinder</top><ringPlant>RM_FE_Plant_Quickgrass</ringPlant><fireAdapted>true</fireAdapted><noCycle>true</noCycle></li>
 
       <!-- SLIME — slime-fed genetics (roster §SLIME). Ring terrain: the
            Gelatinous Slime mod's own rich slime ground. -->

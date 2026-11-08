@@ -131,11 +131,19 @@ namespace RimMandrake.Pyrelands
             {
                 return;
             }
+            // The same ceiling as the room pusher (owner card 2026-11-08 01:01): on its
+            // own this push takes a one-cell closet ~+33 C over the weather.
+            Map map = beast.MapHeld;
+            if (map == null || beast.PositionHeld.GetTemperature(map) >= FurnaceWarmthMath.RoomHeatCeiling(
+                    PyrelandsTuning.FurnaceRoomFloorC, map.mapTemperature.OutdoorTemp, PyrelandsTuning.FurnaceRoomAboveOutdoorC))
+            {
+                return;
+            }
             // Per-check, not per-second: the interval is FurnaceChargeIntervalTicks,
             // and PushHeat's argument is an energy quantity, so the constant is
             // already calibrated for this cadence rather than for CompHeatPusher's.
             GenTemperature.PushHeat(
-                beast.PositionHeld, beast.MapHeld,
+                beast.PositionHeld, map,
                 PyrelandsTuning.FurnaceRadiantHeatPerCheckAtFullCharge * charge);
         }
 

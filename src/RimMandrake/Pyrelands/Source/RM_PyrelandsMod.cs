@@ -24,16 +24,16 @@ namespace RimMandrake.Pyrelands
     //      §6a: "the BiomeDef still loads"). Biome tile PLACEMENT has its
     //      own separate, worldgen-affecting switch (5) and is untouched by
     //      this one.
-    //   2. Loose ash dusting off a burning cell.
+    //   2. Ash laid by a burning cell (sand depth, PyrelandsAsh).
     //   3. Scorch-fruit seeded by a burning cell, plus its per-map cap.
-    //   4. Ash accumulation (drifts) during Ash Fall / Cinderfall weather.
+    //   4. Ash accumulation (vanilla sand fall, drawn as ash) during Ash Fall / Cinderfall weather.
     //   5. Whether the Pyrelands biome can win tile placement at all —
     //      WORLDGEN-AFFECTING, a new-worlds-only switch.
     //   6. The four absorbed mandrake.rut.pyrelandsmechanics mechanics
     //      (burn line, fire-hawk ember spread, furnace-beast thermal
     //      circuit, fire clock/rite trigger) — PYRELANDS_RM_MOD_BUILD_1 §6.
     //   7. Cross-biome opt-in for the ash-accumulation mechanic (4) on a
-    //      non-Pyrelands map, read by MapComponent_PyrelandsAshfall's tick
+    //      non-Pyrelands map, read by PyrelandsAsh's sand-rate postfix
     //      (applies to running maps), same shape as RM_GreentideSettings.
     // ════════════════════════════════════════════════════════════════════
     public class RM_PyrelandsSettings : ModSettings
@@ -46,7 +46,10 @@ namespace RimMandrake.Pyrelands
         public static bool pyrelandsEnabled = true;
 
         public static bool ashDustingEnabled = true;
-        public static float ashDustingChance = 0.02f;
+        // Per fire tick. At 0.02 every burned cell reached the ash cap (x4) and a scar read as one grey sheet; this leaves a
+        // scatter of drifts with the dark ground between them (owner 2026-11-07, "the ground reads crisp").
+        public const float AshDustingDefault = 0.004f;
+        public static float ashDustingChance = AshDustingDefault;
 
         public static bool scorchFruitEnabled = true;
         // Per-burned-cell probability (one roll per Fire instance), NOT
@@ -101,16 +104,14 @@ namespace RimMandrake.Pyrelands
         public static float sandShovelYieldMultiplier = 1f;
 
         // PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED (design/RimMandrake/pyrelands_ash_redesign_2026-10-12.md §5, §5a). Every number
-        // PROVISIONAL. All off: deep ash reads its XML 0.40 and nothing else changes. None affects worldgen.
+        // PROVISIONAL. All off: deep ash reads its XML 0.70 and nothing else changes. None affects worldgen.
         public static bool ashWaterFertilityEnabled = true;
-        public static float ashDryFertility = 0.40f;
+        public static float ashDryFertility = 0.70f;
         public static float ashWateredFertility = 1.40f;
         public static int ashNaturalWaterRadius = 2;
         public static bool freshBurnBonusEnabled = true;
         public static float freshBurnBonus = 0.50f;
         public static float freshBurnDays = 6f;
-        public static bool rainFadesBurnBonus = true;
-        public static float rainFadeBudgetHours = 12f;
         public static int blackRainWaterHours = 24;
         public static bool ambientAshEnabled = true;
         public static float ambientAshShare = 1f;
@@ -124,7 +125,7 @@ namespace RimMandrake.Pyrelands
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) and fire
         // ecology (ash dusting, burn stamps, scorch-fruit) run on a NON-Pyrelands
         // biome's map without importing the whole biome. Read by
-        // MapComponent_PyrelandsAshfall.MapComponentTick and FireEcologyBiomeGate
+        // PyrelandsAsh.Postfix_SandRate and FireEcologyBiomeGate
         // (via AppliesToBiome), so a change applies to maps already running. Same
         // shape as RM_GreentideSettings' cross-biome block.
         public static bool crossBiomeEnabled = false;
@@ -139,7 +140,7 @@ namespace RimMandrake.Pyrelands
             base.ExposeData();
             Scribe_Values.Look(ref pyrelandsEnabled, "pyrelandsEnabled", true);
             Scribe_Values.Look(ref ashDustingEnabled, "ashDustingEnabled", true);
-            Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", 0.02f);
+            Scribe_Values.Look(ref ashDustingChance, "ashDustingChance", AshDustingDefault);
             Scribe_Values.Look(ref scorchFruitEnabled, "scorchFruitEnabled", true);
             // Key renamed with the semantics change (per-tick -> per-cell,
             // 2026-09-16): a settings file saved under the old key holds a
@@ -170,14 +171,12 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
             Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
             Scribe_Values.Look(ref ashWaterFertilityEnabled, "ashWaterFertilityEnabled", true);
-            Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.40f);
+            Scribe_Values.Look(ref ashDryFertility, "ashDryFertility", 0.70f);
             Scribe_Values.Look(ref ashWateredFertility, "ashWateredFertility", 1.40f);
             Scribe_Values.Look(ref ashNaturalWaterRadius, "ashNaturalWaterRadius", 2);
             Scribe_Values.Look(ref freshBurnBonusEnabled, "freshBurnBonusEnabled", true);
             Scribe_Values.Look(ref freshBurnBonus, "freshBurnBonus", 0.50f);
             Scribe_Values.Look(ref freshBurnDays, "freshBurnDays", 6f);
-            Scribe_Values.Look(ref rainFadesBurnBonus, "rainFadesBurnBonus", true);
-            Scribe_Values.Look(ref rainFadeBudgetHours, "rainFadeBudgetHours", 12f);
             Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
@@ -217,8 +216,7 @@ namespace RimMandrake.Pyrelands
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
             .Declare("ashWaterFertilityEnabled", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours")
-            .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus")
-            .Declare("rainFadesBurnBonus", "rainFadeBudgetHours")
+            .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays")
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
@@ -227,9 +225,9 @@ namespace RimMandrake.Pyrelands
             .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
             .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant")
             .Name("pyrelandsEnabled", "Mod enabled")
-            .Name("ashDustingEnabled", "Fire dusts loose ash").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
-            .Name("ashfallAccumulationEnabled", "Weather deposits ash drifts").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
-            .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground").Name("rainFadesBurnBonus", "Rain washes the bonus away early")
+            .Name("ashDustingEnabled", "Fire leaves ash on the ground").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
+            .Name("ashfallAccumulationEnabled", "Ash fall buries the ground").Name("ashWaterFertilityEnabled", "Water makes deep ash fertile")
+            .Name("freshBurnBonusEnabled", "A fresh burn feeds the ground")
             .Name("ambientAshEnabled", "Ash drifts in the air in clear weather").Name("furnaceThermalEnabled", "Furnace-beast thermal circuit")
             .Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
@@ -327,18 +325,18 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Loose ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap" }))
+            if (Group(list, "Fire's ash and scorch-fruit", RimMandrake.Shared.SettingScope.Now, new[] { "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap" }))
             {
                 using (Dependent(list, "ashDustingEnabled", "ashDustingChance", "scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap"))
                 {
-    list.CheckboxLabeled("Fire dusts loose ash", ref ashDustingEnabled,
-                    "A burning cell on scorchable ground has a small chance, per tick batch, to "
-                  + "drop loose ash filth. Off: fire still burns, no extra ash from this. Rides "
-                  + "alongside vanilla's own unconditional scorch mark — that is unaffected either way.");
+    list.CheckboxLabeled("Fire leaves ash on the ground", ref ashDustingEnabled,
+                    "A burning cell on scorchable ground has a small chance, per tick batch, to lay ash on the ground "
+                  + "(Odyssey's sand buildup, drawn as ash), in clumps up to that cell's drift depth. Off: fire still burns, "
+                  + "and leaves no ash of its own. Vanilla's ash filth is kept off natural Pyrelands ground, so this is the scar's ash.");
                 using (Dependent(list, "ashDustingChance"))
                 {
-                    list.Label("Rate: " + (ashDustingChance / 0.02f).ToString("0.00") + "x default");
-                    ashDustingChance = list.Slider(ashDustingChance, 0.02f * 0.25f, 0.02f * 3f);
+                    list.Label("Rate: " + (ashDustingChance / AshDustingDefault).ToString("0.00") + "x default");
+                    ashDustingChance = list.Slider(ashDustingChance, AshDustingDefault * 0.25f, AshDustingDefault * 5f);
                 }
                 list.Gap();
 
@@ -360,10 +358,12 @@ namespace RimMandrake.Pyrelands
             {
             using (Dependent(list, "ashfallAccumulationEnabled", "ashfallRateMultiplier"))
             {
-    list.CheckboxLabeled("Weather deposits ash drifts", ref ashfallAccumulationEnabled,
-                    "Ash Fall and Cinderfall weather bank loose ash across the map over time. "
-                  + "Off: the weather still occurs (darkened sky, lightning on Cinderfall), it just "
-                  + "leaves no ash behind.");
+    list.CheckboxLabeled("Ash fall buries the ground", ref ashfallAccumulationEnabled,
+                    "Ash Fall and Cinderfall lay ash over all open ground the way snow lies (Odyssey's sand buildup, drawn as "
+                  + "ash): at 1x, Ash Fall about 0.05 depth an hour, as heavy snow, Cinderfall under half that. Deep ash slows "
+                  + "walking as sand does, takes footprints, and can be cleared in a snow/sand clear area. Dry it lasts about ten "
+                  + "days; black rain washes it off in hours. Off: the weather still occurs (darkened sky, lightning on "
+                  + "Cinderfall), it just leaves no ash behind.");
                 using (Dependent(list, "ashfallRateMultiplier"))
                 {
                     list.Label("Accumulation rate: " + ashfallRateMultiplier.ToString("0.00") + "x");
@@ -373,7 +373,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Ash field", RimMandrake.Shared.SettingScope.Now, new[] { "ashWaterFertilityEnabled", "ashDryFertility", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours", "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours", "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy" }))
+            if (Group(list, "Ash field", RimMandrake.Shared.SettingScope.Now, new[] { "ashWaterFertilityEnabled", "ashDryFertility", "ashWateredFertility", "ashNaturalWaterRadius", "blackRainWaterHours", "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "ambientAshEnabled", "ambientAshShare", "ambientAshHeavy" }))
             {
                 list.Label("Deep ash is the Pyrelands' ordinary ground. Dry it feeds little; watered it grows almost anything; a fresh burn "
                   + "feeds it for a few days. Hover a deep-ash cell to see \"watered\" and \"fresh burn\". Every number here is provisional.");
@@ -396,24 +396,17 @@ namespace RimMandrake.Pyrelands
                 }
                 }
                 list.Gap();
-                using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
+                using (Dependent(list, "freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays"))
                 {
                 list.CheckboxLabeled("A fresh burn feeds the ground", ref freshBurnBonusEnabled,
-                    "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it. "
+                    "Ground that just burned gets a fertility bonus that fades to nothing over a few days; burning again restarts it, and black rain's watered lift adds to it. "
                   + "Off: no bonus and no burn record is kept.");
-                using (Dependent(list, "freshBurnBonus", "freshBurnDays", "rainFadesBurnBonus", "rainFadeBudgetHours"))
+                using (Dependent(list, "freshBurnBonus", "freshBurnDays"))
                 {
                     list.Label("Bonus right after a burn: +" + freshBurnBonus.ToStringPercent());
                     freshBurnBonus = list.Slider(freshBurnBonus, 0f, 1.5f);
                     list.Label("Bonus lasts: " + freshBurnDays.ToString("0.#") + " days");
                     freshBurnDays = list.Slider(freshBurnDays, 1f, 20f);
-                    list.CheckboxLabeled("Rain washes the bonus away early", ref rainFadesBurnBonus,
-                        "Each hour of rain (here, Black Rain) takes a share of the bonus. Off: the bonus fades by time only.");
-                    using (Dependent(list, "rainFadeBudgetHours"))
-                    {
-                        list.Label("Hours of full rain that strip the whole bonus: " + rainFadeBudgetHours.ToString("0"));
-                        rainFadeBudgetHours = list.Slider(rainFadeBudgetHours, 1f, 72f);
-                    }
                 }
                 }
                 list.Gap();
@@ -558,8 +551,8 @@ namespace RimMandrake.Pyrelands
 
             if (Group(list, "Cross-biome ash accumulation", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
             {
-                list.Label("Lets the ash-drift mechanic (Ash Fall / Cinderfall accumulation) and fire ecology "
-                  + "(fires on soil, sand or gravel dust loose ash, mark fresh burns and seed scorch-fruit) apply on a "
+                list.Label("Lets ash on the ground (a steady light ash fall, drawn as ash, footprint-free) and fire ecology "
+                  + "(fires on soil or gravel lay ash, mark fresh burns and seed scorch-fruit) apply on a "
                   + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Off, both stay in the "
                   + "Pyrelands. A change applies to maps already running.");
                 list.Label("RM_Pyrelands_CrossBiomeUnsupported".Translate());
@@ -577,7 +570,7 @@ namespace RimMandrake.Pyrelands
                         biomeListBuffer = list.TextEntry(biomeListBuffer);
                         crossBiomeBiomeList = biomeListBuffer;
                     }
-                    list.Label("  Coverage: " + crossBiomeCoverage.ToStringPercent() + " of the native ash-accumulation rate");
+                    list.Label("  Ambient ash: " + crossBiomeCoverage.ToStringPercent() + " of a tenth of Ash Fall's rate, until the ground averages a dusting");
                     crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
                 }
                 list.GapLine();

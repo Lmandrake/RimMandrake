@@ -29,7 +29,7 @@
          (Plant.Resting: DayPercent 0.25-0.8), so full growth takes about a day and a half, not under one. -->
     <description>A coarse bunchgrass that regrows on burned ground in a day or two. Its tall stems dry to dull orange almost as quickly, laying fresh tinder over the ash before grazers can clear it.</description>
     <statBases>
-      <MaxHitPoints>70</MaxHitPoints>
+      <MaxHitPoints>28</MaxHitPoints>
       <!-- Above every Core plant (grass tops out at 1.3): this is the
            thing the biome's fires are actually made of. -->
       <Flammability>1.6</Flammability>
@@ -40,9 +40,22 @@
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <comps>
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+    </comps>
+    <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). The charred
+         leafless sprites take none. -->
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_AshDustExtension">
+        <overlays>
+          <li><basePath>Things/Plant/RM_FE_EmberGrass</basePath><overlayPath>Things/Plant/RM_FE_AshDust/EmberGrass</overlayPath></li>
+        </overlays>
+      </li>
+    </modExtensions>
     <ingestible />
     <plant>
-      <!-- Grows on almost anything, dry deep ash (0.40) included; it
+      <!-- Grows on almost anything, dry deep ash (0.70) included; it
            grows fastest where the ash is watered or freshly burned
            (AshField.xml). -->
       <fertilityMin>0.08</fertilityMin>

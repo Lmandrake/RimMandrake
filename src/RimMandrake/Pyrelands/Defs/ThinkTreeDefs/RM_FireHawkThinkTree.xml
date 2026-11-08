@@ -47,4 +47,18 @@
     </thinkRoot>
   </ThinkTreeDef>
 
+
+  <!-- Just below the ember (55): a hawk out of reach of every fire flies toward the nearest one it can see, and the ember node
+       takes over once it is within scanRadius. Same species gate (CompFireHawkSpread, in C#). -->
+  <ThinkTreeDef>
+    <defName>RM_FireHawk_SeekBurn</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>54</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>Misc</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.Pyrelands.JobGiver_RUT_FireHawkSeekBurn" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
 </Defs>

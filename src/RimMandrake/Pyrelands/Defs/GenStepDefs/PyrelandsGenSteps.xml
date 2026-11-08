@@ -37,4 +37,34 @@
     <order>965</order>
   </GenStepDef>
 
+  <!-- The fire cast is met on every fresh map; see GenStep_PyrelandsFireCast. Right after Animals (1200). -->
+  <GenStepDef>
+    <defName>RM_FE_FireCast</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsFireCast" />
+    <order>1210</order>
+  </GenStepDef>
+  <!-- The rare water, as the map rolled it (none is a correct map: owner 2026-11-07, "No guarantee"): every pond gets a
+       ragged shore and a thin mud, rich-soil, ash ring (GenStep_PyrelandsStandingWater). Right after Terrain (210),
+       before roads, ruins, plants and animals. -->
+  <GenStepDef>
+    <defName>RM_FE_StandingWater</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsStandingWater" />
+    <order>215</order>
+  </GenStepDef>
+  <!-- The green ring: rich soil within about 7 cells of water starts fully grassed, mostly Quickgrass
+       (GenStep_PyrelandsGreenRing, map s 2026-11-07 found it a third planted and orange). After Plants (900) and the
+       late ruin scorch (965), so neither the wild fill nor the scorch decides that ground after it. -->
+  <GenStepDef>
+    <defName>RM_FE_GreenRing</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsGreenRing" />
+    <order>970</order>
+  </GenStepDef>
+  <!-- Yesterday's fire (2026-11-07): a half-disc scar burned in from one map edge, whose leading arc the opening front
+       lights (GenStep_PyrelandsYesterdayFire, PyrelandsFireFront.cs). Last of every Pyrelands step and after vanilla's
+       Plants (900) and Animals (1200): no later fill re-grasses the scar, and it removes the plants they placed. -->
+  <GenStepDef>
+    <defName>RM_FE_YesterdayFire</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsYesterdayFire" />
+    <order>1220</order>
+  </GenStepDef>
 </Defs>

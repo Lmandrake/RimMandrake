@@ -261,11 +261,117 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        // ------------------------------------------------------------ yesterday's fire (PYRE_OPENING_FRONT, 2026-11-07)
+        // A fresh map showed no burn line at all on arrival (map s): a 5-cell opening line lit in thick grass reads as a camp
+        // fire, not a front. The map now starts with a half-disc scar on one edge, burned from the edge inward, and the
+        // opening front lights along its ragged leading arc (PyrelandsYesterdayFire).
+
+        /// <summary>The scar's nominal radius: the rolled radius, shrunk so its farthest ragged reach stays minFrontDist from
+        /// the nearest reference point (map centre, landing spot); 0 when that leaves less than floorRadius (a small map).</summary>
+        public static float ScarRadius(float rolled, float clearance, float minFrontDist, float ragged, float floorRadius)
+        {
+            float room = (clearance - minFrontDist) / (1f + Math.Max(0f, ragged));
+            float r = Math.Min(rolled, room);
+            return r >= floorRadius && r > 0f ? r : 0f;
+        }
+
+        /// <summary>The scar's edge radius at one bearing: the nominal radius pushed out or in by up to `ragged` of itself by the
+        /// bearing's noise (clamped to -1..1), so the boundary is one ragged line with no islands.</summary>
+        public static float ScarBoundary(float radius, float noise, float ragged)
+        {
+            float n = noise < -1f ? -1f : noise > 1f ? 1f : noise;
+            return Math.Max(0f, radius * (1f + ragged * n));
+        }
+
+        /// <summary>The burn stamp of a scar cell `depth01` of the way from the map edge (0, burned first) to the front (1, burned
+        /// last): the age runs from oldestAge down to youngestAge. Clamped at tick 0, so a new game's scar reads as burned at the
+        /// start (a stamp is a game tick and BurnBonus reads a negative one as never burned); a later map gets the gradient.</summary>
+        public static int ScarStampTick(int now, float depth01, int oldestAge, int youngestAge)
+        {
+            float t = depth01 < 0f ? 0f : depth01 > 1f ? 1f : depth01;
+            int age = (int)Math.Round(oldestAge + (youngestAge - oldestAge) * t);
+            return Math.Max(0, now - Math.Max(0, age));
+        }
+
+        /// <summary>A cell on the leading arc, not the flanks: its bearing from the scar centre lies within the cone around the
+        /// inward normal (nx, nz) whose half-angle has cosine minCos. The centre cell itself is not on any arc.</summary>
+        public static bool ArcFacing(float dx, float dz, float nx, float nz, float minCos)
+        {
+            double len = Math.Sqrt((double)dx * dx + (double)dz * dz);
+            if (len < 1e-6) return false;
+            return (dx * nx + dz * nz) / len >= minCos;
+        }
+
+        /// <summary>Every how-many'th arc cell (sorted by bearing) gets a fire: at least minStride, and wider when the arc holds
+        /// more than cap cells, so the line reads as a line without lighting every cell or more than cap.</summary>
+        public static int ArcStride(int candidates, int cap, int minStride)
+        {
+            int s = Math.Max(1, minStride);
+            if (cap > 0 && candidates > cap * s)
+            {
+                s = (candidates + cap - 1) / cap;
+            }
+            return s;
+        }
+
+        /// <summary>A scar site is worth burning when at least minShare of its sampled cells can burn (not rock, roof or water).</summary>
+        public static bool ScarSiteUsable(int burnable, int sampled, float minShare)
+        {
+            return sampled > 0 && burnable >= minShare * sampled;
+        }
+
+        /// <summary>A scar site on map edge `edge` (0 north, 1 east, 2 south, 3 west: CompassIndex / 2) `along01` of the way along
+        /// it (west to east, south to north): the centre cell on the edge row or column, and the inward normal pointing into the map.</summary>
+        public static void ScarEdgeFrame(int edge, float along01, int sizeX, int sizeZ, out int cx, out int cz, out int nx, out int nz)
+        {
+            float a = along01 < 0f ? 0f : along01 > 1f ? 1f : along01;
+            int ax = Math.Max(0, Math.Min(sizeX - 1, (int)Math.Round(a * (sizeX - 1))));
+            int az = Math.Max(0, Math.Min(sizeZ - 1, (int)Math.Round(a * (sizeZ - 1))));
+            switch (edge & 3)
+            {
+                case 0: cx = ax; cz = sizeZ - 1; nx = 0; nz = -1; break;
+                case 1: cx = sizeX - 1; cz = az; nx = -1; nz = 0; break;
+                case 2: cx = ax; cz = 0; nx = 0; nz = 1; break;
+                default: cx = 0; cz = az; nx = 1; nz = 0; break;
+            }
+        }
+
+        /// <summary>A cell's bearing from the scar centre, in radians off the inward normal (nx, nz): 0 straight in, +-pi/2 along
+        /// the map edge. The ragged edge's noise is read at this bearing times the radius (arc length), so it is one line.</summary>
+        public static float ScarBearing(float dx, float dz, float nx, float nz)
+        {
+            return (float)Math.Atan2(nx * dz - nz * dx, dx * nx + dz * nz);
+        }
+
+        /// <summary>The chance a scar cell `depth01` from the edge has re-sprouted: edgeChance where the fire started, falling
+        /// straight to 0 at endDepth, and 0 beyond it (the young char right behind the front).</summary>
+        public static float ScarSproutChance(float depth01, float edgeChance, float endDepth)
+        {
+            if (endDepth <= 0f || edgeChance <= 0f) return 0f;
+            float d = depth01 < 0f ? 0f : depth01;
+            return d >= endDepth ? 0f : edgeChance * (1f - d / endDepth);
+        }
+
         // ------------------------------------------------------------ the Tribes' incidents
 
         /// <summary>The switches every Tribes incident that answers the burn obeys (FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH): its own
         /// toggle, the mechanics gate, the burn line it reads (frozen when off) and the "Fire clock" setting, whose tooltip promises
         /// flame harvest, fire raid and fire rite never fire when it is off.</summary>
+        /// <summary>Warn about the burn nearing home: inside the range, not already on it, and not warned lately.</summary>
+        public static bool ApproachWarnDue(int nearestCells, int warnCells, int now, int lastWarnTick, int cooldownTicks)
+        {
+            return nearestCells > 0 && nearestCells <= warnCells && now - lastWarnTick >= cooldownTicks;
+        }
+
+        /// <summary>Which of the 8 compass words (0 north, clockwise) lies from home toward the fire; z grows north.</summary>
+        public static int CompassIndex(int dx, int dz)
+        {
+            if (dx == 0 && dz == 0) return 0;
+            double deg = System.Math.Atan2(dx, dz) * 180.0 / System.Math.PI;
+            if (deg < 0) deg += 360.0;
+            return (int)((deg + 22.5) / 45.0) % 8;
+        }
+
         public static bool TribesIncidentSwitchesOn(bool ownEnabled, bool mechanicsGateOn, bool burnLineEnabled, bool fireClockEnabled)
         {
             return ownEnabled && mechanicsGateOn && burnLineEnabled && fireClockEnabled;

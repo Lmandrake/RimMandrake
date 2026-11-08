@@ -44,7 +44,7 @@
     <label>quickgrass</label>
     <description>A low, dense forage grass engineered twenty-five thousand years ago to feed grazing animals. Deep roots reach the water table, bringing nutritious green shoots back through warm ash within a day or two. The gardeners are gone; the lawn still works.</description>
     <statBases>
-      <MaxHitPoints>85</MaxHitPoints>
+      <MaxHitPoints>32</MaxHitPoints>
       <!-- An ordinary lawn's burn, not the fuel bed's: the fire chain
            needs it back two days after the front passes, and it is the
            water-carrier of the pair. -->
@@ -94,12 +94,24 @@
       half therefore need SEPARATE folders — four PNGs in one folder would
       be a single four-way random mixing both stages.
     -->
+    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <comps>
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.PlantGrowthStages">
         <sproutGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Sprout</sproutGraphicPath>
         <halfGraphicPath>Things/Plant/RM_FE_QuickgrassStages/Half</halfGraphicPath>
         <sproutMaxGrowth>0.33</sproutMaxGrowth>
         <halfMaxGrowth>0.66</halfMaxGrowth>
+      </li>
+      <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). -->
+      <li Class="RimMandrake.Pyrelands.RM_AshDustExtension">
+        <overlays>
+          <li><basePath>Things/Plant/RM_FE_Quickgrass</basePath><overlayPath>Things/Plant/RM_FE_AshDust/Quickgrass</overlayPath></li>
+          <li><basePath>Things/Plant/RM_FE_QuickgrassStages/Sprout</basePath><overlayPath>Things/Plant/RM_FE_AshDust/QuickgrassSprout</overlayPath></li>
+          <li><basePath>Things/Plant/RM_FE_QuickgrassStages/Half</basePath><overlayPath>Things/Plant/RM_FE_AshDust/QuickgrassHalf</overlayPath></li>
+        </overlays>
       </li>
     </modExtensions>
   </ThingDef>

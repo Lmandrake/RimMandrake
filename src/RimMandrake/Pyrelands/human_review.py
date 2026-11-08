@@ -60,7 +60,7 @@ X0 = 8
 ROWS = [("A", "GROUND", 84), ("B", "FIRE", 68), ("C", "PLANTS", 52),
         ("D", "BUILD AND CRAFT", 36), ("E", "CREATURES", 20), ("F", "CAMPAIGN CAST", 4)]
 ASH = "RM_FE_Ash_Deep"
-FIREBREAK = "RM_FE_FirebreakLine"
+FIREBREAK = "Concrete"  # the fire-hygiene ring; the biome's own firebreak terrain is gone (d_firebreak_cut)
 WALL_STUFF = "BlocksGranite"
 FREE = dict(rect=(150, 104, 50, 28), shelter=(156, 108, 11, 9))
 NATURAL = dict(rect=(50, 168, 40, 32))  # left untouched: the fixture's own ground round its pond (x 67-72, z 180-189)
@@ -125,19 +125,20 @@ def station_defs():
         ["Hover the rich soil: 140%. Plant something on it."], "Nothing.",
         terrain=[("RM_FE_Ground_SoilRich", 2, 2, 8, 8), ("Mud", 3, 3, 6, 6), ("WaterShallow", 4, 4, 4, 4)],
         expect_terrain={"WaterShallow": 16})
-    add("A", "FIREBREAK LINE", "the buildable firebreak floor",
-        "Architect > Floors > firebreak line. Weak spot: it borrows RoughHewnRock's texture; does it read as a "
-        "deliberate firebreak beside grass?", ["Lay more of it yourself (god mode builds at once).",
-                                              "Light the grass (Dev > Debug actions > Fire): the fire stops at the line."],
+    add("A", "PAVED STRIP", "an ordinary paved strip holds a burn",
+        "Concrete laid beside grass, the player's way to hold a walking line.",
+        ["Lay more of it yourself (god mode builds at once).",
+         "Light the grass (Dev > Debug actions > Fire): the fire stops at the line."],
         "Nothing until you light the grass.",
         terrain=[(FIREBREAK, 2, 5, 8, 2)], plants=[(EMBER, 2, 7, 8, 3, 1.0, 1.0)],
         expect_terrain={FIREBREAK: 16}, burnable=True)
-    add("A", "LOOSE ASH DRIFTS", "fire and ash fall leave loose ash",
-        "RM_FE_Filth_LooseAsh at 1, 2, 3 and 4 passes, west to east. Weak spot: thick drifts may read as dirt.",
-        ["Select the filth: cleaning removes it.", "--weather RM_FE_Weather_AshFall lays more over the whole map."],
-        "Nothing; colonists may clean it if it is in the home area (it is not).",
-        spawn=[("RM_FE_Filth_LooseAsh", 2 + 2 * i, z, i + 1) for i in range(4) for z in range(3, 9)],
-        expect_things=["RM_FE_Filth_LooseAsh"])
+    add("A", "ASH ON THE GROUND", "fire and ash fall leave ash (sand depth)",
+        "Ash at depth 0.25, 0.5, 0.75 and 1.0, west to east, on deep ash. Weak spot: a thin dusting may read as fog.",
+        ["Walk a colonist across it: footprints from depth 0.1.", "--weather RM_FE_Weather_AshFall lays more over the whole map.",
+         "Mark a snow/sand clear area on it: colonists clear it."],
+        "Nothing; ash is not filth, nobody sweeps it unless a clear area is marked.",
+        terrain=[(ASH, 2, 3, 8, 6)], ash=[(2 + 2 * i, 3, 2, 6, 0.25 * (i + 1)) for i in range(4)],
+        expect_terrain={ASH: 48})
     add("A", "HEAT: SUN VS SHADE", "overhead sun; a roof answers it",
         "West pad open sky, east pad under a roof on four granite posts. The cell temperature is the same; the "
         "difference is in a pawn's felt heat (the sun-heat kind 'overhead', +4..10 C, from the shared "
@@ -162,7 +163,7 @@ def station_defs():
         terrain=[("RM_FE_Ground_Soil", 2, 2, 8, 8)], plants=[(EMBER, 2, 2, 8, 8, 1.0, 0.75, 11), (QUICK, 2, 2, 8, 8, 1.0, 0.25, 12)],
         expect_terrain={"RM_FE_Ground_Soil": 50}, burnable=True, **ring)
     add("B", "AFTER THE BURN", "burned during the build, then put out",
-        "The same pad burned for ~1.5 h: soil -> deep ash in one step, loose ash dusted on it, and maybe a "
+        "The same pad burned for ~1.5 h: soil -> deep ash in one step, ash lying on it, and maybe a "
         "scorch-fruit pod (1 in 20 burned cells). Weak spot: leafless (burnt) grass art; a pod that never appears.",
         ["Hover a burned cell: fertility shows the fresh-burn bonus (+50%, fading over 6 days).",
          "Unpause at 3x: ember grass re-greens within a few days, largely green in about a week."],
@@ -192,9 +193,9 @@ def station_defs():
         "Paused: nothing. Lit: the burn crosses the pen; the ashwallow dives and surfaces.",
         room=(1, 1, 10, 10), plants=[(EMBER, 2, 2, 8, 8, 1.0, 1.0)], pawns=[("RM_Ashwallow", 6, 6, 1)], keep=True,
         burnable=True)
-    add("B", "FIREBREAK AND FOAM", "lay your own firebreak, then light it",
+    add("B", "PAVING AND FOAM", "lay your own paved strip, then light it",
         "An unringed grass pad: try the player's tools against fire.",
-        ["Architect > Floors > firebreak line across the pad, then light one side.",
+        ["Architect > Floors > concrete across the pad, then light one side.",
          "Equip a colonist with the firefoam sprayer (D, items) and spray the fire."],
         "Paused: nothing. The pad is surrounded by bare ash, so the fire cannot leave the station.",
         terrain=[(ASH, 1, 1, 10, 10)], plants=[(EMBER, 1, 2, 10, 8, 1.0, 1.0)], burnable=True,
@@ -334,10 +335,10 @@ SIGNS = {
     "WATER RING": ("water ringed with mud, then rich soil",
                    "hover the rich soil (140%); compare N0's pond",
                    "does it look like the biome's own pond?"),
-    "FIREBREAK LINE": ("a stone firebreak strip beside grass",
-                       "light the grass (Dev > Debug actions > Fire)",
-                       "does the fire stop at the line? does it look deliberate?"),
-    "LOOSE ASH DRIFTS": ("loose ash, 1 to 4 layers, west to east",
+    "PAVED STRIP": ("a concrete strip beside grass",
+                    "light the grass (Dev > Debug actions > Fire)",
+                    "does the fire stop at the line?"),
+    "ASH ON THE GROUND": ("ash at depth 0.25 to 1.0, west to east",
                          "select a drift; clean it if you like",
                          "do thick drifts read as ash, or as dirt?"),
     "HEAT: SUN VS SHADE": ("west pad open sky, east pad under a roof",
@@ -348,7 +349,7 @@ SIGNS = {
                         "does it end up like the AFTER pad next door?"),
     "AFTER THE BURN": ("the same pad, burned during the build",
                        "hover a cell: fertility shows +50% burn bonus",
-                       "ash, loose ash, maybe a pod: does it look burned?"),
+                       "ash, ash on the ground, maybe a pod: does it look burned?"),
     "BURNING NOW": ("a live fire, paused mid-burn",
                     "unpause at 1x and watch it walk",
                     "do fire and smoke look right on ash ground?"),
@@ -358,9 +359,9 @@ SIGNS = {
     "BURROWER": ("an ashwallow in grass",
                  "light the west edge, unpause at 1x, select it",
                  "can you SEE that it has burrowed, and that it survives?"),
-    "FIREBREAK AND FOAM": ("an open grass pad: your tools vs fire",
-                           "lay a firebreak, light one side, spray firefoam",
-                           "do the firebreak and the foam both stop it?"),
+    "PAVING AND FOAM": ("an open grass pad: your tools vs fire",
+                        "lay a paved strip, light one side, spray firefoam",
+                        "do the paving and the foam both stop it?"),
     "EMBER GRASS: GROWTH": ("ember grass at 5, 25, 50, 75, 100%",
                             "hover each strip for its growth",
                             "does young grass read as young, or just small?"),
@@ -459,7 +460,7 @@ FEATURES = [
     ("terrain", "Unburned pockets: soil, rich soil, gravel, sand (RM_FE_Ground_*)", "ScorchableGround.xml", "2"),
     ("terrain", "Every ground burns to deep ash in one step (burnedDef)", "ScorchableGround.xml", "7 8"),
     ("terrain", "Water ringed with mud and rich soil (terrainPatchMakers)", "BiomeDefs/Pyrelands.xml", "3 N0"),
-    ("terrain", "Firebreak line: buildable floor that stops fire", "TerrainDefs/Firebreak.xml", "4 12"),
+    ("terrain", "A vanilla paved strip holds a burn", "vanilla Concrete", "4 12"),
     ("terrain", "Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load)", "AshField.xml", None,
      "they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none "
      "remain. Their three PNGs are orphaned (named on station 1's card)."),
@@ -485,8 +486,8 @@ FEATURES = [
     ("mechanic", "Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water)", "PyrelandsAshField.cs", "18"),
     ("mechanic", "Fresh-burn bonus (+0.50 fading over 6 days)", "PyrelandsAshField.cs", "8 10"),
     ("mechanic", "Black rain washes the bonus away and waters the field", "PyrelandsAshField.cs", "10 G"),
-    ("mechanic", "Fire dusts loose ash (RM_FE_Filth_LooseAsh)", "FireEcologyHook.cs", "5 8"),
-    ("mechanic", "Ash fall lays drifts that keep accumulating", "PyrelandsAshField.cs", "5 G"),
+    ("mechanic", "Fire leaves ash on the ground (sand depth)", "FireEcologyHook.cs", "5 8"),
+    ("mechanic", "Ash fall buries the ground as heavy snow does (sand depth)", "PyrelandsAshSand.cs", "5 G"),
     ("mechanic", "Ambient ash drift is the commonest weather", "PyrelandsAshField.cs", "G"),
     ("mechanic", "Standing burn line: the map is never fireless for 2 days (MapComponent_BurnLine)", "Source", "L",
      "the calm world puts it out; L's card says how it relights (2 quiet days at 3x)"),
@@ -564,7 +565,7 @@ BOARDS = {
            "What the biome grew by itself: the two grasses, deep ash, a pond ringed with rich ground and mud. "
            "PYRELANDS_GRASS_SATURATION_1 asks for your look here: grass everywhere, ash where burned, no bare dirt."),
     "R": ("SCORCHED RUIN", "the nearest ruin the build found",
-          "Ruins on a Pyrelands map stand blackened: deep ash under and round them, loose ash filth, burned stuff. "
+          "Ruins on a Pyrelands map stand blackened: deep ash under and round them, ash lying on it, burned stuff. "
           "Weak spot: a pristine ruin (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE)."),
     "G": ("WEATHER SWITCH", "one global switch: --weather NAME",
           "Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: free-flying ash like snow "
@@ -738,7 +739,7 @@ def station_def_names(s):
 
 
 # Defs a station names that this repo does not define (vanilla Core / DLC). Anything else must be found in src/.
-VANILLA = {"WaterShallow", "Mud", "Wall", "Door", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
+VANILLA = {"Concrete", "WaterShallow", "Mud", "Wall", "Door", "RoofConstructed", "Battery", "PowerConduit", "FueledSmithy", "Steel",
            "WoodLog", "Plant_Potato", "BlocksGranite", "Cooler", "SolarGenerator", "MealSurvivalPack",
            "MedicineIndustrial", "ComponentIndustrial"}
 
@@ -767,7 +768,7 @@ def known_defs(S):
     names = set()
     for s in S:
         names |= station_def_names(s)
-    names |= {"RM_FE_Filth_LooseAsh", ASH, FIREBREAK}
+    names |= {ASH, FIREBREAK}
     return (names & VANILLA) | defs_in_repo(names - VANILLA)
 
 
@@ -1198,6 +1199,9 @@ class Review(object):
                 self.call("jawa/set_roof_batch", ops="%s:%d,%d,%d,%d" % ((d,) + g(x, z) + (w, h)))
             for d, x, z, n_ in u.get("spawn", []):
                 self.call("jawa/spawn_batch", ops="%s:%d,%d,%d" % ((d,) + g(x, z) + (n_,)))
+            for x, z, w, h, depth in u.get("ash", []):   # ash is sand depth, not a thing (PyrelandsAsh.LayAsh)
+                self.call("jawa/static_call", type="RimMandrake.Pyrelands.PyrelandsAsh", method="LayAsh",
+                          args="%d,%d,%d,%d|%s" % (g(x, z) + (w, h, depth)))
             for d, n_, x, z in u.get("items", []):
                 self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=ox + x, z=oz + z)
         self.say("gallery: %d stations laid" % len(S))

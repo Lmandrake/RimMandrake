@@ -26,7 +26,7 @@ PLANTS = [
     ("rainfall band reversed", B, "<rainfall>550~1000</rainfall>", "<rainfall>1000~550</rainfall>", "pyrelands-biome"),
     ("score never beats arid shrubland", B, "<baseScore>30</baseScore>", "<baseScore>1</baseScore>", "pyrelands-biome"),
     ("plant density differs from the enforcer", B, "<plantDensity>16</plantDensity>", "<plantDensity>3</plantDensity>", "pyrelands-biome"),
-    ("regrow days differ from the enforcer", B, "<wildPlantRegrowDays>9</wildPlantRegrowDays>", "<wildPlantRegrowDays>20</wildPlantRegrowDays>", "pyrelands-biome"),
+    ("regrow days differ from the enforcer", B, "<wildPlantRegrowDays>5</wildPlantRegrowDays>", "<wildPlantRegrowDays>20</wildPlantRegrowDays>", "pyrelands-biome"),
     ("wild plant row not on the allowlist", B, "<RM_FE_Plant_Quickgrass>3.8</RM_FE_Plant_Quickgrass>", "<RM_FE_Plant_Quickgrass>3.8</RM_FE_Plant_Quickgrass><RM_FE_Plant_Other>1</RM_FE_Plant_Other>", "pyrelands-biome"),
     ("allowlisted plant undefined", "Source/WildPlantAllowlist.cs", '"RM_FE_Plant_Quickgrass",', '"RM_FE_Plant_Quickgras",', "pyrelands-biome"),
     ("settings key differs from field", "Source/RM_PyrelandsMod.cs", 'Scribe_Values.Look(ref ashfallRateMultiplier, "ashfallRateMultiplier", 1f);', 'Scribe_Values.Look(ref ashfallRateMultiplier, "ashRate", 1f);', "settings-scribed"),

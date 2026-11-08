@@ -38,6 +38,15 @@ namespace RimMandrake.Pyrelands
             return fullRadius * (minFraction + (1f - minFraction) * c);
         }
 
+        /// <summary>The room temperature a furnace-beast stops heating at: aboveOutdoor over the weather, never under the floor
+        /// (a cold-biome barn still warms to the floor). Owner card 2026-11-08 01:01 "heat with no cap": past ambient, so a
+        /// closed pen at a 50 C ambient becomes an oven, but to a ceiling, not without end.</summary>
+        public static float RoomHeatCeiling(float floor, float outdoor, float aboveOutdoor)
+        {
+            float relative = outdoor + aboveOutdoor;
+            return relative > floor ? relative : floor;
+        }
+
         /// <summary>FURNACE_AURA_FIX_WARMS_THROUGH_WALLS: the aura is the OPEN-FIELD half only. A pawn in an enclosed room
         /// (a room that does not use the outdoor temperature) is warmed by the beast's vanilla heat pusher through the room
         /// temperature, so the aura would stack on it; and a wall between pawn and beast (no line of sight) blocks it.</summary>

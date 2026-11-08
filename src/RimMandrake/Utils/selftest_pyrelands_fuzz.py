@@ -4,11 +4,11 @@
 
 Seeded fuzz over the production kernels with explicit invariants: the burn-line map component and fire-front clock with the Tribes'
 FireRaid (arson debt) and FlameHarvest (minimum fires) incidents on top (burn), the furnace-beast thermal charge, world-herd cycle,
-nearest-tile search and bed-ignition clock (furnace), the biome score, ash fall and fire-ecology gates (eco), and the tuning-file relationships (units). The tuning numbers are read from
+nearest-tile search and bed-ignition clock (furnace), the biome score, ash fall and fire-ecology gates and ash-on-sand rates (eco), the tuning-file relationships (units), and ash on vanilla sand in play terms (ashscenario: ash fall adds depth, black rain removes it, a desert's sand stays vanilla's). The tuning numbers are read from
 Pyrelands/Source/PyrelandsTuning.cs itself, so the fuzz cannot drift from what ships. The project is built through
 winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only burn|furnace|eco|units]
+    python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only burn|furnace|eco|units|ashscenario]
 
 A failing case is shrunk (burn) and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

@@ -23,8 +23,8 @@ namespace RimMandrake.Pyrelands
     /// that "the fire a tamed hawk spreads is still nobody's friend", so a tamed
     /// hawk carries twigs in your base exactly as a wild one does.
     ///
-    /// Direction is random, per §7c's own v1 ruling ("direction random in v1;
-    /// downwind if the spike finds wind cheap to read"). Wind was NOT wired: the
+    /// Direction is ahead of the blaze, away from the burn's centre (north star: "ahead of the existing blaze"; the first
+    /// version was random). Wind was NOT wired: the
     /// engine exposes wind as a weather-driven speed
     /// (WeatherManager/Map.windManager.WindSpeed), not a bearing, so there is no
     /// cheap "downwind" vector to read. Saying so here rather than inventing one.
@@ -34,6 +34,9 @@ namespace RimMandrake.Pyrelands
         /// <summary>How many random bearings are tried before the hawk gives up
         /// on this fire and waits out its cooldown.</summary>
         private const int BearingTries = 8;
+
+        /// <summary>Younger grass than this is a scar's sprouts, not fuel worth an ember.</summary>
+        private const float MinFuelGrowth = 0.25f;
 
         protected override Job TryGiveJob(Pawn pawn)
         {
@@ -75,7 +78,7 @@ namespace RimMandrake.Pyrelands
                 return null;
             }
 
-            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target);
+            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target, source.Position);
             job.count = 1;
             return job;
         }
@@ -95,14 +98,20 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>
-        /// One cell, spreadDistance out from the fire's own position on a random
-        /// bearing. Validated against vanilla's own ChanceToStartFireIn so terrain
-        /// flammability, fire bulwarks and existing fires are all respected
-        /// without re-deriving any of it.
+        /// One cell, spreadDistance out from the fire's own position, AHEAD of the blaze: of the lawful bearings tried, the
+        /// one with standing grass and no fire beside it that lies farthest from the burn's centre, so the ember lands in
+        /// fuel the front has not reached rather than back in its own scar. With no such cell, any lawful one, as before.
+        /// Validated against vanilla's own ChanceToStartFireIn so terrain flammability, fire bulwarks and existing fires are
+        /// all respected without re-deriving any of it.
         /// </summary>
         private static bool TryFindCellBeyondTheFire(Pawn pawn, Fire source, int distance, out IntVec3 result)
         {
             Map map = pawn.Map;
+            MapComponent_BurnLine burn = map.GetComponent<MapComponent_BurnLine>();
+            IntVec3 centre = burn != null && burn.AnyBurn ? burn.BurnCenter : source.Position;
+            result = IntVec3.Invalid;
+            bool haveFuel = false;
+            float best = -1f;
             for (int i = 0; i < BearingTries; i++)
             {
                 float angle = Rand.Range(0f, 360f);
@@ -122,12 +131,38 @@ namespace RimMandrake.Pyrelands
                     continue;
                 }
 
-                result = candidate;
-                return true;
+                bool fuel = HasStandingFuel(candidate, map);
+                if (haveFuel && !fuel)
+                {
+                    continue;
+                }
+                float score = candidate.DistanceToSquared(centre);
+                if ((fuel && !haveFuel) || score > best)
+                {
+                    haveFuel = fuel;
+                    best = score;
+                    result = candidate;
+                }
             }
+            return result.IsValid;
+        }
 
-            result = IntVec3.Invalid;
-            return false;
+        private static bool HasStandingFuel(IntVec3 cell, Map map)
+        {
+            Plant plant = cell.GetPlant(map);
+            if (plant == null || plant.Growth < MinFuelGrowth)
+            {
+                return false;
+            }
+            for (int i = 0; i < GenAdj.AdjacentCellsAndInside.Length; i++)
+            {
+                IntVec3 c = cell + GenAdj.AdjacentCellsAndInside[i];
+                if (c.InBounds(map) && c.ContainsStaticFire(map))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

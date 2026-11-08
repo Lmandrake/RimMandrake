@@ -72,12 +72,13 @@ def main():
         check("EGROWTH_RELOAD_FIX_FREE_CHARGE_PASS: %s scribed with default -1" % f,
               re.search(r'Scribe_Values\.Look\(ref %s, "%s", -1\);' % (f, f), expose) is not None)
     # EGROWTH_RUPTURE_FIX_ROLLS_TWICE: clouds tick before the charge pass that may fire (and pulse) a new rupture
-    body = method_body(mc, "private void Pass(int now, int dt)")
+    body = method_body(mc, "private void Pass(int now)")
     scope_end = body.find("RM_SoakSources.Pulse(this, now);")
-    tick_at, pass_at = body.find("TickRuptures(now)", scope_end), body.find("ledger.Pass(sink")
-    check("sanity: Pass body has the in-scope rupture tick and the ledger pass", scope_end > 0 and tick_at > 0 and pass_at > 0)
-    check("EGROWTH_RUPTURE_FIX_ROLLS_TWICE: ruptures tick before ledger.Pass", 0 < tick_at < pass_at,
-          (tick_at, pass_at))
+    tick_at = body.find("TickRuptures(now)", scope_end)
+    check("sanity: Pass body has the in-scope rupture tick", scope_end > 0 and tick_at > 0)
+    tick = method_body(mc, "public override void MapComponentTick()")
+    check("EGROWTH_RUPTURE_FIX_ROLLS_TWICE: ruptures tick (Pass) before the plants are stepped",
+          0 < tick.find("Pass(now)") < tick.find("StepPlants(now)"), (tick.find("Pass(now)"), tick.find("StepPlants(now)")))
     tr = read("RM_TopResolver.cs")
     check("sanity: Rupture still pulses its new cloud once itself", "RuptureExposurePulse(map, new RM_RuptureZone" in tr)
     # EGROWTH_BLOOMBURST_FIX_STALE_FOOTPRINT
@@ -122,7 +123,7 @@ def main():
           and re.search(r"if \(lookKnown && \(on != lookOn \|\| hue != lookHue \|\| scale != lookScale\)\)", upd) is not None)
     check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: the last look is recorded every frame",
           all(x in upd for x in ("lookKnown = true;", "lookOn = on;", "lookHue = hue;", "lookScale = scale;")))
-    pas = method_body(mcs, "private void Pass(int now, int dt)")
+    pas = method_body(mcs, "private void Pass(int now)")
     cl = pas.find("ledger.charges.Clear();")
     check("EGROWTH_DISABLE_FIX_BLOATED_PLANTS_STAY: out-of-scope dropped charges are dirtied before the clear",
           cl > 0 and "foreach (IntVec3 c in ledger.charges.Keys) Dirty(c);" in pas[:cl])

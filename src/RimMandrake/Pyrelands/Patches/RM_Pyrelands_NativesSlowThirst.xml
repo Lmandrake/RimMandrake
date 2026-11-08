@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- The fire cast takes nearly all its water from the grass (owner, 2026-11-07: "MOSTLY grass-watered with a very, very slow
+       building thirst need to occasionally increase their density near the rare water"). The need falls about 0.05 a day, so
+       a herd looks for a pond every couple of weeks, from anywhere on the map; empty, it never dehydrates, so a map with no
+       reachable water kills nothing. Both mods stay optional. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <success>Always</success>
+      <xpath>Defs/ThingDef[defName="RM_FireHawk" or defName="RM_FurnaceBeast" or defName="RM_Ullai" or defName="RM_Emberscythe" or defName="RM_Sytheclaw" or defName="RM_Barbslinger" or defName="RM_FireWasp" or defName="RM_Flamefang" or defName="RM_Ashwallow" or defName="RSW_Anooba" or defName="RSW_Iriaz" or defName="RSW_Nuna" or defName="RSW_Orray" or defName="RSW_Zeer" or defName="RSW_Dalgo" or defName="RSW_Gizka"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.Thirst.RM_ThirstGrassWateredExtension" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

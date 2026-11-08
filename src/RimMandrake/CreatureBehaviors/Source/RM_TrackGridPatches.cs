@@ -70,10 +70,21 @@ namespace RimMandrake.CreatureBehaviors
         }
 
         /// <summary>
-        /// The track surface at a cell: the terrain's, else any filth's in the cell, skipping an
-        /// extension whose biome filter excludes this map. Null if none.
+        /// The track surface at a cell: the terrain's, else any filth's in the cell, else the map biome's
+        /// buildup surface where the cell's sand depth reaches its minSandDepth (the Pyrelands' ash), skipping
+        /// an extension whose biome filter excludes this map. Null if none.
         /// </summary>
         public static RM_TrackSurfaceExtension SurfaceAt(IntVec3 c, Map map)
+        {
+            RM_TrackSurfaceExtension ext = OwnSurfaceAt(c, map);
+            if (ext != null) return ext;
+            ext = BuildupSurfaceOf(map);
+            if (ext != null && map.sandGrid != null && map.sandGrid.GetDepth(c) >= ext.minSandDepth) return ext;
+            return null;
+        }
+
+        /// <summary>The cell's own surface, its terrain's or a filth's in it; null if neither carries one.</summary>
+        public static RM_TrackSurfaceExtension OwnSurfaceAt(IntVec3 c, Map map)
         {
             RM_TrackSurfaceExtension ext = ExtOf(c.GetTerrain(map), map);
             if (ext != null) return ext;
@@ -87,6 +98,13 @@ namespace RimMandrake.CreatureBehaviors
                 }
             }
             return null;
+        }
+
+        /// <summary>The map biome's buildup surface (an RM_TrackSurfaceExtension with minSandDepth > 0), or null.</summary>
+        public static RM_TrackSurfaceExtension BuildupSurfaceOf(Map map)
+        {
+            RM_TrackSurfaceExtension ext = ExtOf(map?.Biome, map);
+            return ext != null && ext.IsBuildupSurface ? ext : null;
         }
 
         private static RM_TrackSurfaceExtension ExtOf(Def def, Map map)

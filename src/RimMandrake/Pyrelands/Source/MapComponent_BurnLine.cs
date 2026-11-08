@@ -72,6 +72,9 @@ namespace RimMandrake.Pyrelands
             fireFront = new PyrelandsFireFront(map);
         }
 
+        /// <summary>The fire clock, for GenStep_PyrelandsYesterdayFire (components are built before the gen steps run).</summary>
+        internal PyrelandsFireFront FireFront => fireFront;
+
         /// <summary>The kit's single entry point. Null-safe for callers that may
         /// run against a map that has not finished construction.</summary>
         public static MapComponent_BurnLine For(Map map)
@@ -155,7 +158,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Test probe (jawa/static_call; PYRE_OPENING_FRONT): the current map's opening front.
-        /// -> "done=;lit=;litTick=;origin=x,z|invalid;mapAge=;now=" (lit/litTick/origin are this session's only).</summary>
+        /// -> "done=;lit=;litTick=;origin=x,z|invalid;mapAge=;now=" (lit/litTick/origin are this session's only), then yesterday's
+        /// fire: ";scarLaid=;scarCentre=;scarSide=;scarRadius=;scarCells=;bare=;sprouts=;pods=;ash=;arcCandidates=;arcLit=".</summary>
         public static string ProbeOpeningFront()
         {
             MapComponent_BurnLine c = For(Find.CurrentMap);
@@ -163,7 +167,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Test drive only (jawa/static_call; PYRE_OPENING_FRONT): treat the current map as fresh for the opening
-        /// front, its window starting now, so a long-lived fixture can prove the arrival path. Returns 1, -1 with no component.</summary>
+        /// front, its window starting now, with a new yesterday's fire burned in for it to light, so a long-lived fixture can
+        /// prove the arrival path. Returns 1, -1 with no component.</summary>
         public static int RearmOpeningFront()
         {
             MapComponent_BurnLine c = For(Find.CurrentMap);
@@ -202,6 +207,9 @@ namespace RimMandrake.Pyrelands
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref lastApproachWarnTick, "lastApproachWarnTick", -999999);
+            Scribe_Values.Look(ref approachLetterSent, "approachLetterSent", false);
+            Scribe_Values.Look(ref dryChecked, "dryChecked", false);
             Scribe_Values.Look(ref arsonDebt, "arsonDebt", 0f);
             Scribe_Values.Look(ref ticksSinceAnyFire, "ticksSinceAnyFire", 0);
             Scribe_Values.Look(ref lastReseedAttemptTick, "lastReseedAttemptTick", -99999);
@@ -250,8 +258,10 @@ namespace RimMandrake.Pyrelands
             // GPT deep review 2026-10-22 #3: Measure() is the only writer of AnyBurn/burnCenter, which burrowing and the
             // furnace thermal cycle read under their OWN switches; it used to run only with the burn line on
             Measure();
+            WarnIfDry();
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
+                WatchApproach();
                 NudgeBurrowers();
                 AccrueArsonDebt();
                 KeepTheBurnAlive();
@@ -306,20 +316,36 @@ namespace RimMandrake.Pyrelands
                 Job cur = pawn.CurJob;
                 bool diving = cur != null && cur.def == PyrelandsMechanicsDefOf.RM_Burrow;
                 bool idle = cur == null || IsIdleJob(cur.def);
-                // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling, non-diving burrower.
-                if (diving || !idle)
+                // Grazing or asleep, the think tree hands the meal or the bed straight back, so the dive is started outright.
+                // At the 6-cell dive radius (RM_Ashwallow, 2026-11-07; was 15) a grazer left to finish its meal is caught.
+                bool yields = !idle && cur != null && !pawn.Downed && YieldsToFire(cur.def);
+                // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling or yielding, non-diving burrower.
+                if (diving || !(idle || yields))
                 {
                     continue;
                 }
                 bool wouldDive = RM_JobGiver_BurrowOnFire.WouldDive(pawn);
                 int last = lastBurrowNudge.TryGetValue(pawn.thingIDNumber, out int t) ? t : -1;
-                if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, idle, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
+                if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, true, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
                 {
                     if (lastBurrowNudge.Count > 4096) lastBurrowNudge.Clear();   // unsaved and never pruned per pawn: bound it
                     lastBurrowNudge[pawn.thingIDNumber] = now;
-                    pawn.jobs.CheckForJobOverride();
+                    if (idle)
+                    {
+                        pawn.jobs.CheckForJobOverride();
+                    }
+                    else
+                    {
+                        pawn.jobs.StartJob(JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_Burrow), JobCondition.InterruptForced);
+                    }
                 }
             }
+        }
+
+        /// <summary>Grazing and sleep: jobs a burrower drops for a fire within its dive radius.</summary>
+        private static bool YieldsToFire(JobDef def)
+        {
+            return def == JobDefOf.Ingest || def == JobDefOf.LayDown;
         }
 
         /// <summary>The jobs a grazer idles in between think passes: the ones the cold-burn samples sat in before diving.</summary>
@@ -327,6 +353,116 @@ namespace RimMandrake.Pyrelands
         {
             return def == JobDefOf.GotoWander || def == JobDefOf.Wait_Wander || def == JobDefOf.Wait_MaintainPosture
                 || def == JobDefOf.Wait;
+        }
+
+        // Owner 2026-11-07: a waterless Pyrelands map is allowed ("you would walk away to another map as your first option"), but
+        // nothing told the player: on map v (55 C, no water) all three colonists were down with thirst 0.68 days after landing,
+        // with no word before the first one fell. One letter, the first watch interval on a player home with no open water,
+        // only when a thirst need exists (FlowWorks). Saved, so a reload does not repeat it.
+        private bool dryChecked;
+
+        private void WarnIfDry()
+        {
+            if (dryChecked)
+            {
+                return;
+            }
+            dryChecked = true;
+            if (!map.IsPlayerHome || DefDatabase<NeedDef>.GetNamedSilentFail("RM_Thirst") == null)
+            {
+                return;
+            }
+            TerrainGrid g = map.terrainGrid;
+            for (int i = 0; i < map.cellIndices.NumGridCells; i++)
+            {
+                TerrainDef t = g.TerrainAt(i);
+                if (t != null && t.IsWater)
+                {
+                    return;
+                }
+            }
+            Find.LetterStack.ReceiveLetter("RM_DryLandLabel".Translate(), "RM_DryLandLetter".Translate(), LetterDefOf.ThreatSmall);
+        }
+
+        // The burn nearing home. Saved, so a reload does not repeat the first letter or the last warning.
+        private int lastApproachWarnTick = -999999;
+        private bool approachLetterSent;
+        // Unsaved: rebuilt within BurnApproachHomeResampleTicks of a load.
+        private int lastApproachCheckTick = -999999;
+        private int homeSampleTick = -999999;
+        private readonly List<IntVec3> homeSample = new List<IntVec3>();
+        private IntVec3 homeCentre = IntVec3.Invalid;
+
+        /// <summary>A front gave no sign to a player watching their base until flames stood on the home area. Say so about
+        /// half a day out: the first time as a letter that says what a burn takes and what stops it, then as a message.</summary>
+        private void WatchApproach()
+        {
+            int now = Find.TickManager.TicksGame;
+            if (!AnyBurn || now - lastApproachCheckTick < PyrelandsTuning.BurnApproachCheckTicks
+                || now - lastApproachWarnTick < PyrelandsTuning.BurnApproachCooldownTicks)
+            {
+                return;
+            }
+            lastApproachCheckTick = now;
+            if (now - homeSampleTick >= PyrelandsTuning.BurnApproachHomeResampleTicks)
+            {
+                homeSampleTick = now;
+                homeSample.Clear();
+                foreach (IntVec3 c in map.areaManager.Home.ActiveCells)
+                {
+                    if (c.x % 4 == 0 && c.z % 4 == 0) homeSample.Add(c);
+                }
+                int sx = 0, sz = 0;
+                foreach (IntVec3 h in homeSample) { sx += h.x; sz += h.z; }
+                homeCentre = homeSample.Count > 0 ? new IntVec3(sx / homeSample.Count, 0, sz / homeSample.Count) : IntVec3.Invalid;
+            }
+            if (homeSample.Count == 0)
+            {
+                return;
+            }
+            List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            int nearest = int.MaxValue;
+            IntVec3 nearestFire = IntVec3.Invalid;
+            IntVec3 nearestHome = IntVec3.Invalid;
+            for (int i = 0; i < fires.Count; i += 3)    // a front is continuous; every third flame finds it
+            {
+                if (!(fires[i] is Fire { parent: null } fire) || !fire.Spawned) continue;
+                IntVec3 f = fire.Position;
+                for (int j = 0; j < homeSample.Count; j++)
+                {
+                    IntVec3 h = homeSample[j];
+                    int d = Mathf.Max(Mathf.Abs(f.x - h.x), Mathf.Abs(f.z - h.z));
+                    if (d < nearest)
+                    {
+                        nearest = d;
+                        nearestFire = f;
+                        nearestHome = h;
+                    }
+                }
+            }
+            if (!nearestFire.IsValid || !RM_BurnKernel.ApproachWarnDue(nearest, PyrelandsTuning.BurnApproachWarnCells, now, lastApproachWarnTick,
+                    PyrelandsTuning.BurnApproachCooldownTicks))
+            {
+                return;
+            }
+            lastApproachWarnTick = now;
+            // The side of home the fire is on, read from home's middle: read from the nearest home cell, a front already
+            // lapping the west edge came out "east" (map p, 2026-11-07: "1 cells from your home, out to the east").
+            IntVec3 from0 = homeCentre.IsValid ? homeCentre : nearestHome;
+            string from = ("RM_Compass" + RM_BurnKernel.CompassIndex(nearestFire.x - from0.x, nearestFire.z - from0.z)).Translate();
+            bool atEdge = nearest <= PyrelandsTuning.BurnApproachAtEdgeCells;
+            if (!approachLetterSent)
+            {
+                approachLetterSent = true;
+                string lead = atEdge ? "RM_BurnApproachLeadEdge".Translate(from) : "RM_BurnApproachLead".Translate(nearest, from);
+                Find.LetterStack.ReceiveLetter("RM_BurnApproachLabel".Translate(), "RM_BurnApproachLetter".Translate(lead),
+                    LetterDefOf.ThreatSmall, new TargetInfo(nearestFire, map));
+            }
+            else
+            {
+                Messages.Message(atEdge ? "RM_BurnApproachMessageEdge".Translate(from) : "RM_BurnApproachMessage".Translate(nearest, from),
+                    new TargetInfo(nearestFire, map), MessageTypeDefOf.ThreatSmall);
+            }
         }
 
         private void Measure()

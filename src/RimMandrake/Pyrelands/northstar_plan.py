@@ -5,8 +5,7 @@
 The deploy of the composed mod is gated by preflight_pyrelands.py gate A (rows 3.2.x, 3.8.1-3.8.7).
 
 Wall time (MEASURED 2026-10-12, 250x250 site, 23-mod tier): waits <= 5000 ticks step ~60 ticks/s, longer ones run
-Ultrafast at ~200 ticks/s. embergrass_regrow waits 423,000 ticks (~36 min) for a CALIBRATING row that reads
-UNMEASURED whatever it sees; burn_line waits 120,360 (~10 min) for the standing-burn reseed; scorchfruit_spoils waits up to 270,000 (~22 min). Split the run so neither shell
+Ultrafast at ~200 ticks/s. embergrass_regrow waits 420,000 ticks (~36 min) on the real clock; burn_line waits 120,360 (~10 min) for the standing-burn reseed; scorchfruit_spoils waits up to 270,000 (~22 min). Split the run so neither shell
 timeout eats the other half; the driver rewrites --out after every chain (`partial: true`) either way:
   ... run --mod Pyrelands --plan <this> --skip-chains embergrass_regrow,burn_line,fresh_burn_bonus --out Transient/northstar/Pyrelands_main.json
   ... run --mod Pyrelands --plan <this> --chains embergrass_regrow,burn_line,fresh_burn_bonus --out Transient/northstar/Pyrelands_regrow.json

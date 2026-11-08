@@ -4,9 +4,15 @@ using System.Collections.Generic;
 namespace RimMandrake.Pyrelands
 {
     // Verse-free decisions of the fire-ecology hooks and the biome (FireEcologyHook.cs, WildPlantAllowlist.cs, RM_PyrelandsMod.cs): the
-    // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, the ash-fall rate and
-    // attempt count, the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
+    // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, ash on the sand grid (the
+    // weather's ash rate, the outdoor wear, the cover's opacity, the grass dust), the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
     // same expressions; the offline fuzz drives them.
+
+    /// <summary>A map's drift-field noise cut points (RM_FireEcoKernel.DriftCuts): pool, fringe (1), bank (2), core (3).</summary>
+    public struct RM_DriftCuts
+    {
+        public float Pool, Fringe, Bank, Core;
+    }
 
     public static class RM_FireEcoKernel
     {
@@ -56,28 +62,19 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>The fire-tick gate's ground (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): ANY Pyrelands ground (an `RM_FE_` terrain, deep
-        /// ash included, since deep ash is ~85% of the biome) except the firebreak, plus vanilla Soil/Sand/Gravel/SoilRich. The
+        /// ash included, since deep ash is ~85% of the biome), plus vanilla Soil/Sand/Gravel/SoilRich. The
         /// ground alone opts in nothing: the hook ANDs it with the map's biome gate (ScorchableHere, FireEcologyOnMap). Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
         /// stamp on every deep-ash cell.</summary>
         public static bool IsScorchableGround(string n)
         {
-            if (n == null || n == FirebreakDefName)
+            if (n == null)
             {
                 return false;
             }
             return IsPyrelandsGround(n) || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
         }
 
-        public const string FirebreakDefName = "RM_FE_FirebreakLine";
         public const string DeepAshDefName = "RM_FE_Ash_Deep";
-
-        /// <summary>The retired ladder rungs, kept one cycle as hidden legacy aliases and re-laid to deep ash on load.</summary>
-        public static readonly string[] LegacyAshDefNames = { "RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy" };
-
-        public static bool IsLegacyAsh(string n)
-        {
-            return n != null && Array.IndexOf(LegacyAshDefNames, n) >= 0;
-        }
 
         /// <summary>The burn stamp's gate: master on, the bonus on, a spawned ground fire (not a burning pawn) on scorchable ground.
         /// Independent of the ash-dusting and scorch-fruit toggles.</summary>
@@ -86,19 +83,15 @@ namespace RimMandrake.Pyrelands
             return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;
         }
 
-        /// <summary>Fresh-burn bonus (design §4): base x max(0, 1 - age/duration - rainSince/rainBudget), capped at base. burnTick &lt; 0 =
-        /// never burned; a stamp from the future (another game) counts as never. rainFade off = time only.</summary>
-        public static float BurnBonus(int burnTick, int now, float bonus, int durationTicks, float rainSince, float rainBudget, bool rainFade)
+        /// <summary>Fresh-burn bonus: base x max(0, 1 - age/duration), on its own clock; rain never takes it away (owner, d_blackrain_stop_wipe:
+        /// black rain's watered lift stacks on top). burnTick &lt; 0 = never burned; a stamp from the future (another game) counts as never.</summary>
+        public static float BurnBonus(int burnTick, int now, float bonus, int durationTicks)
         {
             if (burnTick < 0 || now < burnTick || durationTicks <= 0 || bonus <= 0f)
             {
                 return 0f;
             }
             float f = 1f - (float)(now - burnTick) / durationTicks;
-            if (rainFade && rainBudget > 0f && rainSince > 0f)
-            {
-                f -= rainSince / rainBudget;
-            }
             if (f <= 0f)
             {
                 return 0f;
@@ -133,6 +126,26 @@ namespace RimMandrake.Pyrelands
         {
             int until = now + ticks;
             return until > oldUntil ? until : oldUntil;
+        }
+
+        /// <summary>PyrelandsWetRoots: the temperature a plant's roots feel on watered ash, coolingC below its cell's.</summary>
+        public static float WetRootTemperature(float cellTemp, float coolingC)
+        {
+            return cellTemp - (coolingC > 0f ? coolingC : 0f);
+        }
+
+        /// <summary>PyrelandsWetRoots: vanilla's growth season (PlantUtility.GrowthSeasonNow: minGrowth &lt; T &lt; maxGrowth) for a plant
+        /// on watered ash. Only the hot side moves: at or past maxGrowth the cooled root temperature is tested instead, so wet roots can
+        /// open a season the heat shut and never shut one, and a cold cell never counts as warmer (map w 2026-11-08, 58.8 C: rice read
+        /// "0% (out of temperature growth range)" under our own "grows as if 27F cooler" line).</summary>
+        public static bool WetRootGrowthSeason(float cellTemp, float minGrowth, float maxGrowth, float coolingC)
+        {
+            if (cellTemp < maxGrowth)
+            {
+                return cellTemp > minGrowth;
+            }
+            float roots = WetRootTemperature(cellTemp, coolingC);
+            return roots > minGrowth && roots < maxGrowth;
         }
 
         /// <summary>ASH_FIELD_FIX_FORGETS_THE_WATER (6): a Black Rain waters an unroofed cell until its stamp, and only while the setting
@@ -187,6 +200,28 @@ namespace RimMandrake.Pyrelands
         {
             int until = now + Math.Max(0, holdTicks);
             return currentHoldUntil > until ? currentHoldUntil : until;
+        }
+
+        /// <summary>BURROWER_FLEES_LARGE_FIRE: vanilla's JobGiver_AnimalFlee sits in AnimalConstant and is asked every 30 ticks
+        /// for a wild animal. With 60+ fires near and one inside 10 cells it hands out a Flee that interrupts any job, the
+        /// dome included (map w, pass 18: a domed ashwallow surfaced 2.2 cells from a creeping front and ran; earlier, one
+        /// fled instead of diving and was killed). What a burrower's flee giver answers instead:
+        /// 0 = vanilla's answer stands, 1 = nothing (stay domed, or keep grazing until the front is in dive range), 2 = dive.</summary>
+        public static int BurrowerFleeAnswer(bool burrower, bool burrowed, bool fleeFromFire, bool wouldDive)
+        {
+            if (!burrower)
+            {
+                return 0;
+            }
+            if (burrowed)
+            {
+                return 1;
+            }
+            if (!fleeFromFire)
+            {
+                return 0;
+            }
+            return wouldDive ? 2 : 1;
         }
 
         /// <summary>RM_JobDriver_Burrow surfaces only when no free fire is within its radius AND the last heat hit's hold
@@ -263,47 +298,155 @@ namespace RimMandrake.Pyrelands
             return perTick * delta;
         }
 
+        // ── The drift field (PyrelandsDriftField): one static low-frequency noise per map gives every cell a target ash
+        // level 0..3 (AshDepthPerLevel of sand depth each). Conductor ruling 2026-11-07 on map s: "make the drifts fewer, of varied size and clustered (pooled
+        // against walls and along the burn edge), rather than redrawing the grain again." A hashed third of a scar's cells at
+        // thickness 1 read as polka dots: every drift alone, all one size, evenly spread. The cuts are quantiles of the map's
+        // own noise, so the shares below hold whatever the noise's spread turns out to be.
+
+        /// <summary>Above this share of the field a lee or burn-edge cell pools a drift; below it the bonus is dropped, so a long
+        /// wall or a scar's rim holds pools and gaps instead of an outline.</summary>
+        public const float DriftPoolQuantile = 0.5f;
+        /// <summary>The top fifth of the field holds a drift at all: with the lee and edge pools that is ~20-25% of a scar.</summary>
+        public const float DriftFringeQuantile = 0.8f;
+        /// <summary>Banks (thickness 2) and cores (3) sit inside the fringes, on the field's highest ground.</summary>
+        public const float DriftBankQuantile = 0.91f;
+        public const float DriftCoreQuantile = 0.965f;
+        /// <summary>The deepest a scar or drift-field target goes, in drift levels (AshDepthPerLevel each).</summary>
+        public const int DriftTargetMax = 3;
+        /// <summary>A fire must have burned this long before its cell counts the burn edge: early in a cell's fire the grass ahead
+        /// of the front has not caught yet, and every interior cell would read as rim.</summary>
+        public const int ScarEdgeSettleTicks = 600;
+
+        /// <summary>Quantile cut points of a map's drift-field noise; sorts the samples in place.</summary>
+        public static RM_DriftCuts DriftCuts(float[] samples)
+        {
+            var cuts = new RM_DriftCuts();
+            if (samples == null || samples.Length == 0)
+            {
+                cuts.Pool = cuts.Fringe = cuts.Bank = cuts.Core = float.MaxValue;
+                return cuts;
+            }
+            Array.Sort(samples);
+            cuts.Pool = Quantile(samples, DriftPoolQuantile);
+            cuts.Fringe = Quantile(samples, DriftFringeQuantile);
+            cuts.Bank = Quantile(samples, DriftBankQuantile);
+            cuts.Core = Quantile(samples, DriftCoreQuantile);
+            return cuts;
+        }
+
+        private static float Quantile(float[] sorted, float q)
+        {
+            int i = (int)(q * (sorted.Length - 1));
+            if (i < 0) i = 0;
+            if (i >= sorted.Length) i = sorted.Length - 1;
+            return sorted[i];
+        }
+
+        /// <summary>A cell's target ash thickness 0..3: the field's height, plus one in the lee of an edifice and one at a burn edge
+        /// where the field is at least middling.</summary>
+        public static int DriftTarget(float noise, RM_DriftCuts cuts, bool lee, bool burnEdge)
+        {
+            int t = noise >= cuts.Core ? 3 : noise >= cuts.Bank ? 2 : noise >= cuts.Fringe ? 1 : 0;
+            if (noise >= cuts.Pool)
+            {
+                if (lee) t++;
+                if (burnEdge) t++;
+            }
+            return t > DriftTargetMax ? DriftTargetMax : t;
+        }
+
+        /// <summary>A burning cell's ash after one dusting: one drift level deeper, never past the cell's drift-field target, never
+        /// thinned (a long burn can never re-roll its way past the target, and a deeper fall already lying stays).</summary>
+        public static float ScarAshStep(float depth, int target)
+        {
+            float want = target * AshDepthPerLevel;
+            if (depth >= want - AshDepthEpsilon) return depth;
+            float next = depth + AshDepthPerLevel;
+            return next > want ? want : next;
+        }
+
+        /// <summary>A scar laid at once (yesterday's fire, a ruin): the cell's target depth, never thinning a deeper drift.</summary>
+        public static float ScarAshLaid(float depth, int target)
+        {
+            float want = target * AshDepthPerLevel;
+            return depth > want ? depth : want;
+        }
+
         public static bool UnderFruitCap(int existing, int cap)
         {
             return existing < cap;
         }
 
-        /// <summary>The ash-fall rate this map gets this batch, or -1 when it gets none: ash fall full, cinderfall reduced, an opted-in
-        /// foreign biome the coverage slider, anything else nothing.</summary>
-        public static float AshRate(bool ashFall, bool cinderfall, float cinderFactor, bool nativeBiome, bool crossBiomeApplies,
-            float crossCoverage, float rateMultiplier)
+        // ── Ash on vanilla sand (PyrelandsAshSand.cs). Owner, by card, 2026-11-08: "Rebuild ash on vanilla sand?" -> "Yes, rebuild
+        // on sand". Ash is the Odyssey sand depth grid (0..1) on a map fire ecology runs on: ash fall lays it through the weather's
+        // own sandRate (vanilla SteadyEnvironmentEffects.AddFallenSandAt, snow's code path), a fire lays it on its cell, black rain
+        // carries it off, and colonists clear it with vanilla's clear-snow-and-sand job.
+
+        /// <summary>One drift level in sand depth (a drift level is thickness 1..4): the drift field's targets convert at this.</summary>
+        public const float AshDepthPerLevel = 0.25f;
+        public const float AshDepthEpsilon = 0.001f;
+        /// <summary>Ash shallower than this is none: vanilla's own None buildup category (WeatherBuildupUtility, below 0.03).</summary>
+        public const float AshVisibleDepth = 0.03f;
+        /// <summary>Vanilla's sand wear per steady-effects visit on an open-sky cell with no sand falling (SteadyEnvironmentEffects,
+        /// SandDissipateRate 1/180). A cell is visited every ~1,667 ticks (0.0006 of the map a tick), 36 times a day: 0.2 a day.</summary>
+        public const float VanillaSandWear = 1f / 180f;
+        /// <summary>Dry ash on an ash map wears at this share of vanilla's sand: 0.1 depth a day, so a full cover lasts ~10 days and a
+        /// scar's 0.25-0.75 lasts 2.5-7.5 (the retired filth expired 6-9 days after its last thickening).</summary>
+        public const float AshDryWearShare = 0.5f;
+        /// <summary>Rain carries off this much ash a visit at rainRate 1: one drift level, as vanilla's rainWashes thinned the filth one
+        /// level on a Rand.Chance(rainRate) roll. Black rain (rainRate 1.1) clears a full cover in ~2.5 hours.</summary>
+        public const float AshRainWashPerVisit = 0.25f;
+        /// <summary>Cross-biome ambient ash at 100% coverage, as a share of the ash weathers' own sandRate.</summary>
+        public const float AmbientAshShare = 0.1f;
+        /// <summary>Cross-biome ambient ash falls only while the map's mean depth is below this (then dry wear takes over).</summary>
+        public const float AmbientMeanDepthCap = 0.1f;
+
+        /// <summary>The sand rate an ash weather adds on this map: its own sandRate times the rate setting on an ash map with ash fall
+        /// on; nothing otherwise (the weather still blows, it lays nothing; and never sand on a map that does not draw ash).</summary>
+        public static float AshWeatherSandRate(float ashWeatherRate, bool ashMap, bool accumulationOn, float rateMultiplier)
         {
-            float rate;
-            if (ashFall)
-            {
-                rate = 1f;
-            }
-            else if (cinderfall)
-            {
-                rate = cinderFactor;
-            }
-            else if (!nativeBiome && crossBiomeApplies)
-            {
-                rate = crossCoverage;
-            }
-            else
-            {
-                return -1f;
-            }
-            return rate * rateMultiplier;
+            if (!ashMap || !accumulationOn || !(ashWeatherRate > 0f) || !(rateMultiplier > 0f)) return 0f;
+            return ashWeatherRate * rateMultiplier;
         }
 
-        /// <summary>Deposit attempts this batch: map area per attempt scaled by the rate; a rate of zero deposits nothing, any positive
-        /// rate deposits at least one.</summary>
-        public static int AshAttempts(int area, float cellsPerAttempt, float rate)
+        /// <summary>The steady ambient ash rate of an opted-in foreign biome's map: the coverage slider's share of a tenth of ash fall's
+        /// rate, falling only while the map's mean depth is under AmbientMeanDepthCap; 0 for the Pyrelands itself or off.</summary>
+        public static float AmbientAshSandRate(bool crossBiomeApplies, bool nativeBiome, bool accumulationOn, float coverage,
+            float ashFallRate, float rateMultiplier, float meanDepth)
         {
-            if (rate <= 0f)
-            {
-                return 0;
-            }
-            int attempts = (int)((float)area / cellsPerAttempt * rate);
-            return attempts < 1 ? 1 : attempts;
+            if (nativeBiome || !crossBiomeApplies || !accumulationOn || !(coverage > 0f) || meanDepth >= AmbientMeanDepthCap) return 0f;
+            return coverage * AmbientAshShare * ashFallRate * rateMultiplier;
         }
+
+        /// <summary>What one steady-effects visit takes off an open-sky cell with no sand falling: vanilla's wear on any map that does
+        /// not hold ash; on an ash map half that dry, plus the rain's wash (black rain is the one rain the Pyrelands has).</summary>
+        public static float OutdoorSandWear(bool ashMap, float rainRate)
+        {
+            if (!ashMap) return VanillaSandWear;
+            return VanillaSandWear * AshDryWearShare + AshRainWashPerVisit * (rainRate > 0f ? rainRate : 0f);
+        }
+
+        /// <summary>The ground cover's opacity over a cell of this ash depth: none below the visible depth, a gritty 0.4 at a dusting
+        /// (the rough shader opens holes below 1), 0.9 at one old drift level (0.25, the old cover's x1), solid from 0.5.</summary>
+        public static float AshCoverOpacity(float depth)
+        {
+            if (!(depth >= AshVisibleDepth)) return 0f;
+            if (depth >= 0.5f) return 1f;
+            if (depth >= AshDepthPerLevel) return 0.9f + 0.1f * (depth - AshDepthPerLevel) / (0.5f - AshDepthPerLevel);
+            return 0.4f + 0.5f * (depth - AshVisibleDepth) / (AshDepthPerLevel - AshVisibleDepth);
+        }
+
+        /// <summary>Grass dust over a plant: 0 none, 1 the light overlay, 2 the full one.</summary>
+        public static int AshDustLevel(float depth)
+        {
+            if (!(depth >= AshDustLightDepth)) return 0;
+            return depth >= AshDustFullDepth ? 2 : 1;
+        }
+
+        /// <summary>A grass cell dusts light from here (~1.5 hours of ash fall) and full from AshDustFullDepth (~8 hours).</summary>
+        public const float AshDustLightDepth = 0.08f;
+        public const float AshDustFullDepth = 0.4f;
 
         /// <summary>True exactly once per id; the set is cleared wholesale when it passes a bound no live map reaches.</summary>
         public static bool MarkOnce(HashSet<int> rolled, int id, int bound)
@@ -336,7 +479,7 @@ namespace RimMandrake.Pyrelands
         public static readonly int[] FruitSpotDz = { 0, -1, 0, 1, -1, 1, -1, 0, 1 };
 
         /// <summary>SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: a pod lands only on bare, standable PYRELANDS GROUND (IsScorchableGround: deep
-        /// ash or the scorchable soils), never on a firebreak, a floor or other unburnable ground beside the fire.</summary>
+        /// ash or the scorchable soils), never on a floor or other unburnable ground beside the fire.</summary>
         public static bool FruitLandingLegal(bool inBounds, bool standable, bool hasPlant, bool scorchableGround)
         {
             return inBounds && standable && !hasPlant && scorchableGround;

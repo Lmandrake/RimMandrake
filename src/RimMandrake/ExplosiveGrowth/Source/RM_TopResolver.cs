@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -147,8 +148,8 @@ namespace RimMandrake.ExplosiveGrowth
             ThingDef def = plant.def;
             DropProduce(plant, prof.produceFactor, scatter: false);
             RM_ExplosiveGrowthDefOf.RM_EG_Split?.PlayOneShot(new TargetInfo(c, map));
-            FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_LooseGround);
-            SplitAndDie(plant);
+            if (!prof.gentleBurst) FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_LooseGround);   // a gentle carpet leaves the ground clean: 26,000 grey smudges a storm (owner, 2026-11-07)
+            EndCycle(plant, prof, comp);
             RM_SproutRing.Sow(map, c, def, SproutRadius, Sprouts(prof, DrySprouts), respectBuiltGround: true, comp, growth: 0.05f);
         }
 
@@ -200,21 +201,21 @@ namespace RimMandrake.ExplosiveGrowth
 
             // Chaff and husk: hay is vanilla's own dry, flammable plant matter
             // — low-grade fuel, exactly the ruled husk. TINDER leaves more.
-            SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
+            if (!prof.gentleBurst) SpawnNear(ThingDefOf.Hay, tinder ? Rand.RangeInclusive(8, 14) : Rand.RangeInclusive(3, 6), c, map);
             foreach (IntVec3 f in GenRadial.RadialCellsAround(c, BurstRadius, true))
             {
-                if (f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
+                if (!prof.gentleBurst && f.InBounds(map) && Rand.Chance(0.35f)) FilthMaker.TryMakeFilth(f, map, ThingDefOf.Filth_LooseGround);
             }
 
-            if (ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
+            if (!prof.gentleBurst && ExplosiveGrowthSettings.burstHurtsPawns) HurtPawnsNear(c, map, BurstRadius);
 
-            SplitAndDie(plant);
+            EndCycle(plant, prof, comp);
 
             ThingDef ring = prof.ringPlant ?? def;
             int n = tinder ? Rand.RangeInclusive(5, 9) : Rand.RangeInclusive(3, 6);
             RM_SproutRing.Sow(map, c, ring, BurstRadius, n, respectBuiltGround: false, comp, growth: Rand.Range(0.25f, 0.45f));
 
-            if (map.IsPlayerHome && MessagesRepeatAvoider.MessageShowAllowed("RM_EG_Burst", 60f))
+            if (!prof.gentleBurst && map.IsPlayerHome && MessagesRepeatAvoider.MessageShowAllowed("RM_EG_Burst", 60f))
             {
                 Messages.Message("A swollen " + def.label + " burst, sowing the ground around it.",
                     new TargetInfo(c, map), MessageTypeDefOf.NegativeEvent);
@@ -496,6 +497,22 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         // ── shared pieces ────────────────────────────────────────────────
+
+        private static readonly AccessTools.FieldRef<Plant, int> ageRef = AccessTools.FieldRefAccess<Plant, int>("ageInt");
+
+        /// <summary>A gentle carpet starts over where it stands, which looks the same as dying and resprouting: destroying a
+        /// plant costs about 1.8 ms on a grass-covered map, and a soaked map pops one every tick.</summary>
+        private static void EndCycle(Plant plant, RM_PlantProfile prof, RM_MapComponent_ExplosiveGrowth comp)
+        {
+            if (!prof.gentleBurst || comp == null)
+            {
+                SplitAndDie(plant);
+                return;
+            }
+            plant.Growth = 0.05f;
+            ageRef(plant) = 0;
+            comp.Dirty(plant.Position);
+        }
 
         private static void SplitAndDie(Plant plant)
         {
