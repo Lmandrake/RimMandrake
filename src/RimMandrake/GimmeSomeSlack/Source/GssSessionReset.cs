@@ -22,6 +22,7 @@ namespace RimMandrake.GimmeSomeSlack
             GimmeSomeSlackProbe.request = "";                  // B22: a probe request queued in the last game never fires
             Aerial.AerialProbe.request = "";                   //      in this one (thing ids repeat across loads)
             Aerial.CompAerialAnchor.debugSkipReseed = false;   // C15: an interrupted negative control never leaks into a game
+            Aerial.RM_LiveWirePathCost.Clear();                 // map ids repeat across games: the last one's priced cells go
         }
     }
 

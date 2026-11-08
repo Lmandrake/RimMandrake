@@ -160,6 +160,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 contactsDirty = false;
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_LiveWirePathCost.Sync(map, shockCells);
             }
             if (sweep)
             {
@@ -170,6 +171,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 PollFallen();
                 FallenGroundCheck();
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_LiveWirePathCost.Sync(map, shockCells);
                 RM_FallenWireShock.TryIgnite(map, liveTips);
                 TapRegistry.Prune();
             }
@@ -293,10 +295,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
                 var others = AutoLinkCandidates(AerialLineProfiles.LookOfThing(a.parent), a, a.Position, a.Kind);
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), a.Range);
-                if (pick < 0) continue;
-                if (CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
+                if (pick >= 0 && CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
+                // a pole put up where one died takes back every span that fell with it: each neighbour whose wires lie on the ground
+                // aimed at this cell (pass 12, played: a lamp mast rebuilt after a mortar came back linked to its nearest neighbour
+                // only; the other's wires lay live in the yard with no cut to re-string, and no way back but the link gizmo)
+                foreach (CompAerialAnchor o in others)
+                {
+                    if (!o.fallen.Any(f => FellToward(f, a.Position)) || o.links.Any(l => l.other == a)) continue;
+                    if (CompAerialAnchor.Verdict(a, o.parent) != LinkVerdict.Ok) continue;
+                    o.fallen.RemoveAll(f => FellToward(f, a.Position));
+                    if (CompAerialAnchor.TryLink(a, o.parent) == LinkVerdict.Ok) { autoLinks++; orphanRelinks++; }
+                }
             }
         }
+
+        /// <summary>Did <paramref name="f"/> fall when a pole on (or right beside) <paramref name="cell"/> died? Its partner is
+        /// dead and it is aimed at that cell: a pole rebuilt a cell off the old spot takes the span back too.</summary>
+        private static bool FellToward(FallenCord f, IntVec3 cell) => f.cutPartner == -1 && f.toward.DistanceToSquared(cell) <= 2;
+
+        public int orphanRelinks;
 
         /// <summary>The anchors auto-link may pick for a pole of <paramref name="look"/> at <paramref name="at"/>: same look only
         /// (design 2.3). Shared by the real auto-link and the placement ghost's preview line (GPT pre-release C11: the ghost

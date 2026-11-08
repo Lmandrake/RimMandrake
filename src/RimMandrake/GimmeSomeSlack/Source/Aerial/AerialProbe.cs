@@ -259,7 +259,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                       ",\"externalContacts\":" + RM_FallenWireShock.externalContacts +
                       ",\"shockCellList\":[" + string.Join(",", audit.cells.Take(200).Select(c => "[" + c.x + "," + c.z + "]")) + "]");
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
-                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
+                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"orphanRelinks\":" + comp.orphanRelinks + ",\"liveWirePriced\":" + RM_LiveWirePathCost.CountOn(map) + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +

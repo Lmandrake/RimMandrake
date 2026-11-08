@@ -78,6 +78,8 @@ def main():
     say(R, "after 600")
     R.shots(tag + "3", ["line", "shed", "mast1"])
 
+    # what a colony has: the saves' stockpile holds one unit a stack, so a real stack of steel goes in the stockpile first
+    R.call("jawa/spawn_batch", ops="Steel:%d,%d,75;Steel:%d,%d,75" % (ox + 2, oz - 6, ox + 4, oz - 6))
     # the player puts the mast back: a blueprint on the same cell, built by colonists
     print("blueprint", json.dumps(R.ap("place:RM_AerialLampMast:%s:%d,%d:build" % (look, ox + m1[0], oz + m1[1])))[:200])
     built = play_until(R, 6000, lambda: any((a.get("x"), a.get("z")) == (ox + m1[0], oz + m1[1]) for a in anchors(R)))
