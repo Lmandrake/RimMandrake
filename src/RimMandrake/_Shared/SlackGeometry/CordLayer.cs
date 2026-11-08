@@ -55,6 +55,18 @@ namespace RimMandrake.Shared.Slack
         /// (<see cref="CordLayer.LooseHeap"/>), not three to five tight turns reversing at each one into a knotted spring (judges, passes 12-15; the owner:
         /// "slowly curving loops as the preferred option"). Off by default: FlowWorks and hoses lie as before.</summary>
         public bool RoundLoops;
+        /// <summary>Floor cords: a hop under <see cref="CordLayer.RoundMinLen"/> bows out over its whole width, a lazy C, not one tall narrow bump
+        /// (<see cref="CordLayer.ShortBowAmp"/>). Off for a cord to a cut end, whose writhing tail needs the length. Off by default.</summary>
+        public bool ShortBow;
+        private LayParams noBow;
+        /// <summary>This set with <see cref="ShortBow"/> off (cached; the copy is otherwise identical).</summary>
+        public LayParams WithoutShortBow()
+        {
+            if (!ShortBow) return this;
+            LayParams c = noBow;
+            if (c == null) { c = (LayParams)MemberwiseClone(); c.ShortBow = false; c.noBow = null; noBow = c; }
+            return c;
+        }
 
         /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
@@ -264,6 +276,14 @@ namespace RimMandrake.Shared.Slack
                 double amp = cap * rrBundle.Range(0.45, 1.0);
                 double spread = 0;
                 if (tng != null) RoundOut(s, ref c, up, down, lat, ref side, ref amp, ref wdt, out spread);
+                else if (prm.ShortBow && L < RoundMinLen)
+                {
+                    // a hop under RoundMinLen bows out over its whole width, a lazy C: one tall narrow bump on a two-cell hop between junctions hung as a
+                    // straight-legged V, and every such hop in a row hung the same way, a washing line (blind judge p15a, every look)
+                    c = L * (0.5 + (c / L - 0.5) * 0.2);
+                    wdt = L * (1.1 + 0.3 * (wdt - prm.ExcursionLo) / Math.Max(1e-6, prm.ExcursionHi - prm.ExcursionLo));
+                    amp = Math.Min(amp, ShortBowAmp * L + 0.3);
+                }
                 for (int i = 0; i < n; i++)
                 {
                     double u = (s[i] - c) / (wdt / 2), e = Math.Exp(-u * u);
@@ -321,6 +341,8 @@ namespace RimMandrake.Shared.Slack
 
         /// <summary>The shortest planned hop whose excursions are laid round (<see cref="LayParams.RoundExcursions"/>), cells.</summary>
         public const double RoundMinLen = 2.5;
+        /// <summary>A hop under <see cref="RoundMinLen"/> bows out at most this much of its length plus 0.3 cell (<see cref="LayParams.RoundExcursions"/>).</summary>
+        public const double ShortBowAmp = 0.35;
         /// <summary>A round excursion's crown and feet bend no tighter than about this (cells): <see cref="LayParams.RoundExcursions"/>.</summary>
         public const double ExcursionRound = 0.8;
         /// <summary>Of an excursion drawn <paramref name="amp"/> high over <paramref name="wdt"/>: its width grows to 1.625 R + 0.4 amp and its legs spread 0.25 R + 0.27 amp along the

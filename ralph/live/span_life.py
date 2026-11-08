@@ -14,8 +14,6 @@ from await_lifecycle import await_lifecycle  # noqa: E402
 
 BA = "ralph/live/ba_state.json"
 LI.FRAMES.update({"line": (36, -5, 34, 15), "cut2": (50, -5, 22, 12)})
-# the conduit that carries the house grid to the first mast (lived_in.plan: line(38,5..39,5) + line(39,3..39,4))
-FEED = (38, 3, 2, 3)
 
 
 def anchors(R):
@@ -80,17 +78,20 @@ def main():
     frames(R, tag, "play", 8.0)
     frames(R, tag, "close", 3.2)
     R.B.call("rimworld/set_time_speed", speed=0)
-    # the supply cut: the conduit from the house grid to the first mast goes
-    x, z, w, h = FEED
-    print("cut feed", json.dumps(R.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % (ox + x, oz + z, w, h), categories="Building"))[:200])
+    # the supply cut: the live half is fed by the hut's own battery (lived_in.plan: Battery at (72,1), nothing else on that run), so drain it,
+    # and back. Every battery in the hut's rect, read from the map, not assumed
+    hut = "%d,%d,%d,%d" % (ox + 64, oz - 4, 13, 9)
+    bats = [t.get("id") or t.get("thingId") for t in R.B.call("jawa/list_things", defName="Battery", rect=hut, limit=5).get("things") or []]
+    print("hut batteries", bats)
+    for b in bats:
+        print("drain", json.dumps(R.call("jawa/battery_set", thing=b, mode="setPct", value=0.0))[:160])
     R.B.ticks(400)
-    print("fallen after feed cut", json.dumps(fallen(R))[:400])
+    print("fallen after drain", json.dumps(fallen(R))[:400])
     R.shots(tag + "a2", ["line", "cutspan"])
-    # and back
-    cells = [(38, 5), (39, 5), (39, 3), (39, 4)]
-    print("restore feed", json.dumps(R.call("jawa/build_batch", ops=";".join("PowerConduit:%d,%d" % (ox + a, oz + b) for a, b in cells), wipeExisting=False))[:200])
+    for b in bats:
+        print("charge", json.dumps(R.call("jawa/battery_set", thing=b, mode="setPct", value=1.0))[:160])
     R.B.ticks(400)
-    print("fallen after restore", json.dumps(fallen(R))[:400])
+    print("fallen after recharge", json.dumps(fallen(R))[:400])
     R.shots(tag + "a3", ["line", "cutspan"])
     # the colonists re-string every cut anchor
     for a in anchors(R):

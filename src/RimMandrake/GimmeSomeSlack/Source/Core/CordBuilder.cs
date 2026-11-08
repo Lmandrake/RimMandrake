@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true };
+        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true, ShortBow = true };
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
@@ -897,6 +897,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             LayParams prm = opt.Lay;
             CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            // a cord to a cut end keeps its length for the end's limp curl or writhing tail
+            if ((na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam)) prm = prm.WithoutShortBow();
             var piece = new LaidPiece
             {
                 Owner = na.Cell.CompareTo(nb.Cell) <= 0 ? na.Cell : nb.Cell,
@@ -1060,6 +1062,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                            LaidPiece piece, CordPlan pl, CordNode na, CordNode nb)
         {
             LayParams prm = opt.Lay;
+            if ((na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam)) prm = prm.WithoutShortBow();
             CordRng rr = CordRng.Of(opt.Seed, "cord", key, "dive");
             int nsec = pl.Dives.Count + 1;
             var secC = new List<List<V2>>();
