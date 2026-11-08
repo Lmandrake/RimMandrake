@@ -43,6 +43,13 @@ namespace RimMandrake.Shared.Slack
         /// <see cref="CordLayer.DoorKeep"/>), and let go along a smooth ramp, not a jump to half the bend; and a stretch running flat off a door's hold is filled
         /// from 0.8 cell, not 2. A rod of 2-3 cells out of a doorway was what the hard hold drew. Loops and heaps still keep <see cref="CordLayer.DoorKeep"/> clear of a door. Hoses keep the hard hold.</summary>
         public bool SoftPins;
+        /// <summary>Floor cords: an excursion bends no tighter than about <see cref="CordLayer.ExcursionRound"/> (the owner: "what they avoid are sharp curves unless they must ...
+        /// slowly curving loops as the preferred option"). A tall excursion on a short hop drew a narrow finger, a hairpin with a sharp tip; now it widens as it grows tall and its legs
+        /// spread along the cord, so it lies as a broad round lobe. One against a wall is scaled down whole to the room at its middle, or swings to the side with more room, not
+        /// clamped flat along the wall. What still bends tighter than that on clear floor (two excursions meeting, one swung across a planned corner) is then eased
+        /// round and the length it lost given back as a wider lay (<see cref="CordLayer.Ease"/>, <see cref="CordLayer.Regrow"/>). Same draws in the same order.
+        /// Off by default: FlowWorks and hoses lie as before.</summary>
+        public bool RoundExcursions;
 
         /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
@@ -184,6 +191,9 @@ namespace RimMandrake.Shared.Slack
             for (int i = 0; i < n; i++) { Geo.TanNorm(P, i, out V2 t, out V2 nn); T.Add(t); N.Add(nn); }
             double cap = prm.Cap;
             var lat = new double[n];
+            double[] tng = prm.RoundExcursions ? new double[n] : null;     // along the cord: a round excursion's legs spread apart
+            double[] up = null, down = null;
+            if (tng != null) { up = FreeReach(w, P, N, 1, cap); down = FreeReach(w, P, N, -1, cap); }
             int nb = Math.Max(1, (int)Math.Round(L / Math.Max(2.6, prm.ExcursionHi)));
             for (int b = 0; b < nb; b++)                       // 1. broad excursions, shared by the bundle
             {
@@ -196,25 +206,35 @@ namespace RimMandrake.Shared.Slack
                 int side = sp >= sm ? 1 : -1;
                 if (rrBundle.Value() < 0.3) side = -side;
                 double amp = cap * rrBundle.Range(0.45, 1.0);
+                double spread = 0;
+                if (tng != null) RoundOut(s, ref c, up, down, lat, ref side, ref amp, ref wdt, out spread);
                 for (int i = 0; i < n; i++)
                 {
-                    double u = (s[i] - c) / (wdt / 2);
-                    lat[i] += side * amp * Math.Exp(-u * u);
+                    double u = (s[i] - c) / (wdt / 2), e = Math.Exp(-u * u);
+                    lat[i] += side * amp * e;
+                    if (tng != null) tng[i] += spread * u * e;
                 }
             }
             double spent = prm.FillFlats ? FillFlats(w, P, N, s, pin, soft ? ramp : null, lat, cap, prm, rrBundle) : 0;
             double kAmp = rrStrand.Range(0.85, 1.1), wav = rrStrand.Range(0.35, 0.6), ph = rrStrand.Range(0, 6);
             for (int i = 0; i < n; i++)
+            {
                 lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * prm.Wobble * Math.Sin(s[i] / wav + ph);
-            double[] up = FreeReach(w, P, N, 1, cap), down = FreeReach(w, P, N, -1, cap);
+                if (tng != null) tng[i] *= ramp[i] * kAmp;
+            }
+            if (tng == null) { up = FreeReach(w, P, N, 1, cap); down = FreeReach(w, P, N, -1, cap); }
             var Q = new List<V2>(n);
             double wantLen = 0, gotLen = 0;
             for (int i = 0; i < n; i++)
             {
-                Q.Add(P[i] + N[i] * Geo.Clamp(lat[i], -down[i], up[i]));
+                double lc = Geo.Clamp(lat[i], -down[i], up[i]);
+                // a leg's spread shrinks with its height where a wall clamps it
+                double tc = tng == null ? 0 : tng[i] * (Math.Abs(lat[i]) > 1e-6 ? Math.Min(1, Math.Abs(lc / lat[i])) : 1);
+                Q.Add(tng == null ? P[i] + N[i] * lc : P[i] + N[i] * lc + T[i] * tc);
                 if (i > 0)
                 {
-                    wantLen += V2.Dist(P[i - 1] + N[i - 1] * lat[i - 1], P[i] + N[i] * lat[i]);
+                    wantLen += tng == null ? V2.Dist(P[i - 1] + N[i - 1] * lat[i - 1], P[i] + N[i] * lat[i])
+                                           : V2.Dist(P[i - 1] + N[i - 1] * lat[i - 1] + T[i - 1] * tng[i - 1], P[i] + N[i] * lat[i] + T[i] * tng[i]);
                     gotLen += V2.Dist(Q[i - 1], Q[i]);
                 }
             }
@@ -222,6 +242,15 @@ namespace RimMandrake.Shared.Slack
             // what an excursion could not spend sideways (it met a wall) it keeps as LENGTH; the
             // settle buckles that into a bunch against the obstacle (rope.sprawl's `lost`)
             double lost = Math.Max(0, wantLen - gotLen);
+            if (tng != null)
+            {
+                double was = Geo.Length(Q);
+                for (int round = 0; round < EaseRounds; round++)
+                {
+                    Ease(w, Q, ramp, ExcursionRound);
+                    Regrow(P, N, T, up, down, Q, was);
+                }
+            }
             var st = new SettleStats();
             if (prm.LoopsPerCell > 0 || prm.HeapP > 0) Q = AddLoops(w, Q, loopRamp, prm, rrStrand, target, st);
             Q = Geo.Resample(Q, step);
@@ -232,6 +261,133 @@ namespace RimMandrake.Shared.Slack
             double restLen = Math.Min(Lq + 0.8 * lost, Math.Max(Lq, target));
             stats = Settle(w, Q, PinMask(w, Q, soft ? DoorHoldSoft : DoorKeep), restLen, prm, st);
             return Q;
+        }
+
+        /// <summary>A round excursion's crown and feet bend no tighter than about this (cells): <see cref="LayParams.RoundExcursions"/>.</summary>
+        public const double ExcursionRound = 0.8;
+        /// <summary>Of an excursion drawn <paramref name="amp"/> high over <paramref name="wdt"/>: its width grows to 1.625 R + 0.4 amp and its legs spread 0.25 R + 0.27 amp along the
+        /// cord (R = <see cref="ExcursionRound"/>; fitted so a lone excursion of any drawn height bends no tighter than 0.75 cell, keeping 76-100% of the length it spent as a finger),
+        /// and its middle <paramref name="c"/> moves in from the cord's ends by half that width: its foot is not cut off short by an end's pin into a hook.
+        /// The room at its middle (<paramref name="up"/>, <paramref name="down"/>, less what the excursions already laid there (<paramref name="lat"/>) take of it) caps its height whole:
+        /// it swings to the other side when that side has more room than this one gives it. Two excursions stacked on one stretch so never pass the room between them, and never
+        /// lie clamped flat along its edge.</summary>
+        private static void RoundOut(double[] s, ref double c, double[] up, double[] down, double[] lat, ref int side, ref double amp, ref double wdt, out double spread)
+        {
+            double width = Math.Max(wdt, 1.625 * ExcursionRound + 0.4 * amp);
+            double L = s[s.Length - 1], margin = Math.Min(0.5 * L, 0.5 * width);
+            c = Geo.Clamp(c, margin, L - margin);
+            double roomUp = double.MaxValue, roomDown = double.MaxValue;
+            for (int i = 0; i < s.Length; i++)
+                if (Math.Abs(s[i] - c) <= width * 0.35) { roomUp = Math.Min(roomUp, Math.Max(0, up[i] - Math.Max(0, lat[i]))); roomDown = Math.Min(roomDown, Math.Max(0, down[i] + Math.Min(0, lat[i]))); }
+            if (roomUp == double.MaxValue) { int j = Array.BinarySearch(s, c); if (j < 0) j = ~j; j = Math.Min(Math.Max(j, 0), s.Length - 1); roomUp = Math.Max(0, up[j] - Math.Max(0, lat[j])); roomDown = Math.Max(0, down[j] + Math.Min(0, lat[j])); }
+            double room = side > 0 ? roomUp : roomDown, other = side > 0 ? roomDown : roomUp;
+            if (room < amp * RoomHeadroom && other > room) { side = -side; room = other; }
+            amp = Math.Min(amp, room / RoomHeadroom);
+            wdt = Math.Max(wdt, 1.625 * ExcursionRound + 0.4 * amp);
+            spread = 0.25 * ExcursionRound + 0.27 * amp;
+        }
+        /// <summary>The most a strand scales its bundle's excursions (kAmp): an excursion fitted to its room leaves this much over.</summary>
+        private const double RoomHeadroom = 1.1;
+
+        /// <summary>What the excursions still bend tighter than <see cref="ExcursionRound"/> over half a cell (two of them meeting, one swung across a planned corner) is eased
+        /// toward its chord a little at a time, where the floor round it is clear: a tight bend is left only where a wall makes it. Pins and their ramps lie as laid
+        /// (<paramref name="ramp"/> under 1). No draws.</summary>
+        private static void Ease(CordWorld w, List<V2> Q, double[] ramp, double round)
+        {
+            int n = Q.Count, k = EaseK;
+            if (n < 2 * k + 3) return;
+            var X = Q.ToArray();
+            var Y = new V2[n];
+            var h = new double[n];
+            var near = new Dictionary<int, bool>();
+            // 1 on clear floor, falling to 0 at EaseClear from a wall: a bend a wall makes is left as it is, and the ease fades out toward it
+            double Room(V2 p)
+            {
+                Cell c = p.Floor;
+                int key = c.Z * 65536 + c.X;
+                if (!near.TryGetValue(key, out bool nr))
+                {
+                    nr = false;
+                    for (int dz = -1; dz <= 1 && !nr; dz++)
+                        for (int dx = -1; dx <= 1; dx++)
+                            if (!w.IsWalkable(new Cell(c.X + dx, c.Z + dz))) { nr = true; break; }
+                    near[key] = nr;
+                }
+                return nr ? Geo.Clamp((w.Clearance(p) - EaseClear) / EaseFade, 0, 1) : 1;
+            }
+            for (int it = 0; it < EaseIters; it++)
+            {
+                bool any = false;
+                Array.Clear(h, 0, n);
+                for (int i = k; i < n - k; i++)
+                {
+                    if (ramp[i] < 0.5 || Radius(X[i - k], X[i], X[i + k]) >= round) continue;
+                    any = true;
+                    for (int j = Math.Max(1, i - 2 * k); j <= Math.Min(n - 2, i + 2 * k); j++) h[j] = Math.Max(h[j], 1 - Math.Abs(i - j) / (2.0 * k + 1));
+                }
+                if (!any) break;
+                Array.Copy(X, Y, n);
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (h[i] <= 0) continue;
+                    double g = 0.5 * h[i] * ramp[i] * Room(Y[i]);
+                    if (g <= 0) continue;
+                    int a = Math.Max(0, i - k), b = Math.Min(n - 1, i + k);
+                    V2 m = Y[a];
+                    for (int j = a + 1; j <= b; j++) m = m + Y[j];
+                    X[i] = Y[i] + (m * (1.0 / (b - a + 1)) - Y[i]) * g;
+                }
+            }
+            for (int i = 0; i < n; i++) Q[i] = X[i];
+        }
+        /// <summary>What <see cref="Ease"/> cut off a bend is given back to the whole lay: every point's offset from the planned line grows by one factor (to at most
+        /// <see cref="RegrowMax"/>, and never so far that a point reaches the edge of its room each side, <paramref name="up"/>, <paramref name="down"/>) until the cord is as long
+        /// as it was. A wider, slower lay, not a bend, and never a lobe pressed flat against its room.</summary>
+        private static void Regrow(List<V2> P, List<V2> N, List<V2> T, double[] up, double[] down, List<V2> Q, double was)
+        {
+            int n = Q.Count;
+            var dn = new double[n];
+            var dt = new double[n];
+            for (int i = 0; i < n; i++) { V2 d = Q[i] - P[i]; dn[i] = d.X * N[i].X + d.Z * N[i].Z; dt[i] = d.X * T[i].X + d.Z * T[i].Z; }
+            // no point grows into the edge of its room (one already held there stays there): grown into it, a lobe lay flat along the edge between two sharp shoulders
+            double gMax = RegrowMax;
+            for (int i = 0; i < n; i++)
+            {
+                double room = dn[i] >= 0 ? up[i] : down[i];
+                if (Math.Abs(dn[i]) > 1e-6 && Math.Abs(dn[i]) < room - 1e-3) gMax = Math.Min(gMax, room / Math.Abs(dn[i]));
+            }
+            V2 At(int i, double g)
+            {
+                double a = g * dn[i], c = Geo.Clamp(a, -down[i], up[i]);
+                double tc = g * dt[i] * (Math.Abs(a) > 1e-6 ? Math.Min(1, Math.Abs(c / a)) : 1);
+                return P[i] + N[i] * c + T[i] * tc;
+            }
+            double Len(double g)
+            {
+                double l = 0;
+                V2 prev = At(0, g);
+                for (int i = 1; i < n; i++) { V2 q = At(i, g); l += V2.Dist(prev, q); prev = q; }
+                return l;
+            }
+            if (Len(1) >= was - 0.02) return;
+            if (gMax <= 1) return;
+            double lo = 1, hi = gMax;
+            if (Len(hi) > was)
+                for (int it = 0; it < 12; it++) { double mid = (lo + hi) / 2; if (Len(mid) < was) lo = mid; else hi = mid; }
+            for (int i = 0; i < n; i++) Q[i] = At(i, hi);
+        }
+        private const double RegrowMax = 1.4;
+
+        /// <summary><see cref="Ease"/>: the bend is read over +-<see cref="EaseK"/> samples (a quarter cell each way at the 0.05 step) and eased at most <see cref="EaseIters"/>
+        /// times a round; next to a wall the ease fades out over <see cref="EaseFade"/> and stops at <see cref="EaseClear"/> from it. <see cref="EaseRounds"/> rounds of an
+        /// ease then a <see cref="Regrow"/>, so the cord ends as long as the excursions laid it.</summary>
+        private const int EaseK = 5, EaseIters = 12;
+        private const double EaseClear = 0.3, EaseFade = 0.2;
+        private const int EaseRounds = 4;
+        private static double Radius(V2 a, V2 b, V2 c)
+        {
+            double cross = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X));
+            return cross < 1e-12 ? double.MaxValue : V2.Dist(a, b) * V2.Dist(b, c) * V2.Dist(c, a) / (2 * cross);
         }
 
         /// <summary>How far past a doorway point a cord is held to its line (and loops are kept away): the old hard hold, and the floor cord's soft one.</summary>
@@ -721,7 +877,9 @@ namespace RimMandrake.Shared.Slack
         /// <summary>A DEAD end lies limp: the last 0.7 cell falls sideways off the conduit's line
         /// (0.30 cell at the tip) and curls over, so it reads as slack and still next to a live end
         /// that sticks straight out. Tried on the seeded side, then the other, then at half size;
-        /// a shape that would put any point on unwalkable ground is not used.</summary>
+        /// a shape that would put any point on unwalkable ground is not used. A curl that comes out
+        /// under <see cref="LimpTurnMin"/> at the tip (the cord already bending the other way into it, a
+        /// round excursion ending there) gives way to the next shape, then to one that curls over nearer the tip (the tip as far off the line), or else the one that curls most.</summary>
         public static void LimpTail(CordWorld w, List<V2> P, bool atEnd, int side, int strandIndex)
         {
             if (P.Count < 4) return;
@@ -733,7 +891,9 @@ namespace RimMandrake.Shared.Slack
             j = Math.Max(1, Math.Min(j, P.Count - 2));
             int m = P.Count - j;
             var orig = P.GetRange(j, m);
-            foreach (double amp in new[] { 1.0, -1.0, 0.5, -0.5 })
+            V2[] best = null;
+            double bestTurn = -1;
+            foreach ((double amp, double pw) in new[] { (1.0, 2.4), (-1.0, 2.4), (0.5, 2.4), (-0.5, 2.4), (1.0, 3.6), (-1.0, 3.6) })
             {
                 var cand = new V2[m];
                 bool ok = true;
@@ -741,17 +901,38 @@ namespace RimMandrake.Shared.Slack
                 {
                     double u = m == 1 ? 1 : k / (double)(m - 1);
                     Geo.TanNorm(orig, k, out V2 t, out V2 nrm);
-                    double curl = amp * side * (0.30 + 0.025 * strandIndex) * Math.Pow(u, 2.4);
+                    double curl = amp * side * (0.30 + 0.025 * strandIndex) * Math.Pow(u, pw);
                     double back = -0.12 * Math.Abs(amp) * u * u * u;
                     cand[k] = orig[k] + nrm * curl + t * back;
                     if (w != null && !w.IsWalkable(cand[k].Floor)) { ok = false; break; }
                 }
                 if (!ok) continue;
                 for (int k = 0; k < m; k++) P[j + k] = cand[k];
-                break;
+                double turn = TipTurn(P);
+                if (turn >= LimpTurnMin) { best = null; break; }
+                if (turn > bestTurn) { bestTurn = turn; best = cand; }
+                for (int k = 0; k < m; k++) P[j + k] = orig[k];
             }
+            if (best != null) for (int k = 0; k < m; k++) P[j + k] = best[k];
             if (!atEnd) P.Reverse();
         }
+        /// <summary>How far a dead end's tip turns over its last 0.6 cell, radians: the last 0.1 against the stretch 0.45-0.6 back.</summary>
+        private static double TipTurn(List<V2> q)
+        {
+            V2 Back(double back)
+            {
+                double acc = 0;
+                for (int i = q.Count - 1; i > 0; i--) { acc += V2.Dist(q[i], q[i - 1]); if (acc >= back) return q[i - 1]; }
+                return q[0];
+            }
+            V2 a = q[q.Count - 1] - Back(0.1), b = Back(0.45) - Back(0.6);
+            double d = (Math.Atan2(a.Z, a.X) - Math.Atan2(b.Z, b.X)) % (2 * Math.PI);
+            if (d < -Math.PI) d += 2 * Math.PI;
+            if (d > Math.PI) d -= 2 * Math.PI;
+            return Math.Abs(d);
+        }
+        /// <summary>A dead end's tip curls at least this far where a walkable shape can (the audit's bar, <c>CordAudit.ArtFit</c>): the plain curl turns 52-56 degrees on a straight end.</summary>
+        private const double LimpTurnMin = 50 * Math.PI / 180;
 
         /// <summary>Replace the last stretch of a strand (its first stretch when atEnd is false) with a
         /// smooth curve that ends exactly at target travelling along arrive, finishing with a straight

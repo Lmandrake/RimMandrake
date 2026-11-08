@@ -272,6 +272,47 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 List<ShapeClass> t = CordShape.Table(new[] { a, twin });
                 Check(t.Count == 1 && t[0].TooAlike == 1 && t[0].MinDistance < 0.05, $"planted: a cord and its moved, turned, reversed copy read {(t.Count > 0 ? t[0].MinDistance : -1):0.000} apart");
             }
+
+            // a slack cord on open floor takes slow, wide curves, no hairpin (owner 2026-11-07 7:07 PM: "what they avoid are sharp curves unless they must ... slowly curving
+            // loops as the preferred option"): a short hop given a lot of slack, the lay a row of junctions draws, with no loops or heaps (those coil on purpose).
+            // The excursions as drawn before (RoundExcursions off) as the control: a tall narrow finger, a hairpin at its tip.
+            {
+                var open = new CordWorld(30, 30);
+                int Sharp(List<V2> Q)
+                {
+                    List<V2> R = Geo.Resample(Q, 0.05);
+                    double[] s = Geo.CumLen(R);
+                    int bends = 0;
+                    bool inBend = false;
+                    for (int i = 5; i < R.Count - 5; i++)
+                    {
+                        V2 a = R[i - 5], b = R[i], c = R[i + 5];
+                        double cross = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X));
+                        bool tight = s[i] > 1.0 && s[s.Length - 1] - s[i] > 1.0 && cross > 1e-12
+                                     && V2.Dist(a, b) * V2.Dist(b, c) * V2.Dist(c, a) / (2 * cross) < 0.6;
+                        if (tight && !inBend) bends++;
+                        inBend = tight;
+                    }
+                    return bends;
+                }
+                int sharpOff = 0, sharpOn = 0, lays = 0;
+                foreach (double hop in new[] { 3.0, 4.0, 5.0, 6.0 })
+                    foreach (ulong seed in new ulong[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 })
+                    {
+                        var line = new List<V2>();
+                        for (double x = 13; x <= 13 + hop + 1e-9; x += 0.05) line.Add(new V2(x, 15.5));
+                        var off = new BuildOptions().Lay;
+                        off.LoopsPerCell = 0; off.HeapP = 0; off.RoundExcursions = false;
+                        var on = new BuildOptions().Lay;
+                        on.LoopsPerCell = 0; on.HeapP = 0;     // the builder's own lay: with RoundExcursions off there the row fails
+                        sharpOff += Sharp(CordLayer.Sprawl(open, line, off, 1.2, 8, CordRng.Of(seed, "b"), CordRng.Of(seed, "s"), 1));
+                        sharpOn += Sharp(CordLayer.Sprawl(open, line, on, 1.2, 8, CordRng.Of(seed, "b"), CordRng.Of(seed, "s"), 1));
+                        lays++;
+                    }
+                Console.WriteLine($"  bends tighter than 0.6 cell on open floor: {sharpOn} in {lays} short slack hops; drawn as before {sharpOff}");
+                Check(sharpOff >= lays / 2, $"can-fail: the excursions as drawn before bend tighter than 0.6 cell {sharpOff} times in {lays} hops");
+                Check(sharpOn <= sharpOff / 4, $"a slack hop on open floor bends tighter than 0.6 cell {sharpOn} times in {lays} hops (as drawn before {sharpOff})");
+            }
         }
 
         /// <summary>The polish: a planted sawtooth and a planted corner read as faults and come out, the ends stay point for point; a strip beside a machine draws its lead as one straight nub.</summary>

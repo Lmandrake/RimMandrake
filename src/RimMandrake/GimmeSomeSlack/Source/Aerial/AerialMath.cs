@@ -770,8 +770,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// (screen z fakes height), then lies the rest of the way to <paramref name="device"/> as a loose cord (<see cref="LooseRun"/>). Null when
         /// no loose cord can lie on the ground between (a wall between: vanilla wires a lamp indoors to a mast outside), or the device stands
         /// beside the mast; the caller then hangs <see cref="LooseDrop"/>.
+        /// The ground run lies no further up the screen than the higher of its touchdown and its device, plus <see cref="DropRise"/>
+        /// (<paramref name="keepLow"/>; off only for the self-test's control): ground up-screen of those is behind the pole and under the
+        /// overhead wires, and a run that wandered there and curled back down into a lamp read as a cord strung from the crossarm (pass 14, all four looks).
         /// </summary>
-        public static FallenLay LayDrop(P2 top, P2 basePt, P2 device, int seed, Func<int, int, bool> walkable)
+        public static FallenLay LayDrop(P2 top, P2 basePt, P2 device, int seed, Func<int, int, bool> walkable, bool keepLow = true)
         {
             double dist = P2.Dist(basePt, device);
             if (dist < 1.4) return null;
@@ -784,7 +787,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             var td = new P2(basePt.X + ux * s0 + nx * side0, basePt.Z + uz * s0 + nz * side0);
             Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
             if (!open(td)) return null;
-            List<P2> run = LooseRun(td, device, seed, open);
+            double cap = Math.Max(td.Z, device.Z) + DropRise;
+            List<P2> run = keepLow ? LooseRun(td, device, seed, g => g.Z <= cap && open(g)) ?? LooseRun(td, device, seed, open) : LooseRun(td, device, seed, open);
             if (run == null || run.Count < 3) return null;
             var lay = new FallenLay();
             // the hanging part, a J: straight down from the insulator under its own weight, leaning a little to one side, then curving out
@@ -805,6 +809,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             lay.Tip = lay.TipNow = lay.Pts[lay.Pts.Count - 1];
             return lay;
         }
+
+        /// <summary>The least a loose run lies, as a share of the ground it covers: under it a draw reads as a rod laid there.</summary>
+        private const double LooseMin = 1.32;
+
+        /// <summary>How far up the screen past the higher of its touchdown and its device a drop's ground run may wander, cells.</summary>
+        public const double DropRise = 0.35;
 
         /// <summary>
         /// A loose cord lying on the ground from <paramref name="from"/> to <paramref name="to"/>, 1.5-1.9x as long as the distance plus a little:
@@ -847,7 +857,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 double ex = x - from.X, ez = z - from.Z, el = Math.Sqrt(ex * ex + ez * ez);
                 if (el < 1e-6) continue;
                 double sc = dist / el;
-                if (sc < 0.75 || sc > (attempt < 12 ? 1.35 : 1.8)) continue;
+                if (sc < 0.75 || sc > (attempt < 12 ? 1.35 : 1.8) || L * sc < LooseMin * dist) continue;
                 double rot = baseA - Math.Atan2(ez, ex), c = Math.Cos(rot), sn = Math.Sin(rot);
                 var o = new List<P2>(pts.Count);
                 bool ok = true;

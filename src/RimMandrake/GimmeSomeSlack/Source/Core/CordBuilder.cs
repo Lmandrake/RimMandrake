@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true };
+        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true };
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;

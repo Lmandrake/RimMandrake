@@ -521,7 +521,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             var basePt = new P2(20.5, 20.5);
             var top = new P2(20.6, 24.2);
-            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0, tight = 0;
+            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0, tight = 0, high = 0, highFree = 0, upLays = 0;
             double worst = 0, worstRatio = 99;
             string missed = "";
             for (int dir = 0; dir < 8; dir++)
@@ -547,6 +547,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     // the J: the top 35% of the hang comes down, it does not slant off toward the device
                     int k = Math.Max(1, (int)(l.GroundFrom * 0.35));
                     if (Math.Abs(l.Pts[k].X - top.X) <= 0.45 && top.Z - l.Pts[k].Z >= 0.6) hangs++;
+                    // the ground run stays down the screen: none of it behind the pole or under the wires, up-screen of its touchdown and device
+                    double Rise(FallenLay f) { double hi = Math.Max(f.Pts[f.GroundFrom].Z, dev.Z), r = 0; for (int i = f.GroundFrom; i < f.Pts.Count; i++) r = Math.Max(r, f.Pts[i].Z - hi); return r; }
+                    if (Rise(l) > AerialMath.DropRise + 1e-6) high++;
+                    FallenLay free = AerialMath.LayDrop(top, basePt, dev, 1000 + 37 * seed + dir, (x, z) => true, keepLow: false);
+                    if (dev.Z > basePt.Z + 0.5) { upLays++; if (free != null && Rise(free) > 0.6) highFree++; }
                 }
             C(laid == total, $"every drop on open ground lies as a cord ({laid}/{total}{missed})");
             C(ends == laid, $"each leaves its insulator and ends on its device ({ends}/{laid})");
@@ -555,6 +560,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // owner, 2026-11-07: "what they avoid are sharp curves unless they must": slow wide curves, not kinks and hairpins
             C(tight <= laid / 10, $"at most one ground run in ten bends tighter than a 0.4-cell radius ({tight}/{laid})");
             C(hangs == laid, $"each hangs straight down from its insulator before it curves out ({hangs}/{laid})");
+            C(high == 0, $"no ground run wanders more than {AerialMath.DropRise} cell up-screen of its touchdown and device, behind the pole and under the wires ({high}/{laid})");
+            C(highFree >= upLays / 4, $"can fail: let free, the ground run to a device up-screen of the mast rises over 0.6 cell past it in {highFree}/{upLays}");
             C(oldTaut > total / 2, $"can fail: the old hanging drop, one arc from insulator to device, is under 1.3x its reach in {oldTaut}/{total}");
             // a wall between the mast and the device (vanilla wires a lamp indoors to a mast outside): no ground drop, the caller hangs it
             FallenLay walled = AerialMath.LayDrop(top, basePt, new P2(24.5, 20.5), 7, (x, z) => x != 22);
