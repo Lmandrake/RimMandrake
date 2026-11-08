@@ -621,10 +621,10 @@ def cgroup_processes(props):
 # ---- the loop's files -----------------------------------------------------------------------------
 
 # A bar verdict is a line that STARTS with a bar id and then says its verdict: `- pit_reads_as_hole: false (why)` or the
-# table row `| pit_reads_as_hole | false | why |`. The id is snake_case (has an underscore), so a trap such as
+# table row `| pit_reads_as_hole | false | why |` (an id may carry a tag: `never_x (cannot)`). The id is snake_case (has an underscore), so a trap such as
 # "- Raid: ... canDig=false;" or prose that mentions "false" is not a bar. Same id twice: the later line wins.
 NO_VERDICT_LIST = "UNMEASURED (no verdict list)"
-COUNT_LINE = re.compile(r"^\s*(?:[-*]\s+|\|\s*)[`*]*([A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+)[`*]*\s*[:|—]\s*\**(true|false|unseen)\b\**(.*)$", re.I)
+COUNT_LINE = re.compile(r"^\s*(?:[-*]\s+|\|\s*)[`*]*([A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+)[`*]*(?:\s*\([a-z ]{1,12}\))?\s*[:|—]\s*\**(true|false|unseen)\b\**(.*)$", re.I)
 
 
 def parse_progress(text):

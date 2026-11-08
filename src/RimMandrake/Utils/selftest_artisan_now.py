@@ -447,8 +447,8 @@ def scenarios(mod):
         # bar-verdict lines: only `id: verdict` bullets and `| id | verdict |` rows count, never a trap that says "=false"
         trap = mod.parse_progress("## Traps\n- Raid: `lord_set_job args=canDig=false;`\n- never taut: false start\n- see below = false\n")
         check("trap_line_not_a_bar", sum(trap["counts"].values()) == 0)
-        bars = mod.parse_progress("## Count\n- bar_a: true\n- `bar_b`: **false** (why)\n| bar_c | unseen | note |\n- bar_a: false\n")
-        check("bar_lines_counted_once", dict(bars["counts"]) == {"false": 2, "unseen": 1})
+        bars = mod.parse_progress("## Count\n- bar_a: true\n- `bar_b`: **false** (why)\n| bar_c | unseen | note |\n- bar_a: false\n| bar_d (cannot) | true | tagged |\n")
+        check("bar_lines_counted_once", dict(bars["counts"]) == {"false": 2, "unseen": 1, "true": 1})
         check("trapped_loop_unmeasured", "UNMEASURED (no verdict list)" in glance(first_page, "trapped") and "0 / 1 / 0" not in glance(first_page, "trapped"))
     finally:
         shutil.rmtree(root, ignore_errors=True)
