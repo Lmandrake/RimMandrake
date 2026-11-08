@@ -19,8 +19,11 @@ namespace RimMandrake.FlowWorks
 	///
 	/// THE RULE: no melee swing, trash job or blocker-bash between two squares a cliff apart (the shooting rule's cliff, 2 m
 	/// shipped), either way. And a pawn HELD in a pit (RM_SuperdeepTrap.IsHeld: it cannot climb out) is no auto-target threat
-	/// to a searcher a cliff above it unless it has engaged a target in the last 360 ticks (vanilla's own window for roamers,
-	/// Pawn.ThreatDisabledBecauseNonAggressiveRoamer). So drafted defenders on the lip shoot the raiders still on their feet,
+	/// to a searcher a cliff above it unless it has ATTACKED in the last 360 ticks (a verb cast, mindState.lastAttackTargetTick;
+	/// vanilla's roamer window is the same 360). Not lastEngageTargetTick: JobGiver_AIFightEnemy.UpdateEnemyTarget stamps that
+	/// whenever it merely picks a target, so a trapped raider who kept choosing the archers above him and was refused every
+	/// swing stayed a live threat and drew all their arrows while his rescuer set a ladder 3 cells away unshot (s11, pass 7:
+	/// refused 72, ladder in at +3960, rescuer shot only at +4680). So drafted defenders on the lip shoot the raiders still on their feet,
 	/// a trapped archer who shoots up is shot back, and an explicit attack order on a captive still works.
 	/// </summary>
 	public static class RM_CliffMelee
@@ -129,7 +132,7 @@ namespace RimMandrake.FlowWorks
 	[RimMandrake.Shared.PatchFeature("Trapped raiders are not auto-targets", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "reachSeesWallsAndCliffs")]
 	public static class RM_Patch_ThreatDisabled_HeldInPit
 	{
-		/// <summary>Vanilla's window after an engagement in which a roamer stays a threat (Pawn.ThreatDisabledBecauseNonAggressiveRoamer).</summary>
+		/// <summary>How long after a real attack (a verb cast) a held pawn stays a threat: vanilla's roamer window (Pawn.ThreatDisabledBecauseNonAggressiveRoamer).</summary>
 		public const int EngageWindowTicks = 360;
 
 		[HarmonyPostfix]
@@ -139,7 +142,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			if (__instance.mindState != null && Find.TickManager.TicksGame < __instance.mindState.lastEngageTargetTick + EngageWindowTicks)
+			if (__instance.mindState != null && Find.TickManager.TicksGame < __instance.mindState.lastAttackTargetTick + EngageWindowTicks)
 			{
 				return;
 			}

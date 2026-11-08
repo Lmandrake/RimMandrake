@@ -60,11 +60,15 @@ def stage(B, ox, oz):
     dig(B, big, 4)
     side = [(ox + 9 + i, oz + 9 + j) for i in range(3) for j in range(3)]
     dig(B, side, 8)
+    side8 = [(ox + 13 + i, oz + 9 + j) for i in range(3) for j in range(3)]   # pass 7: 3x3 at 8 m beside the 4 m one
+    dig(B, side8, 16)
     B.step(5)
     for k, d in enumerate(DEPTHS):
         ids += put(B, (ox + 3 * k, oz + 1))      # the hole's north-west square
     ids += put(B, (ox + 2, oz + 8))               # big pit, by the near (south) lip
     ids += put(B, (ox + 4, oz + 12))              # big pit, against the far (north) wall
+    ids += put(B, (ox + 10, oz + 10))             # pass 7: 3x3 4 m, middle square (pit_occupant_below_floor)
+    ids += put(B, (ox + 14, oz + 11))             # pass 7: 3x3 8 m, north row (against the far wall)
     B.call("rimworld/play_for", durationMs=1500, speed="Normal")
     cen = B.call("jawa/pawn_census", ids=",".join(ids)) or {}
     log("pawns", [(p.get("name"), p.get("x"), p.get("z"), p.get("drafted")) for p in cen.get("pawns") or []])
@@ -83,6 +87,17 @@ def shot(B, name, rect, root):
     log("SHOT", name, r.get("path") or r.get("message"))
 
 
+def sinks(B, tag):
+    """The real drawn sink of every colonist in a hole (RM_PromotionProofs.ProofPawnSink, through the draw postfix)."""
+    cen = B.call("jawa/pawn_census", faction="player") or {}
+    for p in cen.get("pawns") or []:
+        r = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofPawnSink",
+                   args=p.get("id")) or {}
+        res = str(r.get("result") or r.get("message") or r.get("error"))
+        if "depth=0 " not in res:
+            log("SINK", tag, p.get("name"), res[:220])
+
+
 def set_look(B, look):
     for f, v in LOOKS[look].items():
         r = B.call("jawa/mod_settings_field", typeName=T, action="set", field=f, value=v) or {}
@@ -99,12 +114,13 @@ def shoot(B, ox, oz, tag, looks):
         # pass 6: the owner's play zoom is ~64 px a cell (CLAUDE.md), root 7.2 on Steve's ~920 px-high window
         shot(B, n + "_occ_r7", (ox - 1, oz - 1, 22, 4), 7.2)
         shot(B, n + "_empty_r7", (ox - 1, oz + 3, 22, 4), 7.2)
-        shot(B, n + "_big_r7", (ox - 1, oz + 7, 14, 7), 7.2)
+        shot(B, n + "_big_r7", (ox - 1, oz + 7, 18, 7), 7.2)
         shot(B, n + "_occ_r20", (ox - 1, oz - 1, 22, 4), 20)
         shot(B, n + "_empty_r20", (ox - 1, oz + 3, 22, 4), 20)
-        shot(B, n + "_big_r20", (ox - 1, oz + 7, 14, 7), 20)
+        shot(B, n + "_big_r20", (ox - 1, oz + 7, 18, 7), 20)
         shot(B, n + "_occ_r11", (ox - 1, oz - 1, 22, 4), 11)
-        shot(B, n + "_big_r11", (ox - 1, oz + 7, 14, 7), 11)
+        shot(B, n + "_big_r11", (ox - 1, oz + 7, 18, 7), 11)
+        sinks(B, n)
     set_look(B, 1)   # leave the default look on
 
 
