@@ -43,11 +43,20 @@
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsFireCast" />
     <order>1210</order>
   </GenStepDef>
-  <!-- The rare water, never none: a map the noise left with almost no standing water gets two or three ringed ponds
-       (GenStep_PyrelandsStandingWater). Right after Terrain (210), before roads, ruins, plants and animals. -->
+  <!-- The rare water, never none: a map the noise left with almost no standing water gets two or three ponds, and
+       every pond gets a ragged shore and a thin mud, rich-soil, ash ring (GenStep_PyrelandsStandingWater). Right after
+       Terrain (210), before roads, ruins, plants and animals. -->
   <GenStepDef>
     <defName>RM_FE_StandingWater</defName>
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsStandingWater" />
     <order>215</order>
+  </GenStepDef>
+  <!-- The green ring: rich soil within about 7 cells of water starts fully grassed, mostly Quickgrass
+       (GenStep_PyrelandsGreenRing, map s 2026-11-07 found it a third planted and orange). After Plants (900) and the
+       late ruin scorch (965), so neither the wild fill nor the scorch decides that ground after it. -->
+  <GenStepDef>
+    <defName>RM_FE_GreenRing</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsGreenRing" />
+    <order>970</order>
   </GenStepDef>
 </Defs>

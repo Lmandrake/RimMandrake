@@ -223,6 +223,119 @@ namespace RimMandrake.Pyrelands
         }
     }
 
+    /// <summary>One static drift field per map: a low-frequency noise giving every cell a target loose-ash thickness 0..3
+    /// (RM_FireEcoKernel.DriftTarget), shared by the fire's scar ash, ash fall and yesterday's fire. Conductor ruling 2026-11-07
+    /// on map s: "make the drifts fewer, of varied size and clustered (pooled against walls and along the burn edge), rather than
+    /// redrawing the grain again." Unsaved: rebuilt from the map's own uniqueID, so a reload puts every drift's ceiling back.</summary>
+    public static class PyrelandsDriftField
+    {
+        private sealed class Field
+        {
+            public int mapId;
+            public Verse.Noise.Perlin noise;
+            public RM_DriftCuts cuts;
+        }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, Field> fields =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Map, Field>();
+
+        // ~10-cell features: a clump is a few cells across with a core, and a wide bare stretch lies between clumps. The old
+        // ash-fall field (0.045) banked over 20-cell sweeps, wider than a burn scar's own width.
+        private const double Frequency = 0.1;
+        // A 48x48 lattice of samples sets the cuts: enough for stable quantiles, never a scan of every cell.
+        private const int SampleSide = 48;
+
+        private static ThingDef ashDef;
+        private static bool ashResolved;
+
+        public static ThingDef AshDef
+        {
+            get
+            {
+                if (!ashResolved)
+                {
+                    ashResolved = true;
+                    ashDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
+                }
+                return ashDef;
+            }
+        }
+
+        private static Field For(Map map)
+        {
+            if (fields.TryGetValue(map, out Field f) && f.mapId == map.uniqueID) return f;
+            if (f != null) fields.Remove(map);
+            f = new Field { mapId = map.uniqueID };
+            f.noise = new Verse.Noise.Perlin(Frequency, 2.0, 0.5, 3, map.uniqueID * 7919 + 1543, Verse.Noise.QualityMode.Medium);
+            var samples = new float[SampleSide * SampleSide];
+            for (int i = 0; i < SampleSide; i++)
+            {
+                for (int j = 0; j < SampleSide; j++)
+                {
+                    double x = (i + 0.5) * map.Size.x / SampleSide;
+                    double z = (j + 0.5) * map.Size.z / SampleSide;
+                    samples[i * SampleSide + j] = (float)f.noise.GetValue(x, 0.0, z);
+                }
+            }
+            f.cuts = RM_FireEcoKernel.DriftCuts(samples);
+            fields.Add(map, f);
+            return f;
+        }
+
+        /// <summary>True when a cardinal neighbour holds an edifice (rock, a wall, a ruin): the lee ash banks against.</summary>
+        public static bool Lee(Map map, IntVec3 c)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[k];
+                if (n.InBounds(map) && n.GetEdifice(map) != null) return true;
+            }
+            return false;
+        }
+
+        /// <summary>True when a cardinal neighbour still holds standing grass that is not burning: the scar's rim.</summary>
+        public static bool BurnEdge(Map map, IntVec3 c)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[k];
+                if (!n.InBounds(map)) continue;
+                Plant p = n.GetPlant(map);
+                if (p != null && !p.def.plant.IsTree && !n.ContainsStaticFire(map)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>The cell's target thickness 0..3: the field's height, plus the lee, plus the burn edge when it may count.</summary>
+        public static int Target(Map map, IntVec3 c, bool countEdge)
+        {
+            Field f = For(map);
+            float n = (float)f.noise.GetValue(c.x, 0.0, c.z);
+            return RM_FireEcoKernel.DriftTarget(n, f.cuts, Lee(map, c), countEdge && BurnEdge(map, c));
+        }
+
+        /// <summary>The current loose-ash thickness on a cell, 0 for none.</summary>
+        public static int Thickness(Map map, IntVec3 c)
+        {
+            ThingDef def = AshDef;
+            return def != null && c.GetFirstThing(map, def) is Filth f ? f.thickness : 0;
+        }
+
+        /// <summary>Lays a burned cell's whole scar ash at once (yesterday's fire, GenStep_PyrelandsYesterdaysFire): its drift-field
+        /// target with the lee and the burn edge, never spilling, never thinning a deeper drift already there.</summary>
+        public static void LayScarAsh(Map map, IntVec3 c)
+        {
+            ThingDef def = AshDef;
+            if (def == null || map == null || !c.InBounds(map)) return;
+            int have = Thickness(map, c);
+            int target = Target(map, c, true);
+            if (RM_FireEcoKernel.ScarAshMayThicken(have, target))
+            {
+                FilthMaker.TryMakeFilth(c, map, def, target - have, FilthSourceFlags.None, false);
+            }
+        }
+    }
+
     // Postfix on the PROTECTED instance Fire.TickInterval(int delta). Runs
     // once per live Fire thing per tick-interval batch — cheap, low-chance
     // rolls only, never per-frame. `delta` is the batch's tick-interval size
@@ -292,21 +405,23 @@ namespace RimMandrake.Pyrelands
                         RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null, scorchable)) return;
 
                 // Loose ash dusting: the scar's ash (vanilla's Filth_Ash is kept off natural ground here, Patch_FilthMaker_NoAshOnAsh).
-                // A fire leaves at most ONE drift on its own cell and never spills: rolled per tick, a long burn filled its cell to
-                // the cap and FilthMaker then propagated the overflow to the neighbours, so 6,335 of 6,924 burned cells sat at x4 and
-                // the scar read as one pale sheet (map n, 2026-11-07). Only ash fall heaps drifts deeper.
+                // A fire heaps its own cell up to that cell's drift-field target and never spills: rolled per tick, a long burn filled
+                // its cell to the cap and FilthMaker then propagated the overflow to the neighbours, so 6,335 of 6,924 burned cells sat
+                // at x4 and the scar read as one pale sheet (map n, 2026-11-07). Only ash fall heaps drifts deeper.
                 if (RM_PyrelandsSettings.ashDustingEnabled)
                 {
-                    ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                    // Only about a third of a scar's cells may hold a drift, fixed per cell so a long burn cannot re-roll its way in:
-                    // with a drift on 92% of cells the scar read as pale camouflage blotches, not char with ash on it (map p,
-                    // 2026-11-07, p_scar_d15_64.png).
-                    if (ashFilth != null && RM_FireEcoKernel.ScarAshCell(Rand.ValueSeeded(Gen.HashCombineInt(pos.x * 7919 + pos.z, map.uniqueID + 1543)),
-                            RM_FireEcoKernel.ScarAshShare)
-                        && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta))
-                        && pos.GetFirstThing(map, ashFilth) == null)
+                    ThingDef ashFilth = PyrelandsDriftField.AshDef;
+                    // The target is fixed per cell (PyrelandsDriftField), so a long burn cannot re-roll its way in or past it. A
+                    // hashed third of the cells at x1 read as polka dots (map s, 2026-11-07): every drift alone and one size. Now most
+                    // cells take none and the rest lie in clumps with x2-x3 cores, pooled in the lee and along the rim. The rim counts
+                    // only once the fire has burned a while: early on, the grass ahead of the front has not caught yet.
+                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta)))
                     {
-                        FilthMaker.TryMakeFilth(pos, map, ashFilth, 1, FilthSourceFlags.None, false);
+                        int target = PyrelandsDriftField.Target(map, pos, __instance.TicksSinceSpawn >= RM_FireEcoKernel.ScarEdgeSettleTicks);
+                        if (RM_FireEcoKernel.ScarAshMayThicken(PyrelandsDriftField.Thickness(map, pos), target))
+                        {
+                            FilthMaker.TryMakeFilth(pos, map, ashFilth, 1, FilthSourceFlags.None, false);
+                        }
                     }
                 }
 
@@ -455,14 +570,18 @@ namespace RimMandrake.Pyrelands
         // path has to be nearly free.
         private const int CheckIntervalTicks = 250;
 
-        // One deposit attempt per this many map cells per batch. A 250x250
-        // map (62,500 cells) gets ~15 per batch, ~60 per in-game hour —
-        // visible drifts over an afternoon, not a filth explosion.
+        // Cross-biome ambient drift (no weather behind it, so it never stops): one candidate per this many cells per batch, the
+        // old sprinkle rate, ~15 on a 250x250 map.
         private const float CellsPerDepositAttempt = 4000f;
+
+        // Under ash fall or cinderfall: one new-cell candidate AND one bank-growth pick per this many cells per batch, ~156 each
+        // on a 250x250 map. The old sprinkle (one per 4,000 cells, mostly landing under grass) left a six-hour fall invisible on
+        // map s (sky_s_1ashfall_b.png, 2026-11-07). Each candidate is a handful of cell lookups and one noise read; no batch
+        // scans the map.
+        private const float CellsPerFallCandidate = 400f;
 
         private const float CinderfallRateFactor = 0.45f;
 
-        private static ThingDef ashFilthDef;
         private static WeatherDef ashFallWeather;
         private static WeatherDef cinderfallWeather;
         private static bool defsResolved;
@@ -472,30 +591,39 @@ namespace RimMandrake.Pyrelands
         {
         }
 
-        // Unsaved: rebuilt from the map's own id, so the same hollows fill after a reload.
-        private Verse.Noise.Perlin driftField;
-
-        /// <summary>0..1, how readily falling ash settles here: the drift field, or 1 in the lee of rock or a wall.</summary>
-        private float DriftWeight(IntVec3 c)
-        {
-            if (driftField == null)
-            {
-                driftField = new Verse.Noise.Perlin(0.045, 2.0, 0.5, 3, map.uniqueID * 7919 + 1543, Verse.Noise.QualityMode.Medium);
-            }
-            for (int k = 0; k < 4; k++)
-            {
-                IntVec3 n = c + GenAdj.CardinalDirections[k];
-                if (n.InBounds(map) && n.GetEdifice(map) != null) return 1f;
-            }
-            return RM_FireEcoKernel.DriftAccept((float)driftField.GetValue(c.x, 0.0, c.z));
-        }
-
         private static void ResolveDefs()
         {
             defsResolved = true;
-            ashFilthDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
             ashFallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_AshFall");
             cinderfallWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_FE_Weather_Cinderfall");
+        }
+
+        /// <summary>One ash-fall deposit on a cell: lands under open sky on dry ground, kept by the drift field's chance for that
+        /// cell (grass rarely, a hollow or a lee on bare ground always), heaped no deeper than the cell's ash-fall ceiling.
+        /// Never spills to a neighbour.</summary>
+        private bool TryDeposit(IntVec3 c, ThingDef ashDef)
+        {
+            if (!c.InBounds(map) || map.roofGrid.Roofed(c) || c.GetTerrain(map).IsWater)
+            {
+                return false;
+            }
+            Plant plant = c.GetPlant(map);
+            bool underGrass = plant != null && !plant.def.plant.IsTree;
+            // Grass keeps the odd drift whatever the field says, so roll it before the noise read.
+            if (underGrass && !Rand.Chance(RM_FireEcoKernel.AshFallGrassAccept))
+            {
+                return false;
+            }
+            int target = PyrelandsDriftField.Target(map, c, false);
+            if (PyrelandsDriftField.Thickness(map, c) >= RM_FireEcoKernel.AshFallCeiling(target, ashDef.filth.maxThickness))
+            {
+                return false;
+            }
+            if (!underGrass && !Rand.Chance(RM_FireEcoKernel.AshFallAccept(target, false)))
+            {
+                return false;
+            }
+            return FilthMaker.TryMakeFilth(c, map, ashDef, 1, FilthSourceFlags.None, false);
         }
 
         public override void MapComponentTick()
@@ -512,20 +640,23 @@ namespace RimMandrake.Pyrelands
             {
                 ResolveDefs();
             }
-            if (ashFilthDef == null)
+            ThingDef ashDef = PyrelandsDriftField.AshDef;
+            if (ashDef == null)
             {
                 return;
             }
 
             WeatherManager wm = map.weatherManager;
             WeatherDef current = (wm != null) ? wm.curWeather : null;
+            bool ashFall = current != null && current == ashFallWeather;
+            bool cinderfall = current != null && current == cinderfallWeather;
 
             bool isNativeBiome = map.Biome != null && map.Biome.defName == "RM_Pyrelands";
 
             // Cross-biome opt-in (MOD_OPTIONS_RETROFIT_1 §6a): an opted-in non-Pyrelands biome gets ambient ash drift regardless
             // of its own current weather, scaled by crossBiomeCoverage. Off by default; never fires unless the owner names this
             // biome or ticks "every biome". A rate of zero (coverage slider at 0) deposits nothing.
-            float rate = RM_FireEcoKernel.AshRate(current != null && current == ashFallWeather, current != null && current == cinderfallWeather,
+            float rate = RM_FireEcoKernel.AshRate(ashFall, cinderfall,
                 CinderfallRateFactor, isNativeBiome, !isNativeBiome && RM_PyrelandsSettings.AppliesToBiome(map.Biome),
                 RM_PyrelandsSettings.crossBiomeCoverage, RM_PyrelandsSettings.ashfallRateMultiplier);
             if (rate < 0f)
@@ -533,26 +664,43 @@ namespace RimMandrake.Pyrelands
                 return;
             }
 
-            int attempts = RM_FireEcoKernel.AshAttempts(map.Area, CellsPerDepositAttempt, rate);
+            bool falling = ashFall || cinderfall;
+            int attempts = RM_FireEcoKernel.AshAttempts(map.Area, falling ? CellsPerFallCandidate : CellsPerDepositAttempt, rate);
 
             try
             {
-                // Drifts, not a sprinkle: a uniformly random cell gave an even scatter that never banked. Each candidate is kept
-                // with the map's drift-field weight (a static low-frequency noise, so ash banks in the same hollows every fall) or
-                // always beside rock or a wall (the lee). Twice the candidates keep the total near the old rate.
-                for (int i = 0; i < attempts * 2; i++)
+                // New drifts: random cells, kept where the ash shows and banks (bare ground, the field's hollows, the lee).
+                List<Thing> drifts = map.listerThings.ThingsOfDef(ashDef);
+                if (RM_FireEcoKernel.AshFallMaySpread(drifts.Count, map.Area, RM_FireEcoKernel.AshFallCoverCap))
                 {
-                    IntVec3 c = CellFinder.RandomCell(map);
-                    // Under a roof the ash never lands; on water it sinks.
-                    // FilthMaker itself rejects unwalkable cells, and
-                    // shouldPropagate:false stops it hunting an 8-way
-                    // neighbour every time it hits a wall.
-                    if (map.roofGrid.Roofed(c) || c.GetTerrain(map).IsWater)
+                    for (int i = 0; i < attempts; i++)
+                    {
+                        TryDeposit(CellFinder.RandomCell(map), ashDef);
+                    }
+                }
+                if (!falling)
+                {
+                    return;
+                }
+                // Banks grow: a drift already lying (laid by this fall, an earlier one, or a fire's scar) heaps toward its
+                // ceiling, and once there spills its growth onto a neighbour the field accepts, so a hollow fills out to its
+                // edges hour by hour while the plain between banks stays thin.
+                for (int i = 0; i < attempts; i++)
+                {
+                    int count = drifts.Count;
+                    if (count == 0)
+                    {
+                        break;
+                    }
+                    IntVec3 at = drifts[Rand.Range(0, count)].Position;
+                    if (TryDeposit(at, ashDef))
                     {
                         continue;
                     }
-                    if (!Rand.Chance(DriftWeight(c))) continue;
-                    FilthMaker.TryMakeFilth(c, map, ashFilthDef, 1, FilthSourceFlags.None, false);
+                    if (RM_FireEcoKernel.AshFallMaySpread(count, map.Area, RM_FireEcoKernel.AshFallCoverCap))
+                    {
+                        TryDeposit(at + GenAdj.AdjacentCells[Rand.Range(0, 8)], ashDef);
+                    }
                 }
             }
             catch (Exception e)

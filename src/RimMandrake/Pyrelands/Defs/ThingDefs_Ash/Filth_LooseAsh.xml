@@ -50,13 +50,19 @@
       so a thin scatter shows the dark ground between them and a deep drift reads as heaped ash, not haze. Tinted down to a mid-light
       grey: at full white a burned cell at x4 read as snow.
       Same day, at play zoom on map p: one 1.5-cell drift on 92% of a scar's cells still read as pale camouflage blotches. A fire
-      now leaves a drift on about a third of its cells (FireEcologyHook, ScarAshShare), drawn at 1.25 and a little darker, so the
+      now leaves a drift on about a third of its cells (FireEcologyHook, the since-retired ScarAshShare), drawn at 1.25 and a little darker, so the
       scar reads as char with ash lying on it.
       Still read as "flat, cold blue-grey splats with hard edges... stickers" (judge on map q, owner's Conductor at 16:40). Redrawn
       (src/RimMandrake/Pyrelands/ash_drift_gen.py, seed 41): each drift is one organic powder sheet, thin at the margin where it
       ends in a crisp, ragged edge of coarse grain with stray specks past it (fine grain vanished at play zoom and the first
       cut read as soft smoke puffs), heaped in places, warm pale grey. Drawn at 1.6 so neighbouring
       drifts overlap into patches instead of tiling as separate stickers.
+      Then on map s the scar read as polka dots: a hashed third of the cells, each at x1, every drift alone and one size. Conductor
+      ruling the same day: "make the drifts fewer, of varied size and clustered (pooled against walls and along the burn edge),
+      rather than redrawing the grain again." The art stays; WHERE it lies changed. A static per-map drift field
+      (FireEcologyHook.cs, PyrelandsDriftField) gives each cell a target of 0-3: about a fifth of a scar holds ash, in clumps
+      whose x2-x3 cores are several sprites deep (Graphic_Cluster draws one per point of thickness), with pools in the lee and
+      along the rim and wide bare char between. Ash fall uses the same field and heaps one deeper than it (maxThickness 4).
     -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>

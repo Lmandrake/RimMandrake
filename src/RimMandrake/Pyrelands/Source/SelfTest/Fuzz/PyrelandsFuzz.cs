@@ -877,6 +877,45 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround("RM_FE") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
                 Check(RM_FireEcoKernel.DustChance(0.02f, 15) == 0.02f * 15 && RM_FireEcoKernel.UnderFruitCap(39, 40) && !RM_FireEcoKernel.UnderFruitCap(40, 40), "dust chance / fruit cap");
+
+                // The drift field (map s polka dots, 2026-11-07): about a fifth of a scar holds ash whatever the noise's spread,
+                // with ~10% lee/rim cells, monotonic in the noise, a bonus never lowers it, never past 3.
+                int ns = 400 + r.Next(2000), shape = r.Next(3);
+                float[] samples = new float[ns];
+                for (int i = 0; i < ns; i++)
+                {
+                    double u = r.NextDouble();
+                    samples[i] = shape == 0 ? (float)(u * 2 - 1) : shape == 1 ? (float)((r.NextDouble() + u + r.NextDouble() - 1.5) / 1.5) : (float)(u * u * u);
+                }
+                float[] kept = (float[])samples.Clone();
+                RM_DriftCuts cuts = RM_FireEcoKernel.DriftCuts(samples);
+                Check(cuts.Pool <= cuts.Fringe && cuts.Fringe <= cuts.Bank && cuts.Bank <= cuts.Core, "drift cuts out of order");
+                int holding = 0;
+                for (int i = 0; i < ns; i++)
+                {
+                    bool lee = r.Next(20) == 0, edge = r.Next(20) == 0;
+                    int t0 = RM_FireEcoKernel.DriftTarget(kept[i], cuts, false, false);
+                    int tb = RM_FireEcoKernel.DriftTarget(kept[i], cuts, lee, edge);
+                    Check(t0 >= 0 && tb >= t0 && tb <= RM_FireEcoKernel.DriftTargetMax, "drift target out of range or lowered by a bonus");
+                    Check(RM_FireEcoKernel.DriftTarget(kept[i] + 0.05f, cuts, false, false) >= t0, "drift target not monotonic in noise");
+                    if (tb > 0) holding++;
+                }
+                float share = (float)holding / ns;
+                Check(share >= 0.15f && share <= 0.30f, "scar ash share " + share + " outside 15-30% (shape " + shape + ")");
+                RM_DriftCuts none = RM_FireEcoKernel.DriftCuts(new float[0]);
+                Check(RM_FireEcoKernel.DriftTarget(1e6f, none, true, true) == 0, "an empty field laid ash");
+                int have = r.Next(5), wantAsh = r.Next(4);
+                Check(RM_FireEcoKernel.ScarAshMayThicken(have, wantAsh) == (have < wantAsh), "scar ash thickens past its target");
+
+                // Ash fall: grass gets the odd drift, hollows and the lee always, bare ground sometimes; heaps one past the
+                // field's target up to the def cap; new drifts stop at the cover cap.
+                int tgt = r.Next(4), max = 1 + r.Next(5);
+                Check(RM_FireEcoKernel.AshFallAccept(tgt, true) == RM_FireEcoKernel.AshFallGrassAccept, "ash fall on grass not the odd drift");
+                Check(RM_FireEcoKernel.AshFallAccept(tgt, false) == (tgt >= 1 ? 1f : RM_FireEcoKernel.AshFallBareAccept), "ash fall bare/hollow accept");
+                int ceil = RM_FireEcoKernel.AshFallCeiling(tgt, max);
+                Check(ceil >= 1 && ceil <= max && ceil == Math.Min(max, Math.Max(1, tgt + 1)), "ash fall ceiling");
+                int areaA = 1 + r.Next(90000), drifts = r.Next(20000);
+                Check(RM_FireEcoKernel.AshFallMaySpread(drifts, areaA, RM_FireEcoKernel.AshFallCoverCap) == (drifts < areaA * RM_FireEcoKernel.AshFallCoverCap), "ash fall cover cap");
             });
         }
 

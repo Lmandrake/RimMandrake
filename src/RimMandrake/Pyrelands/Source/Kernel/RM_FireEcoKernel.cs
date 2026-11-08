@@ -8,6 +8,12 @@ namespace RimMandrake.Pyrelands
     // attempt count, the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
     // same expressions; the offline fuzz drives them.
 
+    /// <summary>A map's drift-field noise cut points (RM_FireEcoKernel.DriftCuts): pool, fringe (1), bank (2), core (3).</summary>
+    public struct RM_DriftCuts
+    {
+        public float Pool, Fringe, Bank, Core;
+    }
+
     public static class RM_FireEcoKernel
     {
         /// <summary>BiomeWorker_Pyrelands.GetScore: -100 when generation is off or the tile is water, 0 outside the climate band (rainfall is
@@ -264,13 +270,69 @@ namespace RimMandrake.Pyrelands
             return perTick * delta;
         }
 
-        /// <summary>The share of a burn scar's cells that may hold a loose-ash drift.</summary>
-        public const float ScarAshShare = 0.33f;
+        // ── The drift field (PyrelandsDriftField): one static low-frequency noise per map gives every cell a target ash
+        // thickness 0..3. Conductor ruling 2026-11-07 on map s: "make the drifts fewer, of varied size and clustered (pooled
+        // against walls and along the burn edge), rather than redrawing the grain again." A hashed third of a scar's cells at
+        // thickness 1 read as polka dots: every drift alone, all one size, evenly spread. The cuts are quantiles of the map's
+        // own noise, so the shares below hold whatever the noise's spread turns out to be.
 
-        /// <summary>Whether a scar cell may hold a drift, from its fixed per-cell roll (0..1).</summary>
-        public static bool ScarAshCell(float cellRoll, float share)
+        /// <summary>Above this share of the field a lee or burn-edge cell pools a drift; below it the bonus is dropped, so a long
+        /// wall or a scar's rim holds pools and gaps instead of an outline.</summary>
+        public const float DriftPoolQuantile = 0.5f;
+        /// <summary>The top fifth of the field holds a drift at all: with the lee and edge pools that is ~20-25% of a scar.</summary>
+        public const float DriftFringeQuantile = 0.8f;
+        /// <summary>Banks (thickness 2) and cores (3) sit inside the fringes, on the field's highest ground.</summary>
+        public const float DriftBankQuantile = 0.91f;
+        public const float DriftCoreQuantile = 0.965f;
+        /// <summary>The deepest a scar or drift-field target goes; ash fall may heap one more (AshFallCeiling).</summary>
+        public const int DriftTargetMax = 3;
+        /// <summary>A fire must have burned this long before its cell counts the burn edge: early in a cell's fire the grass ahead
+        /// of the front has not caught yet, and every interior cell would read as rim.</summary>
+        public const int ScarEdgeSettleTicks = 600;
+
+        /// <summary>Quantile cut points of a map's drift-field noise; sorts the samples in place.</summary>
+        public static RM_DriftCuts DriftCuts(float[] samples)
         {
-            return cellRoll < share;
+            var cuts = new RM_DriftCuts();
+            if (samples == null || samples.Length == 0)
+            {
+                cuts.Pool = cuts.Fringe = cuts.Bank = cuts.Core = float.MaxValue;
+                return cuts;
+            }
+            Array.Sort(samples);
+            cuts.Pool = Quantile(samples, DriftPoolQuantile);
+            cuts.Fringe = Quantile(samples, DriftFringeQuantile);
+            cuts.Bank = Quantile(samples, DriftBankQuantile);
+            cuts.Core = Quantile(samples, DriftCoreQuantile);
+            return cuts;
+        }
+
+        private static float Quantile(float[] sorted, float q)
+        {
+            int i = (int)(q * (sorted.Length - 1));
+            if (i < 0) i = 0;
+            if (i >= sorted.Length) i = sorted.Length - 1;
+            return sorted[i];
+        }
+
+        /// <summary>A cell's target ash thickness 0..3: the field's height, plus one in the lee of an edifice and one at a burn edge
+        /// where the field is at least middling.</summary>
+        public static int DriftTarget(float noise, RM_DriftCuts cuts, bool lee, bool burnEdge)
+        {
+            int t = noise >= cuts.Core ? 3 : noise >= cuts.Bank ? 2 : noise >= cuts.Fringe ? 1 : 0;
+            if (noise >= cuts.Pool)
+            {
+                if (lee) t++;
+                if (burnEdge) t++;
+            }
+            return t > DriftTargetMax ? DriftTargetMax : t;
+        }
+
+        /// <summary>A fire may thicken its cell's drift only while the drift is below the cell's target: a long burn can never
+        /// re-roll its way past it.</summary>
+        public static bool ScarAshMayThicken(int thickness, int target)
+        {
+            return thickness < target;
         }
 
         public static bool UnderFruitCap(int existing, int cap)
@@ -303,18 +365,41 @@ namespace RimMandrake.Pyrelands
             return rate * rateMultiplier;
         }
 
-        /// <summary>Deposit attempts this batch: map area per attempt scaled by the rate; a rate of zero deposits nothing, any positive
-        /// rate deposits at least one.</summary>
-        /// <summary>Ash fall's keep chance for a cell from its drift-field noise (about -1..1): the low half takes little, the
-        /// high bands take nearly all, so drifts bank instead of sprinkling.</summary>
-        public static float DriftAccept(float noise)
+        // ── Ash fall (MapComponent_PyrelandsAshfall). Owner's Conductor 2026-11-07, sky_s_1ashfall_b.png on map s: a six-hour fall
+        // left nothing visible. It sprinkled single drifts on uniformly random cells, and on a grass map nearly all of them lay
+        // under the grass blades, which draw over filth. Now it lands where it shows (bare ground: scars, rock flats, paths,
+        // floors), fills the drift field's hollows and the lee of rock and walls, and heaps the drifts it already laid.
+
+        /// <summary>Keep chance for falling ash on a cell under standing grass: the odd drift, since the grass hides it anyway.</summary>
+        public const float AshFallGrassAccept = 0.03f;
+        /// <summary>Keep chance on bare ground the drift field gives nothing: a light dusting between the banks.</summary>
+        public const float AshFallBareAccept = 0.12f;
+        /// <summary>New drifts stop once this share of the map holds one; the ones already laid keep heaping to their ceiling.</summary>
+        public const float AshFallCoverCap = 0.15f;
+
+        /// <summary>Ash fall's keep chance for a cell: grass takes the odd drift, a hollow or a lee on bare ground takes all.</summary>
+        public static float AshFallAccept(int target, bool underGrass)
         {
-            float w = 0.5f + noise * 1.1f;
-            if (w < 0.04f) return 0.04f;
-            if (w > 1f) return 1f;
-            return w * w;
+            if (underGrass) return AshFallGrassAccept;
+            return target >= 1 ? 1f : AshFallBareAccept;
         }
 
+        /// <summary>How deep ash fall heaps a cell: one past its drift-field target, at least 1, at most the filth's own cap.</summary>
+        public static int AshFallCeiling(int target, int maxThickness)
+        {
+            int c = target + 1;
+            if (c > maxThickness) c = maxThickness;
+            return c < 1 ? 1 : c;
+        }
+
+        /// <summary>Whether ash fall may start a new drift (a fresh cell or a bank's spread) with this many already on the map.</summary>
+        public static bool AshFallMaySpread(int drifts, int area, float capShare)
+        {
+            return drifts < area * capShare;
+        }
+
+        /// <summary>Deposit attempts this batch: map area per attempt scaled by the rate; a rate of zero deposits nothing, any positive
+        /// rate deposits at least one.</summary>
         public static int AshAttempts(int area, float cellsPerAttempt, float rate)
         {
             if (rate <= 0f)
