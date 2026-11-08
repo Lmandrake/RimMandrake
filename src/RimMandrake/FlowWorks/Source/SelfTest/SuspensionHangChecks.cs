@@ -1,6 +1,7 @@
 // SUSPENSION_BRIDGE_READS_HUNG (Artisan pass 4, 2026-11-08): the numbers of the hung look (RM_SuspensionHangMath.cs).
 // The bar: suspension_bridge_reads_hung (a deck hung between anchors over a dug hole, not a floor tile or a pier bridge).
 using System;
+using System.Collections.Generic;
 using RimMandrake.FlowWorks;
 
 namespace RimMandrake.FlowWorks.SelfTest
@@ -13,6 +14,30 @@ namespace RimMandrake.FlowWorks.SelfTest
         }
 
         private static readonly SuspensionTier[] Tiers = { SuspensionTier.Rope, SuspensionTier.Timber, SuspensionTier.Steel, SuspensionTier.Heavy };
+
+        /// <summary>No towers, one mid tower, and two towers where the span is long enough (tower indices lie in 1..len - 2).</summary>
+        private static IEnumerable<List<int>> TowerSets(int len)
+        {
+            yield return new List<int>();
+            if (len >= 5)
+            {
+                yield return new List<int> { len / 2 };
+            }
+            if (len >= 9)
+            {
+                yield return new List<int> { 3, len - 4 };
+            }
+        }
+
+        private static float[] SupportsOf(List<int> idx, int len)
+        {
+            float[] sup = new float[idx.Count];
+            for (int k = 0; k < idx.Count; k++)
+            {
+                sup[k] = RM_SuspensionHangMath.SupportAlong(idx[k], len);
+            }
+            return sup;
+        }
 
         public static void Run(Action<string, Action> Case)
         {
@@ -131,6 +156,137 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SuspensionHangMath.HungSagAt(4f, sup, mids, 3) == 0f, "hung sag at a tower");
                 Assert(Math.Abs(RM_SuspensionHangMath.HungSagAt(6.75f, sup, mids, 3) - 0.5f) < 1e-4f, "second segment's own mid sag");
                 Assert(RM_SuspensionHangMath.HungSagAt(10f, sup, mids, 3) == 0f, "hung sag over the far anchor");
+            });
+            // the anchors at the two ends: the first and last supports sit on the anchors' deck-facing edges, and their posts are
+            // printed by the first and last deck squares, standing on those squares against the anchors
+            Case("Hang_supports_at_anchor_ends_posts_on_end_squares", () =>
+            {
+                int seen = 0;
+                for (int len = 3; len <= 22; len++)
+                {
+                    foreach (List<int> towers in TowerSets(len))
+                    {
+                        List<int> idx = RM_SuspensionMath.Supports(len, towers);
+                        int n = idx.Count;
+                        Assert(n == 2 + towers.Count, "len " + len + ": " + n + " supports for " + towers.Count + " tower(s)");
+                        float[] sup = SupportsOf(idx, len);
+                        Assert(sup[0] == 0.5f && sup[n - 1] == len - 1.5f, "len " + len + ": ends at " + sup[0] + " / " + sup[n - 1]);
+                        for (int k = 0; k < n; k++)
+                        {
+                            if (k > 0)
+                            {
+                                Assert(sup[k] > sup[k - 1], "len " + len + ": supports not increasing at " + k);
+                            }
+                            int owner = RM_SuspensionHangMath.PostOwner(sup[k], len);
+                            int want = k == 0 ? 1 : k == n - 1 ? len - 2 : idx[k];
+                            Assert(owner == want, "len " + len + " support " + k + ": post printed by square " + owner + ", want " + want);
+                            foreach (SuspensionTier t in Tiers)
+                            {
+                                float w = RM_SuspensionHangMath.PostWidth(t);
+                                float foot = RM_SuspensionHangMath.PostFootAlong(k, n, sup[k], w);
+                                Assert(foot - 0.5f * w >= owner - 0.5f - 1e-5f && foot + 0.5f * w <= owner + 0.5f + 1e-5f,
+                                    "len " + len + " support " + k + " " + t + ": post at " + foot + " off its square " + owner);
+                                Assert(foot >= 0.5f && foot <= len - 1.5f, "len " + len + " support " + k + ": post off the deck");
+                                if (k == 0 || k == n - 1)
+                                {
+                                    Assert(Math.Abs(foot - sup[k]) <= 0.5f * w + 1e-5f, "len " + len + ": anchor post " + foot + " not against its anchor " + sup[k]);
+                                }
+                                seen++;
+                            }
+                        }
+                    }
+                }
+                Assert(seen > 500, "instrument: checked " + seen + " posts");
+            });
+            // the hung look: from each support the deck drops steadily to its lowest mid-segment and rises back, in every look
+            Case("Hang_sag_rises_monotonic_to_mid_span", () =>
+            {
+                int seen = 0;
+                int[] looks = { RM_SuspensionHangMath.TreatmentSuspension, RM_SuspensionHangMath.TreatmentRopeWalk, RM_SuspensionHangMath.TreatmentCableStayed };
+                foreach (SuspensionTier t in Tiers)
+                {
+                    foreach (int look in looks)
+                    {
+                        for (int len = 3; len <= 22; len++)
+                        {
+                            foreach (List<int> towers in TowerSets(len))
+                            {
+                                float[] sup = SupportsOf(RM_SuspensionMath.Supports(len, towers), len);
+                                int n = sup.Length;
+                                float[] mids = new float[n];
+                                for (int k = 0; k + 1 < n; k++)
+                                {
+                                    mids[k] = RM_SuspensionHangMath.TreatedMidSag(sup[k + 1] - sup[k], t, look);
+                                }
+                                for (int k = 0; k + 1 < n; k++)
+                                {
+                                    float a0 = sup[k], a1 = sup[k + 1], mid = 0.5f * (a0 + a1);
+                                    string at = t + " look " + look + " len " + len + " seg " + k;
+                                    Assert(mids[k] > 0f, at + ": no sag");
+                                    Assert(RM_SuspensionHangMath.HungSagAt(a0, sup, mids, n) == 0f && RM_SuspensionHangMath.HungSagAt(a1, sup, mids, n) == 0f, at + ": sag at a support");
+                                    Assert(Math.Abs(RM_SuspensionHangMath.HungSagAt(mid, sup, mids, n) - mids[k]) < 1e-4f, at + ": mid-span is not the lowest point " + mids[k]);
+                                    const int steps = 64;
+                                    float prev = 0f;
+                                    for (int j = 1; j <= steps; j++)
+                                    {
+                                        float a = a0 + (a1 - a0) * j / steps, sag = RM_SuspensionHangMath.HungSagAt(a, sup, mids, n);
+                                        Assert(sag >= 0f && sag <= mids[k] + 1e-5f, at + ": sag " + sag + " outside 0.." + mids[k]);
+                                        bool before = a <= mid + 1e-5f;
+                                        bool afterMid = a - (a1 - a0) / steps >= mid - 1e-5f;
+                                        if (before)
+                                        {
+                                            Assert(sag >= prev - 1e-6f, at + ": sag falls back before mid-span at " + a);
+                                        }
+                                        else if (afterMid)
+                                        {
+                                            Assert(sag <= prev + 1e-6f, at + ": sag deepens past mid-span at " + a);
+                                        }
+                                        prev = sag;
+                                        seen++;
+                                    }
+                                }
+                                Assert(RM_SuspensionHangMath.HungSagAt(0f, sup, mids, n) == 0f && RM_SuspensionHangMath.HungSagAt(len - 1f, sup, mids, n) == 0f, "len " + len + ": the anchors themselves sag");
+                            }
+                        }
+                    }
+                }
+                Assert(seen > 10000, "instrument: sampled " + seen + " points");
+            });
+            // PAWN_WALKS_UNDER_DECK draw order: the redrawn deck (and its posts, cables and railing) lies above every layer of a
+            // pawn on the hole's floor and below every layer of a pawn on the deck, for every altitude seed; the thresholds that
+            // pick whom to redraw over take the floor pawns and never the walkers. Pawn layers as LipOcclusion_skips_shallower_pawn:
+            // seed within one AltInc, layers 0.0037 under to 100 x 0.0003658537 over the seeded altitude.
+            Case("Hang_deck_redraw_between_floor_and_deck_walkers", () =>
+            {
+                float pawnAlt = 28 * 0.36585367f, inc = 0.03658537f, under = 0.0037f, over = 100 * 0.0003658537f;
+                float lip = pawnAlt - RM_WallFaceMath.SunkAltitudeDrop + RM_WallFaceMath.CoverAboveSunk;
+                int seen = 0;
+                for (int j = -20; j <= 20; j++)
+                {
+                    float seed = inc * j / 20f;
+                    foreach (bool sunkenDeck in new[] { false, true })
+                    {
+                        float deck = RM_SuspensionHangMath.OccluderY(pawnAlt, sunkenDeck);
+                        float rail = deck + RM_SuspensionHangMath.RailingAboveDeck;
+                        float parts = RM_SuspensionHangMath.PartsY(pawnAlt, sunkenDeck);
+                        // a sunken deck's walkers are sunk like the floor's; the floor band under it drops further again
+                        float walker = pawnAlt + seed - (sunkenDeck ? RM_WallFaceMath.SunkAltitudeDrop : 0f);
+                        float floor = pawnAlt + seed - RM_WallFaceMath.SunkAltitudeDrop - (sunkenDeck ? RM_SuspensionHangMath.SunkenExtraDrop : 0f);
+                        string at = (sunkenDeck ? "sunken" : "surface") + " deck, seed " + seed;
+                        Assert(!RM_SuspensionHangMath.RedrawCovers(pawnAlt - walker, sunkenDeck), at + ": the deck is redrawn over its own walker");
+                        Assert(RM_SuspensionHangMath.RedrawCovers(pawnAlt - floor, sunkenDeck), at + ": the deck is not redrawn over the pawn beneath it");
+                        Assert(deck < parts && rail < parts, at + ": posts and cables under the redrawn deck");
+                        Assert(parts < walker - under && rail < walker - under && deck < walker - under, at + ": the deck or its parts over a walker's lowest layer");
+                        Assert(deck > floor + over, at + ": the deck under the floor pawn's highest layer");
+                        if (!sunkenDeck)
+                        {
+                            Assert(deck > lip, at + ": the deck under the pit's lip cover, a floor pawn would show through it");
+                            Assert(!RM_SuspensionHangMath.RedrawCovers(pawnAlt - (pawnAlt + seed), true), at + ": a ground pawn picked as the floor band");
+                        }
+                        seen++;
+                    }
+                }
+                Assert(seen == 82, "instrument: checked " + seen + " seeds");
             });
         }
     }

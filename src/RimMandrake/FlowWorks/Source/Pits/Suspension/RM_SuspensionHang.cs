@@ -16,29 +16,36 @@ namespace RimMandrake.FlowWorks.Pits
 	/// above the sunk pawns and below everyone on the ground (DrawOccluders). Walkers on the deck are drawn lowered by the
 	/// sag (RM_Patch_SuspensionHangDrawPos).
 	/// Three looks for the owner's side-by-side, switched live (jawa/static_call):
-	/// RimMandrake.FlowWorks.Pits.RM_SuspensionHang.SetTreatment("0"|"1"|"2") - 0 suspension (posts, a main cable from
+	/// type=RimMandrake.FlowWorks.Pits.RM_SuspensionHang method=SetTreatment args=0|1|2 - 0 suspension (posts, a main cable from
 	/// post top to post top, suspenders), 1 rope walk (short posts, a hand rope that follows the sagging deck, V ties: hangs
 	/// most), 2 cable-stayed (tall pylons at the supports, straight stays to the deck: hangs least).
 	/// Jetties, drawbridges, raid planks and spans under 3 squares stay flat (IsHung).</summary>
 	public static class RM_SuspensionHang
 	{
-		/// <summary>The look being drawn (RM_SuspensionHangMath.Treatment*). Not saved: the side-by-side is a viewing aid.</summary>
+		/// <summary>The look being drawn (RM_SuspensionHangMath.Treatment*). Not saved: the side-by-side is a viewing aid.
+		/// Default 0, suspension, the one that reads most hung: tall posts on both end squares mark the anchors, the main cable
+		/// dips about a square on screen from post top to mid-span (timber over 9 squares: 0.55 of cable dip on 0.4 of deck
+		/// sag) and the suspenders show the deck carried by it. The rope walk sags most but its knee-high hand rope reads as a
+		/// railing; cable-stayed's straight stays and least sag read rigid.</summary>
 		public static int Treatment = RM_SuspensionHangMath.TreatmentSuspension;
 
 		/// <summary>Strips per deck square along the span (the bow drawn as this many straight pieces per square).</summary>
 		public const int Steps = 4;
 
 		/// <summary>The redrawn deck sits this far below a pawn's altitude: above the sunk pawns (P - 0.22 .. P - 0.107,
-		/// RM_WallFaceMath.SunkAltitudeDrop) and the lip cover (P - 0.08), below anyone on the ground (P - 0.04 and up).</summary>
-		public const float OccluderDrop = 0.07f;
+		/// RM_WallFaceMath.SunkAltitudeDrop) and the lip cover (P - 0.08), below anyone on the ground (P - 0.04 and up).
+		/// The draw-order numbers live in RM_SuspensionHangMath (self-tested: Hang_deck_redraw_between_floor_and_deck_walkers).</summary>
+		public const float OccluderDrop = RM_SuspensionHangMath.OccluderDrop;
 
 		/// <summary>Posts and cables: just above the redrawn deck, still below anyone on the ground.</summary>
-		public const float PartsDrop = 0.055f;
+		public const float PartsDrop = RM_SuspensionHangMath.PartsDrop;
 
 		/// <summary>A sunken deck (DeckNotches > 0) has its walkers sunk too; its redraw and parts drop this much further and
 		/// the floor band beneath it drops past them (RM_Patch_SuspensionHangDrawPos).</summary>
-		public const float SunkenExtraDrop = 0.2f;
+		public const float SunkenExtraDrop = RM_SuspensionHangMath.SunkenExtraDrop;
 
+		/// <summary>After the pit's lip cover (RM_FaceMaterial.OccluderQueue 3050), so a sunk pawn's pixels are painted over;
+		/// the pawns on the ground keep theirs by altitude.</summary>
 		public const int OccluderQueue = 3051, PartsQueue = 3052;
 
 		/// <summary>The rope walk's hand rope: this high (cells north) over the sagging deck edge.</summary>
@@ -52,13 +59,15 @@ namespace RimMandrake.FlowWorks.Pits
 
 		private static readonly Color32 White = new Color32(255, 255, 255, 255);
 
-		public static string SetTreatment(string which)
+		/// <summary>Switches every hung span on every map to look <paramref name="which"/> (0 suspension, 1 rope walk,
+		/// 2 cable-stayed) and redraws them. One int parameter, no overload: jawa/static_call coerces "args=1" to it.</summary>
+		public static string SetTreatment(int which)
 		{
-			int t;
-			if (which == null || !int.TryParse(which.Trim(), out t) || t < 0 || t > 2)
+			if (which < RM_SuspensionHangMath.TreatmentSuspension || which > RM_SuspensionHangMath.TreatmentCableStayed)
 			{
-				return "SetTreatment: want \"0\" (suspension), \"1\" (rope walk) or \"2\" (cable-stayed), got \"" + which + "\"";
+				return "SetTreatment: want 0 (suspension), 1 (rope walk) or 2 (cable-stayed), got " + which;
 			}
+			int t = which;
 			Treatment = t;
 			int n = 0;
 			List<Map> maps = Current.Game?.Maps;
@@ -157,7 +166,7 @@ namespace RimMandrake.FlowWorks.Pits
 			for (int k = 0; k < n; k++)
 			{
 				int i = idx[k];
-				d.supports[k] = i == 0 ? 0.5f : i == r.length - 1 ? r.length - 1.5f : i;
+				d.supports[k] = RM_SuspensionHangMath.SupportAlong(i, r.length);
 			}
 			for (int k = 0; k + 1 < n; k++)
 			{
@@ -311,14 +320,6 @@ namespace RimMandrake.FlowWorks.Pits
 			sm.tris.Add(c); sm.tris.Add(c + 2); sm.tris.Add(c + 3);
 		}
 
-		/// <summary>The deck square that draws support <paramref name="p"/>'s post: the first and last deck squares draw the
-		/// anchors' posts, a tower's own square draws its tower's.</summary>
-		private static int OwnerOf(float p, int length)
-		{
-			int i = Mathf.FloorToInt(p + 0.5f);
-			return i < 1 ? 1 : i > length - 2 ? length - 2 : i;
-		}
-
 		private static int SegmentOf(ShapeData d, float along)
 		{
 			for (int k = 0; k + 1 < d.count; k++)
@@ -346,7 +347,7 @@ namespace RimMandrake.FlowWorks.Pits
 		}
 
 		/// <summary>Prints the posts, cables or ropes a deck square carries: its outer edge(s) only, its own stretch of each
-		/// cable, and the post of any support it owns (OwnerOf). Printed with the square, so they come and go with it.</summary>
+		/// cable, and the post of any support it owns (RM_SuspensionHangMath.PostOwner). Printed with the square, so they come and go with it.</summary>
 		public static void PrintParts(SectionLayer layer, Building_SuspensionDeck deck)
 		{
 			SuspensionBridgeRecord r = deck?.Record;
@@ -364,7 +365,7 @@ namespace RimMandrake.FlowWorks.Pits
 			int tier = TierIndex(r.tier);
 			LayerSubMesh posts = layer.GetSubMesh(postMats[tier]);
 			LayerSubMesh cables = layer.GetSubMesh(cableMats[tier]);
-			float y = AltitudeLayer.Pawn.AltitudeFor() - PartsDrop - (r.deckNotches > 0 ? SunkenExtraDrop : 0f);
+			float y = RM_SuspensionHangMath.PartsY(AltitudeLayer.Pawn.AltitudeFor(), r.deckNotches > 0);
 			if (lo)
 			{
 				PrintSide(posts, cables, r, d, i, -0.5f, -1f, y);
@@ -386,12 +387,12 @@ namespace RimMandrake.FlowWorks.Pits
 			for (int k = 0; k < d.count; k++)
 			{
 				float p = d.supports[k];
-				if (OwnerOf(p, r.length) != i)
+				if (RM_SuspensionHangMath.PostOwner(p, r.length) != i)
 				{
 					continue;
 				}
 				// an anchor's post stands just on the deck's end, a tower's on its own square's middle
-				float a = k == 0 ? p + 0.5f * postW : k == d.count - 1 ? p - 0.5f * postW : p;
+				float a = RM_SuspensionHangMath.PostFootAlong(k, d.count, p, postW);
 				float w = tr == RM_SuspensionHangMath.TreatmentCableStayed ? 1.2f * postW : postW;
 				Line(posts, At(r, d, a, edge, 0f, y), At(r, d, a, edge + outward * topSplay, top, y), w);
 			}
@@ -741,7 +742,8 @@ namespace RimMandrake.FlowWorks.Pits
 					continue;
 				}
 				Vector3 dp = p.DrawPos;
-				if (!(dp.y < pawnAlt - 0.1f) || RM_PitCoverBeneath.IsBeneath(p))
+				float drop = pawnAlt - dp.y;
+				if (!RM_SuspensionHangMath.RedrawCovers(drop, false) || RM_PitCoverBeneath.IsBeneath(p))
 				{
 					continue;   // on the ground (or on the deck), or already hidden under a pit cover
 				}
@@ -753,7 +755,7 @@ namespace RimMandrake.FlowWorks.Pits
 				boxes[boxCount++] = new PawnBox
 				{
 					minX = dp.x - h.x, maxX = dp.x + h.x, minZ = dp.z - h.y, maxZ = dp.z + h.y,
-					deep = dp.y < pawnAlt - 0.3f,
+					deep = RM_SuspensionHangMath.RedrawCovers(drop, true),
 				};
 			}
 			if (boxCount == 0)
@@ -796,7 +798,7 @@ namespace RimMandrake.FlowWorks.Pits
 		{
 			ShapeData d = ShapeOf(r);
 			bool sunken = r.deckNotches > 0;
-			float y = pawnAlt - OccluderDrop - (sunken ? SunkenExtraDrop : 0f);
+			float y = RM_SuspensionHangMath.OccluderY(pawnAlt, sunken);
 			for (int i = 1; i <= r.length - 2; i++)
 			{
 				for (int lane = 0; lane < r.width; lane++)
@@ -828,7 +830,7 @@ namespace RimMandrake.FlowWorks.Pits
 					{
 						return;
 					}
-					DrawRailingOver(map, r, d, c, y + 0.004f);
+					DrawRailingOver(map, r, d, c, y + RM_SuspensionHangMath.RailingAboveDeck);
 				}
 			}
 		}

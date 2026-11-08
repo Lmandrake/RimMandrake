@@ -182,5 +182,49 @@ namespace RimMandrake.FlowWorks
 		/// (sx, sz) with t1 > t0 is clockwise seen from above (vanilla's plane winding); false means the strip's triangles
 		/// are listed the other way round. A sag under the slope guard never changes it.</summary>
 		public static bool StripClockwise(int fx, int fz, int sx, int sz) => sx * fz - sz * fx < 0;
+
+		// ---- the supports and their posts (the anchors at both ends) ----
+
+		/// <summary>The position along the span of the support at deck index <paramref name="index"/> (RM_SuspensionMath.Supports)
+		/// of a span <paramref name="length"/> squares long with both anchors: the first anchor's deck-facing edge (0.5), the
+		/// last anchor's (length - 1.5), a tower's centre.</summary>
+		public static float SupportAlong(int index, int length) => index <= 0 ? 0.5f : index >= length - 1 ? length - 1.5f : index;
+
+		/// <summary>The deck square that prints the post of the support at <paramref name="along"/>: the first and last deck
+		/// squares (1 and length - 2) print the anchors' posts, a tower's own square its tower's.</summary>
+		public static int PostOwner(float along, int length)
+		{
+			int i = (int)Math.Floor(along + 0.5f);
+			return i < 1 ? 1 : i > length - 2 ? length - 2 : i;
+		}
+
+		/// <summary>Where along the span the post of support <paramref name="k"/> of <paramref name="count"/> stands: an anchor's
+		/// just on the deck's end (inside its owner square, against the anchor), a tower's on its own square's middle.</summary>
+		public static float PostFootAlong(int k, int count, float support, float postWidth)
+			=> k == 0 ? support + 0.5f * postWidth : k == count - 1 ? support - 0.5f * postWidth : support;
+
+		// ---- draw order (PAWN_WALKS_UNDER_DECK): the redrawn deck between the pawns beneath it and the pawns on it ----
+
+		/// <summary>Below the Pawn layer's altitude: the deck redrawn over sunk pawns (above them at RM_WallFaceMath
+		/// SunkAltitudeDrop plus their seed and render layers, and above the lip cover), its posts and cables a little higher,
+		/// all under every pawn on the ground (seed at most one AltInc down).</summary>
+		public const float OccluderDrop = 0.07f, PartsDrop = 0.055f, RailingAboveDeck = 0.004f;
+
+		/// <summary>A sunken deck (DeckNotches > 0) has its walkers sunk like the floor's: its redraw and parts drop this much
+		/// further, and the floor band beneath it is drawn this much lower again (RM_Patch_SuspensionHangDrawPos).</summary>
+		public const float SunkenExtraDrop = 0.2f;
+
+		/// <summary>A pawn drawn more than this below the Pawn layer is sunk (on a hole's floor); more than
+		/// <see cref="DeepBelow"/> is the floor band under a sunken deck.</summary>
+		public const float SunkBelow = 0.1f, DeepBelow = 0.3f;
+
+		public static float OccluderY(float pawnAlt, bool sunkenDeck) => pawnAlt - OccluderDrop - (sunkenDeck ? SunkenExtraDrop : 0f);
+
+		public static float PartsY(float pawnAlt, bool sunkenDeck) => pawnAlt - PartsDrop - (sunkenDeck ? SunkenExtraDrop : 0f);
+
+		/// <summary>True when the deck is redrawn over a pawn drawn <paramref name="drop"/> below the Pawn layer whose sprite
+		/// overlaps it: under a surface deck any sunk pawn (the hole's floor), under a sunken deck only the floor band dropped
+		/// past its sunk walkers. A pawn on the deck is never covered.</summary>
+		public static bool RedrawCovers(float drop, bool sunkenDeck) => sunkenDeck ? drop > DeepBelow : drop > SunkBelow;
 	}
 }
