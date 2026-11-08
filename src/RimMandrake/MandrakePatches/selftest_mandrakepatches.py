@@ -559,6 +559,78 @@ def log_spam_check():
         check("break: planted '%s' changed the text" % name, (a, b) != (src, mod_src))
         check("break: log spam off %s is reported" % name, len(log_spam_problems(a, b)) >= 1)
 
+def metal_nonflammable_problems(src, mod_src):
+    out = []
+    for needle, why in (
+            ('MineralCategories = { "Metallic", "Stony", "Gemstones" }', "the categories are not Metallic, Stony, Gemstones"),
+            ('OrganicCategories = { "Woody", "Fabric", "Leathery" }', "Woody/Fabric/Leathery are not excluded"),
+            ("c.defName == name", "categories are not matched by defName (a mod-free generic match)"),
+            ("m.stat == StatDefOf.Flammability", "the Flammability stat is not the one edited"),
+            ("sp.statFactors = factors;", "stuffProps.statFactors is not set"),
+            ("def.statBases = bases;", "the stuff's own statBases is not set"),
+            ("new List<StatModifier>(sp.statFactors)", "the shared statFactors list is edited in place"),
+            ("value = 0f", "the value is not 0"),
+            ("if (!RM_PatchesSettings.metalStoneNonFlammable)", "the toggle is ignored"),
+            ("stuff def(s) changed (", "no startup count line"),
+            ("[StaticConstructorOnStartup]", "no startup hook"),
+            ("public static string Probe()", "no live probe")):
+        if needle not in src:
+            out.append(why)
+    for banned in ("RSW_", "RUT_", "RM_Steel", "Steel\"") :
+        # the generic code names no mod's def; the Probe list legitimately does, so look only above it
+        if banned in src.split("public static string Probe()")[0].split("[StaticConstructorOnStartup]")[1]:
+            out.append("Apply names a mod def (%s): it must stay generic" % banned)
+    if "public static bool metalStoneNonFlammable = true;" not in mod_src or 'Scribe_Values.Look(ref metalStoneNonFlammable, "metalStoneNonFlammable", true);' not in mod_src:
+        out.append("the setting is not default-on in both the field and the Scribe default")
+    if "ref RM_PatchesSettings.metalStoneNonFlammable" not in mod_src or "MetalNonFlammable.Status" not in mod_src:
+        out.append("no settings checkbox or status")
+    if "Metal, stone and gem buildings don't burn" not in mod_src:
+        out.append("the checkbox label is not the owner-ordered text")
+    return out
+
+
+def metal_nonflammable_check():
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read().replace("\r\n", "\n")
+    src, mod_src = rd("Source", "MetalNonFlammable", "MetalNonFlammable.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs")
+    got = metal_nonflammable_problems(src, mod_src)
+    check("metal non-flammable: shipped source", got == [], got)
+    srchash = rd("Assemblies", "RimMandrakePatches.dll.srchash")
+    check("metal non-flammable: the built DLL's srchash lists the source", "MetalNonFlammable/MetalNonFlammable.cs" in srchash)
+    breaks = [("Stony dropped", src.replace('"Stony", ', ""), mod_src),
+              ("Woody no longer excluded", src.replace('"Woody", ', ""), mod_src),
+              ("factor left alone", src.replace("sp.statFactors = factors;", ""), mod_src),
+              ("own statBases left alone", src.replace("def.statBases = bases;", ""), mod_src),
+              ("list edited in place", src.replace("new List<StatModifier>(sp.statFactors)", "sp.statFactors"), mod_src),
+              ("toggle ignored", src.replace("if (!RM_PatchesSettings.metalStoneNonFlammable)", "if (false)"), mod_src),
+              ("a mod def named in Apply", src.replace("public static void Apply()", "public static void Apply()\n{ var x = \"RSW_Durasteel\";"), mod_src),
+              ("defaults off", src, mod_src.replace("metalStoneNonFlammable = true;", "metalStoneNonFlammable = false;")),
+              ("checkbox removed", src, mod_src.replace("ref RM_PatchesSettings.metalStoneNonFlammable", "ref RM_PatchesSettings.caiFogForcedOff"))]
+    for name, a, b in breaks:
+        check("break: planted '%s' changed the text" % name, (a, b) != (src, mod_src))
+        check("break: metal non-flammable %s is reported" % name, len(metal_nonflammable_problems(a, b)) >= 1)
+    # The def-level rule, offline, on the real def dump: every shipped stuff the C# would touch (mineral category, no organic one).
+    dump = os.path.join(os.environ.get("RM_DEF_DUMP", ""), "defs", "ThingDef.json")
+    try:
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+        import game_paths
+        dump = os.path.join(game_paths.DEF_DUMP, "defs", "ThingDef.json")
+        import json
+        with open(dump, encoding="utf-8") as f:
+            defs = json.load(f)["defs"]
+    except Exception as e:
+        print("SKIP metal non-flammable: def dump unreadable (%s)" % str(e)[:80])
+        return
+    hit = []
+    for t in defs:
+        if not t.get("is", {}).get("stuff"):
+            continue
+        cats = (t["fields"].get("stuffProps") or {}).get("categories") or []
+        if set(cats) & {"Metallic", "Stony", "Gemstones"} and not set(cats) & {"Woody", "Fabric", "Leathery"}:
+            hit.append(t["defName"])
+    check("metal non-flammable: the dump has Steel, an RSW metal, and a custom stone in the covered set",
+          {"Steel", "RSW_Durasteel", "RM_Lanternstone"} <= set(hit) and len(hit) >= 40, "%d covered; sample %s" % (len(hit), hit[:5]))
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -570,6 +642,7 @@ def main():
     null_guard_check()
     cut_drug_guard_check()
     log_spam_check()
+    metal_nonflammable_check()
     ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
     check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
     fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()

@@ -15,6 +15,8 @@ namespace RimMandrake.Patches
         public static bool cutDrugPolicyGuard = true;
         // LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS: drop the debug lines of Intimacy and Mood Chain Reaction.
         public static bool quietThirdPartyLogSpam = true;
+        // METAL_STONE_NONFLAMMABLE (owner order 2026-11-08): metal, stone and gem materials cannot burn.
+        public static bool metalStoneNonFlammable = true;
 
         public override void ExposeData()
         {
@@ -23,6 +25,7 @@ namespace RimMandrake.Patches
             Scribe_Values.Look(ref nullThingClassGuard, "nullThingClassGuard", true);
             Scribe_Values.Look(ref cutDrugPolicyGuard, "cutDrugPolicyGuard", true);
             Scribe_Values.Look(ref quietThirdPartyLogSpam, "quietThirdPartyLogSpam", true);
+            Scribe_Values.Look(ref metalStoneNonFlammable, "metalStoneNonFlammable", true);
         }
     }
 
@@ -67,6 +70,13 @@ namespace RimMandrake.Patches
                 + "stops recording, which hides real errors. While this is on, their debug lines are dropped and nothing "
                 + "else about either mod changes. Off = they log as they ship. Takes effect at once.");
             l.Label(LogSpamOff.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Metal, stone and gem buildings don't burn", ref RM_PatchesSettings.metalStoneNonFlammable,
+                "Vanilla gives steel, gold and silver a flammability factor of 0.4, so a steel wall catches fire. While this "
+                + "is on, every metal, stone, brick, block and gem material in the game, ours and other mods', has its "
+                + "flammability set to 0 at game start, so walls and furniture built from them cannot burn. Wood, cloth and "
+                + "leather are untouched. Off = vanilla values. Takes effect at the next game start.");
+            l.Label(MetalNonFlammable.Status);
             l.End();
             if (RM_PatchesSettings.caiFogForcedOff && !before)
                 CaiFogOff.Force("settings toggle");
