@@ -30,6 +30,7 @@ namespace RimMandrake.Graffiti
         private int marksThisSitting;
         private Pawn subject;
         private Faction targetFaction;
+        private float markFit = 1f;
 
         public override void ExposeData()
         {
@@ -40,6 +41,7 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref marksThisSitting, "rmMarksThisSitting");
             Scribe_References.Look(ref subject, "rmPaintSubject");
             Scribe_References.Look(ref targetFaction, "rmPaintTargetFaction");
+            Scribe_Values.Look(ref markFit, "rmPaintFit", 1f);
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -132,6 +134,7 @@ namespace RimMandrake.Graffiti
         {
             float room = GraffitiJobUtility.WallRoom(cell, Map);
             subject = null;
+            markFit = 1f;
             targetFaction = null;
             if (!Designated(cell))
             {
@@ -163,7 +166,9 @@ namespace RimMandrake.Graffiti
                 if (!pawn.InMentalState) room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map));
                 ThingDef said = GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject);
                 if (said != null) return said;
-                return pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
+                ThingDef pick = pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
+                markFit = pick != null ? GraffitiPool.FitFor(pick, room) : 1f;
+                return pick;
             }
             MapComponent_GraffitiOrders orders = MapComponent_GraffitiOrders.For(Map);
             ThingDef ordered = orders?.OrderAt(cell);
@@ -173,7 +178,9 @@ namespace RimMandrake.Graffiti
                 targetFaction = orders.FactionAt(cell);
                 return ordered;
             }
-            return GraffitiPool.PickForDesignator(pawn, room, cell);
+            ThingDef chosen = GraffitiPool.PickForDesignator(pawn, room, cell);
+            markFit = chosen != null ? GraffitiPool.FitFor(chosen, room + 0.3f) : 1f;
+            return chosen;
         }
 
         private void FinishMark(IntVec3 cell, Toil walk)
@@ -190,10 +197,11 @@ namespace RimMandrake.Graffiti
             Pawn spare = ReplyTo ?? (Meant != null ? pawn : null);
             Pawn spare2 = Meant != null && markDef == RMGraffitiDefOf.RM_Graffiti_Mockery ? Meant : null;
             bool crowded = !designated && !pawn.InMentalState
-                && GraffitiPool.WidthOf(markDef) > GraffitiJobUtility.BareRoom(cell, Map, spare, spare2) + 0.01f;
+                && GraffitiPool.WidthOf(markDef) * markFit > GraffitiJobUtility.BareRoom(cell, Map, spare, spare2) + 0.01f;
             job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
             if (crowded) GraffitiSocial.Trace(pawn.LabelShort + " left " + markDef.defName + "@" + cell + " unfinished: fresh paint beside it");
-            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated, reply: ReplyTo != null);
+            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated, reply: ReplyTo != null, fit: markFit);
+            markFit = 1f;
             markDef = null;
             subject = null;
             targetFaction = null;

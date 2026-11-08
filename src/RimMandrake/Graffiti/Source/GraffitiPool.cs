@@ -51,6 +51,25 @@ namespace RimMandrake.Graffiti
         /// <summary>Wall cells a mark's drawing spans.</summary>
         public static float WidthOf(ThingDef markDef) => markDef?.graphicData?.drawSize.x ?? 1f;
 
+        // Live pass 13: on a wall a few weeks old the gaps between marks are about a cell, and only three drawings are a cell wide, so
+        // every gap got a tally, a scratch or a rude little man (37 of Ashgate's 70 marks). A writer squeezes a smaller tag into a gap:
+        // most drawings may go down to this share of their size to fit one. A piece is planned to its wall and doesn't shrink.
+        public const float MinFit = 0.8f;
+
+        /// <summary>The narrowest this drawing may be painted to fit a gap (Filth_Mark.fit).</summary>
+        public static float FitWidthOf(ThingDef markDef)
+        {
+            GraffitiForm form = markDef?.GetModExtension<ModExtension_Graffiti>()?.form ?? GraffitiForm.Scrawl;
+            return WidthOf(markDef) * (form == GraffitiForm.Piece ? 1f : MinFit);
+        }
+
+        /// <summary>How much of its full size this drawing takes in a gap this wide: 1 if it fits whole, never under MinFit.</summary>
+        public static float FitFor(ThingDef markDef, float room)
+        {
+            float w = WidthOf(markDef);
+            return room >= w ? 1f : System.Math.Max(FitWidthOf(markDef) / w, room / w);
+        }
+
         // Designator: only marks the player can deliberately choose
         // (ModExtension_Graffiti.designatorEligible), still weighted so a
         // designated cell doesn't always get the exact same mark.
@@ -135,7 +154,7 @@ namespace RimMandrake.Graffiti
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
-                if (ext == null || !filter(ext) || WidthOf(d) > maxWidth) continue;
+                if (ext == null || !filter(ext) || FitWidthOf(d) > maxWidth) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
                 float w = ext.poolWeight * RM_GraffitiKernel.FormAffinity(ext.form, level);

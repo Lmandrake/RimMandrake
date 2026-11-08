@@ -73,6 +73,12 @@ namespace RimMandrake.Graffiti
         // messages in seven hours, and nothing ever ended it).
         public bool lastWord;
 
+        // The share of its drawing's full size this mark was painted at, squeezed into a gap (GraffitiPool.FitFor). Its width on the wall
+        // is Width, which every overlap and gap measure uses, so a smaller tag is neither erased nor erasing as if it were full size.
+        public float fit = 1f;
+
+        internal float Width => GraffitiPool.WidthOf(def) * fit;
+
         // Who held this mark dear: readers it moved, a tribute's subject, a mourner. Somebody who scrubs it in a cleaning fit answers to them.
         private List<int> valuedBy = new List<int>();
 
@@ -147,6 +153,9 @@ namespace RimMandrake.Graffiti
             {
                 ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
                 if (ext == null) return RM_Meaning.None;
+                // A tribute to someone who has died since is their memorial now: nobody is jealous of the dead, and a friend reading it
+                // mourns (GPT broaden pass 13, lead 6).
+                if (ext.meaning == RM_Meaning.Tribute && subject != null && subject.Dead) return RM_Meaning.Memorial;
                 if (ext.meaning != RM_Meaning.None) return ext.meaning;
                 if (ext.sigilTierA || !ext.requiresAnyMeme.NullOrEmpty()) return RM_Meaning.Devotion;
                 if (ext.category == GraffitiCategory.Mural) return RM_Meaning.Beauty;
@@ -259,7 +268,7 @@ namespace RimMandrake.Graffiti
             if (weatherStep > 0) line += weatherStep >= 3 ? ", nearly weathered away" : ", fading";
             if (maker != null) line += ", by " + maker.LabelShort;
             else if (makerFaction != null) line += ", by " + makerFaction.Name;
-            if (subject != null || !subjectName.NullOrEmpty()) line += ", about " + SubjectName;
+            if (subject != null || !subjectName.NullOrEmpty()) line += ", about " + SubjectName + (subject != null && subject.Dead && def != RMGraffitiDefOf.RM_Graffiti_Memorial ? " (dead since)" : "");
             if (targetFaction != null) line += ", insulting " + targetFaction.Name;
             if (defaced) line += defacedBy != null ? ". Crossed out by " + defacedBy.LabelShort : ". Crossed out";
             if (angered + amused + moved > 0)
@@ -289,6 +298,7 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
             Scribe_Values.Look(ref permanent, "rmMarkPermanent");
             Scribe_Values.Look(ref lastWord, "rmMarkLastWord");
+            Scribe_Values.Look(ref fit, "rmMarkFit", 1f);
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
             Scribe_Values.Look(ref pigment, "rmMarkPigment", 0);
@@ -327,7 +337,7 @@ namespace RimMandrake.Graffiti
         // other, not one filth pile growing. "Rival" = any other
         // Filth_Mark whose def differs from markDef; thickening the SAME
         // def (the vanilla FilthMaker behaviour) is left alone.
-        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false, bool reply = false)
+        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false, bool reply = false, float fit = 1f)
         {
             bool repaint = false;
             // A mark that sends its own message carries the going-over in it: one act, one line.
@@ -358,7 +368,7 @@ namespace RimMandrake.Graffiti
                 int side = ReadWallSide(cell, map);
                 if (side != RM_GraffitiKernel.NoWall)
                 {
-                    foreach (Filth_Mark under in MarksOverlapping(cell + new Rot4(side).FacingCell, side, GraffitiPool.WidthOf(markDef) / 2f, map, null))
+                    foreach (Filth_Mark under in MarksOverlapping(cell + new Rot4(side).FacingCell, side, GraffitiPool.WidthOf(markDef) * fit / 2f, map, null))
                     {
                         if (under.Position != cell && !rivals.Contains(under))
                         {
@@ -388,6 +398,7 @@ namespace RimMandrake.Graffiti
                 return null;
             }
             if (repaint) mark.MadeAfresh();
+            mark.fit = fit;
             mark.maker = maker;
             mark.makerFaction = maker?.Faction;
             mark.makerIdeo = GraffitiJobUtility.IdeoOf(maker);
@@ -541,8 +552,8 @@ namespace RimMandrake.Graffiti
             int look = hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
             RM_GraffitiKernel.CraftLook(look, out float craftThrough, out float wobble, out float mud);
             slope *= wobble;
-            float width = size.x * scale;
-            float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
+            float width = size.x * scale * fit;
+            float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale * fit;
             float fade = Fade;
             float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.2f * fade, 0.04f, 0.85f);
             if (cachedFrameMat == null && cachedIconMat == null)
@@ -683,7 +694,7 @@ namespace RimMandrake.Graffiti
                 foreach (Thing t in floor.GetThingList(map))
                 {
                     if (!(t is Filth_Mark m) || m == except || m.wallSide != side) continue;
-                    if (RM_GraffitiKernel.WallMarksOverlap(k, halfWidth, GraffitiPool.WidthOf(m.def) / 2f) && !found.Contains(m))
+                    if (RM_GraffitiKernel.WallMarksOverlap(k, halfWidth, m.Width / 2f) && !found.Contains(m))
                     {
                         found.Add(m);
                     }

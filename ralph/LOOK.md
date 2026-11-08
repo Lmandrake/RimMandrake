@@ -32,3 +32,10 @@ Least sure of: whether the glints read at play zoom on a busy wall (they are abo
 - `weather_south_wall_west.png` / `weather_south_wall_east.png`: the outer south wall after weathering came in: three outdoor marks wore away in a day and a half, and Karen painted into the gaps.
 
 Least sure of: whether a fading mark reads as weathered paint or just as faint paint at play zoom (I haven't framed one mid-fade yet).
+
+Pass 13 (64 px unless marked):
+- `weather_flaking_and_painted_heads_128.png` (128 px): left, a tag at its last weather step, now flaking remnants and rain-washed streaks (before this pass it was a pale uniform ghost: `old/weather_ghost_before_p13.png`); right, two mockeries of Lark with his head painted by the same hand as the horns, outline gone to broken brush, colours muted.
+- `lived_in_south_wall_day19_playzoom.png`: Ashgate's outer south wall on day 19, unstaged: tallies, a poor green glyph, a poor stencil sigil, a red tag, the flaking tag, two mockeries.
+- `lived_in_corridor_day18_playzoom.png`: the corridor and the stockroom wall on day 18.
+
+Least sure of: whether the painted heads still say who is mocked at 64 px (the hat and hair carry it, muted), and whether marks squeezed to 80% into a gap look like a different hand or just smaller.

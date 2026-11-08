@@ -161,7 +161,7 @@ namespace RimMandrake.Graffiti
                 {
                     if (!(t is Filth_Mark m) || m.wallSide != side || (spare != null && m.maker == spare) || (spare2 != null && m.maker == spare2)) continue;
                     if (k == 0) return 0f;
-                    room = System.Math.Min(room, 2f * (System.Math.Abs(k) - GraffitiPool.WidthOf(m.def) / 2f) + 0.3f);
+                    room = System.Math.Min(room, 2f * (System.Math.Abs(k) - m.Width / 2f) + 0.3f);
                 }
             }
             return room;
