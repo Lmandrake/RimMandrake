@@ -1,48 +1,44 @@
 # GSS Ralph: where the last pass got to
 
-**Merge landed (pass 10): `origin/main` is merged into `ralph/gss`. Stop my game only through `ralph/steve.sh` (it stops by pid). Game B's bridge is 5175, mine 5174: leave B alone.**
+**Game: `ralph/GAME` says `b` (bridge 5175, data `/mnt/d/ClaudeWork/rimmandrake/instances/b`), lent by the Conductor while Graffiti is paused. A deploy needs game A free (`ralph/fw_holds.py a` exit 1). B has the GSS tier; B's Graffiti list is backed up at `$RM_GAME_USERDATA/Config/ModsConfig.graffiti-before-gss-20261107.xml`, and I moved my clone's stale swap marker aside on Steve (`deployed/config/ModsConfig.swap-active.stale-20261107.json`) so `tier` would run.**
 
-Pass 11. Retired on the context guard (about 270k). Not done, so no `DONE.md`. Self-tests 1155/1155. No live proof run on this DLL.
+Pass 12. Deployed DLL: commit 9c8c26b7cf (fallen lay, Scrapper strand, relink, path cost). Not deployed yet: the cut-half relink fix in `CompAerialAnchor` (below).
 
-## Settled this pass
-- **Sparks follow the moving end: the owner certified it by eye** (relayed 2026-11-07 14:30: "I can certify by eye that the sparks now follow the moving broken wires. Good job!"). Don't re-prove it. If a later DLL touches `CordMotion`, `TipSparks`, `DrawFallenTails`/`DrawFallenGlow` or `ThrowTipSpark`, say so here so his look can be repeated. My frames, for the record: `p11m_floor_ride.png` and `p11m_wire_*` in the shots folder (12 frames each, the spark on the tip in every one; `spark_measure.py`: spark travel 0.41-0.42 cell against tip travel 0.41-0.47).
-- **Open items triaged against the code** (subagent, read-only): 11 of 17 fixed in code, `CORD_ADAPTER_FIX_NO_LAMP_GEOMETRY` false (by design: lamps keep the centroid look he walked), the rest proof-only or paperwork under `infrastructure/state/` (not mine). Two harness gaps fixed here: M15e now names `RM_RestringSpan`, PT_A3_goodwill_day names `theftGoodwill`, so `mod_completion` can credit them. `plan.md`'s "Modern junctions draw the long power strip" is BUILT (`CordBuilder.cs` PoseStrip); the cord-shape instrument is BUILT (`CordShape.Table`, probe `shapetable`). Scenes: 10 of 23 built with a control, 9 without a control, 4 missing (rewire_cost, four_looks, gravship, walk): `GSS_SCENES_BUILD_EVERY_CORD_A_FOIL` is the one really open item.
+## Fixed this pass (all seen in the game on B unless said)
+- **Fallen wires stopped at a shed's wall as rods** (`AerialMath.LayFallen`). Played: a mortar on the lamp mast with a shed under the span; the far mast's three wires ran straight to the shed wall and ended in three sparks. Now a wire tries its full slack turned up to 50 degrees off its line (own side first) before less slack; with a wall across every way it piles its spare cable in coils in front of the wall. Self-test row: 0/40 seeds lay whole beside a shed before, 36+ now. Seen: `p12q3_Modern_line.png` (before: `p12n3_Industrial_line.png`, `p12m3_Futuristic_line.png`).
+- **Scrapper cords were Industrial's black rubber.** New `Strand_ScrapTaped.png` (1024x32, built from `Strand_Jawa`'s pixels by `ralph/art/scrap_strand.py`, installed through the art ledger): rust-red and olive salvage spliced in, duct and electrical tape. Ribbon repeat now follows the texture's aspect (`CordMaterials.Aspect`), so it repeats every 2.56 cells. Overhead/fallen Scrapper wires keep `Strand_Jawa`. Seen: `ba_new_Scrapper_t01.png`, `p12p_Industrial_pair.png` (Industrial heap beside a Scrapper run).
+- **A rebuilt mast took back one span, not both** (`RM_MapComponent_Aerial.ProcessAutoLinks`): now every neighbour whose wires fell toward its cell. Seen: `p12q5_Modern_line.png` (orphanRelinks 1, both spans up).
+- **Colonists walked into live fallen wires** (3 of 6 down at once, `p12n`): `RM_LiveWirePathCost`, +600 perceived path cost on live contact cells (vanilla fire +1000), only while shocks are on. Seen: priced cells follow liveness (41/21/41 as the hut battery went full/empty/full).
+- **Not deployed:** a span cut mid-way whose far pole then dies left wires the rebuilt pole never takes back (played + reloaded, `p12r`, `gss_p12_mid*_Modern` saves on B). Cause: the cut half kept the cut cell as `toward`. Fixed in `CompAerialAnchor` despawn: it keeps its lay but belongs to the dead pole's cell. Build, deploy, rerun `p12_reno.py TAG Modern reload` to see it.
 
-## Fixed this pass
-- **The rod through a doorway** (`never_taut_straight_cord`). Cause: a cord was held to its planned line 0.55 cell either side of the door cell, then let go with a jump to half its bend, so 2-4 cells ran dead straight through every door. Now (`LayParams.SoftPins`, GSS only, cords of 2.5 cells and up) the hold is the door cell plus 0.15, the release is a smoothstep over 0.7 cell, and a flat stretch running off a door's hold is filled from 0.8 cell (was 2). Loops still root 0.55+ clear of doors (they use the old ramp), so the doorway ring count did not rise. Measured offline on the 138-doorway matrix (`ralph/live/lab_doorrod.py IN OUT`, new): straight run through a door max 4.8 -> 2.4 cells, over 2.5 cells 6 -> 0; the remaining 2.2-2.4 are a terminal one cell past a door (nothing to bend). `lab_doors.py read`: plain runs through a door still 2 lines everywhere; along_branch/outside_tee a little better. FlowWorks rebuilt, hoses unchanged (SoftPins off). Commit 92c832da6d. **Seen in the game**: `junction_saves.py now` on this DLL (four fresh generated maps, played ~1800 ticks): the house's bottom door in every look now bends through or just past the door, no rod (`p11_door_now_sheet.png`, against `judge_p10a/door_bottom.png`).
-- **Fallen wires beside a rock or wall** (`AerialMath.LayFallen`): when a bend would cross an unwalkable cell, the wire now tries the same bends mirrored before halving its slack, so it stays loose instead of going rod-straight. New self-test row with a can-fail: beside a wall, 31/40 seeds still bend 0.6+ cell off their line (halving only: 16/40; bar 28). Built, **not deployed** (Steve still runs 92c832da6d's DLL): deploy and look at a cut span beside rocks.
-- Trap found on the way: a soft pin on a 1.4-cell hop frees a bump that the junction's arm fitting (`AttachEnd`) then cuts off, leaving a straight 0.9 stub and a too-short whip tail (selftest `whip: tails outside 0.7-1.15`). Hence the 2.5-cell floor on soft pins.
+## The six owed items (Conductor's apply_now list): none still real
+COLOUR_SEED_SPLIT fixed (`Core/RebuildTail.cs:57-59`), NO_LAMP_GEOMETRY false by design (lamps keep the centroid look he asked for), AUDIT_REJECTS_WALL_PLUGS fixed (`Core/CordAudit.cs:206`), FRESH_BUILD_TAP_CLAMPS fixed (`GimmeSomeSlackProbe.cs:353`), FUZZ_ONLY_UNKNOWN fixed (`GssFuzz.cs:630`), RESTRING_STYLES fixed (`ConduitStylePicker.cs:484`, now with an offline guard row in `StyleStage2Checks.BridgeWiring`). Side note from that check: `GssFuzz.cs:163` makes half the fuzz's consumers lamps, a kind the game never produces.
 
-## Do next, in order
-1. `deploy` + `up` (the fallen-wire mirror is built but not on Steve).
-2. **Junction before and after**, owed to the owner. The saves exist: `gss_ba_{Modern,Scrapper,Industrial,Futuristic}` on Steve, made on DLL 92c832da6d, with `ba_now_*_{house,yard,work,strips}` shots (fetched here; `ralph/live/ba_state.json` on Steve holds the origins). Game down, copy `ralph/live/old_dll/before_903ba19f.dll` over `Mods/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll` on Steve (check `old_dll/` reached Steve's clone: it is untracked here), `up`, `junction_saves.py pre`, `deploy` + `up` to restore, then `python3 ralph/live/junction_ba.py <shots> ba_pre ba_now ba_sheet`.
-3. **`dense_grid_reads_as_tangle` is false**: load each `gss_ba_*` save and shoot the `dense` frame (lived_in FRAMES, 24x12 cells; `lived_in.py rect` or `shots TAG --frames dense` with that save's origin) at play zoom, and look hard. The p10a judge: the Modern heap shows no strips, Industrial/Futuristic heaps read as straight spokes (a star).
-4. **Scrapper vs Industrial cords**: `Strand_Jawa` (mean rgb 39,32,27) and Industrial's `Strand_BlackRubber` (32,30,29) are nearly the same texture; the other two Industrial kinds are ribbed. Only the fittings tell those looks apart. My idea: give Scrapper two or three scavenged-junk strand variants (rusty brown, faded olive with tape patches) as ADDED variants, leaving `Strand_Jawa` as one of them; the variant plumbing is `ConduitStyles` (`IndustrialKinds`, count per look) and `CordMaterials.StrandPathOf`.
-5. Futuristic fallen wires: on the ground they lie loose (loops, hooks; crop of `p10a_Futuristic_cutspan` 330-900,250-600). What reads as a rod is the hanging drop from the crossarm (`AerialMath.LayFallen`, s < s0): a straight line straight down. Judge on fresh shots before changing anything. Also `LayFallen` halves its slack whole when one bend would hit an unwalkable cell; mirroring the bends first would keep cords loose beside rocks.
-6. GPT broaden leads 4, 6, 7 from pass 10 (outage at play zoom without knowing where; a mast failure with colonists repairing; settings mid-save). Then the full proof once (`proof_all.py --live`, not recorded). A broaden call was made in pass 10, so DONE.md is allowed once its leads are acted on.
-7. Still open from pass 9: the crossarm zigzag (`AerialMath.SpanCurveDrip`), the plug barb at one-cell devices, spur knots in the audit, and cords at night on a dark floor.
+## Played this pass (GPT broaden, pass 12, `gpt_help_pass011.md`)
+Asked: what a real player would do that my one scripted layout can't show. Acted on #4, #5, #8 (`ralph/live/p12_reno.py`): renovating through cords (wall built across kitchen cords: they re-lay round it; a bedroom wall over conduit made a door: the cord passes through it), liveness following a battery (correct), save/reload mid-rebuild (found the cut-half bug above). Not yet: #1 growing a colony one appliance at a time, #3 a live span across a rescue route, #6 joining two runs of different looks, #7 clutter/night/snow. Pass 10's leads 4 and 6 done (`p12m`/`p12n`/`p12q`: mast failure over a shed, rebuild, colonists).
 
-## Traps I paid for
-- `game_gate.py` refuses any local command that names `rw_game.sh`, even a `grep`.
-- `_Shared/SlackGeometry` compiles into FlowWorks: rebuild both and commit both DLLs.
-- The self-test log from `dotnet.exe` has bytes that make plain `grep` silent: use `grep -a`.
-- To pass an env var into the Windows `dotnet.exe` from WSL: `WSLENV=NAME NAME=1 python3 ...`.
-- The shape lab: `python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --lab Transient/lab/doors/in OUTDIR` (138 worlds, ~10 s). `lab_render.py WORLD LAID OUT x,z,w,h` draws one; `lab_audit_sum.py OUTDIR` sums the shape audit. The audit's "rod" metric over-counts (it skips points that come back near the start), so don't chase its totals.
-- `steve.sh fetch` one file at a time is slow: `ralph/live/fetch_shots.sh PREFIX` tars a prefix in one go; `ralph/live/sheet.py` makes a contact sheet.
+## Blind judge on the colony at play zoom (old DLL; `D:\ClaudeWork\rimmandrake\ralph_gss\judge_p12\`)
+Worst: straight 3-5 cell cords down the 3-cell corridor between house and workshop (Modern/Futuristic/Industrial; the lamp at (22,2) is wired by vanilla through the wall to conduit outside, so its cord runs out, down the corridor, and in at the south door), hairpins with straight legs (Futuristic workshop), a W of straight legs (Industrial kitchen), Modern's dense heap a net of straight strokes, a taut drop cord from the lamp mast to a lamp, fallen-wire legs from crossarms. Being fixed offline by a builder subagent when this was written (lab: `Transient/lab/ba/worlds/ba_*.json`, the four played colonies dumped by `ralph/live/dump_worlds.py`).
+
+## Do next
+1. Take the builder's straight-run fix if it holds (look at its renders), build, deploy, re-shoot tiles (`p12_look.py TAG --frames "" --tiles`), re-judge.
+2. Consider routing a cord THROUGH a wall (into one face, out of the other) when the walkable detour is far longer than the wall's thickness: the corridor cord is a 12-cell detour for a lamp 4 cells from its conduit, and that is also an eighth way extra cables show at a doorway.
+3. The cut-half relink: deploy and replay `reload`.
+4. Modern dense heap (net of straight strokes, few strips), lamp-mast drop cord taut arc.
+5. Full proof once (`proof_all.py --live`), not recorded.
 
 ## Steve
-`bad_cpus=[]` at 4.21 h uptime. No dead game, no dropped ssh, no reboot. The game was restarted once, for the deploy; the bridge came up in 23 s. Four fresh maps in a row in `junction_saves.py now` without a fault.
+Fault window F20261107T174953Z open the whole pass (status showed `bad_cpus=[13]`): all shots are in-window. No surprise needed a restart; no dead game, no dropped ssh, no reboot. Game B restarted 4 times for deploys and the old-DLL before/after; the bridge came up in 22 s each time.
 
 ## North star, judged hard
-Seen on the pass-10 DLL (p10a colony, p10h doorway), and the doors on this pass's DLL (`ba_now_*`).
 - conduit_reads_invisible: true
 - cord_lies_slack_in_loops: true
 - cord_meets_wall_at_its_face: true
-- dense_grid_reads_as_tangle: false (seen only far off; Industrial and Futuristic heaps read as spokes, the Modern heap shows no strips)
-- break_live_and_dead_ends_differ: true
-- overhead_span_above_everything: unseen for buildings (true for pawns, `p10a_Futuristic_spanpawn`)
-- downed_span_lies_on_ground: false for Futuristic (the crossarm drops read as rods), true for the other three
-- four_styles_distinguishable: false (Scrapper and Industrial cords are the same dark texture; only the fittings differ)
-- one_run_one_style: true
-- never_taut_straight_cord: true at the doors that were rods (`p11_door_now_sheet.png`, all four looks); not yet re-judged across a whole colony on this DLL
-- never_cord_across_impassable: true
+- dense_grid_reads_as_tangle: true for Scrapper, Industrial, Futuristic; Modern reads as a net of straight strokes (judge) — false until fixed
+- break_live_and_dead_ends_differ: true (judge: easy in all four looks)
+- overhead_span_above_everything: true (span over the shed's wall, `p12q5_Modern_line.png`; pawns `p12m0_Futuristic_shed.png`)
+- downed_span_lies_on_ground: true on this DLL beside a shed (`p12q3`); crossarm drop legs still read straight-ish
+- four_styles_distinguishable: true on this DLL (`p12p_*_pair.png`)
+- one_run_one_style: true (`p12p_*_pair.png`, four looks, each beside a run in another look)
+- never_taut_straight_cord: false (corridor, hairpins, kitchen W)
+- never_cord_across_impassable: true (judge: none; a wall built through cords re-lays them round it)

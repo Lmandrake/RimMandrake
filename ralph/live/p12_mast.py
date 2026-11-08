@@ -23,7 +23,10 @@ def anchors(R):
 def say(R, what):
     t = R.B.call("jawa/time_clock")["ticksGame"]
     a = [{k: x.get(k) for k in ("id", "x", "z", "fallenLive")} | {"fallen": len(x.get("fallen") or []), "links": len(x.get("links") or [])} for x in anchors(R)]
-    print("@%d %s anchors=%s" % (t, what, json.dumps(a)))
+    c = R.B.ap("census")
+    print("@%d %s anchors=%s counters=%s" % (t, what, json.dumps(a), json.dumps({k: c.get(k) for k in ("autoLinks", "orphanRelinks", "liveWirePriced", "explosionCuts")})))
+    ps = [q for q in R.B.call("jawa/list_pawns").get("pawns") or [] if q.get("isPlayer")]
+    print("   colonists", len(ps), "downed", [q.get("name") for q in ps if q.get("downed")])
 
 
 def play_until(R, ticks, done, step=300):

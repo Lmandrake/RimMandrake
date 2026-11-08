@@ -20,6 +20,7 @@ def main():
     ap.add_argument("--blast", action="store_true")
     ap.add_argument("--cut-frames", default="cutspan,drop,yard")
     ap.add_argument("--play", type=int, default=0)
+    ap.add_argument("--rect", default="", help="ad-hoc frames in the site's own cells: name:x,z,w,h[;...]")
     ap.add_argument("--tiles", action="store_true", help="also shoot the whole colony at play zoom, 20x11-cell tiles named t<col><row>")
     a = ap.parse_args()
     st = json.load(open(BA))
@@ -35,6 +36,10 @@ def main():
         if a.play:
             R.play(a.play)
         frames = [f for f in a.frames.split(",") if f]
+        for q in [q for q in a.rect.split(";") if q]:
+            nm, v = q.split(":")
+            LI.FRAMES[nm] = tuple(int(t) for t in v.split(","))
+            frames.append(nm)
         if a.tiles:
             for i, x in enumerate(range(-3, 77, 20)):
                 for j, z in enumerate(range(8, -12, -11)):
