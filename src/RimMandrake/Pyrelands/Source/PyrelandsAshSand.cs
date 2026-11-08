@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -62,6 +64,7 @@ namespace RimMandrake.Pyrelands
                 rule + "SandGrid.AddDepth", "ash wears away as vanilla sand does and black rain does not wash it");
             Patch(h, AccessTools.Method(typeof(SectionLayer_Sand), nameof(SectionLayer_Sand.Regenerate)), nameof(Prefix_SandLayer),
                 null, null, rule + "SectionLayer_Sand.Regenerate", "vanilla sand draws over the ash cover");
+            PatchLabels(h, rule);
         }
 
         private static void Patch(Harmony h, System.Reflection.MethodBase target, string prefix, string postfix, string finalizer,
@@ -194,6 +197,78 @@ namespace RimMandrake.Pyrelands
             }
             SandLayersSkipped++;
             return false;
+        }
+
+        // ── the hover label ──────────────────────────────────────────────
+        // Owner, 2026-11-08, on the first ash-on-sand build: "Oops. It says "Windswept sand" on my hover over". Vanilla names
+        // the sand grid in two places, both with Odyssey's keys: MouseoverReadout.MouseoverReadoutOnGUI ("Sand".Translate() +
+        // " (thin) (walk speed ..)", bottom left) and CellInspectorDrawer.DrawMapInspector ("Sand_Label".Translate(), the cell
+        // inspector's row). Both keys read "Windswept sand". A transpiler puts AshLabelKey after each ldstr, so on an ash map
+        // the key becomes ours ("Ash") and vanilla's depth words (dusting/thin/medium/thick, WeatherBuildupUtility.
+        // GetSandDescription, same bands) and walk speed follow unchanged. Every other map keeps Odyssey's text.
+
+        /// <summary>The vanilla sand-label keys and our ash keys (Languages/English/Keyed/Pyrelands.xml).</summary>
+        public const string SandKey = "Sand", SandLabelKey = "Sand_Label", KeyAsh = "RM_Ash", KeyAshLabel = "RM_Ash_Label";
+
+        /// <summary>Sand-label sites the transpiler rewrote, one per Harmony run of it (2 after load; more if another mod
+        /// re-patches a site). A bridge read, never saved.</summary>
+        public static int LabelSitesPatched;
+
+        /// <summary>The key vanilla should translate for the sand grid's label on the current map: ours on an ash map.</summary>
+        public static string AshLabelKey(string vanillaKey)
+        {
+            if (!IsAshMap(Find.CurrentMap)) return vanillaKey;
+            if (vanillaKey == SandLabelKey) return KeyAshLabel;
+            if (vanillaKey == SandKey) return KeyAsh;
+            return vanillaKey;
+        }
+
+        private static void PatchLabels(Harmony h, string rule)
+        {
+            PatchLabel(h, rule, AccessTools.Method(typeof(MouseoverReadout), nameof(MouseoverReadout.MouseoverReadoutOnGUI)));
+            PatchLabel(h, rule, AccessTools.Method(typeof(CellInspectorDrawer), "DrawMapInspector"));
+        }
+
+        private static void PatchLabel(Harmony h, string rule, MethodInfo target)
+        {
+            string what = rule + (target == null ? "a sand-label site" : target.DeclaringType.Name + "." + target.Name);
+            if (target == null)
+            {
+                Log.Error(what + " NOT FOUND, the hover on ash reads \"Windswept sand\".");
+                return;
+            }
+            try
+            {
+                h.Patch(target, transpiler: new HarmonyMethod(typeof(PyrelandsAsh), nameof(Transpile_SandLabel)));
+            }
+            catch (Exception e)
+            {
+                Log.Error(what + " patch FAILED, the hover on ash reads \"Windswept sand\": " + e.Message);
+            }
+        }
+
+        // The key each site carries, by its declaring type. Not handed over in a static: Harmony re-runs every transpiler on a
+        // method whenever any mod patches that method again, long after PatchLabels.
+        private static string SiteKey(MethodBase original) => original?.DeclaringType == typeof(MouseoverReadout) ? SandKey : SandLabelKey;
+
+        public static IEnumerable<CodeInstruction> Transpile_SandLabel(IEnumerable<CodeInstruction> instructions, MethodBase original)
+        {
+            var mapper = AccessTools.Method(typeof(PyrelandsAsh), nameof(AshLabelKey));
+            string want = SiteKey(original);
+            int hits = 0;
+            foreach (CodeInstruction ci in instructions)
+            {
+                yield return ci;
+                if (ci.opcode == OpCodes.Ldstr && ci.operand is string s && s == want)
+                {
+                    hits++;
+                    yield return new CodeInstruction(OpCodes.Call, mapper);
+                }
+            }
+            if (hits != 1)
+                Log.Error("[RimMandrake.Pyrelands] ash on sand: " + original?.DeclaringType?.Name + "." + original?.Name + " has " + hits
+                          + " ldstr \"" + want + "\" (want 1): the vanilla code changed, the hover on ash may read \"Windswept sand\".");
+            else LabelSitesPatched++;
         }
 
         // ── bridge reads (jawa/static_call) ──────────────────────────────

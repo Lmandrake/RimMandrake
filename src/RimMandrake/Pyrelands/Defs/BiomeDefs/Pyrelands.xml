@@ -125,10 +125,20 @@
            Stillsand's track grid (CreatureBehaviors, FOOTPRINT_TRACK_GRID_1), with the ash itself as the print surface. Ash is
            Odyssey sand depth here (Source/PyrelandsAshSand.cs): a walker on ash at least minSandDepth deep leaves a print, a print
            is buried once buryDepth of ash has fallen or washed over it, and goes when the ash under it thins below minSandDepth.
-           0.1 is about two hours of ash fall; vanilla's snow takes prints from 0.4 (PawnFootprintMaker). -->
+           0.1 is about two hours of ash fall; vanilla's snow takes prints from 0.4 (PawnFootprintMaker).
+           Owner 2026-11-08 on the first build: "I don't see any footprints, alas." The grid held 1,603 live prints then
+           (13,980 laid): they were drawn but unseen. The track grid's own sprites are for pale sand (human 99/255 grey, animal
+           58, at most 0.67 alpha x 0.7 opacity); on ash (cover 167 x 0.48 tint = 80) that moves the ground 8-12 levels. Ash
+           prints are pressed dark: the same shapes at 0.35 x their colour and 1.4 x their alpha (Textures/Things/Tracks/
+           RM_Ash*, guard Utils/selftest_pyrelands_track_contrast.py). buryDepth 0.12 buried a print in ~2 h of AshFall (about
+           30 s of play at speed 3); 0.3 keeps it ~5 h of AshFall and ~3 days dry. -->
       <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" MayRequire="mandrake.rm.biomes">
         <minSandDepth>0.1</minSandDepth>
-        <buryDepth>0.12</buryDepth>
+        <buryDepth>0.3</buryDepth>
+        <humanTexPath>Things/Tracks/RM_AshPrint_Human</humanTexPath>
+        <animalTexPath>Things/Tracks/RM_AshPrint_Animal</animalTexPath>
+        <largeTexPath>Things/Tracks/RM_AshPrint_Large</largeTexPath>
+        <dragTexPath>Things/Tracks/RM_AshDrag</dragTexPath>
       </li>
     </modExtensions>
 

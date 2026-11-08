@@ -60,4 +60,9 @@
   <RM_WetRootsInspect>Wet ash keeps its roots cool: grows as if {0} cooler (dry it would grow at {1}).</RM_WetRootsInspect>
   <RM_AshSignFreshBurn>fresh burn +{0} ({1} days)</RM_AshSignFreshBurn>
 
+  <!-- Ash is Odyssey's sand grid on an ash map (Source/PyrelandsAshSand.cs); these replace Odyssey's "Sand" / "Sand_Label"
+       ("Windswept sand") in the mouseover readout and the cell inspector there. Vanilla's depth words follow: "Ash (thin)". -->
+  <RM_Ash>Ash</RM_Ash>
+  <RM_Ash_Label>Ash</RM_Ash_Label>
+
 </LanguageData>
