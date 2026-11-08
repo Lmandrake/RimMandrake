@@ -1744,6 +1744,56 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>
+        /// A strip pile's cable from port <paramref name="pa"/> to <paramref name="pb"/> as a swirled cord: out of the socket, then its heading bends by
+        /// curvature waves tight enough to curl (a third to two thirds of a cell across) and drifts toward the far socket, held home over its last third,
+        /// 2.2-3x the distance between them; the whole is turned and scaled about its start to end exactly at the far socket's lead. Every point stays
+        /// on the heap's own walkable cells. Null when ten draws all leave the heap: the caller keeps its spline.
+        /// </summary>
+        private static List<V2> Swirl(CordWorld w, HashSet<Cell> comp, PilePort pa, PilePort pb, CordRng r)
+        {
+            V2 s = pa.Tip + pa.Out * 0.22, e = pb.Tip + pb.Out * 0.22;
+            double dist = V2.Dist(s, e);
+            if (dist < 0.3) return null;
+            const double ds = 0.05;
+            double baseA = Math.Atan2(e.Z - s.Z, e.X - s.X);
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                double A = r.Range(1.6, 2.6) * r.Sign(), l1 = r.Range(1.4, 2.4), l2 = r.Range(2.8, 4.6), p1 = r.Range(0, 6.283), p2 = r.Range(0, 6.283);
+                double want = Math.Max(dist * r.Range(2.2, 3.0), dist + 2.5);
+                double h = Math.Atan2(pa.Out.Z, pa.Out.X), x = s.X, z = s.Z, L = 0;
+                var pts = new List<V2> { s };
+                while (L < want)
+                {
+                    double u = L / want, err = Math.Atan2(e.Z - z, e.X - x) - h;
+                    while (err > Math.PI) err -= 2 * Math.PI;
+                    while (err < -Math.PI) err += 2 * Math.PI;
+                    double home = u < 0.65 ? 0.25 : 0.25 + 9 * (u - 0.65);
+                    h += (A * (0.65 * Math.Sin(6.283 * L / l1 + p1) + 0.35 * Math.Sin(6.283 * L / l2 + p2)) * (1 - 0.7 * Math.Max(0, u - 0.65) / 0.35) + home * err) * ds;
+                    x += ds * Math.Cos(h); z += ds * Math.Sin(h); L += ds;
+                    pts.Add(new V2(x, z));
+                }
+                double ex = x - s.X, ez = z - s.Z, el = Math.Sqrt(ex * ex + ez * ez);
+                if (el < 1e-6) continue;
+                double sc = dist / el;
+                if (sc < 0.7 || sc > 1.45) continue;
+                double rot = baseA - Math.Atan2(ez, ex), c = Math.Cos(rot), sn = Math.Sin(rot);
+                var o = new List<V2>(pts.Count + 2) { pa.Tip };
+                bool ok = true;
+                for (int i = 0; i < pts.Count && ok; i++)
+                {
+                    double px = pts[i].X - s.X, pz = pts[i].Z - s.Z;
+                    V2 q = i == pts.Count - 1 ? e : new V2(s.X + sc * (px * c - pz * sn), s.Z + sc * (px * sn + pz * c));
+                    ok = comp.Contains(q.Floor) && w.IsWalkable(q.Floor);
+                    o.Add(q);
+                }
+                if (!ok) continue;
+                o.Add(pb.Tip);
+                return Geo.Resample(o, 0.05);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// A pile (owner review 2026-10-04 B2/B13): a mass of cables PLUGGED INTO each other. Every cable of the heap
         /// starts and ends on a connector's port, so no connector lies unused and no cable end lies loose. Star Wars,
         /// Jawa and Cybertek piles use many + and T junction boxes (the praised T junction art); the modern
@@ -1762,6 +1812,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
             int n = Math.Min(MaxPileCables, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
             var used = new HashSet<int>();
+            HashSet<Cell> compSet = null;
             for (int i = 0; i < n && ports.Count >= 2; i++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i);
@@ -1776,7 +1827,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 stops.Add(pb.Tip + pb.Out * 0.22);
                 stops.Add(pb.Tip);
                 List<V2> P = Geo.Resample(Geo.Catmull(stops, 10), 0.05);
-                int heaps = r.Int(1, 2);
+                // a strip pile's cables are far apart (a strip every 7 cells), so a spline through a few cells of the heap drew
+                // long strokes corner to corner, a net (blind judge, pass 12-14): they swirl instead (owner: "a huge tangle of nasty wires and power strips all swirled together terribly")
+                List<V2> swirl = strips ? Swirl(w, compSet ??= new HashSet<Cell>(comp), pa, pb, CordRng.Of(opt.Seed, "swirl", nd.Cell.X, nd.Cell.Z, i)) : null;
+                if (swirl != null) P = swirl;
+                int heaps = swirl != null ? r.Int(0, 1) : r.Int(1, 2);
                 for (int k = 0; k < heaps && P.Count > 24; k++)
                 {
                     int j = r.Int(P.Count / 3, 2 * P.Count / 3);
