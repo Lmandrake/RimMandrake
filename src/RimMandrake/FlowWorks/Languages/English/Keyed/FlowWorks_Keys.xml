@@ -128,6 +128,8 @@
   <RMFlow_RaidersGiveUpTrench>Raiders of {0} cannot cross your pit and are pulling back.</RMFlow_RaidersGiveUpTrench>
   <!-- RAIDERS_FETCH_THEIR_FALLEN: {0} = the raiding faction's name -->
   <RMFlow_RaidersFetchFallen>Raiders of {0} are lowering a ladder into your pit to fetch their fallen.</RMFlow_RaidersFetchFallen>
+  <!-- PIT_STORY_BUILD_LEFT_IN_THE_PIT: {0} = the names of the raiders a withdrawing raid leaves held in a pit -->
+  <RMFlow_RaidLeftTrapped>The raid is pulling back and leaving {0} in your pit. Right-click them with a colonist to capture them from the edge.</RMFlow_RaidLeftTrapped>
   <RMFlow_RescueLadderIntoPrison>Raiders have set a ladder into the pit holding your prisoners: they may climb out.</RMFlow_RescueLadderIntoPrison>
 
   <!-- RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH: first time a colonist is swept by a fast river lane -->

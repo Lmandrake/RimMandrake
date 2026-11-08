@@ -64,7 +64,7 @@ def shot(B, name, rect=VIEW, root=ROOT):
     time.sleep(1.5)
     r = B.call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=1,
                rootSize=root, doNotResetCamera=True, fileName="s1_%s_%s" % (name, time.strftime("%H%M%S"))) or {}
-    log("SHOT", name, r.get("path") or r.get("message"))
+    log("SHOT", name, r.get("path") or r.get("message"), {k: v for k, v in r.items() if k not in ("path", "operation")})
     return r.get("path")
 
 
@@ -116,6 +116,8 @@ def stage(B, a):
     # a player's colonists would cut the plants under the walls and the pit: clear just those cells
     for c in cells_walls + PIT:
         B.call("jawa/clear_area", rect="%d,%d,1,1" % c, dryRun=False)
+    # and the passage floor: a player cuts the trees out of his killbox (s7: pines stood in it, drawn over the pit)
+    B.call("jawa/clear_area", rect="%d,%d,3,%d" % (GX - 1, PZ0, PZ1 - PZ0 + 1), dryRun=False)
     r = B.call("jawa/build_batch", ops=ops("Wall", cells_walls), stuff="BlocksGranite", faction="player", readBack=2) or {}
     log("walls", {k: r.get(k) for k in ("success", "placed", "survived", "failed") if k in r})
     shot(B, "00_passage_undug")
@@ -135,12 +137,17 @@ def stage(B, a):
     shot(B, "04_pit_covered_close", rect=(GX - 3, PZ - 2, 7, 6), root=4.0)
     # his story: "the defenders standing on the other side begin peppering them with arrows" -- three archers drafted in the
     # passage just north of the pit, the colony side
-    r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX, z=PZ + 4, faction="player", count=a.archers) or {}
-    aids = [p.get("id") for p in r.get("pawns") or [] if p.get("id")]
-    spots = [(-1, 4), (0, 4), (1, 4), (-1, 5), (0, 5), (1, 5)]
-    for pid, (dx, dz) in zip(aids, spots):
-        o = B.call("jawa/order_pawn", pawnId=pid, x=GX + dx, z=PZ + dz, draft=True, waitTicks=120) or {}
-        log("archer", pid, json.dumps(o, default=str)[:200])
+    # each archer spawned on its own spot (s7: a count spawn scattered one OUTSIDE the compound, and the raid went for him)
+    dz = a.archer_dz
+    spots = [(-1, dz), (0, dz), (1, dz), (-1, dz + 1), (0, dz + 1), (1, dz + 1)][:a.archers]
+    for dx, ddz in spots:
+        r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX + dx, z=PZ + ddz, faction="player", count=1) or {}
+        pid = next((p.get("id") for p in r.get("pawns") or [] if p.get("id")), None)
+        if pid:
+            # drafted where it stands (s8: rimworld/set_draft left them undrafted and they wandered out of the compound)
+            o = B.call("jawa/order_pawn", pawnId=pid, x=GX + dx, z=PZ + ddz, draft=True, waitTicks=0) or {}
+            log("draft", pid, json.dumps(o, default=str)[:160])
+        log("archer", pid, (GX + dx, PZ + ddz), json.dumps(r.get("pawns"), default=str)[:200])
     st.update(staged=True, d=a.d, cover=a.cover)
     save(st)
 
@@ -197,6 +204,9 @@ def watch(B, a):
         line = "t+%d hostiles=%d near=%d | %s | pit(ladders=%s): %s" % (
             done, len([p for p in hs if not p.get("dead")]), len(near), "; ".join(brief(p) for p in hs)[:1400],
             rep.get("ladderSquares"), json.dumps(occ, default=str)[:600])
+        if near or near_seen:
+            cm = B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_CliffMelee", method="ProofCliffMelee", args="read") or {}
+            line += " | " + str(cm.get("result") or cm.get("message") or "")[:80]
         log(line)
         if near or near_seen:
             log("   defenders:", "; ".join(brief(p) for p in pawns(B, "player"))[:900])
@@ -242,6 +252,7 @@ def main():
     ap.add_argument("--speed", default="Fast")
     ap.add_argument("--close", type=int, default=0, help="every Nth frame also a root-11 close shot of the pit")
     ap.add_argument("--archers", type=int, default=3)
+    ap.add_argument("--archer-dz", type=int, default=4, help="archers' first row, cells north of the pit's south row (2 = the north lip)")
     ap.add_argument("--wall", type=float, default=1500)
     a = ap.parse_args()
     B = fwb.FW()

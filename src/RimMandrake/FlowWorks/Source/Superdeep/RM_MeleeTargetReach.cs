@@ -20,7 +20,8 @@ namespace RimMandrake.FlowWorks
 	///
 	/// THE FIX: on a map with a hole, a melee search accepts only a target the searcher can reach (Touch, Danger.Deadly, the
 	/// finder's own door and fence flags), the same CanReach the pather agrees with. A target in a pit that the raider can stand
-	/// beside on the lip stays a target (Touch reaches it from the lip). With nothing reachable, FightEnemies gives no job and
+	/// beside on the lip WAS a target (Touch reaches it from the lip) until pass 6: RM_CliffMelee now refuses a swing across a
+	/// sheer lip either way. With nothing reachable, FightEnemies gives no job and
 	/// the duty goes on to its later givers: trash, go to the nearest hostile, sap, and JobGiver_RM_CrossTrench.
 	/// </summary>
 	[HarmonyPatch(typeof(AttackTargetFinder), nameof(AttackTargetFinder.BestAttackTarget))]
@@ -44,7 +45,8 @@ namespace RimMandrake.FlowWorks
 			}
 			Predicate<Thing> inner = validator;
 			validator = t => (inner == null || inner(t))
-				&& (t == null || !t.Spawned || p.CanReach(t, PathEndMode.Touch, Danger.Deadly, canBashDoors, canBashFences));
+				&& (t == null || !t.Spawned || (p.CanReach(t, PathEndMode.Touch, Danger.Deadly, canBashDoors, canBashFences)
+					&& !RM_CliffMelee.Across(p, t)));   // PIT_STORY_FIX_MELEE_ACROSS_THE_LIP: no swing up or down a sheer lip
 			Wrapped++;
 		}
 

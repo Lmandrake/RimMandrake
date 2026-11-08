@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -224,6 +225,25 @@ namespace RimMandrake.FlowWorks.TakenByLand
         // ── SWEEP_PRISONER_RETURN ───────────────────────────────────────────────────────────────────────────────────
         /// <summary>When each pawn was given back; RM_Patch_ReturnedPrisonerNoEscape and RM_Patch_ReturnedPrisonerLost read it.</summary>
         public static readonly RM_TakenReturnGuard Returned = new RM_TakenReturnGuard();
+
+        /// <summary>RETURNED_PRISONER_FIX_GRACE_LOST_ON_LOAD, live (ralph/live/four.py): "mark:pawnId" marks the pawn given back
+        /// now, as the return does; "read:pawnId" reports its escape guard and the letter's watch. Save and reload between them.</summary>
+        public static string ProofReturnedGrace(string arg)
+        {
+            int now = Find.TickManager.TicksGame;
+            string[] a = (arg ?? "").Split(':');
+            if (a.Length != 2 || !int.TryParse(a[1], out int id) || (a[0] != "mark" && a[0] != "read"))
+            {
+                return "REFUSED: arg is mark:<pawnId> or read:<pawnId>";
+            }
+            if (a[0] == "mark")
+            {
+                Returned.Mark(id, now);
+            }
+            Pawn p = Find.CurrentMap?.mapPawns.AllPawnsSpawned.FirstOrDefault(q => q.thingIDNumber == id);
+            return "GRACE id=" + id + " pawn=" + (p?.LabelShort ?? "none") + " prisoner=" + (p?.IsPrisonerOfColony ?? false) + " now=" + now
+                + " inGuard=" + Returned.InGuard(id, now) + " recent=" + Returned.Recent(id, now);
+        }
 
         /// <summary>The vanilla escape's open-door search from a district (JobGiver_PrisonerEscape: 25 regions, free-passage doors).</summary>
         public static bool OpenPathToEdge(District d)

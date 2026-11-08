@@ -16,6 +16,7 @@ import fwb
 
 CLIFF = "RimMandrake.FlowWorks.RM_CliffMask"
 COVER = "RimMandrake.FlowWorks.Pits.RM_PitCoverUtility"
+TAKEN = "RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand"
 
 
 def log(*a):
@@ -79,6 +80,12 @@ def main():
     B.shot("fw4_bigdeck", x0 - 1, z0 - 1, a.big + 2, a.big + 2, root=40)
     # save and reload: the full cliff-mask rebuild of a big hole on load
     log("RESULT cliff reset before reload:", proof(B, CLIFF, "ProofCliffTiming", "reset"))
+    # RETURNED_PRISONER_FIX_GRACE_LOST_ON_LOAD: a pawn marked given back now must keep its escape guard across the reload
+    cen = B.call("jawa/pawn_census", faction="player") or {}
+    gid = next((str(p.get("id")).replace("Human", "") for p in cen.get("pawns") or [] if p.get("isColonist")), None)
+    gid = "".join(ch for ch in (gid or "") if ch.isdigit())
+    if gid:
+        log("RESULT grace mark:", proof(B, TAKEN, "ProofReturnedGrace", "mark:" + gid))
     r = B.call("rimworld/save_game", saveName=a.save) or {}
     log("save", json.dumps(r, default=str)[:200])
     time.sleep(3)
@@ -91,6 +98,10 @@ def main():
     B.step(60)
     log("RESULT cliff after reload+60:", proof(B, CLIFF, "ProofCliffTiming", ""))
     log("RESULT coverscan after reload:", proof(B, COVER, "ProofCoverScan", ""))
+    if gid:
+        log("RESULT grace after reload+60:", proof(B, TAKEN, "ProofReturnedGrace", "read:" + gid))
+        B.step(2500)
+        log("RESULT grace after reload+2560 (guard 2500 over, watch on):", proof(B, TAKEN, "ProofReturnedGrace", "read:" + gid))
     if a.skip_maps:
         return
     # a second map with its own pit; per-map derive counts on both

@@ -96,6 +96,10 @@ def shoot(B, ox, oz, tag, looks):
     for look in looks:
         set_look(B, look)
         n = "b3_%s_L%d" % (tag, look)
+        # pass 6: the owner's play zoom is ~64 px a cell (CLAUDE.md), root 7.2 on Steve's ~920 px-high window
+        shot(B, n + "_occ_r7", (ox - 1, oz - 1, 22, 4), 7.2)
+        shot(B, n + "_empty_r7", (ox - 1, oz + 3, 22, 4), 7.2)
+        shot(B, n + "_big_r7", (ox - 1, oz + 7, 14, 7), 7.2)
         shot(B, n + "_occ_r20", (ox - 1, oz - 1, 22, 4), 20)
         shot(B, n + "_empty_r20", (ox - 1, oz + 3, 22, 4), 20)
         shot(B, n + "_big_r20", (ox - 1, oz + 7, 14, 7), 20)
