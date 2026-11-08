@@ -187,18 +187,24 @@ namespace RimMandrake.Pyrelands
     /// <summary>Scorch-fruit only stands in a fresh burn, right behind the front, and its shade-cloth study (EnvironmentalHazards'
     /// found-tech comp) is served automatically by vanilla's study work giver, which knows nothing of fire. On map n
     /// (2026-11-07) two colonists walked 70 cells into the opening front on day 0 and one came back with three burns. A pod
-    /// with fire within FireClear cells is not studied unless the player orders it.</summary>
+    /// with fire within FireClear cells is not studied unless the player orders it.
+    /// Nor is one far from home: on map r (2026-11-07) a colonist walked 120 cells across open ground at 60 C to study a pod
+    /// beside the burn, with thirst 0.23, food 0.19 and heatstroke 0.34. A pod outside the home area is studied unordered only
+    /// within StudyReach cells of the studier.</summary>
     public static class Patch_StudyInteract_NotInTheFire
     {
         private const int FireClear = 6;
+        private const int StudyReach = 25;
         private static ThingDef pod;
 
-        public static void Postfix(ref bool __result, Thing t, bool forced)
+        public static void Postfix(ref bool __result, Pawn pawn, Thing t, bool forced)
         {
             if (!__result || forced || t == null || !t.Spawned) return;
             if (pod == null) pod = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
             if (t.def != pod) return;
             Map map = t.Map;
+            bool atHome = map.areaManager?.Home != null && map.areaManager.Home[t.Position];
+            if (!atHome && (pawn == null || !t.Position.InHorDistOf(pawn.Position, StudyReach))) { __result = false; return; }
             foreach (IntVec3 c in GenRadial.RadialCellsAround(t.Position, FireClear, true))
             {
                 if (c.InBounds(map) && c.ContainsStaticFire(map)) { __result = false; return; }

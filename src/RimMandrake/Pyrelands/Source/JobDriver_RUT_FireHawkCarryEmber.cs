@@ -97,10 +97,12 @@ namespace RimMandrake.Pyrelands
                 CompFireHawkSpread comp = pawn.TryGetComp<CompFireHawkSpread>();
                 float size = comp?.Props.startFireSize ?? PyrelandsTuning.SmoulderFireSize;
 
-                if (FireUtility.TryStartFireIn(cell, pawn.Map, size, pawn))
+                bool lit = FireUtility.TryStartFireIn(cell, pawn.Map, size, pawn);
+                if (lit)
                 {
                     FleckMaker.ThrowFireGlow(cell.ToVector3Shifted(), pawn.Map, 1f);
                 }
+                comp?.Notify_EmberDropped(cell, lit);
             };
             yield return dropEmber;
         }

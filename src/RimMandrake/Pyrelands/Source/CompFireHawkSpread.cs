@@ -42,6 +42,24 @@ namespace RimMandrake.Pyrelands
     {
         private int lastSortieTick = -99999;
 
+        // The last ember drop, for the live probe (jawa/comp_read): where, when, and whether a fire took. A drop six cells past
+        // a ragged front often lands within a few cells of other flames, so "a new fire away from the blaze" cannot be told
+        // from the fire map alone.
+        private IntVec3 lastDropCell = IntVec3.Invalid;
+        private int lastDropTick = -1;
+        private bool lastDropLit;
+        private int drops;
+        private int dropsLit;
+
+        public void Notify_EmberDropped(IntVec3 cell, bool lit)
+        {
+            lastDropCell = cell;
+            lastDropTick = Find.TickManager.TicksGame;
+            lastDropLit = lit;
+            drops++;
+            if (lit) dropsLit++;
+        }
+
         public CompProperties_FireHawkSpread Props => (CompProperties_FireHawkSpread)props;
 
         public bool CanSortieNow =>
@@ -59,6 +77,11 @@ namespace RimMandrake.Pyrelands
         {
             base.PostExposeData();
             Scribe_Values.Look(ref lastSortieTick, "lastSortieTick", -99999);
+            Scribe_Values.Look(ref lastDropCell, "lastDropCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref lastDropTick, "lastDropTick", -1);
+            Scribe_Values.Look(ref lastDropLit, "lastDropLit", false);
+            Scribe_Values.Look(ref drops, "drops", 0);
+            Scribe_Values.Look(ref dropsLit, "dropsLit", 0);
         }
     }
 }
