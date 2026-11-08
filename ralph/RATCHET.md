@@ -7,7 +7,7 @@ Bar ids are the 30 in `ralph/ASPECTS.md` / the north-star walk (`design/validati
 Bar numbers are the old Remaining order (kept so earlier notes still point right). Each bar keeps its acceptance test.
 Another pass is justified only by a named failed assertion or a missing shot.
 
-### Batch 0, offline (pass 8): the shared depth drawing and the look fixes, with draw-math tests; one validation map,
+### Batch 0, offline (pass 8): DONE (built, merged, DLL committed; not deployed, not seen): the shared depth drawing and the look fixes, with draw-math tests; one validation map,
 staging scripts, state-log asserts and shot coordinates (`ralph/live/g8_*`, manifest `ralph/live/GALLERY8.md`).
 
 ### Batch A, daylight depth gallery (bars 4, 5, 10-13)
@@ -36,6 +36,7 @@ Owed, not bars, piggyback here: four.py grace probe (take/save/reload/read); tra
 Scripted raid, fixed seed, dry weather, known defenders (the colony's own armed) and rescuer; layout of s14 (`FW_PERIM=20`, spawn 6 south of the mouth). SAVE just before the raiders reach the cover (and read their jobs: none on the concealed cover, pit_covered_invisible regression check), save after capture and before the rescue; retry only the failed segment; keep one continuous successful run as the final evidence: two fall through the cover, rescue ladder on the near wall, defenders shooting the rescuers, raid driven off, injured prisoners in the drained pit prison.
 
 ## Proven (locked)
+Pass 8 changed the far face's height and the occupant sink (one curve) and the bridge's look: pit_walls_have_visible_depth, pit_occupied_distinguishable, never_snared_standing and pit_cover_unlike_bridge stay locked here (no regression shown) but batch A/B frames re-see them; a regression seen there moves them back.
 - geared_pawn_climbs_out: p2: geared pawn out at depth 0 at +634 ticks, ungeared control stayed at depth 8; `Transient/live_session/pass2c_20261019T023413/session.json` B4_access_gear_climbs_sheer_4m PASS, B4_access_no_gear_stays_in PASS (ruling 1:23).
 - pit_cover_unlike_bridge: p2: the bridge reads as a built crossing, timber deck with posts and rails; hung look is judged only by suspension_bridge_reads_hung (ruling 1:23).
 - sluice_gate_state_legible: p2: shut vs lifted reads at r11 (`shots\old\pass2\bar_sluice_gate_state_legible_crop_r11_shut_over_open*`), ProofLiquid fill 2/0 shut vs 1/1 lifted. The bar names no zoom (ruling 1:23). r20 plank is a nice-to-have only.

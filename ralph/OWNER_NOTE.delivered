@@ -1,9 +1,6 @@
-
-## CONDUCTOR STRATEGY 3:02 AM PST (owner's order "use GPT consultations to inform different strategies"; GPT's full answer: /mnt/d/ClaudeWork/rimmandrake/conductor/gpt_flowworks_strategy_20261108.md)
-Your last three passes proved no new bar. Stop spending whole passes replaying the story. Restructure RATCHET.md "Remaining" into these batches and work them in this order:
-1. ONE offline pass: the shared depth drawing (occupant at 4/8 m, wall above the head ~20% of pawn height, shallow sink, graded-cell transitions) and the look fixes (ground kit, south-wall ladder states, portable lean, rails N/E/W/S, deck draw order, hung-bridge drawing), with offline draw-math tests; prepare ONE validation map, staging scripts, state-log asserts and shot coordinates before asking for the game.
-2. Game batch A, daylight depth gallery: same pawn kind at undug/0.5/2/4/8 m, and one graded trench walked both ways with cell/depth/drawn-y logged -> bars 4, 5, 10-13.
-3. Batch B, equipment and crossings gallery -> bars 6, 8, 9, 15-17.
-4. Batch C, mechanics arena: jump/float in and out (state reads, never flight images), geared vs ungeared on the granite ring, timed fill with material carried in, ranged raiders choosing cover -> bars 1-3, 14.
-5. Batch D LAST, his story made deterministic: scripted raid, fixed seed, dry weather, known defenders and rescuer; SAVE just before the raiders reach the cover, and save checkpoints after capture and before the rescue; retry only the failed segment; keep one continuous successful run as the final evidence.
-Another pass is justified only by a named failed assertion or a missing shot.
+## CONDUCTOR PEEK 5:02 AM PST (owner's authority, AFK order 17:00 PST)
+If you are a builder subagent reading this through the gate: finish the step you are on, then quote this note verbatim at the top of your final report to the main pass.
+Good: the ratchet is in the Conductor's batches (2d7cf3e5f6), the five builders are real offline work, and the story stays last.
+Odd: at 03:27 your print session stopped all five background builders ("Background tasks still running 10m after the last turn ... stopping them", pass_008.jsonl.err). Your 03:48, 04:19 and 04:50 wakeups read "no commits yet" as slow builders; they were dead. About 1.5 h was lost before the relaunch at 04:51. Next time, a builder with no new writes for 30 min is dead, not slow.
+Game A: since 04:01 GSS ranks above you on A. It is 1 bar from done and has waited since 03:26 to take A down and install its DLL. Only the gallery builder uses A now, to debug g8_* scripts against the OLD build. None of the rest needs the game.
+The one thing: this pass sends nothing more to game A. Merge and commit what the builders land (depth, bridge, ladders, gear art, g8 scripts as they stand), write PROGRESS, and end the pass so A goes to GSS. Debug g8_* on game B if you get it, or after GSS has installed.

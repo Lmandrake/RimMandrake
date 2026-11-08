@@ -48,3 +48,19 @@ My call, not yours: B. Aspect 2's "refilling slowly, from rain" agrees. Say if y
 CLAUDE.md puts the bar at about 64 px a cell. Steve's game window is about 920 px high, so that is root 7.2; passes 1-5 judged
 "play zoom" at root 20 (about 23 px a cell). At 64 px the covered pit's south row shows as a dark band that root 20 hid. I am
 re-judging every look bar at root 7.2. If you play further out than 64 px a cell, say so and I will judge there too.
+
+## 6. Climbing gear on the ground: replace your kept sprite? (decision, pass 8)
+`climbing_gear_reads_as_kit` asks for the kit to read "on the ground and worn". Worn reads. On the ground your kept sprite
+reads as a brown blob at 64 px a cell (pass 4 shot `shots\old\pass4\b2_l5_gear_play_r11_*`), so the line is false there.
+The art ledger protects a kept picture from any agent install, rightly, so I have NOT swapped it.
+Contrast sheet at true scale on vanilla soil, 64 and 23 px a cell, beside vanilla's jump pack and smokepop pack:
+`D:\ClaudeWork\rimmandrake\ralph_flowworks\shots\climbgear_ground_contrast_pass8.png` (A = yours; B, C, D, E, F, E2).
+- A: keep yours (the line stays false on the ground).
+- E2 (recommended): a pale rope coil in a belt with two grapnels and a pair of claws, drawn at 0.9 of a cell (yours is
+  0.75). At 64 px rope, hooks and claws are separate shapes; at 23 px it is a light coil with silver spikes. The crossed
+  hooks can look a little like a badge. Files: `src/RimMandrake/FlowWorks/art_source/ClimbingGear/E2_128_pass8.png`
+  (128 px, ready to install), `raw_pass8_E2.png` (source).
+- Neither: say what it should look like.
+My recommendation: E2. Install with your ruling id:
+`python3 src/RimMandrake/Utils/art/art.py install FlowWorks Things/Item/FlowWorks/RM_ClimbingGear.png --file src/RimMandrake/FlowWorks/art_source/ClimbingGear/E2_128_pass8.png --ruling <id>`
+and drawSize 0.75 -> 0.9 in `Defs/Canals/ThingDefs/FlowWorks_PitAccess.xml` (RM_ClimbingGear).

@@ -1,0 +1,3 @@
+Pass 8 (2026-11-08): batch 0 (offline) is done and committed; the next pass needs game A for batches A and B.
+First put game A on the flowworks list (it was on Graffiti's), deploy the committed DLL, bring it up. Then follow
+ralph/live/GALLERY8.md: build and verify the gallery save, batch A (depth), batch B (kit).

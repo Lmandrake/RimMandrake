@@ -1,114 +1,112 @@
 # FlowWorks Artisan, aspect 1 (pits and depth): progress
 
-## Pass 7 (2026-11-08, ~09:55-10:35Z): rain fixed, the archers' target bug fixed, the story staged three ways
-Weather: 3 crashes of game A (one native crash in map generation, one Mono JIT crash in vanilla `StunHandler.StunFor`
-mid-raid, one at load) and 1 failed start, all with `bad_cpus=[2]`; 0 dropped ssh. Retired on the context gate (258k).
-Shots: `D:\ClaudeWork\rimmandrake\ralph_flowworks\shots\pass7\` (pass 6's moved to `shots\old\pass6`).
+## Pass 8 (2026-11-08, ~03:00-07:00 PST): batch 0, offline, per the Conductor's 3:02 strategy
+RATCHET.md is now in his batches (0 offline, A depth gallery, B equipment and crossings, C mechanics arena, D the story
+last). This pass did batch 0. Nothing new was seen in the game: at 05:02 the Conductor gave game A to GSS for its landing
+("this pass sends nothing more to game A"), and game A was on Graffiti's list anyway (see weather).
 
-**Landed (built, DLL + .srchash committed, deployed, live):**
-1. Rain (QUESTIONS 4, my call B): `rainFillPerPulse` 0.1 -> 0.002. The old rate was 0.5 m per game hour of rain (every vanilla
-   rain weather has rainRate 1), so any pit trap flooded in one shower (s9). Now ~0.24 m per rain day. Live setting read 0.002;
-   the story pits in s12-s13 read fill 0 throughout.
-2. `RM_CliffMelee` threat rule: a held pawn stays an auto-target only after a REAL attack (`lastAttackTargetTick`), not after
-   merely picking a target (`lastEngageTargetTick`, which `JobGiver_AIFightEnemy.UpdateEnemyTarget` stamps on every pick).
-   s11 showed why: the trapped raider was refused 72 swings yet stayed a "threat", so 5 archers on the lip shot him while his
-   rescuer chopped wood, fetched it and set a ladder 3 cells away (ladder in at +3960, rescuer dead only at +4680). Deployed
-   for s12+; not yet seen in a run where a rescue was under way.
+**Built, merged, DLL + .srchash committed (source d4671811b8c6), NOT deployed:**
+1. Depth drawing, one scale (builder branch worktree-agent-a908dbc64d5ccd15e). Sink `RM_PitDrawMath.SinkFor`: 4k(D/4)^0.85
+   to D4, then +k/4 a level to D8, flat past: k 0.3 gives 0.37/0.67/0.94/1.20/1.50 at 0.5/1/1.5/2/4 m. The far face
+   (`RM_PitLookMath.ObliqueFace`) uses the same curve plus a small extra past 4 m, soft-capped into the column's opening, and
+   the occupant's sink uses the same soft cap, so floor line and face foot agree. Face heights: 3- and 5-row pit 1.20/1.50/
+   1.72 at 2/4/8 m; 2-row 1.20/1.49/1.63; 1-row ~0.85 at all. Lip is riser-aware ((z_s+1) - SinkFor(that square)), so a graded
+   trench no longer clamps the sink. New setting `pitSinkHoldAbove` (default 0 = drawn centre on the near lip). Bridge calls
+   (`args` is one '|'-separated string): `jawa/static_call` type `RimMandrake.FlowWorks.RM_PitDepthDraw`, methods
+   `DepthDrawState "<thingIDNumber>"` (one line: cell, depth, sink, drawnZ, lipZ, face, hold, k), `SetSinkHoldAbove "0.4"`,
+   `SetSinkPerLevel "0.375"` (live only, not saved). New SelfTest/PitDepthDrawingChecks.cs (11 cases).
+   Known edge: a N-S trench whose deepest part is ONE row squeezes its 4 m step below the 3.5 m one (soft cap on a 1-row run);
+   the gallery's graded trench has 3 rows at 4 m. `northstar/validation_v2.py` X rows still model the old linear sink: its
+   predicted sinks are wrong now (don't trust its X rows until updated).
+2. Ladders on rails (worktree-agent-a685de667d76a4c0c): `RM_LadderRigMath.Strokes` drives `RM_LadderDraw.TryPrint`; rails on
+   all four walls in both states (north rim to face foot, east/west 0.36 apart, south hooks 0.34 over the lip), rails ~5.5 px
+   at 64 px (was 2.6); lowered rides between rails, raised lies out beyond the rim (QUESTIONS 2 rule kept). Portables lean
+   11-39 degrees on all four walls; too tall a wall: flat on the floor, and no way out (`RM_LadderUtility.Reaches`
+   :87-115 is the one rule the drawing, `LadderLetsOut` and the climb join in RM_CliffMask:430 all ask). Staging a too-short
+   portable: placement refuses it, so place on a shallow pit, dig past `portableLadderMaxLevels`, redraw.
+3. Hung suspension bridge (worktree-agent-aadc260db98b8231d, pass 7's builder finished): `RM_SuspensionHang.cs`;
+   treatment 0 (default) posts on both end squares, main cable dipping post to post, hangers to a sagging deck; 1 rope walk
+   (reads as a railing), 2 cable-stayed (reads rigid). Switch: static_call `RimMandrake.FlowWorks.Pits.RM_SuspensionHang`
+   `SetTreatment "1"`. Deck redrawn over floor-band pawns beneath, not over a pawn that has walked out south of it. Staging:
+   `RM_SuspensionProofs.ProofBuild "x1,z1;x2,z2;timber;god"` (see ladders5.py). A walk-under shot needs a pit at least 5 rows
+   N-S (B3 in the gallery is 9 rows at 2 m). Unverified: posts/cables may draw over the head of a pawn in front of them; in a
+   pit shallower than 2 m the redrawn deck can hide the head of a pawn beneath that pokes above it.
+4. Climbing gear on the ground: candidate E2 (rope coil in a belt, two grapnels, claws, drawSize 0.9) made and judged, NOT
+   installed: the art ledger refuses any agent install over an owner-KEPT picture (pre-push ART_VERSION_WRANGLING_1, then
+   `art.py install` REFUSED). Put to him as QUESTIONS 6 with the sheet `shots\climbgear_ground_contrast_pass8.png`; files in
+   `art_source/ClimbingGear/E2_128_pass8.png`. E2 reads as rope + hooks + claws at 64 px; at 23 px a light coil with spikes.
+   Until he rules, climbing_gear_reads_as_kit stays false on the ground (decision row below).
+5. Staging for the next sitting: `ralph/live/g8_*.py` + manifest `ralph/live/GALLERY8.md` (fixtures A1-A4, B1-B4, shot
+   names, asserts to results.jsonl, commands). Checked offline against the live tool schemas and a mock bridge; the
+   FlowWorks-free half ran on game A; the FlowWorks half (dig, ladders, bridge, the save `RM_FW_Gallery8`) has NEVER run.
+   `ORIGIN (60,150)` in g8_common.py is provisional until `g8_site.py probe` on the calm map.
 
-**The story, three runs on this build** (`story3.sh`, logs on Steve `Transient/ralph_fw/watch_sN.out`; summarise with a
-regex over the `t+` lines, the raw lines are 1.5k chars each):
-- s11 (raid from the map edge, 400 pts): every raider took vanilla's trash-a-distant-building job on the staged colony's only
-  buildings (its walls) from 70 cells out. One (Hippo) came up the passage and fell; Gaxo chopped, took a portable ladder and
-  set it on the south wall (seen, `s11_rescue_ladder_set_south_wall_64px.png`); Hippo climbed out ~1,200 ticks later and was
-  shot; 3 raiders dead, 2 fled. All 8 defenders lived. No prisoner left. Closest to his story so far.
-- s12 (spawn 18 cells south of the passage mouth, 400 pts = 4 Neanderthals): the first raider fell through at once and died
-  in the pit (arrows on the way in, then spikes); with the hole open the passage is truly blocked, so the other three bashed
-  walls for 3,000 ticks and left. Correct behaviour, not his story.
-- s13 (800 pts): a mixed 15-pawn raid (ancient soldiers and a militor joined) broke in through the compound walls; nobody fell.
-- s14 (600 pts, spawn 6 cells south of the mouth, NEW `FW_PERIM=20` perimeter wall along the passage mouth's row): **the
-  first two fell through the cover together** (Trogo held from t240, Cale from t720), the raid stayed, Orange chopped and
-  set a rescue ladder (in at t2400, ~1,700 ticks after the second fall, most of it chopping out of bow range), both climbed
-  out: Cale was shot dead at the lip, Trogo escaped with the raid; Orange (the rescuer) was never hit. Raid driven off (1 dead),
-  no prisoner left. Pit dry. Cliff melee refused 610 swings. His story up to "driven off", but the rescue beat the archers.
-With the perimeter wall the trap springs as he wrote it. What stands between s14 and his ending is the rescue race: 5
-tribal short bows never touched a rescuer who was out of range while chopping and spent only ~240 ticks at the lip setting the
-ladder. Open question for pass 8, look before tuning: is ~240 ticks at the lip too quick for a makeshift ladder (his story has
-defenders "peppering them with arrows while they try"), or are 5 short bows simply too few? Try first with the colony's own
-3 colonists armed (a player defends with everyone), then judge the ladder-setting time.
+Self-tests on the merged build: targeted 181/181 (PitDraw, PitLook, PitDepth, Ladder, Suspension, Hang, Drawbridge,
+PitCover, DeepDig, DeepBed, Swim, WallClimb, PitAccess...). Full suite: see the commit after this one; the builders' full runs
+were red only on PitCapture_follows (known), LW1 (a hose SwimCellsPublished source pin) and RiverSwitchFlip_weirWhiteWater
+(a stale text pin), both red on the base too; PondDepth_S7_cost once (timing under load).
 
-**Seen, not changed:**
-- `pit_covered_invisible`: pass 6's dark south row did NOT come back (s11 undug vs covered at 64 px: the covered squares are
-  2.6% darker, `s11_undug_vs_covered_passage_64px.png`). Two hairline seams do show at root 7.2, because the bridge widens the
-  camera's minimum to 0.5 so `RM_PitCoverLookMath.SeamStrength` applies its closest-zoom floor (0.9) up to root 13. A player
-  at 64 px on a 4K screen (root ~17) gets none; on a 1440p screen 64 px IS the closest zoom, where the seam is meant to show.
-  Kept Proven (no regression shown).
-- Open item triage (subagent, `D:\ClaudeWork\rimmandrake\ralph_flowworks\pass7\items_triage.md`): of 17 items, 8 fixed in
-  code, 2 really open (a harness false pass; grate fire, aspect 2), 7 need a live look (deep stone letter; soil strip over
-  wall; capture-down from the lip; bridge art = suspension_bridge_reads_hung; underpass shot = pawn_walks_under_deck; river and
-  flood rows, aspect 2).
-- `jump_into_pit_lands_unhurt`: every floater and jumper race tagged in `Patches/Canals/FlowWorks_PitTravel.xml` comes from
-  other mods (RM_Bulloo, RSW_*), none on game A's small list, and CLAUDE.md forbids live flight. Only the jump pack/Skip in
-  AND out can be shown on this list; the floater clause needs a list with one of those mods (owner's call or another tier).
+**Weather and harness:** 0 game crashes, 0 restarts, 0 dropped ssh (bad_cpus=[2] all pass). Harness: the print session
+stops background agents 10 min after a turn ends ("Background tasks still running 10m after the last turn ... stopping
+them"): all five builders died at 03:27 and 1.5 h went before I relaunched them in the FOREGROUND (all five in one message,
+run concurrently, ~50-60 min). Never end a turn with background agents running; a builder with no writes for 30 min is
+dead. Game A was switched to Graffiti's list at 03:27 (steve_games.py tier_a=graffiti); since 04:01 GSS ranks first on A.
+`codex_home_1`'s Codex login is dead ("refresh token already used"): the next image job there needs a fresh login.
 
-**In flight at retire:** an rm-builder subagent in a worktree is writing the hung suspension bridge (`RM_SuspensionHang.cs`,
-treatments 0/1/2 by `jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionHang SetTreatment`, deck redrawn over pawns
-beneath) from `hung_bridge_pass6\PROGRESS.md`, building with `WINBUILD_ROOT=D:\ClaudeWork\rimmandrake\build_fw7_bridge`. Its
-commit lands on a `worktree-agent-*` branch (`git branch -a | grep worktree`); merge its SOURCE, rebuild the DLL here, deploy.
-If no branch exists, look for uncommitted source in `.claude/worktrees/agent-*` before rerunning the brief.
-
-## Next (in order)
-1. Story again with `FW_PERIM=20 FW_SPAWN=gx,p-6` (s14's layout) and the defenders armed as a player would; frames of the
-   rescue ladder going in. If fallen remain after the raid leaves: `python.exe ralph/live/capture.py <colonist> <x> <z>`
-   (right-click capture from the edge), and look for the `RMFlow_RaidLeftTrapped` message.
-2. Merge and deploy the hung bridge; `ladders5.py bridge` at root 7.2 and 11 for the three treatments side by side in LOOK.md.
-3. `bash ralph/live/look7.sh p7` (written, never run): depth sheet in the default look with occupied 3x3 pits at 4 m and
-   8 m, `walk7.py` graded walk 0-4 m and back with the real drawn sink per stop, ladders/portables/gear at root 7.2 and 11.
-   Judges pit_depth/pawn_height/lowers/rises/occupant_below_floor/trapped/ladder_state/portable/rails/gear in one sitting.
-4. Jump pack in and out of a 2 m pit with hediffs read (`bars2_pit.py jump` has the in half).
-5. GPT broaden call (none in passes 6-7; required before DONE.md) with the 64 px shots.
-Owed from earlier: trench cage staging, no-gear wall control, dig hours + raiders carrying fill, four.py (grace across a reload).
+## Next (in order; ralph/NEED_GAME is set)
+1. When game A is ours: `ralph/steve.sh tier` (flowworks list), `deploy`, `up`. Check the deployed DLL's srchash.
+2. `g8_site.py probe` -> set ORIGIN -> `build --save RM_FW_Gallery8` -> `verify` (GALLERY8.md has the commands).
+3. Batch A (`g8_depth.py --k 0.3,0.375 --hold 0,0.4`): measure a colonist's drawn feet-to-crown on the undug control at
+   root 7.2 (vanilla head offset +0.34 suggests ~1.25 cells, not the provisional 1.0). If ~1.25, the 20 % needs k ~0.375
+   (sink 1.5 at 2 m): pick k and hold by eye from the side-by-side, set the defaults, rebuild. Judge bars 4, 5, 10-13; also
+   re-see pit_walls_have_visible_depth, pit_occupied_distinguishable, never_snared_standing (their face/sink changed).
+4. Batch B (`g8_kit.py`): bars 8, 9, 15-17 (6 waits on QUESTIONS 6), plus pit_cover_unlike_bridge (bridge look changed).
+5. First-look shots refreshed (3-4 `first_look_*`), then the GPT broaden call with them (none in passes 6-8; required
+   before DONE.md).
+6. Batch C, then D (RATCHET).
 
 ## Running count (seen in game; look bars judged at ~64 px where re-shot)
-- pit_depth_ladder_legible: false (pass 3 at r20); unjudged at 64 px
-- pawn_height_ladder_legible: false (pass 3 at r20); unjudged at 64 px
+- pit_depth_ladder_legible: unseen (rebuilt pass 8; was false)
+- pawn_height_ladder_legible: unseen (rebuilt pass 8; was false)
 - pawn_lowers_on_deeper_cell: unseen
 - pawn_rises_on_shallower_cell: unseen
 - pit_reads_as_hole: true (s12 open spiked pit at 64 px)
-- pit_walls_have_visible_depth: true
+- pit_walls_have_visible_depth: unseen (true before; pass 8 changed the far face's height)
 - pit_not_vanilla_trap: true
 - pit_reads_at_size: true
-- pit_occupant_below_floor: false (true at 2 m, s11 at 64 px; the 4 m 3x3 case drew on the south lip, pass 2)
-- pit_occupied_distinguishable: true
+- pit_occupant_below_floor: unseen (rebuilt pass 8; was false at 4 m)
+- pit_occupied_distinguishable: unseen (true before; occupant sink changed)
 - pit_trapped_reads_as_trapped: unseen
-- pit_covered_invisible: true (s11 pair at 64 px; hairline seam only at a bridge-only zoom)
+- pit_covered_invisible: true (s11 pair at 64 px)
 - pit_covered_seam_at_max_zoom: true
-- ladder_state_legible: false (south fix unseen)
+- ladder_state_legible: unseen (rebuilt pass 8)
 - sluice_gate_state_legible: true
 - spikes_read_distinct: true
 - trench_wall_cover_shown: true
 - raiders_never_shelter_in_a_cage: unseen
-- wall_ladder_rides_on_rails: false
-- portable_ladder_leans_on_its_wall: false (s11 rescue ladder leans on the south wall at 64 px; too-tall control unseen)
-- climbing_gear_reads_as_kit: false (ground kit)
+- wall_ladder_rides_on_rails: unseen (rails built pass 8)
+- portable_ladder_leans_on_its_wall: unseen (rebuilt pass 8)
+- climbing_gear_reads_as_kit: false (ground: kept sprite, a brown blob at 64 px; E2 awaits his ruling, QUESTIONS 6)
 - geared_pawn_climbs_out: true
 - jump_into_pit_lands_unhurt: unseen (out, and floaters: not on this mod list)
 - geared_pawn_scales_built_wall: unseen (no-gear control owed)
-- suspension_bridge_reads_hung: false (being built at retire)
-- pawn_walks_under_deck: false (draw order; being built at retire)
-- pit_cover_unlike_bridge: true
-- digging_takes_hours: unseen (fill + raiders carrying fill owed)
-- never_snared_standing (cannot): true
+- suspension_bridge_reads_hung: unseen (built pass 8)
+- pawn_walks_under_deck: unseen (deck over floor pawns built pass 8)
+- pit_cover_unlike_bridge: unseen (true before; the bridge's look changed)
+- digging_takes_hours: unseen
+- never_snared_standing (cannot): unseen (true before; occupant sink changed)
 - never_reads_as_building (cannot): true
 
-Count: 14 true, 9 false, 7 unseen (of 30).
+Count: 10 true, 1 false, 19 unseen (of 30).
 
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | his story has never reached "prisoners in a tidy prison" | s14: two fell, rescue ladder in, both climbed out, raid driven off | s14 layout with armed defenders, then capture.py |
-| unknown | archers now shoot the rescuer, not the trapped | s11 (before the fix) | a run where a rescue is under way |
-| unknown | the withdrawing-raid message | never fired (no raid left anyone trapped) | a run that leaves a raider in the pit |
-| blocker | bridge reads flat; pawn drawn over the deck | builder in flight | merge, root 7.2 shots |
-| unknown | ten look bars at 64 px | look7.sh written | run it |
-| decision | rain rate (QUESTIONS 4) | 0.5 m/h was the old rate | his word on 0.24 m/rain day |
-| decision | floaters/jumpers not on game A's list | FlowWorks_PitTravel.xml names only other mods' races | owner: accept as a limit, or a tier with one of them |
+| blocker | game A is GSS's until it lands | Conductor 05:02; tier_a=graffiti since 03:27 | NEED_GAME; then tier, deploy, up |
+| unknown | the whole pass-8 look (depth, rails, portables, bridge, gear) | built, 181/181 offline, never drawn in game | batches A and B |
+| unknown | a colonist's drawn feet-to-crown (sets the 20 %) | head offset +0.34 on a 1.5 mesh suggests ~1.25 | undug control at root 7.2 in batch A |
+| unknown | g8 FlowWorks staging works at all | mock dry run only | g8_site.py build/verify |
+| regression risk | Proven pit look bars ride on the changed face | pass 5 shots predate it | batch A frames |
+| decision | climbing gear ground sprite: his kept one fails the bar | shots/climbgear_ground_contrast_pass8.png | his ruling on QUESTIONS 6 |
+| decision | rain rate (QUESTIONS 4), floaters off game A's list, raised-ladder rule (QUESTIONS 2) | unchanged | his word |
+| unknown | his story end to end | s14 best so far (pass 7) | batch D, last |
