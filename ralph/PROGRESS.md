@@ -1,115 +1,109 @@
 # FlowWorks Artisan, aspect 1 (pits and depth): progress
 
-## Pass 6 (2026-11-08, ~09:25-10:25Z): his story three more times; three things break it before a rescue can
-Weather: 2 native Mono crashes of game A (one at load, one mid-staging in `HoseRelayIndex` JIT; `bad_cpus=[2]` all pass),
-1 bridge reset during quick-test map generation, 0 dropped ssh. Retired on the context gate (251k).
+## Pass 7 (2026-11-08, ~09:55-10:35Z): rain fixed, the archers' target bug fixed, the story staged three ways
+Weather: 3 crashes of game A (one native crash in map generation, one Mono JIT crash in vanilla `StunHandler.StunFor`
+mid-raid, one at load) and 1 failed start, all with `bad_cpus=[2]`; 0 dropped ssh. Retired on the context gate (258k).
+Shots: `D:\ClaudeWork\rimmandrake\ralph_flowworks\shots\pass7\` (pass 6's moved to `shots\old\pass6`).
 
-**The zoom the bar names changes the verdicts.** CLAUDE.md: play zoom is ~64 px a cell. Steve's game window is ~920 px high,
-so that is **root 7.2** (s7 at root 7.5 measured 916 x 855 px for 15 x 14 cells = 61 px). Every earlier pass judged "play
-zoom" at root 20 (~23 px, a third of the bar's resolution). `story1.py`/`story3.sh` now take `FW_ROOT=7.2`; `bars3.py` adds
-`_r7` frames. Re-judge every look bar at root 7.2.
-- **`pit_covered_invisible` is false at 61 px**: the cover's SOUTH row is a dark brown band, the north row passes for soil
-  (`shots\pass6\s7_cover_south_row_dark_61px_x2.png`, undug left, covered right). Not the seam (`SeamMat` alphas 0.07/0.42/0.16
-  are hairlines) and not the faces layer (skips lidded squares). Note `SeamStrength` gives 0.9 at ANY root <= 13 (the bridge
-  widens the camera's min size to 0.5). Untested suspects: spikes drawn sunk under the lid, the near-lip occlusion band, a
-  shadow pass. `ralph/live/cover6.py` (written, never run) stages undug / covered / spiked+covered side by side and can flip
-  settings fields: run it, then fix.
-- At 61 px the open pit reads as a hole (dark floor, lit far face), and a raider in the spiked pit reads as down in it with
-  the archers above on the lip (`s7_raider_in_pit_archers_on_lip_61px.png`).
+**Landed (built, DLL + .srchash committed, deployed, live):**
+1. Rain (QUESTIONS 4, my call B): `rainFillPerPulse` 0.1 -> 0.002. The old rate was 0.5 m per game hour of rain (every vanilla
+   rain weather has rainRate 1), so any pit trap flooded in one shower (s9). Now ~0.24 m per rain day. Live setting read 0.002;
+   the story pits in s12-s13 read fill 0 throughout.
+2. `RM_CliffMelee` threat rule: a held pawn stays an auto-target only after a REAL attack (`lastAttackTargetTick`), not after
+   merely picking a target (`lastEngageTargetTick`, which `JobGiver_AIFightEnemy.UpdateEnemyTarget` stamps on every pick).
+   s11 showed why: the trapped raider was refused 72 swings yet stayed a "threat", so 5 archers on the lip shot him while his
+   rescuer chopped wood, fetched it and set a ladder 3 cells away (ladder in at +3960, rescuer dead only at +4680). Deployed
+   for s12+; not yet seen in a run where a rescue was under way.
 
-**Story runs** (`FW_SPAWN=gx,0 FW_ARCHERS=5 FW_ADZ=2 FW_ROOT=7.2 bash ralph/live/story3.sh 400 TribeRoughNeanderthal sN`;
-logs on Steve `Transient/ralph_fw/{stage,raid,watch}_sN.out`):
-- s7 (pass-5 build): the count spawn put one archer OUTSIDE the compound; the raid walked round to him, downed and kidnapped
-  him. One raider (Bilen) fell, then **meleed the archer standing on the lip above him from 2 m down**, and the drafted archers
-  shot him dead point blank before any rescuer came. One raider chopped a pine for a ladder, then the raid left (KidnapCover).
-- s8: `rimworld/set_draft` did not draft the archers; they wandered off and were downed outside. Fixed: each archer is spawned on
-  its own spot and drafted with `jawa/order_pawn draft=True waitTicks=0`; the passage floor is cleared of trees (s7 had
-  pines standing in it, drawn over the pit).
-- s9 (this build): four of five raiders fell in, but **the pit was full of water** (pit report `fillRaw` 3-4 of depth 4, about
-  an hour of game time after it was dug), so they were not held (`held:false`, CanReach to the archers true) and walked out
-  and meleed the archers (ProofThink: `JobGiver_AIFightEnemies`, `JobGiver_ReactToCloseMeleeThreat`). Likely rain: the model
-  adds a notch (0.5 m) per 10 pulses at RainRate 1 (`rainFillPerPulse` 0.1, `RainLevelsNow`). Pass 5 saw rain fill the
-  story pit too (s4). Not yet confirmed: the weather and the fluid at the time. QUESTIONS 4.
+**The story, three runs on this build** (`story3.sh`, logs on Steve `Transient/ralph_fw/watch_sN.out`; summarise with a
+regex over the `t+` lines, the raw lines are 1.5k chars each):
+- s11 (raid from the map edge, 400 pts): every raider took vanilla's trash-a-distant-building job on the staged colony's only
+  buildings (its walls) from 70 cells out. One (Hippo) came up the passage and fell; Gaxo chopped, took a portable ladder and
+  set it on the south wall (seen, `s11_rescue_ladder_set_south_wall_64px.png`); Hippo climbed out ~1,200 ticks later and was
+  shot; 3 raiders dead, 2 fled. All 8 defenders lived. No prisoner left. Closest to his story so far.
+- s12 (spawn 18 cells south of the passage mouth, 400 pts = 4 Neanderthals): the first raider fell through at once and died
+  in the pit (arrows on the way in, then spikes); with the hole open the passage is truly blocked, so the other three bashed
+  walls for 3,000 ticks and left. Correct behaviour, not his story.
+- s13 (800 pts): a mixed 15-pawn raid (ancient soldiers and a militor joined) broke in through the compound walls; nobody fell.
+- s14 (running at retire, result unread): 600 pts, spawn 6 cells south of the mouth, NEW `FW_PERIM=20` perimeter wall
+  along the passage mouth's row (a player's killbox gap sits in a perimeter wall; the old layout let raids walk round the passage).
+  Its log: `Transient/ralph_fw/watch_s14.out` on Steve.
+What blocks his story is now staging, not a known mod bug: raids reach the pit only if the passage is the obvious way in, and
+the first faller often dies on the way in. Next: perimeter layout (s14), then if needed spawn inside the passage mouth.
 
-**Built this pass (in the commit with this file; built, deployed except the last, partly seen):**
-1. `Superdeep/RM_CliffMelee.cs` (PIT_STORY_FIX_MELEE_ACROSS_THE_LIP): no melee, trash or blocker-bash between squares a cliff
-   apart (the shooting rule's 2 m), either way (melee target finder, `TrashUtility.ShouldTrashBuilding/Plant`,
-   `DigUtility.PassBlockerJob`); a pawn HELD in a pit is no auto-target threat to a searcher a cliff above it unless it engaged
-   in the last 360 ticks (`Pawn.ThreatDisabled` postfix). Live in s9: `refused=338 threatsDisabled=9`. Not yet seen in a run
-   where the pit stays dry. Probe: `RM_CliffMelee.ProofCliffMelee` (the watch logs it).
-2. Pass 5's `isTrap` on the covers made vanilla log "Config error ... isTrap but is not edifice. Code will break." x6: removed;
-   instead the same trash postfix never trashes or torches a cover that has not given way. s9 showed no job on the cover.
-3. `Superdeep/RM_RaidLeavesTrapped.cs` + key `RMFlow_RaidLeftTrapped`: when a hostile raid's lord turns to leaving with members
-   held in a pit, one message names them and points at the capture from the edge. **Built, not deployed, never seen.**
-4. `RM_TakenByLand.ProofReturnedGrace` (mark/read) and `four.py` steps: mark, save, reload, read, +2500 ticks. Deployed, not run.
-5. Hung suspension bridge: a builder subagent wrote NO code (stopped at my retire); its design, with every edit pinned by
-   file and line, is `D:\ClaudeWork\rimmandrake\ralph_flowworks\hung_bridge_pass6\PROGRESS.md` (new `RM_SuspensionHang.cs`;
-   treatments 0 suspension, 1 rope walk, 2 cable-stayed, switched by `jawa/static_call` `RimMandrake.FlowWorks.Pits.RM_SuspensionHang`
-   `SetTreatment` "0"/"1"/"2"; sagged deck, posts, cables, floor shadow; the deck redrawn over a pawn on the floor beneath it;
-   deck walkers lowered by the sag; rope-walk sag capped at 0.2 of a segment so a 3-cell N-S span does not fold). Its empty
-   worktree `.claude/worktrees/agent-ae9f8185dff1939c2` can be removed.
-C# self-test on the first build of this pass: 2 FAIL, `PitCapture_follows_a_held_pawn_that_moves` (known red) and `LW1 a lay
-depends on the world's content only` (hose lay world, not touched here; check whether it is red on HEAD~ before blaming).
-Rerun it on this commit with the output kept whole (the background tail cut the summary).
+**Seen, not changed:**
+- `pit_covered_invisible`: pass 6's dark south row did NOT come back (s11 undug vs covered at 64 px: the covered squares are
+  2.6% darker, `s11_undug_vs_covered_passage_64px.png`). Two hairline seams do show at root 7.2, because the bridge widens the
+  camera's minimum to 0.5 so `RM_PitCoverLookMath.SeamStrength` applies its closest-zoom floor (0.9) up to root 13. A player
+  at 64 px on a 4K screen (root ~17) gets none; on a 1440p screen 64 px IS the closest zoom, where the seam is meant to show.
+  Kept Proven (no regression shown).
+- Open item triage (subagent, `D:\ClaudeWork\rimmandrake\ralph_flowworks\pass7\items_triage.md`): of 17 items, 8 fixed in
+  code, 2 really open (a harness false pass; grate fire, aspect 2), 7 need a live look (deep stone letter; soil strip over
+  wall; capture-down from the lip; bridge art = suspension_bridge_reads_hung; underpass shot = pawn_walks_under_deck; river and
+  flood rows, aspect 2).
+- `jump_into_pit_lands_unhurt`: every floater and jumper race tagged in `Patches/Canals/FlowWorks_PitTravel.xml` comes from
+  other mods (RM_Bulloo, RSW_*), none on game A's small list, and CLAUDE.md forbids live flight. Only the jump pack/Skip in
+  AND out can be shown on this list; the floater clause needs a list with one of those mods (owner's call or another tier).
+
+**In flight at retire:** an rm-builder subagent in a worktree is writing the hung suspension bridge (`RM_SuspensionHang.cs`,
+treatments 0/1/2 by `jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionHang SetTreatment`, deck redrawn over pawns
+beneath) from `hung_bridge_pass6\PROGRESS.md`, building with `WINBUILD_ROOT=D:\ClaudeWork\rimmandrake\build_fw7_bridge`. Its
+commit lands on a `worktree-agent-*` branch (`git branch -a | grep worktree`); merge its SOURCE, rebuild the DLL here, deploy.
+If no branch exists it finished nothing: rerun the brief.
 
 ## Next (in order)
-1. Deploy this commit; `ralph/steve.sh status`. Settle the flooded pit FIRST: on a fresh map dig the story pit, read
-   `jawa/map_info` weather and the pit report's fill every 250 ticks for a game day. If rain fills 2 m in hours, rule on
-   QUESTIONS 4 (recommendation there) and build it; the story cannot play while the pit floods.
-2. Story s10, same command, on a dry pit: watch for no melee across the lip, archers shooting the rescuers not the trapped,
-   the rescue ladder SEEN going in (near wall), the raid driven off, the new message, then right-click capture from the edge.
-   If the rescue still never completes, stage it so it does (owner's ruling: stage it to complete, don't replay for luck).
-3. `cover6.py stage` then `shots`, find the dark south row, fix, re-shoot at root 7.2 before/after.
-4. Depth sheet at root 7.2: `FW_... bash ralph/live/bars3.sh p6 1`, then judge the depth/pawn-height bars at 64 px.
-5. Hand the bridge design (`hung_bridge_pass6\PROGRESS.md`, its "Next" line) to a fresh builder while the game runs the story;
-   shoot the three treatments side by side at root 7.2 into `ralph/LOOK.md` as a contrast sheet.
-6. `four.py` (grace across a reload, cover scan, cliff timing, two maps) on this build.
-7. GPT broaden call (none made this pass or last; needed before DONE.md), with the root-7.2 shots.
-Earlier owed items stand (PROGRESS of pass 5): trench cage staging, pawn lowers/rises walk, portable-ladder too-tall control,
-no-gear wall control, jump exits, dig fill + raiders carrying fill.
+1. Read s14 (`steve.sh fetch Transient/ralph_fw/watch_s14.out`). If fallen remain after the raid leaves:
+   `python.exe ralph/live/capture.py <colonist> <x> <z>` (right-click capture from the edge), and look for the
+   `RMFlow_RaidLeftTrapped` message. If nobody falls: spawn inside the passage mouth (`FW_SPAWN=gx,p2`).
+2. Merge and deploy the hung bridge; `ladders5.py bridge` at root 7.2 and 11 for the three treatments side by side in LOOK.md.
+3. `bash ralph/live/look7.sh p7` (written, never run): depth sheet in the default look with occupied 3x3 pits at 4 m and
+   8 m, `walk7.py` graded walk 0-4 m and back with the real drawn sink per stop, ladders/portables/gear at root 7.2 and 11.
+   Judges pit_depth/pawn_height/lowers/rises/occupant_below_floor/trapped/ladder_state/portable/rails/gear in one sitting.
+4. Jump pack in and out of a 2 m pit with hediffs read (`bars2_pit.py jump` has the in half).
+5. GPT broaden call (none in passes 6-7; required before DONE.md) with the 64 px shots.
+Owed from earlier: trench cage staging, no-gear wall control, dig hours + raiders carrying fill, four.py (grace across a reload).
 
-## Running count (seen in game; look bars now judged at ~64 px a cell where re-shot)
+## Running count (seen in game; look bars judged at ~64 px where re-shot)
 - pit_depth_ladder_legible: false (pass 3 at r20); unjudged at 64 px
 - pawn_height_ladder_legible: false (pass 3 at r20); unjudged at 64 px
 - pawn_lowers_on_deeper_cell: unseen
 - pawn_rises_on_shallower_cell: unseen
-- pit_reads_as_hole: true (s7 open pit at 61 px)
+- pit_reads_as_hole: true (s12 open spiked pit at 64 px)
 - pit_walls_have_visible_depth: true
 - pit_not_vanilla_trap: true
 - pit_reads_at_size: true
-- pit_occupant_below_floor: false (true at 2 m; the 4 m 3x3 case drew on the south lip, pass 2)
+- pit_occupant_below_floor: false (true at 2 m, s11 at 64 px; the 4 m 3x3 case drew on the south lip, pass 2)
 - pit_occupied_distinguishable: true
 - pit_trapped_reads_as_trapped: unseen
-- pit_covered_invisible: false (s7 at 61 px: the south row is a dark band)
+- pit_covered_invisible: true (s11 pair at 64 px; hairline seam only at a bridge-only zoom)
 - pit_covered_seam_at_max_zoom: true
 - ladder_state_legible: false (south fix unseen)
-- sluice_gate_state_legible: true (Conductor ruling 1:23)
+- sluice_gate_state_legible: true
 - spikes_read_distinct: true
 - trench_wall_cover_shown: true
 - raiders_never_shelter_in_a_cage: unseen
 - wall_ladder_rides_on_rails: false
-- portable_ladder_leans_on_its_wall: false (stronger lean unseen)
+- portable_ladder_leans_on_its_wall: false (s11 rescue ladder leans on the south wall at 64 px; too-tall control unseen)
 - climbing_gear_reads_as_kit: false (ground kit)
-- geared_pawn_climbs_out: true (Conductor ruling 1:23)
-- jump_into_pit_lands_unhurt: unseen (one clause owed)
+- geared_pawn_climbs_out: true
+- jump_into_pit_lands_unhurt: unseen (out, and floaters: not on this mod list)
 - geared_pawn_scales_built_wall: unseen (no-gear control owed)
-- suspension_bridge_reads_hung: false (designed, not built)
-- pawn_walks_under_deck: false (draw order; designed, not built)
-- pit_cover_unlike_bridge: true (Conductor ruling 1:23)
+- suspension_bridge_reads_hung: false (being built at retire)
+- pawn_walks_under_deck: false (draw order; being built at retire)
+- pit_cover_unlike_bridge: true
 - digging_takes_hours: unseen (fill + raiders carrying fill owed)
 - never_snared_standing (cannot): true
 - never_reads_as_building (cannot): true
 
-Count: 13 true, 10 false, 7 unseen (of 30).
+Count: 14 true, 9 false, 7 unseen (of 30).
 
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | the story pit floods within about an hour; the fallen float out | s9 pit report fill 3-4/4, held:false | weather + fill per 250 ticks on a fresh map (Next 1) |
-| blocker | his story has never reached "driven off, prisoners in a tidy prison" | s7 kidnap, s8 staging, s9 flood | s10 on a dry pit |
-| regression | covered pit visible at play zoom (south row dark) | s7 61 px crop | cover6.py at root 7.2 |
-| unknown | cliff-melee rule in a held pit | s9 counters only | s10 job log: no AttackMelee across the lip |
-| unknown | the withdrawing-raid message | built, not deployed | s10 messages |
-| blocker | bridge reads flat | design only (hung_bridge_pass6) | build it, root 7.2 shots |
-| decision | rain fill rate vs pit traps | QUESTIONS 4 | his card |
-| decision | play zoom is root 7.2 on Steve (64 px) | CLAUDE.md, s7 clip | re-judge the look bars there |
+| blocker | his story has never reached "driven off, prisoners in a tidy prison" | s11 rescue succeeded, s12 faller died, s13 nobody fell | s14 with the perimeter wall, then capture.py |
+| unknown | archers now shoot the rescuer, not the trapped | s11 (before the fix) | a run where a rescue is under way |
+| unknown | the withdrawing-raid message | never fired (no raid left anyone trapped) | a run that leaves a raider in the pit |
+| blocker | bridge reads flat; pawn drawn over the deck | builder in flight | merge, root 7.2 shots |
+| unknown | ten look bars at 64 px | look7.sh written | run it |
+| decision | rain rate (QUESTIONS 4) | 0.5 m/h was the old rate | his word on 0.24 m/rain day |
+| decision | floaters/jumpers not on game A's list | FlowWorks_PitTravel.xml names only other mods' races | owner: accept as a limit, or a tier with one of them |

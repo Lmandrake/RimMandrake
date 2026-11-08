@@ -114,6 +114,12 @@ def stage(B, a):
     cells_walls = [c for c in cells_walls if c != (GX, CZ0)]
     for z in range(PZ0, PZ1 + 1):
         cells_walls += [(GX - 2, z), (GX + 2, z)]
+    # pass 7: a player's killbox gap sits in a perimeter wall; without one (s11-s13) the raid walked round the passage and
+    # bashed the compound. FW_PERIM=n: a wall along the passage mouth's row, n cells each side of it
+    perim = int(os.environ.get("FW_PERIM", "0"))
+    for x in range(GX - perim, GX + perim + 1):
+        if abs(x - GX) > 2:
+            cells_walls.append((x, PZ0))
     # a player's colonists would cut the plants under the walls and the pit: clear just those cells
     for c in cells_walls + PIT:
         B.call("jawa/clear_area", rect="%d,%d,1,1" % c, dryRun=False)
