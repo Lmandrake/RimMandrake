@@ -1,0 +1,9 @@
+
+## CONDUCTOR STRATEGY 3:02 AM PST (owner's order "use GPT consultations to inform different strategies"; GPT's full answer: /mnt/d/ClaudeWork/rimmandrake/conductor/gpt_flowworks_strategy_20261108.md)
+Your last three passes proved no new bar. Stop spending whole passes replaying the story. Restructure RATCHET.md "Remaining" into these batches and work them in this order:
+1. ONE offline pass: the shared depth drawing (occupant at 4/8 m, wall above the head ~20% of pawn height, shallow sink, graded-cell transitions) and the look fixes (ground kit, south-wall ladder states, portable lean, rails N/E/W/S, deck draw order, hung-bridge drawing), with offline draw-math tests; prepare ONE validation map, staging scripts, state-log asserts and shot coordinates before asking for the game.
+2. Game batch A, daylight depth gallery: same pawn kind at undug/0.5/2/4/8 m, and one graded trench walked both ways with cell/depth/drawn-y logged -> bars 4, 5, 10-13.
+3. Batch B, equipment and crossings gallery -> bars 6, 8, 9, 15-17.
+4. Batch C, mechanics arena: jump/float in and out (state reads, never flight images), geared vs ungeared on the granite ring, timed fill with material carried in, ranged raiders choosing cover -> bars 1-3, 14.
+5. Batch D LAST, his story made deterministic: scripted raid, fixed seed, dry weather, known defenders and rescuer; SAVE just before the raiders reach the cover, and save checkpoints after capture and before the rescue; retry only the failed segment; keep one continuous successful run as the final evidence.
+Another pass is justified only by a named failed assertion or a missing shot.

@@ -3,25 +3,37 @@
 Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_flowworks_2026-11-08.md`) plus the Conductor ruling 1:23 AM (OWNER_NOTE.delivered) where PROGRESS differs. PROGRESS's "Count: 14/9/7" is wrong; the true split is 14 proven, 16 remaining (30 bars).
 Bar ids are the 30 in `ralph/ASPECTS.md` / the north-star walk (`design/validation_walks/RimMandrake/FlowWorks.md`). "p2" = `D:\ClaudeWork\rimmandrake\ralph_flowworks\pass_002.jsonl` line 3294, shots in `shots\old\pass2\bar_<id>_*`.
 
-## Remaining (work only on these, in this order)
-Bars (16). Batch the stagings: one bridge sitting should close several.
-1. jump_into_pit_lands_unhurt: floating creatures in and out, and jump/fly OUT, are not shown on the current build. One state-read run (no flight imaging, read depth + injury hediffs) closes it. Pass 7: every floater/jumper race tagged (FlowWorks_PitTravel.xml) is from mods not on game A's list; only jump pack/Skip in and out can be shown there.
-2. digging_takes_hours: fill time not read live; "raiders filling a trench carry the fill in first" never staged. One raid filling a trench with jobs logged settles both.
-3. geared_pawn_scales_built_wall: the no-gear control on a built wall was never run live. Run the same pawn without gear on the granite ring; confirm ProofLadderParity goes through the production access check.
-4. pit_occupant_below_floor (REOPENED): true only at 2 m. At 4 m in a 3x3 pit the occupant is drawn on the south lip (sink clamped to the near lip). Fix, then one r20 shot each at 4 m and 8 m.
-5. pit_trapped_reads_as_trapped (REOPENED): nothing measures wall-over-head (about a fifth of the pawn's height). At 8 m the ungeared pawn did not look trapped. Measure the ratio, one shot at 4 m and 8 m.
-6. climbing_gear_reads_as_kit (REOPENED, half shown): worn reads (r8, four facings); on the ground it is a brown coil, readable only at r3. One ground shot at r11/r20 where it reads as a kit.
-7. STORY (the done condition, not a bar): pass 7 s11-s13 on the rain + threat fixes (PROGRESS): rescue ladder seen set on the south wall (s11), faller died (s12), nobody fell (s13); s14 adds a perimeter wall (FW_PERIM=20), unread at retire. his covered-pit-trap story played end to end: defenders shoot, the rescue finishes, ladder seen going in on the near wall. Stage it so it completes: s7 replay (`FW_SPAWN=gx,0 FW_ARCHERS=5 FW_CLOSE=3 bash ralph/live/story3.sh 400 TribeRoughNeanderthal s7`), then archers on the north lip row or open ground beside the passage. Must also show no raider job on the concealed cover before it springs (pit_covered_invisible regression check, isTrap fix unwatched).
-8. ladder_state_legible: south (near) wall lowered draws nothing; fix deployed pass 5, unseen. One r20 lowered/raised pair on the south wall. Open owner look: QUESTIONS 2 (raised ladder drawn on the ground).
-9. portable_ladder_leans_on_its_wall: stronger lean (`RM_LadderDraw`) deployed, unseen. One r11/r20 shot, plus a negative control (too tall lies flat and gives no way out).
-10. pit_depth_ladder_legible: 4 m vs 8 m too close. Eased cap built, unseen. Re-shoot the depth sheet in daylight on this build, same pawn kind in every hole (`bars3.py`).
-11. pawn_height_ladder_legible: 0.5 m vs undug is 0.3 cell (~7 px at r20, `RM_PitDrawMath.SinkFor`). Boost shallow sink; ObliqueFace shares `pitSinkPerLevel`, so change both. Shot of 0.5 m vs undug.
-12. pawn_lowers_on_deeper_cell and 13. pawn_rises_on_shallower_cell: never tried. One pawn walks a graded trench 0..8 levels and back; shot at each cell and the drawn y read. Likely inherits item 11.
-14. raiders_never_shelter_in_a_cage: never staged. One ranged raid beside a climbable trench and a sheer pocket; read each raider's cover cell and the cage flag (TRENCH_raiders_skip_sheer_cage was UNMEASURED).
-15. wall_ladder_rides_on_rails: behaviour measured; look half open: no rails drawn on any wall (dotted rungs). Draw rails, r20 shot of N/E/W/S.
-16. pawn_walks_under_deck (draw): walk measured (UND_floor_path_walks_under PASS); pawn under a deck is drawn on top of it. Fix draw order; frames of a pawn walking beneath. (Do not call it "never walked": pass 2 walked it.)
-17. suspension_bridge_reads_hung: nothing drawn from `RM_SuspensionHangMath.cs`. Build the drawing (design: `D:\ClaudeWork\rimmandrake\ralph_flowworks\hung_bridge\PROGRESS.md`), `ladders5.py bridge` at r20/r11.
-Owed, not bars: four.py grace probe (take/save/reload/read); trapped raider melee-bashing a rim wall (`AttackMelee@Wall`, check RM_MeleeTargetReach); a number for rain filling a pit (aspect 2).
+## Remaining (work only on these; batches per the Conductor strategy 3:02 AM, OWNER_NOTE.delivered)
+Bar numbers are the old Remaining order (kept so earlier notes still point right). Each bar keeps its acceptance test.
+Another pass is justified only by a named failed assertion or a missing shot.
+
+### Batch 0, offline (pass 8): the shared depth drawing and the look fixes, with draw-math tests; one validation map,
+staging scripts, state-log asserts and shot coordinates (`ralph/live/g8_*`, manifest `ralph/live/GALLERY8.md`).
+
+### Batch A, daylight depth gallery (bars 4, 5, 10-13)
+4. pit_occupant_below_floor (REOPENED): true only at 2 m. At 4 m in a 3x3 pit the occupant was drawn on the south lip (sink clamped to the near lip). Accept: occupants on the south/middle/north rows of 3x3 pits at 4 m and 8 m, root 7.2 and 20.
+5. pit_trapped_reads_as_trapped (REOPENED): wall over head about a fifth of the pawn's height at a superdeep (2 m+) occupant. Accept: the ratio measured on a shot at 2 m, 4 m and 8 m (crown to rim vs feet to crown), plus the state read.
+10. pit_depth_ladder_legible: 4 m vs 8 m were too close. Accept: daylight depth sheet, undug/0.5/1/1.5/2/4/8 m side by side, each told apart by eye.
+11. pawn_height_ladder_legible: 0.5 m vs undug was 0.3 cell. Accept: same pawn kind in each hole, sink read per hole, strictly lower to 4 m, equal at 4 and 8 m, each step visible on the shot.
+12. pawn_lowers_on_deeper_cell and 13. pawn_rises_on_shallower_cell: never tried. Accept: one pawn walks the graded trench 0..8 levels both ways (N-S and E-W), cell/depth/drawn-y logged per stop, before/after frames.
+
+### Batch B, equipment and crossings gallery (bars 6, 8, 9, 15-17)
+6. climbing_gear_reads_as_kit (half shown): worn reads; on the ground a brown coil. Accept: ground shot at root 7.2 and 20 reading as a kit.
+8. ladder_state_legible: south (near) wall lowered drew nothing (fix pass 5, unseen). Accept: lowered/raised pair, all four walls, root 7.2. Open owner look: QUESTIONS 2.
+9. portable_ladder_leans_on_its_wall: lean on every wall, plus the too-tall control lying flat with no way out (shot + reachability read).
+15. wall_ladder_rides_on_rails: no rails drawn. Accept: rails on N/E/W/S at root 7.2, raised and lowered.
+16. pawn_walks_under_deck (draw): walk measured in pass 2; pawn under a deck drawn on top of it. Accept: before/mid/after frames of a floor pawn passing beneath, deck over him.
+17. suspension_bridge_reads_hung: nothing drawn from `RM_SuspensionHangMath.cs`. Accept: treatments side by side at root 7.2 and 20, one default.
+
+### Batch C, mechanics arena (bars 1-3, 14)
+1. jump_into_pit_lands_unhurt: jump pack/Skip in and out with depth + injury hediffs read (no flight images). Floater races are all from mods not on game A's list (FlowWorks_PitTravel.xml): needs a profile with one of them or the owner's ruling.
+2. digging_takes_hours: fill time read live; raiders filling a trench carry the fill in first (jobs logged).
+3. geared_pawn_scales_built_wall: same pawn without gear on the granite ring (control), through the production access check.
+14. raiders_never_shelter_in_a_cage: a ranged raid beside a climbable trench and a sheer pocket; each raider's cover cell and the cage flag read.
+Owed, not bars, piggyback here: four.py grace probe (take/save/reload/read); trapped raider melee-bashing a rim wall (`AttackMelee@Wall`, RM_MeleeTargetReach); a number for rain filling a pit (aspect 2).
+
+### Batch D, LAST: his story made deterministic (the done condition, item 7)
+Scripted raid, fixed seed, dry weather, known defenders (the colony's own armed) and rescuer; layout of s14 (`FW_PERIM=20`, spawn 6 south of the mouth). SAVE just before the raiders reach the cover (and read their jobs: none on the concealed cover, pit_covered_invisible regression check), save after capture and before the rescue; retry only the failed segment; keep one continuous successful run as the final evidence: two fall through the cover, rescue ladder on the near wall, defenders shooting the rescuers, raid driven off, injured prisoners in the drained pit prison.
 
 ## Proven (locked)
 - geared_pawn_climbs_out: p2: geared pawn out at depth 0 at +634 ticks, ungeared control stayed at depth 8; `Transient/live_session/pass2c_20261019T023413/session.json` B4_access_gear_climbs_sheer_4m PASS, B4_access_no_gear_stays_in PASS (ruling 1:23).
