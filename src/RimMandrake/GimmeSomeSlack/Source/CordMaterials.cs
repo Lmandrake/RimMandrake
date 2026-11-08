@@ -215,6 +215,8 @@ namespace RimMandrake.GimmeSomeSlack
             // phase 1b B6: LEDs dark when the net is dead. Until PowerStrip_Lit/_Dark art lands (artpipe), the
             // dark strip is the strip tinted down.
             d[DecalKind.PowerStripDark] = StripDarkMat(style, true);
+            // the wire tie on a plug's strain-relief loop (owner 2026-11-08 round 2): one band for every look, never the cord's colour
+            d[DecalKind.CableTie] = SlotMat(style, "CableTie", PieceQueue);
             decals = d;
             // B14 (owner review 2026-10-04): in the extension-cord look every connection piece takes its net's cord colour.
             // The shipped pieces carry ORANGE cord stubs; Styles/ExtCord/<Colour>/<slot> are the recoloured copies
@@ -334,6 +336,7 @@ namespace RimMandrake.GimmeSomeSlack
                 d[DecalKind.FrayDead] = SlotMat(style, "EndFrayed_Dead", PieceQueue, new Color(0.62f, 0.58f, 0.55f, 1f), null, false);
                 d[DecalKind.FrayLive] = SlotMat(style, "EndFrayed_Live", PieceQueue, null, null, false);
                 d[DecalKind.PowerStripDark] = StripDarkMat(style, false);
+                d[DecalKind.CableTie] = SlotMat(style, "CableTie", PieceQueue, null, null, false);
                 if (look == "Modern" && ExtCordColors[v] != "Orange")
                     foreach (var kv in ColourSlots)
                     {

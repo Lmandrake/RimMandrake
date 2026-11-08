@@ -541,7 +541,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double FairR = 0.7, FairStep = 0.05;
         private const int FairK = 6, FairIters = 12, FairRounds = 8;
 
-        private static bool Cross(V2 a, V2 b, V2 c, V2 d, out V2 at)
+        internal static bool Cross(V2 a, V2 b, V2 c, V2 d, out V2 at)
         {
             at = default(V2);
             double rx = b.X - a.X, rz = b.Z - a.Z, sx = d.X - c.X, sz = d.Z - c.Z, den = rx * sz - rz * sx;

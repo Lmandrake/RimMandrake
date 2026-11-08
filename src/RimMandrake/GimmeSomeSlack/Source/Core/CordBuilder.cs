@@ -8,7 +8,7 @@ using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
-    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark }
+    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark, CableTie }
 
     /// <summary>A decal's drawn height over its width. The power strip's art is 64x32 lit AND dark (GPT source read 2026-10-06
     /// A19: the dark strip drew at aspect 1, twice as tall as the lit one).</summary>
@@ -66,6 +66,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Dive-through: this strand's start (DiveA) / end (DiveB) is where the cord dives under a barrier or comes
         /// back up, not one of its edge's ends. End art (plugs, frays, whip tails) never goes there.</summary>
         public bool DiveA, DiveB;
+        /// <summary>The tied strain-relief loops at this strand's plugs (<see cref="CordPlugExit"/>): each loop's arc along Pts is the north star's own coil, not a bend
+        /// (CordShapeAudit leaves it out); null when the strand has none.</summary>
+        internal List<CordTie> Ties;
+    }
+
+    /// <summary>A small closed loop a cord makes just past its plug, held by a tie band where it crosses itself (owner 2026-11-08: "a tight wire-tied strain-relief LOOP").
+    /// S0..S1: the loop's arc along the strand's Pts (cells from Pts[0]); At / Angle: the band, across the crossing.</summary>
+    internal struct CordTie
+    {
+        public double S0, S1;
+        public V2 At;
+        public double Angle;
     }
 
     /// <summary>A conduit end that reads live or dead: where sparks go (design §8.5).</summary>
@@ -1049,7 +1061,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     P = HopWhole(w, g, e, C, opt, piece, key, isLive) ?? P;
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
                 if (!fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
-                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C) });
+                List<CordTie> ties = null;
+                if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, true, true, out ties);
+                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
                 laid += Geo.Length(P);
             }
             piece.PathLen = L;
@@ -1249,6 +1263,98 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bad = bestBad;
             }
             return P;
+        }
+
+        /// <summary>Each end of a strand plugged into a strip socket leaves its plug as the owner said (2026-11-08, round 2): straight for a stiff length, then a natural bend, a tied
+        /// strain-relief loop, or a tight bend only where a wall or object forces it (<see cref="CordPlugExit"/>). Ties come back as arcs along the new strand, each with its tie band
+        /// decal on the piece.</summary>
+        private static List<V2> PlugExits(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, List<V2> P, BuildOptions opt, bool doA, bool doB, out List<CordTie> ties)
+        {
+            ties = null;
+            if (P == null || P.Count < 6) return P;
+            CordPlugExit.Site siteA = doA ? PlugSite(w, g, e, true, P, opt) : null, siteB = doB ? PlugSite(w, g, e, false, P, opt) : null;
+            if (siteA == null && siteB == null) return P;
+            double L = Geo.Length(P);
+            foreach (bool atA in new[] { true, false })
+            {
+                CordPlugExit.Site site = atA ? siteA : siteB;
+                if (site == null) continue;
+                List<V2> q = atA ? new List<V2>(P) : Enumerable.Reverse(P).ToList();
+                if (V2.Dist(q[0], site.Tip) > 0.12) continue;
+                // a short cord plugged in at both ends: each end has its own half to lay again
+                double maxJ = siteA != null && siteB != null ? L / 2 : L;
+                List<V2> head = new List<V2>(), keep = new List<V2>();
+                double s = 0;
+                for (int i = 0; i < q.Count; i++) { if (i > 0) s += V2.Dist(q[i], q[i - 1]); if (s <= maxJ || head.Count < 3) head.Add(q[i]); else keep.Add(q[i]); }
+                List<V2> laid = CordPlugExit.Lay(head, site, out CordTie? tie, out CordPlugExit.Kind _);
+                if (ReferenceEquals(laid, head)) continue;
+                var nq = new List<V2>(laid);
+                nq.AddRange(keep);
+                double nL = Geo.Length(nq);
+                if (atA)
+                {
+                    // the other end's ties were measured from this end: shift them by the change in length
+                    if (ties != null) for (int k = 0; k < ties.Count; k++) { CordTie t = ties[k]; double d = nL - L; t.S0 += d; t.S1 += d; ties[k] = t; }
+                    P = nq;
+                }
+                else
+                {
+                    nq.Reverse();
+                    P = nq;
+                    if (tie.HasValue) { CordTie t = tie.Value; double s0 = nL - t.S1, s1 = nL - t.S0; t.S0 = s0; t.S1 = s1; tie = t; }
+                }
+                L = nL;
+                if (tie.HasValue)
+                {
+                    (ties = ties ?? new List<CordTie>()).Add(tie.Value);
+                    piece.Decals.Add(new CordDecal(DecalKind.CableTie, tie.Value.At, tie.Value.Angle, CableTieScale));
+                }
+            }
+            return P;
+        }
+
+        /// <summary>The tie band's scale, cells: a band round a doubled cord (owner: "small closed loop with a tie band").</summary>
+        public const double CableTieScale = 0.16;
+
+        /// <summary>A strip socket's plug and what stands round it, for <see cref="CordPlugExit"/>; null for an end that is not one.</summary>
+        private static CordPlugExit.Site PlugSite(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, BuildOptions opt)
+        {
+            VId v = atA ? e.A : e.B;
+            CordNode nd = g.Nodes[v];
+            if (nd.Type != NodeType.Junction || opt.PileFor(nd.Cell) != PileArt.Strips) return null;
+            StripPose sp = PoseStrip(g, v, opt.Seed);
+            V2 ad = ArmDir(g, e, atA);
+            var arm = new Cell((int)ad.X, (int)ad.Z);
+            int socket = sp.SocketFor(arm);
+            if (socket < 0) return null;
+            V2 tip = sp.PlugTip(arm, socket), u = sp.PlugOut(arm);
+            var site = new CordPlugExit.Site { Tip = tip, Out = u };
+            foreach (Cell a in new[] { sp.BackArm, sp.FreeArm, sp.SocketArm })
+            {
+                int k = sp.SocketFor(a);
+                if (k < 0 || k == socket) continue;
+                V2 hd = sp.At(StripHeads[k], StripHeadZ);
+                site.Neighbours.Add(new[] { hd, sp.PlugTip(a, k) + sp.PlugOut(a) * 0.25 });
+            }
+            // the strip's own body (the art about +-0.405 along, +-0.11 across, its middle 0.027 out from the sockets' line toward the plugs)
+            V2 body = sp.At(0, StripHeadZ) + sp.Side * 0.027;
+            bool InBody(V2 q, double m)
+            {
+                V2 d = q - body;
+                double al = d.X * sp.Along.X + d.Z * sp.Along.Z, si = d.X * sp.Side.X + d.Z * sp.Side.Z;
+                return Math.Abs(al) <= 0.405 + m && Math.Abs(si) <= 0.11 + m;
+            }
+            Func<V2, bool> arrive = ArriveClear(w, P, tip, null);
+            List<V2> boxes = OtherBoxes(g, e);
+            site.Clear = q => V2.Dist(q, tip) < 0.05 || (arrive(q) && !InBody(q, 0.03) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff));
+            var near = w.Machines.Where(m => m.X0 <= tip.X + 4 && m.X0 + m.W >= tip.X - 4 && m.Z0 <= tip.Z + 4 && m.Z0 + m.H >= tip.Z - 4).ToList();
+            site.WallDist = q =>
+            {
+                double d = w.Clearance(q);
+                foreach (MachineInfo m in near) d = Math.Min(d, CordShapeAudit.RectDist(m.X0, m.Z0, m.W, m.H, q));
+                return d;
+            };
+            return site;
         }
 
         /// <summary>The junctions, strips, heaps, cut ends and plates near a cord that are not its own ends: a cord laid again whole or round a bend keeps <see cref="BoxKeepOff"/> off
@@ -1702,7 +1808,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
-                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C) });
+                    List<CordTie> ties = null;
+                    if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, !diveA, !diveB, out ties);
+                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
                     laid += Geo.Length(P);
                 }
             }
@@ -1816,7 +1924,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How far out from its socket a cord coming in from the side has straightened up to arrive square.</summary>
         public const double StripSwing = 0.3;
         /// <summary>How far a plug from behind / off the free end leans from straight out toward the free end, radians.</summary>
-        public const double StripLeanBack = 1.3, StripLeanFree = 0.9;
+        public const double StripLeanBack = 0, StripLeanFree = 0;
         /// <summary>How far a strip plugged into the wall beside it stands back from the wall, cells.</summary>
         public const double StripWallGap = 0.3;
 
@@ -2184,10 +2292,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 int k2 = Math.Max(1, (int)Math.Ceiling(d2 / 0.05));
                 for (int i = 1; i <= k2; i++) ext.Add(c + (h - c) * (i / (double)k2));
             }
-            var o = new List<V2>(P);
-            if (atStart) { ext.Reverse(); o.InsertRange(0, ext); }
-            else o.AddRange(ext);
+            var body = new List<V2>(P);
+            if (atStart) body.Reverse();
+            List<V2> o = CutJointLoop(body, ext);
+            if (atStart) o.Reverse();
             return o;
+        }
+
+        /// <summary>How far either side of the joint <see cref="CutJointLoop"/> looks for the cord crossing itself, cells.</summary>
+        public const double JointLoopLook = 0.6;
+
+        /// <summary>The cusp of the owner's shot 2026-11-08 121523 (a nib where a cord crosses itself): a lay that ran on past its plug
+        /// point into the machine and came back left a 0.16-cell loop where the run on under the art (<paramref name="ext"/>) set off from
+        /// the tip (lab: the same 86/139 deg nib at one machine of each of the four played colonies). Where the run on crosses the body's
+        /// last <see cref="JointLoopLook"/> cell, the body stops at the crossing and goes straight on into the run. body ends at the tip.</summary>
+        internal static List<V2> CutJointLoop(List<V2> body, List<V2> ext)
+        {
+            var e = new List<V2>(ext.Count + 1) { body[body.Count - 1] };
+            e.AddRange(ext);
+            int lo = body.Count - 2;
+            double acc = 0;
+            while (lo > 0 && acc < JointLoopLook) { acc += V2.Dist(body[lo - 1], body[lo]); lo--; }
+            double ea = 0;
+            for (int j = 0; j + 1 < e.Count && ea < JointLoopLook; ea += V2.Dist(e[j], e[j + 1]), j++)
+                for (int i = lo; i + 2 < body.Count; i++)   // not the body's last segment: it shares the tip with e's first
+                {
+                    if (!CordShape.Cross(body[i], body[i + 1], e[j], e[j + 1], out V2 x)) continue;
+                    var cut = body.GetRange(0, i + 1);
+                    if (V2.Dist(cut[cut.Count - 1], x) > 1e-9) cut.Add(x);
+                    cut.AddRange(e.GetRange(j + 1, e.Count - j - 1));
+                    return cut;
+                }
+            body.AddRange(ext);
+            return body;
         }
 
         public const double PastFaceDepth = 0.03;

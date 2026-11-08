@@ -140,32 +140,61 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ the span curve (design 2.5)
         /// <summary>
-        /// P(t) = lerp(A, B, t) + (0, -sag * 4t(1-t)), sag = sagFactor * |AB|, sampled about every
-        /// <paramref name="step"/> cells. Top-down RimWorld fakes height as +z on screen, so a screen-down droop
-        /// reads as a hanging wire from any direction. Ends are exactly A and B.
+        /// P(t) = lerp(A, B, t) + (0, -sag * Droop(t)), sag = sagFactor * |AB|, sampled about every
+        /// <paramref name="step"/> cells plus <see cref="SpanEndSamples"/> by each insulator. Top-down RimWorld fakes height as +z on
+        /// screen, so a screen-down droop reads as a hanging wire from any direction. Ends are exactly A and B.
         /// </summary>
         public static List<P2> SpanCurve(P2 a, P2 b, double sagFactor, double step = 0.5)
         {
             double len = P2.Dist(a, b);
             double sag = Math.Max(0, sagFactor) * len;
-            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.05, step)));
-            var pts = new List<P2>(n + 1);
-            for (int i = 0; i <= n; i++)
+            List<double> ts = SpanTs(len, step);
+            var pts = new List<P2>(ts.Count);
+            foreach (double t in ts)
             {
-                double t = i / (double)n;
                 P2 p = P2.Lerp(a, b, t);
-                p.Z -= sag * 4 * t * (1 - t);
+                p.Z -= sag * Droop(t);
                 pts.Add(p);
             }
             pts[0] = a;
-            pts[n] = b;
+            pts[pts.Count - 1] = b;
             return pts;
+        }
+
+        /// <summary>The span's droop as a fraction of its mid-span sag: sin^2(pi t), 0 with zero slope at both insulators, 1 at t = 0.5.
+        /// The owner's pole photo (sitting 2026-11-08, "The top of power poles shows needless kinks in the wires where they connect"):
+        /// a line comes in straight, rests on the insulator and goes out straight; it sags only mid-span. The old parabola 4t(1-t)
+        /// left every insulator 13.5 deg off the chord (atan(4 x 0.06)), so two spans met in a 25 deg V on top of a straight pole
+        /// (offline sweep gss_sitting/tools/pole_top_sweep.py: parabola 25.4 deg, sin^2 with the end samples 0.7 deg).</summary>
+        public static double Droop(double t)
+        {
+            if (t <= 0 || t >= 1) return 0;
+            double s = Math.Sin(Math.PI * t);
+            return s * s;
+        }
+
+        /// <summary>Extra samples this many cells from each insulator, so the drawn first segment follows the flat end of
+        /// <see cref="Droop"/> (with only the 0.5-cell steps a straight pole still showed a 4-12 deg V).</summary>
+        public static readonly double[] SpanEndSamples = { 0.08, 0.16, 0.3 };
+
+        /// <summary>The span fractions SpanCurve samples: uniform about every step cells, plus SpanEndSamples (those inside a quarter span) at each end.</summary>
+        public static List<double> SpanTs(double len, double step)
+        {
+            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.05, step)));
+            var ts = new List<double>(n + 1 + 2 * SpanEndSamples.Length);
+            for (int i = 0; i <= n; i++) ts.Add(i / (double)n);
+            if (len > 1e-6)
+                foreach (double d in SpanEndSamples)
+                    if (d < len / 4) { ts.Add(d / len); ts.Add(1 - d / len); }
+            ts.Sort();
+            for (int i = ts.Count - 1; i > 0; i--) if (ts[i] - ts[i - 1] < 1e-9) ts.RemoveAt(i);
+            return ts;
         }
 
         /// <summary>
         /// CPU sway (design 2.5 option 2): perpendicular ground-plane offset of the sample at span fraction t,
-        /// amp x min(wind, 1.5) / 1.5 x sin(pi t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)), w 1.1-1.6 rad/s seeded.
-        /// Zero at both insulators and with no wind; |offset| never exceeds 1.3 x amp x min(wind, 1.5) / 1.5 (below amp x min(wind, 1.5)).
+        /// amp x min(wind, 1.5) / 1.5 x Droop(t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)), w 1.1-1.6 rad/s seeded.
+        /// Zero, and flat, at both insulators (Droop, not sin(pi t), since 2026-11-08: a swaying wire still leaves the insulator straight) and with no wind; |offset| never exceeds 1.3 x amp x min(wind, 1.5) / 1.5 (below amp x min(wind, 1.5)).
         /// </summary>
         public static double Sway(double t, double timeSec, double wind, double amp, int seed)
         {
@@ -173,7 +202,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double w = 1.1 + 0.5 * U(seed, 2);
             double phi = 2 * Math.PI * U(seed, 3), phi2 = 2 * Math.PI * U(seed, 4);
             double wave = (Math.Sin(w * timeSec + phi) + 0.3 * Math.Sin(2.3 * w * timeSec + phi2)) / 1.3;
-            return amp * Math.Min(wind, 1.5) / 1.5 * Math.Sin(Math.PI * t) * wave * 1.3;
+            return amp * Math.Min(wind, 1.5) / 1.5 * Droop(t) * wave * 1.3;
         }
 
         // ------------------------------------------------------------------ link rules (design 2.2.5, 2.4)
@@ -276,7 +305,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             foreach (double t in ts)
             {
                 P2 p = P2.Lerp(a, b, t);
-                p.Z -= sag * 4 * t * (1 - t);
+                p.Z -= sag * Droop(t);
                 double d = Math.Min(t, 1 - t) * len;
                 if (d < reach) p.Z -= depth * 0.5 * (1 - Math.Cos(2 * Math.PI * d / reach));
                 pts.Add(p);
@@ -297,8 +326,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         // ------------------------------------------------------------------ the cast shadow of a span (owner review B24)
         /// <summary>
         /// The ground shadow of a sagging span (owner review 2026-10-04 B24: the old straight base-to-base line read as a
-        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x 4t(1-t) above the
-        /// straight ground line between the pole feet; its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
+        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x Droop(t) above the
+        /// straight ground line between the pole feet (Droop: sin^2(pi t) since 2026-11-08); its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
         /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
         /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
         /// </summary>
@@ -310,7 +339,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             for (int i = 0; i <= n; i++)
             {
                 double t = i / (double)n;
-                double h = Math.Max(0, hA + (hB - hA) * t - Math.Max(0, sagFactor) * len * 4 * t * (1 - t));
+                double h = Math.Max(0, hA + (hB - hA) * t - Math.Max(0, sagFactor) * len * Droop(t));
                 P2 g = P2.Lerp(baseA, baseB, t);
                 pts.Add(new P2(g.X + kx * h, g.Z + kz * h));
             }

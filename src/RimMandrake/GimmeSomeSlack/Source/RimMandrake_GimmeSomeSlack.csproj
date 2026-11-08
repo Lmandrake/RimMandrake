@@ -39,6 +39,7 @@
     <Compile Include="TipSparks.cs" />
     <Compile Include="Core\CordGraph.cs" />
     <Compile Include="Core\CordShapeAudit.cs" />
+    <Compile Include="Core\CordPlugExit.cs" />
     <Compile Include="Core\SnapshotBlock.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />

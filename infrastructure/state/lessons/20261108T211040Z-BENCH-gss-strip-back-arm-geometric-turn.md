@@ -1,2 +1,5 @@
 GSS Modern power strips: CordAudit.StripFits requires a plug to stand out at least 10 degrees to the sockets' side, so a cord arriving from behind the strip must turn about 100 degrees or more in its last cell; a bar under 100 degrees for back-arm cords is unmeetable. After the 2026-11-08 plug lean the sitting's Modern colony has 2 of 39 socket ends past 150, 10 past 100, and 8 bends excused as 'socket' (ratchet bar 8, goal 3): back-arm Gamma corners 105-139 deg and same-cell lamp+wall-stub loops at 157,113 and 163,113 (the beside-machine lead rule leaves the wall stub as the back arm). Open design question to the owner: may a strip turn its sockets toward the wall arm, or move off the lamp cell?
 home: src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs
+
+
+Resolved 2026-11-08 (ralph/gss, plug-exit port): strip leans 0 + CordPlugExit.Lay at every strip socket; lab Modern socket-excused 9 -> 0, hooks past 100 deg 13 -> 2. See lesson 20261108T222103Z-BENCH-gss-geometry-offline-sweep-first.

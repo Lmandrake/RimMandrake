@@ -325,7 +325,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public static List<string> EndsOnBodies(List<LaidPiece> ps)
         {
             var faults = new List<string>();
-            List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive).ToList();
+            List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive && d.Kind != DecalKind.CableTie).ToList();   // a tie band on a strain-relief loop joins nothing
             // a connector's centre and every port on it (junction arm tips, strip sockets): a cable plugged into an arm ends
             // a box-half away from the box's centre
             var nodes = cons.Select(d => d.Pos).Concat(CordBuilder.PortsOf(cons).Select(q => q.Tip)).ToList();

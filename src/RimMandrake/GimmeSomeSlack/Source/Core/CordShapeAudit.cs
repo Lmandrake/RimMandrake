@@ -24,7 +24,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Sharp corners of a strand, one per corner, positions on the map. <paramref name="skipEnd"/>: the arc at each end to leave out (under a plug).</summary>
-        internal static List<V2> Corners(List<V2> pts, double skipEnd = 0.05)
+        internal static List<V2> Corners(List<V2> pts, double skipEnd = 0.05, List<CordTie> ties = null)
         {
             var o = new List<V2>();
             if (pts == null || pts.Count < 3) return o;
@@ -33,7 +33,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int a = 0, b = 0;
             for (int i = 1; i < pts.Count - 1; i++)
             {
-                if (cum[i] < skipEnd || cum[i] > L - skipEnd || cum[i] - last < 0.25) continue;
+                if (cum[i] < skipEnd || cum[i] > L - skipEnd || cum[i] - last < 0.25 || InTie(ties, cum[i])) continue;
                 while (a < i && cum[i] - cum[a + 1] >= SharpArc) a++;
                 while (b < pts.Count - 1 && cum[b] - cum[i] < SharpArc) b++;
                 if (cum[i] - cum[a] < SharpArc * 0.5 || cum[b] - cum[i] < SharpArc * 0.5) continue;
@@ -103,8 +103,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return t;
         }
 
-        /// <summary>Every bend of a strand, ends included (<see cref="BendDeg"/> within <see cref="BendArc"/>).</summary>
-        internal static List<Bend> Bends(List<V2> pts)
+        /// <summary>Whether arc <paramref name="s"/> along a strand lies on one of its tied strain-relief loops (with a half-step margin): the loop is the plug's own coil, held by
+        /// its tie, and the bars leave it out as they leave out a broad loop (<see cref="Bend.IsLoop"/>).</summary>
+        internal static bool InTie(List<CordTie> ties, double s)
+        {
+            if (ties == null) return false;
+            foreach (CordTie t in ties) if (s >= t.S0 - TieMargin && s <= t.S1 + TieMargin) return true;
+            return false;
+        }
+
+        /// <summary>The arc either side of a tied loop the bars leave out with it, cells.</summary>
+        public const double TieMargin = 0.05;
+
+        /// <summary>Every bend of a strand, ends included (<see cref="BendDeg"/> within <see cref="BendArc"/>); a tied loop's own arc (<paramref name="ties"/>) turns nothing.</summary>
+        internal static List<Bend> Bends(List<V2> pts, List<CordTie> ties = null)
         {
             var o = new List<Bend>();
             if (pts == null || pts.Count < 3) return o;
@@ -112,8 +124,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int n = q.Count;
             if (n < 4) return o;
             var t = new double[n];
-            for (int k = 1; k < n - 1; k++) t[k] = SignedTurn(q[k] - q[k - 1], q[k + 1] - q[k]);
             double[] cum = Geo.CumLen(q);
+            for (int k = 1; k < n - 1; k++) t[k] = InTie(ties, cum[k]) ? 0 : SignedTurn(q[k] - q[k - 1], q[k + 1] - q[k]);
             double L = cum[n - 1], thr = BendDeg * Math.PI / 180;
             int win = Math.Max(2, (int)Math.Round(BendArc / BendStep));
             var mark = new bool[n];
@@ -267,7 +279,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return false;
         }
 
-        private static double RectDist(int x0, int z0, int w, int h, V2 p)
+        internal static double RectDist(int x0, int z0, int w, int h, V2 p)
         {
             double dx = Math.Max(Math.Max(x0 - p.X, 0), p.X - (x0 + w)), dz = Math.Max(Math.Max(z0 - p.Z, 0), p.Z - (z0 + h));
             return Math.Sqrt(dx * dx + dz * dz);
@@ -308,7 +320,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) return;
                 Strands++;
                 string name = p.EndA == null ? p.Key : p.EndA + "|" + p.EndB;
-                foreach (Bend b in CordShapeAudit.Bends(s.Pts))
+                foreach (Bend b in CordShapeAudit.Bends(s.Pts, s.Ties))
                 {
                     string why = Why(w, p.EndA, p.EndB, s.Pts, b);
                     Bends++;
@@ -335,7 +347,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 if (s.Pts == null || s.Pts.Count < 3) return;
                 Strands++;
-                List<V2> c = CordShapeAudit.Corners(s.Pts);
+                List<V2> c = CordShapeAudit.Corners(s.Pts, 0.05, s.Ties);
                 if (c.Count > 0) SharpStrands++;
                 Corners += c.Count;
                 string name = p.EndA == null ? p.Key : p.EndA + "|" + p.EndB;
