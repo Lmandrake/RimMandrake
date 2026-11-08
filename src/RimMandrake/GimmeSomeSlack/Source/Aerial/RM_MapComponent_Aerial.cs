@@ -698,10 +698,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     Vector3 c = DeviceHome(d);
                     int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
                                                  Gen.HashCombineInt(Mathf.RoundToInt(lm.Width * 1000f), d.Rotation.AsInt));
+                    // the ground part lies on open floor: a wall built across it re-lays it (or hangs it, when nothing clears)
+                    sig = Gen.HashCombineInt(sig, (int)DropGroundSig(a.Position, c));
                     if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
                     {
                         if (kv.Value != null) foreach (Mesh old in kv.Value) if (old != null) UnityEngine.Object.Destroy(old);
-                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, new P2(c.x, c.z), tip, under, over, lm.Width));
+                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, a, new P2(c.x, c.z), tip, under, over, lm.Width));
                         dropMeshes[key] = kv;
                     }
                     foreach (Mesh m in kv.Value)
@@ -748,8 +750,49 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return Math.Abs(p.X - g.x) <= sz.x / 2f && Math.Abs(p.Z - g.z) <= sz.y / 2f;
         }
 
-        private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over, float width)
+        /// <summary>A walkability signature of the ground a drop from the mast at <paramref name="home"/> to <paramref name="dev"/> can lie on.</summary>
+        private ulong DropGroundSig(IntVec3 home, Vector3 dev)
         {
+            PathGrid pg = map.pathing.Normal.pathGrid;
+            int x0 = Math.Min(home.x, (int)dev.x) - 2, x1 = Math.Max(home.x, (int)dev.x) + 2, z0 = Math.Min(home.z, (int)dev.z) - 2, z1 = Math.Max(home.z, (int)dev.z) + 2;
+            ulong h = 1469598103934665603UL;
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    var q = new IntVec3(x, 0, z);
+                    h = (h ^ (ulong)(!q.InBounds(map) ? 3 : pg.WalkableFast(q) ? 1 : 2)) * 1099511628211UL;
+                }
+            return h ^ (h >> 32);
+        }
+
+        /// <summary>The drop's meshes. On open ground it is <see cref="AerialMath.LayDrop"/>'s too-long cord: the part hanging from the
+        /// insulator at span altitude, the part lying on the ground under pawns and buildings like any floor cord, so it goes in under the
+        /// device's art. Where no loose cord can lie (a wall between, the device beside the mast) it hangs <see cref="AerialMath.LooseDrop"/>.</summary>
+        private static Mesh[] DropMeshes(Thing d, CompAerialAnchor a, P2 from, P2 tip, float under, float over, float width)
+        {
+            Map map = a.parent.Map;
+            if (map != null)
+            {
+                PathGrid pg = map.pathing.Normal.pathGrid;
+                IntVec3 home = a.Position;
+                CellRect dr = d.OccupiedRect();
+                Thing wall = d.def.building != null && d.def.building.isAttachment && d.Spawned ? GenConstruct.GetWallAttachedTo(d) : null;
+                IntVec3 wallAt = wall?.Position ?? IntVec3.Invalid;
+                Func<int, int, bool> walk = (x, z) =>
+                {
+                    var q = new IntVec3(x, 0, z);
+                    if (!q.InBounds(map)) return false;
+                    return q == home || q == wallAt || dr.Contains(q) || pg.WalkableFast(q);
+                };
+                Vector3 bp = a.BasePoint;
+                FallenLay lay = AerialMath.LayDrop(tip, new P2(bp.x, bp.z), from, d.thingIDNumber, walk);
+                if (lay != null && lay.GroundFrom > 0)
+                {
+                    float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the fallen wire's ground altitude: under pawns, like any floor cord
+                    return new[] { Ribbon(lay.Pts.GetRange(0, lay.GroundFrom + 1), over, "RM_AerialDrop", width),
+                                   Ribbon(lay.Pts.GetRange(lay.GroundFrom, lay.Pts.Count - lay.GroundFrom), groundY, "RM_AerialDropGround", width) };
+                }
+            }
             List<P2> pts = AerialMath.LooseDrop(from, tip, d.thingIDNumber);
             int split = 0;
             while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;

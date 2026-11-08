@@ -44,6 +44,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Terminals();
             Round3();
             PipeKind();
+            Drops();
             Console.WriteLine($"aerial: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -512,6 +513,55 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             mineFails = before;
             mine -= 2;
             C(planted == 2, "sanity probe: both planted wrong expectations were detected (" + planted + "/2)");
+        }
+            // ------------------------------------------------------------------ a mast's local drop is a too-long cord on the ground (pass 13)
+        /// <summary>Blind judge, pass 12: the drop "from the lamp mast to a lamp" read as "a shallow taut arc" in every look. A drop to a device
+        /// on open ground now hangs down from the insulator and lies on the ground to the device as a loose cord.</summary>
+        private static void Drops()
+        {
+            var basePt = new P2(20.5, 20.5);
+            var top = new P2(20.6, 24.2);
+            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0;
+            double worst = 0, worstRatio = 99;
+            for (int dir = 0; dir < 8; dir++)
+                for (int seed = 0; seed < 10; seed++)
+                {
+                    double ang = dir * Math.PI / 4 + 0.2 * seed / 10.0, d = 2.5 + 0.4 * seed;
+                    var dev = new P2(basePt.X + Math.Cos(ang) * d, basePt.Z + Math.Sin(ang) * d);
+                    total++;
+                    FallenLay l = AerialMath.LayDrop(top, basePt, dev, 1000 + 37 * seed + dir, (x, z) => true);
+                    List<P2> old = AerialMath.LooseDrop(dev, top, 1000 + 37 * seed + dir);
+                    if (PathLen(old, 0) < 1.3 * P2.Dist(dev, top)) oldTaut++;
+                    if (l == null || l.GroundFrom <= 0) continue;
+                    laid++;
+                    if (P2.Dist(l.Pts[0], top) < 1e-9 && P2.Dist(l.Pts[l.Pts.Count - 1], dev) < 1e-6) ends++;
+                    double ratio = PathLen(l.Pts, l.GroundFrom) / Math.Max(1e-6, P2.Dist(l.Pts[l.GroundFrom], dev));
+                    worstRatio = Math.Min(worstRatio, ratio);
+                    if (ratio >= 1.3) loose++;
+                    double run = AerialMath.LongestStraight(l.Pts.GetRange(l.GroundFrom, l.Pts.Count - l.GroundFrom), 0.15);
+                    worst = Math.Max(worst, run);
+                    if (run > 2.5) rods++;
+                    // the J: the top 35% of the hang comes down, it does not slant off toward the device
+                    int k = Math.Max(1, (int)(l.GroundFrom * 0.35));
+                    if (Math.Abs(l.Pts[k].X - top.X) <= 0.45 && top.Z - l.Pts[k].Z >= 0.6) hangs++;
+                }
+            C(laid == total, $"every drop on open ground lies as a cord ({laid}/{total})");
+            C(ends == laid, $"each leaves its insulator and ends on its device ({ends}/{laid})");
+            C(loose == laid, $"each ground run is at least 1.3x the ground it covers ({loose}/{laid}, worst {worstRatio:0.00}x)");
+            C(rods == 0, $"no ground run has a straight stretch over 2.5 cells, the floor cords' rod ({rods}, worst {worst:0.00})");
+            C(hangs == laid, $"each hangs straight down from its insulator before it curves out ({hangs}/{laid})");
+            C(oldTaut > total / 2, $"can fail: the old hanging drop, one arc from insulator to device, is under 1.3x its reach in {oldTaut}/{total}");
+            // a wall between the mast and the device (vanilla wires a lamp indoors to a mast outside): no ground drop, the caller hangs it
+            FallenLay walled = AerialMath.LayDrop(top, basePt, new P2(24.5, 20.5), 7, (x, z) => x != 22);
+            C(walled == null, "a wall between the mast and its device: no cord laid through it");
+            C(AerialMath.LayDrop(top, basePt, new P2(21.2, 20.9), 7, (x, z) => true) == null, "a device beside the mast keeps the hanging drop");
+        }
+
+        private static double PathLen(List<P2> p, int from)
+        {
+            double L = 0;
+            for (int i = from + 1; i < p.Count; i++) L += P2.Dist(p[i - 1], p[i]);
+            return L;
         }
     }
 }

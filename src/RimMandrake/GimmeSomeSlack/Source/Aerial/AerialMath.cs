@@ -763,6 +763,190 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return o;
         }
 
+        /// <summary>
+        /// A mast's local drop as a too-long extension cord lying on the ground (blind judge, pass 12: the drop "from the lamp mast to a lamp"
+        /// still read as "a shallow taut arc" in every look; owner: "Everything is a too-long extension cord"). It hangs straight down from the
+        /// insulator at <paramref name="top"/> and curves out to touch the ground a cell or so from the mast's foot <paramref name="basePt"/>
+        /// (screen z fakes height), then lies the rest of the way to <paramref name="device"/> as a loose cord (<see cref="LooseRun"/>). Null when
+        /// no loose cord can lie on the ground between (a wall between: vanilla wires a lamp indoors to a mast outside), or the device stands
+        /// beside the mast; the caller then hangs <see cref="LooseDrop"/>.
+        /// </summary>
+        public static FallenLay LayDrop(P2 top, P2 basePt, P2 device, int seed, Func<int, int, bool> walkable)
+        {
+            double dist = P2.Dist(basePt, device);
+            if (dist < 1.4) return null;
+            double ux = (device.X - basePt.X) / dist, uz = (device.Z - basePt.Z) / dist, nx = -uz, nz = ux;
+            int sgn = U(seed, 33) < 0.5 ? -1 : 1;
+            // the touchdown: out from the foot, and to one side of the pole when the device is up the screen from it, or the ground run
+            // would lie over its own hang
+            double s0 = Math.Min(0.4 * dist, 0.75 + 0.45 * U(seed, 34));
+            double side0 = uz > 0.3 ? sgn * (0.45 + 0.3 * U(seed, 54)) * uz : 0;
+            var td = new P2(basePt.X + ux * s0 + nx * side0, basePt.Z + uz * s0 + nz * side0);
+            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
+            if (!open(td)) return null;
+            List<P2> run = LooseRun(td, device, seed, open);
+            if (run == null || run.Count < 3) return null;
+            var lay = new FallenLay();
+            // the hanging part, a J: straight down from the insulator under its own weight, leaning a little to one side, then curving out
+            // into the ground run along the way it leaves the touchdown (a straight diagonal from the crossarm read as a rod)
+            double dx = run[2].X - run[0].X, dz = run[2].Z - run[0].Z, dl = Math.Max(1e-6, Math.Sqrt(dx * dx + dz * dz));
+            double fall = Math.Max(0.5, top.Z - td.Z), lead = 0.45 + 0.25 * U(seed, 53), sway = sgn * (0.2 + 0.18 * U(seed, 47));
+            P2 c1 = new P2(top.X + sway, top.Z - 0.7 * fall), c2 = new P2(td.X - dx / dl * lead, td.Z - dz / dl * lead);
+            double hangLen = P2.Dist(top, c1) + P2.Dist(c1, c2) + P2.Dist(c2, td);
+            int hn = Math.Max(8, (int)Math.Ceiling(hangLen / 0.07));
+            for (int i = 0; i < hn; i++)
+            {
+                double t = i / (double)hn, m = 1 - t;
+                double a0 = m * m * m, a1 = 3 * m * m * t, a2 = 3 * m * t * t, a3 = t * t * t;
+                lay.Pts.Add(new P2(a0 * top.X + a1 * c1.X + a2 * c2.X + a3 * td.X, a0 * top.Z + a1 * c1.Z + a2 * c2.Z + a3 * td.Z));
+            }
+            lay.GroundFrom = lay.Pts.Count;
+            lay.Pts.AddRange(run);
+            lay.Tip = lay.TipNow = lay.Pts[lay.Pts.Count - 1];
+            return lay;
+        }
+
+        /// <summary>
+        /// A loose cord lying on the ground from <paramref name="from"/> to <paramref name="to"/>, 1.5-1.9x as long as the distance plus a little:
+        /// its heading bends by a curvature made of two slow waves of uneven length, so it swings in arcs of uneven size and now and then throws
+        /// a loop, drawn gently toward the far end; the whole lay is then turned and scaled about its start so it ends exactly there, which
+        /// keeps every bend (steering it in hard flattened the last stretch into a straight). A gentle sweep that still reads straight over
+        /// more than 2.2 cells gets a soft bow of a third to half a cell across it (half the draws had one). Up to twelve draws: none whose
+        /// cord crosses an unwalkable cell, none that loops round its own end or coils on it (the doorway lesson: a coil at an end reads as
+        /// more cables), the first with no stretch over 2.2 cells straight, else the least straight. Null when no draw lies on open ground.
+        /// </summary>
+        public static List<P2> LooseRun(P2 from, P2 to, int seed, Func<P2, bool> open, double ds = 0.05)
+        {
+            double dist = P2.Dist(from, to);
+            if (dist < 1e-6) return null;
+            double baseA = Math.Atan2(to.Z - from.Z, to.X - from.X);
+            int salt = 200;
+            Func<double> rnd = () => U(seed, salt++);
+            List<P2> best = null;
+            double bestStraight = double.MaxValue, nearEnd = Math.Min(0.75, 0.4 * dist);
+            var pts = new List<P2>();
+            var hs = new List<double>();
+            for (int attempt = 0; attempt < 16 && (attempt < 12 || best == null); attempt++)
+            {
+                int sgn = rnd() < 0.5 ? -1 : 1;
+                // the last four draws, only when none of the first twelve lay clear: a shorter, gentler cord for a tight spot
+                double tight = attempt < 12 ? 1 : 0.7;
+                double A = (1.3 + 0.6 * rnd()) * tight, l1 = 2.2 + 1.0 * rnd(), l2 = 4.0 + 2.0 * rnd(), p1 = 6.283 * rnd(), p2 = 6.283 * rnd();
+                double want = attempt < 12 ? dist * (1.55 + 0.35 * rnd()) + 0.8 : dist * (1.3 + 0.2 * rnd()) + 0.3;
+                double h = baseA + sgn * (0.5 + 0.5 * rnd()), x = from.X, z = from.Z, L = 0;
+                pts.Clear(); hs.Clear();
+                pts.Add(from); hs.Add(h);
+                while (L < want)
+                {
+                    double err = WrapPi(Math.Atan2(to.Z - z, to.X - x) - h);
+                    h += (A * (0.65 * Math.Sin(6.283 * L / l1 + p1) + 0.35 * Math.Sin(6.283 * L / l2 + p2)) + 0.7 * err) * ds;
+                    x += ds * Math.Cos(h); z += ds * Math.Sin(h); L += ds;
+                    pts.Add(new P2(x, z)); hs.Add(h);
+                }
+                double ex = x - from.X, ez = z - from.Z, el = Math.Sqrt(ex * ex + ez * ez);
+                if (el < 1e-6) continue;
+                double sc = dist / el;
+                if (sc < 0.75 || sc > 1.35) continue;
+                double rot = baseA - Math.Atan2(ez, ex), c = Math.Cos(rot), sn = Math.Sin(rot);
+                var o = new List<P2>(pts.Count);
+                bool ok = true;
+                int n = pts.Count, tail = (int)(1.0 / ds);
+                for (int i = 0; i < n && ok; i++)
+                {
+                    double px = pts[i].X - from.X, pz = pts[i].Z - from.Z;
+                    var q = i == n - 1 ? to : new P2(from.X + sc * (px * c - pz * sn), from.Z + sc * (px * sn + pz * c));
+                    if (i < n - tail && P2.Dist(q, to) < nearEnd) ok = false;   // it comes back round its own end
+                    else if (!open(q)) ok = false;
+                    o.Add(q);
+                }
+                if (!ok) continue;
+                if (Math.Abs(hs[n - 1] - hs[Math.Max(0, n - 1 - (int)(1.6 / ds))]) > 4.2) continue;   // a coil on its own end
+                for (int b = 0; b < 5; b++)
+                {
+                    if (StraightAt(o, 0.15, out int i0, out int i1) <= 2.2) break;
+                    o = Bowed(o, i0, i1, rnd, open) ?? o;
+                }
+                double st = LongestStraight(o, 0.15);
+                if (st < bestStraight) { bestStraight = st; best = new List<P2>(o); }
+                if (st <= 2.2) break;
+            }
+            return best;
+        }
+
+        /// <summary>The longest stretch of a dense polyline (points a twentieth of a cell apart) within <paramref name="tol"/> of its chord, and its ends.</summary>
+        private static double StraightAt(List<P2> p, double tol, out int i0, out int i1)
+        {
+            double best = 0; i0 = i1 = 0;
+            for (int i = 0; i < p.Count; i += 2)
+                for (int j = i + 12; j < p.Count; j += 2)
+                {
+                    double L = P2.Dist(p[i], p[j]);
+                    if (L < 0.01) break;
+                    bool ok = true;
+                    for (int m = i + 1; m < j && ok; m += 2)
+                        ok = Math.Abs((p[m].X - p[i].X) * (p[j].Z - p[i].Z) - (p[m].Z - p[i].Z) * (p[j].X - p[i].X)) / L <= tol;
+                    if (!ok) break;
+                    if (L > best) { best = L; i0 = i; i1 = j; }
+                }
+            return best;
+        }
+
+        /// <summary>A soft bow across the stretch <paramref name="i0"/>..<paramref name="i1"/> (sin squared, so it joins the cord on either side
+        /// without a corner), to whichever side lies on open ground; null when neither does.</summary>
+        private static List<P2> Bowed(List<P2> p, int i0, int i1, Func<double> rnd, Func<P2, bool> open)
+        {
+            double L = P2.Dist(p[i0], p[i1]);
+            if (L < 1e-6 || i1 <= i0) return null;
+            double nx = -(p[i1].Z - p[i0].Z) / L, nz = (p[i1].X - p[i0].X) / L;
+            double amp = (0.3 + 0.2 * rnd()) * Math.Min(1, L / 2.5) * (rnd() < 0.5 ? -1 : 1);
+            for (int side = 0; side < 2; side++, amp = -amp)
+            {
+                var o = new List<P2>(p);
+                bool ok = true;
+                for (int m = i0; m <= i1 && ok; m++)
+                {
+                    double t = (m - i0) / (double)(i1 - i0), w = Math.Sin(Math.PI * t);
+                    o[m] = new P2(p[m].X + nx * amp * w * w, p[m].Z + nz * amp * w * w);
+                    ok = open(o[m]);
+                }
+                if (ok) return o;
+            }
+            return null;
+        }
+
+        private static double WrapPi(double a)
+        {
+            while (a > Math.PI) a -= 2 * Math.PI;
+            while (a < -Math.PI) a += 2 * Math.PI;
+            return a;
+        }
+
+        /// <summary>The longest stretch of <paramref name="pts"/> whose points all lie within <paramref name="tol"/> cell of its own chord
+        /// (ralph/live/lab_straight.py's measure of a rod).</summary>
+        public static double LongestStraight(List<P2> pts, double tol)
+        {
+            var q = new List<P2>();
+            for (int i = 1; i < pts.Count; i++)
+            {
+                int n = Math.Max(1, (int)(P2.Dist(pts[i - 1], pts[i]) / 0.1));
+                for (int j = 0; j < n; j++) q.Add(P2.Lerp(pts[i - 1], pts[i], j / (double)n));
+            }
+            if (pts.Count > 0) q.Add(pts[pts.Count - 1]);
+            double best = 0;
+            for (int i = 0; i < q.Count; i += 3)
+                for (int j = i + 10; j < q.Count; j += 3)
+                {
+                    double L = P2.Dist(q[i], q[j]);
+                    if (L < 0.01) break;
+                    bool ok = true;
+                    for (int m = i + 1; m < j && ok; m += 2)
+                        ok = Math.Abs((q[m].X - q[i].X) * (q[j].Z - q[i].Z) - (q[m].Z - q[i].Z) * (q[j].X - q[i].X)) / L <= tol;
+                    if (!ok) break;
+                    best = Math.Max(best, L);
+                }
+            return best;
+        }
+
         /// <summary>The points of <paramref name="l"/> that lie on the ground: the only ones a pawn can touch (GPT pre-release
         /// C3: the hanging part's points are screen positions lifted by the insulator height, i.e. thin air north of the mast).</summary>
         public static IEnumerable<P2> GroundPts(FallenLay l)
