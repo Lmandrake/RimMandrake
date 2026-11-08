@@ -11,11 +11,15 @@ LOGS=/mnt/d/ClaudeWork/rimmandrake/ralph_flowworks
 EVENTS=$LOGS/events.log
 REVIEW_AT=${REVIEW_AT:-20000000}
 OFFLINE_AT=${OFFLINE_AT:-4000000}
-AHEAD="rm-ralph-gss-steve"   # loops ahead on game A; keep in step with AHEAD in ralph/game_gate.py
+AHEAD=""   # nothing goes ahead of FlowWorks on game A (owner card 2026-11-07); keep in step with AHEAD in ralph/game_gate.py
+# FlowWorks goes first on A, but a loop that borrowed A while this one was paused keeps it to the end of the pass it is in
+# (shared rule, read live: /home/mandrake/rm/scratch/BENCH/steve_games.py). Conductor 2026-11-07 20:20 PST. Revert:
+# backup_steve_fallback_20261107_2020/REVERT.sh in D:\ClaudeWork\rimmandrake\conductor.
+borrowed() { python3 /home/mandrake/rm/scratch/BENCH/steve_games.py held flowworks; }
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
 tally() { python3 ralph/tally.py "$LOGS"; }
 ahead_running() { for u in $AHEAD; do systemctl --user is-active --quiet "$u" && return 0; done; return 1; }
-game_busy() { ahead_running || ! ralph/steve.sh alive 2>/dev/null; }
+game_busy() { ahead_running || borrowed || ! ralph/steve.sh alive 2>/dev/null; }
 
 n=$(ls "$LOGS"/pass_*.jsonl 2>/dev/null | wc -l)
 fails=0; idle=0
@@ -28,7 +32,7 @@ while :; do
   if game_busy && [ "$t" -ge "$OFFLINE_AT" ]; then touch ralph/NEED_GAME; fi
   if [ -e ralph/NEED_GAME ]; then
     if game_busy; then
-      say "GAME_WAIT: $(ahead_running && echo 'a loop ahead has game A' || echo 'Steve does not answer'), no model running, $t tokens"
+      say "GAME_WAIT: $(ahead_running && echo 'a loop ahead has game A' || { borrowed && echo 'another loop ends its pass on game A'; } || echo 'Steve does not answer'), no model running, $t tokens"
       while game_busy; do
         [ -e "$LOGS/STOP" ] && { say "LOOP stopped: STOP file"; exit 0; }
         sleep 60

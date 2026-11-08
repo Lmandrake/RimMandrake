@@ -147,6 +147,59 @@ namespace RimMandrake.FlowWorks.Rivers
 				+ " pending=" + w.PendingCount;
 		}
 
+		/// <summary>RETURNED_PRISONER_FIX_GRACE_LOST_ON_LOAD, live proof (Artisan pass 4): "take:N" sweeps the pawn whose
+		/// thingIDNumber is N off its map by the river policy and walks it straight back (ReturnAllNow), so a save and reload can
+		/// follow inside the guard hour; "read:N" only reads. Both answer "RETURNGUARD id=N spawned=B prisoner=B guarded=B
+		/// watched=B count=N tick=N" (guarded: vanilla escape still off; watched: an exit would still write the letter).</summary>
+		public static string ProofReturnGuard(string arg)
+		{
+			string[] a = (arg ?? "").Split(':');
+			if (a.Length != 2 || !int.TryParse(a[1], out int id) || (a[0] != "take" && a[0] != "read"))
+			{
+				return "REFUSED: take:<thingIDNumber> or read:<thingIDNumber>";
+			}
+			var tw = Find.World?.GetComponent<RimMandrake.FlowWorks.TakenByLand.RM_WorldComponent_TakenByLand>();
+			if (tw == null)
+			{
+				return "UNMEASURED no taken-by-land component";
+			}
+			Pawn p = FindPawn(id);
+			if (a[0] == "take")
+			{
+				if (p == null || !p.Spawned)
+				{
+					return "REFUSED: no spawned pawn " + id;
+				}
+				if (!RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.Take(p, "river", default(IntVec3), 0.01f, 1f))
+				{
+					return "REFUSED: the river policy would not hold " + p.LabelShort;
+				}
+				tw.ReturnAllNow();
+				p = FindPawn(id) ?? p;
+			}
+			int now = Find.TickManager.TicksGame;
+			var guard = RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.Returned;
+			return "RETURNGUARD id=" + id + " spawned=" + (p != null && p.Spawned) + " prisoner=" + (p != null && p.IsPrisonerOfColony)
+				+ " guarded=" + guard.Within(id, now, RimMandrake.FlowWorks.TakenByLand.RM_TakenByLandKernel.ReturnGuardTicks)
+				+ " watched=" + guard.Within(id, now, RimMandrake.FlowWorks.TakenByLand.RM_TakenByLandKernel.ReturnWatchTicks)
+				+ " count=" + guard.Count + " tick=" + now;
+		}
+
+		private static Pawn FindPawn(int id)
+		{
+			foreach (Map m in Find.Maps)
+			{
+				foreach (Pawn q in m.mapPawns.AllPawnsSpawned)
+				{
+					if (q.thingIDNumber == id)
+					{
+						return q;
+					}
+				}
+			}
+			return null;
+		}
+
 		private static IntVec3 FindRun(RM_MapComponent_RiverCurrent comp, Map map, int lane, int length)
 		{
 			List<IntVec3> cells = new List<IntVec3>(map.AllCells);

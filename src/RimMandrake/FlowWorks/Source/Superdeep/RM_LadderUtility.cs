@@ -567,6 +567,16 @@ namespace RimMandrake.FlowWorks
 			return string.IsNullOrEmpty(s) ? line : s + "\n" + line;
 		}
 
+		/// <summary>LADDER_RAILS_DRAWN_ON_THE_FACE: under the oblique cut the ladder is printed down (or, raised, out of) its wall at
+		/// the hole's drawn depth (RM_LadderDraw); otherwise the def's art.</summary>
+		public override void Print(SectionLayer layer)
+		{
+			if (!RM_LadderDraw.TryPrint(this, GetComp<RM_CompLadder>(), layer))
+			{
+				base.Print(layer);
+			}
+		}
+
 		public override Graphic Graphic
 		{
 			get

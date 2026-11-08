@@ -65,6 +65,7 @@
   <RMFlow_CaptureDownNotHeld>the pit is not holding them</RMFlow_CaptureDownNotHeld>
   <RMFlow_CaptureDownNoPrisonBed>needs a prisoner bed in the pit</RMFlow_CaptureDownNoPrisonBed>
   <RMFlow_CaptureDownNoLip>no reachable edge cell next to them</RMFlow_CaptureDownNoLip>
+  <RMFlow_CaptureDownDownedNoLip>they lie where no edge touches them, so nobody could feed them there; needs a prisoner bed in the pit</RMFlow_CaptureDownDownedNoLip>
   <RMFlow_CapturedDown>{0} took {1} prisoner from the edge of the pit.</RMFlow_CapturedDown>
 
   <!-- LIQUID_BOTTLE_LOOP_1 revert timer. -->
@@ -127,6 +128,7 @@
   <RMFlow_RaidersGiveUpTrench>Raiders of {0} cannot cross your pit and are pulling back.</RMFlow_RaidersGiveUpTrench>
   <!-- RAIDERS_FETCH_THEIR_FALLEN: {0} = the raiding faction's name -->
   <RMFlow_RaidersFetchFallen>Raiders of {0} are lowering a ladder into your pit to fetch their fallen.</RMFlow_RaidersFetchFallen>
+  <RMFlow_RescueLadderIntoPrison>Raiders have set a ladder into the pit holding your prisoners: they may climb out.</RMFlow_RescueLadderIntoPrison>
 
   <!-- RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH: first time a colonist is swept by a fast river lane -->
   <RMFlow_RiverSweptFirstEntry>{0} is being swept downstream by the river's current. Fast water cannot be waded out of; build a ford or a bridge to cross.</RMFlow_RiverSweptFirstEntry>

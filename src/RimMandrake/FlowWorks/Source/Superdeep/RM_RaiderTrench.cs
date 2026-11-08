@@ -905,6 +905,10 @@ namespace RimMandrake.FlowWorks
 		public static JobDef RM_RaiderSetLadder;
 		public static JobDef RM_RaiderFillTrench;
 
+		/// <summary>RAIDERS_FETCH_THEIR_FALLEN: the set-ladder work lowered for the raid's fallen (RM_RaiderRescue). Its own def,
+		/// so the rescue survives a save and the think tree's re-runs under fire are told from the job alone.</summary>
+		public static JobDef RM_RaiderRescueLadder;
+
 		/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: fetch fill material and tip it into a trench square.</summary>
 		public static JobDef RM_RaiderFetchFill;
 
@@ -928,7 +932,9 @@ namespace RimMandrake.FlowWorks
 	/// drop in levels) or shovel one level into a trench square (targetA), standing beside it. Re-checked at the end.</summary>
 	public class JobDriver_RM_RaiderTrenchWork : JobDriver
 	{
-		private bool IsLadder => job.def == RM_RaiderTrenchDefOf.RM_RaiderSetLadder;
+		private bool IsLadder => job.def == RM_RaiderTrenchDefOf.RM_RaiderSetLadder || IsRescue;
+
+		private bool IsRescue => job.def != null && job.def == RM_RaiderTrenchDefOf.RM_RaiderRescueLadder;
 
 		/// <summary>One raider sets a ladder slot; up to RM_RaiderTrenchMath.MaxFillersPerSquare share a fill square (job.count
 		/// stops the causeway at its step).</summary>
@@ -1043,6 +1049,10 @@ namespace RimMandrake.FlowWorks
 				}
 				ladder.SetFaction(pawn.Faction);
 				GenSpawn.Spawn(ladder, c, map, Rot4.FromIntVec3(wall - c));
+				if (IsRescue)
+				{
+					RM_RaiderRescue.NoteRescueLadderSet(ladder);   // owner card 2026-11-07: one message if colony prisoners are below
+				}
 			};
 			done.defaultCompleteMode = ToilCompleteMode.Instant;
 			yield return done;
@@ -1122,6 +1132,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED, PROVISIONAL: a sapper raid's share (owner: "Sappers however would bring
 		/// shovels &amp; ladders"). A siege brings none: it is mortar-based.</summary>
 		public static float sapperShovelShare = RM_ShovelMath.DefaultSapperShovelShare;
+		/// <summary>RAIDERS_FETCH_THEIR_FALLEN, request C: while a raid is fetching its fallen out of a pit, its assault does not
+		/// leave for colony damage taken (at most RM_RaiderTrenchMath.RescueHoldCapTicks). RM_Patch_ColonyDamage_RescueHold.</summary>
+		public static bool raiderRescueHoldsRaid = true;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -1146,6 +1159,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref raiderJumpPackShare, "raiderJumpPackShare", 0.1f);
 			Scribe_Values.Look(ref raiderShovelShare, "raiderShovelShare", RM_ShovelMath.DefaultRaiderShovelShare);
 			Scribe_Values.Look(ref sapperShovelShare, "sapperShovelShare", RM_ShovelMath.DefaultSapperShovelShare);
+			Scribe_Values.Look(ref raiderRescueHoldsRaid, "raiderRescueHoldsRaid", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -1173,6 +1187,11 @@ namespace RimMandrake.FlowWorks
 			list.Label("  Scaling ladder speed: x" + raiderLadderSpeed.ToString("0.00") + "  (about " + ladderSec
 			  + " s for a 2 m wall)", tooltip: "About 10 s plus 1 s a metre at x1.");
 			raiderLadderSpeed = Mathf.Round(list.Slider(raiderLadderSpeed, 0.25f, 4f) * 20f) / 20f;
+			list.CheckboxLabeled("  A raid fetching its fallen stays to finish", ref raiderRescueHoldsRaid,
+				"Raiders who fell into a pit are fetched with a ladder by one of their raid. On, while that rescue is under way the "
+			  + "raid does not give up and leave because of the damage it has done to your colony; it still leaves when its time "
+			  + "runs out or it has lost too many people, and it waits at most " + (RM_RaiderTrenchMath.RescueHoldCapTicks / 2500f).ToString("0.#")
+			  + " hours. Off: it leaves as usual and abandons them.");
 			list.CheckboxLabeled("  Raiders breach by filling", ref raiderFillEnabled,
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "
 			  + "step of a one-square causeway is climbable, then walk across it. Only raiders with a shovel do (with \"Digging and "

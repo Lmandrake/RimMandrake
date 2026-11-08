@@ -39,6 +39,7 @@ namespace RimMandrake.FlowWorks
 			{
 				case "TendPatient":
 				case "RM_CaptureDown":
+				case "FeedPatient":   // DRAINED_HOLE_IS_A_PRISON: a downed prisoner is fed by hand from a lip that touches him
 					return LipKind.Touch;
 				case "PrisonerAttemptRecruit":
 				case "PrisonerConvert":
@@ -76,6 +77,9 @@ namespace RimMandrake.FlowWorks
 			AlreadyPrisoner,
 			NotHeld,
 			NoPrisonBed,
+			/// <summary>DRAINED_HOLE_IS_A_PRISON: a downed person in a bare hole where no lip touches him: nobody could feed him
+			/// there (he cannot get up to food, and the hand-feeding warden must touch him), so he is not taken (BedlessDowned).</summary>
+			DownedNoLip,
 		}
 
 		/// <summary>
@@ -127,6 +131,39 @@ namespace RimMandrake.FlowWorks
 		public static bool DropCell(bool inPocket, bool sameRoom, bool standable, bool onRim)
 		{
 			return inPocket && sameRoom && standable && onRim;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: a cell whose food the pocket count adds up. Vanilla's FoodAvailableInRoomTo counts
+		/// only the prisoner's room, and he may eat only food in his own room: a sloped pocket can span two rooms (the deep part
+		/// a pit room, the shallow end the outdoors), and food in the other one feeds nobody.</summary>
+		public static bool FoodCellCounts(bool inPocket, bool sameRoom)
+		{
+			return inPocket && sameRoom;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: vanilla's WardenFeedUtility.ShouldBeFed wants a bed. A downed lip-served prisoner on
+		/// the bare floor is fed by hand too (vanilla Feed: the warden carries food to him and must touch him), when he can be
+		/// brought food and a lip cell touches him.</summary>
+		public static bool FedFromLip(bool vanilla, bool lipServed, bool downed, bool inBed, bool canBeBroughtFood, bool touchLip)
+		{
+			return vanilla || lipServed && downed && !inBed && canBeBroughtFood && touchLip;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: capture down's last word on a bedless capture. A downed person no lip touches would
+		/// starve where he lies (nobody can hand him food), so he is not taken; with a lip beside him, or a bed prison, the
+		/// verdict stands.</summary>
+		public static CaptureDownVerdict BedlessDowned(CaptureDownVerdict v, bool viaBedless, bool downed, bool touchLip)
+		{
+			return v == CaptureDownVerdict.Allowed && viaBedless && downed && !touchLip ? CaptureDownVerdict.DownedNoLip : v;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: may a remembered lip answer (one warden, one prisoner) be used again? A "yes" holds
+		/// only while its lip still serves where the prisoner stands now (within the kind's radius, still a good spot); a "no"
+		/// holds only while he has not moved. A stale "yes" sends the warden to a lip that no longer serves, the path patch
+		/// finds none, and vanilla restarts the job in the same tick until its 10-jobs guard trips.</summary>
+		public static bool LipMemoGood(bool ok, bool prisonerMoved, float lipToPrisoner, float radius, bool goodForKind)
+		{
+			return ok ? lipToPrisoner <= radius && goodForKind : !prisonerMoved;
 		}
 
 		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room's floor is 3.0 m down for a person

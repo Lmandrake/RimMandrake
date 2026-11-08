@@ -199,6 +199,24 @@ namespace RimMandrake.FlowWorks
 			return q.z + 1f;
 		}
 
+		/// <summary>LADDER_RAILS_DRAWN_ON_THE_FACE (RM_LadderDraw): the oblique far face over <paramref name="c"/>'s column as
+		/// ObliqueCell prints it: its height in cells, with the column's far rim z and near rim z. 0 (rims at the square's own
+		/// edges) where <paramref name="c"/> is not dug.</summary>
+		public static float ObliqueFaceAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c, out float rim, out float near)
+		{
+			rim = c.z + 1f;
+			near = c.z;
+			int d = eng.HollowDepthAt(c);
+			if (d <= 0)
+			{
+				return 0f;
+			}
+			rim = FarRim(map, eng, c, d, out int rimDepth);
+			near = NearRim(map, eng, c, d);
+			int drop = RM_WallFaceMath.ExposedDrop(d, rimDepth, eng.FillAt(c));
+			return RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, 0.15f);
+		}
+
 		/// <summary>The near rim under <paramref name="c"/>'s column: the z of the north edge of the first square south of it
 		/// that shows shallower than <paramref name="d"/>.</summary>
 		private static float NearRim(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d)

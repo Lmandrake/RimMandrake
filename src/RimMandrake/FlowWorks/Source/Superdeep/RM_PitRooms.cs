@@ -368,10 +368,16 @@ namespace RimMandrake.FlowWorks
 			// DRAINED_HOLE_IS_A_PRISON: with the bedless switch on, a pit that TRAPS the person is held and a prison, bed or not
 			bool bedless = RimMandrakeFlowWorksSettings.bedlessPitPrisonEnabled;
 			bool trapped = bedless && humanlike && !ownSide && target.Spawned && RM_BedlessPitPrison.HoleHolds(target);
-			return RM_PitRoomMath.CaptureDown(RimMandrakeFlowWorksSettings.captureDownEnabled && RoomsOn,
+			RM_PitRoomMath.CaptureDownVerdict v = RM_PitRoomMath.CaptureDown(RimMandrakeFlowWorksSettings.captureDownEnabled && RoomsOn,
 				humanlike, ownSide, target != null && target.IsPrisonerOfColony,
 				RM_PitRoomMath.BedlessHeld(target != null && RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target), bedless, trapped),
 				RM_PitRoomMath.BedlessPrison(prison, bedless, trapped));
+			// DRAINED_HOLE_IS_A_PRISON: taken without a bed while downed, he must be fed by hand from a lip touching him
+			if (v != RM_PitRoomMath.CaptureDownVerdict.Allowed || prison || !target.Downed)
+			{
+				return v;
+			}
+			return RM_PitRoomMath.BedlessDowned(v, true, true, RM_BedlessPitPrison.TouchLipExists(target));
 		}
 
 		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER: the pit room's person depth scaled by this pawn's height (RM_Drowning.HeightOf,
@@ -397,6 +403,7 @@ namespace RimMandrake.FlowWorks
 			{
 				case RM_PitRoomMath.CaptureDownVerdict.NotHeld: return "RMFlow_CaptureDownNotHeld".Translate();
 				case RM_PitRoomMath.CaptureDownVerdict.NoPrisonBed: return "RMFlow_CaptureDownNoPrisonBed".Translate();
+				case RM_PitRoomMath.CaptureDownVerdict.DownedNoLip: return "RMFlow_CaptureDownDownedNoLip".Translate();
 				default: return null;
 			}
 		}

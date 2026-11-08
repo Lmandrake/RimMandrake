@@ -18,19 +18,25 @@ namespace RimMandrake.FlowWorks
 	/// pocket; DeliverFood also wants a prison cell (IsInPrisonCell) and drops at SpotToChewStandingNear, which can be the middle
 	/// of the hole. Without this file he would starve with nobody told.
 	///
-	/// WHY THESE THREE PATCHES AND NOT AN IsInPrisonCell POSTFIX: making the hole "a prison cell" everywhere has eight vanilla
+	/// WHY THESE FOUR PATCHES AND NOT AN IsInPrisonCell POSTFIX: making the hole "a prison cell" everywhere has eight vanilla
 	/// callers (SocialProperness among them, which is hot), works per cell where the prisoner's pocket is per pawn, and would
 	/// still leave DeliverFood's room compare and FoodAvailableInRoomTo wrong. The narrowest set that works:
-	///  1. WorkGiver_Scanner.AllowUnreachable (getter), postfix: true for the five warden givers that can work from the lip
-	///     (chat/recruit, convert, enslave, interrogate, deliver food), and only while some prisoner is served from the lip;
+	///  1. WorkGiver_Scanner.AllowUnreachable (getter), postfix: true for the six warden givers that can work from the lip
+	///     (chat/recruit, convert, enslave, interrogate, deliver food, feed), and only while some prisoner is served from the lip;
 	///     else JobGiver_Work never even offers them the unreachable prisoner. Their own gate (2) still decides.
-	///  2. WorkGiver_Warden.ShouldTakeCareOfPrisoner, postfix: for those five only, the reach check is replaced by "a lip cell
-	///     exists" (talk: RM_PitRooms.TryFindLipCell, Interact kind; food: a rim drop cell with a lip beside it). Every other
-	///     warden giver (take to bed, release, execute, feed) keeps vanilla's "no": nobody walks into the hole.
+	///  2. WorkGiver_Warden.ShouldTakeCareOfPrisoner, postfix: for those six only, the reach check is replaced by "a lip cell
+	///     exists" (talk: RM_PitRooms.TryFindLipCell, Interact kind; hand-feeding: Touch kind; food: a rim drop cell with a
+	///     lip beside it). Every other warden giver (take to bed, release, execute) keeps vanilla's "no": nobody walks into
+	///     the hole. A remembered lip is used again only while it still serves where he stands (RM_PitRoomMath.LipMemoGood).
 	///  3. WorkGiver_Warden_DeliverFood.JobOnThing, postfix: for a lip-served prisoner the warden cannot reach, or one held in
 	///     no prison cell, the job drops the food on a rim cell of HIS pocket, in his room (SocialProperness: a prisoner eats
 	///     only food in his room), next to a lip cell the warden can stand on. The walk itself is the existing lip service
-	///     (RM_Patch_PathFollower_LipService via RM_PitRooms.ShouldServeFromLipFor, which asks ServesJobAt here).
+	///     (RM_Patch_PathFollower_LipService via RM_PitRooms.ShouldServeFromLipFor, which asks ServesJobAt here). The food
+	///     count reads only the cells of his pocket in his room (RM_PitRoomMath.FoodCellCounts).
+	///  4. WardenFeedUtility.ShouldBeFed, postfix: a DOWNED lip-served prisoner on the bare floor with a lip touching him is
+	///     one to be fed by hand (vanilla wants a bed). Vanilla Feed's FeedPatient job then carries food to him; the walk is
+	///     the lip service (FeedPatient is Touch kind) and the chew needs only a touch. Capture down will not take a downed
+	///     person no lip touches (CaptureDownVerdict.DownedNoLip): nobody could feed him where he lies.
 	///
 	/// THE PRISON-DOOR RULE: nothing here builds, installs, lowers or orders a ladder, and the warden givers left alone above
 	/// are the ones that would walk a prisoner out. With LADDER_PARITY_BUILD_NO_KEYS_REQUIRED a lowered ladder is a held-open
@@ -42,8 +48,9 @@ namespace RimMandrake.FlowWorks
 	/// think node finds no exit spot through the reach veto and gives up without a log line. Every search here is memoised
 	/// (MemoTicks), so nothing runs each tick.
 	///
-	/// NOT here: a DOWNED prisoner on the bare floor is not fed (vanilla Feed needs a bed; food dropped beside him cannot be
-	/// eaten); tending reaches him only where he lies against the wall (a Touch lip); hemogen delivery is vanilla's.
+	/// NOT here: a prisoner who goes down AFTER capture where no lip touches him (the middle of a wide hole) is not fed, and
+	/// nothing tells the player; tending and hand-feeding reach him only where he lies against the wall (a Touch lip);
+	/// hemogen delivery is vanilla's.
 	/// </summary>
 	public static class RM_BedlessPitPrison
 	{
@@ -64,8 +71,11 @@ namespace RimMandrake.FlowWorks
 		private static bool anyServed;
 		private static readonly Dictionary<int, (int tick, bool v)> served = new Dictionary<int, (int, bool)>();
 		private static readonly Dictionary<int, (int tick, bool v)> fedMemo = new Dictionary<int, (int, bool)>();
-		private static readonly Dictionary<(int w, int p, int kind), (int tick, bool ok, IntVec3 cell)> lipMemo =
-			new Dictionary<(int, int, int), (int, bool, IntVec3)>();
+		/// <summary>One warden, one prisoner, one kind: the answer, its cell, and where the prisoner stood when it was found
+		/// (RM_PitRoomMath.LipMemoGood decides whether it may be used again).</summary>
+		private static readonly Dictionary<(int w, int p, int kind), (int tick, bool ok, IntVec3 cell, IntVec3 at)> lipMemo =
+			new Dictionary<(int, int, int), (int, bool, IntVec3, IntVec3)>();
+		private static readonly Dictionary<int, (int tick, bool v, IntVec3 at)> touchMemo = new Dictionary<int, (int, bool, IntVec3)>();
 
 		private static int Now => Find.TickManager?.TicksGame ?? 0;
 
@@ -78,6 +88,7 @@ namespace RimMandrake.FlowWorks
 				served.Clear();
 				fedMemo.Clear();
 				lipMemo.Clear();
+				touchMemo.Clear();
 				anyTick = -99999;
 			}
 		}
@@ -243,12 +254,17 @@ namespace RimMandrake.FlowWorks
 			return pocket.valid && (cell == prisoner.Position || pocket.Contains(cell)) && !pocket.Contains(worker.Position);
 		}
 
-		/// <summary>The warden givers that can do their job from the lip (talking is Interact, food is Drop).</summary>
+		/// <summary>The warden givers that can do their job from the lip (talking is Interact, food is Drop, hand-feeding a
+		/// downed prisoner is Touch).</summary>
 		public static RM_PitRoomMath.LipKind GiverKind(WorkGiver_Scanner g)
 		{
 			if (g is WorkGiver_Warden_DeliverFood)
 			{
 				return RM_PitRoomMath.LipKind.Drop;
+			}
+			if (g is WorkGiver_Warden_Feed)
+			{
+				return RM_PitRoomMath.LipKind.Touch;
 			}
 			if (g is WorkGiver_Warden_Chat || g is WorkGiver_Warden_Convert || g is WorkGiver_Warden_Enslave
 				|| g is WorkGiver_Warden_InterrogateIdentity)
@@ -266,26 +282,96 @@ namespace RimMandrake.FlowWorks
 				&& warden.CanReserve(p, 1, -1, null, forced);
 		}
 
-		/// <summary>A lip cell this warden can talk to the prisoner from (memoised per warden and prisoner).</summary>
-		public static bool TryTalkLip(Pawn warden, Pawn p, out IntVec3 lip)
+		/// <summary>A lip cell this warden can talk to the prisoner from (Interact) or hand him food from (Touch), memoised
+		/// per warden, prisoner and kind. A remembered "yes" is used again only while its lip still serves where he stands now;
+		/// a remembered "no" only while he has not moved (RM_PitRoomMath.LipMemoGood). A stale "yes" would send the warden to
+		/// a lip the path patch can no longer use, and vanilla would restart the job until its 10-jobs-in-a-tick guard.</summary>
+		public static bool TryLip(Pawn warden, Pawn p, RM_PitRoomMath.LipKind kind, out IntVec3 lip)
 		{
 			Fresh();
 			int now = Now;
-			var key = (warden.thingIDNumber, p.thingIDNumber, (int)RM_PitRoomMath.LipKind.Interact);
-			if (lipMemo.TryGetValue(key, out (int tick, bool ok, IntVec3 cell) m) && Live(m.tick, now, MemoTicks))
+			var key = (warden.thingIDNumber, p.thingIDNumber, (int)kind);
+			if (lipMemo.TryGetValue(key, out (int tick, bool ok, IntVec3 cell, IntVec3 at) m) && Live(m.tick, now, MemoTicks))
 			{
-				lip = m.cell;
-				return m.ok;
+				float radius = RM_PitRoomMath.RadiusFor(kind);
+				float dist = m.ok ? m.cell.DistanceTo(p.Position) : 0f;
+				bool good = m.ok && dist <= radius && LipStillServes(warden, m.cell, p.Position, kind);
+				if (RM_PitRoomMath.LipMemoGood(m.ok, m.at != p.Position, dist, radius, good))
+				{
+					lip = m.cell;
+					return m.ok;
+				}
 			}
-			bool ok = RM_PitRooms.TryFindLipCell(warden, p.Position, RM_PitRoomMath.LipKind.Interact, out lip);
-			lipMemo[key] = (now, ok, lip);
+			bool ok = RM_PitRooms.TryFindLipCell(warden, p.Position, kind, out lip);
+			lipMemo[key] = (now, ok, lip, p.Position);
 			return ok;
+		}
+
+		/// <summary>Does a remembered lip cell still pass RM_PitRooms.TryFindLipCell's own tests (not pit floor, standable,
+		/// a good spot to talk from, reachable) for a prisoner standing at <paramref name="target"/>?</summary>
+		private static bool LipStillServes(Pawn warden, IntVec3 lip, IntVec3 target, RM_PitRoomMath.LipKind kind)
+		{
+			Map map = warden.Map;
+			if (map == null || !lip.InBounds(map) || !lip.Standable(map)
+				|| RM_PitRooms.IsPitFloor(map, RM_SuperdeepTrap.EngineOf(map), lip))
+			{
+				return false;
+			}
+			if (kind == RM_PitRoomMath.LipKind.Interact && !SocialInteractionUtility.IsGoodPositionForInteraction(lip, target, map))
+			{
+				return false;
+			}
+			return warden.CanReach(lip, PathEndMode.OnCell, Danger.Deadly);
+		}
+
+		/// <summary>Does a lip cell touch this pawn where he lies: an 8-neighbour outside his pocket, not pit floor, standable?
+		/// No warden is asked: this is "could anyone hand him food here" (the hand-feeding gate and capture down's downed
+		/// rule). Kept ServedTicks while he stays on the same cell.</summary>
+		public static bool TouchLipExists(Pawn p)
+		{
+			if (p == null || !p.Spawned)
+			{
+				return false;
+			}
+			Fresh();
+			int now = Now;
+			if (touchMemo.TryGetValue(p.thingIDNumber, out (int tick, bool v, IntVec3 at) m) && Live(m.tick, now, ServedTicks)
+				&& m.at == p.Position)
+			{
+				return m.v;
+			}
+			bool v = FindTouchLip(p);
+			touchMemo[p.thingIDNumber] = (now, v, p.Position);
+			return v;
+		}
+
+		private static bool FindTouchLip(Pawn p)
+		{
+			Map map = p.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			Pocket pocket = PocketOf(p);
+			if (eng == null || !pocket.valid)
+			{
+				return false;
+			}
+			float radius = RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Touch);
+			for (int i = 0; i < 8; i++)
+			{
+				IntVec3 c = p.Position + GenAdj.AdjacentCells[i];
+				if (c.InBounds(map) && !pocket.Contains(c)
+					&& RM_PitRoomMath.LipCandidate(RM_PitRooms.IsPitFloor(map, eng, c), c.Standable(map), c.DistanceTo(p.Position), radius))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>Where to drop food for this prisoner: the cell of HIS pocket nearest him that is in his room (food is
 		/// proper for a prisoner only in his room), free to stand on and empty, on the rim (a neighbour outside the pocket),
 		/// with a lip cell beside it this warden can stand on (RM_PitRooms.TryFindLipCell, Drop kind). Memoised per warden
-		/// and prisoner; a remembered cell that has since filled is looked for again.</summary>
+		/// and prisoner; a remembered cell that has since filled, left his room or his search radius is looked for again, and a
+		/// remembered "no" only holds while he stays put (RM_PitRoomMath.LipMemoGood).</summary>
 		public static bool TryDropSpot(Pawn warden, Pawn p, out IntVec3 drop)
 		{
 			drop = IntVec3.Invalid;
@@ -297,14 +383,18 @@ namespace RimMandrake.FlowWorks
 			int now = Now;
 			Map map = p.Map;
 			var key = (warden.thingIDNumber, p.thingIDNumber, (int)RM_PitRoomMath.LipKind.Drop);
-			if (lipMemo.TryGetValue(key, out (int tick, bool ok, IntVec3 cell) m) && Live(m.tick, now, MemoTicks)
-				&& (!m.ok || m.cell.GetFirstItem(map) == null))
+			if (lipMemo.TryGetValue(key, out (int tick, bool ok, IntVec3 cell, IntVec3 at) m) && Live(m.tick, now, MemoTicks))
 			{
-				drop = m.cell;
-				return m.ok;
+				float dist = m.ok ? m.cell.DistanceTo(p.Position) : 0f;
+				bool good = m.ok && m.cell.InBounds(map) && m.cell.GetFirstItem(map) == null && m.cell.GetRoom(map) == p.GetRoom();
+				if (RM_PitRoomMath.LipMemoGood(m.ok, m.at != p.Position, dist, DropSearchRadius, good))
+				{
+					drop = m.cell;
+					return m.ok;
+				}
 			}
 			bool found = FindDropSpot(warden, p, map, out drop);
-			lipMemo[key] = (now, found, drop);
+			lipMemo[key] = (now, found, drop, p.Position);
 			return found;
 		}
 
@@ -355,8 +445,9 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>Vanilla FoodAvailableInRoomTo, counted over the prisoner's pocket instead of his room: what he carries,
-		/// what lies down there that he will eat, against what the hungry prisoners down there want (kept ServedTicks).</summary>
+		/// <summary>Vanilla FoodAvailableInRoomTo, counted over the cells of the prisoner's pocket that are in his room (vanilla
+		/// counts the room alone; a pocket can span two rooms and he eats only in his): what he carries, what lies there that
+		/// he will eat, against what the hungry prisoners there want (kept ServedTicks).</summary>
 		public static bool FoodInPocket(Pawn p)
 		{
 			Fresh();
@@ -389,9 +480,15 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			Map map = p.Map;
+			Room room = p.GetRoom();
 			float have = 0f;
 			foreach (IntVec3 c in pocket.Cells(map))
 			{
+				// only his room's food: he may eat nothing else (a sloped pocket can be two rooms)
+				if (!RM_PitRoomMath.FoodCellCounts(true, c.GetRoom(map) == room))
+				{
+					continue;
+				}
 				List<Thing> things = map.thingGrid.ThingsListAtFast(c);
 				for (int i = 0; i < things.Count; i++)
 				{
@@ -412,7 +509,8 @@ namespace RimMandrake.FlowWorks
 			{
 				Pawn o = prisoners[i];
 				Need_Food f = o.needs?.food;
-				if (f == null || !pocket.Contains(o.Position) || f.CurLevelPercentage >= f.PercentageThreshHungry + 0.02f)
+				if (f == null || !RM_PitRoomMath.FoodCellCounts(pocket.Contains(o.Position), o.GetRoom() == room)
+					|| f.CurLevelPercentage >= f.PercentageThreshHungry + 0.02f)
 				{
 					continue;
 				}
@@ -426,7 +524,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>DeliverFood for a lip-served prisoner: vanilla's gates (can be brought food, hungry, not one to be fed by
-		/// hand), then not when he is downed (he cannot get up to it), not when enough lies in his pocket, a drop cell, and
+		/// hand), then not when he is downed (he cannot get up to it; patch 4 has him fed by hand), not when enough lies in his pocket, a drop cell, and
 		/// vanilla's own food search. The food lands on the drop cell (JobDriver_FoodDeliver drops at target C).</summary>
 		public static Job BuildFoodJob(Pawn warden, Pawn p)
 		{
@@ -457,7 +555,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	/// <summary>DRAINED_HOLE_IS_A_PRISON patch 1: JobGiver_Work offers a warden only prisoners he can reach unless the
-	/// giver allows the unreachable. The five lip-capable warden givers allow it while a lip-served prisoner exists; their
+	/// giver allows the unreachable. The six lip-capable warden givers allow it while a lip-served prisoner exists; their
 	/// own ShouldTakeCareOfPrisoner (patch 2) still refuses anyone without a lip.</summary>
 	[HarmonyPatch(typeof(WorkGiver_Scanner), nameof(WorkGiver_Scanner.AllowUnreachable), MethodType.Getter)]
 	[RimMandrake.Shared.PatchFeature("Wardens work from the lip", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
@@ -475,9 +573,9 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
-	/// <summary>DRAINED_HOLE_IS_A_PRISON patch 2: for the five lip-capable warden givers, a lip-served prisoner the warden
-	/// cannot reach is still his to care for when a lip cell will do (talk) or a rim drop cell has one (food). Every other
-	/// warden giver keeps vanilla's answer.</summary>
+	/// <summary>DRAINED_HOLE_IS_A_PRISON patch 2: for the six lip-capable warden givers, a lip-served prisoner the warden
+	/// cannot reach is still his to care for when a lip cell will do (talk; hand-feeding, a lip touching him) or a rim drop
+	/// cell has one (food). Every other warden giver keeps vanilla's answer.</summary>
 	[HarmonyPatch(typeof(WorkGiver_Warden), "ShouldTakeCareOfPrisoner")]
 	[RimMandrake.Shared.PatchFeature("Wardens work from the lip", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
 	public static class RM_Patch_Warden_CareFromLip
@@ -500,9 +598,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			__result = kind == RM_PitRoomMath.LipKind.Interact
-				? RM_BedlessPitPrison.TryTalkLip(warden, p, out _)
-				: RM_BedlessPitPrison.TryDropSpot(warden, p, out _);
+			__result = kind == RM_PitRoomMath.LipKind.Drop
+				? RM_BedlessPitPrison.TryDropSpot(warden, p, out _)
+				: RM_BedlessPitPrison.TryLip(warden, p, kind, out _);
 		}
 	}
 
@@ -546,6 +644,29 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			__result = RM_BedlessPitPrison.BuildFoodJob(pawn, p);
+		}
+	}
+
+	/// <summary>DRAINED_HOLE_IS_A_PRISON patch 4: a downed lip-served prisoner on the bare floor is one to be fed by hand.
+	/// Vanilla's ShouldBeFed wants a bed, so a downed captive in a bare hole would starve (he cannot get up to dropped food).
+	/// With a lip touching him (TouchLipExists) and food he may be brought, this says yes: vanilla WorkGiver_Warden_Feed makes
+	/// its FeedPatient job (patches 1 and 2 let the warden have him, Touch kind), the walk to him is the lip service
+	/// (FeedPatient is Touch in RM_PitRoomMath.KindOf), and the chew needs only a touch. Every vanilla caller then treats
+	/// him as a bedded patient: DeliverFood, the doctor's FeedPatient and hemogen delivery skip him, his own GetFood waits.
+	/// No lip touching him: vanilla's no stands, and capture down refuses to take him (CaptureDownVerdict.DownedNoLip).</summary>
+	[HarmonyPatch(typeof(WardenFeedUtility), nameof(WardenFeedUtility.ShouldBeFed))]
+	[RimMandrake.Shared.PatchFeature("Wardens work from the lip", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
+	public static class RM_Patch_WardenFeed_FromLip
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Pawn p, ref bool __result)
+		{
+			if (__result || p == null || !p.Downed || p.guest == null || !RM_BedlessPitPrison.LipServed(p))
+			{
+				return;
+			}
+			__result = RM_PitRoomMath.FedFromLip(false, true, p.Downed, p.InBed(), p.guest.CanBeBroughtFood,
+				RM_BedlessPitPrison.TouchLipExists(p));
 		}
 	}
 }

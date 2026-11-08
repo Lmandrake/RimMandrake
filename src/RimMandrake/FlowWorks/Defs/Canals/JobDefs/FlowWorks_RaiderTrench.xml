@@ -8,6 +8,15 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
+  <!-- RAIDERS_FETCH_THEIR_FALLEN: the same set-ladder work, lowered into a pocket to fetch the raid's fallen
+       (Source/Superdeep/RM_RaiderRescue.cs). Its own def so the rescue is known from the saved job alone. -->
+  <JobDef>
+    <defName>RM_RaiderRescueLadder</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderTrenchWork</driverClass>
+    <reportString>lowering a ladder to fetch the fallen.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
   <JobDef>
     <defName>RM_RaiderFillTrench</defName>
     <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderTrenchWork</driverClass>

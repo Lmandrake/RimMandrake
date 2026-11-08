@@ -28,10 +28,11 @@ import sys
 WRAPPER = "ralph/steve.sh"
 COPY_ENV = "RM_GAME_INSTANCE"
 DEFAULT_COPY = "a"
-# FlowWorks drives SteveDesktop's game A. The GSS loop goes first on it. Graffiti (rm-ralph-graffiti3) is on game B and
-# Pyrelands (rm-ralph-pyrelands) on Archmagi's game: neither shares game A, so they are left out on purpose. Listing them
-# would only make this loop wait for games it never touches (helper for FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH, 2026-11-07).
-AHEAD = {"a": ["rm-ralph-gss-steve"]}
+# FlowWorks drives SteveDesktop's game A and has first claim on it (owner card, 2026-11-07). The GSS loop (rm-ralph-gss-steve)
+# shares game A but queues behind this loop: its own gate and loop.sh yield while rm-ralph-flowworks is active. So nothing goes
+# ahead of FlowWorks here, and an empty list means this gate never waits. Graffiti (rm-ralph-graffiti3) is on game B and
+# Pyrelands (rm-ralph-pyrelands) on Archmagi's game: neither shares game A.
+AHEAD = {"a": []}
 SOFT, HARD = 250_000, 350_000
 WARNED = "ralph/.context_warned"
 GAME = re.compile(
@@ -41,6 +42,10 @@ GAME = re.compile(
     r"|prove_pump_tank_coupler|prove_wrecked_links|ralph/steve\.sh\s+(up|down|restart|deploy|tier|run)\b"
     r"|RimWorldWin64|steam://|Start-Process|taskkill|system_click|system_screenshot")
 
+# Steve commands that drive game A: held back while a loop that borrowed A ends its pass (shared rule, read live;
+# Conductor 2026-11-07 20:20 PST).
+STEVE_DRIVES = re.compile(r"ralph/steve\.sh\s+(up|down|restart|deploy|tier|run)\b")
+RULE = "/home/mandrake/rm/scratch/BENCH/steve_games.py"
 NEVER = re.compile(r"taskkill[^|;&]*/IM\b[^|;&]*RimWorld", re.I)
 NEVER_ON_NAMED = re.compile(r"system_click|system_screenshot|steam://|steam\.exe", re.I)
 
@@ -140,6 +145,14 @@ def main():
         return 2
     command = (hook.get("tool_input") or {}).get("command", "")
     copy = (os.environ.get(COPY_ENV) or DEFAULT_COPY).strip().lower()
+    if (STEVE_DRIVES.search(command) or GAME.search(command)) and os.path.exists(RULE) \
+            and subprocess.run([sys.executable, RULE, "held", "flowworks"]).returncode == 0:
+        print("REFUSED: another loop borrowed game A while you were paused and keeps it to the end of its pass "
+              "(python3 %s show). Do the offline work you can. When only the game can tell you more: write ralph/PROGRESS.md, "
+              "create ralph/NEED_GAME, commit, push and end your turn. The loop waits at no token cost and starts a fresh "
+              "pass when A is yours again; your first game step then: ralph/steve.sh up (it puts your tier back first)." % RULE,
+              file=sys.stderr)
+        return 2
     if NEVER.search(command):
         print("REFUSED: taskkill /IM takes every game on this machine, another loop's included. Stop yours by pid: "
               "python3 src/RimMandrake/Utils/game_instance.py stop", file=sys.stderr)

@@ -446,5 +446,32 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>How far (squares) from the fallen a raider still answers: a raider across the map leaves it to nearer ones.</summary>
 		public const int RescueRadius = 45;
+
+		/// <summary>Review F6: a fallen raider's climb-out is over when he is out of every pocket, on the wall top he was sent to,
+		/// or no longer in the pocket he was fetched from (the wall top may itself lie in a pocket for his climb band).</summary>
+		public static bool ClimbOutDone(bool inPocket, bool onWallTop, bool inFetchedPocket)
+		{
+			return !inPocket || onWallTop || !inFetchedPocket;
+		}
+
+		/// <summary>Request C: the most the assault's colony-damage exit waits for a rescue, from the first time it would have
+		/// fired (two in-game hours: a ladder set under fire and the fallen climbing out fit well inside it).</summary>
+		public const int RescueHoldCapTicks = 5000;
+
+		/// <summary>Request C: hold the colony-damage exit now? Only while the rescue is under way, and only until
+		/// <paramref name="cap"/> ticks after the first hold (<paramref name="firstHoldTick"/> &lt; 0: none yet, this is it; a
+		/// first hold in the future is a stale memo and counts as none).</summary>
+		public static bool HoldColonyDamageExit(bool rescueActive, int firstHoldTick, int now, int cap)
+		{
+			if (!rescueActive)
+			{
+				return false;
+			}
+			if (firstHoldTick < 0 || now < firstHoldTick)
+			{
+				return cap > 0;
+			}
+			return now - firstHoldTick < cap;
+		}
 	}
 }

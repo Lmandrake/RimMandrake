@@ -111,6 +111,28 @@
       <careIfWornByCorpse>false</careIfWornByCorpse>
       <careIfDamaged>false</careIfDamaged>
       <wearPerDay>0</wearPerDay>
+      <!-- worn as a pack (a belt in front, the rope coil on the back), drawn like vanilla's jump pack -->
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/RM_ClimbingGear</wornGraphicPath>
+      <wornGraphicData>
+        <renderUtilityAsPack>true</renderUtilityAsPack>
+        <east>
+          <offset>(-0.3,-0.05)</offset>
+          <thin><offset>(0.05,0)</offset></thin>
+          <hulk><offset>(-0.1,0)</offset></hulk>
+          <fat><offset>(-0.15,0)</offset></fat>
+        </east>
+        <west>
+          <offset>(0.3,-0.05)</offset>
+          <thin><offset>(-0.05,0)</offset></thin>
+          <hulk><offset>(0.1,0)</offset></hulk>
+          <fat><offset>(0.15,0)</offset></fat>
+        </west>
+        <male>  <scale>(0.75,0.75)</scale></male>
+        <female><scale>(0.75,0.75)</scale></female>
+        <thin>  <scale>(0.7,0.7)</scale></thin>
+        <hulk>  <scale>(0.9,0.9)</scale></hulk>
+        <fat>   <scale>(0.9,0.9)</scale></fat>
+      </wornGraphicData>
       <bodyPartGroups>
         <li>Waist</li>
       </bodyPartGroups>

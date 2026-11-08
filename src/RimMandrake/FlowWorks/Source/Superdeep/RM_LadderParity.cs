@@ -363,6 +363,10 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				if (RM_RaiderRescue.OwnRaidBelow(p, l))
+				{
+					continue;   // RAIDERS_FETCH_THEIR_FALLEN: never one its own raid still stands below (taking it strands them)
+				}
 				if (!p.CanReserve(l) || !p.CanReach(l, PathEndMode.Touch, Danger.Deadly))
 				{
 					continue;
