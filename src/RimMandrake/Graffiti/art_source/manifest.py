@@ -81,14 +81,20 @@ for i, (t, tool, c) in enumerate([
 # Pass 18: claw gouges and crossed knife cuts read as "animal gouges, damage" (blind judge, pass 17). Scratchiti: only a person scratches a name, a face, a heart.
 for i, t in enumerate(["a fast scratched tag, one big looping signature that spells no letters of any alphabet, underlined twice with a hard slash",
                        "a crude scratched face, a lopsided round head with two X eyes and a wide grin of jagged teeth, the outline gone over twice",
-                       "a lopsided heart scratched hard with an arrow stabbed through it and a little scrawl that spells nothing on either side"]):
+                       "a lopsided heart scratched hard with an arrow stabbed through it and a little scrawl that spells nothing on either side",
+                       # Pass 19: four identical X-faces on one save read as "a stamp" (blind judge, pass 18). More hands, more drawings.
+                       "a crude scratched stick man with a huge round head and spiky hair, both arms up, standing on a wobbly scratched line",
+                       "a scratched lopsided five-pointed star gone over three times, with a fast spiral scratched beside it"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Scratchiti: a mark scratched into a painted wall with a nail or a key by a bored person, no paint at all: " + t + ". Every line is a deep thick scratch of pale bare exposed material with a darker lip along one side, jagged, each line at least a tenth of the image's height. Plainly drawn by a hand, never claw marks, never cracks, never damage. " + SQ)
 for i, t in enumerate(["two neat bundles of tally strokes", "one bundle of tally strokes and three spare strokes", "three bundles of short tally strokes, the last unfinished"]):
     add(f"tally_{i}", F + "TallyMarks", 1, "chalk", 0.12, "Prisoner's tally marks counting days: " + t + ", careful, patient, small. " + CHALK + PALE + SQ, True, height=0.75)
-for i, (t, c) in enumerate([("a jagged eye with a slash through it, meaning keep out", "rust red"), ("three spikes pointing at a ragged blot, meaning danger here", "ochre and soot"), ("a skull-like blot with two gouged eyes and no teeth, meaning death", "chalk and soot"), ("a crude open maw of teeth, meaning something bites", "rust red and soot")]):
+for i, (t, c) in enumerate([("a jagged eye with a slash through it, meaning keep out", "rust red"), ("a crude stick man running away to one side, arms flailing, from a ragged blot with jagged teeth, meaning danger here", "ochre"), ("a skull-like blot with two gouged eyes and no teeth, meaning death", "chalk and soot"), ("a crude open maw of teeth, meaning something bites", "rust red and soot")]):
     add(f"warn_{i}", F + "WarningGlyph", 1.2, "brush", 0.25, "A settler's warning daubed on a wall, not any real-world sign: " + t + ". " + BRUSH + PIG.format(c=c) + SQ)
 for i, t in enumerate(["two great angry slashes crossed over a scribble", "a big scrubbing back and forth scribble blotting something out"]):
     add(f"crossout_{i}", F + "CrossOut", 1.3, "brush", 0.15, "Someone's mark furiously crossed out: " + t + ". " + BRUSH + PIG.format(c="oxblood over soot") + SQ)
+# Pass 19: a red scrawl struck through a mark, in oxblood, read as "a blood splash" (blind judge, pass 18, corridor_west). A can's crimson.
+for n in ("crossout_0", "crossout_1"):
+    M[n].update(hue=(0.80, 0.17, 0.27), hue_lift=2.0)
 # ------ stencils
 add("stencil_crown_0", F + "Stencil_Crown", 1.25, "spray", 0.3, "A crude crown of five blunt uneven spikes, an insult to nobility, sprayed badly through a torn cardboard stencil: one spike broken short where the card tore, ragged gaps, "
     "a misted double edge along one side where the card slipped, and a thick sloppy slash of paint sprayed right through it on the diagonal. Not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="pale lime white crown, the slash in rust red") + SQ, floor=0.04)
@@ -99,10 +105,12 @@ add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's mar
 # Pass 14: the old fist (four knuckle lumps in oxblood) read at play zoom as a blood smear on the wall. A raised fist and forearm is a silhouette.
 # Pass 16: the ochre disc behind it read as a logo or badge (blind judge). A street stencil is the shape alone on bare wall, in whatever can was to hand.
 # Pass 17: still "emoji-style clip-art more than stencil" (blind judge), five of them the commonest badge. A street fist is sprayed freehand, fast.
-add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and forearm sprayed freehand, fast, with one can, by someone angry: a rough fat outline that overshoots at the corners and doubles back, "
-    "the knuckles four lumpy blobs of different sizes, the thumb a single fat stroke, the inside filled with quick zigzag passes that leave gaps of bare wall, the forearm running off "
-    "the bottom crooked, heavy runs falling straight down where the can was held too long, and the fist leaning hard to one side. No disc, no circle, no ring, nothing behind it. "
-    "Not a stencil, not tidy, not symmetrical, not an icon, not clip-art, not an emoji. " + SPRAY + PALE + SQ, True, floor=0.04)
+# Pass 18: the freehand fist, tinted orange, closed up at play zoom into "a mud or rust splat" (blind judge). A street stencil cut from a photograph:
+# two values, the light paint and the shadows left as bare wall, so the fingers read as cuts at any size and nothing about it is an outline.
+add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A street stencil of a raised fist and forearm, cut from a photograph into two values: the lit side of the fist and arm is solid paint, "
+    "and every shadow is a gap of bare wall left fully transparent: deep gaps between each finger, a gap under the thumb, the knuckles' shadows, the forearm's shaded side. "
+    "Blunt stencil bridges, crisp cut edges softened by a little overspray mist where the card lifted, sprayed a little crooked, patchy where the can ran low, two thin runs. "
+    "No outline drawn round it, no disc, no circle, nothing behind it. Not clip-art, not an icon, not an emoji. " + SPRAY + PALE + SQ, True, floor=0.04)
 # ------ stencil portraits (the defs keep their Paste_ names): sprayed straight onto the wall, no paper, the wall between every part.
 PORTRAIT = ("A big street stencil portrait sprayed straight onto a bare wall. No paper, no sheet, no poster, no rectangle, no backing, no border, no frame, no background panel. "
             "First a few loose patchy clouds of the second colour were misted on with a can, thin, uneven, fading out at their edges, never a block. "
@@ -130,7 +138,11 @@ add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "Around an 
     "different hands, short slashes, dots pressed with a thumb, tiny tally strokes, little three-stroke stars and a few flicked arcs, no crosses and no plus signs, some crowded "
     "together and some far apart, thick and thin, a couple of thin runs falling straight down. The middle left completely empty and transparent, about half the picture's width. "
     "Not a box, not a frame, not a clean ring, not a badge. " + SPRAY + PIG.format(c="chalk white, ochre and rust red") + SQ)
-add("dripframe_0", F + "SigilFrame_DripFrame", 1.3, "brush", 0.2, "A heavy dragged ring of paint around an empty middle, the middle left completely empty and transparent, long runs falling straight down from its bottom. " + BRUSH + PIG.format(c="oxblood") + SQ)
+# Pass 19: the oxblood ring round the sign read as "an emblem", and a red ring with runs is a blood ring. No ring: one fat sprayed swipe across the
+# middle that the sign is sprayed onto, in the writer's own can (pigmented), heavy runs off its lower edge.
+add("dripframe_0", F + "SigilFrame_DripFrame", 1.3, "spray", 0.2, "One fat rough swipe of spray paint dragged across the middle of the picture from left to right, a little tilted, "
+    "about two fifths of the picture's height, its two ends ragged and uneven, one end thicker where the hand slowed, misted and speckled along its edges, "
+    "heavy runs falling straight down from its lower edge to the bottom of the picture, the top quarter of the picture empty. Not a ring, not a circle, not a box, not a badge, not a banner. " + SPRAY + PALE + SQ, True)
 # ------ meme glyphs: each its own tool, none a centred pictogram
 G = [
  ("Cannibal", "a gnawed long bone with a bite-mark ring of teeth around its end", BRUSH, "oxblood and lime white"),
@@ -170,7 +182,8 @@ M["highlife_0"]["rim"] = False   # its black grin lies at the face's edge and br
 M["highlife_0"].update(hue=(0.86, 0.42, 0.66))
 M["natureprimacy_0"].update(hue=(0.80, 0.48, 0.22))
 M["treeconnection_0"].update(hue=(0.42, 0.52, 0.78))
-for n in ("animalpersonhood_0", "warn_1"):
+# Pass 19: warn_1's symmetric arrows closing on a navy blot read as "a logo", the blot as "soot" (blind judge, pass 18). A fleeing stick man, one colour.
+for n in ("animalpersonhood_0",):
     M[n].update(dark_to=(0.22, 0.27, 0.62))
 
 
@@ -197,9 +210,9 @@ for i, (t, tool) in enumerate([("a fat crude three-pointed crown sprayed tilted 
                                 "the person, more arms on the left than the right, and a few fast cheering flicks off to one side. No ring, no stars, no sparkles, no flowers", SPRAY)]):
     add(f"tribute_{i}", F + "Tribute", 1.25, "brush", 0.15, (TRIB.format(t=t) if tool is SPRAY else "A loving tribute to someone, painted carefully on a wall by a friend: " + t + ". ")
         + GAP.replace("top centre", "centre") + tool + PIG.format(c="ochre and chalk white") + SQ)
-for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude folded wings either side of the gap, a ring of small dots around it, drips falling"]):
+for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude wings sprayed freehand either side of the gap, the left one bigger and lifted higher, feathers as fast slashes, drips falling, nothing around the gap, no ring, no dots, no halo"]):
     add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH
-        + PIG.format(c="deep dull cobalt blue, the dots chalk white" if i == 2 else "chalk white and ash grey") + SQ)
+        + PIG.format(c="deep dull cobalt blue" if i == 2 else "chalk white and ash grey") + SQ)
 # Pass 18: the wings in chalk and ash grey read as "ash or mould" (blind judge, pass 17). One clear colour.
 for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",
                        "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a grinning little man thumbing his nose with one hand and waggling the fingers, his tongue stuck out, on wobbly legs"]):

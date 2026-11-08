@@ -88,6 +88,7 @@ namespace RimMandrake.Graffiti
         // load, same as any other Material/Graphic cache in vanilla.
         private Material cachedFrameMat;
         private Material cachedIconMat;
+        private Material[] cachedIconCopies;
         private Material cachedHeadMat;
         private bool sigilMatsBuilt;
 
@@ -529,11 +530,17 @@ namespace RimMandrake.Graffiti
             sigilMatsBuilt = true;
             cachedFrameMat = null;
             cachedIconMat = null;
+            cachedIconCopies = null;
             cachedHeadMat = null;
             ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
             if (ext != null && subject != null && ext.hasSubject)
             {
-                Texture2D head = WallPlane.PaintedPortrait(subject, pigment);
+                // The head in a can that stands off the drawing round it and off the wall: live pass 19, an ochre head under an ochre crown was
+                // one blot. A pigmented drawing is the mark's own pigment, so the head takes the next one that reads.
+                Color art = ext.pigmented ? PigmentOf(pigment) : WallPlane.PaintColor(ArtMat());
+                Color face = WallColor();
+                int can = RM_GraffitiKernel.ContrastingPigment(pigment + (ext.pigmented ? 1 : 0), art.r, art.g, art.b, face.r, face.g, face.b);
+                Texture2D head = WallPlane.PaintedPortrait(subject, can >= 0 ? can : pigment);
                 if (head != null) cachedHeadMat = MaterialPool.MatFrom(head, ShaderDatabase.Mote, Color.white);
             }
             else if (ext != null && targetFaction != null)
@@ -545,18 +552,59 @@ namespace RimMandrake.Graffiti
             {
                 return;
             }
-            if (!string.IsNullOrEmpty(ext.sigilFrameTexPath))
+            // Ideoligion colours are clean UI colours; on a wall they are the same hue in a mixed pigment.
+            Color sign = Color.Lerp(makerIdeo.Color, new Color(0.45f, 0.42f, 0.38f), 0.3f) * 0.9f;
+            sign.a = 1f;
+            Color wall = WallColor();
+            if (ext.sigilSignInHand)
             {
-                cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Mote);
+                // The sign in the writer's own can, standing off the chalk halo over it and off the wall: three believers, three colours.
+                int own = RM_GraffitiKernel.ContrastingPigment(pigment, 0.92f, 0.90f, 0.83f, wall.r, wall.g, wall.b);
+                if (own >= 0) sign = PigmentOf(own);
+            }
+            if (!string.IsNullOrEmpty(ext.sigilFrameTexPath) && ext.sigilCopies <= 1)
+            {
+                Color frame = Color.white;
+                if (ext.sigilFrameInHand)
+                {
+                    int own = RM_GraffitiKernel.ContrastingPigment(pigment, sign.r, sign.g, sign.b, wall.r, wall.g, wall.b);
+                    if (own >= 0) frame = PigmentOf(own);
+                }
+                cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Mote, frame);
             }
             Texture2D icon = WallPlane.PaintedIcon(makerIdeo.Icon, Hand, Look) ?? makerIdeo.Icon;
             if (icon != null)
             {
-                // Ideoligion colours are clean UI colours; on a wall they are the same hue in a mixed pigment.
-                Color pigmentOfIdeo = Color.Lerp(makerIdeo.Color, new Color(0.45f, 0.42f, 0.38f), 0.3f) * 0.9f;
-                pigmentOfIdeo.a = 1f;
-                cachedIconMat = MaterialPool.MatFrom(icon, ShaderDatabase.Mote, pigmentOfIdeo);
+                // Over its frame, whatever order the layer happens to draw them in: live pass 19, the sign went under the swipe it was sprayed onto.
+                cachedIconMat = MaterialPool.MatFrom(new MaterialRequest(icon, ShaderDatabase.Mote, sign) { renderQueue = (cachedFrameMat?.renderQueue ?? ShaderDatabase.Mote.renderQueue) + 1 });
+                if (ext.sigilCopies > 1)
+                {
+                    // A stencil run: one card, sprayed again and again along the wall as the can runs low. Each copy caught the paint its own
+                    // way (a copy per hand of the card), and each is thinner than the last.
+                    cachedIconCopies = new Material[ext.sigilCopies];
+                    for (int k = 0; k < ext.sigilCopies; k++)
+                    {
+                        Texture2D copy = k == 0 ? icon : (WallPlane.PaintedIcon(makerIdeo.Icon, Hand + k, Look) ?? icon);
+                        Color thin = sign;
+                        thin.a = 1f - 0.4f * k / (ext.sigilCopies - 1);
+                        cachedIconCopies[k] = MaterialPool.MatFrom(new MaterialRequest(copy, ShaderDatabase.Mote, thin));
+                    }
+                }
             }
+        }
+
+        /// <summary>The colour of the wall face this mark is on; a middling grey with none.</summary>
+        private Color WallColor()
+        {
+            return Spawned && wallSide != RM_GraffitiKernel.NoWall ? WallPlane.FaceColor(Position + new Rot4(wallSide).FacingCell, Map) : new Color(0.45f, 0.45f, 0.45f);
+        }
+
+        /// <summary>The material of this mark's own drawing (its variant), before pigment, craft or weather.</summary>
+        private Material ArtMat()
+        {
+            Graphic g = Graphic;
+            if (g is Graphic_Random random) g = variant >= 0 ? random.SubGraphicAtIndex(variant) : random.SubGraphicFor(this);
+            return g?.MatAt(Rot4.North, this);
         }
 
         // A painted mark lies in its wall's plane (WallPlane, RM_GraffitiKernel.MarkPieces): stopped at the crease and the corners,
@@ -667,7 +715,21 @@ namespace RimMandrake.Graffiti
             {
                 WallPlane.Print(layer, this, cachedFrameMat, width, height, slide, slope, lift, flip, cachedIconMat == null ? through : 0f);
             }
-            if (cachedIconMat != null)
+            if (cachedIconCopies != null)
+            {
+                // Along the wall, each copy a step higher or lower than the last (the writer's arm drifting as they walked), none flipped.
+                int n = cachedIconCopies.Length;
+                float iconH = height * 0.6f, iconW = iconH * 0.8f;
+                float step = Mathf.Min(iconW * 0.92f, (width - iconW) / (n - 1));
+                float tc = WallPlane.CenterT(this, width, height, slope, lift);
+                float climb = (flip ? -1f : 1f) * 0.06f * height;
+                for (int k = 0; k < n; k++)
+                {
+                    float along = (k - (n - 1) / 2f) * step;
+                    WallPlane.Print(layer, this, cachedIconCopies[k], iconW, iconH, slide + along, slope * (1f + 0.5f * k), lift, false, through, 0.001f + 0.0002f * k, tc + (k - (n - 1) / 2f) * climb);
+                }
+            }
+            else if (cachedIconMat != null)
             {
                 // The icon's square in the wall's plane, centred in its frame. An icon may have text-like symmetry, so no flip.
                 float iconH = height * 0.78f;

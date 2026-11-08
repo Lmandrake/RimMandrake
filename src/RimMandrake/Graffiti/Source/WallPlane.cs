@@ -529,8 +529,13 @@ namespace RimMandrake.Graffiti
 
         private static readonly Dictionary<int, Texture2D> Portraits = new Dictionary<int, Texture2D>();
 
-        /// <summary>A colonist's head as a hand would put it on a wall: a street stencil cut from the game's own portrait, in three values, black,
-        /// the can's colour and a pale. Their hair, headgear and face's shape are what a wall can show, and enough to say who it is. Null if it can't be had.</summary>
+        /// <summary>A colonist's head as a hand would put it on a wall: one can through one card cut from the game's own portrait. The lights are
+        /// solid paint, the middle values a thin dusting, and every dark (the game's outline, the eyes, the shadows) bare wall, so hair, face and
+        /// collar come out as separate islands with the wall between, the way a one-layer stencil does. Copied by hand, so a little lopsided.
+        /// Their hair, headgear and face's shape are what a wall can show, and enough to say who it is. Null if it can't be had.</summary>
+        /// Live pass 15 and pass 18, a blind judge: the game portrait in muted tones, then cut to three values (black lines, the can's colour, a pale),
+        /// still read as "smooth game portraits, clip-art stickers": the black ring of the game's outline and its two clean fills are the game's
+        /// look whatever colour they're in. Offline prototype ralph/live/proto/portrait_proto.py (one_card).
         internal static Texture2D PaintedPortrait(Pawn pawn, int pigment)
         {
             if (pawn == null) return null;
@@ -540,54 +545,95 @@ namespace RimMandrake.Graffiti
             try
             {
                 RenderTexture rt = PortraitsCache.Get(pawn, new Vector2(PortraitPx, PortraitPx), Rot4.South, new Vector3(0f, 0f, 0.3f), 1.28205f, supersample: false, compensateForUIScale: false, healthStateOverride: PawnHealthState.Mobile);
-                Color32[] px = ReadTexture(rt, out int size);
+                Color32[] src = ReadTexture(rt, out int size);
                 float seed = (pawn.thingIDNumber & 1023) * 0.37f;
-                // Live pass 15, a blind judge: flattened to muted tones, every head still read as "a crisp game portrait... a UI icon or sticker",
-                // "lit like the UI, not like paint on brick". A face on a street wall is a stencil: its values cut to three, black for the lines and
-                // shadows, the can's colour for the middle, a pale for the light, as the poster-portrait stencils are sprayed. Split at this head's own
-                // middle value, so a dark face and a pale one both come out in three.
                 RM_Rgb p = RM_GraffitiKernel.PigmentColor(pigment);
-                if (p.r * 0.3f + p.g * 0.59f + p.b * 0.11f < 0.3f) p = RM_GraffitiKernel.PigmentColor(1);    // black under black lines is a blot
-                Color32 ink = new Color32(30, 24, 24, 255);
-                Color32 mid = new Color32((byte)(p.r * 255f), (byte)(p.g * 255f), (byte)(p.b * 255f), 255);
-                Color32 pale = new Color32((byte)(Mathf.Lerp(p.r, 0.93f, 0.72f) * 255f), (byte)(Mathf.Lerp(p.g, 0.90f, 0.72f) * 255f), (byte)(Mathf.Lerp(p.b, 0.82f, 0.72f) * 255f), 255);
-                bool[] paint = new bool[px.Length];
+                if (p.r * 0.3f + p.g * 0.59f + p.b * 0.11f < 0.3f) p = RM_GraffitiKernel.PigmentColor(1);    // soot through a card on a dark wall is nothing
+                byte pr = (byte)(p.r * 255f), pg = (byte)(p.g * 255f), pb = (byte)(p.b * 255f);
+                // Copied by a hand, not printed: the drawing pushed a few pixels about by a slow field.
+                var px = new Color32[src.Length];
+                float drift = size * 0.03f, slow = 5f / size;
+                for (int y = 0; y < size; y++)
+                {
+                    for (int x = 0; x < size; x++)
+                    {
+                        int sx = Mathf.Clamp(Mathf.RoundToInt(x + (Mathf.PerlinNoise(seed + x * slow, seed * 1.9f + y * slow) - 0.5f) * 2f * drift), 0, size - 1);
+                        int sy = Mathf.Clamp(Mathf.RoundToInt(y + (Mathf.PerlinNoise(seed * 0.7f + x * slow, seed * 2.3f + y * slow) - 0.5f) * 2f * drift), 0, size - 1);
+                        px[y * size + x] = src[sy * size + sx];
+                    }
+                }
+                // Where the card is cut: the head's own values, split at its own quantiles, so a dark face and a pale one both cut.
                 var lums = new List<float>();
+                var lum = new float[px.Length];
                 for (int i = 0; i < px.Length; i++)
                 {
-                    paint[i] = px[i].a >= 40;
-                    float l = (px[i].r + px[i].g + px[i].b) / 765f;
-                    if (paint[i] && l >= InkBelow) lums.Add(l);
+                    lum[i] = (px[i].r + px[i].g + px[i].b) / 765f;
+                    if (px[i].a >= 40 && lum[i] >= InkBelow) lums.Add(lum[i]);
                 }
                 lums.Sort();
-                float split = lums.Count > 10 ? lums[lums.Count * 9 / 20] : 0.5f;
-                var outPx = new Color32[px.Length];
-                for (int i = 0; i < px.Length; i++)
+                float lo = lums.Count > 10 ? lums[lums.Count * 8 / 100] : 0.3f, hi = lums.Count > 10 ? lums[lums.Count * 30 / 100] : 0.5f;
+                var alpha = new float[px.Length];
+                var drawn = new bool[px.Length];
+                for (int y = 0; y < size; y++)
                 {
-                    int x = i % size, y = i / size;
-                    float grit = Mathf.PerlinNoise(seed * 3f + x * 0.55f, seed + y * 0.55f);
-                    if (!paint[i])
+                    for (int x = 0; x < size; x++)
                     {
-                        // Overspray: a faint dusting of the colour just past the stencil's edge, where the card lifted.
-                        int near = NearestPaint(paint, size, x, y, 3);
-                        outPx[i] = near > 0 ? new Color32(mid.r, mid.g, mid.b, (byte)(80f * (1f - near / 4f) * Mathf.Clamp01(grit * 1.6f - 0.3f))) : new Color32(0, 0, 0, 0);
-                        continue;
+                        int i = y * size + x;
+                        if (px[i].a < 40 || lum[i] < InkBelow) continue;
+                        float streak = Mathf.PerlinNoise(seed + x * 0.012f, seed + y * 0.34f);
+                        float patch = Mathf.PerlinNoise(seed * 2f + x * 0.045f, seed + y * 0.05f);
+                        float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.5f) / 0.3f);
+                        if (lum[i] >= hi) alpha[i] = 0.78f + 0.22f * keep;
+                        else if (lum[i] >= lo)
+                        {
+                            // A dusting: the can passed over quickly, a speckle of paint.
+                            uint h = (uint)(i * 2654435761u) ^ (uint)(pawn.thingIDNumber * 40503);
+                            float speck = ((h >> 8) & 1023) / 1023f;
+                            alpha[i] = 0.7f * Mathf.Clamp01(speck * 2.4f - 0.5f);
+                        }
+                        drawn[i] = alpha[i] > 0.05f;
                     }
-                    Color32 c = px[i];
-                    float lum = (c.r + c.g + c.b) / 765f;
-                    float streak = Mathf.PerlinNoise(seed + x * 0.012f, seed + y * 0.34f);
-                    float patch = Mathf.PerlinNoise(seed * 2f + x * 0.045f, seed + y * 0.05f);
-                    float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.5f) / 0.3f);
-                    // Ragged at the rim: within two pixels of bare wall, grit decides how much paint caught.
-                    float rim = NearestBare(paint, size, x, y, 2) > 0 ? Mathf.Clamp01(grit * 1.8f - 0.45f) : 1f;
-                    Color32 tone = lum < InkBelow ? ink : lum < split ? mid : pale;
-                    float body = lum < InkBelow ? (grit > 0.38f ? 0.95f : 0.6f) : 0.62f + 0.36f * keep;
-                    tone.a = (byte)(255f * body * rim);
-                    outPx[i] = tone;
                 }
-                px = outPx;
+                var outPx = new Color32[px.Length];
+                for (int y = 0; y < size; y++)
+                {
+                    for (int x = 0; x < size; x++)
+                    {
+                        int i = y * size + x;
+                        float grit = Mathf.PerlinNoise(seed * 3f + x * 0.55f, seed + y * 0.55f);
+                        float a;
+                        if (drawn[i])
+                        {
+                            // Ragged at the rim: within two pixels of bare wall, grit decides how much paint caught.
+                            a = NearestBare(drawn, size, x, y, 2) > 0 ? alpha[i] * Mathf.Clamp01(grit * 1.8f - 0.45f) : alpha[i];
+                        }
+                        else
+                        {
+                            // Mist: a faint dusting just past the card's edge, where it lifted.
+                            int near = NearestPaint(drawn, size, x, y, 4);
+                            a = near > 0 ? 0.3f * (1f - near / 5f) * Mathf.Clamp01(grit * 1.6f - 0.3f) : 0f;
+                        }
+                        outPx[i] = new Color32(pr, pg, pb, (byte)(255f * a));
+                    }
+                }
+                // Three runs off the lowest solid paint, straight down (rows are bottom up).
+                var rng = new System.Random(pawn.thingIDNumber * 7919 + pigment);
+                for (int r = 0; r < 3; r++)
+                {
+                    int x = size / 4 + rng.Next(size / 2);
+                    int y0 = -1;
+                    for (int y = 0; y < size; y++) if (alpha[y * size + x] >= 0.78f) { y0 = y; break; }
+                    if (y0 < 0) continue;
+                    int len = size / 20 + rng.Next(size / 8);
+                    for (int k = 1; k <= len && y0 - k >= 0; k++)
+                    {
+                        int i = (y0 - k) * size + x;
+                        byte a = (byte)(255f * 0.9f * (1f - k / (float)(len + 4)));
+                        if (a > outPx[i].a) outPx[i] = new Color32(pr, pg, pb, a);
+                    }
+                }
                 made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = "RM_Graffiti_Portrait_" + pawn.thingIDNumber, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
-                made.SetPixels32(px);
+                made.SetPixels32(outPx);
                 made.Apply(true, false);
             }
             catch (Exception e)

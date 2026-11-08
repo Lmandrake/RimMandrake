@@ -65,3 +65,11 @@ Pass 16 (build after 08b75451f4, game B, `graffiti_p15_ash_lit` loaded at noon a
 - `p16_lived_west_edge.png`: the sideways scraps on the west bedroom's outer wall are gone (taken down: no free face near).
 - `p16_dirt_vs_paint_left.png` / `_right.png` / `_awful_128.png`: the dirt wall: awful Vandal in pink and mustard beside real blood, vomit and ash.
 Least sure of: the awful HighLife glyph (oxide green and soot, its art's own colours) and the poor wolf glyph (soot and ochre) on the dirt wall, which may still read as mould and soot; and how small the stencilled heads are at play zoom.
+
+## Pass 19 (shots `p19_*`)
+- `p19_south_wall_west.png` / `_east.png`: halo sigils now differ by writer (ochre sign, turquoise sign); the tribute's head is a pale one-colour stencil under the ochre crown; the fist is a two-value stencil.
+- `p19_corridor_west.png`: the stencil-box sigil is now a stencil run, three turquoise signs in a row; the old "red rose" is a crimson rude little man again (no poor smear).
+- `p19_corridor_east.png`: the drip sigil is a chalk swipe with the faith's sign sprayed on top.
+- `p19_storeroom.png`: crimson and turquoise where rust and burnt orange were; memorial wings without the dotted ring.
+- `p19_close_tribute_stencilrun_dripswipe_poor_128.png`: the four fixes above at 128.
+Least sure of: the poor turquoise gear+hammer stencil and the Vandal teal-pink tangle in the storeroom, which still look lumpy to me.

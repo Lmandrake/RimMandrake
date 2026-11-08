@@ -89,7 +89,8 @@ def bake(name, m):
         sat = (mx - mn) / np.maximum(mx, 1)
         l = rgb.mean(2, keepdims=True)
         t = np.array(m["hue"]) * 255
-        recol = t * (l / max(t.mean(), 1))
+        # hue_lift: a dark drawing's paint brought up to a can's value as well (pass 19: an oxblood cross-out stayed dried blood at its own value).
+        recol = t * (l / max(t.mean(), 1)) * m.get("hue_lift", 1.0)
         w = np.clip((sat - 0.12) / 0.15, 0, 1)
         rgb = np.clip(rgb * (1 - w) + recol * w, 0, 255)
     if m.get("dark_solid"):

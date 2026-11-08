@@ -628,7 +628,7 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil</defName>
     <label>ideoligion sigil</label>
-    <description>A sprayed frame around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <description>The maker's own ideoligion's sign, sprayed in whatever can they carry, under a saint's halo flicked on fast in chalk.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo</texPath>
@@ -653,6 +653,7 @@
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo/halo_0</sigilFrameTexPath>
+        <sigilSignInHand>true</sigilSignInHand>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>
@@ -661,8 +662,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_StencilBox</defName>
-    <label>ideoligion sigil, stencil box</label>
-    <description>A hand-sprayed box with broken corners around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <label>ideoligion sigil, stencil run</label>
+    <description>The maker's own ideoligion's sign in its own colour, sprayed through the same card three times along the wall, each copy thinner as the can ran low.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
@@ -686,7 +687,7 @@
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
-        <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox/stencilbox_0</sigilFrameTexPath>
+        <sigilCopies>3</sigilCopies>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>
@@ -694,8 +695,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_DripFrame</defName>
-    <label>ideoligion sigil, drip ring</label>
-    <description>A heavy ring of running paint dragged around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <label>ideoligion sigil, drip swipe</label>
+    <description>The maker's own ideoligion's sign in its own colour, sprayed onto a fat running swipe of the maker's own paint.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
@@ -720,6 +721,7 @@
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame/dripframe_0</sigilFrameTexPath>
+        <sigilFrameInHand>true</sigilFrameInHand>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>

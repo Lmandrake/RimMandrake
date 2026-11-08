@@ -1,30 +1,25 @@
 # Graffiti: where the last pass got to
 
-Pass 18 (2026-11-08, ~05:00-06:05 PST, game B). Retired on context (~250k). Committed `c30fdbba96` and pushed. RATCHET.md is current. Game B left up on the build before the last change.
+Pass 19 (2026-11-08, ~05:30-06:45 PST, game B). Retired on context (~255k) before a blind judge. RATCHET.md is current. Game B left up on pass 19's build with `graffiti_p18_insult` loaded.
 
 ## Game and machine
-- Game B came up first time on every try (4 deploy+up cycles, 22 s each). No crash, no ssh drop, bad_cpus=[2] as before. Pass 17's two Unity-startup crashes did not recur.
-- The play-zoom window now holds 19 cells at 64 px and 8 at 128: the old 20-wide rects fail. Rects used: south wall `101,107,19,10` / `120,107,19,10`, corridor `109,116,19,9` / `127,116,19,9`, storeroom `126,123,18,14`, dirt `10,41,17,7` / `26,41,17,7`, awful close `10,43,8,4` at 128.
-- Art generation: the per-worker Codex homes (`codexhome_w*`) have dead refresh tokens ("refresh token was already used"). `manifest.py gen` fails; `/tmp`-style sequential calls without `--codex-home` work (~1 min each). Script used: call `codex_image.py generate --out GEN/<name>.png --timeout 900 --prompt <manifest prompt>` per name.
+- 3 deploy+up cycles, each up first time (22 s). No crash, no ssh drop, bad_cpus=[2] as before. One `fetch` with backslash paths failed as STEVE_UNREACHABLE: it was my quoting, not the machine (use `D:/...` forward slashes in bridge paths and fetches).
+- Art generation worked sequentially without `--codex-home` (~1 min each): `/tmp/p19_gen.sh`-style loop calling `codex_image.py generate --out GEN/<name>.png --timeout 900 --prompt <manifest prompt>`.
 
 ## Done this pass
-- **The faith's sign is each writer's own sprayed copy** (WallPlane.PaintedIcon(icon, hand, quality), Kernel.IconCopy): the icon's black outline becomes bare wall (it had been an even ring round the shape), lines drift per writer, a poor/awful hand's copy wanders further and runs, mist past the card's edge. Offline prototype `ralph/live/proto/icon_proto.py`, sheet `p18/icon_proto.png`. **At play zoom the per-hand difference doesn't show** (judge: three "identical" halo signs).
-- **Art, 11 regenerated** (prompts in manifest.py, old gens in `gen3/old_p17/`): Scratches as scratchiti (scratched tag, X-eyed face, heart with arrow; the owner once called the old gouges "the mod's best art", 2026-09-16 note under the north star, but the judge read them as damage); memorial_2 wings deep blue; halo frame a tilted saint's halo over the sign plus an underline swipe; fist sprayed freehand; mock_1 a reared rat (bake `pad` puts its neck under the head), mock_2 a plucked chicken; tribute_0 a slipping crown with an arrow, tribute_2 a crowd of arms lifting the head; wide_0 filled pale blue, throwup_a_1 crimson (`hue`).
-- **Bugs found live and fixed:** (1) an ordered mark went to Brick (Artistic 0), who silently painted a sigil instead of the ordered throw-up: the work giver now gives an order only to a hand that may paint it (forced: says why), and the job paints that mark (squeezed to fit) or nothing. (2) An order on a doorway cell was painted as floor filth (`side -1`): no wall, no mark, the order is spent. Neither seen live after the fix.
-- **GPT broaden** (`gpt_help_pass018.md`, ask `ralph/live/broaden_ask_pass18.md`). Leads: unbriefed player; renovating a decorated bedroom; tribal start with no ideoligion; cramped rooms with corners and doors; winter lighting cycle; day-60 player who ignores graffiti; min-maxer repeating the cheapest social act. Acted on lead 2: an ordered go-over gave Karen "opinion of Brick -20" for doing as told. Now an ordered go-over costs the maker the mood of losing their work and logs "..., on orders.", but gives no grudge and no answer. **Built, not deployed or seen.**
-- Owed checks: wrong-faction visitor confirmed; two-cell face rule confirmed. Confront over painted-out work: unseen (one roll came up None, and ordered go-overs no longer answer at all).
-
-## Blind judge pass 18 (`p18/blind_judge_p18.md`)
-Dirt **yes** (new list: late-weathered red paint, the orange freehand fist, a peach smudge). Worse than a tally **yes**. Register **mixed**. Details are in RATCHET items 1-2.
+- **Ordered go-over seen live** (`p19/01_ordered_goover.txt`): Karen ordered over Vex's gear: Vex took "Karen painted over my work -4", his opinion of Karen stayed 67, the log says "on orders", no message. Over Lark's piece the -4 didn't fit his full negative budget (two mockeries): the budget working, not a bug.
+- **Dirt, at its causes:** pigments rust red and burnt orange are now crimson (0.80,0.17,0.27) and turquoise (0.24,0.64,0.64): every pass-17/18 dirt read was in one of those hues (old marks repaint in the new ones). A poor hand no longer lays an offset second coat (CraftSmear(Poor)=0): on cell-wide drawings it filled every gap and made the "red rose"/"mud splat" blobs. Cross-outs re-hued oxblood to crimson (bake `hue_lift`).
+- **Register:** PaintedPortrait is a one-colour stencil (prototype `ralph/live/proto/portrait_proto.py`, `p19/portrait_proto_one_card.png`), its can chosen to stand off the frame's paint. Sigils per writer: halo sign in the writer's can (`sigilSignInHand`); StencilBox is a stencil run of three thinning copies (`sigilCopies`, no frame); DripFrame is a pale swipe in the writer's can (`sigilFrameInHand`) with the faith's sign drawn over it (render queue +1).
+- **Art regenerated** (old gens in `gen3/old_p19/`): stencil_fist_0 (two-value photo stencil), dripframe_0 (swipe), memorial_2 (wings, no dotted ring), warn_1 (stick man fleeing a toothed blot), new scratches_3/4 (stick man; star and spiral; the star is drawn in one line, a pentagram if you look for it).
+- Shots: `shots/p19_*` (the 8 judge frames, same rects as pass 18, plus a 128 close sheet). Pass 18's moved to `shots/old/pass18/`.
 
 ## Do next
-1. Deploy `c30fdbba96` and see the ordered go-over live: order a go-over of someone's mark and check the maker's thoughts (mood yes, opinion of the painter no) and the log ("on orders").
-2. Dirt: the freehand fist is worse than the stencil it replaced. Restore a stencil fist (old gen in `gen3/old_p17/stencil_fist_0.png`) but rougher, or the freehand one in a lighter, non-earth pigment. Late weathering: a mark should be gone before it's a pale red/peach ghost (WallPlane.EatenClean's last steps, or bleach on reds).
-3. Register: the pawn head in tributes and mockeries is a smooth game portrait. Give WallPlane.PaintedPortrait the icon's stencil treatment (two tones, no outline, mist). Vary sigils more per writer, so the same sign twice reads as two people's work (frame choice or tilt per hand, not a 3% drift). Penalise repeats of the same variant, not only the same def (four X-faces).
-4. Re-shoot the 8 frames above, fresh blind judge (`p15/judge_brief_template.md`, brief filled this pass in `/tmp/p18/judge_brief.md`, gone).
+1. Blind judge on `shots/p19_*` (brief template `p15/judge_brief_template.md`; frames: south_wall_west/east, corridor_west/east, storeroom, dirt_left/right, awful_128). Send it to a subagent; my own read: the red rose and teal lump are gone, the heads are pale/coloured stencils, the three halos differ in colour.
+2. Still lumpy in my look: the poor turquoise gear+hammer stencil (storeroom bottom, (132,125)), and the Vandal teal-pink tangle. If the judge names them, regenerate stencil_gear_0 as a two-value stencil like the fist.
+3. If dirt and register both come back clean: DONE.md (the pass-18 broaden is acted on and seen live; a pass-21 claim needs a new broaden).
 
 ## Traps (kept)
 - The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; `ralph/steve.sh sync` after editing it. `so Ledger trace` prints the trace once and clears it.
-- `so Order painter/def/about/x,z` sets the designation without the designator's checks: pick a cell on a wall (the doorway at (154,113) bit this pass). It forces the job with TryTakeOrderedJob, bypassing the work giver.
-- Generating art: see Game and machine above; put the prompt in manifest.py first (it must equal BASE + text).
+- `so Order painter/def/about/x,z`: the def must be designatorEligible (RudeLittleMan, TallyMarks, Mockery...; Tag_A is refused). Pick a floor cell whose wall is the mark's (z=113 south wall, 121 corridor, 125/134 storeroom).
+- Close-up rects at 128: the wall sits at the top of a rect whose z is the mark's floor row; use z = floor row - 1 (e.g. `110,112,8,4`).
 - Local hour in Ashgate: ((ticks - 2983) % 60000)/2500. Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/`.

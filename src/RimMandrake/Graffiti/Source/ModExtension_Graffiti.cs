@@ -93,6 +93,14 @@ namespace RimMandrake.Graffiti
         public bool sigilTierA;
         public string sigilFrameTexPath;
 
+        // How a writer sprays the faith's sign (pass 19; blind judge pass 18: the same sign three times in the faith's one colour read as
+        // "a stamp", a sign in a ring as "an emblem"). sigilCopies: the same card sprayed this many times along the wall, no frame, each
+        // copy thinner as the can runs low (a stencil run). sigilSignInHand: the sign in the writer's own can, not the faith's colour.
+        // sigilFrameInHand: the frame is a pale drawing sprayed in the writer's can, in a colour that stands off the sign.
+        public int sigilCopies = 1;
+        public bool sigilSignInHand;
+        public bool sigilFrameInHand;
+
         public GraffitiVisibility visibility = GraffitiVisibility.Public;
 
         // §1 Mural: "positive Beauty, quality-tiered like sculpture
@@ -213,7 +221,7 @@ namespace RimMandrake.Graffiti
 
                 // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 verify step 5: "every Sigil-form mark has
                 // a frame texture."
-                if (ext.form == GraffitiForm.Sigil && ext.sigilTierA && string.IsNullOrEmpty(ext.sigilFrameTexPath))
+                if (ext.form == GraffitiForm.Sigil && ext.sigilTierA && string.IsNullOrEmpty(ext.sigilFrameTexPath) && ext.sigilCopies <= 1)
                 {
                     Log.Warning("[RimMandrake.Graffiti] " + def.defName +
                         " is form=Sigil, sigilTierA=true but names no sigilFrameTexPath - " +

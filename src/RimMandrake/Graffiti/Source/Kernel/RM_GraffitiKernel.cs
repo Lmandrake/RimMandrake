@@ -674,11 +674,14 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Pigments a tag can be written in (multiplied onto a pale drawing): dull colours a colony could mix, none neon. Pass 17: the fifth was
-        /// an olive green, and a green tag on a wall read to a blind judge as moss (pass 16); it is a dusty pink now, which nothing on a wall grows.</summary>
+        /// an olive green, and a green tag on a wall read to a blind judge as moss (pass 16); it is a dusty pink now, which nothing on a wall grows.
+        /// Pass 19: the first was a rust red and the last a burnt orange, and in a dim room or worn pale a judge read them, pass after pass, as
+        /// "a rust run or dried blood", "a mud or rust splat", "a water stain" (passes 17, 18): those are the hues of rust, mud and blood. The red
+        /// is a can's crimson now, which wears to pink, and the orange a turquoise, which nothing on a wall turns.</summary>
         public static readonly RM_Rgb[] Pigments =
         {
-            new RM_Rgb(0.74f, 0.27f, 0.20f), new RM_Rgb(0.82f, 0.60f, 0.27f), new RM_Rgb(0.92f, 0.90f, 0.83f), new RM_Rgb(0.20f, 0.19f, 0.19f),
-            new RM_Rgb(0.84f, 0.45f, 0.60f), new RM_Rgb(0.36f, 0.48f, 0.58f), new RM_Rgb(0.54f, 0.37f, 0.56f), new RM_Rgb(0.86f, 0.46f, 0.22f),
+            new RM_Rgb(0.80f, 0.17f, 0.27f), new RM_Rgb(0.82f, 0.60f, 0.27f), new RM_Rgb(0.92f, 0.90f, 0.83f), new RM_Rgb(0.20f, 0.19f, 0.19f),
+            new RM_Rgb(0.84f, 0.45f, 0.60f), new RM_Rgb(0.36f, 0.48f, 0.58f), new RM_Rgb(0.54f, 0.37f, 0.56f), new RM_Rgb(0.24f, 0.64f, 0.64f),
         };
 
         /// <summary>The first pigment from `start` on that reads on this wall and stands off the mark it signs (its paint's mean colour): a red tag on
@@ -1127,9 +1130,12 @@ namespace RimMandrake.Graffiti
         /// <summary>How far a clumsy hand slipped and went over its own mark again, off true: 0 for anyone who can paint. Live 2026-11-07: an
         /// awful piece and a legendary one side by side differed only by which drawing each was, so the owner's "a poor artist will paint
         /// such a bad graffiti mark that it is ugly" wasn't on the wall.</summary>
+        /// Pass 19: a poor hand no longer goes over its mark again. On a drawing a cell wide its half-offset second coat filled every gap, and the
+        /// blob read to a blind judge as "a blood splash", "a red rose", "a mud or rust splat" (passes 17, 18: rude little men, a gear, a fist, all
+        /// poor). A poor mark shows its hand by its runs and its wobble; only an awful one is a ruined, gone-over mess.
         public static float CraftSmear(int quality)
         {
-            return quality == Awful ? 1f : quality == Poor ? 0.5f : 0f;
+            return quality == Awful ? 1f : 0f;
         }
 
         /// <summary>What a writer who can paint adds that a beginner doesn't: the piece's 3D block, its letters' shadow cast down and along
