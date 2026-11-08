@@ -1068,7 +1068,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>
         /// A spur's spare cord as one loose loop out of its junction box: it leaves the box's middle (under the art) and comes back to it, the loop lying off a side of the box no
-        /// cord leaves by (the spur's own side first, where the needless conduit ran), a little oval or a narrow lobe (<see cref="SpurHankR"/>, past the bar's 0.45 loop radius, so not a tight
+        /// cord leaves by (the spur's own side first, where the needless conduit ran), a dropped teardrop of cord, full out past the box and leaning a little (<see cref="SpurHankR"/>, past the bar's 0.45 loop radius, so not a tight
         /// pigtail), on open floor and <see cref="SpurKeepOff"/> off every other box, strip, plate and cut end. Pass 18's broad ring left by any side: it hung across a neighbouring
         /// strip or box and shared the box's fitting with a real lead (blind judge p18b, every look). Null when no side has room: the caller lays the small curl on the box.
         /// </summary>
@@ -1102,7 +1102,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return true;
             }
             int sg = r.Sign();
-            double squash = r.Range(0.86, 1.0), drift = r.Range(0.02, 0.05);
+            double lean = r.Range(-0.28, 0.28), fat = r.Range(0.35, 0.6), drift = r.Range(0.03, 0.07);
             foreach (var (wide, deep) in SpurHankR)
                 foreach (V2 n in sides)
                 {
@@ -1110,12 +1110,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     foreach (int side in new[] { sg, -sg })
                     {
                         V2 t = n.Perp * side;
-                        double rt = wide == deep ? wide / squash : wide, rn = wide == deep ? deep * squash : deep;
-                        var o = new List<V2>(64);
-                        for (int i = 0; i < 64; i++)
+                        // a dropped loop of cord: the two legs close together where they go into the box, the loop full and round out past it, leaning a little
+                        V2 out1 = (n + t * lean).Norm(), across = out1.Perp * side;
+                        var o = new List<V2>(72);
+                        for (int i = 0; i < 72; i++)
                         {
-                            double th = 2 * Math.PI * i / 63.0;
-                            o.Add(j.Pos + t * (rt * Math.Sin(th) + drift * th) + n * (rn * (1 - Math.Cos(th))));
+                            double th = 2 * Math.PI * i / 71.0, h = 0.5 * (1 - Math.Cos(th));
+                            double x = wide * Math.Sin(th) * ((1 - fat) + fat * 2 * h) / (1 - fat + fat);
+                            o.Add(j.Pos + across * (x + drift * (th - Math.PI)) + out1 * (2 * deep * h));
                         }
                         // the stretch under the box's art is hidden: only the loop out past it must lie clear
                         if (o.Where(q => V2.Dist(q, j.Pos) > 0.42).All(Ok)) return o;
@@ -1131,9 +1133,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return null;
         }
 
-        /// <summary>The loops a spur tries, half-width across the side then half-depth out from it (cells), roundest first: a round loop a little oval, then a lobe narrow enough
-        /// to hang between a neighbouring box and a machine. Each averages past the bar's 0.45 loop radius.</summary>
-        private static readonly (double, double)[] SpurHankR = { (0.52, 0.52), (0.48, 0.48), (0.42, 0.58), (0.36, 0.62) };
+        /// <summary>The loops a spur tries, half-width across the side then half-depth out from it (cells), widest first: the narrowest hangs between a neighbouring box and a
+        /// machine. Each averages past the bar's 0.45 loop radius.</summary>
+        private static readonly (double, double)[] SpurHankR = { (0.5, 0.6), (0.44, 0.62), (0.38, 0.64) };
         /// <summary>How far a spur's loop keeps off another box, strip, plate or cut end, cells.</summary>
         private const double SpurKeepOff = 0.6;
 
