@@ -688,6 +688,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var p = new LaidPiece { Key = "coil:" + sk.Key, Owner = j.Cell };
                 CordRng r = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z);
                 var coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
+                // a broad loop of the spare cord beside the box, where one lies clear: the 0.22 curl read as a tight pigtail on the box (never_taut_straight_cord, live pass 18)
+                if (opt.Lay.FairBends) coil = SpurLoop(w, j.Pos, r) ?? coil;
                 CordLayer.ProjectOut(w, coil);
                 if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
                 outp.Add(p);
@@ -806,6 +808,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         partB.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
                         foreach (Cell c in g.Nodes[v].Cells) partB.Append(';').Append(c.X).Append(',').Append(c.Z);
                     }
+                // the boxes, cut ends and plates round it: a cord laid again keeps off them (OtherBoxes), so one appearing re-lays it
+                full.Append('N');
+                foreach (KeyValuePair<VId, CordNode> kv in NearNodes(g, e))
+                    full.Append(kv.Key.ToString()).Append(kv.Value.Type).Append(kv.Value.Pos.X.ToString("0.00", inv)).Append('/').Append(kv.Value.Pos.Z.ToString("0.00", inv)).Append(';');
                 res.Add(new EdgePlan
                 {
                     Edge = e, EKey = ekey, PartA = full.ToString(), PartB = partB.ToString(), Sig = LaySignature(e, parallel),
@@ -968,7 +974,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
             int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
             double laid = 0;
-            List<V2> nub = StripNub(g, e, opt);
+            List<V2> nub = StripNub(g, e, opt) ?? (prm.FairBends ? BoxNub(w, g, e, opt) : null);
             if (nub != null) n = 1;
             for (int i = 0; i < n; i++)
             {
@@ -1031,6 +1037,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // the overrun. Appended after the floor rule like IntoArt: these points lie in the wall cell by design.
                 P = PastFace(P, true, na);
                 P = PastFace(P, false, nb);
+                // a short cord that still bends sharp where nothing makes it (never_taut_straight_cord) is laid again whole, fitting to fitting; a cord that passes keeps its lay
+                if (!fell && prm.FairBends && !cutEnd && n == 1 && L <= HopMaxPath && CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0)
+                    P = HopWhole(w, g, e, C, opt, piece, key, isLive) ?? P;
+                // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
+                if (!fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C) });
                 laid += Geo.Length(P);
             }
@@ -1049,6 +1060,285 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.CZ1 = Math.Min(w.Height - 1, (int)Math.Floor(z1) + 3);
             return piece;
         }
+
+        /// <summary>A spur's spare cord as one broad loop off its junction (<see cref="SpurLoopR"/>, the bar's loop), the first of its eight ways round, in a drawn order, that lies on
+        /// open floor clear of furniture, doors and machines; null when none does.</summary>
+        private static List<V2> SpurLoop(CordWorld w, V2 at, CordRng r)
+        {
+            var dirs = new List<(V2 t, int side)>();
+            foreach (V2 t in new[] { new V2(1, 0), new V2(0, 1), new V2(-1, 0), new V2(0, -1) })
+                foreach (int side in new[] { 1, -1 }) dirs.Add((t, side));
+            for (int i = dirs.Count - 1; i > 0; i--) { int k = r.Int(0, i); var x = dirs[i]; dirs[i] = dirs[k]; dirs[k] = x; }
+            foreach (double rad in SpurLoopR)
+                foreach (var (t, side) in dirs)
+                {
+                    List<V2> o = CordLayer.Loop(at, t, t.Perp, rad, side);
+                    if (o.All(q => w.IsWalkable(q.Floor) && !w.IsFurniture(q.Floor) && !w.IsDoor(q.Floor) && !w.Machines.Any(m => m.Contains(q.Floor)) && w.Clearance(q) >= LayParams.RC)) return o;
+                }
+            return null;
+        }
+
+        /// <summary>The radii a spur's loop tries, widest first (cells): past the bar's 0.45 loop radius.</summary>
+        private static readonly double[] SpurLoopR = { 0.55, 0.5 };
+
+        /// <summary>
+        /// Each bend the bar counts against a laid strand (<see cref="CordShapeAudit.Unforced"/>), re-laid round: the cord from a little before it to a little after is laid again as
+        /// a Dubins path between its own poses there, no tighter than <see cref="HeapTurnR"/>, so a hairpin or a squashed double-back becomes a smooth bend or a whole round loop
+        /// (the north star's loop, which the bar does not count). A window keeps clear of walls, furniture, machines and doors the cord did not go through, never reaches into an end's
+        /// fitting (a cut end's live run, limp curl and writhing tail least of all), and is kept only when the strand's count drops and it draws no straight rod. Live pass 18: a
+        /// generator's long lead hooked a cell short of its plug, a wall plate's cord doubled back flat beside its loops.
+        /// </summary>
+        private static List<V2> SmoothBends(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, List<V2> P, CordNode na, CordNode nb, Func<Cell, bool> isLive)
+        {
+            int bad = CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P);
+            if (bad == 0 || P.Count < 8) return P;
+            var doors = new HashSet<Cell>();
+            foreach (V2 q in P) if (w.IsDoor(q.Floor)) doors.Add(q.Floor);
+            List<V2> boxes = OtherBoxes(g, e);
+            Func<V2, bool> clear = q =>
+            {
+                Cell c = q.Floor;
+                if (!w.IsWalkable(c) || w.IsFurniture(c) || (w.IsDoor(c) && !doors.Contains(c))) return false;
+                foreach (MachineInfo m in w.Machines) if (m.Contains(c)) return false;
+                foreach (V2 bx in boxes) if (V2.Dist(q, bx) < BoxKeepOff) return false;
+                return w.Clearance(q) >= LayParams.RC;
+            };
+            // where each end's fitting is along the strand: a machine's plug point (its run on under the art left alone), a wall plate's face, else the strand's end
+            int FitIndex(CordNode nd, bool first)
+            {
+                MachineInfo m = nd.IsMachine ? nd.Machine : null;
+                bool Inside(V2 q) => (m != null && m.Contains(q.Floor)) || !w.IsWalkable(q.Floor);
+                int k = first ? 0 : P.Count - 1;
+                if (first) while (k < P.Count - 1 && Inside(P[k])) k++;
+                else while (k > 0 && Inside(P[k])) k--;
+                return k;
+            }
+            bool cutA = na.Type == NodeType.Terminal && !na.Seam, cutB = nb.Type == NodeType.Terminal && !nb.Seam;
+            bool machA = na.IsMachine && na.Machine != null, machB = nb.IsMachine && nb.Machine != null;
+            double rodNow = CordShapeAudit.LongestRod(P, out _);
+            for (int round = 0; round < SmoothRounds && bad > 0; round++)
+            {
+                double[] cum = Geo.CumLen(P);
+                double L = cum[cum.Length - 1];
+                int fa = FitIndex(na, true), fb = FitIndex(nb, false);
+                if (fb - fa < 6) break;
+                // a cut end's live run, limp curl and writhing tail are never laid again; a fitting's straight bit (a plug's: none, it goes on under the art) is its own
+                double lo = cum[fa] + (cutA ? 1.6 : machA ? 0 : FitStraight), hi = cum[fb] - (cutB ? 1.6 : machB ? 0 : FitStraight);
+                CordShapeAudit.Bend? worst = null;
+                foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(P))
+                    if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, P, b) == "unforced") { worst = b; break; }
+                if (worst == null) break;
+                double S = worst.Value.S;
+                List<V2> best = null;
+                int bestBad = bad;
+                var why = HopWhy == null ? null : new Dictionary<string, int>();
+                void No(string t) { if (why != null) why[t] = why.TryGetValue(t, out int k) ? k + 1 : 1; }
+                double bestCost = double.MaxValue;
+                foreach (var (wa, wb) in SmoothWindows)
+                {
+                    double s0 = S - wa, s1 = S + wb;
+                    // a window that would reach into a fitting starts (ends) at it instead, unless that is a cut end's
+                    if (s0 < lo && !cutA) s0 = lo;
+                    if (s1 > hi && !cutB) s1 = hi;
+                    if (s0 < lo - 1e-9 || s1 > hi + 1e-9 || s1 - s0 < 0.3) { No("guard"); continue; }
+                    int j0 = Array.BinarySearch(cum, s0), j1 = Array.BinarySearch(cum, s1);
+                    if (j0 < 0) j0 = ~j0;
+                    if (j1 < 0) j1 = ~j1;
+                    j0 = Math.Max(fa, Math.Min(j0, P.Count - 3));
+                    j1 = Math.Max(j0 + 2, Math.Min(j1, fb));
+                    if (j0 < 1 || j1 > P.Count - 2) { No("guard"); continue; }
+                    V2 a = P[j0], b = P[j1], ta = P[j0 + 1] - P[j0 - 1], tb = P[j1 + 1] - P[j1 - 1];
+                    // at a fitting the heading is the fitting's: out of (into) a plug along its run under the art, along a junction arm's or a plate's straight bit
+                    if (j0 <= fa + 1 && machA) ta = P[j0] - P[Math.Max(0, j0 - 2)];
+                    else if (cum[j0] <= cum[fa] + FitStraight + 0.05) ta = P[j0] - P[fa];
+                    if (j1 >= fb - 1 && machB) tb = P[Math.Min(P.Count - 1, j1 + 2)] - P[j1];
+                    else if (cum[j1] >= cum[fb] - FitStraight - 0.05) tb = P[fb] - P[j1];
+                    if (ta.Len < 1e-9 || tb.Len < 1e-9) continue;
+                    double ha = Math.Atan2(ta.Z, ta.X), hb = Math.Atan2(tb.Z, tb.X), old = cum[j1] - cum[j0];
+                    foreach (double rad in HopRadii)
+                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a, ha, b, hb, rad))
+                        {
+                            if (dp.Turning > 2.6 * Math.PI || dp.Len > old + 5.0) { No("turn/len"); continue; }
+                            List<V2> arc = CordShape.Dubins.Sample(a, ha, dp, 0.05);
+                            if (arc.Count == 0 || !arc.All(clear)) { No("ground"); continue; }
+                            var Q = new List<V2>(P.Count + arc.Count);
+                            for (int k = 0; k <= j0; k++) Q.Add(P[k]);
+                            Q.AddRange(arc);
+                            for (int k = j1 + 1; k < P.Count; k++) Q.Add(P[k]);
+                            int nb2 = CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, Q);
+                            if (nb2 >= bad) { No("still" + nb2); continue; }
+                            if (CordShapeAudit.LongestRod(Q, out _) >= Math.Max(rodNow, CordShapeAudit.RodLen)) { No("rod"); continue; }
+                            double cost = nb2 * 10 + Math.Abs(dp.Len - old) * 0.3 + dp.Turning * 0.05;
+                            if (cost < bestCost) { best = Q; bestCost = cost; bestBad = nb2; }
+                        }
+                }
+                if (why != null) HopWhy("smooth " + piece.EndA + "|" + piece.EndB + " at " + worst.Value.Apex.X.ToString("0.00") + "," + worst.Value.Apex.Z.ToString("0.00") + " S " + S.ToString("0.00") + "/" + L.ToString("0.00")
+                                        + (best != null ? " -> " + bestBad : " none") + " " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value)));
+                if (best == null) break;
+                P = best;
+                bad = bestBad;
+            }
+            return P;
+        }
+
+        /// <summary>The junctions, strips, heaps, cut ends and plates near a cord that are not its own ends: a cord laid again whole or round a bend keeps <see cref="BoxKeepOff"/> off
+        /// them, so it never runs over a box or lays its body under another cord's end there (pile look rule 2).</summary>
+        private static List<V2> OtherBoxes(CordGraph g, CordEdge e)
+        {
+            var o = new List<V2>();
+            foreach (KeyValuePair<VId, CordNode> kv in NearNodes(g, e))
+            {
+                CordNode nd = kv.Value;
+                if (nd.Type == NodeType.Tangle && nd.Cells != null) foreach (Cell c in nd.Cells) o.Add(c.Centre);
+                else o.Add(nd.Pos);
+            }
+            return o;
+        }
+
+        /// <summary>The nodes (<see cref="CordGraph.NodesNear"/>) within <see cref="NearReach"/> of an edge's own chain of cells, its two ends left out. Read off the graph alone, so the
+        /// edge's key carries them (<see cref="PlanEdges"/>).</summary>
+        internal static List<KeyValuePair<VId, CordNode>> NearNodes(CordGraph g, CordEdge e)
+        {
+            int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
+            foreach (VId v in e.Chain())
+            {
+                Cell c = g.Nodes.TryGetValue(v, out CordNode nd) ? nd.Cell : v.A;
+                x0 = Math.Min(x0, c.X); z0 = Math.Min(z0, c.Z); x1 = Math.Max(x1, c.X); z1 = Math.Max(z1, c.Z);
+            }
+            return g.NodesNear(x0 - NearReach, z0 - NearReach, x1 + NearReach, z1 + NearReach).Where(kv => !kv.Key.Equals(e.A) && !kv.Key.Equals(e.B)).ToList();
+        }
+
+        /// <summary>How far round an edge's chain of cells its re-lay looks for other boxes, cells.</summary>
+        private const int NearReach = 4;
+
+        /// <summary>How far a re-laid cord keeps off another junction box's middle, cells (a box's art is about 0.9 across).</summary>
+        private const double BoxKeepOff = 0.55;
+
+        private const int SmoothRounds = 6;
+        /// <summary>The straight bit a fitted end keeps (cells): a junction arm's or a plug's, the shortest an end is laid with.</summary>
+        private const double FitStraight = 0.15;
+        /// <summary>How much cord before and after a bend <see cref="SmoothBends"/> lays again, cells, in the order tried.</summary>
+        private static readonly (double, double)[] SmoothWindows = { (0.5, 0.5), (0.8, 0.8), (0.6, 1.1), (1.1, 0.6), (1.2, 1.2), (1.7, 1.7), (2.2, 2.2) };
+
+        /// <summary>The longest planned path (cells) <see cref="HopWhole"/> may lay again.</summary>
+        public const double HopMaxPath = 4.5;
+
+        private struct HopEnd
+        {
+            public V2 T, Arrive;
+            public double Straight;
+            public Func<V2, bool> Clear;
+        }
+
+        /// <summary>The fittings one end of an edge may take a whole-laid cord at (<see cref="EndPose"/>; a one-cell machine with no wall home on any open side). Empty when the end has no
+        /// fitting or a strip's socket wants the cord swung round the strip first.</summary>
+        private static List<HopEnd> HopEnds(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> C, BuildOptions opt)
+        {
+            var o = new List<HopEnd>();
+            CordNode nd = g.Nodes[atA ? e.A : e.B];
+            if (!EndPose(w, g, e, atA, C, 0, 1, opt, out V2 target, out V2 arrive, out double straight, out _, out int swing) || swing != 0) return o;
+            MachineInfo m = nd.IsMachine ? nd.Machine : null;
+            o.Add(new HopEnd { T = target, Arrive = arrive.Norm(), Straight = straight, Clear = ArriveClear(w, C, target, m) });
+            if (m != null && m.W == 1 && m.H == 1 && !m.HasHome)
+                foreach (Cell side in new[] { new Cell(m.X0, m.Z0 + 1), new Cell(m.X0 + 1, m.Z0), new Cell(m.X0, m.Z0 - 1), new Cell(m.X0 - 1, m.Z0) })
+                {
+                    V2 t2 = m.Kind == MachineKind.Lamp ? LampEntry(m, side.Centre) : CordGraph.PlugPoint(m, side, g.Slides(m));
+                    if (V2.Dist(t2, target) < 0.05 || !w.IsWalkable(t2.Floor)) continue;
+                    V2 a2 = IntoMachine(m, t2);
+                    if (g.Slides(m)) a2 = CordGraph.SlideArrive(m, t2, a2);
+                    o.Add(new HopEnd { T = t2, Arrive = a2.Norm(), Straight = straight, Clear = ArriveClear(w, C, t2, m) });
+                }
+            return o;
+        }
+
+        /// <summary>
+        /// A short cord laid again whole, from one fitting's straight bit to the other's: the Dubins path between the two poses at <see cref="HopRadii"/> (no tighter than a heap
+        /// cable's turn), bowed off to a side in one lazy C or S for its slack, flat where it leaves and meets each straight bit. The laid cord's ends were each come round to on their
+        /// own, so a junction box a cell or two from its machine sent a "&lt;" or a hook into one of them (live, every look, pass 18). Of the draws the bar counts clean, on clear ground and
+        /// with no straight rod, the one whose length lies nearest a loose cord's (a drawn multiple of the gap round <see cref="HopSlack"/>) is kept; null when none is clean.
+        /// </summary>
+        private static List<V2> HopWhole(CordWorld w, CordGraph g, CordEdge e, List<V2> C, BuildOptions opt, LaidPiece piece, string key, Func<Cell, bool> isLive)
+        {
+            List<HopEnd> endsA = HopEnds(w, g, e, true, C, opt), endsB = HopEnds(w, g, e, false, C, opt);
+            if (endsA.Count == 0 || endsB.Count == 0) { HopWhy?.Invoke(piece.EndA + "|" + piece.EndB + " no ends " + endsA.Count + "/" + endsB.Count); return null; }
+            var why = HopWhy == null ? null : new Dictionary<string, int>();
+            void No(string t) { if (why != null) why[t] = why.TryGetValue(t, out int k) ? k + 1 : 1; }
+            CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            CordRng r = CordRng.Of(opt.Seed, "hop", key);
+            List<V2> boxes = OtherBoxes(g, e);
+            int sg = r.Sign();
+            double aim = r.Range(HopSlack - 0.1, HopSlack + 0.12), sBias = r.Range(-0.08, 0.08);
+            List<V2> best = null;
+            double bestCost = double.MaxValue;
+            foreach (HopEnd A in endsA)
+                foreach (HopEnd B in endsB)
+                {
+                    V2 ea = A.T - A.Arrive * A.Straight, eb = B.T - B.Arrive * B.Straight;
+                    double gap = Math.Max(V2.Dist(A.T, B.T), 0.3);
+                    double ha = Math.Atan2(-A.Arrive.Z, -A.Arrive.X), hb = Math.Atan2(B.Arrive.Z, B.Arrive.X);
+                    HopEnd a0 = A, b0 = B;
+                    Func<V2, bool> clear = q => V2.Dist(q, a0.T) < 0.3 || V2.Dist(q, b0.T) < 0.3 || (a0.Clear(q) && b0.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff));
+                    foreach (double rad in HopRadii)
+                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Len).Take(2))
+                        {
+                            if (dp.Turning > Math.PI) { No("turns"); continue; }
+                            var basePts = new List<V2> { ea };
+                            basePts.AddRange(CordShape.Dubins.Sample(ea, ha, dp, 0.05));
+                            if (basePts.Count < 3) { No("short"); continue; }
+                            double[] cl = Geo.CumLen(basePts);
+                            double Lb = cl[cl.Length - 1];
+                            var nrm = new V2[basePts.Count];
+                            for (int k = 0; k < basePts.Count; k++) { Geo.TanNorm(basePts, k, out _, out V2 nn); nrm[k] = nn; }
+                            for (int shape = 0; shape < 2; shape++)
+                                foreach (double f in HopDepths)
+                                    foreach (int side in new[] { sg, -sg })
+                                    {
+                                        if (f == 0 && (side != sg || shape == 1)) continue;
+                                        double D = side * f * Lb;
+                                        var mid = new List<V2>(basePts.Count);
+                                        bool ok = true;
+                                        for (int k = 0; k < basePts.Count && ok; k++)
+                                        {
+                                            double u = cl[k] / Lb, s1 = Math.Sin(Math.PI * u);
+                                            double y = shape == 0 ? s1 * s1 : Math.Sin(2 * Math.PI * u) * s1 * 1.3;
+                                            V2 q = basePts[k] + nrm[k] * (D * y);
+                                            if (!clear(q)) ok = false;
+                                            mid.Add(q);
+                                        }
+                                        if (!ok) { No("ground"); continue; }
+                                        var P = new List<V2>();
+                                        int na2 = Math.Max(1, (int)Math.Round(A.Straight / 0.05)), nb2 = Math.Max(1, (int)Math.Round(B.Straight / 0.05));
+                                        for (int q = 0; q < na2; q++) P.Add(A.T - A.Arrive * (A.Straight * q / na2));
+                                        P.AddRange(mid);
+                                        for (int q = 1; q <= nb2; q++) P.Add(eb + B.Arrive * (B.Straight * q / nb2));
+                                        P[P.Count - 1] = B.T;
+                                        double ratio = Geo.Length(P) / gap;
+                                        if (ratio > HopMaxRatio) { No("long"); continue; }
+                                        bool rod = CordShapeAudit.LongestRod(P, out _) >= CordShapeAudit.RodLen;
+                                        if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
+                                        if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
+                                        P = PastFace(P, true, na);
+                                        P = PastFace(P, false, nb);
+                                        if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0) { No("bends"); continue; }
+                                        // a loose cord, not a taut one: short of the slack census's 1.15 it costs, a straight rod costs more
+                                        double cost = Math.Abs(ratio - aim) + (ratio < 1.15 ? 0.4 : 0) + (rod ? 1 : 0) + (shape == 1 ? 0.04 + sBias : 0) + 0.01 * (rad - HopRadii[0]);
+                                        if (cost < bestCost) { best = P; bestCost = cost; }
+                                    }
+                        }
+                }
+            if (why != null) HopWhy(piece.EndA + "|" + piece.EndB + (best != null ? " LAID " + bestCost.ToString("0.00") : " none") + " ends " + endsA.Count + "/" + endsB.Count + " " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value)));
+            return best;
+        }
+
+        /// <summary>Lab trace of <see cref="HopWhole"/>: what each cord laid again whole met.</summary>
+        internal static Action<string> HopWhy;
+
+        /// <summary>A whole-laid short cord's Dubins radii (cells): a heap cable's turn and wider.</summary>
+        private static readonly double[] HopRadii = { HeapTurnR, 0.85, 1.0 };
+        /// <summary>How deep a whole-laid short cord's bow is, as a share of its path; 0 is the plain Dubins path.</summary>
+        private static readonly double[] HopDepths = { 0.3, 0.22, 0.15, 0.08, 0 };
+        /// <summary>The length a whole-laid short cord aims at, as a multiple of the gap; it never takes one longer than <see cref="HopMaxRatio"/>.</summary>
+        private const double HopSlack = 1.3, HopMaxRatio = 2.4;
 
         /// <summary>A strip right beside a machine points its lead at it, so that lead is a short straight nub off the strip's end and on under the machine's art. Sent to the machine's sliding plug point, off to
         /// one side, it doubled back round the strip's end in a flat hook (blind judge's "two short cords to one machine"; shape lab). Null when this edge is no such lead, or the line misses the machine.</summary>
@@ -1086,6 +1376,67 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         private const double StripNubReach = 1.8, StripNubUnder = 0.3, StripNubBelly = 0.12;
+
+        /// <summary>A junction box right beside a machine, its arm pointing at it: the lead is the arm's own short plug on straight under the machine's art. Laid to the machine's plug
+        /// point, which sits at or behind the arm's tip, it swung out sideways and hooked back in a 140-degree V beside the box (live, every look: a lamp over its box, a battery on
+        /// its run). Null when this edge is no such lead, the box is a blob or a strip, or the arm's line misses the machine within <see cref="BoxNubReach"/>.</summary>
+        private static List<V2> BoxNub(CordWorld w, CordGraph g, CordEdge e, BuildOptions opt)
+        {
+            foreach (bool atA in new[] { true, false })
+            {
+                VId v = atA ? e.A : e.B;
+                CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
+                if (nd.Type != NodeType.Junction || nd.IsBlob || !v.IsCellish || !far.IsMachine || far.Machine == null || opt.PileFor(nd.Cell) == PileArt.Strips) continue;
+                V2 a = ArmDir(g, e, atA);
+                if (!g.MachineArmsOf(v).Contains(new Cell((int)a.X, (int)a.Z))) continue;
+                MachineInfo m = far.Machine;
+                if (m.Contains(nd.Cell)) continue;
+                double under = StripNubUnder + ArtInset(m, a);
+                V2 tip = nd.Pos + a * (ArmTuck * JunctionScale);
+                double reached = -1;
+                for (double t = 0; t <= BoxNubReach; t += 0.05)
+                    if (m.Contains((tip + a * t).Floor)) { reached = t; break; }
+                if (reached < 0) continue;
+                // a cord, not a rod: one smooth bow to a side, flat where it leaves the arm and where it goes in under the art (sin squared), deeper the longer the gap.
+                // Under BowTurn a cell its heading never turns past the bar's 90 degrees (its widest swing is 2 atan(pi depth / gap))
+                CordRng r = CordRng.Of(opt.Seed, "nub", nd.Cell.X, nd.Cell.Z);
+                int sgn = r.Sign();
+                double gap = reached + 0.05, depth = Math.Min(gap * Math.Tan(BowTurn / 2) / Math.PI, StripNubBelly * reached + (reached > 0.4 ? r.Range(0.1, 0.22) * gap : 0));
+                V2 side = new V2(-a.Z, a.X);
+                var line = new List<V2>();
+                bool clear = true;
+                for (double t = 0; t <= reached + 1e-6; t += 0.05)
+                {
+                    double u = Math.Min(1, t / gap), b = Math.Sin(Math.PI * u);
+                    V2 q = tip + a * t + side * (sgn * depth * b * b);
+                    if (t < reached && !NubGround(w, m, q)) { clear = false; break; }
+                    line.Add(q);
+                }
+                if (!clear) continue;
+                if (line.Count < 2) line.Add(tip + a * 0.05);
+                // on under the art to the centroid, as every machine end goes
+                line = IntoArt(line, false, m, g.Slides(m));
+                if (atA) return line;
+                line.Reverse();
+                return line;
+            }
+            return null;
+        }
+
+        /// <summary>How far past its arm's tip a junction box's machine may begin for the arm to plug straight into it, cells: the box beside it, or one cell between.</summary>
+        private const double BoxNubReach = 1.6;
+        /// <summary>The most a box's bowed lead swings its heading, radians (well under the bar's 90 degrees).</summary>
+        private const double BowTurn = 70 * Math.PI / 180;
+
+        /// <summary>Ground a box's lead may cross before its machine: walkable, no furniture, no other machine.</summary>
+        private static bool NubGround(CordWorld w, MachineInfo own, V2 q)
+        {
+            Cell c = q.Floor;
+            if (!w.IsWalkable(c) || w.IsFurniture(c) || w.IsDoor(c)) return false;
+            foreach (MachineInfo o in w.Machines)
+                if (o.Contains(c) && !(o.X0 == own.X0 && o.Z0 == own.Z0 && o.W == own.W && o.H == own.H)) return false;
+            return true;
+        }
 
         /// <summary>How far a diving cord runs on past the face into a wall, rock or building (hidden by it), cells. Water: 0,
         /// the cord meets the water's edge like a conduit stub into water.</summary>

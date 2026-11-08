@@ -22,6 +22,7 @@ def main():
     ap.add_argument("--play", type=int, default=0)
     ap.add_argument("--rect", default="", help="ad-hoc frames in the site's own cells: name:x,z,w,h[;...]")
     ap.add_argument("--tiles", action="store_true", help="also shoot the whole colony at play zoom, 20x11-cell tiles named t<col><row>")
+    ap.add_argument("--bends", action="store_true", help="print the bends probe (never_taut_straight_cord's count) and write it to ralph/live/bends_<tag>_<look>.json")
     a = ap.parse_args()
     st = json.load(open(BA))
     for look in a.looks:
@@ -35,6 +36,11 @@ def main():
         json.dump(st[look], open(LI.STATE, "w"))
         if a.play:
             R.play(a.play)
+        if a.bends:
+            b = R.B.probe("bends")
+            t = b.get("tally") or {}
+            print("BENDS", look, "world", b.get("world"), "strands", t.get("strands"), "bends", t.get("bends"), "unforced", t.get("unforced"), json.dumps(t.get("why")))
+            json.dump(b, open("ralph/live/bends_%s_%s.json" % (a.tag, look), "w"))
         frames = [f for f in a.frames.split(",") if f]
         for q in [q for q in a.rect.split(";") if q]:
             nm, v = q.split(":")

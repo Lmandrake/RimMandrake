@@ -180,6 +180,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
         public const double ForceNear = 0.3, DoorNear = 0.6, SocketReach = 0.75, LimpReach = 1.0;
 
+        /// <summary>How many of a strand's bends the bar counts against it (<see cref="Why"/> "unforced").</summary>
+        internal static int Unforced(CordWorld w, string endA, string endB, List<V2> pts)
+        {
+            int k = 0;
+            foreach (Bend b in Bends(pts)) if (Why(w, endA, endB, pts, b) == "unforced") k++;
+            return k;
+        }
+
         /// <summary>Degrees between the way a strand leaves one end (its first 0.15 cell) and the way its course runs from there (to the point 1.5 cells on, or 0.6 of it on a short cord).</summary>
         internal static double NeededTurn(List<V2> pts, bool first)
         {

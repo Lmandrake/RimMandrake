@@ -830,6 +830,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : new HashSet<Cell>();
         }
 
+        private Dictionary<long, List<KeyValuePair<VId, CordNode>>> nodeGrid;
+        private const int NodeGridSize = 8;
+
+        /// <summary>The graph's nodes that are neither a machine nor a seam (boxes, strips, heaps, cut ends, plates) with their cell in the rectangle, in a fixed order: what a cord laid
+        /// again keeps off (CordBuilder.OtherBoxes) and what goes into its edge's key, so a box that appears beside a cord re-lays it.</summary>
+        internal List<KeyValuePair<VId, CordNode>> NodesNear(int x0, int z0, int x1, int z1)
+        {
+            Dictionary<long, List<KeyValuePair<VId, CordNode>>> t = System.Threading.Volatile.Read(ref nodeGrid);
+            if (t == null)
+            {
+                t = new Dictionary<long, List<KeyValuePair<VId, CordNode>>>();
+                foreach (KeyValuePair<VId, CordNode> kv in Nodes.OrderBy(kv => kv.Key.ToString(), StringComparer.Ordinal))
+                {
+                    if (kv.Value.IsMachine || kv.Value.Seam) continue;
+                    Cell c = kv.Value.Cell;
+                    long k = ((long)Math.Floor(c.X / (double)NodeGridSize) << 32) ^ (uint)(int)Math.Floor(c.Z / (double)NodeGridSize);
+                    if (!t.TryGetValue(k, out List<KeyValuePair<VId, CordNode>> l)) t[k] = l = new List<KeyValuePair<VId, CordNode>>();
+                    l.Add(kv);
+                }
+                System.Threading.Volatile.Write(ref nodeGrid, t);
+            }
+            var o = new List<KeyValuePair<VId, CordNode>>();
+            for (int gx = (int)Math.Floor(x0 / (double)NodeGridSize); gx <= (int)Math.Floor(x1 / (double)NodeGridSize); gx++)
+                for (int gz = (int)Math.Floor(z0 / (double)NodeGridSize); gz <= (int)Math.Floor(z1 / (double)NodeGridSize); gz++)
+                    if (t.TryGetValue(((long)gx << 32) ^ (uint)gz, out List<KeyValuePair<VId, CordNode>> l))
+                        foreach (KeyValuePair<VId, CordNode> kv in l)
+                        {
+                            Cell c = kv.Value.Cell;
+                            if (c.X >= x0 && c.X <= x1 && c.Z >= z0 && c.Z <= z1) o.Add(kv);
+                        }
+            return o;
+        }
+
         private Dictionary<VId, HashSet<Cell>> machineArmTable;
         /// <summary>How far a machine's plug may be from a junction for the machine to count as right beside it, cells.</summary>
         public const double BesideMachine = 1.6;

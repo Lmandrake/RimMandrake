@@ -69,7 +69,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(inPath));
             CordWorld w = Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
             var b = new CordBuilder();
+            CordBuilder.HopWhy = t => Console.WriteLine("HOP " + t);
             List<LaidPiece> ps = b.Build(w, opt, c => live.Contains(c));
+            CordBuilder.HopWhy = null;
             var sb = new StringBuilder("{\"pieces\":[");
             bool first = true;
             int strands = 0;
