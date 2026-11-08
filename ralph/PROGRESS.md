@@ -4,7 +4,7 @@ Pass 15. Retired on the context gate. Game on SteveDesktop, 11 mods (GSS, FW, br
 
 ## The owner's two asks, this pass
 - **Spark on the writhing end**: certified by the owner by eye on pass 11; the spark code (`TipSparks`, `DrawFallenTails/Glow`, `CordMotion`) is untouched since. Re-shot on the current DLL in a played colony after a blast: `p15s_close_sheet.png`, `p15s_play_sheet.png` (+ `.gif`), Modern; `p15t_*`, Scrapper. `spark_measure.py`: spark in 10/10 frames each, mean 0.16 cell from the probe's moving tip. Dead half lies dark beside it. Writhe travel is small (0.24-0.51 cell).
-- **Several cables into one outlet**: a ninth form found and fixed. A strip right beside a wall outlet faced its sockets at the wall, so the cords to its other arms plugged in beside the outlet: three cables into one tab (`p15/ba_Modern_t01_r.png`, before left). Now the strip's own lead goes into the outlet and it stands 0.3 back (`CordGraph.WallArmsOf`, `PoseStrip`). Not yet written into QUESTIONS.md for the owner: **do that first**.
+- **Several cables into one outlet**: a ninth form found and fixed (answered in QUESTIONS.md). A strip right beside a wall outlet faced its sockets at the wall, so the cords to its other arms plugged in beside the outlet: three cables into one tab (`p15/ba_Modern_t01_r.png`, before left). Now the strip's own lead goes into the outlet and it stands 0.3 back (`CordGraph.WallArmsOf`, `PoseStrip`).
 
 ## Done this pass (committed, seen in game unless said)
 - Strip beside a wall outlet plugged in by its lead (above). Seen, Modern kitchen.
@@ -27,7 +27,7 @@ Counts a/b/c/d/e/f: Modern 17/2/10/0/0/9, Scrapper 15/4/1/2/0/4, Industrial 27/4
 2. Lamp hairpin (above).
 3. Modern "plugged in twice": at a T on a through line, the free-arm cord and the stem cord leave adjacent sockets on the same side and run parallel ~1 cell (`p15/z_m11_mid.png`). Idea: free-arm SwingIn turns toward the free end sooner and over a longer stretch (`SwingIn` j-radius 0.85 -> ~1.2).
 4. `bedroom_reno.py TAG Modern Futuristic` is written, never run (GPT pass-13 lead 1, still owed before DONE).
-5. Owner's answer in QUESTIONS.md for the ninth cause; then `proof_all.py --live --only core` (expect 47/47) and a broaden call with the new shots.
+5. `proof_all.py --live --only core` (expect 47/47) and a broaden call with the new shots.
 
 ## Steve this pass
 bad_cpus [1] then [2]. No dead game, no dropped ssh, no reboot. 4 deploy + restart cycles, bridge up in 34-41 s. One failed save load (the 1.4 colony), cleared by closing the dialog. The night step of `span_life.py --night` did nothing: `jawa/time_clock` has no hour field.
