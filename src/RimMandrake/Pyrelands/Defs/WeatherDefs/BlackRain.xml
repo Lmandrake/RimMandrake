@@ -51,8 +51,10 @@
     <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
     <perceivePriority>3</perceivePriority>
     <rainRate>1.1</rainRate>
+    <!-- 2026-11-08: our own sooty streaks (Source/PyrelandsWeatherOverlays.cs). Vanilla's light rain streaks captured as nothing
+         on this ground under this sky, so black rain read only as a dark hour. -->
     <overlayClasses>
-      <li>WeatherOverlay_Rain</li>
+      <li>RimMandrake.Pyrelands.WeatherOverlay_RM_BlackRain</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <!-- Lifted 2026-11-07: noon at sky 0.30 read as night (map s, sky_s_3blackrain): the colony could hardly be seen. Now a dim

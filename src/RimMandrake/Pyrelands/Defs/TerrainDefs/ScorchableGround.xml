@@ -75,7 +75,9 @@
     <label>gravel</label>
     <description>Loose stone chips over hardpan. Sparse fuel, but what grows in it still burns.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
-    <color>(140, 130, 120)</color>
+    <!-- 2026-11-08: was (140,130,120), which drew a pale grey-green slab like poured concrete against the deep ash (map w,
+         first_look_2). A darker, warmer stony brown still reads as unburned ground beside the ash without glaring. -->
+    <color>(110, 98, 84)</color>
     <fertility>0.28</fertility>
     <passability>Standable</passability>
     <pathCost>2</pathCost>

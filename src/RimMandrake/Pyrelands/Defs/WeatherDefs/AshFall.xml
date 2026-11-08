@@ -4,6 +4,7 @@
   <!--
     Ash fall — "ash that blows like snow" (owner's ruling, 2026-09-09).
 
+    (2026-11-08: ash fall now draws its own flakes, WeatherOverlay_RM_AshFall; the note below still holds for ash drift.)
     THE FALLING VISUAL IS PURE XML, NO NEW OVERLAY CLASS. Vanilla tints
     every active weather overlay with the CURRENT WEATHER'S OWN sky
     `overlay` colour: Verse/SkyManager.cs:117 takes
@@ -57,8 +58,11 @@
     <ambientSounds>
       <li>Ambient_Wind_Fog</li>
     </ambientSounds>
+    <!-- 2026-11-08: our own flakes (Source/PyrelandsWeatherOverlays.cs). SnowHard's light flakes captured as nothing on map w at
+         noon, and in motion they streaked by fast enough to read as brown rain. These are alpha-blended pale ash, two layers,
+         drifting at snow-gentle speed on a sideways wind. -->
     <overlayClasses>
-      <li>WeatherOverlay_SnowHard</li>
+      <li>RimMandrake.Pyrelands.WeatherOverlay_RM_AshFall</li>
       <li>WeatherOverlay_Fog</li>
     </overlayClasses>
     <!-- `overlay` is the ash colour itself — see the header. `saturation`
