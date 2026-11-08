@@ -35,6 +35,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 |---|---|
 | **Fixed priority** `order` = steven, system, lukas: burn the FIRST account in that list that is measured, fresh, inside its window and above its line. When system resets the machine goes to system even if lukas still has budget (a lower account's budget that expires first is given up) | owner's 10:15 words; the 10:58 soonest-expiry rule was reverted on his 15:20 review ("awkward") |
 | Steven: use only inside 48 h after his reset, **leave at 52% left** (his "50%" plus a 2-point overshoot margin) | owner words 2026-10-27 "up to 50% after a fresh reset only"; 52 by card 10:20; 48 h is our reading (delegated) |
+| Steven's account, late in his week: may be drawn down toward **10% left, never below**; the 50% use is done early in the week, then left alone | owner, 2026-10-26: *"As we get near his reset you may consider drawing it down towards 10%, but never beyond that. We don't ever want to crowd him out."* |
 | Floors: **0%** when switching away, **2%** when waiting on an account (owner can still talk to a seat while idle) | card 2026-10-28 15:33 "Drain to 0%"; 2% delegated |
 | **Soft line** (line + 2%: allocator gives 0 new helpers, running seats publish and finish) then **hard stop** (fleet-stop) | by card 10:20 |
 | **Blind meter = 0%**: once the last MEASURED reading is <= 1%, a blind one (failed /usage, limit error, ESTIMATE, stale) counts as 0% and switches | relayed rule 11:2x |

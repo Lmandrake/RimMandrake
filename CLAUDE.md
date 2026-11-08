@@ -189,6 +189,10 @@ prefixes `RM_`/`RSW_`/`RUT_`, namespaces `RimMandrake[.StarWars|.Utinni].<Mod>`.
 text only; dev tooling is exempt. 🔴 **The migration is DONE** (*"Deploy the full rename."*,
 2026-08-31) — a later rename is simply owed work; delete any doc still citing a rename gate.
 
+## Sittings with the owner keep the advanced-zoom mod — owner, 2026-11-03
+
+*"there was a standing rule that the advanced zoom capabilities were always to be included in mod lists where the human sat with Conductor, so I can zoom in and study things."* Any mod list built for a sitting with him includes it.
+
 ## Every mod ships superb Mod Settings — owner, 2026-09-12
 
 On/off per major feature, tuning where a number is the experience, defaults = shipped

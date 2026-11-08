@@ -73,6 +73,11 @@ Commands, flags, files and the hand-off: `references/lifecycle.md`. The 14 rulin
 which tool refuses what: `references/art_requirements.md`. Failures that have actually happened, each with
 its check: `references/traps.md`.
 
+## Sheet behaviour he has ruled
+
+- **Group similar rows under an expandable parent; a click never makes an item vanish** (owner, 2026-10-10): *"it should collapse similar items together "Biome sheets: 23" and when you click on it, it expands to show the sub-items that are themselves clickable. Things should NEVER just "drop off" when you click on them."*
+- **No "accept unchanged" control; an untouched row on a returned sheet means accepted** (owner, 2026-10-12): *"I also HATE the "accept unchanged." I never return a sheet without reviewing every item, so please assume "accept unchanged" is true if I didn't change anything."* Retiring the current art and picking another happens in the same pass.
+
 ## Before he sees a sheet
 
 - [ ] every row read by the seat or a naive judge, broken rows fixed or dropped; `prereview.py check <html>` OK, and

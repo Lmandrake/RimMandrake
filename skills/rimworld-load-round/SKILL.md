@@ -94,6 +94,11 @@ live load. `sweep_load.sh` already greps `^Config error in`; §8's
 ENGINE disapproves, not necessarily that it's wrong for our purposes) before
 filing anything this sweep surfaces.
 
+### Which list to test on (owner rulings)
+
+- **Small mod lists are the way to test until one final verification pass on the whole list** (owner, 2026-11-02): *"small mod lists should always be the way to test until a final verification pass on the whole huge mod list."*
+- **Huge Things belongs on the testing mod lists** (owner, 2026-10-16): *"We also need to include the huge things mod in our testing mods too. We have so many huge things, we want to make sure we're always compatible with them."*
+
 ### ⚠️ What the minimal list CANNOT do
 
 * **It cannot reproduce the 21,872-tile geometry.** `ferny.Worldbuilder` is absent, and
