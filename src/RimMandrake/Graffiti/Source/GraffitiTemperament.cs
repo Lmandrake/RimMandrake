@@ -179,7 +179,13 @@ namespace RimMandrake.Graffiti
                 Thought_Memory m = memories[i];
                 if (!IsOurs(m.def)) continue;
                 if (Thought_GriefEase.Eases(m.def) && !apart) continue;
-                if (m.def == def && m.otherPawn == other) existing = m;
+                if (m.def == def && m.otherPawn == other)
+                {
+                    // A memory saved by an older build keeps the class it was saved with (a memorial before Thought_GriefEase). Renewing it would
+                    // keep its old rules for good, so it goes and the new one is made in its own class.
+                    if (m.GetType() != def.ThoughtClass) { p.needs.mood.thoughts.memories.RemoveMemory(m); i--; continue; }
+                    existing = m;
+                }
                 if (social)
                 {
                     if (m is Thought_MemorySocial s && m.otherPawn == other && (s.opinionOffset > 0f) == positive) already += System.Math.Abs(s.opinionOffset);

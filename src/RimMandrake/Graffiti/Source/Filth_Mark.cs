@@ -18,10 +18,14 @@ namespace RimMandrake.Graffiti
     // elsewhere in the save (Pawn, Faction and Ideo are all
     // ILoadReferenceable - Ideo confirmed via RimSage this pass,
     // RimWorld/Ideo.cs:9 "public class Ideo : IExposable,
-    // ILoadReferenceable"). A dead maker or a destroyed corpse still
-    // resolves fine (Scribe_References tolerates a since-vanished
-    // ILoadReferenceable by leaving the field null on load, same as any
-    // other cross-reference in this engine).
+    // ILoadReferenceable"). A dead pawn counts as destroyed, and
+    // Scribe_References writes "null" for a destroyed thing unless
+    // saveDestroyedThings is set (Verse/Scribe_References.cs): every
+    // memorial forgot who it was for at its first save (live, pass 10:
+    // Lark's memorial to Pell saved rmMarkSubject null, lost Pell's painted
+    // face, and Lark painted Pell another). The pawns are kept the way
+    // vanilla keeps a relation's: saveDestroyedThings, and a pawn the
+    // world has discarded is let go before the save so nothing warns.
     public class Filth_Mark : Filth
     {
         public Pawn maker;
@@ -230,10 +234,16 @@ namespace RimMandrake.Graffiti
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref maker, "rmMarkMaker");
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                if (maker != null && maker.Discarded) maker = null;
+                if (subject != null && subject.Discarded) subject = null;
+                if (defacedBy != null && defacedBy.Discarded) defacedBy = null;
+            }
+            Scribe_References.Look(ref maker, "rmMarkMaker", saveDestroyedThings: true);
             Scribe_References.Look(ref makerFaction, "rmMarkMakerFaction");
             Scribe_References.Look(ref makerIdeo, "rmMarkMakerIdeo");
-            Scribe_References.Look(ref subject, "rmMarkSubject");
+            Scribe_References.Look(ref subject, "rmMarkSubject", saveDestroyedThings: true);
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
@@ -241,7 +251,7 @@ namespace RimMandrake.Graffiti
             Scribe_References.Look(ref targetFaction, "rmMarkTargetFaction");
             Scribe_Values.Look(ref subjectName, "rmMarkSubjectName");
             Scribe_Values.Look(ref defaced, "rmMarkDefaced");
-            Scribe_References.Look(ref defacedBy, "rmMarkDefacedBy");
+            Scribe_References.Look(ref defacedBy, "rmMarkDefacedBy", saveDestroyedThings: true);
             Scribe_Collections.Look(ref readBy, "rmMarkReadBy", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref factionsRead, "rmMarkFactionsRead", LookMode.Value);
             Scribe_Values.Look(ref angered, "rmMarkAngered");

@@ -203,7 +203,81 @@ def wallui(s, name, cell, root=7.4):
     print("UISHOT", os.path.join(SHOTS, name + ".png"))
 
 
+def load(s, save):
+    """Load a save from game B's Saves and wait until its map is playing."""
+    print(str(s.call("rimworld/load_game", saveName=save))[:200], flush=True)
+    for _ in range(240):
+        time.sleep(1.0)
+        try:
+            gi = s.call("rimworld/get_game_info")
+        except Exception:
+            continue
+        if isinstance(gi, dict) and gi.get("ticksGame") and (gi.get("programState") in (None, "Playing")) and gi.get("mapCount", gi.get("maps", 1)):
+            print("LOADED", save, "tick", gi.get("ticksGame"), str(gi)[:200])
+            return
+    print("LOAD timed out", save)
+
+
 def one(s, a):
+    if a[0] == "load":
+        load(s, a[1])
+        return
+    if a[0] == "uil":
+        # UI layout, one element per line: id, kind, label, rect; filtered by a substring of the line when given
+        kw = {"surfaceId": a[1]} if len(a) > 1 and a[1] != "-" else {}
+        off = 0
+        while True:
+            kw["offset"] = off
+            r = s.call("rimworld/get_ui_layout", **kw)
+            els = []
+            if isinstance(r, dict):
+                els = list(r.get("elements") or [])
+                for sf in r.get("surfaces") or []:
+                    print("SURFACE", sf.get("surfaceTargetId"), sf.get("surfaceKind"), sf.get("label"), str(sf.get("rect"))[:80])
+                    for e in sf.get("elements") or []:
+                        e = dict(e)
+                        e["_surface"] = sf.get("surfaceTargetId")
+                        els.append(e)
+            if not els and off == 0:
+                print(json.dumps(r)[:1500])
+            for e in els:
+                line = json.dumps(e)[:300]
+                if len(a) < 3 or a[2].lower() in line.lower():
+                    print(line)
+            nxt = ((r.get("page") or {}).get("nextOffset")) if isinstance(r, dict) else None
+            if not nxt:
+                break
+            off = nxt
+        return
+    if a[0] == "hoverlabel":
+        # hover the first UI element whose label holds this text (spaces as _), as a player's mouse would
+        want = a[1].replace("_", " ").lower()
+        r = s.call("rimworld/get_ui_layout")
+        for sf in (r.get("surfaces") or []) if isinstance(r, dict) else []:
+            for e in sf.get("elements") or []:
+                if want in str(e.get("label") or "").lower():
+                    print("HOVER", e.get("targetId"), e.get("label"))
+                    print(json.dumps(s.call("rimworld/set_hover_target", targetId=e.get("targetId"), anchor=a[2] if len(a) > 2 else "center"))[:300])
+                    return
+        print("HOVER no element labelled", want)
+        return
+    if a[0] == "screen":
+        # the whole screen as it stands, UI and all
+        s.call("rimworld/step_game_ticks", ticks=1)
+        time.sleep(1.0)
+        r = s.call("rimworld/take_screenshot", fileName="%s__%d" % (a[1], int(time.time())), suppressMessage=True)
+        path = r.get("path") if isinstance(r, dict) else None
+        for _ in range(40):
+            if path and os.path.exists(path) and os.path.getsize(path) > 0:
+                break
+            time.sleep(0.5)
+        os.makedirs(SHOTS, exist_ok=True)
+        shutil.copy(path, os.path.join(SHOTS, a[1] + ".png"))
+        print("SCREEN", os.path.join(SHOTS, a[1] + ".png"))
+        return
+    if a[0] == "hover":
+        print(json.dumps(s.call("rimworld/set_hover_target", targetId=a[1], anchor=a[2] if len(a) > 2 else "center"))[:300])
+        return
     if a[0] == "days":
         days(s, int(a[1]), int(a[2]) if len(a) > 2 else 15000)
         return

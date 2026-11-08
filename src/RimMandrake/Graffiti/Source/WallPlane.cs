@@ -16,6 +16,12 @@ namespace RimMandrake.Graffiti
         private static readonly Dictionary<long, Material> ThroughMats = new Dictionary<long, Material>();
         private static readonly Color32 White = new Color32(255, 255, 255, 255);
         private const float TopThrough = 0.45f;
+        /// <summary>Option D (owner, 2026-11-07: "bolder paint inside the wall face"). The face is the wall's lit surface: a spray's soft
+        /// alpha over it composited pastel, and the wall blended back at full show-through washed it further, so the paint on the face read
+        /// as a pale ghost of the paint climbing onto the dark top (live, Ashgate, pass 10). The face takes a second coat of the same paint
+        /// and half the show-through; holes in the paint stay holes, so the wall still shows where the can missed.</summary>
+        private const float FaceThrough = 0.5f;
+        private const int FaceCoats = 2;
 
         /// <summary>The wall's link bits as its own graphic computes them; negative where no paintable wall stands.</summary>
         internal static int LinksAt(IntVec3 c, Map map)
@@ -167,7 +173,7 @@ namespace RimMandrake.Graffiti
             List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(k => LinksAt(anchor + new IntVec3(ax * k, 0, az * k), map), face, geom.crease, geom.side, width, height, slide, slope, lift, flip, centerT);
             foreach (RM_MarkPiece piece in pieces)
             {
-                Emit(layer.GetSubMesh(mat), piece.poly, anchor.x, anchor.z, y, null);
+                for (int coat = piece.onTop ? 1 : FaceCoats; coat > 0; coat--) Emit(layer.GetSubMesh(mat), piece.poly, anchor.x, anchor.z, y, null);
             }
             if (through <= 0f) return;
             foreach (RM_MarkPiece piece in pieces)
@@ -177,7 +183,7 @@ namespace RimMandrake.Graffiti
                 if (wallAtlas == null) continue;
                 int links = LinksAt(cell, map);
                 // The top is a dark surface with no grain: less of it comes back, so the paint up there stays the same paint.
-                Material over = ThroughMat(wallAtlas, piece.onTop ? through * TopThrough : through, mat.renderQueue + 1);
+                Material over = ThroughMat(wallAtlas, through * (piece.onTop ? TopThrough : FaceThrough), mat.renderQueue + 1);
                 Vector2 off = new Vector2((links % 4) * 0.25f + 1f / 32f, (links / 4) * 0.25f + 1f / 32f);
                 Emit(layer.GetSubMesh(over), piece.poly, anchor.x, anchor.z, y + 0.002f, v => new Vector2(off.x + (v.x - ax * piece.k) * 0.1875f, off.y + (v.z - az * piece.k) * 0.1875f));
             }

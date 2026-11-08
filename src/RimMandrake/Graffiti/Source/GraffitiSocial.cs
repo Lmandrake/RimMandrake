@@ -559,7 +559,9 @@ namespace RimMandrake.Graffiti
             for (int i = 0; i < comp.marks.Count; i++)
             {
                 Filth_Mark m = comp.marks[i];
-                if (m.def == def && m.subject == subject && m.maker == painter && !m.defaced) return true;
+                // A save from before pass 10 lost a dead subject's reference and kept only the name.
+                bool about = m.subject == subject || (m.subject == null && subject != null && m.subjectName == subject.LabelShort);
+                if (m.def == def && about && m.maker == painter && !m.defaced) return true;
             }
             return false;
         }
