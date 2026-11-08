@@ -22,6 +22,7 @@ def main():
     ap.add_argument("--play", type=int, default=0)
     ap.add_argument("--rect", default="", help="ad-hoc frames in the site's own cells: name:x,z,w,h[;...]")
     ap.add_argument("--tiles", action="store_true", help="also shoot the whole colony at play zoom, 20x11-cell tiles named t<col><row>")
+    ap.add_argument("--dump", action="store_true", help="also dump the cord world for the offline lab (probe worlddump:ba_<Look>, under the game's GssWorlds)")
     ap.add_argument("--bends", action="store_true", help="print the bends probe (never_taut_straight_cord's count) and write it to ralph/live/bends_<tag>_<look>.json")
     a = ap.parse_args()
     st = json.load(open(BA))
@@ -36,6 +37,8 @@ def main():
         json.dump(st[look], open(LI.STATE, "w"))
         if a.play:
             R.play(a.play)
+        if a.dump:
+            print("DUMP", look, json.dumps(R.B.probe("worlddump:ba_%s" % look))[:200])
         if a.bends:
             b = R.B.probe("bends")
             t = b.get("tally") or {}

@@ -24,6 +24,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (JsonElement a in r.GetProperty("doors").EnumerateArray()) w.SetDoor(C(a));
             foreach (JsonElement a in r.GetProperty("buried").EnumerateArray()) w.SetForcedBuried(C(a));
             foreach (JsonElement a in r.GetProperty("busy").EnumerateArray()) w.SetBusy(C(a));
+            // furniture and extra path costs (beds, tables, trees): dumped since pass 19, so an older world reads as none
+            if (r.TryGetProperty("furniture", out JsonElement fu)) foreach (JsonElement a in fu.EnumerateArray()) w.SetFurniture(C(a));
+            if (r.TryGetProperty("costs", out JsonElement co)) foreach (JsonElement a in co.EnumerateArray()) w.SetExtraCost(C(a), (float)a[2].GetDouble());
             foreach (JsonElement m in r.GetProperty("machines").EnumerateArray())
             {
                 var i = new MachineInfo { Id = m.GetProperty("id").GetString(), Kind = (MachineKind)m.GetProperty("kind").GetInt32(), X0 = m.GetProperty("x").GetInt32(), Z0 = m.GetProperty("z").GetInt32(), W = m.GetProperty("w").GetInt32(), H = m.GetProperty("h").GetInt32() };

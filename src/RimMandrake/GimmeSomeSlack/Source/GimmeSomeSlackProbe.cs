@@ -533,6 +533,8 @@ namespace RimMandrake.GimmeSomeSlack
             var doors = new List<Cell>();
             var buried = new List<Cell>();
             var busy = new List<Cell>();
+            var furniture = new List<Cell>();
+            var costs = new List<string>();
             for (int z = 0; z < w.Height; z++)
                 for (int x = 0; x < w.Width; x++)
                 {
@@ -541,11 +543,13 @@ namespace RimMandrake.GimmeSomeSlack
                     if (w.IsDoor(c)) doors.Add(c);
                     if (w.IsWalkable(c) && w.IsBuried(c)) buried.Add(c);
                     if (w.IsBusy(c)) busy.Add(c);
+                    if (w.IsFurniture(c)) furniture.Add(c);
+                    if (w.ExtraCost(c) != 0f) costs.Add("[" + x + "," + z + "," + w.ExtraCost(c).ToString(inv) + "]");
                 }
             var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
                 + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
                 + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + "}");
-            string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy)
+            string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy) + ",\"furniture\":" + L(furniture) + ",\"costs\":[" + string.Join(",", costs) + "]"
                 + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
                 + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))
                 + ",\"opt\":{\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)
