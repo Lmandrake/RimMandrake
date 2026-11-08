@@ -168,6 +168,7 @@
     <Compile Include="..\Superdeep\RM_PitLookMath.cs" />
     <Compile Include="SuspensionHangChecks.cs" />
     <Compile Include="PitLookChecks.cs" />
+    <Compile Include="PitDepthDrawingChecks.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_TerrainWriteBudget.cs" />
     <Compile Include="..\RM_LevelSolve.cs" />
