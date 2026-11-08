@@ -374,6 +374,33 @@ namespace RimMandrake.Pyrelands
             return n;
         }
 
+        /// <summary>Regrowth read (jawa/static_call), bar pyre_embergrass_regrows: every cell on the CURRENT map with a burn stamp,
+        /// binned by whole days since its LAST burn, and per bin how many cells hold a living ember grass or quickgrass now and
+        /// how many of those are past half grown. Fire-proof cells (water, rock, buildings) never get a stamp, so the share is of
+        /// ground that burned. "days=cells/grassy/halfGrown;..." oldest bin last.</summary>
+        public static string ProbeRegrowth()
+        {
+            Map m = Find.CurrentMap;
+            var comp = For(m);
+            if (comp == null || comp.burnTick == null) return "error=no ash field on the current map";
+            int now = Find.TickManager.TicksGame;
+            var cells = new SortedDictionary<int, int[]>();
+            for (int i = 0; i < comp.burnTick.Length; i++)
+            {
+                if (comp.burnTick[i] < 0) continue;
+                int d = Math.Max(0, (now - comp.burnTick[i]) / GenDate.TicksPerDay);
+                if (!cells.TryGetValue(d, out int[] row)) cells[d] = row = new int[3];
+                row[0]++;
+                Plant p = m.thingGrid.ThingAt<Plant>(m.cellIndices.IndexToCell(i));
+                if (p == null || (p.def.defName != "RM_FE_Plant_EmberGrass" && p.def.defName != "RM_FE_Plant_Quickgrass")) continue;
+                row[1]++;
+                if (p.Growth >= 0.5f) row[2]++;
+            }
+            var parts = new List<string>();
+            foreach (var kv in cells) parts.Add(kv.Key + "=" + kv.Value[0] + "/" + kv.Value[1] + "/" + kv.Value[2]);
+            return "now=" + now + ";" + string.Join(";", parts);
+        }
+
         /// <summary>Harness weather read (jawa/static_call): the LIVE RM_Pyrelands weather table after the ambient-ash settings
         /// were written, "defName=commonality;...".</summary>
         public static string WeatherShares()

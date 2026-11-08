@@ -21,6 +21,8 @@
 
   <!-- The burn nearing home (MapComponent_BurnLine.WatchApproach). {0} cells, {1} a compass word. -->
   <RM_WithersUnderRoof>Withering: it needs open sky.</RM_WithersUnderRoof>
+  <RM_DryLandLabel>No water here</RM_DryLandLabel>
+  <RM_DryLandLetter>There is no open water anywhere on this map.\n\nWithout water your colonists will be down with thirst in about a day. Form a caravan and go looking for water while they can still walk.</RM_DryLandLetter>
   <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>
   <RM_BurnApproachLead>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.</RM_BurnApproachLead>
   <RM_BurnApproachLeadEdge>A burn line has reached the edge of your home, on the {0} side.</RM_BurnApproachLeadEdge>

@@ -1,55 +1,65 @@
 # Pyrelands progress
 
-**State at retirement:** the game is up (paused) on fresh map `v` (`play.py build --tag v`, save `NS_Pyrelands_play_v` at landing, 55 C, no standing water at all), build f6fe748c79 deployed and hash-verified, tick 80601. First look at the arrival: `ProbeOpeningFront` read scarLaid north edge, centre (88,249), radius 47.8, 3,068 cells, 75 sprouts, 4 pods, ash on 676 cells; the arc lit **27 fires at tick 80039** (38 ticks after load), centred (89,203). No Pyrelands error in Player.log (one CrackedLands def exception, not ours). `shots/v_arrival_arc.png` (+600 ticks): the scar reads right (dark char, clumped ash, ragged grass edge, ash falling), but the arc is still **27 small separate flames, reading as spot fires along the edge rather than a line**. First job: run 1 to 2 game hours and look again; if it is still dots, start the arc fires larger (`OpeningFrontFireSize` 0.35) or denser (`YesterdayFireArcStride` 2). Also judge the grey ash clumps on the scar: at this zoom they can read as smoke puffs.
+**State at retirement:** the game is up (paused) on map `w`, day 14.6, saved as `NS_Pyrelands_play_w_d14`. That map was built this pass with `play.py build --tag w`, at 54 C, with a 660-cell pond 59 cells east of the landing. The deployed build has two additions: a regrowth probe and a dry-map letter. Reload the save with `python.exe Transient/pyre_play5/reload.py NS_Pyrelands_play_w_d14`. In that save:
+- **Storyteller:** Phoebe/Peaceful (`jawa/storyteller_swap`). Twice the Ohnaka Gang's day-13 night raid downed the colony, unarmed and then armed, so I took raids out to keep the biome run going.
+- **Gear:** colonists armed through `jawa/pawn_gear`.
+- **House:** 11 unbuilt walls were spawned and the room roofed through the bridge, because heatstroke downed Loaiza at 53 C in the open shell.
+- **Farm:** rice is sown beside a canal I dug with FlowWorks' `Deepen()` (`Transient/pyre_play5/canal.py 166 181 140 2`, fed from the pond at x182). The test strips are z141 and z139, x166-175, 10 plants each, and they read watered. A dry control strip of 10 is at z145, x166-175 (5 cells off the canal), with 14 more in the base field at 121,130.
 
-This pass played map `t` (save `NS_Pyrelands_play_t`; my live run took it from day 2.3 to 4.75, unsaved), built five fixes, and deployed build f6fe748c79. It has NOT been seen in game yet. My scripts are in `Transient/pyre_play5/`: `watch.py SLICES TICKS [1]` (fires, hawk drop counters, each ashwallow's burrow state and distance to the nearest fire, colonists; `1` stops on an event), `hawkwatch.py MAXTICKS` (runs Superfast, pauses on a new hawk drop, reads Pawn_FlightTracker and shoots the drop cell with a flying hawk kept out of frame), `herds.py` (every wild animal's thirst and food), `cover.py x,z,w,h` (grass cells in a rect). The older `Transient/pyre_play4/` scripts still work (`paneshot.py`, `tmap.py`, `findsites.py`, `call.py`, `tools.py PATTERN` lists bridge tools).
+New scripts are in `Transient/pyre_play5/`:
+- `run.py HOURS TAG [nowarn]`: one line an hour (weather, fires, nearest fire to a colonist, jobs, thirst, food). It shoots the colony on letters and sky changes and at noon, and stops on a downed colonist or on fire within 6 cells.
+- `water.py`: pond clusters by distance.
+- `jobs.py`: dense job sampling.
+- `adv.py`: advance N ticks.
+- `fshot.py NAME`: densest-fire shot.
+- `canal.py`.
+- `reload.py`.
 
-## Owner card 7:09 PM (it reached a builder, not me; now done)
-"No guarantee. It is absolutely not ok to assume you can appear on these harsh maps and be ok. Don't do that. You would walk away to another map as your first option instead and that's good." The guaranteed dug ponds are removed (`GenStep_PyrelandsStandingWater.cs`), with no well added. QUESTIONS 1 is dropped. No bar or suite row treated a dry map as a defect. It is not in the ledger yet.
+A note on `Transient/pyre_play/col2.py`: Windows python ignores `COLBASE` unless `export WSLENV=COLTAG:COLBASE`, which is why the base landed at 118,118.
 
-## Seen on map t (old build)
-- **Herd thirst is staggered now:** one gizka herd at 0.49, the other at 0.89, ashwallows 0.71, hawks 0.74. Grass-watered natives never dehydrate (FlowWorks `Need_RM_Thirst.NeedInterval` returns before the hediff), so a waterless map kills none of them.
-- **Burrow, live** (`shots/t_burrow_live_a.png`): an ashwallow on the scar shows a small brown dome and the pane line "Burrowed: sealed under the ash until the fire passes." But it dove with the fire 14 cells off on char the fire had already left, surfaced, walked back and dove again. A herd of four dove at 15 cells, the front crept to 5.7 cells over 15,000 ticks and stalled, and they came up 17,000 ticks later. The fire never passed over one.
-- **Hawks are broken:** over 2 days, 7 sorties (one per 15,000-tick cooldown) gave **0 drops**. The job failed as soon as its one source Fire despawned, and grass fires burn out in seconds.
-- **Regrowth:** the SE scar (burned day ~1.5 to 2.3) was 46% re-grown by cell at day 4.75, with full-size clumps (`shots/t_scar_d4.75.png`, a night shot, dark). That is "visibly re-greening within a few days". "Largely green within about a week" is not measured.
-- **Pond shore** (`first_look_2`): long straight runs and square steps. Cause: the shore noise rarely crossed its threshold, and the ≥3-sides clean-up undid every one-cell bump. Re-running the GenStep live changed almost nothing.
-- Last pass left **ash fall force-locked** on map t (`Forced weather` in the right panel). Unlocked with `jawa/weather_set unlock=true`. Check for that after any skies test.
-
-## Built (deployed, unseen)
-- **Yesterday's fire** (`PyrelandsFireFront.cs`: `PyrelandsYesterdayFire`, `GenStep_PyrelandsYesterdayFire` at order 1220). A ragged half-disc scar (radius 35 to 50) enters from one edge, with its front at least 70 cells from the centre and from the landing. On each scar cell the grass is removed, scar ash is laid in clumps and the burn is stamped. About 15% of cells sprout near the edge, fading to none by 0.6 depth, and 4 ripe pods sit behind the front. The first watch interval lights the leading arc (at most 32 fires) and posts "Smoke to the {side}: yesterday's grass fire is still burning along the edge of its scar." It skips water within 7.5 cells. It falls back to the old 5-cell line on a small map. Probe: `jawa/static_call type=RimMandrake.Pyrelands.MapComponent_BurnLine method=ProbeOpeningFront` (scarLaid, scarSide, scarRadius, scarCells, sprouts, pods, arcCandidates, arcLit). `RearmOpeningFront` lays a runtime scar on a live map. Builder notes: `D:\ClaudeWork\rimmandrake\ralph_pyrelands\yfire\`.
-- **Pond shores** (`RaggedShores`): smoothed noise, then a breaker adds a 2 to 3 cell bump or notch to any straight side longer than 4. In the prototype the longest side went from 10 to 4 cells and square corners from 2.3 to 0.2 per 100. Before/after: `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shore_ring\final_before_after_*.png`. The builder saw a possible bare speck inside the ring; check it in game.
-- **Hawk ember** (`JobDriver_RUT_FireHawkCarryEmber.cs`): the job goes to the source CELL (TargetC). It takes an ember if any free fire burns within 2.9 cells, and the carry no longer depends on the source fire.
-- **Burrow:** ashwallow `detectionRadius` 15 → 6. `NudgeBurrowers` now starts the dive outright for a grazing (`Ingest`) or sleeping (`LayDown`) ashwallow. The think tree would just hand the meal or bed back.
-- **Black rain** (`BlackRain.xml`): day sky 0.30 → 0.50 (brownish), streak overlay darker (0.40) than vanilla rain's 0.7, night lifted a little. Old pair: `old\sky_s_2rain_vanilla.png` and `old\sky_s_3blackrain.png`.
-- Not in git: the builder's lesson `infrastructure/state/lessons/20261108T033025Z-BENCH-grid-noise-keeps-straight-shores.md` (I keep out of that tree).
+## Seen this pass
+- **Burn line, map v (old build, same visuals):** the arrival arc of 27 dots became a real front within an hour. Over 2 days it walked about 26 cells a day, peaked near 480 fires, and left a dark scar with ash and re-sprouting tufts (`v_ov_d2noon.png`, `first_look_2`). Map w's arc lit on arrival with its message. On w, cinderfall then set 650 fires map-wide, black rain put out every one within 2 h, and a dry thunderstorm next day spread to 1,070 fires in three rings that crossed the base and burned out in 2 h (`first_look_1`, `first_look_3`). It is dramatic and readable. TPS during the 1,000-fire peak (map w ticks 846k to 866k, about 21:00 PST) is **not yet checked in telemetry**.
+- **Hawks work now:** map v showed 3 sorties, 3 drops, all lit. Two landed 7 to 9 cells outside the scar in unburned grass. The third (`v_hawkdrop_97279.png`) landed 5.1 cells from the nearest other fire.
+- **Burrow:** a map v ashwallow dove and held while fire came to 1.4 cells. It surfaced with no hediffs and walked 35 cells off. There is no shot of the dome inside the fire.
+- **No-water map v:** all three colonists were down with thirst 0.68 days after landing, and nothing warned the player. The owner allows dry maps, so I added the letter: `MapComponent_BurnLine.WarnIfDry` posts "No water here" once, on a player home with no water terrain when FlowWorks thirst exists. It is built and deployed, but no dry map has been seen with it yet.
+- **Ash drifts read as blurry grey smudges at 1:1** (`v_ash_drift_crop_1to1.png`): translucent, soft-edged, and smoke-like beside crisp grass. I believe this is the owner's "blurry grey stuff". A subagent was redrawing `Textures/Things/Filth/RM_FE_LooseAsh/*`, with old copies to `Transient/ash_old/` and a mock at `shots/ash_redraw_mock.png`. **Check the working tree.** If the redraw is good, deploy it and judge it on a scar. If it is half-done or worse, restore from `Transient/ash_old/`. Nothing from it is committed or deployed.
+- **Ash fall overlay** is `WeatherOverlay_SnowHard` tinted tan. In a still it shows long diagonal streaks like brown rain (`w_ev_742726.png`). Its header comment claims SnowGentle. Try SnowGentle in the skies comparison.
+- **Colonists never sowed or cut on the play map** until I wrote Growing and PlantCutting priorities with `jawa/set_work_priority`. They sowed at once after that. The cause is unknown; it is a harness problem, not the mod.
+- **Regrowth** (new probe `jawa/static_call type=RimMandrake.Pyrelands.MapComponent_PyrelandsAshField method=ProbeRegrowth`; output days since burn = cells/grassy/half-grown), map w tick 878549:
+  - 1 d: 32% grassy.
+  - 2 d: 42%.
+  - 3 d: 45% (100 cells).
+  - The day-14.3 wildfire cohort is 16,730 cells. Read it at day 17.5 and day 21 to judge "largely green within about a week".
 
 ## Next, in order
-1. On map v (already landed, see the top): shoot the arrival at play zoom: the colonists, then the scar and lit arc with the message visible (full-UI `take_screenshot`), plus an overview. This is `pyre_burn_line_present`. Judge whether the arc reads as a front with a trail, and whether 32 fires 70 cells out is too much for a day-0 colony (watch the front's arrival at the colony too: broaden lead 1).
-2. The pond shore at play zoom, beside `first_look_2`. Black rain against vanilla rain at noon on the same rect. Refresh `first_look_*` and LOOK.md (owner wants the before/after).
-3. Run `watch.py` while the arc front advances: an ashwallow it passes over should dive within 6 cells and come up unhurt. Run `hawkwatch.py`: drops should now land, ahead of the front.
-4. Farming (broaden lead 3): `jawa/map_zones action=createZone zoneType=growing rect=x,z,w,h` plus `rimworld/set_zone_target` for rice. Make one plot by the pond, one on dry ash, one on the fresh scar. Pane shots on a planted rice of each (`paneshot.py`) cover `ash_fertile_when_watered` and `fresh_burn_feeds_the_field`. Then force black rain over the scar plot and pane it again.
-5. Regrowth to day 7 on the arrival scar, with noon shots (`cover.py`). Scorch-fruit spoil: spawn `RM_FE_ScorchFruitYield` forbidden outdoors.
-6. Full suite (`live_session.py ... --no-restart`), then the fresh-eyes judge, then DONE. The last broaden call was pass 012 (`gpt_help_pass012.md`); leads 1 and 3 are above.
+1. The ash redraw (above). Then deploy, restart, and reload w_d14.
+2. Run map w for 3 days with `run.py`. Compare rice on the canal strips and the dry strip: shot plus growth from `list_things`. That is `ash_fertile_when_watered`. Then plant a strip on the day-14 scar beside an unburned one (`fresh_burn_feeds_the_field`), and force black rain over it.
+3. Read `ProbeRegrowth` at about day 17.5 and day 21, with noon shots of one fixed scar rect.
+4. Map w has 40 scorch-fruit: run `play.py track`, harvest some, and leave the fruit outdoors to see whether it rots in about 4 days.
+5. `play.py skies` at noon on one rect: ash fall (overlay), black rain against vanilla rain, cinderfall. Unlock the weather afterwards.
+6. Telemetry for the wildfire hour. Read a burrowed ashwallow's dome in fire (`watch.py`). Make the broaden call (none this pass). Then the full suite, the fresh-eyes judge, and DONE.
+
+Smaller: the yesterday's-fire message shows "Smoke to the east: Yesterday's…" with a capital Y. The pond shore still steps in blocks. `QUESTIONS.md` is unchanged.
 
 ## Count
 - pyre_plant_distribution_correct: true
 - pyre_animal_distribution_correct: true
-- pyre_mapgen_log_clean: true (map v, this build: no Pyrelands error or warning)
+- pyre_mapgen_log_clean: true
 - pyre_ground_deep_ash: true
 - pyre_ash_fertile_when_watered: unseen
 - pyre_fresh_burn_feeds_the_field: unseen
 - pyre_grass_chokes_ground: true
-- pyre_embergrass_regrows: unseen (46% re-grown at about 3 days on map t; day 7 not measured)
-- pyre_burn_line_present: false (map v: scar and lit arc present on arrival, but the arc reads as dots so far)
+- pyre_embergrass_regrows: unseen
+- pyre_burn_line_present: true
 - pyre_scorchfruit_fire_born: true
 - pyre_scorchfruit_produces: true
 - pyre_scorchfruit_spoils_fast: unseen
 - pyre_ruins_scorched: true
-- pyre_firehawk_carries_ember: false (0 drops from 7 sorties on map t; fix built, unseen)
+- pyre_firehawk_carries_ember: true
 - pyre_furnacebeast_warmth: true
 - pyre_furnacebeast_heats_room: true
-- pyre_burrowers_dive: unseen (dive and pane seen live; the fire never passed over a burrowed one; radius changed)
-- pyre_ashfall_darkens_drifts: unseen
-- pyre_blackrain_reads: unseen (re-coloured, not yet shot)
+- pyre_burrowers_dive: unseen
+- pyre_ashfall_darkens_drifts: false
 - pyre_cinderfall_distinct: true
+- pyre_blackrain_reads: unseen
 - pyre_cannot_ordinary_rain: true

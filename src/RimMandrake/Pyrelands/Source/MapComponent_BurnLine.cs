@@ -209,6 +209,7 @@ namespace RimMandrake.Pyrelands
             base.ExposeData();
             Scribe_Values.Look(ref lastApproachWarnTick, "lastApproachWarnTick", -999999);
             Scribe_Values.Look(ref approachLetterSent, "approachLetterSent", false);
+            Scribe_Values.Look(ref dryChecked, "dryChecked", false);
             Scribe_Values.Look(ref arsonDebt, "arsonDebt", 0f);
             Scribe_Values.Look(ref ticksSinceAnyFire, "ticksSinceAnyFire", 0);
             Scribe_Values.Look(ref lastReseedAttemptTick, "lastReseedAttemptTick", -99999);
@@ -257,6 +258,7 @@ namespace RimMandrake.Pyrelands
             // GPT deep review 2026-10-22 #3: Measure() is the only writer of AnyBurn/burnCenter, which burrowing and the
             // furnace thermal cycle read under their OWN switches; it used to run only with the burn line on
             Measure();
+            WarnIfDry();
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
                 WatchApproach();
@@ -351,6 +353,35 @@ namespace RimMandrake.Pyrelands
         {
             return def == JobDefOf.GotoWander || def == JobDefOf.Wait_Wander || def == JobDefOf.Wait_MaintainPosture
                 || def == JobDefOf.Wait;
+        }
+
+        // Owner 2026-11-07: a waterless Pyrelands map is allowed ("you would walk away to another map as your first option"), but
+        // nothing told the player: on map v (55 C, no water) all three colonists were down with thirst 0.68 days after landing,
+        // with no word before the first one fell. One letter, the first watch interval on a player home with no open water,
+        // only when a thirst need exists (FlowWorks). Saved, so a reload does not repeat it.
+        private bool dryChecked;
+
+        private void WarnIfDry()
+        {
+            if (dryChecked)
+            {
+                return;
+            }
+            dryChecked = true;
+            if (!map.IsPlayerHome || DefDatabase<NeedDef>.GetNamedSilentFail("RM_Thirst") == null)
+            {
+                return;
+            }
+            TerrainGrid g = map.terrainGrid;
+            for (int i = 0; i < map.cellIndices.NumGridCells; i++)
+            {
+                TerrainDef t = g.TerrainAt(i);
+                if (t != null && t.IsWater)
+                {
+                    return;
+                }
+            }
+            Find.LetterStack.ReceiveLetter("RM_DryLandLabel".Translate(), "RM_DryLandLetter".Translate(), LetterDefOf.ThreatSmall);
         }
 
         // The burn nearing home. Saved, so a reload does not repeat the first letter or the last warning.
