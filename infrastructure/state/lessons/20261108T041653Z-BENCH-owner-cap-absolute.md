@@ -1,0 +1,2 @@
+Graffiti pass 9: owner said 'about +2 to +3 total and cap it'; the loop built cap = AmbientMoodBudget(3) * max(trait good, 0.5), so a sensitive pawn reaches +4.5. When the owner names a number as a cap, the cap is absolute; trait scaling may only lower it. Also: Artisan TRUE bars citing shots older than the pass's own changes (new sprites, new values) are stale; re-shoot before DONE. Peek note: /home/mandrake/rm/scratch/BENCH/ralph_graffiti/ralph/OWNER_NOTE (8:16 PM PST).
+home: artisan
