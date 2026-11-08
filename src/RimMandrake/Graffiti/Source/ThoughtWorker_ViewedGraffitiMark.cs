@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -14,10 +13,7 @@ namespace RimMandrake.Graffiti
     // name ME", not by category, so one worker class serves every future
     // reaction thought without a content pack ever touching this file.
     //
-    // Pattern verified against real vanilla source (RimSage):
-    // RimWorld.ThoughtWorker_PyromaniacNearFlames - the same "situational
-    // thought active only while an environmental thing is nearby" shape,
-    // same room+radius scan idiom. This worker returns presence/absence
+    // A situational thought active only while a mark is nearby, read off the map's list of marks. This worker returns presence/absence
     // only (no stacking) - a content pack wanting quality-scaled intensity
     // (Mural's supportsQuality) can still do so by keying a *different*
     // ThoughtDef for each quality tier, each pointed at this same class.
@@ -34,65 +30,33 @@ namespace RimMandrake.Graffiti
         private Thing NearbyMatchingMark(Pawn p)
         {
             Room room = p.Position.GetRoom(p.Map);
-            foreach (IntVec3 cell in GenRadial.RadialCellsAround(p.Position, ScanRadius, useCenter: true))
+            MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(p.Map);
+            if (comp == null) return null;
+            for (int i = 0; i < comp.marks.Count; i++)
             {
-                if (!cell.InBounds(p.Map) || cell.Fogged(p.Map))
+                Filth_Mark mark = comp.marks[i];
+                if ((mark.Position - p.Position).LengthHorizontalSquared > ScanRadius * ScanRadius || mark.Position.Fogged(p.Map) || !RM_GraffitiKernel.StillSpeaks(mark.defaced, false))
                 {
                     continue;
                 }
-                // Filth (RM_Graffiti_Vandal's own thingClass, per
-                // GRAFFITI_FRAMEWORK_BUILD_1's third pass) doesn't always
-                // report a Room the same way a built Thing does at a wall
-                // cell - only gate on room-match when both resolve, so a
-                // mark painted on an exterior/edge wall isn't silently
-                // invisible to this check.
-                Room cellRoom = cell.GetRoom(p.Map);
+                Room cellRoom = mark.Position.GetRoom(p.Map);
                 if (!RM_GraffitiKernel.SameRoomOrUnknown(room != null, cellRoom != null, room == cellRoom))
                 {
                     continue;
                 }
-                List<Thing> thingList = cell.GetThingList(p.Map);
-                for (int i = 0; i < thingList.Count; i++)
+                ModExtension_Graffiti ext = mark.def.GetModExtension<ModExtension_Graffiti>();
+                // Relation-keyed (GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 §1.5): ResolveReactionThought picks the ONE ThoughtDef this viewer gets from
+                // this mark; this worker instance only fires if that pick is the ThoughtDef it belongs to.
+                if (ext == null || ResolveReactionThought(ext, mark, p) != def)
                 {
-                    ModExtension_Graffiti ext = thingList[i].def.GetModExtension<ModExtension_Graffiti>();
-                    if (ext == null)
-                    {
-                        continue;
-                    }
-                    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 §1.5: relation-keyed
-                    // reactions. ResolveReactionThought picks the ONE
-                    // ThoughtDef this specific viewer should get from this
-                    // specific mark (subject > own faction > same ideo >
-                    // hostile maker > other ideo > the old flat fallback) -
-                    // this ThoughtWorker instance only fires if that
-                    // resolved pick is the ThoughtDef it belongs to (`def`),
-                    // exactly as the old single-field check did.
-                    ThoughtDef resolved = ResolveReactionThought(ext, thingList[i] as Filth_Mark, p);
-                    if (resolved != def)
-                    {
-                        continue;
-                    }
-                    // Owner ruling #4 (graffiti_spec.md §7): "Cant renders as a
-                    // FAINT SCRAWL to outsiders - they see that marks exist,
-                    // never what they mean." RimWorld has one screen, not one
-                    // per pawn, so there is no separate graphic to swap - the
-                    // mark's Filth Thing renders identically for everyone
-                    // (that IS "they see it exists"). What ClanOnly withholds
-                    // is the MEANING layer: the reaction this worker grants.
-                    // A Public mark (Sacred/Mural/Jest/most Taunts) reads for
-                    // any viewer, same as before. GraffitiVisibility.ClanOnly
-                    // (Cant's own family default, §1⑤) is gated to the
-                    // player's own pawns - the mechanism-level stand-in for
-                    // "the clan" this RM-tier engine can use without a hard
-                    // dependency on the RSW-tier Jawa xenotype check
-                    // (JawaRules.IsJawa) a RUT content pack could still layer
-                    // on top later.
-                    if (RM_GraffitiKernel.ClanOnlyBlocks(ext.visibility == GraffitiVisibility.ClanOnly, p.Faction == Faction.OfPlayer))
-                    {
-                        continue;
-                    }
-                    return thingList[i];
+                    continue;
                 }
+                // Owner ruling #4 (graffiti_spec.md §7): a clan-only mark looks the same to everyone; what it withholds from outsiders is the meaning.
+                if (RM_GraffitiKernel.ClanOnlyBlocks(ext.visibility == GraffitiVisibility.ClanOnly, p.Faction == Faction.OfPlayer))
+                {
+                    continue;
+                }
+                return mark;
             }
             return null;
         }
@@ -111,9 +75,9 @@ namespace RimMandrake.Graffiti
             RM_ReactionSlot slot = RM_GraffitiKernel.ReactionSlot(prov,
                 ext.onViewSubject != null, prov && mark.subject == viewer,
                 ext.onViewOwnFaction != null, prov && mark.makerFaction != null && mark.makerFaction == viewer.Faction,
-                ext.onViewSameIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo == viewer.Ideo,
+                ext.onViewSameIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo == GraffitiJobUtility.IdeoOf(viewer),
                 ext.onViewHostileMaker != null, prov && mark.makerFaction != null && viewer.Faction != null && mark.makerFaction.HostileTo(viewer.Faction),
-                ext.onViewOtherIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo != viewer.Ideo);
+                ext.onViewOtherIdeo != null, prov && mark.makerIdeo != null && GraffitiJobUtility.IdeoOf(viewer) != null && mark.makerIdeo != GraffitiJobUtility.IdeoOf(viewer));
             switch (slot)
             {
                 case RM_ReactionSlot.Subject: return ext.onViewSubject;

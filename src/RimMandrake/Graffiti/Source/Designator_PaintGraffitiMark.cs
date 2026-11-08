@@ -19,6 +19,8 @@ namespace RimMandrake.Graffiti
     public class Designator_PaintGraffitiMark : Designator_Cells
     {
         private ThingDef chosenMark;
+        private Pawn chosenSubject;
+        private Faction chosenFaction;
         public Designator_PaintGraffitiMark()
         {
             // Plain string literals, matching this mod's existing
@@ -57,6 +59,10 @@ namespace RimMandrake.Graffiti
             {
                 return "Mark a floor cell right against a wall.";
             }
+            if (!GraffitiJobUtility.OnFace(loc, Map))
+            {
+                return "Paint goes on a wall's face: stand south of the wall, where its face is in view.";
+            }
             return true;
         }
 
@@ -71,6 +77,8 @@ namespace RimMandrake.Graffiti
                 new FloatMenuOption("Any mark (painter's pick)", delegate
                 {
                     chosenMark = null;
+                    chosenSubject = null;
+                    chosenFaction = null;
                     base.ProcessInput(ev);
                 })
             };
@@ -80,8 +88,54 @@ namespace RimMandrake.Graffiti
                 options.Add(new FloatMenuOption(local.LabelCap, delegate
                 {
                     chosenMark = local;
-                    base.ProcessInput(ev);
+                    chosenSubject = null;
+                    chosenFaction = null;
+                    ModExtension_Graffiti ext = local.GetModExtension<ModExtension_Graffiti>();
+                    if (ext != null && ext.hasSubject)
+                    {
+                        ChooseWhom(ev, ext);
+                    }
+                    else if (ext != null && ext.meaning == RM_Meaning.Insult)
+                    {
+                        ChooseFaction(ev);
+                    }
+                    else
+                    {
+                        base.ProcessInput(ev);
+                    }
                 }, local));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        /// <summary>A mark about someone asks who: the colonists, or for a memorial the colony's dead.</summary>
+        private void ChooseWhom(Event ev, ModExtension_Graffiti ext)
+        {
+            IEnumerable<Pawn> who = ext.meaning == RM_Meaning.Memorial
+                ? Find.WorldPawns.AllPawnsDead.Concat(Map.mapPawns.AllPawns.Where(p => p.Dead)).Where(p => p.Faction == Faction.OfPlayer && p.RaceProps.Humanlike)
+                : Map.mapPawns.FreeColonists;
+            List<FloatMenuOption> options = who.OrderBy(p => p.LabelShort).Select(p => new FloatMenuOption(p.LabelShort, delegate
+            {
+                chosenSubject = p;
+                base.ProcessInput(ev);
+            })).ToList();
+            if (options.Count == 0)
+            {
+                options.Add(new FloatMenuOption("Nobody to paint", null));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        private void ChooseFaction(Event ev)
+        {
+            List<FloatMenuOption> options = Find.FactionManager.AllFactionsVisibleInViewOrder.Where(f => !f.IsPlayer && !f.Hidden).Select(f => new FloatMenuOption(f.Name, delegate
+            {
+                chosenFaction = f;
+                base.ProcessInput(ev);
+            })).ToList();
+            if (options.Count == 0)
+            {
+                options.Add(new FloatMenuOption("Nobody to insult", null));
             }
             Find.WindowStack.Add(new FloatMenu(options));
         }
@@ -89,7 +143,7 @@ namespace RimMandrake.Graffiti
         public override void DesignateSingleCell(IntVec3 c)
         {
             Map.designationManager.AddDesignation(new Designation(c, RMGraffitiDefOf.RM_PaintGraffitiHere));
-            MapComponent_GraffitiOrders.For(Map)?.SetOrder(c, chosenMark);
+            MapComponent_GraffitiOrders.For(Map)?.SetOrder(c, chosenMark, chosenSubject, chosenFaction);
         }
     }
 }

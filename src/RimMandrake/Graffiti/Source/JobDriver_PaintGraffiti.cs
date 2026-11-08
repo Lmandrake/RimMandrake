@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -6,119 +8,270 @@ namespace RimMandrake.Graffiti
 {
     // GRAFFITI_FRAMEWORK_BUILD_1's absorbed spree mechanic. Owner ruling,
     // 2026-08-31: "SUPERSEDE NOW... we absorb the vandal-spree mechanic
-    // into our own framework C# and RETIRE Mlie.GraffitiMod from the mod
-    // list at build time." Mlie.GraffitiMod's own JobDriver_PaintGraffiti
-    // is compiled-only (no shipped source) - this is a fresh implementation
-    // against the real vanilla toil API, modeled on two verified vanilla
-    // analogs (not guessed): JobDriver_RelaxAlone (Source/RimWorld/
-    // JobDriver_RelaxAlone.cs) for the goto-and-gain-Joy-for-joyDuration
-    // shape, and JobDriver_Floordrawing (same folder) for the
-    // FilthMaker.TryMakeFilth-on-completion shape.
+    // into our own framework C#". Vanilla models: JobDriver_RelaxAlone (joy
+    // gain over a stay) and JobDriver_Floordrawing (filth made while ticking,
+    // never on interruption).
+    //
+    // A job is a sitting at a wall. The painter walks onto the floor cell, faces
+    // the wall and works on ONE chosen mark for as long as its form takes (a scrawl
+    // is seconds, a piece is an afternoon); interrupted, nothing is left. Then a
+    // spree or a joy sitting moves down the wall to the next bare stretch. The first
+    // version stood on one cell for 8000 ticks and repainted it every 250, each new
+    // mark erasing the last, so a whole spree left 3 to 6 marks and a colony could
+    // never look written on.
     public class JobDriver_PaintGraffiti : JobDriver
     {
         private const TargetIndex MarkCellInd = TargetIndex.A;
+        private const int ProgressPuffInterval = 45;
+
+        private ThingDef markDef;
+        private int paintTotal;
+        private int paintLeft;
+        private int marksThisSitting;
+        private Pawn subject;
+        private Faction targetFaction;
+        private float markFit = 1f;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Defs.Look(ref markDef, "rmMarkDef");
+            Scribe_Values.Look(ref paintTotal, "rmPaintTotal");
+            Scribe_Values.Look(ref paintLeft, "rmPaintLeft");
+            Scribe_Values.Look(ref marksThisSitting, "rmMarksThisSitting");
+            Scribe_References.Look(ref subject, "rmPaintSubject");
+            Scribe_References.Look(ref targetFaction, "rmPaintTargetFaction");
+            Scribe_Values.Look(ref markFit, "rmPaintFit", 1f);
+        }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return pawn.Reserve(job.GetTarget(MarkCellInd), job, errorOnFailed: errorOnFailed);
         }
 
-        // Fixed 2026-09-02 (opus code review), both against verified vanilla
-        // behavior:
-        //
-        // 1. AddFinishAction runs on Toil.Cleanup UNCONDITIONALLY - drafting the
-        //    pawn, a cancel, a downing, or a new mental break one tick after
-        //    arrival all fired the paint, not just real completion. Moved the
-        //    FilthMaker call into a periodic tickIntervalAction instead, the
-        //    exact shape JobDriver_Floordrawing (the model this file's header
-        //    already claims to follow) actually uses: it paints only if it's
-        //    still actively ticking the toil, repeatedly, never on interruption.
-        //
-        // 2. JoyTickCheckEnd's default fullJoyAction=EndJob calls
-        //    EndJobWith(Succeeded) the instant joy crosses 0.9999 - one paint
-        //    job's worth of gain (joyGainRate * 0.36 / 2500 per tick) fills the
-        //    bar in ~1 tick's rate math well before defaultDuration elapses, so
-        //    the ThinkTree immediately re-hands the pawn the same job: a
-        //    per-tick goto+paint+pathfind churn for the whole 25000-45000 tick
-        //    spree. fullJoyAction=None lets the toil run its full
-        //    defaultDuration instead, painting periodically the whole time.
-        protected override System.Collections.Generic.IEnumerable<Toil> MakeNewToils()
+        /// <summary>Someone this job answers, painting back at them (JobGiver_AnswerMark): a single mark, not a sitting.</summary>
+        private Pawn ReplyTo => job.GetTarget(TargetIndex.B).Thing as Pawn;
+
+        /// <summary>Someone the painter came here to say something about (JoyGiver_PaintGraffiti found this wall wide enough for it): the
+        /// sitting's first mark, then cleared.</summary>
+        private Pawn Meant => job.GetTarget(TargetIndex.C).Thing as Pawn;
+
+        public override string GetReport()
+        {
+            if (subject != null && markDef != null)
+            {
+                RM_Meaning meaning = markDef.GetModExtension<ModExtension_Graffiti>()?.meaning ?? RM_Meaning.None;
+                if (meaning == RM_Meaning.Mockery) return "painting a mockery of " + subject.LabelShort + ".";
+                if (meaning == RM_Meaning.Tribute) return "painting a tribute to " + subject.LabelShort + ".";
+                if (meaning == RM_Meaning.Memorial) return "painting a memorial to " + subject.LabelShort + ".";
+            }
+            return base.GetReport();
+        }
+
+        private bool Designated(IntVec3 cell) => Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
+
+        private void FaceWall(IntVec3 cell)
+        {
+            int side = Filth_Mark.ReadWallSide(cell, Map);
+            pawn.rotationTracker.FaceCell(side == RM_GraffitiKernel.NoWall ? cell : cell + new Rot4(side).FacingCell);
+        }
+
+        protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(MarkCellInd);
 
-            yield return Toils_Goto.GotoCell(MarkCellInd, PathEndMode.Touch);
+            Toil walk = Toils_Goto.GotoCell(MarkCellInd, PathEndMode.OnCell);
+            yield return walk;
 
             Toil paint = ToilMaker.MakeToil("MakeNewToils");
-            paint.defaultCompleteMode = ToilCompleteMode.Delay;
-            paint.defaultDuration = job.def.joyDuration;
+            paint.defaultCompleteMode = ToilCompleteMode.Never;
             paint.handlingFacing = true;
             paint.initAction = delegate
             {
-                pawn.rotationTracker.FaceCell(job.GetTarget(MarkCellInd).Cell);
+                IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
+                FaceWall(cell);
+                if (paintLeft > 0 && markDef != null)
+                {
+                    return;     // resumed from a save
+                }
+                markDef = ChooseMark(cell);
+                if (markDef == null)
+                {
+                    EndJobWith(JobCondition.Incompletable);
+                    return;
+                }
+                paintTotal = paintLeft = RM_GraffitiKernel.PaintTicks(
+                    markDef.GetModExtension<ModExtension_Graffiti>()?.form ?? GraffitiForm.Scrawl,
+                    RM_GraffitiSettings.paintIntervalTicks);
             };
             paint.AddPreTickIntervalAction(delegate(int delta)
             {
-                pawn.rotationTracker.FaceCell(job.GetTarget(MarkCellInd).Cell);
+                IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
+                FaceWall(cell);
                 JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.None);
-                if (pawn.IsHashIntervalTick(RM_GraffitiKernel.PaintInterval(RM_GraffitiSettings.paintIntervalTicks), delta))
+                if (pawn.CurJob != job)
                 {
-                    IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
-                    if (cell.IsValid && Map != null)
-                    {
-                        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4: pool
-                        // selection (skill-weighted via poolWeight on each
-                        // def) replaces the hardcoded RM_Graffiti_Vandal
-                        // reference, and Filth_Mark.MakeMark stamps
-                        // provenance (maker/faction/ideo) instead of the
-                        // bare FilthMaker call - every mark this pawn paints
-                        // now carries who made it, for the relation-keyed
-                        // viewer reactions and going-over.
-                        // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4's
-                        // designator placer shares this same job/driver: a
-                        // cell the player designated (RM_PaintGraffitiHere,
-                        // see Designator_PaintGraffitiMark) picks from the
-                        // designator-eligible pool instead of the ordinary
-                        // spree/joy pool, and the designation is cleared
-                        // once painted so the colonist doesn't loop forever
-                        // repainting the same cell. A joy/spree job never
-                        // has a designation at its cell, so this is a no-op
-                        // for the ordinary path.
-                        bool designated = Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
-                        // GPT deep review 2026-10-22 #8: a job handed out by the work giver (workGiverDef is saved with the
-                        // job) whose order was cancelled meanwhile paints nothing, instead of a spree mark
-                        if (!designated && job.workGiverDef != null)
-                        {
-                            EndJobWith(JobCondition.Incompletable);
-                            return;
-                        }
-                        // GRAFFITI_DESIGNATOR_MARK_CHOICE_1: a mark the
-                        // player chose for this cell wins, if this painter's
-                        // hand is allowed it (the pool's own gates).
-                        MapComponent_GraffitiOrders orders = designated ? MapComponent_GraffitiOrders.For(Map) : null;
-                        ThingDef ordered = orders?.OrderAt(cell);
-                        ThingDef markDef = !designated ? GraffitiPool.PickForSpree(pawn)
-                            : (ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) ? ordered : GraffitiPool.PickForDesignator(pawn));
-                        Filth_Mark made = Filth_Mark.MakeMark(cell, Map, markDef, pawn);
-                        if (designated && made == null)
-                        {
-                            // GPT deep review 2026-10-22 #6: nothing was painted; keep the order for another try
-                            EndJobWith(JobCondition.Incompletable);
-                            return;
-                        }
-                        if (designated)
-                        {
-                            Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
-                            orders?.Clear(cell);
-                            // A designated job is one mark, not a spree: without
-                            // this the toil kept ticking, the next interval read
-                            // the cell as undesignated and painted a spree-pool
-                            // mark over the ordered one (going-over).
-                            EndJobWith(JobCondition.Succeeded);
-                        }
-                    }
+                    return;
+                }
+                if (pawn.IsHashIntervalTick(ProgressPuffInterval, delta))
+                {
+                    SprayPuff(cell);
+                }
+                paintLeft -= delta;
+                if (paintLeft <= 0)
+                {
+                    FinishMark(cell, walk);
                 }
             });
+            paint.WithProgressBar(MarkCellInd, () => paintTotal <= 0 ? 0f : 1f - (float)paintLeft / paintTotal);
             yield return paint;
+        }
+
+        /// <summary>The mark for this stretch of wall: the player's order if this hand may paint it, else the pool's pick, never
+        /// wider than the wall has room for. A job from the work giver whose order was cancelled paints nothing (GPT deep
+        /// review 2026-10-22 #8).</summary>
+        private ThingDef ChooseMark(IntVec3 cell)
+        {
+            // Live pass 18: an order on a doorway cell was painted as floor filth. No wall, no mark; an order there is spent.
+            if (Filth_Mark.ReadWallSide(cell, Map) == RM_GraffitiKernel.NoWall)
+            {
+                GraffitiSocial.Trace(pawn.LabelShort + " found no wall to paint at " + cell);
+                if (Designated(cell))
+                {
+                    Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
+                    MapComponent_GraffitiOrders.For(Map)?.Clear(cell);
+                }
+                return null;
+            }
+            float room = GraffitiJobUtility.WallRoom(cell, Map);
+            subject = null;
+            markFit = 1f;
+            targetFaction = null;
+            if (!Designated(cell))
+            {
+                if (job.workGiverDef != null)
+                {
+                    return null;
+                }
+                if (ReplyTo != null)
+                {
+                    // An answer in paint may go over what it answers, that's the point of it, but nobody else's work.
+                    subject = ReplyTo;
+                    room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map, ReplyTo));
+                    return GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery) <= room ? RMGraffitiDefOf.RM_Graffiti_Mockery : null;
+                }
+                if (Meant != null)
+                {
+                    // Over nobody's work but the painter's own. If the gap has closed or the feeling has changed since, a plain mark instead.
+                    ThingDef meant = GraffitiSocial.MeaningFor(pawn, Meant);
+                    float mine = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map, pawn, meant == RMGraffitiDefOf.RM_Graffiti_Mockery ? Meant : null));
+                    if (meant != null && GraffitiPool.WidthOf(meant) <= mine && GraffitiPool.PainterMayPaint(meant, pawn))
+                    {
+                        subject = Meant;
+                        return meant;
+                    }
+                    job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
+                }
+                // Owner's pick, 2026-11-07: measure a mark's real width before painting, so nobody erases a neighbour by accident. A spree
+                // has no such manners: going over is what it's for.
+                if (!pawn.InMentalState) room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map));
+                // Something said about someone goes where it can be read: never turned along an edge-on wall's top, where a head is a blot.
+                ThingDef said = GraffitiJobUtility.OnFace(cell, Map) ? GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject) : null;
+                if (said != null) return said;
+                ThingDef pick = pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
+                markFit = pick != null ? GraffitiPool.FitFor(pick, room) : 1f;
+                return pick;
+            }
+            MapComponent_GraffitiOrders orders = MapComponent_GraffitiOrders.For(Map);
+            ThingDef ordered = orders?.OrderAt(cell);
+            if (ordered != null)
+            {
+                // The ordered mark or nothing (live pass 18: a hand that couldn't paint the ordered throw-up painted a sigil in its place). Short of
+                // room it's squeezed as any mark is; an order goes over what's there on purpose. Refused, the order stays for a hand that may.
+                if (!GraffitiPool.PainterMayPaint(ordered, pawn))
+                {
+                    GraffitiSocial.Trace(pawn.LabelShort + " won't paint the ordered " + ordered.defName.Replace("RM_Graffiti_", "") + "@" + cell + ": " + GraffitiPool.WhyNot(ordered, pawn));
+                    return null;
+                }
+                subject = orders.SubjectAt(cell);
+                targetFaction = orders.FactionAt(cell);
+                markFit = GraffitiPool.FitFor(ordered, room + 0.3f);
+                return ordered;
+            }
+            ThingDef chosen = GraffitiPool.PickForDesignator(pawn, room, cell);
+            markFit = chosen != null ? GraffitiPool.FitFor(chosen, room + 0.3f) : 1f;
+            return chosen;
+        }
+
+        private void FinishMark(IntVec3 cell, Toil walk)
+        {
+            bool designated = Designated(cell);
+            if (!designated && job.workGiverDef != null)
+            {
+                EndJobWith(JobCondition.Incompletable);
+                return;
+            }
+            // The gap was measured when the brush went up. A mark painted beside it since (two hands on one wall) may have narrowed it, and
+            // finishing now would erase the neighbour by accident: live 2026-11-07, three "painted over my work" grudges in half a day, one
+            // of them ending in a mockery. Whoever sees fresh paint there leaves it be. A spree and an order go over on purpose; a reply only over the work it answers.
+            Pawn spare = ReplyTo ?? (Meant != null ? pawn : null);
+            Pawn spare2 = Meant != null && markDef == RMGraffitiDefOf.RM_Graffiti_Mockery ? Meant : null;
+            bool crowded = !designated && !pawn.InMentalState
+                && GraffitiPool.WidthOf(markDef) * markFit > GraffitiJobUtility.BareRoom(cell, Map, spare, spare2) + 0.01f;
+            job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
+            if (crowded) GraffitiSocial.Trace(pawn.LabelShort + " left " + markDef.defName + "@" + cell + " unfinished: fresh paint beside it");
+            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated, reply: ReplyTo != null, fit: markFit);
+            markFit = 1f;
+            markDef = null;
+            subject = null;
+            targetFaction = null;
+            paintLeft = paintTotal = 0;
+            if (designated)
+            {
+                if (made == null)
+                {
+                    // GPT deep review 2026-10-22 #6: nothing was painted; keep the order for another try
+                    EndJobWith(JobCondition.Incompletable);
+                    return;
+                }
+                // A designated job is one mark, not a sitting.
+                Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
+                MapComponent_GraffitiOrders.For(Map)?.Clear(cell);
+                EndJobWith(JobCondition.Succeeded);
+                return;
+            }
+            if (ReplyTo != null)
+            {
+                if (made != null) MapComponent_GraffitiSocial.For(Map)?.Answered(pawn, null, ReplyTo);
+                EndJobWith(made != null ? JobCondition.Succeeded : JobCondition.Incompletable);
+                return;
+            }
+            if (made != null) marksThisSitting++;
+            if (!RM_GraffitiKernel.SittingContinues(marksThisSitting, pawn.InMentalState, pawn.needs?.joy?.CurLevelPercentage ?? 1f)
+                || !GraffitiJobUtility.TryFindWallMarkCell(pawn, out IntVec3 next, roomCap: !pawn.InMentalState)
+                || !pawn.CanReserve(next))
+            {
+                EndJobWith(JobCondition.Succeeded);
+                return;
+            }
+            Map.reservationManager.Release(cell, pawn, job);
+            pawn.Reserve(next, job, errorOnFailed: false);
+            job.SetTarget(MarkCellInd, next);
+            JumpToToil(walk);
+        }
+
+        private void SprayPuff(IntVec3 cell)
+        {
+            Vector3 at = cell.ToVector3Shifted();
+            int side = Filth_Mark.ReadWallSide(cell, Map);
+            if (side != RM_GraffitiKernel.NoWall)
+            {
+                at += new Rot4(side).FacingCell.ToVector3() * 0.6f;
+            }
+            Color tint = markDef?.GetModExtension<ModExtension_Graffiti>()?.form == GraffitiForm.Paste
+                ? new Color(0.85f, 0.8f, 0.68f, 0.5f)
+                : new Color(0.75f, 0.75f, 0.75f, 0.45f);
+            FleckMaker.ThrowDustPuffThick(at, Map, 0.55f, tint);
         }
     }
 }

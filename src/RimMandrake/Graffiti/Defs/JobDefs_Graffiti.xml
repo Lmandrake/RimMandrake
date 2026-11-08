@@ -7,6 +7,10 @@
     <reportString>painting graffiti.</reportString>
     <joyKind>Meditative</joyKind>
     <joyDuration>8000</joyDuration>
+    <!-- Owner, card 2026-11-07: making a mark "counts as a fun activity for recreation purposes" (every paint job gains joy through
+         JoyUtility.JoyTickCheckEnd), and a hand gets better with practice. -->
+    <joySkill>Artistic</joySkill>
+    <joyXpPerTick>0.004</joyXpPerTick>
   </JobDef>
 
 </Defs>

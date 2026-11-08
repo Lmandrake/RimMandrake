@@ -23,27 +23,68 @@ namespace RimMandrake.Graffiti
         // to RM_Graffiti_Vandal if nothing else is registered, so a mod
         // list with only the four GRAFFITI_GENERIC_MARKS_1 defs behaves
         // exactly as it did before this item.
-        public static ThingDef PickForSpree(Pawn painter)
+        public static ThingDef PickForSpree(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            ThingDef pick = WeightedPick(SpreeEligible, painter);
-            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+            ThingDef pick = WeightedPick(SpreeEligible, painter, maxWidth, at);
+            return pick ?? Fallback(maxWidth);
+        }
+
+        // Joy: a calm hand with time on its side. Everything a spree reaches
+        // for plus the planned forms - the stencil, the poster, the piece and
+        // above all the painter's own ideoligion sigil - and no untrained
+        // scrawl from a trained artist.
+        public static ThingDef PickForJoy(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
+        {
+            bool trained = (painter?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0) >= TrainedHand;
+            ThingDef pick = WeightedPick(ext => RM_GraffitiKernel.JoyForm(ext.form) && !(trained && ext.form == GraffitiForm.Scrawl), painter, maxWidth, at);
+            return pick ?? Fallback(maxWidth);
+        }
+
+        private const int TrainedHand = 6;
+
+        /// <summary>The old scrawl when the pool has nothing, but only if it fits: a mark too wide for its gap would paint over a neighbour.</summary>
+        private static ThingDef Fallback(float maxWidth)
+        {
+            return WidthOf(RMGraffitiDefOf.RM_Graffiti_Vandal) <= maxWidth ? RMGraffitiDefOf.RM_Graffiti_Vandal : null;
+        }
+
+        /// <summary>Wall cells a mark's drawing spans.</summary>
+        public static float WidthOf(ThingDef markDef) => markDef?.graphicData?.drawSize.x ?? 1f;
+
+        // Live pass 13: on a wall a few weeks old the gaps between marks are about a cell, and only three drawings are a cell wide, so
+        // every gap got a tally, a scratch or a rude little man (37 of Ashgate's 70 marks). A writer squeezes a smaller tag into a gap:
+        // most drawings may go down to this share of their size to fit one. A piece is planned to its wall and doesn't shrink.
+        public const float MinFit = 0.8f;
+
+        /// <summary>The narrowest this drawing may be painted to fit a gap (Filth_Mark.fit).</summary>
+        public static float FitWidthOf(ThingDef markDef)
+        {
+            GraffitiForm form = markDef?.GetModExtension<ModExtension_Graffiti>()?.form ?? GraffitiForm.Scrawl;
+            return WidthOf(markDef) * (form == GraffitiForm.Piece ? 1f : MinFit);
+        }
+
+        /// <summary>How much of its full size this drawing takes in a gap this wide: 1 if it fits whole, never under MinFit.</summary>
+        public static float FitFor(ThingDef markDef, float room)
+        {
+            float w = WidthOf(markDef);
+            return room >= w ? 1f : System.Math.Max(FitWidthOf(markDef) / w, room / w);
         }
 
         // Designator: only marks the player can deliberately choose
         // (ModExtension_Graffiti.designatorEligible), still weighted so a
         // designated cell doesn't always get the exact same mark.
-        public static ThingDef PickForDesignator(Pawn painter)
+        public static ThingDef PickForDesignator(Pawn painter, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            ThingDef pick = WeightedPick(DesignatorEligible, painter);
-            return pick ?? RMGraffitiDefOf.RM_Graffiti_Vandal;
+            ThingDef pick = WeightedPick(DesignatorEligible, painter, maxWidth, at);
+            return pick ?? Fallback(maxWidth);
         }
 
         // RaidExitTagger: marks a raiding pawn's own gang leaves behind
         // (ModExtension_Graffiti.raidExitEligible), meme-gated ones only
         // offered when the pawn's ideo actually holds a matching meme.
-        public static ThingDef PickForRaidExit(Pawn raider)
+        public static ThingDef PickForRaidExit(Pawn raider, float maxWidth = float.MaxValue, IntVec3? at = null)
         {
-            return WeightedPick(RaidExitEligible, raider);
+            return WeightedPick(RaidExitEligible, raider, maxWidth, at);
         }
 
         private static bool SpreeEligible(ModExtension_Graffiti ext)
@@ -69,7 +110,23 @@ namespace RimMandrake.Graffiti
         {
             ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
             if (ext == null || !ext.designatorEligible) return false;
-            return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.poolWeight);
+            if (RM_GraffitiKernel.RefusesToPaint(ext.meaning, painter?.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false)) return false;
+            // A mark about someone takes a hand that does art at all; a scrawl doesn't.
+            if ((ext.hasSubject || ext.minArtistic > 0) && painter != null && painter.WorkTagIsDisabled(WorkTags.Artistic)) return false;
+            // A mark about someone never rolls out of a pool (weight 0), but it can be ordered by name.
+            return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.hasSubject || ext.meaning == RM_Meaning.Insult ? 1f : ext.poolWeight);
+        }
+
+        /// <summary>Why PainterMayPaint refuses, in a player's words.</summary>
+        public static string WhyNot(ThingDef markDef, Pawn painter)
+        {
+            ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
+            if (ext == null || !ext.designatorEligible) return "not a mark anyone can be told to paint";
+            if (RM_GraffitiKernel.RefusesToPaint(ext.meaning, painter?.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false)) return "too kind to paint " + markDef.label;
+            if (painter != null && painter.WorkTagIsDisabled(WorkTags.Artistic)) return "incapable of art";
+            if (!SkillGateAllows(ext, painter)) return "needs Artistic " + ext.minArtistic + " for " + markDef.label;
+            if (!MemeGateAllows(ext, painter)) return "not of a faith that paints " + markDef.label;
+            return "won't paint " + markDef.label;
         }
 
         public static IEnumerable<ThingDef> AllDesignatorEligible()
@@ -83,17 +140,38 @@ namespace RimMandrake.Graffiti
 
         private delegate bool EligibleFilter(ModExtension_Graffiti ext);
 
-        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer)
+        private const float NearbyRadius = 8f;
+
+        /// <summary>The marks already on this bit of wall, so the pool rarely repeats one beside itself.</summary>
+        private static HashSet<ThingDef> DefsNear(IntVec3 at, Map map)
         {
+            var near = new HashSet<ThingDef>();
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(at, NearbyRadius, useCenter: true))
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing t in c.GetThingList(map))
+                {
+                    if (t is Filth_Mark) near.Add(t.def);
+                }
+            }
+            return near;
+        }
+
+        private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth, IntVec3? at)
+        {
+            HashSet<ThingDef> near = at.HasValue && placer?.Map != null ? DefsNear(at.Value, placer.Map) : null;
+            if (at.HasValue && placer?.Map != null && !RM_GraffitiKernel.PaintsEdgeOn(RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(at.Value, placer.Map)))) return null;
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
+            int level = placer?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0;
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
-                if (ext == null || !filter(ext)) continue;
+                if (ext == null || !filter(ext) || FitWidthOf(d) > maxWidth) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
-                weights.Add(ext.poolWeight);
+                float w = ext.poolWeight * RM_GraffitiKernel.FormAffinity(ext.form, level);
+                weights.Add(near != null && near.Contains(d) ? w * RM_GraffitiKernel.NearbySameMarkWeight : w);
             }
             int index = RM_GraffitiKernel.PickIndex(weights, defs.Count == 0 ? 0f : Rand.Range(0f, RM_GraffitiKernel.Total(weights)));
             return index < 0 ? null : defs[index];
@@ -106,7 +184,10 @@ namespace RimMandrake.Graffiti
         private static bool MemeGateAllows(ModExtension_Graffiti ext, Pawn placer)
         {
             bool hasReq = !ext.requiresAnyMeme.NullOrEmpty();
-            Ideo ideo = placer?.Ideo;
+            Ideo ideo = GraffitiJobUtility.IdeoOf(placer);
+            // A tier-A sigil is the painter's own faith's icon in a frame: without an ideoligion (classic mode, or Ideology off) it would
+            // be an empty frame, so nobody without one paints it.
+            if (ext.sigilTierA && ideo == null && placer != null) return false;
             bool holds = false;
             if (hasReq && ideo != null)
             {

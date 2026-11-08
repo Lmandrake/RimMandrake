@@ -78,12 +78,13 @@ namespace RimMandrake.Graffiti
             {
                 return;
             }
-            ThingDef markDef = GraffitiPool.PickForRaidExit(pawn);
+            float room = GraffitiJobUtility.WallRoom(cell, map);
+            ThingDef markDef = GraffitiPool.PickForRaidExit(pawn, room, cell);
             if (markDef == null)
             {
                 return;
             }
-            Filth_Mark.MakeMark(cell, map, markDef, pawn);
+            Filth_Mark.MakeMark(cell, map, markDef, pawn, fit: GraffitiPool.FitFor(markDef, room));
         }
     }
 }

@@ -330,7 +330,7 @@ namespace RimMandrake.Graffiti
             Retire(rival);
             Place(colonist, Cell(12, WallRow - 3));
             // no colonist auto-cleans during the 600-tick thickening wait, so the unforced reads see every mark still standing
-            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned.ToList())
             {
                 if (p.workSettings != null && p.workSettings.EverWork) p.workSettings.SetPriority(WorkTypeDefOf.Cleaning, 0);
             }

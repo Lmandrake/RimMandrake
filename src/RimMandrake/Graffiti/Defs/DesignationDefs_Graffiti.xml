@@ -13,4 +13,12 @@
     <targetType>Cell</targetType>
   </DesignationDef>
 
+  <!-- Design 1.7, fork F7: "a scrub designator overrides" the protection own-colony and devotional marks have from the cleaning rounds
+       (Designator_ScrubGraffiti, WorkGiver_ScrubGraffitiDesignated). Vanilla's own remove-paint overlay: it is paint coming off. -->
+  <DesignationDef>
+    <defName>RM_ScrubGraffiti</defName>
+    <texturePath>Designations/RemovePaint</texturePath>
+    <targetType>Thing</targetType>
+  </DesignationDef>
+
 </Defs>

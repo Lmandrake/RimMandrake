@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- REVISIT WHENEVER PERSONALITIES CHANGE. Owner, card 2026-11-07, accepting this table: "(1) is excellent, but make a note: we will likely
+       add additional personality traits later for the different races, so we should revisit these any time we mess with personalities."
+       Item: GRAFFITI_TEMPER_RETHINK_RACES_BRING_TRAITS. Any mod or race pack that adds traits, genes or hediffs that act like personality
+       should add its rows here (or in its own RM_GraffitiTemperamentDef: every def's rows count).
+
+       How each kind of person takes a mark (design/RimMandrake/graffiti_personality_pass_2026-11-07.md, section 5). One row per trait at a
+       degree, gene, hediff or precept, matched by name and resolved once at load, so a row for a mod that isn't loaded is simply inert.
+       Rows multiply; the totals are clamped (RM_GraffitiKernel.Combine). Read by GraffitiTemperament.Of.
+         numb      feels nothing from any mark, answers nothing, never refuses to clean
+         bad/good  multiply negative and positive meaning thoughts, mood and opinion (0 .. 1.5)
+         craft     multiplies both art thoughts (fine work, ugly mark) unless fine or ugly says otherwise
+         temper    the fight on a confrontation (0 .. 4): RM_GraffitiKernel.ConfrontFightChance
+         paint     how often they reach for the brush on their own (0 .. 2)
+         lean      Scrub, Reply or Nothing: what they'd rather do than shout
+         offended  another creed's sign (0 .. 1.5)
+         neat      1 minds the mess; 2 can break into compulsive scrubbing
+       Every number is a proposal from the pass, to be tuned in play. -->
+  <RimMandrake.Graffiti.RM_GraffitiTemperamentDef>
+    <defName>RM_GraffitiTemperament_Core</defName>
+    <rows>
+      <!-- "Sociopaths wouldn't feel any mood change or care." Others still hate them for what they paint. -->
+      <li><trait>Psychopath</trait><numb>true</numb><paint>0</paint></li>
+      <li><hediff>Inhumanized</hediff><numb>true</numb><paint>0</paint></li>
+      <li><trait>Kind</trait><temper>0.25</temper><lean>Scrub</lean></li>
+      <li><trait>Bloodlust</trait></li>
+      <li><trait>Abrasive</trait><temper>1.5</temper><paint>1.5</paint></li>
+      <li><trait>Brawler</trait><temper>1.5</temper></li>
+      <li><trait>Wimp</trait><temper>0.5</temper><lean>Scrub</lean></li>
+      <li><trait>Nerves</trait><degree>2</degree><bad>0.7</bad><temper>0.6</temper></li>
+      <li><trait>Nerves</trait><degree>1</degree><bad>0.85</bad><temper>0.8</temper></li>
+      <!-- "Sensitive types might get extra mood debuffs or buffs." No vanilla trait means emotionally sensitive; these are the closest. -->
+      <li><trait>Nerves</trait><degree>-1</degree><bad>1.25</bad><good>1.25</good><craft>1.25</craft><temper>1.2</temper></li>
+      <li><trait>Nerves</trait><degree>-2</degree><bad>1.5</bad><good>1.5</good><craft>1.5</craft><temper>1.5</temper></li>
+      <li><trait>NaturalMood</trait><degree>2</degree><bad>0.75</bad><good>1.25</good></li>
+      <li><trait>NaturalMood</trait><degree>1</degree><bad>0.9</bad><good>1.1</good></li>
+      <li><trait>NaturalMood</trait><degree>-1</degree><bad>1.1</bad><good>0.9</good></li>
+      <li><trait>NaturalMood</trait><degree>-2</degree><bad>1.25</bad><good>0.75</good></li>
+      <!-- "Clean freaks might get extra debuffs and have a mood break." No vanilla trait means tidy; Neurotic is the closest. Only Very Neurotic breaks. -->
+      <li><trait>Neurotic</trait><degree>1</degree><fine>0.5</fine><neat>1</neat><lean>Scrub</lean></li>
+      <li><trait>Neurotic</trait><degree>2</degree><bad>1.1</bad><fine>0.5</fine><neat>2</neat><lean>Scrub</lean></li>
+      <!-- Vanilla already nullifies pretty and ugly surroundings for him: art leaves him cold, meaning doesn't. -->
+      <li><trait>Ascetic</trait><craft>0</craft></li>
+      <li><trait>TorturedArtist</trait><bad>1.25</bad><good>1.25</good><craft>1.25</craft><paint>1.5</paint><lean>Reply</lean></li>
+      <li><trait>Joyous</trait><bad>0.75</bad><good>1.25</good></li>
+      <li><trait>Industriousness</trait><degree>-1</degree><paint>0.75</paint></li>
+      <li><trait>Industriousness</trait><degree>-2</degree><paint>0.5</paint></li>
+      <!-- Genes that behave like personality: the same temperament by another route. Aggression and dead calm need no row: the game's own fight
+           factor on them is already in the confronter's chance. -->
+      <li><gene>Mood_Sanguine</gene><bad>0.75</bad><good>1.25</good></li>
+      <li><gene>Mood_Optimist</gene><bad>0.9</bad><good>1.1</good></li>
+      <li><gene>Mood_Pessimist</gene><bad>1.1</bad><good>0.9</good></li>
+      <li><gene>Mood_Depressive</gene><bad>1.25</bad><good>0.75</good></li>
+      <!-- An ideoligion's view of other creeds: how much another creed's sign offends. -->
+      <li><precept>IdeoDiversity_Abhorrent</precept><offended>1.5</offended></li>
+      <li><precept>IdeoDiversity_Horrible</precept><offended>1.25</offended></li>
+      <li><precept>IdeoDiversity_Disapproved</precept><offended>1</offended></li>
+      <li><precept>IdeoDiversity_Standard</precept><offended>0.75</offended></li>
+      <li><precept>IdeoDiversity_Approved</precept><offended>0.5</offended></li>
+      <li><precept>IdeoDiversity_Respected</precept><offended>0.25</offended></li>
+      <li><precept>IdeoDiversity_Exalted</precept><offended>0</offended></li>
+      <!-- Mods with the literal versions of his two words, inert where they aren't installed. -->
+      <li><trait>VTE_Neat</trait><fine>0.5</fine><neat>2</neat><lean>Scrub</lean></li>
+      <li><trait>RT_Tidy</trait><fine>0.5</fine><neat>2</neat><lean>Scrub</lean></li>
+      <li><trait>Hygienic</trait><degree>2</degree><fine>0.5</fine><neat>2</neat><lean>Scrub</lean></li>
+      <li><trait>Hygienic</trait><degree>1</degree><fine>0.5</fine><neat>1</neat><lean>Scrub</lean></li>
+      <li><trait>VTE_Anxious</trait><bad>1.25</bad><good>1.25</good></li>
+      <li><trait>Megachuv</trait><bad>1.25</bad><good>1.25</good></li>
+    </rows>
+  </RimMandrake.Graffiti.RM_GraffitiTemperamentDef>
+
+</Defs>

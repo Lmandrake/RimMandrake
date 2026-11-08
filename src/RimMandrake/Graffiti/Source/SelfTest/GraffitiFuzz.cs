@@ -31,6 +31,76 @@ namespace RimMandrake.Graffiti.SelfTest
             return fails;
         }
 
+        // ════════════════════════ social ════════════════════════
+        // Reading a mark and answering it: every viewer standing against what the tables promise.
+        private static List<string> Social(int n, int seed)
+        {
+            return Loop("social", n, seed, r =>
+            {
+                Steps++;
+                var v = new RM_Viewer
+                {
+                    isMaker = r.Next(4) == 0, isSubject = r.Next(3) == 0, ownFaction = r.Next(2) == 0, hostileMaker = r.Next(4) == 0,
+                    loverOfSubject = r.Next(4) == 0, loverOfMaker = r.Next(4) == 0, opinionOfMaker = r.Next(-100, 101), opinionOfSubject = r.Next(-100, 101),
+                    kind = r.Next(3) == 0, hot = r.Next(3) == 0, psychopath = r.Next(4) == 0, hasIdeo = r.Next(2) == 0, makerHasIdeo = r.Next(2) == 0, sameIdeoAsMaker = r.Next(2) == 0,
+                };
+                var meaning = (RM_Meaning)r.Next(8);
+                RM_Reaction react = RM_GraffitiKernel.ReactionOf(meaning, v);
+                if (v.isMaker) Check(react == RM_Reaction.None, "a painter doesn't react to their own mark");
+                if (!v.isMaker && v.hostileMaker) Check(react == RM_Reaction.Uneasy || react == RM_Reaction.Defiant, "an enemy's mark is an enemy's mark, whatever it says");
+                if (!v.isMaker && !v.hostileMaker)
+                {
+                    if (meaning == RM_Meaning.Mockery && v.isSubject) Check(react == (v.kind ? RM_Reaction.ShrugsOff : RM_Reaction.Humiliated), "the subject of a mockery");
+                    if (meaning == RM_Meaning.Mockery && !v.isSubject && v.opinionOfSubject >= 20) Check(react == RM_Reaction.FriendDefends, "a friend of the mocked");
+                    if (meaning == RM_Meaning.Tribute && v.isSubject) Check(react == RM_Reaction.Honored, "the subject of a tribute");
+                    if (meaning == RM_Meaning.Devotion) Check(react != RM_Reaction.Offended || (v.hasIdeo && v.makerHasIdeo && !v.sameIdeoAsMaker), "only another creed offends");
+                    if (meaning == RM_Meaning.Memorial && v.psychopath) Check(react == RM_Reaction.None, "a psychopath mourns nobody");
+                }
+                if (meaning == RM_Meaning.None && !v.isMaker && !v.hostileMaker && !v.ownFaction) Check(react == RM_Reaction.None, "a stranger's plain tag means nothing");
+                bool canFight = r.Next(2) == 0, here = r.Next(2) == 0, good = r.Next(2) == 0;
+                float roll = (float)r.NextDouble();
+                var reaction = (RM_Reaction)r.Next(21);
+                RM_Answer answer = RM_GraffitiKernel.AnswerOf(reaction, v.hot, canFight, here, good, roll);
+                if (answer == RM_Answer.Confront) Check(canFight && here, "nobody confronts a painter who isn't here, or who can't fight");
+                if (answer == RM_Answer.Reply) Check(good && here, "a reply needs a good hand and someone to reply to");
+                bool gentle = reaction == RM_Reaction.Amused || reaction == RM_Reaction.Moved || reaction == RM_Reaction.Honored || reaction == RM_Reaction.Uplifted || reaction == RM_Reaction.Warmed || reaction == RM_Reaction.Gleeful;
+                if (gentle) Check(answer == RM_Answer.None, "nobody answers a mark they enjoyed");
+                int worst = r.Next(-100, 101);
+                bool enemy = r.Next(2) == 0, spree = r.Next(2) == 0, kind = r.Next(2) == 0, beloved = r.Next(2) == 0, mourned = r.Next(2) == 0;
+                RM_Meaning wants = RM_GraffitiKernel.WantsToPaint(spree, kind, worst, enemy, beloved, mourned, roll);
+                if (wants == RM_Meaning.Mockery) Check(!kind && enemy && worst <= RM_GraffitiKernel.EnemyOpinion, "cruelty needs an enemy and an unkind hand");
+                if (wants == RM_Meaning.Tribute) Check(beloved && !spree, "a broken hand paints no valentines");
+                if (wants == RM_Meaning.Memorial) Check(mourned, "a memorial needs someone mourned");
+                if (!enemy && !beloved && !mourned) Check(wants == RM_Meaning.None, "a colony at peace paints nothing about anyone");
+                Check(RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Mockery, true) && !RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Mockery, false) && !RM_GraffitiKernel.RefusesToPaint(RM_Meaning.Tribute, true), "who refuses what");
+                int id = r.Next(), count = r.Next(1, 12);
+                int hand = RM_GraffitiKernel.HandChoice(id, count, 3);
+                Check(hand >= 0 && hand < count && hand == RM_GraffitiKernel.HandChoice(id, count, 3), "a painter's hand is stable and in range");
+                Check(RM_GraffitiKernel.TerritoryStage(0) == -1 && RM_GraffitiKernel.TerritoryStage(1) == 0 && RM_GraffitiKernel.TerritoryStage(3) == 1 && RM_GraffitiKernel.TerritoryStage(9) == 2, "territory stages");
+                Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, true, false, false) < RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, true, false), "a named insult costs more than a taunt");
+                Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, r.Next(2) == 0, r.Next(2) == 0) == 0, "someone else's insult costs a visitor's faction nothing");
+                int q = r.Next(0, 7);
+                RM_GraffitiKernel.IconCopy(q, out float drift, out float drips, out int bucket);
+                RM_GraffitiKernel.IconCopy(RM_GraffitiKernel.Normal, out float normalDrift, out _, out _);
+                Check(drift >= 0.012f && drift <= 0.09f && bucket >= 0 && bucket <= 3 && drips >= 0f && drips <= 1f, "a copied sign stays a copy of the sign");
+                Check(q < RM_GraffitiKernel.Normal ? drift > normalDrift && drips > 0f : q > RM_GraffitiKernel.Normal ? drift < normalDrift && drips == 0f : drips == 0f, "a clumsy copy wanders and runs, a good one holds");
+                // A memorial softens grief and never turns it into a gain: every ease about one dead pawn, in order, adds up to at most half the grief.
+                float grief = (float)(r.NextDouble() * 30.0), before = 0f;
+                int eases = r.Next(0, 5);
+                for (int i = 0; i < eases; i++)
+                {
+                    float raw = (float)(r.NextDouble() * 8.0), share = RM_GraffitiKernel.EaseShare(grief, raw, before);
+                    Check(share >= 0f && share <= raw + 1e-5f, "an ease is never more than itself");
+                    before += share;
+                }
+                Check(before <= grief * RM_GraffitiKernel.GriefEaseShare + 1e-4f, $"eases {before} outweigh half the grief {grief}");
+                Check(RM_GraffitiKernel.EaseShare(0f, 4f, 0f) == 0f, "no grief, no relief");
+                Check(RM_GraffitiKernel.AmbientMoodBudget < RM_GraffitiKernel.GoodMoodBudget, "wall pleasure about nobody is a share of the good budget");
+                float warm = (float)(r.NextDouble() * 1.5);
+                Check(RM_GraffitiKernel.AmbientBudget(warm) <= RM_GraffitiKernel.AmbientMoodBudget + 1e-5f, $"ordinary wall art past +3 for good {warm}");
+            });
+        }
+
         // ════════════════════════ pick ════════════════════════
         private static List<string> Pick(int n, int seed)
         {
@@ -279,30 +349,108 @@ namespace RimMandrake.Graffiti.SelfTest
                     int side = RM_GraffitiKernel.WallSide(has[0], has[1], has[2], has[3]);
                     Check(side == want, $"mask {mask}: WallSide {side}, want {want}");
                     Check(side == RM_GraffitiKernel.NoWall || has[side], $"mask {mask}: side {side} has no wall");
-                    RM_GraffitiKernel.WallFaceOffset(side, 0.5f, out float dx, out float dz);
-                    float angle = RM_GraffitiKernel.WallFaceAngle(side);
-                    if (side == RM_GraffitiKernel.NoWall)
-                    {
-                        Check(dx == 0f && dz == 0f && angle == 0f, $"mask {mask}: no wall but offset ({dx},{dz}) angle {angle}");
-                        continue;
-                    }
-                    Check(dx == 0.5f * stepX[side] && dz == 0.5f * stepZ[side], $"mask {mask}: offset ({dx},{dz}) is not toward side {side}");
-                    if (side == 2)
-                    {
-                        Check(angle == 0f, $"mask {mask}: south wall rotated the mark to {angle}; it must stay upright");
-                        continue;
-                    }
-                    Check(angle == side * 90f, $"mask {mask}: angle {angle} does not face side {side}");
-                    // the mark's top (0, 1) turned clockwise by the angle points at the wall
-                    double rad = angle * Math.PI / 180.0;
-                    Check(Math.Abs(Math.Sin(rad) - stepX[side]) < 1e-6 && Math.Abs(Math.Cos(rad) - stepZ[side]) < 1e-6, $"side {side}: the top does not point into the wall");
+                    Check(side == RM_GraffitiKernel.NoWall || RM_GraffitiKernel.FaceOfSide(side) != RM_GraffitiKernel.FaceNone, $"mask {mask}: side {side} has no face");
                 }
                 foreach (int bad in new[] { -2, 4, 99 })
                 {
-                    RM_GraffitiKernel.WallFaceOffset(bad, 0.5f, out float bx, out float bz);
-                    Check(bx == 0f && bz == 0f && RM_GraffitiKernel.WallFaceAngle(bad) == 0f, $"out-of-range side {bad} moved the mark");
+                    Check(RM_GraffitiKernel.FaceOfSide(bad) == RM_GraffitiKernel.FaceNone, $"out-of-range side {bad} has a face");
                 }
-                Check(RM_GraffitiKernel.WallFaceOffsetCells > 0f && RM_GraffitiKernel.WallFaceOffsetCells <= 1f, "the wall-face offset leaves the wall's own cell");
+                Check(RM_GraffitiKernel.FaceOfSide(0) == RM_GraffitiKernel.FaceFront && !RM_GraffitiKernel.SidePaintable(2), "a wall north of the floor shows its front; a wall south of it shows nothing");
+                // Every mark, every link set, every face, every width: inside its face, and its art's map stays affine.
+                float[][] geoms = { new[] { 0.40f, 0.22f }, new[] { 0.30f, 0.20f }, new[] { 0.45f, 0.30f } };
+                foreach (float[] g in geoms)
+                {
+                    foreach (int face in new[] { RM_GraffitiKernel.FaceFront, RM_GraffitiKernel.FaceEast, RM_GraffitiKernel.FaceWest })
+                    {
+                        RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
+                        for (int linksA = 0; linksA < 16; linksA++)
+                        {
+                            for (int linksB = 0; linksB < 16; linksB++)
+                            {
+                                foreach (float width in new[] { 0.6f, 1f, 2f, 3f })
+                                {
+                                    foreach (float slope in new[] { -0.06f, 0f, 0.06f })
+                                    {
+                                        foreach (float lift in new[] { 0f, 0.5f, 1f })
+                                        {
+                                            Cases++; Steps++;
+                                            int la = linksA, lb = linksB;
+                                            Func<int, int> linksAt = k => k == 0 ? la : (k > 0 ? lb : (la & 8) != 0 ? 10 : -1);
+                                            List<RM_MarkPiece> pieces = RM_GraffitiKernel.MarkPieces(linksAt, face, g[0], g[1], width, RM_GraffitiKernel.ClimbHeight, 0f, slope, lift, false);
+                                            if (RM_GraffitiKernel.FaceExists(la, face))
+                                            {
+                                                Check(pieces.Exists(p => p.k == 0 && !p.onTop) && pieces.Exists(p => p.k == 0 && p.onTop), $"face {face} links {la}: a full mark must lie on its face and climb onto the top");
+                                            }
+                                            if (!RM_GraffitiKernel.FaceExists(la, face))
+                                            {
+                                                Check(pieces.Count == 0 || pieces.TrueForAll(p => p.k != 0), $"face {face} links {la}: drew on a cell with no such face");
+                                            }
+                                            foreach (RM_MarkPiece p in pieces)
+                                            {
+                                                List<RM_PlaneVert> edge = p.onTop ? RM_GraffitiKernel.TopPoly(linksAt(p.k), g[0], g[1]) : RM_GraffitiKernel.FacePoly(linksAt(p.k), face, g[0], g[1]);
+                                                Check(edge != null && RM_GraffitiKernel.FaceExists(linksAt(p.k), face), $"face {face}: a piece on a cell with no face");
+                                                if (edge == null) continue;
+                                                foreach (RM_PlaneVert v in p.poly)
+                                                {
+                                                    float x = v.x - ax * p.k, z = v.z - az * p.k;
+                                                    Check(x >= -1e-3f && x <= 1.001f && z >= -1e-3f && z <= 1.001f, $"face {face} links {linksAt(p.k)}: vertex ({x},{z}) leaves the wall cell");
+                                                    for (int e = 0; e < edge.Count; e++)
+                                                    {
+                                                        RM_PlaneVert a = edge[e], b = edge[(e + 1) % edge.Count];
+                                                        Check((b.x - a.x) * (z - a.z) - (b.z - a.z) * (x - a.x) >= -1e-3f, $"face {face} links {linksAt(p.k)}: vertex ({x},{z}) outside the face");
+                                                    }
+                                                    Check(v.u >= -1e-3f && v.u <= 1.001f && v.v >= -1e-3f && v.v <= 1.001f, "uv left the art");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // Measuring the crease: an outline at the tile's edge must not be taken for it.
+                float[] prof = { 100, 100, 100, 100, 104, 104, 200, 240, 240, 240, 0, 0 };
+                Check(RM_GraffitiKernel.CreaseCrossing(prof, 1, 7, 10) == 6, "crease crossing misread");
+                Check(RM_GraffitiKernel.CreaseCrossing(new float[] { 90, 90, 90, 90 }, 0, 2, 4) == -1, "a flat tile has no crease");
+            });
+        }
+
+        // The hand, the pace and the wall's manners: a mark may tilt and shrink but never grow out of its wall cell, every form takes
+        // real time, overlap is symmetric, and a room's share grows with the room.
+        private static List<string> Paint()
+        {
+            return Loop("paint", 1, 1, r =>
+            {
+                foreach (GraffitiForm form in Enum.GetValues(typeof(GraffitiForm)))
+                {
+                    foreach (int pace in new[] { int.MinValue, 0, 60, 250, 1000, int.MaxValue })
+                    {
+                        Cases++; Steps++;
+                        int t = RM_GraffitiKernel.PaintTicks(form, pace);
+                        Check(t >= 30 && t <= RM_GraffitiKernel.PaintTicksBase(form) * 4, $"{form} at pace {pace}: {t} ticks");
+                    }
+                    Check(RM_GraffitiKernel.JoyForm(form) || !RM_GraffitiKernel.SpreeForm(form), $"{form}: in the spree pool but not the joy pool");
+                }
+                for (int id = -2000; id < 200000; id += 37)
+                {
+                    foreach (float width in new[] { 1f, 2f, 3f })
+                    {
+                        Cases++; Steps++;
+                        RM_GraffitiKernel.HandOf(id, width, out float slope, out float scale, out float slide, out float lift, out bool flip);
+                        Check(scale > 0.5f && scale <= 1f, $"id {id}: scale {scale} grows out of the wall");
+                        Check(Math.Abs(slope) <= 0.0601f && Math.Abs(slide) <= 0.1f && lift >= 0f && lift <= 1f, $"id {id}: slope {slope}, slide {slide}, lift {lift}");
+                        RM_GraffitiKernel.HandOf(id, width, out float slope2, out float scale2, out float slide2, out float lift2, out bool flip2);
+                        Check(slope == slope2 && scale == scale2 && slide == slide2 && lift == lift2 && flip == flip2, $"id {id}: the hand is not stable across redraws");
+                    }
+                }
+                Check(RM_GraffitiKernel.WallMarksOverlap(0f, 0.5f, 0.5f) && !RM_GraffitiKernel.WallMarksOverlap(1f, 0.5f, 0.5f), "one-cell neighbours must not count as overlapping");
+                Check(RM_GraffitiKernel.WallMarksOverlap(1f, 1.5f, 0.5f) && RM_GraffitiKernel.WallMarksOverlap(-1f, 1.5f, 0.5f), "a tag beside a piece's middle lies under it");
+                Check(!RM_GraffitiKernel.RoomHoldsEnough(0, 1) && RM_GraffitiKernel.RoomHoldsEnough(1, 1), "a closet takes one mark");
+                Check(!RM_GraffitiKernel.RoomHoldsEnough(4, 160) && RM_GraffitiKernel.RoomHoldsEnough(11, 160), "a hall takes more than a closet");
+                Check(RM_GraffitiKernel.IdleHandTags(0f) && !RM_GraffitiKernel.IdleHandTags(RM_GraffitiKernel.IdleTagChance) && !RM_GraffitiKernel.IdleHandTags(1f), "the idle tag is a low chance, not a certainty");
+                Check(RM_GraffitiKernel.SittingContinues(100, true, 1f), "a spree does not stop for joy");
+                Check(!RM_GraffitiKernel.SittingContinues(RM_GraffitiKernel.MaxMarksPerJoySitting, false, 0f) && !RM_GraffitiKernel.SittingContinues(0, false, 1f) && RM_GraffitiKernel.SittingContinues(0, false, 0f), "a joy sitting ends when satisfied or after its few marks");
             });
         }
 
@@ -314,6 +462,7 @@ namespace RimMandrake.Graffiti.SelfTest
             int S(int baseSeed) { return oneSeed ?? baseSeed; }
             var fam = new (string name, Func<List<string>> run)[]
             {
+                ("social", () => Social(N(20000), S(1))),
                 ("pick", () => Pick(N(3000), S(1))),
                 ("gates", () => Gates()),
                 ("react", () => React()),
@@ -321,6 +470,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("cells", () => Cells(N(6000), S(1))),
                 ("lure", () => Lure(N(4000), S(1))),
                 ("wall", () => Wall()),
+                ("paint", () => Paint()),
             };
             foreach (var f in fam)
             {

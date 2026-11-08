@@ -115,8 +115,13 @@ def main(argv):
             E("gr-class", "%s: category is %r, not Filth" % (tag, inherited(d, "category")))
         if (ext.findtext("sigilTierA") or "").strip().lower() == "true":
             tex = (ext.findtext("sigilFrameTexPath") or "").strip()
+            try:
+                copies = int((ext.findtext("sigilCopies") or "1").strip())
+            except ValueError:
+                copies = 1
             if not tex:
-                E("gr-sigil", "%s: sigilTierA with no sigilFrameTexPath" % tag)
+                if copies <= 1:   # a stencil run (sigilCopies > 1) draws no frame, as ModExtension_Graffiti.ConfigErrors allows
+                    E("gr-sigil", "%s: sigilTierA with no sigilFrameTexPath" % tag)
             elif not glob.glob(os.path.join(REPO, "src", "*", "*", "Textures", tex.replace("/", os.sep) + ".png")):
                 E("gr-sigil", "%s: frame texture %s has no png in any mod's Textures" % (tag, tex))
     for tname, worker in sorted(thoughts.items()):

@@ -9,12 +9,766 @@
        only this def when the maker's faction is hostile to the viewer's (and no closer relation wins). -->
   <ThoughtDef>
     <defName>RM_Graffiti_ViewedHostileMark</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
     <workerClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark</workerClass>
     <stages>
       <li>
         <label>enemy graffiti nearby</label>
         <description>Someone hostile painted their mark here on the way out. They were here, they know the way, and they wanted us to know it.</description>
         <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Passing by: what's on the wall near you, while you're near it. Read through the relation-keyed slots on each mark. Only the uneasy ones
+       stay situational: our sign and our pieces please through the read memories (RM_Graffiti_Uplifted, RM_Graffiti_FineArt), which share the
+       ambient budget (RM_GraffitiKernel.AmbientMoodBudget), so the same sigil no longer pleased twice outside any cap. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_NearForeignSign</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <workerClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark</workerClass>
+    <stages>
+      <li>
+        <label>foreign creed nearby</label>
+        <description>Another creed's sign is on the wall here. I'd rather not have to look at it.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Territory: however far from the marks you are, you know they're there. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_EnemyClaim</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <workerClass>RimMandrake.Graffiti.ThoughtWorker_EnemyClaim</workerClass>
+    <stages>
+      <li>
+        <label>enemy marks on our walls</label>
+        <description>Their mark is still on our walls. Nobody has done anything about it.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <label>enemy marks all over our walls</label>
+        <description>They've marked this place as theirs, again and again, and it's all still there.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>they've claimed our walls</label>
+        <description>Every wall I pass says this place belongs to them. Why does nobody clean it off?</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Reading a mark: a memory the moment someone reads it (GraffitiSocial.Apply), read again while the mark stands. Mood and opinion are separate defs, the game's own pattern. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_Humiliated</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li>
+        <label>mocked on the wall by {0}</label>
+        <description>{0} painted me up there, for everyone to read. Everyone has read it.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+      <!-- Stage 1: the mockery is off the wall (scrubbed, crossed out, painted over, or its wall gone): GraffitiSocial.Notify_MockeryGone.
+           Half as sharp, and a day at most from then, so cleaning it visibly helps the person it hurt. -->
+      <li>
+        <label>mocked on the wall by {0} (gone now)</label>
+        <description>{0} painted me up there. It's off the wall now, but people saw it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_PaintedMe</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>20</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>painted me on the wall</label>
+        <baseOpinionOffset>-30</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_ShruggedOff</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>laughed at {0}'s picture of me</label>
+        <description>{0} painted me as a fool. It's a good likeness, actually.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_FriendMocked</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0} mocked on the wall</label>
+        <description>Someone painted {0} as a joke, for everyone to read. It isn't funny.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_MockedMyFriend</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>mocked a friend of mine on the wall</label>
+        <baseOpinionOffset>-12</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_EnjoyedIt</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0} mocked on the wall</label>
+        <description>Someone finally said what we all think of {0}, and in paint.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_SaidItForMe</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>said it about them for me</label>
+        <baseOpinionOffset>8</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_EnjoyedInsult</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>insult on our wall</label>
+        <description>Someone painted what we think of them, up where they'll see it. Good.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_WhatTheWallSays</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>what the wall says about them</label>
+        <baseOpinionOffset>-8</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Cruel</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>paints cruel things on walls</label>
+        <baseOpinionOffset>-6</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Honored</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li>
+        <label>tribute from {0}</label>
+        <description>{0} painted me on the wall, carefully, and meant it.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_HonoredMe</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>20</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>painted me a tribute</label>
+        <baseOpinionOffset>20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_JealousOfWall</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>wall tribute to {0}</label>
+        <description>All that care on the wall, and it's for {0}.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_PaintedSomeoneElse</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>paints tributes to someone else</label>
+        <baseOpinionOffset>-15</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_HonoredMyEnemy</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>paints tributes to someone I can't stand</label>
+        <baseOpinionOffset>-6</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Warmed</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>tribute to {0}</label>
+        <description>Someone painted {0} on the wall. Well deserved.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Mourning</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>RimMandrake.Graffiti.Thought_GriefEase</thoughtClass>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>memorial to {0}</label>
+        <description>Someone painted {0} on the wall so we wouldn't forget. I stood there a while. It helped.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Remembered</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>20</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>painted a memorial for someone I loved</label>
+        <baseOpinionOffset>10</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Amused</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>0.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>funny doodle</label>
+        <description>Some idiot drew something stupid on the wall. I laughed.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_MovedByPiece</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0}'s wall piece</label>
+        <description>{0} has made something on our wall. I keep stopping to look at it.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Artist</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>made that piece on the wall</label>
+        <baseOpinionOffset>6</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Uplifted</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>our sign on the wall</label>
+        <description>Someone painted our sign up where it can be seen.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Faithful</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>paints our sign on the walls</label>
+        <baseOpinionOffset>4</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Offended</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>foreign creed on the wall</label>
+        <description>Someone painted another creed's sign on our wall, where I have to walk past it.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Heretic</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>paints a foreign creed on our walls</label>
+        <baseOpinionOffset>-8</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_RivalHandMood</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0}'s tag on the wall</label>
+        <description>{0} has written their name on another wall. It's everywhere I go.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_RivalHand</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>writes all over the walls</label>
+        <baseOpinionOffset>-4</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_FriendHand</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0}'s tag on the wall</label>
+        <description>I know that hand anywhere. It's {0}'s. Made me smile.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Defiant</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>they'll pay for that</label>
+        <description>They left their mark on our wall on the way out. Let them come back and try it.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_WorkDestroyed</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li>
+        <label>{0} painted over my work</label>
+        <description>{0} painted straight over what I made. It took me hours.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_DestroyedMyWork</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>painted over my work</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Scrubbed</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>2</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li>
+        <label>{0} wiped out my work</label>
+        <description>{0} took my mark off the wall.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_ScrubbedMyWork</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>wiped my mark off the wall</label>
+        <baseOpinionOffset>-8</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_LeftMyMark</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>left my mark</label>
+        <description>I put something on the wall today. It'll be there tomorrow.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_StuckItToThem</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>showed the wall what {0} is</label>
+        <description>I painted what I think of {0} where everyone can see it. Felt good.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Answered</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>answered it</label>
+        <description>Someone put that on our wall. I did something about it.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_Reclaimed</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>took our wall back</label>
+        <description>They left their mark on our wall. It's gone now, and I'm the one who did it.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Art skill (owner, 2026-11-07): "A poor artist will paint such a bad graffiti mark that it is ugly ... and gives mood debuffs. But a highly
+       skilled artist is actually making art. It is beautiful, improves a room and people's moods." The paint itself, apart from what it says:
+       GraffitiSocial.Reads gives one of these by the mark's craft (RM_GraffitiKernel.CraftStage), before its meaning, so a brilliant slander
+       hurts and pleases at once and the needs tab shows both. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_UglyMark</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>clumsy paint on the wall</label>
+        <description>Somebody has slapped paint on the wall without the first idea how. It looks like a stain with ambitions.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <label>hideous paint on the wall</label>
+        <description>Somebody smeared that on the wall and called it a mark. It's genuinely painful to look at.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_FineArt</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>good work on the wall</label>
+        <description>Whatever else it is, {0} painted that well.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+      <li>
+        <label>fine work on the wall</label>
+        <description>{0} has real skill. I stopped to look at the brushwork.</description>
+        <baseMoodEffect>1.5</baseMoodEffect>
+      </li>
+      <li>
+        <label>a masterwork on the wall</label>
+        <description>{0} painted that. It's the best thing on any wall here, whatever it says.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>a legendary piece on the wall</label>
+        <description>People will talk about what {0} painted on that wall for years. I could look at it all day.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Clean freaks (personality pass, section 8): minding the mess, at most once in three days (GameComponent_Graffiti.MessDue). -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_Mess</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>paint all over the walls</label>
+        <description>Paint on the walls. Whoever did it, whatever it says, it's a mess and somebody should clean it.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>filth all over the walls</label>
+        <description>Paint, smeared on the walls where anyone can see it. I can't stop seeing it. It has to come off.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <!-- Somebody scrubbed a mark I held dear, in a cleaning fit. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_ScrubbedWhatIDearMood</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0} scrubbed it off the wall</label>
+        <description>{0} scrubbed it off in one of those cleaning fits. It meant something to me, and now there's a clean patch of wall.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_ScrubbedWhatIDear</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>20</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>scrubbed off a mark I loved</label>
+        <baseOpinionOffset>-5</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <!-- Owner's pick, 2026-11-07: cleaning a mockery bonds its subject and the cleaner. -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_WipedItAwayMood</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>{0} wiped it off the wall</label>
+        <description>That thing on the wall about me is gone. {0} cleaned it off without being asked.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RM_Graffiti_WipedItAway</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>30</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>2</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.6</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>wiped that mockery of me off the wall</label>
+        <baseOpinionOffset>12</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <!-- Owner, card 2026-11-07: a memorial comes from someone "actually grieving and helps them feel better". The painter's own lift; the grief
+       itself also wears off sooner (GraffitiSocial.EaseGrief). Thought_GriefEase holds it, and RM_Graffiti_Mourning with it, under half the grief
+       still felt for the dead pawn: a memorial softens grief, never turns it into a gain (owner, card 2026-11-07, after "Painted a memorial to
+       Pell +5" beside "My friend Pell died -3"). -->
+  <ThoughtDef>
+    <defName>RM_Graffiti_GriefEased</defName>
+    <nullifyingTraits><li>Psychopath</li></nullifyingTraits>
+    <nullifyingHediffs><li MayRequire="Ludeon.RimWorld.Anomaly">Inhumanized</li></nullifyingHediffs>
+    <thoughtClass>RimMandrake.Graffiti.Thought_GriefEase</thoughtClass>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>painted a memorial to {0}</label>
+        <description>I painted {0} on the wall. It hurts less, now that there's somewhere to look.</description>
+        <baseMoodEffect>4</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

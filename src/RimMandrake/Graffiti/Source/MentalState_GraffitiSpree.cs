@@ -11,5 +11,11 @@ namespace RimMandrake.Graffiti
     // source declares its own, confirmed by reading MentalStates_Mood.xml).
     public class MentalState_GraffitiSpree : MentalState
     {
+        // Whose work the spree went over, told once now rather than a message per mark as it happened.
+        public override void PostEnd()
+        {
+            base.PostEnd();
+            GraffitiSocial.SpreeEnded(pawn);
+        }
     }
 }

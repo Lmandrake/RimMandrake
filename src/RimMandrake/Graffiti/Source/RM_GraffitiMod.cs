@@ -19,9 +19,8 @@ namespace RimMandrake.Graffiti
     //      which simply hand back no job when off — the ThinkTree falls
     //      through to whatever else a pawn would otherwise do, same as any
     //      vanilla JobGiver returning null).
-    //   2. Paint interval — how often (in ticks) a painting pawn leaves a
-    //      fresh mark while working (JobDriver_PaintGraffiti's hardcoded
-    //      250-tick PaintIntervalTicks).
+    //   2. Painting pace — scales how long each mark takes to paint
+    //      (RM_GraffitiKernel.PaintTicks; 250 is the base rate).
     //   3. Viewer reaction — the mood/thought effect from noticing a mark
     //      nearby (ThoughtWorker_ViewedGraffitiMark).
     //   4. Breach-bias — raiders funneling their breach target toward a
@@ -45,6 +44,8 @@ namespace RimMandrake.Graffiti
         public static bool breachBiasEnabled = true;
         public static bool raidExitTaggingEnabled = true;
         public static bool autoCleanProtectionEnabled = true;
+        public static bool socialEnabled = true;
+        public static bool socialMessagesEnabled = true;
 
         public override void ExposeData()
         {
@@ -55,6 +56,8 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref breachBiasEnabled, "breachBiasEnabled", true);
             Scribe_Values.Look(ref raidExitTaggingEnabled, "raidExitTaggingEnabled", true);
             Scribe_Values.Look(ref autoCleanProtectionEnabled, "autoCleanProtectionEnabled", true);
+            Scribe_Values.Look(ref socialEnabled, "socialEnabled", true);
+            Scribe_Values.Look(ref socialMessagesEnabled, "socialMessagesEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -68,22 +71,29 @@ namespace RimMandrake.Graffiti
             if (Group(list, "Painting", RimMandrake.Shared.SettingScope.Now, new[] { "paintingEnabled", "paintIntervalTicks" }))
             {
                 list.CheckboxLabeled("Graffiti painting", ref paintingEnabled,
-                    "Pawns can paint graffiti marks on walls as a joy activity, and during "
-                  + "the painting-spree mental break. Off: no pawn ever paints a mark.");
-                list.Label((TaggedString)("Paint interval: every " + paintIntervalTicks + " ticks while painting"), -1f,
-                    "How often a painting pawn leaves a fresh mark while it works (60 = about 1 s, 1000 = about 17 s "
-                  + "at normal speed). Lower: more marks per painting session. Shipped: 250.");
+                    "Pawns paint marks on walls: for fun, when idle, on your orders, in a painting spree, in reply to a mark about them, and "
+                  + "raiders tag on their way out. Off: nobody paints anything, replies included. Marks already on the walls stay, and "
+                  + "people still read them unless the switch for what marks mean between people is off too.");
+                list.Label((TaggedString)("Painting pace: " + paintIntervalTicks), -1f,
+                    "How long a mark takes to paint. At the shipped 250 a tag takes about 8 seconds at normal speed and "
+                  + "a wall piece about 47; 60 is four times faster, 1000 four times slower. Lower: more marks per session.");
                 paintIntervalTicks = (int)list.Slider(paintIntervalTicks, 60f, 1000f);
                 list.GapLine();
             }
 
-            if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "viewerReactionEnabled" }))
+            if (Group(list, "Viewer reactions", RimMandrake.Shared.SettingScope.Now, new[] { "socialEnabled", "socialMessagesEnabled", "viewerReactionEnabled" }))
             {
-                list.CheckboxLabeled("Viewer reactions to marks", ref viewerReactionEnabled,
-                    "Pawns get a mood effect from noticing a graffiti mark nearby that reacts to them: "
-                  + "colonists are unsettled by a tag a hostile faction left behind, and the RimMandrake "
-                  + "Sacred Marks mod adds its own sacred-mark thoughts to the same switch. "
-                  + "Off: marks are purely decorative filth.");
+                list.CheckboxLabeled("Marks matter between people", ref socialEnabled,
+                    "Colonists read the walls: a mockery humiliates its subject and turns friends against its painter, a tribute or memorial moves people, "
+                  + "a fine piece pleases and a clumsy one grates, and they scrub, cross out, paint back or go and confront whoever did it. Each takes it "
+                  + "like themselves: a psychopath doesn't care, a nervous soul feels it more, a very neurotic one may break and scrub the walls. "
+                  + "Off: none of that, and what it already made anyone feel is forgotten at once.");
+                list.CheckboxLabeled("Say so when it happens", ref socialMessagesEnabled,
+                    "Lines over a pawn's head when they read a mark, and a message when something starts between people. The thoughts and social log still happen with this off.");
+                list.CheckboxLabeled("Feelings while near a mark", ref viewerReactionEnabled,
+                    "While a pawn stands near certain marks they feel it: a tag a hostile faction left behind unsettles colonists, and the "
+                  + "RimMandrake Sacred Marks mod adds its own sacred-mark thoughts to the same switch. Off: none of those. This doesn't touch "
+                  + "what marks mean between people, which is the first switch in this section.");
                 list.GapLine();
             }
 

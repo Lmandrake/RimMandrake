@@ -25,9 +25,13 @@
          none - a free per-tick virtual call on every mark with nothing
          behind it. -->
     <category>Filth</category>
+    <!-- Every mark def sets shaderType Mote, tested live against the alternatives. The default Cutout throws
+         away partial alpha, so overspray and soft runs clip into a clean sticker edge. Map/Transparent draws
+         nothing at this altitude, TransparentPostLight glows at night. And not here on this abstract parent:
+         a graphicData block on it left every child invisible, with no error. -->
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <useHitPoints>false</useHitPoints>
-    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawerType>MapMeshOnly</drawerType>
     <!-- 🔴 REQUIRED, and measured live 2026-09-06: placementMask is a
          REQUIREMENT the terrain's own filthAcceptanceMask must fully cover
          (FilthMaker.TerrainAcceptsFilth: (terrainMask & placementMask) ==
@@ -47,9 +51,12 @@
         <li>Unnatural</li>
       </placementMask>
       <cleaningSound>Interact_CleanFilth</cleaningSound>
-      <rainWashes>true</rainWashes>
+      <!-- Paint on a wall: rain does not take it off and boots do not carry it.
+           With canFilthAttach a thick mark rode off on a pawn's feet (Pawn_FilthTracker)
+           and was dropped as a mark on open floor, with no wall behind it. -->
+      <rainWashes>false</rainWashes>
       <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
-      <canFilthAttach>true</canFilthAttach>
+      <canFilthAttach>false</canFilthAttach>
     </filth>
     <building>
       <isEdifice>false</isEdifice>
@@ -64,17 +71,16 @@
     </statBases>
   </ThingDef>
 
-  <!-- The absorbed vandal-spree mark. Textures are the donor mod's own
-       6 graffiti_N.png files, copied byte-for-byte (MIT license, confirmed
-       via LICENSE.md read in full - GRAFFITI_FRAMEWORK_BUILD_1's own
-       license-check gate) - credited in About.xml. -->
+  <!-- The untrained scrawl: the ugliest thing on the wall, and it looks it. -->
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Vandal</defName>
     <label>graffiti</label>
-    <description>An untrained scrawl, sprayed by an idle or unhappy hand. Nobody will call it art.</description>
+    <description>A sloppy, over-loaded scrawl of clashing paint, sprayed or slapped on by an idle or unhappy hand and left to run down the wall. Nobody will call it art.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
+      <drawSize>(2, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-15</Beauty>
@@ -102,11 +108,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Scratches</defName>
-    <label>scratch marks</label>
-    <description>Deep parallel scratches gouged into the wall, plaster and paint stripped away to raw material beneath.</description>
+    <label>scratched mark</label>
+    <description>Somebody's mark scratched into the wall with a nail or a key: a name that spells nothing, a grinning face, a heart. No paint, just the wall's raw material showing through.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>
+      <drawSize>(1, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>
@@ -115,8 +123,9 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <wallThrough>0</wallThrough>
         <form>Glyph</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -125,10 +134,12 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_TallyMarks</defName>
     <label>tally marks</label>
-    <description>A running tally scratched into the wall, groups of four struck through by a fifth.</description>
+    <description>A patient tally in charcoal, a day at a time, groups of four struck through by a fifth.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(1, 0.75)</drawSize>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -137,8 +148,9 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Glyph</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -147,10 +159,12 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_WarningGlyph</defName>
     <label>warning glyph</label>
-    <description>A crude hazard glyph, daubed as a warning to whoever reads it next.</description>
+    <description>A settler's warning daubed on the wall for whoever reads it next.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
+      <drawSize>(1.2, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -172,6 +186,113 @@
     </modExtensions>
   </ThingDef>
 
+  <!-- The wide throw-up: two cells of wall, big enough to change the rhythm of a corridor.
+       Quick and sloppy, so a spree reaches for it too, unlike the piece. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_ThrowUp_Wide</defName>
+    <label>wide throw-up</label>
+    <description>Fat letterforms stretched across a stretch of wall, filled fast and outlined faster. It is meant to be seen from the far end of the corridor.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_Wide</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>ThrowUp</form>
+        <poolWeight>3</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Tag_RollCall</defName>
+    <label>tag roll call</label>
+    <description>A whole crew has signed this wall, one over the other, each hand answering the last.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Tag_RollCall</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-7</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Code</category>
+        <form>Tag</form>
+        <poolWeight>1</poolWeight>
+        <raidExitEligible>true</raidExitEligible>
+        <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Paste_Gig</defName>
+    <label>fight-night stencil</label>
+    <description>Two heads sprayed big through hacked card side by side, a screaming one and a snarling beast, a jagged sunburst misted behind them. Whatever fight it calls for, it is not for you.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Paste_Gig</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(2, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Jest</category>
+        <form>Paste</form>
+        <poolWeight>1.5</poolWeight>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The piece: the big one, the reason you stop and look. Three cells of wall, an
+       afternoon's work; only a trained hand, only a calm one (not in the spree pool).
+       Beauty is the only mark above zero: real graffiti varies wildly in scale and
+       worth (owner, 2026-09-16), and someone meant this one. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Piece</defName>
+    <label>graffiti piece</label>
+    <description>A full wall piece in several colours, planned and outlined and worked over for hours. Somebody signed the colony's wall and meant it.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Piece</texPath>
+      <shaderType>Mote</shaderType>
+      <drawSize>(3, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Mural</category>
+        <form>Piece</form>
+        <poolWeight>2</poolWeight>
+        <minArtistic>4</minArtistic>
+        <designatorEligible>true</designatorEligible>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
   <!-- ════════════════════════════════════════════════════════════════
        GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 — the punk-urban register (design
        §2.2). Form axis alongside GraffitiCategory; asemic letterforms only
@@ -187,6 +308,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_A</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -195,6 +318,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -210,6 +334,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_B</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -218,6 +344,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -233,6 +360,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_C</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -241,6 +370,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
+        <pigmented>true</pigmented>
         <form>Tag</form>
         <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
@@ -256,6 +386,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_A</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -265,13 +397,13 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
         <form>ThrowUp</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <!-- GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §3's own table
              row for this def: "Joy (skill >= 6), RaidExit". Wired this wave
              via GraffitiPool.SkillGateAllows. -->
-        <minArtistic>6</minArtistic>
+        <minArtistic>3</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -283,6 +415,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_B</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -292,10 +426,10 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
         <form>ThrowUp</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>2</poolWeight>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
-        <minArtistic>6</minArtistic>
+        <minArtistic>3</minArtistic>
       </li>
     </modExtensions>
   </ThingDef>
@@ -307,6 +441,8 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_CrossOut</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-7</Beauty>
@@ -340,10 +476,12 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Crown</defName>
     <label>crossed-out crown stencil</label>
-    <description>A crisp stencilled crown, struck through - anti-authority in the one register vanilla itself owns. It does not fade.</description>
+    <description>A crude crown sprayed through hacked card, a slash of paint knocked through it. An insult to anyone with a title.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Crown</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -368,10 +506,12 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Gear</defName>
     <label>broken gear stencil</label>
-    <description>A crisp stencilled gear, cracked through the teeth - anti-machine, the other authority vanilla owns. It does not fade.</description>
+    <description>A blunt cog sprayed through hacked card, a work gang's emblem.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Gear</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -383,6 +523,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
+        <pigmented>true</pigmented>
         <form>Stencil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -394,11 +535,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Stencil_Fist</defName>
-    <label>raised fist stencil</label>
-    <description>A crisp stencilled fist, raised - generic defiance, no target named. It does not fade.</description>
+    <label>fist stencil</label>
+    <description>A brawler's knuckles sprayed through hacked card. No target named.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
+      <drawSize>(1.25, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -410,8 +553,9 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
+        <pigmented>true</pigmented>
         <form>Stencil</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.6</poolWeight>  <!-- pass 16: five fists in one colony read as one stamp, repeated -->
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -419,11 +563,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Paste_Flyer</defName>
-    <label>pasted flyer</label>
-    <description>A wheat-pasted paper flyer, asemic headline over a rough sketch - it peels in the rain and won't last the season.</description>
+    <label>stencil portrait</label>
+    <description>A howling head or a many-eyed beast sprayed big through hacked card over a mist of colour, the bare wall showing through it. Sprayed thin, it won't last the season.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Flyer</texPath>
+      <drawSize>(1.1, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -436,7 +582,7 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <form>Paste</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>1.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>
@@ -444,11 +590,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Paste_Wanted</defName>
-    <label>torn wanted poster</label>
-    <description>A torn poster, a silhouette above asemic lettering - a threat left where the target will find it. It peels in the rain.</description>
+    <label>wanted stencil</label>
+    <description>A face sprayed big through hacked card, masked or crossed out - a threat left where the target will find it. Sprayed thin, the weather takes it within days.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Wanted</texPath>
+      <drawSize>(1.1, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -480,10 +628,12 @@
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil</defName>
     <label>ideoligion sigil</label>
-    <description>A sprayed frame around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <description>The maker's own ideoligion's sign, sprayed in whatever can they carry, under a saint's halo flicked on fast in chalk.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -495,6 +645,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -502,6 +653,7 @@
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo/halo_0</sigilFrameTexPath>
+        <sigilSignInHand>true</sigilSignInHand>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>
@@ -510,11 +662,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_StencilBox</defName>
-    <label>ideoligion sigil, stencil box</label>
-    <description>A stencilled diamond box sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <label>ideoligion sigil, stencil run</label>
+    <description>The maker's own ideoligion's sign in its own colour, sprayed through the same card three times along the wall, each copy thinner as the can ran low.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -526,13 +680,14 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
         <raidExitEligible>true</raidExitEligible>
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
-        <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_StencilBox/stencilbox_0</sigilFrameTexPath>
+        <sigilCopies>3</sigilCopies>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>
@@ -540,11 +695,13 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_IdeoSigil_DripFrame</defName>
-    <label>ideoligion sigil, drip ring</label>
-    <description>A ring of running paint sprayed around a painted emblem - the maker's own ideoligion, in its own colour.</description>
+    <label>ideoligion sigil, drip swipe</label>
+    <description>The maker's own ideoligion's sign in its own colour, sprayed onto a fat running swipe of the maker's own paint.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame</texPath>
+      <drawSize>(1.3, 1)</drawSize>
+      <shaderType>Mote</shaderType>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -556,6 +713,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
+        <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Sigil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -563,6 +721,7 @@
         <onViewHostileMaker>RM_Graffiti_ViewedHostileMark</onViewHostileMaker>
         <sigilTierA>true</sigilTierA>
         <sigilFrameTexPath>Things/Filth/Art/RM_Graffiti_SigilFrame_DripFrame/dripframe_0</sigilFrameTexPath>
+        <sigilFrameInHand>true</sigilFrameInHand>
         <protectedFromAutoClean>true</protectedFromAutoClean>
       </li>
     </modExtensions>

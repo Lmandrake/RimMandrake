@@ -1,0 +1,93 @@
+"""Look at Graffiti the way a player does. Run from the repo root under Windows python.exe, game up on graffiti_solo, bridge held:
+    python.exe src/RimMandrake/Graffiti/stage_colony.py new              fresh quicktest world
+    python.exe src/RimMandrake/Graffiti/stage_colony.py colony           build the lived-in base (RM_GraffitiStage.Colony)
+    python.exe src/RimMandrake/Graffiti/stage_colony.py call <Method> [arg]
+    python.exe src/RimMandrake/Graffiti/stage_colony.py run <ticks>      advance the clock in steps (reads marks back)
+    python.exe src/RimMandrake/Graffiti/stage_colony.py shot <name> x,z,w,h [ppc=64]    measured-zoom shot, saved to the shots folder
+Every shot is taken paused at measured px per cell (modcheck/play_zoom)."""
+import json, os, shutil, sys, time
+sys.path.insert(0, r"src\RimMandrake\Utils")
+sys.path.insert(0, r"src\RimMandrake\Utils\modcheck")
+import rimbridge_client as rb
+import play_zoom
+
+PROBE = "RimMandrake.Graffiti.RM_GraffitiStage"
+SHOTS = r"Transient\gshots"   # in the clone on Steve, brought back with steve.sh fetch
+CALFILE = r"D:\ClaudeWork\rimmandrake\ralph_graffiti\k.json"
+
+
+class Sess(object):
+    def __init__(self):
+        h, p, t = rb.resolve_endpoint()
+        self.s = rb.RimBridge(host=h, port=p, token=t, timeout=300.0)
+        self.s.connect()
+
+    def call(self, tool, **kw):
+        r = self.s.call(tool, kw) or {}
+        if isinstance(r, dict) and r.get("content"):
+            try:
+                r = json.loads(r["content"][0]["text"])
+            except Exception:
+                pass
+        return r
+
+
+def static(s, method, arg="x"):
+    r = s.call("jawa/static_call", type=PROBE, method=method, args=arg)
+    return (r.get("result") if isinstance(r, dict) else None) or r
+
+
+def shot(s, name, rect, ppc=64):
+    # The tool writes its PNG asynchronously and answers at once if a file of that name exists, so reusing a name copies the LAST
+    # run's picture (it did: a "natural day" shot showed the previous game). Every capture gets a name nobody has used.
+    # Settle first: after safe_advance a paused camera draws colonists where they last stood on screen (the tweener only moves with frames).
+    s.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=0)
+    s.call("rimworld/step_game_ticks", ticks=4)
+    static(s, "Settle")
+    for _ in range(6):      # vanilla's "name your settlement" prompts stack up across a long advance
+        if not s.call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement").get("changed"):
+            break
+    unique = "%s__%d" % (name, int(time.time()))
+    cal = play_zoom.Calibration()
+    path = play_zoom.shoot(s, cal, rect, 0, ppc, unique, RuntimeError)
+    local = play_zoom.local_path(path)
+    for _ in range(40):
+        if os.path.exists(local) and os.path.getsize(local) > 0:
+            break
+        time.sleep(0.5)
+    os.makedirs(SHOTS, exist_ok=True)
+    dest = os.path.join(SHOTS, name + ".png")
+    shutil.copy(local, dest)
+    print("SHOT", dest, "ticks", s.call("rimworld/get_game_info").get("ticksGame"))
+
+
+def run(s, ticks):
+    done = 0
+    while done < ticks:
+        n = min(2000, ticks - done)
+        print(str(s.call("jawa/safe_advance", ticks=n).get("triggers"))[:200])
+        done += n
+        print(done, static(s, "Count"), flush=True)
+
+
+def main():
+    a = sys.argv[1:]
+    if a[0] == "new":
+        import subprocess
+        sys.exit(subprocess.call([sys.executable, r"src\RimMandrake\bridgetools\prove_quicktest_world.py"]))
+    s = Sess()
+    if a[0] == "colony":
+        print(static(s, "Colony"))
+        s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+    elif a[0] == "call":
+        print(static(s, a[1], a[2] if len(a) > 2 else "x"))
+    elif a[0] == "run":
+        run(s, int(a[1]))
+    elif a[0] == "shot":
+        rect = tuple(int(v) for v in a[2].split(","))
+        shot(s, a[1], rect, int(a[3]) if len(a) > 3 else 64)
+    elif a[0] == "raw":
+        print(json.dumps(s.call(a[1], **json.loads(a[2] if len(a) > 2 else "{}")))[:3000])
+
+
+main()

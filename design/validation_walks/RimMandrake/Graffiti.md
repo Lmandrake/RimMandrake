@@ -34,10 +34,14 @@ Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (
 - MOD (gen 19, the 2 FAILs): `RM_Graffiti_Vandal` variants `vandal_1.png` (a clean prohibition sign) and `vandal_0.png` (an electrical-hazard bolt) read as real-world signage, which breaks `mark_carries_no_earth_signage`; under the owner's 2026-09-16 ruling the glyph is replaced, never exempted. The two judge pages agreed independently. RULED OUT: the CrossOut or WarningGlyph art (both checked, neither holds those shapes).
 - UNEXPLAINED (gen 19): in the run, colonists Alekey (tick 601, cell 125,125) and Stonejaw (tick 1501, cell 123,129) died by a direct Kill with 0 damage (`jawa/damage_log` kind kill, amount 0; vitals "died: unknown cause"), both on chain boundaries. Two Fingerspikes (ids 8592/8593) "arrived" and left in the same sample at tick 1501. RULED OUT: `_clear_pawns` vanish as the killer (each vanish reads as `departed`, never a death). The rows still PASS.
 - HARNESS (test pilot gen 21, offline from the gen 19 live replies): the 7 UNJUDGEABLE judge rows were the capture, not the art. `rimworld/screenshot_cell_rect` with no `rootSize` shoots at the CURRENT zoom (rootSize 24 = 19.7 px per cell), and the bars are judged at ~64. Every judged shot now passes `ppc=PLAY_PPC` (64). `modcheck/play_zoom.py` learns K = px-per-cell × rootSize from the tool's own reply (clipRect ÷ paddedRect × appliedRootSize), shoots at K/64, and checks the PNG is within 5%. A gallery page (22×26 cells) is taller than one 64-ppc screen (~15.7 cells), so it is shot in bands and stitched into ONE image; `judge_cli` judges only a component's LAST shot. spree_variety stays at the current zoom: it is 44 cells wide and judged PASS. Guard: `selftest_graffiti_play_zoom.py` (red on the held code; S7 replays the live replies). RULED OUT: a fixed rootSize (7.35) as the fix, since K depends on the window (live K 472 to 474). RULED OUT: splitting the gallery into more components, which would rename the required checks' claimed_by rows. STILL OPEN: two UNJUDGEABLE reasons are not about zoom (beauty_pair: "nothing labels the Beauty value"; gallery_page_1: "no reference of known size"). The next live A2 shows whether they survive at 64 ppc.
+- CHANGED (Ralph pass 1, 2026-11-06): a paint job now makes one finished mark, then moves down the wall (no longer one cell repainted every 250 ticks); marks draw on the wall cell itself and go with their wall; marks use shaderType Mote; idle colonists can tag (`JobGiver_IdleTag`). HARNESS: the screenshot tool writes asynchronously, so a reused filename copies the previous run's picture (`stage_colony.py` uses unique names). Colonists draw at their last on-screen spot after `safe_advance` with the camera elsewhere. See `ralph/PROGRESS.md`.
+
+- NOTE (Ralph pass 13, 2026-11-08, Conductor ruling 1:23 AM; a note, not a bar change): two notes inside the north star are stale. `RM_Graffiti_WarningGlyph` is no longer a hazard triangle: `warn_0..3.png` are a crossed eye, arrows to a splat, a skull and a fanged maw, viewed this pass. `RM_Graffiti_Vandal` carries no English and no donor tag: `vandal_0..5.png` are illegible smeared scrawls, viewed this pass. The bars themselves stand as written.
 
 ## north star
 state: VALIDATED
-validated-hash: 335bccf3b6cbda91ab995e52922ffd51ae11365b0652dc0481dc6bf8fc10693c
+validated-hash: eeca8dff8692b20bc41f1761f3d94e6eb627df90b8ea859d1a25fe5a12a352c9
+validated-by: BY CARD: Should I validate it now? → Validate with the rereads pick (Recommended)
 
 ✅ **BINDING.** Every line below was ruled or accepted in the owner's sitting of
 2026-09-16 and validated on his word — *"Validate now, all 10 lines"* — at the hash
@@ -46,6 +50,10 @@ with `shows=` and a screenshot satisfies it. Any later edit to this section reve
 it to DRAFT by hash mismatch, so amend it only in another sitting with him.
 
 (`state:` is kept as a single bare token because `modcheck/cli.py` parses that field.)
+
+The paragraph above describes the ten lines of 2026-09-16. The social lines, the
+art-skill line and the personality line came later, added on his word by card
+2026-11-07; that same sentence's rule on amending applies to them.
 
 ### the experience  (OWNER'S WORDS — verbatim)
 
@@ -70,6 +78,29 @@ it to DRAFT by hash mismatch, so amend it only in another sitting with him.
 
 🔑 The through-line in all three: **variety, and marks that read as punk/urban
 graffiti.** *"All the various kinds"* is a demand about appearance, not mechanism.
+
+His words on what happens between people came later, and add to that:
+
+2026-11-07, on the contrast sheet:
+
+> *"And did you test the social implications of the mod? It's more than just art
+> display."*
+
+2026-11-07, on art skill:
+
+> *"Please ensure that a person's art skill goes into the art's effect. A poor
+> artist will paint such a bad graffiti mark that it is ugly, harms a room's beauty,
+> and gives mood debuffs. But a highly skilled artist is actually making art. It is
+> beautiful, improves a room and people's moods. And this combines with slanderous
+> art: it can actually make you really angry as well as improve your mood from the
+> beauty of it. Emotions are complicated."*
+
+2026-11-07, on personality:
+
+> *"Take a moment to consider the many personality types and how this would interact
+> with them. Sociopaths wouldn't feel any mood change or care, while sensitive types
+> might get extra mood debuffs or buffs as results. Clean freaks might get extra
+> debuffs and have a mood break that makes them compulsively clean graffitti marks."*
 
 ### must show
 
@@ -105,6 +136,44 @@ graffiti.** *"All the various kinds"* is a demand about appearance, not mechanis
 **Beauty legibility**
 - [ ] `mark_ugliness_is_visible` — a Beauty −15 vandal scrawl looks worse than a
       Beauty −3 tally at a glance. The stat and the picture agree.
+
+**Between people — his "more than just art display"**
+- [ ] `mockery_changes_regard` — a mockery names someone, hurts or amuses the right
+      people, and changes how they regard its painter.
+- [ ] `tribute_and_memorial_mean_it` — a tribute can warm someone, make someone
+      jealous, or annoy an enemy; a memorial comes from someone actually grieving
+      and helps them feel better.
+- [ ] `pawns_answer_the_wall` (change) — pawns answer what is on the wall: the player
+      sees the scrub, the cross-out, the reply or the confrontation finish.
+- [ ] `raid_mark_troubles_until_retaken` (change) — a raid's mark left standing
+      troubles the colony; taking the wall back ends that claim.
+- [ ] `visitors_read_without_recharging` — visitors can read an insult to their
+      faction. One passing trader must never charge the same wall over and over.
+- [ ] `stories_not_a_tax` — graffiti makes occasional stories in an ordinary colony.
+      It must never become a permanent mood tax or a stream of messages.
+- [ ] `fights_have_people_and_reasons` — a fight has people and a reason behind it.
+      Paint must never manufacture violence from nothing or bypass a pawn's
+      restrictions.
+- [ ] `stands_alone_and_obeys_settings` — graffiti works alone, without an
+      ideoligion, survives saving, and stops when its settings say it stops.
+
+- [ ] `making_a_mark_is_its_own_fun` — all mark makers get a small mood buff for
+      having made it, and making it counts as a fun activity for recreation.
+- [ ] `rereads_affect_at_most_daily` — seeing the same mark repeatedly repeatedly
+      affects your mood, but no more than once per day. Opinion changes once, on the
+      first read.
+
+**Art skill — his words, 2026-11-07**
+- [ ] `art_skill_goes_into_the_art` — "a poor artist will paint such a bad graffiti
+      mark that it is ugly, harms a room's beauty, and gives mood debuffs"; "a highly
+      skilled artist is actually making art. It is beautiful, improves a room and
+      people's moods"; and slanderous art "can actually make you really angry as well
+      as improve your mood from the beauty of it".
+
+**Personality — each kind of person takes it like themselves**
+- [ ] `each_takes_it_like_themselves` — psychopaths don't care: no mood change from
+      any mark. Sensitive people feel more, both ways. Clean freaks take extra
+      debuffs and can break into compulsively cleaning graffiti marks.
 
 ### cannot show
 

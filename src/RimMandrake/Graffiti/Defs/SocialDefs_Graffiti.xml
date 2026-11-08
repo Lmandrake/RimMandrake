@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_ScrubMark</defName>
+    <driverClass>RimMandrake.Graffiti.JobDriver_ScrubMark</driverClass>
+    <reportString>scrubbing a mark off the wall.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RM_DefaceMark</defName>
+    <driverClass>RimMandrake.Graffiti.JobDriver_DefaceMark</driverClass>
+    <reportString>crossing out a mark.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RM_ConfrontPainter</defName>
+    <driverClass>RimMandrake.Graffiti.JobDriver_ConfrontPainter</driverClass>
+    <reportString>going to have it out with TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <!-- Never chosen by chance (InteractionWorker's weight is 0): only JobDriver_ConfrontPainter does this. Owner's pick, "Scale it with temper":
+       the game never rolls a fight on this (base 0, so vanilla's roll on the painter's traits never fires); GraffitiSocial.FightChance rolls it
+       on the confronter's own temper after the talk, three insults' worth, capped, at most once in 15 days. -->
+  <InteractionDef>
+    <defName>RM_Graffiti_Confront</defName>
+    <label>confront about the wall</label>
+    <workerClass>InteractionWorker</workerClass>
+    <symbol>Things/Mote/SpeechSymbols/Insult</symbol>
+    <socialFightBaseChance>0</socialFightBaseChance>
+    <recipientThought>Insulted</recipientThought>
+    <logRulesInitiator>
+      <rulesStrings>
+        <li>r_logentry->[INITIATOR_nameDef] went up to [RECIPIENT_nameDef] and had it out over what was painted on the wall.</li>
+        <li>r_logentry->[INITIATOR_nameDef] [confronted] [RECIPIENT_nameDef] about the wall.</li>
+        <li>confronted->confronted</li>
+        <li>confronted->got in the face of</li>
+        <li>confronted->shouted at</li>
+      </rulesStrings>
+    </logRulesInitiator>
+  </InteractionDef>
+
+  <HistoryEventDef>
+    <defName>RM_Graffiti_WallInsult</defName>
+    <label>insult painted on a wall</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RM_Graffiti_SharedSign</defName>
+    <label>shared creed on a wall</label>
+  </HistoryEventDef>
+
+</Defs>

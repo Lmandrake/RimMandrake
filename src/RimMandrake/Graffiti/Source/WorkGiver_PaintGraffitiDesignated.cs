@@ -26,6 +26,14 @@ namespace RimMandrake.Graffiti
         {
             if (!RM_GraffitiSettings.paintingEnabled) return false;
             if (pawn.Map.designationManager.DesignationAt(c, RMGraffitiDefOf.RM_PaintGraffitiHere) == null) return false;
+            // Live pass 18: an ordered throw-up went to a hauler with no Artistic, who painted a sigil in its place. An order goes to a hand that may
+            // paint that mark, as the game's own art bills go to one with the skill; nobody else takes it.
+            ThingDef ordered = MapComponent_GraffitiOrders.For(pawn.Map)?.OrderAt(c);
+            if (ordered != null && !GraffitiPool.PainterMayPaint(ordered, pawn))
+            {
+                if (forced) JobFailReason.Is(GraffitiPool.WhyNot(ordered, pawn));
+                return false;
+            }
             return pawn.CanReserveAndReach(c, PathEndMode.Touch, Danger.None);
         }
 
