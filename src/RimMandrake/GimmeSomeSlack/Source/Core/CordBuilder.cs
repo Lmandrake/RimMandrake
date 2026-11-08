@@ -435,6 +435,35 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 lock (layLock) { layRunning = false; layWorld = layGraphWorld = null; }
             }
         }
+        /// <summary>Heap pieces by <see cref="TangleKey"/>: the last Build's, and this one's.</summary>
+        private Dictionary<string, LaidPiece> tangleCache = new Dictionary<string, LaidPiece>(), tangleNext = new Dictionary<string, LaidPiece>();
+
+        /// <summary>All a heap's piece reads: its cells, the seed, its look and live flag, the lay options, and every cell two round it (walkable, door, cost, busy,
+        /// furniture, conduit, machine), which its connectors and the ground its cables walk are made of.</summary>
+        private static string TangleKey(CordWorld w, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
+        {
+            List<Cell> comp = nd.Cells;
+            int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
+            ulong h = 1469598103934665603UL;
+            foreach (Cell c in comp.OrderBy(c => c))
+            {
+                h = (h ^ (ulong)(uint)(c.X * 73856093 ^ c.Z * 19349663)) * 1099511628211UL;
+                x0 = Math.Min(x0, c.X - 2); z0 = Math.Min(z0, c.Z - 2); x1 = Math.Max(x1, c.X + 2); z1 = Math.Max(z1, c.Z + 2);
+            }
+            var machine = new HashSet<Cell>();
+            foreach (MachineInfo m in w.Machines)
+                if (m.X0 <= x1 && m.X0 + m.W > x0 && m.Z0 <= z1 && m.Z0 + m.H > z0)
+                    for (int x = m.X0; x < m.X0 + m.W; x++)
+                        for (int z = m.Z0; z < m.Z0 + m.H; z++) machine.Add(new Cell(x, z));
+            for (int x = x0; x <= x1; x++)
+                for (int z = z0; z <= z1; z++)
+                {
+                    var c = new Cell(x, z);
+                    h = (h ^ CellSig(w, c) ^ (w.IsConduit(c) ? 1UL << 60 : 0UL) ^ (machine.Contains(c) ? 1UL << 59 : 0UL)) * 1099511628211UL;
+                }
+            return nd.Cell + "|" + h + "|" + opt.Seed + "|" + opt.PileFor(nd.Cell) + "|" + (isLive(nd.Cell) ? 'L' : 'D') + "|" + (opt.Lay.FairBends ? 'F' : '-') + "|" + comp.Count;
+        }
+
         /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>
         private Dictionary<string, LaidPiece> shown = new Dictionary<string, LaidPiece>(), shownNext = new Dictionary<string, LaidPiece>();
         public CordGraph Graph { get; private set; }
@@ -645,7 +674,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     outp.Add(p);
                 }
                 else if (nd.Type == NodeType.Tangle)
-                    outp.Add(TanglePiece(w, nd, opt, isLive));
+                {
+                    // a heap's cables are walked out over its whole ground (pass 17: 16 ms a Build for the Scrapper colony's heap): kept while nothing in or round it changes
+                    string tk = TangleKey(w, nd, opt, isLive);
+                    if (!tangleCache.TryGetValue(tk, out LaidPiece tp)) tp = TanglePiece(w, nd, opt, isLive);
+                    tangleNext[tk] = tp;
+                    outp.Add(tp);
+                }
             }
             foreach (var sk in g.SpurKnots)
             {
@@ -657,6 +692,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
                 outp.Add(p);
             }
+            (tangleCache, tangleNext) = (tangleNext, tangleCache);
+            tangleNext.Clear();
             spareCache = cache;
             cache = next;
             lastOut = outp;
@@ -1327,13 +1364,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Reshape one end of a laid strand so it arrives where and how the end's art expects:
         /// into a junction arm's tip along the arm, onto the plug point heading into the machine, onto
         /// a stub face heading into it, or straight out of a conduit end.</summary>
-        private static List<V2> AttachEnd(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n, BuildOptions opt)
+        /// <summary>How an end's fitting takes the cord: the point it plugs in at (<paramref name="target"/>), the way it goes in there, the straight bit before it, how roomy the old
+        /// approach may be, and for a strip socket whether the cord must first swing round the strip (1 from behind, 2 past its free end). False for an end with no fitting.</summary>
+        private static bool EndPose(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n, BuildOptions opt, out V2 target, out V2 arrive, out double straight, out double roomy, out int swing)
         {
             VId v = atA ? e.A : e.B;
             CordNode nd = g.Nodes[v];
             double lat = n == 1 ? 0 : (i - (n - 1) / 2.0);
-            V2 target, arrive;
-            double straight = 0.15, roomy = 0;
+            target = arrive = default(V2);
+            straight = 0.15; roomy = 0; swing = 0;
             if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
                 StripPose sp = PoseStrip(g, v, opt.Seed);
@@ -1354,10 +1393,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     arrive = -sp.Side;
                     straight = 0.22;
                     roomy = 1.2;
-                    V2 onSide = target + sp.Side * StripSwing;
-                    // from behind: first out past the free end, so the cord comes round the strip instead of under it
-                    if (arm == sp.BackArm) P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap, onSide - sp.Along * 0.15);
-                    else if (arm == sp.FreeArm) P = SwingIn(w, P, !atA, sp.Centre, onSide - sp.Along * 0.5 + sp.Side * 0.25, onSide - sp.Along * 0.1 + sp.Side * 0.2);
+                    swing = arm == sp.BackArm ? 1 : arm == sp.FreeArm ? 2 : 0;
                 }
             }
             else if (nd.Type == NodeType.Junction)
@@ -1398,7 +1434,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 // round 5: the cord runs on into the pile and plugs into one of its connectors' ports, along that port
                 List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true));
-                if (ports.Count == 0) return P;
+                if (ports.Count == 0) return false;
                 PilePort q = EntryPort(ports, atA ? e.PA : e.PB);
                 target = q.Tip + Side(q.Out) * (lat * 0.02);
                 arrive = -q.Out;
@@ -1411,7 +1447,23 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 arrive = o;
                 straight = 0.6;
             }
-            else return P;
+            else return false;
+            return true;
+        }
+
+        private static List<V2> AttachEnd(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n, BuildOptions opt)
+        {
+            VId v = atA ? e.A : e.B;
+            CordNode nd = g.Nodes[v];
+            if (!EndPose(w, g, e, atA, P, i, n, opt, out V2 target, out V2 arrive, out double straight, out double roomy, out int swing)) return P;
+            if (swing != 0)
+            {
+                StripPose sp = PoseStrip(g, v, opt.Seed);
+                V2 onSide = target + sp.Side * StripSwing;
+                // from behind: first out past the free end, so the cord comes round the strip instead of under it
+                if (swing == 1) P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap, onSide - sp.Along * 0.15);
+                else P = SwingIn(w, P, !atA, sp.Centre, onSide - sp.Along * 0.5 + sp.Side * 0.25, onSide - sp.Along * 0.1 + sp.Side * 0.2);
+            }
             // a cut end keeps the old approach: its live end runs straight out of the conduit end and its dead end curls limp (break_live_and_dead_ends_differ)
             CordNode farEnd = g.Nodes[atA ? e.B : e.A];
             if (opt.Lay.FairBends && !(nd.Type == NodeType.Terminal && !nd.Seam) && !(farEnd.Type == NodeType.Terminal && !farEnd.Seam))
@@ -1451,7 +1503,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var machine = new HashSet<Cell>();
             foreach (MachineInfo m in w.Machines)
             {
-                if (m == own || m.X0 > target.X + 4 || m.X0 + m.W < target.X - 4 || m.Z0 > target.Z + 4 || m.Z0 + m.H < target.Z - 4) continue;
+                // by footprint, not reference: a graph reduced from an earlier copy of the world holds that copy's machine infos (the sliced lay laid a lamp's cord round its own cell)
+                if ((own != null && m.X0 == own.X0 && m.Z0 == own.Z0 && m.W == own.W && m.H == own.H) || m.X0 > target.X + 4 || m.X0 + m.W < target.X - 4 || m.Z0 > target.Z + 4 || m.Z0 + m.H < target.Z - 4) continue;
                 for (int x = m.X0; x < m.X0 + m.W; x++)
                     for (int z = m.Z0; z < m.Z0 + m.H; z++) machine.Add(new Cell(x, z));
             }
@@ -1897,6 +1950,247 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return null;
         }
 
+        /// <summary>The tightest a heap's cable turns outside a whole coil (cells). Over one cell of cord it then turns at most 80 degrees, never the sharp bend never_taut_straight_cord
+        /// counts; a spline through random points in the heap folded back on itself wherever two came one behind the other (pass 17: every fold of the self-test's 123 strands was a heap's).</summary>
+        public const double HeapTurnR = 0.72;
+        /// <summary>A heap cable's coils: whole loops, one way round, this wide (cells). The north star's own loops; a cable crammed in a heap coils, it does not fold.</summary>
+        public const double HeapCoilLo = 0.48, HeapCoilHi = 0.62;
+        /// <summary>How far a heap reaches from each of its conduit cells' middles (cells), drawn per cell: their union is a lumpy round outline, not the block's square.</summary>
+        public const double HeapReachLo = 0.95, HeapReachHi = 1.4;
+        /// <summary>The disc round a heap port's lead that counts as the heap's own ground (radius, cells): room for a cable to come out of an outward arm and round.</summary>
+        public const double PortBulge = 0.8;
+        /// <summary>Heap cables laid by the old spline because no walk came round on the heap's ground (the self-test reads it).</summary>
+        internal static int HeapWalkMisses, HeapWalkOff, HeapWalkLong;
+        /// <summary>Self-test hook: each walk attempt's points, its stops, whether it came round, and the heap's ground test.</summary>
+        internal static Action<List<V2>, List<V2>, bool, Func<V2, bool>> HeapWalkTrace;
+        internal static Action<string> HeapWalkWhy;
+
+        /// <summary>Where a heap's cable may lie: on the heap's ground cells (<see cref="PileGround"/>) and within its own reach of one of its conduit cells, or round a port's lead.
+        /// Sampled once on a 0.1-cell grid over the heap's box: the walk asks it a few hundred times a step.</summary>
+        internal static Func<V2, bool> HeapGround(HashSet<Cell> ground, List<Cell> comp, ulong seed, List<PilePort> ports)
+        {
+            var reach = new Dictionary<Cell, double>();
+            foreach (Cell c in comp) reach[c] = CordRng.Of(seed, "heapreach", c.X, c.Z).Range(HeapReachLo, HeapReachHi);
+            // round every port's lead too: a box at the heap's edge with an arm pointing out sends its cable out and round, a bulge, where it could not turn back inside
+            var bulge = ports.Select(q => q.Tip + q.Out * (0.22 + PortBulge)).ToList();
+            bool At(V2 q)
+            {
+                if (!ground.Contains(q.Floor)) return false;
+                foreach (V2 b in bulge) if (V2.Dist(q, b) <= PortBulge + 0.05) return true;
+                int fx = (int)Math.Floor(q.X), fz = (int)Math.Floor(q.Z);
+                for (int dx = -2; dx <= 2; dx++)
+                    for (int dz = -2; dz <= 2; dz++)
+                        if (reach.TryGetValue(new Cell(fx + dx, fz + dz), out double rr) && V2.Dist(q, new Cell(fx + dx, fz + dz).Centre) <= rr) return true;
+                return false;
+            }
+            const int per = 10;   // grid steps a cell
+            int x0 = ground.Min(c => c.X), z0 = ground.Min(c => c.Z), nx = (ground.Max(c => c.X) - x0 + 1) * per, nz = (ground.Max(c => c.Z) - z0 + 1) * per;
+            var grid = new bool[nx * nz];
+            for (int i = 0; i < nx; i++)
+                for (int j = 0; j < nz; j++) grid[i * nz + j] = At(new V2(x0 + (i + 0.5) / per, z0 + (j + 0.5) / per));
+            return q =>
+            {
+                int i = (int)Math.Floor((q.X - x0) * per), j = (int)Math.Floor((q.Z - z0) * per);
+                return i >= 0 && j >= 0 && i < nx && j < nz && grid[i * nz + j];
+            };
+        }
+
+        private static double Wrap(double a)
+        {
+            while (a > Math.PI) a -= 2 * Math.PI;
+            while (a < -Math.PI) a += 2 * Math.PI;
+            return a;
+        }
+
+        /// <summary>The tightest a heap cable turns right out of its plug (cells), over at most <see cref="HeapPlugReach"/> of cord: a socket's forced bend.</summary>
+        private const double HeapPlugR = 0.3, HeapPlugReach = 0.45;
+
+        /// <summary>Whether a heap cable can turn here: the heap's ground all round within 0.4 cell.</summary>
+        private static bool HeapRoomy(Func<V2, bool> onGround, V2 q)
+        {
+            if (!onGround(q)) return false;
+            for (int a = 0; a < 8; a++) if (!onGround(q + CordAudit.Dir(a * Math.PI / 4) * 0.4)) return false;
+            return true;
+        }
+
+        /// <summary>The arc points from a pose turning at curvature <paramref name="k"/> for <paramref name="len"/> cells (the start left out); the end pose out.</summary>
+        private static List<V2> Arc(V2 a, double h, double k, double len, out V2 end, out double hEnd)
+        {
+            var o = new List<V2>();
+            int m = Math.Max(1, (int)Math.Ceiling(len / 0.05));
+            double ds = len / m, x = a.X, z = a.Z;
+            for (int i = 0; i < m; i++)
+            {
+                double hm = h + k * ds / 2;
+                x += Math.Cos(hm) * ds; z += Math.Sin(hm) * ds;
+                h += k * ds;
+                o.Add(new V2(x, z));
+            }
+            end = new V2(x, z); hEnd = h;
+            return o;
+        }
+
+        /// <summary>How a heap cable leaves its plug: straight on, or an arc at <see cref="HeapTurnR"/> or wider, to the first roomy spot; only where none stays on the heap, an arc as tight
+        /// as <see cref="HeapPlugR"/> over at most <see cref="HeapPlugReach"/> cell (the plug's own forced bend: a box at the heap's edge with an arm pointing out or into a pocket). Null if
+        /// nothing gets out.</summary>
+        private static List<V2> HeapEscape(Func<V2, bool> onGround, V2 mid, V2 a, double h, CordRng r, out V2 end, out double hEnd)
+        {
+            // out where it can go on: roomy, headed back into the heap (toward its middle), clear ground a cell on
+            bool Out(V2 e, double he) => HeapRoomy(onGround, e) && Math.Abs(Wrap(Math.Atan2(mid.Z - e.Z, mid.X - e.X) - he)) < 1.3
+                                         && onGround(e + CordAudit.Dir(he) * 0.5) && onGround(e + CordAudit.Dir(he) * 1.0);
+            end = a; hEnd = h;
+            double kMax = 1 / HeapTurnR, kPlug = 1 / HeapPlugR;
+            int sg = r.Sign();
+            var tries = new List<(double k, double maxLen)> { (0, 1.2), (sg * kMax / 2, 1.6), (-sg * kMax / 2, 1.6), (sg * kMax, 2.2), (-sg * kMax, 2.2) };
+            // a retry escapes another way: the gentle tries in a drawn order
+            for (int i = tries.Count - 1; i > 0; i--) { int j = r.Int(0, i); var t = tries[i]; tries[i] = tries[j]; tries[j] = t; }
+            foreach (double kp in new[] { 1 / 0.5, kPlug }) { tries.Add((sg * kp, HeapPlugReach)); tries.Add((-sg * kp, HeapPlugReach)); }
+            // first out where it can go on; where no way gets there, out anywhere roomy
+            for (int pass = 0; pass < 2; pass++)
+                foreach (var (k, maxLen) in tries)
+                    for (double len = 0.2; len <= maxLen + 1e-9; len += 0.1)
+                    {
+                        List<V2> arc = Arc(a, h, k, len, out V2 e, out double he);
+                        if (!arc.All(onGround)) break;
+                        if (Math.Abs(k) > kMax)
+                        {
+                            // a tight plug bend, then on at the cord's own radius, either way round, to where it can go on
+                            foreach (double k2 in new[] { Math.Sign(k) * kMax, 0, -Math.Sign(k) * kMax })
+                                for (double l2 = 0.3; l2 <= 1.6 + 1e-9; l2 += 0.1)
+                                {
+                                    List<V2> on = Arc(e, he, k2, l2, out V2 e2, out double he2);
+                                    if (!on.All(onGround)) break;
+                                    if (pass == 0 ? Out(e2, he2) : HeapRoomy(onGround, e2)) { arc.AddRange(on); end = e2; hEnd = he2; return arc; }
+                                }
+                            continue;
+                        }
+                        if (pass == 0 ? Out(e, he) : HeapRoomy(onGround, e) && onGround(e + CordAudit.Dir(he) * 0.5)) { end = e; hEnd = he; return arc; }
+                    }
+            return null;
+        }
+
+        /// <summary>A Dubins path between two poses on the heap at a radius from <see cref="HeapTurnR"/> up (the order drawn), no more than one and a half turns, its straight part
+        /// bowed (<see cref="Bowed"/>: a heap of straight strokes was the blind judge's "scribble of straight strokes inside a square"); null if none stays on.</summary>
+        private static List<V2> HeapLeg(Func<V2, bool> onGround, V2 a, double ha, V2 b, double hb, CordRng r)
+        {
+            var radii = new List<double> { HeapTurnR, 0.85, 1.0, 1.25 };
+            for (int i = radii.Count - 1; i > 0; i--) { int j = r.Int(0, i); double t = radii[i]; radii[i] = radii[j]; radii[j] = t; }
+            int sg = r.Sign();
+            double amp = r.Range(0.15, 0.28);
+            foreach (double rr in radii)
+                foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a, ha, b, hb, rr).OrderBy(d => d.Len))
+                {
+                    if (dp.Turning > 1.5 * Math.PI) continue;
+                    if (dp.Word >= 4)
+                    {
+                        List<V2> pts = CordShape.Dubins.Sample(a, ha, dp, 0.05);
+                        if (pts.All(onGround)) return pts;
+                        continue;
+                    }
+                    // LSL, LSR, RSL, RSR: an arc, a straight, an arc
+                    double k1 = (dp.Word <= 1 ? 1 : -1) / rr, k3 = (dp.Word == 0 || dp.Word == 2 ? 1 : -1) / rr;
+                    var o = new List<V2>();
+                    V2 a1 = a;
+                    double h1 = ha;
+                    if (dp.T * rr > 1e-6) o.AddRange(Arc(a, ha, k1, dp.T * rr, out a1, out h1));
+                    double ls = dp.P * rr;
+                    List<V2> mid = null;
+                    foreach (int side in new[] { sg, -sg, 0 })
+                    {
+                        mid = Bowed(a1, h1, ls, side * amp);
+                        if (mid.All(onGround)) break;
+                        mid = null;
+                    }
+                    if (mid == null) continue;
+                    o.AddRange(mid);
+                    V2 sEnd = a1 + CordAudit.Dir(h1) * ls;
+                    if (dp.Q * rr > 1e-6) o.AddRange(Arc(sEnd, h1, k3, dp.Q * rr, out _, out _));
+                    if (o.All(onGround)) return o;
+                }
+            return null;
+        }
+
+        /// <summary>A straight from a pose bowed off its line in one lazy wave per <see cref="BowWave"/> cells (offset sin^3: flat and unbent at both ends, so it meets the arcs either
+        /// side of it without a corner or a tighter turn), at most <paramref name="amp"/> cells (sign = side) and never bending tighter than a <see cref="BowMinR"/>-cell radius, so a short
+        /// straight stays nearly straight. The start left out; its end is the straight's own end.</summary>
+        private static List<V2> Bowed(V2 a, double h, double len, double amp)
+        {
+            var o = new List<V2>();
+            if (len < 1e-6) return o;
+            int m = Math.Max(1, (int)Math.Ceiling(len / 0.05)), n = Math.Max(1, (int)Math.Round(len / BowWave));
+            double wave = len / n, cap = wave * wave / (2.1 * Math.PI * Math.PI * BowMinR);   // |offset''| <= ~2.1 pi^2 amp / wave^2
+            amp = Math.Sign(amp) * Math.Min(Math.Abs(amp), cap);
+            V2 d = CordAudit.Dir(h), nn = d.Perp;
+            for (int i = 1; i <= m; i++)
+            {
+                double t = i / (double)m, sn = Math.Sin(n * Math.PI * t);
+                o.Add(a + d * (len * t) + nn * (amp * sn * sn * sn));
+            }
+            return o;
+        }
+        private const double BowWave = 2.2, BowMinR = 2.0;
+
+        /// <summary>
+        /// A heap's cable from port <paramref name="pa"/> to <paramref name="pb"/>, laid like a cord pushed into a pile: out of each plug (<see cref="HeapEscape"/>), then from stop to
+        /// stop of <paramref name="stops"/> (the roomy ones) along Dubins paths at <see cref="HeapTurnR"/> or wider, each stop crossed at a heading drawn round the way on, now and then a
+        /// whole coil where one fits. It never turns tighter than that radius outside a coil or its plugs' own bends, so it never folds (never_taut_straight_cord). Null when no draw stays on the heap.
+        /// </summary>
+        private static List<V2> HeapWalk(Func<V2, bool> onGround, V2 mid, List<V2> stops, PilePort pa, PilePort pb, CordRng r)
+        {
+            const double lead = 0.22;
+            var via = stops.Where(q => HeapRoomy(onGround, q)).ToList();
+            V2 sb = pb.Tip + pb.Out * lead;
+            for (int attempt = 0; attempt < 6; attempt++)
+            {
+                var all = new List<V2> { pa.Tip };
+                for (int q = 1; q <= 4; q++) all.Add(pa.Tip + pa.Out * (lead * q / 4));
+                List<V2> ea = HeapEscape(onGround, mid, all[all.Count - 1], Math.Atan2(pa.Out.Z, pa.Out.X), r, out V2 a, out double ha);
+                List<V2> eb = HeapEscape(onGround, mid, sb, Math.Atan2(pb.Out.Z, pb.Out.X), r, out V2 b, out double hb);
+                if (ea == null || eb == null) { HeapWalkWhy?.Invoke("no escape " + (ea == null ? "A" : "B")); return null; }
+                all.AddRange(ea);
+                int coils = r.Int(0, 2);
+                List<V2> last = null;
+                for (int i = 0; i < via.Count && last == null; i++)
+                {
+                    V2 to = via[i];
+                    bool final = i == via.Count - 1;
+                    List<V2> leg = null;
+                    double hTo = 0;
+                    for (int t = 0; t < (final ? 16 : 8); t++)
+                    {
+                        V2 next = i + 1 < via.Count ? via[i + 1] : b;
+                        hTo = Math.Atan2(next.Z - to.Z, next.X - to.X) + (final ? (t / 16.0 - 0.5) * 2 * Math.PI * 0.9 : r.Range(-1.3, 1.3));
+                        leg = HeapLeg(onGround, a, ha, to, hTo, r);
+                        // the last stop's heading must also let the cord come round to the far plug's way out
+                        if (leg != null && final && (last = HeapLeg(onGround, to, hTo, b, hb + Math.PI, r)) == null) leg = null;
+                        if (leg != null) break;
+                    }
+                    if (leg == null) continue;   // a stop it cannot come by is let go
+                    all.AddRange(leg);
+                    a = to; ha = hTo;
+                    if (!final && coils > 0 && r.Chance(0.6))
+                    {
+                        // a whole coil where it fits
+                        int sg = r.Sign();
+                        double rc = r.Range(HeapCoilLo, HeapCoilHi);
+                        V2 cc = a + CordAudit.Dir(ha + sg * Math.PI / 2) * rc;
+                        List<V2> coil = Arc(a, ha, sg / rc, 2 * Math.PI * rc, out V2 ce, out double ch);
+                        if (coil.All(q => onGround(q) && onGround(q + (q - cc).Norm() * 0.06))) { all.AddRange(coil); coils--; }
+                    }
+                }
+                last ??= HeapLeg(onGround, a, ha, b, hb + Math.PI, r);
+                HeapWalkTrace?.Invoke(all, via, last != null, onGround);
+                if (last == null) { System.Threading.Interlocked.Increment(ref HeapWalkLong); HeapWalkWhy?.Invoke("last leg"); continue; }
+                all.AddRange(last);
+                eb.Reverse();
+                all.AddRange(eb.Skip(1));
+                all.Add(sb);
+                for (int q = 3; q >= 0; q--) all.Add(pb.Tip + pb.Out * (lead * q / 4));
+                return Geo.Resample(all, 0.05);
+            }
+            return null;
+        }
+
         /// <summary>How far past the middle of its cell a heap's cable may wander, as a multiple of the old 0.3 cell (so up to 0.6 past the middle).</summary>
         public const double PileSpill = 2.0;
 
@@ -1939,6 +2233,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // the heap may spill a cell past its conduit onto open floor: kept to the conduit's own cells, its cables drew the block's square
             // outline with straight sides (blind judge p14a/p15a, every look: "squared heaps with straight strokes")
             HashSet<Cell> compSet = PileGround(w, comp);
+            Func<V2, bool> onGround = null;
+            V2 mid = new V2(comp.Average(c => c.X + 0.5), comp.Average(c => c.Z + 0.5));
             for (int i = 0; i < n && ports.Count >= 2; i++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i);
@@ -1946,6 +2242,40 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 for (int k = 0; k < ports.Count && cons.Count > 1 && ports[b].Connector == ports[a].Connector; k++) b = (b + 1) % ports.Count;
                 if (a == b) continue;
                 PilePort pa = ports[a], pb = ports[b];
+                if (opt.Lay.FairBends)
+                {
+                    // a cable pushed into the pile: it wanders and coils, never folds (never_taut_straight_cord), over a lumpy round heap (not the block's square)
+                    if (onGround == null)
+                    {
+                        // the walk may also cross the first cell of a conduit run leaving the heap: a port facing it bends its cable away there, as the run's own cord leaves
+                        var walkCells = new HashSet<Cell>(compSet);
+                        foreach (Cell c in comp)
+                            for (int dx = -1; dx <= 1; dx++)
+                                for (int dz = -1; dz <= 1; dz++)
+                                {
+                                    var q = new Cell(c.X + dx, c.Z + dz);
+                                    if (w.IsConduit(q) && w.IsWalkable(q) && !w.IsDoor(q) && !w.IsFurniture(q) && !w.Machines.Any(m => m.Contains(q))) walkCells.Add(q);
+                                }
+                        onGround = HeapGround(walkCells, comp, opt.Seed, ports);
+                    }
+                    CordRng rw = CordRng.Of(opt.Seed, "heapwalk", nd.Cell.X, nd.Cell.Z, i);
+                    var via = new List<V2>();
+                    int nv = rw.Int(3, 5);
+                    for (int k = 0; k < nv; k++)
+                        for (int t = 0; t < 8; t++)
+                        {
+                            V2 q = comp[rw.Int(0, comp.Count - 1)].Centre + CordAudit.Dir(rw.Range(0, 2 * Math.PI)) * rw.Range(0, 1.1);
+                            if (onGround(q)) { via.Add(q); break; }
+                        }
+                    List<V2> walk = HeapWalk(onGround, mid, via, pa, pb, rw);
+                    if (walk != null)
+                    {
+                        p.Strands.Add(new CordStrand { Pts = walk, S0 = rw.Value() });
+                        used.Add(a); used.Add(b);
+                        continue;
+                    }
+                    System.Threading.Interlocked.Increment(ref HeapWalkMisses);
+                }
                 var stops = new List<V2> { pa.Tip, pa.Tip + pa.Out * 0.22 };
                 int ns = r.Int(2, 4);
                 for (int k = 0; k < ns; k++)

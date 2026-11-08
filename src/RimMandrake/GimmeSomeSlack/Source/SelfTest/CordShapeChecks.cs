@@ -85,6 +85,99 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
         }
 
+        /// <summary>Pass-17 diagnostic (--shape-diag): where the folds sit, and which cords a sliced lay lays differently from one plain Build.</summary>
+        internal static void Diag()
+        {
+            foreach (string look in new[] { "Scrapper", "Modern" })
+            {
+                string f = System.IO.Path.Combine(Environment.CurrentDirectory, "ba_" + look + ".json");
+                if (!System.IO.File.Exists(f)) { Console.WriteLine("TIME no " + f); continue; }
+                using var doc = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(f));
+                CordWorld w = LabWorld.Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> liveT);
+                var bt = new CordBuilder();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                bt.Build(w, opt, c => liveT.Contains(c));
+                Console.WriteLine($"TIME {look}: a cold Build {sw.Elapsed.TotalMilliseconds:0.0} ms");
+                sw.Restart();
+                for (int k = 0; k < 10; k++) bt.Build(w, opt, c => liveT.Contains(c));
+                double all = sw.Elapsed.TotalMilliseconds / 10;
+                opt.Tangles = false;
+                var b2 = new CordBuilder();
+                b2.Build(w, opt, c => liveT.Contains(c));
+                sw.Restart();
+                for (int k = 0; k < 10; k++) b2.Build(w, opt, c => liveT.Contains(c));
+                Console.WriteLine($"TIME {look}: a reused Build {all:0.00} ms with heaps, {sw.Elapsed.TotalMilliseconds / 10:0.00} ms without");
+            }
+            {
+                var sb = new System.Text.StringBuilder("{\"walks\":[");
+                Func<V2, bool> g0 = null;
+                int nw = 0;
+                CordBuilder.HeapWalkTrace = (pts, stops, done, g) =>
+                {
+                    g0 = g;
+                    if (nw++ > 0) sb.Append(',');
+                    sb.Append("{\"done\":").Append(done ? "true" : "false").Append(",\"stops\":[").Append(string.Join(",", stops.Select(q => $"[{q.X:0.###},{q.Z:0.###}]")))
+                      .Append("],\"pts\":[").Append(string.Join(",", pts.Select(q => $"[{q.X:0.###},{q.Z:0.###}]"))).Append("]}");
+                };
+                CordBuilder.HeapWalkWhy = t => Console.WriteLine("WHY " + t);
+                List<LaidPiece> ps0 = new CordBuilder().Build(ReviewRound1Checks.PileWorld(), new BuildOptions { Seed = 1 }, c => true);
+                CordBuilder.HeapWalkWhy = null;
+                CordBuilder.HeapWalkTrace = null;
+                sb.Append("],\"ground\":[");
+                bool f = true;
+                for (double x = 4; x < 13; x += 0.1)
+                    for (double z = 4; z < 13; z += 0.1)
+                        if (g0 != null && g0(new V2(x, z))) { if (!f) sb.Append(','); f = false; sb.Append($"[{x:0.##},{z:0.##}]"); }
+                sb.Append("],\"decals\":[").Append(string.Join(",", ps0.Where(p => p.Key.StartsWith("tangle")).SelectMany(p => p.Decals).Select(d => $"[\"{d.Kind}\",{d.Pos.X:0.###},{d.Pos.Z:0.###},{d.Angle:0.###},{d.Scale:0.###}]"))).Append("]}");
+                System.IO.File.WriteAllText(System.IO.Path.Combine(Environment.CurrentDirectory, "heapwalk_trace.json"), sb.ToString());
+                Console.WriteLine($"HEAPTRACE {nw} attempts -> heapwalk_trace.json in {Environment.CurrentDirectory}");
+            }
+            foreach (ulong seed in new ulong[] { 1, 2, 3, 7, 19 })
+                foreach (var (name, w) in new[] { ("room", Room()), ("pile", ReviewRound1Checks.PileWorld()) })
+                    foreach (LaidPiece p in new CordBuilder().Build(w, new BuildOptions { Seed = seed }, c => true))
+                        for (int si = 0; si < p.Strands.Count; si++)
+                        {
+                            List<V2> P = p.Strands[si].Pts;
+                            double[] cum = Geo.CumLen(P);
+                            foreach (V2 k in CordShape.Kinks(P))
+                            {
+                                int i = P.IndexOf(k);
+                                Console.WriteLine($"FOLD {name} s{seed} [{p.EndA} | {p.EndB}] key={(p.Key ?? "").Split('#')[0]} strand {si}/{p.Strands.Count} L={cum[cum.Length - 1]:0.00} at {cum[i]:0.00} ({k.X:0.00},{k.Z:0.00})");
+                            }
+                        }
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            var (cells, lamps) = CordScaleBench.Lattice(2);
+            int n = Math.Min(120, cells.Count / 2), nc0 = cells.Count - n;
+            List<LaidPiece> one = new CordBuilder().Build(CordScaleBench.World(2, nc0, lamps.Count), new BuildOptions(), live);
+            var b = new CordBuilder();
+            List<LaidPiece> outp = null;
+            for (int i = 0; i < 60; i++)
+            {
+                outp = b.Build(CordScaleBench.World(2, nc0, lamps.Count), new BuildOptions { AsyncLay = true }, live);
+                if (b.LastPending == 0 && !b.LayRunning) break;
+                while (b.LayRunning) System.Threading.Thread.Sleep(1);
+            }
+            var byKey = one.Where(p => p.Key != null).GroupBy(p => p.Key).ToDictionary(g => g.Key, g => g.First());
+            int diff = 0;
+            foreach (LaidPiece p in outp)
+            {
+                if (p.Key == null || !byKey.TryGetValue(p.Key, out LaidPiece q)) { Console.WriteLine($"SLICE only in sliced: {p.Key}"); diff++; continue; }
+                string why = null;
+                if (p.Strands.Count != q.Strands.Count) why = $"strands {p.Strands.Count} vs {q.Strands.Count}";
+                else for (int si = 0; si < p.Strands.Count && why == null; si++)
+                    {
+                        List<V2> a = p.Strands[si].Pts, c = q.Strands[si].Pts;
+                        if (a.Count != c.Count) { why = $"strand {si} pts {a.Count} vs {c.Count}"; break; }
+                        for (int j = 0; j < a.Count; j++) if (V2.Dist(a[j], c[j]) > 5e-4) { why = $"strand {si} pt {j}/{a.Count} ({a[j].X:0.000},{a[j].Z:0.000}) vs ({c[j].X:0.000},{c[j].Z:0.000})"; break; }
+                    }
+                if (why == null && p.Decals.Count != q.Decals.Count) why = $"decals {p.Decals.Count} vs {q.Decals.Count}";
+                if (why == null && p.Ends.Count != q.Ends.Count) why = $"ends {p.Ends.Count} vs {q.Ends.Count}";
+                if (why != null) { diff++; if (diff <= 30) Console.WriteLine($"SLICE differs [{p.EndA} | {p.EndB}] {why}"); }
+            }
+            Console.WriteLine($"HEAPWALK misses {CordBuilder.HeapWalkMisses}, attempts off the ground {CordBuilder.HeapWalkOff}, over budget {CordBuilder.HeapWalkLong}");
+            Console.WriteLine($"SLICE {diff} pieces differ of {outp.Count} (plain {one.Count}); live misses {CordBuilder.LiveMisses}");
+        }
+
         public static void Run()
         {
             int alike = 0, cords = 0;

@@ -1,43 +1,41 @@
 # GSS Ralph: where the last pass got to
 
-Pass 16. Retired on the context gate, offline the whole pass (the game was not touched). **Deployed on Steve = still 249698eeec.** Everything below is committed, built in the lab, **not deployed, not seen in game**. The heap spill (493e472932) is still undeployed too.
+Pass 17. Offline the whole pass. **Deploy refused** (`steve.sh deploy`: "FlowWorks holds game A, which loads this DLL too"), so `ralph/NEED_GAME_A` and `ralph/NEED_GAME` are set. **Deployed on Steve = still 249698eeec.** Everything since (pass 16's fairing, the heap spill 493e472932, this pass) is built and committed, never seen in game.
 
-## What this pass did: the bar's measure, and the lay fixed to it
-The one open bar is never_taut_straight_cord, under the Conductor's 1:18 AM pass rule (RATCHET.md). Its measure did not exist, so I built it, then worked the lay down against it in the shape lab (`Transient/lab/ba/worlds/*.json`, the four played colonies dumped from the game).
+## What this pass did
+1. **Self-tests green: 1178/1178** (aerial 166/166, offline validation 9/9).
+   - `sustained change` (sliced lay != one plain Build): `ArriveClear` compared machines by reference. A graph reduced from an earlier copy of the world holds that copy's `MachineInfo`s, so the sliced lay treated a lamp's own cell as another machine's and laid its cord round it. Now compared by footprint. Live this could also happen (worker graph adoption), so it is a real fix, not a test fix.
+   - `cord-shape: 24 folds`: every one was a heap cable (the pile scene; the open room had 0). Fixed by the new heap lay below: 0 folds in 131 strands.
+2. **Heaps re-laid (`HeapWalk` in CordBuilder.cs, GSS only via `FairBends`).** The old cable was a Catmull spline through 2-4 random points, which folded wherever two points lay one behind the other, drew straight strokes corner to corner, and filled the block's square. Now each cable:
+   - leaves its plug by `HeapEscape`: straight or an arc at >= 0.72 cell to a roomy spot headed back into the heap; only when nothing fits, a plug bend as tight as 0.3 within 0.45 cell (the socket's forced bend);
+   - runs stop to stop (3-5 roomy stops) along Dubins paths at radius 0.72-1.25. Each straight part is bowed by a sin^3 wave, flat and unbent at its ends and never tighter than a 2-cell radius. It sometimes throws a whole coil (r 0.48-0.62, a loop by the bar's own rule);
+   - stays on a lumpy round ground: the heap's ground cells (plus the first cell of a conduit arm leaving it) within a per-cell reach of 0.95-1.4 from its conduit cells, or round a port's lead.
+   - By construction it never turns more than ~80 deg in a cell outside a coil or a plug bend. Misses fall back to the old spline (3 cables in the self-test's 50 heap builds).
+   - Lab look: `D:\ClaudeWork\rimmandrake\ralph_gss\p17\lab_heaps_walk_Scrapper_Modern.png` (before: `lab_heap_Scrapper_before_p16.png`): a dense mass of curves and coils, a round lumpy outline, far fewer straight strokes. **This changes a look the owner approved: before/after at play zoom in game is owed.**
+   - Heap pieces are now cached (`TangleKey`: cells, seed, look, live, every cell 2 round). Before, a heap was re-laid on every Build, and with the walk that took a reused Build to 16.7 ms on the Scrapper colony. Now it is 0.6 ms.
+3. `--shape-diag` (selftest_gimmesomeslack.py) prints FOLD rows, SLICE differences, HEAPWALK misses, Build TIME on the lab worlds, and writes `heapwalk_trace.json` into the selftest cwd. Draw it with `ralph/live/heapwalk_plot.py`.
 
-- **The measure** (`CordShapeAudit.Bends`, `Why`, `BendTally`): a bend = the heading turns past 90 deg within 1 cell of cord (signed sum, so an S does not count), whole cord, ends included. Classes: `loop` (comes round >= 300 deg at mean radius >= 0.45: the north star's own loops, not a fault), `hidden` (under a wall or the plugged machine's art), `wall`/`building` (apex within 0.3 of an unwalkable cell, another machine or furniture), `door` (within 0.6), `socket` (within 0.75 of a junction arm / strip socket / wall plate / pile port / cut end when the course is >= 90 deg off the fitting's facing), `limp` (dead end's curl), else `unforced`. A machine plug is never a socket: we choose its side. Live: probe `bends`, row `M2c_no_sharp_bends` (renamed from M2c_no_folded_cords in validation.py and the core row list), PASS = 0 unforced. Lab: printed per world, `ralph/live/lab_bends_sum.py OUTDIR` sums by piece kind.
-- **Unforced count, lab, HEAD before this pass**: Modern 56, Scrapper 83, Industrial 85, Futuristic 89. **Now: 27, 42, 42, 41** (it reached 21/35/33/28 with cut-end cords faired too, which broke the cut-end art).
-- **Fixes** (all behind `LayParams.FairBends`, on in GSS's `CordBuilder.Lay`, off for FlowWorks):
-  1. `CordShape.Fair`: the last shaping of every floor strand (LayEdge, LayDiving, heap strands). Every bend tighter than 0.7 cell (3-point radius over +-0.3 cell) on open floor is drawn toward its chord until none is left; broad loops and 0.2 cell at each end (cut ends: 0.6 live / 1.0 dead) stay; a point never moves into walls, furniture, doors, other machines, or nearer a wall. A loop too tight to be broad is cut out whole at its crossing.
-  2. `CordShape.ArriveRound` (Dubins paths, radii 0.78 to 0.3): every end except a cut end comes round to its fitting at a bounded radius, cut back along the cord where the path turns least. This replaced the old `CordLayer.Approach` hook in the last half cell (the lamp hook, the strip-socket hooks, the "<" class).
-  3. A one-cell machine (in game a standing lamp is a Consumer) takes its plug on whichever side the cord comes round to with clearly less turn (`SideSwitchGain` 0.35 rad). Lab: the bedroom lamp hook is gone (`Transient/lab/p16/lamp_ba.png`). In game: unseen.
-  4. Loops: `RoundLoopMinR` 0.36 -> 0.5, `RoundFig8MinR` 0.5 -> 0.65 (GSS only), knot loops 0.5; heaps use `LooseHeap` turns >= 0.5 instead of the tight reversing `Heap` spring. Heaps still read as a dense tangle in the lab (`Transient/lab/p16/heap_Scrapper_ba.png`), rounder; outline still squarish.
-
-## Self-tests: 1176/1178 (aerial 166/166)
-Fixed on the way: cut ends (and the whole cord to a cut end) keep the old lay and approach, like ShortBow: the live run, limp curl and whip tails are break_live_and_dead_ends_differ's art, and fairing them broke nodal/downed/whip and made `determinism F33-35` differ on the terminal|battery cord. The "detached ends" check accepts a one-cell machine's plug on any side. A heap's broad coil that would leave the heap's ground is left out (a strip lost a cable: B13, pile look rule 1). Round lays try the 0.5 loop last (long-run end heaps).
-Still red, first job next pass:
-- `cord-shape: 24 folds in 123 strands` (old `CordShape.Kinks`, bar 1 in 20; was within it before this pass). Room() + PileWorld scenes, `CordShapeChecks.cs:~105`. Print where the folds are (piece names): heap strands (Fair inside a heap is held to its ground by `within`; a stuck point can leave a V) or end joins. With loop cuts in heaps on it was 159, off it is 24.
-- `sustained change: the start did not settle equal to one unbudgeted Build (675 cords, pending 0)`: the budgeted/sliced lay path disagrees with one plain Build. Something in Fair/ArriveRound depends on more than the lay key covers (ArriveClear looks 4 cells round the target for machines; the corridor hash covers 3 round the path), or on order.
-- Perf: the slice line reads "worst 11.1 ms (budget 8 ms)"; check whether it was over before this pass (git stash is not allowed: build HEAD~ in a worktree).
-Lab now (cords to cut ends left unfaired): **Modern 27, Scrapper 42, Industrial 42, Futuristic 41** unforced.
+## Lab count of unforced sharp bends (never_taut_straight_cord, played colonies, no furniture)
+Modern 17, Scrapper 26, Industrial 26, Futuristic 24 (pass 16: 27/42/42/41). Heaps are now 0-3 per look. **What is left is short cords: chord under 3 cells, 10-18 per look** (`Transient/lab/p17/h4`, sheet `p17\lab_unforced_Futuristic.png`): a junction box 1-3 cells from its machine, battery or wall plate, a "<" mid-cord or a hook at the plug. Also 1 per look of `coil:` (the spur coil at a junction, `CordLayer.Loop` radius 0.22, CordBuilder ~line 650: make it 0.5 under FairBends) and 2-5 on mid-length cords.
 
 ## Do next, in order
-1. Self-tests green (above). Then the rest of the lab's unforced bends: by kind it is heap mid/end ~10-17, junction->consumer mid 3-6, machine-end 2-4. Make sheets: `ralph/live/lab_bends_rows.py OUT.json SHARP.json` then `ralph/live/lab_sharp_sheet.py WORLD LAID SHARP OUT.png --skip-tangle` (or `--tangle-only`). Re-dump the worlds from the game first if you can (`dump_worlds.py`): the lab worlds have no furniture.
-2. Deploy, then live: probe `bends` on each look's save (`gss_ba_<Look>`), four numbers; shoot `p12_look.py p16 --frames drop,span,dense --tiles` and look at the lamp, the heap and the mast foot in every look (the 12 shots the ratchet wants). If a live count is not 0, its rows say where.
-3. Braiding (owner asked), bedroom_reno.py, proof core, GPT leads 4 and 7, a broaden call: see RATCHET.md 6-8.
+1. **Short hops laid whole** (offline). `EndPose` is already split out of `AttachEnd` (same behaviour, self-tests green). Plan: in LayEdge, for n == 1, no cut end, chord under ~3, not a strip socket with a swing, lay the cord from A's fitting pose (`target - arrive*straight`, heading `-arrive`) to B's along two Dubins legs (radius >= 0.68) through a mid pose bowed 0.2-0.8 cell to one side for slack (length >= 1.15 x chord). For a one-cell machine without a home, try all four sides as AttachEnd does. Check every point clear (ArriveClear rules, both ends), keep the least-turning candidate, skip slack/loops/AttachEnd/Unfold/Fair, keep IntoArt/PastFace. Fall back to the old lay. Then the spur coil. Target: lab 0 unforced in all four looks.
+2. When the game is free: `steve.sh deploy`, `up`, probe `bends` on each `gss_ba_<Look>` save (four numbers), then `p12_look.py p17 --frames drop,span,dense --tiles`: the lamp, the heap and the mast foot in every look (the ratchet's 12 shots), plus the heap before/after (p15 `z_sdense.png` is before).
+3. Braiding (owner asked): heaps first. A pair of heap cables can share a stretch: the second follows the first's path with offsets of opposite sign, ±0.035·sin(2πs/0.7), only where the path turns under 50 deg a cell, so the bar stays clean. Then side-by-side runs.
+4. Then RATCHET 7-8: bedroom_reno.py, proof core, GPT leads 4 and 7, a broaden call.
 
 ## Steve this pass
-Not used. No dead game, no dropped ssh, no reboot.
+`status` once: game b stopped, `bad_cpus=[2]`. No game run. Deploy refused, because game A is held by FlowWorks. No dead game, no dropped ssh, no reboot.
 
 ## North star, judged hard
 - conduit_reads_invisible: true
-- cord_lies_slack_in_loops: true (on 249698eeec; the new lay is broader-looped but unseen, recheck the slack census once deployed)
+- cord_lies_slack_in_loops: true (on 249698eeec; the new lay is unseen, so recheck the slack census once deployed)
 - cord_meets_wall_at_its_face: true
-- dense_grid_reads_as_tangle: true on the deployed build; the new heap is unseen in game
-- break_live_and_dead_ends_differ: true (cut ends deliberately left on the old approach)
+- dense_grid_reads_as_tangle: true on the deployed build; the new heap (walked cables) is unseen in game
+- break_live_and_dead_ends_differ: true (cut ends deliberately left on the old lay and approach)
 - overhead_span_above_everything: true
 - downed_span_lies_on_ground: true
 - four_styles_distinguishable: true
 - one_run_one_style: true
-- never_taut_straight_cord: false (lab unforced sharp bends 27/42/42/41 per look; the bar wants 0 in game)
+- never_taut_straight_cord: false (lab unforced 17/26/26/24; the bar wants 0 in game)
 - never_cord_across_impassable: true
