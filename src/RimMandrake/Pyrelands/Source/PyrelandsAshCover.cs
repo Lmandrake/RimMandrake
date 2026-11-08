@@ -16,10 +16,11 @@ namespace RimMandrake.Pyrelands
     /// or fine gravel ... ash or grey dust drifted by wind", crisp (pass 21, map x, shots p21c0_base against p21r1).
     /// So: a mesh of 4x4 quads a cell, each vertex's alpha from the bilinear field of the cells holding ash, cut at its 0.5
     /// contour after an edge noise bends it (so clumps do not keep the cell grid's straight sides), drawn with the terrain
-    /// fade-rough shader, whose edge texture (RM_FE_AshCoverEdge) frays the margin. The depth of each cell comes from its
-    /// loose-ash filth thickness, so every mechanic stays the filth's (fire and ash fall lay it, rain washes it, it expires,
-    /// colonists sweep it indoors) and only the look changes. The filth's own sprite prints nothing (Graphic_RM_AshCoverHidden);
-    /// its spawn, thickening and removal already dirty the Things mesh of its section and the adjacent ones, which rebuilds this.
+    /// fade-rough shader, whose edge texture (RM_FE_AshCoverEdge) frays the margin.
+    /// 2026-11-08, ash moved to vanilla sand (PyrelandsAsh, owner by card): each cell's depth is the map's SandGrid depth, and its
+    /// opacity RM_FireEcoKernel.AshCoverOpacity of it. Vanilla's SectionLayer_Sand draws nothing on an ash map; this layer draws
+    /// nothing on any other. SandGrid dirties the Sand flag on a visible change (and at random, 1.25% of writes), and the Things
+    /// flag, which the watered ground's changes also ride on; a rebuild happens only when the quantised depths changed.
     /// </summary>
     [StaticConstructorOnStartup]
     public class SectionLayer_PyrelandsAsh : SectionLayer
@@ -33,8 +34,9 @@ namespace RimMandrake.Pyrelands
         private static readonly Color WetTint = new Color(0.30f, 0.30f, 0.30f, 1f);
         private static readonly Color WetGroundTint = new Color(0.40f, 0.40f, 0.40f, 1f);
         private const string GroundTexPath = "Terrain/Surfaces/RM_FE_Ash_Deep";
-        // Alpha for thickness 1..4: below 1 the rough shader opens grit-sized holes, so a thin drift shows a little char.
-        private static readonly float[] DepthAlpha = { 0f, 0.9f, 1f, 1f, 1f };
+        // Depth quantised to 1/64ths: fine enough that no step shows, coarse enough that a fall's every write is not a rebuild.
+        private const int Steps = 64;
+        private static readonly int VisibleSteps = Mathf.CeilToInt(RM_FireEcoKernel.AshVisibleDepth * Steps);
 
         // Fine quads per cell side: a 16 px step at play zoom, where vanilla's half-cell vertex grid fades over a whole cell.
         private const int Sub = 4;
@@ -54,7 +56,7 @@ namespace RimMandrake.Pyrelands
 
         public SectionLayer_PyrelandsAsh(Section section) : base(section)
         {
-            relevantChangeTypes = MapMeshFlagDefOf.Things;
+            relevantChangeTypes = (ulong)MapMeshFlagDefOf.Sand | (ulong)MapMeshFlagDefOf.Things;
         }
 
         public override bool Visible => true;
@@ -75,17 +77,17 @@ namespace RimMandrake.Pyrelands
         private static Material MatWet => matWet ?? (matWet = MakeMat("RM_PyrelandsAshCoverWet", TexPath, WetTint, 2402));
         private static Material MatGround => matGround ?? (matGround = MakeMat("RM_PyrelandsAshWetGround", GroundTexPath, WetGroundTint, 2400));
 
-        // Per cell in the ring: ash thickness 0..4, plus WetBit where the ground is watered ash terrain.
-        private const int WetBit = 8;
+        // Per cell in the ring: ash depth in Steps (0..64), plus WetBit where the ground is watered ash terrain.
+        private const int WetBit = 128;
 
         public override void Regenerate()
         {
-            ThingDef ash = PyrelandsDriftField.AshDef;
             LayerSubMesh smDry = GetSubMesh(Mat), smWet = GetSubMesh(MatWet), smGround = GetSubMesh(MatGround);
             int now = Find.TickManager.TicksGame;
+            bool ashMap = PyrelandsAsh.IsAshMap(Map);
             MapComponent_PyrelandsAshField field = MapComponent_PyrelandsAshField.For(Map);
             bool mayBeWet = field != null && field.MayBeWet(now);
-            bool hasAsh = ash != null && Map.listerThings.ThingsOfDef(ash).Count > 0;
+            bool hasAsh = ashMap && Map.sandGrid.TotalDepth > RM_FireEcoKernel.AshDepthEpsilon;
             if (!hasAsh && !mayBeWet)
             {
                 lastThick = null;
@@ -103,7 +105,7 @@ namespace RimMandrake.Pyrelands
                 for (int j = 0; j < bh; j++)
                 {
                     IntVec3 c = new IntVec3(Mathf.Clamp(ox + i, 0, Map.Size.x - 1), 0, Mathf.Clamp(oz + j, 0, Map.Size.z - 1));
-                    int t = hasAsh ? Mathf.Clamp(PyrelandsDriftField.Thickness(Map, c), 0, 4) : 0;
+                    int t = hasAsh ? Mathf.Clamp(Mathf.RoundToInt(Map.sandGrid.GetDepth(c) * Steps), 0, Steps) : 0;
                     if (mayBeWet && field.IsWetAshGround(c, now)) t |= WetBit;
                     thick[i * bh + j] = t;
                 }
@@ -115,11 +117,11 @@ namespace RimMandrake.Pyrelands
             if (dry == null || dry.Length != thick.Length) { dry = new int[thick.Length]; wet = new int[thick.Length]; ground = new int[thick.Length]; }
             for (int k = 0; k < thick.Length; k++)
             {
-                int t = thick[k] & 7;
+                int t = thick[k] & (WetBit - 1);
                 bool w = (thick[k] & WetBit) != 0;
                 dry[k] = w ? 0 : t;
                 wet[k] = w ? t : 0;
-                ground[k] = w ? 4 : 0;
+                ground[k] = w ? Steps : 0;
             }
             Build(smGround, ground, rect, ox, oz, bh);
             Build(smDry, dry, rect, ox, oz, bh);
@@ -134,7 +136,7 @@ namespace RimMandrake.Pyrelands
             bool any = false;
             for (int k = 0; k < cells.Length; k++)
             {
-                if (cells[k] > 0) { any = true; break; }
+                if (cells[k] >= VisibleSteps) { any = true; break; }
             }
             if (!any)
             {
@@ -185,8 +187,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>The cover's alpha at a fine vertex. (u, v) is the vertex in block cell-centre space. Where ash lies is the 0.5
-        /// contour of the bilinear presence field, pushed in and out by the edge noise; inside, opacity follows thickness,
-        /// averaged over the ash cells only so a patch does not thin towards its rim.</summary>
+        /// contour of the bilinear presence field (cells at the visible depth or deeper), pushed in and out by the edge noise; inside,
+        /// opacity follows depth, averaged over the ash cells only so a patch does not thin towards its rim.</summary>
         private static float AlphaAt(int[] thick, int bh, float u, float v, int fx, int fz)
         {
             int i0 = Mathf.FloorToInt(u), j0 = Mathf.FloorToInt(v);
@@ -198,9 +200,9 @@ namespace RimMandrake.Pyrelands
                 {
                     float w = (di == 0 ? 1f - fu : fu) * (dj == 0 ? 1f - fv : fv);
                     int t = thick[(i0 + di) * bh + (j0 + dj)];
-                    if (t <= 0) continue;
+                    if (t < VisibleSteps) continue;
                     pres += w;
-                    op += w * DepthAlpha[t];
+                    op += w * RM_FireEcoKernel.AshCoverOpacity((float)t / Steps);
                 }
             }
             if (pres <= 0f) return 0f;
@@ -244,13 +246,5 @@ namespace RimMandrake.Pyrelands
         }
 
         private static float Smooth(float t) => t * t * (3f - 2f * t);
-    }
-
-    /// <summary>The loose-ash filth's graphic: the inspect icon only. The ground cover (SectionLayer_PyrelandsAsh) draws the ash.</summary>
-    public class Graphic_RM_AshCoverHidden : Graphic_Single
-    {
-        public override void Print(SectionLayer layer, Thing thing, float extraRotation)
-        {
-        }
     }
 }

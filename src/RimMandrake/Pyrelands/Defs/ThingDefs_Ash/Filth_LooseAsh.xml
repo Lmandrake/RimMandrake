@@ -2,25 +2,18 @@
 <Defs>
 
   <!--
-    The loose surface-ash layer that rides on top of the ground (mostly deep
-    ash, AshField.xml) — the visible mark of a fresh fall or a fresh burn. Vanilla's own DamageWorker_Flame already drops Filth_Ash
-    unconditionally on every fire tick everywhere (RimSage,
-    Source/Verse/DamageWorker_Flame.cs:29) — that keeps happening, untouched,
-    in every biome including this one.
-
-    This is a SEPARATE filth, spawned by the C# fire hook and the ash-fall
-    weather, carrying rainWashes=true — vanilla's own SteadyEnvironmentEffects
-    already washes any rainWashes filth away under ANY weather with rainRate>0
-    (Source/RimWorld/SteadyEnvironmentEffects.cs:124), including Black Rain.
-    That passive vanilla mechanic is what actually delivers "converts
-    accumulated ash to fast-clearing slurry". The deep-ash terrain itself
-    never washes away; Black Rain instead waters it (AshField.xml).
+    LEGACY, kept one cycle so an older save loads. Loose ash was this filth until 2026-11-08; it is now Odyssey's sand depth on
+    a map fire ecology runs on (owner, by card: "Rebuild ash on vanilla sand?" -> "Yes, rebuild on sand"; Source/PyrelandsAshSand.cs).
+    Nothing spawns this def any more: fire, ash fall, the ruins and yesterday's fire all lay sand depth. A save that still holds
+    some has every one converted on load to sand depth, a drift level (0.25) per point of thickness, and destroyed
+    (MapComponent_PyrelandsAshfall.FinalizeInit, FireEcologyHook.cs). Drop this def once no save from before 2026-11-08 is played.
+    The history of its eight sprite redraws and the ground cover that replaced them is in git (de23b05e44 and before).
   -->
 
   <ThingDef ParentName="BaseFilth">
     <defName>RM_FE_Filth_LooseAsh</defName>
-    <label>loose ash</label>
-    <description>A drift of fine grey ash over the ground beneath it. A hard rain carries it off fast.</description>
+    <label>loose ash (old)</label>
+    <description>Ash from before ash lay on the ground as a drift of its own. It turns into that drift when the map loads.</description>
     <altitudeLayer>Filth</altitudeLayer>
     <category>Filth</category>
     <drawerType>MapMeshOnly</drawerType>
@@ -33,58 +26,14 @@
       <canFilthAttach>true</canFilthAttach>
       <maxThickness>4</maxThickness>
     </filth>
-    <!--
-      Owner verdict 2026-09-18 on the minimal-list review: "I don't see ash...
-      anywhere" — 1,900 of these were on the map after ashfall+fire, mechanically
-      fine, invisible. The original (140,136,130,200) is a mid-grey close in
-      value to Pyrelands' own grey-brown ground (see ScorchableGround.xml's
-      Gravel/Soil tints, ~120-140 range) — same tone, low alpha, no contrast
-      either way. Real ash reads pale, near-white against dark ground; raised
-      here to a pale warm-grey and near-opaque so the drift actually stands out
-      rather than blending into the dirt it is meant to be visible on top of.
-    -->
-    <!--
-      Owner 2026-11-07 on the grey ground: "blurry grey stuff ... looks low-res and ugly". Measured by rebuilding a burned patch one
-      layer at a time: vanilla's Things/Filth/Ash blob at 3.3 cells, one splotch per point of thickness (Graphic_Cluster), laid
-      a soft grey fog over every cell. Our own crisp drifts instead (Textures/Things/Filth/RM_FE_LooseAsh, 256 px for 1.5 cells),
-      so a thin scatter shows the dark ground between them and a deep drift reads as heaped ash, not haze. Tinted down to a mid-light
-      grey: at full white a burned cell at x4 read as snow.
-      Same day, at play zoom on map p: one 1.5-cell drift on 92% of a scar's cells still read as pale camouflage blotches. A fire
-      now leaves a drift on about a third of its cells (FireEcologyHook, the since-retired ScarAshShare), drawn at 1.25 and a little darker, so the
-      scar reads as char with ash lying on it.
-      Still read as "flat, cold blue-grey splats with hard edges... stickers" (judge on map q, owner's Conductor at 16:40). Redrawn
-      (src/RimMandrake/Pyrelands/ash_drift_gen.py, seed 41): each drift is one organic powder sheet, thin at the margin where it
-      ends in a crisp, ragged edge of coarse grain with stray specks past it (fine grain vanished at play zoom and the first
-      cut read as soft smoke puffs), heaped in places, warm pale grey. Drawn at 1.6 so neighbouring
-      drifts overlap into patches instead of tiling as separate stickers.
-      Then on map s the scar read as polka dots: a hashed third of the cells, each at x1, every drift alone and one size. Conductor
-      ruling the same day: "make the drifts fewer, of varied size and clustered (pooled against walls and along the burn edge),
-      rather than redrawing the grain again." The art stays; WHERE it lies changed. A static per-map drift field
-      (FireEcologyHook.cs, PyrelandsDriftField) gives each cell a target of 0-3: about a fifth of a scar holds ash, in clumps
-      whose x2-x3 cores are several sprites deep (Graphic_Cluster draws one per point of thickness), with pools in the lee and
-      along the rim and wide bare char between. Ash fall uses the same field and heaps one deeper than it (maxThickness 4).
-      2026-11-07 night, map v at 1:1 (shots/v_ash_drift_crop_1to1.png): the drifts still read as translucent smoke smudges beside the
-      crisp grass. Redrawn again (ash_drift_gen.py, seed 41, same shapes): see-through warm-grey powder with a crisp broken edge,
-      visible grit, a brighter heaped middle and a few dark cinder flecks. Every opaque or hard-edged cut read as snow, cotton or
-      stickers, so the translucency and this colour stay. Blind judges on a true-scale mock: ash 4/5, smoke 1/5 (old cut 2/5, 4/5).
-      2026-11-08, that cut in game on map w at 1:1 (shots/ash_new_1to1_crop.png): a second model read it as "pale pitted crust or
-      lichen", from the near-black cinder flecks and the alpha holes. Same outlines; flecks fewer and mid-grey (char_v 0.16 -> 0.46),
-      holes shallower (hole_k 0.30 -> 0.12) (shots/ash_fleck_compare.png, old left of each pair).
-      2026-11-08, map x day 3 at play zoom (shots/first_look_8): still grey cloud puffs beside a fresh colony, eight cuts in. The
-      sprite is retired: loose ash is drawn as ground cover (SectionLayer_PyrelandsAsh in PyrelandsAshCover.cs, textures
-      ash_cover_gen.py): a pale sheet over every cell holding this filth, its margin bent by noise and frayed by the terrain
-      fade-rough shader, as one terrain lies over another (snow's soft path read as fog: shots/cover1, t1-t16). This graphic
-      prints nothing and is kept for the inspect icon.
-    -->
     <graphicData>
-      <graphicClass>RimMandrake.Pyrelands.Graphic_RM_AshCoverHidden</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <texPath>Things/Filth/RM_FE_LooseAsh/LooseAshA0</texPath>
       <color>(184, 180, 172, 200)</color>
       <drawSize>1.6</drawSize>
     </graphicData>
     <statBases>
-      <!-- Under open sky ash is the ground's own colour here: a burn must not read as an ugly environment for days. Indoors it is dirt. -->
       <BeautyOutdoors>0</BeautyOutdoors>
       <Beauty>-8</Beauty>
       <Cleanliness>-10</Cleanliness>

@@ -41,8 +41,8 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | mechanic | Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water) | PyrelandsAshField.cs | 18 |  |
 | mechanic | Fresh-burn bonus (+0.50 fading over 6 days) | PyrelandsAshField.cs | 8 10 |  |
 | mechanic | Black rain washes the bonus away and waters the field | PyrelandsAshField.cs | 10 G |  |
-| mechanic | Fire dusts loose ash (RM_FE_Filth_LooseAsh) | FireEcologyHook.cs | 5 8 |  |
-| mechanic | Ash fall lays drifts that keep accumulating | PyrelandsAshField.cs | 5 G |  |
+| mechanic | Fire leaves ash on the ground (sand depth) | FireEcologyHook.cs | 5 8 |  |
+| mechanic | Ash fall buries the ground as heavy snow does (sand depth) | PyrelandsAshSand.cs | 5 G |  |
 | mechanic | Ambient ash drift is the commonest weather | PyrelandsAshField.cs | G |  |
 | mechanic | Standing burn line: the map is never fireless for 2 days (MapComponent_BurnLine) | Source | L | the calm world puts it out; L's card says how it relights (2 quiet days at 3x) |
 | mechanic | Fire front: a grass line goes up every 2-4 days (PyrelandsFireFront.cs) | Source | L | a clock over days; L's card warns that it can light station grass once you unpause |

@@ -651,7 +651,6 @@ namespace RimMandrake.Pyrelands
         {
             Shape shape = new Shape(map, centre, edge, radius);
             ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_ScorchFruit");
-            ThingDef ashDef = PyrelandsDriftField.AshDef;
             int cells = 0, bare = 0, sprouts = 0, pods = 0, ashed = 0;
             foreach (IntVec3 c in shape.box)
             {
@@ -661,7 +660,7 @@ namespace RimMandrake.Pyrelands
                 if (p == null) bare++;
                 else if (p.def == fruitDef) pods++;
                 else if (!p.def.plant.IsTree) sprouts++;
-                if (ashDef != null && c.GetFirstThing(map, ashDef) != null) ashed++;
+                if (PyrelandsAsh.Depth(map, c) >= RM_FireEcoKernel.AshVisibleDepth) ashed++;
             }
             return string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "scarCells={0};bare={1};sprouts={2};pods={3};ash={4}", cells, bare, sprouts, pods, ashed);

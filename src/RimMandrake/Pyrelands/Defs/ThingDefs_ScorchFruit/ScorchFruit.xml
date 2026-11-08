@@ -11,8 +11,8 @@
     "is fire nearby" check at harvest time (which vanilla has no XML hook
     for — no Plant field reads GameCondition or nearby Fire things), this
     plant simply DOES NOT EXIST until the C# hook spawns it (already at
-    harvestAfterGrowth, via the same fire-tick hook that places
-    RM_FE_Filth_LooseAsh) directly on a burning cell. It never appears in
+    harvestAfterGrowth, via the same fire-tick hook that lays the
+    scar's ash) directly on a burning cell. It never appears in
     any biome's wildPlants list — RimUtinni: Fire Ecology does NOT add it
     there, deliberately. "Inert and worthless unburned" is delivered by the
     plant simply not existing unburned, which is stronger than a gate.

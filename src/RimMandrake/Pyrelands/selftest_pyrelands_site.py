@@ -929,7 +929,7 @@ def test_suite_reads_no_genstep_as_a_thing():
     src = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
     used = set(re.findall(r'(?:_things|_count|_ids_on_map)\(t, "([^"]+)"', src))
     used |= set(re.findall(r'list_things", defName="([^"]+)"', src))
-    check("validation.py thing reads were found (the instrument can see)", "RM_FE_Filth_LooseAsh" in used, used)
+    check("validation.py thing reads were found (the instrument can see)", "RM_FE_Plant_ScorchFruit" in used, used)
     check("no thing read names a GenStepDef", not (used & gensteps), used & gensteps)
 
 

@@ -121,6 +121,15 @@
       <li Class="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthBiomeExtension" MayRequire="mandrake.rm.biomes">
         <vanillaCropsNeedWater>false</vanillaCropsNeedWater>
       </li>
+      <!-- Footprints in the ash (owner 2026-11-08: "footprints were already built by us in the desert ... reuse that"): the
+           Stillsand's track grid (CreatureBehaviors, FOOTPRINT_TRACK_GRID_1), with the ash itself as the print surface. Ash is
+           Odyssey sand depth here (Source/PyrelandsAshSand.cs): a walker on ash at least minSandDepth deep leaves a print, a print
+           is buried once buryDepth of ash has fallen or washed over it, and goes when the ash under it thins below minSandDepth.
+           0.1 is about two hours of ash fall; vanilla's snow takes prints from 0.4 (PawnFootprintMaker). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" MayRequire="mandrake.rm.biomes">
+        <minSandDepth>0.1</minSandDepth>
+        <buryDepth>0.12</buryDepth>
+      </li>
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>

@@ -55,6 +55,8 @@
     <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
     <rainRate>0</rainRate>
     <snowRate>0</snowRate>
+    <!-- 2026-11-08: ash is vanilla sand on an ash map (Source/PyrelandsAshSand.cs); cinderfall lays it at 0.45 of ash fall's 1.2. -->
+    <sandRate>0.54</sandRate>
     <temperatureRange>0~999</temperatureRange>
     <windSpeedFactor>1.8</windSpeedFactor>
     <windSpeedOffset>1.5</windSpeedOffset>

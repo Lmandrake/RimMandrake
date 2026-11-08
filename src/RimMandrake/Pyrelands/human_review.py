@@ -132,12 +132,13 @@ def station_defs():
         "Nothing until you light the grass.",
         terrain=[(FIREBREAK, 2, 5, 8, 2)], plants=[(EMBER, 2, 7, 8, 3, 1.0, 1.0)],
         expect_terrain={FIREBREAK: 16}, burnable=True)
-    add("A", "LOOSE ASH DRIFTS", "fire and ash fall leave loose ash",
-        "RM_FE_Filth_LooseAsh at 1, 2, 3 and 4 passes, west to east. Weak spot: thick drifts may read as dirt.",
-        ["Select the filth: cleaning removes it.", "--weather RM_FE_Weather_AshFall lays more over the whole map."],
-        "Nothing; colonists may clean it if it is in the home area (it is not).",
-        spawn=[("RM_FE_Filth_LooseAsh", 2 + 2 * i, z, i + 1) for i in range(4) for z in range(3, 9)],
-        expect_things=["RM_FE_Filth_LooseAsh"])
+    add("A", "ASH ON THE GROUND", "fire and ash fall leave ash (sand depth)",
+        "Ash at depth 0.25, 0.5, 0.75 and 1.0, west to east, on deep ash. Weak spot: a thin dusting may read as fog.",
+        ["Walk a colonist across it: footprints from depth 0.1.", "--weather RM_FE_Weather_AshFall lays more over the whole map.",
+         "Mark a snow/sand clear area on it: colonists clear it."],
+        "Nothing; ash is not filth, nobody sweeps it unless a clear area is marked.",
+        terrain=[(ASH, 2, 3, 8, 6)], ash=[(2 + 2 * i, 3, 2, 6, 0.25 * (i + 1)) for i in range(4)],
+        expect_terrain={ASH: 48})
     add("A", "HEAT: SUN VS SHADE", "overhead sun; a roof answers it",
         "West pad open sky, east pad under a roof on four granite posts. The cell temperature is the same; the "
         "difference is in a pawn's felt heat (the sun-heat kind 'overhead', +4..10 C, from the shared "
@@ -162,7 +163,7 @@ def station_defs():
         terrain=[("RM_FE_Ground_Soil", 2, 2, 8, 8)], plants=[(EMBER, 2, 2, 8, 8, 1.0, 0.75, 11), (QUICK, 2, 2, 8, 8, 1.0, 0.25, 12)],
         expect_terrain={"RM_FE_Ground_Soil": 50}, burnable=True, **ring)
     add("B", "AFTER THE BURN", "burned during the build, then put out",
-        "The same pad burned for ~1.5 h: soil -> deep ash in one step, loose ash dusted on it, and maybe a "
+        "The same pad burned for ~1.5 h: soil -> deep ash in one step, ash lying on it, and maybe a "
         "scorch-fruit pod (1 in 20 burned cells). Weak spot: leafless (burnt) grass art; a pod that never appears.",
         ["Hover a burned cell: fertility shows the fresh-burn bonus (+50%, fading over 6 days).",
          "Unpause at 3x: ember grass re-greens within a few days, largely green in about a week."],
@@ -337,7 +338,7 @@ SIGNS = {
     "PAVED STRIP": ("a concrete strip beside grass",
                     "light the grass (Dev > Debug actions > Fire)",
                     "does the fire stop at the line?"),
-    "LOOSE ASH DRIFTS": ("loose ash, 1 to 4 layers, west to east",
+    "ASH ON THE GROUND": ("ash at depth 0.25 to 1.0, west to east",
                          "select a drift; clean it if you like",
                          "do thick drifts read as ash, or as dirt?"),
     "HEAT: SUN VS SHADE": ("west pad open sky, east pad under a roof",
@@ -348,7 +349,7 @@ SIGNS = {
                         "does it end up like the AFTER pad next door?"),
     "AFTER THE BURN": ("the same pad, burned during the build",
                        "hover a cell: fertility shows +50% burn bonus",
-                       "ash, loose ash, maybe a pod: does it look burned?"),
+                       "ash, ash on the ground, maybe a pod: does it look burned?"),
     "BURNING NOW": ("a live fire, paused mid-burn",
                     "unpause at 1x and watch it walk",
                     "do fire and smoke look right on ash ground?"),
@@ -485,8 +486,8 @@ FEATURES = [
     ("mechanic", "Watered deep ash is fertile (0.40 dry -> 1.40 within 2 cells of water)", "PyrelandsAshField.cs", "18"),
     ("mechanic", "Fresh-burn bonus (+0.50 fading over 6 days)", "PyrelandsAshField.cs", "8 10"),
     ("mechanic", "Black rain washes the bonus away and waters the field", "PyrelandsAshField.cs", "10 G"),
-    ("mechanic", "Fire dusts loose ash (RM_FE_Filth_LooseAsh)", "FireEcologyHook.cs", "5 8"),
-    ("mechanic", "Ash fall lays drifts that keep accumulating", "PyrelandsAshField.cs", "5 G"),
+    ("mechanic", "Fire leaves ash on the ground (sand depth)", "FireEcologyHook.cs", "5 8"),
+    ("mechanic", "Ash fall buries the ground as heavy snow does (sand depth)", "PyrelandsAshSand.cs", "5 G"),
     ("mechanic", "Ambient ash drift is the commonest weather", "PyrelandsAshField.cs", "G"),
     ("mechanic", "Standing burn line: the map is never fireless for 2 days (MapComponent_BurnLine)", "Source", "L",
      "the calm world puts it out; L's card says how it relights (2 quiet days at 3x)"),
@@ -564,7 +565,7 @@ BOARDS = {
            "What the biome grew by itself: the two grasses, deep ash, a pond ringed with rich ground and mud. "
            "PYRELANDS_GRASS_SATURATION_1 asks for your look here: grass everywhere, ash where burned, no bare dirt."),
     "R": ("SCORCHED RUIN", "the nearest ruin the build found",
-          "Ruins on a Pyrelands map stand blackened: deep ash under and round them, loose ash filth, burned stuff. "
+          "Ruins on a Pyrelands map stand blackened: deep ash under and round them, ash lying on it, burned stuff. "
           "Weak spot: a pristine ruin (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE)."),
     "G": ("WEATHER SWITCH", "one global switch: --weather NAME",
           "Weather is global, so it is one switch, not stations. RM_FE_Weather_AshDrift: free-flying ash like snow "
@@ -767,7 +768,7 @@ def known_defs(S):
     names = set()
     for s in S:
         names |= station_def_names(s)
-    names |= {"RM_FE_Filth_LooseAsh", ASH, FIREBREAK}
+    names |= {ASH, FIREBREAK}
     return (names & VANILLA) | defs_in_repo(names - VANILLA)
 
 
@@ -1198,6 +1199,9 @@ class Review(object):
                 self.call("jawa/set_roof_batch", ops="%s:%d,%d,%d,%d" % ((d,) + g(x, z) + (w, h)))
             for d, x, z, n_ in u.get("spawn", []):
                 self.call("jawa/spawn_batch", ops="%s:%d,%d,%d" % ((d,) + g(x, z) + (n_,)))
+            for x, z, w, h, depth in u.get("ash", []):   # ash is sand depth, not a thing (PyrelandsAsh.LayAsh)
+                self.call("jawa/static_call", type="RimMandrake.Pyrelands.PyrelandsAsh", method="LayAsh",
+                          args="%d,%d,%d,%d|%s" % (g(x, z) + (w, h, depth)))
             for d, n_, x, z in u.get("items", []):
                 self.call("rimworld/spawn_thing", defName=d, stackCount=n_, x=ox + x, z=oz + z)
         self.say("gallery: %d stations laid" % len(S))

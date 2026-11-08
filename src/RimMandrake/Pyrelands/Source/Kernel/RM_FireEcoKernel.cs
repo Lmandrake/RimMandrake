@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace RimMandrake.Pyrelands
 {
     // Verse-free decisions of the fire-ecology hooks and the biome (FireEcologyHook.cs, WildPlantAllowlist.cs, RM_PyrelandsMod.cs): the
-    // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, the ash-fall rate and
-    // attempt count, the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
+    // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, ash on the sand grid (the
+    // weather's ash rate, the outdoor wear, the cover's opacity, the grass dust), the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
     // same expressions; the offline fuzz drives them.
 
     /// <summary>A map's drift-field noise cut points (RM_FireEcoKernel.DriftCuts): pool, fringe (1), bank (2), core (3).</summary>
@@ -307,7 +307,7 @@ namespace RimMandrake.Pyrelands
         }
 
         // ── The drift field (PyrelandsDriftField): one static low-frequency noise per map gives every cell a target ash
-        // thickness 0..3. Conductor ruling 2026-11-07 on map s: "make the drifts fewer, of varied size and clustered (pooled
+        // level 0..3 (AshDepthPerLevel of sand depth each). Conductor ruling 2026-11-07 on map s: "make the drifts fewer, of varied size and clustered (pooled
         // against walls and along the burn edge), rather than redrawing the grain again." A hashed third of a scar's cells at
         // thickness 1 read as polka dots: every drift alone, all one size, evenly spread. The cuts are quantiles of the map's
         // own noise, so the shares below hold whatever the noise's spread turns out to be.
@@ -320,7 +320,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>Banks (thickness 2) and cores (3) sit inside the fringes, on the field's highest ground.</summary>
         public const float DriftBankQuantile = 0.91f;
         public const float DriftCoreQuantile = 0.965f;
-        /// <summary>The deepest a scar or drift-field target goes; ash fall may heap one more (AshFallCeiling).</summary>
+        /// <summary>The deepest a scar or drift-field target goes, in drift levels (AshDepthPerLevel each).</summary>
         public const int DriftTargetMax = 3;
         /// <summary>A fire must have burned this long before its cell counts the burn edge: early in a cell's fire the grass ahead
         /// of the front has not caught yet, and every interior cell would read as rim.</summary>
@@ -364,11 +364,21 @@ namespace RimMandrake.Pyrelands
             return t > DriftTargetMax ? DriftTargetMax : t;
         }
 
-        /// <summary>A fire may thicken its cell's drift only while the drift is below the cell's target: a long burn can never
-        /// re-roll its way past it.</summary>
-        public static bool ScarAshMayThicken(int thickness, int target)
+        /// <summary>A burning cell's ash after one dusting: one drift level deeper, never past the cell's drift-field target, never
+        /// thinned (a long burn can never re-roll its way past the target, and a deeper fall already lying stays).</summary>
+        public static float ScarAshStep(float depth, int target)
         {
-            return thickness < target;
+            float want = target * AshDepthPerLevel;
+            if (depth >= want - AshDepthEpsilon) return depth;
+            float next = depth + AshDepthPerLevel;
+            return next > want ? want : next;
+        }
+
+        /// <summary>A scar laid at once (yesterday's fire, a ruin): the cell's target depth, never thinning a deeper drift.</summary>
+        public static float ScarAshLaid(float depth, int target)
+        {
+            float want = target * AshDepthPerLevel;
+            return depth > want ? depth : want;
         }
 
         public static bool UnderFruitCap(int existing, int cap)
@@ -376,88 +386,83 @@ namespace RimMandrake.Pyrelands
             return existing < cap;
         }
 
-        /// <summary>The ash-fall rate this map gets this batch, or -1 when it gets none: ash fall full, cinderfall reduced, an opted-in
-        /// foreign biome the coverage slider, anything else nothing.</summary>
-        public static float AshRate(bool ashFall, bool cinderfall, float cinderFactor, bool nativeBiome, bool crossBiomeApplies,
-            float crossCoverage, float rateMultiplier)
+        // ── Ash on vanilla sand (PyrelandsAshSand.cs). Owner, by card, 2026-11-08: "Rebuild ash on vanilla sand?" -> "Yes, rebuild
+        // on sand". Ash is the Odyssey sand depth grid (0..1) on a map fire ecology runs on: ash fall lays it through the weather's
+        // own sandRate (vanilla SteadyEnvironmentEffects.AddFallenSandAt, snow's code path), a fire lays it on its cell, black rain
+        // carries it off, and colonists clear it with vanilla's clear-snow-and-sand job.
+
+        /// <summary>One drift level of the retired loose-ash filth (thickness 1..4) in sand depth: the drift field's targets and a
+        /// legacy filth's thickness both convert at this.</summary>
+        public const float AshDepthPerLevel = 0.25f;
+        public const float AshDepthEpsilon = 0.001f;
+        /// <summary>Ash shallower than this is none: vanilla's own None buildup category (WeatherBuildupUtility, below 0.03).</summary>
+        public const float AshVisibleDepth = 0.03f;
+        /// <summary>Vanilla's sand wear per steady-effects visit on an open-sky cell with no sand falling (SteadyEnvironmentEffects,
+        /// SandDissipateRate 1/180). A cell is visited every ~1,667 ticks (0.0006 of the map a tick), 36 times a day: 0.2 a day.</summary>
+        public const float VanillaSandWear = 1f / 180f;
+        /// <summary>Dry ash on an ash map wears at this share of vanilla's sand: 0.1 depth a day, so a full cover lasts ~10 days and a
+        /// scar's 0.25-0.75 lasts 2.5-7.5 (the retired filth expired 6-9 days after its last thickening).</summary>
+        public const float AshDryWearShare = 0.5f;
+        /// <summary>Rain carries off this much ash a visit at rainRate 1: one drift level, as vanilla's rainWashes thinned the filth one
+        /// level on a Rand.Chance(rainRate) roll. Black rain (rainRate 1.1) clears a full cover in ~2.5 hours.</summary>
+        public const float AshRainWashPerVisit = 0.25f;
+        /// <summary>Cross-biome ambient ash at 100% coverage, as a share of the ash weathers' own sandRate.</summary>
+        public const float AmbientAshShare = 0.1f;
+        /// <summary>Cross-biome ambient ash falls only while the map's mean depth is below this (then dry wear takes over).</summary>
+        public const float AmbientMeanDepthCap = 0.1f;
+
+        /// <summary>The sand rate an ash weather adds on this map: its own sandRate times the rate setting on an ash map with ash fall
+        /// on; nothing otherwise (the weather still blows, it lays nothing; and never sand on a map that does not draw ash).</summary>
+        public static float AshWeatherSandRate(float ashWeatherRate, bool ashMap, bool accumulationOn, float rateMultiplier)
         {
-            float rate;
-            if (ashFall)
-            {
-                rate = 1f;
-            }
-            else if (cinderfall)
-            {
-                rate = cinderFactor;
-            }
-            else if (!nativeBiome && crossBiomeApplies)
-            {
-                rate = crossCoverage;
-            }
-            else
-            {
-                return -1f;
-            }
-            return rate * rateMultiplier;
+            if (!ashMap || !accumulationOn || !(ashWeatherRate > 0f) || !(rateMultiplier > 0f)) return 0f;
+            return ashWeatherRate * rateMultiplier;
         }
 
-        // ── Ash fall (MapComponent_PyrelandsAshfall). Owner's Conductor 2026-11-07, sky_s_1ashfall_b.png on map s: a six-hour fall
-        // left nothing visible. It sprinkled single drifts on uniformly random cells, and on a grass map nearly all of them lay
-        // under the grass blades, which draw over filth. Now it lands where it shows (bare ground: scars, rock flats, paths,
-        // floors), fills the drift field's hollows and the lee of rock and walls, and heaps the drifts it already laid.
-
-        // 2026-11-08, map w: grass carpets almost the whole map, so ash fall showed on next to nothing. The grass now wears the
-        // ash itself (PyrelandsAshDust prints a dust overlay over a plant on a drift), so ash lands on grass along the same drift
-        // field: banks of grey grass in the field's hollows and lees, the odd dusted clump between them.
-
-        /// <summary>Keep chance for falling ash on grass the drift field gives nothing: the odd dusted clump between the banks.</summary>
-        public const float AshFallGrassAccept = 0.03f;
-        /// <summary>Keep chance on grass in the drift field's banks (target 1+): the bank greys over in an afternoon's fall.</summary>
-        public const float AshFallGrassBankAccept = 0.5f;
-        /// <summary>Keep chance on bare ground the drift field gives nothing: a light dusting between the banks.</summary>
-        public const float AshFallBareAccept = 0.12f;
-        /// <summary>New drifts stop once this share of the map holds one; the ones already laid keep heaping to their ceiling.</summary>
-        public const float AshFallCoverCap = 0.35f;
-
-        /// <summary>Ash fall's keep chance for a cell: on bare ground a hollow or a lee takes all and the rest a dusting; on grass
-        /// a bank takes half and the rest the odd drift.</summary>
-        public static float AshFallAccept(int target, bool underGrass)
+        /// <summary>The steady ambient ash rate of an opted-in foreign biome's map: the coverage slider's share of a tenth of ash fall's
+        /// rate, falling only while the map's mean depth is under AmbientMeanDepthCap; 0 for the Pyrelands itself or off.</summary>
+        public static float AmbientAshSandRate(bool crossBiomeApplies, bool nativeBiome, bool accumulationOn, float coverage,
+            float ashFallRate, float rateMultiplier, float meanDepth)
         {
-            if (underGrass) return target >= 1 ? AshFallGrassBankAccept : AshFallGrassAccept;
-            return target >= 1 ? 1f : AshFallBareAccept;
+            if (nativeBiome || !crossBiomeApplies || !accumulationOn || !(coverage > 0f) || meanDepth >= AmbientMeanDepthCap) return 0f;
+            return coverage * AmbientAshShare * ashFallRate * rateMultiplier;
         }
 
-        /// <summary>Loose ash under open sky on natural ground is the land itself (BeautyOutdoors 0), not dirt to sweep; on a floor
-        /// or under a roof it is.</summary>
-        public static bool AshIsGround(bool roofed, bool floor)
+        /// <summary>What one steady-effects visit takes off an open-sky cell with no sand falling: vanilla's wear on any map that does
+        /// not hold ash; on an ash map half that dry, plus the rain's wash (black rain is the one rain the Pyrelands has).</summary>
+        public static float OutdoorSandWear(bool ashMap, float rainRate)
         {
-            return !roofed && !floor;
+            if (!ashMap) return VanillaSandWear;
+            return VanillaSandWear * AshDryWearShare + AshRainWashPerVisit * (rainRate > 0f ? rainRate : 0f);
         }
 
-        /// <summary>How deep ash fall heaps a cell: one past its drift-field target, at least 1, at most the filth's own cap.</summary>
-        public static int AshFallCeiling(int target, int maxThickness)
+        /// <summary>The ground cover's opacity over a cell of this ash depth: none below the visible depth, a gritty 0.4 at a dusting
+        /// (the rough shader opens holes below 1), 0.9 at one old drift level (0.25, the old cover's x1), solid from 0.5.</summary>
+        public static float AshCoverOpacity(float depth)
         {
-            int c = target + 1;
-            if (c > maxThickness) c = maxThickness;
-            return c < 1 ? 1 : c;
+            if (!(depth >= AshVisibleDepth)) return 0f;
+            if (depth >= 0.5f) return 1f;
+            if (depth >= AshDepthPerLevel) return 0.9f + 0.1f * (depth - AshDepthPerLevel) / (0.5f - AshDepthPerLevel);
+            return 0.4f + 0.5f * (depth - AshVisibleDepth) / (AshDepthPerLevel - AshVisibleDepth);
         }
 
-        /// <summary>Whether ash fall may start a new drift (a fresh cell or a bank's spread) with this many already on the map.</summary>
-        public static bool AshFallMaySpread(int drifts, int area, float capShare)
+        /// <summary>Grass dust over a plant: 0 none, 1 the light overlay, 2 the full one.</summary>
+        public static int AshDustLevel(float depth)
         {
-            return drifts < area * capShare;
+            if (!(depth >= AshDustLightDepth)) return 0;
+            return depth >= AshDustFullDepth ? 2 : 1;
         }
 
-        /// <summary>Deposit attempts this batch: map area per attempt scaled by the rate; a rate of zero deposits nothing, any positive
-        /// rate deposits at least one.</summary>
-        public static int AshAttempts(int area, float cellsPerAttempt, float rate)
+        /// <summary>A grass cell dusts light from here (~1.5 hours of ash fall) and full from AshDustFullDepth (~8 hours).</summary>
+        public const float AshDustLightDepth = 0.08f;
+        public const float AshDustFullDepth = 0.4f;
+
+        /// <summary>A legacy loose-ash filth's thickness as sand depth, for the one-time migration of a save laid before ash moved to sand.</summary>
+        public static float LegacyFilthDepth(int thickness)
         {
-            if (rate <= 0f)
-            {
-                return 0;
-            }
-            int attempts = (int)((float)area / cellsPerAttempt * rate);
-            return attempts < 1 ? 1 : attempts;
+            if (thickness <= 0) return 0f;
+            float d = thickness * AshDepthPerLevel;
+            return d > 1f ? 1f : d;
         }
 
         /// <summary>True exactly once per id; the set is cleared wholesale when it passes a bound no live map reaches.</summary>

@@ -10,7 +10,7 @@ using Verse;
 namespace RimMandrake.Pyrelands
 {
     /// <summary>Plant def extension: the ash-dust overlay for each graphic the plant draws (a Graphic_Random folder, a staged
-    /// folder), printed over the plant while its cell holds a loose-ash drift. Same file names as the base, so the random
+    /// folder), printed over the plant while its cell holds ash. Same file names as the base, so the random
     /// variant index matches. A graphic with no pair (the charred leafless one) takes no dust.</summary>
     public class RM_AshDustExtension : DefModExtension
     {
@@ -24,15 +24,13 @@ namespace RimMandrake.Pyrelands
     }
 
     /// <summary>
-    /// Ash fall lays loose-ash filth, and filth draws below LowPlant: on map w (2026-11-08) a six-hour ash fall laid ~3,000
-    /// drifts on the grass carpet and a player saw none of them (shots/af_s1_4.png). Vanilla already prints a second,
-    /// silhouette-matched plane over a plant when its cell's snow is deep (Plant.Print: GetSnowDepth &gt; 0.8, then
-    /// SnowOverlayGraphic). A transpiler swaps those two reads for ours, so a dusted grass cell prints its ash overlay through
-    /// vanilla's own code path, at vanilla's own positions and wind sway: light at one layer of ash, full at two or more. Snow
-    /// still wins where it lies. The filth's own spawn, thickening, washing and expiry dirty the section mesh, so the dust comes
-    /// and goes with the drift (black rain washes it off the grass).
-    /// Outdoor ash on natural ground is the land, not dirt (BeautyOutdoors 0): nobody sweeps the grass or the yard after a
-    /// fall unless ordered. Floors and roofed cells are still cleaned.
+    /// Ash on the ground draws below LowPlant: on map w (2026-11-08) a six-hour ash fall laid ~3,000 drifts on the grass carpet
+    /// and a player saw none of them (shots/af_s1_4.png). Vanilla already prints a second, silhouette-matched plane over a plant
+    /// when its cell's snow is deep (Plant.Print: GetSnowDepth &gt; 0.8, then SnowOverlayGraphic). A transpiler swaps those two
+    /// reads for ours, so a dusted grass cell prints its ash overlay through vanilla's own code path, at vanilla's own positions
+    /// and wind sway: light from RM_FireEcoKernel.AshDustLightDepth of ash (sand depth, PyrelandsAsh), full from AshDustFullDepth.
+    /// Snow still wins where it lies. SandGrid dirties the Things mesh as the depth moves (a big step at once, else at random,
+    /// 1.25% of its writes), so the dust comes and goes with the ash (black rain washes it off the grass in a step).
     /// </summary>
     [StaticConstructorOnStartup]
     public static class PyrelandsAshDust
@@ -59,22 +57,13 @@ namespace RimMandrake.Pyrelands
                 }
                 else
                 {
-                    Log.Message("[RimMandrake.Pyrelands] ash dust: armed; grass on a loose-ash drift prints its ash overlay ("
+                    Log.Message("[RimMandrake.Pyrelands] ash dust: armed; grass on ash prints its ash overlay ("
                                 + swappedDepth + "+" + swappedOverlay + " reads swapped)");
                 }
             }
             catch (Exception e)
             {
                 Log.Error("[RimMandrake.Pyrelands] ash dust: Plant.Print patch FAILED, ash on grass will not show: " + e.Message);
-            }
-            try
-            {
-                h.Patch(AccessTools.Method(typeof(WorkGiver_CleanFilth), nameof(WorkGiver_CleanFilth.HasJobOnThing)),
-                    postfix: new HarmonyMethod(typeof(PyrelandsAshDust), nameof(Postfix_CleanFilth)));
-            }
-            catch (Exception e)
-            {
-                Log.Error("[RimMandrake.Pyrelands] ash dust: cleaning patch FAILED, colonists will sweep ash off the grass: " + e.Message);
             }
         }
 
@@ -113,11 +102,11 @@ namespace RimMandrake.Pyrelands
             return ext;
         }
 
-        /// <summary>The loose-ash thickness dusting this plant, 0 for none (or no overlay for its def).</summary>
+        /// <summary>The ash dusting this plant: 0 none, 1 light, 2 full (none for a def with no overlay, or off an ash map).</summary>
         private static int DustOn(Plant p, Map map, IntVec3 c)
         {
-            if (p == null || map == null || ExtOf(p.def) == null || !c.InBounds(map)) return 0;
-            return PyrelandsDriftField.Thickness(map, c);
+            if (p == null || map == null || ExtOf(p.def) == null || !c.InBounds(map) || !PyrelandsAsh.IsAshMap(map)) return 0;
+            return RM_FireEcoKernel.AshDustLevel(map.sandGrid.GetDepth(c));
         }
 
         /// <summary>Plant.Print's snow read: real snow first, else "deep" on a dusted grass cell so the overlay prints.</summary>
@@ -179,14 +168,6 @@ namespace RimMandrake.Pyrelands
             }
             pairs[g] = pair;
             return pair;
-        }
-
-        public static void Postfix_CleanFilth(ref bool __result, Thing t, bool forced)
-        {
-            if (!__result || forced || t == null || t.def != PyrelandsDriftField.AshDef || !t.Spawned) return;
-            Map map = t.Map;
-            IntVec3 c = t.Position;
-            if (RM_FireEcoKernel.AshIsGround(map.roofGrid.Roofed(c), map.terrainGrid.TerrainAt(c).IsFloor)) __result = false;
         }
     }
 }

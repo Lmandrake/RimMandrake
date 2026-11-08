@@ -208,7 +208,7 @@ MODS = {
     }, ()),
     "Pyrelands": ("RM_PyrelandsMod.cs", "FireEcologyHook.csproj", {
         "Mod enabled": "Now",
-        "Loose ash and scorch-fruit": "Now",
+        "Fire's ash and scorch-fruit": "Now",
         "Ash accumulation (Ash Fall / Cinderfall weather)": "Now",
         "Plant art and wild flora": "Now",
         "Scorched ruins (new maps)": "NewMapsOnly",

@@ -58,6 +58,7 @@
     <Compile Include="PyrelandsWeatherOverlays.cs" />
     <Compile Include="PyrelandsAshCover.cs" />
     <Compile Include="PyrelandsAshDust.cs" />
+    <Compile Include="PyrelandsAshSand.cs" />
     <Compile Include="PyrelandsHerdThirst.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />
     <Compile Include="GenStep_PyrelandsFireCast.cs" />

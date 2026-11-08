@@ -221,6 +221,7 @@
     <Compile Include="RM_TrackSurfaceExtension.cs" />
     <Compile Include="RM_MapComponent_TrackGrid.cs" />
     <Compile Include="RM_TrackGridPatches.cs" />
+    <Compile Include="RM_TrackBuildupEraser.cs" />
     <Compile Include="RM_SectionLayer_TrackPrints.cs" />
     <Compile Include="RM_TrackGridDiag.cs" />
     <Compile Include="RM_PerceivedBeautyExtension.cs" />

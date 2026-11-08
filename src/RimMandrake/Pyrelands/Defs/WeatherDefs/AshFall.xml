@@ -17,16 +17,16 @@
     exists. `curSky.colors.overlay` is read nowhere else in the engine, so
     darkening it has no side effects.
 
-    ⚠️ WHAT THE ENGINE WILL NOT DO FOR US. `snowRate` is the field that
-    makes falling weather ACCUMULATE, and it accumulates into
-    map.snowGrid — white snow, drawn white, melting above freezing
-    (SteadyEnvironmentEffects.cs:96 AddFallenSnowAt). On a 25 degC+ biome
-    it would both look wrong and melt instantly, so snowRate stays 0 and
-    the accumulation is done instead by MapComponent_PyrelandsAshfall
-    (Source/FireEcologyHook.cs), which lays down this mod's own
-    RM_FE_Filth_LooseAsh — the same filth the fire hook already drops, so
-    a drift laid by weather and a drift laid by a fire are the same thing
-    and both wash away under RM_FE_BlackRain.
+    ⚠️ WHERE THE ASH GOES. `snowRate` accumulates into map.snowGrid: white,
+    and melted at once on a 25 degC+ biome, so it stays 0. Since 2026-11-08
+    (owner, by card: "Rebuild ash on vanilla sand?" -> "Yes") the ash is
+    Odyssey's SAND grid: `sandRate` below is deposited by vanilla
+    SteadyEnvironmentEffects.AddFallenSandAt, snow's own code path
+    (0.046 x rate x noise 0.5..1 a visit, a visit every ~1,667 ticks).
+    1.2 is heavy snow's snowRate (SnowHard), so ash piles as heavy snow
+    does: ~0.048 depth a game hour, a full cover in about a day. On an ash
+    map it is drawn as ash, keeps ~10 days dry and washes off under
+    RM_FE_BlackRain (Source/PyrelandsAshSand.cs); the rate setting scales it.
 
     🔑 rainRate STAYS 0. Anything above 0.1 would (a) put out the fires
     this biome exists to have, via Fire.TickInterval's rain extinguish,
@@ -52,6 +52,7 @@
     <moveSpeedMultiplier>0.95</moveSpeedMultiplier>
     <rainRate>0</rainRate>
     <snowRate>0</snowRate>
+    <sandRate>1.2</sandRate>
     <windSpeedFactor>1.2</windSpeedFactor>
     <windSpeedOffset>0.5</windSpeedOffset>
     <preventSkygaze>true</preventSkygaze>
@@ -97,7 +98,7 @@
     Ash drift — the Pyrelands' CLEAR weather (owner, 2026-10-12: "a LOT of free-flying ash blowing around like snow";
     design pyrelands_ash_redesign_2026-10-12.md §5a). Replaces Clear in the biome table at the same weight. The same
     gentle-snow sheet tinted by the sky `overlay` colour as ash fall (header above), but no fog, no penalties, sunny sky,
-    and NO accumulation (MapComponent_PyrelandsAshfall lays drifts only for ash fall / cinderfall). The ambientAshHeavy
+    and NO accumulation (sandRate 0: only ash fall and cinderfall lay ash). The ambientAshHeavy
     setting layers WeatherOverlay_SnowHard on at startup (the "LOT" setting).
   -->
   <WeatherDef>

@@ -82,6 +82,9 @@ ANIMAL_MANIFEST = frozenset([
 DEEP_ASH = "RM_FE_Ash_Deep"   # the ash field (AshField.xml): the biome's ordinary ground
 LEGACY_ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy")   # retired rungs: hidden aliases, re-laid on load
 ASH_FIELD = "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField"     # jawa/static_call probes (PyrelandsAshField.cs)
+# Ash on the ground is Odyssey's sand depth since 2026-11-08 (owner by card, "Rebuild ash on vanilla sand?" -> "Yes"), not a
+# thing: list_things cannot see it. PyrelandsAsh.ProbeAsh reads it, ClearAsh zeroes it (Source/PyrelandsAshSand.cs).
+ASH_SAND = "RimMandrake.Pyrelands.PyrelandsAsh"
 STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
 # Mechanics that must be OFF during the controlled bars (plan 2.3a isolation).
@@ -459,6 +462,31 @@ def _count(t, defName, rect=None):
     if "countMatched" not in r or not r.get("scanned"):
         _fail("list_things(%s) unreadable (no countMatched / scanned 0): %r" % (defName, r))
     return r["countMatched"]
+
+
+def _ash(t, rect=None):
+    """The ash (sand depth) over `rect` ('x,z,w,h') or the whole map -> {cells, ashed, deep, depthSum, max, ashMap, ...};
+    ashed = cells at the visible depth (0.03) or deeper. {} offline. Raises on an unreadable result."""
+    r = t.bridge_call("jawa/static_call", type=ASH_SAND, method="ProbeAsh", args=rect or "all")
+    if not _live(t):
+        return {}
+    _ok(r, "ProbeAsh(%s)" % (rect or "all"))
+    out = {}
+    for part in str(r.get("result") or "").split(";"):
+        k, _, v = part.partition("=")
+        try:
+            out[k] = float(v) if "." in v else int(v)
+        except ValueError:
+            out[k] = v
+    if "ashed" not in out or not out.get("cells"):
+        _fail("ProbeAsh(%s) unreadable: %r" % (rect or "all", r))
+    return out
+
+
+def _clear_ash(t):
+    """Every cell of the current map to no ash (PyrelandsAsh.ClearAsh); the cleared count, or None offline."""
+    r = t.bridge_call("jawa/static_call", type=ASH_SAND, method="ClearAsh")
+    return (r or {}).get("result") if _live(t) else None
 
 
 def _things(t, defName, rect=None, limit=500):
@@ -1060,11 +1088,11 @@ def ruins(t):
                   [(x.get("def"), x["x"], x["z"]) for x in picks])
             got = _terrain(t, ";".join("%d,%d,3,3" % (x["x"] - 1, x["z"] - 1) for x in picks))
             frac = sum(v for k, v in got.items() if k == DEEP_ASH or "Water" in k) / float(max(1, sum(got.values())))
-            filthy = sum(1 for x in picks if _count(t, "RM_FE_Filth_LooseAsh", "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)) > 0)
-            _note(t, "ruin footprint terrain + loose ash (3x3 at %d sampled ruin buildings)" % len(picks),
-                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithLooseAsh": filthy})
+            filthy = sum(1 for x in picks if _ash(t, "%d,%d,3,3" % (x["x"] - 1, x["z"] - 1)).get("ashed", 0) > 0)
+            _note(t, "ruin footprint terrain + ash on the ground (3x3 at %d sampled ruin buildings)" % len(picks),
+                  {"terrain": got, "deepAshFraction": round(frac, 3), "ruinsWithAsh": filthy})
             # Deep ash is ~85% of the map, so terrain alone barely marks a ruin; the genstep lays deep ash on EVERY
-            # footprint cell (ruin floors included) and loose-ash filth on ~70% of them, which is the visible scorch.
+            # footprint cell (ruin floors included) and ash (sand depth 0.25) on ~70% of them, which is the visible scorch.
             if frac < RUIN_ASH_MIN:
                 _fail("ruin footprints are %.0f%% deep ash, want >= %.0f%%: %r" % (100 * frac, 100 * RUIN_ASH_MIN, got))
             # The site builder now sets the season BEFORE the map is generated (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST),
@@ -1397,9 +1425,9 @@ def fire_tick_effects(t):
     with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
         _fire(t, rect)
         _wait(t, 2600)
-        n = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
+        n = _ash(t, _rs(rect)).get("ashed", 0)
         if _live(t) and n < 1:
-            _fail("expected >=1 RM_FE_Filth_LooseAsh in %s after 2600 ticks of fire, got %d"
+            _fail("expected >=1 ashed cell (sand depth >= 0.03) in %s after 2600 ticks of fire, got %d"
                   % (_rs(rect), n))
         t.screenshot(rect=rect)
 
@@ -1444,24 +1472,26 @@ def _clear_scorchfruit(t):
 @suite.chain("ashfall_weather_accumulation")
 @_teardown(weather=True)
 def ashfall_weather_accumulation(t):
-    """Ashfall counted over the WHOLE map from ZERO: deposits land on
-    `CellFinder.RandomCell(map)`, so a 24x24 rect expected ~0 hits (the 2026-09-13 false RED)."""
+    """Ash fall counted over the WHOLE map from ZERO. Since 2026-11-08 it is vanilla sand fall (sandRate 1.2, heavy snow's
+    pace), so every open cell gains depth on each visit; 2600 ticks is ~1.5 visits, a dusting where it has landed."""
     _pad(t, PAD_PROBE)
     with _comp(t, "ashfall_accumulates", toggle="ashfallAccumulationEnabled"):
         _extinguish(t)
-        t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
-        start = _count(t, "RM_FE_Filth_LooseAsh")
+        _clear_ash(t)
+        start = _ash(t).get("ashed", 0)
         if _live(t) and start != 0:
-            _fail("could not clear ash to zero before the run: %d remain" % start)
+            _fail("could not clear ash to zero before the run: %d cells remain" % start)
         try:
             t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
             _wait(t, 2600)
-            n = _count(t, "RM_FE_Filth_LooseAsh")
+            got = _ash(t)
         finally:
             t.bridge_call("jawa/weather_set", unlock=True)
+        n = got.get("ashed", 0)
+        _note(t, "whole-map ash after 2600 ticks of ash fall", got)
         if _live(t) and n < 1:
-            _fail("expected >=1 NEW RM_FE_Filth_LooseAsh over the whole map after 2600 ticks "
-                  "under RM_FE_Weather_AshFall, got %d" % n)
+            _fail("expected >=1 NEW ashed cell over the whole map after 2600 ticks "
+                  "under RM_FE_Weather_AshFall, got %d (%r)" % (n, got))
         t.screenshot()
 
 
@@ -1473,17 +1503,19 @@ def ashfall_drifts(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "ashfall_darkens_drifts", shows=["pyre_ashfall_darkens_drifts"]):
         _extinguish(t)
-        t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
+        _clear_ash(t)
         t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
         _wait(t, 4000)
-        series = []
+        series, cells = [], []
         for _ in range(4):
-            series.append(_count(t, "RM_FE_Filth_LooseAsh"))
+            a = _ash(t)
+            series.append(a.get("depthSum", 0.0))
+            cells.append(a.get("ashed", 0))
             _wait(t, 2500)
-        _note(t, "whole-map LooseAsh at t=0/2500/5000/7500 after settle", series)
+        _note(t, "whole-map ash depth sum / ashed cells at t=0/2500/5000/7500 after settle", {"depthSum": series, "ashed": cells})
         if _live(t):
-            if any(b < a for a, b in zip(series, series[1:])) or series[-1] < 20:
-                _fail("ash series %r not monotone or < 20 at the end" % series)
+            if any(b < a for a, b in zip(series, series[1:])) or cells[-1] < 20:
+                _fail("ash depth series %r not monotone, or %r ashed cells < 20 at the end" % (series, cells))
         t.screenshot()
 
 

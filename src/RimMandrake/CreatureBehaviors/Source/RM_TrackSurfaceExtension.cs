@@ -29,6 +29,17 @@ namespace RimMandrake.CreatureBehaviors
     // each add their own extension to one def; the first whose biome filter
     // matches the map wins (RM_TrackGridPatches.SurfaceAt).
     //
+    // On a BiomeDef, with minSandDepth > 0 (the Pyrelands' ash, 2026-11-08): the map's buildup in Odyssey's
+    // sand grid is the surface. Wherever it lies at least minSandDepth deep a walker leaves a print, whatever
+    // the terrain; the buildup's own eraser (RM_TrackBuildupEraser) buries a print once buryDepth of it has
+    // moved over the cell (on the odds, delta / buryDepth a write) and clears it when the cell thins below
+    // minSandDepth. A terrain's or a filth's own surface still wins on its cell.
+    //
+    //   <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">     <!-- on the BiomeDef -->
+    //     <minSandDepth>0.1</minSandDepth>
+    //     <buryDepth>0.12</buryDepth>
+    //   </li>
+    //
     // Print class, in order: a race override; then, for an invisible walker,
     // invisibleTexPath if set (the Stillsand's submerged swimmer draws a wake
     // trough, not feet; null keeps ordinary prints, the Warscar's case: the
@@ -56,6 +67,16 @@ namespace RimMandrake.CreatureBehaviors
 
         /// <summary>Walkers lighter than this leave nothing (0 = everything leaves prints).</summary>
         public float minBodySize = 0f;
+
+        /// <summary>On a BiomeDef only: the map's sand-grid buildup is the surface wherever it is at least this deep. 0 = not a
+        /// buildup surface (a terrain's or filth's extension ignores it).</summary>
+        public float minSandDepth = 0f;
+
+        /// <summary>Buildup surfaces: sand moved over a printed cell (fallen, worn or washed) that buries its print, on the odds
+        /// (each write clears it with chance delta / buryDepth).</summary>
+        public float buryDepth = 0.12f;
+
+        public bool IsBuildupSurface => minSandDepth > 0f;
 
         public bool AppliesTo(Map map)
         {
@@ -101,6 +122,8 @@ namespace RimMandrake.CreatureBehaviors
         {
             foreach (string e in base.ConfigErrors()) yield return e;
             if (printSize <= 0f) yield return "RM_TrackSurfaceExtension: printSize must be > 0";
+            if (minSandDepth < 0f || minSandDepth > 1f) yield return "RM_TrackSurfaceExtension: minSandDepth must be in 0..1";
+            if (IsBuildupSurface && !(buryDepth > 0f)) yield return "RM_TrackSurfaceExtension: a buildup surface needs buryDepth > 0";
             if (humanTexPath.NullOrEmpty() || animalTexPath.NullOrEmpty() || largeTexPath.NullOrEmpty() || dragTexPath.NullOrEmpty())
             {
                 yield return "RM_TrackSurfaceExtension: every print class needs a texPath";

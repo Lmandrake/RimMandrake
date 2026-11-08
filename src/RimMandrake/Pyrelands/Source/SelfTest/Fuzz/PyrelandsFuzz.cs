@@ -585,17 +585,17 @@ namespace RimMandrake.Pyrelands.Fuzz
                 float a2 = RM_FireEcoKernel.BiomeScore(true, true, false, Math.Min(tMax, t2 + 1f), r2 + 10f, 100f, false, tMin, tMax, rMin, rMax, eMin, eMax, bs, dw, div);
                 Check(a2 >= a1, "a warmer, wetter tile scored lower");
                 // the vanilla rival (arid shrubland) at the same tile: report where the Pyrelands out-bids it
-                // ash-fall rate / attempts
-                bool ashFall = r.Next(4) == 0, cinder = !ashFall && r.Next(4) == 0, nativeB = r.Next(2) == 0, cross = r.Next(2) == 0;
-                float cov = r.Next(0, 5) / 4f, mult = 0.25f + r.Next(0, 12) / 4f;
-                float rate = RM_FireEcoKernel.AshRate(ashFall, cinder, 0.45f, nativeB, cross, cov, mult);
-                float specRate = ashFall ? mult : cinder ? 0.45f * mult : !nativeB && cross ? cov * mult : -1f;
-                Check(rate == specRate, $"ash rate {rate}, spec {specRate}");
-                int area = 100 + r.Next(250000);
-                int att = RM_FireEcoKernel.AshAttempts(area, 4000f, rate < 0 ? 0f : rate);
-                if (rate <= 0f) { Check(att == 0, $"a rate of {rate} still deposits {att} ash"); AshSkips++; }
-                else { Check(att >= 1 && att >= (int)((float)area / 4000f * rate), "ash attempts below the floor"); AshAttemptsTotal += att; }
-                Check(RM_FireEcoKernel.AshAttempts(area * 2, 4000f, 1f) >= RM_FireEcoKernel.AshAttempts(area, 4000f, 1f), "a bigger map got fewer ash attempts");
+                // ash on sand: the ash weathers' sand rate and an opted-in biome's ambient ash
+                bool ashMapR = r.Next(2) == 0, accOn = r.Next(4) != 0, nativeB = r.Next(2) == 0, cross = r.Next(2) == 0;
+                float weatherRate = r.Next(0, 5) * 0.3f, cov = r.Next(0, 5) / 4f, mult = r.Next(0, 13) / 4f, mean = (float)r.NextDouble() * 0.2f;
+                float rate = RM_FireEcoKernel.AshWeatherSandRate(weatherRate, ashMapR, accOn, mult);
+                float specRate = ashMapR && accOn && weatherRate > 0f && mult > 0f ? weatherRate * mult : 0f;
+                Check(rate == specRate, $"ash weather sand rate {rate}, spec {specRate}");
+                if (rate <= 0f) AshSkips++; else AshAttemptsTotal++;
+                float amb = RM_FireEcoKernel.AmbientAshSandRate(cross, nativeB, accOn, cov, 1.2f, mult, mean);
+                float specAmb = !nativeB && cross && accOn && cov > 0f && mean < RM_FireEcoKernel.AmbientMeanDepthCap
+                    ? cov * RM_FireEcoKernel.AmbientAshShare * 1.2f * mult : 0f;
+                Check(amb == specAmb, $"ambient ash rate {amb}, spec {specAmb}");
                 // once-per-fire roll set
                 var set = new HashSet<int>(); int bound = 50;
                 for (int k = 0; k < 400; k++)
@@ -935,27 +935,128 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(share >= 0.15f && share <= 0.30f, "scar ash share " + share + " outside 15-30% (shape " + shape + ")");
                 RM_DriftCuts none = RM_FireEcoKernel.DriftCuts(new float[0]);
                 Check(RM_FireEcoKernel.DriftTarget(1e6f, none, true, true) == 0, "an empty field laid ash");
-                int have = r.Next(5), wantAsh = r.Next(4);
-                Check(RM_FireEcoKernel.ScarAshMayThicken(have, wantAsh) == (have < wantAsh), "scar ash thickens past its target");
+                float have = (float)r.NextDouble(); int wantAsh = r.Next(4);
+                float step = RM_FireEcoKernel.ScarAshStep(have, wantAsh), laid = RM_FireEcoKernel.ScarAshLaid(have, wantAsh);
+                float wantD = wantAsh * RM_FireEcoKernel.AshDepthPerLevel;
+                Check(step >= have && (step <= wantD + 1e-5f || step == have), "scar ash thinned or thickened past its target");
+                Check(step - have <= RM_FireEcoKernel.AshDepthPerLevel + 1e-5f, "a dusting laid more than one drift level");
+                Check(laid == Math.Max(have, wantD), "a laid scar thinned a deeper drift or missed its target");
 
-                // Ash fall: grass in a bank half the time and elsewhere the odd drift, hollows and the lee always, bare ground
-                // sometimes; heaps one past the field's target up to the def cap; new drifts stop at the cover cap. Ash on natural
-                // ground under open sky is not swept; on a floor or under a roof it is.
-                int tgt = r.Next(4), max = 1 + r.Next(5);
-                Check(RM_FireEcoKernel.AshFallAccept(tgt, true) == (tgt >= 1 ? RM_FireEcoKernel.AshFallGrassBankAccept : RM_FireEcoKernel.AshFallGrassAccept),
-                      "ash fall on grass: bank or odd drift");
-                Check(RM_FireEcoKernel.AshFallGrassBankAccept > RM_FireEcoKernel.AshFallGrassAccept, "grass banks take less ash than the plain");
-                bool roofedA = r.Next(2) == 0, floorA = r.Next(2) == 0;
-                Check(RM_FireEcoKernel.AshIsGround(roofedA, floorA) == (!roofedA && !floorA), "ash swept off open natural ground");
-                Check(RM_FireEcoKernel.AshFallAccept(tgt, false) == (tgt >= 1 ? 1f : RM_FireEcoKernel.AshFallBareAccept), "ash fall bare/hollow accept");
-                int ceil = RM_FireEcoKernel.AshFallCeiling(tgt, max);
-                Check(ceil >= 1 && ceil <= max && ceil == Math.Min(max, Math.Max(1, tgt + 1)), "ash fall ceiling");
-                int areaA = 1 + r.Next(90000), drifts = r.Next(20000);
-                Check(RM_FireEcoKernel.AshFallMaySpread(drifts, areaA, RM_FireEcoKernel.AshFallCoverCap) == (drifts < areaA * RM_FireEcoKernel.AshFallCoverCap), "ash fall cover cap");
+                // Ash on sand: wear off an ash map is vanilla's, on one half of it dry plus the rain's wash; the cover's opacity and
+                // the grass dust rise with depth; a legacy filth converts a drift level per point of thickness.
+                float rainA = (float)r.NextDouble() * 1.5f, dA = (float)r.NextDouble(), dB = dA + (float)r.NextDouble() * (1f - dA);
+                Check(RM_FireEcoKernel.OutdoorSandWear(false, rainA) == RM_FireEcoKernel.VanillaSandWear, "a non-ash map's sand wear is not vanilla's");
+                Check(RM_FireEcoKernel.OutdoorSandWear(true, 0f) < RM_FireEcoKernel.VanillaSandWear, "dry ash wears as fast as vanilla sand");
+                Check(RM_FireEcoKernel.OutdoorSandWear(true, rainA) >= RM_FireEcoKernel.OutdoorSandWear(true, 0f), "rain slowed the ash's wear");
+                Check(RM_FireEcoKernel.AshCoverOpacity(dB) >= RM_FireEcoKernel.AshCoverOpacity(dA) && RM_FireEcoKernel.AshCoverOpacity(dB) <= 1f,
+                      "ash cover opacity not monotonic or above 1");
+                Check(RM_FireEcoKernel.AshCoverOpacity(RM_FireEcoKernel.AshVisibleDepth * 0.99f) == 0f, "ash below the visible depth drew");
+                Check(RM_FireEcoKernel.AshDustLevel(dB) >= RM_FireEcoKernel.AshDustLevel(dA), "grass dust not monotonic in depth");
+                int thickA = r.Next(6);
+                Check(RM_FireEcoKernel.LegacyFilthDepth(thickA) == Math.Min(1f, thickA * RM_FireEcoKernel.AshDepthPerLevel), "legacy filth depth");
             });
         }
 
         // ════════════════════════ units ════════════════════════
+        // ════════════════════════ ash on sand, in play terms ════════════════════════
+        // Owner by card 2026-11-08, "Rebuild ash on vanilla sand?" -> "Yes". One open-sky cell per noise sample, visited on vanilla's
+        // schedule (SteadyEnvironmentEffects: 0.0006 of the map a tick, so every ~1,667 ticks, 1.5 visits a game hour), each visit
+        // doing what vanilla does with the rate PyrelandsAsh.Postfix_SandRate composes and the wear Prefix_AddDepth puts in:
+        // sand falling (rate > 0.001) adds 0.046 x rate x noise(0.5..1), otherwise the cell wears. The rate and wear come from the
+        // kernel exactly as the caller asks for them; the vanilla side is written out from the decompile, literal for literal.
+        private const float VanillaFall = 0.046f, VanillaWear = 1f / 180f, VisitsPerHour = 2500f / (1f / 0.0006f);
+
+        private static float VanillaVisit(float depth, float sandRate, float noise)
+        {
+            float d = sandRate > 0.001f ? depth + VanillaFall * sandRate * noise : depth - VanillaWear;
+            return d < 0f ? 0f : d > 1f ? 1f : d;
+        }
+
+        private static float OurVisit(float depth, float otherSandRate, float ashWeatherRate, bool ashMap, float rainRate, float noise, float mult = 1f)
+        {
+            float rate = otherSandRate + RM_FireEcoKernel.AshWeatherSandRate(ashWeatherRate, ashMap, true, mult);
+            float d = rate > 0.001f ? depth + VanillaFall * rate * noise : depth - RM_FireEcoKernel.OutdoorSandWear(ashMap, rainRate);
+            return d < 0f ? 0f : d > 1f ? 1f : d;
+        }
+
+        private static List<string> AshScenario()
+        {
+            var fails = new List<string>();
+            try
+            {
+                const int cells = 400;
+                const float AshFallRate = 1.2f, SandstormRate = 1.6f, BlackRainRate = 1.1f;   // AshFall.xml, Odyssey Sandstorm, BlackRain.xml
+                var rng = new Random(20261108);
+                var noise = new float[cells];
+                for (int i = 0; i < cells; i++) noise[i] = 0.5f + 0.5f * (float)rng.NextDouble();
+                int Visits(float hours) => (int)Math.Round(hours * VisitsPerHour);
+                float Mean(float[] a) { double t = 0; foreach (float v in a) t += v; return (float)(t / a.Length); }
+
+                // 1. A Pyrelands map under ash fall for twelve hours: every open cell holds ash, piled at about heavy snow's pace.
+                var ash = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, AshFallRate, true, 0f, noise[i]);
+                Cases++;
+                float m12 = Mean(ash);
+                int bare = 0; foreach (float d in ash) if (d < RM_FireEcoKernel.AshVisibleDepth) bare++;
+                Check(bare == 0, $"after 12 hours of ash fall {bare} of {cells} open cells hold no ash");
+                Check(m12 / 12f >= 0.03f && m12 / 12f <= 0.07f, $"ash fall piled {m12 / 12f:0.000} a game hour; heavy snow piles ~0.049");
+                var hardSnow = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) hardSnow[i] = VanillaVisit(hardSnow[i], 1.2f, noise[i]);   // SnowHard's snowRate, snow's formula
+                Check(Math.Abs(m12 - Mean(hardSnow)) < 1e-4f, $"ash fall {m12:0.000} after 12 h does not match heavy snow {Mean(hardSnow):0.000}");
+
+                // 2. Then a dry day: the ash stays (vanilla sand would have worn 0.2 off).
+                for (int v = 0; v < Visits(24f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, 0f, true, 0f, noise[i]);
+                Cases++;
+                float m36 = Mean(ash);
+                Check(m12 - m36 <= 0.11f && m12 - m36 >= 0.09f, $"a dry day took {m12 - m36:0.000} off the ash, want ~0.1 (vanilla sand: 0.2)");
+
+                // 3. Then three hours of black rain: the ash is gone.
+                for (int v = 0; v < Visits(3f); v++)
+                    for (int i = 0; i < cells; i++) ash[i] = OurVisit(ash[i], 0f, 0f, true, BlackRainRate, noise[i]);
+                Cases++;
+                int left = 0; foreach (float d in ash) if (d >= RM_FireEcoKernel.AshVisibleDepth) left++;
+                Check(left == 0, $"after 3 hours of black rain {left} of {cells} cells still hold ash");
+
+                // 4. A desert map (no fire ecology): twelve hours of sandstorm, then a day clear, exactly as vanilla.
+                var ours = new float[cells]; var vanilla = new float[cells];
+                for (int v = 0; v < Visits(36f); v++)
+                {
+                    bool storm = v < Visits(12f);
+                    for (int i = 0; i < cells; i++)
+                    {
+                        ours[i] = OurVisit(ours[i], storm ? SandstormRate : 0f, 0f, false, 0f, noise[i]);
+                        vanilla[i] = VanillaVisit(vanilla[i], storm ? SandstormRate : 0f, noise[i]);
+                    }
+                }
+                Cases++;
+                for (int i = 0; i < cells; i++)
+                {
+                    if (ours[i] != vanilla[i]) { Check(false, $"desert sand cell {i}: {ours[i]} where vanilla has {vanilla[i]}"); break; }
+                }
+                Check(Mean(vanilla) > 0f, "the desert control laid no sand: the scenario is blind");
+
+                // 5. Ash fall forced onto that desert map: it lays nothing (its sand would be drawn as sand, beige).
+                var forced = new float[cells];
+                for (int v = 0; v < Visits(12f); v++)
+                    for (int i = 0; i < cells; i++) forced[i] = OurVisit(forced[i], 0f, AshFallRate, false, 0f, noise[i]);
+                Cases++;
+                Check(Mean(forced) == 0f, $"ash fall on a map that does not draw ash laid {Mean(forced):0.000}");
+
+                // 6. The rate setting at 2x lays twice the first hour's ash.
+                float one = 0f, two = 0f;
+                for (int v = 0; v < Visits(1f); v++) { one = OurVisit(one, 0f, AshFallRate, true, 0f, 0.75f); two = OurVisit(two, 0f, AshFallRate, true, 0f, 0.75f, 2f); }
+                Cases++;
+                Check(one > 0f && Math.Abs(two - 2f * one) < 1e-5f, $"2x ash fall laid {two:0.0000} against 1x {one:0.0000}");
+                Console.WriteLine($"ash scenario: 12 h ash fall mean {m12:0.000} ({m12 / 12f:0.000}/h, heavy snow {Mean(hardSnow) / 12f:0.000}/h), after a dry day {m36:0.000}, "
+                                  + $"after 3 h black rain {Mean(ash):0.000}; desert sand {Mean(vanilla):0.000} = vanilla");
+            }
+            catch (Exception e) { fails.Add("ash scenario: " + e.Message); }
+            return fails;
+        }
+
         private static List<string> Units()
         {
             var fails = new List<string>();
@@ -1201,6 +1302,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 ("furnace", () => Furnace(N(800), S(1))),
                 ("eco", () => Eco(N(4000), S(1))),
                 ("units", () => Units()),
+                ("ashscenario", () => AshScenario()),
             };
             foreach (var f in fam)
             {
