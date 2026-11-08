@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true };
+        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true };
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
@@ -1230,6 +1230,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double StripWrap = 0.45;
         /// <summary>How far out from its socket a cord coming in from the side has straightened up to arrive square.</summary>
         public const double StripSwing = 0.3;
+        /// <summary>How far a strip plugged into the wall beside it stands back from the wall, cells.</summary>
+        public const double StripWallGap = 0.3;
 
         public struct StripPose
         {
@@ -1273,8 +1275,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             // a machine right beside the strip takes the strip's own lead: with the sockets facing it, a through cord plugging in ran along
             // the machine's edge and read as a second cord into it (blind judge; owner 2026-11-07, "multiple cables for no reason")
+            bool beside = false;
             foreach (Cell c in order)
-                if (g.MachineArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); break; }
+                if (g.MachineArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); beside = true; break; }
+            // and a strip right beside a wall outlet is plugged into it by its own lead: with the sockets facing the wall, the cords to its
+            // other arms plugged in beside the outlet and read as two or three cables going into the one outlet (owner 2026-11-07)
+            bool toWall = false;
+            if (!beside)
+                foreach (Cell c in order)
+                    if (g.WallArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); toWall = true; break; }
             Cell lead = new Cell(faces.Z, -faces.X);                                         // -90 degrees from the sockets
             Cell free = new Cell(-lead.X, -lead.Z), back = new Cell(-faces.X, -faces.Z);
             bool hasBack = arms.Contains(back), hasFree = arms.Contains(free), hasFace = arms.Contains(faces);
@@ -1283,7 +1292,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return new StripPose
             {
                 // the plugs stand out on the sockets' side: the strip sits back a little, so strip and plugs centre on the node
-                Centre = nd.Pos - side * 0.06,
+                // one plugged into the wall stands back from it a little, so its lead is a short cord and not its nub pressed on the outlet
+                Centre = nd.Pos - side * 0.06 - along * (toWall ? StripWallGap : 0),
                 Along = along, Side = side, Angle = Math.Atan2(along.Z, along.X),
                 LeadArm = lead, SocketArm = faces, FreeArm = free, BackArm = back,
                 SocketOfBackArm = hasBack ? 0 : -1,

@@ -50,6 +50,11 @@ namespace RimMandrake.Shared.Slack
         /// round and the length it lost given back as a wider lay (<see cref="CordLayer.Ease"/>, <see cref="CordLayer.Regrow"/>). Same draws in the same order.
         /// Off by default: FlowWorks and hoses lie as before.</summary>
         public bool RoundExcursions;
+        /// <summary>Floor cords: a spliced loop is never drawn tighter than <see cref="CordLayer.RoundLoopMinR"/> (no shrinking it to fit: it is
+        /// left out and its length stays in the lay), a figure-8 only when it is broad, and a pile of spare cord is two or three loose turns wound one way
+        /// (<see cref="CordLayer.LooseHeap"/>), not three to five tight turns reversing at each one into a knotted spring (judges, passes 12-15; the owner:
+        /// "slowly curving loops as the preferred option"). Off by default: FlowWorks and hoses lie as before.</summary>
+        public bool RoundLoops;
 
         /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
@@ -131,6 +136,51 @@ namespace RimMandrake.Shared.Slack
                     double th = a0 + turn * i / 49.0;
                     o.Add(new V2(cc.X + rad * Math.Cos(th), cc.Z + rad * 0.85 * Math.Sin(th)));
                 }
+            }
+            o.Add(p);
+            return o;
+        }
+
+        /// <summary>Smallest loop radius a <see cref="LayParams.RoundLoops"/> lay draws, cells; and the smallest figure-8.</summary>
+        public const double RoundLoopMinR = 0.36, RoundFig8MinR = 0.5;
+        /// <summary>How far a <see cref="LayParams.RoundLoops"/> loop or pile keeps from the cord's own ends, cells: one lying over an end reads
+        /// as more cables going to that plug or outlet (GSS's seventh cause of extra cables at a doorway).</summary>
+        public const double RoundEndClear = 1.6;
+
+        private static bool ClearOfEnds(List<V2> shape, V2 a, V2 b)
+        {
+            foreach (V2 q in shape) if (V2.Dist(q, a) < RoundEndClear || V2.Dist(q, b) < RoundEndClear) return false;
+            return true;
+        }
+
+        /// <summary>A pile of spare cord as a player leaves it: two or three loose turns, all wound the way the cord was already going, each
+        /// a little off the last, so it reads as cord dropped in a heap and not as a spring or a knot.</summary>
+        public static List<V2> LooseHeap(V2 p, V2 t, V2 n, double r, int side, CordRng rr)
+        {
+            var o = new List<V2> { p };
+            V2 c = p + n * (side * r * 1.1);
+            V2 d0 = p - c;
+            double a = Math.Atan2(d0.Z, d0.X);
+            // the turning sense that carries on along t at p
+            int dir = (-Math.Sin(a) * t.X + Math.Cos(a) * t.Z) >= 0 ? 1 : -1;
+            int loops = rr.Int(2, 3);
+            V2 cc = c;
+            double rad = r;
+            for (int k = 0; k < loops; k++)
+            {
+                double turn = 2 * Math.PI * (k == loops - 1 ? 1.0 : rr.Range(0.9, 1.1));
+                V2 next = c + t * (r * rr.Range(-0.45, 0.45)) + n * (side * r * rr.Range(-0.3, 0.3));
+                double nextRad = r * rr.Range(0.8, 1.15);
+                for (int i = 1; i <= 60; i++)
+                {
+                    double f = i / 60.0, th = a + dir * turn * f;
+                    // centre and radius drift smoothly from this turn's to the next, so the turns lie beside each other, not on top
+                    V2 ce = cc + (next - cc) * f;
+                    double rr0 = rad + (nextRad - rad) * f;
+                    o.Add(new V2(ce.X + rr0 * Math.Cos(th), ce.Z + rr0 * 0.85 * Math.Sin(th)));
+                }
+                a += dir * turn;
+                cc = next; rad = nextRad;
             }
             o.Add(p);
             return o;
@@ -739,13 +789,13 @@ namespace RimMandrake.Shared.Slack
                     int side = w.Clearance(Q[j] + nrm * 0.8) >= w.Clearance(Q[j] - nrm * 0.8) ? 1 : -1;
                     double r = 0.5 * prm.Cap / 1.6;
                     List<V2> shape = null;
-                    for (int tries = 0; tries < 5 && r >= 0.18; tries++, r *= 0.7)
+                    for (int tries = 0; tries < 5 && r >= (prm.RoundLoops ? RoundLoopMinR : 0.18); tries++, r *= 0.7)
                     {
-                        List<V2> c = Heap(Q[j], t, nrm, r, side, re);
+                        List<V2> c = prm.RoundLoops ? LooseHeap(Q[j], t, nrm, r, side, re) : Heap(Q[j], t, nrm, r, side, re);
                         // GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET: an end heap spends the same budget as any loop, and the
                         // first takes at most half the room left so the other end still gets one
                         if (OverBudget(s[s.Length - 1], c, target, atEnd ? 2 : 1)) continue;
-                        if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own)) { shape = c; break; }
+                        if (AllClear(w, c, LayParams.RC + 0.02) && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own) && (!prm.RoundLoops || ClearOfEnds(c, Q[0], Q[Q.Count - 1]))) { shape = c; break; }
                     }
                     if (shape == null) continue;
                     double fromStart = s[j], fromEnd = s[s.Length - 1] - s[j];
@@ -792,13 +842,14 @@ namespace RimMandrake.Shared.Slack
                 List<V2> shape = null;
                 for (int tries = 0; tries < 5; tries++)
                 {
-                    List<V2> c = cand.Key ? Heap(Q[j], t, nrm, r, side, rr) : fig8 ? Figure8(Q[j], t, nrm, r, side) : Loop(Q[j], t, nrm, r, side);
+                    List<V2> c = cand.Key ? (prm.RoundLoops ? LooseHeap(Q[j], t, nrm, r, side, rr) : Heap(Q[j], t, nrm, r, side, rr))
+                        : fig8 && (!prm.RoundLoops || r >= RoundFig8MinR) ? Figure8(Q[j], t, nrm, r, side) : Loop(Q[j], t, nrm, r, side);
                     bool over = OverBudget(s[s.Length - 1], c, target);
                     // GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (design 8: "no loops or heaps in the doorway"): a door cell is walkable, so
                     // AllClear passes it; a loop rooted beside a doorway must not spread into it, as the end-heap branch already refuses
-                    if (AllClear(w, c, LayParams.RC + 0.02) && !over && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own)) { shape = c; break; }
+                    if (AllClear(w, c, LayParams.RC + 0.02) && !over && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own) && (!prm.RoundLoops || ClearOfEnds(c, Q[0], Q[Q.Count - 1]))) { shape = c; break; }
                     r *= 0.7;
-                    if (r < 0.18) break;
+                    if (r < (prm.RoundLoops ? RoundLoopMinR : 0.18)) break;
                 }
                 if (shape == null) continue;
                 if (cand.Key) { st?.HeapsAt.Add(s[j]); st?.HeapsFromEnd.Add(s[s.Length - 1] - s[j]); }

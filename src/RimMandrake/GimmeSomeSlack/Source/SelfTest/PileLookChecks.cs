@@ -64,20 +64,23 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 List<LaidPiece> ps = new CordBuilder().Build(ReviewRound1Checks.PileWorld(), new BuildOptions(), c => true);
                 V2 mid = default(V2);
                 var drop = new LaidPiece { Key = "planted" };
-                int n = 0;
-                // the longest run whose middle is clear of every connector: the audit forgives an end beside one, and which run that is moves with the lay
+                int n = 0, m = -1;
+                // the longest run whose middle is clear of every connector: the audit forgives an end beside one, and which run that is moves with the lay.
+                // The planted length's far end may land on another cable as well, so the host taken is the first where a box at the planted end clears that end
                 foreach (CordStrand host in ps.SelectMany(p => p.Strands).Where(x => !x.OverFace).OrderByDescending(x => Geo.Length(x.Pts)))
                 {
                     mid = host.Pts[host.Pts.Count / 2];
                     drop.Strands.Clear();
+                    drop.Decals.Clear();
                     drop.Strands.Add(new CordStrand { Pts = new List<V2> { mid, mid + new V2(0.4, 0.7), mid + new V2(0.9, 1.1) } });
                     n = CordAudit.EndsOnBodies(ps.Concat(new[] { drop }).ToList()).Count;
-                    if (n >= 1) break;
+                    if (n < 1) continue;
+                    // and a connector at that end clears it
+                    drop.Decals.Add(new CordDecal(DecalKind.JunctionTin, mid, 0, 0.6));
+                    m = CordAudit.EndsOnBodies(ps.Concat(new[] { drop }).ToList()).Count;
+                    if (m == n - 1) break;
                 }
                 Check(n >= 1, $"rule 2 can fail: a planted length dropped on a run -> {n} faults");
-                // and a connector at that end clears it
-                drop.Decals.Add(new CordDecal(DecalKind.JunctionTin, mid, 0, 0.6));
-                int m = CordAudit.EndsOnBodies(ps.Concat(new[] { drop }).ToList()).Count;
                 Check(m == n - 1, $"rule 2: a junction box at the planted end clears it ({n} -> {m})");
             }
 

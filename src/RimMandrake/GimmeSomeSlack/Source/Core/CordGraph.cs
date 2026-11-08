@@ -856,6 +856,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
         private static readonly HashSet<Cell> NoArms = new HashSet<Cell>();
 
+        private Dictionary<VId, HashSet<Cell>> wallArmTable;
+        /// <summary>How far a wall or rock face may be from a junction for the conduit to count as going into the wall right beside it, cells.</summary>
+        public const double BesideWall = 1.0;
+
+        /// <summary>The arms of a junction whose cord is a short hop into a wall or rock face right beside it.</summary>
+        internal HashSet<Cell> WallArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref wallArmTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, VId other, CordEdge e, bool atA)
+                {
+                    NodeType o = Nodes[other].Type;
+                    if (Nodes[n].Type != NodeType.Junction || (o != NodeType.StubWall && o != NodeType.StubRock)) return;
+                    if (V2.Dist(Nodes[n].Pos, atA ? e.PB : e.PA) > BesideWall) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e.B, e, true); Arm(e.B, e.A, e, false); }
+                System.Threading.Volatile.Write(ref wallArmTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : NoArms;
+        }
+
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>
         internal Cell CellOf(VId v) => Nodes[v].Cell;
     }
