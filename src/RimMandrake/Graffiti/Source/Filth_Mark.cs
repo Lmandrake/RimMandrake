@@ -359,7 +359,7 @@ namespace RimMandrake.Graffiti
                         repaint = true;
                         if (same.maker != null && same.maker != maker)
                         {
-                            GraffitiSocial.Notify_WentOver(same, maker, tells, reply, same);    // the same drawing, repainted by this hand
+                            GraffitiSocial.Notify_WentOver(same, maker, tells, reply, same, ordered);    // the same drawing, repainted by this hand
                             if (!over.Contains(same.maker.LabelShort)) over.Add(same.maker.LabelShort);
                         }
                     }
@@ -388,7 +388,7 @@ namespace RimMandrake.Graffiti
             foreach (Filth_Mark rival in rivals)
             {
                 if (rival.Destroyed) continue;
-                GraffitiSocial.Notify_WentOver(rival, maker, tells, reply, outFilth as Filth_Mark);
+                GraffitiSocial.Notify_WentOver(rival, maker, tells, reply, outFilth as Filth_Mark, ordered);
                 if (rival.maker != null && rival.maker != maker && !over.Contains(rival.maker.LabelShort)) over.Add(rival.maker.LabelShort);
                 rival.SkipCleanNotice();
                 rival.Destroy();
@@ -511,6 +511,19 @@ namespace RimMandrake.Graffiti
             return string.IsNullOrEmpty(baseText) ? line : baseText + "\n" + line;
         }
 
+        /// <summary>Whose hand: a colonist's own, else their faction's (raiders of one band copy alike), else the mark's own.</summary>
+        private int Hand => maker != null ? maker.thingIDNumber : (makerFaction?.loadID ?? thingIDNumber);
+
+        /// <summary>How well it was made, or what its form allows when no hand is recorded (a staged mark, a save from before craft).</summary>
+        private int Look
+        {
+            get
+            {
+                ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                return hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
+            }
+        }
+
         private void RebuildSigilMats()
         {
             sigilMatsBuilt = true;
@@ -525,7 +538,7 @@ namespace RimMandrake.Graffiti
             }
             else if (ext != null && targetFaction != null)
             {
-                Texture2D emblem = WallPlane.PaintedIcon(targetFaction.def.FactionIcon);
+                Texture2D emblem = WallPlane.PaintedIcon(targetFaction.def.FactionIcon, Hand, Look);
                 if (emblem != null) cachedHeadMat = MaterialPool.MatFrom(emblem, ShaderDatabase.Mote, Color.Lerp(targetFaction.Color, new Color(0.45f, 0.42f, 0.38f), 0.3f));
             }
             if (ext == null || !ext.sigilTierA || makerIdeo == null)
@@ -536,7 +549,7 @@ namespace RimMandrake.Graffiti
             {
                 cachedFrameMat = MaterialPool.MatFrom(ext.sigilFrameTexPath, ShaderDatabase.Mote);
             }
-            Texture2D icon = WallPlane.PaintedIcon(makerIdeo.Icon) ?? makerIdeo.Icon;
+            Texture2D icon = WallPlane.PaintedIcon(makerIdeo.Icon, Hand, Look) ?? makerIdeo.Icon;
             if (icon != null)
             {
                 // Ideoligion colours are clean UI colours; on a wall they are the same hue in a mixed pigment.
@@ -568,7 +581,7 @@ namespace RimMandrake.Graffiti
                 scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
             }
             // A mark nobody's hand made (a staged one, a save from before craft) looks as its form allows: a scrawl is never neat.
-            int look = hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
+            int look = Look;
             RM_GraffitiKernel.CraftLook(look, out float craftThrough, out float wobble, out float mud);
             if (RM_GraffitiStage.smearOver) RM_GraffitiKernel.CraftLookBefore(look, ref mud);
             if (RM_GraffitiStage.oldWeather) craftThrough += RM_GraffitiKernel.CraftThroughPass16(look);

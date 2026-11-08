@@ -78,6 +78,12 @@ namespace RimMandrake.Graffiti.SelfTest
                 Check(hand >= 0 && hand < count && hand == RM_GraffitiKernel.HandChoice(id, count, 3), "a painter's hand is stable and in range");
                 Check(RM_GraffitiKernel.TerritoryStage(0) == -1 && RM_GraffitiKernel.TerritoryStage(1) == 0 && RM_GraffitiKernel.TerritoryStage(3) == 1 && RM_GraffitiKernel.TerritoryStage(9) == 2, "territory stages");
                 Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, true, false, false) < RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, true, false), "a named insult costs more than a taunt");
+                Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, r.Next(2) == 0, r.Next(2) == 0) == 0, "someone else's insult costs a visitor's faction nothing");
+                int q = r.Next(0, 7);
+                RM_GraffitiKernel.IconCopy(q, out float drift, out float drips, out int bucket);
+                RM_GraffitiKernel.IconCopy(RM_GraffitiKernel.Normal, out float normalDrift, out _, out _);
+                Check(drift >= 0.012f && drift <= 0.09f && bucket >= 0 && bucket <= 3 && drips >= 0f && drips <= 1f, "a copied sign stays a copy of the sign");
+                Check(q < RM_GraffitiKernel.Normal ? drift > normalDrift && drips > 0f : q > RM_GraffitiKernel.Normal ? drift < normalDrift && drips == 0f : drips == 0f, "a clumsy copy wanders and runs, a good one holds");
                 // A memorial softens grief and never turns it into a gain: every ease about one dead pawn, in order, adds up to at most half the grief.
                 float grief = (float)(r.NextDouble() * 30.0), before = 0f;
                 int eases = r.Next(0, 5);

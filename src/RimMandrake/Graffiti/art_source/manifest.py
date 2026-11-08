@@ -43,6 +43,9 @@ for i, (d, t, c) in enumerate([("A", "fat round overlapping bubble shapes", "dus
 for i, (t, c) in enumerate([("fat round bubble shapes in a row", "chalk fill, soot line"), ("bulging squared bubble shapes", "rust red fill, soot line"), ("drooping melted bubble shapes", "dull violet fill, chalk line"), ("tall crowded bubble shapes shouldering each other", "oxide green fill, chalk line")]):
     add(f"wide_{i}", F + "ThrowUp_Wide", 2, "brush", 0.2 + 0.08 * i, f"A wide graffiti throw-up: {t} that look like letters but spell nothing. " + ROLLER + PIG.format(c=c) + L2)
 M["throwup_a_0"]["fill"] = (0.86, 0.45, 0.64)   # pass 16: lilac went grey in a dim storeroom and still read as rock chunks
+# Pass 17: half weathered, the chalk-filled wide throw-up read as "chalk dust or a scrubbed stain", the rust-red one "could pass for rust" (blind judge).
+M["wide_0"]["fill"] = (0.55, 0.74, 0.92)
+M["throwup_a_1"]["hue"] = (0.82, 0.20, 0.30)
 # ------ pieces
 for i, (t, c) in enumerate([("sharp interlocking angular shapes like shattered letters, arrows thrown off them", "rust red, burnt orange, soot black, chalk"), ("huge rounded interlocked shapes with a hard second colour fading through them", "dull blue, lime white, soot black"),
                             ("tall spiky shapes leaning into each other, a crude sun behind", "ochre, oxblood, soot black"), ("flowing ribbon shapes knotting through each other", "oxide green, chalk, dull violet")]):
@@ -75,8 +78,11 @@ for i, (t, tool, c) in enumerate([
     add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + "Colours only: " + c + ", cheap paint that clashes, not neon. " + L2, floor=0.04)
     M[f"vandal_{i}"].update(mute=0.85 if i in (1, 2, 4) else 0.6, drop_grey=True)   # their mustard went olive (moss) at 0.6
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs
-for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
-    add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)
+# Pass 18: claw gouges and crossed knife cuts read as "animal gouges, damage" (blind judge, pass 17). Scratchiti: only a person scratches a name, a face, a heart.
+for i, t in enumerate(["a fast scratched tag, one big looping signature that spells no letters of any alphabet, underlined twice with a hard slash",
+                       "a crude scratched face, a lopsided round head with two X eyes and a wide grin of jagged teeth, the outline gone over twice",
+                       "a lopsided heart scratched hard with an arrow stabbed through it and a little scrawl that spells nothing on either side"]):
+    add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Scratchiti: a mark scratched into a painted wall with a nail or a key by a bored person, no paint at all: " + t + ". Every line is a deep thick scratch of pale bare exposed material with a darker lip along one side, jagged, each line at least a tenth of the image's height. Plainly drawn by a hand, never claw marks, never cracks, never damage. " + SQ)
 for i, t in enumerate(["two neat bundles of tally strokes", "one bundle of tally strokes and three spare strokes", "three bundles of short tally strokes, the last unfinished"]):
     add(f"tally_{i}", F + "TallyMarks", 1, "chalk", 0.12, "Prisoner's tally marks counting days: " + t + ", careful, patient, small. " + CHALK + PALE + SQ, True, height=0.75)
 for i, (t, c) in enumerate([("a jagged eye with a slash through it, meaning keep out", "rust red"), ("three spikes pointing at a ragged blot, meaning danger here", "ochre and soot"), ("a skull-like blot with two gouged eyes and no teeth, meaning death", "chalk and soot"), ("a crude open maw of teeth, meaning something bites", "rust red and soot")]):
@@ -92,9 +98,11 @@ add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's mar
     "Not clean, not symmetrical, not clip-art, not a logo. " + STENCIL + PALE + SQ, True, floor=0.04)
 # Pass 14: the old fist (four knuckle lumps in oxblood) read at play zoom as a blood smear on the wall. A raised fist and forearm is a silhouette.
 # Pass 16: the ochre disc behind it read as a logo or badge (blind judge). A street stencil is the shape alone on bare wall, in whatever can was to hand.
-add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and its forearm thrust straight up, the fist clenched with the thumb across the fingers, sprayed through a crude cardboard stencil "
-    "with blunt bridges cut between the fingers, the forearm running off the bottom. No disc, no circle, no ring, no shape behind it: bare wall all round, only overspray speckle. "
-    "Defiant, not tidy, not symmetrical, not an icon. " + STENCIL + PALE + SQ, True, floor=0.04)
+# Pass 17: still "emoji-style clip-art more than stencil" (blind judge), five of them the commonest badge. A street fist is sprayed freehand, fast.
+add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and forearm sprayed freehand, fast, with one can, by someone angry: a rough fat outline that overshoots at the corners and doubles back, "
+    "the knuckles four lumpy blobs of different sizes, the thumb a single fat stroke, the inside filled with quick zigzag passes that leave gaps of bare wall, the forearm running off "
+    "the bottom crooked, heavy runs falling straight down where the can was held too long, and the fist leaning hard to one side. No disc, no circle, no ring, nothing behind it. "
+    "Not a stencil, not tidy, not symmetrical, not an icon, not clip-art, not an emoji. " + SPRAY + PALE + SQ, True, floor=0.04)
 # ------ stencil portraits (the defs keep their Paste_ names): sprayed straight onto the wall, no paper, the wall between every part.
 PORTRAIT = ("A big street stencil portrait sprayed straight onto a bare wall. No paper, no sheet, no poster, no rectangle, no backing, no border, no frame, no background panel. "
             "First a few loose patchy clouds of the second colour were misted on with a can, thin, uneven, fading out at their edges, never a block. "
@@ -111,10 +119,12 @@ for i, (t, c) in enumerate([("a blunt masked face looking straight out, a cloth 
 add("gig_0", F + "Paste_Gig", 2, "spray", 0.28, PORTRAIT + "The subject, for a fight night: two big heads side by side, on the left a screaming wild-haired head, on the right a snarling beast's head, "
     "and behind both a jagged sunburst of sprayed rays in the second colour, separate spikes with bare wall between them. " + SPRAY + PIG.format(c="soot black over misted rust red") + L2, floor=0.04)
 # ------ sigil frames (ideoligion icon goes in the middle, leave it empty)
-# Pass 16: the ring of radiating stabs read as a clip-art burst (blind judge). A believer's halo is one loose loop of a can.
-add("halo_0", F + "SigilFrame_Halo", 1.3, "spray", 0.2, "A ragged halo sprayed fast in one loose loop of a spray can around an empty middle, the loop not quite closing, thick and thin where the hand sped and slowed, "
-    "a second faster loop slipping off it, three or four short flicks thrown outward, and runs falling straight down from its bottom. The middle left completely empty and transparent. "
-    "Not a burst, not rays, not a badge. " + SPRAY + PIG.format(c="chalk white") + SQ)
+# Pass 16: the ring of radiating stabs read as a clip-art burst (blind judge). Pass 17: the loop round the icon still read as a badge, a sign in a ring.
+# A saint's halo hangs over the head, it does not enclose it: a tilted loop sprayed above the sign, and an underline swipe under it.
+add("halo_0", F + "SigilFrame_Halo", 1.3, "spray", 0.2, "A saint's halo sprayed fast by a believer: one loose tilted ellipse of a spray can hovering in the top quarter of the picture, leaning to one side, "
+    "the loop not quite closing, thick and thin where the hand sped and slowed, two or three short flicks thrown off its upper edge; under it the middle of the picture left completely "
+    "empty and transparent, about half the picture's width, because a sign is painted there later; and at the bottom one fast underline swipe, heavier at one end, with runs falling straight down. "
+    "Nothing around the sides of the middle. Not a ring round the middle, not a burst, not rays, not a badge. " + SPRAY + PIG.format(c="chalk white") + SQ)
 # Pass 17: the soot box read as "a sticker decal" round its icon (blind judge, pass 16). A street shrine's sign is ringed by what its believers added.
 add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "Around an empty middle, the marks a crowd of believers left at a street shrine over many nights: a loose uneven ring of small fast strokes by many "
     "different hands, short slashes, dots pressed with a thumb, tiny tally strokes, little three-stroke stars and a few flicked arcs, no crosses and no plus signs, some crowded "
@@ -166,25 +176,31 @@ for n in ("animalpersonhood_0", "warn_1"):
 
 # ------ marks about somebody: the subject's own head goes in the gap, painted at runtime (WallPlane.PaintedPortrait).
 GAP = "The top centre of the picture is left completely empty, a clear round gap about a third of the picture's width, because a head is painted there later. "
+# Pass 17: the horns-and-beard read as "a red winged skull, biker-patch badge", the dunce cap with pointing hands as "a red-hat gnome, sticker"
+# (blind judge). Symmetry round a head is a badge; a crude body seen from the side, its neck ending in the head, is a cartoon (the donkey was never one).
 for i, t in enumerate(["a fat crude donkey's body on stumpy legs seen from the side, a flicking tail, its neck ending in the empty gap where its head should be",
-                       "two huge curling devil horns rising either side of the gap, a forked beard hanging under it, jagged stink lines coming off",
-                       "a tall crooked dunce cap on top, a row of little pointing hands from both sides aimed in at the gap",
+                       "a crude scrawny rat's body reared up on its hind legs like a man, seen from the side, little clawed hands clutching a stolen scrap to its chest, a long bald tail curling along the ground, its neck rising straight up into the empty gap at the top centre where its head should be",
+                       "a scrawny plucked chicken's body seen from the side, knock-kneed on spindly legs, a few feathers falling off it, flapping one stubby bald wing in a panic, its neck ending in the empty gap where its head should be",
                        "a crude gallows and a headless stick body hanging from it, the rope going into the gap"]):
-    add(f"mock_{i}", F + "Mockery", 1.25, "brush", 0.15, "A cruel joke about someone, drawn on a wall by somebody who hates them: " + t + ". " + GAP + BRUSH + PIG.format(c="oxblood and soot black") + SQ)
-M["mock_2"].update(dark_to=(0.22, 0.27, 0.62))
+    add(f"mock_{i}", F + "Mockery", 1.25, "brush", 0.15, "A cruel joke about someone, drawn on a wall by somebody who hates them: " + t + ". Lopsided, not symmetrical, not a badge. " + GAP + BRUSH + PIG.format(c="oxblood and soot black") + SQ)
 # Pass 15: a blind judge read the laurel ring and the winged sun as badges or clip-art, careful and symmetrical. A street tribute is sprayed loud
 # and fast by a friend: a crown thrown on their head, roses and a sprayed ring, stars and shine flicks. The heart already read as paint.
 TRIB = ("A street tribute to someone, sprayed fast and loud on a wall at night by a friend who rates them: {t}. Proud and rough, lopsided, not careful, "
         "not symmetrical, not a badge, not an emblem, not clip-art. ")
-for i, (t, tool) in enumerate([("a fat crude three-pointed crown sprayed sitting right on top of the gap as if on the person's head, a ragged sprayed ring around the gap, "
-                                "short fat shine flicks bursting off it and two clumsy five-point stars", SPRAY),
+M["mock_1"]["pad"] = (0, 0, 0.42, 0)   # the reared rat's neck is right of its middle (its tail runs off left); the head is painted at the centre
+# Pass 17: the crown in a ring with stars and shine flicks read as "an orange sunburst with a white star, clip-art", the roses with sparkles as
+# "a shrine sticker" (blind judge). Off-centre, one gesture, no ring and no sparkles.
+for i, (t, tool) in enumerate([("a fat crude three-pointed crown sprayed tilted on top of the gap as if on the person's head, slipping off to one side, and under the gap one big "
+                                "fat underline swoosh that curls up at one end into an arrow pointing at the gap. No ring, no stars, no sparkles, no rays", SPRAY),
                                ("a big lopsided heart outline around the gap with little flicks of love around it", BRUSH),
-                               ("two crude sprayed roses with long thorny stems crossing under the gap, a lumpy hand-sprayed ring around the gap and a few four-point sparkles "
-                                "flicked off it", SPRAY)]):
+                               ("a crowd of five or six crude raised arms reaching up from the bottom edge, some open hands and some fists, lifting the gap up high as if carrying "
+                                "the person, more arms on the left than the right, and a few fast cheering flicks off to one side. No ring, no stars, no sparkles, no flowers", SPRAY)]):
     add(f"tribute_{i}", F + "Tribute", 1.25, "brush", 0.15, (TRIB.format(t=t) if tool is SPRAY else "A loving tribute to someone, painted carefully on a wall by a friend: " + t + ". ")
         + GAP.replace("top centre", "centre") + tool + PIG.format(c="ochre and chalk white") + SQ)
 for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude folded wings either side of the gap, a ring of small dots around it, drips falling"]):
-    add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="chalk white and ash grey") + SQ)
+    add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH
+        + PIG.format(c="deep dull cobalt blue, the dots chalk white" if i == 2 else "chalk white and ash grey") + SQ)
+# Pass 18: the wings in chalk and ash grey read as "ash or mould" (blind judge, pass 17). One clear colour.
 for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",
                        "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a grinning little man thumbing his nose with one hand and waggling the fingers, his tongue stuck out, on wobbly legs"]):
     add(f"rude_{i}", F + "RudeLittleMan", 1, "brush", 0.2, "A silly rude doodle, the kind bored people draw on any wall anywhere: " + t + ". Childish, funny, thick wobbly lines. " + BRUSH + PALE + SQ, True)

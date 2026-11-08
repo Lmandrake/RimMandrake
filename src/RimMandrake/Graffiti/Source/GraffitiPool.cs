@@ -117,6 +117,18 @@ namespace RimMandrake.Graffiti
             return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.hasSubject || ext.meaning == RM_Meaning.Insult ? 1f : ext.poolWeight);
         }
 
+        /// <summary>Why PainterMayPaint refuses, in a player's words.</summary>
+        public static string WhyNot(ThingDef markDef, Pawn painter)
+        {
+            ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
+            if (ext == null || !ext.designatorEligible) return "not a mark anyone can be told to paint";
+            if (RM_GraffitiKernel.RefusesToPaint(ext.meaning, painter?.story?.traits?.HasTrait(TraitDefOf.Kind) ?? false)) return "too kind to paint " + markDef.label;
+            if (painter != null && painter.WorkTagIsDisabled(WorkTags.Artistic)) return "incapable of art";
+            if (!SkillGateAllows(ext, painter)) return "needs Artistic " + ext.minArtistic + " for " + markDef.label;
+            if (!MemeGateAllows(ext, painter)) return "not of a faith that paints " + markDef.label;
+            return "won't paint " + markDef.label;
+        }
+
         public static IEnumerable<ThingDef> AllDesignatorEligible()
         {
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)

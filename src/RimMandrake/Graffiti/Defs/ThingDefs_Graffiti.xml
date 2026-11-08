@@ -108,8 +108,8 @@
 
   <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_Graffiti_Scratches</defName>
-    <label>scratch marks</label>
-    <description>Deep parallel scratches gouged into the wall, plaster and paint stripped away to raw material beneath.</description>
+    <label>scratched mark</label>
+    <description>Somebody's mark scratched into the wall with a nail or a key: a name that spells nothing, a grinning face, a heart. No paint, just the wall's raw material showing through.</description>
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>

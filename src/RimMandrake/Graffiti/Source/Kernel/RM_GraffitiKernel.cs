@@ -1106,6 +1106,17 @@ namespace RimMandrake.Graffiti
             return form == GraffitiForm.Stencil || form == GraffitiForm.Sigil || form == GraffitiForm.Paste || hasSubject || forAMeme;
         }
 
+        /// <summary>How a writer copies their faith's sign (WallPlane.PaintedIcon): how far the lines wander, as a share of the sign's size, and how
+        /// much the paint runs. Pass 17's blind judge: every sign "looks equally clean, so no skill reads in them", and the same sign twice on a
+        /// wall read "as a repeated stamp". The bucket keys the cache: awful, poor, normal, good and up.</summary>
+        public static void IconCopy(int quality, out float drift, out float drips, out int bucket)
+        {
+            CraftLook(quality, out _, out float wobble, out _);
+            drift = Clamp(0.035f * wobble, 0.012f, 0.09f);
+            drips = CraftDrips(quality);
+            bucket = quality <= Normal ? quality : 3;
+        }
+
         /// <summary>How much a clumsy hand's paint runs (WallPlane.Dripped): an awful hand floods it, a poor one lets some go, anyone who can paint
         /// controls it.</summary>
         public static float CraftDrips(int quality)

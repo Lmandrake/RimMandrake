@@ -633,7 +633,12 @@ namespace RimMandrake.Graffiti
             ModExtension_Graffiti ext = m.def.GetModExtension<ModExtension_Graffiti>();
             bool taunt = ext != null && ext.category == GraffitiCategory.Taunt;
             int delta = RM_GraffitiKernel.GoodwillOf(m.Meaning, m.targetFaction == v.Faction, taunt, GraffitiJobUtility.IdeoOf(v) != null && GraffitiJobUtility.IdeoOf(v) == m.makerIdeo);
-            if (delta == 0) return false;
+            if (delta == 0)
+            {
+                // Owed check (pass 13: a Berro Pact visitor was charged for the insult to Hatlencaora): someone else's insult is read and left.
+                if (m.Meaning == RM_Meaning.Insult) Trace(v.LabelShort + " of " + v.Faction.Name + " reads " + m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + ": about " + (m.targetFaction?.Name ?? "nobody") + ", none of theirs, goodwill 0");
+                return false;
+            }
             delta = comp.ChargeVisit(v.Faction, delta);
             if (delta == 0) return false;
             Trace(v.LabelShort + " of " + v.Faction.Name + " reads " + m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + ": goodwill " + delta);
@@ -850,20 +855,23 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
-        internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false, Filth_Mark over = null)
+        /// <param name="ordered">Painted by the player's order: the maker loses their work and feels it, but the painter did as they were told (GPT,
+        /// pass 18: "choosing the colony's appearance becomes repeated interpersonal aggression"; live, Brick ordered over Karen's piece cost him -20).</param>
+        internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false, Filth_Mark over = null, bool ordered = false)
         {
             Pawn maker = under.maker;
             if (!RM_GraffitiSettings.socialEnabled || maker == null || maker == by || maker.Dead || maker.needs?.mood == null || maker.Faction != Faction.OfPlayer) return;
             if (GraffitiTemperament.IsNumb(maker)) return;
             GraffitiTemperament.Give(maker, T.RM_Graffiti_WorkDestroyed, by);
-            if (by != null) GraffitiTemperament.Give(maker, T.RM_Graffiti_DestroyedMyWork, by);
+            if (by != null && !ordered) GraffitiTemperament.Give(maker, T.RM_Graffiti_DestroyedMyWork, by);
             // Live 2026-11-08: a three-colonist spree sent sixteen "X painted over Y's work" in five hours, one twice on one tick (a mark over two
             // of the same hand's). A spree is one story, told once when it ends (SpreeEnded); otherwise one painter over one maker's work is
             // told once a day. The maker's anger and grudge come every time, as before.
             bool spree = by != null && by.InMentalState;
             if (spree) NoteSpreeOver(by, maker);
             bool toldToday = by != null && LoggedToday(maker, by, RM_Reaction.WorkDestroyed);
-            if (!toldToday) Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.");
+            if (!toldToday) Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work" + (ordered ? ", on orders." : "."));
+            if (ordered) return;
             if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned && !quiet && !spree && !toldToday)
             {
                 Tell((by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.", WallTarget(under), MessageTypeDefOf.SilentInput);

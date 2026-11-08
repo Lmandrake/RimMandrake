@@ -641,26 +641,29 @@ namespace RimMandrake.Graffiti
 
         // ---------------------------------------------------------------- a clean ideoligion icon, painted
 
-        private static readonly Dictionary<Texture, Texture2D> Painted = new Dictionary<Texture, Texture2D>();
+        private static readonly Dictionary<(Texture, int, int), Texture2D> Painted = new Dictionary<(Texture, int, int), Texture2D>();
 
-        /// <summary>The game's ideoligion icons are crisp vectors with soft UI shading (a blind judge saw "a shaded grey-white dome, rendered
-        /// and dropped in"). Here each is cut like a stencil and dragged through a dry brush: its shading goes to two flat tones of one
-        /// paint, its strokes keep their shape, its coverage goes streaky and patched like everything else on a wall. Null if unreadable.</summary>
-        internal static Texture2D PaintedIcon(Texture2D icon)
+        /// <summary>The game's ideoligion icons are crisp vectors with soft UI shading and a black outline. On a wall each is a writer's own copy,
+        /// sprayed through card: its light is the paint, its shade the same paint thinner, its outline the card left standing (bare wall, never an
+        /// even ring round the shape: pass 17's blind judge read the sign in its ring as "logo/sticker"). Each writer's lines wander their own way,
+        /// a clumsy hand's further, and run (RM_GraffitiKernel.IconCopy), so the same sign twice on a wall is two people's copies, not one stamp.
+        /// Offline prototype: ralph/live/proto/icon_proto.py. Null if unreadable.</summary>
+        internal static Texture2D PaintedIcon(Texture2D icon, int hand, int quality)
         {
             if (icon == null) return null;
-            if (Painted.TryGetValue(icon, out Texture2D done)) return done;
+            RM_GraffitiKernel.IconCopy(quality, out float driftShare, out float drips, out int bucket);
+            var key = (icon, hand & 3, bucket);
+            if (Painted.TryGetValue(key, out Texture2D done)) return done;
             Texture2D made = null;
             try
             {
                 Color32[] src = ReadTexture(icon, out int size);
-                made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = icon.name + "_painted", filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
-                float seed = (icon.GetInstanceID() & 1023) * 0.37f;
+                made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = icon.name + "_painted" + (hand & 3) + bucket, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+                float seed = (icon.GetInstanceID() & 1023) * 0.37f + (hand & 3) * 41.3f;
                 float scale = 128f / size;
-                // Copied by hand off the faith's sign, not printed: the lines drift a few percent of the icon one way and back, slowly, as a
-                // painter's arm does. Live pass 16: a blind judge still read the clean vector inside each frame as "an emblem or badge", "a sticker decal".
+                // Copied by hand off the faith's sign, not printed: the lines drift one way and back, slowly, as a painter's arm does.
                 var px = new Color32[src.Length];
-                float drift = size * 0.035f, slow = 2.2f / size;
+                float drift = size * driftShare, slow = 2.2f / size;
                 for (int y = 0; y < size; y++)
                 {
                     for (int x = 0; x < size; x++)
@@ -670,23 +673,72 @@ namespace RimMandrake.Graffiti
                         px[y * size + x] = src[sy * size + sx];
                     }
                 }
+                var alpha = new float[px.Length];
+                var tone = new float[px.Length];
                 for (int y = 0; y < size; y++)
                 {
                     for (int x = 0; x < size; x++)
                     {
-                        Color32 c = px[y * size + x];
-                        // Two tones, never a gradient: the light of the icon is the paint's full colour, its shade the same paint thinned.
+                        int i = y * size + x;
+                        Color32 c = px[i];
                         float lum = (c.r + c.g + c.b) / 765f;
-                        byte tone = (byte)(lum > 0.55f ? 255 : 150);
-                        c.r = c.g = c.b = tone;
-                        c.a = (byte)(c.a > 110 ? 255 : (c.a > 40 ? 120 : 0));
+                        tone[i] = lum > 0.55f ? 1f : 0.72f;
+                        float a = c.a > 110 ? 1f : (c.a > 40 ? 0.47f : 0f);
+                        a *= Mathf.Clamp01((lum - 0.22f) / 0.12f);        // the outline is card: bare wall
                         float streak = Mathf.PerlinNoise(seed + x * scale * 0.012f, seed + y * scale * 0.34f);
                         float patch = Mathf.PerlinNoise(seed * 2f + x * scale * 0.045f, seed + y * scale * 0.05f);
                         float grit = Mathf.PerlinNoise(seed + x * scale * 0.6f, seed * 3f + y * scale * 0.6f);
                         float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.62f) / 0.28f) * Mathf.Clamp01((grit + 0.35f) / 0.6f);
-                        c.a = (byte)(c.a * (0.22f + 0.78f * keep));
-                        px[y * size + x] = c;
+                        alpha[i] = a * (0.55f + 0.45f * keep);
                     }
+                }
+                // Mist past the card's edge: thin and speckled, where the can's spray got under it.
+                float[] mist = BoxBlur(alpha, size, Mathf.Max(1, Mathf.RoundToInt(size * 0.025f)), 0.5f);
+                for (int y = 0; y < size; y++)
+                {
+                    for (int x = 0; x < size; x++)
+                    {
+                        int i = y * size + x;
+                        float speck = Mathf.PerlinNoise(seed * 1.3f + x * scale * 1.4f, seed * 0.4f + y * scale * 1.4f);
+                        float m = mist[i] * 0.45f * Mathf.Clamp01((speck - 0.35f) / 0.3f);
+                        if (m > alpha[i]) { alpha[i] = m; tone[i] = 0.8f; }
+                    }
+                }
+                // Runs: from a bottom edge of solid paint, straight down (rows are bottom up), a bead where each stopped.
+                if (drips > 0f)
+                {
+                    var rng = new System.Random((icon.GetInstanceID() * 31) ^ (hand * 7919) ^ bucket);
+                    var edges = new List<int>();
+                    for (int y = 1; y < size; y++)
+                        for (int x = 0; x < size; x++)
+                            if (alpha[y * size + x] > 0.6f && alpha[(y - 1) * size + x] <= 0.6f) edges.Add(y * size + x);
+                    int runs = edges.Count == 0 ? 0 : (int)(2 + 5 * drips);
+                    int w = Mathf.Max(2, size / 48);
+                    for (int r = 0; r < runs; r++)
+                    {
+                        int e = edges[rng.Next(edges.Count)];
+                        int ex = e % size, ey = e / size;
+                        int len = (int)(size * (0.06f + 0.22f * drips * (float)rng.NextDouble()));
+                        int k = 0;
+                        for (; k < len && ey - 1 - k >= 0; k++)
+                        {
+                            for (int dx = 0; dx < w && ex + dx < size; dx++)
+                            {
+                                int i = (ey - 1 - k) * size + ex + dx;
+                                alpha[i] = Mathf.Max(alpha[i], 0.9f - 0.35f * k / len);
+                                tone[i] = 1f;
+                            }
+                        }
+                        int by = ey - 1 - k;
+                        for (int yy = by - 1; yy <= by; yy++)
+                            for (int xx = ex - 1; xx <= ex + w; xx++)
+                                if (yy >= 0 && xx >= 0 && xx < size) { alpha[yy * size + xx] = 0.9f; tone[yy * size + xx] = 1f; }
+                    }
+                }
+                for (int i = 0; i < px.Length; i++)
+                {
+                    byte t = (byte)(255f * tone[i]);
+                    px[i] = new Color32(t, t, t, (byte)(255f * Mathf.Clamp01(alpha[i])));
                 }
                 made.SetPixels32(px);
                 made.Apply(true, false);
@@ -695,8 +747,38 @@ namespace RimMandrake.Graffiti
             {
                 Log.WarningOnce("[Graffiti] couldn't paint icon " + icon.name + ": " + e.Message, icon.GetInstanceID() ^ 0x49434f4e);
             }
-            Painted[icon] = made;
+            Painted[key] = made;
             return made;
+        }
+
+        /// <summary>A box blur of what is over `over`, twice, in both directions.</summary>
+        private static float[] BoxBlur(float[] a, int size, int r, float over)
+        {
+            var cur = new float[a.Length];
+            for (int i = 0; i < a.Length; i++) cur[i] = a[i] > over ? 1f : 0f;
+            var tmp = new float[a.Length];
+            for (int pass = 0; pass < 4; pass++)
+            {
+                bool rows = (pass & 1) == 0;
+                for (int line = 0; line < size; line++)
+                {
+                    float sum = 0f;
+                    for (int k = -r; k <= r; k++) sum += Get(cur, size, rows, line, k);
+                    for (int j = 0; j < size; j++)
+                    {
+                        tmp[rows ? line * size + j : j * size + line] = sum / (2 * r + 1);
+                        sum += Get(cur, size, rows, line, j + r + 1) - Get(cur, size, rows, line, j - r);
+                    }
+                }
+                var swap = cur; cur = tmp; tmp = swap;
+            }
+            return cur;
+        }
+
+        private static float Get(float[] a, int size, bool rows, int line, int j)
+        {
+            if (j < 0 || j >= size) return 0f;
+            return rows ? a[line * size + j] : a[j * size + line];
         }
     }
 }

@@ -132,6 +132,17 @@ namespace RimMandrake.Graffiti
         /// review 2026-10-22 #8).</summary>
         private ThingDef ChooseMark(IntVec3 cell)
         {
+            // Live pass 18: an order on a doorway cell was painted as floor filth. No wall, no mark; an order there is spent.
+            if (Filth_Mark.ReadWallSide(cell, Map) == RM_GraffitiKernel.NoWall)
+            {
+                GraffitiSocial.Trace(pawn.LabelShort + " found no wall to paint at " + cell);
+                if (Designated(cell))
+                {
+                    Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
+                    MapComponent_GraffitiOrders.For(Map)?.Clear(cell);
+                }
+                return null;
+            }
             float room = GraffitiJobUtility.WallRoom(cell, Map);
             subject = null;
             markFit = 1f;
@@ -173,10 +184,18 @@ namespace RimMandrake.Graffiti
             }
             MapComponent_GraffitiOrders orders = MapComponent_GraffitiOrders.For(Map);
             ThingDef ordered = orders?.OrderAt(cell);
-            if (ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) && GraffitiPool.WidthOf(ordered) <= room + 0.3f)
+            if (ordered != null)
             {
+                // The ordered mark or nothing (live pass 18: a hand that couldn't paint the ordered throw-up painted a sigil in its place). Short of
+                // room it's squeezed as any mark is; an order goes over what's there on purpose. Refused, the order stays for a hand that may.
+                if (!GraffitiPool.PainterMayPaint(ordered, pawn))
+                {
+                    GraffitiSocial.Trace(pawn.LabelShort + " won't paint the ordered " + ordered.defName.Replace("RM_Graffiti_", "") + "@" + cell + ": " + GraffitiPool.WhyNot(ordered, pawn));
+                    return null;
+                }
                 subject = orders.SubjectAt(cell);
                 targetFaction = orders.FactionAt(cell);
+                markFit = GraffitiPool.FitFor(ordered, room + 0.3f);
                 return ordered;
             }
             ThingDef chosen = GraffitiPool.PickForDesignator(pawn, room, cell);

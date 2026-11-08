@@ -30,6 +30,13 @@ def bake(name, m):
     pad = 4
     box = (max(0, xs.min() - pad), max(0, ys.min() - pad), min(src.width, xs.max() + pad + 1), min(src.height, ys.max() + pad + 1))
     src = src.crop(box)
+    if m.get("pad"):
+        # Bare wall added round the drawing (shares of its width and height: left, top, right, bottom), so a part of it the runtime paints
+        # over (a head in a gap, always centred) lands where the drawing meant it to.
+        l, t, r, bt = m["pad"]
+        grown = Image.new("RGBA", (int(src.width * (1 + l + r)), int(src.height * (1 + t + bt))), (0, 0, 0, 0))
+        grown.paste(src, (int(src.width * l), int(src.height * t)))
+        src = grown
     W, H = int(PPC * m["width"]), int(TALL * m["height"])
     # Fill the canvas: a mark's proportions are loose, and it has its wall's face and the wall's top to fill (option D).
     aspect_art, aspect_can = src.width / src.height, W / H
