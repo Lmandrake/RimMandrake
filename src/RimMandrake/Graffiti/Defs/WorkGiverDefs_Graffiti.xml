@@ -17,4 +17,19 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- Scrubs the marks the player dragged Designator_ScrubGraffiti over. Cleaning, ahead of the ordinary rounds (vanilla CleanFilth is 5):
+       it was asked for. -->
+  <WorkGiverDef>
+    <defName>RM_ScrubGraffitiDesignated</defName>
+    <label>scrub graffiti</label>
+    <giverClass>RimMandrake.Graffiti.WorkGiver_ScrubGraffitiDesignated</giverClass>
+    <workType>Cleaning</workType>
+    <verb>scrub</verb>
+    <gerund>scrubbing</gerund>
+    <priorityInType>10</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

@@ -527,6 +527,22 @@ namespace RimMandrake.Graffiti
             return "WALLGONE made " + made + " | destroyed " + (m == null || m.Destroyed);
         }
 
+        /// <summary>SCRUB x,z,w,h: the player drags the Scrub graffiti order over this rect, through the designator's own drag path.
+        /// -> SCRUB marks designated, and the cells the drag refused.</summary>
+        public static string Scrub(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            int[] r = (args ?? "").Split(',').Select(s => int.TryParse(s.Trim(), out int v) ? v : -1).ToArray();
+            if (r.Length != 4 || r.Any(v => v < 0)) return "REFUSED want x,z,w,h";
+            Designator_ScrubGraffiti d = new Designator_ScrubGraffiti();
+            List<IntVec3> cells = new CellRect(r[0], r[1], r[2], r[3]).Cells.Where(c => d.CanDesignateCell(c).Accepted).ToList();
+            int before = map.designationManager.SpawnedDesignationsOfDef(RMGraffitiDefOf.RM_ScrubGraffiti).Count();
+            d.DesignateMultiCell(cells);
+            int after = map.designationManager.SpawnedDesignationsOfDef(RMGraffitiDefOf.RM_ScrubGraffiti).Count();
+            return "SCRUB designated " + (after - before) + " marks over " + cells.Count + " cells, " + after + " waiting";
+        }
+
         /// <summary>The real thing: args "n" free colonists start the forced spree. -> SPREE started k of n</summary>
         public static string Spree(string args)
         {

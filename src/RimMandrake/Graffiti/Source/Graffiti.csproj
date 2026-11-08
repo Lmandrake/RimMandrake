@@ -74,7 +74,9 @@
     <Compile Include="AutoCleanProtection.cs" />
     <Compile Include="RaidExitTagger.cs" />
     <Compile Include="Designator_PaintGraffitiMark.cs" />
+    <Compile Include="Designator_ScrubGraffiti.cs" />
     <Compile Include="WorkGiver_PaintGraffitiDesignated.cs" />
+    <Compile Include="WorkGiver_ScrubGraffitiDesignated.cs" />
     <Compile Include="RM_GraffitiMod.cs" />
     <Compile Include="RM_GraffitiProof.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />

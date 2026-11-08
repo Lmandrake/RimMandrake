@@ -111,6 +111,20 @@ namespace RimMandrake.Graffiti
             base.Destroy(mode);
         }
 
+        /// <summary>Where the paint is: on the face of its wall, three quarters of a cell on from the floor cell the mark stands on. The
+        /// scrub order's icon, the selection bracket, the cleaning dust and its progress bar go to the paint, not the floor before it (live
+        /// 2026-11-08: every scrub icon sat on the floor). Print draws from the wall itself and takes only this altitude.</summary>
+        public override Vector3 DrawPos
+        {
+            get
+            {
+                Vector3 v = base.DrawPos;
+                if (wallSide < 0 || wallSide > 3) return v;
+                IntVec3 f = new Rot4(wallSide).FacingCell;
+                return v + new Vector3(f.x * 0.75f, 0f, f.z * 0.75f);
+            }
+        }
+
         /// <summary>This mark is going by another hand than the cleaning job, and that hand tells the story itself.</summary>
         internal void SkipCleanNotice() { skipCleanNotice = true; }
 
@@ -338,7 +352,7 @@ namespace RimMandrake.Graffiti
             if (repaint) mark.MadeAfresh();
             mark.maker = maker;
             mark.makerFaction = maker?.Faction;
-            mark.makerIdeo = maker?.Ideo;
+            mark.makerIdeo = GraffitiJobUtility.IdeoOf(maker);
             mark.subject = subject;
             mark.subjectName = subject?.LabelShort;
             mark.targetFaction = targetFaction;

@@ -274,9 +274,9 @@ namespace RimMandrake.Graffiti
                 kind = traits != null && traits.HasTrait(TraitDefOf.Kind),
                 hot = GraffitiTemperament.IsHot(v),
                 psychopath = traits != null && traits.HasTrait(TraitDefOf.Psychopath),
-                hasIdeo = v.Ideo != null,
+                hasIdeo = GraffitiJobUtility.IdeoOf(v) != null,
                 makerHasIdeo = m.makerIdeo != null,
-                sameIdeoAsMaker = v.Ideo != null && v.Ideo == m.makerIdeo,
+                sameIdeoAsMaker = GraffitiJobUtility.IdeoOf(v) != null && GraffitiJobUtility.IdeoOf(v) == m.makerIdeo,
             };
         }
 
@@ -477,7 +477,7 @@ namespace RimMandrake.Graffiti
             if (m.defaced || m.makerFaction != Faction.OfPlayer) return false;
             ModExtension_Graffiti ext = m.def.GetModExtension<ModExtension_Graffiti>();
             bool taunt = ext != null && ext.category == GraffitiCategory.Taunt;
-            int delta = RM_GraffitiKernel.GoodwillOf(m.Meaning, m.targetFaction == v.Faction, taunt, v.Ideo != null && v.Ideo == m.makerIdeo);
+            int delta = RM_GraffitiKernel.GoodwillOf(m.Meaning, m.targetFaction == v.Faction, taunt, GraffitiJobUtility.IdeoOf(v) != null && GraffitiJobUtility.IdeoOf(v) == m.makerIdeo);
             if (delta == 0) return false;
             delta = comp.ChargeVisit(v.Faction, delta);
             if (delta == 0) return false;
@@ -695,7 +695,10 @@ namespace RimMandrake.Graffiti
         /// <summary>A mark was wiped or crossed out by this pawn: their satisfaction, its maker's anger if it was somebody's, the thanks of
         /// whoever it mocked (owner's pick: cleaning a mockery bonds subject and cleaner), and the hurt of anyone who held it dear, if it went
         /// in a cleaning fit.</summary>
-        internal static void Notify_Answered(Filth_Mark mark, Pawn by, bool crossedOut, bool fit = false)
+        /// <param name="chore">Scrubbed as work, not as a statement: the player's scrub order or the cleaning rounds. A chore says nothing aloud
+        /// and logs only the first of a cleaner's scrubs of one painter's work in a day (live 2026-11-08: one ordered cleanup of a spree
+        /// stacked six "There. Gone." motes and wrote twenty log lines). An enemy mark, a rescue or a fit is still told in full.</param>
+        internal static void Notify_Answered(Filth_Mark mark, Pawn by, bool crossedOut, bool fit = false, bool chore = false)
         {
             if (!RM_GraffitiSettings.socialEnabled || by == null) return;
             Pawn maker = mark.maker;
@@ -729,13 +732,26 @@ namespace RimMandrake.Graffiti
             string whose = enemy ? "the enemy's mark" : (maker != null && maker != by ? maker.LabelShort + "'s mark" : "a mark");
             string about = subject != null && subject != by ? " about " + mark.SubjectName : "";
             string text = by.LabelShort + verb + whose + about + "." + (rescued ? " " + mark.SubjectName + " won't forget that." : "");
-            Trace(text + " @" + mark.Position + (fit ? " (in a cleaning fit)" : ""));
-            Log(by, rescued ? subject : maker, text);
-            Say(by, crossedOut ? "Not on my wall." : "There. Gone.", Tone.Neutral);
+            Trace(text + " @" + mark.Position + (fit ? " (in a cleaning fit)" : chore ? " (a chore)" : ""));
+            bool story = !chore || enemy || rescued || fit;
+            if (story || FirstChoreToday(by, maker)) Log(by, rescued ? subject : maker, text);
+            if (story) Say(by, crossedOut ? "Not on my wall." : "There. Gone.", Tone.Neutral);
             if (RM_GraffitiSettings.socialMessagesEnabled && by.Faction == Faction.OfPlayer && (enemy || subject != null || fit))
             {
                 Tell(text, WallTarget(mark), MessageTypeDefOf.SilentInput);
             }
+        }
+
+        private static readonly Dictionary<long, int> lastChoreLog = new Dictionary<long, int>();
+
+        /// <summary>The first chore scrub of this painter's work by this cleaner in a day, so a cleanup is one log line, not thirty.</summary>
+        private static bool FirstChoreToday(Pawn by, Pawn maker)
+        {
+            long key = ((long)by.thingIDNumber << 32) | (uint)(maker?.thingIDNumber ?? 0);
+            int now = Find.TickManager.TicksGame;
+            if (lastChoreLog.TryGetValue(key, out int last) && now - last < GenDate.TicksPerDay && now >= last) return false;
+            lastChoreLog[key] = now;
+            return true;
         }
 
         /// <summary>A mark wiped by the cleaning job (the player's order, or the rounds): the same story, with whoever held the rag.</summary>
@@ -749,7 +765,7 @@ namespace RimMandrake.Graffiti
                 Pawn p = colonists[i];
                 if (p.CurJobDef == JobDefOf.Clean && p.CurJob != null && p.CurJob.targetA.Thing == mark)
                 {
-                    Notify_Answered(mark, p, crossedOut: false);
+                    Notify_Answered(mark, p, crossedOut: false, chore: true);
                     return;
                 }
             }

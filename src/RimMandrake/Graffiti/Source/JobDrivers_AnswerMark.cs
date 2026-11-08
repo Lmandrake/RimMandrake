@@ -113,7 +113,9 @@ namespace RimMandrake.Graffiti
         {
             mark.SkipCleanNotice();
             MentalState_GraffitiCompulsiveClean fit = pawn.MentalState as MentalState_GraffitiCompulsiveClean;
-            GraffitiSocial.Notify_Answered(mark, pawn, crossedOut: false, fit: fit != null);
+            // The player's scrub order (Designator_ScrubGraffiti) is a chore; a grudge or a fit is the pawn's own statement.
+            bool ordered = mark.Map?.designationManager.DesignationOn(mark, RMGraffitiDefOf.RM_ScrubGraffiti) != null;
+            GraffitiSocial.Notify_Answered(mark, pawn, crossedOut: false, fit: fit != null, chore: ordered && fit == null);
             mark.Destroy();
             fit?.Notify_Scrubbed();
         }

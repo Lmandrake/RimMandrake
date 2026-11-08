@@ -152,7 +152,10 @@ namespace RimMandrake.Graffiti
         private static bool MemeGateAllows(ModExtension_Graffiti ext, Pawn placer)
         {
             bool hasReq = !ext.requiresAnyMeme.NullOrEmpty();
-            Ideo ideo = placer?.Ideo;
+            Ideo ideo = GraffitiJobUtility.IdeoOf(placer);
+            // A tier-A sigil is the painter's own faith's icon in a frame: without an ideoligion (classic mode, or Ideology off) it would
+            // be an empty frame, so nobody without one paints it.
+            if (ext.sigilTierA && ideo == null && placer != null) return false;
             bool holds = false;
             if (hasReq && ideo != null)
             {

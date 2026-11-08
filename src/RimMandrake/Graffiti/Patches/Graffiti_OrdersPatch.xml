@@ -22,6 +22,7 @@
       <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
       <value>
         <li>RimMandrake.Graffiti.Designator_PaintGraffitiMark</li>
+        <li>RimMandrake.Graffiti.Designator_ScrubGraffiti</li>
       </value>
     </match>
   </Operation>

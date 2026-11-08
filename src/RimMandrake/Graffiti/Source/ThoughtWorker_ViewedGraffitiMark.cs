@@ -75,9 +75,9 @@ namespace RimMandrake.Graffiti
             RM_ReactionSlot slot = RM_GraffitiKernel.ReactionSlot(prov,
                 ext.onViewSubject != null, prov && mark.subject == viewer,
                 ext.onViewOwnFaction != null, prov && mark.makerFaction != null && mark.makerFaction == viewer.Faction,
-                ext.onViewSameIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo == viewer.Ideo,
+                ext.onViewSameIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo == GraffitiJobUtility.IdeoOf(viewer),
                 ext.onViewHostileMaker != null, prov && mark.makerFaction != null && viewer.Faction != null && mark.makerFaction.HostileTo(viewer.Faction),
-                ext.onViewOtherIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo != viewer.Ideo);
+                ext.onViewOtherIdeo != null, prov && mark.makerIdeo != null && GraffitiJobUtility.IdeoOf(viewer) != null && mark.makerIdeo != GraffitiJobUtility.IdeoOf(viewer));
             switch (slot)
             {
                 case RM_ReactionSlot.Subject: return ext.onViewSubject;

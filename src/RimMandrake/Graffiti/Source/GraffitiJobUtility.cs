@@ -10,6 +10,16 @@ namespace RimMandrake.Graffiti
     // (JobGiver_GraffitiPaintingSpree) - one implementation, not two copies.
     public static class GraffitiJobUtility
     {
+        /// <summary>The ideoligion a pawn paints and reads by, or null when the game is played without one. In Ideology's classic mode
+        /// every faction, raiders included, carries the player's hidden ideo (FactionIdeosTracker), so a raider's mark would read as our
+        /// own faith and a sigil would paint an icon the player never chose.</summary>
+        internal static Ideo IdeoOf(Pawn p)
+        {
+            Ideo ideo = p?.Ideo;
+            if (ideo == null || !ModsConfig.IdeologyActive || ideo.classicMode || (Find.IdeoManager != null && Find.IdeoManager.classicMode)) return null;
+            return ideo;
+        }
+
         private const int SearchRadius = 12;
 
         // Fixed 2026-09-02 (opus code review): RadialCellsAround yields cells in
