@@ -42,9 +42,10 @@ last). This pass did batch 0. Nothing new was seen in the game: at 05:02 the Con
    `ORIGIN (60,150)` in g8_common.py is provisional until `g8_site.py probe` on the calm map.
 
 Self-tests on the merged build: targeted 181/181 (PitDraw, PitLook, PitDepth, Ladder, Suspension, Hang, Drawbridge,
-PitCover, DeepDig, DeepBed, Swim, WallClimb, PitAccess...). Full suite: see the commit after this one; the builders' full runs
-were red only on PitCapture_follows (known), LW1 (a hose SwimCellsPublished source pin) and RiverSwitchFlip_weirWhiteWater
-(a stale text pin), both red on the base too; PondDepth_S7_cost once (timing under load).
+PitCover, DeepDig, DeepBed, Swim, WallClimb, PitAccess...). Full suite on the merged build (logs
+`D:\ClaudeWork\rimmandrake\ralph_flowworks\pass8\selftest_full_*.txt`): 1282/1285; reds PitCapture_follows (known),
+LW1 (a hose SwimCellsPublished source pin) and RiverSwitchFlip_weirWhiteWater (a stale text pin), all three red on the
+builders' bases before their changes too.
 
 **Weather and harness:** 0 game crashes, 0 restarts, 0 dropped ssh (bad_cpus=[2] all pass). Harness: the print session
 stops background agents 10 min after a turn ends ("Background tasks still running 10m after the last turn ... stopping
