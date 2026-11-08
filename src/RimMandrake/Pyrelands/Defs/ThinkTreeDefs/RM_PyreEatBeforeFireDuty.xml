@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  On a Pyrelands map an urgently hungry colonist eats before it fights fire. Core's Humanlike tree (ThinkTreeDefs/Humanlike.xml)
+  runs emergency work, fire in the home area included, before "Get food (only if starving)", and a burn here can stand in the
+  home area for most of a day (ThinkNode_ConditionalPyrelandsColonist says what map x showed). Humanlike_PostDuty is above that
+  block; FlowWorks' drink giver sits there too, at priority 100. JobGiver_GetFood's minCategory and leaveJoinableLordIfIssuesJob
+  are the fields Core's own starving node sets (read from Assembly-CSharp 1.6).
+-->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_PyreEatBeforeFireDuty</defName>
+    <insertTag>Humanlike_PostDuty</insertTag>
+    <insertPriority>90</insertPriority>
+    <thinkRoot Class="RimMandrake.Pyrelands.ThinkNode_ConditionalPyrelandsColonist">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>SatisfyingNeeds</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_GetFood">
+              <minCategory>UrgentlyHungry</minCategory>
+              <leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

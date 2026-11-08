@@ -26,7 +26,7 @@
   <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>
   <RM_BurnApproachLead>A burn line is {0} cells from your home, out to the {1}, and walking this way. It will be here in under a day.</RM_BurnApproachLead>
   <RM_BurnApproachLeadEdge>A burn line has reached the edge of your home, on the {0} side.</RM_BurnApproachLeadEdge>
-  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Walls and a roof keep it out. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
+  <RM_BurnApproachLetter>{0}\n\nEverything left on open ground burns when it passes: food, wood, crops, bedding. Stone walls and a roof keep it out, but wood and steel walls catch, and a burning wall lights the beds and stores against it inside. Grass carries it; cut the grass around what you want to keep, or pave a strip, and put your stores indoors.\n\nWhat it leaves is worth having: for a few days the fresh ash feeds a crop as water would, and scorch-fruit cracks open in the scar, for about a day.</RM_BurnApproachLetter>
   <RM_BurnApproachMessage>The burn is {0} cells from home, out to the {1}.</RM_BurnApproachMessage>
   <RM_BurnApproachMessageEdge>The burn has reached home, on the {0} side.</RM_BurnApproachMessageEdge>
   <RM_Compass0>north</RM_Compass0>

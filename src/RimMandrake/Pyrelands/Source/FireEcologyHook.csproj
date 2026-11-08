@@ -52,6 +52,7 @@
     <Compile Include="FireEcologyHook.cs" />
     <Compile Include="JobGiver_RUT_FireHawkSeekBurn.cs" />
     <Compile Include="CompWithersUnderRoof.cs" />
+    <Compile Include="ThinkNode_ConditionalPyrelandsColonist.cs" />
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsWeatherOverlays.cs" />
     <Compile Include="PyrelandsAshDust.cs" />
