@@ -578,7 +578,13 @@ namespace RimMandrake.Pyrelands
         // on a 250x250 map. The old sprinkle (one per 4,000 cells, mostly landing under grass) left a six-hour fall invisible on
         // map s (sky_s_1ashfall_b.png, 2026-11-07). Each candidate is a handful of cell lookups and one noise read; no batch
         // scans the map.
-        private const float CellsPerFallCandidate = 400f;
+        //
+        // 2026-11-08, owner on map x after ~7 h of fall: "accumulating very slowly. If this were snow ... much faster." 400 -> 50
+        // cells per candidate (8x): ~1,250 of each per batch on a 250x250 map. Vanilla hard snow (snowRate 1.2) lays
+        // 0.046 x 1.2 x ~0.58 = 0.032 depth on every outdoor cell each visit, a cell visited every 1,645 ticks (38 cells a tick, 62,500 cells),
+        // so ~0.049 depth per game hour on 100% of the map; a drift here heaps ~0.5 of its 4 levels per hour (5,000 picks an hour over
+        // ~10,000 drifts) = ~0.12 depth an hour, and the cover cap (AshFallCoverCap) rose with it.
+        private const float CellsPerFallCandidate = 50f;
 
         private const float CinderfallRateFactor = 0.45f;
 

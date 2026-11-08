@@ -417,7 +417,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>Keep chance on bare ground the drift field gives nothing: a light dusting between the banks.</summary>
         public const float AshFallBareAccept = 0.12f;
         /// <summary>New drifts stop once this share of the map holds one; the ones already laid keep heaping to their ceiling.</summary>
-        public const float AshFallCoverCap = 0.15f;
+        public const float AshFallCoverCap = 0.35f;
 
         /// <summary>Ash fall's keep chance for a cell: on bare ground a hollow or a lee takes all and the rest a dusting; on grass
         /// a bank takes half and the rest the odd drift.</summary>

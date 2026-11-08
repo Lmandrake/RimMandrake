@@ -221,7 +221,14 @@ namespace RimMandrake.Pyrelands
                 if (RM_PyrelandsSettings.ashWaterFertilityEnabled) Sweep(now);
                 if (overlayStale)
                 {
-                    overlayStale = false;
+                    // Wet ash is drawn black by the ash cover (PyrelandsAshCover.cs): rebuild its sections when the water changes,
+                    // at most every 600 ticks (a throttled change stays stale and goes out next interval).
+                    if (now - lastCoverDirtyTick >= 600)
+                    {
+                        overlayStale = false;
+                        lastCoverDirtyTick = now;
+                        map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
+                    }
                     if (Find.PlaySettings != null && Find.PlaySettings.showFertilityOverlay && Find.CurrentMap == map)
                     {
                         map.fertilityGrid.Drawer.SetDirty();
@@ -267,6 +274,7 @@ namespace RimMandrake.Pyrelands
                         int j = idx.CellToIndex(nb);
                         if (wateredUntil[j] <= now) changed = true;
                         wateredUntil[j] = until;
+                        if (until > maxWateredUntil) maxWateredUntil = until;
                     }
                 }
             }
@@ -280,6 +288,7 @@ namespace RimMandrake.Pyrelands
                         int j = idx.CellToIndex(nb);
                         if (wateredUntil[j] <= now) changed = true;
                         wateredUntil[j] = until;
+                        if (until > maxWateredUntil) maxWateredUntil = until;
                     });
                 }
             }
@@ -293,6 +302,32 @@ namespace RimMandrake.Pyrelands
             int i = map.cellIndices.CellToIndex(c);
             burnTick[i] = now;
             active = true;
+        }
+
+        // Unsaved: the latest watered-until stamp this session laid or loaded, so the ash cover can skip a map with nothing wet.
+        private int maxWateredUntil = -1;
+        private int lastCoverDirtyTick = -99999;
+
+        /// <summary>Whether any ash may be watered at this tick (the ash cover draws wet ground black only then).</summary>
+        public bool MayBeWet(int now)
+        {
+            if (!RM_PyrelandsSettings.ashWaterFertilityEnabled) return false;
+            if (blackRainWateredUntil > now || maxWateredUntil > now) return true;
+            if (maxWateredUntil == -1 && wateredUntil != null)
+            {
+                int m = 0;
+                for (int i = 0; i < wateredUntil.Length; i++) if (wateredUntil[i] > m) m = wateredUntil[i];
+                maxWateredUntil = m;
+                return m > now;
+            }
+            return false;
+        }
+
+        /// <summary>Watered ash terrain: the cover layer draws this ground, and the loose ash on it, near black.</summary>
+        public bool IsWetAshGround(IntVec3 c, int now)
+        {
+            TerrainDef t = c.GetTerrain(map);
+            return t != null && t.HasModExtension<RM_AshFieldExtension>() && IsWatered(c, now);
         }
 
         public bool IsWatered(IntVec3 c, int now)

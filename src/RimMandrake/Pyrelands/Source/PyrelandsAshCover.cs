@@ -26,7 +26,13 @@ namespace RimMandrake.Pyrelands
     {
         private const string TexPath = "Things/Filth/RM_FE_AshCover";
         private const string EdgeTexPath = "Things/Filth/RM_FE_AshCoverEdge";
-        private static readonly Color Tint = new Color(0.70f, 0.70f, 0.70f, 1f);
+        // 2026-11-08, owner on map x ("the black soil of the initial map was very cool ... all the ash's should be darker, and wet ash
+        // should be downright blackened"): dry loose ash was a 0.70 tint (~117 grey on the 47 grey ground), now 0.48 (~80); loose ash
+        // where the ground is watered is 0.30 (~50), and the watered ground itself is the deep-ash terrain's own texture at 0.40 (~20).
+        private static readonly Color Tint = new Color(0.48f, 0.48f, 0.48f, 1f);
+        private static readonly Color WetTint = new Color(0.30f, 0.30f, 0.30f, 1f);
+        private static readonly Color WetGroundTint = new Color(0.40f, 0.40f, 0.40f, 1f);
+        private const string GroundTexPath = "Terrain/Surfaces/RM_FE_Ash_Deep";
         // Alpha for thickness 1..4: below 1 the rough shader opens grit-sized holes, so a thin drift shows a little char.
         private static readonly float[] DepthAlpha = { 0f, 0.9f, 1f, 1f, 1f };
 
@@ -40,7 +46,7 @@ namespace RimMandrake.Pyrelands
         private const int Spacing1 = 12, Spacing2 = 3;
         private const float Amp1 = 0.6f, Amp2 = 0.15f;
         private static float[] noise;
-        private static Material mat;
+        private static Material mat, matWet, matGround;
 
         // The section's ash thickness with one ring of neighbours, and the last one built (rebuild only on a change).
         private int[] thick, lastThick;
@@ -53,53 +59,83 @@ namespace RimMandrake.Pyrelands
 
         public override bool Visible => true;
 
-        private static Material Mat
+        private static Material MakeMat(string name, string tex, Color tint, int queue)
         {
-            get
-            {
-                if (mat != null) return mat;
-                mat = new Material(ShaderDatabase.TerrainFadeRough) { name = "RM_PyrelandsAshCover" };
-                mat.mainTexture = ContentFinder<Texture2D>.Get(TexPath);
-                Texture2D edge = ContentFinder<Texture2D>.Get(EdgeTexPath, false);
-                mat.SetTexture("_AlphaAddTex", edge != null ? (Texture)edge : MatBases.Snow.GetTexture("_AlphaAddTex"));
-                mat.color = Tint;
-                // Over every terrain (2000 + renderPrecedence), beside vanilla's snow.
-                mat.renderQueue = 2401;
-                return mat;
-            }
+            var m = new Material(ShaderDatabase.TerrainFadeRough) { name = name };
+            m.mainTexture = ContentFinder<Texture2D>.Get(tex);
+            Texture2D edge = ContentFinder<Texture2D>.Get(EdgeTexPath, false);
+            m.SetTexture("_AlphaAddTex", edge != null ? (Texture)edge : MatBases.Snow.GetTexture("_AlphaAddTex"));
+            m.color = tint;
+            // Over every terrain (2000 + renderPrecedence), beside vanilla's snow; wet ground under the drifts.
+            m.renderQueue = queue;
+            return m;
         }
+
+        private static Material Mat => mat ?? (mat = MakeMat("RM_PyrelandsAshCover", TexPath, Tint, 2401));
+        private static Material MatWet => matWet ?? (matWet = MakeMat("RM_PyrelandsAshCoverWet", TexPath, WetTint, 2402));
+        private static Material MatGround => matGround ?? (matGround = MakeMat("RM_PyrelandsAshWetGround", GroundTexPath, WetGroundTint, 2400));
+
+        // Per cell in the ring: ash thickness 0..4, plus WetBit where the ground is watered ash terrain.
+        private const int WetBit = 8;
 
         public override void Regenerate()
         {
             ThingDef ash = PyrelandsDriftField.AshDef;
-            LayerSubMesh sm = GetSubMesh(Mat);
-            if (ash == null || Map.listerThings.ThingsOfDef(ash).Count == 0)
+            LayerSubMesh smDry = GetSubMesh(Mat), smWet = GetSubMesh(MatWet), smGround = GetSubMesh(MatGround);
+            int now = Find.TickManager.TicksGame;
+            MapComponent_PyrelandsAshField field = MapComponent_PyrelandsAshField.For(Map);
+            bool mayBeWet = field != null && field.MayBeWet(now);
+            bool hasAsh = ash != null && Map.listerThings.ThingsOfDef(ash).Count > 0;
+            if (!hasAsh && !mayBeWet)
             {
                 lastThick = null;
-                sm.Clear(MeshParts.All);
-                sm.disabled = true;
+                smDry.Clear(MeshParts.All); smDry.disabled = true;
+                smWet.Clear(MeshParts.All); smWet.disabled = true;
+                smGround.Clear(MeshParts.All); smGround.disabled = true;
                 return;
             }
             CellRect rect = section.CellRect;
             int bw = rect.Width + 2, bh = rect.Height + 2;
             int ox = rect.minX - 1, oz = rect.minZ - 1;
             if (thick == null || thick.Length != bw * bh) thick = new int[bw * bh];
-            bool any = false;
             for (int i = 0; i < bw; i++)
             {
                 for (int j = 0; j < bh; j++)
                 {
                     IntVec3 c = new IntVec3(Mathf.Clamp(ox + i, 0, Map.Size.x - 1), 0, Mathf.Clamp(oz + j, 0, Map.Size.z - 1));
-                    int t = Mathf.Clamp(PyrelandsDriftField.Thickness(Map, c), 0, 4);
+                    int t = hasAsh ? Mathf.Clamp(PyrelandsDriftField.Thickness(Map, c), 0, 4) : 0;
+                    if (mayBeWet && field.IsWetAshGround(c, now)) t |= WetBit;
                     thick[i * bh + j] = t;
-                    if (t > 0) any = true;
                 }
             }
             // Plants growing, fires and items dirty the same Things flag far more often than ash changes: rebuild only on a change.
             if (lastThick != null && lastThick.Length == thick.Length && SameAs(lastThick, thick)) return;
             if (lastThick == null || lastThick.Length != thick.Length) lastThick = new int[thick.Length];
             Array.Copy(thick, lastThick, thick.Length);
+            if (dry == null || dry.Length != thick.Length) { dry = new int[thick.Length]; wet = new int[thick.Length]; ground = new int[thick.Length]; }
+            for (int k = 0; k < thick.Length; k++)
+            {
+                int t = thick[k] & 7;
+                bool w = (thick[k] & WetBit) != 0;
+                dry[k] = w ? 0 : t;
+                wet[k] = w ? t : 0;
+                ground[k] = w ? 4 : 0;
+            }
+            Build(smGround, ground, rect, ox, oz, bh);
+            Build(smDry, dry, rect, ox, oz, bh);
+            Build(smWet, wet, rect, ox, oz, bh);
+        }
+
+        private int[] dry, wet, ground;
+
+        private void Build(LayerSubMesh sm, int[] cells, CellRect rect, int ox, int oz, int bh)
+        {
             sm.Clear(MeshParts.All);
+            bool any = false;
+            for (int k = 0; k < cells.Length; k++)
+            {
+                if (cells[k] > 0) { any = true; break; }
+            }
             if (!any)
             {
                 sm.disabled = true;
@@ -113,7 +149,7 @@ namespace RimMandrake.Pyrelands
                 for (int b = 0; b < vh; b++)
                 {
                     float wx = rect.minX + (float)a / Sub, wz = rect.minZ + (float)b / Sub;
-                    float alpha = AlphaAt(thick, bh, wx - 0.5f - ox, wz - 0.5f - oz, rect.minX * Sub + a, rect.minZ * Sub + b);
+                    float alpha = AlphaAt(cells, bh, wx - 0.5f - ox, wz - 0.5f - oz, rect.minX * Sub + a, rect.minZ * Sub + b);
                     alphas[a * vh + b] = alpha;
                     sm.verts.Add(new Vector3(wx, y, wz));
                     sm.colors.Add(new Color32(255, 255, 255, (byte)(alpha * 255f)));

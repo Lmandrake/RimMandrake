@@ -56,7 +56,7 @@
     <label>deep ash</label>
     <description>Ash laid down by a thousand years of burning, fine and black. Dry, it feeds thin crops; watered, it grows almost anything.</description>
     <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(255, 255, 255, 255)</color>
+    <color>(204, 204, 204, 255)</color>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.RM_AshFieldExtension">
         <wateredFertility>1.40</wateredFertility>

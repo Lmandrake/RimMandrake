@@ -38,6 +38,9 @@ namespace RimMandrake.Pyrelands
     public static class PyrelandsAshDust
     {
         private const float LightAlpha = 0.6f;
+        // 2026-11-08, owner: "all the ash's should be darker, and wet ash should be downright blackened". The overlay texture is a
+        // mid ash grey (ash_dust_gen.py, ~165); dry dust is tinted to ~80, dust on watered ground to ~50.
+        private const float DryDust = 0.48f, WetDust = 0.30f;
         private static readonly Dictionary<Graphic, Graphic[]> pairs = new Dictionary<Graphic, Graphic[]>();
         private static readonly Dictionary<ThingDef, RM_AshDustExtension> exts = new Dictionary<ThingDef, RM_AshDustExtension>();
         private static int swappedDepth, swappedOverlay;
@@ -133,7 +136,11 @@ namespace RimMandrake.Pyrelands
             int thick = DustOn(p, map, p.Position);
             if (thick <= 0) return p.SnowOverlayGraphic;
             Graphic[] pair = PairFor(p);
-            return pair == null ? null : pair[thick >= 2 ? 1 : 0];
+            if (pair == null) return null;
+            int now = Find.TickManager.TicksGame;
+            MapComponent_PyrelandsAshField field = MapComponent_PyrelandsAshField.For(map);
+            bool wet = field != null && field.MayBeWet(now) && field.IsWatered(p.Position, now);
+            return pair[(thick >= 2 ? 1 : 0) + (wet ? 2 : 0)];
         }
 
         private static Graphic[] PairFor(Plant p)
@@ -153,9 +160,13 @@ namespace RimMandrake.Pyrelands
                         pair = new[]
                         {
                             GraphicDatabase.Get(g.GetType(), o.overlayPath, ShaderDatabase.TransparentPlant, g.drawSize,
-                                new Color(1f, 1f, 1f, LightAlpha), Color.white),
+                                new Color(DryDust, DryDust, DryDust, LightAlpha), Color.white),
                             GraphicDatabase.Get(g.GetType(), o.overlayPath, ShaderDatabase.TransparentPlant, g.drawSize,
-                                Color.white, Color.white),
+                                new Color(DryDust, DryDust, DryDust, 1f), Color.white),
+                            GraphicDatabase.Get(g.GetType(), o.overlayPath, ShaderDatabase.TransparentPlant, g.drawSize,
+                                new Color(WetDust, WetDust, WetDust, LightAlpha), Color.white),
+                            GraphicDatabase.Get(g.GetType(), o.overlayPath, ShaderDatabase.TransparentPlant, g.drawSize,
+                                new Color(WetDust, WetDust, WetDust, 1f), Color.white),
                         };
                     }
                     catch (Exception e)
