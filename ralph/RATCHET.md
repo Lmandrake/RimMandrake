@@ -1,13 +1,18 @@
 # Pyrelands: the ratchet (Conductor, 2026-11-08 ~02:00 AM PST; updated by pass 19)
 
-Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_pyrelands_2026-11-08.md`) plus the Conductor ruling 1:26 AM (OWNER_NOTE.delivered). Where PROGRESS's Count disagrees, this file wins: ash_fertile_when_watered, scorchfruit_spoils_fast are credited now; firehawk_carries_ember stays true (ruling overrides the audit's demotion); burrowers_dive proven in pass 18. 22 bars: 22 proven, 0 remaining (pass 18). Ids are as in `design/validation_walks/RimMandrake/Pyrelands.md` and PROGRESS.
+Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_pyrelands_2026-11-08.md`) plus the Conductor ruling 1:26 AM (OWNER_NOTE.delivered). Where PROGRESS's Count disagrees, this file wins: ash_fertile_when_watered, scorchfruit_spoils_fast are credited now; firehawk_carries_ember stays true (ruling overrides the audit's demotion); burrowers_dive proven in pass 18. 22 bars: 21 proven, 1 remaining (pass 20: ashfall re-shoot after the ground-cover change). Ids are as in `design/validation_walks/RimMandrake/Pyrelands.md` and PROGRESS.
 Suite results: `Transient/northstar/Pyrelands_main.json`, `Pyrelands_r3.json`. Shots: `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`.
 
 ## Remaining (work only on these, in this order)
-(none: all 22 bars are proven as of pass 18.)
+- pyre_ashfall_darkens_drifts (pass 20): moved back because a change touched what it depends on, not on a shown regression.
+  8c548b81c5 replaced the loose-ash sprite with a ground cover (SectionLayer_PyrelandsAsh); the counts and the grass dust
+  overlay are unchanged, but the drifts' look on bare ground is new. Re-shoot an h0/h3/h6 series plus counts on this build
+  (`Transient/pyre_play10/ashperf.py RM_FE_Weather_AshFall 6 2500 3`), and judge the snow/frost read GPT gave first.
 Owed before DONE, not bars: the main suite on the current build (pass 19's live_session run REFUSED at gate B: it needs the
 site reloaded first, `northstar_site.py --site 1 --tag r3 --reload-only --tile 38 --map-id 1`, then cli.py run, see PROGRESS);
 the fresh-eyes judge; DONE.md.
+Done in pass 20: loose ash drawn as ground cover (8c548b81c5), the owner's "blurry grey stuff"; a 3-day replay on it lost
+two colonists (fire, a barbslinger): see PROGRESS before DONE.
 Done in pass 19: lead 1 of the pass-18 broaden call acted on. A fresh colony on map x, played three days with nothing managed,
 found and fixed three things (thirst past 60 cells, steel walls and the burn letter, eating before fire duty). On the replay
 with all fixes, all three colonists are alive and fed at day 3.15, the beds are intact, and fire duty took ~30% of day 2.
@@ -38,7 +43,7 @@ Nothing in Proven depends on what changed (FlowWorks drink search, a colonist th
   0.23, ordered to consume 6 (the player's Consume): food 0.234 -> 0.770 (6 x 0.09). Nobody hauled the fruit home: all three
   were beating fires. `Transient/pyre_play8/harvest.py`, `eat.py`.
 
-- pyre_ashfall_darkens_drifts (pass 18, build a8511632c8 deployed with the capped ash-dust textures, played on map w from
+- (moved to Remaining in pass 20) pyre_ashfall_darkens_drifts (pass 18, build a8511632c8 deployed with the capped ash-dust textures, played on map w from
   day 22 10:20, ash fall locked 6 h then unlocked): the sky dims at once; drifts 3 -> 483 -> 900 -> 1353 -> 1797 -> 2191 -> 2615
   by the hour; at play zoom the dusted grass reads as grey ash-coated clumps that multiply hour by hour (1 at h1, ~5 at h3,
   ~15 at h6 in the same view). Black rain then washed them, 2615 -> 2012 -> 667 -> 74 in 3 h, and the grey went with them.
