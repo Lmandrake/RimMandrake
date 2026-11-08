@@ -1,11 +1,8 @@
 # Pyrelands progress
 
-**State at retirement:** the game is up and paused on map w, day 21, saved as `NS_Pyrelands_play_w_d21` (weather unlocked). The deployed build is the 2026-11-07 one plus the first ash redraw. The following are **committed but NOT deployed**:
-- the ash cut with softer flecks;
-- the furnace-beast change (see "Built" below; check the commit list);
-- the wet-roots growth-season fix.
+**State at retirement:** I started a deploy and restart (`Transient/pyre_play6/restart.py --deploy`; its log is `restart2.log`) as I retired. It carries the softer-fleck ash, the furnace-beast oven and sleep ignition (commit b3dd0877b1), and the wet-roots growth-season fix. It finished: 11 files deployed and the bridge came up in 100 s. The game is at the main menu on the new build. The only load exception is CrackedLands' missing `VEF.Plants.DualCropExtension` (another biome, small list). There are no Pyrelands errors.
 
-Deploy them all with one restart: `python3 Transient/pyre_play6/restart.py --deploy` (stop, composed deploy, launch; about 5 minutes). Then reload: `python.exe Transient/pyre_play5/reload.py NS_Pyrelands_play_w_d21`.
+Then reload: `python.exe Transient/pyre_play5/reload.py NS_Pyrelands_play_w_d21` (day 21). **Feed the colony at once.** The keep-alive packs ran out around day 20. Xiaoer went catatonic from malnutrition at tick 1,254,885, which is inside that save. He died at 1,348,185, after the save, while my skies run had no vitals guard. The other two were at 4 to 7% food with heatstroke. Spawn MealSurvivalPack near 125,125 (`jawa/spawn_batch`, see `northstar_site.food_ops`). This is my unmanaged test colony running out of food, not a biome defect. The colonists never hunted or farmed beyond the strips.
 
 New tools are in `Transient/pyre_play6/`:
 - `long.py HOURS FX FZ SX SZ`: hourly play, with every-6-hour readings of fruit, pods, rice and regrowth, and noon shots of a fixed scar rect.
@@ -40,10 +37,19 @@ New tools are in `Transient/pyre_play6/`:
   - A subagent read the defs: water (precedence 394) fades onto mud (330), and mud fades onto ash and soil (about 100). Every edge already blends half a cell, and the shape code caps straight runs at 4.
   - What still reads blocky is the one-cell mud lip tracing every grid step.
   - If the owner wants it softer, the lever is a lip of varying width (0 to 2 cells) with gaps, not the defs.
+- **Skies (`skies_w21_sheet.png`, 1:1 crops, current build):** my rect fell inside the roofed house, so read it for tint only.
+  - Black rain darkens and greys the whole scene, against vanilla Rain's normal colour.
+  - Ash fall greys it, and cinderfall turns it orange with ember specks.
+  - No drops or flakes show in any still. Reshoot outdoors over a scar (for example 15,32) before judging the two weather bars.
 - **Pale gravel pockets** (`first_look_2`, lower left) read like a concrete slab. They use vanilla Gravel tinted (140,130,120). Try a darker tint.
 
 ## Owner's card, 01:01: the furnace-beast as oven, and sleep ignition
-A builder subagent implemented these offline:
+A builder subagent implemented these offline (commit b3dd0877b1). Its numbers:
+- the room ceiling is outdoors +25 C, so a 50 C day makes a 75 C pen; an unprotected colonist reaches extreme heatstroke in about 7 h and dies in about 11 h;
+- a sleeping beast rolls at an MTB of 3,750 ticks after a half-hour grace;
+- the beast itself is immune.
+
+What it built:
 - no 24 C cap;
 - a beast asleep on a flammable plant lights it;
 - a suite row `pyre_furnacebeast_heats_room` measured at the map's real temperature;
@@ -62,7 +68,7 @@ I asked about the ash at 1:1 (old vs new), which bar I'm fooling myself on, and 
 I did not act on its other leads: a farmer sowing across scar and old ash by colony labour, firebreak trust, day-60 clutter.
 
 ## Next, in order
-1. Restart with deploy. Then read `freshburn.py read` and `rice.py` at 11:00 and 15:00. Expect no "out of temperature growth range" on watered ash below about 73 C.
+1. Confirm the deploy, reload d21 and feed the colony. Then read `freshburn.py read` and `rice.py` at 11:00 and 15:00. Expect no "out of temperature growth range" on watered ash below about 73 C.
 2. Run `stage.py skies X Z 30 16 TAG` at a scar with drifts. Then try ash fall on `WeatherOverlay_SnowGentle` instead of SnowHard (AshFall.xml line 61; the owner's word was "ash that blows like snow"); the restart is needed for that. Then judge `ashfall_darkens_drifts` and `blackrain_reads`.
 3. Shoot the new ash cut at 1:1 on a scar.
 4. Furnace-beast oven and sleep ignition, live, at real temperature.
