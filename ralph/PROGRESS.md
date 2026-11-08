@@ -25,11 +25,16 @@ regex over the `t+` lines, the raw lines are 1.5k chars each):
   in the pit (arrows on the way in, then spikes); with the hole open the passage is truly blocked, so the other three bashed
   walls for 3,000 ticks and left. Correct behaviour, not his story.
 - s13 (800 pts): a mixed 15-pawn raid (ancient soldiers and a militor joined) broke in through the compound walls; nobody fell.
-- s14 (running at retire, result unread): 600 pts, spawn 6 cells south of the mouth, NEW `FW_PERIM=20` perimeter wall
-  along the passage mouth's row (a player's killbox gap sits in a perimeter wall; the old layout let raids walk round the passage).
-  Its log: `Transient/ralph_fw/watch_s14.out` on Steve.
-What blocks his story is now staging, not a known mod bug: raids reach the pit only if the passage is the obvious way in, and
-the first faller often dies on the way in. Next: perimeter layout (s14), then if needed spawn inside the passage mouth.
+- s14 (600 pts, spawn 6 cells south of the mouth, NEW `FW_PERIM=20` perimeter wall along the passage mouth's row): **the
+  first two fell through the cover together** (Trogo held from t240, Cale from t720), the raid stayed, Orange chopped and
+  set a rescue ladder (in at t2400, ~1,700 ticks after the second fall, most of it chopping out of bow range), both climbed
+  out: Cale was shot dead at the lip, Trogo escaped with the raid; Orange (the rescuer) was never hit. Raid driven off (1 dead),
+  no prisoner left. Pit dry. Cliff melee refused 610 swings. His story up to "driven off", but the rescue beat the archers.
+With the perimeter wall the trap springs as he wrote it. What stands between s14 and his ending is the rescue race: 5
+tribal short bows never touched a rescuer who was out of range while chopping and spent only ~240 ticks at the lip setting the
+ladder. Open question for pass 8, look before tuning: is ~240 ticks at the lip too quick for a makeshift ladder (his story has
+defenders "peppering them with arrows while they try"), or are 5 short bows simply too few? Try first with the colony's own
+3 colonists armed (a player defends with everyone), then judge the ladder-setting time.
 
 **Seen, not changed:**
 - `pit_covered_invisible`: pass 6's dark south row did NOT come back (s11 undug vs covered at 64 px: the covered squares are
@@ -49,12 +54,12 @@ the first faller often dies on the way in. Next: perimeter layout (s14), then if
 treatments 0/1/2 by `jawa/static_call RimMandrake.FlowWorks.Pits.RM_SuspensionHang SetTreatment`, deck redrawn over pawns
 beneath) from `hung_bridge_pass6\PROGRESS.md`, building with `WINBUILD_ROOT=D:\ClaudeWork\rimmandrake\build_fw7_bridge`. Its
 commit lands on a `worktree-agent-*` branch (`git branch -a | grep worktree`); merge its SOURCE, rebuild the DLL here, deploy.
-If no branch exists it finished nothing: rerun the brief.
+If no branch exists, look for uncommitted source in `.claude/worktrees/agent-*` before rerunning the brief.
 
 ## Next (in order)
-1. Read s14 (`steve.sh fetch Transient/ralph_fw/watch_s14.out`). If fallen remain after the raid leaves:
-   `python.exe ralph/live/capture.py <colonist> <x> <z>` (right-click capture from the edge), and look for the
-   `RMFlow_RaidLeftTrapped` message. If nobody falls: spawn inside the passage mouth (`FW_SPAWN=gx,p2`).
+1. Story again with `FW_PERIM=20 FW_SPAWN=gx,p-6` (s14's layout) and the defenders armed as a player would; frames of the
+   rescue ladder going in. If fallen remain after the raid leaves: `python.exe ralph/live/capture.py <colonist> <x> <z>`
+   (right-click capture from the edge), and look for the `RMFlow_RaidLeftTrapped` message.
 2. Merge and deploy the hung bridge; `ladders5.py bridge` at root 7.2 and 11 for the three treatments side by side in LOOK.md.
 3. `bash ralph/live/look7.sh p7` (written, never run): depth sheet in the default look with occupied 3x3 pits at 4 m and
    8 m, `walk7.py` graded walk 0-4 m and back with the real drawn sink per stop, ladders/portables/gear at root 7.2 and 11.
@@ -100,7 +105,7 @@ Count: 14 true, 9 false, 7 unseen (of 30).
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | his story has never reached "driven off, prisoners in a tidy prison" | s11 rescue succeeded, s12 faller died, s13 nobody fell | s14 with the perimeter wall, then capture.py |
+| blocker | his story has never reached "prisoners in a tidy prison" | s14: two fell, rescue ladder in, both climbed out, raid driven off | s14 layout with armed defenders, then capture.py |
 | unknown | archers now shoot the rescuer, not the trapped | s11 (before the fix) | a run where a rescue is under way |
 | unknown | the withdrawing-raid message | never fired (no raid left anyone trapped) | a run that leaves a raider in the pit |
 | blocker | bridge reads flat; pawn drawn over the deck | builder in flight | merge, root 7.2 shots |
