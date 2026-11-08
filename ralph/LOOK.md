@@ -22,3 +22,13 @@ Pass 11 (current build, 64 px unless marked):
 - `art_skill_crafts_ladder_beauty.png`: a Piece at every craft, Beauty -6 to +30 (not yet looked at).
 
 Least sure of: whether the ten-day hold on scrubbed walls feels right in play (not yet seen), and the jealousy line, which isn't on screen.
+
+Pass 12 (current build, 64 px unless marked):
+- `art_skill_ladder_awful_to_good_64.png` / `art_skill_ladder_good_to_legendary_64.png`: one piece at each craft on a granite wall, left to right. Awful is a muddy smeared double, poor a washed ghost, normal clean; from good up the letters stand off the wall on a dark 3D block, and masterwork and legendary carry white shine glints. (Before this pass, masterwork looked like normal work.)
+- `art_skill_masterwork_legendary_128.png` / `art_skill_awful_poor_128.png` (128 px): the two ends of the ladder close up.
+
+Least sure of: whether the glints read at play zoom on a busy wall (they are about 8 px), and whether the block shadow on a dark wall shows at all.
+- `scrub_hold_lived_in_corridor_day18.png`: Ashgate on day 18. The corridor's north wall (top of the frame) was ordered scrubbed six days earlier and is still bare; the bedroom walls below carry the colony's ordinary mix, including Karen's new good piece.
+- `weather_south_wall_west.png` / `weather_south_wall_east.png`: the outer south wall after weathering came in: three outdoor marks wore away in a day and a half, and Karen painted into the gaps.
+
+Least sure of: whether a fading mark reads as weathered paint or just as faint paint at play zoom (I haven't framed one mid-fade yet).

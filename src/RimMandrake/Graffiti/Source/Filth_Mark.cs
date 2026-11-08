@@ -63,6 +63,11 @@ namespace RimMandrake.Graffiti
         public int craft = RM_GraffitiKernel.Normal;
         public bool hasCraft;
 
+        // Paint weathers (RM_GraffitiKernel.WeatherDays): it fades over the last 40% of its life and then is gone. A permanent mark never does:
+        // left for the owner's later Luminous Pigments, which make graffiti permanent. weatherStep is the fade drawn now, 0..4.
+        public bool permanent;
+        internal int weatherStep;
+
         // Who held this mark dear: readers it moved, a tribute's subject, a mourner. Somebody who scrubs it in a cleaning fit answers to them.
         private List<int> valuedBy = new List<int>();
 
@@ -87,6 +92,7 @@ namespace RimMandrake.Graffiti
                 wallSide = ReadWallSide(Position, map);
             }
             base.SpawnSetup(map, respawningAfterLoad);
+            weatherStep = WeatherStepNow(out _);
             if (placedTick < 0 && !respawningAfterLoad)
             {
                 placedTick = Find.TickManager.TicksGame;
@@ -163,6 +169,20 @@ namespace RimMandrake.Graffiti
 
         public string CraftLabel => hasCraft ? ((QualityCategory)craft).GetLabel() : null;
 
+        /// <summary>How weathered the mark is drawn and counted now: its last weather step, 0 fresh to 1 gone.</summary>
+        internal float Fade => weatherStep * 0.25f;
+
+        /// <summary>The weather step its age has reached (0..4), 0 for a permanent mark or one with no date.</summary>
+        internal int WeatherStepNow(out float fade)
+        {
+            fade = 0f;
+            if (permanent || placedTick < 0 || !Spawned) return 0;
+            ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+            float life = RM_GraffitiKernel.WeatherDays(ext?.form ?? GraffitiForm.Scrawl, hasCraft ? craft : RM_GraffitiKernel.Normal, !Map.roofGrid.Roofed(Position), thingIDNumber);
+            fade = RM_GraffitiKernel.WeatherFade((Find.TickManager.TicksGame - placedTick) / (float)GenDate.TicksPerDay, life);
+            return RM_GraffitiKernel.WeatherStep(fade);
+        }
+
         // The room counts a mark's beauty on the floor cell it was painted from (CellBeauty ignores whatever stands on a wall's own cell), and
         // under a roof it counts filth at 0.3. This undoes that for craft, so a masterwork is worth its table value indoors and out.
         public override float GetBeauty(bool outside)
@@ -177,9 +197,10 @@ namespace RimMandrake.Graffiti
         {
             get
             {
-                if (!hasCraft) return this.GetStatValue(StatDefOf.Beauty);
+                float worn = 1f - 0.6f * Fade;
+                if (!hasCraft) return this.GetStatValue(StatDefOf.Beauty) * worn;
                 float net = RM_GraffitiKernel.CraftBeauty(craft);
-                return defaced ? System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor)) : net;
+                return (defaced ? System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor)) : net) * worn;
             }
         }
 
@@ -230,6 +251,7 @@ namespace RimMandrake.Graffiti
         {
             string line = def.LabelCap;
             if (hasCraft) line += " (" + CraftLabel + ")";
+            if (weatherStep > 0) line += weatherStep >= 3 ? ", nearly weathered away" : ", fading";
             if (maker != null) line += ", by " + maker.LabelShort;
             else if (makerFaction != null) line += ", by " + makerFaction.Name;
             if (subject != null || !subjectName.NullOrEmpty()) line += ", about " + SubjectName;
@@ -260,6 +282,7 @@ namespace RimMandrake.Graffiti
             Scribe_References.Look(ref makerIdeo, "rmMarkMakerIdeo");
             Scribe_References.Look(ref subject, "rmMarkSubject", saveDestroyedThings: true);
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
+            Scribe_Values.Look(ref permanent, "rmMarkPermanent");
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
             Scribe_Values.Look(ref pigment, "rmMarkPigment", 0);
@@ -504,7 +527,8 @@ namespace RimMandrake.Graffiti
             slope *= wobble;
             float width = size.x * scale;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
-            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough, 0.04f, 0.6f);
+            float fade = Fade;
+            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.45f * fade, 0.04f, 0.85f);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
                 if (cachedHeadMat != null)
@@ -529,6 +553,12 @@ namespace RimMandrake.Graffiti
                 {
                     mat = MaterialPool.MatFrom(g.path, g.Shader, Muddied(Color.white, mud));
                 }
+                if (fade > 0f && !string.IsNullOrEmpty(g.path))
+                {
+                    Color worn = mat.color;
+                    worn.a *= 1f - 0.6f * fade;
+                    mat = MaterialPool.MatFrom(g.path, g.Shader, worn);
+                }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);
                 float smear = RM_GraffitiKernel.CraftSmear(look);
@@ -538,7 +568,7 @@ namespace RimMandrake.Graffiti
                     WallPlane.Print(layer, this, mat, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
                         -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, Mathf.Clamp(through + 0.22f, 0.04f, 0.6f), 0.0015f);
                 }
-                if (!defaced && !string.IsNullOrEmpty(g.path)) PrintSkill(layer, g, mat, look, width, height, slide, slope, lift, flip && cachedHeadMat == null);
+                if (!defaced && fade < 0.5f && !string.IsNullOrEmpty(g.path)) PrintSkill(layer, g, mat, look, width, height, slide, slope, lift, flip && cachedHeadMat == null);
                 PrintCrossOut(layer, width, height, slide, slope, lift);
                 return;
             }
@@ -562,7 +592,7 @@ namespace RimMandrake.Graffiti
             RM_GraffitiKernel.CraftDepth(look, out float drop, out int steps, out int glints);
             if (steps <= 0) return;
             Color tone = paint.color;
-            Color dark = new Color(0.05f + tone.r * 0.16f, 0.045f + tone.g * 0.14f, 0.05f + tone.b * 0.16f, 0.88f);
+            Color dark = new Color(0.05f + tone.r * 0.16f, 0.045f + tone.g * 0.14f, 0.05f + tone.b * 0.16f, 0.88f * tone.a);
             // A queue under the paint's, so only the block's edge shows past the letters. An altitude bump alone doesn't decide it: live, the
             // block drew over the letters and a masterwork went to a dark mass.
             Material shadow = MaterialPool.MatFrom(new MaterialRequest((Texture2D)paint.mainTexture, g.Shader, dark) { renderQueue = paint.renderQueue - 1 });

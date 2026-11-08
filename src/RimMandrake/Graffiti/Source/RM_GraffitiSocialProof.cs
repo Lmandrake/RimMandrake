@@ -233,6 +233,16 @@ namespace RimMandrake.Graffiti
             return sb.ToString();
         }
 
+        /// <summary>"on"/"off": the save's classic-mode flag (Ideology loaded, "no ideoligion" picked at the start), as the game reads it. The
+        /// bridge can't start a quicktest in classic mode; the flag is what GraffitiJobUtility.IdeoOf reads, so flipping it runs the same paths.</summary>
+        public static string Classic(string args)
+        {
+            if (Find.IdeoManager == null) return "REFUSED no ideo manager";
+            if (args == "on") Find.IdeoManager.classicMode = true;
+            else if (args == "off") Find.IdeoManager.classicMode = false;
+            return "CLASSIC " + Find.IdeoManager.classicMode;
+        }
+
         /// <summary>"field=value": flip one of the mod's settings as the player's checkbox would (the same static field the settings window
         /// writes), so a run can show that off means off. No args: every setting as it stands.</summary>
         public static string Set(string args)

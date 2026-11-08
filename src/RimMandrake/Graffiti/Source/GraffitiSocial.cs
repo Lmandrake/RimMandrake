@@ -107,8 +107,31 @@ namespace RimMandrake.Graffiti
 
         public IEnumerable<RM_Grudge> Grudges => grudges;
 
+        /// <summary>Paint weathers: each mark redrawn as it fades, and gone when it's worn through. Nobody takes this as an insult.</summary>
+        private void Weather()
+        {
+            foreach (Filth_Mark m in marks.ToList())
+            {
+                if (!m.Spawned) continue;
+                int step = m.WeatherStepNow(out float fade);
+                if (fade >= 1f)
+                {
+                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + " by " + (m.maker?.LabelShort ?? "-") + " weathered away");
+                    m.SkipCleanNotice();
+                    m.Destroy();
+                    continue;
+                }
+                if (step != m.weatherStep)
+                {
+                    m.weatherStep = step;
+                    map.mapDrawer.MapMeshDirty(m.Position, MapMeshFlagDefOf.Things);
+                }
+            }
+        }
+
         public override void MapComponentTick()
         {
+            if (map.IsHashIntervalTick(GenDate.TicksPerHour) && marks.Count > 0) Weather();
             if (!RM_GraffitiSettings.socialEnabled)
             {
                 // Off means off: what the walls made people feel, and what they meant to do about it, goes the moment the switch does.

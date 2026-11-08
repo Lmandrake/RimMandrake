@@ -1118,6 +1118,34 @@ namespace RimMandrake.Graffiti
             return found;
         }
 
+        // ---------------------------------------------------------------- weather
+
+        /// <summary>Days a mark lasts on its wall before it has weathered away. Live, pass 12: Ashgate's walls reached their caps on day 11 and
+        /// nobody painted again for the next three and a half days, because nothing but the player or an answer ever took our own marks down.
+        /// Paint weathers: out in the rain twice as fast, paper posters fastest, a gouge slowest, a good writer's paint longer than a beginner's.
+        /// The owner's later Luminous Pigments make a mark permanent (Filth_Mark.permanent), so ordinary paint isn't. Each mark +-25% by id.</summary>
+        public static float WeatherDays(GraffitiForm form, int craft, bool outdoors, int id)
+        {
+            float days = outdoors ? 22f : 44f;
+            if (form == GraffitiForm.Paste) days *= 0.5f;
+            else if (form == GraffitiForm.Stencil) days *= 1.3f;
+            else if (form == GraffitiForm.Scrawl) days *= 0.8f;
+            days *= craft <= Awful ? 0.75f : craft == Poor ? 0.85f : craft == Normal ? 1f : craft == Good ? 1.1f : craft == Excellent ? 1.2f : 1.35f;
+            uint h = (uint)id * 2246822519u + 3266489917u;
+            return days * (0.75f + 0.5f * ((h >> 9) & 1023) / 1023f);
+        }
+
+        /// <summary>How far gone a mark is, 0 fresh to 1 gone: nothing shows for the first 60% of its life, then it fades steadily.</summary>
+        public static float WeatherFade(float ageDays, float lifeDays)
+        {
+            if (lifeDays <= 0f) return 0f;
+            float f = (ageDays / lifeDays - 0.6f) / 0.4f;
+            return f < 0f ? 0f : (f > 1f ? 1f : f);
+        }
+
+        /// <summary>The fade as a few steps, so a mark's mesh is rebuilt a handful of times in its life, not every check.</summary>
+        public static int WeatherStep(float fade) { return fade <= 0f ? 0 : (int)Math.Ceiling(fade * 4f); }
+
         /// <summary>The muddy brown a cheap, overmixed paint goes.</summary>
         public static readonly RM_Rgb Mud = new RM_Rgb(0.36f, 0.30f, 0.24f);
 

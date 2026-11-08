@@ -1,43 +1,43 @@
 # Graffiti: where the last pass got to
 
-Pass 11 (2026-11-08). Everything is committed and pushed; game B runs the newest build (`4b3ad46` + the scrub hold, deployed at commit time).
+Pass 12 (2026-11-08). Everything is committed and pushed. Game B runs the newest build (weathering, deployed and seen live).
 
 ## Weather this pass
-- Game B was hung at the start: its log stopped at 20:57 mid-load of `graffiti_p10_ash_story` (a load something before this pass asked for), canary `bad_cpus=[10]`. `deploy` stopped it (forced after 90 s); `up` then worked first time. No other drops. `bad_cpus=[10]` all pass; nothing surprising needed a restart to confirm.
+- No drops, no dead game, no ssh failures. `bad_cpus=[10]` all pass; nothing surprising needed a restart to confirm. Six deploy/up cycles, each about 25 s.
 
-## Built this pass (deployed and seen live unless said)
-- **Scrub graffiti order** (design 1.7, fork F7: "a scrub designator overrides"). Orders tab, drag over walls or the floor before them. `Designator_ScrubGraffiti`, `RM_ScrubGraffiti` designation (vanilla remove-paint overlay), `WorkGiver_ScrubGraffitiDesignated` (Cleaning, priority 10, uses the answer's `RM_ScrubMark` job, reaches past the Home area, `RefusesToClean` holds). Live, Ashgate: 31 marks designated over Mo's spree corridor; Lark and Fringe scrubbed 23 in 6000 ticks. Hook: `st Scrub x,z,w,h` (the designator's own drag path).
-- **A scrub is a chore when ordered** (or the vanilla cleaning rounds): no "There. Gone." mote (six stacked live), and one log line per cleaner and painter a day (was one per mark, 20 from one cleanup). Grudge answers, fits, enemy marks and rescued mockery subjects still say and log in full. Live: three log lines for the whole cleanup.
-- **A mark's DrawPos is its wall face** (0.75 cell on from its floor cell): designation icons, selection bracket, cleaning dust and progress bar sit on the paint (`scrub_order_designated.png`). Print only reads its altitude.
-- **A wall the player had scrubbed is held clean for 10 days** against our own painters (joy, idle, replies, meaning marks, sprees too); a player's paint order overrides. `MapComponent_GraffitiSocial.HoldScrubbed/HeldClean`, saved (`rmScrubbedHold`), checked in `GraffitiJobUtility.KeptClean`. Why: the scrubbed corridor took about ten new marks in two unstaged days, and the order looked pointless. **Deployed, not yet seen live**: scrub a corridor, run `days 60000`, and check no own-colony mark lands within 2 cells of a scrubbed one.
-- **Classic mode (Ideology on, "no ideoligion")**: every faction carries the player's hidden ideo (FactionIdeosTracker), so raiders' marks read as our faith and a sigil painted the hidden icon. `GraffitiJobUtility.IdeoOf` returns null there and is used for every ideo read; nobody without an ideoligion paints a tier-A sigil (an empty frame). **Built, not seen live** (needs a classic-mode quicktest; that is the stands_alone "no ideoligion" profile).
-- Driver: `load` now waits for two equal mark counts before returning (the empty-first-read trap is gone).
+## Built and seen live this pass
+- **Skill shows on the wall.** The craft ladder at 64 px showed masterwork looking like normal work. Good+ pieces now stand off the wall on a dark 3D block in the paint's own darkest shade (deeper with craft), and masterwork and legendary carry white shine glints on their letters' top edges (`RM_GraffitiKernel.CraftDepth`, `ShinePoints`, `MarkPoint`; `Filth_Mark.PrintSkill`). The block needs a render queue one under the paint: an altitude bump alone drew it over the letters. Shots: `art_skill_ladder_*`.
+- **The scrub hold covers the whole dragged stretch.** Live: the 2.9-cell ring round each scrubbed mark left gaps, and a tag and a mockery landed in them within a day. Now the bounding rect of the drag, 3 cells wider, is held for 10 days (`HoldStretch`, saved as `rmHeldStretches`/`rmHeldSince`). Live: nothing was painted inside it for 6 days (`scrub_hold_lived_in_corridor_day18.png`).
+- **A mockery off the wall eases its subject at once** (GPT lead 4). Scrubbed, crossed out, painted over, weathered or its wall gone: the subject's "Mocked on the wall by X" goes to stage 1, "(gone now)", -4 base instead of -8, a day at most (`Notify_MockeryGone`, hooked in `Filth_Mark.Destroy` and the cross-out). Live: "Lark's humiliation over Karen's mockery eases: it's off the wall" when Lark painted back over it.
+- **Paint weathers** (from GPT lead 2, the long run). Five and a half unattended days (`graffiti_p12_ash_long`): marks reached 67 by day 11 and nobody painted again for 3.5 days. Every joy giver answered null because every wall was at its cap, and nothing but the player or an answer ever removed our own marks. Now each mark has a life (`WeatherDays`: indoors about 44 days, outdoors half that, posters half again, stencils x1.3, scrawls x0.8, better craft longer, +-25% by id). It fades over the last 40%, as more wall shows through, thinner paint and lower Beauty, and then it's gone with a trace line. A `permanent` flag is saved and never weathers, left for Luminous Pigments. Live, from day 16: three outdoor marks wore away in 1.5 days, and Karen painted four new ones, a mockery among them, in the gaps. One message in 1.5 days.
+- **Classic-mode hook** `so Classic on|off` (sets `Find.IdeoManager.classicMode`): built and deployed, **not yet used**.
+- Ledger lines now show each wall memory's age (`(age N)`), which is the evidence for rereads at most daily. The bridge's `jawa/pawn_need` memory list is capped and drops ours.
 
-## Seen live this pass (evidence for DONE.md; shots in the shots folder)
-- `optionD_materials_playzoom.png` / `optionD_materials_close128.png`: granite, wood, steel, marble, plasteel, slate rooms in daylight (Sweep). The face paint keeps its colour over the crease on every material; brick courses show through on granite and marble; light walls are not too loud; dark walls still read. Side faces carry a vertical scrap, as designed. (The first take was black: Ashgate's local time was 8:37 pm in a dry thunderstorm. Use `kv jawa/weather_set weather=Clear lockWeather=true`, and work out local time from `jawa/time_date_at` longitude.)
-- Two unstaged days on Ashgate after the cleanup (ticks 517k to 637k): 2 messages (Mo's mockery of Lark, which traces to Lark's still-standing mockery of Mo; Lark's tribute to Brick), about 6 log lines, marks 45 to 60, one vanilla break (Lark, Tortured Artist, insulting spree). **Mo does not spiral** (mood 82%). His -13.2 is a 3-day humiliation from a mockery Brick scrubbed (expires) plus -4.4 from Lark's mockery, which still stands; the player can now scrub it in one drag. Save: `graffiti_p11_ash_days`.
-- Rustwall (`graffiti_p8_busy3`, then saved as `graffiti_p11_rust_memorial`):
-  - `personality_psychopath_cathryn_needs.png`: Cathryn (Psychopath) after Brandt painted a mockery of her: no wall thought at all. `so Temper` reads numb, paint urge 0.
-  - `personality_sensitive_kinso_needs.png`: Kinso (Volatile) "Mocked on the wall by Brandt -13" (base -8, ×1.5, × good craft); the line is at the bottom edge of the list, legible. He then scrubbed it and painted an awful mockery of Brandt back, unprompted.
-  - `tribute_jealous_kinso_message.png`: Lark (Kinso's lover) painted a tribute to Brick; Kinso read it as Jealous. The message shows ("Kinso saw Lark's tribute to Brick and said nothing, loudly."); the thought is below the cut of the list.
-  - `memorial_lark_grief_half.png`: Pell killed; 10,500 ticks later Lark painted a good memorial. Needs: "My friend Pell died -2", "Painted a memorial to Pell +1": exactly half. Message on screen.
-  - `art_skill_crafts_ladder(_beauty).png`: one Piece at each craft, Beauty -6, -3, 0, +3, +8, +18, +30, at 40 px per cell (29 cells wide). **Not yet looked at.** Check that the overlay numbers show and the awful ones look worse.
+## Seen live this pass (no code change needed)
+- Painting switched off (`so Set paintingEnabled=False`): 19,000 ticks, no new marks, no paint replies; a scrub of a mockery still happened (cleaning, not painting).
+- Save and reload: 60 marks identical (def, craft, Beauty, maker, subject, room) and every pawn's wall mood and opinion totals equal.
+- Long run (`graffiti_p12_ash_long`, ticks 637k to 961k): 11 messages in 5.5 days, all in a burst around one Karen–Lark mockery feud (mockery, reply over it, confronts, cross-out, a tribute). Wall mood per pawn stayed between about +6 and -10, with no one spiralling. Karen confronted Lark at 954353 with BLOWS (chance 0.36), but I don't see a message for it in `Said`. Check whether the fight message goes through `Tell`.
+- Performance (game B's `JawaBench/tps` record): 0.57 ms per tick average while fast-forwarding, worst 12.7 ms; all map components 0.003 ms per tick.
+- GPT lead 3 (insult read through a bedroom wall): not possible. A reader must share the mark's room and have line of sight to the floor before it (`GraffitiSocial` ~L305). Lead 5 (Beauty exploit): ten excellent pieces raise an 8x8 room's average Beauty by about 1.25, far less than one sculpture.
 
-## Do next
-1. Look at `art_skill_crafts_ladder_beauty.png`. If the overlay numbers don't show, hover a cell nearer the row, or take two 64-px halves.
-2. See the scrub hold live (above). Then the classic-mode quicktest: `prove_quicktest_world.py` with classic mode (or set `Find.IdeoManager.classicMode` before generating), one spree, a raid exit; check no sigils and no "Our sign" reads from raiders.
-3. Clean-freak fit: `so Cast Brick/Neurotic:2/0`, `brk Brick RM_GraffitiCompulsiveCleaningBreak`, then a UI shot mid-fit.
-4. Still unseen on this build: raid mark and its retake, visitors, `so Set paintingEnabled=False` then a quiet day, save and reload, making_a_mark (a Needs shot with "Left my mark" while recreation rises), a reread a day later (the trace has `rereads` lines; a thought's age is the evidence), scrawl beside tallies on a lived-in wall in daylight.
-5. GPT `broaden` with these shots (required before DONE.md; pass 9's used old ones), act on one or two leads, then DONE.md.
-6. Retire the old shots: move the pass-8 and earlier shots in the shots folder that the current build no longer matches into `old/`.
+## GPT broaden (pass 12): asked, got, acted on
+Asked with six current shots (`ralph/live/broaden_ask_pass12.md`). Answer: `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gpt_help_pass012.md`. Acted on: lead 2 (a long ignored run, which found the dead equilibrium, now fixed by weathering) and lead 4 (cleaning a mockery should visibly help its subject, fixed). Checked by code: leads 3 and 5. Not tried: lead 1 (a newcomer working back from "Mocked on the wall by X" to the mark: try `wallui` on the wall, and the thought's tooltip), lead 6 (an emergency mid-answer: draft or restrict, then release), lead 7 (people change while the paint stays).
+
+## Do next (then DONE.md: the broaden requirement is met this pass)
+1. Look at a mark mid-fade at play zoom and 128 px (load `graffiti_p12_ash_day18`; find a mark whose inspect says "fading"). If it reads as faint new paint rather than worn paint, weather it differently (patchier, not just thinner).
+2. Unseen on this build: raid tag and retake (`kv jawa/fire_raid points=120 arrivalMode=EdgeWalkIn ...`, wait until they reach the east wall, then `kv jawa/lord_set_job lordIndex=N lordJob=LordJob_ExitMapBest args=locomotion=Jog;canDig=false;canDefendSelf=true`), visitors (`so Order <painter>/RM_Graffiti_FactionInsult/<faction>/x,z` on the outer wall, then `kv jawa/fire_incident incidentDef=TraderCaravanArrival faction=OutlanderCivil forced=true`, `gw` before and after), the clean-freak fit (Mo is Very Neurotic: `brk Mo RM_GraffitiCompulsiveCleaningBreak`, then a `ui` shot mid-fit), classic mode (`so Classic on`, `st Spree 1`, a day; Count shows no new IdeoSigil or Glyph, and the Ledger shows no "Our sign").
+3. making_a_mark: `setjoy 0.4 <names>` then `painting making_mark 30000` (it now waits for joy to rise before the mid shot; I never looked at the second set).
+4. Rereads at most daily: `so Ledger`, where a mark seen for days has a memory with age under 60000.
+5. Lead 1 (newcomer finds the mockery): one `wallui` shot of the wall carrying it.
+6. DONE.md with verdicts on every north-star line.
 
 ## Traps
 - The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with the Write or Edit tool. `g.py` is the driver; `ralph/steve.sh sync` after editing it.
-- `shot` refuses a rect wider than one screen: 20 cells at 64 px, 8 at 128, 28 at 44.
-- Two `so Order` calls in a row for one painter: the second replaces the first. Wait for the first (`until`).
-- `so Order` without a cell can fail with "no wall": give it a known wall-face floor cell.
-- The Needs tab's thought list is cut at about 17 lines and the bridge can't scroll it; a long-lived colonist's wall line may sit below the cut.
-- A numb pawn (psychopath) never appears as a reader in the trace: they're skipped before reading.
-- Rustwall is in a bad state (starvation, raid, two dead): good for mechanics, not for "lived-in" art shots. Ashgate is the lived-in one.
-- `up` started in the background: wait for "started game b" in its log before calling the bridge.
+- `shot` refuses a rect wider than one screen: 20 cells at 64 px, 8 at 128.
+- Local time: `kv jawa/time_date_at` gives no hour; compute it as ((ticksAbs + longitude/360*60000) % 60000)/2500. Ashgate is at longitude -17.9, Rustwall at -23.1. `kv jawa/weather_set weather=Clear lockWeather=true` after every load.
+- Ashgate runs low on food: stock it with `kv rimworld/spawn_thing defName=MealSurvivalPack x=120 z=131 stackCount=10` (x 120..125) before long runs.
+- `ui` shots raise a Food tooltip unless a cell is passed (it parks the hover on the map).
+- The Needs tab list is cut at about 17 lines and the bridge can't scroll it.
+- `days` shows only the last trace lines of each chunk; `so Said 30` lists every message with its tick.
+- Saves on game B: `graffiti_p12_ash_long` (day 16, before weathering), `graffiti_p12_ash_weather`, `graffiti_p12_ash_day18` (newest, with weathering), `graffiti_p11_rust_memorial` (Rustwall).
 - Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse,RimWorld.Planet}/`.

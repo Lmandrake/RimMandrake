@@ -89,7 +89,7 @@ def setup(s):
 def days(s, ticks, chunk=15000):
     """A run of days with nothing staged: one Tally line per chunk, and only the trace lines that are events (not every read)."""
     import re
-    keep = re.compile(r"painted|wants to|over|confront|BLOWS|scrub|crossed|unfinished|refus|fit|goodwill|raid|left their|means to")
+    keep = re.compile(r"painted|wants to|over|confront|BLOWS|scrub|crossed|unfinished|refus|fit|goodwill|raid|left their|means to|weathered|eases")
     done = 0
     while done < ticks:
         n = min(chunk, ticks - done)
