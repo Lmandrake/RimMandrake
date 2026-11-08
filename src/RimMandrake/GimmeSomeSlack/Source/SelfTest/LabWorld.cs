@@ -34,6 +34,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 foreach (JsonElement l in m.GetProperty("links").EnumerateArray()) i.MachineLinks.Add(l.GetString());
                 i.InsetS = m.GetProperty("insets")[0].GetDouble(); i.InsetN = m.GetProperty("insets")[1].GetDouble(); i.InsetE = m.GetProperty("insets")[2].GetDouble(); i.InsetW = m.GetProperty("insets")[3].GetDouble();
                 if (m.TryGetProperty("home", out JsonElement home)) { i.HasHome = true; i.HomeX = home[0].GetInt32(); i.HomeZ = home[1].GetInt32(); }
+                if (m.TryGetProperty("foot", out JsonElement foot)) i.Foot = foot.GetBoolean();
                 w.Machines.Add(i);
             }
             live = new HashSet<Cell>();

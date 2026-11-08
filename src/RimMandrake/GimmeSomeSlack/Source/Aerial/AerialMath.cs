@@ -249,8 +249,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>A span is drawn, damaged and owned by the end with the lower thingIDNumber.</summary>
         public static bool Owns(int self, int other) => self < other;
 
+        /// <summary>The drip-loop setting's default (AerialSettings.dripLoops): off since the owner's sitting of 2026-11-08 12:20 PM, "The top
+        /// of power poles shows needless kinks in the wires where they connect too" (the drip loop at every insulator).</summary>
+        public const bool DripLoopsDefault = false;
+
         /// <summary>Design 2.5 "each strand gets a short drip loop below the insulator" (unbuilt until the 2026-10-10 build-out;
-        /// setting dripLoops, default ON since 2026-10-15). The span curve as
+        /// setting dripLoops, default ON 2026-10-15, OFF since 2026-11-08). The span curve as
         /// <see cref="SpanCurve"/>, plus within <paramref name="reach"/> cells of each end a dip of up to
         /// <paramref name="depth"/> cells (screen-down = hanging) shaped (1 - cos(2 pi d / reach)) / 2, so the wire leaves the insulator
         /// level, sags into a small loop and rises back to the span: a sine left a sharp peak on every insulator, and two spans meeting there drew a zigzag along the crossarm
@@ -397,40 +401,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (count == 1) return insulators / 2;
             int i = (int)Math.Round(strand * (insulators - 1) / (double)(count - 1));
             return Math.Max(0, Math.Min(insulators - 1, i));
-        }
-
-        // ------------------------------------------------------------------ local drops onto a pole's terminals (owner round 2, 2026-10-04)
-        /// <summary>A signature of <see cref="AssignTerminals"/>'s inputs: equal signatures give the same assignment
-        /// (order-independent over the devices, as the assignment sorts them). GPT pre-release C16.</summary>
-        public static int TerminalSig(IList<(int Id, double X)> devices, int insulators)
-        {
-            unchecked
-            {
-                int h = insulators * 397 ^ devices.Count, sum = 0, xor = 0;
-                for (int i = 0; i < devices.Count; i++)
-                {
-                    int d = (devices[i].Id * 31) ^ Math.Round(devices[i].X, 3).GetHashCode();
-                    sum += d * 0x2F0B3C1; xor ^= (int)Hash(devices[i].Id, (int)Math.Round(devices[i].X * 1000));
-                }
-                return (h * 31 + sum) * 31 + xor;
-            }
-        }
-
-        /// <summary>
-        /// Which insulator (terminal, left to right) each LOCAL connection of one pole takes: the devices wired to it and the
-        /// transmitters standing beside it. Ordered by where they stand across the crossarm (<c>X</c>, east = right), then id,
-        /// so wires never cross needlessly. Up to one per insulator they never share (one device takes the middle, two the
-        /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
-        /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
-        /// </summary>
-        public static Dictionary<int, int> AssignTerminals(IList<(int Id, double X)> devices, int insulators)
-        {
-            var r = new Dictionary<int, int>();
-            var order = devices.OrderBy(d => d.X).ThenBy(d => d.Id).ToList();
-            int k = order.Count, n = Math.Max(1, insulators);
-            for (int i = 0; i < k; i++)
-                r[order[i].Id] = n <= 1 ? 0 : k <= n ? InsulatorIndex(i, k, n) : Math.Min(n - 1, i * n / k);
-            return r;
         }
 
         // ------------------------------------------------------------------ the wall bracket (owner round 2, 2026-10-04)
@@ -738,75 +708,40 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         /// <summary>
-        /// A mast's local drop as a too-long cord, not a rod (blind judge, pass 1: "a taut, rod-like cord runs from the mast crossarm to the
-        /// lamp"): it hangs down from the insulator at <paramref name="tip"/>, bellies well out to one side, and comes back into the device
-        /// at <paramref name="from"/>. A short drop keeps a belly of at least a third of a cell. Polyline from the device to the insulator.
+        /// A pole's or mast's local lead to a device: a too-long extension cord lying on the ground the whole way, from under the anchor's foot
+        /// <paramref name="basePt"/> to <paramref name="device"/> (owner, sitting 2026-11-08 12:20 PM: "Items should connect to the bottom of a
+        /// power pole (beneath its base), not run a line up to the top of the power pole"; it used to hang from the crossarm insulator and then
+        /// lie down, shots 121837/121857). The run is a <see cref="LooseRun"/> kept no further up the screen than the higher of its two ends plus
+        /// <see cref="DropRise"/> (ground up-screen of those is behind the pole: a run wandering there read as a cord strung from the crossarm),
+        /// else any open run, else one under a wall (vanilla wires a lamp indoors to a pole outside: the cord goes in under the wall, as floor cords
+        /// do), else a shallow bow. Never null; <see cref="FallenLay.GroundFrom"/> is 0 (all of it on the ground) and it ends exactly on the device.
         /// </summary>
-        public static List<P2> LooseDrop(P2 from, P2 tip, int seed, double step = 0.08)
+        public static FallenLay LayFootDrop(P2 basePt, P2 device, int seed, Func<int, int, bool> walkable)
         {
-            double dx = tip.X - from.X, dz = tip.Z - from.Z, d = Math.Sqrt(dx * dx + dz * dz);
-            var o = new List<P2>();
-            if (d < 1e-6) { o.Add(from); o.Add(tip); return o; }
-            double nx = -dz / d, nz = dx / d;
-            int sgn = U(seed, 31) < 0.5 ? -1 : 1;
-            double belly = Math.Max(0.35, 0.34 * d) * (0.85 + 0.3 * U(seed, 32)) * sgn;
-            // a cubic: out of the device to the side, then up under the insulator from straight below it
-            var c1 = new P2(from.X + dx * 0.2 + nx * belly * 1.5, from.Z + dz * 0.2 + nz * belly * 1.5 - 0.1 * d);
-            var c2 = new P2(tip.X - nx * belly * 0.2, tip.Z - 0.75 * d);
-            int n = Math.Max(8, (int)Math.Ceiling(1.6 * d / step));
-            for (int i = 0; i <= n; i++)
-            {
-                double t = i / (double)n, m = 1 - t;
-                double a = m * m * m, b = 3 * m * m * t, c = 3 * m * t * t, e = t * t * t;
-                o.Add(new P2(a * from.X + b * c1.X + c * c2.X + e * tip.X, a * from.Z + b * c1.Z + c * c2.Z + e * tip.Z));
-            }
-            return o;
-        }
-
-        /// <summary>
-        /// A mast's local drop as a too-long extension cord lying on the ground (blind judge, pass 12: the drop "from the lamp mast to a lamp"
-        /// still read as "a shallow taut arc" in every look; owner: "Everything is a too-long extension cord"). It hangs straight down from the
-        /// insulator at <paramref name="top"/> and curves out to touch the ground a cell or so from the mast's foot <paramref name="basePt"/>
-        /// (screen z fakes height), then lies the rest of the way to <paramref name="device"/> as a loose cord (<see cref="LooseRun"/>). Null when
-        /// no loose cord can lie on the ground between (a wall between: vanilla wires a lamp indoors to a mast outside), or the device stands
-        /// beside the mast; the caller then hangs <see cref="LooseDrop"/>.
-        /// The ground run lies no further up the screen than the higher of its touchdown and its device, plus <see cref="DropRise"/>
-        /// (<paramref name="keepLow"/>; off only for the self-test's control): ground up-screen of those is behind the pole and under the
-        /// overhead wires, and a run that wandered there and curled back down into a lamp read as a cord strung from the crossarm (pass 14, all four looks).
-        /// </summary>
-        public static FallenLay LayDrop(P2 top, P2 basePt, P2 device, int seed, Func<int, int, bool> walkable, bool keepLow = true)
-        {
-            double dist = P2.Dist(basePt, device);
-            if (dist < 1.4) return null;
-            double ux = (device.X - basePt.X) / dist, uz = (device.Z - basePt.Z) / dist, nx = -uz, nz = ux;
-            int sgn = U(seed, 33) < 0.5 ? -1 : 1;
-            // the touchdown: out from the foot, and to one side of the pole when the device is up the screen from it, or the ground run
-            // would lie over its own hang
-            double s0 = Math.Min(0.4 * dist, 0.75 + 0.45 * U(seed, 34));
-            double side0 = uz > 0.3 ? sgn * (0.45 + 0.3 * U(seed, 54)) * uz : 0;
-            var td = new P2(basePt.X + ux * s0 + nx * side0, basePt.Z + uz * s0 + nz * side0);
-            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
-            if (!open(td)) return null;
-            double cap = Math.Max(td.Z, device.Z) + DropRise;
-            List<P2> run = keepLow ? LooseRun(td, device, seed, g => g.Z <= cap && open(g)) ?? LooseRun(td, device, seed, open) : LooseRun(td, device, seed, open);
-            if (run == null || run.Count < 3) return null;
             var lay = new FallenLay();
-            // the hanging part, a J: straight down from the insulator under its own weight, leaning a little to one side, then curving out
-            // into the ground run along the way it leaves the touchdown (a straight diagonal from the crossarm read as a rod)
-            double dx = run[2].X - run[0].X, dz = run[2].Z - run[0].Z, dl = Math.Max(1e-6, Math.Sqrt(dx * dx + dz * dz));
-            double fall = Math.Max(0.5, top.Z - td.Z), lead = 0.45 + 0.25 * U(seed, 53), sway = sgn * (0.2 + 0.18 * U(seed, 47));
-            P2 c1 = new P2(top.X + sway, top.Z - 0.7 * fall), c2 = new P2(td.X - dx / dl * lead, td.Z - dz / dl * lead);
-            double hangLen = P2.Dist(top, c1) + P2.Dist(c1, c2) + P2.Dist(c2, td);
-            int hn = Math.Max(8, (int)Math.Ceiling(hangLen / 0.07));
-            for (int i = 0; i < hn; i++)
+            double dist = P2.Dist(basePt, device);
+            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
+            double cap = Math.Max(basePt.Z, device.Z) + DropRise;
+            List<P2> run = dist < 0.3 ? null
+                : LooseRun(basePt, device, seed, g => g.Z <= cap && open(g)) ?? LooseRun(basePt, device, seed, open) ?? LooseRun(basePt, device, seed, _ => true);
+            if (run == null || run.Count < 2)
             {
-                double t = i / (double)hn, m = 1 - t;
-                double a0 = m * m * m, a1 = 3 * m * m * t, a2 = 3 * m * t * t, a3 = t * t * t;
-                lay.Pts.Add(new P2(a0 * top.X + a1 * c1.X + a2 * c2.X + a3 * td.X, a0 * top.Z + a1 * c1.Z + a2 * c2.Z + a3 * td.Z));
+                // a device right at the foot (or nothing lies): a shallow bow, to one side
+                run = new List<P2>();
+                double nx = dist < 1e-6 ? 0 : -(device.Z - basePt.Z) / dist, nz = dist < 1e-6 ? 0 : (device.X - basePt.X) / dist;
+                double bow = (U(seed, 33) < 0.5 ? -1 : 1) * Math.Min(0.25, 0.2 * dist + 0.05);
+                int n = Math.Max(4, (int)Math.Ceiling(dist / 0.06));
+                for (int i = 0; i <= n; i++)
+                {
+                    double t = i / (double)n, k = 4 * t * (1 - t) * bow;
+                    run.Add(new P2(basePt.X + (device.X - basePt.X) * t + nx * k, basePt.Z + (device.Z - basePt.Z) * t + nz * k));
+                }
             }
-            lay.GroundFrom = lay.Pts.Count;
+            run[0] = basePt;
+            run[run.Count - 1] = device;
             lay.Pts.AddRange(run);
-            lay.Tip = lay.TipNow = lay.Pts[lay.Pts.Count - 1];
+            lay.GroundFrom = 0;
+            lay.Tip = lay.TipNow = device;
             return lay;
         }
 

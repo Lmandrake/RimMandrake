@@ -308,13 +308,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Console.WriteLine("MEASURE A10 2,500-cell field: first build " + first.ToString("0") + " ms (" + n1 + " pieces), unchanged rebuild " + again.ToString("0") + " ms (" + n2 + " pieces)");
                 Check(n1 == n2 && n1 > 0, "A10 the field builds and rebuilds to the same piece count");
             }
-
-            // C16: the terminal assignment's signature is order-free and moves with an id, an x or the insulator count
-            var devs = new List<(int, double)> { (5, 0.4), (9, -0.6), (12, 1.1) };
-            int sig = AerialMath.TerminalSig(devs, 3);
-            Check(sig == AerialMath.TerminalSig(new List<(int, double)> { (12, 1.1), (5, 0.4), (9, -0.6) }, 3), "C16 device order does not change the signature");
-            Check(sig != AerialMath.TerminalSig(devs, 2) && sig != AerialMath.TerminalSig(new List<(int, double)> { (5, 0.9), (9, -0.6), (12, 1.1) }, 3) &&
-                  sig != AerialMath.TerminalSig(new List<(int, double)> { (5, 0.4), (9, -0.6) }, 3), "C16 insulators, a moved device or a removed device change it");
         }
 
         // ------------------------------------------------------------------ GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT (D2, D9)

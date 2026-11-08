@@ -1,0 +1,2 @@
+GSS CordBuilder end shaping: ArriveRound (Dubins arrival) runs after AttachEnd and overwrites SwingIn's swing, so tuning SwingIn or the strip plug's straight length (tried 0.4) or pinning junction ends in Fair only moves a strip's back-arm corner outward; hairpins over 150 degrees went 2 to 5. The lever that worked is the plug's lean (StripLeanBack/StripLeanFree in PlugOut).
+home: src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs

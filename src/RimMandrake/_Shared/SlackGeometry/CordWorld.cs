@@ -32,6 +32,11 @@ namespace RimMandrake.Shared.Slack
         public bool HasHome;
         public int HomeX, HomeZ;
 
+        /// <summary>An aerial anchor (power pole, lamp mast): owner 2026-11-08 12:20 PM, "Items should connect to the bottom of a power
+        /// pole (beneath its base), not run a line up to the top of the power pole". Its cord comes in from below whatever side vanilla
+        /// hooked, and ends tucked just under the foot of the art, never at a side of the cell (a mast's side box, mid-height).</summary>
+        public bool Foot;
+
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
 

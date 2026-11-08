@@ -202,7 +202,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         foreach (CordStrand s in p.Strands)
                         {
                             strands++;
-                            folds += CordShape.Kinks(s.Pts).Count;
+                            int fk = CordShape.Kinks(s.Pts).Count;
+                            folds += fk;
+                            if (fk > 0 && folds <= 8) Console.WriteLine($"  FOLD seed {seed} [{p.EndA} | {p.EndB}] {p.Key} x{fk} at {string.Join(" ", CordShape.Kinks(s.Pts).Select(q => $"({q.X:0.00},{q.Z:0.00})"))}");
                         }
             Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
             Console.WriteLine($"  cord folds: {folds} in {strands} strands");

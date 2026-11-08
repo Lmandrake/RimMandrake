@@ -150,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private readonly ICollection<string> straightPlug;
 
         /// <summary>Does a cord into this machine slide under it (not a lamp, not a drawn connector such as the tap clamp)?</summary>
-        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !straightPlug.Contains(m.Id ?? "");
+        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !m.Foot && !straightPlug.Contains(m.Id ?? "");
 
         internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax, bool slideUnder = true,
                                          ICollection<string> straightPlug = null) =>
@@ -691,6 +691,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static V2 PlugPoint(MachineInfo m, Cell hookup, bool slide = false)
         {
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
+            if (m.Foot) return new V2(m.X0 + m.W / 2.0, m.Z0 - 0.08);   // a pole or mast: in from below, under its foot, whatever side vanilla hooked
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
             double x0 = m.X0, z0 = m.Z0, x1 = m.X0 + m.W, z1 = m.Z0 + m.H;
             double qx = Geo.Clamp(hx, x0 + 0.25, x1 - 0.25), qz = Geo.Clamp(hz, z0 + 0.25, z1 - 0.25);

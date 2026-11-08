@@ -84,11 +84,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (AngDiff(arriveAng, Ang(-along)) > 35 * Deg) { ok = false; msg.Add($"{at} lead arrives {AngDiff(arriveAng, Ang(-along)) / Deg:0}deg off the strip"); }
                     continue;
                 }
-                double near = StripHeadX.Min(x => V2.Dist(e - side * (PlugFace * CordBuilder.PilePlugScale), Art(x, StripHeadZ)));
+                // its plug (it may lean toward the free end, owner 2026-11-08): the head on a socket, standing out on the sockets' side,
+                // and the cord arriving along the plug
+                int pi = decals.FindIndex(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, e) < 0.03);
+                if (pi < 0) { ok = false; msg.Add($"{at} a cord on a socket wears no plug"); continue; }
+                CordDecal plug = decals[pi];
+                V2 into = Dir(plug.Angle);
+                V2 head = plug.Pos + into * (PlugFace * CordBuilder.PilePlugScale);
+                double near = StripHeadX.Min(x => V2.Dist(head, Art(x, StripHeadZ)));
                 if (near > 0.08) { ok = false; msg.Add($"{at} cord end {near:0.00} off every socket"); continue; }
                 plugged++;
-                if (AngDiff(arriveAng, Ang(-side)) > 35 * Deg) { ok = false; msg.Add($"{at} cord arrives {AngDiff(arriveAng, Ang(-side)) / Deg:0}deg off its socket"); }
-                if (!decals.Any(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, e) < 0.03)) { ok = false; msg.Add($"{at} a cord on a socket wears no plug"); }
+                if (-(into.X * side.X + into.Z * side.Z) < Math.Cos(80 * Deg)) { ok = false; msg.Add($"{at} a plug does not stand out on the sockets' side"); }
+                if (AngDiff(arriveAng, plug.Angle) > 35 * Deg) { ok = false; msg.Add($"{at} cord arrives {AngDiff(arriveAng, plug.Angle) / Deg:0}deg off its plug"); }
             }
             if (plugged == 0 || leads > 3) { ok = false; msg.Add($"{at} strip with {plugged} plugged cords, {leads} on its lead"); }
             return ok;

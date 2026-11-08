@@ -82,8 +82,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             pendingAuto.Remove(a);
             pendingSince.Remove(a);
             anchorLive.Remove(a.thingIDNumber);
-            lastTerminals.Remove(a.thingIDNumber);
-            termSigs.Remove(a.thingIDNumber);
             DirtyCell(a.Position);
         }
         public void Register(CompPowerTap t) => taps.Add(t);
@@ -613,9 +611,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ local drops (owner round 2, 2026-10-04)
         public int lastLocalDrops;
-        /// <summary>State read: per anchor id, device id -> terminal index used on the last frame.</summary>
-        public readonly Dictionary<int, Dictionary<int, int>> lastTerminals = new Dictionary<int, Dictionary<int, int>>();
-        private readonly Dictionary<int, int> termSigs = new Dictionary<int, int>();
         private readonly Dictionary<long, KeyValuePair<int, Mesh[]>> dropMeshes = new Dictionary<long, KeyValuePair<int, Mesh[]>>();
         private readonly HashSet<long> dropUsed = new HashSet<long>();
 
@@ -655,55 +650,40 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         private readonly List<Thing> devsScratch = new List<Thing>();
-        private readonly List<(int, double)> termScratch = new List<(int, double)>();
 
-        /// <summary>Each local connection is a drop wire from the device's CENTROID up to the pole terminal
-        /// AerialMath.AssignTerminals gave it (spread over the crossarm, shared only when there are more devices than
-        /// insulators). The part over the device's own art is drawn BENEATH the building (SmallWire), so it vanishes into the
-        /// device whatever its art; the rest hangs at span altitude and ends exactly on the insulator tip.</summary>
+        /// <summary>Each local connection is a cord on the ground from under the pole's foot to the device's centroid (owner, sitting
+        /// 2026-11-08 12:20 PM: "Items should connect to the bottom of a power pole (beneath its base), not run a line up to the top of the
+        /// power pole"; it used to hang from a crossarm terminal). It lies at floor-cord altitude, so it goes in under the pole's art and
+        /// under the device's.</summary>
         private void DrawLocalDrops(CellRect view)
         {
             lastLocalDrops = 0;
             if (!AerialSettings.enabled || AerialMaterials.Span == null) return;
             dropUsed.Clear();
-            float under = AltitudeLayer.SmallWire.AltitudeFor(), over = SpanAltitude;
             CellRect near = view.ExpandedBy(6);
             List<Thing> devs = devsScratch;
             foreach (CompAerialAnchor a in Anchors)
             {
                 if (!near.Contains(a.Position)) continue;
                 LocalConnections(a, devs);
-                if (devs.Count == 0) { lastTerminals.Remove(a.thingIDNumber); continue; }
-                List<P2> tips = a.InsulatorTips();
-                if (tips.Count == 0) continue;
+                if (devs.Count == 0) continue;
                 AerialMaterials.LookMats lm = AerialMaterials.For(AerialMaterials.LookOf(a));
                 if (lm.Span == null) continue;
                 Vector3 bp = a.BasePoint;
-                termScratch.Clear();
-                for (int di = 0; di < devs.Count; di++) termScratch.Add((devs[di].thingIDNumber, (double)(devs[di].TrueCenter().x - bp.x)));
-                // GPT pre-release C16: the assignment (a sort and a dictionary) only changes with the devices, their x or the
-                // insulator count, so it is recomputed only when that signature does, not every frame
-                int tsig = AerialMath.TerminalSig(termScratch, tips.Count);
-                if (!lastTerminals.TryGetValue(a.thingIDNumber, out Dictionary<int, int> term) || !termSigs.TryGetValue(a.thingIDNumber, out int had) || had != tsig)
-                {
-                    term = AerialMath.AssignTerminals(termScratch, tips.Count);
-                    lastTerminals[a.thingIDNumber] = term;
-                    termSigs[a.thingIDNumber] = tsig;
-                }
+                var foot = new P2(bp.x, bp.z);
                 foreach (Thing d in devs)
                 {
-                    P2 tip = tips[Mathf.Clamp(term[d.thingIDNumber], 0, tips.Count - 1)];
                     long key = ((long)a.thingIDNumber << 32) ^ (uint)d.thingIDNumber;
                     dropUsed.Add(key);
                     Vector3 c = DeviceHome(d);
-                    int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
+                    int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), foot.X.GetHashCode() ^ foot.Z.GetHashCode()),
                                                  Gen.HashCombineInt(Mathf.RoundToInt(lm.Width * 1000f), d.Rotation.AsInt));
-                    // the ground part lies on open floor: a wall built across it re-lays it (or hangs it, when nothing clears)
+                    // it lies on open floor: a wall built across it re-lays it (under the wall, when nothing clears)
                     sig = Gen.HashCombineInt(sig, (int)DropGroundSig(a.Position, c));
                     if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
                     {
                         if (kv.Value != null) foreach (Mesh old in kv.Value) if (old != null) UnityEngine.Object.Destroy(old);
-                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, a, new P2(c.x, c.z), tip, under, over, lm.Width));
+                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, a, new P2(c.x, c.z), foot, lm.Width));
                         dropMeshes[key] = kv;
                     }
                     foreach (Mesh m in kv.Value)
@@ -732,24 +712,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return d.TrueCenter();
         }
 
-        /// <summary>The device's drawn extent (its footprint united with its graphic rect, and the wall a wall-mounted device
-        /// hangs on), in which the drop runs under it.</summary>
-        public static bool InDeviceArt(Thing d, P2 p)
-        {
-            CellRect r = d.OccupiedRect();
-            if (p.X >= r.minX && p.X <= r.maxX + 1 && p.Z >= r.minZ && p.Z <= r.maxZ + 1) return true;
-            if (d.def.building != null && d.def.building.isAttachment && d.Spawned)
-            {
-                Thing wall = GenConstruct.GetWallAttachedTo(d);
-                if (wall != null && p.X >= wall.Position.x && p.X <= wall.Position.x + 1 && p.Z >= wall.Position.z && p.Z <= wall.Position.z + 1) return true;
-            }
-            if (d.Graphic == null) return false;
-            Vector3 g = d.TrueCenter() + d.Graphic.DrawOffset(d.Rotation);
-            Vector2 sz = d.Graphic.drawSize;
-            if (d.Rotation.IsHorizontal && d.Graphic.ShouldDrawRotated) sz = new Vector2(sz.y, sz.x);
-            return Math.Abs(p.X - g.x) <= sz.x / 2f && Math.Abs(p.Z - g.z) <= sz.y / 2f;
-        }
-
         /// <summary>A walkability signature of the ground a drop from the mast at <paramref name="home"/> to <paramref name="dev"/> can lie on.</summary>
         private ulong DropGroundSig(IntVec3 home, Vector3 dev)
         {
@@ -765,11 +727,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return h ^ (h >> 32);
         }
 
-        /// <summary>The drop's meshes. On open ground it is <see cref="AerialMath.LayDrop"/>'s too-long cord: the part hanging from the
-        /// insulator at span altitude, the part lying on the ground under pawns and buildings like any floor cord, so it goes in under the
-        /// device's art. Where no loose cord can lie (a wall between, the device beside the mast) it hangs <see cref="AerialMath.LooseDrop"/>.</summary>
-        private static Mesh[] DropMeshes(Thing d, CompAerialAnchor a, P2 from, P2 tip, float under, float over, float width)
+        /// <summary>The drop's mesh: <see cref="AerialMath.LayFootDrop"/>'s too-long cord from the anchor's foot, lying on the ground under
+        /// pawns and buildings like any floor cord, so it goes in under the pole's art and the device's.</summary>
+        private static Mesh[] DropMeshes(Thing d, CompAerialAnchor a, P2 from, P2 foot, float width)
         {
+            Func<int, int, bool> walk = (x, z) => true;
             Map map = a.parent.Map;
             if (map != null)
             {
@@ -778,27 +740,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 CellRect dr = d.OccupiedRect();
                 Thing wall = d.def.building != null && d.def.building.isAttachment && d.Spawned ? GenConstruct.GetWallAttachedTo(d) : null;
                 IntVec3 wallAt = wall?.Position ?? IntVec3.Invalid;
-                Func<int, int, bool> walk = (x, z) =>
+                walk = (x, z) =>
                 {
                     var q = new IntVec3(x, 0, z);
                     if (!q.InBounds(map)) return false;
                     return q == home || q == wallAt || dr.Contains(q) || pg.WalkableFast(q);
                 };
-                Vector3 bp = a.BasePoint;
-                FallenLay lay = AerialMath.LayDrop(tip, new P2(bp.x, bp.z), from, d.thingIDNumber, walk);
-                if (lay != null && lay.GroundFrom > 0)
-                {
-                    float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the fallen wire's ground altitude: under pawns, like any floor cord
-                    return new[] { Ribbon(lay.Pts.GetRange(0, lay.GroundFrom + 1), over, "RM_AerialDrop", width),
-                                   Ribbon(lay.Pts.GetRange(lay.GroundFrom, lay.Pts.Count - lay.GroundFrom), groundY, "RM_AerialDropGround", width) };
-                }
             }
-            List<P2> pts = AerialMath.LooseDrop(from, tip, d.thingIDNumber);
-            int split = 0;
-            while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;
-            var lo = pts.GetRange(0, Math.Min(pts.Count, split + 1));
-            var hi = pts.GetRange(split, pts.Count - split);
-            return new[] { Ribbon(lo, under, "RM_AerialDropUnder", width), Ribbon(hi, over, "RM_AerialDrop", width) };
+            FallenLay lay = AerialMath.LayFootDrop(foot, from, d.thingIDNumber, walk);
+            float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the fallen wire's ground altitude: under pawns, like any floor cord
+            return new[] { Ribbon(lay.Pts, groundY, "RM_AerialDropGround", width) };
         }
 
         private static Mesh Ribbon(List<P2> pts, float y, string name, float width)

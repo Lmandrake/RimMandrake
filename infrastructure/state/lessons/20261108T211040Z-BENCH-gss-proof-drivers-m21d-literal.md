@@ -1,0 +1,2 @@
+selftest_gss_proof_drivers.py M21d hard-codes a 12-cell drip span ON as 36 points, but both validation_aerial.drip_expected_points and the test's own _ts_count port give 48 (12 + 24 + 12 with step 0.5, reach 0.45); 'M21d ON counts pass ON' fails off the same literal. Neither file was touched on ralph/gss 2026-11-08: a stale literal, not a GSS regression. Fix the literal (36 -> 48, strandPts 48, verts 192).
+home: src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py

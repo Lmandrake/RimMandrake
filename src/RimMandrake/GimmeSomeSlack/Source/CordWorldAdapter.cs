@@ -186,6 +186,8 @@ namespace RimMandrake.GimmeSomeSlack
                     if (world.IsConduit(C(adj)) && !touching.Contains(C(adj))) touching.Add(C(adj));
                 m.Hookups.AddRange(HookupPick.PickCarrier(world, touching, ref conduitRuns));
                 SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
+                // a standing pole or mast takes its floor cord under its foot (owner, sitting 2026-11-08: "Items should connect to the bottom of a power pole")
+                if (!m.HasHome && Aerial.CompAerialAnchor.Of(th) != null && !(th.def.building?.isAttachment ?? false)) m.Foot = true;
                 transmitterMachines[th] = m;
                 if (m.Hookups.Count > 0) world.Machines.Add(m);
             }

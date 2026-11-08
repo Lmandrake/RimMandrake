@@ -41,7 +41,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Tap();
             CanFail();
             Brackets();
-            Terminals();
             Round3();
             PipeKind();
             Drops();
@@ -173,27 +172,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         rows.Add("{\"aim\":" + a + ",\"seed\":" + seed + ",\"ground\":" + l.GroundFrom + ",\"blocked\":[" + blocked + "],\"pts\":[" + string.Join(",", l.Pts.Select(p => "[" + p.X.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "," + p.Z.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "]")) + "]}");
             }
             System.IO.File.WriteAllText(path, "[" + string.Join(",", rows) + "]");
-        }
-
-        // ------------------------------------------------------------------ round 2: local devices across a pole's terminals
-        private static void Terminals()
-        {
-            Dictionary<int, int> one = AerialMath.AssignTerminals(new List<(int, double)> { (5, 0.3) }, 3);
-            C(one[5] == 1, "one local device takes the middle terminal");
-            Dictionary<int, int> two = AerialMath.AssignTerminals(new List<(int, double)> { (8, 1.0), (9, -2.0) }, 3);
-            C(two[9] == 0 && two[8] == 2, "two devices take the outer pair, the western one on the left");
-            Dictionary<int, int> three = AerialMath.AssignTerminals(new List<(int, double)> { (1, 0.0), (2, -3.0), (3, 2.5) }, 3);
-            C(three[2] == 0 && three[1] == 1 && three[3] == 2, "three lights each wire to a different terminal, left to right");
-            var many = new List<(int, double)>();
-            for (int i = 0; i < 7; i++) many.Add((100 + i, i - 3.0));
-            Dictionary<int, int> m = AerialMath.AssignTerminals(many, 3);
-            var load = Enumerable.Range(0, 3).Select(t => m.Values.Count(v => v == t)).ToList();
-            bool monotone = many.OrderBy(d => d.Item2).Select(d => m[d.Item1]).Zip(many.OrderBy(d => d.Item2).Select(d => m[d.Item1]).Skip(1), (a, b) => a <= b).All(x => x);
-            C(m.Count == 7 && load.Max() - load.Min() <= 1 && monotone, "seven devices share three terminals evenly (" + string.Join("/", load) + "), never crossing");
-            C(AerialMath.AssignTerminals(many, 1).Values.All(v => v == 0), "a one-insulator bracket: everything on its one terminal");
-            var rev = new List<(int, double)>(many); rev.Reverse();
-            Dictionary<int, int> m2 = AerialMath.AssignTerminals(rev, 3);
-            C(m.All(kv => m2[kv.Key] == kv.Value), "terminal choice does not depend on enumeration order");
         }
 
         private static void Strands()
@@ -514,59 +492,42 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             mine -= 2;
             C(planted == 2, "sanity probe: both planted wrong expectations were detected (" + planted + "/2)");
         }
-            // ------------------------------------------------------------------ a mast's local drop is a too-long cord on the ground (pass 13)
-        /// <summary>Blind judge, pass 12: the drop "from the lamp mast to a lamp" read as "a shallow taut arc" in every look. A drop to a device
-        /// on open ground now hangs down from the insulator and lies on the ground to the device as a loose cord.</summary>
+        // ------------------------------------------------------------------ a mast's local drop is a too-long cord on the ground (pass 13)
+        /// <summary>Blind judge, pass 12: the drop "from the lamp mast to a lamp" read as "a shallow taut arc" in every look; owner, sitting
+        /// 2026-11-08: "Items should connect to the bottom of a power pole (beneath its base)". A drop is a loose cord on the ground from the
+        /// pole's foot to the device (SittingChecks.FootDrop holds the foot itself).</summary>
         private static void Drops()
         {
             var basePt = new P2(20.5, 20.5);
-            var top = new P2(20.6, 24.2);
-            int laid = 0, total = 0, ends = 0, loose = 0, rods = 0, hangs = 0, oldTaut = 0, tight = 0, high = 0, highFree = 0, upLays = 0;
+            int total = 0, ends = 0, loose = 0, rods = 0, tight = 0, high = 0, highFree = 0, upLays = 0;
             double worst = 0, worstRatio = 99;
-            string missed = "";
             for (int dir = 0; dir < 8; dir++)
                 for (int seed = 0; seed < 10; seed++)
                 {
                     double ang = dir * Math.PI / 4 + 0.2 * seed / 10.0, d = 2.5 + 0.4 * seed;
                     var dev = new P2(basePt.X + Math.Cos(ang) * d, basePt.Z + Math.Sin(ang) * d);
                     total++;
-                    FallenLay l = AerialMath.LayDrop(top, basePt, dev, 1000 + 37 * seed + dir, (x, z) => true);
-                    List<P2> old = AerialMath.LooseDrop(dev, top, 1000 + 37 * seed + dir);
-                    if (PathLen(old, 0) < 1.3 * P2.Dist(dev, top)) oldTaut++;
-                    if (l == null || l.GroundFrom <= 0) { missed += $" d{d:0.0}@{dir}"; continue; }
-                    laid++;
-                    if (P2.Dist(l.Pts[0], top) < 1e-9 && P2.Dist(l.Pts[l.Pts.Count - 1], dev) < 1e-6) ends++;
-                    double ratio = PathLen(l.Pts, l.GroundFrom) / Math.Max(1e-6, P2.Dist(l.Pts[l.GroundFrom], dev));
+                    FallenLay l = AerialMath.LayFootDrop(basePt, dev, 1000 + 37 * seed + dir, (x, z) => true);
+                    if (P2.Dist(l.Pts[0], basePt) < 1e-9 && P2.Dist(l.Pts[l.Pts.Count - 1], dev) < 1e-6 && l.GroundFrom == 0) ends++;
+                    double ratio = PathLen(l.Pts, 0) / Math.Max(1e-6, P2.Dist(basePt, dev));
                     worstRatio = Math.Min(worstRatio, ratio);
                     if (ratio >= 1.3) loose++;
-                    List<P2> g = l.Pts.GetRange(l.GroundFrom, l.Pts.Count - l.GroundFrom);
-                    double run = AerialMath.LongestStraight(g, AerialMath.DeadStraight);
+                    double run = AerialMath.LongestStraight(l.Pts, AerialMath.DeadStraight);
                     worst = Math.Max(worst, run);
                     if (run > 2.5) rods++;
-                    if (MinRadius(g) < 0.4) tight++;
-                    // the J: the top 35% of the hang comes down, it does not slant off toward the device
-                    int k = Math.Max(1, (int)(l.GroundFrom * 0.35));
-                    if (Math.Abs(l.Pts[k].X - top.X) <= 0.45 && top.Z - l.Pts[k].Z >= 0.6) hangs++;
-                    // the ground run stays down the screen: none of it behind the pole or under the wires, up-screen of its touchdown and device
-                    double Rise(FallenLay f) { double hi = Math.Max(f.Pts[f.GroundFrom].Z, dev.Z), r = 0; for (int i = f.GroundFrom; i < f.Pts.Count; i++) r = Math.Max(r, f.Pts[i].Z - hi); return r; }
-                    if (Rise(l) > AerialMath.DropRise + 1e-6) high++;
-                    FallenLay free = AerialMath.LayDrop(top, basePt, dev, 1000 + 37 * seed + dir, (x, z) => true, keepLow: false);
-                    if (dev.Z > basePt.Z + 0.5) { upLays++; if (free != null && Rise(free) > 0.6) highFree++; }
+                    if (MinRadius(l.Pts) < 0.4) tight++;
+                    // the run stays down the screen: none of it behind the pole or under the wires, up-screen of its foot and device
+                    double Rise(List<P2> f) { double hi = Math.Max(basePt.Z, dev.Z), r = 0; foreach (P2 q in f) r = Math.Max(r, q.Z - hi); return r; }
+                    if (Rise(l.Pts) > AerialMath.DropRise + 1e-6) high++;
+                    if (dev.Z > basePt.Z + 0.5) { upLays++; List<P2> free = AerialMath.LooseRun(basePt, dev, 1000 + 37 * seed + dir, _ => true); if (free != null && Rise(free) > 0.6) highFree++; }
                 }
-            C(laid == total, $"every drop on open ground lies as a cord ({laid}/{total}{missed})");
-            C(ends == laid, $"each leaves its insulator and ends on its device ({ends}/{laid})");
-            C(loose == laid, $"each ground run is at least 1.3x the ground it covers ({loose}/{laid}, worst {worstRatio:0.00}x)");
-            C(rods == 0, $"no ground run has a dead-straight stretch over 2.5 cells ({rods}, worst {worst:0.00})");
+            C(ends == total, $"each drop leaves the pole's foot on the ground and ends on its device ({ends}/{total})");
+            C(loose == total, $"each drop is at least 1.3x the ground it covers ({loose}/{total}, worst {worstRatio:0.00}x)");
+            C(rods == 0, $"no drop has a dead-straight stretch over 2.5 cells ({rods}, worst {worst:0.00})");
             // owner, 2026-11-07: "what they avoid are sharp curves unless they must": slow wide curves, not kinks and hairpins
-            C(tight <= laid / 10, $"at most one ground run in ten bends tighter than a 0.4-cell radius ({tight}/{laid})");
-            C(hangs == laid, $"each hangs straight down from its insulator before it curves out ({hangs}/{laid})");
-            C(high == 0, $"no ground run wanders more than {AerialMath.DropRise} cell up-screen of its touchdown and device, behind the pole and under the wires ({high}/{laid})");
-            C(highFree >= upLays / 4, $"can fail: let free, the ground run to a device up-screen of the mast rises over 0.6 cell past it in {highFree}/{upLays}");
-            C(oldTaut > total / 2, $"can fail: the old hanging drop, one arc from insulator to device, is under 1.3x its reach in {oldTaut}/{total}");
-            // a wall between the mast and the device (vanilla wires a lamp indoors to a mast outside): no ground drop, the caller hangs it
-            FallenLay walled = AerialMath.LayDrop(top, basePt, new P2(24.5, 20.5), 7, (x, z) => x != 22);
-            C(walled == null, "a wall between the mast and its device: no cord laid through it");
-            C(AerialMath.LayDrop(top, basePt, new P2(21.2, 20.9), 7, (x, z) => true) == null, "a device beside the mast keeps the hanging drop");
+            C(tight <= total / 10, $"at most one drop in ten bends tighter than a 0.4-cell radius ({tight}/{total})");
+            C(high == 0, $"no drop wanders more than {AerialMath.DropRise} cell up-screen of its foot and device, behind the pole and under the wires ({high}/{total})");
+            C(highFree >= upLays / 4, $"can fail: let free, the run to a device up-screen of the pole rises over 0.6 cell past it in {highFree}/{upLays}");
         }
 
         /// <summary>The tightest radius of curvature along a dense run, over half-cell windows, its first and last half cell left out.</summary>

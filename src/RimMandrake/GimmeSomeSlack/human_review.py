@@ -1023,7 +1023,7 @@ SETTINGS = [
     ("aerial", "sag", "0.06", "sag, share of the span", "21"),
     ("aerial", "autoLink", "True", "new anchors link to the nearest in range", "F, 28"),
     ("aerial", "maxStrands", "3", "wires per span, 1 to this", "6, 22"),
-    ("aerial", "dripLoops", "True", "drip loops at the insulators", "6"),
+    ("aerial", "dripLoops", "False", "drip loops at the insulators", "6"),
     ("aerial", "keepWiresOnGravship", "True", "wires on a launched gravship stay strung", "no station (needs a gravship launch)"),
     ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 21 (unpause)"),
     ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),

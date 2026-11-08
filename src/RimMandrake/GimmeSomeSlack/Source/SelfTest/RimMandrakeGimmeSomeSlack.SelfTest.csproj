@@ -93,11 +93,14 @@
     <Compile Include="..\Core\SnapshotPool.cs" />
     <Compile Include="SnapshotPoolChecks.cs" />
     <Compile Include="..\Core\SliceWindow.cs" />
+    <Compile Include="SittingChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="oracle_scenes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="matrix_det_scenes.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="sitting_ba_Modern.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="sitting_ba_Scrapper.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

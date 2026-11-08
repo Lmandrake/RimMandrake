@@ -548,7 +548,7 @@ namespace RimMandrake.GimmeSomeSlack
                 }
             var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
                 + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
-                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + "}");
+                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + (m.Foot ? ",\"foot\":true" : "") + "}");
             string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy) + ",\"furniture\":" + L(furniture) + ",\"costs\":[" + string.Join(",", costs) + "]"
                 + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
                 + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))

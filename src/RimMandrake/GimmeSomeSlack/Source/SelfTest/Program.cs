@@ -102,6 +102,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             DoorLoopChecks.Run();          // GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (GPT FB_hose_gss_3.4): DoorLoopChecks.cs
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
             CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
+            SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
             JunctionStripChecks.Run();     // d_modern_junction_strip (owner 2026-11-05): JunctionStripChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs

@@ -806,6 +806,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     MachineInfo hm = g.Nodes[v].IsMachine ? g.Nodes[v].Machine : null;
                     if (hm != null && hm.HasHome) partB.Append('H').Append(hm.HomeX).Append(',').Append(hm.HomeZ);
+                    if (hm != null && hm.Foot) partB.Append('F');
                 }
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Tangle && g.Nodes[v].Cells != null)
@@ -867,6 +868,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 nums.Add(BitConverter.DoubleToInt64Bits(m.InsetS)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetN));
                 nums.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
                 if (m.HasHome) { nums.Add(1); nums.Add(m.HomeX); nums.Add(m.HomeZ); } else nums.Add(0);
+                nums.Add(m.Foot ? 1 : 0);
             }
         }
 
@@ -1376,7 +1378,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (!EndPose(w, g, e, atA, C, 0, 1, opt, out V2 target, out V2 arrive, out double straight, out _, out int swing) || swing != 0) return o;
             MachineInfo m = nd.IsMachine ? nd.Machine : null;
             o.Add(new HopEnd { T = target, Arrive = arrive.Norm(), Straight = straight, Clear = ArriveClear(w, C, target, m) });
-            if (m != null && m.W == 1 && m.H == 1 && !m.HasHome)
+            if (m != null && m.W == 1 && m.H == 1 && !m.HasHome && !m.Foot)
                 foreach (Cell side in new[] { new Cell(m.X0, m.Z0 + 1), new Cell(m.X0 + 1, m.Z0), new Cell(m.X0, m.Z0 - 1), new Cell(m.X0 - 1, m.Z0) })
                 {
                     V2 t2 = m.Kind == MachineKind.Lamp ? LampEntry(m, side.Centre) : CordGraph.PlugPoint(m, side, g.Slides(m));
@@ -1536,7 +1538,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 VId v = atA ? e.A : e.B;
                 CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
-                if (nd.Type != NodeType.Junction || !far.IsMachine || far.Machine == null || opt.PileFor(nd.Cell) != PileArt.Strips) continue;
+                if (nd.Type != NodeType.Junction || !far.IsMachine || far.Machine == null || far.Machine.Foot || opt.PileFor(nd.Cell) != PileArt.Strips) continue;   // a pole's or mast's lead goes in under its foot, never a nub into its side (owner 2026-11-08)
                 V2 ad = ArmDir(g, e, atA);
                 var arm = new Cell((int)ad.X, (int)ad.Z);
                 if (!g.MachineArmsOf(v).Contains(arm)) continue;
@@ -1574,7 +1576,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 VId v = atA ? e.A : e.B;
                 CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
-                if (nd.Type != NodeType.Junction || nd.IsBlob || !v.IsCellish || !far.IsMachine || far.Machine == null || opt.PileFor(nd.Cell) == PileArt.Strips) continue;
+                if (nd.Type != NodeType.Junction || nd.IsBlob || !v.IsCellish || !far.IsMachine || far.Machine == null || far.Machine.Foot || opt.PileFor(nd.Cell) == PileArt.Strips) continue;
                 V2 a = ArmDir(g, e, atA);
                 if (!g.MachineArmsOf(v).Contains(new Cell((int)a.X, (int)a.Z))) continue;
                 MachineInfo m = far.Machine;
@@ -1813,6 +1815,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double StripWrap = 0.45;
         /// <summary>How far out from its socket a cord coming in from the side has straightened up to arrive square.</summary>
         public const double StripSwing = 0.3;
+        /// <summary>How far a plug from behind / off the free end leans from straight out toward the free end, radians.</summary>
+        public const double StripLeanBack = 1.3, StripLeanFree = 0.9;
         /// <summary>How far a strip plugged into the wall beside it stands back from the wall, cells.</summary>
         public const double StripWallGap = 0.3;
 
@@ -1827,8 +1831,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
             public int SocketOfSocketArm, SocketOfFreeArm, SocketOfBackArm;
 
             internal V2 At(double x, double z) => Centre + Along * (x * JunctionStripScale) + Side * (z * JunctionStripScale);
-            /// <summary>Where a cord plugged into socket k ends: the plug's own centre, its head on the socket.</summary>
-            internal V2 Tip(int k) => At(StripHeads[k], StripHeadZ) + Side * (0.46 * PilePlugScale);
+            /// <summary>Which way a plug on the arm's socket stands out of the strip, head on the socket: a cord from the socket side
+            /// straight out; one off the free end or from behind leans toward the free end, so it plugs in along its own way and does not
+            /// hook round into a plug facing away from it (owner 2026-11-08 12:20 PM, "The modern cable is a bit of a mess").</summary>
+            internal V2 PlugOut(Cell arm)
+            {
+                double t = arm == BackArm ? StripLeanBack : arm == FreeArm ? StripLeanFree : 0;
+                return Side * Math.Cos(t) - Along * Math.Sin(t);
+            }
+            /// <summary>Where a cord from this arm plugged into socket k ends: the plug's own centre, its head on the socket.</summary>
+            internal V2 PlugTip(Cell arm, int k) => At(StripHeads[k], StripHeadZ) + PlugOut(arm) * (0.46 * PilePlugScale);
             internal V2 LeadTip => At(StripLeadX, StripLeadZ);
 
             internal int SocketFor(Cell arm) =>
@@ -1928,11 +1940,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else
                 {
                     // a bundle shares one plug, as a device lead does: its strands close up to the socket
-                    target = sp.Tip(socket);
-                    arrive = -sp.Side;
+                    target = sp.PlugTip(arm, socket);
+                    arrive = -sp.PlugOut(arm);
                     straight = 0.22;
                     roomy = 1.2;
-                    swing = arm == sp.BackArm ? 1 : arm == sp.FreeArm ? 2 : 0;
+                    swing = arm == sp.BackArm ? 1 : 0;
                 }
             }
             else if (nd.Type == NodeType.Junction)
@@ -1998,10 +2010,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (swing != 0)
             {
                 StripPose sp = PoseStrip(g, v, opt.Seed);
-                V2 onSide = target + sp.Side * StripSwing;
-                // from behind: first out past the free end, so the cord comes round the strip instead of under it
-                if (swing == 1) P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap, onSide - sp.Along * 0.15);
-                else P = SwingIn(w, P, !atA, sp.Centre, onSide - sp.Along * 0.5 + sp.Side * 0.25, onSide - sp.Along * 0.1 + sp.Side * 0.2);
+                V2 ad = ArmDir(g, e, atA);
+                V2 onSide = target + sp.PlugOut(new Cell((int)ad.X, (int)ad.Z)) * StripSwing;
+                // from behind: first out past the free end, so the cord comes round the strip instead of under it, into a plug leaning its way
+                P = SwingIn(w, P, !atA, sp.Centre, sp.At(StripHeads[0], 0) - sp.Along * StripWrap - sp.Side * 0.2, onSide);
             }
             // a cut end keeps the old approach: its live end runs straight out of the conduit end and its dead end curls limp (break_live_and_dead_ends_differ)
             CordNode farEnd = g.Nodes[atA ? e.B : e.A];
@@ -2014,7 +2026,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a one-cell machine takes its plug on whichever side the cord comes round to with the least turn (the side that faces vanilla's hookup cell
                 // made a cord laid in from beside or below run past a standing lamp and hook back over its top: blind judge p15a, every look)
                 MachineInfo m = nd.IsMachine ? nd.Machine : null;
-                if (m != null && m.W == 1 && m.H == 1 && !m.HasHome)
+                if (m != null && m.W == 1 && m.H == 1 && !m.HasHome && !m.Foot)
                     foreach (Cell side in new[] { new Cell(m.X0, m.Z0 + 1), new Cell(m.X0 + 1, m.Z0), new Cell(m.X0, m.Z0 - 1), new Cell(m.X0 - 1, m.Z0) })
                     {
                         V2 t2 = m.Kind == MachineKind.Lamp ? LampEntry(m, side.Centre) : CordGraph.PlugPoint(m, side, g.Slides(m));
@@ -2130,6 +2142,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// the centroid: far enough that it crosses the footprint edge on the diagonal, clear of the side's port midpoints.</summary>
         public const double SlideCarry = 0.3;
 
+        /// <summary>How far into a pole's or mast's cell its floor cord runs, under the foot of its art (MachineInfo.Foot), cells.</summary>
+        public const double FootTuck = 0.15;
+
         private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m, bool slide = false)
         {
             if (P.Count < 2) return P;
@@ -2137,6 +2152,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
             V2 into = IntoMachine(m, tip);
             V2 c = Centroid(m), pre = c - into * CentroidApproach;
             var ext = new List<V2>();
+            if (m.Foot)
+            {
+                // a pole or mast: just in under its foot and no further (on to the centroid it ran up the pole's art: owner 2026-11-08)
+                c = new V2(m.X0 + m.W / 2.0, m.Z0 + FootTuck);
+                int kf = Math.Max(1, (int)Math.Ceiling(V2.Dist(tip, c) / 0.05));
+                for (int i = 1; i <= kf; i++) ext.Add(tip + (c - tip) * (i / (double)kf));
+                var of = new List<V2>(P);
+                if (atStart) { ext.Reverse(); of.InsertRange(0, ext); }
+                else of.AddRange(ext);
+                return of;
+            }
             if (slide)
             {
                 // carry the diagonal arrival on under the edge, then turn for the centroid
@@ -2229,7 +2255,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 V2 ad = ArmDir(g, e, atStart);
                 int socket = sp.SocketFor(new Cell((int)ad.X, (int)ad.Z));
                 // square onto the socket whatever the bundle's last point did: one plug, on the art's own plug
-                if (socket >= 0) piece.Decals.Add(new CordDecal(DecalKind.Plug, sp.Tip(socket), Math.Atan2(-sp.Side.Z, -sp.Side.X), PilePlugScale));
+                Cell arm = new Cell((int)ad.X, (int)ad.Z);
+                if (socket >= 0) { V2 u = sp.PlugOut(arm); piece.Decals.Add(new CordDecal(DecalKind.Plug, sp.PlugTip(arm, socket), Math.Atan2(-u.Z, -u.X), PilePlugScale)); }
             }
             else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
@@ -2387,6 +2414,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The most cables a pile draws (each joins two connector ports).</summary>
         public const int MaxPileCables = 24;
 
+        /// <summary>THE grid-heap density knob: the share of the old connector and cable counts a pile draws (1 = the heap the owner called
+        /// overkill). Owner, live sitting 2026-11-08 12:20 PM: "The massive tangle shown for the grid is indeed a bit excessive. I did want a
+        /// tangled rats-nest of wires, but that's overkill." At 0.35 (with the floors of 3 boxes and HeapMinCables) the sitting's grid heaps draw
+        /// 5 boxes and 9 cables in Scrapper (was 13 and 23) and 3 strips and 6 cables in Modern (was 7 and 14), SittingChecks' heap lines.</summary>
+        public const double HeapDensity = 0.35;
+        /// <summary>The fewest cables a heap draws (fewer if the old count was fewer): the owner still wants "a tangled rats-nest of wires" (2026-11-08).</summary>
+        public const int HeapMinCables = 6;
+
         /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
         /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
 
@@ -2399,7 +2434,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
             // a strip every four cells: at one in seven the Modern heap was a thin net of a few cords between four strips beside the junction looks' dense
             // boxes (dense_grid_reads_as_tangle; the owner: "a huge tangle of nasty wires and power strips all swirled together terribly")
-            int want = strips ? Math.Max(1, 1 + comp.Count / 4) : Math.Max(3, 1 + comp.Count / 2);
+            int want = strips ? Math.Max(1, 1 + (int)(comp.Count / 4 * HeapDensity)) : Math.Max(3, 1 + (int)(comp.Count / 2 * HeapDensity));   // still MANY boxes (review 1, B2)
             var cons = new List<CordDecal>();
             int portsSoFar = 0;
             foreach (Cell c in cells)
@@ -2767,7 +2802,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             List<PilePort> ports = PortsOf(cons);
             // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
-            int n = Math.Min(MaxPileCables, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
+            // HeapDensity thins a big heap; a small one keeps the old count up to HeapMinCables, so it is still a rats-nest and not a few loose cords (review 1, B2)
+            int old = Math.Min(14, 4 + comp.Count / 3);
+            int n = Math.Min(MaxPileCables, Math.Max(Math.Max(Math.Min(old, HeapMinCables), (int)(old * HeapDensity)), (ports.Count + 1) / 2));
             var used = new HashSet<int>();
             // the heap may spill a cell past its conduit onto open floor: kept to the conduit's own cells, its cables drew the block's square
             // outline with straight sides (blind judge p14a/p15a, every look: "squared heaps with straight strokes")
