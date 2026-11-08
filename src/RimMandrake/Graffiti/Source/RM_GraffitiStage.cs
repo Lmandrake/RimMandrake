@@ -364,6 +364,18 @@ namespace RimMandrake.Graffiti
         /// shot on one wall a few seconds apart. Never saved.</summary>
         internal static bool smearOver;
 
+        /// <summary>Proof only: pass 16's weathering (a pale stain of the whole shape under its flaked coat) and its clumsy hands (a thin coat, the
+        /// first go a film, no runs), so they can be shot beside pass 17's on the same wall. Never saved.</summary>
+        internal static bool oldWeather;
+
+        /// <summary>LOOK p16|p17: switch weathering and clumsy hands between pass 16's and today's, and redraw the map. -> LOOK state.</summary>
+        public static string Look(string args)
+        {
+            oldWeather = args == "p16";
+            Find.CurrentMap?.mapDrawer.RegenerateEverythingNow();
+            return "LOOK " + (oldWeather ? "p16" : "p17");
+        }
+
         /// <summary>SMEAR old|new: switch how clumsy hands draw, and redraw the map. -> SMEAR state.</summary>
         public static string Smear(string args)
         {

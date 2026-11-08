@@ -75,6 +75,29 @@ def bake(name, m):
         mx, mn = rgb.max(2), rgb.min(2)
         sat = (mx - mn) / np.maximum(mx, 1)
         alpha = alpha * np.clip((sat - 0.2) / 0.12, 0, 1)
+    if m.get("hue"):
+        # Pass 17: a glyph's own green read as mould at play zoom (blind judge, pass 16: HighLife "mould or moss first"). Its coloured paint takes
+        # another hue at the same value; its blacks and whites stay.
+        mx, mn = rgb.max(2, keepdims=True), rgb.min(2, keepdims=True)
+        sat = (mx - mn) / np.maximum(mx, 1)
+        l = rgb.mean(2, keepdims=True)
+        t = np.array(m["hue"]) * 255
+        recol = t * (l / max(t.mean(), 1))
+        w = np.clip((sat - 0.12) / 0.15, 0, 1)
+        rgb = np.clip(rgb * (1 - w) + recol * w, 0, 255)
+    if m.get("dark_solid"):
+        # Pass 17: black blotted on in soft patches read as soot or a burn (the warning glyph's blot, the mockery's pointing hands, the wolf).
+        # Black paint is there or it isn't: a dark pixel is either full coat or bare wall, and no grey dusting of black around it.
+        dark = rgb.mean(2) < 85
+        alpha = np.where(dark, np.where(alpha > 0.45, 1.0, 0.0), alpha)
+    if m.get("dark_to"):
+        # Pass 17: and black beside one colour, low on a wall, is what a fire leaves: the warning's blot under its arrows, the pointing hands round a
+        # head, the wolf's black. Those blacks become a deep paint colour that nothing on a wall grows or burns into.
+        l = rgb.mean(2, keepdims=True)
+        sat = (rgb.max(2, keepdims=True) - rgb.min(2, keepdims=True)) / np.maximum(rgb.max(2, keepdims=True), 1)
+        w = np.clip((95 - l) / 40, 0, 1) * np.clip((0.4 - sat) / 0.15, 0, 1)    # a dull black, not a deep red
+        deep = np.array(m["dark_to"]) * 255 * np.clip(0.55 + l / 120, 0.55, 1.2)
+        rgb = np.clip(rgb * (1 - w) + deep * w, 0, 255)
     if m.get("mute"):
         # Pass 16: the Vandal's clashing colours came back from the generator near neon; clashing stays, in this world's dusty range.
         grey = rgb.mean(2, keepdims=True)

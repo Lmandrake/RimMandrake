@@ -139,7 +139,9 @@ namespace RimMandrake.Graffiti
 
         /// <summary>How far the weather has eaten in at each step (RM_GraffitiKernel.WeatherStep, 1..4): the share of the noise field gone.</summary>
         /// Pass 16: eats less at each step (a blind judge read W3 and W4's faint remains as rust, grime, ash and dry grass); what's left stays paint.
+        /// Pass 17: less again, so even at W4 two thirds of every stroke is there and its ends and joins still say a hand made it.
         private static readonly float[] Eaten = { 0f, 0.15f, 0.28f, 0.42f, 0.55f };
+        private static readonly float[] EatenClean = { 0f, 0.09f, 0.17f, 0.25f, 0.33f };
 
         /// <summary>What paint soaks into a wall and keeps even where the weather has taken the coat, at each step: a share of the
         /// drawing's own opacity. Live pass 14, a blind judge on Ashgate's day-18 walls: flaked marks with nothing between the flakes
@@ -150,18 +152,23 @@ namespace RimMandrake.Graffiti
         /// <summary>How far the sun has chalked what's left of the coat at each step, toward white in its own hue: real old paint goes paler,
         /// grime goes darker. Live pass 15 (blind judge): greyed toward the wall's middle value, W2-W4 read as "rust or a burn", "grime or ash",
         /// "dry grass". Where only the stain is left it is chalked further (StainBleach), so the ghost of a shape is pale, not a smudge.</summary>
-        internal const float BleachPerStep = 0.07f;
+        internal static float BleachPerStep => RM_GraffitiStage.oldWeather ? 0.07f : 0.045f;
         private const float StainBleach = 0.5f;
 
         /// <summary>Paint as the weather leaves it. Live pass 13: a mark late in its life read as faint new paint, a pale ghost, because the
         /// fade only thinned it. Old paint goes in patches: blotches flake off, rain runs wash it in vertical streaks, and the edges of
         /// what's left are ragged with grit; what stays is chalkier. The same noise field at every step, eaten further each time, so a mark
         /// wears the way it began to. Four fields per texture (by mark id), so two weathered stamps of one drawing don't wear alike.</summary>
+        /// Pass 17 (GPT's lead, after pass 16's blind judge read every faint mark as a stain: "the weak ones read as stains, not as clumsy paint"):
+        /// a stain keeps a mark's area and loses its strokes. Now the weather takes whole pieces out with clean edges, mostly in rain's vertical runs
+        /// and the grit's small chips, and leaves nothing between them; what stays is the full coat, a little chalkier. RM_GraffitiStage.oldWeather
+        /// draws the pass-16 way, for a side-by-side.
         internal static Texture2D Weathered(Texture tex, int step, int id)
         {
             if (tex == null || step <= 0) return null;
             step = Math.Min(step, Eaten.Length - 1);
-            long key = ((long)tex.GetInstanceID() << 8) | ((long)step << 4) | (long)(id & 3);
+            bool old = RM_GraffitiStage.oldWeather;
+            long key = ((long)tex.GetInstanceID() << 8) | ((long)step << 4) | (long)(id & 3) | (old ? 1L << 3 : 0L);
             if (WeatheredTex.TryGetValue(key, out Texture2D done)) return done;
             Texture2D made = null;
             try
@@ -180,22 +187,32 @@ namespace RimMandrake.Graffiti
                         float streak = Mathf.PerlinNoise(seed * 1.7f + u * 26f, seed + v * 2.2f);
                         float grit = Mathf.PerlinNoise(seed * 2.1f + u * 70f, seed + v * 70f);
                         int i = y * w + x;
-                        n[i] = 0.4f * blot + 0.2f * rag + 0.2f * streak + 0.2f * grit;
+                        n[i] = old ? 0.4f * blot + 0.2f * rag + 0.2f * streak + 0.2f * grit : 0.2f * blot + 0.2f * rag + 0.35f * streak + 0.25f * grit;
                         if (px[i].a > 40 && (i % 7) == 0) sample.Add(n[i]);
                     }
                 }
                 // Spread the field over 0..1 by the paint it actually covers, so a step eats the same share of every drawing.
                 sample.Sort();
                 float lo = sample.Count > 20 ? sample[sample.Count / 20] : 0.3f, hi = sample.Count > 20 ? sample[sample.Count * 19 / 20] : 0.7f;
-                float span = Mathf.Max(hi - lo, 0.05f), t = Eaten[step];
+                float span = Mathf.Max(hi - lo, 0.05f), t = old ? Eaten[step] : EatenClean[step];
                 for (int i = 0; i < px.Length; i++)
                 {
                     Color32 c = px[i];
                     if (c.a == 0) continue;
                     float m = Mathf.Clamp01((n[i] - lo) / span);
-                    float coat = Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f));
-                    float keep = Mathf.Max(Stain[step], coat);
-                    float bleach = BleachPerStep * step + (1f - coat) * StainBleach;
+                    float coat, keep, bleach;
+                    if (old)
+                    {
+                        coat = Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f));
+                        keep = Mathf.Max(Stain[step], coat);
+                        bleach = BleachPerStep * step + (1f - coat) * StainBleach;
+                    }
+                    else
+                    {
+                        // A clean edge a pixel or two wide, so a chip mips to a gap at play zoom, not to a thinner film.
+                        keep = Mathf.Clamp01((m - t) / 0.025f + 0.5f);
+                        bleach = BleachPerStep * step;
+                    }
                     px[i] = new Color32((byte)(c.r + (255 - c.r) * bleach), (byte)(c.g + (255 - c.g) * bleach), (byte)(c.b + (255 - c.b) * bleach), (byte)(c.a * keep));
                 }
                 made = new Texture2D(w, h, TextureFormat.RGBA32, true) { name = tex.name + "_weathered" + step, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
@@ -207,6 +224,88 @@ namespace RimMandrake.Graffiti
                 Log.WarningOnce("[Graffiti] couldn't weather " + tex.name + ": " + e.Message, tex.GetInstanceID() ^ 0x57454154);
             }
             WeatheredTex[key] = made;
+            return made;
+        }
+
+        private static readonly Dictionary<long, Texture2D> DrippedTex = new Dictionary<long, Texture2D>();
+
+        /// <summary>A clumsy hand's paint, as it runs: too much on the can or the brush, so it pools at the low edge of a stroke and runs straight
+        /// down the wall in full-strength drips, each with a bead at its end, and stalls into a few fat blobs. Live pass 16, a blind judge: a poor
+        /// hand shown by a thin, washed coat read as "stains, not clumsy paint". A run is the surest sign a wall has paint on it; a lot of runs is
+        /// a hand that couldn't control it. load: 0 none, 1 an awful hand. The runs stay inside the drawing's canvas. Null if unreadable.</summary>
+        internal static Texture2D Dripped(Texture tex, float load, int id)
+        {
+            if (tex == null || load <= 0f) return null;
+            long key = ((long)tex.GetInstanceID() << 8) | ((long)(load * 8f) << 2) | (long)(id & 3);
+            if (DrippedTex.TryGetValue(key, out Texture2D done)) return done;
+            Texture2D made = null;
+            try
+            {
+                Color32[] px = ReadTexture(tex, out int w, out int h);
+                var outPx = (Color32[])px.Clone();
+                uint r = (uint)(id & 3) * 2654435761u + (uint)tex.GetInstanceID() * 40503u + 977u;
+                float Rnd() { r = r * 1664525u + 1013904223u; return (r >> 8) / 16777216f; }
+                int cell = h;    // texture pixels per world cell of height (art is baked 256 px to the cell)
+                int dripW = Math.Max(3, cell / 40);
+                // Columns at random, a stroke's lowest edge in each: a drip starts where paint sits on bare wall.
+                int tries = (int)(w / (float)dripW * 0.55f * load);
+                for (int k = 0; k < tries; k++)
+                {
+                    int x = (int)(Rnd() * (w - dripW));
+                    // Rows run bottom up: walk down from the top, find the lowest solid pixel above an open gap.
+                    for (int y = h - 2; y > 2; y--)
+                    {
+                        int i = y * w + x;
+                        if (px[i].a < 200 || px[i - w].a > 40) continue;
+                        if (Rnd() > 0.5f) continue;
+                        Color32 c = px[i];
+                        c.a = 255;
+                        int len = (int)(cell * (0.06f + 0.30f * load * Rnd()));
+                        int width = dripW + (Rnd() < 0.3f ? dripW / 2 : 0);
+                        for (int d = 1; d <= len && y - d >= 0; d++)
+                        {
+                            // Thins as it runs, then a bead where it stopped.
+                            float taper = 1f - 0.45f * d / len;
+                            int ww = Math.Max(2, (int)(width * taper));
+                            if (d > len - width) ww = width + 1;
+                            for (int dx = 0; dx < ww && x + dx < w; dx++)
+                            {
+                                int j = (y - d) * w + x + dx;
+                                if (outPx[j].a < 230) outPx[j] = c;
+                            }
+                        }
+                        break;
+                    }
+                }
+                // Where the can stalled: a fat blob on a stroke or two.
+                int blobs = load >= 1f ? 3 : (load > 0f ? 1 : 0);
+                for (int b = 0, guard = 0; b < blobs && guard < 400; guard++)
+                {
+                    int x = (int)(Rnd() * w), y = (int)(Rnd() * h);
+                    if (px[y * w + x].a < 220) continue;
+                    Color32 c = px[y * w + x];
+                    c.a = 255;
+                    int rad = (int)(cell * (0.035f + 0.02f * Rnd()));
+                    for (int dy = -rad; dy <= rad; dy++)
+                    {
+                        for (int dx = -rad; dx <= rad; dx++)
+                        {
+                            int xx = x + dx, yy = y + dy;
+                            if (xx < 0 || yy < 0 || xx >= w || yy >= h || dx * dx + dy * dy > rad * rad) continue;
+                            outPx[yy * w + xx] = c;
+                        }
+                    }
+                    b++;
+                }
+                made = new Texture2D(w, h, TextureFormat.RGBA32, true) { name = tex.name + "_dripped", filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+                made.SetPixels32(outPx);
+                made.Apply(true, false);
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[Graffiti] couldn't run paint on " + tex.name + ": " + e.Message, tex.GetInstanceID() ^ 0x44524950);
+            }
+            DrippedTex[key] = made;
             return made;
         }
 
@@ -301,6 +400,36 @@ namespace RimMandrake.Graffiti
             }
             AlphaGrids[tex] = grid;
             return grid;
+        }
+
+        private static readonly Dictionary<Texture, Color> PaintColors = new Dictionary<Texture, Color>();
+
+        /// <summary>The colour a material's paint shows overall: its texture's mean colour where there's paint, times its tint. Grey if unreadable.</summary>
+        internal static Color PaintColor(Material mat)
+        {
+            Texture tex = mat?.mainTexture;
+            if (tex == null) return new Color(0.5f, 0.5f, 0.5f);
+            if (!PaintColors.TryGetValue(tex, out Color mean))
+            {
+                mean = new Color(0.5f, 0.5f, 0.5f);
+                try
+                {
+                    Color32[] px = ReadTexture(tex, out int w, out int h);
+                    double r = 0, g = 0, b = 0, n = 0;
+                    for (int i = 0; i < px.Length; i += 3)
+                    {
+                        if (px[i].a < 128) continue;
+                        r += px[i].r; g += px[i].g; b += px[i].b; n++;
+                    }
+                    if (n > 0) mean = new Color((float)(r / n / 255), (float)(g / n / 255), (float)(b / n / 255));
+                }
+                catch (Exception e)
+                {
+                    Log.WarningOnce("[Graffiti] couldn't read the paint of " + tex.name + ": " + e.Message, tex.GetInstanceID() ^ 0x50414e54);
+                }
+                PaintColors[tex] = mean;
+            }
+            return mean * mat.color;
         }
 
         private static Texture2D glintTex;
@@ -524,10 +653,23 @@ namespace RimMandrake.Graffiti
             Texture2D made = null;
             try
             {
-                Color32[] px = ReadTexture(icon, out int size);
+                Color32[] src = ReadTexture(icon, out int size);
                 made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = icon.name + "_painted", filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
                 float seed = (icon.GetInstanceID() & 1023) * 0.37f;
                 float scale = 128f / size;
+                // Copied by hand off the faith's sign, not printed: the lines drift a few percent of the icon one way and back, slowly, as a
+                // painter's arm does. Live pass 16: a blind judge still read the clean vector inside each frame as "an emblem or badge", "a sticker decal".
+                var px = new Color32[src.Length];
+                float drift = size * 0.035f, slow = 2.2f / size;
+                for (int y = 0; y < size; y++)
+                {
+                    for (int x = 0; x < size; x++)
+                    {
+                        int sx = Mathf.Clamp(Mathf.RoundToInt(x + (Mathf.PerlinNoise(seed + x * slow, seed * 1.9f + y * slow) - 0.5f) * 2f * drift), 0, size - 1);
+                        int sy = Mathf.Clamp(Mathf.RoundToInt(y + (Mathf.PerlinNoise(seed * 0.7f + x * slow, seed * 2.3f + y * slow) - 0.5f) * 2f * drift), 0, size - 1);
+                        px[y * size + x] = src[sy * size + sx];
+                    }
+                }
                 for (int y = 0; y < size; y++)
                 {
                     for (int x = 0; x < size; x++)

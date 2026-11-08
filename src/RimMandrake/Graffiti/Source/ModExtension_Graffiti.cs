@@ -36,10 +36,6 @@ namespace RimMandrake.Graffiti
         // def directly).
         public float poolWeight = 1f;
 
-        // May a pool put this drawing on a wall seen edge-on, where it is drawn turned along the wall's top strip
-        // (RM_GraffitiKernel.ReadsEdgeOn)? -1 by its form (letters yes, pictures no), 0 never, 1 always (a tally, scratches).
-        public int edgeOn = -1;
-
         // Placers this mark is eligible for - design §1.2's "placers"
         // column. Spree/Joy reads the punk pool via GraffitiPool; a player
         // Designator only offers marks with designatorEligible=true;

@@ -190,7 +190,7 @@ namespace RimMandrake.Graffiti
         internal int WeatherStepNow(out float fade)
         {
             fade = 0f;
-            if (permanent || placedTick < 0 || !Spawned) return 0;
+            if (permanent || placedTick == -1 || !Spawned) return 0;     // -1 is no date; a proof may date a mark back before the game began
             ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
             float life = RM_GraffitiKernel.WeatherDays(ext?.form ?? GraffitiForm.Scrawl, hasCraft ? craft : RM_GraffitiKernel.Normal, !Map.roofGrid.Roofed(Position), thingIDNumber);
             fade = RM_GraffitiKernel.WeatherFade((Find.TickManager.TicksGame - placedTick) / (float)GenDate.TicksPerDay, life);
@@ -571,6 +571,7 @@ namespace RimMandrake.Graffiti
             int look = hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
             RM_GraffitiKernel.CraftLook(look, out float craftThrough, out float wobble, out float mud);
             if (RM_GraffitiStage.smearOver) RM_GraffitiKernel.CraftLookBefore(look, ref mud);
+            if (RM_GraffitiStage.oldWeather) craftThrough += RM_GraffitiKernel.CraftThroughPass16(look);
             slope *= wobble;
             float width = size.x * scale * fit;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale * fit;
@@ -608,12 +609,19 @@ namespace RimMandrake.Graffiti
                 {
                     mat = MaterialPool.MatFrom(g.path, g.Shader, Muddied(Color.white, mud));
                 }
+                // A gouge is the wall, and the wall doesn't run.
+                float runs = RM_GraffitiStage.oldWeather || ext?.wallThrough == 0f ? 0f : RM_GraffitiKernel.CraftDrips(look);
+                if (runs > 0f && mat.mainTexture != null)
+                {
+                    Texture2D run = WallPlane.Dripped(mat.mainTexture, runs, thingIDNumber);
+                    if (run != null) mat = MaterialPool.MatFrom(new MaterialRequest(run, g.Shader, mat.color));
+                }
                 if (fade > 0f && mat.mainTexture != null)
                 {
                     // Worn in patches, not thinned all over (WallPlane.Weathered): what's left is still paint.
                     // A pigment on a pale drawing chalks the way the drawing's own colours do in Weathered: paler in its hue, not thinner
                     // (pass 16; thinned, old paint over a wall read as a stain).
-                    Color worn = Color.Lerp(mat.color, Color.white, WallPlane.BleachPerStep * 1.7f * weatherStep);
+                    Color worn = Color.Lerp(mat.color, Color.white, WallPlane.BleachPerStep * (RM_GraffitiStage.oldWeather ? 1.7f : 1.2f) * weatherStep);
                     worn.a = mat.color.a * (1f - 0.08f * fade);
                     Texture2D eaten = WallPlane.Weathered(mat.mainTexture, weatherStep, thingIDNumber);
                     mat = eaten != null ? MaterialPool.MatFrom(new MaterialRequest(eaten, g.Shader, worn)) : MaterialPool.MatFrom(g.path, g.Shader, worn);
@@ -625,7 +633,7 @@ namespace RimMandrake.Graffiti
                     // couldn't, around a shape that still reads. Live 2026-11-08: drawn over the mark with its own wall show-through, it washed a poor
                     // glyph into a green smudge on the day-19 wall, a mess rather than a message.
                     Color thin = mat.color;
-                    thin.a *= RM_GraffitiKernel.SmearAlpha;
+                    thin.a *= RM_GraffitiStage.oldWeather ? RM_GraffitiKernel.SmearAlpha : RM_GraffitiKernel.SmearAlphaFull;
                     Material under = MaterialPool.MatFrom(new MaterialRequest((Texture2D)mat.mainTexture, mat.shader, thin) { renderQueue = mat.renderQueue - 1 });
                     WallPlane.Print(layer, this, under, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
                         -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, 0f, 0.0005f);
@@ -638,6 +646,7 @@ namespace RimMandrake.Graffiti
                         -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, Mathf.Clamp(through + 0.22f, 0.04f, 0.6f), 0.0015f);
                 }
                 if (!defaced && fade < 0.5f && !string.IsNullOrEmpty(g.path)) PrintSkill(layer, g, mat, look, width, height, slide, slope, lift, flip && cachedHeadMat == null);
+                PrintSignature(layer, ext, WallPlane.PaintColor(mat), width, height, slide, slope, lift, through, mat.renderQueue + 2);
                 PrintCrossOut(layer, width, height, slide, slope, lift);
                 return;
             }
@@ -651,6 +660,7 @@ namespace RimMandrake.Graffiti
                 float iconH = height * 0.78f;
                 WallPlane.Print(layer, this, cachedIconMat, iconH * 0.8f, iconH, slide, slope, lift, false, through, 0.001f, WallPlane.CenterT(this, width, height, slope, lift));
             }
+            PrintSignature(layer, ext, WallPlane.PaintColor(cachedFrameMat ?? cachedIconMat), width, height, slide, slope, lift, through, (cachedIconMat ?? cachedFrameMat).renderQueue + 2);
             PrintCrossOut(layer, width, height, slide, slope, lift);
         }
 
@@ -682,6 +692,29 @@ namespace RimMandrake.Graffiti
                 float size = 0.2f + 0.05f * (look - RM_GraffitiKernel.Masterwork);
                 WallPlane.Print(layer, this, shine, size, size, s, 0f, lift, false, 0f, 0.003f, t);
             }
+        }
+
+        private static readonly string[] SignatureDefs = { "RM_Graffiti_Tag_A", "RM_Graffiti_Tag_B", "RM_Graffiti_Tag_C" };
+
+        /// <summary>The writer's own tag (RM_GraffitiKernel.Signed), in the hand their tags carry everywhere (PickLook) and in a colour that stands off
+        /// both the wall and the shape it signs, along the shape's lower right, in a quick hand's slant: the symbol was cut once, the signature is theirs.
+        /// Nobody's hand (a staged or very old mark), nothing.</summary>
+        private void PrintSignature(SectionLayer layer, ModExtension_Graffiti ext, Color paint, float width, float height, float slide, float slope, float lift, float through, int queue)
+        {
+            if (RM_GraffitiStage.oldWeather || ext == null || defaced || Fade >= 0.75f) return;
+            if (!RM_GraffitiKernel.Signed(ext.form, ext.hasSubject, !ext.requiresAnyMeme.NullOrEmpty())) return;
+            int who = maker != null && maker.Faction == Faction.OfPlayer ? maker.thingIDNumber : (makerFaction?.loadID ?? -1);
+            if (who < 0) return;
+            ThingDef tagDef = DefDatabase<ThingDef>.GetNamedSilentFail(SignatureDefs[RM_GraffitiKernel.HandChoice(who, SignatureDefs.Length, 3)]);
+            if (!(tagDef?.graphic is Graphic_Random tags) || tags.SubGraphicsCount == 0) return;
+            Graphic hand = tags.SubGraphicAtIndex(RM_GraffitiKernel.HandChoice(who, tags.SubGraphicsCount, 1));
+            Color wall = WallPlane.FaceColor(Position + new Rot4(wallSide).FacingCell, Map);
+            int ink = RM_GraffitiKernel.ContrastingPigment(RM_GraffitiKernel.HandChoice(who, RM_GraffitiKernel.PigmentCount, 2), paint.r, paint.g, paint.b, wall.r, wall.g, wall.b);
+            if (ink < 0) return;
+            Material mat = MaterialPool.MatFrom(new MaterialRequest((Texture2D)hand.MatSingle.mainTexture, ShaderDatabase.Mote, PigmentOf(ink)) { renderQueue = queue });
+            float tw = Mathf.Min(width * 0.64f, 0.85f), th = tw * 0.62f;
+            float tc = WallPlane.CenterT(this, width, height, slope, lift) - height * 0.26f;
+            WallPlane.Print(layer, this, mat, tw, th, slide + width * 0.5f - tw * 0.48f, 0.1f - slope * 0.5f, lift, false, through, 0.002f, tc);
         }
 
         private void PrintCrossOut(SectionLayer layer, float width, float height, float slide, float slope, float lift)

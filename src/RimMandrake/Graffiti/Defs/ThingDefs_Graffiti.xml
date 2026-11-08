@@ -125,7 +125,6 @@
         <category>Code</category>
         <wallThrough>0</wallThrough>
         <form>Glyph</form>
-        <edgeOn>1</edgeOn>  <!-- strokes read turned: RM_GraffitiKernel.ReadsEdgeOn -->
         <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
@@ -151,7 +150,6 @@
         <category>Code</category>
         <pigmented>true</pigmented>
         <form>Glyph</form>
-        <edgeOn>1</edgeOn>  <!-- a tally reads turned on its side: RM_GraffitiKernel.ReadsEdgeOn -->
         <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
@@ -557,7 +555,7 @@
         <category>Jest</category>
         <pigmented>true</pigmented>
         <form>Stencil</form>
-        <poolWeight>1</poolWeight>
+        <poolWeight>0.6</poolWeight>  <!-- pass 16: five fists in one colony read as one stamp, repeated -->
         <designatorEligible>true</designatorEligible>
       </li>
     </modExtensions>

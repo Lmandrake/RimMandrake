@@ -151,6 +151,13 @@ for name, t, tool, c in G:
     add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"),
         floor=0.04 if name == "Tunneler" else 0.0)
 M["highlife_0"]["rim"] = False   # its black grin lies at the face's edge and break_rim took it for an outline (pass 14)
+# Pass 17: a blind judge read HighLife's oxide green as "mould or moss first" and the wolf's black as "a scorch or soot mark"; greens that a wall
+# grows go to other paint, and black blotted beside one colour (the warning's blot, the wolf, the mockery's pointing hands) to a deep blue.
+M["highlife_0"].update(hue=(0.86, 0.42, 0.66))
+M["natureprimacy_0"].update(hue=(0.80, 0.48, 0.22))
+M["treeconnection_0"].update(hue=(0.42, 0.52, 0.78))
+for n in ("animalpersonhood_0", "warn_1"):
+    M[n].update(dark_to=(0.22, 0.27, 0.62))
 
 
 # ------ marks about somebody: the subject's own head goes in the gap, painted at runtime (WallPlane.PaintedPortrait).
@@ -160,6 +167,7 @@ for i, t in enumerate(["a fat crude donkey's body on stumpy legs seen from the s
                        "a tall crooked dunce cap on top, a row of little pointing hands from both sides aimed in at the gap",
                        "a crude gallows and a headless stick body hanging from it, the rope going into the gap"]):
     add(f"mock_{i}", F + "Mockery", 1.25, "brush", 0.15, "A cruel joke about someone, drawn on a wall by somebody who hates them: " + t + ". " + GAP + BRUSH + PIG.format(c="oxblood and soot black") + SQ)
+M["mock_2"].update(dark_to=(0.22, 0.27, 0.62))
 # Pass 15: a blind judge read the laurel ring and the winged sun as badges or clip-art, careful and symmetrical. A street tribute is sprayed loud
 # and fast by a friend: a crown thrown on their head, roses and a sprayed ring, stars and shine flicks. The heart already read as paint.
 TRIB = ("A street tribute to someone, sprayed fast and loud on a wall at night by a friend who rates them: {t}. Proud and rough, lopsided, not careful, "

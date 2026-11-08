@@ -147,7 +147,6 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <form>Scrawl</form>
-        <edgeOn>0</edgeOn>  <!-- a figure turned along a wall's top is a blot: RM_GraffitiKernel.ReadsEdgeOn -->
         <meaning>Jest</meaning>
         <poolWeight>2.5</poolWeight>
         <pigmented>true</pigmented>

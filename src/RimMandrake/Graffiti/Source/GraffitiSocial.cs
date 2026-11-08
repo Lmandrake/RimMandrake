@@ -62,7 +62,7 @@ namespace RimMandrake.Graffiti
         private static bool forgotten;
         private bool movedOffEdges;
 
-        /// <summary>Since pass 14 nobody paints a picture or a message on a wall seen edge-on, where it prints turned along the wall's top strip
+        /// <summary>Since pass 17 nobody paints anything on a wall seen edge-on (pass 14: no picture or message), where it prints turned along the wall's top strip
         /// as a blot; a save from before still carries them there (live pass 15, Ashgate: a fist, painted heads, a ring and cogs drawn sideways on
         /// wall tops, which a blind judge read as "a scorched hole"). Once a load, each moves to the nearest free face, in its own room
         /// if it can, as if it had been painted there; with none within a few cells it is taken down. A pigment its wall swallows is re-picked.</summary>
@@ -72,8 +72,6 @@ namespace RimMandrake.Graffiti
             {
                 if (m.Destroyed || !m.Spawned || m.wallSide == RM_GraffitiKernel.NoWall) continue;
                 if (!RM_GraffitiKernel.EdgeOn(RM_GraffitiKernel.FaceOfSide(m.wallSide))) continue;
-                ModExtension_Graffiti ext = m.def.GetModExtension<ModExtension_Graffiti>();
-                if (ext == null || RM_GraffitiKernel.ReadsEdgeOn(ext.form, ext.edgeOn, ext.hasSubject)) continue;
                 Room room = m.Position.GetRoom(map);
                 IntVec3 to = IntVec3.Invalid;
                 // Its own room first. Live pass 16: a room's only face-on wall is its north one, and most were full, so six of nine stayed;

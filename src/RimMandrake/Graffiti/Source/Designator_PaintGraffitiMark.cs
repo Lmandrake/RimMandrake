@@ -59,6 +59,10 @@ namespace RimMandrake.Graffiti
             {
                 return "Mark a floor cell right against a wall.";
             }
+            if (!GraffitiJobUtility.OnFace(loc, Map))
+            {
+                return "Paint goes on a wall's face: stand south of the wall, where its face is in view.";
+            }
             return true;
         }
 

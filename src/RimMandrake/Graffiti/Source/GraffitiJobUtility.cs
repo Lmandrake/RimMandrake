@@ -43,7 +43,7 @@ namespace RimMandrake.Graffiti
             int bareSeen = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, SearchRadius, useCenter: false))
             {
-                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)
+                bool usable = c.InBounds(map) && c.Standable(map) && OnFace(c, map) && pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)
                     && !KeptClean(c, map) && (!roomCap || !RoomFull(c, map, marksInRoom));
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
@@ -219,12 +219,6 @@ namespace RimMandrake.Graffiti
             List<int> pool = RM_GraffitiKernel.Gather(states);
             if (pool.Count > 0)
             {
-                // A side face shows a sliver; a hand with a whole front face in reach mostly uses it.
-                if (Rand.Value < RM_GraffitiKernel.FrontFaceBias)
-                {
-                    List<int> fronts = pool.FindAll(i => Filth_Mark.ReadWallSide(cells[i], map) == 0);
-                    if (fronts.Count > 0) pool = fronts;
-                }
                 result = cells[pool.RandomElement()];
                 return true;
             }
@@ -296,7 +290,7 @@ namespace RimMandrake.Graffiti
             int bareSeen = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, RaidExitSearchRadius, useCenter: true))
             {
-                bool usable = c.InBounds(map) && c.Standable(map) && HasCardinalWall(c, map) && IsExteriorCell(c, map);
+                bool usable = c.InBounds(map) && c.Standable(map) && OnFace(c, map) && IsExteriorCell(c, map);
                 cells.Add(c);
                 bool marked = usable && AlreadyMarked(c, map);
                 states.Add(new RM_MarkCell(usable, marked));

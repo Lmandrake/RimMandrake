@@ -376,19 +376,10 @@ namespace RimMandrake.Graffiti
         /// <summary>A wall seen edge-on: the camera shows only the strip of its top, and a mark there is drawn turned along it.</summary>
         public static bool EdgeOn(int face) { return face == FaceEast || face == FaceWest; }
 
-        /// <summary>Can this drawing go on a wall seen edge-on and still read? Turned along the strip, letters and strokes read as a tag or a
-        /// tally on its side; a picture (a fist, a face, a sigil, a poster, someone's head) becomes a blot. Option D's "a side face stays a
-        /// scrap": a scrap, not a smear. Live pass 14: a third of Ashgate's marks were on such walls, and a fist, a mockery and a memorial
-        /// each came out as a red or green blot that read at play zoom as blood or mould. edgeOn from the def: -1 by form, 0 never, 1 always.</summary>
-        public static bool ReadsEdgeOn(GraffitiForm form, int edgeOn, bool hasSubject)
-        {
-            if (edgeOn >= 0) return edgeOn > 0;
-            if (hasSubject) return false;
-            return form == GraffitiForm.Tag || form == GraffitiForm.ThrowUp || form == GraffitiForm.Scrawl;
-        }
-
-        /// <summary>Chance a calm hand picks a whole front face over a side's sliver when it has both within reach.</summary>
-        public const float FrontFaceBias = 0.85f;
+        /// <summary>Does anything go on a wall seen edge-on? No. Turned along the strip of its top, a picture became a blot (live pass 14: a fist, a
+        /// mockery and a memorial read as blood or mould), and pass 16's blind judge read the tags and tallies still allowed there as "rust or blood
+        /// runs" and "moss". Option D's "a side face stays a scrap" ends here at the owner's other honest answer: nothing.</summary>
+        public static bool PaintsEdgeOn(int face) { return !EdgeOn(face); }
 
         /// <summary>The widest mark a face may carry: a side face is a sliver, three cells of piece would be a stripe.</summary>
         public static float MaxWidthOnFace(int face) { return face == FaceFront ? float.MaxValue : 2f; }
@@ -682,12 +673,27 @@ namespace RimMandrake.Graffiti
             flip = ((h2 >> 17) & 1) == 1;
         }
 
-        /// <summary>Pigments a tag can be written in (multiplied onto a pale drawing): dull colours a colony could mix, none neon.</summary>
+        /// <summary>Pigments a tag can be written in (multiplied onto a pale drawing): dull colours a colony could mix, none neon. Pass 17: the fifth was
+        /// an olive green, and a green tag on a wall read to a blind judge as moss (pass 16); it is a dusty pink now, which nothing on a wall grows.</summary>
         public static readonly RM_Rgb[] Pigments =
         {
             new RM_Rgb(0.74f, 0.27f, 0.20f), new RM_Rgb(0.82f, 0.60f, 0.27f), new RM_Rgb(0.92f, 0.90f, 0.83f), new RM_Rgb(0.20f, 0.19f, 0.19f),
-            new RM_Rgb(0.42f, 0.52f, 0.33f), new RM_Rgb(0.36f, 0.48f, 0.58f), new RM_Rgb(0.54f, 0.37f, 0.56f), new RM_Rgb(0.86f, 0.46f, 0.22f),
+            new RM_Rgb(0.84f, 0.45f, 0.60f), new RM_Rgb(0.36f, 0.48f, 0.58f), new RM_Rgb(0.54f, 0.37f, 0.56f), new RM_Rgb(0.86f, 0.46f, 0.22f),
         };
+
+        /// <summary>The first pigment from `start` on that reads on this wall and stands off the mark it signs (its paint's mean colour): a red tag on
+        /// a red fist read as a smudge on its forearm (live pass 17). -1 if none.</summary>
+        public static int ContrastingPigment(int start, float markR, float markG, float markB, float wallR, float wallG, float wallB)
+        {
+            for (int k = 0; k < Pigments.Length; k++)
+            {
+                int p = (Math.Abs(start) + k) % Pigments.Length;
+                RM_Rgb c = Pigments[p];
+                float dr = c.r - markR, dg = c.g - markG, db = c.b - markB;
+                if (PigmentReads(p, wallR, wallG, wallB) && dr * dr + dg * dg + db * db >= 0.12f) return p;
+            }
+            return -1;
+        }
         public static int PigmentCount => Pigments.Length;
         public static RM_Rgb PigmentColor(int index) { return Pigments[Math.Abs(index) % Pigments.Length]; }
 
@@ -1060,12 +1066,14 @@ namespace RimMandrake.Graffiti
         /// mud: how far the pigment slides toward the muddy brown of a cheap mix. Live pass 15, a blind judge at play zoom: even at 0.4 an awful
         /// hand's paint read as "moss or mould", a poor one's as "soot or scorch". Ugly is clumsy, not the colour of growth: no mud now; an
         /// awful hand shows in its wobble, its slipped second go (CraftSmear) and its thin coat, in the paint's own colour.</summary>
+        /// Pass 17: no thin coat either. GPT's lead on the pass-16 judge's "the weak ones read as stains": the wall drawn back over a weak mark ate its
+        /// edges. A clumsy hand is a full coat with the clumsiness in its shape: the wobble, the slipped first go and the runs (CraftDrips).
         public static void CraftLook(int quality, out float through, out float wobble, out float mud)
         {
             switch (quality)
             {
-                case Awful: through = 0.2f; wobble = 3f; mud = 0f; return;
-                case Poor: through = 0.1f; wobble = 2f; mud = 0f; return;
+                case Awful: through = 0f; wobble = 3f; mud = 0f; return;
+                case Poor: through = 0f; wobble = 2f; mud = 0f; return;
                 case Good: through = -0.04f; wobble = 0.8f; mud = 0f; return;
                 case Excellent: through = -0.08f; wobble = 0.6f; mud = 0f; return;
                 case Masterwork: through = -0.12f; wobble = 0.4f; mud = 0f; return;
@@ -1082,9 +1090,28 @@ namespace RimMandrake.Graffiti
             else if (quality == Poor) mud = 0.35f;
         }
 
-        /// <summary>The thin coat of a clumsy hand's first go, as a share of the paint's opacity. It lies under two coats on a face, so it shows at
-        /// about twice this.</summary>
-        public const float SmearAlpha = 0.28f;
+        /// <summary>Pass 16's thin coat under a clumsy mark, for RM_GraffitiStage.oldWeather's side-by-side.</summary>
+        public static float CraftThroughPass16(int quality) { return quality == Awful ? 0.2f : quality == Poor ? 0.1f : 0f; }
+
+        /// <summary>The coat of a clumsy hand's first go, as a share of the paint's opacity. Pass 16's 0.28 lay under the mark as a film, and a film
+        /// on a wall is a stain (GPT: "a translucent second attempt reads as rubbed material"); the first go is paint too.</summary>
+        public const float SmearAlpha = 0.28f, SmearAlphaFull = 0.9f;
+
+        /// <summary>Does its writer put their tag at its foot? A stencil, a sigil, a sprayed portrait or a believer's emblem is one cut shape sprayed
+        /// alone, and alone it reads as a stamp: pass 16's blind judge saw every fist as "a clean emoji-style fist icon", the sigils as badges and
+        /// decals, the mockeries and the crowned tribute as emblems and clip-art. GPT's lead: register comes from composition more than from
+        /// roughness, a symbol with a scrawl beside it reads as somebody's street work. A tag, a throw-up, a piece and a scrawl are already a hand.</summary>
+        public static bool Signed(GraffitiForm form, bool hasSubject, bool forAMeme)
+        {
+            return form == GraffitiForm.Stencil || form == GraffitiForm.Sigil || form == GraffitiForm.Paste || hasSubject || forAMeme;
+        }
+
+        /// <summary>How much a clumsy hand's paint runs (WallPlane.Dripped): an awful hand floods it, a poor one lets some go, anyone who can paint
+        /// controls it.</summary>
+        public static float CraftDrips(int quality)
+        {
+            return quality == Awful ? 1f : quality == Poor ? 0.5f : 0f;
+        }
 
         /// <summary>How far a clumsy hand slipped and went over its own mark again, off true: 0 for anyone who can paint. Live 2026-11-07: an
         /// awful piece and a legendary one side by side differed only by which drawing each was, so the owner's "a poor artist will paint
