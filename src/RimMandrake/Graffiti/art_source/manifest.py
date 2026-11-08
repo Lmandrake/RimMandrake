@@ -42,6 +42,7 @@ for i, (d, t, c) in enumerate([("A", "fat round overlapping bubble shapes", "dus
     add(f"throwup_{d.lower()}_{i % 2}", F + "ThrowUp_" + d, 1.3, "brush", 0.2 + 0.12 * (i % 2), f"A graffiti throw-up: {t} that look like letters but spell nothing. " + ROLLER + PIG.format(c=c) + SQ)
 for i, (t, c) in enumerate([("fat round bubble shapes in a row", "chalk fill, soot line"), ("bulging squared bubble shapes", "rust red fill, soot line"), ("drooping melted bubble shapes", "dull violet fill, chalk line"), ("tall crowded bubble shapes shouldering each other", "oxide green fill, chalk line")]):
     add(f"wide_{i}", F + "ThrowUp_Wide", 2, "brush", 0.2 + 0.08 * i, f"A wide graffiti throw-up: {t} that look like letters but spell nothing. " + ROLLER + PIG.format(c=c) + L2)
+M["throwup_a_0"]["fill"] = (0.86, 0.45, 0.64)   # pass 16: lilac went grey in a dim storeroom and still read as rock chunks
 # ------ pieces
 for i, (t, c) in enumerate([("sharp interlocking angular shapes like shattered letters, arrows thrown off them", "rust red, burnt orange, soot black, chalk"), ("huge rounded interlocked shapes with a hard second colour fading through them", "dull blue, lime white, soot black"),
                             ("tall spiky shapes leaning into each other, a crude sun behind", "ochre, oxblood, soot black"), ("flowing ribbon shapes knotting through each other", "oxide green, chalk, dull violet")]):
@@ -175,6 +176,7 @@ for i, t in enumerate(["three melting candles in a row along the bottom, long ru
 for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",
                        "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a grinning little man thumbing his nose with one hand and waggling the fingers, his tongue stuck out, on wobbly legs"]):
     add(f"rude_{i}", F + "RudeLittleMan", 1, "brush", 0.2, "A silly rude doodle, the kind bored people draw on any wall anywhere: " + t + ". Childish, funny, thick wobbly lines. " + BRUSH + PALE + SQ, True)
+M["rude_3"]["floor"] = 0.3   # pass 16: the generator washed a pale haze behind him, and baked it read on the wall as a faint ochre blob
 for i, t in enumerate(["two heavy slashes crossed over the gap, a wet gob of spit falling through it, a row of sneering teeth under it", "a ring of jagged angry scrawl around the gap and one long strike diagonally across it"]):
     add(f"insult_{i}", F + "FactionInsult", 1.3, "brush", 0.15, "An insult to a hated faction, defacing their emblem: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="soot black and rust red") + SQ)
 

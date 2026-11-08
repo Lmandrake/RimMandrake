@@ -83,7 +83,11 @@ namespace RimMandrake.Graffiti
                     to = c;
                     break;
                 }
-                if (!to.IsValid) continue;
+                if (!to.IsValid)
+                {
+                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " stays on an edge-on wall at " + m.Position + ": no free face in its room within " + MoveOffEdgeRadius);
+                    continue;
+                }
                 IntVec3 from = m.Position;
                 m.DeSpawn();
                 m.wallSide = RM_GraffitiKernel.NoWall;
@@ -92,7 +96,8 @@ namespace RimMandrake.Graffiti
             }
         }
 
-        private const float MoveOffEdgeRadius = 4.9f;
+        /// <summary>Live pass 16 at 4.9: one picture of Ashgate's seven moved; the rest sat in rooms whose faces near them were full.</summary>
+        private const float MoveOffEdgeRadius = 8.9f;
 
         /// <summary>The player ordered this mark scrubbed: the wall around it is left clean by our own painters for a while.</summary>
         internal void HoldScrubbed(Filth_Mark m)

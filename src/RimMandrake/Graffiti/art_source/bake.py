@@ -64,6 +64,12 @@ def bake(name, m):
         rgb = np.clip(235 + (l - l[alpha > 0.3].mean() if (alpha > 0.3).any() else 0) * 0.4, 150, 255) * np.ones(3)
     if not m["pigmented"] and m["mode"] != "scratch":
         rgb = bolder(rgb, alpha)
+    if m.get("fill"):
+        # Pass 16: a pale fill inside a soot line is the game's own rock chunk, and in a dim room lilac goes grey: the fill takes a clear colour.
+        l = rgb.mean(2, keepdims=True)
+        fill = np.clip((l - 95) / 30, 0, 1) * np.clip((232 - l) / 18, 0, 1)
+        recol = np.array(m["fill"]) * 255 * np.clip(l / 175, 0.6, 1.2)
+        rgb = np.clip(rgb * (1 - fill) + recol * fill, 0, 255)
     if m.get("drop_grey"):
         # The Vandal prompt's hand smeared through wet paint comes back as a grey-brown smudge in the middle: on a wall that is dirt.
         mx, mn = rgb.max(2), rgb.min(2)
