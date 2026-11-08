@@ -1366,6 +1366,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             else if (nd.IsMachine && nd.Machine != null)
             {
                 target = atA ? e.PA : e.PB;
+                // a standing lamp takes its cord on the side the cord comes from: its plug point is the top of its cell, so a cord laid in from below
+                // or beside ran past the lamp and hooked back over it (blind judge p15a, every look: "the lamp lead overshoots and hairpins back"). The run
+                // under the lamp's art to its centre hides which side it went in by
+                if (nd.Machine.Kind == MachineKind.Lamp && nd.Machine.W == 1 && nd.Machine.H == 1) target = LampEntry(nd.Machine, BackAlong(P, !atA, LampLook));
                 arrive = IntoMachine(nd.Machine, target);
                 if (g.Slides(nd.Machine)) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
             }
@@ -1423,6 +1427,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
             round.AddRange(from < 0 ? bend : bend.GetRange(from + 1, bend.Count - from - 1));
             if (!atEnd) round.Reverse();
             return round;
+        }
+
+        /// <summary>How far back along a cord (cells) <see cref="LampEntry"/> looks to see which side of a lamp it comes from.</summary>
+        public const double LampLook = 1.1;
+
+        /// <summary>The point just outside a one-cell lamp on the side facing <paramref name="from"/>: the top edge, as before, for a cord from above.</summary>
+        internal static V2 LampEntry(MachineInfo m, V2 from)
+        {
+            double cx = m.X0 + 0.5, cz = m.Z0 + 0.5, dx = from.X - cx, dz = from.Z - cz;
+            if (dz >= Math.Abs(dx) * 0.6) return new V2(cx, m.Z0 + 1.02);
+            if (Math.Abs(dx) >= Math.Abs(dz)) return new V2(dx > 0 ? m.X0 + 1.08 : m.X0 - 0.08, cz - 0.1);
+            return new V2(cx, m.Z0 - 0.08);
+        }
+
+        /// <summary>The point <paramref name="d"/> cells of arc back from one end of a laid cord (the far end if it is shorter).</summary>
+        private static V2 BackAlong(List<V2> P, bool atEnd, double d)
+        {
+            double run = 0;
+            int n = P.Count;
+            for (int k = 1; k < n; k++)
+            {
+                V2 a = atEnd ? P[n - k] : P[k - 1], b = atEnd ? P[n - k - 1] : P[k];
+                run += V2.Dist(a, b);
+                if (run >= d) return b;
+            }
+            return atEnd ? P[0] : P[n - 1];
         }
 
         /// <summary>The art inset (cells) on the footprint side a cord enters through.</summary>
@@ -1713,7 +1743,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
             var cells = new List<Cell>(comp);
             for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
-            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(3, 1 + comp.Count / 2);
+            // a strip every four cells: at one in seven the Modern heap was a thin net of a few cords between four strips beside the junction looks' dense
+            // boxes (dense_grid_reads_as_tangle; the owner: "a huge tangle of nasty wires and power strips all swirled together terribly")
+            int want = strips ? Math.Max(1, 1 + comp.Count / 4) : Math.Max(3, 1 + comp.Count / 2);
             var cons = new List<CordDecal>();
             int portsSoFar = 0;
             foreach (Cell c in cells)
