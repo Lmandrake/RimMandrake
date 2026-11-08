@@ -40,8 +40,8 @@ Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (
 
 ## north star
 state: VALIDATED
-validated-hash: eeca8dff8692b20bc41f1761f3d94e6eb627df90b8ea859d1a25fe5a12a352c9
-validated-by: BY CARD: Should I validate it now? → Validate with the rereads pick (Recommended)
+validated-hash: 07ee6ecdbfb296ddd3fff8050204ea237fa3f8796e4ba49d835ad385c5ce1df8
+validated-by: BY CARD: Change 'every mark' to 'every face-on mark'? -> Yes, every face-on mark
 
 ✅ **BINDING.** Every line below was ruled or accepted in the owner's sitting of
 2026-09-16 and validated on his word — *"Validate now, all 10 lines"* — at the hash
@@ -112,7 +112,7 @@ His words on what happens between people came later, and add to that:
       because `placementMask` was `Any`. Every state assertion passed at the time.)
 - [ ] `mark_reads_as_deliberate` — a mark reads at play zoom as something a hand
       made on purpose, not as scattered dirt or a smudge.
-- [ ] `mark_reads_at_play_zoom` — every mark reads AS A MARK at normal play zoom
+- [ ] `mark_reads_at_play_zoom` — every face-on mark reads AS A MARK at normal play zoom
       (~64px), not only when zoomed in. 🔴 **Owner ruling, 2026-09-16**: this
       replaces a drafted `mark_scale_consistent` line. Scale *uniformity* is the
       wrong bar — real graffiti varies wildly in scale and a big piece beside a
