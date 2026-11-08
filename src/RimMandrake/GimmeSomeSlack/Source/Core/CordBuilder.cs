@@ -688,8 +688,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var p = new LaidPiece { Key = "coil:" + sk.Key, Owner = j.Cell };
                 CordRng r = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z);
                 var coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
-                // a broad loop of the spare cord beside the box, where one lies clear: the 0.22 curl read as a tight pigtail on the box (never_taut_straight_cord, live pass 18)
-                if (opt.Lay.FairBends) coil = SpurLoop(w, j.Pos, r) ?? coil;
+                // NOT the broad SpurLoop below: live pass 18 its ring hung out of the box across neighbouring strips and boxes and shared the box's fitting with real leads
+                // (blind judge, every look, p18\judge_p18b_findings.png). It must leave by a free arm and keep off other fittings before it comes back.
                 CordLayer.ProjectOut(w, coil);
                 if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
                 outp.Add(p);
