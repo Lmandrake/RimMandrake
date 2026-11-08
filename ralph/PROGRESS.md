@@ -54,7 +54,7 @@ the look bars), write DONE.md citing that evidence bar by bar. A judge's approva
    behaviour bars count measurements; the three it named are marked true above; close the one missing clause on jump, digging
    and wall scaling; reopened: occupant/trapped looks at depths other than 2 m, the ground kit. The long pole is his story played
    END TO END (defenders shoot, the rescue finishes): STAGE it so it completes, don't replay until luck delivers it.
-1. Deploy (if this commit's DLL is not on Steve yet), then replay `FW_SPAWN=gx,0 FW_ARCHERS=5 FW_CLOSE=3 bash ralph/live/story3.sh 400 TribeRoughNeanderthal s7`
+1. (0009583872 is deployed on game A, 01:5x; game up, no map loaded.) Replay `FW_SPAWN=gx,0 FW_ARCHERS=5 FW_CLOSE=3 bash ralph/live/story3.sh 400 TribeRoughNeanderthal s7`
    and look for: nobody targets the cover before it springs; the rescuer fells a sapling in hundreds of ticks; the raid waits;
    the ladder is SEEN going in on the near wall; arrows. Then stage it fairer to his words: archers on the north lip row
    (PZ+2), or open ground beside the passage so defenders see the rescuers (he wrote "the defenders standing on the other side").
