@@ -1,4 +1,7 @@
+using RimWorld;
+using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.Pyrelands
 {
@@ -51,13 +54,46 @@ namespace RimMandrake.Pyrelands
         private int drops;
         private int dropsLit;
 
+        // JobDriver_RUT_FireHawkCarryEmber's toils: 0 go to the fire, 1 take the ember, 2 carry it, 3 drop it. From the carry
+        // toil on, the hawk holds the burning twig.
+        private const int CarryToilIndex = 2;
+        // Fire-coloured, so the text reads as the same thing as the glow thrown beside it.
+        private static readonly Color EmberDropTextColor = new Color(1f, 0.55f, 0.15f);
+
         public void Notify_EmberDropped(IntVec3 cell, bool lit)
         {
             lastDropCell = cell;
             lastDropTick = Find.TickManager.TicksGame;
             lastDropLit = lit;
             drops++;
-            if (lit) dropsLit++;
+            if (lit)
+            {
+                dropsLit++;
+                // The player's only sign of cause and effect: a new fire six cells from the blaze, and nobody to blame.
+                // Thrown like RM_JobDriver_Burrow's "Burrowed!" (3.65 s before it fades), at the fire it lit.
+                if (parent.Spawned)
+                {
+                    MoteMaker.ThrowText(cell.ToVector3Shifted(), parent.Map, "RM_EmberDroppedMote".Translate(), EmberDropTextColor, 3.65f);
+                }
+            }
+        }
+
+        private bool CarryingEmber
+        {
+            get
+            {
+                JobDriver driver = (parent as Pawn)?.jobs?.curDriver;
+                return driver is JobDriver_RUT_FireHawkCarryEmber && driver.CurToilIndex >= CarryToilIndex;
+            }
+        }
+
+        /// <summary>The inspect pane: "Carrying a burning twig" while the ember is in flight, else (after a first drop) how
+        /// long ago the last one fell. Built only when the pane is open on the hawk.</summary>
+        public override string CompInspectStringExtra()
+        {
+            if (CarryingEmber) return "RM_FireHawkCarrying".Translate().ToString();
+            if (drops <= 0 || lastDropTick < 0) return null;
+            return "RM_FireHawkLastDrop".Translate((Find.TickManager.TicksGame - lastDropTick).ToStringTicksToPeriod()).ToString();
         }
 
         public CompProperties_FireHawkSpread Props => (CompProperties_FireHawkSpread)props;
