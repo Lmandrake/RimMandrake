@@ -71,7 +71,7 @@ namespace RimMandrake.Graffiti
             foreach (Filth_Mark m in marks.ToArray())
             {
                 if (m.Destroyed || !m.Spawned || m.wallSide == RM_GraffitiKernel.NoWall) continue;
-                if (!RM_GraffitiKernel.EdgeOn(RM_GraffitiKernel.FaceOfSide(m.wallSide))) continue;
+                if (!RM_GraffitiKernel.EdgeOn(RM_GraffitiKernel.FaceOfSide(m.wallSide)) && GraffitiJobUtility.OnFace(m.Position, map)) continue;     // and since pass 17, none on a lone cell of face
                 Room room = m.Position.GetRoom(map);
                 IntVec3 to = IntVec3.Invalid;
                 // Its own room first. Live pass 16: a room's only face-on wall is its north one, and most were full, so six of nine stayed;
@@ -91,7 +91,7 @@ namespace RimMandrake.Graffiti
                 {
                     // Live pass 16: four stayed, in a bedroom whose one face was full and out on a long outside wall, drawn sideways as scraps a blind
                     // judge had read as mould. Paint nobody can see as anything but a blot is taken down, quietly: nobody scrubbed it.
-                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " taken off an edge-on wall at " + m.Position + ": no free face within " + MoveOffEdgeRadius);
+                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " taken off an edge-on wall or a stub at " + m.Position + ": no free face within " + MoveOffEdgeRadius);
                     m.SkipCleanNotice();
                     m.Destroy();
                     continue;
@@ -100,7 +100,7 @@ namespace RimMandrake.Graffiti
                 m.DeSpawn();
                 m.wallSide = RM_GraffitiKernel.NoWall;
                 GenSpawn.Spawn(m, to, map);
-                GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " off an edge-on wall: " + from + " -> " + to);
+                GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " off an edge-on wall or a stub: " + from + " -> " + to);
             }
             foreach (Filth_Mark m in marks.ToArray())
             {

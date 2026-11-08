@@ -117,10 +117,30 @@ namespace RimMandrake.Graffiti
             return false;
         }
 
-        /// <summary>Does a mark at this floor cell go on a wall's front face, the one the camera sees whole?</summary>
+        /// <summary>Does a mark at this floor cell go on a wall's front face, the one the camera sees whole, in a run of at least two cells? A lone
+        /// cell of face is a wall's end or the stub beside a door: live pass 17, a portrait squeezed onto the stub over a door read as a scrap stuck
+        /// on a post, and pass 16's judge saw a tally on such a stub and an X on a wall's end cap (GPT: "restrict marks to faces that keep their strokes").</summary>
         internal static bool OnFace(IntVec3 c, Map map)
         {
-            return RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(c, map)) == RM_GraffitiKernel.FaceFront;
+            return RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(c, map)) == RM_GraffitiKernel.FaceFront && FaceRun(c, map) >= MinFaceRun;
+        }
+
+        private const int MinFaceRun = 2;
+
+        /// <summary>How many cells of front face run unbroken through this floor cell's wall, up to 2 * MaxWallReach + 1.</summary>
+        internal static int FaceRun(IntVec3 c, Map map)
+        {
+            int side = Filth_Mark.ReadWallSide(c, map);
+            if (side == RM_GraffitiKernel.NoWall) return 0;
+            int face = RM_GraffitiKernel.FaceOfSide(side);
+            IntVec3 wall = c + new Rot4(side).FacingCell;
+            if (!WallPlane.FaceAt(wall, map, face)) return 0;
+            RM_GraffitiKernel.AlongOf(face, out int ax, out int az);
+            IntVec3 along = new IntVec3(ax, 0, az);
+            int a = 0, b = 0;
+            while (a < MaxWallReach && WallPlane.FaceAt(wall + along * (a + 1), map, face)) a++;
+            while (b < MaxWallReach && WallPlane.FaceAt(wall - along * (b + 1), map, face)) b++;
+            return 1 + a + b;
         }
 
         private const float MeaningRadius = 12f, FarMeaningRadius = 24f;

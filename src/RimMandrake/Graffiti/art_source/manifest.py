@@ -115,7 +115,11 @@ add("gig_0", F + "Paste_Gig", 2, "spray", 0.28, PORTRAIT + "The subject, for a f
 add("halo_0", F + "SigilFrame_Halo", 1.3, "spray", 0.2, "A ragged halo sprayed fast in one loose loop of a spray can around an empty middle, the loop not quite closing, thick and thin where the hand sped and slowed, "
     "a second faster loop slipping off it, three or four short flicks thrown outward, and runs falling straight down from its bottom. The middle left completely empty and transparent. "
     "Not a burst, not rays, not a badge. " + SPRAY + PIG.format(c="chalk white") + SQ)
-add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "A rough hand-sprayed box frame with broken corners around an empty middle, the middle left completely empty and transparent. " + SPRAY + PIG.format(c="soot black") + SQ)
+# Pass 17: the soot box read as "a sticker decal" round its icon (blind judge, pass 16). A street shrine's sign is ringed by what its believers added.
+add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "Around an empty middle, the marks a crowd of believers left at a street shrine over many nights: a loose uneven ring of small fast strokes by many "
+    "different hands, short slashes, dots pressed with a thumb, tiny tally strokes, little three-stroke stars and a few flicked arcs, no crosses and no plus signs, some crowded "
+    "together and some far apart, thick and thin, a couple of thin runs falling straight down. The middle left completely empty and transparent, about half the picture's width. "
+    "Not a box, not a frame, not a clean ring, not a badge. " + SPRAY + PIG.format(c="chalk white, ochre and rust red") + SQ)
 add("dripframe_0", F + "SigilFrame_DripFrame", 1.3, "brush", 0.2, "A heavy dragged ring of paint around an empty middle, the middle left completely empty and transparent, long runs falling straight down from its bottom. " + BRUSH + PIG.format(c="oxblood") + SQ)
 # ------ meme glyphs: each its own tool, none a centred pictogram
 G = [
