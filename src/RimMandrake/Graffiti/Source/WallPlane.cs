@@ -138,12 +138,20 @@ namespace RimMandrake.Graffiti
         private static readonly Dictionary<long, Texture2D> WeatheredTex = new Dictionary<long, Texture2D>();
 
         /// <summary>How far the weather has eaten in at each step (RM_GraffitiKernel.WeatherStep, 1..4): the share of the noise field gone.</summary>
-        private static readonly float[] Eaten = { 0f, 0.22f, 0.38f, 0.53f, 0.68f };
+        /// Pass 16: eats less at each step (a blind judge read W3 and W4's faint remains as rust, grime, ash and dry grass); what's left stays paint.
+        private static readonly float[] Eaten = { 0f, 0.15f, 0.28f, 0.42f, 0.55f };
 
         /// <summary>What paint soaks into a wall and keeps even where the weather has taken the coat, at each step: a share of the
         /// drawing's own opacity. Live pass 14, a blind judge on Ashgate's day-18 walls: flaked marks with nothing between the flakes
         /// read as "spilled debris", "mould", "a soot stain". With the whole shape still faintly there, it reads as an old mark.</summary>
-        private static readonly float[] Stain = { 1f, 0.34f, 0.28f, 0.22f, 0.16f };
+        /// Pass 16: the stain was a thin film of the paint's own colour, and a thin dark film on a wall is grime; it's now bleached (below) and kept stronger.
+        private static readonly float[] Stain = { 1f, 0.45f, 0.40f, 0.35f, 0.30f };
+
+        /// <summary>How far the sun has chalked what's left of the coat at each step, toward white in its own hue: real old paint goes paler,
+        /// grime goes darker. Live pass 15 (blind judge): greyed toward the wall's middle value, W2-W4 read as "rust or a burn", "grime or ash",
+        /// "dry grass". Where only the stain is left it is chalked further (StainBleach), so the ghost of a shape is pale, not a smudge.</summary>
+        internal const float BleachPerStep = 0.07f;
+        private const float StainBleach = 0.5f;
 
         /// <summary>Paint as the weather leaves it. Live pass 13: a mark late in its life read as faint new paint, a pale ghost, because the
         /// fade only thinned it. Old paint goes in patches: blotches flake off, rain runs wash it in vertical streaks, and the edges of
@@ -179,16 +187,16 @@ namespace RimMandrake.Graffiti
                 // Spread the field over 0..1 by the paint it actually covers, so a step eats the same share of every drawing.
                 sample.Sort();
                 float lo = sample.Count > 20 ? sample[sample.Count / 20] : 0.3f, hi = sample.Count > 20 ? sample[sample.Count * 19 / 20] : 0.7f;
-                float span = Mathf.Max(hi - lo, 0.05f), t = Eaten[step], chalk = 0.045f * step;
+                float span = Mathf.Max(hi - lo, 0.05f), t = Eaten[step];
                 for (int i = 0; i < px.Length; i++)
                 {
                     Color32 c = px[i];
                     if (c.a == 0) continue;
                     float m = Mathf.Clamp01((n[i] - lo) / span);
-                    float keep = Mathf.Max(Stain[step], Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f)));
-                    float lum = (c.r + c.g + c.b) / 3f;
-                    float pale = lum * 0.85f + 38f;
-                    px[i] = new Color32((byte)Mathf.Lerp(c.r, pale, chalk * 3f), (byte)Mathf.Lerp(c.g, pale, chalk * 3f), (byte)Mathf.Lerp(c.b, pale, chalk * 3f), (byte)(c.a * keep));
+                    float coat = Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f));
+                    float keep = Mathf.Max(Stain[step], coat);
+                    float bleach = BleachPerStep * step + (1f - coat) * StainBleach;
+                    px[i] = new Color32((byte)(c.r + (255 - c.r) * bleach), (byte)(c.g + (255 - c.g) * bleach), (byte)(c.b + (255 - c.b) * bleach), (byte)(c.a * keep));
                 }
                 made = new Texture2D(w, h, TextureFormat.RGBA32, true) { name = tex.name + "_weathered" + step, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
                 made.SetPixels32(px);
@@ -392,23 +400,38 @@ namespace RimMandrake.Graffiti
 
         private static readonly Dictionary<int, Texture2D> Portraits = new Dictionary<int, Texture2D>();
 
-        /// <summary>A colonist's head as a hand would put it on a wall: the game's own portrait, its colours flattened to a few broad values and dragged through
-        /// a dry brush. Their hair and their face's shape are what a wall can show, and enough to say who it is. Null if it can't be had.</summary>
-        internal static Texture2D PaintedPortrait(Pawn pawn)
+        /// <summary>A colonist's head as a hand would put it on a wall: a street stencil cut from the game's own portrait, in three values, black,
+        /// the can's colour and a pale. Their hair, headgear and face's shape are what a wall can show, and enough to say who it is. Null if it can't be had.</summary>
+        internal static Texture2D PaintedPortrait(Pawn pawn, int pigment)
         {
             if (pawn == null) return null;
-            if (Portraits.TryGetValue(pawn.thingIDNumber, out Texture2D done)) return done;
+            int key = pawn.thingIDNumber * 16 + (pigment & 15);
+            if (Portraits.TryGetValue(key, out Texture2D done)) return done;
             Texture2D made = null;
             try
             {
                 RenderTexture rt = PortraitsCache.Get(pawn, new Vector2(PortraitPx, PortraitPx), Rot4.South, new Vector3(0f, 0f, 0.3f), 1.28205f, supersample: false, compensateForUIScale: false, healthStateOverride: PawnHealthState.Mobile);
                 Color32[] px = ReadTexture(rt, out int size);
                 float seed = (pawn.thingIDNumber & 1023) * 0.37f;
-                // Live pass 13: the head still read as the game's sprite stuck in the paint, its clean black outline a die-cut edge. Now
-                // it's painted by the same hand as the horns round it: the outline and shadows go to broken black brush, the colours to
-                // a few flat muted tones (the hat and hair still say who it is), and the edge to grit and a little overspray.
+                // Live pass 15, a blind judge: flattened to muted tones, every head still read as "a crisp game portrait... a UI icon or sticker",
+                // "lit like the UI, not like paint on brick". A face on a street wall is a stencil: its values cut to three, black for the lines and
+                // shadows, the can's colour for the middle, a pale for the light, as the poster-portrait stencils are sprayed. Split at this head's own
+                // middle value, so a dark face and a pale one both come out in three.
+                RM_Rgb p = RM_GraffitiKernel.PigmentColor(pigment);
+                if (p.r * 0.3f + p.g * 0.59f + p.b * 0.11f < 0.3f) p = RM_GraffitiKernel.PigmentColor(1);    // black under black lines is a blot
+                Color32 ink = new Color32(30, 24, 24, 255);
+                Color32 mid = new Color32((byte)(p.r * 255f), (byte)(p.g * 255f), (byte)(p.b * 255f), 255);
+                Color32 pale = new Color32((byte)(Mathf.Lerp(p.r, 0.93f, 0.72f) * 255f), (byte)(Mathf.Lerp(p.g, 0.90f, 0.72f) * 255f), (byte)(Mathf.Lerp(p.b, 0.82f, 0.72f) * 255f), 255);
                 bool[] paint = new bool[px.Length];
-                for (int i = 0; i < px.Length; i++) paint[i] = px[i].a >= 40;
+                var lums = new List<float>();
+                for (int i = 0; i < px.Length; i++)
+                {
+                    paint[i] = px[i].a >= 40;
+                    float l = (px[i].r + px[i].g + px[i].b) / 765f;
+                    if (paint[i] && l >= InkBelow) lums.Add(l);
+                }
+                lums.Sort();
+                float split = lums.Count > 10 ? lums[lums.Count * 9 / 20] : 0.5f;
                 var outPx = new Color32[px.Length];
                 for (int i = 0; i < px.Length; i++)
                 {
@@ -416,9 +439,9 @@ namespace RimMandrake.Graffiti
                     float grit = Mathf.PerlinNoise(seed * 3f + x * 0.55f, seed + y * 0.55f);
                     if (!paint[i])
                     {
-                        // Overspray: a faint dark dusting just past the paint's edge.
+                        // Overspray: a faint dusting of the colour just past the stencil's edge, where the card lifted.
                         int near = NearestPaint(paint, size, x, y, 3);
-                        outPx[i] = near > 0 ? new Color32(30, 24, 24, (byte)(70f * (1f - near / 4f) * Mathf.Clamp01(grit * 1.6f - 0.3f))) : new Color32(0, 0, 0, 0);
+                        outPx[i] = near > 0 ? new Color32(mid.r, mid.g, mid.b, (byte)(80f * (1f - near / 4f) * Mathf.Clamp01(grit * 1.6f - 0.3f))) : new Color32(0, 0, 0, 0);
                         continue;
                     }
                     Color32 c = px[i];
@@ -428,18 +451,10 @@ namespace RimMandrake.Graffiti
                     float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.5f) / 0.3f);
                     // Ragged at the rim: within two pixels of bare wall, grit decides how much paint caught.
                     float rim = NearestBare(paint, size, x, y, 2) > 0 ? Mathf.Clamp01(grit * 1.8f - 0.45f) : 1f;
-                    if (lum < 0.2f)
-                    {
-                        outPx[i] = new Color32(30, 24, 24, (byte)(255f * (grit > 0.38f ? 0.92f : 0.55f) * rim));
-                        continue;
-                    }
-                    float band = (Mathf.Round(lum * 2.6f) / 2.6f) / Mathf.Max(lum, 0.08f);
-                    float grey = (c.r + c.g + c.b) / 3f;
-                    outPx[i] = new Color32(
-                        (byte)Mathf.Clamp((grey + (c.r - grey) * 0.6f) * band * 0.86f + 6f, 0f, 255f),
-                        (byte)Mathf.Clamp((grey + (c.g - grey) * 0.6f) * band * 0.84f + 4f, 0f, 255f),
-                        (byte)Mathf.Clamp((grey + (c.b - grey) * 0.6f) * band * 0.8f, 0f, 255f),
-                        (byte)(255f * (0.5f + 0.42f * keep) * rim));
+                    Color32 tone = lum < InkBelow ? ink : lum < split ? mid : pale;
+                    float body = lum < InkBelow ? (grit > 0.38f ? 0.95f : 0.6f) : 0.62f + 0.36f * keep;
+                    tone.a = (byte)(255f * body * rim);
+                    outPx[i] = tone;
                 }
                 px = outPx;
                 made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = "RM_Graffiti_Portrait_" + pawn.thingIDNumber, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
@@ -450,9 +465,12 @@ namespace RimMandrake.Graffiti
             {
                 Log.WarningOnce("[Graffiti] couldn't paint a portrait of " + pawn.LabelShort + ": " + e.Message, pawn.thingIDNumber ^ 0x48454144);
             }
-            Portraits[pawn.thingIDNumber] = made;
+            Portraits[key] = made;
             return made;
         }
+
+        /// <summary>A portrait value below this is a line or a shadow, and goes to the stencil's black.</summary>
+        private const float InkBelow = 0.2f;
 
         private const int PortraitPx = 128;
 

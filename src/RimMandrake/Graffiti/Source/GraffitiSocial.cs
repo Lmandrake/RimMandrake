@@ -60,6 +60,39 @@ namespace RimMandrake.Graffiti
         internal const int ScrubHoldTicks = 10 * GenDate.TicksPerDay;
         private const float ScrubHoldRadius = 2.9f;
         private static bool forgotten;
+        private bool movedOffEdges;
+
+        /// <summary>Since pass 14 nobody paints a picture or a message on a wall seen edge-on, where it prints turned along the wall's top strip
+        /// as a blot; a save from before still carries them there (live pass 15, Ashgate: a fist, painted heads, a ring and cogs drawn sideways on
+        /// wall tops, which a blind judge read as "a scorched hole"). Once a load, each moves to the nearest free face in its own room, as if it
+        /// had been painted there; with none within a few cells it stays where it is.</summary>
+        private void MoveOffEdges()
+        {
+            foreach (Filth_Mark m in marks.ToArray())
+            {
+                if (m.Destroyed || !m.Spawned || m.wallSide == RM_GraffitiKernel.NoWall) continue;
+                if (!RM_GraffitiKernel.EdgeOn(RM_GraffitiKernel.FaceOfSide(m.wallSide))) continue;
+                ModExtension_Graffiti ext = m.def.GetModExtension<ModExtension_Graffiti>();
+                if (ext == null || RM_GraffitiKernel.ReadsEdgeOn(ext.form, ext.edgeOn, ext.hasSubject)) continue;
+                Room room = m.Position.GetRoom(map);
+                IntVec3 to = IntVec3.Invalid;
+                foreach (IntVec3 c in GenRadial.RadialCellsAround(m.Position, MoveOffEdgeRadius, useCenter: false))
+                {
+                    if (!c.InBounds(map) || !c.Standable(map) || c.GetRoom(map) != room || !GraffitiJobUtility.OnFace(c, map)) continue;
+                    if (m.Width > System.Math.Min(GraffitiJobUtility.WallRoom(c, map), GraffitiJobUtility.BareRoom(c, map))) continue;
+                    to = c;
+                    break;
+                }
+                if (!to.IsValid) continue;
+                IntVec3 from = m.Position;
+                m.DeSpawn();
+                m.wallSide = RM_GraffitiKernel.NoWall;
+                GenSpawn.Spawn(m, to, map);
+                GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " off an edge-on wall: " + from + " -> " + to);
+            }
+        }
+
+        private const float MoveOffEdgeRadius = 4.9f;
 
         /// <summary>The player ordered this mark scrubbed: the wall around it is left clean by our own painters for a while.</summary>
         internal void HoldScrubbed(Filth_Mark m)
@@ -138,6 +171,11 @@ namespace RimMandrake.Graffiti
 
         public override void MapComponentTick()
         {
+            if (!movedOffEdges)
+            {
+                movedOffEdges = true;
+                MoveOffEdges();
+            }
             if (map.IsHashIntervalTick(GenDate.TicksPerHour) && marks.Count > 0) Weather();
             if (!RM_GraffitiSettings.socialEnabled)
             {

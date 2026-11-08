@@ -691,13 +691,19 @@ namespace RimMandrake.Graffiti
         public static int PigmentCount => Pigments.Length;
         public static RM_Rgb PigmentColor(int index) { return Pigments[Math.Abs(index) % Pigments.Length]; }
 
-        /// <summary>Does this pigment stand off a wall face of this colour? By colour, not value: rust reads on grey stone as well as chalk does.</summary>
+        /// <summary>Does this pigment stand off a wall face of this colour? By colour, not value: rust reads on grey stone as well as chalk does.
+        /// But soot reads only on a pale wall: the face the camera sees is darker than its stuff's tint (shade, the atlas's own grey, night), and
+        /// live pass 15 a soot tally on a grey stone face was "almost invisible" to a blind judge, though by colour it stood off.</summary>
         public static bool PigmentReads(int index, float wallR, float wallG, float wallB)
         {
             RM_Rgb p = PigmentColor(index);
             float dr = p.r - wallR, dg = p.g - wallG, db = p.b - wallB;
+            if (Luma(p.r, p.g, p.b) < DarkPigment && Luma(wallR, wallG, wallB) < PaleWallForSoot) return false;
             return dr * dr + dg * dg + db * db >= 0.09f;
         }
+
+        public const float DarkPigment = 0.3f, PaleWallForSoot = 0.58f;
+        public static float Luma(float r, float g, float b) { return r * 0.3f + g * 0.59f + b * 0.11f; }
 
         /// <summary>What an inspecting player reads off a mark's Beauty, so the stat and the picture can be held side by side.</summary>
         public static string BeautyWord(float beauty)
@@ -1051,13 +1057,15 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>How the craft shows on the wall. through: more of the wall shows through a thin, patchy coat; wobble: a shaky hand's tilt;
-        /// mud: how far the pigment slides toward the muddy brown of a cheap mix.</summary>
+        /// mud: how far the pigment slides toward the muddy brown of a cheap mix. Live pass 15, a blind judge at play zoom: even at 0.4 an awful
+        /// hand's paint read as "moss or mould", a poor one's as "soot or scorch". Ugly is clumsy, not the colour of growth: no mud now; an
+        /// awful hand shows in its wobble, its slipped second go (CraftSmear) and its thin coat, in the paint's own colour.</summary>
         public static void CraftLook(int quality, out float through, out float wobble, out float mud)
         {
             switch (quality)
             {
-                case Awful: through = 0.2f; wobble = 3f; mud = 0.4f; return;
-                case Poor: through = 0.1f; wobble = 2f; mud = 0.2f; return;
+                case Awful: through = 0.2f; wobble = 3f; mud = 0f; return;
+                case Poor: through = 0.1f; wobble = 2f; mud = 0f; return;
                 case Good: through = -0.04f; wobble = 0.8f; mud = 0f; return;
                 case Excellent: through = -0.08f; wobble = 0.6f; mud = 0f; return;
                 case Masterwork: through = -0.12f; wobble = 0.4f; mud = 0f; return;

@@ -37,7 +37,7 @@ for i, (d, t) in enumerate([("A", "looped, leaning hard to the right, an underli
 for i, t in enumerate(["three different hands stacked, each a fast scribble", "a long row of small crowded scrawled signatures, some crossed out", "four fat scrawls side by side, each by another hand"]):
     add(f"rollcall_{i}", F + "Tag_RollCall", 2, "spray", 0.3, "A roll call of graffiti tags that spell no letters of any alphabet: " + t + ". " + SPRAY + PIG.format(c="chalk white, soot black, rust red, ochre") + L2)
 # ------ throw-ups
-for i, (d, t, c) in enumerate([("A", "fat round overlapping bubble shapes", "chalk fill, soot black line"), ("A", "lumpy melting bubble shapes", "rust red fill, soot line"),
+for i, (d, t, c) in enumerate([("A", "fat round overlapping bubble shapes", "dusty lilac fill, soot black line, a few chalk white shine flicks"), ("A", "lumpy melting bubble shapes", "rust red fill, soot line"),
                                ("B", "squat rounded blocks shouldering each other", "ochre fill, soot line"), ("B", "cloud-like puffed shapes with a hasty second line", "dull blue fill, chalk line")]):
     add(f"throwup_{d.lower()}_{i % 2}", F + "ThrowUp_" + d, 1.3, "brush", 0.2 + 0.12 * (i % 2), f"A graffiti throw-up: {t} that look like letters but spell nothing. " + ROLLER + PIG.format(c=c) + SQ)
 for i, (t, c) in enumerate([("fat round bubble shapes in a row", "chalk fill, soot line"), ("bulging squared bubble shapes", "rust red fill, soot line"), ("drooping melted bubble shapes", "dull violet fill, chalk line"), ("tall crowded bubble shapes shouldering each other", "oxide green fill, chalk line")]):
@@ -53,23 +53,25 @@ VANDAL = ("The ugliest, crudest graffiti on any wall: no skill at all, done in a
           "put there on purpose, never dirt, never a stain, never scorch, never brown. It is clumsy, not bold: the paint goes on in blotches and splats, far too thick "
           "in some places and starved and broken in others; the lines wobble, stall into fat blobs where the hand stopped, and double back over themselves; a hand "
           "was dragged through the wet paint and smeared part of it sideways into a grubby streak; and a dirty fog of fine overspray hangs around all of it. "
-          "The colours fight each other and have gone sickly and dull, cheap old paint greyed by grime: never clean, never cheerful, never pretty, never neat. ")
+          "The colours fight each other: cheap loud paint straight from the can in colours that clash and hurt the eye, never clean, never pretty, never neat, and "
+          "nothing that could be moss, mould, soot, rust, mud or blood: no green, no olive, no brown, no black, no grey. ")
+# Pass 16: a blind judge read the bile-green, olive and liver-purple set as moss and mould at play zoom. Ugly is clumsy and garish, not the colours of growth.
 HEAVY = "Far too much paint in the blobs: uneven runs falling straight down from them, some long, some short, none tidy. "
 for i, (t, tool, c) in enumerate([
         ("a clotted scribble scrawled over and over on the same spot until it is one shapeless knot, with a second scribble in another colour dragged through it and "
-         "a smeared handprint wiped across one end", SPRAY, "sickly bile green over a dull liver-purple underlayer"),
+         "a smeared handprint wiped across one end", SPRAY, "loud cheap pink over a harsh cyan underlayer"),
         ("an attempt at a tag that went wrong: four wobbly shapes that were meant to be letters of no alphabet, the last ones cramped and sliding downhill, then the "
-         "whole thing angrily scribbled over", SPRAY, "dirty salmon pink, the scribble over it in grimy olive"),
+         "whole thing angrily scribbled over", SPRAY, "salmon pink, the scribble over it in harsh mustard yellow"),
         ("three scrawled tags that spell nothing, sprayed right over each other in three clashing colours until they knot into one ugly tangle, splattered where a can spat",
-         SPRAY, "sour mustard, liver purple and dirty salmon pink"),
+         SPRAY, "sour mustard yellow, harsh violet and loud cheap pink"),
         ("a careless fat zigzag dragged the whole width in thick opaque paint, blotted into fat blobs where the can stuck, with a second clumsy zigzag in another colour "
-         "sprayed crookedly over it and a burst of spatter where the can was shaken against the wall", SPRAY, "sickly bile green, the second zigzag in dirty salmon pink"),
+         "sprayed crookedly over it and a burst of spatter where the can was shaken against the wall", SPRAY, "harsh cyan, the second zigzag in loud cheap pink"),
         ("a loaded brush flicked at the wall again and again, then a lopsided scrawl hacked through the splats and a wet smear wiped half of it away", BRUSH,
-         "dull liver purple splats, the scrawl in sickly bile green"),
+         "harsh violet splats, the scrawl in sour mustard yellow"),
         ("one furious scribble hacked back and forth with an over-loaded brush, peaks of wildly different heights crossing over themselves into a dense tangle, never "
-         "forming letters, a second messier scribble smeared over it with a hand", BRUSH, "grimy olive over dirty salmon pink"),
+         "forming letters, a second messier scribble smeared over it with a hand", BRUSH, "harsh cyan over salmon pink"),
 ]):
-    add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + PIG.format(c=c) + L2, floor=0.04)
+    add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + "Colours only: " + c + ", cheap paint that clashes, not neon. " + L2, floor=0.04)
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs
 for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)
@@ -82,11 +84,15 @@ for i, t in enumerate(["two great angry slashes crossed over a scribble", "a big
 # ------ stencils
 add("stencil_crown_0", F + "Stencil_Crown", 1.25, "spray", 0.3, "A crude crown of five blunt uneven spikes, an insult to nobility, sprayed badly through a torn cardboard stencil: one spike broken short where the card tore, ragged gaps, "
     "a misted double edge along one side where the card slipped, and a thick sloppy slash of paint sprayed right through it on the diagonal. Not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="pale lime white crown, the slash in rust red") + SQ, floor=0.04)
-add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's emblem: a crude cog hacked out of cardboard with a knife, lopsided and knocked off-true, blunt uneven teeth of different sizes, a ragged hole in the middle, "
-    "sprayed through the card; then a careless second burst in another colour sprayed and dragged half across it. Not clean, not symmetrical, not clip-art. " + STENCIL + PIG.format(c="dull blue cog, a smeared burst of rust red sprayed over one side") + SQ, floor=0.04)
+# Pass 16: the blue-and-red cog read as a gear icon (blind judge). One can, a hammer slammed across a hacked-out cog, sprayed through card.
+add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's mark: a crude lopsided cog hacked out of cardboard with a knife, blunt uneven teeth, a ragged hole in the middle, "
+    "with a heavy hammer laid slanting across it, the two sprayed through the card in one colour; one side sprayed heavy and running, the other starved and broken. "
+    "Not clean, not symmetrical, not clip-art, not a logo. " + STENCIL + PALE + SQ, True, floor=0.04)
 # Pass 14: the old fist (four knuckle lumps in oxblood) read at play zoom as a blood smear on the wall. A raised fist and forearm is a silhouette.
-add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and its forearm thrust straight up, the fist clenched with the thumb across the fingers, sprayed in soot black through a crude cardboard stencil "
-    "with blunt bridges cut between the fingers, over a ragged sprayed disc of ochre behind it, the forearm running off the bottom. Defiant, not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="soot black fist, ochre disc") + SQ, floor=0.04)
+# Pass 16: the ochre disc behind it read as a logo or badge (blind judge). A street stencil is the shape alone on bare wall, in whatever can was to hand.
+add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and its forearm thrust straight up, the fist clenched with the thumb across the fingers, sprayed through a crude cardboard stencil "
+    "with blunt bridges cut between the fingers, the forearm running off the bottom. No disc, no circle, no ring, no shape behind it: bare wall all round, only overspray speckle. "
+    "Defiant, not tidy, not symmetrical, not an icon. " + STENCIL + PALE + SQ, True, floor=0.04)
 # ------ stencil portraits (the defs keep their Paste_ names): sprayed straight onto the wall, no paper, the wall between every part.
 PORTRAIT = ("A big street stencil portrait sprayed straight onto a bare wall. No paper, no sheet, no poster, no rectangle, no backing, no border, no frame, no background panel. "
             "First a few loose patchy clouds of the second colour were misted on with a can, thin, uneven, fading out at their edges, never a block. "
@@ -103,7 +109,10 @@ for i, (t, c) in enumerate([("a blunt masked face looking straight out, a cloth 
 add("gig_0", F + "Paste_Gig", 2, "spray", 0.28, PORTRAIT + "The subject, for a fight night: two big heads side by side, on the left a screaming wild-haired head, on the right a snarling beast's head, "
     "and behind both a jagged sunburst of sprayed rays in the second colour, separate spikes with bare wall between them. " + SPRAY + PIG.format(c="soot black over misted rust red") + L2, floor=0.04)
 # ------ sigil frames (ideoligion icon goes in the middle, leave it empty)
-add("halo_0", F + "SigilFrame_Halo", 1.3, "brush", 0.2, "A rough ring of short radiating stabs around an empty middle, the middle left completely empty and transparent. " + BRUSH + PIG.format(c="chalk white") + SQ)
+# Pass 16: the ring of radiating stabs read as a clip-art burst (blind judge). A believer's halo is one loose loop of a can.
+add("halo_0", F + "SigilFrame_Halo", 1.3, "spray", 0.2, "A ragged halo sprayed fast in one loose loop of a spray can around an empty middle, the loop not quite closing, thick and thin where the hand sped and slowed, "
+    "a second faster loop slipping off it, three or four short flicks thrown outward, and runs falling straight down from its bottom. The middle left completely empty and transparent. "
+    "Not a burst, not rays, not a badge. " + SPRAY + PIG.format(c="chalk white") + SQ)
 add("stencilbox_0", F + "SigilFrame_StencilBox", 1.3, "spray", 0.25, "A rough hand-sprayed box frame with broken corners around an empty middle, the middle left completely empty and transparent. " + SPRAY + PIG.format(c="soot black") + SQ)
 add("dripframe_0", F + "SigilFrame_DripFrame", 1.3, "brush", 0.2, "A heavy dragged ring of paint around an empty middle, the middle left completely empty and transparent, long runs falling straight down from its bottom. " + BRUSH + PIG.format(c="oxblood") + SQ)
 # ------ meme glyphs: each its own tool, none a centred pictogram
@@ -163,7 +172,7 @@ for i, (t, tool) in enumerate([("a fat crude three-pointed crown sprayed sitting
 for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude folded wings either side of the gap, a ring of small dots around it, drips falling"]):
     add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="chalk white and ash grey") + SQ)
 for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",
-                       "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a little man with a bucket stuck on his head walking into nothing, wobble lines around him"]):
+                       "a tiny naked-looking blob of a man with a huge head, dancing badly, arms waving, big dumb smile", "a grinning little man thumbing his nose with one hand and waggling the fingers, his tongue stuck out, on wobbly legs"]):
     add(f"rude_{i}", F + "RudeLittleMan", 1, "brush", 0.2, "A silly rude doodle, the kind bored people draw on any wall anywhere: " + t + ". Childish, funny, thick wobbly lines. " + BRUSH + PALE + SQ, True)
 for i, t in enumerate(["two heavy slashes crossed over the gap, a wet gob of spit falling through it, a row of sneering teeth under it", "a ring of jagged angry scrawl around the gap and one long strike diagonally across it"]):
     add(f"insult_{i}", F + "FactionInsult", 1.3, "brush", 0.15, "An insult to a hated faction, defacing their emblem: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="soot black and rust red") + SQ)

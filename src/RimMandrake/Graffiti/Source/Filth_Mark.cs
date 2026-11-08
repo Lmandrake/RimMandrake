@@ -501,7 +501,7 @@ namespace RimMandrake.Graffiti
             ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
             if (ext != null && subject != null && ext.hasSubject)
             {
-                Texture2D head = WallPlane.PaintedPortrait(subject);
+                Texture2D head = WallPlane.PaintedPortrait(subject, pigment);
                 if (head != null) cachedHeadMat = MaterialPool.MatFrom(head, ShaderDatabase.Mote, Color.white);
             }
             else if (ext != null && targetFaction != null)
@@ -556,7 +556,7 @@ namespace RimMandrake.Graffiti
             float width = size.x * scale * fit;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale * fit;
             float fade = Fade;
-            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.2f * fade, 0.04f, 0.85f);
+            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.1f * fade, 0.04f, 0.85f);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
                 if (cachedHeadMat != null)
@@ -564,7 +564,15 @@ namespace RimMandrake.Graffiti
                     // Their head in the gap the art leaves, under the art: the horns go over the hair.
                     float tc = WallPlane.CenterT(this, width, height, slope, lift);
                     float headH = height * ext.gapSize;
-                    WallPlane.Print(layer, this, cachedHeadMat, headH * 0.92f, headH, slide, slope, lift, false, 0f, 0f, tc + (ext.gapV - 0.5f) * height);
+                    // The head is paint like the rest: it weathers with its frame and the wall comes back through it (pass 16; it had stayed crisp
+                    // and lit like the UI while the horns round it wore away).
+                    Material head = cachedHeadMat;
+                    if (fade > 0f && head.mainTexture != null)
+                    {
+                        Texture2D eatenHead = WallPlane.Weathered(head.mainTexture, weatherStep, thingIDNumber);
+                        if (eatenHead != null) head = MaterialPool.MatFrom(new MaterialRequest(eatenHead, head.shader, new Color(1f, 1f, 1f, 1f - 0.08f * fade)));
+                    }
+                    WallPlane.Print(layer, this, head, headH * 0.92f, headH, slide, slope, lift, false, through, 0f, tc + (ext.gapV - 0.5f) * height);
                 }
                 Graphic g = Graphic;
                 if (g is Graphic_Random random)
@@ -584,8 +592,10 @@ namespace RimMandrake.Graffiti
                 if (fade > 0f && mat.mainTexture != null)
                 {
                     // Worn in patches, not thinned all over (WallPlane.Weathered): what's left is still paint.
-                    Color worn = mat.color;
-                    worn.a *= 1f - 0.2f * fade;
+                    // A pigment on a pale drawing chalks the way the drawing's own colours do in Weathered: paler in its hue, not thinner
+                    // (pass 16; thinned, old paint over a wall read as a stain).
+                    Color worn = Color.Lerp(mat.color, Color.white, WallPlane.BleachPerStep * 1.7f * weatherStep);
+                    worn.a = mat.color.a * (1f - 0.08f * fade);
                     Texture2D eaten = WallPlane.Weathered(mat.mainTexture, weatherStep, thingIDNumber);
                     mat = eaten != null ? MaterialPool.MatFrom(new MaterialRequest(eaten, g.Shader, worn)) : MaterialPool.MatFrom(g.path, g.Shader, worn);
                 }
