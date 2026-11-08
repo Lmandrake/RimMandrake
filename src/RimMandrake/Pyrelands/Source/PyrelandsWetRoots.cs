@@ -15,6 +15,13 @@ namespace RimMandrake.Pyrelands
     /// beside dug water, near a pond or mud, or after a Black Rain) reads its temperature growth factor as if its cell were
     /// PyrelandsTuning.WetRootsCoolingC cooler, never lower than vanilla's. Dry ash keeps vanilla's heat. The plant's inspect pane
     /// says so when it changes the number. Same gate as watered fertility (Mod Settings: ash water fertility).
+    ///
+    /// The growth season too (live, map w 2026-11-08, 58.8 C under Black Rain: watered rice read "Growth rate: 0% (out of
+    /// temperature growth range)" right above our "Grows as if 27F cooler" line). Vanilla's season gate,
+    /// PlantUtility.GrowthSeasonNow(IntVec3, Map, ThingDef) (minGrowthTemperature &lt; T &lt; maxGrowthTemperature on the raw cell
+    /// temperature), zeroes Plant.GrowthRate and skips the growth in Plant.TickLong, and sowing and the zone pane read it too. On
+    /// the same watered ash it is read at the cooled root temperature, hot side only (RM_FireEcoKernel.WetRootGrowthSeason), so
+    /// the season opens where the heat shut it and never shuts or warms a cold cell.
     /// </summary>
     [StaticConstructorOnStartup]
     public static class PyrelandsWetRoots
@@ -33,20 +40,42 @@ namespace RimMandrake.Pyrelands
             {
                 Log.Error("[RimMandrake.Pyrelands] wet roots: patch FAILED, watered ash gives crops no heat relief: " + e.Message);
             }
+            try
+            {
+                h.Patch(AccessTools.Method(typeof(PlantUtility), nameof(PlantUtility.GrowthSeasonNow),
+                        new[] { typeof(IntVec3), typeof(Map), typeof(ThingDef) }),
+                    postfix: new HarmonyMethod(typeof(PyrelandsWetRoots), nameof(Postfix_GrowthSeason)));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] wet roots: growth-season patch FAILED, a watered crop past its heat stop reads 0%: " + e.Message);
+            }
+        }
+
+        /// <summary>Ash-field ground with the switches on: the only cells wet roots may touch.</summary>
+        static bool AshGround(Map map, IntVec3 c)
+        {
+            return map != null && RM_PyrelandsSettings.ashWaterFertilityEnabled && PyrelandsMechanicsGate.On && c.InBounds(map)
+                && PyrelandsAshFieldPatches.ExtOf(map.terrainGrid.TerrainAt(c)) != null;
+        }
+
+        static bool Watered(Map map, IntVec3 c)
+        {
+            MapComponent_PyrelandsAshField field = MapComponent_PyrelandsAshField.For(map);
+            return field != null && field.IsWatered(c, Find.TickManager.TicksGame);
         }
 
         /// <summary>The cooled factor if wet roots apply to this plant now, else -1.</summary>
         internal static float CooledFactor(Plant plant, out float cellTemp)
         {
             cellTemp = 0f;
-            if (plant == null || !plant.Spawned || !RM_PyrelandsSettings.ashWaterFertilityEnabled || !PyrelandsMechanicsGate.On) return -1f;
+            if (plant == null || !plant.Spawned) return -1f;
             Map map = plant.Map;
             IntVec3 c = plant.Position;
-            if (PyrelandsAshFieldPatches.ExtOf(map.terrainGrid.TerrainAt(c)) == null) return -1f;
+            if (!AshGround(map, c)) return -1f;
             if (!GenTemperature.TryGetTemperatureForCell(c, map, out cellTemp)) return -1f;
             if (cellTemp <= plant.def.plant.maxOptimalGrowthTemperature) return -1f;
-            MapComponent_PyrelandsAshField field = MapComponent_PyrelandsAshField.For(map);
-            if (field == null || !field.IsWatered(c, Find.TickManager.TicksGame)) return -1f;
+            if (!Watered(map, c)) return -1f;
             return PlantUtility.GrowthRateFactorFor_Temperature(plant.def,
                 RM_FireEcoKernel.WetRootTemperature(cellTemp, PyrelandsTuning.WetRootsCoolingC));
         }
@@ -61,6 +90,25 @@ namespace RimMandrake.Pyrelands
             catch (Exception)
             {
                 // a growth read must never throw; vanilla's number stands
+            }
+        }
+
+        /// <summary>Vanilla said no season: on watered ash past the heat stop, ask again at the root temperature. Same cell
+        /// read as vanilla's (c.GetTemperature is TryGetTemperatureForCell), same room-or-adjacent requirement.</summary>
+        public static void Postfix_GrowthSeason(IntVec3 c, Map map, ThingDef plantDef, ref bool __result)
+        {
+            if (__result) return;
+            try
+            {
+                if (plantDef?.plant == null || !AshGround(map, c)) return;
+                if (!GenTemperature.TryGetTemperatureForCell(c, map, out float cellTemp) || cellTemp < plantDef.plant.maxGrowthTemperature) return;
+                if (c.GetRoomOrAdjacent(map, RegionType.Set_All) == null || !Watered(map, c)) return;
+                __result = RM_FireEcoKernel.WetRootGrowthSeason(cellTemp, plantDef.plant.minGrowthTemperature,
+                    plantDef.plant.maxGrowthTemperature, PyrelandsTuning.WetRootsCoolingC);
+            }
+            catch (Exception)
+            {
+                // a season read must never throw; vanilla's answer stands
             }
         }
 

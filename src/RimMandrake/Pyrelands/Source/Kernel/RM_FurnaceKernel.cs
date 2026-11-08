@@ -3,7 +3,7 @@ using System;
 namespace RimMandrake.Pyrelands
 {
     // Verse-free decisions of the furnace-beast kit: the thermal-charge step and its hysteresis (CompFurnaceThermalCharge), the
-    // bed-ignition rest clock and cell count (CompFurnaceBedIgnition), the size ratio and the fire-hawk sortie cooldown. Tuning numbers are PARAMETERS (the mod
+    // bed-ignition rest clock, cell count and in-sleep grass roll (CompFurnaceBedIgnition), the size ratio and the fire-hawk sortie cooldown. Tuning numbers are PARAMETERS (the mod
     // passes PyrelandsTuning's constants; the fuzz reads PyrelandsTuning.cs itself), so nothing here can drift from the shipped values.
 
     public enum RM_RestOutcome { Resting, NothingToReport, WokeTooShort, WokeRested }
@@ -67,6 +67,13 @@ namespace RimMandrake.Pyrelands
             int slept = restingTicks;
             restingTicks = 0;
             return slept < minRestTicks ? RM_RestOutcome.WokeTooShort : RM_RestOutcome.WokeRested;
+        }
+
+        /// <summary>Owner card 2026-11-08 01:01 "it ignites grass it sleeps in": the in-sleep roll is due only asleep, past the grace,
+        /// and on a cell holding a plant that can burn now. A bare floor never rolls.</summary>
+        public static bool SleepIgnitionDue(bool awake, int restingTicks, bool flammablePlantOnCell, int graceTicks)
+        {
+            return !awake && flammablePlantOnCell && restingTicks >= graceTicks;
         }
 
         /// <summary>The cells a rested beast smoulders: the min..max range scaled by its size (rounded), and the scatter radius.</summary>

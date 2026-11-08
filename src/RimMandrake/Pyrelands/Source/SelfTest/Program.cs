@@ -66,6 +66,12 @@ namespace RimMandrake.Pyrelands.SelfTest
                 Assert(FurnaceWarmthMath.ShowsSign(FurnaceWarmthMath.SignMinC) && FurnaceWarmthMath.ShowsSign(14f), "no sign for real warmth");
                 Assert(FurnaceWarmthMath.ShowsSign(FurnaceWarmthMath.Offset(1f, 4.9f, 14f, 1f)), "a pawn one cell from a full beast shows no sign");
             });
+            Case("a closed room heats to 25 C over the weather, never under 24 C (owner card 2026-11-08 01:01, heat with no cap)", () =>
+            {
+                Assert(FurnaceWarmthMath.RoomHeatCeiling(24f, 50f, 25f) == 75f, "at the Pyrelands' 50 C a pen is not an oven");
+                Assert(FurnaceWarmthMath.RoomHeatCeiling(24f, 0f, 25f) == 25f, "just above freezing the ceiling is not outdoors +25");
+                Assert(FurnaceWarmthMath.RoomHeatCeiling(24f, -20f, 25f) == 24f, "a cold-biome barn lost the 24 C floor");
+            });
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");

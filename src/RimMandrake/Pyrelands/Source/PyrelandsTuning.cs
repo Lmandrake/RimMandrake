@@ -137,6 +137,17 @@ namespace RimMandrake.Pyrelands
         public const int FurnaceBedIgnitionMinCells = 1;
         public const int FurnaceBedIgnitionMaxCells = 2;
 
+        /// <summary>Owner card 2026-11-08 01:01 "it ignites grass it sleeps in": asleep on a flammable plant, the beast
+        /// sets it alight. Never at once: the first half hour of sleep is safe, then a mean of 1.5 h more, so about two
+        /// hours of sleep on average (63% by 2 h, 81% by 3 h, ~99% by a night of 8 h). Never on a bare floor. [INVENTED, ruled behaviour]</summary>
+        public const int FurnaceSleepIgnitionGraceTicks = 1250;
+        public const int FurnaceSleepIgnitionMtbTicks = 3750;
+        public const int FurnaceSleepIgnitionCheckTicks = 250;
+
+        /// <summary>The sleeping-in-grass fire is a fire, not the bed-down smoulder: a 0.1 start in grass usually dies
+        /// before it spreads, so the fire-front's size. [INVENTED]</summary>
+        public const float FurnaceSleepIgnitionFireSize = 0.35f;
+
         // ---------------------------------------------------------------
         // PYRELANDS_FIRE_CADENCE_1 — the biome's fire clock (PyrelandsFireFront).
         // Owner, 2026-09-14: "the fires should come every few days, not a rare
@@ -307,8 +318,13 @@ namespace RimMandrake.Pyrelands
         /// cadence: this is a weeks-long cycle, not a combat stat.</summary>
         public const int FurnaceChargeIntervalTicks = 250;
 
-        /// <summary>How far above outdoors a furnace-beast can heat an enclosed room.</summary>
+        /// <summary>How far above outdoors a furnace-beast can heat an enclosed room: the oven's ceiling (owner card
+        /// 2026-11-08 01:01, "heat with no cap", a pen at 50 C ambient settles 15-30 C over it). 75 C gives an unprotected
+        /// colonist extreme heatstroke in ~7 h, death in ~11 h: a hazard to read, not a trap. The beast is immune.</summary>
         public const float FurnaceRoomAboveOutdoorC = 25f;
+
+        /// <summary>The ceiling never falls under this, so a barn in a cold biome still warms to comfortable (the old def cap).</summary>
+        public const float FurnaceRoomFloorC = 24f;
 
         /// <summary>Above this ambient temperature the beast charges. Chosen at
         /// the Deep Desert's daytime floor, so basking genuinely works out there

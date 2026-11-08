@@ -107,6 +107,7 @@ PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
 PAD_HERD_OLD = (30, 100)   # herd_follows_two_day_old_burn: burn A, backdated two days
 PAD_HERD_NEW = (220, 100)  # burn B, fresh: present in the history and NOT the anchor
+PAD_SLEEP = (220, 160)     # furnace_sleep: a beast asleep in grass lights it (owner card 2026-11-08 01:01)
 HERD_SPAWN = (125, 215)    # the wild ullai herd starts ~150 cells from A and ~140 from B
 HERD_SIZE = 10
 HERD_RACE = "RM_Ullai"
@@ -129,7 +130,8 @@ REGROW_FIRST_DAYS_FRAC = 0.25
 REGROW_FIRST_DAYS_MAX = 0.55
 REGROW_WEEK_FRAC = 0.6
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
-FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW)
+FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW,
+             PAD_SLEEP)
 DEEP_ASH_MIN = 0.85        # pyre_ground_deep_ash: deep ash share of open land on a fresh map (PROVISIONAL, design §2)
 WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry FertilityAt (shipped 1.40 vs 0.70)
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
@@ -1905,11 +1907,32 @@ def furnace_warmth(t):
         t.screenshot()
 
 
+# Owner card 2026-11-08 01:01 "heat with no cap": a closed pen settles at the weather plus this (PyrelandsTuning.
+# FurnaceRoomAboveOutdoorC, pinned by selftest_pyrelands_site): a 75 C oven at a 50 C site, heatstroke over hours.
+FURNACE_ROOM_ABOVE_C = 25.0
+FURNACE_ROOM_MIN_OVER = 10.0   # "clearly hotter": the 5x5 inside reaches the ceiling in ~2,600 of the series' 12,600 ticks
+FURNACE_ROOM_SLACK = 8.0       # over the ceiling: with no ceiling at all the same room runs to ~+64 C
+
+
+def room_heat_verdict(end, above=FURNACE_ROOM_ABOVE_C, min_over=FURNACE_ROOM_MIN_OVER, slack=FURNACE_ROOM_SLACK):
+    """pyre_furnacebeast_heats_room on the last (beast room, control room) read -> (ok, why): the beast room is clearly
+    hotter than the control, which stands at the weather, and the outdoor-relative ceiling held."""
+    if not end or None in end:
+        return False, "temperature unread at the end of the series: %r" % (end,)
+    over = end[0] - end[1]
+    if over < min_over:
+        return False, "beast room is not clearly hotter than the matched control (%+.1f C, under %+.0f)" % (over, min_over)
+    if over > above + slack:
+        return False, "beast room ran %+.1f C over the control: the %+.0f C ceiling did not hold" % (over, above)
+    return True, "beast room %+.1f C over the control (ceiling %+.0f C)" % (over, above)
+
+
 @suite.chain("furnace_room")
 @_teardown()
 def furnace_room(t):
-    """Two matched 7x7 rooms. The gating arm starts both at 10 C (below the pusher's 24 C cap,
-    where the beast is designed to heat); the ambient arm at the site's own heat is recorded."""
+    """Two matched 7x7 rooms at the site's own temperature, one holding a furnace-beast. Owner card 2026-11-08 01:01
+    ("heat with no cap"): the beast room climbs past the weather to the ceiling, FURNACE_ROOM_ABOVE_C over it, so it
+    must read clearly hotter than the control and no more than the ceiling plus slack over it (room_heat_verdict)."""
     _pad(t, PAD_ROOMS)
     t.clear_area(size=TEST_SIZE)
     x, z = t.anchor
@@ -1955,9 +1978,172 @@ def furnace_room(t):
             end = series[-1]
             if None in end:
                 _unmeasured(t, "no temperature read at the end of the series: %r" % (series,))
-            if end[0] - end[1] < 5.0:
-                _fail("beast room is not clearly hotter than the matched control: %r" % (series,))
+            ok, why = room_heat_verdict(end)
+            if not ok:
+                _fail("%s: %r" % (why, series))
         t.screenshot(rect=(a[0], a[1], 18, 7))
+
+
+# Owner card 2026-11-08 01:01 "it ignites grass it sleeps in" (pyre_furnacebeast_sleep_ignites).
+FURNACE_BED = "RimMandrake.Pyrelands.CompFurnaceBedIgnition"   # ProbeSleep: the sleeper's state read
+SLEEP_GRACE_TICKS = 1250     # PyrelandsTuning.FurnaceSleepIgnitionGraceTicks (these three pinned by selftest_pyrelands_site)
+SLEEP_MTB_TICKS = 3750       # PyrelandsTuning.FurnaceSleepIgnitionMtbTicks: with the grace, ~2 h of sleep on average
+SLEEP_POLL_TICKS = 250       # PyrelandsTuning.FurnaceSleepIgnitionCheckTicks: one poll per roll
+SLEEP_FAIL_ROLL_TICKS = 5 * SLEEP_MTB_TICKS      # ~7.5 h rolling on grass with no fire FAILS (a working roll: e^-5, 0.7%)
+SLEEP_CONTROL_ROLL_TICKS = 3 * SLEEP_MTB_TICKS   # the bare-ground span: a roll that ignored the plant lights it 95% of runs
+SLEEP_WAIT_TICKS = 30000     # the row's ceiling: the grace, the FAIL span and one re-sleep
+SLEEP_REORDERS = 4           # LayDown re-orders per beast (it woke, or lay down off its plot)
+
+
+def _kv_int(v, default=-1):
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return default
+
+
+def _slept_through(prev, cur):
+    """Two ProbeSleep polls asleep on one cell with the rest clock still running: it lay there the whole interval."""
+    return (prev.get("awake") == "False" and cur.get("awake") == "False" and prev.get("cell") == cur.get("cell")
+            and _kv_int(cur.get("restingTicks")) > _kv_int(prev.get("restingTicks")) >= 0)
+
+
+def sleep_ignition_verdict(a, b, step=SLEEP_POLL_TICKS, grace=SLEEP_GRACE_TICKS, fail_roll=SLEEP_FAIL_ROLL_TICKS,
+                           control_roll=SLEEP_CONTROL_ROLL_TICKS):
+    """pyre_furnacebeast_sleep_ignites over the two sleepers' polls (ProbeSleep fields plus 'fire', the Fire count within
+    2 cells of the sleeper) -> (verdict, why, spans), verdict 'PASS', 'FAIL' or None (keep polling). a lies in grass,
+    b (the control) on bare ground. An interval counts only when the beast slept through it past the grace: on a
+    flammable plant for a, on a plantless cell for b. A fire, or the sleep roll's own record (litAfterTicks), appearing
+    beside b over such an interval FAILS; a PASSES once its sleep roll's record stands with a Fire seen beside it by the
+    next poll and b has slept control_roll ticks; a FAILS after fail_roll ticks of rolling with no light."""
+    roll_b = 0
+    for prev, cur in zip(b, b[1:]):
+        if not _slept_through(prev, cur) or prev.get("plant") != "none":
+            continue
+        if cur.get("litAfterTicks") != prev.get("litAfterTicks") and _kv_int(cur.get("litAfterTicks")) >= 0:
+            return "FAIL", "the sleep roll lit the bare-ground control at cell %s (%r)" % (cur.get("cell"), cur), {"rollB": roll_b}
+        if cur.get("fire", 0) > 0 and not prev.get("fire", 0):
+            return "FAIL", "fire beside the control asleep on bare ground at cell %s (%r)" % (cur.get("cell"), cur), {"rollB": roll_b}
+        if _kv_int(prev.get("restingTicks")) >= grace:
+            roll_b += step
+    roll_a = 0
+    for prev, cur in zip(a, a[1:]):
+        if _slept_through(prev, cur) and prev.get("flammablePlant") == "True" and _kv_int(prev.get("restingTicks")) >= grace:
+            roll_a += step
+    lit = next((i for i, s in enumerate(a) if _kv_int(s.get("litAfterTicks")) >= 0), None)
+    spans = {"rollA": roll_a, "rollB": roll_b, "litAfterTicks": _kv_int(a[lit].get("litAfterTicks")) if lit is not None else None}
+    if lit is not None:
+        seen = [s.get("fire", 0) for s in a[lit:lit + 2]]
+        if not any(seen):
+            if len(seen) < 2:
+                return None, "lit after %s ticks asleep, fire not yet read" % spans["litAfterTicks"], spans
+            return "FAIL", "the sleep roll lit the grass (after %s ticks asleep) but no Fire stood beside the beast by the next poll" \
+                   % spans["litAfterTicks"], spans
+        if roll_b >= control_roll:
+            return "PASS", "grass caught after %s ticks (%.1f h) asleep; the control slept %d ticks on bare ground, no fire" \
+                   % (spans["litAfterTicks"], spans["litAfterTicks"] / 2500.0, roll_b), spans
+        return None, "lit; the control has slept %d of %d ticks" % (roll_b, control_roll), spans
+    if roll_a >= fail_roll:
+        return "FAIL", "the beast slept %d ticks (%.1f h) past the grace on a flammable plant and never lit it" \
+               % (roll_a, roll_a / 2500.0), spans
+    return None, "rolled %d of %d ticks on grass, the control %d of %d on bare ground" % (roll_a, fail_roll, roll_b, control_roll), spans
+
+
+@suite.chain("furnace_sleep")
+@_teardown(fire=True, weather=True)
+def furnace_sleep(t):
+    """Owner card 2026-11-08 01:01: a furnace-beast asleep on a cell holding grass (any flammable plant) sets it alight,
+    after ~2 h of sleep on average, never at once and never on a cell with no plant. Two wild beasts are laid down on a
+    concrete pad: A on a 5x5 of ember grass, B (the control) on a 5x5 of bare RM_FE_Ground_Soil, which burns
+    (Flammability 0.6), so a roll that ignored the plant would light it. Every SLEEP_POLL_TICKS both are read with
+    CompFurnaceBedIgnition.ProbeSleep and the Fire within 2 cells of each is counted; sleep_ignition_verdict grades.
+    The wake-up smoulder (any ground, 18%) is the older, separate roll: a fire beside a woken B is put out before it
+    lies down again, and only the sleep roll's own record can pass A. Weather locked Clear: rain would put a small
+    grass fire out before a poll saw it.
+    Lessons from runs go here."""
+    _pad(t, PAD_SLEEP)
+    t.clear_area(size=TEST_SIZE)
+    rect = _rect(t)
+    x, z = t.anchor
+    plots = {"A": (x - 8, z - 2, 5, 5), "B": (x + 3, z - 2, 5, 5)}
+    beds = dict((k, (r[0] + 2, r[1] + 2)) for k, r in plots.items())
+    # shows=[] until pyre_furnacebeast_sleep_ignites is a bar of the walk's north star (an orphan shows= id refuses the
+    # run, floor.orphan_shows); this component then claims it.
+    with _comp(t, "furnacebeast_sleep_ignites", shows=[]):
+        _set(t, {"furnaceThermalEnabled": True})
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        # All concrete but the two plots, 6 cells apart: A's fire cannot reach B, nor the site's own grass.
+        t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=FIREBREAK, width=rect[2], height=rect[3],
+                      layer="top")
+        t.bridge_call("jawa/set_plants", ops="CLEAR:%s" % _rs(rect))
+        for r in plots.values():
+            _soil(t, r)
+        _plants(t, "RM_FE_Plant_EmberGrass", plots["A"])
+        planted = _GEN.get("last_plants")
+        ids = dict((k, _spawn_wild(t, "RM_FurnaceBeast", c[0], c[1])) for k, c in beds.items())
+        orders = dict((k, []) for k in beds)
+
+        def lay_down(k):
+            t.bridge_call("jawa/pawn_need", pawn=ids[k], action="need", need="Food", level=1.0)
+            t.bridge_call("jawa/pawn_need", pawn=ids[k], action="need", need="Rest", level=0.05)
+            r = t.bridge_call("jawa/ordered_job", pawnId=ids[k], jobDef="LayDown", targetAX=beds[k][0],
+                              targetAZ=beds[k][1], waitTicks=0)
+            orders[k].append(dict((f, (r or {}).get(f)) for f in ("success", "accepted", "afterJobDef", "message")))
+
+        def probe(k, tick):
+            r = t.bridge_call("jawa/static_call", type=FURNACE_BED, method="ProbeSleep", args=ids[k])
+            if not _live(t):
+                return {}
+            if not (r or {}).get("success"):
+                _unmeasured(t, "static_call ProbeSleep refused - is the sleep-ignition build deployed? %r" % r)
+            kv = parse_kv(r.get("result"))
+            c = xz_of(kv.get("cell"))
+            if kv.get("spawned") != "true" or c is None:
+                _unmeasured(t, "furnace-beast %s is not on the map: %r" % (k, kv))
+            kv["fire"] = _count(t, "Fire", "%d,%d,5,5" % (c[0] - 2, c[1] - 2))
+            kv["tick"] = tick
+            return kv
+
+        for k in beds:
+            lay_down(k)
+        samples = dict((k, []) for k in beds)
+        verdict, why, spans, waited = None, "", {}, 0
+        while waited < SLEEP_WAIT_TICKS:
+            _wait(t, SLEEP_POLL_TICKS)
+            waited += SLEEP_POLL_TICKS
+            for k in beds:
+                samples[k].append(probe(k, waited))
+            if not _live(t):
+                break
+            verdict, why, spans = sleep_ignition_verdict(samples["A"], samples["B"])
+            if verdict:
+                break
+            for k in beds:
+                sm = samples[k][-1]
+                if len(orders[k]) > SLEEP_REORDERS:
+                    continue
+                if k == "A":
+                    stray = _kv_int(sm.get("litAfterTicks")) < 0 and sm.get("awake") == "False" and sm.get("flammablePlant") != "True"
+                else:
+                    stray = spans.get("rollB", 0) < SLEEP_CONTROL_ROLL_TICKS and sm.get("awake") == "False" and sm.get("plant") != "none"
+                woke = sm.get("job") != "LayDown" and (k == "B" or _kv_int(sm.get("litAfterTicks")) < 0)
+                if not (stray or woke):
+                    continue
+                if k == "B" and sm.get("fire"):   # the wake-up smoulder, not this row's roll: put out before it lies down
+                    t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs((plots["B"][0] - 3, plots["B"][1] - 3, 11, 11)))
+                lay_down(k)
+        _note(t, "grass plot planting (A)", planted)
+        _note(t, "LayDown orders", orders)
+        _note(t, "sleeper polls (tick, awake, job, restingTicks, cell, plant, litAfterTicks, fire within 2)",
+              dict((k, [(s.get("tick"), s.get("awake"), s.get("job"), s.get("restingTicks"), s.get("cell"), s.get("plant"),
+                         s.get("litAfterTicks"), s.get("fire")) for s in v]) for k, v in samples.items()))
+        if _live(t):
+            _note(t, "sleep ignition spans (ticks)", spans)
+            if verdict == "FAIL":
+                _fail(why)
+            if verdict != "PASS":
+                _unmeasured(t, "no verdict in %d ticks: %s" % (waited, why))
+        t.screenshot(rect=(plots["A"][0] - 1, plots["A"][1] - 1, 18, 7))
 
 
 @suite.chain("burrowers")

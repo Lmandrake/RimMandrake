@@ -539,6 +539,16 @@ namespace RimMandrake.Pyrelands.Fuzz
                 float c0 = (float)r.NextDouble() * 3f - 1f;
                 float rr = FurnaceWarmthMath.Radius(5f, 0.3f, true, c0);
                 Check(rr >= 5f * 0.3f - 1e-5f && rr <= 5f + 1e-5f && FurnaceWarmthMath.Radius(5f, 0.3f, false, c0) == 5f, "warmth radius bounds");
+                // owner card 2026-11-08 01:01: the room ceiling follows the weather and never falls under the floor
+                float fl = T.F("FurnaceRoomFloorC"), above = T.F("FurnaceRoomAboveOutdoorC"), outd = (float)(r.NextDouble() * 140.0 - 60.0);
+                float ceil = FurnaceWarmthMath.RoomHeatCeiling(fl, outd, above);
+                Check(ceil >= fl && ceil >= outd + above - 1e-4f && (ceil == fl || ceil == outd + above), $"room ceiling {ceil} at outdoor {outd}");
+                Check(FurnaceWarmthMath.RoomHeatCeiling(fl, outd + 1f, above) >= ceil, "a hotter day lowered the room ceiling");
+                // ... and asleep in grass, the roll is due only asleep, past the grace, on a plant that can burn
+                int grace = T.I("FurnaceSleepIgnitionGraceTicks"), slept = r.Next(0, 3 * grace);
+                bool aw = r.Next(2) == 0, plant = r.Next(2) == 0;
+                Check(RM_FurnaceKernel.SleepIgnitionDue(aw, slept, plant, grace) == (!aw && plant && slept >= grace), "SleepIgnitionDue");
+                Check(!RM_FurnaceKernel.SleepIgnitionDue(false, int.MaxValue, false, grace), "a bare floor rolled for fire");
             }));
             return fails;
         }
@@ -744,6 +754,20 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FireEcoKernel.WateredExpiredWithin(3900, 4000, 250) && RM_FireEcoKernel.WateredExpiredWithin(4000, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(3750, 4000, 250) && !RM_FireEcoKernel.WateredExpiredWithin(4001, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(0, 100, 250) && !RM_FireEcoKernel.WateredExpiredWithin(-1, 100, 250), "WateredExpiredWithin boundaries");
+                    {   // PyrelandsWetRoots growth season (map w 2026-11-08): wet roots open the season on the hot side only, never shut it
+                        float mn = (float)(r.NextDouble() * 20.0) - 5f, mx = mn + 10f + (float)(r.NextDouble() * 50.0);
+                        float t = mn - 20f + (float)(r.NextDouble() * (mx - mn + 60f)), cool = (float)(r.NextDouble() * 30.0) - 5f;
+                        bool van = t > mn && t < mx, wet = RM_FireEcoKernel.WetRootGrowthSeason(t, mn, mx, cool);
+                        float roots = RM_FireEcoKernel.WetRootTemperature(t, cool);
+                        Check(!van || wet, "wet roots shut a growth season vanilla had open");
+                        Check(t >= mx || wet == van, "wet roots moved the season below the heat stop (a cold cell counted warmer)");
+                        Check(cool > 0f || wet == van, "no cooling, yet the season moved");
+                        Check(van || !wet || (roots > mn && roots < mx), "wet roots opened a season the cooled roots do not stand in");
+                    }
+                    Check(RM_FireEcoKernel.WetRootGrowthSeason(58.8f, 0f, 58f, 15f) && RM_FireEcoKernel.WetRootGrowthSeason(58f, 0f, 58f, 15f)
+                          && !RM_FireEcoKernel.WetRootGrowthSeason(58.8f, 0f, 58f, 0f) && !RM_FireEcoKernel.WetRootGrowthSeason(73f, 0f, 58f, 15f)
+                          && !RM_FireEcoKernel.WetRootGrowthSeason(-2f, 0f, 58f, 15f) && RM_FireEcoKernel.WetRootGrowthSeason(30f, 0f, 58f, 15f),
+                          "WetRootGrowthSeason: map w's 58.8 C rice grows wet, the 73 C stop and the cold side stay vanilla");
                     for (int m = 0; m < 16; m++)   // SCORCH_FRUIT_FIX_LANDS_ON_FIREBREAK: only bare standable Pyrelands ground takes a pod
                         Check(RM_FireEcoKernel.FruitLandingLegal((m & 1) != 0, (m & 2) != 0, (m & 4) != 0, (m & 8) != 0) == (m == 11), "FruitLandingLegal table " + m);
                     Check(RM_FireEcoKernel.IsScorchableGround(RM_FireEcoKernel.DeepAshDefName)
@@ -1021,6 +1045,12 @@ namespace RimMandrake.Pyrelands.Fuzz
                     Check(RM_FurnaceKernel.RestStep(ref rest, true, 30, 2500) == RM_RestOutcome.WokeRested, "RestStep: a rest of exactly the minimum counts");
                     rest = 0; RM_FurnaceKernel.RestStep(ref rest, false, 2499, 2500);
                     Check(RM_FurnaceKernel.RestStep(ref rest, true, 30, 2500) == RM_RestOutcome.WokeTooShort, "RestStep: one tick under the minimum is too short");
+                    int g = T.I("FurnaceSleepIgnitionGraceTicks");
+                    Check(RM_FurnaceKernel.SleepIgnitionDue(false, g, true, g) && !RM_FurnaceKernel.SleepIgnitionDue(false, g - 1, true, g)
+                          && !RM_FurnaceKernel.SleepIgnitionDue(true, g, true, g), "SleepIgnitionDue: due at exactly the grace, not a tick before, never awake");
+                    Check(T.I("FurnaceSleepIgnitionGraceTicks") + T.I("FurnaceSleepIgnitionMtbTicks") <= 2 * 2500
+                          && T.I("FurnaceSleepIgnitionGraceTicks") + T.I("FurnaceSleepIgnitionMtbTicks") >= 2500, "sleep ignition mean is not 1-2 h of sleep (owner card 2026-11-08 01:01)");
+                    Check(FurnaceWarmthMath.RoomHeatCeiling(24f, 50f, 25f) == 75f && FurnaceWarmthMath.RoomHeatCeiling(24f, -30f, 25f) == 24f, "RoomHeatCeiling corners");
                 }
                 Check(RM_FireEcoKernel.IsScorchableGround("Gravel") && RM_FireEcoKernel.IsScorchableGround("Soil") && RM_FireEcoKernel.IsScorchableGround("Sand") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Gravel"), "scorchable ground names");
                 int ts = 0;

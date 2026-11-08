@@ -136,14 +136,28 @@ namespace RimMandrake.Pyrelands
             return until > oldUntil ? until : oldUntil;
         }
 
-        /// <summary>ASH_FIELD_FIX_FORGETS_THE_WATER (6): a Black Rain waters an unroofed cell until its stamp, and only while the setting
-        /// still gives it hours. Setting blackRainWaterHours to 0 switches the water off at once, not when the old stamp runs out.</summary>
         /// <summary>PyrelandsWetRoots: the temperature a plant's roots feel on watered ash, coolingC below its cell's.</summary>
         public static float WetRootTemperature(float cellTemp, float coolingC)
         {
             return cellTemp - (coolingC > 0f ? coolingC : 0f);
         }
 
+        /// <summary>PyrelandsWetRoots: vanilla's growth season (PlantUtility.GrowthSeasonNow: minGrowth &lt; T &lt; maxGrowth) for a plant
+        /// on watered ash. Only the hot side moves: at or past maxGrowth the cooled root temperature is tested instead, so wet roots can
+        /// open a season the heat shut and never shut one, and a cold cell never counts as warmer (map w 2026-11-08, 58.8 C: rice read
+        /// "0% (out of temperature growth range)" under our own "grows as if 27F cooler" line).</summary>
+        public static bool WetRootGrowthSeason(float cellTemp, float minGrowth, float maxGrowth, float coolingC)
+        {
+            if (cellTemp < maxGrowth)
+            {
+                return cellTemp > minGrowth;
+            }
+            float roots = WetRootTemperature(cellTemp, coolingC);
+            return roots > minGrowth && roots < maxGrowth;
+        }
+
+        /// <summary>ASH_FIELD_FIX_FORGETS_THE_WATER (6): a Black Rain waters an unroofed cell until its stamp, and only while the setting
+        /// still gives it hours. Setting blackRainWaterHours to 0 switches the water off at once, not when the old stamp runs out.</summary>
         public static bool BlackRainWaters(int wateredUntil, int now, float waterHours, bool roofed)
         {
             return waterHours > 0f && wateredUntil > now && !roofed;
