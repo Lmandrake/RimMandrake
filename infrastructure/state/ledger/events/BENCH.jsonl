@@ -18968,3 +18968,51 @@
 {"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-07T06:29:10Z","tsn":1794032950091161043}
 {"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-07T06:59:10Z","tsn":1794034750823720090}
 {"seat":"CONDUCTOR","event":"note","id":"GRAFFITI_FINISH_RALPH_LOOP_PLAYS_FIRST","text":"Second DONE claim at 01:20 PST, 7.07M tokens, head d1d2d729ef. Blind judge: perspective TRUE (fairly sure); painted FALSE for the set (rectangular stamps and domed sigils still stuck on); north star 6 true, 3 false (reads_at_play_zoom, register_is_punk_urban, never_reads_as_dirt), 1 cannot tell; would not show as finished. Trade found: true perspective confines marks to the thin wall face, so they shrink to about a third of their old height. Verdict: D:\\ClaudeWork\\rimmandrake\\ralph_graffiti\\blind_judge_verdict_pass2.md. NEXT: owner looks and decides how large a mark may be against true perspective, then send it back or accept.","ts":"2026-11-07T09:24:13Z","tsn":1794043453640106566}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","override":"took the bridge: RELENTLESS went quiet for 546 min","ts":"2026-11-07T11:35:38Z","tsn":1794051338289420903}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T13:08:17Z","tsn":1794056897355860383}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T13:08:50Z","tsn":1794056930886623758}
+{"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-07T13:13:18Z","tsn":1794057198828965723}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-07T13:17:57Z","tsn":1794057477813260424}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T14:48:22Z","tsn":1794062902223398929}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T14:48:55Z","tsn":1794062935276844251}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T16:40:53Z","tsn":1794069653786169711}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T16:41:33Z","tsn":1794069693158983573}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T19:18:59Z","tsn":1794079139743801091}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T19:19:34Z","tsn":1794079174563507219}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T20:54:16Z","tsn":1794084856149579654}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T20:54:55Z","tsn":1794084895832657502}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T21:32:27Z","tsn":1794087147474431985}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T21:33:16Z","tsn":1794087196403973896}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T22:30:02Z","tsn":1794090602462390076}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T22:30:51Z","tsn":1794090651324295119}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-07T23:13:33Z","tsn":1794093213605325129}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-07T23:14:22Z","tsn":1794093262409553963}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","override":"took the driver lock from a dead or forced holder","ts":"2026-11-08T00:48:43Z","tsn":1794098923450153552}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T01:47:06Z","tsn":1794102426377774951}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T01:48:02Z","tsn":1794102482129759650}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T02:53:46Z","tsn":1794106426978068121}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T02:55:51Z","tsn":1794106551118198122}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T03:40:29Z","tsn":1794109229338631913}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T03:45:17Z","tsn":1794109517984250318}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T04:37:31Z","tsn":1794112651857294406}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T08:44:41Z","tsn":1794127481221631469}
+{"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-08T08:48:21Z","tsn":1794127701901758521}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T10:01:36Z","tsn":1794132096285599601}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-08T10:11:43Z","tsn":1794132703519434502}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T10:11:53Z","tsn":1794132713914087398}
+{"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-08T10:44:58Z","tsn":1794134698832305813}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T11:27:16Z","tsn":1794137236369952045}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-08T11:29:15Z","tsn":1794137355404522657}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T11:29:39Z","tsn":1794137379251816943}
+{"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-08T11:31:06Z","tsn":1794137466945296849}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T12:12:48Z","tsn":1794139968921184035}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-08T13:01:27Z","tsn":1794142887465667293}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T13:01:38Z","tsn":1794142898189078686}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T13:47:19Z","tsn":1794145639339443427}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T13:48:20Z","tsn":1794145700346270520}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T14:44:51Z","tsn":1794149091206358648}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T14:46:11Z","tsn":1794149171516575033}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-08T15:48:20Z","tsn":1794152900945543985}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","purpose":"Artisan Pyrelands","ts":"2026-11-08T15:49:10Z","tsn":1794152950196844980}
+{"seat":"CONDUCTOR","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-11-08T16:37:00Z","tsn":1794155820399564594}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-08T16:47:17Z","tsn":1794156437958827353}
