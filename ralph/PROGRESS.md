@@ -1,51 +1,45 @@
 # Pyrelands progress
 
-**State at retirement (pass 18):** the game is up on a fresh map x (built this pass, saved as `NS_Pyrelands_play_x`, day 5.3,
-three colonists, nothing done yet). The running game also holds some crash-landing goods from a failed setup call; they are
-not in the save. Build: a2efdf4e92 is deployed. Bridge released. All 22 bars are in RATCHET's Proven.
+**State at retirement (pass 19):** the game is up on the `pyrelands` tier with the current build deployed (800e7d6bd8 plus
+the FlowWorks drink fix 313db85317). It sits on map x at day 3.15 of the fresh-colony replay (not saved). Bridge released.
+All 22 bars are in RATCHET's Proven, and nothing this pass touched what they depend on.
 
-## Seen and done this pass
-- **Ash fall proven** on the capped ash-dust cut (map w, day 22, a 6-hour fall from 10:20). Drifts rose 3 -> 483 -> 900 ->
-  1353 -> 1797 -> 2191 -> 2615. Grey dusted grass multiplied hour by hour at play zoom. Black rain then washed it to 74 in 3
-  hours, and the grey went with it (`ashfall_h0_h3_h6_washed.png`).
-- **A burrow bug, found and fixed.** Vanilla's `JobGiver_AnimalFlee` runs every 30 ticks for a wild animal. With 60+ fires
-  near and one inside 10 cells, it orders a flee that overrides any job, the dome included. So in the big wildfires burrowers
-  exist for, an ashwallow fled instead of diving, or was pulled out of its dome. That is the Conductor's "1 of 3 fled and was
-  killed." Fix in `RM_BurrowHeatReaction.cs` (prefix and postfix on `TryGiveJob`) plus `RM_FireEcoKernel.BurrowerFleeAnswer`
-  with a fuzz table: a domed burrower flees nothing; a standing one dives instead of fleeing fire, if the fire is in its
-  radius, else holds. Predator flight is unchanged.
-- **Burrow proven on the fix** in a natural 1,550-fire wildfire. Two ashwallows dived 4.5 and 5.4 cells from the front. One
-  had fire on its own cell for ~2,000 ticks. Both surfaced unhurt after the fire near them went out.
-  `burrow_dive_pane_infire_surfaced.png`. Note: a creeping front flickers (cells go out and relight), so an animal can
-  surface in a gap and dive again. That's harmless; I left it.
-- **Colonists and outdoor ash:** over 15,000 ticks on map w, 8 of 180 job samples were Clean (4%); the rest were sleep,
-  harvest, sow and haul. Nobody spends the day sweeping ash.
-- **Mood on map w is fine.** The "Catatonic", "Insulting spree" and "Daze" letters date from about day 21.3, before this
-  pass's save. The biome's only mood drag is heat, −4 to −8. Note: `Transient/pyre_play7/revive.py` sets Mood to 1, so don't
-  use it when judging mood.
-- **Performance** (telemetry, this session, ash fall plus a map-wide wildfire): Superfast ran 292-437 TPS (median 376), Normal
-  held 60, and the worst tick was 142 ms.
-
-## Broaden call (pass 18): `D:\ClaudeWork\rimmandrake\ralph_pyrelands\gpt_help_pass018.md`
-I asked which proofs look staged, and what a new player's first three days would hit. Leads it gave:
-1. A new colony on default firefighting may lose its workdays to fires (food or shelter left unfinished). **Not yet acted
-   on: do it first.**
-2. Grass may reconnect a firebreak or keep invading a crop plot.
-3. A tamed furnace-beast sleeping in a wooden room (fires there are owner-intended; check the player can tell the cause).
-4. Weather readability for ordinary tasks.
-5. Performance in a mature colony during repeated ash fall (this session's telemetry covers part of it).
+## Seen and done this pass: lead 1, a fresh colony played three days with nothing managed (map x)
+Setup: `NS_Pyrelands_play_x_setup` (crash-landing goods, a 7x7 steel bedroom, 3 wooden beds, an 8x8 rice field, a
+stockpile). `colony.py reload` turns raids off (`allowBigThreats` false) and clears the queue. A day-5 world's storyteller
+sent a pirate raid 1.6 hours in, which a fresh landing would not get, and it downed two of the three. Fires, weather,
+predators and disease all stay on.
+1. **Thirst killed the colony with water on the map.** The only pond was 94 cells off; FlowWorks' drink search walks 60 cells
+   and gives up. All three wandered at thirst 0 and were down with dehydration by day 1.4. **Fixed** in FlowWorks
+   (`TryFindDrinkCell`: past the walk, the map's drinkable cells, nearest first; the walk is capped at GenRadial's 79.8, since
+   the natives' 150 had logged "Not enough squares" 118 times). This is outside Pyrelands: see QUESTIONS 5.
+2. **The burn came through steel walls.** Replayed with a watcher on the room (`roomwatch.py`): grass fire beside the wall lit
+   the steel wall cells (vanilla steel is 0.4 flammable, stone 0), and the burning wall lit the bed inside. Our burn letter
+   said "Walls and a roof keep it out". **Fixed** the letter: stone walls do, and wood and steel catch.
+3. **Colonists beat fire until they starved.** Vanilla runs fire duty in the home area before even starving-eat. Food went
+   0.20 -> 0.11 -> 0.05 -> 0.00 while beating fire, and Gaz went down. Most survival packs had burned in the open stockpile,
+   which the letter warns about. **Fixed:** on Pyrelands, an urgently hungry colonist eats first
+   (`RM_PyreEatBeforeFireDuty`, at Humanlike_PostDuty beside the drink giver; QUESTIONS 6).
+4. **The replay with all fixes (`colx_run4.log`):** all three alive at day 3.15, food 0.71-0.76, thirst 0.34-0.46. The beds
+   are intact. Fire duty was 44 of the day-2 job samples (~30%), and the room and field were done on day 0. The new room's
+   grass withered under the roof within a day. Shots: `first_look_6/7/8`. Remaining letters were ordinary (a quest, the burn
+   letter, a barbslinger revenge).
+- Seen, not changed: two colonists took small burns walking to the pond through the live burn, one from a fire a hawk's ember
+  had lit. A pond only reachable through fire is the biome. Colonists idle a lot once their few orders are done, which is
+  the unmanaged setup, not the biome.
 
 ## Next, in order
-1. **Act on lead 1** (required before DONE). Load `NS_Pyrelands_play_x`, then run `python.exe Transient/pyre_play9/colony.py
-   setup`. It spawns crash-landing goods, places real blueprints (a 7x7 steel bedroom, 3 wooden beds), creates an 8x8 rice
-   field and a stockpile, and paints the home area. The stack sizes are fixed but the script has not been run since. Then
-   run `python.exe Transient/pyre_play9/colony.py run 144 1250 12` (three days, half-hour slices, a shot every 6 h). Read the
-   job tally per day: how much BeatFire, whether the room gets built, whether the rice gets sown, downs, burns, mood, letters.
-   Look at the shots yourself. Fix what's wrong. This is also the fresh `first_look` for the owner.
-2. Run the full suite on the current build (`live_session.py ... --compose`).
-3. Run the fresh-eyes judge (north star plus shots only), then write DONE.md.
-Tools: `Transient/pyre_play9/burrowwatch.py` (camera follows the animal: real captures of dive, pane, in-fire and surfaced),
-`near.py` (each burrower's distance to fire and the grass around it), `jobs.py` (colonist job tally).
+1. **The main suite on this build.** live_session REFUSED at gate B because the quicktest world is not the site. Do it this way:
+   `python.exe src/RimMandrake/Pyrelands/northstar_site.py --site 1 --tag r3 --reload-only --tile 38 --map-id 1`, then
+   `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py
+   --skip-chains embergrass_regrow,burn_line,fresh_burn_bonus --out Transient/northstar/Pyrelands_p20_main.json`. The Nov-7 run
+   had 3 FAILs (forced harvest gave no yield; dome drew 'none', fixed since; the save held cut furnace herds): check each.
+   The long chains are optional, because their bars are proven in play.
+2. The fresh-eyes judge (north star plus shots only; `first_look_*`, `ashfall_h0_h3_h6_washed`, `burrow_dive_pane_infire_surfaced`,
+   `weather_noon_rain_blackrain_ashfall`, and from `old/`: `w_pondwest`, `s_furnace_warm_pane2`, `sky_s_4cinderfall`,
+   `sky_s_1ashfall_b`). Watch for the pale ash-dust clumps on grass in `first_look_7/8`: they read as grey bushes.
+3. DONE.md. The broaden call was made in pass 18 and its lead 1 is acted on here.
+Tools: `Transient/pyre_play9/colony.py reload|setup|run`, `roomwatch.py`, `water.py`, `savex.py`.
 
 ## Count
 - pyre_plant_distribution_correct: true

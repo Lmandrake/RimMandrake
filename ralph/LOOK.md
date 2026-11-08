@@ -1,4 +1,4 @@
-# First look: map w, days 14 to 24 (refreshed 2026-11-08, pass 18)
+# First look: map w, days 14 to 24, and a fresh colony on map x (refreshed 2026-11-08, pass 19)
 
 Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are in `old\`.
 
@@ -8,7 +8,9 @@ Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are 
 - **New:** `ashfall_h0_h3_h6_washed.png`: the colony's edge under a natural-length ash fall: at hour 0, hour 3 and hour 6, then after black rain. The sky dims, and grass standing on ash drifts turns grey, more of it each hour (the map's drifts went from 3 to 2,615). Black rain washed them off in three hours (74 left).
 - **New:** `burrow_dive_pane_infire_surfaced.png`: top, an ashwallow domed beside a wildfire, selected: "Burrowed!" over it, and the pane reads "Burrowed: sealed under the ash until the fire passes." Bottom left, another one domed while the fire burns through the grass around it. Bottom right, the same animal up again after the fire went out, at dusk, unhurt.
 
+- **New, pass 19:** `first_look_6_fresh_colony_day0.png`, `_7_burn_reaches_colony_day2.png`, `_8_colony_after_burn_day3.png`: a fresh landing on map x, played three days with nothing managed after hour one (a 7x7 steel bedroom, three wooden beds, an 8x8 rice field). Hour 6: the room is up and the field sown, and the grass inside the new room withers under its roof within a day. Day 2.4: a burn reaches the base under ash fall, and the colonists beat it back from the walls. Day 3.2: everyone is alive, the beds are intact, and the base stands in grass again.
+
 **What I'm least sure about:**
 1. **The dusted grass reads as grey grass more than as ash lying on grass.** At play zoom it reads as ash-coated clumps, but up close a dusted clump is a flat grey silhouette.
 2. **A domed ashwallow is a brown scaly mound,** and a player who hasn't seen one could take it for a rock. The "Burrowed!" text and the pane say what it is.
-3. **I have not played a fresh colony since the big changes.** Everything here is map w, which has been played and nursed since day 0. A fresh landing played three days with nothing managed is next.
+3. **The fresh colony only came through after two fixes this pass.** Before them, it died of thirst 94 cells from the only pond on day 1.4. On a second try, the burn lit its steel walls and the beds inside, and the colonists beat fire until they starved. Both are fixed and the replay came through, but it is one map and one seed.

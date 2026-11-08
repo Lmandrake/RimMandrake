@@ -1,14 +1,17 @@
-# Pyrelands: the ratchet (Conductor, 2026-11-08 ~02:00 AM PST; updated by pass 17)
+# Pyrelands: the ratchet (Conductor, 2026-11-08 ~02:00 AM PST; updated by pass 19)
 
 Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_pyrelands_2026-11-08.md`) plus the Conductor ruling 1:26 AM (OWNER_NOTE.delivered). Where PROGRESS's Count disagrees, this file wins: ash_fertile_when_watered, scorchfruit_spoils_fast are credited now; firehawk_carries_ember stays true (ruling overrides the audit's demotion); burrowers_dive proven in pass 18. 22 bars: 22 proven, 0 remaining (pass 18). Ids are as in `design/validation_walks/RimMandrake/Pyrelands.md` and PROGRESS.
 Suite results: `Transient/northstar/Pyrelands_main.json`, `Pyrelands_r3.json`. Shots: `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`.
 
 ## Remaining (work only on these, in this order)
 (none: all 22 bars are proven as of pass 18.)
-Owed before DONE, not bars: act on the pass-18 broaden call's lead 1 (a fresh colony, map x, three days unmanaged:
-`Transient/pyre_play9/colony.py`, see PROGRESS); the full suite on the current build; the fresh-eyes judge; DONE.md.
-Done in pass 18: LOOK.md refreshed; outdoor ash is not a chore (4% Clean in 180 job samples); telemetry this session
-(Superfast 292-437 TPS under ash fall plus a 1,550-fire wildfire, worst tick 142 ms); broaden call made.
+Owed before DONE, not bars: the main suite on the current build (pass 19's live_session run REFUSED at gate B: it needs the
+site reloaded first, `northstar_site.py --site 1 --tag r3 --reload-only --tile 38 --map-id 1`, then cli.py run, see PROGRESS);
+the fresh-eyes judge; DONE.md.
+Done in pass 19: lead 1 of the pass-18 broaden call acted on. A fresh colony on map x, played three days with nothing managed,
+found and fixed three things (thirst past 60 cells, steel walls and the burn letter, eating before fire duty). On the replay
+with all fixes, all three colonists are alive and fed at day 3.15, the beds are intact, and fire duty took ~30% of day 2.
+Nothing in Proven depends on what changed (FlowWorks drink search, a colonist think node, letter text).
 
 ## Proven (locked), 22
 - pyre_plant_distribution_correct, pyre_animal_distribution_correct, pyre_mapgen_log_clean, pyre_ground_deep_ash, pyre_burn_line_present, pyre_scorchfruit_fire_born, pyre_grass_chokes_ground: true in PROGRESS Count (suite and map reads from earlier passes); not re-opened by the audit.
