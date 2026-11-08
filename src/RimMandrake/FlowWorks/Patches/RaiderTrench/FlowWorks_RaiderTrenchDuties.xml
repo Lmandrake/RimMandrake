@@ -43,4 +43,30 @@
       <li Class="RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch" />
     </value>
   </Operation>
+  <!-- RAIDERS_FETCH_THEIR_FALLEN: one raider per raid lowers a ladder into the pocket where its fallen are trapped, while the rest
+       fight on. BEFORE the first fight node of each assault duty (AssaultColony: JobGiver_AIFightEnemies; Breaching: the
+       ThinkNode_HarmedRecently that wraps its first FightEnemies; Sapper: its close-threat FightEnemies), so the fetcher keeps
+       fetching under fire. It returns null for everyone else (and for every raider while nobody of its raid is trapped), so
+       the duty runs as before. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="AssaultColony"]/thinkNode/subNodes/li[@Class="JobGiver_AIFightEnemies"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_FetchFallen" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Breaching"]/thinkNode/subNodes/li[@Class="ThinkNode_HarmedRecently"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_FetchFallen" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="Sapper"]/thinkNode/subNodes/li[@Class="JobGiver_AIFightEnemies"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_FetchFallen" />
+    </value>
+  </Operation>
 </Patch>

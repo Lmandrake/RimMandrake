@@ -63,6 +63,7 @@ namespace RimMandrake.FlowWorks
 			workEnds.Clear();
 			shovellers.Clear();
 			dryRun = false;
+			RM_RaiderRescue.ClearMemos();   // RAIDERS_FETCH_THEIR_FALLEN: the per-raid fetch claims die with the save too
 		}
 
 		// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (live 2026-10-22, 4 m ring): lip raiders sat in a vanilla Wait job for 9,000 ticks
@@ -631,6 +632,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
+			// RAIDERS_FETCH_THEIR_FALLEN: the raid's one fetcher keeps its ladder for the fallen (JobGiver_RM_FetchFallen runs
+			// first in every duty; this stops the crossing grabbing the fetcher between its rescue jobs)
+			if (RM_RaiderRescue.Busy(p))
+			{
+				return null;
+			}
 			Thing target = TargetFor(p);
 			if (target == null)
 			{
@@ -961,6 +968,8 @@ namespace RimMandrake.FlowWorks
 		{
 			AddFinishAction(cond => RM_RaiderTrench.NoteWorkEnd(pawn, job, cond, CurToilIndex));
 			this.FailOn(() => !RM_RaiderTrench.On);
+			// RAIDERS_FETCH_THEIR_FALLEN: a rescue ladder's fetcher gives up when its raid stops assaulting (flees, leaves)
+			this.FailOn(() => RM_RaiderRescue.GivenUp(pawn, job));
 			AddEndCondition(() => FillTargetMet() ? JobCondition.Succeeded : JobCondition.Ongoing);
 			// SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the fill branch only (ladders need no shovel); rechecked every tick, so a raider
 			// who lost the shovel, or a job issued before the setting went on, stops

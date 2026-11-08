@@ -97,6 +97,38 @@ namespace RimMandrake.FlowWorks
 			return CaptureDownVerdict.Allowed;
 		}
 
+		/// <summary>DRAINED_HOLE_IS_A_PRISON (owner card 2026-11-05, "Drained moat is a prison": capture from the rim works with
+		/// NO bed, and the hole is the prison). Capture down's two last gates, held and prison, each pass for a person the pit
+		/// TRAPS (RM_SuperdeepTrap.IsTrapped: no way out at its climb) while the bedless switch is on. With the switch off, or
+		/// a pawn that can climb out, the bed rule stands: a bare hole is still NoPrisonBed.</summary>
+		public static bool BedlessPrison(bool roomIsPrison, bool bedlessOn, bool trapped)
+		{
+			return roomIsPrison || bedlessOn && trapped;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: the held gate. The room-depth size rule (HoldsBySize) is the bed prison's; a hole that
+		/// traps the pawn holds it whatever its depth.</summary>
+		public static bool BedlessHeld(bool heldBySize, bool bedlessOn, bool trapped)
+		{
+			return heldBySize || bedlessOn && trapped;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: vanilla's FoodAvailableInRoomTo rule, read over the prisoner's pocket instead of its
+		/// room (a shallow hole's room is the outdoors): food enough is down there when what lies in the pocket covers what the
+		/// hungry prisoners in it want, with vanilla's 0.5 nutrition of slack.</summary>
+		public static bool FoodEnoughInPocket(bool carryingEdible, float nutritionInPocket, float nutritionWanted)
+		{
+			return carryingEdible || nutritionInPocket + 0.5f >= nutritionWanted;
+		}
+
+		/// <summary>DRAINED_HOLE_IS_A_PRISON: a cell food can be dropped onto for a lip-served prisoner: in its pocket and its room
+		/// (a meal is socially proper to a prisoner only in its own room: SocialProperness.IsSociallyProper), standable, and on
+		/// the pocket's rim (a cell beside it is outside the pocket, so a lip can touch it).</summary>
+		public static bool DropCell(bool inPocket, bool sameRoom, bool standable, bool onRim)
+		{
+			return inPocket && sameRoom && standable && onRim;
+		}
+
 		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room's floor is 3.0 m down for a person
 		/// (a 1.75 m human's reach overhead, about 2.2 m, plus a small jump). The Mod Setting pitRoomMinDepthMetres is this
 		/// person figure; 0 = any depth.</summary>

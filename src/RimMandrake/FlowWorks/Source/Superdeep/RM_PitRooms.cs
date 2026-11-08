@@ -348,12 +348,13 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(worker.Map);
-			if (!AnyPitFloor(eng))
-			{
-				return false;
-			}
 			IntVec3 cell = dest.HasThing ? dest.Thing.Position : dest.Cell;
-			return IsPitFloor(worker.Map, eng, cell) && !IsPitFloor(worker.Map, eng, worker.Position);
+			if (AnyPitFloor(eng) && IsPitFloor(worker.Map, eng, cell) && !IsPitFloor(worker.Map, eng, worker.Position))
+			{
+				return true;
+			}
+			// DRAINED_HOLE_IS_A_PRISON: a prisoner the hole holds (a shallow drained moat is no pit room) is served the same way
+			return RM_BedlessPitPrison.ServesJobAt(worker, dest, cell);
 		}
 
 		// ── capture down ─────────────────────────────────────────────────
@@ -364,9 +365,13 @@ namespace RimMandrake.FlowWorks
 			bool ownSide = target != null && (target.Faction == Faction.OfPlayer || target.HostFaction == Faction.OfPlayer && !target.IsPrisonerOfColony);
 			Room room = target != null && target.Spawned ? target.GetRoom() : null;
 			bool prison = room != null && room.IsPrisonCell && IsPitRoom(room);
+			// DRAINED_HOLE_IS_A_PRISON: with the bedless switch on, a pit that TRAPS the person is held and a prison, bed or not
+			bool bedless = RimMandrakeFlowWorksSettings.bedlessPitPrisonEnabled;
+			bool trapped = bedless && humanlike && !ownSide && target.Spawned && RM_BedlessPitPrison.HoleHolds(target);
 			return RM_PitRoomMath.CaptureDown(RimMandrakeFlowWorksSettings.captureDownEnabled && RoomsOn,
 				humanlike, ownSide, target != null && target.IsPrisonerOfColony,
-				target != null && RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target), prison);
+				RM_PitRoomMath.BedlessHeld(target != null && RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target), bedless, trapped),
+				RM_PitRoomMath.BedlessPrison(prison, bedless, trapped));
 		}
 
 		/// <summary>PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER: the pit room's person depth scaled by this pawn's height (RM_Drowning.HeightOf,
@@ -665,7 +670,10 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(clickedPawn.Map);
-			if (eng == null || !RM_PitRooms.IsPitFloor(clickedPawn.Map, eng, clickedPawn.Position))
+			// DRAINED_HOLE_IS_A_PRISON: off the pit-room floor, a person the hole traps (bedless switch on) is offered too
+			if (eng == null || !RM_PitRooms.IsPitFloor(clickedPawn.Map, eng, clickedPawn.Position)
+				&& !(RimMandrakeFlowWorksSettings.bedlessPitPrisonEnabled && clickedPawn.RaceProps.Humanlike
+					&& RM_BedlessPitPrison.HoleHolds(clickedPawn)))
 			{
 				return null;
 			}

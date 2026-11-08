@@ -1,135 +1,114 @@
 # FlowWorks Artisan, aspect 1 (pits and depth): progress
 
-## Pass 1 (2026-11-07): what I saw, what I changed
+## Pass 2 (2026-11-07): what I saw, what I changed
 
-Game A on SteveDesktop, `flowworks` list (11 mods), quick-test maps (temperate forest). Steve: bad_cpus [] all pass, no
-dead game, no dropped ssh. Driver: `ralph/live/story1.py` (stage / raid / watch / look), helpers `fwb.py` (call, tools,
-shot), `getshots.sh <prefix> <dir>` (tars the game's Screenshots on Steve and fetches them), `bars1.py` (depth ladder +
-big pit), `seam.py`, `treat.py` (settings contrast). Saves on Steve: `fw_story1_stall` (raider in the passage pit, three
-at the lip, cover sprung).
+Game A on Steve, `flowworks` list, quick-test temperate map (story1 layout). Weather: 0 dead games, 0 dropped ssh, bad_cpus
+[], ~5 deploy+restart cycles (bridge up in 28-34 s), one slow fetch retried. Retired on the context hook (~260k).
 
-His story, played twice (walled compound, one doorway, 3-wide passage, 3x2 pit 2 m deep with spikes and a cover, a real
-tribal raid via `jawa/fire_incident RaidEnemy forced`; `raid_shape_fire` and `TribeSavageImpid` at 250 pts refuse):
-1. Plank cover (120 kg): a lone raider walked over it; the raid went round the outside and beat the colonists in melee.
-   Expected by the tier design; woven scrap (40 kg) drops one person.
-2. Woven scrap: the first berserker fell onto the spikes (not downed). The other three then stood at the lip with job
-   `Wait` (duty AssaultColony) for 4,000+ ticks; nobody crossed, fetched him, bashed a wall, or went round to the colonists
-   outside the compound. The story stalls here. Cause: being traced (see "next").
+**The raid stall, measured live and fixed (commit dc3a5cd108, deployed, seen).** Pass 1's theory (reach disagrees with the
+pather) was WRONG: `RM_WallReach.ProofReachPair` agreed with A* for every raider/colonist pair (save `fw_story1_stall`).
+Tick-by-tick job watch (`ralph/live/jobwatch.py`): every 250 ticks each raider took AttackMelee on the colonist INSIDE the
+compound, the pather failed, vanilla's ErroredPather Wait(250) followed. Cause: a melee searcher takes AttackTargetFinder's
+region-BFS branch (`GenClosest.ClosestThingReachable`, AttackTargetFinder.cs:233), which never asks CanReach, and regions
+don't know the pit. Fix: `Source/Superdeep/RM_MeleeTargetReach.cs`, melee target picks require CanReach on maps with a hole.
+`ProofThink` there runs one pawn's think tree and names the giving node (use it on any future "they just stand there").
+After the fix (`shots/pass2/story_replay_after_stall_fix_r7.png`): raiders ran TrashBuildingsDistant on the pit spikes,
+set them alight with their trapped comrade on them (he burned to death), one climbed into the pit to club them, two went
+round to a colonist outside and later left. Fix: `RM_Spikes` gets `ai_neverTrashThis` (vanilla's rule for traps).
+BUILT, NOT DEPLOYED, NOT SEEN.
 
-Fixed and deployed (commit 0e5b38c58f), each seen in game afterwards:
-- A covered pit showed as a framed box with spikes on top (wall faces, outline and stakes ignored the lid). Now the lid
-  is ground at play zoom (`first_look_1a/1b`).
-- Seam: a hairline cut + slight discolouration drawn only close up (`RM_PitCoverLookMath.SeamStrength`); seen at root
-  4.5. At root 11 (the real max zoom of Steve's 916 px window) it was invisible; widened (min 2.2 px, floor 0.9 over the
-  two closest zoom steps): BUILT, NOT YET DEPLOYED or seen.
-- A raider in the pit had his legs drawn over the ground whenever someone stood on the lip (the lip band skipped itself
-  to avoid painting over them). Sunk pawns now draw 0.18 below the Pawn layer and the band between them and ground-level
-  pawns (`RM_WallFaceMath.SunkAltitudeDrop`). Seen fixed (`first_look_2`).
-- 9 owed fixes from the conductor's census (2026-11-07 note), applied by a subagent, reviewed: COVER_BLAST_FIX_DECK_LEFT_INTACT,
-  ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE, DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH, SUNKEN_DRAWBRIDGE_FIX_REJECTS_HINGE_BANK,
-  DROWNING_ESCAPE_FIX_READS_DECK_ABOVE, LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING, PIT_RESCUE_FIX_UNREACHABLE_SPARE_LADDER,
-  POCKET_TRAP_FIX_LADDER_TO_SEALED_POCKET, RAILING_TOGGLE_FIX_KEEPS_DECONSTRUCT. Judged wrong: none. 23 skipped as other
-  aspects (hoses, liquids, rivers, python proofs). Open from it: `CanStep` in `Swimming/RM_Swim.cs` still reads the deck
-  depth where `ExitInReach` now reads the floor (swimming, aspect 2).
+**TRAP: `Source/RimMandrake_FlowWorks.csproj` lists every .cs by name.** A new file not listed there is silently not
+compiled. Two of my "fixed" replays ran the old DLL. Check `grep -c -a <TypeName>` on the DLL after every build.
 
-Harness traps found (cost me an hour; they will mislead any proof that judges pawns from shots):
-- `rimworld/step_game_ticks` runs no per-frame visuals: pawns stay DRAWN at a stale spot (often off-screen). Advance with
-  `rimworld/play_for` (`forceRequestedSpeed`) before any shot that must show pawns. Earlier proof shots taken after
-  stepped ticks may show pawns in the wrong place or not at all.
-- `screenshot_cell_rect` straight after a camera move can miss things: frame once, wait ~1.5 s, capture (story1.shot).
-- Windows env vars do not reach python.exe through `steve.sh run` without WSLENV.
-- I killed every python.exe on Steve once (taskkill by pid, but all pids). One of them may have been game B's loop's.
-  Scripts now write their pid (`Transient/ralph_fw/story1.pid`); stop only that pid.
+**Built by a subagent, self-tested, NOT deployed, NOT seen** (logs `D:\ClaudeWork\rimmandrake\flowworks_fetch_prison\`):
+- raiders_fetch_their_fallen: `Source/Superdeep/RM_RaiderRescue.cs`, JobGiver_RM_FetchFallen before FightEnemies in
+  AssaultColony/Breaching/Sapper. One rescuer per raid (2,500-tick lease), supply chain then set-ladder from the rim, one
+  message per raid; given up when the raid stops assaulting; the trapped one walks out by the ladder.
+- drained_hole_is_a_prison: `Source/Superdeep/RM_BedlessPitPrison.cs`, setting bedlessPitPrisonEnabled (on): Capture-down
+  with no bed on anyone the hole traps; five warden jobs work from the lip (needs wardenFromLipEnabled), food dropped on an
+  edge square in his room. NOT covered: a DOWNED bedless prisoner is not fed (vanilla hand-feeding needs a bed); tending
+  only when he lies against the wall; hemogen. Decision for him: `ralph/QUESTIONS.md` 1 (a rescue ladder frees prisoners).
+- Code review of these two: not done (code_review_status DIRTY). Do one before relying on them.
+
+**The other 14 lines, staged by a subagent at root 11 and 20** (`shots/pass2/bar_<line>_r11|r20_<n>.png`, its notes
+`D:\ClaudeWork\rimmandrake\ralph_flowworks\pass2_progress.md`, scripts `ralph/live/bars2_*.py`). Mod bugs it found, each
+with repro there: worn climbing gear draws nothing (RM_ClimbingGear: Belt layer, no wornGraphicPath); a lowered south-wall
+(rot 2) RM_Ladder draws nothing; a pawn walking under a suspension deck is drawn on top of it; sluice water tint did not
+change with fill (probable). Pits at r20 are a dark outlined square; pawns in 4 m pits are drawn on the south lip.
+
+**Four untested fixes: probes built, not run.** `RM_CliffMask.ProofCliffTiming("reset"|"")` times every full derive (load a
+save with a big excavation, read it); `RM_PitCoverUtility.ProofCoverScan("")` times one trigger census over every cover vs
+the old flood-from-every-cover. Two maps: compare `thisMapDerives` per map after a dig on the other. TakenByLand reload:
+not attempted (a river-swept prisoner, aspect 2's river). Baseline (telemetry, Archmagi's game): median tick 1.6-2.0 ms at
+x1-x12 after the last FlowWorks deploy (#2139428).
+
+**GPT broaden (asked this pass; answer `D:\ClaudeWork\rimmandrake\ralph_flowworks\gpt_help_pass002.md`).** I sent the
+replay sheet and the depth sheet. Seven leads; the three I mean to play, not yet played: (2) at the usual camera distance,
+can a player tell who is trapped and does a click beside an occupant land where it looks (the pawn is drawn a cell south
+of where it stands); (5) interrupt the rescue: shoot the rescuer, retreat the raid, watch the half-set ladder; (6) live
+with the pit prison for three days with a wounded captive, save and reload, and check a left-behind ladder.
+
+**Conductor note 17:08 (owner's authority), handled:** reshot at root 11 and 20; count as bullets; NaN-accepting
+AssertClose fixed (`SelfTest/Program.cs`): the full self-test then read 1243/1246, the three reds the known ones
+(RiverSwitchFlip_weirWhiteWater, PitCapture_follows, LW1), so no check was hiding behind NaN; everything committed. NOT handled yet: retake the contrast sheet with every
+hole occupied (draft them); say which build first_look_3b's seam is (unknown, so the seam line is unseen); shoot a covered
+pit dug IN GRASS at root 20 (the cover shows as a bare grassless square on open ground).
 
 ## Next (in order)
-1. Deploy the current DLL; look at the seam at root 11 and at play zoom (seam.py).
-2. The stall (offline trace by a subagent, file:line in the code; the last step needs a live read):
-   - AssaultColony runs FightEnemies first (`Duties_Misc.xml:146-162`); `JobGiver_RM_CrossTrench` is appended LAST, so it
-     is never asked while FightEnemies returns a job.
-   - FightEnemies picks a colonist inside through the doorway; the reach check says reachable (FALSE: `RelativeVeto` in
-     `RM_PocketGridMath` labels by depth only, the walls beside the pit join the two lips; `RM_WallReach` falls back to
-     vanilla when its labels are stale/forced, `RM_WallReach.cs:1439-1450`), the cliff-masked pather finds no route, the
-     job errors, vanilla Waits 250 and the duty repeats forever (`Pawn_JobTracker.cs:450-466`).
-   - Live read to settle it: `jawa/static_call RimMandrake.FlowWorks.RM_WallReach.ProofReachPair` (:1723) raider -> a
-     colonist inside, then `ProofReach` (:1689): Stale count rising = labels never trusted; Residual = labels join the lips.
-   - Even when asked, CrossTrench tests reach with PassAllDestroyableThings, which RM_WallReach skips (:1426-1430), so a
-     walled compound is always "reachable" and it returns GoAround (`RM_RaiderTrench.cs:639-643`) before ladder/fill/jump.
-   - The fallen raider: excluded from CrossTrench (`RM_RaiderTrench.cs:168`), every reach query from his pocket refused,
-     so he falls to WanderAnywhere / IdleError.
-   Fix order: make reach agree with the pather (or make FightEnemies' target honour the cliff mask), then let
-   CrossTrench/fetch run before FightEnemies when the target is cut off by a pit.
-3. raiders_fetch_their_fallen (design, not built): new `JobGiver_RM_FetchFallen` (new `RM_RaiderRescue.cs`), XML-inserted
-   BEFORE `JobGiver_AIFightEnemies` in AssaultColony/Breaching/Sapper duties. Target: a lord member Spawned, not Downed,
-   `RM_SuperdeepTrap.IsTrapped`; skip sieges (`RM_RaiderTrench.IsSiege`), rescuer `RM_RaiderTrench.Eligible` + ToolUser.
-   Slot: pocket from `RM_PocketGrid.ForPawn/ComponentOf/CellsOf`, a pocket cell c with a cardinal neighbour w on the
-   rescuer's side, drop within `RM_LadderUtility.MaxLevelsOf(RM_LadderPortable)`, no `LadderAt`/`RampAt`, reservable and
-   reachable (Touch); nearest the trapped one. Supply: `RM_LadderParity.LadderSupplyJob(p, pocketCells, out canBuild)`
-   (carried, take, wood, then `ChopForLadderJob`). Set: `JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, c, w)`
-   with count = drop (the driver already spawns the ladder in the raid's faction, `JobDriver_RM_RaiderTrenchWork`
-   :1022-1036). One rescuer per lord (static claim dict, ~2,500-tick lease, cleared in ClearMemos). FailOn: duty no
-   longer an assault duty (flee/exit). He then climbs out by `LadderLetsOut`/`JoinedByLadders`.
-   drained_hole_is_a_prison (design, not built): when the raid flees the trapped raider keeps his lord and stays (the
-   map-edge reach is refused). Capture: `CaptureDownVerdict` (`RM_PitRooms.cs:361-369`) needs IsPrisonCell && IsPitRoom,
-   and a 2 m pit is under `pitRoomMinDepthMetres` (3): change the test to prison || (new setting
-   bedlessPitPrisonEnabled && IsTrapped(target)). `PrisonerIsSecure` needs no bed. Wardens: postfix on
-   `WorkGiver_Warden` reach (`WorkGiver_Warden.cs:26`) to accept Touch from a lip cell; food: postfix on
-   `GridsUtility.IsInPrisonCell` (:475) true for a trapping pocket holding a colony prisoner (32 callers: check execute,
-   release, convert, bloodfeed for null room/bed). Exclude prisoners from `RM_PitStuckAlert`. Tending from the lip, sleep
-   on the ground (mood), a ladder the warden uses must not let him out (prison-door rule).
-3. raiders_fetch_their_fallen and drained_hole_is_a_prison (idea sheet leaves, owed; both on his story's path).
-4. The depth look (contrast sheet in LOOK.md; pawns drawn over the near lip, 4 m vs 8 m alike, thin walls). Why 4 m and
-   8 m look alike: `RM_WallFaceMath.NorthByDrop` clamps every drop past 2 m to a 0.62-cell north face, and `FootDarkness`
-   gives 0.90 (D8) vs 0.94 (D16). Idea, not tried: strata on the far wall, one band per 2 m (quarry benches). Try 2-3
-   treatments side by side in LOOK.md before building one. Self-test reds after my changes: PitCapture_follows (known),
-   RiverSwitchFlip_weirWhiteWater and LW1 (rivers and hose lay code; I touched neither, so they predate me: confirm).
-5. The four untested fixes (TakenByLand reload, two maps with a pit each, big cliff-mask rebuild timed, big covered deck
-   timed): not looked at this pass.
+1. Deploy (spikes def + fetch-fallen + prison + probes). Replay his story fresh at root 20: ordinary map, defenders with
+   bows inside the doorway, tribal raid. Watch for: the rescue (message, chop, ladder), arrows on the rescuer, the flee,
+   Capture-down from the lip, a warden feeding from the lip, a save/reload. Then GPT leads 5 and 6.
+2. The depth look, the biggest visible gap (6 lines false): three real treatments on one view, every hole occupied,
+   root 11 and 20, side by side in LOOK.md: (A) consistent oblique (far face 0.6 cell a metre, same scale as the sink, no
+   0.62 clamp, opaque near lip, no black box outline); (B) strata cutaway (the far wall shows one band a metre, compressed
+   into the opening; pawns kept inside the opening, darkened with depth); (C) shadow well (darkness and inner shadow by
+   depth, pawns smaller and darker with depth). Items on a pit floor (logs, bodies) need the same treatment: the replay pit
+   read as a log stockpile. Mind GPT lead 2: the drawn pawn and its clickable cell must agree.
+3. Fix the three render bugs above (worn gear, south ladder, pawn under deck), then the ladder rails/state, the portable
+   ladder's lean, the hung bridge look.
+4. Run the four-fix probes; the covered pit in grass; the seam on the deployed build at root 11.
 
-## Running count (only what I saw in game counts)
-| line | verdict | evidence |
-|---|---|---|
-| pit_depth_ladder_legible | false | 4 m and 8 m holes look alike (contrast sheet) |
-| pawn_height_ladder_legible | false | pawns drawn over the near lip, not in the hole (contrast sheet) |
-| pawn_lowers_on_deeper_cell | unseen | no walk filmed |
-| pawn_rises_on_shallower_cell | unseen | no walk filmed |
-| pit_reads_as_hole | false | a 6x5 reads as a hole; a 3x2 reads as a dark framed box (first_look_4) |
-| pit_walls_have_visible_depth | false | a thin rim band for 2 m (first_look_5) |
-| pit_not_vanilla_trap | true | first_look_4/5 |
-| pit_reads_at_size | true | 6x5 is one place, no grid (first_look_5) |
-| pit_occupant_below_floor | false | reads as behind a ledge in a 2-row pit (first_look_2) |
-| pit_occupied_distinguishable | true | first_look_5 (3x3 with a colonist vs the empty 6x5) |
-| pit_trapped_reads_as_trapped | false | walls never read above the head (contrast sheet) |
-| pit_covered_invisible | true | first_look_1a vs 1b |
-| pit_covered_seam_at_max_zoom | true | first_look_3, 3b |
-| ladder_state_legible | unseen | |
-| sluice_gate_state_legible | unseen | |
-| spikes_read_distinct | true | first_look_4 vs the bare pit before spikes (s1_01 vs s1_02) |
-| trench_wall_cover_shown | unseen | |
-| raiders_never_shelter_in_a_cage | unseen | |
-| wall_ladder_rides_on_rails | unseen | |
-| portable_ladder_leans_on_its_wall | unseen | |
-| climbing_gear_reads_as_kit | unseen | |
-| geared_pawn_climbs_out | unseen | |
-| jump_into_pit_lands_unhurt | unseen | |
-| geared_pawn_scales_built_wall | unseen | |
-| suspension_bridge_reads_hung | unseen | |
-| pawn_walks_under_deck | unseen | |
-| pit_cover_unlike_bridge | unseen | the cover half is seen (passes for ground); no bridge seen |
-| digging_takes_hours | unseen | pits were dug by the bridge, not by colonists |
-| never_snared_standing (cannot) | true | the one fall I watched: down on the spikes, no snare tile |
-| never_reads_as_building (cannot) | false | the small open pit's black-outlined dark square reads as a placed hatch |
+## Running count (only what was seen in game counts; root 11/20 unless said)
+- pit_depth_ladder_legible: false — 4 m and 8 m alike (old contrast sheet); at r20 pits are dark squares
+- pawn_height_ladder_legible: false — occupants drawn on the south lip, not in the hole (contrast sheet, bar_geared_pawn_climbs_out_r20_1)
+- pawn_lowers_on_deeper_cell: unseen — no walk filmed
+- pawn_rises_on_shallower_cell: unseen — no walk filmed
+- pit_reads_as_hole: false — at r20 a dark outlined square, reads as a hatch as much as a hole (bar_ladder_state_legible_r20_1)
+- pit_walls_have_visible_depth: false — one thin pale band on the north edge (same shot)
+- pit_not_vanilla_trap: true — nothing like the spike trap at r20 (bar_ladder_state_legible_r20_1)
+- pit_reads_at_size: unseen — pass 1 saw it only at root 7.2
+- pit_occupant_below_floor: false — occupants drawn on the south lip (bar_geared_pawn_climbs_out_r20_1)
+- pit_occupied_distinguishable: unseen — pass 1 only at root 7.2
+- pit_trapped_reads_as_trapped: false — no wall shows above any occupant's head
+- pit_covered_invisible: false — on open grass the cover is a bare grassless square (conductor, pass-1 shots 3/3b)
+- pit_covered_seam_at_max_zoom: unseen — the build in first_look_3b is unknown; the widened seam not yet looked at
+- ladder_state_legible: false — raised vs lowered differ by a few pixels at r11, nothing at r20; south ladder invisible
+- sluice_gate_state_legible: false — the post moves visibly at r11, a few pixels at r20; water tint unchanged
+- spikes_read_distinct: unseen — pass 1 only at root 7.2
+- trench_wall_cover_shown: true — tooltip "Trench wall: blocks 44%" at 1 m, "blocks 74%" at 1.5 m (bars2_trench, read from the shot tooltip text)
+- raiders_never_shelter_in_a_cage: unseen — not staged
+- wall_ladder_rides_on_rails: false — no rails at any zoom (bar_wall_ladder_rides_on_rails_r11/r20)
+- portable_ladder_leans_on_its_wall: false — upright on the lip at 2 m, a smudge at 4 m (bar_portable_ladder_leans_on_its_wall_r20_1)
+- climbing_gear_reads_as_kit: false — a brown coil on the ground, nothing drawn worn
+- geared_pawn_climbs_out: false — he does get out (634 ticks), but the BEFORE frame draws him on the lip, not on the floor
+- jump_into_pit_lands_unhurt: unseen — Longjump into 2 m and 4 m: no injury; jump pack and creatures not tried
+- geared_pawn_scales_built_wall: unseen — geared pawn crosses (531 ticks); the ungeared refusal not shot
+- suspension_bridge_reads_hung: false — flat straight strips, no sag or cables
+- pawn_walks_under_deck: false — the walker is drawn on top of the deck
+- pit_cover_unlike_bridge: false — unlike a bridge, but its first half (cover passes for ground) is false
+- digging_takes_hours: unseen — 3.8 game hours for 0.5 m by shovel (true half); raiders carrying fill not watched
+- never_snared_standing (cannot): true — falls end on the floor, no snare tile (pass 1 fall, pass 2 replay)
+- never_reads_as_building (cannot): false — the black-outlined dark square reads as a placed hatch
+
+Count: 3 true, 17 false, 10 unseen.
 
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | the story stalls: survivors Wait at the lip forever | raid 2, 4,000+ ticks, save fw_story1_stall | ProofReachPair live read, then the fix, replayed |
-| blocker | raiders never fetch their fallen; no bed-less pit prison | idea sheet leaves owed; code refuses capture without a bed | build both, replay the story to prisoners |
-| unknown | depth look for narrow pits | contrast sheet | 2-3 real treatments side by side |
-| unknown | 16 unseen lines (ladders, gear, bridges, trench cover, digging) | none | stage each on the story map |
-| unknown | the four untested fixes | none | reload with a returned prisoner; two maps; timed rebuilds |
-| decision | none yet for him | | |
-
-## Weather and other notes
-Steve this pass: 0 dead games, 0 dropped ssh, bad_cpus [] at start; 4 deploys + restarts, all clean (bridge up in 28-34 s).
-No phone call to GPT yet (owed before DONE). No telemetry read yet beyond build events (the cost fixes are untimed).
-The ASPECTS split: nothing yet says it is wrong; the stall is in aspect 1's own journey.
+| blocker | the depth look (6 false lines, never_reads_as_building) | r20 shots, old contrast sheet | 3 treatments side by side, every hole occupied, r11 + r20 |
+| unknown | fetch-fallen and the bed-less prison in play | built, self-tested, never run | his story replayed fresh at r20 to the prisoner fed from the lip |
+| unknown | spikes never trashed | def built, not deployed | the same replay |
+| regression | none known | | |
+| blocker | three render bugs (worn gear, south ladder, pawn under deck) | bars2 repros in pass2_progress.md | fix, reshoot r11/r20 |
+| unknown | the four fixes | probes built, not run | ProofCliffTiming on a big dig, ProofCoverScan on a 20x20 deck, two maps |
+| decision | rescue ladder frees colony prisoners | QUESTIONS.md 1 | his answer |

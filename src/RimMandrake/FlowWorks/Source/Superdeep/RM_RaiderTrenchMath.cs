@@ -382,5 +382,69 @@ namespace RimMandrake.FlowWorks
 			}
 			return -1;
 		}
+
+		// ── RAIDERS_FETCH_THEIR_FALLEN (the Verse half: RM_RaiderRescue.cs) ──
+
+		/// <summary>RAIDERS_FETCH_THEIR_FALLEN: what one raider does about its raid's fallen (people the pit traps), in order.
+		/// None: not its business (master off, a siege, no longer an assault duty, nobody trapped, another raider already
+		/// fetching, no slot, no ladder to be had). ClimbOut: it is one of the fallen and a ladder now stands in its pocket.
+		/// Supply: it is the fetcher and must first get a ladder (carried, taken, wood, chopped). SetLadder: lower it in.</summary>
+		public enum FetchStep
+		{
+			None,
+			ClimbOut,
+			Supply,
+			SetLadder,
+		}
+
+		public static FetchStep FetchFallen(bool masterOn, bool assaultDuty, bool siege, bool freedFallen, bool rescuerFit,
+			bool anyTrapped, bool claimedByOther, bool slotFound, bool supplyJob, bool canBuild)
+		{
+			if (!masterOn || !assaultDuty || siege)
+			{
+				return FetchStep.None;
+			}
+			if (freedFallen)
+			{
+				return FetchStep.ClimbOut;
+			}
+			if (!rescuerFit || !anyTrapped || claimedByOther || !slotFound)
+			{
+				return FetchStep.None;
+			}
+			if (supplyJob)
+			{
+				return FetchStep.Supply;
+			}
+			return canBuild ? FetchStep.SetLadder : FetchStep.None;
+		}
+
+		/// <summary>The rescue ladder's drop in levels, from the wall square on the fetcher's side (<paramref name="wallDepth"/>)
+		/// down into the pocket square it stands in (<paramref name="ladderDepth"/>); -1 when the square is no slot: no drop,
+		/// past the portable ladder's reach (<paramref name="reach"/> &gt; 0; 0 = any depth), a ladder or ramp already there,
+		/// reserved by someone else, or out of the fetcher's touch.</summary>
+		public static int RescueDrop(int ladderDepth, int wallDepth, int reach, bool occupied, bool reservable, bool touchable)
+		{
+			int drop = ladderDepth - wallDepth;
+			if (drop <= 0 || occupied || !reservable || !touchable)
+			{
+				return -1;
+			}
+			return reach > 0 && drop > reach ? -1 : drop;
+		}
+
+		/// <summary>One fetcher per raid: the claim stands while its holder is still fit for it (standing, not trapped, the
+		/// same raid, an assault duty), some of the fallen are still down in the pocket, and it was renewed (a rescue job
+		/// handed out) less than <paramref name="lease"/> ticks ago; else another raider may take it up.</summary>
+		public static bool ClaimLive(bool have, int renewedTick, int now, int lease, bool holderFit, bool fallenLeft)
+		{
+			return have && holderFit && fallenLeft && now - renewedTick < Math.Max(1, lease);
+		}
+
+		/// <summary>The lease (ticks) on a fetch claim: about a game hour, long enough to fell a sapling, carry it and set it.</summary>
+		public const int RescueLeaseTicks = 2500;
+
+		/// <summary>How far (squares) from the fallen a raider still answers: a raider across the map leaves it to nearer ones.</summary>
+		public const int RescueRadius = 45;
 	}
 }

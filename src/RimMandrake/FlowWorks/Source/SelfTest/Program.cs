@@ -135,7 +135,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static void AssertClose(float got, float want, string msg, float eps = 0.0001f)
         {
-            if (Math.Abs(got - want) > eps)
+            // SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN: Math.Abs(NaN - want) > eps is false, so a NaN result passed every check here
+            if (float.IsNaN(got) || float.IsNaN(want) || !(Math.Abs(got - want) <= eps))
                 throw new Exception($"{msg}: got {got}, want {want}");
         }
 
@@ -2270,6 +2271,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
             FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
+            RaiderRescueChecks.Run(Case);      // RAIDERS_FETCH_THEIR_FALLEN: fetch verdicts, duty inserts, call sites (RaiderRescueChecks.cs)
+            BedlessPitPrisonChecks.Run(Case);  // DRAINED_HOLE_IS_A_PRISON: bedless rules, setting, three warden patches, prison door (BedlessPitPrisonChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)

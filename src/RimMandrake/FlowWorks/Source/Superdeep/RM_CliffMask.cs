@@ -208,6 +208,8 @@ namespace RimMandrake.FlowWorks
 				m.underDerived = false;
 				return;
 			}
+			// CLIFF_MASK_TAME_PER_CELL_SCRATCH, live proof (Artisan pass 2): every derived full rebuild timed, read by ProofCliffTiming
+			var sw = System.Diagnostics.Stopwatch.StartNew();
 			byte[] depth = RM_PocketGrid.EffectiveDepth(map, eng);
 			Derive(map, eng, m.band, vanilla, depth, false);
 			m.derived = true;
@@ -223,6 +225,34 @@ namespace RimMandrake.FlowWorks
 				Derive(map, eng, m.under, vanilla, floor, true);
 			}
 			m.underDerived = differs;
+			double ms = sw.Elapsed.TotalMilliseconds;
+			TimedDerives++;
+			LastFullMs = ms;
+			LastFullCells = eng.ClimbCellCount;
+			if (ms > MaxFullMs)
+			{
+				MaxFullMs = ms;
+			}
+		}
+
+		/// <summary>Derived full rebuilds since load: the last one's time and hole size, and the slowest.</summary>
+		public static int TimedDerives;
+		public static double LastFullMs, MaxFullMs;
+		public static int LastFullCells;
+
+		/// <summary>Bridge/proof read: "CLIFFTIME derives=N timed=N lastMs=.. lastHoleCells=N maxMs=.. mapCells=N"; arg "reset" zeroes
+		/// the max first.</summary>
+		public static string ProofCliffTiming(string arg)
+		{
+			if (arg == "reset")
+			{
+				MaxFullMs = 0;
+				TimedDerives = 0;
+			}
+			Map map = Find.CurrentMap;
+			return "CLIFFTIME derives=" + FullDerives + " timed=" + TimedDerives + " lastMs=" + LastFullMs.ToString("0.00")
+				+ " lastHoleCells=" + LastFullCells + " maxMs=" + MaxFullMs.ToString("0.00")
+				+ " mapCells=" + (map?.cellIndices.NumGridCells ?? 0) + " thisMapDerives=" + FullDerivesOn(map);
 		}
 
 		private static void Derive(Map map, RM_MapComponent_Excavation eng, NativeArray<CellConnection>[] bands,

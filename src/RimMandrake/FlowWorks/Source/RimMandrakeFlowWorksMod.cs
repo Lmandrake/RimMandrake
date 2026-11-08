@@ -247,6 +247,9 @@ namespace RimMandrake.FlowWorks
         // capture down / convert down are done from the lip.
         public static bool superdeepRoomsEnabled = true;
         public static bool captureDownEnabled = true;
+        /// <summary>DRAINED_HOLE_IS_A_PRISON (owner card 2026-11-05): capture down needs no prisoner bed when the pit traps
+        /// the target; the hole itself is the prison (RM_BedlessPitPrison).</summary>
+        public static bool bedlessPitPrisonEnabled = true;
         public static bool wardenFromLipEnabled = true;
         // PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (owner card 2026-10-18): a pit room is a person-band pocket whose floor is at least
         // this deep for a person (3.0 m: reach overhead plus a small jump), scaled by body height per pawn. 0 = any depth.
@@ -634,6 +637,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
             Scribe_Values.Look(ref pitRoomMinDepthMetres, "pitRoomMinDepthMetres", 3f);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
+            Scribe_Values.Look(ref bedlessPitPrisonEnabled, "bedlessPitPrisonEnabled", true);
             Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
             Scribe_Values.Look(ref pitRelativeClimbEnabled, "pitRelativeClimbEnabled", true);
@@ -806,6 +810,7 @@ namespace RimMandrake.FlowWorks
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
             .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
+            .Declare("captureDownEnabled", "bedlessPitPrisonEnabled").Name("captureDownEnabled", "Capture down from the lip")
             .Declare("superdeepShootingRuleEnabled", "shootingCliffMetres")
             .Declare("trenchCoverEnabled", "trenchCoverStrength", "trenchCoverCap", "trenchAiAvoidsCages")
             .Declare("digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled")
@@ -1691,12 +1696,13 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled" }))
+            if (Section(list, "Pit prisoners, sluice gates and grates", new[] { "superdeepRoomsEnabled", "pitRoomMinDepthMetres", "captureDownEnabled", "bedlessPitPrisonEnabled", "wardenFromLipEnabled", "flowDoorsSealedFromPitEnabled" }))
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
               + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
-              + "trapped enemies; put a prisoner bed in it and it is a prison cell. A gentle slope a person can walk "
+              + "trapped enemies; put a prisoner bed in it and it is a prison cell (or, with the bedless switch below, "
+              + "the bare hole is the prison). A gentle slope a person can walk "
               + "out of never makes a room. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
             using (Dependent(list, "pitRoomMinDepthMetres"))
             {
@@ -1715,6 +1721,14 @@ namespace RimMandrake.FlowWorks
                     "Right-click a trapped person in a pit that has a prisoner bed: a colonist walks to the edge "
                   + "and takes them prisoner from above, without climbing in. Only someone the pit actually holds "
                   + "(a creature too wide for it is not trapped). Off: no capture-down order.");
+            }
+            using (Dependent(list, "bedlessPitPrisonEnabled"))
+            {
+                list.CheckboxLabeled("A hole is a prison, no bed needed", ref bedlessPitPrisonEnabled,
+                    "Capture down also works on someone trapped in a pit with no prisoner bed: the hole itself holds them. "
+                  + "Wardens drop food down to them and talk to them from the edge as in any pit prison, and never lower a "
+                  + "ladder for them. They sleep on the floor. Off: capture down needs a prisoner bed in the pit (prisoners "
+                  + "already taken stay prisoners and are still fed).");
             }
             list.CheckboxLabeled("Wardens and doctors work from the lip", ref wardenFromLipEnabled,
                 "Recruiting, converting, enslaving, wearing down, interrogating, tending and bringing food to "

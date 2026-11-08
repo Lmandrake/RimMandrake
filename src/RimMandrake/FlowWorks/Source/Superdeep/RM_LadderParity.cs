@@ -353,6 +353,10 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < all.Count; i++)
 			{
 				Thing l = all[i];
+				if (RM_RaiderRescue.IsRescueLadder(l))
+				{
+					continue;   // RAIDERS_FETCH_THEIR_FALLEN: the ladder a raid lowered for its fallen stays while they climb
+				}
 				int d = l.Position.DistanceToSquared(p.Position);
 				if (d >= bestD || !RM_LadderParityMath.MayTakeLadder(true, carries, d, RM_LadderParitySettings.raiderTakeLadderRadius,
 					keep != null && keep.Contains(l.Position), l.Position.GetFirstPawn(p.Map) != null))

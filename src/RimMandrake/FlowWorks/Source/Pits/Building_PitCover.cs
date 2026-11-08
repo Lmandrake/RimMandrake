@@ -79,6 +79,64 @@ namespace RimMandrake.FlowWorks.Pits
             return RM_PitDeckMath.Flood(start.Position, c => CoverAt(map, c), (c, d) => c + GenAdj.CardinalDirections[d], 4, c => c.thingIDNumber < id);
         }
 
+        /// <summary>COVER_SCAN_TAME_QUADRATIC_ID_MINIMA, live proof (Artisan pass 2): one trigger census over every cover on the
+        /// current map, as CompPitCoverTrigger runs it (the cheap lower-id neighbour test, then DeckIfLead), timed beside the old
+        /// way (a full flood from every cover). "COVERSCAN covers=N decks=N early=N ms=.. floodEveryCoverMs=..".</summary>
+        public static string ProofCoverScan(string arg)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null)
+            {
+                return "REFUSED: no current map";
+            }
+            var covers = new List<Building_PitCover>();
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+            {
+                if (b is Building_PitCover pc)
+                {
+                    covers.Add(pc);
+                }
+            }
+            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            {
+                if (b is Building_PitCover pc)
+                {
+                    covers.Add(pc);
+                }
+            }
+            int decks = 0, early = 0, deckCells = 0, oldCells = 0;
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            foreach (Building_PitCover self in covers)
+            {
+                bool lower = false;
+                for (int i = 0; i < 4 && !lower; i++)
+                {
+                    Building_PitCover n = CoverAt(map, self.Position + GenAdj.CardinalDirections[i]);
+                    lower = n != null && n.thingIDNumber < self.thingIDNumber;
+                }
+                if (lower)
+                {
+                    early++;
+                    continue;
+                }
+                List<Building_PitCover> deck = DeckIfLead(self);
+                if (deck != null)
+                {
+                    decks++;
+                    deckCells += deck.Count;
+                }
+            }
+            double ms = sw.Elapsed.TotalMilliseconds;
+            sw.Restart();
+            foreach (Building_PitCover self in covers)
+            {
+                oldCells += Deck(self).Count;
+            }
+            double oldMs = sw.Elapsed.TotalMilliseconds;
+            return "COVERSCAN covers=" + covers.Count + " decks=" + decks + " early=" + early + " deckCells=" + deckCells
+                + " ms=" + ms.ToString("0.000") + " floodEveryCoverMs=" + oldMs.ToString("0.000") + " floodCells=" + oldCells;
+        }
+
         /// <summary>PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: does the lid on <paramref name="c"/> draw its own art (an open
         /// pit square among its 8 neighbours betrays the pit, RM_PitCoverLookMath.ShowsArt) instead of the ground?</summary>
         public static bool LidShowsArt(Map map, IntVec3 c)

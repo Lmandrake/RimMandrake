@@ -305,6 +305,11 @@
       <!-- Not an edifice, like the ladder: an edifice would block the fill-in designator. -->
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
+      <!-- RAID_SPIKES_FIX_NOT_TRASHED (Artisan pass 2, live 2026-11-07): raiders cut off by the pit ran
+           JobGiver_AITrashBuildingsDistant on these stakes, set them alight with a comrade standing on them (he burned to
+           death) and one climbed down into the pit to club them. Vanilla never trashes a trap (TrashUtility refuses
+           isTrap); these are a trap at the bottom of a hole, so they get the same rule. -->
+      <ai_neverTrashThis>true</ai_neverTrashThis>
     </building>
     <placeWorkers>
       <li>RimMandrake.FlowWorks.PlaceWorker_SpikesOnSuperdeep</li>

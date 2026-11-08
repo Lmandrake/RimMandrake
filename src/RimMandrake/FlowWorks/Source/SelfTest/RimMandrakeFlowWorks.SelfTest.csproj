@@ -77,6 +77,8 @@
     <Compile Include="PitDeckChecks.cs" />
     <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="RaiderTrenchChecks.cs" />
+    <Compile Include="RaiderRescueChecks.cs" />
+    <Compile Include="BedlessPitPrisonChecks.cs" />
     <Compile Include="..\Superdeep\RM_LadderParityMath.cs" />
     <Compile Include="LadderParityChecks.cs" />
     <Compile Include="..\RM_ShovelMath.cs" />

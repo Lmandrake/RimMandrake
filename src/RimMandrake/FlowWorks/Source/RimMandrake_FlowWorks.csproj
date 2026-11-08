@@ -232,6 +232,8 @@
     <Compile Include="Superdeep\RM_WallClimb.cs" />
     <Compile Include="Superdeep\RM_RaiderTrenchMath.cs" />
     <Compile Include="Superdeep\RM_RaiderTrench.cs" />
+    <Compile Include="Superdeep\RM_RaiderRescue.cs" />
+    <Compile Include="Superdeep\RM_BedlessPitPrison.cs" />
     <Compile Include="Superdeep\RM_MeleeTargetReach.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
     <Compile Include="Superdeep\RM_SpikeDrawMath.cs" />
