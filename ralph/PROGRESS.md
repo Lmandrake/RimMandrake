@@ -23,8 +23,16 @@ Pass 16 (2026-11-08, ~04:00-04:40 PST, game B). Retired on context. Committed an
 - **Sideways tags** on edge-on walls read as "rust or blood runs" and "moss". Tags are still allowed edge-on (Kernel.ReadsEdgeOn). Consider: no new marks edge-on at all, and take old ones down like the pictures.
 - **Clean single silhouettes = icons** (the fist now reads as an emoji fist; five fists in view). A stencil needs stencil character: misregistration, a second colour layer offset, bridges cut through, a tag or scrawl beside it, and fewer repeats.
 
+## GPT `stuck` call, pass 16 (not yet acted on)
+Asked: `ralph/live/stuck_ask_pass16.md` with the judge's verdict and four p16 shots. Answer: `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gpt_help_pass016.md`. Its leads, each with a cheap test:
+1. **The wall drawn back over the paint may be what kills weak marks' edges.** Test: the same weak mark twice on identical walls, with and without the wall overdraw (WallPlane.Print `through`); if the bare one reads as paint, cut the overdraw over surviving paint cores and let mortar interrupt only some areas.
+2. **Show a bad hand in its geometry, not in degraded material.** A faint whole-shape stain keeps the area and loses the stroke; the translucent second go reads as rubbed material. Control: a crooked tally through the same awful + W3 settings beside a failing mark. Change: uneven spacing, overshoots, lopsided loops at full opacity; weather by removing pieces of strokes with clean gaps, no pale footprint.
+3. Narrow faces and wall ends change what a mark reads as (the orange tally on the door stub, the X on a wall-end cap): restrict marks to faces that keep their strokes.
+4. **Stencils read as icons by composition, not cleanliness.** Test: the fist alone vs the same fist inside a crooked painted slogan/tag with overlapping strokes. Change: stencil pieces (symbol plus scrawl, an interruption), fewer identical repeats near each other.
+Its acceptance check: recognition at native play size before inspection.
+
 ## Do next
-Read the GPT `stuck` answer first (path below), pick one or two leads, then:
+Try GPT leads 1 and 2 first (each is one staged A/B on the Dirt wall), then:
 1. Faint = stain: in WallPlane.Weathered drop the low-alpha stain (or make it crisp flakes only), and let a mark go at W3; for awful/poor drop `CraftLook.through` and the 0.28 second go, and show the bad hand by bolder wrongness (overloaded drips, a blob where the can stalled, crooked doubled strokes at full opacity). Re-shoot the Dirt stage (`st Dirt BlocksGranite`, rects below).
 2. Recolour HighLife and AnimalPersonhood (and any glyph whose art is green/olive or mostly black) via manifest `fill`/`mute` or a regenerate.
 3. Dark overspray: find the soot parts in the frames (warning glyph blot, mockery hands) and the dark overspray in PaintedPortrait (now coloured) and PaintedIcon.
