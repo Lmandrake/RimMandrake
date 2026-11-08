@@ -36,7 +36,7 @@ Fault window open the whole pass (`bad_cpus=[13]` at the start, `[9,15]` later):
 - conduit_reads_invisible: true
 - cord_lies_slack_in_loops: true
 - cord_meets_wall_at_its_face: true
-- dense_grid_reads_as_tangle: true for Scrapper, Industrial, Futuristic; Modern reads as a net of straight strokes (judge) — false until fixed
+- dense_grid_reads_as_tangle: false (Scrapper, Industrial and Futuristic heaps read as tangles; Modern's reads as a net of straight strokes with four strips)
 - break_live_and_dead_ends_differ: true (judge: easy in all four looks)
 - overhead_span_above_everything: true (span over the shed's wall, `p12q5_Modern_line.png`; pawns `p12m0_Futuristic_shed.png`)
 - downed_span_lies_on_ground: true on this DLL beside a shed (`p12q3`); crossarm drop legs still read straight-ish
