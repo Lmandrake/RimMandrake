@@ -924,7 +924,23 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Mood budgets (each times the pawn's bad or good): what Graffiti memories may add up to; the named victim of a mockery more.</summary>
-        public const float BadMoodBudget = 8f, VictimMoodBudget = 12f, GoodMoodBudget = 8f;
+        public const float BadMoodBudget = 8f, VictimMoodBudget = 12f, GoodMoodBudget = 6f;
+        /// <summary>Inside the good budget, what walls about nobody in particular may add up to: a funny doodle, good work, our sign, a friend's
+        /// tag, having left a mark. Owner, card 2026-11-07, after the +4 to +6 most pawns took from ordinary wall art: "Graffiti is flavour, not a
+        /// mood engine ... about +2 to +3 total and cap it." Times the pawn's good, so a sensitive pawn may feel up to half as much again.</summary>
+        public const float AmbientMoodBudget = 3f;
+        /// <summary>A memorial softens grief and never turns it into a gain (owner, card 2026-11-07): everything the walls give a pawn about one
+        /// dead pawn adds up to at most this share of the grief that pawn still feels for them.</summary>
+        public const float GriefEaseShare = 0.5f;
+
+        /// <summary>How much of `raw` (a grief-easing memory at full strength) stands, when the grief it eases is `grief` (absolute) and the eases
+        /// before it about the same dead pawn already take `before`.</summary>
+        public static float EaseShare(float grief, float raw, float before)
+        {
+            float room = grief * GriefEaseShare - before;
+            if (room <= 0f || raw <= 0f) return 0f;
+            return raw < room ? raw : room;
+        }
         /// <summary>Opinion caps for Graffiti's social memories of one pawn about another; the named victim's of the painter more.</summary>
         public const float BadOpinionCap = 30f, VictimOpinionCap = 45f, GoodOpinionCap = 30f;
 

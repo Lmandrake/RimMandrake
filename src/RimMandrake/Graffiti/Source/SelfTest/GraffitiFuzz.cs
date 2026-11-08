@@ -78,6 +78,18 @@ namespace RimMandrake.Graffiti.SelfTest
                 Check(hand >= 0 && hand < count && hand == RM_GraffitiKernel.HandChoice(id, count, 3), "a painter's hand is stable and in range");
                 Check(RM_GraffitiKernel.TerritoryStage(0) == -1 && RM_GraffitiKernel.TerritoryStage(1) == 0 && RM_GraffitiKernel.TerritoryStage(3) == 1 && RM_GraffitiKernel.TerritoryStage(9) == 2, "territory stages");
                 Check(RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, true, false, false) < RM_GraffitiKernel.GoodwillOf(RM_Meaning.Insult, false, true, false), "a named insult costs more than a taunt");
+                // A memorial softens grief and never turns it into a gain: every ease about one dead pawn, in order, adds up to at most half the grief.
+                float grief = (float)(r.NextDouble() * 30.0), before = 0f;
+                int eases = r.Next(0, 5);
+                for (int i = 0; i < eases; i++)
+                {
+                    float raw = (float)(r.NextDouble() * 8.0), share = RM_GraffitiKernel.EaseShare(grief, raw, before);
+                    Check(share >= 0f && share <= raw + 1e-5f, "an ease is never more than itself");
+                    before += share;
+                }
+                Check(before <= grief * RM_GraffitiKernel.GriefEaseShare + 1e-4f, $"eases {before} outweigh half the grief {grief}");
+                Check(RM_GraffitiKernel.EaseShare(0f, 4f, 0f) == 0f, "no grief, no relief");
+                Check(RM_GraffitiKernel.AmbientMoodBudget < RM_GraffitiKernel.GoodMoodBudget, "wall pleasure about nobody is a share of the good budget");
             });
         }
 

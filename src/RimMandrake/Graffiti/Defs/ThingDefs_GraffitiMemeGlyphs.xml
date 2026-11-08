@@ -61,7 +61,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -91,7 +90,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -120,7 +118,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -150,7 +147,6 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
         <pigmented>true</pigmented>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -179,7 +175,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -209,7 +204,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -243,7 +237,6 @@
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
         <pigmented>true</pigmented>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -276,7 +269,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -312,7 +304,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -342,7 +333,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -372,7 +362,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -402,7 +391,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -432,7 +420,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -461,7 +448,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -491,7 +477,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -521,7 +506,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -551,7 +535,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -581,7 +564,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -614,7 +596,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Code</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -648,7 +629,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -679,7 +659,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -708,7 +687,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -738,7 +716,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -768,7 +745,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -797,7 +773,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -827,7 +802,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Devotional</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
@@ -862,7 +836,6 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
-        <onViewSameIdeo>RM_Graffiti_NearOwnSign</onViewSameIdeo>
         <onViewOtherIdeo>RM_Graffiti_NearForeignSign</onViewOtherIdeo>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>

@@ -650,6 +650,23 @@ namespace RimMandrake.Graffiti
 
         private const float GriefEasedShare = 0.35f;
 
+        /// <summary>How much this pawn still grieves that one (absolute): the game's own sad memories about the dead pawn, not ours.</summary>
+        internal static float GriefFor(Pawn p, Pawn dead)
+        {
+            if (p == null || dead == null || !dead.Dead) return 0f;
+            List<Thought_Memory> memories = p.needs?.mood?.thoughts?.memories?.Memories;
+            if (memories == null) return 0f;
+            float grief = 0f;
+            for (int i = 0; i < memories.Count; i++)
+            {
+                Thought_Memory t = memories[i];
+                if (t.otherPawn != dead || t is Thought_MemorySocial || GraffitiTemperament.IsOurs(t.def)) continue;
+                float o = t.MoodOffset();
+                if (o < 0f) grief -= o;
+            }
+            return grief;
+        }
+
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
         internal static void Notify_WentOver(Filth_Mark under, Pawn by)
         {
@@ -895,5 +912,37 @@ namespace RimMandrake.Graffiti
             RM_Temper t = GraffitiTemperament.Of(p);
             return t.numb ? 0f : t.bad;
         }
+    }
+
+    /// <summary>A memorial's comfort: painting one (RM_Graffiti_GriefEased) or standing at one (RM_Graffiti_Mourning). Owner, card 2026-11-07:
+    /// a memorial should soften grief, never turn it into a gain. So, read live: all of these about one dead pawn add up to at most half of
+    /// the grief the pawn still feels for them (RM_GraffitiKernel.EaseShare), and when the grief is over, so is the comfort.</summary>
+    public class Thought_GriefEase : Thought_Memory
+    {
+        internal static bool Eases(ThoughtDef def)
+        {
+            return def != null && (def == GraffitiSocial.T.RM_Graffiti_GriefEased || def == GraffitiSocial.T.RM_Graffiti_Mourning);
+        }
+
+        private float Raw => base.MoodOffset();
+
+        public override float MoodOffset()
+        {
+            float raw = Raw;
+            if (raw <= 0f || otherPawn == null) return raw;
+            float grief = GraffitiSocial.GriefFor(pawn, otherPawn);
+            float before = 0f;
+            List<Thought_Memory> memories = pawn.needs?.mood?.thoughts?.memories?.Memories;
+            if (memories == null) return 0f;
+            for (int i = 0; i < memories.Count; i++)
+            {
+                Thought_Memory m = memories[i];
+                if (m == this) break;
+                if (m is Thought_GriefEase e && e.otherPawn == otherPawn) before += RM_GraffitiKernel.EaseShare(grief, e.Raw, before);
+            }
+            return RM_GraffitiKernel.EaseShare(grief, raw, before);
+        }
+
+        public override bool ShouldDiscard => base.ShouldDiscard || otherPawn == null || GraffitiSocial.GriefFor(pawn, otherPawn) <= 0f;
     }
 }

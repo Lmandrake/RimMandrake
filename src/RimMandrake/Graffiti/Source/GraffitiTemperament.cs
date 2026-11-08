@@ -166,16 +166,19 @@ namespace RimMandrake.Graffiti
             float factor = reach * (column == 1 ? t.fine : column == 2 ? t.ugly : column == 3 ? t.offended * t.bad : positive ? t.good : t.bad);
             if (factor <= 0.01f) return false;
             List<Thought_Memory> memories = p.needs.mood.thoughts.memories.Memories;
+            // A memorial's relief isn't wall pleasure: it stands apart from the budgets and is held under the grief it eases (Thought_GriefEase).
+            // Live 2026-11-07: Lark took +1.4 for painting a memorial because funny doodles had filled the budget; then, with it apart, "Painted
+            // a memorial to Pell +5" outweighed "My friend Pell died -3". No grief, no relief.
+            bool apart = Thought_GriefEase.Eases(def);
+            if (apart && GraffitiSocial.GriefFor(p, other) <= 0f) return false;
+            bool ambient = !social && positive && IsAmbient(def);
             Thought_Memory existing = null;
-            float already = 0f;
-            // A memorial's relief isn't wall pleasure and stands apart from its budget. Live 2026-11-07: Lark, whose lover had died (-16),
-            // took +1.4 from painting the memorial, because funny doodles had already filled the budget, while a near-stranger had taken +5.7.
-            bool apart = def == GraffitiSocial.T.RM_Graffiti_GriefEased;
+            float already = 0f, ambientAlready = 0f;
             for (int i = 0; i < memories.Count; i++)
             {
                 Thought_Memory m = memories[i];
                 if (!IsOurs(m.def)) continue;
-                if (m.def == GraffitiSocial.T.RM_Graffiti_GriefEased && !apart) continue;
+                if (Thought_GriefEase.Eases(m.def) && !apart) continue;
                 if (m.def == def && m.otherPawn == other) existing = m;
                 if (social)
                 {
@@ -184,7 +187,11 @@ namespace RimMandrake.Graffiti
                 else if (!(m is Thought_MemorySocial))
                 {
                     float o = m.MoodOffset();
-                    if ((o > 0f) == positive && o != 0f) already += System.Math.Abs(o);
+                    if ((o > 0f) == positive && o != 0f)
+                    {
+                        already += System.Math.Abs(o);
+                        if (o > 0f && IsAmbient(m.def)) ambientAlready += o;
+                    }
                 }
             }
             if (existing != null && !social)
@@ -192,15 +199,17 @@ namespace RimMandrake.Graffiti
                 // Rereads: the stronger memory stands; one as strong renews it.
                 float had = existing.moodPowerFactor;
                 if (factor < had - 0.01f) return false;
-                already -= System.Math.Abs(existing.MoodOffset());
-                float fit = apart ? 1f : RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, MoodBudget(t, positive, victim));
+                float was = System.Math.Abs(existing.MoodOffset());
+                already -= was;
+                if (ambient) ambientAlready -= was;
+                float fit = apart ? 1f : Fit(already, ambientAlready, System.Math.Abs(baseValue) * factor, t, positive, victim, ambient);
                 if (fit <= 0f) return false;
                 existing.moodPowerFactor = System.Math.Max(had, factor * fit);
                 existing.Renew();
                 return true;
             }
-            float budget = social ? OpinionCap(positive, victim) : MoodBudget(t, positive, victim);
-            float keep = apart ? 1f : RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, budget);
+            float keep = apart ? 1f : social ? RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, OpinionCap(positive, victim))
+                : Fit(already, ambientAlready, System.Math.Abs(baseValue) * factor, t, positive, victim, ambient);
             if (keep <= 0f) return false;
             Thought_Memory made = ThoughtMaker.MakeThought(def, stage);
             if (made is Thought_MemorySocial ms)
@@ -213,6 +222,34 @@ namespace RimMandrake.Graffiti
             }
             p.needs.mood.thoughts.memories.TryGainMemory(made, other);
             return true;
+        }
+
+        /// <summary>What share of a new mood memory fits: the budget for its sign, and for wall pleasure about nobody in particular the
+        /// smaller budget inside that.</summary>
+        private static float Fit(float already, float ambientAlready, float offset, RM_Temper t, bool positive, bool victim, bool ambient)
+        {
+            float keep = RM_GraffitiKernel.FitBudget(already, offset, MoodBudget(t, positive, victim));
+            if (ambient) keep = System.Math.Min(keep, RM_GraffitiKernel.FitBudget(ambientAlready, offset, RM_GraffitiKernel.AmbientMoodBudget * System.Math.Max(t.good, 0.5f)));
+            return keep;
+        }
+
+        private static HashSet<ThoughtDef> ambientDefs;
+
+        /// <summary>Wall pleasure about nobody in particular: what the paint is like, whose hand it is, our sign, having painted. Not a tribute
+        /// to you, a mockery you painted or answered, or a wall you took back: those are stories, and have the larger budget.</summary>
+        internal static bool IsAmbient(ThoughtDef def)
+        {
+            if (ambientDefs == null)
+            {
+                ambientDefs = new HashSet<ThoughtDef>
+                {
+                    GraffitiSocial.T.RM_Graffiti_Amused, GraffitiSocial.T.RM_Graffiti_FineArt, GraffitiSocial.T.RM_Graffiti_Uplifted,
+                    GraffitiSocial.T.RM_Graffiti_FriendHand, GraffitiSocial.T.RM_Graffiti_MovedByPiece, GraffitiSocial.T.RM_Graffiti_Warmed,
+                    GraffitiSocial.T.RM_Graffiti_EnjoyedInsult, GraffitiSocial.T.RM_Graffiti_Defiant, GraffitiSocial.T.RM_Graffiti_LeftMyMark,
+                };
+                ambientDefs.Remove(null);
+            }
+            return def != null && ambientDefs.Contains(def);
         }
 
         private static float MoodBudget(RM_Temper t, bool positive, bool victim)
