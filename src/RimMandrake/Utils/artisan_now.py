@@ -620,17 +620,23 @@ def cgroup_processes(props):
 
 # ---- the loop's files -----------------------------------------------------------------------------
 
-COUNT_LINE = re.compile(r"^\s*[-*]\s+(.+?)\s*[:=—-]+\s*\**(true|false|unseen)\b\**(.*)$", re.I)
+# A bar verdict is a line that STARTS with a bar id and then says its verdict: `- pit_reads_as_hole: false (why)` or the
+# table row `| pit_reads_as_hole | false | why |`. The id is snake_case (has an underscore), so a trap such as
+# "- Raid: ... canDig=false;" or prose that mentions "false" is not a bar. Same id twice: the later line wins.
+NO_VERDICT_LIST = "UNMEASURED (no verdict list)"
+COUNT_LINE = re.compile(r"^\s*(?:[-*]\s+|\|\s*)[`*]*([A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+)[`*]*\s*[:|—]\s*\**(true|false|unseen)\b\**(.*)$", re.I)
 
 
 def parse_progress(text):
     """The opening state of PROGRESS.md and its running count: `- bar: true|false|unseen` lines."""
-    counts, rows = Counter(), []
+    counts, bars = Counter(), {}
     for line in text.splitlines():
         m = COUNT_LINE.match(line)
         if m:
-            counts[m[2].lower()] += 1
-            rows.append((short(m[1].strip("`* "), 70), m[2].lower(), short(m[3].strip(" .,:;—-()"), 90)))
+            bars[m[1].lower()] = (short(m[1], 70), m[2].lower(), short(m[3].strip(" .,:;—-()|"), 90))
+    rows = list(bars.values())
+    for _, verdict, _ in rows:
+        counts[verdict] += 1
     head = []
     for line in text.splitlines():
         s = line.strip()
@@ -2063,7 +2069,7 @@ def loop_section(r, machines):
                 for bar, val, note in shown:
                     L.append("- %s: %s%s" % (bar, val, ", " + note if note else ""))
         else:
-            L.append("No running count in PROGRESS.md yet (%s old)." % ago(now_s() - r["progress_t"]))
+            L.append("Its own count: %s. PROGRESS.md (%s old) lists no bar by id with true, false or unseen." % (NO_VERDICT_LIST, ago(now_s() - r["progress_t"])))
         if prog["state"]:
             L.append("")
             L.append("Its notes open with: *%s*" % prog["state"].replace("*", ""))
@@ -2253,7 +2259,7 @@ def better_words(rec):
     else:
         word = "too few to say" if js else "nothing to judge by yet"
         if not js:
-            lines.append("It keeps no count of its own.")
+            lines.append("Its own count: %s." % NO_VERDICT_LIST)
     if not js:
         lines.append("No judge yet.")
     else:
@@ -2608,7 +2614,7 @@ def glance_table(loops):
             tok += " of %s, %d%%" % (toks(r["limit"]), round(100 * r["total"] / r["limit"]))
         rate = "%s/h" % toks(r["rate"]) if r.get("rate") and r["state"] == "working" else "none"
         c = r["prog"]["counts"] if r.get("prog") else None
-        bars = "UNMEASURED" if not c and r["unmeasured"].get("progress") else ("%d / %d / %d" % (c["true"], c["false"], c["unseen"]) if c and sum(c.values()) else "no count")
+        bars = "UNMEASURED" if not c and r["unmeasured"].get("progress") else ("%d / %d / %d" % (c["true"], c["false"], c["unseen"]) if c and sum(c.values()) else NO_VERDICT_LIST)
         quiet = ago(now_s() - r["last_active"]) + " ago" if r.get("last_active") else "UNMEASURED"
         L.append("| **%s** | %s | %s | %s | %s | %s | %s | %s |" % (
             cell(r["name"]), cell(STATE_WORD.get(r["state"], r["state"])), r["machine"], pc, tok, rate, quiet, bars))

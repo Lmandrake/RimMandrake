@@ -126,6 +126,9 @@ def plant(mod, root):
     w.loop("nopasslog", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3, pass_log=False)
     w.loop("stopflag", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3, stop=True)
     w.loop("claimed", [(3600, start), (600, "LOOP DONE_CLAIMED, 5000000 tokens")], unit=None, done=True)
+    # the graffiti case: PROGRESS.md has a Traps line holding "canDig=false;" and no verdict list at all
+    w.loop("trapped", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3,
+           progress="Pass 8 notes.\n\n## Traps\n- Raid: `kv jawa/lord_set_job args=locomotion=Jog;canDig=false;x`, then step\n- joy: false alarms if nothing paints\n")
     w.loop("waiter", [(3600, start), (1800, "GAME_WAIT: a loop ahead has the game, no model running, 3000000 tokens")])
     mod.list_units = lambda sources: w.units
     mod.cgroup_processes = lambda props: (bool((props or {}).get("_model")), [])
@@ -258,6 +261,7 @@ def scenarios(mod):
     try:
         plant(mod, root)
         page, phone, state = mod.build()
+        first_page = page
         # fault: a stale log. The unit is up and the model alive, and nothing has been written for two hours.
         stale = section(page, "stale")
         check("stale_log_is_stuck", stale.startswith("## stale: STUCK") and "Nothing written for 2.0 h" in stale)
@@ -292,7 +296,7 @@ def scenarios(mod):
         check("waiter_names_who", section(page, "waiter").startswith("## waiter: waiting for game") and "gives way to rm-ralph-healthy, which is active" in page)
         check("claim_is_not_acceptance", section(page, "claimed").startswith("## claimed: DONE CLAIMED") and "blind judge owed" in page)
         check("stamp_present", re.search(r"Generated \w+ \d+, \d\d:\d\d:\d\d \w+", page) is not None)
-        check("first_line_is_state", page.splitlines()[4].startswith("**9 loops:"))
+        check("first_line_is_state", page.splitlines()[4].startswith("**10 loops:"))
         # the headline's two figures with nothing to read them from (no learned.md, a loop with no log): UNMEASURED, never 0
         head = page.splitlines()[4]
         check("headline_figures_unmeasured", "Accepted: UNMEASURED." in head and "Accepted: 0" not in head and "Waited for a game: UNMEASURED" in head)
@@ -440,6 +444,12 @@ def scenarios(mod):
         # verdict parsing
         v = mod.parse_verdict(os.path.join(mod.LOG_ROOT, "ralph_twojudges", "blind_judge_verdict_pass2.md"))
         check("verdict_parsed", v["lines"] == 2 and v["passed"] == 0 and v["answer"] == "no" and v["short"] == ["bar_a", "bar_b"])
+        # bar-verdict lines: only `id: verdict` bullets and `| id | verdict |` rows count, never a trap that says "=false"
+        trap = mod.parse_progress("## Traps\n- Raid: `lord_set_job args=canDig=false;`\n- never taut: false start\n- see below = false\n")
+        check("trap_line_not_a_bar", sum(trap["counts"].values()) == 0)
+        bars = mod.parse_progress("## Count\n- bar_a: true\n- `bar_b`: **false** (why)\n| bar_c | unseen | note |\n- bar_a: false\n")
+        check("bar_lines_counted_once", dict(bars["counts"]) == {"false": 2, "unseen": 1})
+        check("trapped_loop_unmeasured", "UNMEASURED (no verdict list)" in glance(first_page, "trapped") and "0 / 1 / 0" not in glance(first_page, "trapped"))
     finally:
         shutil.rmtree(root, ignore_errors=True)
     return fails
@@ -455,6 +465,9 @@ MUTANTS = [
     ('            rec["total"] = None\n', '            rec["total"] = op["t_start"]\n', "missing_pass_log_phone"),
     ('un["live tokens"] = "pass %d log', 'un["ignored"] = "pass %d log', "missing_pass_log_tokens"),
     ('un["progress"] = "no %s" % path', 'pass', "missing_progress_unmeasured"),
+    ('(?:[-*]\\s+|\\|\\s*)[`*]*([A-Za-z]', '(?:[-*]\\s+|\\|\\s*)[`*]*(.+?|[A-Za-z]', "trap_line_not_a_bar"),
+    ('bars[m[1].lower()] = (', 'bars[len(bars)] = (', "bar_lines_counted_once"),
+    ('else NO_VERDICT_LIST)', 'else "no count")', "trapped_loop_unmeasured"),
     ('out[name] = {"why": r["why"], "fresh": False, "data": saved.get(name)}',
      'out[name] = {"why": "", "fresh": True, "data": saved.get(name)}', "old_machine_read_labelled"),
     ('w.append("STOP is set', 'str("STOP is set', "stop_with_unit_warned"),
