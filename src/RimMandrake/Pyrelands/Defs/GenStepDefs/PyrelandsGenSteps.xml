@@ -43,9 +43,9 @@
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsFireCast" />
     <order>1210</order>
   </GenStepDef>
-  <!-- The rare water, never none: a map the noise left with almost no standing water gets two or three ponds, and
-       every pond gets a ragged shore and a thin mud, rich-soil, ash ring (GenStep_PyrelandsStandingWater). Right after
-       Terrain (210), before roads, ruins, plants and animals. -->
+  <!-- The rare water, as the map rolled it (none is a correct map: owner 2026-11-07, "No guarantee"): every pond gets a
+       ragged shore and a thin mud, rich-soil, ash ring (GenStep_PyrelandsStandingWater). Right after Terrain (210),
+       before roads, ruins, plants and animals. -->
   <GenStepDef>
     <defName>RM_FE_StandingWater</defName>
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsStandingWater" />
@@ -58,5 +58,13 @@
     <defName>RM_FE_GreenRing</defName>
     <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsGreenRing" />
     <order>970</order>
+  </GenStepDef>
+  <!-- Yesterday's fire (2026-11-07): a half-disc scar burned in from one map edge, whose leading arc the opening front
+       lights (GenStep_PyrelandsYesterdayFire, PyrelandsFireFront.cs). Last of every Pyrelands step and after vanilla's
+       Plants (900) and Animals (1200): no later fill re-grasses the scar, and it removes the plants they placed. -->
+  <GenStepDef>
+    <defName>RM_FE_YesterdayFire</defName>
+    <genStep Class="RimMandrake.Pyrelands.GenStep_PyrelandsYesterdayFire" />
+    <order>1220</order>
   </GenStepDef>
 </Defs>

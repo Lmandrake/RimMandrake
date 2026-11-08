@@ -72,6 +72,9 @@ namespace RimMandrake.Pyrelands
             fireFront = new PyrelandsFireFront(map);
         }
 
+        /// <summary>The fire clock, for GenStep_PyrelandsYesterdayFire (components are built before the gen steps run).</summary>
+        internal PyrelandsFireFront FireFront => fireFront;
+
         /// <summary>The kit's single entry point. Null-safe for callers that may
         /// run against a map that has not finished construction.</summary>
         public static MapComponent_BurnLine For(Map map)
@@ -155,7 +158,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Test probe (jawa/static_call; PYRE_OPENING_FRONT): the current map's opening front.
-        /// -> "done=;lit=;litTick=;origin=x,z|invalid;mapAge=;now=" (lit/litTick/origin are this session's only).</summary>
+        /// -> "done=;lit=;litTick=;origin=x,z|invalid;mapAge=;now=" (lit/litTick/origin are this session's only), then yesterday's
+        /// fire: ";scarLaid=;scarCentre=;scarSide=;scarRadius=;scarCells=;bare=;sprouts=;pods=;ash=;arcCandidates=;arcLit=".</summary>
         public static string ProbeOpeningFront()
         {
             MapComponent_BurnLine c = For(Find.CurrentMap);
@@ -163,7 +167,8 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>Test drive only (jawa/static_call; PYRE_OPENING_FRONT): treat the current map as fresh for the opening
-        /// front, its window starting now, so a long-lived fixture can prove the arrival path. Returns 1, -1 with no component.</summary>
+        /// front, its window starting now, with a new yesterday's fire burned in for it to light, so a long-lived fixture can
+        /// prove the arrival path. Returns 1, -1 with no component.</summary>
         public static int RearmOpeningFront()
         {
             MapComponent_BurnLine c = For(Find.CurrentMap);
@@ -309,20 +314,36 @@ namespace RimMandrake.Pyrelands
                 Job cur = pawn.CurJob;
                 bool diving = cur != null && cur.def == PyrelandsMechanicsDefOf.RM_Burrow;
                 bool idle = cur == null || IsIdleJob(cur.def);
-                // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling, non-diving burrower.
-                if (diving || !idle)
+                // Grazing or asleep, the think tree hands the meal or the bed straight back, so the dive is started outright.
+                // At the 6-cell dive radius (RM_Ashwallow, 2026-11-07; was 15) a grazer left to finish its meal is caught.
+                bool yields = !idle && cur != null && !pawn.Downed && YieldsToFire(cur.def);
+                // Cheap gates first: WouldDive scans the map's fires, so it runs only for an idling or yielding, non-diving burrower.
+                if (diving || !(idle || yields))
                 {
                     continue;
                 }
                 bool wouldDive = RM_JobGiver_BurrowOnFire.WouldDive(pawn);
                 int last = lastBurrowNudge.TryGetValue(pawn.thingIDNumber, out int t) ? t : -1;
-                if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, idle, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
+                if (RM_FireEcoKernel.BurrowNudgeDue(true, wouldDive, diving, true, now, last, PyrelandsTuning.BurrowNudgeMinGapTicks))
                 {
                     if (lastBurrowNudge.Count > 4096) lastBurrowNudge.Clear();   // unsaved and never pruned per pawn: bound it
                     lastBurrowNudge[pawn.thingIDNumber] = now;
-                    pawn.jobs.CheckForJobOverride();
+                    if (idle)
+                    {
+                        pawn.jobs.CheckForJobOverride();
+                    }
+                    else
+                    {
+                        pawn.jobs.StartJob(JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_Burrow), JobCondition.InterruptForced);
+                    }
                 }
             }
+        }
+
+        /// <summary>Grazing and sleep: jobs a burrower drops for a fire within its dive radius.</summary>
+        private static bool YieldsToFire(JobDef def)
+        {
+            return def == JobDefOf.Ingest || def == JobDefOf.LayDown;
         }
 
         /// <summary>The jobs a grazer idles in between think passes: the ones the cold-burn samples sat in before diving.</summary>

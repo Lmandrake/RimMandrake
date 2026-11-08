@@ -321,7 +321,7 @@ namespace RimMandrake.Pyrelands
             return def != null && c.GetFirstThing(map, def) is Filth f ? f.thickness : 0;
         }
 
-        /// <summary>Lays a burned cell's whole scar ash at once (yesterday's fire, GenStep_PyrelandsYesterdaysFire): its drift-field
+        /// <summary>Lays a burned cell's whole scar ash at once (yesterday's fire, GenStep_PyrelandsYesterdayFire): its drift-field
         /// target with the lee and the burn edge, never spilling, never thinning a deeper drift already there.</summary>
         public static void LayScarAsh(Map map, IntVec3 c)
         {

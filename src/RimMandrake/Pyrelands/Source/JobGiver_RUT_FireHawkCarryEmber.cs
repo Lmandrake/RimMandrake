@@ -78,7 +78,7 @@ namespace RimMandrake.Pyrelands
                 return null;
             }
 
-            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target);
+            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target, source.Position);
             job.count = 1;
             return job;
         }

@@ -15,6 +15,9 @@
   <RM_FireHawkLastDrop>Last ember dropped {0} ago</RM_FireHawkLastDrop>
   <RM_FireFrontLetterLabel>The grass has gone up</RM_FireFrontLetterLabel>
   <RM_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the old camps here pave a strip instead of raising a fence. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RM_FireFrontLetterText>
+  <!-- Yesterday's fire (PyrelandsFireFront.TickOpeningFront): a fresh map's opening front lights the leading arc of the scar
+       laid at generation. A message, not a letter, like the plain opening front. {0} is a compass word (RM_Compass*). -->
+  <RM_YesterdayFireMessage>Smoke to the {0}: yesterday's grass fire is still burning along the edge of its scar.</RM_YesterdayFireMessage>
 
   <!-- The burn nearing home (MapComponent_BurnLine.WatchApproach). {0} cells, {1} a compass word. -->
   <RM_WithersUnderRoof>Withering: it needs open sky.</RM_WithersUnderRoof>

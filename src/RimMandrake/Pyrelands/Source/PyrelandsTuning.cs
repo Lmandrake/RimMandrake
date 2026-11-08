@@ -186,6 +186,69 @@ namespace RimMandrake.Pyrelands
         /// when no lawful cell takes); past it the map is no longer fresh and the opening front is dropped. One hour.</summary>
         public const int OpeningFrontWindowTicks = 2500;
 
+        // Yesterday's fire (PyrelandsYesterdayFire, 2026-11-07): on map s the 5-cell opening line lit in thick grass and read
+        // as a camp fire, with no trail behind it. The map is now generated with a half-disc scar on one edge and the opening
+        // front lights along its leading arc. Conductor brief: radius ~35-50, front at least ~70 cells from the map centre
+        // and the landing spot, away from corners and rock, the arc lit enough to read as a line but not every cell.
+
+        /// <summary>The scar's nominal radius, rolled per map; its ragged edge reaches up to YesterdayFireRagged further.</summary>
+        public const float YesterdayFireMinRadius = 35f;
+        public const float YesterdayFireMaxRadius = 50f;
+
+        /// <summary>Below this the scar is not built (a small map has no room 70 cells from its centre): the opening front
+        /// falls back to its plain line. [INVENTED]</summary>
+        public const float YesterdayFireFloorRadius = 20f;
+
+        /// <summary>The front's farthest ragged reach stays this far from the map centre and from the landing spot.</summary>
+        public const float YesterdayFireFrontClearance = 70f;
+
+        /// <summary>How far, as a share of the radius, the noise pushes the edge in or out at a bearing. [INVENTED]</summary>
+        public const float YesterdayFireRagged = 0.22f;
+
+        /// <summary>Perlin frequency of the edge's raggedness along the arc: about one bulge per 12 cells of a 45-cell arc
+        /// (2 pi 45 x 0.08 = 23 per turn) before the finer octaves. [INVENTED]</summary>
+        public const double YesterdayFireEdgeFrequency = 0.08;
+
+        /// <summary>The burn's age where it started (the map edge) and at its front: about the last day. A new game's scar is
+        /// stamped at tick 0 throughout (RM_BurnKernel.ScarStampTick). [INVENTED]</summary>
+        public const int YesterdayFireOldestAgeTicks = 45000;
+        public const int YesterdayFireYoungestAgeTicks = 1250;
+
+        /// <summary>The arc is the leading edge: bearings within 60 degrees of the inward normal (cos 60 = 0.5); the flanks
+        /// running back to the map edge stay quiet char.</summary>
+        public const float YesterdayFireArcMinCos = 0.5f;
+
+        /// <summary>One fire per second arc cell at least, and at most this many fires: a 45-cell scar's arc holds about 50-60
+        /// grass cells, so about 25-30 fires, three scheduled fronts' worth. [INVENTED]</summary>
+        public const int YesterdayFireArcStride = 2;
+        public const int YesterdayFireArcFireCap = 32;
+
+        /// <summary>The scar's age you can see: where it started, YesterdayFireSproutChance of its cells have re-sprouted young
+        /// grass (ember-grass and quickgrass at the biome's own wild ratio, growth between the two bounds), falling straight to
+        /// none at YesterdayFireSproutEndDepth, so the char right behind the front is bare. Conductor brief: "a scar ~0.75 day
+        /// old held about 15% of its cells re-sprouted (small grass, growth ~0.05-0.2)" in ordinary play.</summary>
+        public const float YesterdayFireSproutChance = 0.15f;
+        public const float YesterdayFireSproutEndDepth = 0.6f;
+        public const float YesterdayFireSproutGrowthMin = 0.05f;
+        public const float YesterdayFireSproutGrowthMax = 0.2f;
+
+        /// <summary>Scorch-fruit pods laid on the young part of the scar (depth from the edge at least YesterdayFireYoungDepth);
+        /// the burn's landing rule (FruitLandingLegal) and the map cap (scorchFruitMapCap) still apply. "A few". [INVENTED]</summary>
+        public const int YesterdayFirePods = 4;
+        public const float YesterdayFireYoungDepth = 0.7f;
+
+        /// <summary>Site search: candidate centres per map edge, along the middle of it (away from the corners), cells sampled
+        /// in each half-disc, and the share that must be burnable ground (not rock, roof or water). [INVENTED]</summary>
+        public const int YesterdayFireSitesPerEdge = 3;
+        public const float YesterdayFireSiteMinAlong = 0.3f;
+        public const float YesterdayFireSiteMaxAlong = 0.7f;
+        public const int YesterdayFireSiteSamples = 64;
+        public const float YesterdayFireSiteMinBurnable = 0.6f;
+
+        /// <summary>Ground this close to water did not burn: the green ring (GenStep_PyrelandsGreenRing's ringReach, 7.5), which
+        /// map t showed green around its ponds, stays green inside a scar too.</summary>
+        public const float YesterdayFireWetReach = 7.5f;
+
         // ---------------------------------------------------------------
         // DEEP_TRIBES_FIRE_RITE_1 — the Deep Tribes come to light it.
         //
@@ -310,8 +373,9 @@ namespace RimMandrake.Pyrelands
         /// extension-carrying race goes to ground. Comfortably wider than a
         /// fire front's own width (FireFrontWidthCells, 9 cells) so the
         /// animal burrows ahead of the line reaching it rather than at the
-        /// last possible cell. [INVENTED]</summary>
-        public const float BurrowDetectionRadius = 15f;
+        /// last possible cell. [INVENTED] 6, was 15 (map t, 2026-11-07): at 15 a herd dove with the front a quarter-day off
+        /// and sat out of sight for hours; MapComponent_BurnLine now also pulls a grazing or sleeping burrower down.</summary>
+        public const float BurrowDetectionRadius = 6f;
 
         /// <summary>PyrelandsWetRoots: degrees a plant on WATERED ash-field ground is spared when its heat growth factor is read.
         /// At the biome's 53.6 C median a vanilla crop's 42-58 C falloff zeroes the growing day; 15 C brings a 45-62 C day

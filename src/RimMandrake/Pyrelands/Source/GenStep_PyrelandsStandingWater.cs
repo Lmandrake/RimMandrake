@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.Noise;
@@ -8,47 +7,28 @@ using Verse.Noise;
 namespace RimMandrake.Pyrelands
 {
     /// <summary>
-    /// The rare water, never none. Standing water here comes only from the biome's noise patch maker (water where the noise
-    /// passes 1.0), and some maps never pass it: map `n` (2026-11-07, 38 C) had no water, no mud and 0.3% rich soil. Every
-    /// colonist carries FlowWorks thirst (empty in about 0.6 days at 40 C, dead about 3 days later) and food gives no water,
-    /// so that landing killed its colony. The cast's thirst (owner, 2026-11-07: "occasionally increase their density near the
-    /// rare water") had nowhere to send it either.
+    /// The rare water, as the map rolled it. Standing water here comes only from the biome's noise patch maker (water where
+    /// the noise passes 1.0), and some maps never pass it (map `n`, 2026-11-07: no water at all). That is a correct map, not
+    /// a defect: the owner (2026-11-07) "No guarantee. It is absolutely not ok to assume you can appear on these harsh maps and
+    /// be ok." A colony that lands dry walks to another map; nothing here digs a pond or sinks a well.
     ///
-    /// Right after Terrain (210), in four passes:
-    /// 1. Ragged shores on every pond. The patch maker's contour is a smooth noise level (frequency 0.012), and snapped to
-    ///    whole cells it drew as long 45-degree staircases at play zoom (map s, 2026-11-07); vanilla fades a shore by only half
-    ///    a cell, so the outline itself has to be broken at the 1-2 cell scale.
-    /// 2. A map still holding fewer than MinWaterCells water cells gets two or three small ponds on the ash away from the
-    ///    edges, rock and the landing spot, and their shores get the same ragging. A map the noise already watered is left be.
-    /// 3. One ring for every pond: a thin mud margin (none on firm stretches), a ragged rich-soil band, then deep ash.
-    /// 4. Firm stretches of any mud left that no pond owns.
+    /// Right after Terrain (210), in three passes over whatever water there is:
+    /// 1. Ragged shores. The patch maker's contour is a smooth noise level (frequency 0.012), and snapped to whole cells it
+    ///    drew 45-degree staircases (map s) and then long straight sides like a rectangular pool (map t, 2026-11-07).
+    /// 2. One ring for every pond: a thin mud margin (none on firm stretches), a ragged rich-soil band, then deep ash.
+    /// 3. Firm stretches of any mud left that no pond owns.
     /// </summary>
     public class GenStep_PyrelandsStandingWater : GenStep
     {
-        public int minWaterCells = 150;
-        public IntRange pondCount = new IntRange(2, 3);
-        public FloatRange pondRadius = new FloatRange(4.5f, 7f);
-        public int edgeMargin = 20;
-        public int centreClear = 16;
-        public int pondSpacing = 55;
-
         public override int SeedPart => 1462093117;
 
         public override void Generate(Map map, GenStepParams parms)
         {
             if (!PyrelandsMechanicsGate.On) return;
-            // No deep water: its seam with shallow draws as hard whole-cell blocks (q_pond_h3); a pan is shallow throughout.
-            TerrainDef deep = TerrainDefOf.WaterShallow, shallow = TerrainDefOf.WaterShallow, mud = TerrainDefOf.Mud;
+            TerrainDef shallow = TerrainDefOf.WaterShallow, mud = TerrainDefOf.Mud;
             TerrainDef rich = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ground_SoilRich") ?? TerrainDefOf.Soil;
             TerrainDef ash = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_FE_Ash_Deep");
-            RaggedShores(map, shallow, mud, null);
-            // Counted after the ragging (it moves a pond's area by a few percent either way), so the guarantee holds on what
-            // the map actually ends with.
-            if (WaterCells(map) < minWaterCells)
-            {
-                List<CellRect> dug = DigPonds(map, deep, shallow, mud, rich);
-                if (dug.Count > 0) RaggedShores(map, shallow, mud, dug);
-            }
+            RaggedShores(map, shallow, mud);
             var bank = new Perlin(0.07, 2.0, 0.5, 2, Rand.Int, QualityMode.Medium);
             bool[] ringed = ReRing(map, shallow, mud, rich, ash, bank);
             FirmBanks(map, mud, rich, bank, ringed);
@@ -58,15 +38,11 @@ namespace RimMandrake.Pyrelands
         // ── 1. ragged shores ────────────────────────────────────────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Moves every standing-water shore by up to about two cells: a cell within ShoreBand of the shore is water where its
-        /// signed distance to the shore (negative in the water) plus ShoreAmplitude times a fine noise falls below zero, so the
-        /// edge wanders on the noise's 3-cell grain instead of the contour's straight steps. Then three clean-ups, each judged on
-        /// the offline prototype (shore_proto.py, 2026-11-07): a cell with three or four of its four sides the other kind flips
-        /// (no one-cell spikes or notches), water pools under MinPool cells become land, and land isles under MinIsle cells with
-        /// water on every side become water. Only shallow standing water and soft ground move; rivers, rock, rock floor and
-        /// anything built stay. areas null means the whole map. Water given up turns to mud; ReRing decides what it ends as.
+        /// Redraws every standing-water shore (PyrelandsShoreShape does the grid work). Only shallow standing water and soft
+        /// ground move; rivers, rock, rock floor and anything built stay. Water given up turns to mud; ReRing decides what it
+        /// ends as.
         /// </summary>
-        private static void RaggedShores(Map map, TerrainDef shallow, TerrainDef mud, List<CellRect> areas)
+        private static void RaggedShores(Map map, TerrainDef shallow, TerrainDef mud)
         {
             CellIndices ci = map.cellIndices;
             TerrainGrid g = map.terrainGrid;
@@ -80,43 +56,13 @@ namespace RimMandrake.Pyrelands
                 if (t != shallow && t != mud && !Writable(t)) continue;
                 IntVec3 c = ci.IndexToCell(i);
                 if (c.GetEdifice(map) != null) continue;
-                if (areas != null && !areas.Any(r => r.Contains(c))) continue;
                 free[i] = true;
             }
-            float[] toWater = Distance(sx, sz, water);
-            var land = new bool[n];
-            for (int i = 0; i < n; i++) land[i] = !water[i];
-            float[] toLand = Distance(sx, sz, land);
-
-            var grain = new Perlin(ShoreFrequency, 2.0, 0.5, 2, Rand.Int, QualityMode.Medium);
-            var signed = new float[n];
-            var wet = (bool[])water.Clone();
-            for (int i = 0; i < n; i++)
-            {
-                signed[i] = water[i] ? 0.5f - toLand[i] : toWater[i] - 0.5f;
-                if (!free[i] || Math.Abs(signed[i]) > ShoreBand) continue;
-                IntVec3 c = ci.IndexToCell(i);
-                wet[i] = signed[i] + ShoreAmplitude * (float)grain.GetValue(c.x, 0, c.z) < 0f;
-            }
-
-            var flips = new List<int>();
-            for (int pass = 0; pass < CleanPasses; pass++)
-            {
-                flips.Clear();
-                for (int i = 0; i < n; i++)
-                {
-                    if (!free[i] || Math.Abs(signed[i]) > ShoreBand + 1f) continue;
-                    int x = i % sx, z = i / sx, other = 0;
-                    if (x > 0 && wet[i - 1] != wet[i]) other++;
-                    if (x < sx - 1 && wet[i + 1] != wet[i]) other++;
-                    if (z > 0 && wet[i - sx] != wet[i]) other++;
-                    if (z < sz - 1 && wet[i + sx] != wet[i]) other++;
-                    if (other >= 3) flips.Add(i);
-                }
-                foreach (int i in flips) wet[i] = !wet[i];
-            }
-            DropSmall(sx, sz, wet, free, true, MinPool, false);
-            DropSmall(sx, sz, wet, free, false, MinIsle, true);
+            int seed = Rand.Int;
+            var grain = new Perlin[PyrelandsShoreShape.LayerFrequency.Length];
+            for (int l = 0; l < grain.Length; l++)
+                grain[l] = new Perlin(PyrelandsShoreShape.LayerFrequency[l], 2.0, 0.5, 2, seed + 7 * l, QualityMode.Medium);
+            bool[] wet = PyrelandsShoreShape.Shape(sx, sz, water, free, (l, x, z) => (float)grain[l].GetValue(x, 0, z), seed);
 
             for (int i = 0; i < n; i++)
             {
@@ -125,59 +71,10 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        /// <summary>
-        /// Flips every 4-connected patch of kind (wet true = water) smaller than minSize to the other kind, when all of it is
-        /// free to change; with enclosed, only a patch whose every outside side is the other kind (an isle, not a cape).
-        /// </summary>
-        private static void DropSmall(int sx, int sz, bool[] wet, bool[] free, bool kind, int minSize, bool enclosed)
-        {
-            int n = wet.Length;
-            var seen = new bool[n];
-            var patch = new List<int>();
-            var queue = new Queue<int>();
-            for (int s = 0; s < n; s++)
-            {
-                if (seen[s] || wet[s] != kind) continue;
-                patch.Clear();
-                bool movable = true, shut = true;
-                seen[s] = true;
-                queue.Enqueue(s);
-                while (queue.Count > 0)
-                {
-                    int i = queue.Dequeue();
-                    patch.Add(i);
-                    movable &= free[i];
-                    int x = i % sx, z = i / sx;
-                    for (int k = 0; k < 4; k++)
-                    {
-                        int nx = x + (k == 0 ? 1 : k == 1 ? -1 : 0), nz = z + (k == 2 ? 1 : k == 3 ? -1 : 0);
-                        if (nx < 0 || nz < 0 || nx >= sx || nz >= sz) { shut = false; continue; }
-                        int j = nz * sx + nx;
-                        if (wet[j] != kind) continue;
-                        if (seen[j]) continue;
-                        seen[j] = true;
-                        queue.Enqueue(j);
-                    }
-                }
-                if (patch.Count >= minSize || !movable || (enclosed && !shut)) continue;
-                foreach (int i in patch) wet[i] = !kind;
-            }
-        }
-
-        /// <summary>Fine shore noise, cycles per cell: about a 3-cell grain, the scale of the bays and points at play zoom.</summary>
-        public const double ShoreFrequency = 0.30;
-        /// <summary>How far the noise moves the shore, in cells; a Perlin field rarely passes +-1.2, so about two cells at most.</summary>
-        public const float ShoreAmplitude = 1.7f;
-        /// <summary>Only cells this close to the old shore (in cells) may change side.</summary>
-        public const float ShoreBand = 2.5f;
-        /// <summary>A pool of fewer cells than this reads as a puddle speck, not a pond, and becomes land.</summary>
-        public const int MinPool = 6;
-        /// <summary>An isle of fewer cells than this reads as a speck in the water and goes under.</summary>
-        public const int MinIsle = 6;
-        /// <summary>Majority clean-up passes on the shore and on the rich band's outer edge.</summary>
+        /// <summary>Majority clean-up passes on the rich band's outer edge.</summary>
         public const int CleanPasses = 2;
 
-        // ── 3. the ring ─────────────────────────────────────────────────────────────────────────────────────────────────
+        // ── 2. the ring ─────────────────────────────────────────────────────────────────────────────────────────────────
 
         /// <summary>
         /// One ring per pond, drawn by distance to the water. The patch maker's ring was wide, smooth mud (0.90-1.00 of its
@@ -186,7 +83,7 @@ namespace RimMandrake.Pyrelands
         /// noise says firm (about three stretches in ten, in runs several cells long) so the grass and FlowWorks canals reach
         /// the water there (FlowWorks will neither dig Mud nor pass water through it); then rich soil out to a ragged BandMin-
         /// BandMax cells further; then deep ash. Every mud or rich-soil cell joined to the water beyond that band (the patch
-        /// maker's old ring, a dug pond's own ring) goes back to deep ash. Returns the cells it decided, so FirmBanks leaves them.
+        /// maker's old ring) goes back to deep ash. Returns the cells it decided, so FirmBanks leaves them.
         /// </summary>
         private static bool[] ReRing(Map map, TerrainDef shallow, TerrainDef mud, TerrainDef rich, TerrainDef ash, Perlin bank)
         {
@@ -195,7 +92,7 @@ namespace RimMandrake.Pyrelands
             int sx = map.Size.x, sz = map.Size.z, n = ci.NumGridCells;
             var water = new bool[n];
             for (int i = 0; i < n; i++) water[i] = g.TerrainAt(i) == shallow;
-            float[] d = Distance(sx, sz, water);
+            float[] d = PyrelandsShoreShape.Distance(sx, sz, water);
 
             // The old ring: mud and rich soil joined (8-way) to the water.
             var old = new bool[n];
@@ -300,14 +197,14 @@ namespace RimMandrake.Pyrelands
         /// <summary>How much fine noise roughens a firm stretch's ends, so a firm bank does not start on a straight line.</summary>
         public const double FirmGrain = 0.25;
 
-        // ── 4. firm banks of unowned mud ────────────────────────────────────────────────────────────────────────────────
+        // ── 3. firm banks of unowned mud ────────────────────────────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Firm stretches of bank. Every pond, the noise ponds and the dug ones alike, came ringed all the way round in vanilla
-        /// Mud, and FlowWorks will neither dig Mud (it slides back) nor pass water through it, so no canal could ever reach the
-        /// water and a watered strip of ash was out of a player's reach (map p, 2026-11-07). ReRing now draws the firm stretches
-        /// of every pond's own ring from this same noise; this pass covers the mud no pond owns (the patch maker's mud where
-        /// its noise reached 0.90 but never 1.0, and puddles RaggedShores filled), cells ReRing decided are skipped.
+        /// Firm stretches of bank. Every pond came ringed all the way round in vanilla Mud, and FlowWorks will neither dig Mud
+        /// (it slides back) nor pass water through it, so no canal could ever reach the water and a watered strip of ash was
+        /// out of a player's reach (map p, 2026-11-07). ReRing now draws the firm stretches of every pond's own ring from this
+        /// same noise; this pass covers the mud no pond owns (the patch maker's mud where its noise reached 0.90 but never 1.0,
+        /// and puddles RaggedShores filled), cells ReRing decided are skipped.
         /// </summary>
         private static void FirmBanks(Map map, TerrainDef mud, TerrainDef rich, Perlin bank, bool[] ringed)
         {
@@ -325,62 +222,7 @@ namespace RimMandrake.Pyrelands
         /// too little mud once the ring's margin itself was thinned to 1-2 cells: the prototype's shores went 46% rich).</summary>
         public const double FirmBankNoise = 0.2;
 
-        // ── 2. dug ponds ────────────────────────────────────────────────────────────────────────────────────────────────
-
-        /// <summary>Digs the ponds and returns each one's reach, for RaggedShores.</summary>
-        private List<CellRect> DigPonds(Map map, TerrainDef deep, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
-        {
-            int wanted = pondCount.RandomInRange;
-            var centres = new List<IntVec3>();
-            var reaches = new List<CellRect>();
-            IntVec3 mid = map.Center;
-            for (int tries = 0; tries < 400 && centres.Count < wanted; tries++)
-            {
-                float r = pondRadius.RandomInRange;
-                var c = new IntVec3(Rand.RangeInclusive(edgeMargin, map.Size.x - 1 - edgeMargin), 0,
-                    Rand.RangeInclusive(edgeMargin, map.Size.z - 1 - edgeMargin));
-                if (c.DistanceTo(mid) < centreClear + r * 2f) continue;
-                bool apart = true;
-                foreach (IntVec3 o in centres) apart &= c.DistanceTo(o) >= pondSpacing;
-                if (!apart || !SiteFits(map, c, r)) continue;
-                Dig(map, c, r, deep, shallow, mud, rich);
-                centres.Add(c);
-                int reach = (int)Math.Ceiling(Math.Min(r * 2.4f, GenRadial.MaxRadialPatternRadius - 1f));
-                reaches.Add(CellRect.CenteredOn(c, reach).ClipInsideMap(map));
-            }
-            if (centres.Count < wanted)
-            {
-                Log.Warning("[RimMandrake.Pyrelands] standing water: dug " + centres.Count + " of " + wanted
-                            + " ponds; the map had no room on open ash for the rest.");
-            }
-            return reaches;
-        }
-
-        private static int WaterCells(Map map)
-        {
-            int n = 0;
-            TerrainGrid g = map.terrainGrid;
-            for (int i = 0; i < map.cellIndices.NumGridCells; i++)
-            {
-                TerrainDef t = g.TerrainAt(i);
-                if (t != null && t.IsWater) n++;
-            }
-            return n;
-        }
-
-        /// <summary>Open, soft ground all the way out to the rich-soil ring, and no rock anywhere near it.</summary>
-        private static bool SiteFits(Map map, IntVec3 c, float r)
-        {
-            int soft = 0, all = 0;
-            foreach (IntVec3 x in GenRadial.RadialCellsAround(c, Math.Min(r * 2.4f, GenRadial.MaxRadialPatternRadius - 1f), true))
-            {
-                if (!x.InBounds(map)) return false;
-                if (x.GetEdifice(map) != null) return false;
-                all++;
-                if (Writable(x.GetTerrain(map))) soft++;
-            }
-            return all > 0 && soft >= all * 0.92f;
-        }
+        // ── shared ──────────────────────────────────────────────────────────────────────────────────────────────────────
 
         /// <summary>The ash and the unburned pockets; never rock floor, water or anything built.</summary>
         private static bool Writable(TerrainDef t)
@@ -388,55 +230,428 @@ namespace RimMandrake.Pyrelands
             return t != null && !t.IsWater && (t.defName.StartsWith("RM_FE_Ash") || t.defName.StartsWith("RM_FE_Ground"));
         }
 
-        private static void Dig(Map map, IntVec3 c, float r, TerrainDef deep, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
+        /// <summary>The dev-mode census line: what the parent's live look checks against the design numbers.</summary>
+        private static string ShoreCensus(Map map, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
         {
-            float p1 = Rand.Range(0f, 6.283f), p2 = Rand.Range(0f, 6.283f);
-            float a1 = Rand.Range(0.12f, 0.24f), a2 = Rand.Range(0.06f, 0.16f);
-            float reach = Math.Min(r * 2.4f, GenRadial.MaxRadialPatternRadius - 1f);
-            // Shore grain at a few cells' scale. A smooth wobble snapped to whole cells drew as long straight terraces at play
-            // zoom (map p, 2026-11-07); vanilla only fades a shore half a cell, so the outline itself has to be ragged.
-            var grain = new Perlin(0.28, 2.0, 0.5, 2, Rand.Int, QualityMode.Medium);
-            foreach (IntVec3 x in GenRadial.RadialCellsAround(c, reach, true))
+            TerrainGrid g = map.terrainGrid;
+            int sx = map.Size.x, sz = map.Size.z, n = map.cellIndices.NumGridCells;
+            int water = 0, shore = 0, shoreMud = 0, shoreRich = 0, mudCells = 0, richCells = 0;
+            for (int i = 0; i < n; i++)
             {
-                if (!x.InBounds(map) || x.GetEdifice(map) != null) continue;
-                float dx = x.x - c.x, dz = x.z - c.z;
-                double th = Math.Atan2(dz, dx);
-                float rr = r * (1f + a1 * (float)Math.Sin(2 * th + p1) + a2 * (float)Math.Sin(3 * th + p2));
-                float d = (float)Math.Sqrt(dx * dx + dz * dz) / rr + ShoreGrain * (float)grain.GetValue(x.x, 0, x.z);
-                int ring = Ring(Math.Max(0f, d), r);
-                if (ring < 0) continue;
-                TerrainDef want = ring == 0 ? deep : ring == 1 ? shallow : ring == 2 ? mud : rich;
-                TerrainDef cur = x.GetTerrain(map);
-                if (cur != null && Rank(cur, deep, shallow, mud, rich) <= ring) continue;   // never dry a wetter cell
-                if (cur != null && !Writable(cur) && !cur.IsWater && cur != mud && cur != rich) continue;
-                map.terrainGrid.SetTerrain(x, want);
+                TerrainDef t = g.TerrainAt(i);
+                if (t == shallow) { water++; continue; }
+                if (t == mud) mudCells++;
+                if (t == rich) richCells++;
+                int x = i % sx, z = i / sx;
+                bool edge = (x > 0 && g.TerrainAt(i - 1) == shallow) || (x < sx - 1 && g.TerrainAt(i + 1) == shallow)
+                            || (z > 0 && g.TerrainAt(i - sx) == shallow) || (z < sz - 1 && g.TerrainAt(i + sx) == shallow);
+                if (!edge) continue;
+                shore++;
+                if (t == mud) shoreMud++;
+                if (t == rich) shoreRich++;
+            }
+            return "water " + water + ", mud " + mudCells + ", rich soil " + richCells + "; shore cells " + shore + " (mud "
+                   + shoreMud + ", rich soil " + shoreRich + ")";
+        }
+    }
+
+    /// <summary>
+    /// The shore's shape on plain grids (index z * sizeX + x, as CellIndices), so it runs without a map. Map t (2026-11-07)
+    /// read as rectangular pools with a notch: one fine noise added to the shore's distance moved it a median of half a
+    /// cell, and any smooth noise snapped to cells keeps a straight side wherever the shore runs near a grid axis and the
+    /// noise is near zero. So, as judged on the offline prototype (shore_shape.py, six seeds of patch-maker ponds and
+    /// small round ones): two noise layers draw bays and points, each capped by the pond's own inscribed radius so a small pond is not
+    /// torn apart, with each pond's offset fitted so its area holds; spikes flip, square corners are bevelled, and every
+    /// straight run still longer than MaxRun gets a small bump or notch.
+    /// </summary>
+    internal static class PyrelandsShoreShape
+    {
+        /// <summary>Noise layers, cycles per cell: a 10-cell swing for bays and points, a 4-cell grain on it.</summary>
+        public static readonly double[] LayerFrequency = { 0.10, 0.25 };
+        /// <summary>Each layer's shore move, in cells per standard deviation of its noise.</summary>
+        public static readonly float[] LayerAmplitude = { 1.8f, 1.2f };
+        /// <summary>Each layer's move at most this share of the pond's inscribed radius (0.4 made a 5-cell pond a cross).</summary>
+        public static readonly float[] LayerCap = { 0.3f, 0.25f };
+        /// <summary>Standard deviation of a two-octave Verse Perlin, measured on the prototype's port of it.</summary>
+        public const float NoiseSigma = 0.411f;
+        /// <summary>No cell farther than this (cells) from the old shore changes side.</summary>
+        public const float Band = 5f;
+        /// <summary>A square corner whose two arms run straight this many cells loses its corner cell.</summary>
+        public const int CornerArm = 3;
+        /// <summary>The longest straight shore run left alone; map t's ponds had sides of 8 to 10.</summary>
+        public const int MaxRun = 4;
+        /// <summary>Spike passes before the corner cut; one more follows it.</summary>
+        public const int SpikePasses = 2;
+        /// <summary>A pool of fewer cells than this reads as a puddle speck, not a pond, and becomes land.</summary>
+        public const int MinPool = 6;
+        /// <summary>An isle of fewer cells than this reads as a speck in the water and goes under.</summary>
+        public const int MinIsle = 6;
+
+        private const float Far = 1e9f, Diag = 1.41421356f;
+
+        /// <summary>The new wet grid. free: cells allowed to change; grain(layer, x, z): that layer's Perlin at the cell.</summary>
+        public static bool[] Shape(int sx, int sz, bool[] water, bool[] free, Func<int, int, int, float> grain, int seed)
+        {
+            int n = sx * sz;
+            var wet = (bool[])water.Clone();
+            int[] pond = Ponds(sx, water, out int count);
+            if (count == 0) return wet;
+            float[] toWater = Distance(sx, sz, water);
+            var land = new bool[n];
+            for (int i = 0; i < n; i++) land[i] = !water[i];
+            float[] toLand = Distance(sx, sz, land);
+            var radius = new float[count];
+            for (int i = 0; i < n; i++) if (pond[i] >= 0) radius[pond[i]] = Math.Max(radius[pond[i]], toLand[i]);
+            int[] near = Nearest(sx, sz, water, pond);
+
+            var signed = new float[n];
+            var disp = new float[n];
+            var zone = new bool[n];
+            var mine = new List<int>[count];
+            for (int k = 0; k < count; k++) mine[k] = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                signed[i] = water[i] ? 0.5f - toLand[i] : toWater[i] - 0.5f;
+                if (!free[i] || near[i] < 0) continue;
+                float a = Math.Abs(signed[i]);
+                zone[i] = a <= Band + 1f;
+                if (a > Band) continue;
+                mine[near[i]].Add(i);
+                float r = radius[near[i]], v = 0f;
+                for (int l = 0; l < LayerFrequency.Length; l++)
+                    v += Math.Min(LayerAmplitude[l], LayerCap[l] * r) * grain(l, i % sx, i / sx) / NoiseSigma;
+                disp[i] = v < -Band ? -Band : v > Band ? Band : v;
+            }
+            // Unfitted, the noise moved a small pond's area by up to a quarter; a binary search on each pond's offset
+            // keeps the water its band had.
+            foreach (List<int> cells in mine)
+            {
+                if (cells.Count == 0) continue;
+                int want = 0;
+                foreach (int i in cells) if (water[i]) want++;
+                float lo = -Band, hi = Band;
+                for (int it = 0; it < 20; it++)
+                {
+                    float c = 0.5f * (lo + hi);
+                    int got = 0;
+                    foreach (int i in cells) if (signed[i] + disp[i] + c < 0f) got++;
+                    if (got > want) lo = c; else hi = c;
+                }
+                float off = 0.5f * (lo + hi);
+                foreach (int i in cells) wet[i] = signed[i] + (disp[i] + off) < 0f;
+            }
+
+            for (int p = 0; p < SpikePasses; p++) Despike(sx, sz, wet, zone);
+            CornerCut(sx, sz, wet, zone);
+            Despike(sx, sz, wet, zone);
+            BreakRuns(sx, sz, wet, zone, seed);
+            DropSmall(sx, sz, wet, free, true, MinPool, false);
+            DropSmall(sx, sz, wet, free, false, MinIsle, true);
+            return wet;
+        }
+
+        /// <summary>Every zone cell with three or four of its four sides the other kind flips, all at once.</summary>
+        private static void Despike(int sx, int sz, bool[] wet, bool[] zone)
+        {
+            var flips = new List<int>();
+            for (int i = 0; i < wet.Length; i++) if (zone[i] && Others(sx, sz, wet, i) >= 3) flips.Add(i);
+            foreach (int i in flips) wet[i] = !wet[i];
+        }
+
+        private static int Others(int sx, int sz, bool[] wet, int i)
+        {
+            int x = i % sx, z = i / sx, other = 0;
+            if (x > 0 && wet[i - 1] != wet[i]) other++;
+            if (x < sx - 1 && wet[i + 1] != wet[i]) other++;
+            if (z > 0 && wet[i - sx] != wet[i]) other++;
+            if (z < sz - 1 && wet[i + sx] != wet[i]) other++;
+            return other;
+        }
+
+        /// <summary>A square corner whose arms both run straight CornerArm cells loses its corner cell (a point gives up
+        /// water, a bay takes it), so it reads as a bevel. Judged all at once on the grid as it stood.</summary>
+        private static void CornerCut(int sx, int sz, bool[] wet, bool[] zone)
+        {
+            var cut = new List<int>();
+            for (int z = 1; z < sz - 1; z++)
+            {
+                for (int x = 1; x < sx - 1; x++)
+                {
+                    int i = z * sx + x;
+                    if (!zone[i]) continue;
+                    bool me = wet[i];
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int dz = k < 2 ? 1 : -1, dx = k % 2 == 0 ? 1 : -1;
+                        // the corner's two outward sides are the other kind, its two inward sides mine
+                        if (wet[i + dz * sx] == me || wet[i + dx] == me) continue;
+                        if (wet[i - dz * sx] != me || wet[i - dx] != me) continue;
+                        bool ok = true;
+                        for (int t = 1; t < CornerArm && ok; t++)
+                        {
+                            int zz = z - dz * t, xx = x - dx * t;
+                            ok = zz >= 0 && zz < sz && xx >= 0 && xx < sx
+                                 && wet[zz * sx + x] == me && wet[zz * sx + x + dx] != me
+                                 && wet[z * sx + xx] == me && wet[(z + dz) * sx + xx] != me;
+                        }
+                        if (ok) { cut.Add(i); break; }
+                    }
+                }
+            }
+            foreach (int i in cut) wet[i] = !wet[i];
+        }
+
+        /// <summary>
+        /// Every straight shore run longer than MaxRun gets a two- or three-cell bump or notch a few cells in from its start,
+        /// whichever keeps the area even, kept only if it leaves no spike and shortens the runs around it. Up to six sweeps,
+        /// since a break can leave a shorter run that is still too long.
+        /// </summary>
+        private static void BreakRuns(int sx, int sz, bool[] wet, bool[] zone, int seed)
+        {
+            int balance = 0;
+            var found = new List<int[]>();
+            var cells = new List<int>();
+            for (int sweep = 0; sweep < 6; sweep++)
+            {
+                found.Clear();
+                for (int v = 0; v < 2; v++)
+                {
+                    bool vert = v == 1;
+                    int lines = vert ? sx + 1 : sz + 1, span = vert ? sz : sx;
+                    for (int line = 0; line < lines; line++)
+                    {
+                        int t = 0;
+                        while (t < span)
+                        {
+                            int o = Edge(sx, sz, wet, vert, line, t);
+                            if (o == 0) { t++; continue; }
+                            int a = t;
+                            while (t < span && Edge(sx, sz, wet, vert, line, t) == o) t++;
+                            if (t - a > MaxRun) found.Add(new[] { v, line, a, t - a, o });
+                        }
+                    }
+                }
+                if (found.Count == 0) return;
+                foreach (int[] f in found)
+                {
+                    bool vert = f[0] == 1;
+                    int line = f[1], a = f[2], len = f[3], o = f[4];
+                    if (RunAt(sx, sz, wet, vert, line, a) != len) continue;   // an earlier break this sweep moved it
+                    double h = Hash01(a + 31 * line, f[0] + 7 * sweep, seed);
+                    int m = 2 + (int)(h * 2.0);
+                    int s = a + 1 + (int)(h * 977.0) % Math.Max(1, Math.Min(MaxRun, len - m - 1));
+                    if (s + m > a + len - 1) s = a + Math.Max(1, len - m - 1);
+                    for (int c = 0; c < 2; c++)
+                    {
+                        bool bump = (c == 0) == (balance <= 0);
+                        // water on the low side (o = +1): a bump wets the high side, a notch dries the low side
+                        int side = bump == (o > 0) ? 1 : 0;
+                        cells.Clear();
+                        for (int t = s; t < s + m; t++)
+                        {
+                            int x = vert ? line - 1 + side : t, z = vert ? t : line - 1 + side;
+                            if (x < 0 || z < 0 || x >= sx || z >= sz || !zone[z * sx + x]) break;
+                            cells.Add(z * sx + x);
+                        }
+                        if (cells.Count < m) continue;
+                        int before = Around(sx, sz, wet, cells);
+                        foreach (int i in cells) wet[i] = !wet[i];
+                        if (!Spiky(sx, sz, wet, cells) && Around(sx, sz, wet, cells) < before)
+                        {
+                            balance += bump ? m : -m;
+                            break;
+                        }
+                        foreach (int i in cells) wet[i] = !wet[i];
+                    }
+                }
             }
         }
 
-        /// <summary>How far the shore grain moves a band edge, as a share of the pond's radius.</summary>
-        public const float ShoreGrain = 0.16f;
-
-        /// <summary>0 deep water (big ponds only), 1 shallow water, 2 mud, 3 rich soil, -1 outside; d is distance over the
-        /// pond's own radius at that angle. The mud and rich bands only seed the old ring; ReRing redraws them.</summary>
-        public static int Ring(float d, float r)
+        /// <summary>How the shore crosses grid line `line` at t: +1 water on the low side, -1 on the high side, 0 not at
+        /// all. Vertical line x lies between columns x-1 and x, horizontal line z between rows z-1 and z. The map's own
+        /// edge is never a shore.</summary>
+        private static int Edge(int sx, int sz, bool[] wet, bool vert, int line, int t)
         {
-            if (d < 0.4f && r >= 6f) return 0;
-            if (d < 1f) return 1;
-            if (d < 1.4f) return 2;
-            if (d < 2f) return 3;
-            return -1;
+            bool a, b;
+            if (vert)
+            {
+                if (t < 0 || t >= sz || line <= 0 || line >= sx) return 0;
+                a = wet[t * sx + line - 1];
+                b = wet[t * sx + line];
+            }
+            else
+            {
+                if (t < 0 || t >= sx || line <= 0 || line >= sz) return 0;
+                a = wet[(line - 1) * sx + t];
+                b = wet[line * sx + t];
+            }
+            return a == b ? 0 : a ? 1 : -1;
         }
 
-        private static int Rank(TerrainDef t, TerrainDef deep, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
+        /// <summary>Length of the straight run through grid line `line` at t, 0 where the shore does not cross it.</summary>
+        private static int RunAt(int sx, int sz, bool[] wet, bool vert, int line, int t)
         {
-            if (t == deep) return 0;
-            if (t.IsWater) return 1;
-            if (t == mud) return 2;
-            if (t == rich) return 3;
-            return 4;
+            int o = Edge(sx, sz, wet, vert, line, t);
+            if (o == 0) return 0;
+            int a = t, b = t;
+            while (Edge(sx, sz, wet, vert, line, a - 1) == o) a--;
+            while (Edge(sx, sz, wet, vert, line, b + 1) == o) b++;
+            return b - a + 1;
         }
 
-        // ── shared ──────────────────────────────────────────────────────────────────────────────────────────────────────
+        /// <summary>The longest straight run through any grid edge of these cells.</summary>
+        private static int Around(int sx, int sz, bool[] wet, List<int> cells)
+        {
+            int best = 0;
+            foreach (int i in cells)
+            {
+                int x = i % sx, z = i / sx;
+                best = Math.Max(best, Math.Max(RunAt(sx, sz, wet, false, z, x), RunAt(sx, sz, wet, false, z + 1, x)));
+                best = Math.Max(best, Math.Max(RunAt(sx, sz, wet, true, x, z), RunAt(sx, sz, wet, true, x + 1, z)));
+            }
+            return best;
+        }
+
+        /// <summary>True when any of these cells or its four neighbours has three or four sides the other kind.</summary>
+        private static bool Spiky(int sx, int sz, bool[] wet, List<int> cells)
+        {
+            foreach (int i in cells)
+            {
+                int x = i % sx, z = i / sx;
+                if (Others(sx, sz, wet, i) >= 3) return true;
+                if (x > 0 && Others(sx, sz, wet, i - 1) >= 3) return true;
+                if (x < sx - 1 && Others(sx, sz, wet, i + 1) >= 3) return true;
+                if (z > 0 && Others(sx, sz, wet, i - sx) >= 3) return true;
+                if (z < sz - 1 && Others(sx, sz, wet, i + sx) >= 3) return true;
+            }
+            return false;
+        }
+
+        /// <summary>A uniform [0, 1) from (x, z, seed): a 32-bit integer mix, bit for bit the prototype's.</summary>
+        internal static double Hash01(int x, int z, int seed)
+        {
+            unchecked
+            {
+                uint h = (uint)x * 0x27D4EB2Du + (uint)z * 0x165667B1u + (uint)seed * 0x9E3779B9u;
+                h ^= h >> 15;
+                h *= 0x85EBCA6Bu;
+                h ^= h >> 13;
+                h *= 0xC2B2AE35u;
+                h ^= h >> 16;
+                return h / 4294967296.0;
+            }
+        }
+
+        /// <summary>Each water cell's pond (4-connected), numbered in index order; -1 on land.</summary>
+        private static int[] Ponds(int sx, bool[] water, out int count)
+        {
+            int n = water.Length;
+            var pond = new int[n];
+            for (int i = 0; i < n; i++) pond[i] = -1;
+            var queue = new Queue<int>();
+            count = 0;
+            for (int s = 0; s < n; s++)
+            {
+                if (!water[s] || pond[s] >= 0) continue;
+                pond[s] = count;
+                queue.Enqueue(s);
+                while (queue.Count > 0)
+                {
+                    int i = queue.Dequeue(), x = i % sx;
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int j = k == 0 ? (x < sx - 1 ? i + 1 : -1) : k == 1 ? (x > 0 ? i - 1 : -1) : k == 2 ? i + sx : i - sx;
+                        if (j < 0 || j >= n || !water[j] || pond[j] >= 0) continue;
+                        pond[j] = count;
+                        queue.Enqueue(j);
+                    }
+                }
+                count++;
+            }
+            return pond;
+        }
+
+        /// <summary>Each cell's nearest pond, by Distance's chamfer carrying the pond's number.</summary>
+        private static int[] Nearest(int sx, int sz, bool[] water, int[] pond)
+        {
+            int n = sx * sz;
+            var d = new float[n];
+            var near = (int[])pond.Clone();
+            for (int i = 0; i < n; i++) d[i] = water[i] ? 0f : Far;
+            for (int z = 0; z < sz; z++)
+            {
+                for (int x = 0; x < sx; x++)
+                {
+                    int i = z * sx + x;
+                    if (d[i] == 0f) continue;
+                    if (x > 0) Pull(d, near, i, i - 1, 1f);
+                    if (z == 0) continue;
+                    Pull(d, near, i, i - sx, 1f);
+                    if (x > 0) Pull(d, near, i, i - sx - 1, Diag);
+                    if (x < sx - 1) Pull(d, near, i, i - sx + 1, Diag);
+                }
+            }
+            for (int z = sz - 1; z >= 0; z--)
+            {
+                for (int x = sx - 1; x >= 0; x--)
+                {
+                    int i = z * sx + x;
+                    if (d[i] == 0f) continue;
+                    if (x < sx - 1) Pull(d, near, i, i + 1, 1f);
+                    if (z == sz - 1) continue;
+                    Pull(d, near, i, i + sx, 1f);
+                    if (x < sx - 1) Pull(d, near, i, i + sx + 1, Diag);
+                    if (x > 0) Pull(d, near, i, i + sx - 1, Diag);
+                }
+            }
+            return near;
+        }
+
+        private static void Pull(float[] d, int[] near, int i, int j, float step)
+        {
+            if (d[j] + step >= d[i]) return;
+            d[i] = d[j] + step;
+            near[i] = near[j];
+        }
+
+        /// <summary>
+        /// Flips every 4-connected patch of kind (wet true = water) smaller than minSize to the other kind, when all of it is
+        /// free to change; with enclosed, only a patch whose every outside side is the other kind (an isle, not a cape).
+        /// </summary>
+        private static void DropSmall(int sx, int sz, bool[] wet, bool[] free, bool kind, int minSize, bool enclosed)
+        {
+            int n = wet.Length;
+            var seen = new bool[n];
+            var patch = new List<int>();
+            var queue = new Queue<int>();
+            for (int s = 0; s < n; s++)
+            {
+                if (seen[s] || wet[s] != kind) continue;
+                patch.Clear();
+                bool movable = true, shut = true;
+                seen[s] = true;
+                queue.Enqueue(s);
+                while (queue.Count > 0)
+                {
+                    int i = queue.Dequeue();
+                    patch.Add(i);
+                    movable &= free[i];
+                    int x = i % sx, z = i / sx;
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int nx = x + (k == 0 ? 1 : k == 1 ? -1 : 0), nz = z + (k == 2 ? 1 : k == 3 ? -1 : 0);
+                        if (nx < 0 || nz < 0 || nx >= sx || nz >= sz) { shut = false; continue; }
+                        int j = nz * sx + nx;
+                        if (wet[j] != kind) continue;
+                        if (seen[j]) continue;
+                        seen[j] = true;
+                        queue.Enqueue(j);
+                    }
+                }
+                if (patch.Count >= minSize || !movable || (enclosed && !shut)) continue;
+                foreach (int i in patch) wet[i] = !kind;
+            }
+        }
 
         /// <summary>
         /// Distance in cells from every cell to the nearest source cell (0 on a source), by the two-pass chamfer with straight
@@ -445,7 +660,6 @@ namespace RimMandrake.Pyrelands
         /// </summary>
         internal static float[] Distance(int sx, int sz, bool[] source)
         {
-            const float Far = 1e9f, Diag = 1.41421356f;
             int n = sx * sz;
             var d = new float[n];
             for (int i = 0; i < n; i++) d[i] = source[i] ? 0f : Far;
@@ -486,29 +700,6 @@ namespace RimMandrake.Pyrelands
             return d;
         }
 
-        /// <summary>The dev-mode census line: what the parent's live look checks against the design numbers.</summary>
-        private static string ShoreCensus(Map map, TerrainDef shallow, TerrainDef mud, TerrainDef rich)
-        {
-            TerrainGrid g = map.terrainGrid;
-            int sx = map.Size.x, sz = map.Size.z, n = map.cellIndices.NumGridCells;
-            int water = 0, shore = 0, shoreMud = 0, shoreRich = 0, mudCells = 0, richCells = 0;
-            for (int i = 0; i < n; i++)
-            {
-                TerrainDef t = g.TerrainAt(i);
-                if (t == shallow) { water++; continue; }
-                if (t == mud) mudCells++;
-                if (t == rich) richCells++;
-                int x = i % sx, z = i / sx;
-                bool edge = (x > 0 && g.TerrainAt(i - 1) == shallow) || (x < sx - 1 && g.TerrainAt(i + 1) == shallow)
-                            || (z > 0 && g.TerrainAt(i - sx) == shallow) || (z < sz - 1 && g.TerrainAt(i + sx) == shallow);
-                if (!edge) continue;
-                shore++;
-                if (t == mud) shoreMud++;
-                if (t == rich) shoreRich++;
-            }
-            return "water " + water + ", mud " + mudCells + ", rich soil " + richCells + "; shore cells " + shore + " (mud "
-                   + shoreMud + ", rich soil " + shoreRich + ")";
-        }
     }
 
     /// <summary>
@@ -548,7 +739,7 @@ namespace RimMandrake.Pyrelands
             int n = ci.NumGridCells;
             var water = new bool[n];
             for (int i = 0; i < n; i++) water[i] = g.TerrainAt(i)?.IsWater == true;
-            float[] d = GenStep_PyrelandsStandingWater.Distance(map.Size.x, map.Size.z, water);
+            float[] d = PyrelandsShoreShape.Distance(map.Size.x, map.Size.z, water);
             int ring = 0, planted = 0, rerolled = 0, held = 0;
             for (int i = 0; i < n; i++)
             {

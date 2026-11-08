@@ -1052,6 +1052,89 @@ namespace RimMandrake.Pyrelands.Fuzz
                         Check(done && took <= 1, "OpeningFront did not settle, or took more than once, on map " + map);
                     }
                 }
+                {
+                    // Yesterday's fire (PyrelandsYesterdayFire, 2026-11-07): the scar's shape, ages, arc and site rules
+                    float rag = T.F("YesterdayFireRagged"), clr = T.F("YesterdayFireFrontClearance"), floor = T.F("YesterdayFireFloorRadius");
+                    float rMin = T.F("YesterdayFireMinRadius"), rMax = T.F("YesterdayFireMaxRadius");
+                    Check(Math.Abs(RM_BurnKernel.ScarRadius(50f, 125f, 70f, 0.22f, 20f) - 55f / 1.22f) < 1e-3f && RM_BurnKernel.ScarRadius(40f, 125f, 70f, 0.22f, 20f) == 40f
+                        && RM_BurnKernel.ScarRadius(50f, 75f, 70f, 0.22f, 20f) == 0f && RM_BurnKernel.ScarRadius(50f, 10f, 70f, 0.22f, 20f) == 0f, "ScarRadius: a 250 map's edge middle shrinks a 50 to 45, a 150 map gets none");
+                    var yr = new Random(11);
+                    for (int i = 0; i < 2000; i++)
+                    {
+                        float rolled = rMin + (float)yr.NextDouble() * (rMax - rMin), clearance = (float)yr.NextDouble() * 300f;
+                        float r = RM_BurnKernel.ScarRadius(rolled, clearance, clr, rag, floor);
+                        Check(r == 0f || (r >= floor && r <= rolled && r * (1f + rag) <= clearance - clr + 1e-3f), "ScarRadius: reach past the clearance, or over the roll, at " + rolled + "/" + clearance);
+                        float noise = (float)(yr.NextDouble() * 6 - 3), b = RM_BurnKernel.ScarBoundary(rolled, noise, rag);
+                        Check(b >= rolled * (1f - rag) - 1e-3f && b <= rolled * (1f + rag) + 1e-3f, "ScarBoundary outside radius +- ragged at noise " + noise);
+                        float dx = (float)(yr.NextDouble() * 2 - 1), dz = (float)yr.NextDouble();
+                        float bear = RM_BurnKernel.ScarBearing(dx, dz, 0f, 1f), cos = (float)Math.Cos(bear);
+                        Check(Math.Abs(bear) <= Math.PI / 2 + 1e-4, "ScarBearing: a cell on the map side reads past +-pi/2");
+                        Check(Math.Abs(cos - 0.5f) < 1e-3f || RM_BurnKernel.ArcFacing(dx, dz, 0f, 1f, 0.5f) == (cos >= 0.5f) || dx * dx + dz * dz < 1e-10f, "ArcFacing disagrees with ScarBearing's cone at " + dx + "," + dz);
+                    }
+                    Check(RM_BurnKernel.ScarBoundary(40f, 0f, 0.22f) == 40f, "ScarBoundary: no noise is the radius");
+                    Check(RM_BurnKernel.ScarStampTick(100000, 0f, 45000, 1250) == 55000 && RM_BurnKernel.ScarStampTick(100000, 1f, 45000, 1250) == 98750
+                        && RM_BurnKernel.ScarStampTick(100000, -5f, 45000, 1250) == 55000 && RM_BurnKernel.ScarStampTick(100000, 7f, 45000, 1250) == 98750
+                        && RM_BurnKernel.ScarStampTick(0, 0.5f, 45000, 1250) == 0, "ScarStampTick: oldest at the edge, youngest at the front, clamped in depth and at tick 0");
+                    int lastStamp = int.MinValue;
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        int st = RM_BurnKernel.ScarStampTick(30000, i / 100f, 45000, 1250);
+                        Check(st >= lastStamp && st >= 0, "ScarStampTick not monotone (or negative) at depth " + i / 100f);
+                        lastStamp = st;
+                    }
+                    double r59 = 59 * Math.PI / 180, r61 = 61 * Math.PI / 180;
+                    Check(RM_BurnKernel.ArcFacing(0f, 5f, 0f, 1f, 0.5f) && RM_BurnKernel.ArcFacing((float)Math.Sin(r59), (float)Math.Cos(r59), 0f, 1f, 0.5f)
+                        && !RM_BurnKernel.ArcFacing((float)Math.Sin(r61), (float)Math.Cos(r61), 0f, 1f, 0.5f) && !RM_BurnKernel.ArcFacing(1f, 0f, 0f, 1f, 0.5f)
+                        && !RM_BurnKernel.ArcFacing(0f, 0f, 0f, 1f, 0.5f) && !RM_BurnKernel.ArcFacing(0f, -1f, 0f, 1f, 0.5f), "ArcFacing: straight in and 59 deg are arc; 61, 90, behind and the centre are not");
+                    Check(RM_BurnKernel.ArcStride(10, 32, 2) == 2 && RM_BurnKernel.ArcStride(94, 32, 2) == 3 && RM_BurnKernel.ArcStride(5, 32, 0) == 1, "ArcStride table");
+                    for (int n = 0; n <= 2000; n++)
+                    {
+                        int s = RM_BurnKernel.ArcStride(n, 32, 2), fires = 0;
+                        for (int i = s / 2; i < n; i += s) fires++;
+                        Check(s >= 2 && fires <= 32 && (n < 2 || fires >= 1), "ArcStride: " + fires + " fires at stride " + s + " on " + n + " arc cells");
+                    }
+                    Check(!RM_BurnKernel.ScarSiteUsable(0, 0, 0.6f) && !RM_BurnKernel.ScarSiteUsable(38, 64, 0.6f) && RM_BurnKernel.ScarSiteUsable(39, 64, 0.6f)
+                        && RM_BurnKernel.ScarSiteUsable(64, 64, 1f), "ScarSiteUsable: 38.4 of 64 is the 0.6 line");
+                    int[][] sizes = { new[] { 250, 250 }, new[] { 200, 275 } };
+                    foreach (int[] sz in sizes)
+                    {
+                        for (int e = 0; e < 5; e++)
+                        {
+                            foreach (float along in new[] { 0f, 0.3f, 0.5f, 1f, 1.5f })
+                            {
+                                RM_BurnKernel.ScarEdgeFrame(e, along, sz[0], sz[1], out int ex, out int ez, out int enx, out int enz);
+                                bool inb = ex >= 0 && ex < sz[0] && ez >= 0 && ez < sz[1];
+                                int ix = ex + enx, iz = ez + enz, ox = ex - enx, oz = ez - enz;
+                                Check(inb && Math.Abs(enx) + Math.Abs(enz) == 1 && ix >= 0 && ix < sz[0] && iz >= 0 && iz < sz[1]
+                                    && !(ox >= 0 && ox < sz[0] && oz >= 0 && oz < sz[1]), "ScarEdgeFrame: edge " + e + " along " + along + " not on the edge with an inward normal");
+                            }
+                        }
+                    }
+                    RM_BurnKernel.ScarEdgeFrame(0, 0.5f, 250, 250, out int nxc, out int nzc, out int nnx, out int nnz);
+                    Check(nzc == 249 && nnz == -1 && nnx == 0 && (nxc == 124 || nxc == 125), "ScarEdgeFrame: 0 is north (top row, normal south), mid-edge");
+                    Check(Math.Abs(RM_BurnKernel.ScarBearing(0f, 3f, 0f, 1f)) < 1e-6f && Math.Abs(RM_BurnKernel.ScarBearing(1f, 0f, 0f, 1f) + Math.PI / 2) < 1e-5
+                        && Math.Abs(RM_BurnKernel.ScarBearing(-1f, 0f, 0f, 1f) - Math.PI / 2) < 1e-5, "ScarBearing: 0 straight in, -+pi/2 along the edge");
+                    Check(Math.Abs(RM_BurnKernel.ScarSproutChance(0f, 0.15f, 0.6f) - 0.15f) < 1e-6f && Math.Abs(RM_BurnKernel.ScarSproutChance(0.3f, 0.15f, 0.6f) - 0.075f) < 1e-6f
+                        && RM_BurnKernel.ScarSproutChance(0.6f, 0.15f, 0.6f) == 0f && RM_BurnKernel.ScarSproutChance(0.9f, 0.15f, 0.6f) == 0f
+                        && Math.Abs(RM_BurnKernel.ScarSproutChance(-1f, 0.15f, 0.6f) - 0.15f) < 1e-6f && RM_BurnKernel.ScarSproutChance(0.1f, 0.15f, 0f) == 0f, "ScarSproutChance table");
+                    float lastSprout = float.MaxValue;
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        float ch = RM_BurnKernel.ScarSproutChance(i / 100f, 0.15f, 0.6f);
+                        Check(ch <= lastSprout && ch >= 0f, "ScarSproutChance rises with depth at " + i / 100f);
+                        lastSprout = ch;
+                    }
+                    Check(rMin > floor && rMin <= rMax && clr >= 70f && rag > 0f && rag < 0.5f
+                        && RM_BurnKernel.ScarRadius(rMax, 125f, clr, rag, floor) >= rMin && RM_BurnKernel.ScarRadius(rMax, 75f, clr, rag, floor) == 0f
+                        && T.F("YesterdayFireSiteMinAlong") * 249f >= rMax * (1f + rag) && T.F("YesterdayFireSiteMinAlong") < T.F("YesterdayFireSiteMaxAlong")
+                        && T.F("YesterdayFireSiteMaxAlong") < 1f && T.I("YesterdayFireSiteSamples") >= 16 && T.F("YesterdayFireSiteMinBurnable") > 0f && T.F("YesterdayFireSiteMinBurnable") <= 1f
+                        && T.I("YesterdayFireOldestAgeTicks") > T.I("YesterdayFireYoungestAgeTicks") && T.I("YesterdayFireYoungestAgeTicks") > 0 && T.I("YesterdayFireOldestAgeTicks") <= 120000
+                        && T.F("YesterdayFireArcMinCos") > 0f && T.F("YesterdayFireArcMinCos") < 1f && T.I("YesterdayFireArcStride") >= 1 && T.I("YesterdayFireArcFireCap") >= 1
+                        && T.I("YesterdayFirePods") >= 1 && T.F("YesterdayFireYoungDepth") > T.F("YesterdayFireSproutEndDepth") && T.F("YesterdayFireYoungDepth") < 1f
+                        && T.F("YesterdayFireSproutChance") > 0f && T.F("YesterdayFireSproutChance") < 0.5f && T.F("YesterdayFireSproutGrowthMin") > 0f
+                        && T.F("YesterdayFireSproutGrowthMin") < T.F("YesterdayFireSproutGrowthMax") && T.F("YesterdayFireSproutGrowthMax") <= 1f && T.F("YesterdayFireWetReach") > 0f,
+                        "YesterdayFire tuning: a 250 map's edge middle gets a full scar and a 150 map none, the scar clears the corners, ages run edge to front, pods past the sprouts");
+                }
                 Check(RM_BurnKernel.ScheduleTicks(2f, 4f, 0f, 60000) == 120000 && RM_BurnKernel.ScheduleTicks(2f, 4f, 1f, 60000) == 240000, "ScheduleTicks ends");
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
