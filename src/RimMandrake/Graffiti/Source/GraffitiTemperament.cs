@@ -229,7 +229,7 @@ namespace RimMandrake.Graffiti
         private static float Fit(float already, float ambientAlready, float offset, RM_Temper t, bool positive, bool victim, bool ambient)
         {
             float keep = RM_GraffitiKernel.FitBudget(already, offset, MoodBudget(t, positive, victim));
-            if (ambient) keep = System.Math.Min(keep, RM_GraffitiKernel.FitBudget(ambientAlready, offset, RM_GraffitiKernel.AmbientMoodBudget * System.Math.Max(t.good, 0.5f)));
+            if (ambient) keep = System.Math.Min(keep, RM_GraffitiKernel.FitBudget(ambientAlready, offset, RM_GraffitiKernel.AmbientBudget(t.good)));
             return keep;
         }
 

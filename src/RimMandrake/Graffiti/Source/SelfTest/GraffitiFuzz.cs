@@ -90,6 +90,8 @@ namespace RimMandrake.Graffiti.SelfTest
                 Check(before <= grief * RM_GraffitiKernel.GriefEaseShare + 1e-4f, $"eases {before} outweigh half the grief {grief}");
                 Check(RM_GraffitiKernel.EaseShare(0f, 4f, 0f) == 0f, "no grief, no relief");
                 Check(RM_GraffitiKernel.AmbientMoodBudget < RM_GraffitiKernel.GoodMoodBudget, "wall pleasure about nobody is a share of the good budget");
+                float good = (float)(r.NextDouble() * 1.5);
+                Check(RM_GraffitiKernel.AmbientBudget(good) <= RM_GraffitiKernel.AmbientMoodBudget + 1e-5f, $"ordinary wall art past +3 for good {good}");
             });
         }
 

@@ -927,8 +927,17 @@ namespace RimMandrake.Graffiti
         public const float BadMoodBudget = 8f, VictimMoodBudget = 12f, GoodMoodBudget = 6f;
         /// <summary>Inside the good budget, what walls about nobody in particular may add up to: a funny doodle, good work, our sign, a friend's
         /// tag, having left a mark. Owner, card 2026-11-07, after the +4 to +6 most pawns took from ordinary wall art: "Graffiti is flavour, not a
-        /// mood engine ... about +2 to +3 total and cap it." Times the pawn's good, so a sensitive pawn may feel up to half as much again.</summary>
+        /// mood engine ... about +2 to +3 total and cap it." The cap is absolute: a sensitive pawn feels each mark more and so reaches it sooner,
+        /// but never passes it; a cold one stops lower (AmbientBudget). A tribute painted to you, a memorial and a mockery are stories about
+        /// someone, not ordinary wall art, and stand outside it under the good budget.</summary>
         public const float AmbientMoodBudget = 3f;
+
+        /// <summary>The ambient budget for a pawn whose good is `good`: times the pawn's good up to the owner's absolute +3.</summary>
+        public static float AmbientBudget(float good)
+        {
+            float b = AmbientMoodBudget * (good > 0.5f ? good : 0.5f);
+            return b < AmbientMoodBudget ? b : AmbientMoodBudget;
+        }
         /// <summary>A memorial softens grief and never turns it into a gain (owner, card 2026-11-07): everything the walls give a pawn about one
         /// dead pawn adds up to at most this share of the grief that pawn still feels for them.</summary>
         public const float GriefEaseShare = 0.5f;
