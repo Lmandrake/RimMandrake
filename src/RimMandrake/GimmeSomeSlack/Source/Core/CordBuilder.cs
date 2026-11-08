@@ -1038,7 +1038,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 P = PastFace(P, true, na);
                 P = PastFace(P, false, nb);
                 // a short cord that still bends sharp where nothing makes it (never_taut_straight_cord) is laid again whole, fitting to fitting; a cord that passes keeps its lay
-                if (!fell && prm.FairBends && !cutEnd && n == 1 && L <= HopMaxPath && CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0)
+                if (!fell && prm.FairBends && !cutEnd && n == 1 && L <= HopMaxPath && (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0 || CordShapeAudit.FittingsForce(P)))
                     P = HopWhole(w, g, e, C, opt, piece, key, isLive) ?? P;
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
                 if (!fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
@@ -1095,11 +1095,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var doors = new HashSet<Cell>();
             foreach (V2 q in P) if (w.IsDoor(q.Floor)) doors.Add(q.Floor);
             List<V2> boxes = OtherBoxes(g, e);
+            MachineInfo ownA = na.IsMachine ? na.Machine : null, ownB = nb.IsMachine ? nb.Machine : null;
             Func<V2, bool> clear = q =>
             {
                 Cell c = q.Floor;
                 if (!w.IsWalkable(c) || w.IsFurniture(c) || (w.IsDoor(c) && !doors.Contains(c))) return false;
-                foreach (MachineInfo m in w.Machines) if (m.Contains(c)) return false;
+                foreach (MachineInfo m in w.Machines) if (m.Contains(c) || (m != ownA && m != ownB && UnderLampArt(m, c))) return false;
                 foreach (V2 bx in boxes) if (V2.Dist(q, bx) < BoxKeepOff) return false;
                 return w.Clearance(q) >= LayParams.RC;
             };
@@ -1129,6 +1130,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, P, b) == "unforced") { worst = b; break; }
                 if (worst == null) break;
                 double S = worst.Value.S;
+                // a re-lay stays by the cord it replaces: it may round a bend off, not go somewhere new (a ring out over the mast's wires, a loop
+                // round a post or across a neighbour's cord: blind judge p18b, every look)
+                var by = new PtGrid(P, SmoothStray);
                 List<V2> best = null;
                 int bestBad = bad;
                 var why = HopWhy == null ? null : new Dictionary<string, int>();
@@ -1155,16 +1159,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     else if (cum[j1] >= cum[fb] - FitStraight - 0.05) tb = P[fb] - P[j1];
                     if (ta.Len < 1e-9 || tb.Len < 1e-9) continue;
                     double ha = Math.Atan2(ta.Z, ta.X), hb = Math.Atan2(tb.Z, tb.X), old = cum[j1] - cum[j0];
+                    // never a whole ring where there was none: the round bend turns about as far as the old one did
+                    double turnCap = Math.Max(SmoothTurnMin, CordShapeAudit.TotalTurn(P, j0, j1) + SmoothTurnSpare);
+                    int oldX = CrossingsOf(P, j0, j1);
                     foreach (double rad in HopRadii)
                         foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a, ha, b, hb, rad))
                         {
-                            if (dp.Turning > 2.6 * Math.PI || dp.Len > old + 5.0) { No("turn/len"); continue; }
+                            if (dp.Turning > turnCap || dp.Len > old + 5.0) { No("turn/len"); continue; }
                             List<V2> arc = CordShape.Dubins.Sample(a, ha, dp, 0.05);
                             if (arc.Count == 0 || !arc.All(clear)) { No("ground"); continue; }
+                            if (!arc.All(by.Near)) { No("stray"); continue; }
                             var Q = new List<V2>(P.Count + arc.Count);
                             for (int k = 0; k <= j0; k++) Q.Add(P[k]);
                             Q.AddRange(arc);
                             for (int k = j1 + 1; k < P.Count; k++) Q.Add(P[k]);
+                            if (CrossingsOf(Q, j0, j0 + arc.Count) > oldX) { No("cross"); continue; }
                             int nb2 = CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, Q);
                             if (nb2 >= bad) { No("still" + nb2); continue; }
                             if (CordShapeAudit.LongestRod(Q, out _) >= Math.Max(rodNow, CordShapeAudit.RodLen)) { No("rod"); continue; }
@@ -1207,6 +1216,71 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             return g.NodesNear(x0 - NearReach, z0 - NearReach, x1 + NearReach, z1 + NearReach).Where(kv => !kv.Key.Equals(e.A) && !kv.Key.Equals(e.B)).ToList();
         }
+
+        /// <summary>A standing lamp's art stands a cell tall: the cell above its footprint is under the art, so a cord laid there reads as going in at the lamp's foot
+        /// and out at its top (blind judge p18b, Modern_t11).</summary>
+        internal static bool UnderLampArt(MachineInfo m, Cell c) => m.Kind == MachineKind.Lamp && c.X >= m.X0 && c.X < m.X0 + m.W && c.Z == m.Z0 + m.H;
+
+        /// <summary>How many times the stretch Q[i0..i1] crosses the rest of the strand or itself; neighbouring segments are left out.</summary>
+        internal static int CrossingsOf(List<V2> Q, int i0, int i1)
+        {
+            i0 = Math.Max(0, i0); i1 = Math.Min(Q.Count - 1, i1);
+            if (i1 - i0 < 1) return 0;
+            double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
+            for (int i = i0; i <= i1; i++) { x0 = Math.Min(x0, Q[i].X); z0 = Math.Min(z0, Q[i].Z); x1 = Math.Max(x1, Q[i].X); z1 = Math.Max(z1, Q[i].Z); }
+            int n = 0;
+            for (int j = 0; j < Q.Count - 1; j++)
+            {
+                V2 c = Q[j], d = Q[j + 1];
+                if (Math.Max(c.X, d.X) < x0 || Math.Min(c.X, d.X) > x1 || Math.Max(c.Z, d.Z) < z0 || Math.Min(c.Z, d.Z) > z1) continue;
+                for (int i = i0; i < i1; i++)
+                {
+                    if (Math.Abs(i - j) < 3 || (j >= i0 && j < i1 && j < i)) continue;   // a pair inside the stretch is counted once
+                    if (SegCross(Q[i], Q[i + 1], c, d)) n++;
+                }
+            }
+            return n;
+        }
+
+        private static bool SegCross(V2 a, V2 b, V2 c, V2 d)
+        {
+            double rx = b.X - a.X, rz = b.Z - a.Z, sx = d.X - c.X, sz = d.Z - c.Z, den = rx * sz - rz * sx;
+            if (Math.Abs(den) < 1e-12) return false;
+            double t = ((c.X - a.X) * sz - (c.Z - a.Z) * sx) / den, u = ((c.X - a.X) * rz - (c.Z - a.Z) * rx) / den;
+            return t >= 0 && t < 1 && u >= 0 && u < 1;
+        }
+
+        /// <summary>Points of a strand bucketed on a grid, to ask whether a point lies within a reach of any of them.</summary>
+        private sealed class PtGrid
+        {
+            private readonly Dictionary<long, List<V2>> cells = new Dictionary<long, List<V2>>();
+            private readonly double r, r2;
+            private static long K(int x, int z) => ((long)x << 32) ^ (uint)z;
+            internal PtGrid(List<V2> pts, double reach)
+            {
+                r = reach; r2 = reach * reach;
+                foreach (V2 p in pts)
+                {
+                    long k = K((int)Math.Floor(p.X / r), (int)Math.Floor(p.Z / r));
+                    if (!cells.TryGetValue(k, out List<V2> l)) cells[k] = l = new List<V2>();
+                    l.Add(p);
+                }
+            }
+            internal bool Near(V2 q)
+            {
+                int cx = (int)Math.Floor(q.X / r), cz = (int)Math.Floor(q.Z / r);
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dz = -1; dz <= 1; dz++)
+                        if (cells.TryGetValue(K(cx + dx, cz + dz), out List<V2> l))
+                            foreach (V2 p in l) { double ex = p.X - q.X, ez = p.Z - q.Z; if (ex * ex + ez * ez <= r2) return true; }
+                return false;
+            }
+        }
+
+        /// <summary>How far (cells) a re-laid bend may stray from the cord it replaces.</summary>
+        private const double SmoothStray = 0.8;
+        /// <summary>A re-laid bend turns no further than the stretch it replaces did plus <see cref="SmoothTurnSpare"/>, and may always turn <see cref="SmoothTurnMin"/> (a round U).</summary>
+        private const double SmoothTurnMin = 1.15 * Math.PI, SmoothTurnSpare = 0.3 * Math.PI;
 
         /// <summary>How far round an edge's chain of cells its re-lay looks for other boxes, cells.</summary>
         private const int NearReach = 4;
@@ -1273,6 +1347,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (HopEnd A in endsA)
                 foreach (HopEnd B in endsB)
                 {
+                    if (best == null) best = FitCorner(w, g, e, A, B, boxes, piece, na, nb);   // two fittings too close to come round between: one clean small turn, not a hook
+                    if (best != null) { bestCost = 0; break; }
+                }
+            if (best != null) { HopWhy?.Invoke(piece.EndA + "|" + piece.EndB + " CORNER"); return best; }
+            foreach (HopEnd A in endsA)
+                foreach (HopEnd B in endsB)
+                {
                     V2 ea = A.T - A.Arrive * A.Straight, eb = B.T - B.Arrive * B.Straight;
                     double gap = Math.Max(V2.Dist(A.T, B.T), 0.3);
                     double ha = Math.Atan2(-A.Arrive.Z, -A.Arrive.X), hb = Math.Atan2(B.Arrive.Z, B.Arrive.X);
@@ -1326,9 +1407,53 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                     }
                         }
                 }
-            if (why != null) HopWhy(piece.EndA + "|" + piece.EndB + (best != null ? " LAID " + bestCost.ToString("0.00") : " none") + " ends " + endsA.Count + "/" + endsB.Count + " " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value)));
+            if (why != null) HopWhy(piece.EndA + "|" + piece.EndB + (best != null ? " LAID " + bestCost.ToString("0.00") : " none") + " ends " + endsA.Count + "/" + endsB.Count + " " + string.Join(" ", why.Select(kv => kv.Key + ":" + kv.Value))
+                                    + " A " + string.Join(";", endsA.Select(h => h.T + "<" + h.Arrive + "/" + h.Straight.ToString("0.00"))) + " B " + string.Join(";", endsB.Select(h => h.T + "<" + h.Arrive + "/" + h.Straight.ToString("0.00"))));
             return best;
         }
+
+        /// <summary>
+        /// A lead between two fittings that face across a corner too close to come round at the bar's radius (<see cref="CordShapeAudit.FittingsForce"/>: a box on a mast's pole and
+        /// the wall plate beside it, a box and the box a diagonal cell off): the plain Dubins path between their straight bits at the widest of <see cref="FitRadii"/> that turns no
+        /// further than the facings ask, so the cord makes one clean small turn. Laid by the grid it hooked past the corner and back (live, every look's mast foot), and
+        /// <see cref="SmoothBends"/> threw a ring there (blind judge p18b). Null when the fittings do not force a bend or no clean turn lies on clear ground.
+        /// </summary>
+        private static List<V2> FitCorner(CordWorld w, CordGraph g, CordEdge e, HopEnd A, HopEnd B, List<V2> boxes, LaidPiece piece, CordNode na, CordNode nb)
+        {
+            if (na.IsMachine || nb.IsMachine) return null;
+            V2 ea = A.T - A.Arrive * A.Straight, eb = B.T - B.Arrive * B.Straight;
+            double ha = Math.Atan2(-A.Arrive.Z, -A.Arrive.X), hb = Math.Atan2(B.Arrive.Z, B.Arrive.X);
+            var probe = new List<V2> { A.T, ea, eb, B.T };
+            if (V2.Dist(ea, eb) > CordShapeAudit.FitForceLen) return null;
+            foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, CordShapeAudit.FitForceR))
+                if (dp.Turning <= CordShapeAudit.FitForceTurn) return null;
+            double need = Math.Abs(Wrap(hb - ha));
+            Func<V2, bool> clear = q => V2.Dist(q, A.T) < 0.3 || V2.Dist(q, B.T) < 0.3 || (A.Clear(q) && B.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff));
+            foreach (double rad in FitRadii)
+                foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Turning))
+                {
+                    if (dp.Turning > Math.Max(need + FitTurnSpare, Math.PI)) break;   // a corner or a lazy S, never a loop
+                    List<V2> arc = CordShape.Dubins.Sample(ea, ha, dp, 0.05);
+                    if (arc.Count == 0 || !arc.All(clear)) continue;
+                    var P = new List<V2>();
+                    int na2 = Math.Max(1, (int)Math.Round(A.Straight / 0.05)), nb2 = Math.Max(1, (int)Math.Round(B.Straight / 0.05));
+                    for (int q = 0; q < na2; q++) P.Add(A.T - A.Arrive * (A.Straight * q / na2));
+                    P.Add(ea);
+                    P.AddRange(arc);
+                    for (int q = 1; q <= nb2; q++) P.Add(eb + B.Arrive * (B.Straight * q / nb2));
+                    P[P.Count - 1] = B.T;
+                    P = PastFace(P, true, na);
+                    P = PastFace(P, false, nb);
+                    if (CordShapeAudit.Unforced(w, piece.EndA, piece.EndB, P) > 0) continue;
+                    return P;
+                }
+            return null;
+        }
+
+        /// <summary><see cref="FitCorner"/>'s radii, widest first (cells).</summary>
+        private static readonly double[] FitRadii = { 0.6, 0.52, 0.45, 0.38, 0.32 };
+        /// <summary>How much further than the two facings ask <see cref="FitCorner"/>'s turn may go, radians.</summary>
+        private const double FitTurnSpare = 0.3;
 
         /// <summary>Lab trace of <see cref="HopWhole"/>: what each cord laid again whole met.</summary>
         internal static Action<string> HopWhy;

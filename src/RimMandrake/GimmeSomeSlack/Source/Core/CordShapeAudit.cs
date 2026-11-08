@@ -95,6 +95,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z);
         }
 
+        /// <summary>Radians a strand turns through, either way, from point i0 to point i1.</summary>
+        internal static double TotalTurn(List<V2> pts, int i0, int i1)
+        {
+            double t = 0;
+            for (int k = Math.Max(1, i0 + 1); k < Math.Min(pts.Count - 1, i1); k++) t += Math.Abs(SignedTurn(pts[k] - pts[k - 1], pts[k + 1] - pts[k]));
+            return t;
+        }
+
         /// <summary>Every bend of a strand, ends included (<see cref="BendDeg"/> within <see cref="BendArc"/>).</summary>
         internal static List<Bend> Bends(List<V2> pts)
         {
@@ -176,7 +184,53 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             bool socket = kind == "junction" || kind.StartsWith("stub_", StringComparison.Ordinal) || kind == "tangle" || kind == "pile" || kind == "terminal";
             if (socket && b.FromEnd <= SocketReach && NeededTurn(pts, b.NearFirst) >= BendDeg) return "socket";
+            if (Fitted(endA) && Fitted(endB) && b.Sharp <= FitSharpDeg && b.Turn <= EndsTurn(pts) * 180 / Math.PI + FitSpareDeg && FittingsForce(pts)) return "socket";
             return "unforced";
+        }
+
+        /// <summary>A fitting that faces one fixed way: a junction arm, a wall or rock plate, a pile port, a cut end's box. Not a machine's plug (the mod picks its side).</summary>
+        private static bool Fitted(string end)
+        {
+            string k = end == null ? "pile" : end.Split(':')[0];
+            return k == "junction" || k.StartsWith("stub_", StringComparison.Ordinal) || k == "tangle" || k == "pile";
+        }
+
+        /// <summary>Radians between the way a strand leaves its first end (its first 0.15 cell) and the way it goes into its last.</summary>
+        internal static double EndsTurn(List<V2> pts)
+        {
+            double L = Geo.Length(pts);
+            if (L < 0.4) return 0;
+            V2 la = PointAt(pts, 0.15) - pts[0], lb = pts[pts.Count - 1] - PointAt(pts, L - 0.15);
+            return Math.Abs(SignedTurn(la, lb));
+        }
+
+        /// <summary>Two fittings too close to come round between: every way from the one's facing to the other's at <see cref="FitForceR"/> (the radius a quarter turn takes a
+        /// whole cell to make) turns more than <see cref="FitForceTurn"/>, a whole loop. A short lead between them must bend tighter than the bar somewhere or throw a ring, so the
+        /// fittings force its bend (the ruling's "forced bends at a socket edge"), provided it turns no further than the facings ask (<see cref="FitSpareDeg"/>) and is round, not a
+        /// kink (<see cref="FitSharpDeg"/>): a hook is not forced.</summary>
+        internal static bool FittingsForce(List<V2> pts)
+        {
+            if (pts == null || pts.Count < 4) return false;
+            double L = Geo.Length(pts);
+            if (L > FitForceLen || L < 0.4) return false;
+            V2 a = pts[0], b = pts[pts.Count - 1], la = PointAt(pts, 0.15) - a, lb = b - PointAt(pts, L - 0.15);
+            foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a, Math.Atan2(la.Z, la.X), b, Math.Atan2(lb.Z, lb.X), FitForceR))
+                if (dp.Turning <= FitForceTurn) return false;
+            return true;
+        }
+        /// <summary><see cref="FitSharpDeg"/>: the most a forced turn may turn within 0.1 cell either side of its apex (a 0.25-cell radius); a kink is never forced.</summary>
+        public const double FitForceR = 0.64, FitForceTurn = 1.5 * Math.PI, FitForceLen = 3.0, FitSpareDeg = 25, FitSharpDeg = 45;
+
+        private static V2 PointAt(List<V2> pts, double s)
+        {
+            double acc = 0;
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double d = V2.Dist(pts[i - 1], pts[i]);
+                if (acc + d >= s) return d < 1e-12 ? pts[i] : pts[i - 1] + (pts[i] - pts[i - 1]) * ((s - acc) / d);
+                acc += d;
+            }
+            return pts[pts.Count - 1];
         }
         public const double ForceNear = 0.3, DoorNear = 0.6, SocketReach = 0.75, LimpReach = 1.0;
 
