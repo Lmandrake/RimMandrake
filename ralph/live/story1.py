@@ -93,13 +93,14 @@ def brief(p):
 
 def pit_read(B):
     # the report lists the pawns on its own square only: read every square of the pit
-    r, ps, lad = {}, [], 0
+    r, ps, lad, fills = {}, [], 0, []
     for c in PIT:
         r = B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {}
         lad += 1 if r.get("hasLadder") else 0
+        fills.append(r.get("fillRaw", r.get("fill")))
         for p in r.get("pawns") or r.get("occupants") or []:
             ps.append({k: p.get(k) for k in ("id", "downed", "dead", "captured", "held", "lipReachable", "faction")})
-    r["ladderSquares"] = lad
+    r["ladderSquares"] = "%d fill=%s" % (lad, fills)   # pass 7: s9's pit flooded; watch the water
     return r, ps
 
 
@@ -113,6 +114,12 @@ def stage(B, a):
     cells_walls = [c for c in cells_walls if c != (GX, CZ0)]
     for z in range(PZ0, PZ1 + 1):
         cells_walls += [(GX - 2, z), (GX + 2, z)]
+    # pass 7: a player's killbox gap sits in a perimeter wall; without one (s11-s13) the raid walked round the passage and
+    # bashed the compound. FW_PERIM=n: a wall along the passage mouth's row, n cells each side of it
+    perim = int(os.environ.get("FW_PERIM", "0"))
+    for x in range(GX - perim, GX + perim + 1):
+        if abs(x - GX) > 2:
+            cells_walls.append((x, PZ0))
     # a player's colonists would cut the plants under the walls and the pit: clear just those cells
     for c in cells_walls + PIT:
         B.call("jawa/clear_area", rect="%d,%d,1,1" % c, dryRun=False)
@@ -171,8 +178,11 @@ def raid(B, a):
         # south of the passage (jawa/fire_raid takes a spawn centre; fire_incident lets the raid pick any edge)
         sx, sz = a.spawn.split(",")
         sx = GX if sx == "gx" else int(sx)
+        # pass 7: "p-18" = 18 cells south of the passage mouth (s11: from the map edge every raider, far from any enemy,
+        # took vanilla's trash-a-distant-building job on the staged colony's only buildings, its walls, and bypassed the passage)
+        sz = PZ0 + int(sz[1:]) if sz.startswith("p") else int(sz)
         kw = dict(points=a.points, faction=a.faction or "", strategy="ImmediateAttack", arrivalMode="EdgeWalkIn",
-                  spawnCenter="%d,%d" % (sx, int(sz)), dryRun=False)
+                  spawnCenter="%d,%d" % (sx, sz), dryRun=False)
         r = B.call("jawa/fire_raid", **kw) or {}
     else:
         kw = dict(incidentDef="RaidEnemy", points=a.points, forced=True, dryRun=False)
@@ -219,7 +229,8 @@ def watch(B, a):
         if time.time() - t0 > a.wall:
             log("wall-clock budget spent")
             break
-        if near_seen and not [p for p in hs if not p.get("dead") and not p.get("downed")
+        held = {o.get("id") for o in occ or [] if o.get("held")}   # pass 7: the trapped are not the raid
+        if near_seen and not [p for p in hs if not p.get("dead") and not p.get("downed") and p.get("id") not in held
                               and abs(p.get("x", 0) - GX) <= 30 and abs(p.get("z", 0) - PZ) <= 30]:
             log("no hostile on its feet within 30 cells: stop")
             break
