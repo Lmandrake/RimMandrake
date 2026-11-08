@@ -397,7 +397,7 @@ namespace RimMandrake.Graffiti
             Pawn other = reaction == RM_Reaction.Uneasy || reaction == RM_Reaction.Defiant ? null : m.maker;
             bool makerHere = other != null && other.Spawned && other.Map == v.Map && !other.Dead;
             RM_Answer answer = Answers(v)
-                ? RM_GraffitiKernel.AnswerOf(reaction, standing.hot, !v.WorkTagIsDisabled(WorkTags.Violent), makerHere, CanReplyInPaint(v), Rand.Value, temper.lean)
+                ? RM_GraffitiKernel.AnswerOf(reaction, standing.hot, !v.WorkTagIsDisabled(WorkTags.Violent), makerHere, CanReplyInPaint(v) && !m.lastWord && GameComponent_Graffiti.Get?.MockeryDue(v, m.maker) != false, Rand.Value, temper.lean)
                 : RM_Answer.None;
             comp.AddGrudge(v, m, other, answer);
             if (answer != RM_Answer.None) Trace(v.LabelShort + " means to " + answer + (other != null ? " against " + other.LabelShort : ""));
@@ -632,6 +632,8 @@ namespace RimMandrake.Graffiti
         /// <summary>A hand doesn't say the same thing about the same person twice while the first still stands.</summary>
         private static bool AlreadySaid(Map map, ThingDef def, Pawn subject, Pawn painter)
         {
+            // Said lately, even if it's gone from the wall since.
+            if (def == RMGraffitiDefOf.RM_Graffiti_Mockery && GameComponent_Graffiti.Get?.MockeryDue(painter, subject) == false) return true;
             MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(map);
             if (comp == null) return false;
             for (int i = 0; i < comp.marks.Count; i++)
@@ -681,7 +683,7 @@ namespace RimMandrake.Graffiti
 
         /// <summary>A mark is finished: the painter's own feeling, the player's notice. Owner, card 2026-11-07: "All mark makers get a small mood
         /// buff for having made it", and a memorial "helps them feel better".</summary>
-        internal static void Notify_Painted(Filth_Mark mark, Pawn painter)
+        internal static void Notify_Painted(Filth_Mark mark, Pawn painter, string over = null)
         {
             if (painter == null || !RM_GraffitiSettings.socialEnabled) return;
             RM_Meaning meaning = mark.Meaning;
@@ -690,6 +692,7 @@ namespace RimMandrake.Graffiti
             if (painter.Faction == Faction.OfPlayer)
             {
                 if (mark.subject != null && meaning == RM_Meaning.Mockery) GraffitiTemperament.Give(painter, T.RM_Graffiti_StuckItToThem, mark.subject);
+                if (mark.subject != null && meaning == RM_Meaning.Mockery) GameComponent_Graffiti.Get?.NoteMocked(painter, mark.subject);
                 else if (mark.subject != null && meaning == RM_Meaning.Memorial && Grieves(painter, mark.subject)) EaseGrief(painter, mark.subject);
                 else GraffitiTemperament.Give(painter, T.RM_Graffiti_LeftMyMark, null);
                 if (meaning == RM_Meaning.Tribute && mark.subject != null) mark.NoteValued(mark.subject);
@@ -700,10 +703,11 @@ namespace RimMandrake.Graffiti
                     : meaning == RM_Meaning.Tribute ? " painted a tribute to " + mark.SubjectName
                     : meaning == RM_Meaning.Memorial ? " painted a memorial to " + mark.SubjectName
                     : " painted an insult to " + (mark.targetFaction?.Name ?? "a faction");
-                Log(painter, mark.subject, painter.LabelShort + what + " on the wall.");
+                what += " on the wall" + (over != null ? ", over " + over + "'s work." : ".");
+                Log(painter, mark.subject, painter.LabelShort + what);
                 if (RM_GraffitiSettings.socialMessagesEnabled && painter.Faction == Faction.OfPlayer)
                 {
-                    Tell(painter.LabelShort + what + " on the wall.", WallTarget(mark), MessageTypeDefOf.SilentInput, historical: true);
+                    Tell(painter.LabelShort + what, WallTarget(mark), MessageTypeDefOf.SilentInput, historical: true);
                 }
             }
             if (painter.Faction != null && painter.Faction.HostileTo(Faction.OfPlayer) && RM_GraffitiSettings.socialMessagesEnabled
@@ -748,7 +752,7 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
-        internal static void Notify_WentOver(Filth_Mark under, Pawn by)
+        internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false)
         {
             Pawn maker = under.maker;
             if (!RM_GraffitiSettings.socialEnabled || maker == null || maker == by || maker.Dead || maker.needs?.mood == null || maker.Faction != Faction.OfPlayer) return;
@@ -756,7 +760,7 @@ namespace RimMandrake.Graffiti
             GraffitiTemperament.Give(maker, T.RM_Graffiti_WorkDestroyed, by);
             if (by != null) GraffitiTemperament.Give(maker, T.RM_Graffiti_DestroyedMyWork, by);
             Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.");
-            if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned)
+            if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned && !quiet)
             {
                 Tell((by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.", WallTarget(under), MessageTypeDefOf.SilentInput);
             }
@@ -764,8 +768,9 @@ namespace RimMandrake.Graffiti
             if (comp != null && by != null && maker.Spawned && Answers(maker))
             {
                 bool here = by.Spawned && by.Map == maker.Map && !by.Dead;
+                // Gone under a reply: that was the last word, and there's no painting back at it.
                 RM_Answer answer = RM_GraffitiKernel.AnswerOf(RM_Reaction.WorkDestroyed, GraffitiTemperament.IsHot(maker), !maker.WorkTagIsDisabled(WorkTags.Violent), here,
-                    CanReplyInPaint(maker), Rand.Value, GraffitiTemperament.Of(maker).lean);
+                    CanReplyInPaint(maker) && !lastWord && GameComponent_Graffiti.Get?.MockeryDue(maker, by) != false, Rand.Value, GraffitiTemperament.Of(maker).lean);
                 comp.AddGrudge(maker, null, by, answer);
             }
         }
@@ -895,8 +900,17 @@ namespace RimMandrake.Graffiti
             if (fight)
             {
                 game.lastFight = Find.TickManager.TicksGame;
-                painter.interactions.StartSocialFight(by, "RM_Graffiti_MessageWallFight");
-                Log(by, painter, by.LabelShort + " and " + painter.LabelShort + " came to blows over" + where + ".");
+                // StartSocialFight's own message points at the painter alone and says nothing of the wall (live pass 12: a fight the
+                // player was never shown the cause of). Start the same fight here and send our own message, at both of them and the wall.
+                painter.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.SocialFighting, null, forced: false, forceWake: false, causedByMood: false, otherPawn: by);
+                by.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.SocialFighting, null, forced: false, forceWake: false, causedByMood: false, otherPawn: painter);
+                TaleRecorder.RecordTale(TaleDefOf.SocialFight, painter, by);
+                string blows = by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ", and it came to blows.";
+                Log(by, painter, blows);
+                if (PawnUtility.ShouldSendNotificationAbout(by) || PawnUtility.ShouldSendNotificationAbout(painter))
+                {
+                    Tell(blows, about != null ? new LookTargets(new GlobalTargetInfo(by), new GlobalTargetInfo(painter), WallTarget(about).PrimaryTarget) : new LookTargets(by, painter), MessageTypeDefOf.ThreatSmall);
+                }
                 return;
             }
             Log(by, painter, by.LabelShort + " confronted " + painter.LabelShort + " about" + where + ".");

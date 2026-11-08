@@ -304,6 +304,8 @@ namespace RimMandrake.Graffiti
         public int lastFight = -999999;
         public int lastBreak = -999999;
         private Dictionary<int, int> lastMess = new Dictionary<int, int>();
+        // "painter subject" -> when the painter last put a mockery of that person on a wall, by any road (a reply, a grudge, an idle hand).
+        private Dictionary<string, int> lastMocked = new Dictionary<string, int>();
 
         public GameComponent_Graffiti(Game game)
         {
@@ -323,13 +325,30 @@ namespace RimMandrake.Graffiti
             return true;
         }
 
+        /// <summary>One mockery of one person from one painter in MockeryCooldownTicks. Live pass 13: Karen and Lark, each with a fresh
+        /// mockery of the other as soon as the last was gone, seven messages in fourteen hours and no end to it. A feud is a story with
+        /// a few beats (a mockery, the answer, a cross-out, a row), not a drip.</summary>
+        public bool MockeryDue(Pawn painter, Pawn subject)
+        {
+            if (painter == null || subject == null) return true;
+            return !lastMocked.TryGetValue(painter.thingIDNumber + " " + subject.thingIDNumber, out int last)
+                || Find.TickManager.TicksGame - last >= RM_GraffitiKernel.MockeryCooldownTicks;
+        }
+
+        public void NoteMocked(Pawn painter, Pawn subject)
+        {
+            if (painter != null && subject != null) lastMocked[painter.thingIDNumber + " " + subject.thingIDNumber] = Find.TickManager.TicksGame;
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref lastFight, "rmLastFight", -999999);
             Scribe_Values.Look(ref lastBreak, "rmLastBreak", -999999);
             Scribe_Collections.Look(ref lastMess, "rmLastMess", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref lastMocked, "rmLastMocked", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit) lastMess = lastMess ?? new Dictionary<int, int>();
+            if (Scribe.mode == LoadSaveMode.PostLoadInit) lastMocked = lastMocked ?? new Dictionary<string, int>();
         }
     }
 }

@@ -883,6 +883,9 @@ namespace RimMandrake.Graffiti
         public const float ConfrontInsults = 3f, ConfrontFightCap = 0.85f;
         /// <summary>At most one fight the walls caused in this long, for the whole game: a confrontation always happens as a row, a fight is rare.</summary>
         public const int FightCooldownTicks = 15 * 60000;
+
+        /// <summary>A painter's next mockery of the same person waits this long, whatever brings it on (GameComponent_Graffiti.MockeryDue).</summary>
+        public const int MockeryCooldownTicks = 6 * 60000;
         /// <summary>At most one Graffiti break (spree or compulsive cleaning) in this long, for the whole game.</summary>
         public const int BreakCooldownTicks = 15 * 60000;
 

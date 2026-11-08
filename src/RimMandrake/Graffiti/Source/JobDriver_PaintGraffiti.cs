@@ -193,7 +193,7 @@ namespace RimMandrake.Graffiti
                 && GraffitiPool.WidthOf(markDef) > GraffitiJobUtility.BareRoom(cell, Map, spare, spare2) + 0.01f;
             job.SetTarget(TargetIndex.C, LocalTargetInfo.Invalid);
             if (crowded) GraffitiSocial.Trace(pawn.LabelShort + " left " + markDef.defName + "@" + cell + " unfinished: fresh paint beside it");
-            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated);
+            Filth_Mark made = crowded ? null : Filth_Mark.MakeMark(cell, Map, markDef, pawn, subject, targetFaction, ordered: designated, reply: ReplyTo != null);
             markDef = null;
             subject = null;
             targetFaction = null;

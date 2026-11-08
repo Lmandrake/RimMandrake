@@ -68,6 +68,11 @@ namespace RimMandrake.Graffiti
         public bool permanent;
         internal int weatherStep;
 
+        // A reply in paint, painted over the mark it answers: the last word. Whoever it's about may scrub it, cross it out or have it out
+        // with the painter, but not paint back (live pass 13: Karen and Lark painted a mockery over each other's every four hours, seven
+        // messages in seven hours, and nothing ever ended it).
+        public bool lastWord;
+
         // Who held this mark dear: readers it moved, a tribute's subject, a mourner. Somebody who scrubs it in a cleaning fit answers to them.
         private List<int> valuedBy = new List<int>();
 
@@ -283,6 +288,7 @@ namespace RimMandrake.Graffiti
             Scribe_References.Look(ref subject, "rmMarkSubject", saveDestroyedThings: true);
             Scribe_Values.Look(ref placedTick, "rmMarkPlacedTick", -1);
             Scribe_Values.Look(ref permanent, "rmMarkPermanent");
+            Scribe_Values.Look(ref lastWord, "rmMarkLastWord");
             Scribe_Values.Look(ref wallSide, "rmMarkWallSide", RM_GraffitiKernel.NoWall);
             Scribe_Values.Look(ref variant, "rmMarkVariant", -1);
             Scribe_Values.Look(ref pigment, "rmMarkPigment", 0);
@@ -321,9 +327,12 @@ namespace RimMandrake.Graffiti
         // other, not one filth pile growing. "Rival" = any other
         // Filth_Mark whose def differs from markDef; thickening the SAME
         // def (the vanilla FilthMaker behaviour) is left alone.
-        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false)
+        public static Filth_Mark MakeMark(IntVec3 cell, Map map, ThingDef markDef, Pawn maker, Pawn subject = null, Faction targetFaction = null, bool ordered = false, bool reply = false)
         {
             bool repaint = false;
+            // A mark that sends its own message carries the going-over in it: one act, one line.
+            bool tells = subject != null || targetFaction != null;
+            var over = new System.Collections.Generic.List<string>();
             // GPT deep review 2026-10-22 #6: rivals are collected first and destroyed only once the new mark exists, so a
             // refused placement no longer erases the old mark and leaves the wall bare
             var rivals = new System.Collections.Generic.List<Filth_Mark>();
@@ -338,7 +347,11 @@ namespace RimMandrake.Graffiti
                     else if (t is Filth_Mark same && same.def == markDef)
                     {
                         repaint = true;
-                        if (same.maker != null && same.maker != maker) GraffitiSocial.Notify_WentOver(same, maker);
+                        if (same.maker != null && same.maker != maker)
+                        {
+                            GraffitiSocial.Notify_WentOver(same, maker, tells, reply);
+                            if (!over.Contains(same.maker.LabelShort)) over.Add(same.maker.LabelShort);
+                        }
                     }
                 }
                 // Going over reaches along the wall: whatever this mark's drawing will lie on top of, on either face of it.
@@ -365,7 +378,8 @@ namespace RimMandrake.Graffiti
             foreach (Filth_Mark rival in rivals)
             {
                 if (rival.Destroyed) continue;
-                GraffitiSocial.Notify_WentOver(rival, maker);
+                GraffitiSocial.Notify_WentOver(rival, maker, tells, reply);
+                if (rival.maker != null && rival.maker != maker && !over.Contains(rival.maker.LabelShort)) over.Add(rival.maker.LabelShort);
                 rival.SkipCleanNotice();
                 rival.Destroy();
             }
@@ -395,7 +409,9 @@ namespace RimMandrake.Graffiti
             map.mapDrawer.MapMeshDirty(cell, MapMeshFlagDefOf.Things);
             // The room's beauty and impressiveness were worked out when the mark spawned, before its craft was rolled.
             cell.GetRoom(map)?.Notify_ContainedThingSpawnedOrDespawned(mark);
-            GraffitiSocial.Notify_Painted(mark, maker);
+            // Painting a mockery over the one its subject painted of you is a reply, whatever road the brush came by.
+            mark.lastWord = reply || (subject != null && rivals.Any(r => r.subject == maker && r.maker == subject && r.def == RMGraffitiDefOf.RM_Graffiti_Mockery));
+            GraffitiSocial.Notify_Painted(mark, maker, tells && over.Count > 0 ? string.Join(" and ", over) : null);
             return mark;
         }
 
@@ -528,7 +544,7 @@ namespace RimMandrake.Graffiti
             float width = size.x * scale;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
             float fade = Fade;
-            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.45f * fade, 0.04f, 0.85f);
+            float through = Mathf.Clamp(ThroughOf(ext) + craftThrough + 0.2f * fade, 0.04f, 0.85f);
             if (cachedFrameMat == null && cachedIconMat == null)
             {
                 if (cachedHeadMat != null)
@@ -553,11 +569,13 @@ namespace RimMandrake.Graffiti
                 {
                     mat = MaterialPool.MatFrom(g.path, g.Shader, Muddied(Color.white, mud));
                 }
-                if (fade > 0f && !string.IsNullOrEmpty(g.path))
+                if (fade > 0f && mat.mainTexture != null)
                 {
+                    // Worn in patches, not thinned all over (WallPlane.Weathered): what's left is still paint.
                     Color worn = mat.color;
-                    worn.a *= 1f - 0.6f * fade;
-                    mat = MaterialPool.MatFrom(g.path, g.Shader, worn);
+                    worn.a *= 1f - 0.2f * fade;
+                    Texture2D eaten = WallPlane.Weathered(mat.mainTexture, weatherStep, thingIDNumber);
+                    mat = eaten != null ? MaterialPool.MatFrom(new MaterialRequest(eaten, g.Shader, worn)) : MaterialPool.MatFrom(g.path, g.Shader, worn);
                 }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);

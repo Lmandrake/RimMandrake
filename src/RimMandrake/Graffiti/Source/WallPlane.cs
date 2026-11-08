@@ -108,6 +108,95 @@ namespace RimMandrake.Graffiti
             }
         }
 
+        /// <summary>Any texture's pixels, whatever its shape, rows bottom up.</summary>
+        private static Color32[] ReadTexture(Texture tex, out int w, out int h)
+        {
+            w = tex.width;
+            h = tex.height;
+            RenderTexture rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
+            RenderTexture previous = RenderTexture.active;
+            try
+            {
+                Graphics.Blit(tex, rt);
+                RenderTexture.active = rt;
+                var read = new Texture2D(w, h, TextureFormat.RGBA32, false);
+                read.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+                read.Apply(false, false);
+                Color32[] px = read.GetPixels32();
+                UnityEngine.Object.Destroy(read);
+                return px;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(rt);
+            }
+        }
+
+        // ---------------------------------------------------------------- weathered paint
+
+        private static readonly Dictionary<long, Texture2D> WeatheredTex = new Dictionary<long, Texture2D>();
+
+        /// <summary>How far the weather has eaten in at each step (RM_GraffitiKernel.WeatherStep, 1..4): the share of the noise field gone.</summary>
+        private static readonly float[] Eaten = { 0f, 0.22f, 0.38f, 0.53f, 0.68f };
+
+        /// <summary>Paint as the weather leaves it. Live pass 13: a mark late in its life read as faint new paint, a pale ghost, because the
+        /// fade only thinned it. Old paint goes in patches: blotches flake off, rain runs wash it in vertical streaks, and the edges of
+        /// what's left are ragged with grit; what stays is chalkier. The same noise field at every step, eaten further each time, so a mark
+        /// wears the way it began to. Four fields per texture (by mark id), so two weathered stamps of one drawing don't wear alike.</summary>
+        internal static Texture2D Weathered(Texture tex, int step, int id)
+        {
+            if (tex == null || step <= 0) return null;
+            step = Math.Min(step, Eaten.Length - 1);
+            long key = ((long)tex.GetInstanceID() << 8) | ((long)step << 4) | (long)(id & 3);
+            if (WeatheredTex.TryGetValue(key, out Texture2D done)) return done;
+            Texture2D made = null;
+            try
+            {
+                Color32[] px = ReadTexture(tex, out int w, out int h);
+                float seed = 17.3f + (id & 3) * 41.7f;
+                float[] n = new float[px.Length];
+                var sample = new List<float>();
+                for (int y = 0; y < h; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        float u = x / (float)h, v = y / (float)h;
+                        float blot = Mathf.PerlinNoise(seed + u * 3f, seed + v * 3f);
+                        float rag = Mathf.PerlinNoise(seed * 1.3f + u * 13f, seed + v * 13f);
+                        float streak = Mathf.PerlinNoise(seed * 1.7f + u * 26f, seed + v * 2.2f);
+                        float grit = Mathf.PerlinNoise(seed * 2.1f + u * 70f, seed + v * 70f);
+                        int i = y * w + x;
+                        n[i] = 0.4f * blot + 0.2f * rag + 0.2f * streak + 0.2f * grit;
+                        if (px[i].a > 40 && (i % 7) == 0) sample.Add(n[i]);
+                    }
+                }
+                // Spread the field over 0..1 by the paint it actually covers, so a step eats the same share of every drawing.
+                sample.Sort();
+                float lo = sample.Count > 20 ? sample[sample.Count / 20] : 0.3f, hi = sample.Count > 20 ? sample[sample.Count * 19 / 20] : 0.7f;
+                float span = Mathf.Max(hi - lo, 0.05f), t = Eaten[step], chalk = 0.045f * step;
+                for (int i = 0; i < px.Length; i++)
+                {
+                    Color32 c = px[i];
+                    if (c.a == 0) continue;
+                    float m = Mathf.Clamp01((n[i] - lo) / span);
+                    float keep = Mathf.Clamp01((m - t) / 0.04f + 0.5f) * (0.45f + 0.55f * Mathf.Clamp01((m - t - 0.06f) / 0.12f));
+                    float lum = (c.r + c.g + c.b) / 3f;
+                    float pale = lum * 0.85f + 38f;
+                    px[i] = new Color32((byte)Mathf.Lerp(c.r, pale, chalk * 3f), (byte)Mathf.Lerp(c.g, pale, chalk * 3f), (byte)Mathf.Lerp(c.b, pale, chalk * 3f), (byte)(c.a * keep));
+                }
+                made = new Texture2D(w, h, TextureFormat.RGBA32, true) { name = tex.name + "_weathered" + step, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+                made.SetPixels32(px);
+                made.Apply(true, false);
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[Graffiti] couldn't weather " + tex.name + ": " + e.Message, tex.GetInstanceID() ^ 0x57454154);
+            }
+            WeatheredTex[key] = made;
+            return made;
+        }
+
         /// <summary>A luminance profile through the engine's window on one atlas tile: north to south, or west to east, the median of
         /// the middle third at each step. Texture rows run bottom up.</summary>
         private static float[] TileProfile(Color32[] px, int size, int links, bool vertical)
@@ -310,23 +399,44 @@ namespace RimMandrake.Graffiti
                 RenderTexture rt = PortraitsCache.Get(pawn, new Vector2(PortraitPx, PortraitPx), Rot4.South, new Vector3(0f, 0f, 0.3f), 1.28205f, supersample: false, compensateForUIScale: false, healthStateOverride: PawnHealthState.Mobile);
                 Color32[] px = ReadTexture(rt, out int size);
                 float seed = (pawn.thingIDNumber & 1023) * 0.37f;
+                // Live pass 13: the head still read as the game's sprite stuck in the paint, its clean black outline a die-cut edge. Now
+                // it's painted by the same hand as the horns round it: the outline and shadows go to broken black brush, the colours to
+                // a few flat muted tones (the hat and hair still say who it is), and the edge to grit and a little overspray.
+                bool[] paint = new bool[px.Length];
+                for (int i = 0; i < px.Length; i++) paint[i] = px[i].a >= 40;
+                var outPx = new Color32[px.Length];
                 for (int i = 0; i < px.Length; i++)
                 {
-                    Color32 c = px[i];
-                    if (c.a < 40) { px[i] = new Color32(c.r, c.g, c.b, 0); continue; }
                     int x = i % size, y = i / size;
+                    float grit = Mathf.PerlinNoise(seed * 3f + x * 0.55f, seed + y * 0.55f);
+                    if (!paint[i])
+                    {
+                        // Overspray: a faint dark dusting just past the paint's edge.
+                        int near = NearestPaint(paint, size, x, y, 3);
+                        outPx[i] = near > 0 ? new Color32(30, 24, 24, (byte)(70f * (1f - near / 4f) * Mathf.Clamp01(grit * 1.6f - 0.3f))) : new Color32(0, 0, 0, 0);
+                        continue;
+                    }
+                    Color32 c = px[i];
                     float lum = (c.r + c.g + c.b) / 765f;
-                    float band = Mathf.Round(lum * 3.4f) / 3.4f / Mathf.Max(lum, 0.08f);
                     float streak = Mathf.PerlinNoise(seed + x * 0.012f, seed + y * 0.34f);
                     float patch = Mathf.PerlinNoise(seed * 2f + x * 0.045f, seed + y * 0.05f);
                     float keep = Mathf.Clamp01((streak + patch * 0.8f - 0.5f) / 0.3f);
+                    // Ragged at the rim: within two pixels of bare wall, grit decides how much paint caught.
+                    float rim = NearestBare(paint, size, x, y, 2) > 0 ? Mathf.Clamp01(grit * 1.8f - 0.45f) : 1f;
+                    if (lum < 0.2f)
+                    {
+                        outPx[i] = new Color32(30, 24, 24, (byte)(255f * (grit > 0.38f ? 0.92f : 0.55f) * rim));
+                        continue;
+                    }
+                    float band = (Mathf.Round(lum * 2.6f) / 2.6f) / Mathf.Max(lum, 0.08f);
                     float grey = (c.r + c.g + c.b) / 3f;
-                    px[i] = new Color32(
-                        (byte)Mathf.Clamp((grey + (c.r - grey) * 1.15f) * band * 0.92f, 0f, 255f),
-                        (byte)Mathf.Clamp((grey + (c.g - grey) * 1.15f) * band * 0.92f, 0f, 255f),
-                        (byte)Mathf.Clamp((grey + (c.b - grey) * 1.15f) * band * 0.92f, 0f, 255f),
-                        (byte)(255f * (0.55f + 0.45f * keep)));
+                    outPx[i] = new Color32(
+                        (byte)Mathf.Clamp((grey + (c.r - grey) * 0.6f) * band * 0.86f + 6f, 0f, 255f),
+                        (byte)Mathf.Clamp((grey + (c.g - grey) * 0.6f) * band * 0.84f + 4f, 0f, 255f),
+                        (byte)Mathf.Clamp((grey + (c.b - grey) * 0.6f) * band * 0.8f, 0f, 255f),
+                        (byte)(255f * (0.5f + 0.42f * keep) * rim));
                 }
+                px = outPx;
                 made = new Texture2D(size, size, TextureFormat.RGBA32, true) { name = "RM_Graffiti_Portrait_" + pawn.thingIDNumber, filterMode = FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
                 made.SetPixels32(px);
                 made.Apply(true, false);
@@ -340,6 +450,42 @@ namespace RimMandrake.Graffiti
         }
 
         private const int PortraitPx = 128;
+
+        /// <summary>Distance in pixels (1..r) from a bare pixel to the nearest painted one, 0 if none within r.</summary>
+        private static int NearestPaint(bool[] paint, int size, int x, int y, int r)
+        {
+            for (int d = 1; d <= r; d++)
+            {
+                for (int dy = -d; dy <= d; dy++)
+                {
+                    for (int dx = -d; dx <= d; dx++)
+                    {
+                        if (Math.Max(Math.Abs(dx), Math.Abs(dy)) != d) continue;
+                        int xx = x + dx, yy = y + dy;
+                        if (xx >= 0 && yy >= 0 && xx < size && yy < size && paint[yy * size + xx]) return d;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>Distance in pixels (1..r) from a painted pixel to the nearest bare one, 0 if none within r.</summary>
+        private static int NearestBare(bool[] paint, int size, int x, int y, int r)
+        {
+            for (int d = 1; d <= r; d++)
+            {
+                for (int dy = -d; dy <= d; dy++)
+                {
+                    for (int dx = -d; dx <= d; dx++)
+                    {
+                        if (Math.Max(Math.Abs(dx), Math.Abs(dy)) != d) continue;
+                        int xx = x + dx, yy = y + dy;
+                        if (xx < 0 || yy < 0 || xx >= size || yy >= size || !paint[yy * size + xx]) return d;
+                    }
+                }
+            }
+            return 0;
+        }
 
         // ---------------------------------------------------------------- a clean ideoligion icon, painted
 
