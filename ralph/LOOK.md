@@ -1,18 +1,15 @@
-# First look: the grey ground, answered and fixed
+# First look: map t, this build (2026-11-07 evening)
 
-Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are in `old\`.
+Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones, including map s and the grey-ground before/after (`first_look_9`, `first_look_10`), are in `old\`.
 
-- `first_look_9_grey_layers_old_build.png`: your question, settled on the old build by stripping one burned patch layer by layer at play zoom. The blur was not the grass and not the deep ash. It was the ash filth. Vanilla's `Filth_Ash` (x3) and our loose ash (x4) both drew vanilla's soft ash blob, blown up to 3 cells, one blob per point of thickness, so every burned cell sat under a grey fog. Bare deep ash underneath is crisp and warm brown. Its colour is untinted now, so the "double darkening" is gone too. `Filth_LooseGround` no longer appears at all.
-- `first_look_10_grey_ground_before_after.png`: before is the old build; after is this build on a fresh scar on map `p`. Vanilla ash is kept off natural ground. Our loose ash is new crisp art (7 drift shapes at 256 px for 1.5 cells, a mid-light grey), and a fire leaves one drift per cell instead of filling it to the cap.
-- `first_look_11_burn_ring_new_ash.png`: the opening fire on map `p` 3.6 hours in, wide. The ring of flame, the scar inside it with pale ash on dark ground, and scorch-fruit pods.
-- `p_over_t0.png`: map `p` at night, before the fire.
+- `first_look_1_landing.png`: the landing at play zoom on a fresh 50 C map. Orange ember grass and green quickgrass carpet the dark ash, with a few bare ash flats.
+- `first_look_2_pond_green_ring.png`: new this build. Every pond is ringed in green quickgrass on rich soil, with a thin brown mud lip. Before, it was a 4 to 8 cell bare brown band (`old\s_pond_e.png`).
+- `first_look_3_ruin_scorched.png`: a ruin as generated. The floor is charred, the walls and furniture are dark, and ash lies on the floor.
+- `first_look_4_ashfall_6h_and_scar.png`: left, the landing after 6 hours of forced ash fall. Grey banks lie on the bare ash and keep growing (5,149 to 6,794 drifts on the map between hours 2 and 6). Before, nothing showed in the same frame after 8.5 hours. Right, a live fire reaching the pond's green ring, with the new scar ash clustered into heaps and wide bare char between. The old ash was even polka dots (`old\s_scarA_d10.3.png`).
+- `first_look_5_burn_rings_day3_old_build.png`: map s, day 3, unmanaged. Burn rings walk across the map with glowing fronts and dark scars behind. That is the burn line at its best.
 
-**The Conductor's four questions (14:31):**
-1. LOOK.md is rewritten for `first_look_9` to `11`. The fixes are deployed and seen.
-2. The pale hard-edged squares in the old `first_look_1`: **still not identified.** The only ancient concrete on map `p` (a 10x1 strip at 199,92, `p_ancient_concrete.png`) sits inside a scorched ruin and reads dark, not pale. The next pass reads that old map's terrain under the squares.
-3. Grass in the bedroom: nothing sows under a roof. Explosive Growth refuses roofed cells (`RM_MapComponent_ExplosiveGrowth.cs:152,199`). That grass stood there before the walls went up and was never cut, as vanilla allows. On this burning ground it is a fire hazard, though (map `m`'s room burned on day 2.9). Not yet fixed: native grass could die back under a new roof within a day.
-4. `first_look_5`'s stepped brown block: not proven either way. The composite was saved at 12:25, after the edge-fade commit (11:50), but its panels may be older captures. On this build the mud ring round the new pond blends softly (`p_pond_edge.png`).
-
-**New problem:** the pond's **water** draws as flat, stepped blue-grey blocks with hard cell edges (`p_pond_edge.png`). The noise ponds on map `m` looked the same. This is the next thing to fix.
-
-**What I'm least sure about:** up close, the drifts can read a little like camouflage blotches; a smaller drawSize (1.2) may be better. Ash fall now banks into a drift field, but I haven't seen it on screen yet.
+**What I'm least sure about:**
+1. The pond shore is still stepped. The 45° staircase is gone, but the new edge steps in blocky rectangles (`first_look_2`, and `t_pond_t0.png` reads like a square pool). Not fixed yet.
+2. A fresh map still opens with only a small fire somewhere random (map s: a corner), with no scorched trail until about day 2. "Yesterday's fire on arrival" is designed and half built, not in game.
+3. The ash-fall banks are soft-edged grey at this zoom. They read as ash to me, but they may still read as smoke to you.
+4. Black rain is near-black (`old\sky_s_3blackrain.png`). It's plainly not ordinary rain, but you can hardly see your colony under it.
