@@ -8,7 +8,11 @@ Shots are in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`. Older ones are 
 - `first_look_5_pond_shore.png`: map w's pond, with a green ring and a thin mud lip. The shore still steps along the cell grid.
 - `ash_fleck_compare.png`: the next ash cut, not yet in game. Its outlines are unchanged, but the near-black flecks are now soft grey. In each pair the old one is on the left.
 
+- `weather_noon_rain_blackrain_ashfall.png` (new, 2026-11-08): the same grass at day-22 noon under vanilla Rain, then black rain, then ash fall. These are real screen captures at about 47 px a cell. Vanilla's rain and snow overlays never showed on this ground, so black rain used to read only as a darker hour. Black rain now falls as visible dark streaks under its dim brown sky, and ash fall drifts down as pale flakes.
+- The pale gravel pockets in `first_look_2` are now a darker stony brown. This has not been shot yet.
+
 **What I'm least sure about:**
 1. **The ash drifts.** The cut now in game is crisp, not blurry, but GPT read it as "pale pitted crust or lichen" because of its black flecks. The next cut softens those flecks, and it has not been seen in game yet.
 2. **I have no frame that shows an ashwallow domed in the fire.** Four staged herds dove and came through unhurt, but the screenshot draws a pawn at a stale spot unless the camera has been on it.
-3. **The pale gravel pockets** (lower left of `first_look_2`) read like a concrete slab against the dark ash.
+3. **The pale gravel pockets** (lower left of `first_look_2`) read like a concrete slab against the dark ash. I made them darker, but I have not seen them in game yet.
+4. **Frame rate under the new weather.** Superfast ran at about 200 TPS and 16 fps during black rain, against 313 to 360 TPS earlier in the day. I have not yet separated the cost of the weather from other causes.
