@@ -224,9 +224,11 @@ namespace RimMandrake.Graffiti
             {
                 var thoughts = new List<Thought>();
                 p.needs.mood.thoughts.GetAllMoodThoughts(thoughts);
-                float sum = thoughts.Where(t => t.def.defName.StartsWith("RM_Graffiti")).Sum(t => t.MoodOffset());
+                var ours = thoughts.Where(t => t.def.defName.StartsWith("RM_Graffiti")).Select(t => t.MoodOffset()).ToList();
+                float up = ours.Where(o => o > 0f).Sum(), down = ours.Where(o => o < 0f).Sum();
                 float opinion = p.needs.mood.thoughts.memories.Memories.OfType<Thought_MemorySocial>().Where(t => t.def.defName.StartsWith("RM_Graffiti")).Sum(t => System.Math.Abs(t.OpinionOffset()));
-                sb.Append(" " + p.LabelShort + ":" + sum.ToString("+0.0;-0.0;0") + "/" + opinion.ToString("0"));
+                // name:+good/-bad/|opinion|, so a tax (a standing minus) or free mood (a standing plus) shows apart from the net.
+                sb.Append(" " + p.LabelShort + ":" + up.ToString("+0.0;-0.0;0") + "/" + down.ToString("+0.0;-0.0;0") + "/" + opinion.ToString("0"));
             }
             return sb.ToString();
         }

@@ -46,21 +46,28 @@ for i, (t, c) in enumerate([("fat round bubble shapes in a row", "chalk fill, so
 for i, (t, c) in enumerate([("sharp interlocking angular shapes like shattered letters, arrows thrown off them", "rust red, burnt orange, soot black, chalk"), ("huge rounded interlocked shapes with a hard second colour fading through them", "dull blue, lime white, soot black"),
                             ("tall spiky shapes leaning into each other, a crude sun behind", "ochre, oxblood, soot black"), ("flowing ribbon shapes knotting through each other", "oxide green, chalk, dull violet")]):
     add(f"piece_{'abcd'[i]}", F + "Piece", 3, "brush", 0.16, f"A full graffiti piece by someone good, a long wall-burner: {t}, that look like letters but spell nothing. Careful hand, rough materials. Painted with brush and can together: dense coverage, streaky fills, a soft misted glow behind, thin runs falling straight down. " + PIG.format(c=c) + L3)
-# ------ vandal: the ugliest, crudest thing on any wall, and plainly paint someone put there on purpose, never filth.
-VANDAL = ("The ugliest, crudest graffiti on any wall, no skill at all, done in a hurry by someone who wanted to ruin the wall. It is plainly paint put there on purpose: "
-          "bold fat lines of paint in colours that clash horribly, never dirt, never a stain, never scorch, never a smudge, never brown, no speckled grime. "
-          "The colours are dirty and dulled, cheap old paint greyed down by sun and grime, never clean, never cheerful. ")
-HEAVY = "Far too much paint: heavy runs falling straight down from every thick part. "
+# ------ vandal: the ugliest, crudest thing on any wall, and plainly paint someone put there on purpose, never filth. Pass 9: the pass-7 set came out
+# as bold, confident, saturated loops with tidy drips (louder than a tally, not uglier: owner "not sure", GPT "louder, not uglier"). This set is
+# clumsy rather than bold: blotched, starved and over-loaded paint, a hand dragged through it, a grubby fog of overspray, sickly clashing colour.
+VANDAL = ("The ugliest, crudest graffiti on any wall: no skill at all, done in a hurry by someone who wanted to spoil the wall, and it does. It is plainly paint "
+          "put there on purpose, never dirt, never a stain, never scorch, never brown. It is clumsy, not bold: the paint goes on in blotches and splats, far too thick "
+          "in some places and starved and broken in others; the lines wobble, stall into fat blobs where the hand stopped, and double back over themselves; a hand "
+          "was dragged through the wet paint and smeared part of it sideways into a grubby streak; and a dirty fog of fine overspray hangs around all of it. "
+          "The colours fight each other and have gone sickly and dull, cheap old paint greyed by grime: never clean, never cheerful, never pretty, never neat. ")
+HEAVY = "Far too much paint in the blobs: uneven runs falling straight down from them, some long, some short, none tidy. "
 for i, (t, tool, c) in enumerate([
-        ("one huge sloppy over-loaded scribble, a mass of fat round loops and knots scrawled over and over on the spot like a child scribbling out a mistake, no letter shapes, no numbers, "
-         "sprayed far too heavy so the paint pooled", SPRAY, "sour dull bile yellow-green over a fat underlayer of dark oxblood"),
-        ("a crude stick figure sprayed huge and lopsided, sticking its tongue out and showing its bare backside, wobbly limbs, made to offend", SPRAY, "dull bruised violet over a sloppy patch of dusty brick orange"),
-        ("three scrawled tags that spell no letters of any alphabet, sprayed right over each other in three clashing colours until they knot into one muddy tangle", SPRAY, "sour mustard-green, dull bruised violet and dusty brick orange"),
-        ("one giant careless loop of spray swung across the whole picture, a fat line dragged round in big uneven loops and back again", SPRAY, "a dull bruised violet loop over a second loop of sour mustard-green"),
-        ("a crude lopsided leering face sprayed badly, with no circle or outline around it: two uneven eye blobs, one much bigger than the other, a shapeless round dab for a nose "
-         "and a huge wonky grin of uneven teeth with paint running off every tooth. Ugly and stupid, not cute, not a smiley", SPRAY, "dusty brick orange and dull bruised violet"),
-        ("one furious scribble like a seismograph gone mad, a single continuous line hacked back and forth with an over-loaded brush, sharp peaks of wildly different heights and widths "
-         "crossing over themselves into a dense tangle, never forming letters, a second messier scribble dragged over it", BRUSH, "dull bruised violet over dusty brick orange"),
+        ("a clotted scribble scrawled over and over on the same spot until it is one shapeless knot, with a second scribble in another colour dragged through it and "
+         "a smeared handprint wiped across one end", SPRAY, "sickly bile green over a dull liver-purple underlayer"),
+        ("an attempt at a tag that went wrong: four wobbly shapes that were meant to be letters of no alphabet, the last ones cramped and sliding downhill, then the "
+         "whole thing angrily scribbled over", SPRAY, "dirty salmon pink, the scribble over it in grimy olive"),
+        ("three scrawled tags that spell nothing, sprayed right over each other in three clashing colours until they knot into one ugly tangle, splattered where a can spat",
+         SPRAY, "sour mustard, liver purple and dirty salmon pink"),
+        ("a careless fat zigzag dragged the whole width in thick opaque paint, blotted into fat blobs where the can stuck, with a second clumsy zigzag in another colour "
+         "sprayed crookedly over it and a burst of spatter where the can was shaken against the wall", SPRAY, "sickly bile green, the second zigzag in dirty salmon pink"),
+        ("a loaded brush flicked at the wall again and again, then a lopsided scrawl hacked through the splats and a wet smear wiped half of it away", BRUSH,
+         "dull liver purple splats, the scrawl in sickly bile green"),
+        ("one furious scribble hacked back and forth with an over-loaded brush, peaks of wildly different heights crossing over themselves into a dense tangle, never "
+         "forming letters, a second messier scribble smeared over it with a hand", BRUSH, "grimy olive over dirty salmon pink"),
 ]):
     add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + PIG.format(c=c) + L2, floor=0.04)
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs

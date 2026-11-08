@@ -952,12 +952,14 @@ namespace RimMandrake.Graffiti
 
         /// <summary>The most a form can be worth as art. Live 2026-11-07: a level-15 hand rolled "excellent" scratches worth +8 Beauty, which no
         /// player would believe. A tally or a scratch is a tally however good the hand; a tag can have style; a throw-up can be very good;
-        /// a stencil, a poster, a sigil or a piece can be a masterwork.</summary>
+        /// a stencil, a poster, a sigil or a piece can be a masterwork. A scrawl is never better than poor work: it is the ugliest thing on the
+        /// wall, so it is drawn smeared and muddy and its Beauty is below a tally's whoever holds the can (pass 9: a scrawl by a steady hand had
+        /// been worth 0, the same as a tally, while its picture was the loudest on the wall).</summary>
         public static int CraftCeiling(GraffitiForm form)
         {
             switch (form)
             {
-                case GraffitiForm.Scrawl:
+                case GraffitiForm.Scrawl: return Poor;
                 case GraffitiForm.Glyph: return Normal;
                 case GraffitiForm.Tag: return Good;
                 case GraffitiForm.ThrowUp: return Excellent;

@@ -470,7 +470,9 @@ namespace RimMandrake.Graffiti
             {
                 scale = 1f;     // the ugliest thing on the wall gets no modest hand: the picture agrees with its Beauty
             }
-            RM_GraffitiKernel.CraftLook(hasCraft ? craft : RM_GraffitiKernel.Normal, out float craftThrough, out float wobble, out float mud);
+            // A mark nobody's hand made (a staged one, a save from before craft) looks as its form allows: a scrawl is never neat.
+            int look = hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
+            RM_GraffitiKernel.CraftLook(look, out float craftThrough, out float wobble, out float mud);
             slope *= wobble;
             float width = size.x * scale;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale;
@@ -501,7 +503,7 @@ namespace RimMandrake.Graffiti
                 }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);
-                float smear = RM_GraffitiKernel.CraftSmear(hasCraft ? craft : RM_GraffitiKernel.Normal);
+                float smear = RM_GraffitiKernel.CraftSmear(look);
                 if (smear > 0f)
                 {
                     // The second go, off true and squashed, thinner paint: a smudged double that reads as a hand that couldn't.

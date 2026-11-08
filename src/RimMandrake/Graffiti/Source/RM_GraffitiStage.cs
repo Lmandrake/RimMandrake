@@ -466,6 +466,38 @@ namespace RimMandrake.Graffiti
 
         /// <summary>Put every pawn's drawing where the pawn is. The tweener only moves while frames run unpaused, so after a fast advance
         /// a paused camera draws colonists where they stood a day ago, which reads as a staged shot and is false.</summary>
+        /// <summary>NAME faction/settlement: name the player's faction and its home as the player would, so the game stops putting its naming
+        /// dialog over every shot after day 4.3 (Faction.FactionTick), and so captions can say which colony a shot is from. -> NAMED.</summary>
+        public static string Name(string args)
+        {
+            if (Faction.OfPlayer == null) return "REFUSED no game";
+            string[] parts = (args ?? "").Split('/');
+            if (parts.Length < 2 || parts[0].NullOrEmpty() || parts[1].NullOrEmpty()) return "REFUSED usage faction/settlement";
+            Faction.OfPlayer.Name = parts[0];
+            int n = 0;
+            foreach (RimWorld.Planet.Settlement s in Find.WorldObjects.Settlements)
+            {
+                if (s.Faction != Faction.OfPlayer) continue;
+                s.Name = n == 0 ? parts[1] : parts[1] + " " + (n + 1);
+                s.namedByPlayer = true;
+                n++;
+            }
+            foreach (Window w in Find.WindowStack.Windows.ToList())
+            {
+                if (w is Dialog_NamePlayerFaction || w is Dialog_NamePlayerFactionAndSettlement || w is Dialog_NamePlayerSettlement) w.Close(false);
+            }
+            return "NAMED " + Faction.OfPlayer.Name + " / " + parts[1] + " (" + n + " settlements)";
+        }
+
+        /// <summary>BEAUTY on|off: the game's own Beauty overlay (the play-settings toggle), so a shot shows each cell's Beauty where the
+        /// player would read it, around the hovered cell. -> BEAUTY state.</summary>
+        public static string Beauty(string args)
+        {
+            if (Find.PlaySettings == null) return "REFUSED no game";
+            Find.PlaySettings.showBeauty = args != "off";
+            return "BEAUTY " + (Find.PlaySettings.showBeauty ? "on" : "off");
+        }
+
         public static string Settle(string args)
         {
             Map map = Find.CurrentMap;
