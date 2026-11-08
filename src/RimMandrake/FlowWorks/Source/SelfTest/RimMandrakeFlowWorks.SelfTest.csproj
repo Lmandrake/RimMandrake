@@ -85,6 +85,7 @@
     <Compile Include="ShovelChecks.cs" />
     <Compile Include="..\RM_SpanMath.cs" />
     <Compile Include="..\RM_SuspensionMath.cs" />
+    <Compile Include="..\RM_SuspensionHangMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />
     <Compile Include="GroundClassChecks.cs" />
     <Compile Include="UnderpassReachChecks.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="..\Machinery\Kits\RM_LiquidBathMath.cs" />
     <Compile Include="..\RM_WallFaceMath.cs" />
     <Compile Include="..\Superdeep\RM_PitLookMath.cs" />
+    <Compile Include="SuspensionHangChecks.cs" />
     <Compile Include="PitLookChecks.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_TerrainWriteBudget.cs" />

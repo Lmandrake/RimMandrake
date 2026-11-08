@@ -143,8 +143,9 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
-		/// <summary>The nearest standing tree this raider can fell for ladder wood (grown enough to yield wood), within the
-		/// chop radius, reachable and unreserved; null when none.</summary>
+		/// <summary>The tree this raider fells soonest for ladder wood (grown enough to yield wood), within the chop radius,
+		/// reachable and unreserved: the walk there plus the felling, so a sapling near at hand beats a grown oak a little
+		/// nearer (owner's story, 2026-11-04: "hacking down saplings to build a makeshift ladder"); null when none.</summary>
 		public static Job ChopForLadderJob(Pawn p)
 		{
 			if (RM_LadderParityDefOf.RM_RaiderChopForLadder == null || RM_LadderParitySettings.raiderChopRadius <= 0)
@@ -153,8 +154,9 @@ namespace RimMandrake.FlowWorks
 			}
 			Map map = p.Map;
 			int r = RM_LadderParitySettings.raiderChopRadius;
+			float speed = PlantSpeed(p);
 			Plant best = null;
-			int bestD = int.MaxValue;
+			float bestCost = float.MaxValue;
 			foreach (IntVec3 c in GenRadial.RadialCellsAround(p.Position, r, true))
 			{
 				if (!c.InBounds(map))
@@ -167,16 +169,29 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				int d = c.DistanceToSquared(p.Position);
-				if (d >= bestD || !p.CanReserve(pl) || !p.CanReach(pl, PathEndMode.Touch, Danger.Deadly))
+				float cost = RM_LadderParityMath.ChopChoiceCost(c.DistanceTo(p.Position), ChopTicksFor(pl, speed));
+				if (cost >= bestCost || !p.CanReserve(pl) || !p.CanReach(pl, PathEndMode.Touch, Danger.Deadly))
 				{
 					continue;
 				}
 				best = pl;
-				bestD = d;
-				break;   // RadialCellsAround runs nearest-first: the first good tree is the nearest
+				bestCost = cost;
 			}
 			return best == null ? null : JobMaker.MakeJob(RM_LadderParityDefOf.RM_RaiderChopForLadder, best);
+		}
+
+		/// <summary>The raider's plant work speed (0.1 when plant work is disabled for it, as a felling still happens).</summary>
+		public static float PlantSpeed(Pawn p)
+		{
+			return StatDefOf.PlantWorkSpeed.Worker.IsDisabledFor(p) ? 0.1f : p.GetStatValue(StatDefOf.PlantWorkSpeed);
+		}
+
+		/// <summary>Ticks to fell <paramref name="tree"/> for ladder wood: its harvest work scaled by its growth (a sapling is
+		/// hacked down far sooner than a grown oak), at <paramref name="speed"/>.</summary>
+		public static int ChopTicksFor(Plant tree, float speed)
+		{
+			float work = tree?.def.plant?.harvestWork ?? 800f;
+			return RM_LadderParityMath.ChopTicks(RM_LadderParityMath.ChopWork(work, tree?.Growth ?? 1f), speed);
 		}
 
 		/// <summary>The job that gets this raider a ladder it does not yet have (owner Q2's order), or null with
@@ -579,9 +594,7 @@ namespace RimMandrake.FlowWorks
 				pawn.rotationTracker.FaceTarget(job.targetA);
 			};
 			cut.defaultCompleteMode = ToilCompleteMode.Delay;
-			Plant tree = job.targetA.Thing as Plant;
-			float speed = StatDefOf.PlantWorkSpeed.Worker.IsDisabledFor(pawn) ? 0.1f : pawn.GetStatValue(StatDefOf.PlantWorkSpeed);
-			cut.defaultDuration = RM_LadderParityMath.ChopTicks(tree?.def.plant?.harvestWork ?? 800f, speed);
+			cut.defaultDuration = RM_LadderParity.ChopTicksFor(job.targetA.Thing as Plant, RM_LadderParity.PlantSpeed(pawn));
 			cut.handlingFacing = true;
 			cut.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
 			cut.WithProgressBarToilDelay(TargetIndex.A);

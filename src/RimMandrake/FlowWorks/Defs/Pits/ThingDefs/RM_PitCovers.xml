@@ -36,6 +36,9 @@
       <Cloth>10</Cloth>
     </costList>
     <building>
+      <!-- STORY_REPLAY_S6 (pass 5): a concealed pit is a trap. Without isTrap vanilla's TrashUtility took it for any building:
+           a tribal raid walked in from the map edge 55 squares off already set on bashing and torching the hidden cover. -->
+      <isTrap>true</isTrap>
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -83,6 +86,9 @@
       <WoodLog>30</WoodLog>
     </costList>
     <building>
+      <!-- STORY_REPLAY_S6 (pass 5): a concealed pit is a trap. Without isTrap vanilla's TrashUtility took it for any building:
+           a tribal raid walked in from the map edge 55 squares off already set on bashing and torching the hidden cover. -->
+      <isTrap>true</isTrap>
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>
@@ -131,6 +137,9 @@
       <WoodLog>20</WoodLog>
     </costList>
     <building>
+      <!-- STORY_REPLAY_S6 (pass 5): a concealed pit is a trap. Without isTrap vanilla's TrashUtility took it for any building:
+           a tribal raid walked in from the map edge 55 squares off already set on bashing and torching the hidden cover. -->
+      <isTrap>true</isTrap>
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
       <ai_chillDestination>false</ai_chillDestination>

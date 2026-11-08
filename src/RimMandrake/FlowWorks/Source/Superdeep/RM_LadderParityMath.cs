@@ -128,6 +128,21 @@ namespace RimMandrake.FlowWorks
 			return (int)Math.Ceiling(Math.Max(1f, harvestWork) / Math.Max(0.1f, plantWorkSpeed));
 		}
 
+		/// <summary>The felling work of a tree at <paramref name="growth"/> (0..1) for ladder wood: its harvest work scaled by its
+		/// growth, never under a quarter (a sapling is hacked down far sooner than a grown tree; owner's story 2026-11-04).</summary>
+		public static float ChopWork(float harvestWork, float growth)
+		{
+			float g = float.IsNaN(growth) ? 1f : Math.Min(1f, Math.Max(0.25f, growth));
+			return harvestWork * g;
+		}
+
+		/// <summary>What choosing a tree for ladder wood weighs: the walk there (about 12 ticks a square at a raider's pace) plus
+		/// the felling ticks.</summary>
+		public static float ChopChoiceCost(float distanceCells, int chopTicks)
+		{
+			return 12f * Math.Max(0f, distanceCells) + Math.Max(0, chopTicks);
+		}
+
 		/// <summary>LADDERPARITY_FIX_TAKE_WORK_SAPPER_ZERO: ticks for a raider to work a portable ladder loose, as vanilla's
 		/// JobDriver_Uninstall spends it: the def's building.uninstallWork at ConstructionSpeed x 1.7 a tick
 		/// (JobDriver_RemoveBuilding), so a raider takes a ladder down exactly as fast as a colonist uninstalls it.</summary>

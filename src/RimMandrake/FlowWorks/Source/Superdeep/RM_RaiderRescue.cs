@@ -383,6 +383,22 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
+			// STORY_REPLAY_S6 (pass 5): the wood comes first, out of sight, and no claim is made until the ladder job runs, so the
+			// raid's damage exit fired while its rescuer was still felling the tree and the rescue never happened. A raider of
+			// this raid fetching ladder wood or a ladder while one of it is still trapped is a rescue under way too.
+			if (TrappedOf(lord).Count > 0)
+			{
+				for (int i = 0; i < lord.ownedPawns.Count; i++)
+				{
+					Pawn m = lord.ownedPawns[i];
+					JobDef jd = m.CurJob?.def;
+					if (jd != null && (jd == RM_LadderParityDefOf.RM_RaiderChopForLadder || jd == RM_LadderParityDefOf.RM_RaiderTakeLadder)
+						&& Standing(m, lord) && !RM_SuperdeepTrap.IsTrapped(m))
+					{
+						return true;
+					}
+				}
+			}
 			foreach (KeyValuePair<Pawn, (IntVec3 wall, IntVec3 slot)> kv in climbTo)
 			{
 				Pawn m = kv.Key;

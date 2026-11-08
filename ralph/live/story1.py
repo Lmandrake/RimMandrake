@@ -81,13 +81,25 @@ def pawns(B, faction):
 def brief(p):
     job = p.get("job") or p.get("curJob") or {}
     jd = job.get("def") if isinstance(job, dict) else job
-    return "%s(%s) %d,%d%s%s job=%s" % (p.get("name"), p.get("kindDef"), p.get("x", -1), p.get("z", -1),
-                                         " DOWN" if p.get("downed") else "", " DEAD" if p.get("dead") else "", jd)
+    ta = (job.get("targetA") or {}) if isinstance(job, dict) else {}
+    tgt = ""
+    if ta:
+        tgt = "@" + (ta.get("thing") or ta.get("def") or ta.get("label") or "%s,%s" % (ta.get("x"), ta.get("z")))
+    toil = ((p.get("lord") or {}).get("toil") or "").replace("LordToil_", "")
+    return "%s(%s) %d,%d%s%s job=%s%s%s" % (p.get("name"), p.get("kindDef"), p.get("x", -1), p.get("z", -1),
+                                         " DOWN" if p.get("downed") else "", " DEAD" if p.get("dead") else "", jd, tgt,
+                                         " [" + toil + "]" if toil else "")
 
 
 def pit_read(B):
-    r = B.call("jawa/flowworks_pit_report", x=PIT[0][0], z=PIT[0][1]) or {}
-    ps = r.get("pawns") or r.get("occupants") or []
+    # the report lists the pawns on its own square only: read every square of the pit
+    r, ps, lad = {}, [], 0
+    for c in PIT:
+        r = B.call("jawa/flowworks_pit_report", x=c[0], z=c[1]) or {}
+        lad += 1 if r.get("hasLadder") else 0
+        for p in r.get("pawns") or r.get("occupants") or []:
+            ps.append({k: p.get(k) for k in ("id", "downed", "dead", "captured", "held", "lipReachable", "faction")})
+    r["ladderSquares"] = lad
     return r, ps
 
 
@@ -123,10 +135,11 @@ def stage(B, a):
     shot(B, "04_pit_covered_close", rect=(GX - 3, PZ - 2, 7, 6), root=4.0)
     # his story: "the defenders standing on the other side begin peppering them with arrows" -- three archers drafted in the
     # passage just north of the pit, the colony side
-    r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX, z=PZ + 4, faction="player", count=3) or {}
+    r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX, z=PZ + 4, faction="player", count=a.archers) or {}
     aids = [p.get("id") for p in r.get("pawns") or [] if p.get("id")]
-    for pid, dx in zip(aids, (-1, 0, 1)):
-        o = B.call("jawa/order_pawn", pawnId=pid, x=GX + dx, z=PZ + 4, draft=True, waitTicks=120) or {}
+    spots = [(-1, 4), (0, 4), (1, 4), (-1, 5), (0, 5), (1, 5)]
+    for pid, (dx, dz) in zip(aids, spots):
+        o = B.call("jawa/order_pawn", pawnId=pid, x=GX + dx, z=PZ + dz, draft=True, waitTicks=120) or {}
         log("archer", pid, json.dumps(o, default=str)[:200])
     st.update(staged=True, d=a.d, cover=a.cover)
     save(st)
@@ -140,10 +153,25 @@ def raid(B, a):
         o = B.call("jawa/order_pawn", pawnId=p["id"], x=s[0], z=s[1], draft=True, waitTicks=0) or {}
         log("order", p.get("name"), s, json.dumps(o, default=str)[:160])
     log("colonists", [brief(p) for p in cols])
-    kw = dict(incidentDef="RaidEnemy", points=a.points, forced=True, dryRun=False)
-    if a.faction:
-        kw["faction"] = a.faction
-    r = B.call("jawa/fire_incident", **kw) or {}
+    fl = (B.call("jawa/list_factions") or {}).get("factions") or []
+    have = [f.get("defName") for f in fl if f.get("hostile")]
+    if a.faction and a.faction not in have:
+        tribes = [d for d in have if d and d.startswith("Tribe")]
+        log("faction", a.faction, "is not in this world; hostile:", have, "-> using", tribes[:1] or have[:1])
+        a.faction = (tribes or have or [""])[0]
+    if a.spawn:
+        # his story: "Raiders run down a passage towards the colony's doorway": walk in from the map edge straight
+        # south of the passage (jawa/fire_raid takes a spawn centre; fire_incident lets the raid pick any edge)
+        sx, sz = a.spawn.split(",")
+        sx = GX if sx == "gx" else int(sx)
+        kw = dict(points=a.points, faction=a.faction or "", strategy="ImmediateAttack", arrivalMode="EdgeWalkIn",
+                  spawnCenter="%d,%d" % (sx, int(sz)), dryRun=False)
+        r = B.call("jawa/fire_raid", **kw) or {}
+    else:
+        kw = dict(incidentDef="RaidEnemy", points=a.points, forced=True, dryRun=False)
+        if a.faction:
+            kw["faction"] = a.faction
+        r = B.call("jawa/fire_incident", **kw) or {}
     log("raid", json.dumps(r, default=str)[:1500])
     st = load()
     st["raid_tick"] = (B.call("rimworld/get_game_info") or {}).get("state", {}).get("tick")
@@ -166,15 +194,18 @@ def watch(B, a):
         done += step
         hs = pawns(B, "hostile")
         rep, occ = pit_read(B)
-        line = "t+%d hostiles=%d near=%d | %s | pit: %s" % (
-            done, len([p for p in hs if not p.get("dead")]), len(near), "; ".join(brief(p) for p in hs)[:900],
-            json.dumps(occ, default=str)[:600])
+        line = "t+%d hostiles=%d near=%d | %s | pit(ladders=%s): %s" % (
+            done, len([p for p in hs if not p.get("dead")]), len(near), "; ".join(brief(p) for p in hs)[:1400],
+            rep.get("ladderSquares"), json.dumps(occ, default=str)[:600])
         log(line)
         if near or near_seen:
+            log("   defenders:", "; ".join(brief(p) for p in pawns(B, "player"))[:900])
             near_seen = True
             k += 1
             if k % a.every == 0:
                 shot(B, "w%03d" % k)
+                if a.close and k % a.close == 0:
+                    shot(B, "c%03d" % k, rect=(GX - 3, PZ - 3, 7, 7), root=11.0)
         if time.time() - t0 > a.wall:
             log("wall-clock budget spent")
             break
@@ -204,10 +235,13 @@ def main():
     ap.add_argument("--cover", default="RM_PitCover_WovenScrap")
     ap.add_argument("--points", type=float, default=250)
     ap.add_argument("--faction", default="TribeRough")
+    ap.add_argument("--spawn", default="", help="raid spawn centre 'x,z' ('gx,0' = the map edge below the passage)")
     ap.add_argument("--ticks", type=int, default=20000)
     ap.add_argument("--slice", type=int, default=120)
     ap.add_argument("--every", type=int, default=1)
     ap.add_argument("--speed", default="Fast")
+    ap.add_argument("--close", type=int, default=0, help="every Nth frame also a root-11 close shot of the pit")
+    ap.add_argument("--archers", type=int, default=3)
     ap.add_argument("--wall", type=float, default=1500)
     a = ap.parse_args()
     B = fwb.FW()

@@ -50,6 +50,13 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Where a portable ladder's foot stands out from its wall (cells).</summary>
 		public const float LeanOut = 0.62f;
 
+		/// <summary>A portable on the far wall: its top and foot this far either side of the square's middle (cells), about a
+		/// 15-degree slant over a 2 m face, so it reads as leaning where the fixed ladder runs straight down its rails.</summary>
+		public const float FarLeanSide = 0.2f;
+
+		/// <summary>A portable on the near wall: how far its top stands above the lip, and slants aside (cells).</summary>
+		public const float NearPortableAbove = 0.72f, NearLeanSide = 0.2f;
+
 		/// <summary>A raised ladder's length on the ground beyond its rim (cells): its drop plus the top, within these.</summary>
 		public const float RaisedMin = 0.7f, RaisedMax = 2.2f;
 
@@ -98,8 +105,9 @@ namespace RimMandrake.FlowWorks
 					}
 					else if (portable)
 					{
-						// leaning: the foot stands out on the floor, a little to one side so the lean shows
-						Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + 0.04f, top + LadderAbove), new Vector2(cx - 0.08f, Mathf.Max(near + 0.05f, top - drop - LeanOut * 0.55f)), LadderWidth, y + 0.02f);
+						// leaning: the foot stands out on the floor and off to one side: a slant against the face, never the fixed ladder's
+						// straight run (pass 4 read the old 0.12-cell slant as "stands straight")
+						Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + FarLeanSide, top + LadderAbove), new Vector2(cx - FarLeanSide, Mathf.Max(near + 0.05f, top - drop - LeanOut * 0.55f)), LadderWidth, y + 0.02f);
 					}
 					else
 					{
@@ -121,9 +129,16 @@ namespace RimMandrake.FlowWorks
 					}
 					else
 					{
-						// the top rungs over the lip; a leaning portable tips back over the ground behind it
-						float lean = portable ? 0.1f : 0f;
-						Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + lean, top + SouthAbove + lean * 0.5f), new Vector2(cx, top), LadderWidth, y + 0.02f);
+						// the top rungs over the lip; a leaning portable (a raid's rescue ladder comes in from the side the raid
+						// stands on, mostly this one) stands out further and slants, so the player sees it go in
+						if (portable)
+						{
+							Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + NearLeanSide, top + NearPortableAbove), new Vector2(cx - NearLeanSide * 0.4f, top), LadderWidth, y + 0.02f);
+						}
+						else
+						{
+							Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx, top + SouthAbove), new Vector2(cx, top), LadderWidth, y + 0.02f);
+						}
 					}
 					break;
 				}

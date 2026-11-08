@@ -90,6 +90,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: no tree in reach: no ladder (fill or jump instead)");
                 Assert(RM_LadderParityMath.ChopTicks(800f, 1f) == 800 && RM_LadderParityMath.ChopTicks(800f, 2f) == 400, "vanilla's cut: harvestWork / PlantWorkSpeed");
                 Assert(RM_LadderParityMath.ChopTicks(800f, 0f) == 8000, "can-fail: a pawn who cannot cut is slow, not instant");
+                Assert(Math.Abs(RM_LadderParityMath.ChopWork(800f, 0.4f) - 320f) < 0.01f && Math.Abs(RM_LadderParityMath.ChopWork(800f, 0.05f) - 200f) < 0.01f
+                    && Math.Abs(RM_LadderParityMath.ChopWork(800f, 1.3f) - 800f) < 0.01f && Math.Abs(RM_LadderParityMath.ChopWork(800f, float.NaN) - 800f) < 0.01f,
+                    "a sapling is felled sooner: work x growth, floored at a quarter, never above the def's");
+                Assert(RM_LadderParityMath.ChopChoiceCost(10f, RM_LadderParityMath.ChopTicks(RM_LadderParityMath.ChopWork(800f, 0.3f), 0.5f))
+                    < RM_LadderParityMath.ChopChoiceCost(4f, RM_LadderParityMath.ChopTicks(800f, 0.5f)),
+                    "story: a sapling 10 squares off beats a grown oak 4 squares off");
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
                 RiverSwitchFlipChecks.Has(r, @"RM_LadderParity\.SpendLadderWood\(pawn\)", "building a ladder spends the wood");
                 string p = Src("Superdeep", "RM_LadderParity.cs");
