@@ -5735,3 +5735,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-08T16:18:17Z","tsn":1794154697454865628}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 20 min ago (limit 15 min)","ts":"2026-11-08T16:33:33Z","tsn":1794155613148900165}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-08T16:33:39Z","tsn":1794155619157485892}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-08T19:33:06Z","tsn":1794166386897319747}
