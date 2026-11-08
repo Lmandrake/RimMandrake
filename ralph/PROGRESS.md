@@ -43,7 +43,39 @@ Harness traps found (cost me an hour; they will mislead any proof that judges pa
 
 ## Next (in order)
 1. Deploy the current DLL; look at the seam at root 11 and at play zoom (seam.py).
-2. The stall: [filled in below when the trace returns].
+2. The stall (offline trace by a subagent, file:line in the code; the last step needs a live read):
+   - AssaultColony runs FightEnemies first (`Duties_Misc.xml:146-162`); `JobGiver_RM_CrossTrench` is appended LAST, so it
+     is never asked while FightEnemies returns a job.
+   - FightEnemies picks a colonist inside through the doorway; the reach check says reachable (FALSE: `RelativeVeto` in
+     `RM_PocketGridMath` labels by depth only, the walls beside the pit join the two lips; `RM_WallReach` falls back to
+     vanilla when its labels are stale/forced, `RM_WallReach.cs:1439-1450`), the cliff-masked pather finds no route, the
+     job errors, vanilla Waits 250 and the duty repeats forever (`Pawn_JobTracker.cs:450-466`).
+   - Live read to settle it: `jawa/static_call RimMandrake.FlowWorks.RM_WallReach.ProofReachPair` (:1723) raider -> a
+     colonist inside, then `ProofReach` (:1689): Stale count rising = labels never trusted; Residual = labels join the lips.
+   - Even when asked, CrossTrench tests reach with PassAllDestroyableThings, which RM_WallReach skips (:1426-1430), so a
+     walled compound is always "reachable" and it returns GoAround (`RM_RaiderTrench.cs:639-643`) before ladder/fill/jump.
+   - The fallen raider: excluded from CrossTrench (`RM_RaiderTrench.cs:168`), every reach query from his pocket refused,
+     so he falls to WanderAnywhere / IdleError.
+   Fix order: make reach agree with the pather (or make FightEnemies' target honour the cliff mask), then let
+   CrossTrench/fetch run before FightEnemies when the target is cut off by a pit.
+3. raiders_fetch_their_fallen (design, not built): new `JobGiver_RM_FetchFallen` (new `RM_RaiderRescue.cs`), XML-inserted
+   BEFORE `JobGiver_AIFightEnemies` in AssaultColony/Breaching/Sapper duties. Target: a lord member Spawned, not Downed,
+   `RM_SuperdeepTrap.IsTrapped`; skip sieges (`RM_RaiderTrench.IsSiege`), rescuer `RM_RaiderTrench.Eligible` + ToolUser.
+   Slot: pocket from `RM_PocketGrid.ForPawn/ComponentOf/CellsOf`, a pocket cell c with a cardinal neighbour w on the
+   rescuer's side, drop within `RM_LadderUtility.MaxLevelsOf(RM_LadderPortable)`, no `LadderAt`/`RampAt`, reservable and
+   reachable (Touch); nearest the trapped one. Supply: `RM_LadderParity.LadderSupplyJob(p, pocketCells, out canBuild)`
+   (carried, take, wood, then `ChopForLadderJob`). Set: `JobMaker.MakeJob(RM_RaiderTrenchDefOf.RM_RaiderSetLadder, c, w)`
+   with count = drop (the driver already spawns the ladder in the raid's faction, `JobDriver_RM_RaiderTrenchWork`
+   :1022-1036). One rescuer per lord (static claim dict, ~2,500-tick lease, cleared in ClearMemos). FailOn: duty no
+   longer an assault duty (flee/exit). He then climbs out by `LadderLetsOut`/`JoinedByLadders`.
+   drained_hole_is_a_prison (design, not built): when the raid flees the trapped raider keeps his lord and stays (the
+   map-edge reach is refused). Capture: `CaptureDownVerdict` (`RM_PitRooms.cs:361-369`) needs IsPrisonCell && IsPitRoom,
+   and a 2 m pit is under `pitRoomMinDepthMetres` (3): change the test to prison || (new setting
+   bedlessPitPrisonEnabled && IsTrapped(target)). `PrisonerIsSecure` needs no bed. Wardens: postfix on
+   `WorkGiver_Warden` reach (`WorkGiver_Warden.cs:26`) to accept Touch from a lip cell; food: postfix on
+   `GridsUtility.IsInPrisonCell` (:475) true for a trapping pocket holding a colony prisoner (32 callers: check execute,
+   release, convert, bloodfeed for null room/bed). Exclude prisoners from `RM_PitStuckAlert`. Tending from the lip, sleep
+   on the ground (mood), a ladder the warden uses must not let him out (prison-door rule).
 3. raiders_fetch_their_fallen and drained_hole_is_a_prison (idea sheet leaves, owed; both on his story's path).
 4. The depth look (contrast sheet in LOOK.md; pawns drawn over the near lip, 4 m vs 8 m alike, thin walls). Why 4 m and
    8 m look alike: `RM_WallFaceMath.NorthByDrop` clamps every drop past 2 m to a 0.62-cell north face, and `FootDarkness`
@@ -90,9 +122,14 @@ Harness traps found (cost me an hour; they will mislead any proof that judges pa
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | the story stalls: survivors Wait at the lip forever | raid 2, 4,000+ ticks, save fw_story1_stall | the trace below, then the fix, replayed |
+| blocker | the story stalls: survivors Wait at the lip forever | raid 2, 4,000+ ticks, save fw_story1_stall | ProofReachPair live read, then the fix, replayed |
 | blocker | raiders never fetch their fallen; no bed-less pit prison | idea sheet leaves owed; code refuses capture without a bed | build both, replay the story to prisoners |
 | unknown | depth look for narrow pits | contrast sheet | 2-3 real treatments side by side |
 | unknown | 16 unseen lines (ladders, gear, bridges, trench cover, digging) | none | stage each on the story map |
 | unknown | the four untested fixes | none | reload with a returned prisoner; two maps; timed rebuilds |
 | decision | none yet for him | | |
+
+## Weather and other notes
+Steve this pass: 0 dead games, 0 dropped ssh, bad_cpus [] at start; 4 deploys + restarts, all clean (bridge up in 28-34 s).
+No phone call to GPT yet (owed before DONE). No telemetry read yet beyond build events (the cost fixes are untimed).
+The ASPECTS split: nothing yet says it is wrong; the stall is in aspect 1's own journey.
