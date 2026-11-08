@@ -66,8 +66,7 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
-- 🔑 **Search `src/` and the roster before FILING or designing — this project keeps having
-  already built it** (four of six "new" mechanisms already existed, 2026-09-23).
+- 🔑 **Search `src/` and the roster before FILING or designing** (user-level rule; here it is `src/` and the roster).
 - **Say which greatbole you mean:** `RM_Greatbole` (fellable tree) · `RUT_GreatboleHeartwood`
   (the mineable blob) · `RUT_GreatboleCore` (1×1 bookkeeping marker).
 - 🔑 **An animal belongs to ONE biome unless there is an IN-GAME reason** — *"Animals sound be
@@ -119,12 +118,10 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
   Desktop only), the def, the About.xml, or `measure` — and 🔴 **a number about a large
   artifact comes from `measure`, never from a scan** (`block_blind_scan.py` refuses).
   `0` means measured zero; ignorance answers `UNMEASURED`.
-- 🔴 **A count that is round, zero or alarming is a query bug until a sanity probe proves the
-  instrument can see.** Measured traps (ledger key is `id` not `item`, `python.exe` CRLF,
+- 🔴 **Instrument-blindness is a user-level rule.** Measured traps here (ledger key is `id` not `item`, `python.exe` CRLF,
   `grep -c` exit 1, zsh no word-split, `ls|wc` on a missing dir, `*south*` mask glob, creature
   census by description not defName, "is there a mod for X" across BOTH mod roots incl.
-  inactive …): `infrastructure/state/facts/instrument_traps.md`. When the owner says a thing
-  exists and your instrument says it does not, **suspect the instrument**.
+  inactive …): `infrastructure/state/facts/instrument_traps.md`.
 - 🔴 **`Plant` only ticks `TickLong()`** — a comp on a plant overrides `CompTickLong()`.
   🔴 **`MayRequire` on a top-level `<Operation>` is IGNORED** — guard with
   `PatchOperationFindMod`/`Conditional`; a composed member's packageId never loads. A patch
@@ -133,8 +130,6 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
   game won't start, read the **FIRST** exception in `Player.log`, not the loudest. More
   (600 s subagent watchdog, mid-session hooks, card gates, `handoff.py` and two Conductor
   windows): `infrastructure/state/facts/tool_traps.md`.
-- **A gate cited by NAME outlives the item it names — check the item's state** (owner: *"That
-  file may be VERY old… do not accept stale info."*).
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its fingerprint
   matches the live mod set; the frozen `official` dump is the sole design target.
 
@@ -224,13 +219,7 @@ renamed. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
 
 ## Correctness outranks seat ownership; wrong material is deleted
 
-- *"It is WORSE to leave incorrect information that belongs to another seat than it is to
-  violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."* (2026-09-19) — fix a false
-  statement in any seat's file on sight, commit it at once by explicit path, and say what was
-  WRONG. Correcting is not redirecting. Full rule: CHARTER.
-- *"Simply remove offending inaccurate material, don't leave it in and supersede it."*
-  (2026-09-09) — delete wrong content, fix every inbound reference in the same change; a
-  one-line pointer only for content that MOVED.
+User-level rule (fix a false statement on sight in anyone's file; delete, never supersede). Here: commit it at once by explicit path; full rule: CHARTER.
 
 ## 🔑 Agents decide nearly everything, art included — owner, 2026-10-22
 
@@ -243,12 +232,7 @@ replacing art he kept (except the art-eval pipeline's redraws, shown to him afte
 
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
-*"Read it first and see if it's obviously broken, malfunctioning, or problematic before wasting a human's time to tell
-that to you."* Before ANY human review (sheet, art, phone image, walkthrough map or save, list of rules, report), look at
-every item an agent can judge — yourself or a naive judge (fresh Opus that did not make it; `gpt_consult.py` for a big
-sheet) — and fix or drop what is broken; a walkthrough means a zoomed capture of every station and connection, stared
-at. He gets the survivors plus one line of what was caught. Sheet tools refuse without `<stem>.prereview.json`
-(`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.
+User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
@@ -258,7 +242,7 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 
 ## 🔴 An operational item is done only when it is running — owner, 2026-10-31
 
-*"We keep finding problems, making tickets, and they never get folded into operations."* An operational item (a hook, a unit, a timer, the schedule, ops rules, an alarm) closes only on a promise that names **what must stay alive and its last reading**: `rimflow close <ID> --sha <sha> --live "unit=rm-foo.timer reading=<path> max_age=6h"` (or `hook=<file>`, or `once: <why>`). `rimflow` runs the check at close and **refuses an unproven close**; `rm-deadman` (`deadman_check.py`) rechecks every promise for good and **reopens the same item** (`rimflow live --result broken`, outage counted) if it dies. An alarm has one fixed item id, so a repeat reopens it instead of filing a new one. Never file a second ticket for a dead fix. Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+User-level rule (*"We keep finding problems, making tickets, and they never get folded into operations."*). Here an operational item closes only on a promise that names **what must stay alive and its last reading**: `rimflow close <ID> --sha <sha> --live "unit=rm-foo.timer reading=<path> max_age=6h"` (or `hook=<file>`, or `once: <why>`). `rimflow` runs the check at close and **refuses an unproven close**; `rm-deadman` (`deadman_check.py`) rechecks every promise for good and **reopens the same item** (`rimflow live --result broken`, outage counted) if it dies. An alarm has one fixed item id, so a repeat reopens it instead of filing a new one. Never file a second ticket for a dead fix. Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
 
 ## Git
 
@@ -339,7 +323,8 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 
 ## 🔴 Never send him to a computer you can reach yourself — owner, 2026-10-31
 
-Never ask him to go to a machine and do something if you can Tailscale there right now and do it yourself.
+User-level rule; here the route is Tailscale.
+
 
 ## The bridge is passed through one file
 
