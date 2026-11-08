@@ -64,6 +64,15 @@ def bake(name, m):
         rgb = np.clip(235 + (l - l[alpha > 0.3].mean() if (alpha > 0.3).any() else 0) * 0.4, 150, 255) * np.ones(3)
     if not m["pigmented"] and m["mode"] != "scratch":
         rgb = bolder(rgb, alpha)
+    if m.get("drop_grey"):
+        # The Vandal prompt's hand smeared through wet paint comes back as a grey-brown smudge in the middle: on a wall that is dirt.
+        mx, mn = rgb.max(2), rgb.min(2)
+        sat = (mx - mn) / np.maximum(mx, 1)
+        alpha = alpha * np.clip((sat - 0.2) / 0.12, 0, 1)
+    if m.get("mute"):
+        # Pass 16: the Vandal's clashing colours came back from the generator near neon; clashing stays, in this world's dusty range.
+        grey = rgb.mean(2, keepdims=True)
+        rgb = np.clip((grey + (rgb - grey) * m["mute"]) * 0.94, 0, 255)
     if m["mode"] == "paste":
         # Option D has no paper: a poster is what its inks left on the wall, the paper gone.
         rgb, alpha = paste_to_paint(rgb, alpha, rng)

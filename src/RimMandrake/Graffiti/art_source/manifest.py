@@ -72,6 +72,7 @@ for i, (t, tool, c) in enumerate([
          "forming letters, a second messier scribble smeared over it with a hand", BRUSH, "harsh cyan over salmon pink"),
 ]):
     add(f"vandal_{i}", F + "Vandal", 2, "brush" if tool is BRUSH else "spray", 0.08, VANDAL + "It is " + t + ". " + tool + HEAVY + "Colours only: " + c + ", cheap paint that clashes, not neon. " + L2, floor=0.04)
+    M[f"vandal_{i}"].update(mute=0.85 if i == 1 else 0.6, drop_grey=True)   # vandal_1's mustard went olive (moss) at 0.6
 # ------ small glyphs: scratches gouged, tallies, warnings, cross-outs
 for i, t in enumerate(["four parallel claw gouges slashed downward at a slant", "two sets of deep crossing gouges", "one long raking scrape with splintered ends"]):
     add(f"scratches_{i}", F + "Scratches", 1, "scratch", 0.1, "Gouges scratched into a surface with a nail, no paint at all: " + t + ". Pale bare exposed material with a darker lip along one side of each gouge, jagged and irregular, very thick. " + SQ)

@@ -525,6 +525,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Taunt</category>
+        <pigmented>true</pigmented>
         <form>Stencil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -554,6 +555,7 @@
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
         <category>Jest</category>
+        <pigmented>true</pigmented>
         <form>Stencil</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
