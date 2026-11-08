@@ -3,7 +3,9 @@
 // can-fail beside it.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using RimMandrake.GimmeSomeSlack.Aerial;
 
 namespace RimMandrake.GimmeSomeSlack.SelfTest
@@ -17,6 +19,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Naming();
             Runs();
             Bridge();
+            BridgeWiring();
             Split();
             Colours();
             Writes();
@@ -113,6 +116,48 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   ConduitStyles.KeyForMember(true, "Industrial", "Orange") == "Industrial" && ConduitStyles.KeyForMember(true, "Modern", ConduitStyles.Mix) == "Modern_Mix",
                   "a run's colour lands on its conduit cells only; switches and poles carry the look alone; a colour never rides a non-Modern look");
         }
+
+        // GSS_RESTRING_FIX_STYLES_UNRECONCILED: the bridge rule above only runs when something queues it. Every CompAerialAnchor
+        // method that raises a span (a new SpanLink, or a cut span set Up again) can join two conduit runs, so each needs a
+        // postfix that queues the run-merge check; Restring had none, and a re-strung span left one run in two looks.
+        private static void BridgeWiring()
+        {
+            string dir = SwitchFlipChecks.AerialSourceDir();
+            Check(dir != null, "bridge wiring: found Source/Aerial to read the anchor and its patches");
+            if (dir == null) return;
+            string anchor = File.ReadAllText(Path.Combine(dir, "CompAerialAnchor.cs")), picker = File.ReadAllText(Path.Combine(dir, "ConduitStylePicker.cs"));
+            List<string> raisers = SpanRaisers(anchor), missing = Unbridged(raisers, picker);
+            Check(raisers.Contains("TryLink") && raisers.Contains("Restring") && !raisers.Contains("Cut") && !raisers.Contains("Unlink") && missing.Count == 0,
+                  $"bridge wiring: every method that raises a span ({string.Join(", ", raisers)}) queues the run-merge check (unqueued: {string.Join(", ", missing)})");
+            string noRestring = picker.Replace("nameof(CompAerialAnchor.Restring)", "nameof(CompAerialAnchor.Unlink)");
+            Check(Unbridged(raisers, noRestring).SequenceEqual(new[] { "Restring" }), "can fail: without the Restring postfix a re-strung span is reported unqueued");
+        }
+
+        /// <summary>Names of the public static methods whose body adds a SpanLink or sets a span's state Up.</summary>
+        private static List<string> SpanRaisers(string anchor)
+        {
+            var r = new List<string>();
+            foreach (Match m in Regex.Matches(anchor, @"public static \w+ (\w+)\("))
+            {
+                int open = anchor.IndexOf('{', m.Index), arrow = anchor.IndexOf("=>", m.Index, StringComparison.Ordinal);
+                if (open < 0) continue;
+                int end = open;
+                if (arrow >= 0 && arrow < open) end = anchor.IndexOf(';', arrow);
+                else for (int depth = 0; end < anchor.Length; end++)
+                {
+                    if (anchor[end] == '{') depth++;
+                    else if (anchor[end] == '}' && --depth == 0) break;
+                }
+                string body = anchor.Substring(m.Index, Math.Min(end, anchor.Length - 1) - m.Index + 1);
+                if (body.Contains("links.Add(new SpanLink") || Regex.IsMatch(body, @"\.state = (\w+\.state = )?SpanState\.Up;")) r.Add(m.Groups[1].Value);
+            }
+            return r;
+        }
+
+        /// <summary>The raisers with no [HarmonyPatch] on them whose class queues the run-merge check (QueueLink).</summary>
+        private static List<string> Unbridged(List<string> raisers, string picker) =>
+            raisers.Where(n => !Regex.IsMatch(picker, @"\[HarmonyPatch\(typeof\(CompAerialAnchor\), nameof\(CompAerialAnchor\." + n +
+                                                      @"\)\)\](?:(?!\[HarmonyPatch)[\s\S])*?\.QueueLink\(")).ToList();
 
         private static void Split()
         {

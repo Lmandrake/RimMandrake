@@ -160,11 +160,17 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Func<int, int, bool> open = (x, z) => true;
             var tips = new List<P2> { new P2(-0.4, 3.2), new P2(0.0, 3.3), new P2(0.4, 3.2) };
             var rows = new List<string>();
-            var aims = new[] { (0.0, 6.0), (0.0, -6.0), (7.0, 0.0), (-4.0, 3.0), (11.0, 2.0), (0.0, 2.0) };
+            var aims = new[] { (0.0, 6.0), (0.0, -6.0), (7.0, 0.0), (-4.0, 3.0), (11.0, 2.0), (0.0, 2.0), (14.0, 0.0), (12.0, 0.0), (0.0, 9.0) };
+            // the last three with something in the way: a shed under the span 4.5 cells out, a wall across every way, a shed up the screen
+            var ways = new Func<int, int, bool>[] { open, open, open, open, open, open,
+                (x, z) => !(x >= 4 && x <= 9 && z >= -2 && z <= 2), (x, z) => x < 5, (x, z) => !(x >= -2 && x <= 3 && z >= 4 && z <= 6) };
             for (int a = 0; a < aims.Length; a++)
+            {
+                string blocked = string.Join(",", Enumerable.Range(-12, 30).SelectMany(x => Enumerable.Range(-12, 26).Where(z => !ways[a](x, z)).Select(z => "[" + x + "," + z + "]")));
                 foreach (int seed in new[] { 11, 2024, 31337 })
-                    foreach (FallenLay l in AerialMath.LayFallenStrands(tips, new P2(0, 0), new P2(aims[a].Item1, aims[a].Item2), P2.Dist(new P2(0, 0), new P2(aims[a].Item1, aims[a].Item2)) * 1.05, seed + a, 3, open))
-                        rows.Add("{\"aim\":" + a + ",\"seed\":" + seed + ",\"ground\":" + l.GroundFrom + ",\"pts\":[" + string.Join(",", l.Pts.Select(p => "[" + p.X.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "," + p.Z.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "]")) + "]}");
+                    foreach (FallenLay l in AerialMath.LayFallenStrands(tips, new P2(0, 0), new P2(aims[a].Item1, aims[a].Item2), P2.Dist(new P2(0, 0), new P2(aims[a].Item1, aims[a].Item2)) * 1.05, seed + a, 3, ways[a]))
+                        rows.Add("{\"aim\":" + a + ",\"seed\":" + seed + ",\"ground\":" + l.GroundFrom + ",\"blocked\":[" + blocked + "],\"pts\":[" + string.Join(",", l.Pts.Select(p => "[" + p.X.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "," + p.Z.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + "]")) + "]}");
+            }
             System.IO.File.WriteAllText(path, "[" + string.Join(",", rows) + "]");
         }
 
@@ -364,6 +370,27 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 lens.Add(dev.ToString("0.0"));
             }
             C(loose >= 28, "beside a wall " + loose + "/40 fallen wires still bend 0.6+ cell off their line (" + string.Join(" ", lens) + ")");
+            // a shed built under the span (pass 12: a mortar on a lamp mast over a shed): the wire's own line meets the shed's wall 4.5 cells out.
+            // It falls beside the shed with its whole length, a loose cord. Before, every seed stopped at that wall as a straight rod (0/40)
+            Func<int, int, bool> shed = (x, z) => !(x >= 15 && x <= 20 && z >= 9 && z <= 13);
+            int whole = 0, across = 0;
+            var shedLens = new List<string>();
+            for (int seed = 1; seed <= 40; seed++)
+            {
+                FallenLay q = AerialMath.LayFallen(top, basePt, new P2(24.5, 10.5), 14.7, seed, shed);
+                double ql = 0;
+                for (int i = q.GroundFrom + 1; i < q.Pts.Count; i++) ql += P2.Dist(q.Pts[i - 1], q.Pts[i]);
+                if (q.GroundFrom >= 0 && q.Pts.Skip(q.GroundFrom).Any(p => !shed((int)Math.Floor(p.X), (int)Math.Floor(p.Z)))) across++;
+                if (!q.Blocked && ql >= 0.8 * 14) whole++;
+                shedLens.Add(ql.ToString("0"));
+            }
+            C(whole >= 36 && across == 0, "a shed under the span: " + whole + "/40 fallen wires lie their whole length beside it, " + across + " across it (" + string.Join(" ", shedLens) + ")");
+            // a wall across every way it could fall: it stops at the wall, and the cable it has left lies piled in front of it, not as a rod
+            FallenLay pile = AerialMath.LayFallen(top, basePt, new P2(24.5, 10.5), 14.7, 42, (x, z) => x < 16);
+            double pl = 0;
+            for (int i = pile.GroundFrom + 1; i < pile.Pts.Count; i++) pl += P2.Dist(pile.Pts[i - 1], pile.Pts[i]);
+            C(pile.Blocked && pile.Tip.X < 16 && pl >= 1.6 * (pile.Tip.X - basePt.X), "a wall across its way: it piles up in front of the wall (" + pl.ToString("0.0") + " of cable in " +
+              (pile.Tip.X - basePt.X).ToString("0.0") + " cells, tip " + pile.Tip + ")");
             FallenLay g = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, (x, z) => x != 14);
             C(g.Blocked && g.Tip.X < 14 && g.Pts.Skip(1).All(p => (int)Math.Floor(p.X) != 14 || p.Z > 11.2), "a wall stops the lying wire before the wall (tip " + g.Tip + ")");
             FallenLay h = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, open);

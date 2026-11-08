@@ -508,27 +508,41 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double dist = P2.Dist(basePt, toward);
             double h = top.Z - basePt.Z, ix = top.X - basePt.X;
             if (dist < 1e-6 || length <= 0) return lay;
-            double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
-            double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
+            double ax = (toward.X - basePt.X) / dist, az = (toward.Z - basePt.Z) / dist;
+            double ux = ax, uz = az, nx = -uz, nz = ux;
+            double cable = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
             int sgn = side != 0 ? Math.Sign(side) : U(seed, 9) < 0.5 ? -1 : 1;
-            double fit = Math.Min(1, want / 3);
-            // the bends: uneven, at uneven places, the last of them late so the cord still wanders into its end
-            int bends = want < 2 ? 1 : Math.Min(4, 2 + (int)(want / 5));
-            var bendAt = new double[bends]; var bendW = new double[bends]; var bendA = new double[bends];
-            int sign = sgn;
-            for (int b = 0; b < bends; b++)
+            // the plan of the ground path over `want` cells of its line (the cable's length, or less where something stops it)
+            double want = 0, fit = 0, s0 = 0, fanIn = 0, fan = 0, wanderA = 0, wanderL = 0, wanderP = 0, hookL = 0, hookA = 0;
+            int bends = 0;
+            var bendAt = new double[4]; var bendW = new double[4]; var bendA = new double[4];
+            Action<double> plan = w =>
             {
-                bendAt[b] = want * (b == bends - 1 ? 0.62 + 0.26 * U(seed, 40 + b) : 0.14 + 0.5 * (b + U(seed, 40 + b)) / bends);
-                bendW[b] = Math.Max(0.8, Math.Min(2.6, want * (0.13 + 0.1 * U(seed, 50 + b))));
-                bendA[b] = sign * Math.Min(1.8, 0.25 + 0.32 * want) * (0.5 + 0.5 * U(seed, 60 + b));
-                sign = U(seed, 70 + b) < 0.8 ? -sign : sign;
-            }
-            double wanderA = (0.07 + 0.09 * U(seed, 10)) * fit, wanderL = 0.55 + 0.4 * U(seed, 11), wanderP = 6.283 * U(seed, 12);
-            double hookL = Math.Min(1.7, 0.35 * want), hookA = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Min(0.95, 0.24 * want) * (0.6 + 0.4 * U(seed, 14));
-            double fan = sgn * (side != 0 ? 0.75 + 0.45 * U(seed, 15) : 0.3 + 0.25 * U(seed, 15)) * fit;
-            // a wire falling away up the screen doubles back past its own drop: the wider the touchdown, the rounder that turn
-            double s0 = Math.Min(want * 0.6, Math.Max(0.7, Math.Abs(h) * (0.45 + 0.5 * Math.Max(0, uz))));
-            double fanIn = s0 * (1.3 + 0.7 * Math.Max(0, uz));
+                want = w;
+                fit = Math.Min(1, want / 3);
+                // the bends: uneven, at uneven places, the last of them late so the cord still wanders into its end
+                bends = want < 2 ? 1 : Math.Min(4, 2 + (int)(want / 5));
+                int sign = sgn;
+                for (int b = 0; b < bends; b++)
+                {
+                    bendAt[b] = want * (b == bends - 1 ? 0.62 + 0.26 * U(seed, 40 + b) : 0.14 + 0.5 * (b + U(seed, 40 + b)) / bends);
+                    bendW[b] = Math.Max(0.8, Math.Min(2.6, want * (0.13 + 0.1 * U(seed, 50 + b))));
+                    bendA[b] = sign * Math.Min(1.8, 0.25 + 0.32 * want) * (0.5 + 0.5 * U(seed, 60 + b));
+                    sign = U(seed, 70 + b) < 0.8 ? -sign : sign;
+                }
+                wanderA = (0.07 + 0.09 * U(seed, 10)) * fit; wanderL = 0.55 + 0.4 * U(seed, 11); wanderP = 6.283 * U(seed, 12);
+                hookL = Math.Min(1.7, 0.35 * want); hookA = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Min(0.95, 0.24 * want) * (0.6 + 0.4 * U(seed, 14));
+                fan = sgn * (side != 0 ? 0.75 + 0.45 * U(seed, 15) : 0.3 + 0.25 * U(seed, 15)) * fit;
+            };
+            // which way it lies: the break's own line turned by t (radians); a wire falling away up the screen doubles back past its
+            // own drop, and the wider the touchdown, the rounder that turn
+            Action<double> aim = t =>
+            {
+                double c = Math.Cos(t), sn = Math.Sin(t);
+                ux = ax * c - az * sn; uz = ax * sn + az * c; nx = -uz; nz = ux;
+                s0 = Math.Min(want * 0.6, Math.Max(0.7, Math.Abs(h) * (0.45 + 0.5 * Math.Max(0, uz))));
+                fanIn = s0 * (1.3 + 0.7 * Math.Max(0, uz));
+            };
             Func<double, double, P2> ground = (s, k) =>
             {
                 double off = 0;
@@ -544,26 +558,78 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
             Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
-            // the widest slack this ground takes: the same bends turned the other way before any less of them, so a wire beside a
-            // rock or a wall bends away from it and stays a loose cord instead of halving into a rod
-            double slack = 0;
-            foreach (double k in SlackTries)
+            // how far along its line the ground path at slack k stays on open ground (want when all of it does)
+            Func<double, double> clearTo = k =>
             {
-                bool clear = true;
-                for (double s = 0.2; s <= want + 1e-9 && clear; s += 0.2)
-                    if (s > 0.75 && !open(ground(s, k))) clear = false;
-                if (clear) { slack = k; break; }
+                for (double s = 0.2; s <= want + 1e-9; s += 0.2)
+                    if (s > 0.75 && !open(ground(s, k))) return Math.Max(0, s - 0.2);
+                return want;
+            };
+            // the widest slack this ground takes, on the break's own line first, then turned to its own side and the other, up to 50
+            // degrees; the same bends mirrored before any less of them. A wire beside a rock bends away from it, and one whose line
+            // crosses a shed built under the span falls beside the shed, a loose cord, instead of halving into a rod that stops at
+            // its wall (a mortar on a lamp mast over a shed, pass 12)
+            plan(cable);
+            double slack = 0, turn = 0, reach = -1;
+            foreach (double[] ks in SlackLevels)
+            {
+                foreach (double t in AimTurns)
+                {
+                    aim(t * sgn);
+                    foreach (double k in ks)
+                        if (clearTo(k) >= want) { slack = k; turn = t * sgn; reach = want; break; }
+                    if (reach >= 0) break;
+                }
+                if (reach >= 0) break;
             }
-            // how far the ground path is open at that slack (with none left, this is the bare line and may stop short)
-            double reach = want;
-            for (double s = 0.2; s <= want + 1e-9; s += 0.2)
-                if (s > 0.75 && !open(ground(s, slack))) { lay.Blocked = true; reach = Math.Max(0, s - 0.2); break; }
-            if (reach < 0.05) return lay;
+            // nothing lies its whole length (a wall across every way it could fall): it lies as far as the ground lets it, along the
+            // way that goes furthest, its bends drawn in to that stretch, and the cable it has left piles up against what stopped it
+            if (reach < 0)
+            {
+                lay.Blocked = true;
+                for (int pass = 0; pass < 3 && reach < 0; pass++)
+                {
+                    double best = 0, bestK = 0, bestT = 0;
+                    foreach (double[] ks in SlackLevels)
+                        foreach (double t in AimTurns)
+                        {
+                            aim(t * sgn);
+                            foreach (double k in ks)
+                            {
+                                double r = clearTo(k);
+                                if (r > best + 0.05) { best = r; bestK = k; bestT = t * sgn; }
+                            }
+                        }
+                    if (best < 0.05) break;
+                    plan(best);   // the bends drawn in to the stretch it has; it may lie whole now, or stop sooner and try again
+                    aim(bestT);
+                    if (clearTo(bestK) >= want) { slack = bestK; turn = bestT; reach = want; }
+                }
+                if (reach < 0)
+                {
+                    plan(cable);   // nothing at all clears: the bare line, as far as it goes
+                    aim(0);
+                    slack = 0; turn = 0; reach = clearTo(0);
+                    if (reach >= 0.05) plan(reach);
+                }
+                if (reach < 0.05) return lay;
+            }
+            aim(turn);
             s0 = Math.Min(reach * 0.6, s0);
-            // where the coils go: never on the hanging part, never on the end that writhes
+            // where the coils go: never on the hanging part, never on the end that writhes; a cord that stopped short piles the cable
+            // it has left in more of them, in front of what stopped it
+            double spare = Math.Max(0, cable - reach * 1.15);
             var coilsAt = new List<double>();
             if (want >= 3) coilsAt.Add(want * (0.3 + 0.35 * U(seed, 16)));
             if (want >= 7 && U(seed, 17) < 0.65) coilsAt.Add(want * (0.68 + 0.14 * U(seed, 18)));
+            double lo = Math.Max(s0 + 0.2, 0.3 * reach), hi = reach - 1.85;
+            if (lay.Blocked && hi > lo)
+            {
+                int more = Math.Min(3, (int)Math.Round(spare / 2.2)) - coilsAt.Count;
+                for (int c = 0; c < more; c++) coilsAt.Add(lo + (hi - lo) * (c + U(seed, 90 + c)) / more);
+                coilsAt.Sort();
+            }
+            bool piling = lay.Blocked && spare > 1;
             int coilIdx = 0;
             // the one cable, insulator -> touchdown -> end
             double sPos = 0;
@@ -576,10 +642,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
                 while (k == 0 && coilIdx < coilsAt.Count && sPos >= coilsAt[coilIdx])
                 {
-                    if (sPos <= reach - 1.8 && slack != 0)
+                    if (sPos <= reach - 1.8 && (slack != 0 || piling))
                     {
                         double drift = 0.1 + 0.25 * U(seed, 80 + coilIdx);
-                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, Math.Abs(slack), drift, want >= 5, open))
+                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, Math.Max(piling ? 0.8 : 0, Math.Abs(slack)), drift, want >= 5 || piling, open))
                             sPos = Math.Min(reach - 1.5, sPos + drift);
                     }
                     coilIdx++;
@@ -591,7 +657,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return lay;
         }
 
-        private static readonly double[] SlackTries = { 1.0, -1.0, 0.5, -0.5, 0.25, -0.25 };
+        /// <summary>The slack a fallen wire tries, widest first; each level the bends one way and then mirrored.</summary>
+        private static readonly double[][] SlackLevels = { new[] { 1.0, -1.0 }, new[] { 0.5, -0.5 }, new[] { 0.25, -0.25 } };
+        /// <summary>The turns off the break's own line a fallen wire tries, its own side first (radians: 0, 12, 24, 36, 50 degrees).</summary>
+        private static readonly double[] AimTurns = { 0, 0.21, -0.21, 0.42, -0.42, 0.63, -0.63, 0.87, -0.87 };
 
         private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
 

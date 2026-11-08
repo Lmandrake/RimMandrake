@@ -104,7 +104,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "no bare power-master read left in the placeworkers, ground layer, re-string or alert (the clamp keeps its own)");
         }
 
-        private static string AerialSourceDir()
+        internal static string AerialSourceDir()
         {
             for (DirectoryInfo d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
             {
