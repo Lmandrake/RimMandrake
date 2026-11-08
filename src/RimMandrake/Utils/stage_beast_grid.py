@@ -28,7 +28,7 @@ THE STAGE (order is the trap list from skills/rimworld-live-review):
      does not let a pawn squeeze diagonally between two blocked orthogonals.
   5. spawn each creature standing (wild, faction none) in its pen; a Colonist human at each row's start, drafted so he
      holds still, for scale. Flyers are spawned standing; flight is never exercised.
-  6. face everyone south, pin a review_label above each pen "r01c03 label", read the pawn list back and report holes.
+  6. face everyone south WITHOUT a rotation lock (a lock freezes walking creatures on their south art), pin a review_label above each pen "r01c03 label", read the pawn list back and report holes.
 """
 import argparse
 import json
@@ -394,9 +394,13 @@ def live_stage(args, roster):
         for p in humans:
             st.call("jawa/set_draft", {"pawnId": str(p["id"]), "drafted": True})
             st.call("jawa/set_pawn_identity", {"pawn": str(p["id"]), "single": "Human"})
+        # Face everyone south for the first frame, but NEVER lock: lockRotation sets Thing.debugRotLocked, which
+        # freezes the facing for good (and survives save/load), so a penned creature then walks west showing its
+        # south art (owner, 2026-11-08: "This Gizka just walked west while facing south"). Drafted humans are
+        # held south by the engine anyway.
         ids = ",".join(str(p["id"]) for p in mine)
-        rot = st.call("jawa/set_pawn_rotation", {"pawnId": ids, "dir": "south", "lockRotation": True}, check=False)
-        st.say("faced south: %s" % str(rot.get("message") or rot.get("success"))[:100])
+        rot = st.call("jawa/set_pawn_rotation", {"pawnId": ids, "dir": "south", "lockRotation": False}, check=False)
+        st.say("faced south (unlocked): %s" % str(rot.get("message") or rot.get("success"))[:100])
 
         st.call("jawa/review_label", {"action": "clear", "tag": TAG})
         ops = []
