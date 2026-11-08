@@ -72,7 +72,11 @@ namespace RimMandrake.FlowWorks.Pits
 		public static void Print(SectionLayer layer, Building_SuspensionDeck deck)
 		{
 			Material mat = TileFor(deck, out float angle);
-			Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, mat, angle);
+			// a hung span prints the square bent by its sag (RM_SuspensionHang); anything else stays a flat plane
+			if (!RM_SuspensionHang.PrintHungPlane(layer, deck.TrueCenter(), mat, angle, deck.Record))
+			{
+				Printer_Plane.PrintPlane(layer, deck.TrueCenter(), Vector2.one, mat, angle);
+			}
 		}
 	}
 }

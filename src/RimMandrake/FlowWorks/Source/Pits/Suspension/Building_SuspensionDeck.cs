@@ -173,6 +173,10 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			leafRaised = RM_Drawbridges.RaisedAt(map, Position);   // DRAWBRIDGE: a reload (or a rebuilt square) reads its leaf
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, Position);
+			if (!respawningAfterLoad)
+			{
+				RM_SuspensionHang.DirtySpan(map, Record);   // SUSPENSION_BRIDGE_READS_HUNG: a square's cables span the whole bridge
+			}
 			RM_SuspensionWaters.Notify_DeckChanged(map, Position);
 		}
 
@@ -184,9 +188,11 @@ namespace RimMandrake.FlowWorks.Pits
 			// floor: whoever is under it is hit like a roof collapse, and the wreck blocks the floor until cleared
 			bool falls = collapsed;
 			List<Pawn> under = falls ? Bridges?.BandPawnsAt(pos) : null;
-			string look = Bridges?.RecordAt(pos)?.look;
+			SuspensionBridgeRecord hung = Bridges?.RecordAt(pos);
+			string look = hung?.look;
 			base.DeSpawn(mode);
 			RM_MapComponent_SuspensionBridges.DirtyAround(map, pos);
+			RM_SuspensionHang.DirtySpan(map, hung);
 			RM_SuspensionWaters.Notify_DeckChanged(map, pos);
 			if (falls && map != null)
 			{
@@ -208,6 +214,9 @@ namespace RimMandrake.FlowWorks.Pits
 			else if (Graphic is Graphic_Linked linked && linked.SubGraphic != null)
 			{
 				RM_SuspensionDeckLink.Print(layer, this);   // SUSPENSION_DECK_LINKED_NO_SEAMS
+				// SUSPENSION_BRIDGE_READS_HUNG: the posts and cables this square carries, and its shadow on the hole's floor
+				RM_SuspensionHang.PrintParts(layer, this);
+				RM_SuspensionHang.PrintShadow(layer, this);
 			}
 			else
 			{
@@ -217,7 +226,10 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				Vector3 c = Position.ToVector3Shifted();
 				c.y = def.Altitude + Altitudes.AltInc;
-				Printer_Plane.PrintPlane(layer, c, Vector2.one, RM_SuspensionMats.LedgeShadow);
+				if (!RM_SuspensionHang.PrintHungPlane(layer, c, RM_SuspensionMats.LedgeShadow, 0f, Record))
+				{
+					Printer_Plane.PrintPlane(layer, c, Vector2.one, RM_SuspensionMats.LedgeShadow);
+				}
 			}
 		}
 
@@ -427,6 +439,7 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Vector3 center = Position.ToVector3Shifted();
 			center.y = def.Altitude;
+			SuspensionBridgeRecord hung = RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(Position);   // bent with a hung deck
 			for (int i = 0; i < 4; i++)
 			{
 				Rot4 edge = new Rot4(i);
@@ -435,7 +448,10 @@ namespace RimMandrake.FlowWorks.Pits
 				{
 					continue;
 				}
-				Printer_Plane.PrintPlane(layer, center, Vector2.one, mat, edge.AsAngle);
+				if (!RM_SuspensionHang.PrintHungPlane(layer, center, mat, edge.AsAngle, hung))
+				{
+					Printer_Plane.PrintPlane(layer, center, Vector2.one, mat, edge.AsAngle);
+				}
 			}
 		}
 	}

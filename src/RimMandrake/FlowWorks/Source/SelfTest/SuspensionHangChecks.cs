@@ -81,6 +81,57 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SuspensionHangMath.SagAt(2.75f, s, 3, SuspensionTier.Steel) > 0f, "no sag in the first segment");
                 Assert(RM_SuspensionHangMath.SagAt(0f, s, 3, SuspensionTier.Steel) == 0f, "sag over the anchor");
             });
+            // pass 7: the three treatments and the slope guard that keeps the drawn deck from folding back on itself
+            Case("Hang_slope_guard_holds_every_treatment", () =>
+            {
+                // sanity: without the guard a 1-cell rope walk at the readable minimum folds (slope over 1)
+                float raw = RM_SuspensionHangMath.MidSag(1f, SuspensionTier.Heavy) * RM_SuspensionHangMath.SagMultiplier(RM_SuspensionHangMath.TreatmentRopeWalk);
+                Assert(RM_SuspensionHangMath.MaxSlope(raw, 1f) > 1f, "instrument: the unguarded 1-cell rope walk should slope over 1, got " + RM_SuspensionHangMath.MaxSlope(raw, 1f));
+                float[] lens = { 0.5f, 1f, 1.5f, 2f, 3f, 4f, 6f, 9f, 13f, 20f, 40f };
+                int seen = 0;
+                foreach (SuspensionTier t in Tiers)
+                {
+                    for (int tr = 0; tr <= 2; tr++)
+                    {
+                        foreach (float len in lens)
+                        {
+                            float mid = RM_SuspensionHangMath.TreatedMidSag(len, t, tr);
+                            float slope = RM_SuspensionHangMath.MaxSlope(mid, len);
+                            Assert(mid > 0f, t + " t" + tr + " len " + len + ": no sag");
+                            Assert(slope <= 0.8f + 1e-4f, t + " t" + tr + " len " + len + ": slope " + slope + " over the guard");
+                            // the drawn line z' = along - sag(along) must run one way only (a fold would draw the deck twice)
+                            float prev = float.MinValue;
+                            for (int k = 0; k <= 64; k++)
+                            {
+                                float a = len * k / 64f;
+                                float z = a - mid * RM_SuspensionHangMath.Bow(a / len);
+                                Assert(z > prev, t + " t" + tr + " len " + len + ": the drawn deck folds at " + a);
+                                prev = z;
+                            }
+                            seen++;
+                        }
+                    }
+                }
+                Assert(seen == 4 * 3 * lens.Length, "instrument: checked " + seen + " cases");
+            });
+            Case("Hang_treatments_rope_walk_most_cable_stayed_least", () =>
+            {
+                foreach (SuspensionTier t in Tiers)
+                {
+                    for (int len = 3; len <= 16; len++)
+                    {
+                        float s0 = RM_SuspensionHangMath.TreatedMidSag(len, t, RM_SuspensionHangMath.TreatmentSuspension);
+                        float s1 = RM_SuspensionHangMath.TreatedMidSag(len, t, RM_SuspensionHangMath.TreatmentRopeWalk);
+                        float s2 = RM_SuspensionHangMath.TreatedMidSag(len, t, RM_SuspensionHangMath.TreatmentCableStayed);
+                        Assert(s1 > s0 && s0 > s2 && s2 > 0f, t + " len " + len + ": sags " + s0 + "/" + s1 + "/" + s2 + " not rope walk > suspension > cable-stayed > 0");
+                    }
+                }
+                float[] sup = { 0.5f, 4f, 9.5f };
+                float[] mids = { 0.3f, 0.5f };
+                Assert(RM_SuspensionHangMath.HungSagAt(4f, sup, mids, 3) == 0f, "hung sag at a tower");
+                Assert(Math.Abs(RM_SuspensionHangMath.HungSagAt(6.75f, sup, mids, 3) - 0.5f) < 1e-4f, "second segment's own mid sag");
+                Assert(RM_SuspensionHangMath.HungSagAt(10f, sup, mids, 3) == 0f, "hung sag over the far anchor");
+            });
         }
     }
 }

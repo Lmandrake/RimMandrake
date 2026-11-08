@@ -894,7 +894,9 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>SUSPENSION_UNDERPASS (construction design §1.4, the risk table's fallback, taken first): a pawn under a deck is
 		/// drawn UNDER it. The deck square it stands under is drawn again over it, half see-through, so the pawn reads as beneath
 		/// the deck and can still be found. (Re-layering every deck-band pawn above the deck is the alternative; it waits on a
-		/// live look at 1.6's draw batching.)</summary>
+		/// live look at 1.6's draw batching.) PAWN_WALKS_UNDER_DECK (pass 7): a hung span (RM_SuspensionHang.IsHung) draws its
+		/// deck squares solid over any sunk pawn beneath them instead (RM_SuspensionHang.DrawOccluders); the half see-through
+		/// square stays for jetties, drawbridges and raid planks, and for every span when the pit sink is switched off.</summary>
 		public override void MapComponentUpdate()
 		{
 			// HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP: Graphics.DrawMesh from an update draws over the planet unless the world view is skipped
@@ -903,6 +905,7 @@ namespace RimMandrake.FlowWorks.Pits
 				return;
 			}
 			RM_DrawbridgeArt.DrawLeaves(map, bridges);
+			RM_SuspensionHang.DrawOccluders(map, bridges);
 			if (floorBand.Count == 0)
 			{
 				return;
@@ -914,6 +917,10 @@ namespace RimMandrake.FlowWorks.Pits
 					continue;
 				}
 				Building_SuspensionDeck d = RM_SuspensionUnderpass.PassingDeckAt(map, p.Position);
+				if (d != null && RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled && RM_SuspensionHang.IsHung(d.Record))
+				{
+					continue;   // drawn solid over it by RM_SuspensionHang.DrawOccluders
+				}
 				float angle = 0f;
 				Material mat = d == null ? null : RM_SuspensionDeckLink.TileFor(d, out angle);
 				if (mat == null)
