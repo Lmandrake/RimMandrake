@@ -1,19 +1,16 @@
 # Pyrelands: the ratchet (Conductor, 2026-11-08 ~02:00 AM PST; updated by pass 17)
 
-Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_pyrelands_2026-11-08.md`) plus the Conductor ruling 1:26 AM (OWNER_NOTE.delivered). Where PROGRESS's Count disagrees, this file wins: ash_fertile_when_watered, scorchfruit_spoils_fast are credited now; firehawk_carries_ember stays true (ruling overrides the audit's demotion); burrowers_dive has its dive credited but stays Remaining for the readability half. 22 bars: 21 proven, 1 remaining (pass 18). Ids are as in `design/validation_walks/RimMandrake/Pyrelands.md` and PROGRESS.
+Follows the audit (`/mnt/d/ClaudeWork/rimmandrake/conductor/apparatus_audit_pyrelands_2026-11-08.md`) plus the Conductor ruling 1:26 AM (OWNER_NOTE.delivered). Where PROGRESS's Count disagrees, this file wins: ash_fertile_when_watered, scorchfruit_spoils_fast are credited now; firehawk_carries_ember stays true (ruling overrides the audit's demotion); burrowers_dive proven in pass 18. 22 bars: 22 proven, 0 remaining (pass 18). Ids are as in `design/validation_walks/RimMandrake/Pyrelands.md` and PROGRESS.
 Suite results: `Transient/northstar/Pyrelands_main.json`, `Pyrelands_r3.json`. Shots: `D:\ClaudeWork\rimmandrake\ralph_pyrelands\shots\`.
 
 ## Remaining (work only on these, in this order)
-0. Setup (done in pass 18; the game runs the capped ash-dust cut): `Transient/pyre_play6/restart.py --deploy` (puts in the capped ash-dust textures; the running game has the first cut),
-   then `Transient/pyre_play8/loadsave.py NS_Pyrelands_play_w_d22clean` (day 22 10:20, the leftover weather lock removed),
-   `Transient/pyre_play7/revive.py`, `feed.py 20`.
-1. pyre_burrowers_dive: the dive is credited; a readable frame is owed. Park the camera on settled ashwallows, light a line 3 to 5
-   cells off, play at Normal, poll for RM_Burrowed, run 60 more ticks, then a real capture (`Transient/pyre_play7/scr.py`).
-Owed, not bars: LOOK.md refresh with the ash dust (before/after); check colonists no longer sweep outdoor ash on natural ground
-(new, `PyrelandsAshDust.Postfix_CleanFilth`) but still sweep floors; the unattributed slow frames; the full suite on the current
-build; a broaden call (none in pass 16 or 17: it is due before DONE); the fresh-eyes judge; DONE.
+(none: all 22 bars are proven as of pass 18.)
+Owed before DONE, not bars: act on the pass-18 broaden call's lead 1 (a fresh colony, map x, three days unmanaged:
+`Transient/pyre_play9/colony.py`, see PROGRESS); the full suite on the current build; the fresh-eyes judge; DONE.md.
+Done in pass 18: LOOK.md refreshed; outdoor ash is not a chore (4% Clean in 180 job samples); telemetry this session
+(Superfast 292-437 TPS under ash fall plus a 1,550-fire wildfire, worst tick 142 ms); broaden call made.
 
-## Proven (locked), 21
+## Proven (locked), 22
 - pyre_plant_distribution_correct, pyre_animal_distribution_correct, pyre_mapgen_log_clean, pyre_ground_deep_ash, pyre_burn_line_present, pyre_scorchfruit_fire_born, pyre_grass_chokes_ground: true in PROGRESS Count (suite and map reads from earlier passes); not re-opened by the audit.
 - pyre_ash_fertile_when_watered: pass 11, map r: inspect-pane growth 140% watered rice vs 14-20% dry (b64abe34e8); credited by ruling 1:26. (The wet-roots season fix touches this: read it in passing at item 2, do not stage it.)
 - pyre_scorchfruit_spoils_fast: plant half (ruling): suite chain `scorchfruit_spoils` PASS in `Pyrelands_main.json`, pods gone by 1.5 days, yield rotted by 4.5; 111 pods lived 1.08-1.09 days in play (pass 15). Fruit half: 10 harvested fruit in a sealed pen at outdoor heat, pane countdown from "spoils in 4 days", gone at ~4.0 days (pass 15, staged). Rot defs unchanged since ea63499a7e.
@@ -43,6 +40,15 @@ build; a broaden call (none in pass 16 or 17: it is due before DONE); the fresh-
   by the hour; at play zoom the dusted grass reads as grey ash-coated clumps that multiply hour by hour (1 at h1, ~5 at h3,
   ~15 at h6 in the same view). Black rain then washed them, 2615 -> 2012 -> 667 -> 74 in 3 h, and the grey went with them.
   `shots/ashfall_h0_h3_h6_washed.png` (h0, h3, h6, washed), series `c2_s0_*`, `c2_s1_*`, `c2wash_*`.
+
+- pyre_burrowers_dive (pass 18, build a2efdf4e92, played on map w, day 23, a natural wildfire of 1,550 fires, camera parked
+  on each animal at play zoom). Found first: vanilla's constant-tree JobGiver_AnimalFlee (60+ fires near, one inside 10 cells)
+  pulled a domed ashwallow up and sent it running (94462 on a8511632c8); the fix makes a domed burrower flee nothing and a
+  standing one dive instead of fleeing. On the fix: 94463 dived 4.5 cells from the front and held 9,530 ticks with the front at
+  2.0 cells; 94459 dived 5.4 cells off, fire burned on its own cell for ~2,000 ticks, it surfaced within 100 ticks of the fire
+  going out. Both unhurt (no hediffs before or after). A "Burrowed!" text rises at the dive, the body draws as a brown dome, and
+  the pane reads "Burrowed: sealed under the ash until the fire passes." `shots/burrow_dive_pane_infire_surfaced.png` (top:
+  selected dome and pane; bottom: dome in burning grass, then surfaced). Log `Transient/pyre_play9/fix1.log`.
 
 ## Rules
 1. A proven bar stays proven and is not re-tested unless a change touched what it depends on; a pass does not re-prove Proven bars.

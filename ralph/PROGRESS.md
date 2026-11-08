@@ -1,50 +1,51 @@
 # Pyrelands progress
 
-**State at retirement (pass 17):** the game is up on map w at about day 24.2, mid-wildfire, run on from
-`NS_Pyrelands_play_w_d22clean` (nothing saved after it), bridge released. The running build has the FIRST ash-dust cut; the
-committed textures are the capped cut, so restart with `--deploy` first. Evidence notes: `Transient/pyre_play8/EVIDENCE.md`
-(gitignored; the numbers are also in RATCHET).
+**State at retirement (pass 18):** the game is up on a fresh map x (built this pass, saved as `NS_Pyrelands_play_x`, day 5.3,
+three colonists, nothing done yet). The running game also holds some crash-landing goods from a failed setup call; they are
+not in the save. Build: a2efdf4e92 is deployed. Bridge released. All 22 bars are in RATCHET's Proven.
 
 ## Seen and done this pass
+- **Ash fall proven** on the capped ash-dust cut (map w, day 22, a 6-hour fall from 10:20). Drifts rose 3 -> 483 -> 900 ->
+  1353 -> 1797 -> 2191 -> 2615. Grey dusted grass multiplied hour by hour at play zoom. Black rain then washed it to 74 in 3
+  hours, and the grey went with it (`ashfall_h0_h3_h6_washed.png`).
+- **A burrow bug, found and fixed.** Vanilla's `JobGiver_AnimalFlee` runs every 30 ticks for a wild animal. With 60+ fires
+  near and one inside 10 cells, it orders a flee that overrides any job, the dome included. So in the big wildfires burrowers
+  exist for, an ashwallow fled instead of diving, or was pulled out of its dome. That is the Conductor's "1 of 3 fled and was
+  killed." Fix in `RM_BurrowHeatReaction.cs` (prefix and postfix on `TryGiveJob`) plus `RM_FireEcoKernel.BurrowerFleeAnswer`
+  with a fuzz table: a domed burrower flees nothing; a standing one dives instead of fleeing fire, if the fire is in its
+  radius, else holds. Predator flight is unchanged.
+- **Burrow proven on the fix** in a natural 1,550-fire wildfire. Two ashwallows dived 4.5 and 5.4 cells from the front. One
+  had fire on its own cell for ~2,000 ticks. Both surfaced unhurt after the fire near them went out.
+  `burrow_dive_pane_infire_surfaced.png`. Note: a creeping front flickers (cells go out and relight), so an animal can
+  surface in a gap and dive again. That's harmless; I left it.
+- **Colonists and outdoor ash:** over 15,000 ticks on map w, 8 of 180 job samples were Clean (4%); the rest were sleep,
+  harvest, sow and haul. Nobody spends the day sweeping ash.
+- **Mood on map w is fine.** The "Catatonic", "Insulting spree" and "Daze" letters date from about day 21.3, before this
+  pass's save. The biome's only mood drag is heat, −4 to −8. Note: `Transient/pyre_play7/revive.py` sets Mood to 1, so don't
+  use it when judging mood.
+- **Performance** (telemetry, this session, ash fall plus a map-wide wildfire): Superfast ran 292-437 TPS (median 376), Normal
+  held 60, and the worst tick was 142 ms.
 
-**A weather lock was hiding in the save.** `NS_pyre_sky_base` carried a permanent "Forced weather" condition from pass 16's sky
-work, started around day 21.2. My ash fall kept flipping to black rain within the hour. I removed it with `jawa/weather_set
-unlock=true` and saved `NS_Pyrelands_play_w_d22clean`. The weather on map w since day 21.2 was not natural, so pass 16's
-"natural black rain" was probably forced. That doesn't change the fresh-burn growth numbers.
-
-**Ash fall's drifts were invisible on an ordinary map.** Map w is 84% deep ash under a full grass carpet. A natural 6-hour fall
-laid about 3,000 drifts, and at play zoom none showed (`old/af_s1_4.png`). Filth draws below LowPlant, so the grass hides it.
-- **Fix:** `Source/PyrelandsAshDust.cs`. Vanilla prints a silhouette-matched snow overlay over a plant when snow is deep. A
-  transpiler swaps Plant.Print's two snow reads, so a grass plant on a loose-ash drift prints an ash overlay instead: light at
-  one layer of ash, full at two or more. Snow still wins. Black rain, expiry and cleaning remove the drift, and the dust goes with
-  it.
-- Ash fall now lands on grass along the drift field: 50% in banks (target 1+), 3% elsewhere (`RM_FireEcoKernel`).
-- Outdoor ash on natural ground is no longer a cleaning job unless ordered. Floors and roofed cells are still swept. Not yet
-  watched in game.
-- Overlays come from `ash_dust_gen.py`, one per living grass sprite. The charred leafless sprites get none.
-- First cut, in game: grey banks formed and grew on the grass hour by hour (drifts 3 to 2,615 in 6 h). At 1:1, though, a dusted
-  clump read as a hazy grey ghost (`old/v1dust_ad_s1_6.png`).
-- The capped cut is installed but not seen yet: ash sits on the clump's upper reach, rounded grit lies below, and the grass colour
-  shows beneath. Not yet checked: whether TransparentPlant honours the light strength's alpha of 0.6.
-
-**Three bars proven in play** (full numbers in RATCHET):
-- **Furnace room:** 76.7 to 84.3 C against 55 to 60 C.
-- **Sleep ignition:** two grass sleepers lit their grass after 1.0 and 1.8 hours; a bare-cell sleeper lit nothing.
-- **Scorch-fruit:** a natural wildfire left pods; colonists harvested 6 a pod; a hungry colonist went from 0.23 to 0.77 food.
-
-**Seen in passing:**
-- The single beast that fled the wildfire walked 50 cells to the colony.
-- Fire wasps wander inside the colony's bedroom.
-- Harvested fruit lies where it fell while colonists fight fires.
-- Day-23 dry thunderstorm: 1,172 fires across the whole map. Colonists spent hours on BeatFire, but nobody was hurt.
+## Broaden call (pass 18): `D:\ClaudeWork\rimmandrake\ralph_pyrelands\gpt_help_pass018.md`
+I asked which proofs look staged, and what a new player's first three days would hit. Leads it gave:
+1. A new colony on default firefighting may lose its workdays to fires (food or shelter left unfinished). **Not yet acted
+   on: do it first.**
+2. Grass may reconnect a firebreak or keep invading a crop plot.
+3. A tamed furnace-beast sleeping in a wooden room (fires there are owner-intended; check the player can tell the cause).
+4. Weather readability for ordinary tasks.
+5. Performance in a mature colony during repeated ash fall (this session's telemetry covers part of it).
 
 ## Next, in order
-1. Restart with `--deploy`, load `NS_Pyrelands_play_w_d22clean`, then run `revive.py` and `feed.py 20`.
-2. Ash fall: lock it from 10:20 and run `Transient/pyre_play8/ashwatch.py ad 6 2500 140,135 121,127`. Judge the capped cut at
-   1:1 and the hour series. Then unlock, let black rain (or `weather_set RM_FE_BlackRain`) wash it, and shoot the same view.
-   Refresh LOOK.md with the before and after. Check that colonists leave outdoor ash alone.
-3. Burrow dome frame (RATCHET item 2).
-4. The broaden call is due (none in pass 16 or 17). Then the full suite on the current build, the fresh-eyes judge, and DONE.
+1. **Act on lead 1** (required before DONE). Load `NS_Pyrelands_play_x`, then run `python.exe Transient/pyre_play9/colony.py
+   setup`. It spawns crash-landing goods, places real blueprints (a 7x7 steel bedroom, 3 wooden beds), creates an 8x8 rice
+   field and a stockpile, and paints the home area. The stack sizes are fixed but the script has not been run since. Then
+   run `python.exe Transient/pyre_play9/colony.py run 144 1250 12` (three days, half-hour slices, a shot every 6 h). Read the
+   job tally per day: how much BeatFire, whether the room gets built, whether the rice gets sown, downs, burns, mood, letters.
+   Look at the shots yourself. Fix what's wrong. This is also the fresh `first_look` for the owner.
+2. Run the full suite on the current build (`live_session.py ... --compose`).
+3. Run the fresh-eyes judge (north star plus shots only), then write DONE.md.
+Tools: `Transient/pyre_play9/burrowwatch.py` (camera follows the animal: real captures of dive, pane, in-fire and surfaced),
+`near.py` (each burrower's distance to fire and the grass around it), `jobs.py` (colonist job tally).
 
 ## Count
 - pyre_plant_distribution_correct: true
@@ -63,8 +64,8 @@ laid about 3,000 drifts, and at play zoom none showed (`old/af_s1_4.png`). Filth
 - pyre_firehawk_carries_ember: true
 - pyre_furnacebeast_warmth: true
 - pyre_furnacebeast_heats_room: true
-- pyre_burrowers_dive: unseen
-- pyre_ashfall_darkens_drifts: false
+- pyre_burrowers_dive: true
+- pyre_ashfall_darkens_drifts: true
 - pyre_cinderfall_distinct: true
 - pyre_blackrain_reads: true
 - pyre_cannot_ordinary_rain: true
