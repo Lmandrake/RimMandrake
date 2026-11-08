@@ -256,6 +256,9 @@ namespace RimMandrake.Graffiti
                 readBy = readBy ?? new Dictionary<int, int>();
                 factionsRead = factionsRead ?? new List<int>();
                 valuedBy = valuedBy ?? new List<int>();
+                // A form's ceiling can come down between versions (pass 9: a scrawl is never better than poor work); a saved mark keeps to it.
+                ModExtension_Graffiti ext = def?.GetModExtension<ModExtension_Graffiti>();
+                if (hasCraft && ext != null) craft = System.Math.Min(craft, RM_GraffitiKernel.CraftCeiling(ext.form));
             }
         }
 
