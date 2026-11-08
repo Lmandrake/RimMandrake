@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- On a Pyrelands map a person steps off when fire reaches their cell or a neighbour (PyrelandsFireSense.cs says why, from a
+       colonist who died in the grass on map x). Core's HumanlikeConstant has no insert tag, so the node goes straight after
+       vanilla's own explosion flee, inside ThinkNode_ConditionalCanDoConstantThinkTreeJobNow (awake, not burning, not drafted,
+       not broken). The giver is a no-op off Pyrelands maps and with the mechanics switched off. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/ThinkTreeDef[defName="HumanlikeConstant"]/thinkRoot/subNodes/li[@Class="ThinkNode_ConditionalCanDoConstantThinkTreeJobNow"]/subNodes/li[@Class="JobGiver_FleePotentialExplosion"]</xpath>
+    <order>Append</order>
+    <value>
+      <li Class="RimMandrake.Pyrelands.JobGiver_RM_StepAwayFromFire" />
+    </value>
+  </Operation>
+</Patch>

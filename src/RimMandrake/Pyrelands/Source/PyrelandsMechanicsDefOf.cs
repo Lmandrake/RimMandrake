@@ -15,6 +15,7 @@ namespace RimMandrake.Pyrelands
     {
         public static JobDef RM_FireHawkCarryEmber;
         public static JobDef RM_FireHawkSeekBurn;
+        public static JobDef RM_PyreStepAwayFromFire;
 
 
         // PYRELANDS_DEDICATED_GRAZER_1 — burrow-on-fire (RM_JobGiver_BurrowOnFire,

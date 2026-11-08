@@ -11,6 +11,9 @@ namespace RimMandrake.Pyrelands
     /// 2026-11-07: "blurry grey stuff ... looks low-res and ugly"; map x day 3, first_look_8, eight cuts in). Tried live on map x
     /// (shots/cover1, cover2, t1-t16): vanilla's snow path (half-cell vertices, Custom/Snow with its cloudy macro texture) lays
     /// each clump as a soft fog cloud; what reads as ash is a pale sheet with a frayed, gritty margin, as a terrain edge is drawn.
+    /// Its texture is the deep-ash terrain's own, lifted pale (ash_cover_gen.py): both map by world position, so the drift lies in
+    /// the ground's own ripples. Pass 20's flat powder read as fog, snow or concrete to two blind readers; this one as "grey sand
+    /// or fine gravel ... ash or grey dust drifted by wind", crisp (pass 21, map x, shots p21c0_base against p21r1).
     /// So: a mesh of 4x4 quads a cell, each vertex's alpha from the bilinear field of the cells holding ash, cut at its 0.5
     /// contour after an edge noise bends it (so clumps do not keep the cell grid's straight sides), drawn with the terrain
     /// fade-rough shader, whose edge texture (RM_FE_AshCoverEdge) frays the margin. The depth of each cell comes from its
@@ -23,14 +26,14 @@ namespace RimMandrake.Pyrelands
     {
         private const string TexPath = "Things/Filth/RM_FE_AshCover";
         private const string EdgeTexPath = "Things/Filth/RM_FE_AshCoverEdge";
-        private static readonly Color Tint = new Color(0.68f, 0.68f, 0.68f, 1f);
+        private static readonly Color Tint = new Color(0.70f, 0.70f, 0.70f, 1f);
         // Alpha for thickness 1..4: below 1 the rough shader opens grit-sized holes, so a thin drift shows a little char.
         private static readonly float[] DepthAlpha = { 0f, 0.9f, 1f, 1f, 1f };
 
         // Fine quads per cell side: a 16 px step at play zoom, where vanilla's half-cell vertex grid fades over a whole cell.
         private const int Sub = 4;
-        // Half-width of the alpha ramp around the contour; the rough shader turns the ramp into the frayed edge.
-        private const float EdgeBand = 0.3f;
+        // Half-width of the alpha ramp around the contour; the rough shader turns the ramp into the frayed edge (0.3 read as fog).
+        private const float EdgeBand = 0.15f;
         // Edge noise on the fine lattice, wrapping every NoiseSide vertices (24 cells): a 3-cell octave bends the clump, a
         // 0.75-cell one frays it. Spacings must divide NoiseSide.
         private const int NoiseSide = 96;
