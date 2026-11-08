@@ -1,0 +1,1 @@
+rimflow bridge take --owner-said '<his words>' records the hold as seat OWNER, which no seat can then release or take for 45 min (release refuses too). To carry out his 'the bridge is yours', run his give: rimflow bridge give BENCH --seat OWNER --owner-said '<his words>' (what ./bridge conductor runs). Measured 2026-11-08 11:38 AM PST.
