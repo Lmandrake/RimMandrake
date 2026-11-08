@@ -67,6 +67,9 @@
       crisp grass. Redrawn again (ash_drift_gen.py, seed 41, same shapes): see-through warm-grey powder with a crisp broken edge,
       visible grit, a brighter heaped middle and a few dark cinder flecks. Every opaque or hard-edged cut read as snow, cotton or
       stickers, so the translucency and this colour stay. Blind judges on a true-scale mock: ash 4/5, smoke 1/5 (old cut 2/5, 4/5).
+      2026-11-08, that cut in game on map w at 1:1 (shots/ash_new_1to1_crop.png): a second model read it as "pale pitted crust or
+      lichen", from the near-black cinder flecks and the alpha holes. Same outlines; flecks fewer and mid-grey (char_v 0.16 -> 0.46),
+      holes shallower (hole_k 0.30 -> 0.12) (shots/ash_fleck_compare.png, old left of each pair).
     -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>

@@ -35,9 +35,9 @@ S = N * SS
 BG = 0.15         # rgb under alpha 0
 
 P = dict(t0=0.27, t0_j=0.05, edge_feat=11, band=0.14, frag=0.40, frag_c=0.34,
-         c0=0.52, c_span=0.40, clump_t=0.58, clump_c=0.24, hole_t=0.30, hole_k=0.30, grit=7.0, grit2=5.5,
+         c0=0.52, c_span=0.40, clump_t=0.58, clump_c=0.24, hole_t=0.30, hole_k=0.12, grit=7.0, grit2=5.5,
          v0=0.72, v_span=0.18, v_clump=0.05, crest=0.10,
-         chars=(5, 10), char_r=(2.0, 3.2), char_v=0.16,
+         chars=(2, 5), char_r=(1.6, 2.6), char_v=0.46,
          edge_w=0.18, c_edge_k=0.45, v_edge_drop=0.14,
          warm=(1.0, 0.965, 0.925))
 

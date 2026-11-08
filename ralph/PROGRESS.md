@@ -1,65 +1,94 @@
 # Pyrelands progress
 
-**State at retirement:** the game is up (paused) on map `w`, day 14.6, saved as `NS_Pyrelands_play_w_d14`. That map was built this pass with `play.py build --tag w`, at 54 C, with a 660-cell pond 59 cells east of the landing. The deployed build has two additions: a regrowth probe and a dry-map letter. Reload the save with `python.exe Transient/pyre_play5/reload.py NS_Pyrelands_play_w_d14`. In that save:
-- **Storyteller:** Phoebe/Peaceful (`jawa/storyteller_swap`). Twice the Ohnaka Gang's day-13 night raid downed the colony, unarmed and then armed, so I took raids out to keep the biome run going.
-- **Gear:** colonists armed through `jawa/pawn_gear`.
-- **House:** 11 unbuilt walls were spawned and the room roofed through the bridge, because heatstroke downed Loaiza at 53 C in the open shell.
-- **Farm:** rice is sown beside a canal I dug with FlowWorks' `Deepen()` (`Transient/pyre_play5/canal.py 166 181 140 2`, fed from the pond at x182). The test strips are z141 and z139, x166-175, 10 plants each, and they read watered. A dry control strip of 10 is at z145, x166-175 (5 cells off the canal), with 14 more in the base field at 121,130.
+**State at retirement:** the game is up and paused on map w, day 21, saved as `NS_Pyrelands_play_w_d21` (weather unlocked). The deployed build is the 2026-11-07 one plus the first ash redraw. The following are **committed but NOT deployed**:
+- the ash cut with softer flecks;
+- the furnace-beast change (see "Built" below; check the commit list);
+- the wet-roots growth-season fix.
 
-New scripts are in `Transient/pyre_play5/`:
-- `run.py HOURS TAG [nowarn]`: one line an hour (weather, fires, nearest fire to a colonist, jobs, thirst, food). It shoots the colony on letters and sky changes and at noon, and stops on a downed colonist or on fire within 6 cells.
-- `water.py`: pond clusters by distance.
-- `jobs.py`: dense job sampling.
-- `adv.py`: advance N ticks.
-- `fshot.py NAME`: densest-fire shot.
-- `canal.py`.
-- `reload.py`.
+Deploy them all with one restart: `python3 Transient/pyre_play6/restart.py --deploy` (stop, composed deploy, launch; about 5 minutes). Then reload: `python.exe Transient/pyre_play5/reload.py NS_Pyrelands_play_w_d21`.
 
-A note on `Transient/pyre_play/col2.py`: Windows python ignores `COLBASE` unless `export WSLENV=COLTAG:COLBASE`, which is why the base landed at 118,118.
+New tools are in `Transient/pyre_play6/`:
+- `long.py HOURS FX FZ SX SZ`: hourly play, with every-6-hour readings of fruit, pods, rice and regrowth, and noon shots of a fixed scar rect.
+- `stage.py burrow|fruit|skies`. `skies` includes vanilla Rain for the black-rain comparison.
+- `freshburn.py find|sow|read`: rice on 10 fresh-burn cells against 10 cells whose bonus has expired. The cells are in `freshburn_cells.json` and are already sown on w.
+- `pawnshot.py ID NAME`: puts the camera on a pawn and runs 90 ticks at Normal before the shot.
+- Also `rice.py`, `wx.py WEATHER lock|unlock [ticks]`, `tohour.py H`, `save.py`, `pen.py`/`seal.py`.
 
-## Seen this pass
-- **Burn line, map v (old build, same visuals):** the arrival arc of 27 dots became a real front within an hour. Over 2 days it walked about 26 cells a day, peaked near 480 fires, and left a dark scar with ash and re-sprouting tufts (`v_ov_d2noon.png`, `first_look_2`). Map w's arc lit on arrival with its message. On w, cinderfall then set 650 fires map-wide, black rain put out every one within 2 h, and a dry thunderstorm next day spread to 1,070 fires in three rings that crossed the base and burned out in 2 h (`first_look_1`, `first_look_3`). It is dramatic and readable. TPS during the 1,000-fire peak (map w ticks 846k to 866k, about 21:00 PST) is **not yet checked in telemetry**.
-- **Hawks work now:** map v showed 3 sorties, 3 drops, all lit. Two landed 7 to 9 cells outside the scar in unburned grass. The third (`v_hawkdrop_97279.png`) landed 5.1 cells from the nearest other fire.
-- **Burrow:** a map v ashwallow dove and held while fire came to 1.4 cells. It surfaced with no hediffs and walked 35 cells off. There is no shot of the dome inside the fire.
-- **No-water map v:** all three colonists were down with thirst 0.68 days after landing, and nothing warned the player. The owner allows dry maps, so I added the letter: `MapComponent_BurnLine.WarnIfDry` posts "No water here" once, on a player home with no water terrain when FlowWorks thirst exists. It is built and deployed, but no dry map has been seen with it yet.
-- **Ash drifts read as blurry grey smudges at 1:1** (`v_ash_drift_crop_1to1.png`): translucent, soft-edged, and smoke-like beside crisp grass. I believe this is the owner's "blurry grey stuff". A subagent redrew all 7 `Textures/Things/Filth/RM_FE_LooseAsh/*`, keeping the same shapes, file names and def colour. They are now see-through powder with a crisp broken edge, grit, a heaped middle and cinder flecks. Blind judges on a true-scale mock scored them ash 4/5 and smoke 1/5, against the old cut's 2/5 and 4/5 (`shots/ash_redraw_mock.png`). Opaque cuts read as snow or stickers. The redraw is **committed but NOT deployed and not seen in game**. Its weak spots: the grit still looks procedural beside the painted grass, and the flecks pepper 4-deep ash-fall stacks. Old copies are in `Transient/ash_old/`; tools and candidates are in `Transient/ash_redraw/`.
-- **Ash fall overlay** is `WeatherOverlay_SnowHard` tinted tan. In a still it shows long diagonal streaks like brown rain (`w_ev_742726.png`). Its header comment claims SnowGentle. Try SnowGentle in the skies comparison.
-- **Colonists never sowed or cut on the play map** until I wrote Growing and PlantCutting priorities with `jawa/set_work_priority`. They sowed at once after that. The cause is unknown; it is a harness problem, not the mod.
-- **Regrowth** (new probe `jawa/static_call type=RimMandrake.Pyrelands.MapComponent_PyrelandsAshField method=ProbeRegrowth`; output days since burn = cells/grassy/half-grown), map w tick 878549:
-  - 1 d: 32% grassy.
-  - 2 d: 42%.
-  - 3 d: 45% (100 cells).
-  - The day-14.3 wildfire cohort is 16,730 cells. Read it at day 17.5 and day 21 to judge "largely green within about a week".
+## Seen this pass (map w, days 15 to 21, ordinary play unless I say staged)
+- **Ash redraw, in game:** it is crisp, not smoky (`first_look_2`, `ash_new_1to1_crop.png`). GPT's broaden call read it as "pale pitted crust or lichen", because of the near-black flecks and the alpha holes. I made a new cut with the same outlines, softer and fewer flecks and shallower holes (`ash_fleck_compare.png`). It is not seen in game yet.
+- **Regrowth:**
+  - A fixed 30x16 scar went from bare to a full carpet in 3 days (`first_look_3` and `_4`). Black rain fell once in between.
+  - By days since burn, the probe reads 94 to 97% of cells grassy at 4 to 6 days, and most of those are past half grown.
+  - This is "within about a week", on the fast side. The owner asked whether scars last on dry ground. They don't last long once black rain comes.
+- **Fire:** the map re-burns hard. On day 20, a dry thunderstorm put 1,474 fires on map w and burned 39,000 cells in a day. No colonist went down.
+- **TPS:** about 3.4 ms a tick, which is roughly 340 TPS achieved at Superfast. One worst tick of 769 ms is not yet attributed; read `tps_*.jsonl` `worst`/`attr`. Telemetry has no TPS points for the 2026-11-07 wildfire hour, so that is UNMEASURED.
+- **Scorch-fruit:** 10 harvested fruit sat in a sealed pen at outdoor heat (staged). The pane counted down from "spoils in 4 days", and the fruit was gone at about 4.0 days. Pods lived at most 1.08 to 1.09 days from first seen to gone, over 111 pods.
+- **Rice on canal vs dry (played):**
+  - The canal strips went from 42.6% to 92.6% grown, against the dry strip's 33.1% to 72.9%, over about 4 days. That is only about 1.25 times as fast.
+  - Natural black rain watered the dry strip too.
+  - The canal rice was then harvested first.
+- **Fresh burn (staged sowing, set_plants rice at 10%):**
+  - At 11:00 dry, fresh-burn rice grew at 30% and expired-bonus rice at 18%, with a +0.44 bonus.
+  - Under black rain, fertility read 1.83 against 1.49, so the bonus is kept and compounded. But growth was 0% on both: "out of temperature growth range" at 58.8 C.
+- **BUG, fixed offline:** wet roots only patch `GrowthRateFactor_Temperature`. Vanilla's growth-season gate still uses the raw temperature, so above about 58 C a watered crop stops dead. Its pane then contradicts itself ("Wet ash keeps its roots cool … grows as if 27F cooler" under "out of temperature growth range"). This is probably also why the canal advantage is only 1.25 times. Re-measure both bars after deploying.
+- **Burrowers (staged, 4 runs):**
+  - A grazing herd of 3 ashwallows was met by a fire line lit 5 to 8 cells away. In each run, 1 or 2 dove at 5 to 6 cells; the rest walked off. One held for 2,880 ticks with fire on its own cell.
+  - Every one that dove surfaced with no hediffs.
+  - Run 1, fire lit round a freshly spawned walking animal: it fled and a predator killed it. That is by design, since only grazing or sleeping animals dive.
+  - **No frame shows the dome.** Screenshots draw pawns at a stale spot unless the camera sat on them while ticks ran. Run 4 parked the camera and still got no in-fire frame, because the fire stopped 5 cells out.
+- **Pond shore ruling (conductor asked for a fix or a written ruling):** I rule it acceptable for now.
+  - A subagent read the defs: water (precedence 394) fades onto mud (330), and mud fades onto ash and soil (about 100). Every edge already blends half a cell, and the shape code caps straight runs at 4.
+  - What still reads blocky is the one-cell mud lip tracing every grid step.
+  - If the owner wants it softer, the lever is a lip of varying width (0 to 2 cells) with gaps, not the defs.
+- **Pale gravel pockets** (`first_look_2`, lower left) read like a concrete slab. They use vanilla Gravel tinted (140,130,120). Try a darker tint.
+
+## Owner's card, 01:01: the furnace-beast as oven, and sleep ignition
+A builder subagent implemented these offline:
+- no 24 C cap;
+- a beast asleep on a flammable plant lights it;
+- a suite row `pyre_furnacebeast_heats_room` measured at the map's real temperature;
+- a new row `pyre_furnacebeast_sleep_ignites`;
+- the wet-roots season fix.
+
+See the commit for its numbers. **Live check owed:** a closed room with a beast against one without, at about 50 C ambient. Does a colonist in the hot room heat up over hours rather than drop at once? And a beast asleep on grass lighting it. I did not add the sleep-ignition line to the north-star section, which I may not edit; it is counted below as the owner's added bar.
+
+## GPT broaden call (this pass)
+I asked about the ash at 1:1 (old vs new), which bar I'm fooling myself on, and what a first-hour player sees. The answer is in `D:\ClaudeWork\rimmandrake\ralph_pyrelands\gpt_help_pass015.md`. It found:
+- ash: soften the flecks (done);
+- burrowers_dive is the bar I'm fooling myself on: survival numbers are not a readable dive. Watch an established grazer when a natural front reaches it, at play zoom, camera parked;
+- fresh burn needed a direct comparison (done; it exposed the season bug);
+- regrowth should be judged by eye over a week (done).
+
+I did not act on its other leads: a farmer sowing across scar and old ash by colony labour, firebreak trust, day-60 clutter.
 
 ## Next, in order
-1. Deploy the ash redraw (composed deploy, restart), reload w_d14, and judge it at 1:1 on the day-14 scar and under ash fall. Restore `Transient/ash_old/` if it is worse in game.
-2. Run map w for 3 days with `run.py`. Compare rice on the canal strips and the dry strip: shot plus growth from `list_things`. That is `ash_fertile_when_watered`. Then plant a strip on the day-14 scar beside an unburned one (`fresh_burn_feeds_the_field`), and force black rain over it.
-3. Read `ProbeRegrowth` at about day 17.5 and day 21, with noon shots of one fixed scar rect.
-4. Map w has 40 scorch-fruit: run `play.py track`, harvest some, and leave the fruit outdoors to see whether it rots in about 4 days.
-5. `play.py skies` at noon on one rect: ash fall (overlay), black rain against vanilla rain, cinderfall. Unlock the weather afterwards.
-6. Telemetry for the wildfire hour. Read a burrowed ashwallow's dome in fire (`watch.py`). Make the broaden call (none this pass). Then the full suite, the fresh-eyes judge, and DONE.
-
-Smaller: the yesterday's-fire message shows "Smoke to the east: Yesterday's…" with a capital Y. The pond shore still steps in blocks. `QUESTIONS.md` is unchanged.
+1. Restart with deploy. Then read `freshburn.py read` and `rice.py` at 11:00 and 15:00. Expect no "out of temperature growth range" on watered ash below about 73 C.
+2. Run `stage.py skies X Z 30 16 TAG` at a scar with drifts. Then try ash fall on `WeatherOverlay_SnowGentle` instead of SnowHard (AshFall.xml line 61; the owner's word was "ash that blows like snow"); the restart is needed for that. Then judge `ashfall_darkens_drifts` and `blackrain_reads`.
+3. Shoot the new ash cut at 1:1 on a scar.
+4. Furnace-beast oven and sleep ignition, live, at real temperature.
+5. A burrow dome frame: a herd settled with the camera parked, a fire line lit 3 cells off, `play.advance` at Normal speed, and a shot the moment a hediff appears.
+6. Then the full suite, a fresh-eyes judge on the screenshots, and DONE. The broaden call is made.
 
 ## Count
 - pyre_plant_distribution_correct: true
 - pyre_animal_distribution_correct: true
 - pyre_mapgen_log_clean: true
 - pyre_ground_deep_ash: true
-- pyre_ash_fertile_when_watered: unseen
-- pyre_fresh_burn_feeds_the_field: unseen
+- pyre_ash_fertile_when_watered: false
+- pyre_fresh_burn_feeds_the_field: false
 - pyre_grass_chokes_ground: true
-- pyre_embergrass_regrows: unseen
+- pyre_embergrass_regrows: true
 - pyre_burn_line_present: true
 - pyre_scorchfruit_fire_born: true
 - pyre_scorchfruit_produces: true
-- pyre_scorchfruit_spoils_fast: unseen
+- pyre_scorchfruit_spoils_fast: true
 - pyre_ruins_scorched: true
 - pyre_firehawk_carries_ember: true
 - pyre_furnacebeast_warmth: true
-- pyre_furnacebeast_heats_room: true
+- pyre_furnacebeast_heats_room: false
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: false
 - pyre_cinderfall_distinct: true
 - pyre_blackrain_reads: unseen
 - pyre_cannot_ordinary_rain: true
+- (owner's card, 2026-11-08) pyre_furnacebeast_sleep_ignites: unseen
