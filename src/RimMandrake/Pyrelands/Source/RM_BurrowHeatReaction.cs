@@ -15,7 +15,7 @@ namespace RimMandrake.Pyrelands
     ///
     /// Before this, the dome (RM_JobDriver_Burrow + RM_Burrowed) started only when a FREE ground fire came within the race's
     /// detectionRadius (RM_JobGiver_BurrowOnFire, asked at Animal_PreWander). A flamethrower, a burn from an attached fire or
-    /// an incendiary beam hit the animal standing up. Two halves here, both opted in per race by RM_BurrowOnFireExtension:
+    /// an incendiary beam hit the animal standing up. Three parts here, each opted in per race by RM_BurrowOnFireExtension:
     ///
     /// 1. Pawn.PostApplyDamage postfix: a heat-category hit (DamageDef.armorCategory == Heat — data-driven, so Flame, Burn,
     ///    Beam and every modded incendiary, the same gate Patch_FurnaceBeastHeatImmunity uses) starts RM_Burrow at once,
@@ -24,6 +24,8 @@ namespace RimMandrake.Pyrelands
     /// 2. PawnRenderNode_AnimalPart.GraphicFor postfix: while RM_Burrowed holds, the body draws the race's domeTexPath
     ///    (Graphic_Multi, the body's own drawSize, shader and colours). RM_Burrowed sets forceRenderTreeRecache, so the
     ///    swap lands on the hediff's add and remove. No texture at that path = the standing body, said once in the log.
+    /// 3. JobGiver_AnimalFlee prefix and postfix: a domed burrower flees nothing, and a standing one that vanilla would send
+    ///    running from a large fire dives instead when the fire is in its radius, else keeps grazing (BurrowerFleeAnswer).
     /// </summary>
     [StaticConstructorOnStartup]
     public static class RM_BurrowHeatReaction
@@ -61,6 +63,54 @@ namespace RimMandrake.Pyrelands
             {
                 Log.Error("[RimMandrake.Pyrelands] burrow dome pose: GraphicFor patch FAILED, a domed burrower draws "
                         + "standing: " + e.Message);
+            }
+            try
+            {
+                harmony.Patch(AccessTools.Method(typeof(JobGiver_AnimalFlee), "TryGiveJob"),
+                    prefix: new HarmonyMethod(typeof(RM_BurrowHeatReaction), nameof(Prefix_AnimalFlee)),
+                    postfix: new HarmonyMethod(typeof(RM_BurrowHeatReaction), nameof(Postfix_AnimalFlee)));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] burrower flee: JobGiver_AnimalFlee patch FAILED, a large fire will pull a "
+                        + "burrower out of its dome: " + e.Message);
+            }
+        }
+
+        // 3. BURROWER_FLEES_LARGE_FIRE (RM_FireEcoKernel.BurrowerFleeAnswer): vanilla's constant-tree flee would pull a domed
+        //    burrower up and send a standing one running from the very fire it digs in against.
+        private static bool ActiveBurrower(Pawn pawn)
+        {
+            return pawn?.health?.hediffSet != null && pawn.def.HasModExtension<RM_BurrowOnFireExtension>()
+                && PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burrowOnFireEnabled;
+        }
+
+        public static bool Prefix_AnimalFlee(Pawn pawn, ref Job __result)
+        {
+            bool burrower = ActiveBurrower(pawn);
+            bool burrowed = burrower && pawn.health.hediffSet.HasHediff(PyrelandsMechanicsDefOf.RM_Burrowed);
+            if (RM_FireEcoKernel.BurrowerFleeAnswer(burrower, burrowed, false, false) == 1)
+            {
+                __result = null;
+                return false;
+            }
+            return true;
+        }
+
+        public static void Postfix_AnimalFlee(Pawn pawn, ref Job __result)
+        {
+            if (__result == null || __result.def != JobDefOf.Flee || !(__result.targetB.Thing is Fire) || !ActiveBurrower(pawn))
+            {
+                return;
+            }
+            switch (RM_FireEcoKernel.BurrowerFleeAnswer(true, false, true, RM_JobGiver_BurrowOnFire.WouldDive(pawn)))
+            {
+                case 1:
+                    __result = null;
+                    break;
+                case 2:
+                    __result = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_Burrow);
+                    break;
             }
         }
 

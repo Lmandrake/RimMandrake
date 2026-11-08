@@ -210,6 +210,28 @@ namespace RimMandrake.Pyrelands
             return currentHoldUntil > until ? currentHoldUntil : until;
         }
 
+        /// <summary>BURROWER_FLEES_LARGE_FIRE: vanilla's JobGiver_AnimalFlee sits in AnimalConstant and is asked every 30 ticks
+        /// for a wild animal. With 60+ fires near and one inside 10 cells it hands out a Flee that interrupts any job, the
+        /// dome included (map w, pass 18: a domed ashwallow surfaced 2.2 cells from a creeping front and ran; earlier, one
+        /// fled instead of diving and was killed). What a burrower's flee giver answers instead:
+        /// 0 = vanilla's answer stands, 1 = nothing (stay domed, or keep grazing until the front is in dive range), 2 = dive.</summary>
+        public static int BurrowerFleeAnswer(bool burrower, bool burrowed, bool fleeFromFire, bool wouldDive)
+        {
+            if (!burrower)
+            {
+                return 0;
+            }
+            if (burrowed)
+            {
+                return 1;
+            }
+            if (!fleeFromFire)
+            {
+                return 0;
+            }
+            return wouldDive ? 2 : 1;
+        }
+
         /// <summary>RM_JobDriver_Burrow surfaces only when no free fire is within its radius AND the last heat hit's hold
         /// has run out; heatHoldUntil &lt; 0 = never hit.</summary>
         public static bool BurrowMayEmerge(int now, int heatHoldUntil, bool fireNear)

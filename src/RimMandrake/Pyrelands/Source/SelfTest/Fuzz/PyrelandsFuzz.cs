@@ -866,6 +866,13 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_FireEcoKernel.BurrowMayEmerge(1000, -1, false) && !RM_FireEcoKernel.BurrowMayEmerge(1000, -1, true), "BurrowMayEmerge: never hit, fire decides");
                 Check(!RM_FireEcoKernel.BurrowMayEmerge(1599, 1600, false) && RM_FireEcoKernel.BurrowMayEmerge(1600, 1600, false), "BurrowMayEmerge: hold boundary");
                 Check(!RM_FireEcoKernel.BurrowMayEmerge(9000, 1600, true), "BurrowMayEmerge: hold over but fire near");
+                // BURROWER_FLEES_LARGE_FIRE: a burrower never flees fire; domed it flees nothing; any other animal keeps vanilla.
+                for (int m = 0; m < 16; m++)
+                {
+                    bool bur = (m & 1) != 0, domed = (m & 2) != 0, fromFire = (m & 4) != 0, would = (m & 8) != 0;
+                    int answer = !bur ? 0 : domed ? 1 : !fromFire ? 0 : would ? 2 : 1;
+                    Check(RM_FireEcoKernel.BurrowerFleeAnswer(bur, domed, fromFire, would) == answer, "BurrowerFleeAnswer table " + m);
+                }
                 // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the dive nudge fires only for an idling would-dive burrower under a burn.
                 for (int m = 0; m < 16; m++)
                 {
