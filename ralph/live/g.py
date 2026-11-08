@@ -16,6 +16,7 @@ import play_zoom
 STAGE = "RimMandrake.Graffiti.RM_GraffitiStage"
 SOCIAL = "RimMandrake.Graffiti.RM_GraffitiSocialProof"
 SHOTS = r"Transient\gshots"
+STOP = "death,downed,hostile_arrival"   # a punch in a fist fight is no reason to stop the clock
 
 
 class Sess(object):
@@ -64,7 +65,7 @@ def run(s, ticks, chunk=2500):
     done = 0
     while done < ticks:
         n = min(chunk, ticks - done)
-        r = s.call("jawa/safe_advance", ticks=n)
+        r = s.call("jawa/safe_advance", ticks=n, stopOn=STOP)
         done += n
         print("== +%d (%s)" % (done, str(r.get("triggers") if isinstance(r, dict) else r)[:160]), flush=True)
         print(static(s, SOCIAL, "Ledger", "trace"), flush=True)
@@ -92,7 +93,7 @@ def days(s, ticks, chunk=15000):
     done = 0
     while done < ticks:
         n = min(chunk, ticks - done)
-        r = s.call("jawa/safe_advance", ticks=n)
+        r = s.call("jawa/safe_advance", ticks=n, stopOn=STOP)
         done += n
         trig = r.get("triggers") if isinstance(r, dict) else r
         if trig:
@@ -109,7 +110,7 @@ def until(s, pattern, maxticks, step=60):
     import re
     done = 0
     while done < maxticks:
-        s.call("jawa/safe_advance", ticks=step)
+        s.call("jawa/safe_advance", ticks=step, stopOn=STOP)
         done += step
         led = str(static(s, SOCIAL, "Ledger", "trace"))
         lines = [l for l in led.splitlines() if l.startswith("  . ")]

@@ -217,6 +217,9 @@ namespace RimMandrake.Graffiti
             float keep = apart ? 1f : social ? RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, OpinionCap(positive, victim))
                 : Fit(already, ambientAlready, System.Math.Abs(baseValue) * factor, t, positive, victim, ambient);
             if (keep <= 0f) return false;
+            // What the budget leaves of a memory can round to nothing: live, pass 10, Mo's needs listed "Good work on the wall 0". A line that
+            // changes nothing is clutter in the player's list.
+            if (System.Math.Abs(baseValue) * factor * keep < (social ? 1f : 0.5f)) return false;
             Thought_Memory made = ThoughtMaker.MakeThought(def, stage);
             if (made is Thought_MemorySocial ms)
             {

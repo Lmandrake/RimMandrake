@@ -50,20 +50,26 @@ namespace RimMandrake.Graffiti
         {
             Map map = pawn.Map;
             float need = GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery);
-            IntVec3 fallback = IntVec3.Invalid;
+            IntVec3 fallback = IntVec3.Invalid, edge = IntVec3.Invalid;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, ReplyRadius, useCenter: true))
             {
                 if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
                 if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, against))) continue;
-                if (!AlreadyMarked(c, map))
+                bool marked = AlreadyMarked(c, map);
+                if (!OnFace(c, map))
+                {
+                    if (!marked && !edge.IsValid) edge = c;     // a wall seen edge-on: only if no face is near (TryFindMeaningCell)
+                    continue;
+                }
+                if (!marked)
                 {
                     result = c;
                     return true;
                 }
                 if (!fallback.IsValid) fallback = c;     // over the top of the answered pawn's own mark
             }
-            result = fallback;
-            return fallback.IsValid;
+            result = fallback.IsValid ? fallback : edge;
+            return result.IsValid;
         }
 
         private const float ReplyRadius = 7f;
@@ -83,19 +89,31 @@ namespace RimMandrake.Graffiti
                 centres.Add(subject.Position);
             }
             centres.Add(pawn.Position);
-            foreach (IntVec3 centre in centres)
+            // A message is painted where it will be read: a wall's face, not its edge. Live, pass 10: Lark's mockery of Mo went on a wall
+            // seen edge-on, a head-sized scrap on the wall top nobody could read at play zoom. An edge only when no face is near.
+            for (int pass = 0; pass < 2; pass++)
             {
-                foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, MeaningRadius, useCenter: true))
+                foreach (IntVec3 centre in centres)
                 {
-                    if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map)) continue;
-                    if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, pawn, over))) continue;
-                    if (!pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)) continue;
-                    result = c;
-                    return true;
+                    foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, MeaningRadius, useCenter: true))
+                    {
+                        if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map)) continue;
+                        if (pass == 0 && !OnFace(c, map)) continue;
+                        if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, pawn, over))) continue;
+                        if (!pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)) continue;
+                        result = c;
+                        return true;
+                    }
                 }
             }
             result = IntVec3.Invalid;
             return false;
+        }
+
+        /// <summary>Does a mark at this floor cell go on a wall's front face, the one the camera sees whole?</summary>
+        internal static bool OnFace(IntVec3 c, Map map)
+        {
+            return RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(c, map)) == RM_GraffitiKernel.FaceFront;
         }
 
         private const float MeaningRadius = 12f;
