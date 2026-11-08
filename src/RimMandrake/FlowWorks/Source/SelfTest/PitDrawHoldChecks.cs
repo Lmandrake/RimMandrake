@@ -328,7 +328,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(sinkOf.Contains("return Held(Clamped(ex, pawn.Map, from, dFrom, perLevel), drawPos, dFrom);"), "at rest SinkOf holds the drawn position");
                 Assert(sinkOf.Contains("return Held(sa + (sb - sa) * t, drawPos,"), "moving, SinkOf holds the drawn position");
                 string held = Between(src, "private static float Held(", "private static readonly Func<int, int, int> SeenDepth");
-                Assert(held.Contains("HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth)"), "the hold reads the TWEENED draw position, not Position");
+                // PIT_DEPTH_ONE_DRAWING: the hold now also takes the scale (riser-aware lip) and the held-above setting
+                Assert(held.Contains("HoldToDrawnLip(sink, drawPos.x, drawPos.z, d, SeenDepth, RimMandrakeFlowWorksSettings.pitSinkPerLevel,")
+                    && held.Contains("RimMandrakeFlowWorksSettings.pitSinkHoldAbove)"), "the hold reads the TWEENED draw position, not Position");
                 Assert(held.Contains("pitSinkClampEnabled"), "the hold sits under the clamp switch (X rows run with it off)");
                 string clamped = Between(Src("Superdeep", "RM_PitDepthDraw.cs"), "private static float Clamped(", "private static RM_MapComponent_Excavation ExcavationOf(");
                 Assert(clamped.Contains("LipZBelow("), "the per-cell clamp uses the same lip finder");
@@ -365,7 +367,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SwimMath.SurfaceDrawDepth(10, 4) == 6, "2 m of water in a 5 m pit: 3 m down, at the surface");
                 Assert(RM_SwimMath.SurfaceDrawDepth(4, 9) == 0 && RM_SwimMath.SurfaceDrawDepth(0, 4) == 0, "never above the ground");
                 Assert(RM_SwimMath.SurfaceDrawDepth(10, 0) == 10, "can-fail: no water: the floor");
-                Assert(RM_PitDrawMath.SinkFor(RM_SwimMath.SurfaceDrawDepth(10, 10), 0.3f) == 0f && RM_PitDrawMath.SinkFor(10, 0.3f) > 2f,
+                Assert(RM_PitDrawMath.SinkFor(RM_SwimMath.SurfaceDrawDepth(10, 10), 0.3f) == 0f && RM_PitDrawMath.SinkFor(10, 0.3f) >= 1.5f - 1e-4f,
                     "can-fail: pre-fix the 5 m swimmer sank the full cap (the 'jump')");
                 string src = Src("Superdeep", "RM_PitDepthDraw.cs");
                 string sinkOf = Between(src, "public static float SinkOf(", "public static int DrawHollow(");

@@ -393,6 +393,7 @@ namespace RimMandrake.FlowWorks
 					}
 					float southTop = bottom;   // the side band starts above what the near lip already covers in this column
 					IntVec3 lipCell = IntVec3.Invalid;
+					int lipSeen = 0;
 					for (int k = 1; hangs && k <= 3; k++)   // never the pawn's own row: the lip is SOUTH of it
 					{
 						IntVec3 cand = new IntVec3(cx, 0, p.Position.z - k);
@@ -400,15 +401,19 @@ namespace RimMandrake.FlowWorks
 						{
 							break;
 						}
-						if (Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, cand) < d && !eng.IsSourceCell(cand))
+						int seen = Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, cand);
+						if (seen < d && !eng.IsSourceCell(cand))
 						{
 							lipCell = cand;
+							lipSeen = seen;
 							break;
 						}
 					}
 					if (lipCell.IsValid)
 					{
-						float lipZ = lipCell.z + 1f;
+						// PIT_DEPTH_ONE_DRAWING, riser-aware (RM_PitDrawMath.LipZBelow): a shallower hole south of him has its own
+						// floor drawn SinkFor(its depth) lower, so the riser's top, and the cover's, is that much lower
+						float lipZ = lipCell.z + 1f - RM_PitDrawMath.SinkFor(lipSeen, RimMandrakeFlowWorksSettings.pitSinkPerLevel);
 						if (RM_WallFaceMath.OccludedBand(lipZ, bottom, top, out float z0, out float z1))
 						{
 							southTop = z1;

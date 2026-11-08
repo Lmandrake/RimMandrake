@@ -13,15 +13,17 @@ namespace RimMandrake.FlowWorks
 	///
 	/// RimWorld's oblique view draws "lower" as further south on screen (vanilla's own
 	/// flying lift is +0.6 z in Pawn_DrawTracker.FlyingOffset), so a pawn on a cell of
-	/// depth D is drawn D × <see cref="DefaultSinkPerLevel"/> cells south of its tweened
+	/// depth D is drawn <see cref="SinkFor"/>(D) cells south of its tweened
 	/// position. Between two cells the sink is interpolated by how far the tween has
 	/// travelled, so the pawn rises and lowers smoothly rather than stepping.
 	///
-	/// PROVISIONAL (owner has not set a number beyond the 20 %): 0.3 cells per level, so a
-	/// 2 m (D 4) floor sits 1.2 cells below the lip and the 4 m cap (D 8) 2.4. A humanlike reads about
-	/// <see cref="HumanlikeFeetToHeadTop"/> = 1.0 cell feet-to-crown (PROVISIONAL, measure
-	/// from a live frame), so at D = 4 the wall stands 1.2 × head height — his 20 %.
-	/// Larger bodies poke further up; the 20 % bar is stated for a person.
+	/// PIT_DEPTH_ONE_DRAWING (pass 8): the sink is a curve, not a line (<see cref="SinkFor"/>). With the scale k (setting
+	/// pitSinkPerLevel, default 0.3): 0 &lt; D &lt;= 4 sinks 4k x (D/4)^0.85, so 0.5 m 0.37, 1 m 0.67, 1.5 m 0.94 and 2 m (D 4)
+	/// exactly 4k = 1.2; 4 &lt; D &lt;= 8 adds k/4 a notch, so 4 m (D 8) 1.5; flat beyond. A humanlike reads about
+	/// <see cref="HumanlikeFeetToHeadTop"/> = 1.0 cell feet-to-crown (PROVISIONAL, measure from a live frame), so at D = 4
+	/// the wall stands 1.2 x head height (his 20 %). The occupant's sink is also eased into the opening of his column
+	/// (<see cref="OccupantSink"/>, the same <see cref="SoftCap"/> the far face uses), so the far face's foot and his floor
+	/// line stay one line. Larger bodies poke further up; the 20 % bar is stated for a person.
 	/// </summary>
 	public static class RM_PitDrawMath
 	{
@@ -31,20 +33,85 @@ namespace RimMandrake.FlowWorks
 		/// 4 m; <see cref="ClampSinkToLip"/> still keeps the sprite inside the pit opening.</summary>
 		public const int SinkCapLevels = 8;
 
-		/// <summary>PROVISIONAL: cells of southward draw offset per level of depth.</summary>
+		/// <summary>The knee of the sink curve: 2 m (4 notches). Shallower holes follow the power law, deeper ones the slow line.</summary>
+		public const int SinkKneeLevels = 4;
+
+		/// <summary>Exponent of the shallow part of the sink curve: under 1, so the first half metre already reads (0.37 at k 0.3).</summary>
+		public const double SinkShallowPower = 0.85;
+
+		/// <summary>Sink a notch past the knee, as a fraction of the scale k: 2 m to 4 m adds k (0.3 at the default).</summary>
+		public const float SinkDeepSlope = 0.25f;
+
+		/// <summary>PROVISIONAL: the sink scale k (setting pitSinkPerLevel): the 2 m sink is 4k.</summary>
 		public const float DefaultSinkPerLevel = 0.3f;
 
 		/// <summary>PROVISIONAL: a humanlike's on-screen height, feet to crown, in cells.</summary>
 		public const float HumanlikeFeetToHeadTop = 1.0f;
 
-		/// <summary>Sink (cells, positive = drawn lower) for a pawn standing on depth D.</summary>
+		/// <summary>Sink (cells, positive = drawn lower) for a pawn standing on depth D notches, at scale
+		/// <paramref name="sinkPerLevel"/> = k (0 or less: off). 0 &lt; D &lt;= 4: 4k x (D/4)^0.85; 4 &lt; D &lt;= 8:
+		/// 4k + (k/4)(D - 4); flat beyond D 8. At k 0.3: D1 0.369, D2 0.666, D3 0.940, D4 1.200, D5 1.275, D6 1.350, D7 1.425,
+		/// D8 and deeper 1.500. Strictly rising to D 8, so every deeper dry hole up to 4 m draws its pawn lower.</summary>
 		public static float SinkFor(int depth, float sinkPerLevel)
 		{
 			if (depth <= 0 || !(sinkPerLevel > 0f))
 			{
 				return 0f;
 			}
-			return Math.Min(depth, SinkCapLevels) * sinkPerLevel;
+			float atKnee = SinkKneeLevels * sinkPerLevel;
+			if (depth >= SinkKneeLevels)
+			{
+				int deep = Math.Min(depth, SinkCapLevels) - SinkKneeLevels;
+				return atKnee + SinkDeepSlope * sinkPerLevel * deep;
+			}
+			return atKnee * (float)Math.Pow(depth / (double)SinkKneeLevels, SinkShallowPower);
+		}
+
+		/// <summary>The room a drawing has in an opening <paramref name="run"/> cells deep north to south once
+		/// <paramref name="minFloor"/> of floor is kept at the near lip; never below a quarter of the run. NaN when there is no
+		/// opening (run not positive): no cap.</summary>
+		public static float OpeningRoom(float run, float minFloor)
+		{
+			if (!(run > 0f))
+			{
+				return float.NaN;
+			}
+			float room = run - minFloor;
+			return room < 0.25f * run ? 0.25f * run : room;
+		}
+
+		/// <summary>Ease a drop <paramref name="t"/> into <paramref name="room"/>: unchanged up to three quarters of the room,
+		/// then eased towards the room and never reaching it (continuous in value and slope at the knee, strictly rising), so a
+		/// deeper drop always draws a little lower yet never leaves the opening. NaN room: unchanged.</summary>
+		public static float SoftCap(float t, float room)
+		{
+			if (!(t > 0f))
+			{
+				return 0f;
+			}
+			if (float.IsNaN(room))
+			{
+				return t;
+			}
+			if (!(room > 0f))
+			{
+				return 0f;
+			}
+			float knee = 0.75f * room;
+			if (t <= knee)
+			{
+				return t;
+			}
+			float span = room - knee;
+			return room - span * (float)Math.Exp(-(t - knee) / span);
+		}
+
+		/// <summary>The occupant's sink on depth <paramref name="depth"/> in a column whose opening is <paramref name="run"/>
+		/// cells deep: <see cref="SinkFor"/> through the same <see cref="SoftCap"/> as the far face (RM_PitLookMath.ObliqueFace),
+		/// so on the north row his floor line is the face's foot. NaN run (no opening found): the plain sink.</summary>
+		public static float OccupantSink(int depth, float sinkPerLevel, float run, float minFloor)
+		{
+			return SoftCap(SinkFor(depth, sinkPerLevel), OpeningRoom(run, minFloor));
 		}
 
 		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1 — the most a pawn on a cell whose centre is at
@@ -52,14 +119,16 @@ namespace RimMandrake.FlowWorks
 		/// <paramref name="lipZ"/>: its drawn centre never drops past the lip, so the sprite stays
 		/// inside the pit opening and only its lower half goes behind the near bank. Without this a
 		/// pawn on the pit's south row at D4 (sink 1.2) was drawn wholly south of the pit, over the
-		/// ground outside it (owner's muffalo, 2026-10-06). NaN lipZ (no lip found) leaves the sink.</summary>
-		public static float ClampSinkToLip(float sink, float cellCentreZ, float lipZ)
+		/// ground outside it (owner's muffalo, 2026-10-06). NaN lipZ (no lip found) leaves the sink.
+		/// <paramref name="holdAbove"/> (setting pitSinkHoldAbove, cells, negative read as 0) holds the drawn centre that much
+		/// above the lip instead of on it.</summary>
+		public static float ClampSinkToLip(float sink, float cellCentreZ, float lipZ, float holdAbove = 0f)
 		{
 			if (!(sink > 0f) || float.IsNaN(lipZ))
 			{
 				return sink > 0f ? sink : 0f;
 			}
-			float room = cellCentreZ - lipZ;
+			float room = cellCentreZ - lipZ - (holdAbove > 0f ? holdAbove : 0f);
 			if (room <= 0f)
 			{
 				return 0f;
@@ -70,8 +139,11 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The near lip below a point: the north edge (z + 1) of the first square in column <paramref name="x"/>,
 		/// scanning south from row <paramref name="zStart"/> - 1 for at most <paramref name="maxRows"/> rows, whose seen depth
 		/// is shallower than <paramref name="d"/>. <paramref name="seenDepth"/> returns -1 off the map (the scan stops).
-		/// NaN when no lip is found. Never the start row itself: the lip is SOUTH of it.</summary>
-		public static float LipZBelow(int x, int zStart, int d, Func<int, int, int> seenDepth, int maxRows)
+		/// NaN when no lip is found. Never the start row itself: the lip is SOUTH of it.
+		/// PIT_DEPTH_ONE_DRAWING, riser-aware: when that square is itself a hole (seen depth s &gt; 0) its own floor is drawn
+		/// <see cref="SinkFor"/>(s, <paramref name="sinkPerLevel"/>) lower, so the lip, the top of the riser between the two
+		/// floors, is that much lower too: (z_s + 1) - SinkFor(s). Undug ground (s 0) and k 0 give the old edge.</summary>
+		public static float LipZBelow(int x, int zStart, int d, Func<int, int, int> seenDepth, int maxRows, float sinkPerLevel = 0f)
 		{
 			for (int k = 1; k <= maxRows; k++)
 			{
@@ -82,7 +154,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (s < d)
 				{
-					return zStart - k + 1f;
+					return zStart - k + 1f - SinkFor(s, sinkPerLevel);
 				}
 			}
 			return float.NaN;
@@ -126,8 +198,11 @@ namespace RimMandrake.FlowWorks
 		/// The per-cell clamp measures room from the logical cell's centre, but the sink comes off the TWEENED draw position,
 		/// and vanilla's PawnTweener lags the logical cell (spring 0.09 a frame: about 0.85 cell behind a walking boar at any
 		/// game speed) and freezes outright while paused. A boar that stepped 38,22 -> 39,23 was sunk 1.5 (39,23's room) from
-		/// a tween still on 38,22 and drawn a cell south of the pit, on the wall. <paramref name="d"/> &lt;= 0: unchanged.</summary>
-		public static float HoldToDrawnLip(float sink, float drawX, float drawZ, int d, Func<int, int, int> seenDepth)
+		/// a tween still on 38,22 and drawn a cell south of the pit, on the wall. <paramref name="d"/> &lt;= 0: unchanged.
+		/// <paramref name="sinkPerLevel"/> makes the lip riser-aware (<see cref="LipZBelow"/>); <paramref name="holdAbove"/> as
+		/// in <see cref="ClampSinkToLip"/>.</summary>
+		public static float HoldToDrawnLip(float sink, float drawX, float drawZ, int d, Func<int, int, int> seenDepth,
+			float sinkPerLevel = 0f, float holdAbove = 0f)
 		{
 			if (!(sink > 0f) || d <= 0)
 			{
@@ -135,7 +210,7 @@ namespace RimMandrake.FlowWorks
 			}
 			int x = (int)Math.Floor(drawX);
 			int z = (int)Math.Floor(drawZ);
-			return ClampSinkToLip(sink, drawZ, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2));
+			return ClampSinkToLip(sink, drawZ, LipZBelow(x, z, d, seenDepth, SinkCapLevels * 2, sinkPerLevel), holdAbove);
 		}
 
 		/// <summary>PIT_SINK_FIX_SOIL_STRIP_OVER_WALL — the lowest z the near-lip cover may reach in column <paramref name="x"/>.
@@ -144,10 +219,11 @@ namespace RimMandrake.FlowWorks
 		/// save e's C3 lip (band 20.675..22) painted a 2.65-cell soil strip over the room's south wall at z 20. Scanning south
 		/// from the lip row, the first cell where <paramref name="blocksCover"/> holds (a drawn edifice) stops the cover at its
 		/// north edge; what hangs lower is drawn over the wall, as vanilla draws any pawn standing north of one.
-		/// No blocker in the band: <paramref name="bandBottom"/>.</summary>
+		/// No blocker in the band: <paramref name="bandBottom"/>. The scan starts in the square holding the band's top, so a
+		/// riser-aware lip part-way down a shallower hole's square (<see cref="LipZBelow"/>) still tests that square.</summary>
 		public static float CoverStopZ(int x, float lipZ, float bandBottom, Func<int, int, bool> blocksCover)
 		{
-			for (int z = (int)Math.Floor(lipZ) - 1; z + 1f > bandBottom; z--)
+			for (int z = (int)Math.Ceiling(lipZ) - 1; z + 1f > bandBottom; z--)
 			{
 				if (blocksCover(x, z))
 				{
@@ -296,7 +372,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The wall above an occupant's crown as a ratio of their height: the lip is
-		/// D × sink above the floor. 1.2 is the owner's 20 % bar.</summary>
+		/// SinkFor(D) above the floor (4k at 2 m). 1.2 is the owner's 20 % bar.</summary>
 		public static float WallOverHeadRatio(int depth, float sinkPerLevel, float feetToHeadTop)
 		{
 			if (!(feetToHeadTop > 0f))

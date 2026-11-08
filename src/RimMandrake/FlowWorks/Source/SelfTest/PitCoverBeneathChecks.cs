@@ -97,7 +97,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(lip.Contains("int d = Pits.RM_SuspensionUnderpass.DrawDepth(p, p.Position, RM_Patch_PitDepthDrawOffset.DrawHollow(p, eng, p.Position));"),
                     "the lip occluder covers a pawn at its DRAWN depth (a lid walker: none)");
                 Assert(lip.Contains("|| Pits.RM_PitCoverBeneath.IsBeneath(p)"), "no lip cover round a hidden beneath pawn");
-                Assert(lip.Contains("SeenDepthAt(map, eng, cand) < d") && lip.Contains("SeenDepthAt(map, eng, g) >= d"),
+                // PIT_DEPTH_ONE_DRAWING keeps the lip square's seen depth (the riser-aware cover lip), so the test reads it once
+                Assert(lip.Contains("int seen = Pits.RM_SuspensionUnderpass.SeenDepthAt(map, eng, cand);") && lip.Contains("if (seen < d && !eng.IsSourceCell(cand))")
+                    && lip.Contains("SeenDepthAt(map, eng, g) >= d"),
                     "a lid square is ground to the lip search");
                 Assert(lip.Contains("lid != null ? lid.PrintedSurface"), "a lid square is drawn in the ground it prints");
                 // can-fail: no remaining raw hollow read of the pawn's own depth in the occluder

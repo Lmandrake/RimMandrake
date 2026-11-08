@@ -2275,6 +2275,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
             RaiderRescueChecks.Run(Case);      // RAIDERS_FETCH_THEIR_FALLEN: fetch verdicts, duty inserts, call sites (RaiderRescueChecks.cs)
             PitLookChecks.Run(Case);           // PIT_LOOK_TREATMENTS: oblique face grows every depth step, 4 m / 8 m apart (PitLookChecks.cs)
+            PitDepthDrawingChecks.Run(Case);   // PIT_DEPTH_ONE_DRAWING: one sink curve, face foot = occupant floor line, riser-aware lip (PitDepthDrawingChecks.cs)
             SuspensionHangChecks.Run(Case);    // SUSPENSION_BRIDGE_READS_HUNG: deck sag, post-top cables, splay (SuspensionHangChecks.cs)
             BedlessPitPrisonChecks.Run(Case);  // DRAINED_HOLE_IS_A_PRISON: bedless rules, setting, three warden patches, prison door (BedlessPitPrisonChecks.cs)
 

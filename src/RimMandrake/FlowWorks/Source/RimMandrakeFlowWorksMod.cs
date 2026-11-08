@@ -332,7 +332,8 @@ namespace RimMandrake.FlowWorks
         // FALL_GUARDRAILS_BUILD_REAL_OBJECT (owner 2026-10-18): a guardrail (RM_PitGuardrail) or any fence on a lip stops falls
         // over its edges (RM_FallRails). Off: no cell is a rail, the old behaviour.
         public static bool pitGuardrailEnabled = true;
-        // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
+        // PIT_DEPTH_DRAW_OFFSET_1: pawns drawn lower on dug cells. pitSinkPerLevel is the SCALE k of the sink curve
+        // (RM_PitDrawMath.SinkFor, PIT_DEPTH_ONE_DRAWING: 2 m sinks 4k, 4 m 5k; PROVISIONAL 0.3: the 2 m lip 1.2x a person's height).
         public static bool pitDepthDrawOffsetEnabled = true;
         public static float pitSinkPerLevel = 0.3f;
         // EXCAVATION_WALL_ART_1: wall faces drawn by SectionLayer_RMExcavationWalls (procedural until art lands).
@@ -340,6 +341,7 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 1-5, 2026-10-05). Each OFF falls back to the flat look.
         public static bool excavationWallMaterialEnabled = true;   // faces in the ground's own dirt/stone, lit like vanilla walls
         public static bool pitLipOcclusionEnabled = true;          // the near lip hides a sunk pawn's lower body
+        public static float pitSinkHoldAbove = 0f;                 // PIT_DEPTH_ONE_DRAWING: cells the clamp holds a drawn centre above the near lip (0: on it)
         public static bool pitSinkClampEnabled = true;             // ON (owner by card 2026-10-15; was off 2026-10-07): hold the sink so the drawn centre stays north of the near lip; on a south-row pit cell this caps every pawn at 0.5
         public static float pitLipOcclusion = 0.85f;               // how much it hides (1 = fully)
         public static bool pitLipOccupantCutEnabled = true;        // FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the near bank so the occupant stays visible
@@ -693,6 +695,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref excavationWallMaterialEnabled, "excavationWallMaterialEnabled", true);
             Scribe_Values.Look(ref pitLipOcclusionEnabled, "pitLipOcclusionEnabled", true);
             Scribe_Values.Look(ref pitSinkClampEnabled, "pitSinkClampEnabled", true);
+            Scribe_Values.Look(ref pitSinkHoldAbove, "pitSinkHoldAbove", 0f);
             Scribe_Values.Look(ref pitLipOcclusion, "pitLipOcclusion", 0.85f);
             Scribe_Values.Look(ref pitLipOccupantCutEnabled, "pitLipOccupantCutEnabled", true);
             Scribe_Values.Look(ref pitLipOccupantCutWidth, "pitLipOccupantCutWidth", 1f);
@@ -810,6 +813,7 @@ namespace RimMandrake.FlowWorks
             .Declare("fallDeathEnabled", "fallDeathFromMetres", "fallDeathCertainMetres")
             .Declare("spikesEnabled", "spikeDamageMultiplier", "spikeMinDropMetres")
             .Declare("pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled")
+            .Declare("pitSinkClampEnabled", "pitSinkHoldAbove")
             .Declare("pitLipOcclusionEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled")
             .Declare("pitLipOccupantCutEnabled", "pitLipOccupantCutWidth")
             .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitLookMode")
@@ -1869,7 +1873,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitLookMode", "pitCoverSodEnabled", "pitScorchEnabled","pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitLookMode", "pitCoverSodEnabled", "pitScorchEnabled","pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitSinkHoldAbove", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1877,8 +1881,12 @@ namespace RimMandrake.FlowWorks
               + "movement, sight or shooting. Off: pawns are drawn at ground level everywhere.");
             using (Dependent(list, "pitSinkPerLevel"))
             {
-                list.Label("Sink per metre of depth (squares): " + (pitSinkPerLevel * 2f).ToString("F2")
-                  + "  (at 4 m: " + (pitSinkPerLevel * 8f).ToString("F2") + ")");
+                // PIT_DEPTH_ONE_DRAWING: the slider is the curve's scale; the label prints the sinks it really draws
+                list.Label((TaggedString)("How far pawns sink (squares): 0.5 m " + RM_PitDrawMath.SinkFor(1, pitSinkPerLevel).ToString("F2")
+                  + ", 2 m " + RM_PitDrawMath.SinkFor(4, pitSinkPerLevel).ToString("F2")
+                  + ", 4 m and deeper " + RM_PitDrawMath.SinkFor(RM_PitDrawMath.SinkCapLevels, pitSinkPerLevel).ToString("F2")), -1f,
+                    "The scale of the sink: the far wall's face of a cut hangs on the same curve, so its foot is where the "
+                  + "occupant stands. Drawing only.");
                 pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
             }
 
@@ -1937,6 +1945,12 @@ namespace RimMandrake.FlowWorks
                   + "part of them below its edge is hidden behind it. Drawing only.");
                 list.CheckboxLabeled("Hold a deep pawn inside the cut's near edge", ref pitSinkClampEnabled,
                     "Stops a big sprite from drawing outside the cut on the south side, but also caps how far everyone sinks on that row. On by default. Drawing only.");
+                using (Dependent(list, "pitSinkHoldAbove"))
+                {
+                    list.Label((TaggedString)("    Held above the near edge by (squares): " + pitSinkHoldAbove.ToString("F2")), -1f,
+                        "How far above the cut's near edge a held pawn's middle stays. 0: on the edge. Drawing only.");
+                    pitSinkHoldAbove = list.Slider(pitSinkHoldAbove, 0f, 0.5f);
+                }
                 list.CheckboxLabeled("No ground shadow under someone down in a cut", ref pitHidesShadowEnabled,
                     "A person or animal standing in a cut has no shadow drawn on the ground under them, so it cannot "
                   + "show through the near bank. Drawing only. Off: the game's usual shadow.");
@@ -2161,7 +2175,7 @@ namespace RimMandrake.FlowWorks
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
             appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSod;
-        private static float appliedClimbMul;
+        private static float appliedClimbMul, appliedSinkScale = -1f;
         private static int appliedRampSpan, appliedPortableReach;
 
         private static void ApplyChangedSettings()
@@ -2192,6 +2206,14 @@ namespace RimMandrake.FlowWorks
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
                 }
+                if (appliedSinkScale != pitSinkPerLevel && Current.Game != null)
+                {
+                    // PIT_DEPTH_ONE_DRAWING: the far faces hang on the sink's curve
+                    foreach (Map m in Find.Maps)
+                    {
+                        m.mapDrawer.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Terrain);
+                    }
+                }
                 if (appliedSod != pitCoverSodEnabled)
                 {
                     RimMandrake.FlowWorks.Pits.RM_PitCoverSod.RedrawAllLids();
@@ -2205,6 +2227,7 @@ namespace RimMandrake.FlowWorks
             appliedHollow = pondBedHollowEnabled;
             appliedClimb = pitRelativeClimbEnabled;
             appliedClimbMul = pitClimbAbilityMultiplier;
+            appliedSinkScale = pitSinkPerLevel;
             appliedRamps = pitRampsEnabled;
             appliedRampSpan = pitRampMaxSpan;
             appliedPortable = portableLadderEnabled;
