@@ -226,6 +226,7 @@
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
     <Compile Include="Superdeep\RM_LadderDraw.cs" />
+    <Compile Include="Superdeep\RM_LadderRigMath.cs" />
     <!-- PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder job -->
     <Compile Include="Superdeep\RM_PitAccessMath.cs" />
     <Compile Include="Superdeep\RM_LadderParity.cs" />
