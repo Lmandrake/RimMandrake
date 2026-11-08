@@ -189,7 +189,10 @@ namespace RimMandrake.FlowWorks
         public static float maxNetworkCells = 6000f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
-        public static float rainFillPerPulse = 0.1f;
+        // PIT_RAIN_FILL_RATE (pass 7, QUESTIONS 4): 0.1 put a notch (0.5 m) in every open square each game hour of rain, so his
+        // covered pit trap was a pond its raiders swam out of within one shower (s9). 0.002 is ~0.24 m a day of steady rain
+        // (rain plus a run-off share): a 2 m pit takes about eight rain days, a canal still fills over a wet season.
+        public static float rainFillPerPulse = 0.002f;
         // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE (owner 2026-10-27: "Sounds like we need a rain approximation of some kind."):
         // on, rain lands pocket by pocket inside the pulse's own walk (RM_FlowKernel.PocketRain: what an open square cannot
         // hold runs to its pocket, one overflow per pocket); off, the per-square rain pass, spread over the ticks before the pulse.
@@ -620,7 +623,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref maxNetworkCells, "maxNetworkCells", 6000f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
-            Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
+            Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.002f);
             Scribe_Values.Look(ref rainPocketApproxEnabled, "rainPocketApproxEnabled", true);
             // ── Phase 5 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
@@ -1414,8 +1417,8 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "rainFillPerPulse"))
             {
-                list.Label("Rain fill speed: " + (rainFillPerPulse * RM_Volume.MetresPerLevel).ToString("F2") + " m per pulse");
-                rainFillPerPulse = list.Slider(rainFillPerPulse, 0.01f, 1f);
+                list.Label("Rain fill speed: " + (rainFillPerPulse * RM_Volume.MetresPerLevel * (60000f / PulseIntervalTicks)).ToString("F2") + " m per day of steady rain");
+                rainFillPerPulse = list.Slider(rainFillPerPulse, 0.0005f, 1f);
                 list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
                          + "roughly an in-game hour to add half a metre.");
             }

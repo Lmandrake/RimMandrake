@@ -32,17 +32,17 @@ My recommendation: A.
 Nothing seen says the split is wrong (pass 4 agrees: everything this pass touched stayed inside pits and depth). The bed-less pit prison lives in this aspect because his pit story ends in "a tidy
 prison"; the moat's swim and drain stay in aspect 2.
 
-## 4. Rain fills a pit trap in hours, and the trapped float out (decision, pass 6; to be measured first)
-Seen live (s9, 2026-11-08): his covered-pit story, four of five raiders fell into the 2 m spiked pit, and the pit report read
-it 3/4 to full of water about an hour of game time after it was dug. In water they are not held: they walked out and fought
-the archers on the lip. Pass 5 saw rain flood the same pit (s4, ~0.5 m). The model: each rain pulse adds RainRate x 0.1 to an
-accumulator and a full point is one notch (0.5 m) on every unroofed dug square (`rainFillPerPulse` 0.1). Real heavy rain is
-10-50 mm an hour; even with the ground round it draining in, a 2 m pit should take days of rain to fill, not hours.
-Not yet measured: the weather at the time and the fill per pulse (next pass reads both for a game day before changing anything).
-- A: as is (a rainy day turns any pit trap into a pond the raiders swim out of).
-- B: rain fills a pit at about real rates plus a modest run-off share (order of 0.1-0.3 m a day of heavy rain), so pits and
-  canals still fill visibly over a wet season, and a roof still keeps a trap dry.
-My recommendation: B, measured first. It touches aspect 2's fill bars, so the change gets its own before/after numbers.
+## 4. Rain filled a pit trap within one shower (my call, built pass 7: B)
+Seen live (s9, 2026-11-08): his covered-pit story, four of five raiders fell into the 2 m spiked pit, and the pit was 3/4 to
+full of water about an hour of game time after it was dug, so they swam out and fought the archers on the lip.
+Measured from the code: every 250-tick pulse added RainRate x `rainFillPerPulse` (0.1) to an accumulator, a whole point being
+one notch (0.5 m) on every unroofed dug square. Vanilla Rain, RainyThunderstorm and FoggyRain all have rainRate 1, so that is
+0.5 m an hour of rain, 12 m a rain day: any pit trap became a pond in its first shower.
+- A: as was.
+- B (built, default now 0.002, live setting read 0.002 on Steve): about 0.24 m a day of steady rain (rain plus a run-off
+  share), so a 2 m pit takes about eight rain days to fill and a canal still fills visibly over a wet season; a roof still
+  keeps a trap dry. The slider reaches down to 0.0005 and still up to 1, and now reads in metres per rain day.
+My call, not yours: B. Aspect 2's "refilling slowly, from rain" agrees. Say if you want rain faster.
 
 ## 5. Play zoom on SteveDesktop is root 7.2 (my call, pass 6)
 CLAUDE.md puts the bar at about 64 px a cell. Steve's game window is about 920 px high, so that is root 7.2; passes 1-5 judged

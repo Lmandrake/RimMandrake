@@ -1099,7 +1099,7 @@ class FakeBridge(object):
         self.tick, self.pulse = 0, 0
         self.rain, self.cold_since, self.warm_since, self.temp = False, None, None, 20.0
         self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "1680", "sheetCapCm": "50",
-                         "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.1"}
+                         "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.002"}
         self.cap_cm = 50
         self.plants = {}        # cell -> stand pulses
         self.saved = None

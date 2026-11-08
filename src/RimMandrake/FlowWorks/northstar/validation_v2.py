@@ -148,7 +148,7 @@ BOOL_DEFAULTS = {
                viscosityEnabled=True, thickCreepEnabled=True, waterFrontCreepEnabled=True, levelBySurfaceEnabled=True, levelSetEnabled=True, levelExactEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
-FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
+FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.002,
                   "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0, "pitClimbAbilityMultiplier": 1.0, "pitSlowClimbFactor": 2.0, "pitRampMaxSpan": 3, "pitLadderSlowness": 2.0,
                   "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
