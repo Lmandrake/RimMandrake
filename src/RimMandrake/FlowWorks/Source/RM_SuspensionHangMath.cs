@@ -226,5 +226,13 @@ namespace RimMandrake.FlowWorks
 		/// overlaps it: under a surface deck any sunk pawn (the hole's floor), under a sunken deck only the floor band dropped
 		/// past its sunk walkers. A pawn on the deck is never covered.</summary>
 		public static bool RedrawCovers(float drop, bool sunkenDeck) => sunkenDeck ? drop > DeepBelow : drop > SunkBelow;
+
+		/// <summary>PAWN_WALKS_UNDER_DECK, front and behind: true when a pawn on the hole's floor whose undrawn centre is at world
+		/// <paramref name="pawnZ"/> is beneath or north of the deck square whose south edge is at world
+		/// <paramref name="squareSouthZ"/>, so the square is nearer the viewer and is drawn over it where their sprites overlap.
+		/// The view looks north from the south and the sink draws depth as distance south, so a deck point drawn over a floor
+		/// pixel lies south of that pixel's own square whenever the pixel is lower than the deck: a pawn wholly south of the square
+		/// can only overlap it with parts standing above the deck, and those stay in front (its head as it walks out).</summary>
+		public static bool DeckSquareInFront(float pawnZ, float squareSouthZ) => pawnZ > squareSouthZ;
 	}
 }

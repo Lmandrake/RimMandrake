@@ -288,6 +288,84 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Assert(seen == 82, "instrument: checked " + seen + " seeds");
             });
+
+            // PAWN_WALKS_UNDER_DECK, front and behind: a pawn on the hole's floor walks north to south under one deck square
+            // (south edge zs) and the decision RM_SuspensionHang.DrawRecordOver makes (sprite box overlaps the square's
+            // sag-widened rect, and RM_SuspensionHangMath.DeckSquareInFront) is checked against the view itself. The camera looks
+            // north from above the south, so screen z = world z + height: a floor pawn at world z0 on a floor s below the lip draws
+            // its body rows y in [z0 - s - hh, z0 - s + hh] at height y - z0, and the square's surface (sag m) draws its point w at
+            // y = w - m. A body pixel is truly hidden by the deck when the deck point drawn on it lies south of the body (nearer
+            // the camera): w < z0, the same as the body being below the deck there. The redraw paints the square's real pixels
+            // [zs - m, zs + 1 - m] over the pawn whenever the decision holds.
+            Case("Hang_floor_walker_behind_deck_beneath_and_north_only", () =>
+            {
+                const float zs = 10f, step = 0.01f;
+                int walks = 0, headsInFrontSpared = 0, hiddenCovered = 0;
+                foreach (float s in new[] { 0.3f, 0.6f, 1.2f, 1.8f, 2.4f })
+                {
+                    foreach (float hh in new[] { 0.5f, 0.75f })
+                    {
+                        foreach (float m in new[] { 0f, 0.18f, 0.45f, 0.8f })
+                        {
+                            if (m >= s)
+                            {
+                                continue;   // the deck would sag through the floor
+                            }
+                            string at = "sink " + s + ", half-height " + hh + ", sag " + m;
+                            bool fitsUnder = hh < s - m - 0.02f;   // the crown stays clearly below the deck
+                            int flips = 0;
+                            bool was = false;
+                            for (float z0 = zs + 4f; z0 >= zs - 4f; z0 -= step)
+                            {
+                                float lo = z0 - s - hh, hi = z0 - s + hh;
+                                bool decision = hi > zs - m && lo < zs + 1f && RM_SuspensionHangMath.DeckSquareInFront(z0, zs);
+                                if (decision != was)
+                                {
+                                    flips++;
+                                    was = decision;
+                                }
+                                bool anyHidden = false, inFront = false;
+                                for (float y = lo; y <= hi; y += step)
+                                {
+                                    if (y < zs - m || y > zs + 1f - m)
+                                    {
+                                        continue;   // no pixel of this square drawn on this row
+                                    }
+                                    bool hidden = y + m < z0;
+                                    anyHidden |= hidden;
+                                    inFront |= !hidden;
+                                    Assert(!hidden || decision, at + ", z0 " + z0 + ": a body pixel below the deck shows through it");
+                                    if (decision && fitsUnder)
+                                    {
+                                        Assert(hidden, at + ", z0 " + z0 + ": the deck drawn over a pixel standing in front of it");
+                                    }
+                                }
+                                if (decision && anyHidden)
+                                {
+                                    hiddenCovered++;
+                                }
+                                if (decision && z0 > zs + step)   // nearer the edge the hidden sliver is under one sample
+                                {
+                                    Assert(anyHidden || !inFront, at + ", z0 " + z0 + ": covered with no pixel of it behind the deck");
+                                }
+                                if (z0 < zs - step)
+                                {
+                                    Assert(!decision, at + ", z0 " + z0 + ": the deck drawn over a pawn walking out south of it");
+                                    if (inFront)
+                                    {
+                                        headsInFrontSpared++;
+                                    }
+                                }
+                            }
+                            Assert(flips <= 2, at + ": the cover flickers on and off " + flips + " times on one walk");
+                            walks++;
+                        }
+                    }
+                }
+                Assert(walks == 34, "instrument: walked " + walks + " times");
+                Assert(hiddenCovered > 0, "instrument: no walk ever had a pixel behind the deck");
+                Assert(headsInFrontSpared > 0, "instrument: no walk ever put a head in front of the deck's south edge");
+            });
         }
     }
 }

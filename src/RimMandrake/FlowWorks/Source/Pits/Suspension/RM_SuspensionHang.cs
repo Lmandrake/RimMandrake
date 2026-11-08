@@ -24,8 +24,8 @@ namespace RimMandrake.FlowWorks.Pits
 	{
 		/// <summary>The look being drawn (RM_SuspensionHangMath.Treatment*). Not saved: the side-by-side is a viewing aid.
 		/// Default 0, suspension, the one that reads most hung: tall posts on both end squares mark the anchors, the main cable
-		/// dips about a square on screen from post top to mid-span (timber over 9 squares: 0.55 of cable dip on 0.4 of deck
-		/// sag) and the suspenders show the deck carried by it. The rope walk sags most but its knee-high hand rope reads as a
+		/// dips about a square on screen from post top to mid-span (timber over 9 squares: 0.55 of cable dip on about 0.32 of
+		/// deck sag) and the suspenders show the deck carried by it. The rope walk sags most but its knee-high hand rope reads as a
 		/// railing; cable-stayed's straight stays and least sag read rigid.</summary>
 		public static int Treatment = RM_SuspensionHangMath.TreatmentSuspension;
 
@@ -654,6 +654,8 @@ namespace RimMandrake.FlowWorks.Pits
 		private struct PawnBox
 		{
 			public float minX, maxX, minZ, maxZ;
+			/// <summary>The pawn's undrawn centre (world z, before sink and sag): decides which deck squares are in front of it.</summary>
+			public float worldZ;
 			public bool deep;
 		}
 
@@ -755,6 +757,7 @@ namespace RimMandrake.FlowWorks.Pits
 				boxes[boxCount++] = new PawnBox
 				{
 					minX = dp.x - h.x, maxX = dp.x + h.x, minZ = dp.z - h.y, maxZ = dp.z + h.y,
+					worldZ = p.Drawer?.tweener != null ? p.Drawer.tweener.TweenedPos.z : pos.z + 0.5f,
 					deep = RM_SuspensionHangMath.RedrawCovers(drop, true),
 				};
 			}
@@ -781,12 +784,16 @@ namespace RimMandrake.FlowWorks.Pits
 			return false;
 		}
 
-		private static bool AnyBox(float minX, float maxX, float minZ, float maxZ, bool deepOnly)
+		/// <summary>True when a sunk pawn's drawn sprite overlaps the square's drawn rect and the square is in front of it
+		/// (RM_SuspensionHangMath.DeckSquareInFront: the pawn is beneath or north of the square's south edge
+		/// <paramref name="southZ"/>; one walking out to the south keeps its head over the deck's edge).</summary>
+		private static bool AnyBox(float minX, float maxX, float minZ, float maxZ, bool deepOnly, float southZ)
 		{
 			for (int i = 0; i < boxCount; i++)
 			{
 				PawnBox q = boxes[i];
-				if ((!deepOnly || q.deep) && q.maxX > minX && q.minX < maxX && q.maxZ > minZ && q.minZ < maxZ)
+				if ((!deepOnly || q.deep) && q.maxX > minX && q.minX < maxX && q.maxZ > minZ && q.minZ < maxZ
+					&& RM_SuspensionHangMath.DeckSquareInFront(q.worldZ, southZ))
 				{
 					return true;
 				}
@@ -810,7 +817,7 @@ namespace RimMandrake.FlowWorks.Pits
 					}
 					float cx = c.x + 0.5f, cz = c.z + 0.5f;
 					// a sunken deck's walkers are sunk like the floor's: only the floor band (dropped further) goes under it
-					if (!AnyBox(cx - 0.5f, cx + 0.5f, cz - 0.5f - d.maxSag, cz + 0.5f, sunken))
+					if (!AnyBox(cx - 0.5f, cx + 0.5f, cz - 0.5f - d.maxSag, cz + 0.5f, sunken, cz - 0.5f))
 					{
 						continue;
 					}
