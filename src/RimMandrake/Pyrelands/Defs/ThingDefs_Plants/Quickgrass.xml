@@ -105,6 +105,14 @@
         <sproutMaxGrowth>0.33</sproutMaxGrowth>
         <halfMaxGrowth>0.66</halfMaxGrowth>
       </li>
+      <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). -->
+      <li Class="RimMandrake.Pyrelands.RM_AshDustExtension">
+        <overlays>
+          <li><basePath>Things/Plant/RM_FE_Quickgrass</basePath><overlayPath>Things/Plant/RM_FE_AshDust/Quickgrass</overlayPath></li>
+          <li><basePath>Things/Plant/RM_FE_QuickgrassStages/Sprout</basePath><overlayPath>Things/Plant/RM_FE_AshDust/QuickgrassSprout</overlayPath></li>
+          <li><basePath>Things/Plant/RM_FE_QuickgrassStages/Half</basePath><overlayPath>Things/Plant/RM_FE_AshDust/QuickgrassHalf</overlayPath></li>
+        </overlays>
+      </li>
     </modExtensions>
   </ThingDef>
 

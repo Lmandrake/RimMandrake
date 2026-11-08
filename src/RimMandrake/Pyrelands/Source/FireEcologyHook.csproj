@@ -54,6 +54,7 @@
     <Compile Include="CompWithersUnderRoof.cs" />
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsWeatherOverlays.cs" />
+    <Compile Include="PyrelandsAshDust.cs" />
     <Compile Include="PyrelandsHerdThirst.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />
     <Compile Include="GenStep_PyrelandsFireCast.cs" />

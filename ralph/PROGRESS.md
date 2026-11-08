@@ -1,51 +1,50 @@
 # Pyrelands progress
 
-**State at retirement:** the game is up and paused on map w at about day 25.7, run on from `NS_pyre_sky_base` (day 22, 10:20; nothing saved after it), with the bridge released. The running DLL is a debug variant of commit f1a59f306e: it is the same overlay code plus two static debug switches, which I stripped before committing. The next restart with `--deploy` puts the committed DLL in. Nothing else differs. QUESTIONS #4 is new: scars green over in 2 to 3 days once black rain falls.
-
-The test colony was starving and dehydrated at load. I topped up their needs and removed the malnutrition, catatonia, dehydration and heatstroke hediffs (`Transient/pyre_play7/revive.py`), then saved as `NS_Pyrelands_play_w_d21fed`. `fbrun.py` keeps their food at 0.3 or above during runs. This was my unmanaged test colony, not a biome defect.
-
-New tools are in `Transient/pyre_play7/`:
-- `sky.py prep|one`, `wxscr.py WEATHER`: matched-hour weather. Prep saves at HOUR:20. `one` locks the weather, runs the 4000-tick transition and shoots.
-- `scr.py NAME X Z ROOTSIZE jawa/take_screenshot`: a **real screen capture**. Weather overlays only show in this one; `rimworld/take_screenshot` and the cell-rect tool leave them out.
-- `wxdiag.py`: calls `WeatherOverlay_RM_Layered.Diag` through `jawa/static_call`.
-- `fbrun.py SLICES TICKS`: played slices that read the fresh-burn and control rice.
-- `feed.py`, `revive.py`, `probe.py X Z`, `ov.py NAME`.
+**State at retirement (pass 17):** the game is up on map w at about day 24.2, mid-wildfire, run on from
+`NS_Pyrelands_play_w_d22clean` (nothing saved after it), bridge released. The running build has the FIRST ash-dust cut; the
+committed textures are the capped cut, so restart with `--deploy` first. Evidence notes: `Transient/pyre_play8/EVIDENCE.md`
+(gitignored; the numbers are also in RATCHET).
 
 ## Seen and done this pass
 
-**Weather overlays never showed.** At day-22 noon on map w I captured the screen under vanilla Rain, black rain on `WeatherOverlay_Rain`, ash fall on `SnowHard`, BloodRain and UnnaturalFog, at about 47 px a cell. None showed a drop or a flake; only TorrentialRain showed faint streaks over a dark cell.
-- Vanilla's light overlays vanish on dark ash under a dim sky, so black rain read only as "a darker hour".
-- **Fix (f1a59f306e):** `Source/PyrelandsWeatherOverlays.cs` adds alpha-blended two-layer overlays with my own tileable textures (`weather_overlay_gen.py`, `Textures/Weather/`).
-  - `WeatherOverlay_RM_BlackRain`: sooty streaks about 3 px wide, falling at rain speed.
-  - `WeatherOverlay_RM_AshFall`: pale flakes on a slow sideways drift, replacing SnowHard, which "read as brown rain".
-- I debugged it live. A white test texture showed the planes do draw. My first streaks, 1.6 px wide at alpha 0.5, were simply too faint on dark ash; the 3 px streaks at alpha 0.7 to 0.95 read plainly.
-- Result: `shots/weather_noon_rain_blackrain_ashfall.png`, the same cells at the same noon. Vanilla Rain is vivid and shows no drops. Black rain is dim brown with visible dark streaks. Ash fall shows pale flakes.
+**A weather lock was hiding in the save.** `NS_pyre_sky_base` carried a permanent "Forced weather" condition from pass 16's sky
+work, started around day 21.2. My ash fall kept flipping to black rain within the hour. I removed it with `jawa/weather_set
+unlock=true` and saved `NS_Pyrelands_play_w_d22clean`. The weather on map w since day 21.2 was not natural, so pass 16's
+"natural black rain" was probably forced. That doesn't change the fresh-burn growth numbers.
 
-**Gravel pockets** are now tinted (110,98,84); they were (140,130,120), a pale concrete slab. Not yet seen in game.
+**Ash fall's drifts were invisible on an ordinary map.** Map w is 84% deep ash under a full grass carpet. A natural 6-hour fall
+laid about 3,000 drifts, and at play zoom none showed (`old/af_s1_4.png`). Filth draws below LowPlant, so the grass hides it.
+- **Fix:** `Source/PyrelandsAshDust.cs`. Vanilla prints a silhouette-matched snow overlay over a plant when snow is deep. A
+  transpiler swaps Plant.Print's two snow reads, so a grass plant on a loose-ash drift prints an ash overlay instead: light at
+  one layer of ash, full at two or more. Snow still wins. Black rain, expiry and cleaning remove the drift, and the dust goes with
+  it.
+- Ash fall now lands on grass along the drift field: 50% in banks (target 1+), 3% elsewhere (`RM_FireEcoKernel`).
+- Outdoor ash on natural ground is no longer a cleaning job unless ordered. Floors and roofed cells are still swept. Not yet
+  watched in game.
+- Overlays come from `ash_dust_gen.py`, one per living grass sprite. The charred leafless sprites get none.
+- First cut, in game: grey banks formed and grew on the grass hour by hour (drifts 3 to 2,615 in 6 h). At 1:1, though, a dusted
+  clump read as a hazy grey ghost (`old/v1dust_ad_s1_6.png`).
+- The capped cut is installed but not seen yet: ash sits on the clump's upper reach, rounded grit lies below, and the grass colour
+  shows beneath. Not yet checked: whether TransparentPlant honours the light strength's alpha of 0.6.
 
-**Wet-roots season fix confirmed live.** At 60.1 C under black rain, rice read "140% (temperature growth multiplier 81%)" with no "out of temperature growth range". The bug from last pass is gone.
+**Three bars proven in play** (full numbers in RATCHET):
+- **Furnace room:** 76.7 to 84.3 C against 55 to 60 C.
+- **Sleep ignition:** two grass sleepers lit their grass after 1.0 and 1.8 hours; a bare-cell sleeper lit nothing.
+- **Scorch-fruit:** a natural wildfire left pods; colonists harvested 6 a pod; a hungry colonist went from 0.23 to 0.77 food.
 
-**Fresh burn, played** (map w's natural day-20 burn; rice sown at 10% last pass; controls on unburned or long-burned ash): this was ordinary weather: natural black rain fell from day 22.4 to 24.7.
-- At the start, day 22.18: fresh 39.6% grown (n=8, bonus 0.36), control 32.0% (n=7, bonus 0.07, mostly 0).
-- In daylight under black rain, fresh grew at 175, 167, 165 and then 158% while control held at 140%. The bonus faded on its own 6-day clock (0.36, 0.34, 0.31, 0.27, 0.23, 0.19); black rain did not wipe it.
-- Day 24.19: fresh 98%, control 81%. Control reached 92% by day 24.44 and 95% by day 24.69. So a crop sown the same day matured about half a day sooner on fresh burn, out of a roughly 3.5-day cycle.
-- Dry, last pass: 30% against 18% at 11:00.
-- All 8 fresh plants were gone by day 24.44, just after maturing. I did not check whether animals ate them or a fire took them.
-- Log: `Transient/pyre_play7/fbrun1.log`. Counted true: a played measurement on a real map. The advantage is moderate, not dramatic (+25% under rain, +67% dry), and it fades over 6 days.
-
-**Telemetry:**
-- The 11-07 mapComp stalls of 1 to 6.6 s every 250 ticks stopped after 9492f0a461 (11-07 19:50 Z). No session since has a tick over 250 ms except tickOther ticks of about 850 ms at round ticks 843000 and 1132000. Those are probably the bridge saves of last pass, but that is not proven.
-- **Open:** Superfast fell to about 200 TPS at 16 fps this session, against 313 to 360 TPS and 32 to 60 fps in the earlier 11-08 sessions. tickMs is unchanged at 1.85, so the frames are slow, not the simulation. I measured it at the end (`fps.py 30`, same camera, rootSize 10). Clear ran at 19 to 21 fps and 225 to 250 TPS. Black rain ran at 20 to 23 fps and 235 to 276 TPS. Ash fall ran at 18 to 21 fps and 213 to 230 TPS. **So the new overlays cost nothing measurable.** Then, partway through a second Clear window (around tick 1,535,000), frame gaps fell from about 65 ms to about 20 ms, and the game ran at 60 fps and 360 TPS. The cause of the slow frames is not attributed: it was not the weather, and tickMs stayed at 1.3 to 2.4. Lead: fire or another on-screen load. Check `jawa/map_comp_timing` and the fire count when it recurs.
-
-Pushing a new texture needs a record in the art ledger, or the pre-push hook refuses. Write the PNG somewhere inside the clone, then run `art.py install src/RimMandrake/Pyrelands Textures/<rel>.png --file <that path> --reason "script:<repo-relative writer>"`. If the file already sits at its destination, the install answers "already-live" and records nothing.
+**Seen in passing:**
+- The single beast that fled the wildfire walked 50 cells to the colony.
+- Fire wasps wander inside the colony's bedroom.
+- Harvested fruit lies where it fell while colonists fight fires.
+- Day-23 dry thunderstorm: 1,172 fires across the whole map. Colonists spent hours on BeatFire, but nobody was hurt.
 
 ## Next, in order
-1. Restart with `--deploy` (it puts the committed DLL in), reload `NS_pyre_sky_base`, and feed the colony.
-2. Ash drifts: shoot the softer-fleck cut at 1:1 on an outdoor scar during ash fall with flakes falling (real capture, rootSize about 7.4 is 64 px a cell). Judge `ashfall_darkens_drifts`. Also shoot a gravel pocket.
-3. Furnace-beast: the main suite's `furnace_room` PASS (Pyrelands_main.json, 11-07 06:16) **predates the uncapped heat (b3dd0877b1)**, so it does not prove the current build. Re-run `furnace_room` and `furnace_sleep` (validation.py chains), or do a live room on map w with `jawa/make_empty_room` Steel doorDef=Wall, a beast, a control room and a throwaway colonist, reading heatstroke over hours.
-4. Burrow dome frame: park the camera on settled ashwallows, light a line 3 to 5 cells off, play at Normal, poll for RM_Burrowed, run 60 more ticks, then a real capture.
-5. A natural scorch-fruit harvest and eat.
-6. Then the full suite on the current build, a fresh-eyes judge on the screenshots, and DONE. The broaden call is due again: the last one was pass 15.
+1. Restart with `--deploy`, load `NS_Pyrelands_play_w_d22clean`, then run `revive.py` and `feed.py 20`.
+2. Ash fall: lock it from 10:20 and run `Transient/pyre_play8/ashwatch.py ad 6 2500 140,135 121,127`. Judge the capped cut at
+   1:1 and the hour series. Then unlock, let black rain (or `weather_set RM_FE_BlackRain`) wash it, and shoot the same view.
+   Refresh LOOK.md with the before and after. Check that colonists leave outdoor ash alone.
+3. Burrow dome frame (RATCHET item 2).
+4. The broaden call is due (none in pass 16 or 17). Then the full suite on the current build, the fresh-eyes judge, and DONE.
 
 ## Count
 - pyre_plant_distribution_correct: true
@@ -58,15 +57,15 @@ Pushing a new texture needs a record in the art ledger, or the pre-push hook ref
 - pyre_embergrass_regrows: true
 - pyre_burn_line_present: true
 - pyre_scorchfruit_fire_born: true
-- pyre_scorchfruit_produces: unseen
+- pyre_scorchfruit_produces: true
 - pyre_scorchfruit_spoils_fast: true
 - pyre_ruins_scorched: true
 - pyre_firehawk_carries_ember: true
 - pyre_furnacebeast_warmth: true
-- pyre_furnacebeast_heats_room: unseen
+- pyre_furnacebeast_heats_room: true
 - pyre_burrowers_dive: unseen
 - pyre_ashfall_darkens_drifts: false
 - pyre_cinderfall_distinct: true
 - pyre_blackrain_reads: true
 - pyre_cannot_ordinary_rain: true
-- (owner's card, 2026-11-08) pyre_furnacebeast_sleep_ignites: unseen
+- (owner's card, 2026-11-08) pyre_furnacebeast_sleep_ignites: true

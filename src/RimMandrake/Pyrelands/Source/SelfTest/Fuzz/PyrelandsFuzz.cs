@@ -931,10 +931,15 @@ namespace RimMandrake.Pyrelands.Fuzz
                 int have = r.Next(5), wantAsh = r.Next(4);
                 Check(RM_FireEcoKernel.ScarAshMayThicken(have, wantAsh) == (have < wantAsh), "scar ash thickens past its target");
 
-                // Ash fall: grass gets the odd drift, hollows and the lee always, bare ground sometimes; heaps one past the
-                // field's target up to the def cap; new drifts stop at the cover cap.
+                // Ash fall: grass in a bank half the time and elsewhere the odd drift, hollows and the lee always, bare ground
+                // sometimes; heaps one past the field's target up to the def cap; new drifts stop at the cover cap. Ash on natural
+                // ground under open sky is not swept; on a floor or under a roof it is.
                 int tgt = r.Next(4), max = 1 + r.Next(5);
-                Check(RM_FireEcoKernel.AshFallAccept(tgt, true) == RM_FireEcoKernel.AshFallGrassAccept, "ash fall on grass not the odd drift");
+                Check(RM_FireEcoKernel.AshFallAccept(tgt, true) == (tgt >= 1 ? RM_FireEcoKernel.AshFallGrassBankAccept : RM_FireEcoKernel.AshFallGrassAccept),
+                      "ash fall on grass: bank or odd drift");
+                Check(RM_FireEcoKernel.AshFallGrassBankAccept > RM_FireEcoKernel.AshFallGrassAccept, "grass banks take less ash than the plain");
+                bool roofedA = r.Next(2) == 0, floorA = r.Next(2) == 0;
+                Check(RM_FireEcoKernel.AshIsGround(roofedA, floorA) == (!roofedA && !floorA), "ash swept off open natural ground");
                 Check(RM_FireEcoKernel.AshFallAccept(tgt, false) == (tgt >= 1 ? 1f : RM_FireEcoKernel.AshFallBareAccept), "ash fall bare/hollow accept");
                 int ceil = RM_FireEcoKernel.AshFallCeiling(tgt, max);
                 Check(ceil >= 1 && ceil <= max && ceil == Math.Min(max, Math.Max(1, tgt + 1)), "ash fall ceiling");

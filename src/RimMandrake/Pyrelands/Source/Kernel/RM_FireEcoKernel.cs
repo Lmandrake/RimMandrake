@@ -384,18 +384,32 @@ namespace RimMandrake.Pyrelands
         // under the grass blades, which draw over filth. Now it lands where it shows (bare ground: scars, rock flats, paths,
         // floors), fills the drift field's hollows and the lee of rock and walls, and heaps the drifts it already laid.
 
-        /// <summary>Keep chance for falling ash on a cell under standing grass: the odd drift, since the grass hides it anyway.</summary>
+        // 2026-11-08, map w: grass carpets almost the whole map, so ash fall showed on next to nothing. The grass now wears the
+        // ash itself (PyrelandsAshDust prints a dust overlay over a plant on a drift), so ash lands on grass along the same drift
+        // field: banks of grey grass in the field's hollows and lees, the odd dusted clump between them.
+
+        /// <summary>Keep chance for falling ash on grass the drift field gives nothing: the odd dusted clump between the banks.</summary>
         public const float AshFallGrassAccept = 0.03f;
+        /// <summary>Keep chance on grass in the drift field's banks (target 1+): the bank greys over in an afternoon's fall.</summary>
+        public const float AshFallGrassBankAccept = 0.5f;
         /// <summary>Keep chance on bare ground the drift field gives nothing: a light dusting between the banks.</summary>
         public const float AshFallBareAccept = 0.12f;
         /// <summary>New drifts stop once this share of the map holds one; the ones already laid keep heaping to their ceiling.</summary>
         public const float AshFallCoverCap = 0.15f;
 
-        /// <summary>Ash fall's keep chance for a cell: grass takes the odd drift, a hollow or a lee on bare ground takes all.</summary>
+        /// <summary>Ash fall's keep chance for a cell: on bare ground a hollow or a lee takes all and the rest a dusting; on grass
+        /// a bank takes half and the rest the odd drift.</summary>
         public static float AshFallAccept(int target, bool underGrass)
         {
-            if (underGrass) return AshFallGrassAccept;
+            if (underGrass) return target >= 1 ? AshFallGrassBankAccept : AshFallGrassAccept;
             return target >= 1 ? 1f : AshFallBareAccept;
+        }
+
+        /// <summary>Loose ash under open sky on natural ground is the land itself (BeautyOutdoors 0), not dirt to sweep; on a floor
+        /// or under a roof it is.</summary>
+        public static bool AshIsGround(bool roofed, bool floor)
+        {
+            return !roofed && !floor;
         }
 
         /// <summary>How deep ash fall heaps a cell: one past its drift-field target, at least 1, at most the filth's own cap.</summary>

@@ -599,7 +599,7 @@ namespace RimMandrake.Pyrelands
         }
 
         /// <summary>One ash-fall deposit on a cell: lands under open sky on dry ground, kept by the drift field's chance for that
-        /// cell (grass rarely, a hollow or a lee on bare ground always), heaped no deeper than the cell's ash-fall ceiling.
+        /// cell (grass in a bank half the time and elsewhere rarely, a hollow or a lee on bare ground always), heaped no deeper than the cell's ash-fall ceiling.
         /// Never spills to a neighbour.</summary>
         private bool TryDeposit(IntVec3 c, ThingDef ashDef)
         {
@@ -609,17 +609,12 @@ namespace RimMandrake.Pyrelands
             }
             Plant plant = c.GetPlant(map);
             bool underGrass = plant != null && !plant.def.plant.IsTree;
-            // Grass keeps the odd drift whatever the field says, so roll it before the noise read.
-            if (underGrass && !Rand.Chance(RM_FireEcoKernel.AshFallGrassAccept))
-            {
-                return false;
-            }
             int target = PyrelandsDriftField.Target(map, c, false);
             if (PyrelandsDriftField.Thickness(map, c) >= RM_FireEcoKernel.AshFallCeiling(target, ashDef.filth.maxThickness))
             {
                 return false;
             }
-            if (!underGrass && !Rand.Chance(RM_FireEcoKernel.AshFallAccept(target, false)))
+            if (!Rand.Chance(RM_FireEcoKernel.AshFallAccept(target, underGrass)))
             {
                 return false;
             }
