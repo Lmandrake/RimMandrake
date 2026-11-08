@@ -60,7 +60,13 @@ the owner unfreezes it. This section records which file the evidence says is the
 and most reliable world save, so nobody has to rebuild the answer from 40 file names.
 
 **Current world save: `Saves\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**
-(13,564,365 bytes, sha256 `cfeb45446ff2f188…`, since 2026-11-03: 33 landmark names edited offline so no two
+(13,531,124 bytes, sha256 `1d569ea8e7a871e9…`, since 2026-11-07: the cut furnace-herd world leg was stripped offline
+(`RIMMASTER_STRIP_CANONICAL_SAVE_OF_CUT_FURNACE_HERDS`): the `RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder`
+world component, the 2 `RM_FurnaceHerd` world objects (IDs 57, 58, with their 3 `RM_FurnaceBeast` member pawns) and those
+pawns' 3 `BigAndSmall` `BS_scribedCache` entries; pure deletions (1,013 lines, 873 elements), no outside reference to any
+removed id, `Pyrelands/diag/save_world_check.py` PASS. The file before it, 13,564,365 bytes, sha256 `cfeb45446ff2f188…`, is
+`…R3.rws.bak-pre-strip-furnace-herds-2026-11-07` beside it and in
+`D:\ClaudeWork\backups\saves_pre_strip_furnace_herds_2026-11-07\`. That one dates from 2026-11-03: 33 landmark names edited offline so no two
 landmarks share a name and tile 2403 reads The Gaping Doom (`LANDMARK_NAMING_PASS_1`; table
 `world/ASHKARR_R3_landmark_renames_2026-11-03.json`, tool `src/RimMandrake/Utils/landmark_rename_save.py`,
 check `landmark_names_check.py`); only those 33 `<name>` lines changed. The file before it, 13,564,300 bytes, sha256
@@ -90,7 +96,7 @@ Evidence, in order:
   `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
   (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
 - **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
-  `cfeb45446ff2f188…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
+  `1d569ea8e7a871e9…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
   2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.

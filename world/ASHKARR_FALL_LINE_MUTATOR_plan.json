@@ -7,7 +7,7 @@
  },
  "inputs": {
   "save": "world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
-  "save_sha256": "cfeb45446ff2f1880b52379f7265a938f8e7697cf66f565d80a34075767f57b3",
+  "save_sha256": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6",
   "surface_tiles": 21872
  },
  "item": "FALL_LINE_MUTATOR_PLACEMENT_1",
