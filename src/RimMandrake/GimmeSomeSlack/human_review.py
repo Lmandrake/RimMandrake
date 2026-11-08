@@ -744,7 +744,7 @@ def art_slots(tex=TEX):
     """[(piece, {look: (status, path)})] with status 'own' | 'fallback: <what>' | 'n/a'."""
     def has(rel):
         return os.path.exists(os.path.join(tex, rel + ".png"))
-    strand = {"Scrapper": "Strand_Jawa", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
+    strand = {"Scrapper": "Strand_ScrapTaped", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
               "Futuristic": "Styles/Cybertek/Strand"}
     rows = []
 

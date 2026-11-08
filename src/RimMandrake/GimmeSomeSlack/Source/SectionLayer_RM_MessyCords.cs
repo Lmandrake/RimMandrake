@@ -211,12 +211,12 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>The same ribbon as Ribbon, written into plain lists (the component's per-frame meshes use it).</summary>
-        internal static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0)
+        internal static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0, double aspect = 4.0)
         {
             if (pts.Count < 2) return;
             int start = verts.Count;
             float hw = width / 2f;
-            double tile = width * 4.0, u = s0 * 4.0;
+            double tile = width * aspect, u = s0 * 4.0;   // one texture repeat spans `aspect` widths (CordMaterials.Aspect)
             for (int i = 0; i < pts.Count; i++)
             {
                 Geo.TanNorm(pts, i, out V2 t, out V2 n);
@@ -243,7 +243,7 @@ namespace RimMandrake.GimmeSomeSlack
             int start = sm.verts.Count;
             if (start + 2 * pts.Count > MaxMeshVerts) { OverflowDrops++; return 0; }   // 16-bit index mesh: drop, never corrupt (counted: GPT review #15)
             float hw = width / 2f;
-            double tile = width * 4.0;
+            double tile = width * CordMaterials.Aspect(mat);   // one texture repeat spans the texture's own width over height, in strand widths
             double u = s0 * 4.0;
             for (int i = 0; i < pts.Count; i++)
             {

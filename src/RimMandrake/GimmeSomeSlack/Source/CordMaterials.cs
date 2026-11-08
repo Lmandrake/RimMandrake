@@ -114,9 +114,20 @@ namespace RimMandrake.GimmeSomeSlack
                     var w = new string[StarWarsKinds.Length];
                     for (int i = 0; i < w.Length; i++) w[i] = StyleDir + "StarWars/Strand_" + StarWarsKinds[i];
                     return w;
-                default: return new[] { Dir + "Strand_Jawa" };
+                default: return new[] { Dir + "Strand_ScrapTaped" };
             }
         }
+
+        /// <summary>How many strand widths one repeat of a strand material's texture spans along the cord: the texture's own width over its
+        /// height. 4 for the 128x32 strands; Scrapper's taped salvage cord is 1024x32, so it repeats every 2.56 cells and does not read as
+        /// evenly striped (pass 12: Scrapper and Industrial cords were the same dark rubber, only their fittings told the looks apart).</summary>
+        public static double Aspect(Material m)
+        {
+            Texture t = m != null ? m.mainTexture : null;
+            return t != null && t.height > 0 ? (double)t.width / t.height : 4.0;
+        }
+
+        public static double AspectG(int g) => Aspect(StrandG(g));
 
         /// <summary>Path of a decal slot for a style; Jawa slot names at the root, others under Styles/.</summary>
         public static string SlotPath(CordStyle s, string slot)
@@ -280,7 +291,7 @@ namespace RimMandrake.GimmeSomeSlack
                 case "Industrial": return StyleDir + "StarWars/Strand_" + StarWarsKinds[Mathf.Clamp(variant, 0, StarWarsKinds.Length - 1)];
                 case "Modern": return StyleDir + "ExtCord/Strand_" + ExtCordColors[Mathf.Clamp(variant, 0, ExtCordColors.Length - 1)];
                 case "Futuristic": return StyleDir + "Cybertek/Strand";
-                default: return Dir + "Strand_Jawa";
+                default: return Dir + "Strand_ScrapTaped";   // Scrapper: rough, hacked-together salvage cable (style design)
             }
         }
 

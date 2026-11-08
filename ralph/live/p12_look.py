@@ -20,6 +20,7 @@ def main():
     ap.add_argument("--blast", action="store_true")
     ap.add_argument("--cut-frames", default="cutspan,drop,yard")
     ap.add_argument("--play", type=int, default=0)
+    ap.add_argument("--tiles", action="store_true", help="also shoot the whole colony at play zoom, 20x11-cell tiles named t<col><row>")
     a = ap.parse_args()
     st = json.load(open(BA))
     for look in a.looks:
@@ -33,7 +34,13 @@ def main():
         json.dump(st[look], open(LI.STATE, "w"))
         if a.play:
             R.play(a.play)
-        R.shots(a.tag, [f for f in a.frames.split(",") if f])
+        frames = [f for f in a.frames.split(",") if f]
+        if a.tiles:
+            for i, x in enumerate(range(-3, 77, 20)):
+                for j, z in enumerate(range(8, -12, -11)):
+                    LI.FRAMES["t%d%d" % (i, j)] = (x, z, 20, 11)
+                    frames.append("t%d%d" % (i, j))
+        R.shots(a.tag, frames)
         if a.blast:
             R.blast()
             R.B.ticks(120)

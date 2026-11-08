@@ -254,7 +254,7 @@ def o4_oracle(rows):
 # Every style's required PNGs (paths relative to Textures/RimMandrake/GimmeSomeSlack), canvas, and kind. Wired by
 # src/RimMandrake/Utils/mockups/messy_conduit/wire_style_art.py; slots not listed fall back to the Jawa root set.
 STYLE_FILES = {
-    "StarWarsJawa": ["Strand_Jawa", "Junction_Tape", "Junction_Tin", "Plug", "StubWall", "StubRock", "EndFrayed_Dead"],
+    "StarWarsJawa": ["Strand_Jawa", "Strand_ScrapTaped", "Junction_Tape", "Junction_Tin", "Plug", "StubWall", "StubRock", "EndFrayed_Dead"],
     "Cybertek": ["Styles/Cybertek/" + n for n in ("Strand", "Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
     "ExtensionCord": ["Styles/ExtCord/Strand_" + c for c in ("Orange", "Green", "Brown", "Yellow", "Blue")] +
                      ["Styles/ExtCord/" + n for n in ("Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
@@ -273,6 +273,8 @@ ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
 
 def _canvas_for(rel):
     n = rel.split("/")[-1]
+    if n == "Strand_ScrapTaped":
+        return (1024, 32)          # pass 12: a 2.56-cell repeat; the ribbon's repeat follows the texture's aspect (CordMaterials.Aspect)
     if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
         return (128, 32)
     if n == "TapClamp":

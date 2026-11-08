@@ -838,7 +838,7 @@ namespace RimMandrake.GimmeSomeSlack
                                 whipCursors[seed] = cur;
                                 bent = bentBuf;
                             }
-                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
+                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0, CordMaterials.AspectG(v));
                             if (animate) WhipDraws++; else WhipStillDraws++;
                             whipLaid.Add(tail[tail.Count - 1]);
                             whipNow.Add(bent[bent.Count - 1]);
@@ -874,7 +874,7 @@ namespace RimMandrake.GimmeSomeSlack
                     if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
                     List<V2> sw = swayBuf;
                     CordMotion.SwayInto(s.Pts, s.SwayW, gt, MotionSeed(p, s, 3, 0), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind, sw);
-                    SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0);
+                    SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0, CordMaterials.AspectG(v));
                     // a wall end's tail sways, so its fray and its sparks go with it
                     V2 swTip = sw[sw.Count - 1];
                     whipLaid.Add(s.Pts[s.Pts.Count - 1]);
@@ -914,7 +914,7 @@ namespace RimMandrake.GimmeSomeSlack
                             if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
                             List<V2> rp = rippleBuf;
                             CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si), CordMotion.RippleAmp * GimmeSomeSlackSettings.swayAmplitude, wind, rp, ref rippleArc);
-                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
+                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0, CordMaterials.AspectG(v));
                             foreach (V2 q in rp)
                             {
                                 rh = (rh ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
