@@ -1630,7 +1630,9 @@ def style_live(B, rows, log, shots_prefix=None):
     plug_ids = {st: ((per[st].get("slots") or {}).get("Plug") or {}).get("id") for st in STYLES}
     # owner review 2026-10-04 B12: the Modern (ExtensionCord) look's overhead lines stay BLACK while its floor cords are
     # multi-coloured, so its span cable is the black rubber strand, not its first floor strand
-    span_want = {st: ("Strand_BlackRubber" if st == "ExtensionCord" else (strand_sets[st][0] if strand_sets[st] else None)) for st in STYLES}
+    # f3be8bcd3a: the Scrapper (StarWarsJawa) floor cord became spliced salvage (Strand_ScrapTaped); its overhead and fallen wires keep Strand_Jawa
+    span_want = {st: ("Strand_BlackRubber" if st == "ExtensionCord" else "Strand_Jawa" if st == "StarWarsJawa"
+                      else (strand_sets[st][0] if strand_sets[st] else None)) for st in STYLES}
     span_ok = {st: per[st].get("aerialSpanTex") == span_want[st] for st in STYLES}
     row(rows, "ST2_switch_changes_textures", "PASS" if distinct and all(printed_ok.values()) and len(set(plug_ids.values())) == len(STYLES)
         and all(span_ok.values()) else "FAIL", "MOD",

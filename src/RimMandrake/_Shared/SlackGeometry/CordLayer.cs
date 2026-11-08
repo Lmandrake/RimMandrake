@@ -195,7 +195,9 @@ namespace RimMandrake.Shared.Slack
             for (int i = 0; i < n; i++) { Geo.TanNorm(P, i, out V2 t, out V2 nn); T.Add(t); N.Add(nn); }
             double cap = prm.Cap;
             var lat = new double[n];
-            double[] tng = prm.RoundExcursions ? new double[n] : null;     // along the cord: a round excursion's legs spread apart
+            // along the cord: a round excursion's legs spread apart. Not on a hop under RoundMinLen: a lobe wider than the hop, cut off by its two ends' pins,
+            // lay as a short V pressed against whatever stood beside it (a lamp's lead from its own junction, all four played colonies, pass 14)
+            double[] tng = prm.RoundExcursions && L >= RoundMinLen ? new double[n] : null;
             double[] up = null, down = null;
             if (tng != null) { up = FreeReach(w, P, N, 1, cap); down = FreeReach(w, P, N, -1, cap); }
             int nb = Math.Max(1, (int)Math.Round(L / Math.Max(2.6, prm.ExcursionHi)));
@@ -267,6 +269,8 @@ namespace RimMandrake.Shared.Slack
             return Q;
         }
 
+        /// <summary>The shortest planned hop whose excursions are laid round (<see cref="LayParams.RoundExcursions"/>), cells.</summary>
+        public const double RoundMinLen = 2.5;
         /// <summary>A round excursion's crown and feet bend no tighter than about this (cells): <see cref="LayParams.RoundExcursions"/>.</summary>
         public const double ExcursionRound = 0.8;
         /// <summary>Of an excursion drawn <paramref name="amp"/> high over <paramref name="wdt"/>: its width grows to 1.625 R + 0.4 amp and its legs spread 0.25 R + 0.27 amp along the
