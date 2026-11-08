@@ -150,6 +150,15 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <!-- Exempt from the sun-heat shade dash (CreatureBehaviors' RM_JobGiver_SunEscape runs before needs, RM_ShadeHop ahead of
+         every wander node). The Pyrelands carry RM_SunHeatExtension, so every wild animal sprints shade to shade; a hawk that
+         lives by flying into flames did the same, and on map q stood 8 cells from a fire doing RM_ShadeDash, Wait and LayDown,
+         never its ember job. The furnace-beast below is exempt for the same reason: it is the heat. -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunDashExtension" MayRequire="mandrake.rm.biomes">
+        <exempt>true</exempt>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -313,6 +322,11 @@
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunDashExtension" MayRequire="mandrake.rm.biomes">
+        <exempt>true</exempt>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Compile Include="FireEcologyHook.cs" />
+    <Compile Include="JobGiver_RUT_FireHawkSeekBurn.cs" />
     <Compile Include="CompWithersUnderRoof.cs" />
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />

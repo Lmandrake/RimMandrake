@@ -6,13 +6,17 @@ namespace RimMandrake.Pyrelands
     /// <summary>
     /// The roster is rolled by commonality, and small herds of the bestiary grazers can fill the whole budget: one fresh
     /// map in three had no fire-hawk or no ashwallow, so the player never met the cast the biome is about. After
-    /// GenStep_Animals (order 1200) this tops the map up to a pair of hawks and one ashwallow colony. The furnace-beast
+    /// GenStep_Animals (order 1200) this tops the map up to a pair of hawks and eight ashwallows. The furnace-beast
     /// stays on its ruled commonality, so it stays a find.
     /// </summary>
     public class GenStep_PyrelandsFireCast : GenStep
     {
         private const int MinHawks = 2;
-        private const int MinAshwallows = 4;
+        // 8, not 4: pyre_animal_distribution_correct ("the small common grazers outnumber the big predators"). Vanilla spawns
+        // only about 7 groups on a 250 map (pick weight = commonality / wildGroupSize.Average, groups until ecoSystemWeight
+        // reaches area x density / 10000 = 13.1), so one Anooba pack (6~8) with no Ullai or Iriaz herd flips a map. Modelled
+        // over 20,000 maps: 17% fail with no top-up, 10.4% at 4 ashwallows, 4.3% at 8, the owner's roster weights untouched.
+        private const int MinAshwallows = 8;
         private const int ColonySpread = 6;
 
         public override int SeedPart => 1993482203;

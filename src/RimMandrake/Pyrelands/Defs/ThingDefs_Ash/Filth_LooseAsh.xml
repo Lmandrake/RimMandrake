@@ -52,13 +52,18 @@
       Same day, at play zoom on map p: one 1.5-cell drift on 92% of a scar's cells still read as pale camouflage blotches. A fire
       now leaves a drift on about a third of its cells (FireEcologyHook, ScarAshShare), drawn at 1.25 and a little darker, so the
       scar reads as char with ash lying on it.
+      Still read as "flat, cold blue-grey splats with hard edges... stickers" (judge on map q, owner's Conductor at 16:40). Redrawn
+      (src/RimMandrake/Pyrelands/ash_drift_gen.py, seed 41): each drift is one organic powder sheet, thin at the margin where it
+      ends in a crisp, ragged edge of coarse grain with stray specks past it (fine grain vanished at play zoom and the first
+      cut read as soft smoke puffs), heaped in places, warm pale grey. Drawn at 1.6 so neighbouring
+      drifts overlap into patches instead of tiling as separate stickers.
     -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
       <texPath>Things/Filth/RM_FE_LooseAsh</texPath>
       <color>(184, 180, 172, 200)</color>
-      <drawSize>1.25</drawSize>
+      <drawSize>1.6</drawSize>
     </graphicData>
     <statBases>
       <!-- Under open sky ash is the ground's own colour here: a burn must not read as an ugly environment for days. Indoors it is dirt. -->

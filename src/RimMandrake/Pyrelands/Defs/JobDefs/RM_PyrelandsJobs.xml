@@ -32,6 +32,19 @@
     <overrideFlyChance>1</overrideFlyChance>
   </JobDef>
 
+  <!-- The fire-hawk is drawn to a burn it can see (JobGiver_RUT_FireHawkSeekBurn): it flies to a stand-off cell a little
+       outside its ember reach of the nearest open-ground fire, and the ember job takes over from there. Without it, a hawk
+       met a fire only by chance: map r's two hawks idled 100 to 130 cells from a 190-cell burn for a whole night. -->
+  <JobDef>
+    <defName>RM_FireHawkSeekBurn</defName>
+    <driverClass>JobDriver_Goto</driverClass>
+    <reportString>flying to the burn.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <tryStartFlying>true</tryStartFlying>
+    <ifFlyingKeepFlying>true</ifFlyingKeepFlying>
+    <overrideFlyChance>1</overrideFlyChance>
+  </JobDef>
+
   <!-- ========================================================================
        PYRELANDS_DEDICATED_GRAZER_1 — the burrow-on-fire job.
        Driver: RimMandrake.Pyrelands.RM_JobDriver_Burrow. Dispatched only by

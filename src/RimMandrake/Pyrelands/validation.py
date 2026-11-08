@@ -124,6 +124,9 @@ COMMON_GRAZERS = ("RM_Ullai", "RM_Ashwallow", "RSW_Nuna", "RSW_Iriaz", "RSW_Gizk
 BIG_PREDATORS = ("RM_Flamefang", "RM_Barbslinger", "RM_Emberscythe", "RM_Sytheclaw", "RSW_Anooba", "RSW_Orray", "RSW_Dalgo")
 REGROW_SAMPLE_DAYS = (3, 7)
 REGROW_FIRST_DAYS_FRAC = 0.25
+# Ceiling (Conductor, 2026-11-07: "too-fast can never fail it"): a scar already more than half green at day 3 was largely green
+# well before "about a week". Map q measured 56% two days after its burn, which read as grass on dark soil, not a burn.
+REGROW_FIRST_DAYS_MAX = 0.55
 REGROW_WEEK_FRAC = 0.6
 REGROW_BURN_TICKS = 5000   # kill the grass (~3500-4500 ticks)
 FIRE_PADS = (PAD_FIRE_TICK, PAD_ASH, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW, PAD_BURN, PAD_HERD_OLD, PAD_HERD_NEW)
@@ -2175,6 +2178,9 @@ def embergrass_regrow(t):
                 _fail("regrow cohort had no pre-burn plants")
             if not fracs[0][1] or fracs[0][1] < REGROW_FIRST_DAYS_FRAC:
                 _fail("not visibly re-greening within a few days: %r" % (fracs,))
+            if fracs[0][1] > REGROW_FIRST_DAYS_MAX:
+                _fail("re-greens too fast: over %.0f%% green by day %s, so it is largely green long before about a week: %r"
+                      % (REGROW_FIRST_DAYS_MAX * 100, fracs[0][0], fracs))
             if not fracs[-1][1] or fracs[-1][1] < REGROW_WEEK_FRAC:
                 _fail("not largely green again within about a week: %r" % (fracs,))
         t.screenshot(rect=regrow)
@@ -2422,6 +2428,39 @@ def gpt_hunt_plausible(t):
     """The PLAUSIBLE rows of the 2026-10-15 GPT hunt (GPT_TRIAGE). Each row's name says what a PASS means; a FAIL confirms
     the finding. FURNACE_CARAVAN_DIAGNOSE_HEARTH_GOES_COLD has NO row: the owner ruled caravan warmth out of scope
     ("Bah. Reverse decision. Drop the caravan warmth portion.", 2026-10-15)."""
+    # Leftover furnace herds (the world migration was cut 2026-10-23) + TRIBES_LOOKUP_DIAGNOSE_FIRST_ONE_FALLS: an OFFLINE read
+    # of the start save's world (diag/save_world_check.py). 2026-10-15 on CANONICAL_ASHKARR_START_2026-09-12.rws: no seeder
+    # component, 0 herds, 1 TribeCivil faction. Re-run on the freeze candidate after the final paint.
+    w = None
+    with _comp(t, "save_holds_no_furnace_herds", beyond_toggle=True):
+        herd = ("UNMEASURED", "not read (offline declaration probe)")
+        try:
+            if _live(t):
+                sw = _save_world_module()
+                sp = sw.default_save()
+                if not sp:
+                    _unmeasured(t, "the canonical start save was not found in the Saves folder")
+                w = sw.read_world(sp)
+                herd, tribes = sw.verdicts(w)
+                w["_tribes"] = tribes
+                _note(t, "start-save world read (seeder latch, herds, TribeCivil)", w)
+        except (ExpectationFailed, _Unmeasured):
+            raise
+        except Exception as ex:   # noqa: BLE001 - a reader crash is ignorance, never a pass
+            _unmeasured(t, "save_world_check raised %s: %s" % (type(ex).__name__, ex))
+        if _live(t) and herd[0] == "FAIL":
+            _fail(herd[1])
+        if _live(t) and herd[0] == "UNMEASURED":
+            _unmeasured(t, herd[1])
+    _independent(t)
+    with _comp(t, "tribes_lookup_one_faction", beyond_toggle=True):
+        tribes = (w or {}).get("_tribes") or ("UNMEASURED", "no world read")
+        if _live(t) and tribes[0] == "FAIL":
+            _fail(tribes[1])
+        if _live(t) and tribes[0] == "UNMEASURED":
+            _unmeasured(t, tribes[1])
+    _independent(t)
+
     # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT (CONFIRMED and fixed 2026-10-15): vanilla Soil/Sand/Gravel are scorchable ground,
     # so the fire-tick hook now also needs the map's biome to opt in (FireEcologyBiomeGate: the Pyrelands, or the cross-biome
     # setting). A validation map is a Pyrelands map, where a Soil burn fruits by design, so the gate is measured by static_call

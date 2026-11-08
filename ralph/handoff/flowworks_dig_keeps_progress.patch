@@ -1,0 +1,893 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/Designator_FillInCanal.cs b/src/RimMandrake/FlowWorks/Source/Designator_FillInCanal.cs
+index 2b29fd7349..fee8b3f763 100644
+--- a/src/RimMandrake/FlowWorks/Source/Designator_FillInCanal.cs
++++ b/src/RimMandrake/FlowWorks/Source/Designator_FillInCanal.cs
+@@ -13,7 +13,7 @@ namespace RimMandrake.FlowWorks
+ 	/// for it to go, but if it would 'overflow' it is destroyed."</i>
+ 	///
+ 	/// Deliberately the same shape as the dig chain — Designator_Cells, a
+-	/// designation, a WorkGiver_Scanner and a JobDriver_AffectFloor — because
++	/// designation, a WorkGiver_Scanner and a JobDriver_AffectFloor (RM_JobDriver_ShovelFloor) — because
+ 	/// the two are one ladder read in opposite directions and anything that
+ 	/// diverges between them is a defect waiting to be found.
+ 	///
+diff --git a/src/RimMandrake/FlowWorks/Source/JobDriver_DigCanal.cs b/src/RimMandrake/FlowWorks/Source/JobDriver_DigCanal.cs
+index 4ace0bc817..9dd46c0c4a 100644
+--- a/src/RimMandrake/FlowWorks/Source/JobDriver_DigCanal.cs
++++ b/src/RimMandrake/FlowWorks/Source/JobDriver_DigCanal.cs
+@@ -3,11 +3,10 @@ using Verse;
+ 
+ namespace RimMandrake.FlowWorks
+ {
+-	/// <summary>Cuts a cell one level deeper. Reuses vanilla's own
+-	/// JobDriver_AffectFloor (the SmoothFloor engine) -- designation gating,
+-	/// reservation, work-speed ticking and the progress bar all come for
+-	/// free.</summary>
+-	public class JobDriver_DigCanal : JobDriver_AffectFloor
++	/// <summary>Cuts a cell one level deeper. Rides <see cref="RM_JobDriver_ShovelFloor"/>, vanilla's
++	/// JobDriver_AffectFloor (the SmoothFloor engine) rebuilt so the hours a cut takes are interruptible and kept per
++	/// square -- designation gating, reservation, work-speed ticking and the progress bar as vanilla.</summary>
++	public class JobDriver_DigCanal : RM_JobDriver_ShovelFloor
+ 	{
+ 		/// <summary>Work scales with the level being cut (ruling 19's four
+ 		/// depths): deeper spoil is further to move and further to throw. A
+@@ -56,6 +55,12 @@ namespace RimMandrake.FlowWorks
+ 
+ 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_DigCanal;
+ 
++		protected override bool IsFill => false;
++
++		/// <summary>A cut refused at this digger's cap keeps its finished work for whoever may make it (the finish action
++		/// below restores the order first).</summary>
++		protected override bool KeepWorkAfterEffect => cutRefusedButOwed;
++
+ 		/// <summary>Set when this job's cut landed (DoEffect): only then may the finish action re-designate a dig-to square.</summary>
+ 		private bool cutLanded;
+ 
+@@ -63,8 +68,8 @@ namespace RimMandrake.FlowWorks
+ 		/// while someone else may still dig the square. Vanilla deleted the designation; the finish action puts it back.</summary>
+ 		private bool cutRefusedButOwed;
+ 
+-		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": vanilla's AffectFloor deletes the designation after each
+-		/// cut (RimWorld/JobDriver_AffectFloor.cs). One designation, one notch, as before; a square with a dig-to target gets its
++		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": the work toil deletes the designation after each
++		/// cut, as vanilla's AffectFloor does (RimWorld/JobDriver_AffectFloor.cs; ours is RM_JobDriver_ShovelFloor). One designation, one notch, as before; a square with a dig-to target gets its
+ 		/// designation back after a landed cut while it is still above its target and the cap, so the next pawn (or this one)
+ 		/// cuts the next notch. A cancelled job or a cancelled designation re-adds nothing.</summary>
+ 		protected override System.Collections.Generic.IEnumerable<Verse.AI.Toil> MakeNewToils()
+diff --git a/src/RimMandrake/FlowWorks/Source/JobDriver_FillInCanal.cs b/src/RimMandrake/FlowWorks/Source/JobDriver_FillInCanal.cs
+index b5f05fed81..eb0003b4cf 100644
+--- a/src/RimMandrake/FlowWorks/Source/JobDriver_FillInCanal.cs
++++ b/src/RimMandrake/FlowWorks/Source/JobDriver_FillInCanal.cs
+@@ -5,9 +5,10 @@ using Verse.AI;
+ 
+ namespace RimMandrake.FlowWorks
+ {
+-	/// <summary>Raises a cell one level. Same vanilla JobDriver_AffectFloor
+-	/// engine the dig job rides, read in the other direction.</summary>
+-	public class JobDriver_FillInCanal : JobDriver_AffectFloor
++	/// <summary>Raises a cell one level. Same <see cref="RM_JobDriver_ShovelFloor"/>
++	/// engine the dig job rides (vanilla's JobDriver_AffectFloor, interruptible and
++	/// with its work kept per square), read in the other direction.</summary>
++	public class JobDriver_FillInCanal : RM_JobDriver_ShovelFloor
+ 	{
+ 		/// <summary>Filling in is cheaper than cutting, and cheaper at every
+ 		/// level: shovelling spoil back into a hole is not the same labour as
+@@ -43,6 +44,8 @@ namespace RimMandrake.FlowWorks
+ 
+ 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_FillInCanal;
+ 
++		protected override bool IsFill => true;
++
+ 		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: the pit (Floor layer, as vanilla) and one unit of the gravel or chunk
+ 		/// the filler fetches (targetB; absent for a pit already paid for).</summary>
+ 		public override bool TryMakePreToilReservations(bool errorOnFailed)
+@@ -56,8 +59,8 @@ namespace RimMandrake.FlowWorks
+ 
+ 		/// <summary>Owner 2026-10-25: "it takes 1 gravel or 2 chunks to put it all back in again". With targetB set the filler
+ 		/// first carries one unit to the pit and tips it in as credit (gravel or crushed ice 2, chunk 1); short of a notch's 2 the job ends
+-		/// there with the order kept, and the work giver sends someone for more. Then vanilla's fill work, which runs only on
+-		/// a paid-up pit.</summary>
++		/// there with the order kept, and the work giver sends someone for more. Then the shovel work (RM_JobDriver_ShovelFloor),
++		/// which runs only on a paid-up pit.</summary>
+ 		protected override IEnumerable<Toil> MakeNewToils()
+ 		{
+ 			// One toil layout whether or not material is fetched: a save taken after the tip has a destroyed targetB, and a
+@@ -99,7 +102,7 @@ namespace RimMandrake.FlowWorks
+ 			yield return check;
+ 			foreach (Toil t in base.MakeNewToils())
+ 			{
+-				// a cost switched on mid-work: stop before vanilla's last toil deletes the order of a pit DoEffect left unfilled
++				// a cost switched on mid-work: stop before the work toil deletes the order of a pit DoEffect left unfilled
+ 				t.FailOn(() => RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled && RM_GroundClassMath.CreditShort(CreditHere()) > 0);
+ 				yield return t;
+ 			}
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs b/src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs
+index 13c5b9b28c..d149dd89be 100644
+--- a/src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_DigDepthMath.cs
+@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks
+ 		public const int WorkPerNotch = 3200;
+ 
+ 		/// <summary>vanilla JobDriver_AffectFloor: work done per tick = 1.7 × the speed stat (RimSage,
+-		/// RimWorld/JobDriver_AffectFloor.cs). Used only to state digger-days.</summary>
++		/// RimWorld/JobDriver_AffectFloor.cs). States digger-days, and is the rate RM_JobDriver_ShovelFloor works at (RM_DigProgressMath.AfterTicks).</summary>
+ 		public const float WorkPerTickAtSpeedOne = 1.7f;
+ 
+ 		public const int TicksPerDay = 60000;
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_DigProgress.cs b/src/RimMandrake/FlowWorks/Source/RM_DigProgress.cs
+new file mode 100644
+index 0000000000..19b5c2398f
+--- /dev/null
++++ b/src/RimMandrake/FlowWorks/Source/RM_DigProgress.cs
+@@ -0,0 +1,178 @@
++using System.Collections.Generic;
++using Verse;
++
++namespace RimMandrake.FlowWorks
++{
++	/// <summary>Shovel work already done on a square whose dig or fill was interrupted (hunger, thirst, sleep, a fire, a
++	/// draft, a lost shovel) and is not finished: the next job on the square, by anyone, carries on from it. See
++	/// <see cref="RM_DigProgressMath"/>. A running job holds its own work (<see cref="RM_JobDriver_ShovelFloor"/>, saved with
++	/// the job); only paused work lives here, keyed by square and direction and tagged with the depth it was done at.
++	/// Dropped when the order is cancelled (no designation) or the square's depth moves under it.</summary>
++	public class RM_MapComponent_DigProgress : MapComponent
++	{
++		private Dictionary<int, float> done = new Dictionary<int, float>();
++
++		private Dictionary<int, int> depthAt = new Dictionary<int, int>();
++
++		private readonly List<int> pruneBuffer = new List<int>();
++
++		public RM_MapComponent_DigProgress(Map map) : base(map)
++		{
++		}
++
++		public int Count => done.Count;
++
++		private bool KeyOf(IntVec3 c, bool fill, out int key)
++		{
++			key = 0;
++			if (!c.InBounds(map))
++			{
++				return false;
++			}
++			key = RM_DigProgressMath.Key(map.cellIndices.CellToIndex(c), fill);
++			return true;
++		}
++
++		private int DepthNow(IntVec3 c)
++		{
++			return map.GetComponent<RM_MapComponent_Excavation>()?.ExcavatedDepthAt(c) ?? 0;
++		}
++
++		/// <summary>The work paused on the square, removed from the store (the job taking it now holds it); 0 when there is
++		/// none or the square's depth has moved since.</summary>
++		public float Take(IntVec3 c, bool fill)
++		{
++			if (!KeyOf(c, fill, out int key))
++			{
++				return 0f;
++			}
++			bool has = done.TryGetValue(key, out float stored);
++			depthAt.TryGetValue(key, out int storedDepth);
++			done.Remove(key);
++			depthAt.Remove(key);
++			return RM_DigProgressMath.Resume(has, stored, storedDepth, DepthNow(c));
++		}
++
++		/// <summary>Pause work on the square at its current depth (replaces anything stored there).</summary>
++		public void Put(IntVec3 c, bool fill, float work)
++		{
++			if (!KeyOf(c, fill, out int key))
++			{
++				return;
++			}
++			if (!RM_DigProgressMath.Usable(work))
++			{
++				done.Remove(key);
++				depthAt.Remove(key);
++				return;
++			}
++			done[key] = work;
++			depthAt[key] = DepthNow(c);
++		}
++
++		public void Clear(IntVec3 c, bool fill)
++		{
++			if (KeyOf(c, fill, out int key))
++			{
++				done.Remove(key);
++				depthAt.Remove(key);
++			}
++		}
++
++		public float Peek(IntVec3 c, bool fill)
++		{
++			if (!KeyOf(c, fill, out int key))
++			{
++				return 0f;
++			}
++			bool has = done.TryGetValue(key, out float stored);
++			depthAt.TryGetValue(key, out int storedDepth);
++			return RM_DigProgressMath.Resume(has, stored, storedDepth, DepthNow(c));
++		}
++
++		public override void MapComponentTick()
++		{
++			if (done.Count == 0 || Find.TickManager.TicksGame % RM_DigProgressMath.PruneEveryTicks != 0)
++			{
++				return;
++			}
++			Prune();
++		}
++
++		/// <summary>Drops work whose order is gone (cancelled, or deleted as stale by the work giver) or whose square's depth
++		/// moved (someone else cut or filled it).</summary>
++		private void Prune()
++		{
++			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
++			DesignationManager dm = map.designationManager;
++			int cells = map.cellIndices.NumGridCells;
++			pruneBuffer.Clear();
++			foreach (KeyValuePair<int, float> kv in done)
++			{
++				int idx = RM_DigProgressMath.CellOf(kv.Key);
++				if (idx < 0 || idx >= cells)
++				{
++					pruneBuffer.Add(kv.Key);
++					continue;
++				}
++				IntVec3 c = map.cellIndices.IndexToCell(idx);
++				DesignationDef des = RM_DigProgressMath.IsFill(kv.Key) ? RimMandrakeFlowWorks_DefOf.RM_FillInCanal : RimMandrakeFlowWorks_DefOf.RM_DigCanal;
++				depthAt.TryGetValue(kv.Key, out int storedDepth);
++				if (dm.DesignationAt(c, des) == null || (ex?.ExcavatedDepthAt(c) ?? 0) != storedDepth)
++				{
++					pruneBuffer.Add(kv.Key);
++				}
++			}
++			for (int i = 0; i < pruneBuffer.Count; i++)
++			{
++				done.Remove(pruneBuffer[i]);
++				depthAt.Remove(pruneBuffer[i]);
++			}
++			pruneBuffer.Clear();
++		}
++
++		public override void ExposeData()
++		{
++			base.ExposeData();
++			Scribe_Collections.Look(ref done, "rmDigProgressDone", LookMode.Value, LookMode.Value);
++			Scribe_Collections.Look(ref depthAt, "rmDigProgressDepth", LookMode.Value, LookMode.Value);
++			if (Scribe.mode == LoadSaveMode.PostLoadInit)
++			{
++				if (done == null)
++				{
++					done = new Dictionary<int, float>();
++				}
++				if (depthAt == null)
++				{
++					depthAt = new Dictionary<int, int>();
++				}
++				// a half-written pair is no record: keep only work that has its depth tag and is a usable amount
++				pruneBuffer.Clear();
++				foreach (KeyValuePair<int, float> kv in done)
++				{
++					if (!depthAt.ContainsKey(kv.Key) || !RM_DigProgressMath.Usable(kv.Value))
++					{
++						pruneBuffer.Add(kv.Key);
++					}
++				}
++				for (int i = 0; i < pruneBuffer.Count; i++)
++				{
++					done.Remove(pruneBuffer[i]);
++				}
++				pruneBuffer.Clear();
++				foreach (int key in depthAt.Keys)
++				{
++					if (!done.ContainsKey(key))
++					{
++						pruneBuffer.Add(key);
++					}
++				}
++				for (int i = 0; i < pruneBuffer.Count; i++)
++				{
++					depthAt.Remove(pruneBuffer[i]);
++				}
++				pruneBuffer.Clear();
++			}
++		}
++	}
++}
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_DigProgressMath.cs b/src/RimMandrake/FlowWorks/Source/RM_DigProgressMath.cs
+new file mode 100644
+index 0000000000..90436ef3eb
+--- /dev/null
++++ b/src/RimMandrake/FlowWorks/Source/RM_DigProgressMath.cs
+@@ -0,0 +1,88 @@
++using System;
++
++namespace RimMandrake.FlowWorks
++{
++	/// <summary>Live bug (save NS_Pyrelands_play_q_col_d3dig, 2026-11-07): a colonist on RM_DigCanalJob stood on one
++	/// canal square for over 10 game hours and fell to food 0.05 and thirst 0.0. Vanilla's AffectFloor work toil never
++	/// lets the think tree look again until its work is done, and a first cut costs 3200 x 4 = 12,800 work, 16 to 31 hours
++	/// for a weak miner. Two fixes, both in <c>RM_JobDriver_ShovelFloor</c>: the job re-reads the think tree every
++	/// <see cref="OverrideCheckTicks"/> (food, drink, rest and fire win), and the work already done on a square is kept per
++	/// square (<c>RM_MapComponent_DigProgress</c>), so whoever comes back carries on from it. The arithmetic of that
++	/// store lives here, Verse-free, so the SelfTest can prove it.</summary>
++	public static class RM_DigProgressMath
++	{
++		/// <summary>How often a running dig or fill re-reads the pawn's think tree (Job.expiryInterval with
++		/// checkOverrideOnExpire). Under an hour: a notch at speed 1 is 12,800 / 1.7, about 7,500 ticks.</summary>
++		public const int OverrideCheckTicks = 2000;
++
++		/// <summary>How often the store drops work for squares whose order was cancelled or whose depth moved.</summary>
++		public const int PruneEveryTicks = 250;
++
++		/// <summary>One key per square and direction: a dig's work never counts toward a fill of the same square.</summary>
++		public static int Key(int cellIndex, bool fill)
++		{
++			return cellIndex * 2 + (fill ? 1 : 0);
++		}
++
++		public static int CellOf(int key)
++		{
++			return key >> 1;
++		}
++
++		public static bool IsFill(int key)
++		{
++			return (key & 1) == 1;
++		}
++
++		public static bool Usable(float work)
++		{
++			return work > 0f && !float.IsNaN(work) && !float.IsInfinity(work);
++		}
++
++		/// <summary>Work a resumed job starts from: what was stored for the square, only while the square is still at the
++		/// depth it was stored at (a cut or fill by anyone else in between voids it), otherwise nothing.</summary>
++		public static float Resume(bool has, float stored, int storedDepth, int depthNow)
++		{
++			return has && storedDepth == depthNow && Usable(stored) ? stored : 0f;
++		}
++
++		/// <summary>One tick interval of shovel work: vanilla AffectFloor's own rate, 1.7 x the speed stat per tick.</summary>
++		public static float AfterTicks(float done, float speed, int delta)
++		{
++			return done + speed * RM_DigDepthMath.WorkPerTickAtSpeedOne * delta;
++		}
++
++		public static bool Finished(float done, float total)
++		{
++			return total > 0f && done >= total;
++		}
++
++		/// <summary>The progress bar: the share of the work done, 0..1.</summary>
++		public static float Fraction(float done, float total)
++		{
++			if (!(total > 0f) || !Usable(done))
++			{
++				return 0f;
++			}
++			return Math.Min(1f, done / total);
++		}
++
++		/// <summary>Whether a job that ended keeps its work for the square: only work that did not land, on an order that
++		/// still stands. A cancelled order takes its work with it.</summary>
++		public static bool Keep(float done, bool landed, bool orderStands)
++		{
++			return !landed && orderStands && Usable(done);
++		}
++
++		/// <summary>A save from before this fix holds vanilla's private workLeft (counting down from the total, -1000 before
++		/// the work began). The work it stands for, 0..total; nothing when it says nothing.</summary>
++		public static float FromWorkLeft(float workLeft, float total)
++		{
++			if (!Usable(workLeft) || !(total > 0f))
++			{
++				return 0f;
++			}
++			return Math.Max(0f, Math.Min(total, total - workLeft));
++		}
++	}
++}
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_JobDriver_ShovelFloor.cs b/src/RimMandrake/FlowWorks/Source/RM_JobDriver_ShovelFloor.cs
+new file mode 100644
+index 0000000000..9ed4362244
+--- /dev/null
++++ b/src/RimMandrake/FlowWorks/Source/RM_JobDriver_ShovelFloor.cs
+@@ -0,0 +1,156 @@
++using System.Collections.Generic;
++using System.Reflection;
++using HarmonyLib;
++using RimWorld;
++using Verse;
++using Verse.AI;
++
++namespace RimMandrake.FlowWorks
++{
++	/// <summary>The dig and fill jobs' engine: vanilla <see cref="JobDriver_AffectFloor"/>'s toils, rebuilt so hours of shovel
++	/// work no longer hold a pawn until it starves (live, save NS_Pyrelands_play_q_col_d3dig: over 10 game hours on one
++	/// square, food 0.05, thirst 0.0, square still undug; see <see cref="RM_DigProgressMath"/>).
++	///
++	/// Two changes, everything else as vanilla (designation FailOn, Goto Touch, FailOnCannotTouch, progress bar,
++	/// Construction learning, the speed stat at 1.7 per tick, DoEffect then the designation's deletion, same two-toil
++	/// layout so a saved toil index lands on the same toil):
++	///  1. The job re-reads the think tree every <see cref="RM_DigProgressMath.OverrideCheckTicks"/> ticks
++	///     (expiryInterval + checkOverrideOnExpire): Pawn_JobTracker.CheckForJobOverride starts food, drink, rest, joy or a
++	///     fire job over it, and with nothing better it keeps digging (same JobDef from the same JobGiver is a continuation).
++	///  2. The work done is the driver's own, saved with the job, and when the job ends unfinished on a standing order it
++	///     is parked per square in <see cref="RM_MapComponent_DigProgress"/>; the next job on the square starts from it.
++	/// Vanilla's per-job private workLeft lost all of it on any interruption.</summary>
++	public abstract class RM_JobDriver_ShovelFloor : JobDriver_AffectFloor
++	{
++		/// <summary>Vanilla's private countdown, read once to carry on a job saved before this driver existed.</summary>
++		private static readonly FieldInfo VanillaWorkLeft = AccessTools.Field(typeof(JobDriver_AffectFloor), "workLeft");
++
++		private float workDone;
++
++		private float workTotal;
++
++		/// <summary>Set when the work completed and DoEffect spent it; not saved (the job ends the same tick).</summary>
++		private bool workLanded;
++
++		/// <summary>Fill and dig work on a square are kept apart.</summary>
++		protected abstract bool IsFill { get; }
++
++		/// <summary>True after DoEffect when the finished work was not spent (a cut refused at this digger's cap that someone
++		/// else may still make): the work is parked for them rather than lost.</summary>
++		protected virtual bool KeepWorkAfterEffect => false;
++
++		public override void Notify_Starting()
++		{
++			base.Notify_Starting();
++			EnsureInterruptible();
++		}
++
++		/// <summary>Set at the start and checked every work tick, so a job saved without it (an old save, a job made by
++		/// another mod or a bridge tool) gets it too.</summary>
++		private void EnsureInterruptible()
++		{
++			if (job != null && (job.expiryInterval != RM_DigProgressMath.OverrideCheckTicks || !job.checkOverrideOnExpire))
++			{
++				job.expiryInterval = RM_DigProgressMath.OverrideCheckTicks;
++				job.checkOverrideOnExpire = true;
++			}
++		}
++
++		protected override IEnumerable<Toil> MakeNewToils()
++		{
++			// Added after any finish action the subclass added before calling this, so the dig's re-designation runs first
++			// and the order it restores counts as standing.
++			AddFinishAction(delegate (JobCondition cond)
++			{
++				ParkUnfinishedWork();
++			});
++			return ShovelToils();
++		}
++
++		private IEnumerable<Toil> ShovelToils()
++		{
++			this.FailOn(() => !job.ignoreDesignations && Map.designationManager.DesignationAt(TargetLocA, DesDef) == null);
++			yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.Touch);
++			Toil doWork = ToilMaker.MakeToil("RM_ShovelWork");
++			doWork.initAction = delegate
++			{
++				BeginWork(TakeParked());
++			};
++			doWork.tickIntervalAction = delegate (int delta)
++			{
++				if (workTotal <= 0f)
++				{
++					// loaded mid-work from a save made before this driver: vanilla's countdown says how far it got
++					float old = VanillaWorkLeft != null ? (float)VanillaWorkLeft.GetValue(this) : -1000f;
++					BeginWork(0f);
++					float carried = RM_DigProgressMath.FromWorkLeft(old, workTotal);
++					workDone = carried > 0f ? carried : TakeParked();
++				}
++				EnsureInterruptible();
++				Pawn actor = doWork.actor;
++				StatDef stat = SpeedStat;
++				float speed = stat != null && !stat.Worker.IsDisabledFor(actor) ? actor.GetStatValue(stat) : 1f;
++				workDone = RM_DigProgressMath.AfterTicks(workDone, speed, delta);
++				actor.skills?.Learn(SkillDefOf.Construction, 0.1f * delta);
++				if (clearSnow)
++				{
++					Map.snowGrid.SetDepth(TargetLocA, 0f);
++					Map.sandGrid?.SetDepth(TargetLocA, 0f);
++				}
++				if (RM_DigProgressMath.Finished(workDone, workTotal))
++				{
++					IntVec3 c = TargetLocA;
++					DoEffect(c);
++					workLanded = !KeepWorkAfterEffect;
++					Map.designationManager.DesignationAt(c, DesDef)?.Delete();
++					ReadyForNextToil();
++				}
++			};
++			doWork.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
++			doWork.WithProgressBar(TargetIndex.A, () => RM_DigProgressMath.Fraction(workDone, workTotal));
++			doWork.defaultCompleteMode = ToilCompleteMode.Never;
++			doWork.activeSkill = () => SkillDefOf.Construction;
++			yield return doWork;
++		}
++
++		private void BeginWork(float resumed)
++		{
++			// never 0: vanilla finished a zero-work job on its first tick, and so does this
++			workTotal = System.Math.Max(1, BaseWorkAmount);
++			workDone = resumed;
++			workLanded = false;
++		}
++
++		private float TakeParked()
++		{
++			Map map = Map;
++			if (map == null || !job.targetA.IsValid)
++			{
++				return 0f;
++			}
++			return map.GetComponent<RM_MapComponent_DigProgress>()?.Take(job.targetA.Cell, IsFill) ?? 0f;
++		}
++
++		private void ParkUnfinishedWork()
++		{
++			Map map = pawn?.MapHeld;
++			if (map == null || job == null || !job.targetA.IsValid)
++			{
++				return;
++			}
++			IntVec3 c = job.targetA.Cell;
++			bool orderStands = job.ignoreDesignations || map.designationManager.DesignationAt(c, DesDef) != null;
++			if (RM_DigProgressMath.Keep(workDone, workLanded, orderStands))
++			{
++				map.GetComponent<RM_MapComponent_DigProgress>()?.Put(c, IsFill, workDone);
++			}
++		}
++
++		public override void ExposeData()
++		{
++			base.ExposeData();
++			Scribe_Values.Look(ref workDone, "rmShovelWorkDone", 0f);
++			Scribe_Values.Look(ref workTotal, "rmShovelWorkTotal", 0f);
++		}
++	}
++}
+diff --git a/src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj b/src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj
+index 4f7f753bde..95bd0cba27 100644
+--- a/src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj
++++ b/src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj
+@@ -171,6 +171,7 @@
+     <Compile Include="Swale\RM_Swale.cs" />
+     <Compile Include="RM_ExcavationDepth.cs" />
+     <Compile Include="RM_DigDepthMath.cs" />
++    <Compile Include="RM_DigProgressMath.cs" />
+     <Compile Include="RM_DigLabor.cs" />
+     <Compile Include="RM_ShovelMath.cs" />
+     <Compile Include="RM_Shovels.cs" />
+@@ -200,6 +201,8 @@
+     <Compile Include="Designator_DigCanal.cs" />
+     <Compile Include="WorkGiver_DigCanal.cs" />
+     <Compile Include="JobDriver_DigCanal.cs" />
++    <Compile Include="RM_JobDriver_ShovelFloor.cs" />
++    <Compile Include="RM_DigProgress.cs" />
+     <Compile Include="Designator_FillInCanal.cs" />
+     <Compile Include="Designator_RestoreGround.cs" />
+     <Compile Include="WorkGiver_FillInCanal.cs" />
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/DigProgressChecks.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/DigProgressChecks.cs
+new file mode 100644
+index 0000000000..85c8c5b0b2
+--- /dev/null
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/DigProgressChecks.cs
+@@ -0,0 +1,237 @@
++// Live bug (save NS_Pyrelands_play_q_col_d3dig, 2026-11-07): a colonist on RM_DigCanalJob stood on one square for over 10
++// game hours, food 0.38 -> 0.05 and thirst 0.6 -> 0.0, the square still undug. Vanilla AffectFloor's work toil never
++// re-reads the think tree and keeps its work in a private per-job field, so a 12,800-work cut (3200 x 4) held a weak miner
++// for 16-31 hours and any interruption threw the work away. The fix (RM_JobDriver_ShovelFloor + RM_MapComponent_DigProgress):
++// the job re-reads the think tree every RM_DigProgressMath.OverrideCheckTicks, and unfinished work is parked per square.
++// Here: the PRODUCTION Verse-free arithmetic (RM_DigProgressMath) with a can-fail per clause, then the Verse-bound wiring read
++// from the production source.
++// NOT proven here (live rows owed): a hungry digger really leaves for food at the next check and comes back to the same
++// progress bar; a forced dig restarts on its square without a jump in the bar; an old save loaded mid-dig carries on.
++using System;
++using System.Collections.Generic;
++using System.IO;
++using System.Linq;
++using System.Text.RegularExpressions;
++using RimMandrake.FlowWorks;
++
++namespace RimMandrake.FlowWorks.SelfTest
++{
++    internal static class DigProgressChecks
++    {
++        private static void Assert(bool ok, string msg)
++        {
++            if (!ok) throw new Exception(msg);
++        }
++
++        private static string Src(params string[] rel) => RiverSwitchFlipChecks.Src(Path.Combine(rel));
++
++        private static void Has(string src, string pattern, string what) => RiverSwitchFlipChecks.Has(src, pattern, what);
++
++        /// <summary>The store as the map component keeps it (RM_DigProgress.cs Take/Put), on a plain dictionary.</summary>
++        private sealed class Store
++        {
++            private readonly Dictionary<int, (float work, int depth)> parked = new Dictionary<int, (float, int)>();
++
++            public float Take(int cell, bool fill, int depthNow)
++            {
++                int key = RM_DigProgressMath.Key(cell, fill);
++                bool has = parked.TryGetValue(key, out var v);
++                parked.Remove(key);
++                return RM_DigProgressMath.Resume(has, v.work, v.depth, depthNow);
++            }
++
++            public void Put(int cell, bool fill, float work, int depthNow)
++            {
++                parked[RM_DigProgressMath.Key(cell, fill)] = (work, depthNow);
++            }
++
++            public int Count => parked.Count;
++        }
++
++        /// <summary>Ticks a job needs to finish <paramref name="total"/> work at <paramref name="speed"/>, the job being cut
++        /// short every <paramref name="chunk"/> ticks (0: never) and parked or (vanilla) thrown away.</summary>
++        private static int TicksToFinish(float total, float speed, int chunk, bool persist, int giveUpAfter, out int jobs)
++        {
++            var store = new Store();
++            jobs = 0;
++            int ticks = 0;
++            while (ticks < giveUpAfter)
++            {
++                jobs++;
++                float done = persist ? store.Take(7, false, 0) : 0f;
++                for (int t = 0; chunk == 0 || t < chunk; t++)
++                {
++                    done = RM_DigProgressMath.AfterTicks(done, speed, 1);
++                    ticks++;
++                    if (RM_DigProgressMath.Finished(done, total))
++                    {
++                        return ticks;
++                    }
++                    if (ticks >= giveUpAfter)
++                    {
++                        return -1;
++                    }
++                }
++                if (persist && RM_DigProgressMath.Keep(done, false, true))
++                {
++                    store.Put(7, false, done, 0);
++                }
++            }
++            return -1;
++        }
++
++        public static void Run(Action<string, Action> Case)
++        {
++            const float Notch = RM_DigDepthMath.WorkPerNotch * RM_DigDepthMath.DefaultLabourMultiplier; // 12,800, the live cut
++
++            Case("DigProgress: interrupted work sums to the uninterrupted run, no tick double-counted or skipped", () =>
++            {
++                foreach (float speed in new[] { 0.1f, 0.19f, 0.6f, 1f, 1.7f })
++                {
++                    int whole = TicksToFinish(Notch, speed, 0, true, 2_000_000, out int j0);
++                    Assert(whole > 0 && j0 == 1, "an uninterrupted cut at speed " + speed + " finishes in one job");
++                    foreach (int chunk in new[] { 1, 37, RM_DigProgressMath.OverrideCheckTicks, 2500 })
++                    {
++                        int parts = TicksToFinish(Notch, speed, chunk, true, 2_000_000, out int jobs);
++                        Assert(parts == whole, "speed " + speed + ", cut every " + chunk + " ticks: " + parts + " ticks vs " + whole + " uninterrupted");
++                        Assert(jobs == (whole + chunk - 1) / chunk, "speed " + speed + ", chunk " + chunk + ": " + jobs + " jobs");
++                    }
++                }
++                // can-fail: vanilla's per-job countdown (no store) never lands a cut that is longer than the gap between
++                // interruptions, which is the live bug with the interruption it lacked added back
++                int lost = TicksToFinish(Notch, 0.15f, RM_DigProgressMath.OverrideCheckTicks, false, 500_000, out _);
++                Assert(lost == -1, "without the store a 12,800 cut at speed 0.15 cut short every 2000 ticks never lands");
++            });
++
++            Case("DigProgress: the think tree is re-read well inside one notch, and the live cut really took hours", () =>
++            {
++                Assert(RM_DigProgressMath.OverrideCheckTicks > 0, "an expiry is set");
++                Assert(RM_DigProgressMath.OverrideCheckTicks < RM_DigDepthMath.TicksPerHour, "re-read under an hour");
++                float notchTicksAtOne = Notch / RM_DigDepthMath.WorkPerTickAtSpeedOne;
++                Assert(RM_DigProgressMath.OverrideCheckTicks < notchTicksAtOne / 3f,
++                    "at least three re-reads in one notch at speed 1 (" + notchTicksAtOne + " ticks)");
++                float hoursAt010 = Notch / (RM_DigDepthMath.WorkPerTickAtSpeedOne * 0.1f * RM_DigDepthMath.TicksPerHour);
++                float hoursAt019 = Notch / (RM_DigDepthMath.WorkPerTickAtSpeedOne * 0.19f * RM_DigDepthMath.TicksPerHour);
++                Assert(hoursAt010 > 30f && hoursAt010 < 31f && hoursAt019 > 15f && hoursAt019 < 16.5f,
++                    "a 10-19% miner needs 16-31 hours for the first cut (" + hoursAt019 + ".." + hoursAt010 + ")");
++                Assert(Math.Abs(RM_DigProgressMath.AfterTicks(0f, 1f, 1) - RM_DigDepthMath.WorkPerTickAtSpeedOne) < 1e-6f,
++                    "the work rate is vanilla AffectFloor's 1.7 x speed per tick");
++                Assert(Math.Abs(RM_DigProgressMath.AfterTicks(10f, 0.5f, 4) - (10f + 0.5f * 1.7f * 4)) < 1e-4f, "rate x delta");
++            });
++
++            Case("DigProgress: parked work is kept only at the depth it was done at, per square and direction", () =>
++            {
++                var store = new Store();
++                store.Put(100, false, 5000f, 2);
++                Assert(store.Take(100, true, 2) == 0f, "a dig's work never counts toward a fill of the same square");
++                Assert(store.Take(100, false, 2) == 5000f, "a dig resumes its own work at the same depth");
++                Assert(store.Count == 0 && store.Take(100, false, 2) == 0f, "taking it removes it (the job holds it now)");
++                store.Put(100, false, 5000f, 2);
++                Assert(store.Take(100, false, 3) == 0f, "the square was cut (or filled) since: the work is void");
++                Assert(store.Count == 0, "and dropped");
++                Assert(RM_DigProgressMath.Resume(true, 5000f, 2, 2) == 5000f && RM_DigProgressMath.Resume(false, 5000f, 2, 2) == 0f,
++                    "nothing stored, nothing resumed");
++                Assert(RM_DigProgressMath.Resume(true, float.NaN, 0, 0) == 0f && RM_DigProgressMath.Resume(true, -3f, 0, 0) == 0f
++                       && RM_DigProgressMath.Resume(true, float.PositiveInfinity, 0, 0) == 0f, "a bad record resumes nothing");
++                for (int i = 0; i < 400 * 400; i += 397)
++                {
++                    foreach (bool f in new[] { false, true })
++                    {
++                        int k = RM_DigProgressMath.Key(i, f);
++                        Assert(RM_DigProgressMath.CellOf(k) == i && RM_DigProgressMath.IsFill(k) == f, "key round-trips for cell " + i);
++                    }
++                    Assert(RM_DigProgressMath.Key(i, false) != RM_DigProgressMath.Key(i, true), "dig and fill keys differ");
++                    Assert(RM_DigProgressMath.Key(i + 1, false) != RM_DigProgressMath.Key(i, true), "neighbour keys differ");
++                }
++            });
++
++            Case("DigProgress: what a job keeps when it ends", () =>
++            {
++                Assert(RM_DigProgressMath.Keep(4000f, false, true), "unfinished work on a standing order is parked");
++                Assert(!RM_DigProgressMath.Keep(4000f, true, true), "landed work is spent, not parked (no second notch from it)");
++                Assert(!RM_DigProgressMath.Keep(4000f, false, false), "a cancelled order takes its work with it");
++                Assert(!RM_DigProgressMath.Keep(0f, false, true) && !RM_DigProgressMath.Keep(float.NaN, false, true), "no work, nothing kept");
++            });
++
++            Case("DigProgress: the bar and the old-save countdown", () =>
++            {
++                Assert(RM_DigProgressMath.Fraction(6400f, Notch) == 0.5f, "half done reads half");
++                Assert(RM_DigProgressMath.Fraction(13000f, Notch) == 1f && RM_DigProgressMath.Fraction(-5f, Notch) == 0f
++                       && RM_DigProgressMath.Fraction(5f, 0f) == 0f && RM_DigProgressMath.Fraction(float.NaN, Notch) == 0f, "the bar clamps 0..1");
++                Assert(!RM_DigProgressMath.Finished(0f, 0f) && RM_DigProgressMath.Finished(Notch, Notch)
++                       && !RM_DigProgressMath.Finished(Notch - 0.01f, Notch), "finished exactly at the total");
++                Assert(RM_DigProgressMath.FromWorkLeft(2800f, Notch) == 10000f, "vanilla workLeft 2800 of 12,800 is 10,000 done");
++                Assert(RM_DigProgressMath.FromWorkLeft(-1000f, Notch) == 0f, "vanilla's -1000 (work not begun) is nothing");
++                Assert(RM_DigProgressMath.FromWorkLeft(0f, Notch) == 0f && RM_DigProgressMath.FromWorkLeft(float.NaN, Notch) == 0f,
++                    "an absent or bad countdown is nothing");
++                Assert(RM_DigProgressMath.FromWorkLeft(20000f, Notch) == 0f, "a countdown above the total (cheaper now) is nothing done");
++                Assert(RM_DigProgressMath.FromWorkLeft(100f, 0f) == 0f, "no total, nothing");
++            });
++
++            Case("DigProgress wiring: the shovel driver keeps vanilla's toil and adds the re-read and the parking", () =>
++            {
++                string s = Src("RM_JobDriver_ShovelFloor.cs");
++                Has(s, @"abstract class RM_JobDriver_ShovelFloor : JobDriver_AffectFloor", "derives AffectFloor (reservation, DesDef, BaseWorkAmount, SpeedStat)");
++                Assert(!s.Contains("base.MakeNewToils("), "never runs vanilla's work toil (its private countdown loses the work)");
++                Has(s, @"job\.expiryInterval = RM_DigProgressMath\.OverrideCheckTicks; job\.checkOverrideOnExpire = true;", "expiry + override check");
++                Has(s, @"public override void Notify_Starting\(\) \{ base\.Notify_Starting\(\); EnsureInterruptible\(\); \}", "set at job start");
++                Has(s, @"tickIntervalAction = delegate \(int delta\) \{(?:(?!initAction).)*?EnsureInterruptible\(\);", "and every work tick (old saved jobs)");
++                Has(s, @"this\.FailOn\(\(\) => !job\.ignoreDesignations && Map\.designationManager\.DesignationAt\(TargetLocA, DesDef\) == null\);", "designation FailOn");
++                Has(s, @"yield return Toils_Goto\.GotoCell\(TargetIndex\.A, PathEndMode\.Touch\);", "Goto Touch");
++                Has(s, @"doWork\.FailOnCannotTouch\(TargetIndex\.A, PathEndMode\.Touch\);", "FailOnCannotTouch");
++                Has(s, @"doWork\.WithProgressBar\(TargetIndex\.A, \(\) => RM_DigProgressMath\.Fraction\(workDone, workTotal\)\);", "progress bar from the kept work");
++                Has(s, @"doWork\.defaultCompleteMode = ToilCompleteMode\.Never;", "Never complete mode");
++                Has(s, @"doWork\.activeSkill = \(\) => SkillDefOf\.Construction;", "active skill");
++                Has(s, @"actor\.skills\?\.Learn\(SkillDefOf\.Construction, 0\.1f \* delta\);", "Construction learning 0.1/tick");
++                Has(s, @"stat != null && !stat\.Worker\.IsDisabledFor\(actor\) \? actor\.GetStatValue\(stat\) : 1f; workDone = RM_DigProgressMath\.AfterTicks\(workDone, speed, delta\);", "speed stat, vanilla rate");
++                Has(s, @"if \(RM_DigProgressMath\.Finished\(workDone, workTotal\)\) \{ IntVec3 c = TargetLocA; DoEffect\(c\); workLanded = !KeepWorkAfterEffect; Map\.designationManager\.DesignationAt\(c, DesDef\)\?\.Delete\(\); ReadyForNextToil\(\);",
++                    "DoEffect, then the designation's deletion, then the next toil");
++                Has(s, @"doWork\.initAction = delegate \{ BeginWork\(TakeParked\(\)\); \};", "a new job takes the square's parked work");
++                Has(s, @"workTotal = System\.Math\.Max\(1, BaseWorkAmount\);", "the total is fixed at the start, never 0");
++                Has(s, @"RM_DigProgressMath\.FromWorkLeft\(old, workTotal\)", "an old save carries on from vanilla's countdown");
++                Has(s, @"AddFinishAction\(delegate \(JobCondition cond\) \{ ParkUnfinishedWork\(\); \}\); return ShovelToils\(\);", "parking is a finish action");
++                Has(s, @"if \(RM_DigProgressMath\.Keep\(workDone, workLanded, orderStands\)\) \{ map\.GetComponent<RM_MapComponent_DigProgress>\(\)\?\.Put\(c, IsFill, workDone\);", "parks unfinished work on a standing order");
++                Has(s, @"Scribe_Values\.Look\(ref workDone, ""rmShovelWorkDone"", 0f\); Scribe_Values\.Look\(ref workTotal, ""rmShovelWorkTotal"", 0f\);", "saved with the job");
++
++                string dig = Src("JobDriver_DigCanal.cs");
++                Has(dig, @"class JobDriver_DigCanal : RM_JobDriver_ShovelFloor", "dig rides it");
++                Has(dig, @"protected override bool IsFill => false;", "dig keys as dig");
++                Has(dig, @"protected override bool KeepWorkAfterEffect => cutRefusedButOwed;", "a refused-but-owed cut keeps its work");
++                int fin = dig.IndexOf("AddFinishAction(", StringComparison.Ordinal), bas = dig.IndexOf("return base.MakeNewToils();", StringComparison.Ordinal);
++                Assert(fin >= 0 && bas > fin, "the dig's re-designation finish action is added before the base's parking one");
++                string fill = Src("JobDriver_FillInCanal.cs");
++                Has(fill, @"class JobDriver_FillInCanal : RM_JobDriver_ShovelFloor", "fill rides it");
++                Has(fill, @"protected override bool IsFill => true;", "fill keys as fill");
++                Has(fill, @"foreach \(Toil t in base\.MakeNewToils\(\)\)", "fill's credit FailOn is laid on the shovel toils");
++
++                // every FlowWorks AffectFloor job goes through the shovel driver
++                string root = Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_JobDriver_ShovelFloor.cs"));
++                var direct = Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories)
++                    .Where(f => !f.Contains(Path.DirectorySeparatorChar + "SelfTest" + Path.DirectorySeparatorChar)
++                                && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar))
++                    .Where(f => Regex.IsMatch(File.ReadAllText(f), @"class \w+ : JobDriver_AffectFloor\b"))
++                    .Select(Path.GetFileName).ToList();
++                Assert(direct.Count == 1 && direct[0] == "RM_JobDriver_ShovelFloor.cs",
++                    "only the shovel driver derives AffectFloor directly (found: " + string.Join(", ", direct) + ")");
++            });
++
++            Case("DigProgress wiring: the store saves, drops cancelled or moved work, and idles free", () =>
++            {
++                string s = Src("RM_DigProgress.cs");
++                Has(s, @"class RM_MapComponent_DigProgress : MapComponent", "a map component");
++                Has(s, @"Scribe_Collections\.Look\(ref done, ""rmDigProgressDone"", LookMode\.Value, LookMode\.Value\);", "work saved");
++                Has(s, @"Scribe_Collections\.Look\(ref depthAt, ""rmDigProgressDepth"", LookMode\.Value, LookMode\.Value\);", "depth tags saved");
++                Has(s, @"if \(done == null\) \{ done = new Dictionary<int, float>\(\); \}", "an old save loads an empty store");
++                Has(s, @"if \(done\.Count == 0 \|\| Find\.TickManager\.TicksGame % RM_DigProgressMath\.PruneEveryTicks != 0\) \{ return; \}", "idle tick returns first");
++                Has(s, @"dm\.DesignationAt\(c, des\) == null \|\| \(ex\?\.ExcavatedDepthAt\(c\) \?\? 0\) != storedDepth", "drops cancelled orders and moved depths");
++                Has(s, @"done\.Remove\(key\); depthAt\.Remove\(key\); return RM_DigProgressMath\.Resume\(has, stored, storedDepth, DepthNow\(c\)\);", "Take removes and resumes by depth");
++                Assert(!Regex.IsMatch(s, @"void Prune\(\) \{(?:(?!ExposeData).)*new List<"), "the prune reuses its buffer");
++                string proj = Src("RimMandrake_FlowWorks.csproj");
++                foreach (string f in new[] { "RM_JobDriver_ShovelFloor.cs", "RM_DigProgress.cs", "RM_DigProgressMath.cs" })
++                {
++                    Assert(proj.Contains("<Compile Include=\"" + f + "\" />"), f + " is compiled into the mod");
++                }
++            });
++        }
++    }
++}
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs b/src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs
+index 736bd2cb91..4185046dd9 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs
+@@ -2165,6 +2165,7 @@ namespace RimMandrake.FlowWorks.SelfTest
+             HoseWorldPatchChecks.Run(Case);    // HOSE_TICK_REBUILD_ZERO_ALLOC (HoseWorldPatchChecks.cs)
+             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
+             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
++            DigProgressChecks.Run(Case);       // live NS_Pyrelands_play_q_col_d3dig: shovel work interruptible by needs, kept per square (DigProgressChecks.cs)
+             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
+             FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)
+             SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
+diff --git a/src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj b/src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj
+index 066ca024ec..86aebdaa1e 100644
+--- a/src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj
++++ b/src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj
+@@ -136,6 +136,7 @@
+     <Compile Include="..\RM_FuelFireMath.cs" />
+     <Compile Include="..\RM_ExcavationSanityMath.cs" />
+     <Compile Include="..\RM_DigDepthMath.cs" />
++    <Compile Include="..\RM_DigProgressMath.cs" />
+     <Compile Include="..\RM_LiquidHeatMath.cs" />
+     <Compile Include="..\RM_FillEffectMath.cs" />
+     <Compile Include="..\RM_RelativeRulesMath.cs" />
+@@ -224,6 +225,7 @@
+     <Compile Include="VolumeChecks.cs" />
+     <Compile Include="RewireChecks.cs" />
+     <Compile Include="DeepDigChecks.cs" />
++    <Compile Include="DigProgressChecks.cs" />
+     <Compile Include="PondReturnChecks.cs" />
+     <Compile Include="DeepBedChecks.cs" />
+     <Compile Include="PocketGridChecks.cs" />
+diff --git a/src/RimMandrake/FlowWorks/Tools/native_water_audit.md b/src/RimMandrake/FlowWorks/Tools/native_water_audit.md
+index 9b7959252c..d5e626b142 100644
+--- a/src/RimMandrake/FlowWorks/Tools/native_water_audit.md
++++ b/src/RimMandrake/FlowWorks/Tools/native_water_audit.md
+@@ -6,14 +6,26 @@ Each row is a Water terrain the biome paints (its BiomeDef's terrains, or a Wate
+ 
+ | biome | roster | terrain | liquid | use class | a native |
+ |---|---|---|---|---|---|
++| RM_Cauldron | 15 | Marsh | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
++| RM_Cauldron | 15 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
++| RM_FeverWood | 11 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_FeverWood | 11 | RM_FeverWoodMirrorPool | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
++| RM_Greentide | 10 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_GreySea | 9 | RM_WaterBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+ | RM_GreySea | 9 | RM_WaterBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+ | RM_LanternDeeps | 12 | WaterShallow | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
++| RM_LeaningScrub | 19 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_LongShade | 19 | RM_DeepSand | RM_Liquid_NotDrinkable | Never | not water: deep sand; Water-tagged for wading only (DEEP_SAND_FIX_READS_AS_FRESHWATER) |
++| RM_Miasma | 22 | RM_WaterBrackishDeep | RM_Liquid_NotDrinkable | Never | BLOCKED |
++| RM_Miasma | 22 | RM_WaterBrackishShallow | RM_Liquid_NotDrinkable | Never | BLOCKED |
++| RM_Miasma | 22 | RM_WaterBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
++| RM_Miasma | 22 | RM_WaterBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
++| RM_Pyrelands | 9 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_Pyrelands | 9 | WaterDeep | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_Pyrelands | 9 | WaterShallow | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_Stillsand | 16 | RM_DeepSand | RM_Liquid_NotDrinkable | Never | not water: deep sand; Water-tagged for wading only (DEEP_SAND_FIX_READS_AS_FRESHWATER) |
++| RM_TheChill | 10 | RM_PropaneDeep | RM_Liquid_Propane | Never | BLOCKED |
++| RM_TheChill | 10 | RM_PropaneShallow | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
+ | RM_TheChill | 10 | RM_SolidPropane | RM_Liquid_Propane | Never | not water: frozen propane, a solid |
+ | RM_TheChill | 10 | RM_TheChillDeep | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
+ | RM_TheScald | 10 | RM_ScaldMargin | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
+@@ -25,6 +37,8 @@ Each row is a Water terrain the biome paints (its BiomeDef's terrains, or a Wate
+ | RM_TheScald | 10 | RM_ScaldWaterShallow | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
+ | RM_TwilightSea | 18 | WaterOceanDeep | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+ | RM_TwilightSea | 18 | WaterOceanShallow | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
++| RM_Warscar | 12 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
++| RM_Wastes | 15 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+ | RM_Wastes | 15 | RM_WastesBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+ | RM_Wastes | 15 | RM_WastesBrineMovingChestDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+ | RM_Wastes | 15 | RM_WastesBrineMovingShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |

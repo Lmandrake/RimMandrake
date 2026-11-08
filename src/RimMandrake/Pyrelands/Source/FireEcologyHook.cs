@@ -643,7 +643,11 @@ namespace RimMandrake.Pyrelands
                         bool atRim = c.x == clipped.minX || c.x == clipped.maxX
                                   || c.z == clipped.minZ || c.z == clipped.maxZ;
                         TerrainDef cur = map.terrainGrid.TerrainAt(c);
-                        if (ashDeep != null && RM_FireEcoKernel.RuinScorchLays(cur != null && cur.IsWater, cur?.defName))
+                        if (CharFloor(map, c, cur))
+                        {
+                            // a ruin's floor stays a floor, blackened (CharFloor)
+                        }
+                        else if (ashDeep != null && RM_FireEcoKernel.RuinScorchLays(cur != null && cur.IsWater, cur?.defName))
                         {
                             map.terrainGrid.SetTerrain(c, ashDeep);
                         }
@@ -714,7 +718,8 @@ namespace RimMandrake.Pyrelands
                         TerrainDef cur = map.terrainGrid.TerrainAt(c);
                         bool atRim = !occupied.Contains(c);
                         if (cur != null && cur.IsWater) continue;
-                        if (RM_FireEcoKernel.RuinScorchLays(false, cur?.defName)) map.terrainGrid.SetTerrain(c, ashDeep);
+                        if (CharFloor(map, c, cur)) { }
+                        else if (RM_FireEcoKernel.RuinScorchLays(false, cur?.defName)) map.terrainGrid.SetTerrain(c, ashDeep);
                         if (ashFilth != null && Rand.Chance(atRim ? 0.35f : 0.7f))
                         {
                             FilthMaker.TryMakeFilth(c, map, ashFilth, 1, FilthSourceFlags.None, false);
@@ -726,6 +731,31 @@ namespace RimMandrake.Pyrelands
             {
                 Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruins-sweep: " + e.Message, 0x46E05);
             }
+            try
+            {
+                // Every floor left on the map at generation is a ruin's (a ruin whose walls fell, an ancient slab): the sweep
+                // above only reaches one cell past a standing building, so the rest lay pale and clean in a burned land
+                // (map r: a flagstone shrine floor in the middle of the opening scar; the judge: "the ruin floors look clean").
+                foreach (IntVec3 c in map.AllCells)
+                {
+                    CharFloor(map, c, map.terrainGrid.TerrainAt(c));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] scorch-ruin-floors: " + e.Message, 0x46E06);
+            }
+        }
+
+        /// <summary>A built floor (not a road, not water) keeps its pattern and takes the charred paint, the same ColorDef the
+        /// ruin walls get: blackened flagstone, not bare ash where a floor plan was. True when the cell is such a floor.</summary>
+        private static bool CharFloor(Map map, IntVec3 c, TerrainDef cur)
+        {
+            if (cur == null || !cur.IsFloor || cur.IsRoad || cur.IsWater) return false;
+            ColorDef charred = DefDatabase<ColorDef>.GetNamedSilentFail("RM_FE_Charred");
+            if (charred == null) return false;
+            if (map.terrainGrid.ColorAt(c) != charred) map.terrainGrid.SetTerrainColor(c, charred);
+            return true;
         }
     }
 }
