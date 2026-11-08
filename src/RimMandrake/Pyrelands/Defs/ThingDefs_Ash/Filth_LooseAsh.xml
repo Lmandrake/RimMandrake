@@ -70,11 +70,16 @@
       2026-11-08, that cut in game on map w at 1:1 (shots/ash_new_1to1_crop.png): a second model read it as "pale pitted crust or
       lichen", from the near-black cinder flecks and the alpha holes. Same outlines; flecks fewer and mid-grey (char_v 0.16 -> 0.46),
       holes shallower (hole_k 0.30 -> 0.12) (shots/ash_fleck_compare.png, old left of each pair).
+      2026-11-08, map x day 3 at play zoom (shots/first_look_8): still grey cloud puffs beside a fresh colony, eight cuts in. The
+      sprite is retired: loose ash is drawn as ground cover (SectionLayer_PyrelandsAsh in PyrelandsAshCover.cs, textures
+      ash_cover_gen.py): a pale sheet over every cell holding this filth, its margin bent by noise and frayed by the terrain
+      fade-rough shader, as one terrain lies over another (snow's soft path read as fog: shots/cover1, t1-t16). This graphic
+      prints nothing and is kept for the inspect icon.
     -->
     <graphicData>
-      <graphicClass>Graphic_Cluster</graphicClass>
+      <graphicClass>RimMandrake.Pyrelands.Graphic_RM_AshCoverHidden</graphicClass>
       <shaderType>Transparent</shaderType>
-      <texPath>Things/Filth/RM_FE_LooseAsh</texPath>
+      <texPath>Things/Filth/RM_FE_LooseAsh/LooseAshA0</texPath>
       <color>(184, 180, 172, 200)</color>
       <drawSize>1.6</drawSize>
     </graphicData>

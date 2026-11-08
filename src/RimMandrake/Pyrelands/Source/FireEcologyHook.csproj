@@ -55,6 +55,7 @@
     <Compile Include="ThinkNode_ConditionalPyrelandsColonist.cs" />
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsWeatherOverlays.cs" />
+    <Compile Include="PyrelandsAshCover.cs" />
     <Compile Include="PyrelandsAshDust.cs" />
     <Compile Include="PyrelandsHerdThirst.cs" />
     <Compile Include="PyrelandsForeignArrivals.cs" />
