@@ -1,39 +1,37 @@
 # Graffiti: where the last pass got to
 
-Pass 15 (2026-11-08, ~02:41-03:30 PST). Retired on context, not on a wall. Committed and pushed. RATCHET.md is current: 20 Proven, 2 Remaining (never_reads_as_dirt FALSE, punk register MIXED), three small fix checks owed.
+Pass 16 (2026-11-08, ~04:00-04:40 PST, game B). Retired on context. Committed and pushed. RATCHET.md is current.
 
-## The game is now game A (Conductor switch 02:41)
-- `ralph/GAME` says `a`. Game A's user data is the default `C:\Users\sjlewis\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios` (`$RM_GAME_USERDATA` is empty there). I copied the graffiti saves into its Saves folder. New: `graffiti_p15_ash_lit` (Ashgate day 18 at noon, lamps powered), `graffiti_p15_brick_dead` (a day after Brick's death, 3 memorials).
-- `steve.sh up` did not put our tier on: game A came up on GSS's list (GimmeSomeSlack, FlowWorks). Then `steve.sh tier` refused, because a stale swap marker in `~/rm/gameb/deployed/config/` from game B named a before-copy that every `sync` resets, since that file is git-tracked. I moved the marker aside (`ModsConfig.swap-active.stale-gameb-20261108.json`, not deleted), and `tier` + `up` then worked: 10 mods, Graffiti, bridge, all DLC. Check the mod list after any `up` (`ralph/steve.sh run` + read ModsConfig).
-- The lamps were dark because the generator at (144,117) sat on its own net. Three conduits at (144,119..121) join it to the 83-conduit net (saved in `graffiti_p15_ash_lit`). One generator browns out a few of the 15 lamps; that is fine.
-- `graffiti_p14_ash_powered` loads AT noon. Don't advance 22000 ticks (that's for `p12_ash_day18`); I lost one batch of shots to 9 PM that way.
+## Game and machine
+- Game B again (`ralph/GAME` = b, Conductor switch 04:01). Saves now in game B's Saves: `graffiti_p15_ash_lit`, `graffiti_p15_brick_dead` (copied from game A's folder) and the new **`graffiti_p16_ash_lit`**: Ashgate day 18 noon, after the load migration below and with the Dirt stage built at (10,40). Load that one next.
+- **Deploy trap:** game A (FlowWorks in a pass) was still running OUR pass-15 tier, so it held `Mods/Graffiti/Assemblies/RimMandrakeGraffiti.dll` open and deploy failed ("locked by the running game", Errno 22). I did not touch game A: I moved our own old DLL out of the folder (`D:\ClaudeWork\rimmandrake\instances\b\displaced_dll\RimMandrakeGraffiti_p15_0414.dll`; Windows allows renaming a loaded DLL, and the running game keeps its copy), then deploy worked. If deploy says STILL DIFFERS on the DLL again, check whether game A's ModsConfig still lists `mandrake.rm.graffiti` and do the same.
+- Weather: 1 failed `up` ("BLIND: cannot read the command line of game pid"), the retry worked. 0 crashes. One vanilla "Illegal characters in path" texture error at startup (bad_cpus=[2], same as pass 15). No ssh drops. 5 deploy+up cycles, ~25 s each.
 
-## Weather this pass
-2 native crashes on game A (`bad_cpus=[2]`, uptime ~17 h): one in load, one in vanilla `JoyGiver_Meditate.CanBeGivenTo` jumping to an unknown module. Startup also logged null bytes in an XML and "illegal characters in path" for vanilla Leather, which looks like memory corruption. No Graffiti frame in either. 1 `up` failed ("no RimWorldWin64 process 5 s after Start-Process"); the retry worked. No ssh drops.
+## Done this pass (the judge's pass-15 list, items 1-6)
+- **Weathering chalks, not greys** (WallPlane.Weathered, Filth_Mark): what's left goes paler in its own hue (`BleachPerStep` 0.07/step, the bare stain chalked by 0.5), eats less per step (55% at W4, was 68%), the stain kept stronger (0.30-0.45), alpha barely thinned, wall show-through +0.1 per fade (was 0.2). Offline sim first (`/tmp` script, not kept): old rows went grey-brown, new rows pale paint.
+- **No mud** for awful/poor hands (Kernel.CraftLook). Ugly shows in wobble, the slipped second go and thin coat.
+- **Stencil heads** (WallPlane.PaintedPortrait(pawn, pigment)): three values split at the head's own middle, black, the mark's pigment (ochre if the pigment is dark), and a pale; overspray in the colour; weathered with the frame; wall comes back through it.
+- **Soot needs a pale wall** (Kernel.PigmentReads, wall luma >= 0.58 for a pigment under 0.3). Old marks re-pick on load (`Filth_Mark.RepickUnreadPigment`): the corridor soot tally went orange.
+- **Old edge-on pictures** (MapComponent_GraffitiSocial.MoveOffEdges, first tick after load): moved to the nearest free face within 8.9 cells, own room first, then any; with none, taken down quietly. Ashgate: 10 moved, 4 taken down, trace in `p16/01_load_migration_trace.txt`.
+- **Art** (manifest.py, bake.py: new `mute`, `drop_grey`, `fill` options): fist without its disc and the cog with a hammer, both one-colour pigmented stencils; halo frame one sprayed loop; rude_3 thumbs his nose (its generator haze floored out, it was a faint blob); throw-up A dusty magenta; all six Vandals in clashing dusty pink, teal, mustard and violet (no green, olive, brown or grey). My regeneration script lived in /tmp and is gone; the manifest's own `gen` still points at the dead codexhome_w0/w1, so call `skills/generating-images/scripts/codex_image.py generate` directly, one at a time (each ~1.5 min; a background job dies at 10 min unless you give it a timeout).
 
-## Done this pass
-- **Tribute art** (judge, pass 14: the laurel and winged-sun frames read as badges). New prompts for tribute_0 and tribute_2 (manifest.py `TRIB`): a sprayed crown thrown on the head with stars and shine flicks, and crossed sprayed roses round a sprayed ring with sparkles. tribute_1, the heart, stays. They're baked and deployed, and seen live in `p15_lived_south_wall_west.png`. The manifest's codex homes `codexhome_w0/w1` have dead logins ("refresh token was already used"). The plain `codex_image.py generate` (default home) works.
-- **stories_not_a_tax: Proven** (RATCHET). **mark_ugliness_is_visible: Proven** (judge yes), with a caveat tying it to the dirt bar.
-- **Owed fix checks** (RATCHET, Proven list): dead-since tribute, memorial across save, sensitive positive side, mourning message.
-- **Confront message** (found live: "Karen confronted Lark about what's on the wall", when Lark had painted his reply over her work). A painted-over grudge stored no mark. Now `RM_Grudge.topic` and `wentOver` (saved) carry the mark that covered the work. A confrontation says "about painting over Karen's work" and points at that mark, and a Reply is painted near it. Built, not deployed or seen. Files: GraffitiSocial.cs (Notify_WentOver, AddGrudge, Notify_Confronted), Filth_Mark.cs (two call sites), JobDrivers_AnswerMark.cs.
-- **GPT broaden (pass 14), lead 7** (feeding one social mark back into itself): checked in the defs, not played. A re-ordered tribute can't farm opinion: `RM_Graffiti_HonoredMe` stacks twice per pair (+20, then x0.8), and `Honored` mood stacks twice. Lead 1 (would a newcomer mistake paint for filth?) is what the blind judge answered "yes" to below.
-
-## The blind judge, pass 15 (`p15/blind_judge_p15.md`; it read only the 9 `p15_*` shots)
-Dirt: yes. Ugliness visible: yes. Register: mixed. What to fix, most visible first:
-1. **Portraits** in mockeries, tributes and memorials read as "a crisp game portrait... a UI icon or sticker", "lit like the UI, not like paint". Idea: render `WallPlane.PaintedPortrait` as a 2-3 tone stencil portrait in the mark's own pigment (the Obey/HOPE street stencil), keeping the hair/headgear silhouette that says who it is. That's the strongest street idiom for a face, and it fixes "stuck on" too.
-2. **Weathering reads as grime** (W2-W4: "rust or a burn", "grime or ash", "dry grass"). Real faded paint goes chalky and LIGHTER, keeping its hue, with crisp flake edges. Grime is darker and diffuse. Check what weathering does to colour in WallPlane (the stain is 0.34 to 0.16 by step) and bleach toward pale instead of grey. Maybe let W4 go sooner.
-3. **Awful/poor hands read as mould or soot**: the Vandal art asks for "sickly bile green... greyed by grime" (manifest `VANDAL`), and the runtime mud is 0.4/0.2. Ugly should be clumsy and garish, not the colour of growth. Change the Vandal palette in the prompt and regenerate, and/or drop mud toward the ground colour.
-4. **Old pictures on edge-on walls** (painted before pass 14's fix, so all over this test colony) read as blots ("a scorched hole", fists clipped, heads sideways). Idea: a one-time load migration. A picture on an edge-on face moves to the nearest free face-on wall cell within a few cells, else stays.
-5. **Badges**: the IdeoSigil `Halo` frame ("clip-art burst"; the StencilBox frame reads as a paste-up, so this is the one to redraw as a rough sprayed halo), the fist's ochre disc (logo), the gear stencil, and the RudeLittleMan bucket ("a stump").
-6. Small: ThrowUp_A chalk-and-soot reads as the game's rock chunks (recolour the fill); a dark tally on a dark wall is invisible (pick a pigment with contrast against the wall); marks crowd into one clump in the corridor.
+## Blind judge, pass 16
+`p16/blind_judge_p16.md` (it read only the 9 `shots/p16_*`). Dirt: **yes**. Worse than a tally: **yes**. Register: **mixed**. Gone since pass 15: rock chunks, UI portraits, the olive Vandal, the scorched-hole memorial, the invisible soot tally. The full list is in RATCHET. The pattern I read in it:
+- **Faint = stain.** Every weak mark it flagged is faint, thin or low-contrast: a W3 throw-up, the pale weathered gear and scribble, a poor Vandal in the dim storeroom, a faint smudge. "The weak ones read as stains, not as clumsy paint." Chalking helped (no more grey or ash), but a faint mark of any colour still reads as a stain. Ugly needs to be bold and opaque but clumsy, and old marks should go before they're faint (die at W3, or flake crisply with no low-alpha stain at all).
+- **Dark edges = burn.** The black overspray dusting and black blots (warning glyph, mockery's pointing hands, the wolf glyph's black) read as soot. The portrait's overspray is now coloured; the frames' soot parts aren't.
+- **The art's own green is moss.** HighLife (oxide green and soot) at awful read as mould: recolour it (like the Vandals: no green, olive or brown).
+- **Sideways tags** on edge-on walls read as "rust or blood runs" and "moss". Tags are still allowed edge-on (Kernel.ReadsEdgeOn). Consider: no new marks edge-on at all, and take old ones down like the pictures.
+- **Clean single silhouettes = icons** (the fist now reads as an emoji fist; five fists in view). A stencil needs stencil character: misregistration, a second colour layer offset, bridges cut through, a tag or scrawl beside it, and fewer repeats.
 
 ## Do next
-Deploy (the confront fix), `up`, CHECK the mod list, load `graffiti_p15_ash_lit` (noon), Eclipse/weather clear. Fix 1-3 above (offline first: WallPlane is C#, so `st Faces`/`st Compare`/`st Dirt` stage what you need). Shoot the same frames (rects in `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/p15/` file names; south wall west `101,107,20,10`, east `121,107,20,10`, corridor `109,116,20,9` / `126,116,20,9`, storeroom `126,123,18,14`, dirt `st Dirt BlocksGranite` then `10,41,20,7`). Then a fresh blind rm-judge with the same brief: `p15/judge_brief_template.md` (fill `{IMAGES}` and `{OUT}`; tell it to read only the images).
+Read the GPT `stuck` answer first (path below), pick one or two leads, then:
+1. Faint = stain: in WallPlane.Weathered drop the low-alpha stain (or make it crisp flakes only), and let a mark go at W3; for awful/poor drop `CraftLook.through` and the 0.28 second go, and show the bad hand by bolder wrongness (overloaded drips, a blob where the can stalled, crooked doubled strokes at full opacity). Re-shoot the Dirt stage (`st Dirt BlocksGranite`, rects below).
+2. Recolour HighLife and AnimalPersonhood (and any glyph whose art is green/olive or mostly black) via manifest `fill`/`mute` or a regenerate.
+3. Dark overspray: find the soot parts in the frames (warning glyph blot, mockery hands) and the dark overspray in PaintedPortrait (now coloured) and PaintedIcon.
+4. Register: stencil character for the fist/cog (two-layer misregistered stencil, cut bridges), fewer fists (pool weight or a repeat penalty near the same def), the ideo sigil frames.
+5. Then a fresh blind judge with `p15/judge_brief_template.md` on the same frames.
 
-## Traps
-- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; run `ralph/steve.sh sync` after editing it. `kvall` prints a tool's whole answer.
-- `days` hides first reads (" reads "); use `run` or `so Ledger trace` to see who read what.
-- `so Said` keeps messages for the whole game process, across loads.
-- `st Dirt <stuff>[,door]` builds the dirt wall at (10,40), 32x7. `shot` refuses more than 20 cells at 64 px.
-- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500.
-- Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse,RimWorld.Planet}/`.
+## Traps (kept)
+- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; `ralph/steve.sh sync` after editing it. `so Ledger trace` prints the trace once and clears it: capture it to a file, don't `tail` it.
+- Rects: z grows north. South wall west `101,107,20,10`, east `121,107,20,10`, corridor `109,116,20,9` / `126,116,20,9`, storeroom `126,123,18,14`, west edge `92,126,20,12`, dirt `10,41,17,7` / `26,41,17,7`; tributes at 128 `110,114,8,4`. At 128 px a shot holds 8 cells across.
+- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500. Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/`.
