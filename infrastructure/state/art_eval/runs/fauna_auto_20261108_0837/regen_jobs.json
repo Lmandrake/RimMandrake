@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_Fuzzrunner_s2r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. A fuzzrunner: a round, fog-fat, fuzzy-coated runner of the plains, with a deep rounded barrel torso, short sturdy legs planted beneath it, small alert ears and a whiskered snout used for smelling its way along narrow worn runs under dense canopy. Muted dusty plains-and-canopy palette of grey-browns, dull olive and pale fog-grey fur. It stands with the stillness of a stone, body compact and plump. A tall round dome of back and shoulders rises above four planted legs of equal standing height, the body long and full with the top of the back rising high above the feet. Its eyes are bright and watchful, its tail is short and tufted, and its haunches are rounded and heavy. The head carries a tapered whiskered snout, and the torso volume is full and high throughout, giving a plump, compact, evenly rounded silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261108_0837",
+  "drawsize": 0.8,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+ }
+]
