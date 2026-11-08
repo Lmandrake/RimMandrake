@@ -63,6 +63,10 @@
       (FireEcologyHook.cs, PyrelandsDriftField) gives each cell a target of 0-3: about a fifth of a scar holds ash, in clumps
       whose x2-x3 cores are several sprites deep (Graphic_Cluster draws one per point of thickness), with pools in the lee and
       along the rim and wide bare char between. Ash fall uses the same field and heaps one deeper than it (maxThickness 4).
+      2026-11-07 night, map v at 1:1 (shots/v_ash_drift_crop_1to1.png): the drifts still read as translucent smoke smudges beside the
+      crisp grass. Redrawn again (ash_drift_gen.py, seed 41, same shapes): see-through warm-grey powder with a crisp broken edge,
+      visible grit, a brighter heaped middle and a few dark cinder flecks. Every opaque or hard-edged cut read as snow, cotton or
+      stickers, so the translucency and this colour stay. Blind judges on a true-scale mock: ash 4/5, smoke 1/5 (old cut 2/5, 4/5).
     -->
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
