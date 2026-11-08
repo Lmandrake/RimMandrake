@@ -39,3 +39,12 @@ on a labelled tile; the bare excavation reading as a placed building.
 ## What I plan next
 Deploy; replay the story on the same staged layout in the oblique look; shoot the new ladders on all four walls; then a second
 story with no walls: a covered pit line across open ground in front of an ordinary quick-test colony, raid, watch.
+
+## Update before sending (pass 4, 20:47)
+- Deployed the rescue fixes, the exit hold and the new ladder rig. Ladder shots attached (l5_ladders: lowered 5x5 2 m, raised,
+  steel 4 m mixed, portables 2 m / 4 m). Worn climbing gear shot attached.
+- Replayed the story (600-pt Neanderthal tribal raid, same staged walled passage): the raid entered from the NORTH map edge,
+  bashed and burned the compound's north wall and died there (5 of 6); the last raider walked round to the south side and
+  fell through the covered pit alone; no rescue, nobody left to rescue him. At play zoom in evening light the opened pit read
+  as a flat grey box with him in it (w060 attached), not as the dark hole the daylight staged shots show.
+- So the story has never once played as written, and my one layout depends on where the game spawns the raid.

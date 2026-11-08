@@ -1,31 +1,38 @@
-# FlowWorks pits: what to look at (Artisan pass 3, 2026-11-07)
+# FlowWorks pits: what to look at (Artisan pass 4, 2026-11-07)
 
-Shots: `D:\ClaudeWork\rimmandrake\ralph_flowworks\shots\pass3\` (pass 2's are in `shots\old\pass2\`). Ordinary quick-test
-maps on game A, 11:00 daylight, at root 20 (ordinary play, ~23 px a cell) and root 11 (the closest a player can zoom).
+Shots: `D:\ClaudeWork\rimmandrake\ralph_flowworks\shots\pass4\` (older passes in `shots\old\`). Quick-test maps on game A,
+root 20 (play zoom, ~23 px a cell) and root 11 (the closest a player can zoom).
 
-## The depth look: a contrast sheet, one view, every hole occupied
+## First look (ordinary-play frames)
+- `first_look_ladders_lowered_r20.png`: a 5x5 pit 2 m deep, a wooden ladder on the middle of each wall, all lowered, a
+  colonist on the floor. The north ladder hangs on the far face on its iron rails, rim to floor; east and west are thin strips
+  down the side walls; the south one shows only above the near lip.
+- `first_look_ladders_raised_r20.png`: the same four ladders raised: each lies out on the ground beyond its rim, pointing
+  away from the hole; the rails stay bare in the hole.
+- `first_look_climbing_gear_worn_r8.png`: four colonists wearing climbing gear, facing south, east, north, west, and the
+  kit on the ground (your kept sprite).
+- `first_look_story_raider_in_pit_r20.png`: your covered-pit story, replayed: a raider who fell through the cover, in the
+  pit, in evening light, with archers just north of him.
+- `sheet_ladders_r11.png`: lowered, raised, a 4 m steel pit (north and east lowered, south and west raised), and portable
+  ladders in 2 m and 4 m pits.
 
-`contrast_depth_looks_r20.png` (shown at 2x) and `contrast_depth_looks_r11.png`. Left to right: undug, then dry holes 0.5,
-1, 1.5, 2, 4 and 8 m, each 2x2 with a drafted colonist on its north-west square. Top of each block: occupied; below: the same
-depths empty. Three treatments, all live in the build (Mod Setting "How a pit's depth is drawn"):
-- **L0 wall bevel** (the look until now): a black-outlined box, a light band on the far edge that stops growing past 1 m,
-  and colonists in 4 m and 8 m holes drawn on the ground SOUTH of the hole. 2, 4 and 8 m look the same.
-- **L1 oblique cut**: the far wall's face hangs as far as the occupant sinks (one scale for both), lit at the rim and
-  darkening to the foot, a line every metre, soft shade inside the side walls and the near lip; the near bank hides the
-  occupant's legs. No outline. Each depth its own look, 4 m vs 8 m by a taller, darker face. Occupants read waist, chest,
-  shoulders, then head only.
-- **L2 shadow well**: the top-down reading: a short rim band, the whole floor in view and darker with depth, occupants
-  barely shift but are drawn smaller and darker the deeper they stand. 4 m and 8 m both near-black.
+## My calls, not his
+- **Ladders: lowered = in the hole, raised = out of it.** A lowered ladder is printed down its own wall at the hole's drawn
+  depth (the oblique cut's far face, so its foot is where a colonist's feet are). A raised one is drawn slid up and lying
+  on the ground beyond its rim. On the north wall that is the truth of the camera (a ladder standing up out of the hole). On
+  the other three walls it bends the truth: a ladder slid up a side or near wall would stand over the hole, where it reads
+  as "lowered". Your bar says "a raised ladder beside the rim ... the same ladder lowered into the excavation", and this is
+  that reading.
+- **The near (south) wall's ladder shows only its top**, three rungs and the rail hooks over the lip, for the same reason a
+  colonist's legs are hidden there. First built as a sliver nobody could find; made taller (built, not yet seen).
+- **Climbing gear:** your kept ground sprite stays (pass 3 had swapped it; I put it back). The worn pack facings are new:
+  a belt with the rope coil and a grapnel from the front, the coil on the back from behind and the sides.
 
-**My call, not his: L1 is now the default.** It is the only one where the wall visibly rises over the occupant's head and the
-hole reads as a hole rather than a mat or a box. "All three wrong" is a fine answer; L0 and L2 stay one setting away.
+## What I'm least sure about
+- The story's opened pit read as a flat grey box in evening light (`first_look_story_raider_in_pit_r20`), where every
+  daylight staged shot shows a dark hole with a lit far face. Not yet explained.
+- At play zoom the side-wall ladders are dotted lines.
+- The portable ladder on a north wall stands straight on the face; only side-wall portables visibly lean.
 
-What I'm least sure about: at 8 m in a two-row hole the face fills almost the whole opening, so the occupant is a head at
-the near lip. True to the camera, but small; the 8 m hole may want more floor to show.
-
-## Other changes he will see
-- A covered pit dug in grass now carries the grass of the ground around it (sod printed from its neighbours' plants), where it
-  showed a bare square. My call, not his. NOT yet seen in game.
-- Changes to approved things: none. Drawbridges untouched.
-- My calls from pass 2 still stand: pit spikes are never trashed by raiders; a person the hole traps can be captured from the
-  lip with no bed.
+## Changes to approved things
+None. Drawbridges untouched.

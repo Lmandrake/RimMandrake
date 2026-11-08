@@ -43,6 +43,10 @@ namespace RimMandrake.FlowWorks
 		/// <summary>How far a lowered ladder's top and the rails' hooks stand above the rim (cells).</summary>
 		public const float LadderAbove = 0.3f, RailAbove = 0.14f;
 
+		/// <summary>The near (south) wall's ladder shows only above its rim, so it stands taller there (three rungs, the rails'
+		/// hooks over them): first seen live as a sliver nobody could find (pass 4, l5_rig_lowered).</summary>
+		public const float SouthAbove = 0.5f;
+
 		/// <summary>Where a portable ladder's foot stands out from its wall (cells).</summary>
 		public const float LeanOut = 0.62f;
 
@@ -108,7 +112,7 @@ namespace RimMandrake.FlowWorks
 					float top = c.z;
 					if (!portable)
 					{
-						Run(layer, RailTile, RailCap, RailTileAspect, RailCapAspect, new Vector2(cx, top + RailAbove), new Vector2(cx, top), RailWidth, y);
+						Run(layer, RailTile, RailCap, RailTileAspect, RailCapAspect, new Vector2(cx, top + SouthAbove - 0.12f), new Vector2(cx, top), RailWidth, y);
 					}
 					if (raised)
 					{
@@ -119,7 +123,7 @@ namespace RimMandrake.FlowWorks
 					{
 						// the top rungs over the lip; a leaning portable tips back over the ground behind it
 						float lean = portable ? 0.1f : 0f;
-						Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + lean, top + LadderAbove + lean * 0.5f), new Vector2(cx, top), LadderWidth, y + 0.02f);
+						Run(layer, tile, cap, tileAspect, capAspect, new Vector2(cx + lean, top + SouthAbove + lean * 0.5f), new Vector2(cx, top), LadderWidth, y + 0.02f);
 					}
 					break;
 				}

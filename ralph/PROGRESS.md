@@ -1,103 +1,101 @@
 # FlowWorks Artisan, aspect 1 (pits and depth): progress
 
-## Pass 3 (2026-11-07): what I saw, what I changed
+## Pass 4 (2026-11-07, 19:38-20:55): what I saw, what I changed
+Weather: 1 dead game (native Unity crash right after a quick-test map generated, no managed exception, `bad_cpus=[2]`;
+restarted, the rerun was clean), 0 dropped ssh, 1 deploy (bridge up in 35 s). Retired on the context gate.
 
-Game A on Steve, `flowworks` list, quick-test maps (temperate dirt, desert sand) at 09:00-11:00. Weather: 0 dead games,
-0 dropped ssh, 3 deploy+restart cycles (bridge up in ~34 s); `bad_cpus` read [6] then [4] (no result surprised me after a
-restart was due, none taken). Retired on the context gate (~350k).
+**Landed (db0cfe2a12, pushed, deployed, partly seen):** pass 3's lost builder work redone by a subagent: all 8 review
+findings (claim written only by the job that starts; downed bedless captives hand-fed from a touching lip, capture refused
+with a reason when no lip touches; room-only food count; lip memo keyed by the prisoner's cell; climb-out ends at the wall
+top; fallen list rebuilt per pocket; fetcher skips ladders down to a standing raid-mate; dead lords pruned, rescue has its own
+JobDef `RM_RaiderRescueLadder`); one message when a raid's rescue ladder goes into a hole holding colony prisoners; the
+assault's colony-damage exit held while a rescue is under way (postfix, AssaultColony only, capped 5,000 ticks, setting
+`raiderRescueHoldsRaid`). Self-test: only the 3 known reds (LW1, RiverSwitchFlip_weirWhiteWater, PitCapture_follows).
+None of this has been seen live yet: the story replay below never reached a rescue.
 
-**The depth look: three treatments shot side by side, oblique cut chosen (commit 0a357c4bcb, deployed, seen).**
-`pitLookMode` 0 bevel / 1 oblique cut / 2 shadow well, live-switchable (`ralph/live/bars3.py`, save `fw3_bars` on Steve).
-Sheets: `shots\pass3\contrast_depth_looks_r20.png` / `_r11.png`, every hole occupied (drafted colonists, 0..8 m).
-L0 = black box, 4/8 m occupants drawn south of the hole. L2 = people standing in dark squares, 4 m = 8 m. L1 = the far face
-hangs `pitSinkPerLevel` a notch (the occupant's own sink), lit rim to dark foot, a line a metre, soft side/near-lip shade,
-no outline; occupants tinted by the hole's light (GetDrawParms postfix). Tuned once (darker, x1.45 rim light). AFTER the
-deployed tune I replaced the hard cap with an ease into the opening so 4 m and 8 m hang apart (2-row pit: 1.35 vs 1.71
-cells) — built and committed, NOT SEEN. L1 is the default: my call, in `ralph/LOOK.md`.
+**Ladders printed down their wall (`Superdeep/RM_LadderDraw.cs`, art `Textures/.../Canals/LadderRig/`, cut by
+`art_source/LadderRig/slice.py` from codex art): SEEN** (`shots\pass4\sheet_ladders_r11.png`, `first_look_*`). Lowered =
+in the hole on fixed iron rails at the hole's drawn depth (`SectionLayer_RMExcavationWalls.ObliqueFaceAt`); raised = out on
+the ground beyond its rim, bare rails left. Reads clearly at r11; at r20 side ladders are dotted lines and the south one was a
+sliver -> made taller (`SouthAbove` 0.5): BUILT AND IN THE WORKING TREE'S DLL, NOT DEPLOYED, NOT SEEN.
 
-**His story replayed at root 20 (`ralph/live/story3.sh`; ran in L0 by mistake — bars3 then reset the look to 0, fixed).**
-540-pt Neanderthal raid, 7 tribals: one fell through the covered spiked pit, one chopped wood and began a rescue ladder
-(`RM_RaiderChopForLadder` -> `RM_RaiderSetLadder`), then 1,200 ticks later all left: "satisfied with the damage done".
-Measured (`ralph/live/dmg2.py`, damage_log pawnsOnly=false): walls took ~983 (raiders bashing the blocked passage ~884,
-our archers' missed arrows ~99) > vanilla's 900 minimum. So the story ends in a blink. Fix in flight (below), QUESTIONS 1.
+**Climbing gear worn: SEEN** (`first_look_climbing_gear_worn_r8.png`): pack on the back, belt+coil from the front, all four
+facings right. Pass 3 had replaced his KEPT ground sprite (ledger ruling cd19c72f, his words "belt/backpack type item of ropes,
+little grappling hooks, climbing claw"): put back. Pushing textures needs the art ledger (`art.py install ... --file`, a
+`script:` writer for mechanical art; a kept picture only moves by his ruling) or the pre-push guard refuses.
 
-**Owner card 19:03 handled:** starting water bottles (Patches/Scenarios_StartingWaterBottles.xml, xpaths validated);
-Pyrelands' dig-keeps-progress patch landed as written (built; not watched live); rescue-ladder warning: in flight.
+**Four fixes:** cover scan 0.30 ms on a 400-cover deck vs 71-120 ms flooding from every cover (early=399); cliff-mask full
+rebuild 1.96 ms for a 900-cell hole after a reload (250x250 map); two maps: A's derive count held at 1 while B derived (global
+10->11). The returned-prisoner grace across a reload: probe `Rivers.RM_RiverWorksProof.ProofReturnGuard("take:<id>")` /
+`("read:<id>")` is in the deployed DLL, NOT RUN: capture a raider (or spawn a prisoner), take:id, save, reload, read:id
+(want guarded=True watched=True). `ralph/live/four.py` (static_call passes NO argument for "": give every probe one).
 
-**Code review of pass 2's rescue + prison (done, 8 findings, no crash/patch-target faults):** worst: a fetcher under fire
-loses its claimed ladder (RM_RaiderRescue.cs:264); downed bedless captives starve silently (his story's "injured prisoners");
-stale talk-lip memo -> 10-jobs-in-a-tick loop; food counted outside the prisoner's room.
+**His story replayed once (`story3.sh 600 TribeRoughNeanderthal s4`, logs `Transient/ralph_fw/*_s4.out`): did NOT play.**
+The raid entered from the NORTH edge, burned and bashed the compound's north wall, 5 of 6 died there; the last walked round
+and fell through the covered pit in the south passage alone; no rescue (nobody left). The layout only works if the raid comes
+from the south. AND the opened pit read as a flat grey box at r20 in evening light (`first_look_story_raider_in_pit_r20`)
+where daylight staged pits read as dark holes. Unexplained: sprung-cover debris? spikes art? the light? Look first next pass.
 
-## IN FLIGHT AT RETIREMENT — uncommitted in this working tree, check `git status` first
-1. A builder subagent was fixing the 8 review findings + the owner's rescue-ladder message + (10) postpone vanilla's
-   "satisfied" exit while a raid is actively fetching a fallen comrade (prefix on Trigger_FractionColonyDamageTaken.ActivateOn,
-   capped ~5,000 ticks). Files: Superdeep/RM_RaiderRescue.cs, RM_BedlessPitPrison.cs, RM_PitRooms.cs, RM_RaiderTrench.cs,
-   RM_PitStuckAlert.cs, Keyed strings, SelfTest/*Checks.cs. Review its diff, build, run `selftest_flowworks_stock.py`
-   (expected reds: RiverSwitchFlip_weirWhiteWater, PitCapture_follows, LW1), check the new types are in the DLL, commit.
-2. An art subagent was making climbing-gear art: new ground sprite + worn `_north/_south/_east` under
-   Textures/Things/Pawn/Humanlike/Apparel/FlowWorks/RM_ClimbingGear/, wornGraphicPath on RM_ClimbingGear
-   (Defs/Canals/ThingDefs/FlowWorks_PitAccess.xml), offline sheet `shots\climbing_gear_offline_sheet.png`. Judge it, commit.
-3. `ralph/live/look4.sh` was running on Steve (fw3_bars map, X0 = origin+25): sod BEFORE/AFTER in a grass field at r20 + seam
-   at r11, 4 wall ladders (N/S lowered, E/W raised), portable ladder in 2 m and 4 m pits, open spikes, timber bridge with a
-   colonist walking under. Shots `b2_sod_*`, `b2_ladders4_*`, `b2_portable_*`, `b2_spikes_open_*`, `b2_under_*` in Steve's
-   Screenshots; log `Transient/ralph_fw/bars4.out`; save `fw3_look4`. Fetch with
-   `ralph/steve.sh run` + tar (see `ralph/live/getshots.sh`, but tar only this run's files: old prefixes are huge).
+**Phone:** `broaden` sent 20:47 with 5 images (ask `ralph/live/broaden4.md`); the answer lands at
+`D:\ClaudeWork\rimmandrake\ralph_flowworks\gpt_help_pass004.md`. Read it first; play the 1-2 likeliest leads.
+
+**Open items triage (subagent):** of 16, 10 fixed in code; open: PIT_RAIN headroom (aspect 2), PIT_SHOT_PROOF (harness),
+SUSPENSION_GRATE fire (needs his ruling); needs eyes: PIT_SINK soil strip over a wall, SUSPENSION_UNDERPASS picture.
 
 ## Next (in order)
-1. Land 1-2 above; deploy; replay his story in L1 (`bash ralph/live/story3.sh 600 TribeRoughNeanderthal <tag>` on Steve;
-   it starts a fresh map; set pitLookMode 1 first if the settings file still says 0). Watch for the rescue completing
-   under arrows, the warning message, Capture-down from the lip, a warden feeding from the lip, the downed-captive alert.
-2. Look at the look4 shots: ladders/rails/portable lean/bridge sag/under-deck under L1 — then fix what reads wrong
-   (pass 2 found: south-wall ladder invisible, walker drawn on top of the deck, bridges flat strips, no rails).
-3. Four fixes, never timed yet: ProofCliffTiming("reset"|"") after reloading a save with a big dig;
-   Pits.Building_PitCover.ProofCoverScan("") on a 20x20 covered deck; two maps via jawa/world_tile_map_generate (read its
-   schema first) + set_current_map, compare thisMapDerives. TakenByLand reload: needs aspect 2's river.
-4. GPT pass-2 leads still unplayed: (5) interrupt the rescue (shoot the rescuer), (6) three days with a wounded captive,
-   save/reload, left-behind ladder.
-Traps paid for this pass: `export WSLENV=X` REPLACES Steve's WSLENV and Windows python loses RM_DATA_ROOT — append;
-`start_debug_game_ready` only works from the main menu (fresh.py goes there first); fwb.py `call` truncates at 20k chars.
+1. Deploy the working-tree DLL (south stub). Read gpt_help_pass004.md.
+2. The story, made to happen: pick the raid's arrival (`jawa/fire_incident` raid with a spawn spot/edge if it has one — read
+   its schema) or build the passage on the side the raid comes from; replay; watch for: the fall, the rescue ladder under
+   arrows, the exit hold, the prisoner-hole message, Capture from the lip, a warden feeding from the lip. Then the open-ground
+   variant (no walls, a covered pit line across the approach).
+3. Explain the grey-box pit in the story frame (fetch `s1_w0*` shots of s4; compare daylight).
+4. Bridge: no sag, catenary or floor shadow exists (deck = flat 1x1 linked tiles at FloorEmplacement; `SuspensionBridgeRecord.
+   TryIndexOf` gives a tile's span index). Build the hung look; the l5 bridge/under-deck shots of this build are fetched,
+   unjudged (`b2_l5_bridge_*`, `b2_l5_under_*`; the walk now goes south row -> north row).
+5. Conductor's owed list (8:07 PM): ladder warning live (2); Crashlanded start has a bottle, "give patients water" day 1 (3);
+   dig patch: digger eats, progress kept — `ladders5.py dig` (4); re-shoot the daylight depth contrast sheet r11/r20 after the
+   eased 4/8 m cap (5); trench_wall_cover_shown hover shot (6).
 
-## Running count (seen in game, root 11/20; L1 rows are staged 2x2 holes on an ordinary map, not yet the story)
-- pit_depth_ladder_legible: false — L1 tuned (contrast_depth_looks_r20): 0.5..4 m distinct, 4 m vs 8 m too close; the eased fix is unseen
-- pawn_height_ladder_legible: false — L1: waist, chest, shoulders, head-only at 4/8 m read; 0.5 m vs undug barely differs at r20
-- pawn_lowers_on_deeper_cell: unseen — no walk filmed
-- pawn_rises_on_shallower_cell: unseen — no walk filmed
-- pit_reads_as_hole: true — L1 contrast_depth_looks_r20: dark hole, lit far rim, no box
-- pit_walls_have_visible_depth: true — L1: far face descends rim to floor, taller per depth
-- pit_not_vanilla_trap: true — nothing like the spike trap (both sheets)
-- pit_reads_at_size: true — L1 6x5 2 m pit at r11 (b3_p3a_L1_big_r11) reads as one place, no grid
-- pit_occupant_below_floor: true — L1: occupants inside the opening, legs behind the near lip (contrast r11)
-- pit_occupied_distinguishable: true — L1: even at 8 m the occupant's head shows at the lip (contrast r20)
-- pit_trapped_reads_as_trapped: true — L1 2 m+: wall rises well over the head (more than a fifth)
-- pit_covered_invisible: unseen — sod built, look4 shot pending
-- pit_covered_seam_at_max_zoom: unseen — look4 r11 shot pending
-- ladder_state_legible: false — last seen pass 2; under L1 pending (look4)
-- sluice_gate_state_legible: false — pass 2: a few pixels at r20
-- spikes_read_distinct: unseen — L0 story shots show spike texture at r20; L1 pending
-- trench_wall_cover_shown: true — game's own tooltip string, 44% at 1 m, 74% at 1.5 m (pass 2 bars2_trench7.out); hover shot owed
-- raiders_never_shelter_in_a_cage: unseen — not staged
-- wall_ladder_rides_on_rails: false — pass 2: no rails
-- portable_ladder_leans_on_its_wall: false — pass 2; L1 pending
-- climbing_gear_reads_as_kit: false — worn draws nothing; art in flight
-- geared_pawn_climbs_out: false — pass 2 frame drew him on the lip (L0); L1 unseen
-- jump_into_pit_lands_unhurt: unseen — jump pack and creatures not tried
-- geared_pawn_scales_built_wall: unseen — refusal not shot
-- suspension_bridge_reads_hung: false — pass 2 flat strips
-- pawn_walks_under_deck: false — pass 2 walker drawn on top; look4 pending
-- pit_cover_unlike_bridge: false — cover-passes-for-ground half unseen in grass
-- digging_takes_hours: unseen — dig job rewritten (Pyrelands patch), not watched
-- never_snared_standing (cannot): true — falls end on the floor (story replay)
-- never_reads_as_building (cannot): true — L1 has no outline; reads as a hole (contrast sheets)
+## Running count (seen in game)
+- pit_depth_ladder_legible: false — 4 m vs 8 m too close (pass 3); eased cap unseen
+- pawn_height_ladder_legible: false — 0.5 m vs undug barely differs at r20 (pass 3)
+- pawn_lowers_on_deeper_cell: unseen
+- pawn_rises_on_shallower_cell: unseen
+- pit_reads_as_hole: false — staged daylight yes, but the story's opened pit read as a grey box (s4 w060)
+- pit_walls_have_visible_depth: true — far face rim to floor (pass 3 contrast, pass 4 ladders)
+- pit_not_vanilla_trap: true
+- pit_reads_at_size: true — 5x5 pits read as one place (sheet_ladders_r11)
+- pit_occupant_below_floor: true — colonist in the 5x5 pit, legs behind the near lip
+- pit_occupied_distinguishable: true
+- pit_trapped_reads_as_trapped: true (2 m+, pass 3)
+- pit_covered_invisible: true — sod before/after at r20 the same (look4, previous build)
+- pit_covered_seam_at_max_zoom: true — faint darker rectangle at r11 (look4)
+- ladder_state_legible: false — in vs out reads at r11; the south lowered ladder was a sliver (fix unseen)
+- sluice_gate_state_legible: false — pass 2
+- spikes_read_distinct: true — stakes visible in the open spiked pit at r20 and r11 (look4)
+- trench_wall_cover_shown: true — tooltip numbers (pass 2); hover shot owed
+- raiders_never_shelter_in_a_cage: unseen
+- wall_ladder_rides_on_rails: false — rails seen on the north face; side walls dotted at r20, south fix unseen
+- portable_ladder_leans_on_its_wall: false — side wall leans, north wall stands straight; too-short lies flat (true part)
+- climbing_gear_reads_as_kit: true — worn, four facings, and the kept ground sprite (r8)
+- geared_pawn_climbs_out: unseen under the new look
+- jump_into_pit_lands_unhurt: unseen
+- geared_pawn_scales_built_wall: unseen
+- suspension_bridge_reads_hung: false — flat strip (look4); this build's shots unjudged
+- pawn_walks_under_deck: false — never walked across (pass 3 script walked onto the deck row); fixed script's shots unjudged
+- pit_cover_unlike_bridge: false — cover half true, bridge half not
+- digging_takes_hours: unseen
+- never_snared_standing (cannot): true
+- never_reads_as_building (cannot): true
 
-Count: 10 true, 12 false, 8 unseen.
+Count: 13 true, 11 false, 6 unseen.
 
 ## Between this and done
 | kind | what | evidence | next observation |
 |---|---|---|---|
-| blocker | raid leaves 20 s after the fall | dmg2.py: walls 983 dmg > 900 | story replay with the postponement built |
-| unknown | L1 in the story (raider in the pit, ladder over the face) | story ran in L0 | story3 replay in L1 |
-| unknown | rescue fixes, warning message, downed-captive alert, prison feeding | in flight | the same replay to the prison |
-| unknown | sod, seam, ladders, bridge under L1 | look4 shots on Steve | fetch and look |
-| blocker | ladder rails/lean, hung bridge, under-deck draw | pass 2 + look4 | fix after looking |
-| unknown | the four fixes' cost | probes built, not run | Next 3 |
-| decision | postpone "satisfied" exit during a rescue | QUESTIONS 1 | his answer (built as B) |
+| blocker | his story has never played end to end | s4: raid came from the north | a raid made to arrive at the pit |
+| unknown | rescue fixes, exit hold, prisoner message, lip capture/feeding | deployed, never reached | the same replay |
+| regression? | opened pit a grey box in the story | s4 w060 | daylight vs evening, cover debris on/off |
+| blocker | bridge reads flat, no sag | look4 | build the hung look, shoot |
+| unknown | returned-prisoner grace across a reload | probe deployed, not run | take/save/reload/read |
+| decision | raised ladder drawn on the ground (side/near walls) | LOOK.md "my call" | his look |

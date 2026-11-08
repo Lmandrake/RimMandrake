@@ -18,6 +18,8 @@ BRANCH=ralph/flowworks
 OPTS=(-o BatchMode=yes -o ConnectTimeout=10 -o LogLevel=ERROR -o ServerAliveInterval=15 -o ServerAliveCountMax=4)
 G=infrastructure/stevedesktop/rw_game.sh
 on() { ssh "${OPTS[@]}" "$STEVE" "cd ~/$DIR && export RM_GAME_INSTANCE=a && $1"; }
+SG=/home/mandrake/rm/scratch/BENCH/steve_games.py   # shared game rule; `tiered` records whose mod list is on a game
+tier() { on "$G down; python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks --apply --not-my-bridge 'Artisan FlowWorks on Steve game A' 2>&1 | tail -n 5" || dead "tier failed"; python3 "$SG" tiered flowworks; }
 dead() { echo "STEVE_UNREACHABLE: $1. Weather, not your bug: see Steve's section in ralph/PROMPT.md." >&2; exit 75; }
 
 ensure_clone() {
@@ -49,8 +51,11 @@ case "${1:-}" in
     deploy)
         sync_tree
         on "$G down; python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --apply 2>&1 | tail -n 3" || dead "deploy failed" ;;
-    tier) ensure_clone; on "$G down; python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks --apply --not-my-bridge 'Artisan FlowWorks on Steve game A' 2>&1 | tail -n 5" || dead "tier failed" ;;
-    up) ensure_clone; on "$G init; $G up --wait" || dead "game A did not come up" ;;
+    tier) ensure_clone; tier ;;
+    up) ensure_clone
+        # another loop that borrowed A leaves its own mod list on it (shared rule; Conductor 2026-11-07 20:20 PST)
+        if python3 "$SG" needs-tier flowworks; then echo "up: another loop's tier is on game A, applying flowworks first"; tier; fi
+        on "$G init; $G up --wait" || dead "game A did not come up" ;;
     down) ensure_clone; on "$G down" || dead "game A down failed" ;;
     restart) ensure_clone; on "$G down; $G init; $G up --wait" || dead "game A did not come back up" ;;
     run) shift; ensure_clone; on "$*" 2>&1 | tr -d '\r'; rc=${PIPESTATUS[0]}; [ "$rc" = 255 ] && dead "ssh dropped"; exit "$rc" ;;
