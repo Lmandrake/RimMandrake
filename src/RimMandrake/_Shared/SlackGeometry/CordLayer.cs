@@ -58,6 +58,8 @@ namespace RimMandrake.Shared.Slack
         /// <summary>Floor cords: a hop under <see cref="CordLayer.RoundMinLen"/> bows out over its whole width, a lazy C, not one tall narrow bump
         /// (<see cref="CordLayer.ShortBowAmp"/>). Off for a cord to a cut end, whose writhing tail needs the length. Off by default.</summary>
         public bool ShortBow;
+        /// <summary>Floor cords: the builder opens every bend tighter than its fair radius on open floor once the strand is laid (GSS <c>CordShape.Fair</c>). Off by default.</summary>
+        public bool FairBends;
         private LayParams noBow;
         /// <summary>This set with <see cref="ShortBow"/> off (cached; the copy is otherwise identical).</summary>
         public LayParams WithoutShortBow()
@@ -154,7 +156,7 @@ namespace RimMandrake.Shared.Slack
         }
 
         /// <summary>Smallest loop radius a <see cref="LayParams.RoundLoops"/> lay draws, cells; and the smallest figure-8.</summary>
-        public const double RoundLoopMinR = 0.36, RoundFig8MinR = 0.5;
+        public const double RoundLoopMinR = 0.5, RoundFig8MinR = 0.65;
         /// <summary>How far a <see cref="LayParams.RoundLoops"/> loop or pile keeps from the cord's own ends, cells: one lying over an end reads
         /// as more cables going to that plug or outlet (GSS's seventh cause of extra cables at a doorway).</summary>
         public const double RoundEndClear = 1.6;
@@ -811,7 +813,8 @@ namespace RimMandrake.Shared.Slack
                     int side = w.Clearance(Q[j] + nrm * 0.8) >= w.Clearance(Q[j] - nrm * 0.8) ? 1 : -1;
                     double r = 0.5 * prm.Cap / 1.6;
                     List<V2> shape = null;
-                    for (int tries = 0; tries < 5 && r >= (prm.RoundLoops ? RoundLoopMinR : 0.18); tries++, r *= 0.7)
+                    // a round lay tries the smallest broad heap last instead of stepping past it
+                    for (int tries = 0; tries < 5 && r >= (prm.RoundLoops ? RoundLoopMinR : 0.18); tries++, r = prm.RoundLoops && r > RoundLoopMinR + 1e-9 ? Math.Max(RoundLoopMinR, r * 0.7) : r * 0.7)
                     {
                         List<V2> c = prm.RoundLoops ? LooseHeap(Q[j], t, nrm, r, side, re) : Heap(Q[j], t, nrm, r, side, re);
                         // GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET: an end heap spends the same budget as any loop, and the
@@ -870,7 +873,7 @@ namespace RimMandrake.Shared.Slack
                     // GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (design 8: "no loops or heaps in the doorway"): a door cell is walkable, so
                     // AllClear passes it; a loop rooted beside a doorway must not spread into it, as the end-heap branch already refuses
                     if (AllClear(w, c, LayParams.RC + 0.02) && !over && !c.Any(q => w.IsDoor(q.Floor)) && !Lassoes(w, c, own) && (!prm.RoundLoops || ClearOfEnds(c, Q[0], Q[Q.Count - 1]))) { shape = c; break; }
-                    r *= 0.7;
+                    r = prm.RoundLoops && r > RoundLoopMinR + 1e-9 ? Math.Max(RoundLoopMinR, r * 0.7) : r * 0.7;
                     if (r < (prm.RoundLoops ? RoundLoopMinR : 0.18)) break;
                 }
                 if (shape == null) continue;

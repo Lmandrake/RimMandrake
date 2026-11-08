@@ -93,6 +93,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "shapetable") return ShapeTable(comp);
             if (cmd == "kinks") return KinkTable(comp);
             if (cmd == "shapeaudit") return ShapeAudit(comp);
+            if (cmd == "bends") return BendTable(comp);
             if (cmd.StartsWith("worlddump:")) return WorldDump(map, comp, cmd.Substring(10));
             if (cmd.StartsWith("strandsnear:")) return StrandsNear(comp, cmd.Substring(12));
             if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
@@ -555,6 +556,16 @@ namespace RimMandrake.GimmeSomeSlack
             string path = System.IO.Path.Combine(dir, name + ".json");
             System.IO.File.WriteAllText(path, text);
             return "{\"success\":true,\"cmd\":\"worlddump\",\"path\":" + J.S(path) + ",\"bytes\":" + text.Length + "}";
+        }
+
+        /// <summary>never_taut_straight_cord's count (CordShapeAudit.Bends): every bend tighter than 90 degrees within a cell on every laid floor strand, ends included, with what forces it.</summary>
+        private static string BendTable(RM_MapComponent_CordGraph comp)
+        {
+            var t = new CordShapeAudit.BendTally();
+            CordWorld w = comp.LastWorld;
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands) t.Add(w, p, s);
+            return "{\"success\":true,\"cmd\":\"bends\",\"world\":" + J.B(w != null) + ",\"tally\":" + t.Json() + "}";
         }
 
         /// <summary>Where a laid strand folds back on itself (CordShape.Kinks), grouped by how the piece ends.</summary>

@@ -74,6 +74,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             bool first = true;
             int strands = 0;
             CordShapeAudit.Tally tally = new CordShapeAudit.Tally();
+            var bends = new CordShapeAudit.BendTally();
             foreach (LaidPiece p in ps)
             {
                 if (!first) sb.Append(',');
@@ -84,6 +85,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     List<V2> pts = p.Strands[i].Pts;
                     strands++;
                     tally.Add(p, p.Strands[i]);
+                    bends.Add(w, p, p.Strands[i]);
                     if (i > 0) sb.Append(',');
                     sb.Append('[').Append(string.Join(",", pts.Select(q => "[" + F(q.X) + "," + F(q.Z) + "]"))).Append(']');
                 }
@@ -91,10 +93,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 sb.Append(string.Join(",", p.Decals.Select(d => "[\"" + d.Kind + "\"," + F(d.Pos.X) + "," + F(d.Pos.Z) + "," + F(d.Angle) + "," + F(d.Scale) + "]")));
                 sb.Append("],\"ends\":[").Append(string.Join(",", p.Ends.Select(e => "[" + F(e.Tip.X) + "," + F(e.Tip.Z) + "]"))).Append("]}");
             }
-            sb.Append("],\"audit\":").Append(tally.Json()).Append('}');
+            sb.Append("],\"audit\":").Append(tally.Json()).Append(",\"bends\":").Append(bends.Json()).Append('}');
             File.WriteAllText(outPath, sb.ToString());
             Console.WriteLine($"lab: {ps.Count} pieces, {strands} strands -> {outPath}");
             Console.WriteLine("audit " + tally.Json());
+            Console.WriteLine("bends " + bends.Strands + " strands, " + bends.Bends + " bends, unforced " + bends.Unforced + " " + string.Join(" ", bends.ByWhy.OrderBy(kv => kv.Key, StringComparer.Ordinal).Select(kv => kv.Key + "=" + kv.Value)));
             return 0;
         }
     }

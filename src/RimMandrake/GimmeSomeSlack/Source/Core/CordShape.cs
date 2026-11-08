@@ -431,6 +431,260 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
+        /// <summary>The owner, 2026-11-07 7:07 PM: "cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must". The last shaping a laid
+        /// floor strand gets: wherever it bends tighter than <see cref="FairR"/> on open floor it is drawn toward its chord a little at a time, so the bend opens and the cord gives up the
+        /// length the tight bend took, until no such bend is left. Its broad loops (<see cref="CordShapeAudit.LoopKeepR"/> and wider) and the art at its two ends (<paramref name="pinA"/>,
+        /// <paramref name="pinB"/> cells) stay exactly as laid. A point never moves onto ground the cord may not lie on, into a doorway, furniture or a machine it does not plug into,
+        /// or closer to a wall than it was: a bend a wall or a building makes is left as that thing makes it.</summary>
+        internal static List<V2> Fair(CordWorld w, List<V2> pts, double pinA, double pinB, List<MachineInfo> own = null, HashSet<Cell> within = null, bool cutLoops = true)
+        {
+            if (pts == null || pts.Count < 7) return pts;
+            double L0 = Geo.Length(pts);
+            if (L0 < pinA + pinB + 2 * FairK * FairStep) return pts;
+            HashSet<Cell> machine = null;
+            if (w != null && w.Machines.Count > 0)
+            {
+                machine = new HashSet<Cell>();
+                double x0 = pts.Min(q => q.X) - 2, x1 = pts.Max(q => q.X) + 2, z0 = pts.Min(q => q.Z) - 2, z1 = pts.Max(q => q.Z) + 2;
+                foreach (MachineInfo m in w.Machines)
+                {
+                    if ((own != null && own.Contains(m)) || m.X0 > x1 || m.X0 + m.W < x0 || m.Z0 > z1 || m.Z0 + m.H < z0) continue;
+                    for (int x = m.X0; x < m.X0 + m.W; x++)
+                        for (int z = m.Z0; z < m.Z0 + m.H; z++) machine.Add(new Cell(x, z));
+                }
+            }
+            bool Ok(V2 from, V2 to)
+            {
+                if (w == null) return true;
+                Cell cf = from.Floor, ct = to.Floor;
+                if (!w.IsWalkable(ct) || (within != null && !within.Contains(ct))) return false;
+                if (ct != cf && (w.IsFurniture(ct) || (w.IsDoor(ct) && !w.IsDoor(cf)) || (machine != null && machine.Contains(ct)))) return false;
+                double c = w.Clearance(to);
+                return c >= LayParams.RC || c >= w.Clearance(from) - 1e-6;
+            }
+            List<V2> X = Geo.Resample(pts, FairStep);
+            V2 first = pts[0], last = pts[pts.Count - 1];
+            int cuts = 0;
+            for (int round = 0; round < FairRounds; round++)
+            {
+                int n = X.Count;
+                if (n < 2 * FairK + 3) break;
+                double[] cum = Geo.CumLen(X);
+                double L = cum[n - 1];
+                var still = new bool[n];
+                for (int i = 0; i < n; i++) still[i] = i == 0 || i == n - 1 || cum[i] < pinA || cum[i] > L - pinB;
+                List<CordShapeAudit.Bend> bends = CordShapeAudit.Bends(X);
+                // a loop too tight to be a broad one is taken out whole where the cord crosses itself: drawn in, it only pinches into a teardrop
+                bool cut = false;
+                foreach (CordShapeAudit.Bend b in bends)
+                {
+                    if (!cutLoops || b.Round < CordShapeAudit.LoopDeg || b.IsLoop || cuts >= 8) continue;
+                    double half = 0.5 * b.Round * Math.PI / 180 * b.RoundR + 0.3;
+                    int lo = 0, hi = n - 1;
+                    while (lo < n - 1 && cum[lo] < b.S - half) lo++;
+                    while (hi > 0 && cum[hi] > b.S + half) hi--;
+                    int bi = -1, bj = -1;
+                    V2 at = default(V2);
+                    for (int i = Math.Max(lo, 1); i < hi; i++)
+                        for (int j = hi - 1; j > i + 2 && (bj < 0 || j - i > bj - bi); j--)
+                            if (!still[i] && !still[j + 1] && Cross(X[i], X[i + 1], X[j], X[j + 1], out V2 c)) { bi = i; bj = j; at = c; break; }
+                    if (bi < 0) continue;
+                    var Xn = new List<V2>(X.GetRange(0, bi + 1)) { at };
+                    Xn.AddRange(X.GetRange(bj + 1, n - bj - 1));
+                    X = Geo.Resample(Xn, FairStep);
+                    cut = true;
+                    break;
+                }
+                if (cut) { cuts++; round--; continue; }
+                foreach (CordShapeAudit.Bend b in bends)
+                    if (b.IsLoop)
+                    {
+                        // the whole round stretch stays: a broad loop is the north star's own
+                        double half = 0.5 * b.Round * Math.PI / 180 * b.RoundR + 0.1;
+                        for (int i = 0; i < n; i++) if (Math.Abs(cum[i] - b.S) <= half) still[i] = true;
+                    }
+                var h = new double[n];
+                var Y = new V2[n];
+                var Z = X.ToArray();
+                bool moved = false;
+                for (int it = 0; it < FairIters; it++)
+                {
+                    bool any = false;
+                    Array.Clear(h, 0, n);
+                    for (int i = FairK; i < n - FairK; i++)
+                    {
+                        if (still[i] || Radius(Z[i - FairK], Z[i], Z[i + FairK]) >= FairR) continue;
+                        any = true;
+                        for (int j = Math.Max(1, i - 2 * FairK); j <= Math.Min(n - 2, i + 2 * FairK); j++) h[j] = Math.Max(h[j], 1 - Math.Abs(i - j) / (2.0 * FairK + 1));
+                    }
+                    if (!any) break;
+                    Array.Copy(Z, Y, n);
+                    for (int i = 1; i < n - 1; i++)
+                    {
+                        if (h[i] <= 0 || still[i]) continue;
+                        int a = Math.Max(0, i - FairK), b = Math.Min(n - 1, i + FairK);
+                        V2 m = Y[a];
+                        for (int j = a + 1; j <= b; j++) m = m + Y[j];
+                        V2 q = Y[i] + (m * (1.0 / (b - a + 1)) - Y[i]) * (0.5 * h[i]);
+                        if (Ok(Y[i], q)) { Z[i] = q; moved = true; }
+                    }
+                }
+                if (!moved) break;
+                X = Geo.Resample(Z, FairStep);
+            }
+            X[0] = first;
+            X[X.Count - 1] = last;
+            return X;
+        }
+        /// <summary><see cref="Fair"/>: no bend on open floor tighter than this (cells), read over +-<see cref="FairK"/> samples <see cref="FairStep"/> apart; <see cref="FairRounds"/> rounds of
+        /// <see cref="FairIters"/> steps, resampled between rounds so a drawn-in bend is read over the same arc again.</summary>
+        public const double FairR = 0.7, FairStep = 0.05;
+        private const int FairK = 6, FairIters = 12, FairRounds = 8;
+
+        private static bool Cross(V2 a, V2 b, V2 c, V2 d, out V2 at)
+        {
+            at = default(V2);
+            double rx = b.X - a.X, rz = b.Z - a.Z, sx = d.X - c.X, sz = d.Z - c.Z, den = rx * sz - rz * sx;
+            if (Math.Abs(den) < 1e-12) return false;
+            double t = ((c.X - a.X) * sz - (c.Z - a.Z) * sx) / den, u = ((c.X - a.X) * rz - (c.Z - a.Z) * rx) / den;
+            if (t < 0 || t > 1 || u < 0 || u > 1) return false;
+            at = new V2(a.X + rx * t, a.Z + rz * t);
+            return true;
+        }
+
+        private static double Radius(V2 a, V2 b, V2 c)
+        {
+            double cross = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X));
+            return cross < 1e-12 ? double.MaxValue : V2.Dist(a, b) * V2.Dist(b, c) * V2.Dist(c, a) / (2 * cross);
+        }
+
+        // ---------------------------------------------------------------- an end that comes round, never hooks
+        /// <summary>The shortest way from one pose to another that turns no tighter than a radius (Dubins 1957; the six words after A. Walker's dubins.c). Headings are radians from +X toward +Z;
+        /// L turns that way, R the other. A path's three numbers are its segments' lengths in radii.</summary>
+        internal static class Dubins
+        {
+            internal struct Path
+            {
+                public int Word;
+                public double T, P, Q, R;
+                public double Len => (T + P + Q) * R;
+                /// <summary>Radians turned in all.</summary>
+                public double Turning => T + Q + (Word >= 4 ? P : 0);
+            }
+            // LSL, LSR, RSL, RSR, RLR, LRL
+            private static readonly string[] Words = { "LSL", "LSR", "RSL", "RSR", "RLR", "LRL" };
+            private static double Mod2Pi(double a) { a %= 2 * Math.PI; return a < 0 ? a + 2 * Math.PI : a; }
+
+            internal static List<Path> All(V2 a, double ha, V2 b, double hb, double r)
+            {
+                var o = new List<Path>();
+                double dx = b.X - a.X, dz = b.Z - a.Z, D = Math.Sqrt(dx * dx + dz * dz), d = D / r;
+                double th = D > 1e-9 ? Mod2Pi(Math.Atan2(dz, dx)) : 0, al = Mod2Pi(ha - th), be = Mod2Pi(hb - th);
+                double sa = Math.Sin(al), sb = Math.Sin(be), ca = Math.Cos(al), cb = Math.Cos(be), cab = Math.Cos(al - be), d2 = d * d;
+                void Add(int word, double t, double p, double q) => o.Add(new Path { Word = word, T = t, P = p, Q = q, R = r });
+                double ps = 2 + d2 - 2 * cab + 2 * d * (sa - sb);                     // LSL
+                if (ps >= 0) { double t1 = Math.Atan2(cb - ca, d + sa - sb); Add(0, Mod2Pi(t1 - al), Math.Sqrt(ps), Mod2Pi(be - t1)); }
+                ps = -2 + d2 + 2 * cab + 2 * d * (sa + sb);                            // LSR
+                if (ps >= 0) { double p = Math.Sqrt(ps), t0 = Math.Atan2(-ca - cb, d + sa + sb) - Math.Atan2(-2.0, p); Add(1, Mod2Pi(t0 - al), p, Mod2Pi(t0 - be)); }
+                ps = -2 + d2 + 2 * cab - 2 * d * (sa + sb);                            // RSL
+                if (ps >= 0) { double p = Math.Sqrt(ps), t0 = Math.Atan2(ca + cb, d - sa - sb) - Math.Atan2(2.0, p); Add(2, Mod2Pi(al - t0), p, Mod2Pi(be - t0)); }
+                ps = 2 + d2 - 2 * cab + 2 * d * (sb - sa);                             // RSR
+                if (ps >= 0) { double t1 = Math.Atan2(ca - cb, d - sa + sb); Add(3, Mod2Pi(al - t1), Math.Sqrt(ps), Mod2Pi(t1 - be)); }
+                double c = (6 - d2 + 2 * cab + 2 * d * (sa - sb)) / 8;                 // RLR
+                if (Math.Abs(c) <= 1) { double phi = Math.Atan2(ca - cb, d - sa + sb), p = Mod2Pi(2 * Math.PI - Math.Acos(c)), t = Mod2Pi(al - phi + Mod2Pi(p / 2)); Add(4, t, p, Mod2Pi(al - be - t + p)); }
+                c = (6 - d2 + 2 * cab + 2 * d * (sb - sa)) / 8;                        // LRL
+                if (Math.Abs(c) <= 1) { double phi = Math.Atan2(ca - cb, d + sa - sb), p = Mod2Pi(2 * Math.PI - Math.Acos(c)), t = Mod2Pi(-al - phi + p / 2); Add(5, t, p, Mod2Pi(be - al - t + p)); }
+                return o;
+            }
+
+            /// <summary>The path's points from <paramref name="a"/> (left out) to its end, <paramref name="step"/> cells apart.</summary>
+            internal static List<V2> Sample(V2 a, double ha, Path p, double step)
+            {
+                var o = new List<V2>();
+                string w = Words[p.Word];
+                double x = a.X, z = a.Z, h = ha;
+                double[] len = { p.T * p.R, p.P * p.R, p.Q * p.R };
+                for (int sgi = 0; sgi < 3; sgi++)
+                {
+                    char k = w[sgi];
+                    int m = Math.Max(1, (int)Math.Ceiling(len[sgi] / step));
+                    double ds = len[sgi] / m;
+                    for (int i = 0; i < m; i++)
+                    {
+                        if (k == 'S') { x += Math.Cos(h) * ds; z += Math.Sin(h) * ds; }
+                        else
+                        {
+                            double turn = (k == 'L' ? 1 : -1) * ds / p.R, h1 = h + turn;
+                            // along the arc exactly: the chord at the mean heading
+                            double chord = 2 * p.R * Math.Sin(Math.Abs(turn) / 2), hm = h + turn / 2;
+                            x += Math.Cos(hm) * chord; z += Math.Sin(hm) * chord;
+                            h = h1;
+                        }
+                        if (len[sgi] > 1e-9) o.Add(new V2(x, z));
+                    }
+                }
+                return o;
+            }
+        }
+
+        /// <summary>The radii an end tries to come round at, widest first (cells): <see cref="FairR"/> and wider is never read as a sharp bend.</summary>
+        public static readonly double[] ArriveRadii = { 0.78, 0.62, 0.5, 0.4, 0.3 };
+
+        /// <summary>Lay one end of a strand so it comes round to its fitting at no tighter than <see cref="ArriveRadii"/> (a Dubins path from a point on the laid cord to the start of the
+        /// fitting's straight bit), never the hook the old approach drew in the last half cell when the cord came from the wrong side. Of every cut back along the cord (from half a cell
+        /// to six tenths of it, at most three cells) the one that turns least is kept, so a cord that ran on past its plug and wrapped round to it is cut where it first came by.
+        /// <paramref name="clear"/> says where a point may lie. Null when no clear path is found at any radius; <paramref name="turning"/> is that path's turn, radians.</summary>
+        internal static List<V2> ArriveRound(List<V2> P, bool atEnd, V2 target, V2 arrive, double straight, Func<V2, bool> clear, out double turning, double keepFar = 0.5)
+        {
+            turning = double.MaxValue;
+            var Q = new List<V2>(P);
+            if (!atEnd) Q.Reverse();
+            if (Q.Count < 4) return null;
+            arrive = arrive.Norm();
+            double[] cum = Geo.CumLen(Q);
+            double L = cum[cum.Length - 1];
+            V2 E = target - arrive * straight;
+            double he = Math.Atan2(arrive.Z, arrive.X);
+            // a short lead (a junction box right beside its machine) may be laid again whole, from just off its other end
+            // never into the other end's own fitted run (<paramref name="keepFar"/>: a cut end's straight live run or limp curl, another fitting's straight bit)
+            double sMin = Math.Min(0.5, 0.35 * L), sMax = Math.Min(3.0, Math.Min(Math.Max(0.6 * L, L - 0.3), L - keepFar));
+            if (sMax < sMin) return null;
+            foreach (double r in ArriveRadii)
+            {
+                List<V2> best = null;
+                double bestCost = double.MaxValue;
+                int bestJ = -1;
+                for (double back = sMin; back <= sMax + 1e-9; back += 0.1)
+                {
+                    int j = Array.BinarySearch(cum, L - back);
+                    if (j < 0) j = ~j;
+                    j = Math.Max(1, Math.Min(j, Q.Count - 2));
+                    V2 a = Q[j], t = Q[j] - Q[j - 1];
+                    if (t.Len < 1e-9) continue;
+                    double ha = Math.Atan2(t.Z, t.X);
+                    foreach (Dubins.Path dp in Dubins.All(a, ha, E, he, r))
+                    {
+                        // a path that turns little reads as the cord coming in; one that loops round to get there is a coil it did not have
+                        double cost = dp.Turning + 0.15 * Math.Abs(dp.Len - back);
+                        if (cost >= bestCost || dp.Turning > 1.5 * Math.PI) continue;
+                        List<V2> pts = Dubins.Sample(a, ha, dp, 0.05);
+                        if (pts.Any(q => !clear(q))) continue;
+                        best = pts; bestCost = cost; bestJ = j; turning = dp.Turning;
+                    }
+                }
+                if (best == null) continue;
+                var R = Q.GetRange(0, bestJ + 1);
+                R.AddRange(best);
+                int ns = Math.Max(1, (int)Math.Round(straight / 0.05));
+                for (int q = 1; q <= ns; q++) R.Add(E + arrive * (straight * q / ns));
+                R[R.Count - 1] = target;
+                if (!atEnd) R.Reverse();
+                return R;
+            }
+            turning = double.MaxValue;
+            return null;
+        }
+
         private const int PolishNeedleRounds = 6;
         private const double PolishNeedleReach = 0.4;
 

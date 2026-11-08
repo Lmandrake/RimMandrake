@@ -932,11 +932,13 @@ def live_battery(B, fresh_map=False, rows=None):
     # M2 is written after the break (M8) so it is evaluated on the post-break census too -- see there.
     row(rows, "M2b_no_vertex_unwalkable", "PASS" if c0.get("verticesInUnwalkable") == 0 and c0.get("interiorVertices", 0) > 0 else "FAIL",
         "MOD", {k: c0.get(k) for k in ("verticesInUnwalkable", "interiorVertices", "fellBack", "unroutable")})
-    # a cord folded back on itself draws a spike no rope can make; found only in a real colony (northstar/colony_scene.py)
-    kk = B.probe("kinks")
-    row(rows, "M2c_no_folded_cords", "UNMEASURED" if not kk.get("strands") else
-        ("PASS" if kk.get("kinks", 0) <= max(1, kk["strands"] // 20) else "FAIL"), "MOD" if kk.get("strands") else "HARNESS",
-        {"strands": kk.get("strands"), "folds": kk.get("kinks"), "where": (kk.get("rows") or [])[:6], "bar": "one in twenty, where the bend would leave open ground"})
+    # never_taut_straight_cord (owner 2026-11-07 7:07 PM, Conductor pass rule 2026-11-08 1:18 AM): no turn tighter than 90 degrees within one cell
+    # anywhere on a cord, ends included, that no wall, building, door or socket forces (CordShapeAudit.Bends; broad loops are the north star's own)
+    kk = (B.probe("bends") or {}).get("tally") or {}
+    row(rows, "M2c_no_sharp_bends", "UNMEASURED" if not kk.get("strands") else ("PASS" if kk.get("unforced", 1) == 0 else "FAIL"),
+        "MOD" if kk.get("strands") else "HARNESS",
+        {"strands": kk.get("strands"), "bends": kk.get("bends"), "unforced": kk.get("unforced"), "why": kk.get("why"),
+         "where": [r for r in (kk.get("rows") or []) if r.get("why") == "unforced"][:8], "bar": "zero unforced"})
     # ---------------------------------------------------------------- M6: hookup wire hidden, overlay intact
     m6 = (c0.get("hookupWiresSuppressed") or 0) > 0 and (c0.get("overlayConnectorVerts") or 0) > 0
     row(rows, "M6_overlay_lines_intact", "PASS" if m6 else "FAIL", "MOD",

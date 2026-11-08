@@ -272,6 +272,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     {
                         CordNode nd = g.Nodes[atA ? e.A : e.B];
                         if (nd.Type == NodeType.Tangle && nd.Cells != null) return nd.Cells.Any(c => V2.Dist(c.Centre, pt) < 0.75);
+                        // FairBends: a one-cell machine takes its plug on whichever side the cord comes round to, so the end is anywhere just off its cell
+                        MachineInfo m1 = nd.IsMachine ? nd.Machine : null;
+                        if (m1 != null && m1.W == 1 && m1.H == 1 && pt.X > m1.X0 - 0.3 && pt.X < m1.X0 + 1.3 && pt.Z > m1.Z0 - 0.3 && pt.Z < m1.Z0 + 1.3) return true;
                         return V2.Dist(atA ? e.PA : e.PB, pt) < 0.45 + CordBuilder.ArmTuck * (CordBuilder.JunctionScale - 1);
                     }
                     bool okA = g.CordEdges().Any(e => (At(e, true, a) && At(e, false, z)) || (At(e, false, a) && At(e, true, z)));

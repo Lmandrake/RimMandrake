@@ -85,7 +85,7 @@ DECLARED_ROWS = {
     "scenes": SCENE_ROWS,
     "statics": ["SC_statics_clear_between_games"],
     "preflight": ["P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_site_pinned_region_empty"],
-    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable", "M2c_no_folded_cords",
+    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable", "M2c_no_sharp_bends",
              "M1e_machine_on_inwall_run_draws_a_cord", "M1f_machine_on_hidden_conduit_draws_none",
              "M6_overlay_lines_intact", "M5_local_invalidation", "M8_break_two_ends_live_dead", "M2_cords_only_within_net",
              "B1_rope_settle", "B6_tangle_lit_strips", "B3c_spark_rides_whip", "B3_whip_live_ends", "B4_downed_wire_bursts",

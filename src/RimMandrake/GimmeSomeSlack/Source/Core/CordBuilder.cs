@@ -123,7 +123,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public sealed class BuildOptions
     {
-        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true, ShortBow = true };
+        internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true, ShortBow = true, FairBends = true };
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
@@ -964,7 +964,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     CordLayer.ProjectOut(w, P);
                 }
                 for (int k = 0; k < e.Knots.Count; k++)
-                    P = CordLayer.SpliceLoop(w, P, e.Knots[k], CordRng.Of(opt.Seed, "knot", key, i, k), 0.28 + 0.06 * i);
+                    P = CordLayer.SpliceLoop(w, P, e.Knots[k], CordRng.Of(opt.Seed, "knot", key, i, k), (prm.FairBends ? 0.5 : 0.28) + 0.06 * i);
                 // every end arrives the way its art expects (junction arm, plug, stub, conduit end)
                 P = AttachEnd(w, g, e, true, P, i, n, opt);
                 P = AttachEnd(w, g, e, false, P, i, n, opt);
@@ -981,6 +981,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 // the loops and the settle leave folds a cord cannot make: its ribbon spikes there (live, a real colony: 2.9 a strand)
                 if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
+                // a cord to a cut end keeps its old lay, as it keeps its length (ShortBow): its live run, limp curl and writhing tail are break_live_and_dead_ends_differ's art
+                bool cutEnd = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
+                if (!fell && prm.FairBends && !cutEnd) P = CordShape.Fair(w, P, FairPin(na, isLive), FairPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB));
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
@@ -1113,6 +1116,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         P = new List<V2>(C);
                         fell = true;
                     }
+                    if (!fell && prm.FairBends) P = CordShape.Fair(w, P, diveA ? 0.2 : FairPin(na, isLive), diveB ? 0.2 : FairPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB));
                     if (!diveA && na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
                     if (!diveB && nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
                     if (!diveA) P = PastFace(P, true, na);
@@ -1408,7 +1412,57 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 straight = 0.6;
             }
             else return P;
+            // a cut end keeps the old approach: its live end runs straight out of the conduit end and its dead end curls limp (break_live_and_dead_ends_differ)
+            CordNode farEnd = g.Nodes[atA ? e.B : e.A];
+            if (opt.Lay.FairBends && !(nd.Type == NodeType.Terminal && !nd.Seam) && !(farEnd.Type == NodeType.Terminal && !farEnd.Seam))
+            {
+                Func<V2, bool> clear = ArriveClear(w, P, target, nd.IsMachine ? nd.Machine : null);
+                CordNode farNd = g.Nodes[atA ? e.B : e.A];
+                double keepFar = farNd.Type == NodeType.Terminal && !farNd.Seam ? 1.2 : 0.5;
+                List<V2> round = CordShape.ArriveRound(P, !atA, target, arrive, straight, clear, out double turned, keepFar);
+                // a one-cell machine takes its plug on whichever side the cord comes round to with the least turn (the side that faces vanilla's hookup cell
+                // made a cord laid in from beside or below run past a standing lamp and hook back over its top: blind judge p15a, every look)
+                MachineInfo m = nd.IsMachine ? nd.Machine : null;
+                if (m != null && m.W == 1 && m.H == 1 && !m.HasHome)
+                    foreach (Cell side in new[] { new Cell(m.X0, m.Z0 + 1), new Cell(m.X0 + 1, m.Z0), new Cell(m.X0, m.Z0 - 1), new Cell(m.X0 - 1, m.Z0) })
+                    {
+                        V2 t2 = m.Kind == MachineKind.Lamp ? LampEntry(m, side.Centre) : CordGraph.PlugPoint(m, side, g.Slides(m));
+                        if (V2.Dist(t2, target) < 0.05 || !w.IsWalkable(t2.Floor)) continue;
+                        V2 a2 = IntoMachine(m, t2);
+                        if (g.Slides(m)) a2 = CordGraph.SlideArrive(m, t2, a2);
+                        List<V2> r2 = CordShape.ArriveRound(P, !atA, t2, a2, straight, ArriveClear(w, P, t2, m), out double turned2, keepFar);
+                        if (r2 != null && turned2 < turned - SideSwitchGain) { round = r2; turned = turned2; }
+                    }
+                if (round != null) return round;
+            }
             return CordLayer.Approach(w, P, !atA, target, arrive, straight, roomy);
+        }
+
+        /// <summary>A one-cell machine moves its plug to another side only for this much less turn (radians): where the hookup's own side comes round well, it stays.</summary>
+        private const double SideSwitchGain = 0.35;
+
+        /// <summary>Where a cord coming round to its fitting may lie: walkable ground clear of walls, not in under furniture, another machine or a door it did not already go through.
+        /// The last 0.3 cell before the fitting is the fitting's own ground (a wall plate sits at the face, a plug just off the art).</summary>
+        private static Func<V2, bool> ArriveClear(CordWorld w, List<V2> P, V2 target, MachineInfo own)
+        {
+            var doors = new HashSet<Cell>();
+            foreach (V2 q in P) if (w.IsDoor(q.Floor)) doors.Add(q.Floor);
+            // the other machines' cells within reach of this end (an end comes round inside three cells of its fitting)
+            var machine = new HashSet<Cell>();
+            foreach (MachineInfo m in w.Machines)
+            {
+                if (m == own || m.X0 > target.X + 4 || m.X0 + m.W < target.X - 4 || m.Z0 > target.Z + 4 || m.Z0 + m.H < target.Z - 4) continue;
+                for (int x = m.X0; x < m.X0 + m.W; x++)
+                    for (int z = m.Z0; z < m.Z0 + m.H; z++) machine.Add(new Cell(x, z));
+            }
+            return q =>
+            {
+                Cell c = q.Floor;
+                if (!w.IsWalkable(c)) return own != null && own.Contains(c) && V2.Dist(q, target) < 0.3;
+                if (V2.Dist(q, target) < 0.3) return true;
+                if (w.IsFurniture(c) || (w.IsDoor(c) && !doors.Contains(c)) || machine.Contains(c)) return false;
+                return w.Clearance(q) >= LayParams.RC;
+            };
         }
 
         /// <summary>Bend a cord that does not arrive from the sockets' side out through the given points, so it comes round to its
@@ -1681,6 +1735,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private const int SlackRetries = 6, SoftRetries = 3, SoftRetryPoints = 500;
 
         /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose, and a live end sticks straight out.</summary>
+        /// <summary>How much of a strand's end <see cref="CordShape.Fair"/> leaves as laid: a cut end's whole straight run or limp curl, else the fitting's own straight bit.</summary>
+        private static double FairPin(CordNode nd, Func<Cell, bool> isLive) =>
+            nd.Type == NodeType.Terminal && !nd.Seam ? (isLive(nd.Cell) ? 0.6 : 1.0) : 0.2;
+
         private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>
             (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam) ? 1.0 : 0.25;
 
@@ -1905,7 +1963,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     int j = r.Int(P.Count / 3, 2 * P.Count / 3);
                     var win = P.GetRange(Math.Max(0, j - 2), Math.Min(P.Count, j + 3) - Math.Max(0, j - 2));
                     Geo.TanNorm(win, win.Count / 2, out V2 t, out V2 nn);
-                    var hp = CordLayer.Heap(P[j], t, nn, r.Range(0.2, 0.4), r.Sign(), r);
+                    // with FairBends a heap's spare turns are loose and broad (the owner: "what they avoid are sharp curves"), not a tight spring reversing at every turn
+                    var hp = opt.Lay.FairBends ? CordLayer.LooseHeap(P[j], t, nn, r.Range(CordLayer.RoundLoopMinR, 0.7), r.Sign(), r) : CordLayer.Heap(P[j], t, nn, r.Range(0.2, 0.4), r.Sign(), r);
+                    // a broad turn that would leave the heap's ground is left out, not the whole cable (a strip lost a plugged cable: B13, pile look rule 1)
+                    if (opt.Lay.FairBends && !hp.All(q => compSet.Contains(q.Floor))) continue;
                     var o = new List<V2>(P.GetRange(0, j));
                     o.AddRange(hp);
                     o.AddRange(P.GetRange(j + 1, P.Count - j - 1));
@@ -1915,6 +1976,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 CordLayer.Smooth(w, P, 3);
                 P[0] = pa.Tip; P[P.Count - 1] = pb.Tip;
                 P = CordShape.Unfold(w, P);
+                if (opt.Lay.FairBends) P = CordShape.Fair(w, P, 0.22, 0.22, null, compSet, cutLoops: false);
                 if (!P.All(q => compSet.Contains(q.Floor))) continue;
                 p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
                 used.Add(a); used.Add(b);

@@ -69,6 +69,200 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return best;
         }
 
+        // ---------------------------------------------------------------- never_taut_straight_cord: sharp bends over the whole cord
+        /// <summary>The owner, 2026-11-07 7:07 PM: "cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must". The Conductor's
+        /// pass rule (2026-11-08 1:18 AM): no turn tighter than about 90 degrees within one cell, anywhere on a cord, ends included, that no wall, building or socket forces.
+        /// A bend is a stretch of cord whose heading turns past <see cref="BendDeg"/> within <see cref="BendArc"/> of its length (the turn summed with its sign, so an S does not add up).
+        /// A broad loop, the cord coming round <see cref="LoopDeg"/> or more one way at a radius of <see cref="LoopKeepR"/> or wider, is the north star's own loop, not a bend.</summary>
+        public const double BendDeg = 90, BendArc = 1.0, BendStep = 0.05, LoopDeg = 300, LoopKeepR = 0.45;
+
+        internal struct Bend
+        {
+            /// <summary>The sharpest point; how far along the cord it is and from its nearer end; whether that end is the strand's first.</summary>
+            public V2 Apex;
+            public double S, FromEnd;
+            public bool NearFirst;
+            /// <summary>Degrees the heading turns over the bend; its arc (cells); the sharpest turn over 0.2 cell round the apex.</summary>
+            public double Turn, Arc, Sharp;
+            /// <summary>Degrees the cord keeps turning one way through it, and the radius of that stretch: a loop comes round 300 or more.</summary>
+            public double Round, RoundR;
+            public bool IsLoop => Round >= LoopDeg && RoundR >= LoopKeepR;
+        }
+
+        private static double SignedTurn(V2 u, V2 v)
+        {
+            if (u.Len < 1e-9 || v.Len < 1e-9) return 0;
+            return Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z);
+        }
+
+        /// <summary>Every bend of a strand, ends included (<see cref="BendDeg"/> within <see cref="BendArc"/>).</summary>
+        internal static List<Bend> Bends(List<V2> pts)
+        {
+            var o = new List<Bend>();
+            if (pts == null || pts.Count < 3) return o;
+            List<V2> q = Geo.Resample(pts, BendStep);
+            int n = q.Count;
+            if (n < 4) return o;
+            var t = new double[n];
+            for (int k = 1; k < n - 1; k++) t[k] = SignedTurn(q[k] - q[k - 1], q[k + 1] - q[k]);
+            double[] cum = Geo.CumLen(q);
+            double L = cum[n - 1], thr = BendDeg * Math.PI / 180;
+            int win = Math.Max(2, (int)Math.Round(BendArc / BendStep));
+            var mark = new bool[n];
+            for (int i = 1; i < n - 1; i++)
+            {
+                double sum = 0;
+                for (int j = i; j < Math.Min(n - 1, i + win); j++)
+                {
+                    sum += t[j];
+                    if (Math.Abs(sum) > thr) { for (int k = i; k <= j; k++) mark[k] = true; break; }
+                }
+            }
+            int w2 = Math.Max(1, (int)Math.Round(0.1 / BendStep));
+            for (int k = 0; k < n; k++)
+            {
+                if (!mark[k]) continue;
+                int j = k;
+                while (j + 1 < n && mark[j + 1]) j++;
+                double tot = 0;
+                for (int m = k; m <= j; m++) tot += t[m];
+                double best = -1;
+                int apex = k;
+                for (int m = k; m <= j; m++)
+                {
+                    double v = 0;
+                    for (int r = Math.Max(1, m - w2); r <= Math.Min(n - 2, m + w2); r++) v += t[r];
+                    if (Math.Abs(v) > best) { best = Math.Abs(v); apex = m; }
+                }
+                // how far the turning keeps one way round it: a coil goes round, a hairpin stops
+                int lo = k, hi = j, sg = tot >= 0 ? 1 : -1;
+                while (lo > 1 && t[lo - 1] * sg > -0.02) lo--;
+                while (hi < n - 2 && t[hi + 1] * sg > -0.02) hi++;
+                double oneway = 0;
+                for (int m = lo; m <= hi; m++) oneway += t[m];
+                oneway = Math.Abs(oneway);
+                o.Add(new Bend
+                {
+                    Apex = q[apex], S = cum[apex], FromEnd = Math.Min(cum[apex], L - cum[apex]), NearFirst = cum[apex] <= L - cum[apex],
+                    Turn = Math.Abs(tot) * 180 / Math.PI, Arc = cum[j] - cum[k], Sharp = best * 180 / Math.PI,
+                    Round = oneway * 180 / Math.PI, RoundR = oneway > 1e-6 ? (cum[hi] - cum[lo]) / oneway : 99
+                });
+                k = j;
+            }
+            return o;
+        }
+
+        /// <summary>What a bend is, for the bar: "loop" (a broad loop, the north star's own), "hidden" (under a wall or the art of the machine the cord plugs into), "wall" or "building"
+        /// (within <see cref="ForceNear"/> of an unwalkable cell, another machine or furniture: it makes the cord bend), "door" (the cord goes through one straight), "socket" (within
+        /// <see cref="SocketReach"/> of an end whose fitting faces a fixed way, a junction arm, a strip socket, a wall plate or a pile port, when the cord's course from there lies
+        /// <see cref="BendDeg"/> or more off that facing), "limp" (a dead end's curl, the art of break_live_and_dead_ends_differ), or "unforced". A machine's plug is never a socket:
+        /// the mod chooses which side a cord goes in by, so a hook there is a fault.</summary>
+        internal static string Why(CordWorld w, string endA, string endB, List<V2> pts, Bend b)
+        {
+            if (b.IsLoop) return "loop";
+            string end = b.NearFirst ? endA : endB;
+            string kind = end == null ? "pile" : end.Split(':')[0];
+            List<MachineInfo> own = w == null ? new List<MachineInfo>() : OwnMachines(w, endA, endB);
+            V2 a = b.Apex;
+            if (w != null)
+            {
+                if (!w.IsWalkable(a.Floor)) return "hidden";
+                foreach (MachineInfo m in own)
+                    if (InArt(m, a)) return "hidden";
+                if (kind == "terminal" && b.FromEnd <= LimpReach) return "limp";
+                if (NearCell(a, ForceNear, c => !w.IsWalkable(c))) return "wall";
+                if (NearCell(a, ForceNear, c => w.IsFurniture(c)) || w.Machines.Any(m => !own.Contains(m) && RectDist(m.X0, m.Z0, m.W, m.H, a) <= ForceNear)) return "building";
+                if (NearCell(a, DoorNear, c => w.IsDoor(c))) return "door";
+            }
+            bool socket = kind == "junction" || kind.StartsWith("stub_", StringComparison.Ordinal) || kind == "tangle" || kind == "pile" || kind == "terminal";
+            if (socket && b.FromEnd <= SocketReach && NeededTurn(pts, b.NearFirst) >= BendDeg) return "socket";
+            return "unforced";
+        }
+        public const double ForceNear = 0.3, DoorNear = 0.6, SocketReach = 0.75, LimpReach = 1.0;
+
+        /// <summary>Degrees between the way a strand leaves one end (its first 0.15 cell) and the way its course runs from there (to the point 1.5 cells on, or 0.6 of it on a short cord).</summary>
+        internal static double NeededTurn(List<V2> pts, bool first)
+        {
+            var q = new List<V2>(pts);
+            if (!first) q.Reverse();
+            double[] cum = Geo.CumLen(q);
+            double L = cum[cum.Length - 1];
+            V2 At(double s)
+            {
+                for (int i = 1; i < q.Count; i++) if (cum[i] >= s) return q[i];
+                return q[q.Count - 1];
+            }
+            V2 leave = At(0.15) - q[0], course = At(Math.Min(1.5, 0.6 * L)) - q[0];
+            if (leave.Len < 1e-9 || course.Len < 1e-9) return 0;
+            return Math.Abs(SignedTurn(leave, course)) * 180 / Math.PI;
+        }
+
+        private static bool NearCell(V2 p, double r, Func<Cell, bool> hit)
+        {
+            for (int cx = (int)Math.Floor(p.X - r); cx <= (int)Math.Floor(p.X + r); cx++)
+                for (int cz = (int)Math.Floor(p.Z - r); cz <= (int)Math.Floor(p.Z + r); cz++)
+                    if (hit(new Cell(cx, cz)) && RectDist(cx, cz, 1, 1, p) <= r) return true;
+            return false;
+        }
+
+        private static double RectDist(int x0, int z0, int w, int h, V2 p)
+        {
+            double dx = Math.Max(Math.Max(x0 - p.X, 0), p.X - (x0 + w)), dz = Math.Max(Math.Max(z0 - p.Z, 0), p.Z - (z0 + h));
+            return Math.Sqrt(dx * dx + dz * dz);
+        }
+
+        /// <summary>Inside the drawn art of a machine: its footprint less the art's insets.</summary>
+        private static bool InArt(MachineInfo m, V2 p) =>
+            p.X >= m.X0 + m.InsetW && p.X <= m.X0 + m.W - m.InsetE && p.Z >= m.Z0 + m.InsetS && p.Z <= m.Z0 + m.H - m.InsetN;
+
+        /// <summary>The machines a piece's two ends name (their cell inside the footprint, or one of its hookups).</summary>
+        internal static List<MachineInfo> OwnMachines(CordWorld w, string endA, string endB)
+        {
+            var o = new List<MachineInfo>();
+            foreach (string e in new[] { endA, endB })
+            {
+                if (e == null) continue;
+                int c = e.IndexOf(':');
+                if (c < 0) continue;
+                string[] xy = e.Substring(c + 1).Split(',');
+                if (xy.Length < 2 || !int.TryParse(xy[0], out int x) || !int.TryParse(xy[1], out int z)) continue;
+                var cell = new Cell(x, z);
+                foreach (MachineInfo m in w.Machines)
+                    if ((m.Contains(cell) || m.Hookups.Contains(cell)) && !o.Contains(m)) o.Add(m);
+            }
+            return o;
+        }
+
+        /// <summary>The bar's count over a set of pieces: every bend with what it is, the unforced ones first.</summary>
+        public sealed class BendTally
+        {
+            public int Strands, Bends, Unforced;
+            public readonly Dictionary<string, int> ByWhy = new Dictionary<string, int>();
+            private readonly List<string> rows = new List<string>();
+            private static string F(double d) => d.ToString("0.00", CultureInfo.InvariantCulture);
+
+            internal void Add(CordWorld w, LaidPiece p, CordStrand s)
+            {
+                if (s.Pts == null || s.Pts.Count < 3 || s.Lifted) return;
+                Strands++;
+                string name = p.EndA == null ? p.Key : p.EndA + "|" + p.EndB;
+                foreach (Bend b in CordShapeAudit.Bends(s.Pts))
+                {
+                    string why = Why(w, p.EndA, p.EndB, s.Pts, b);
+                    Bends++;
+                    ByWhy[why] = ByWhy.TryGetValue(why, out int k) ? k + 1 : 1;
+                    if (why == "unforced") Unforced++;
+                    if (rows.Count < 300 && why != "loop")
+                        rows.Add("{\"why\":\"" + why + "\",\"x\":" + F(b.Apex.X) + ",\"z\":" + F(b.Apex.Z) + ",\"turn\":" + F(b.Turn) + ",\"arc\":" + F(b.Arc) + ",\"sharp\":" + F(b.Sharp)
+                                 + ",\"fromEnd\":" + F(b.FromEnd) + ",\"piece\":\"" + name + "\"}");
+                }
+            }
+
+            public string Json() => "{\"strands\":" + Strands + ",\"bends\":" + Bends + ",\"unforced\":" + Unforced + ",\"why\":{" +
+                                     string.Join(",", ByWhy.OrderBy(kv => kv.Key, StringComparer.Ordinal).Select(kv => "\"" + kv.Key + "\":" + kv.Value)) + "},\"rows\":[" +
+                                     string.Join(",", rows.OrderBy(r => r.StartsWith("{\"why\":\"unforced\"", StringComparison.Ordinal) ? 0 : 1)) + "]}";
+        }
+
         public sealed class Tally
         {
             public int Strands, SharpStrands, Corners, Rods;

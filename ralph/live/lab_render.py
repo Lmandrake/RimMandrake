@@ -12,6 +12,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("world"); ap.add_argument("laid"); ap.add_argument("out"); ap.add_argument("rect")
 ap.add_argument("--ppc", type=int, default=64)
 ap.add_argument("--no-marks", action="store_true")
+ap.add_argument("--sharp", default="", help="lab_sharp.py --json output: unforced bends ringed red, forced ringed grey, loops ringed blue, the old audit marks off")
 a = ap.parse_args()
 W = json.load(open(a.world)); L = json.load(open(a.laid))
 x0, z0, w, h = [int(v) for v in a.rect.split(",")]
@@ -70,7 +71,13 @@ for p in L["pieces"]:
         else:
             q = 0.06 * ppc
             d.ellipse([c[0] - q, c[1] - q, c[0] + q, c[1] + q], fill=(20, 20, 20, 200))
-if not a.no_marks:
+if a.sharp:
+    for r in json.load(open(a.sharp)):
+        c = px(*r["apex"])
+        q = 0.22 * ppc
+        col = (150, 150, 150) if r["forced"] else (60, 120, 255) if r["cls"] == "loop" else (255, 30, 30)
+        d.ellipse([c[0] - q, c[1] - q, c[0] + q, c[1] + q], outline=col, width=3 * S)
+if not a.no_marks and not a.sharp:
     for r in L["audit"]["rows"]:
         if "sharp" in r:
             c = px(*r["sharp"])
