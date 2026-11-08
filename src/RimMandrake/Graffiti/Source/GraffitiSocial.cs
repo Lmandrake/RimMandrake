@@ -516,7 +516,10 @@ namespace RimMandrake.Graffiti
             // log (live 2026-11-07: "Mo glared at BW's tag" three times in 360 ticks). Events (a mockery read, a tribute) always log.
             if (log != null && RM_GraffitiKernel.LogsOncePerDay(reaction) && LoggedToday(v, maker, reaction)) log = null;
             if (log != null) Log(v, maker, string.Format(log, v.LabelShort, makerName));
-            if (log != null && RM_GraffitiKernel.Announces(reaction) && RM_GraffitiSettings.socialMessagesEnabled && PawnUtility.ShouldSendNotificationAbout(v))
+            // Grief is one story per death, not one line per mourner: live 2026-11-08, Brick's death sent seven messages in an hour as each
+            // colonist stopped at each of his two memorials. The first mourner of the day speaks for the rest; the others keep it in their log.
+            if (log != null && RM_GraffitiKernel.Announces(reaction) && RM_GraffitiSettings.socialMessagesEnabled && PawnUtility.ShouldSendNotificationAbout(v)
+                && !(reaction == RM_Reaction.Mourning && subject != null && MournedAloudToday(subject)))
             {
                 Tell(string.Format(log, v.LabelShort, makerName), WallTarget(m), reaction == RM_Reaction.Humiliated ? MessageTypeDefOf.NegativeEvent : MessageTypeDefOf.SilentInput, historical: true);
             }
@@ -536,6 +539,17 @@ namespace RimMandrake.Graffiti
         }
 
         private static readonly Dictionary<long, int> lastLogged = new Dictionary<long, int>();
+
+        private static readonly Dictionary<int, int> lastMournedAloud = new Dictionary<int, int>();
+
+        /// <summary>Has someone's grief for this dead pawn already reached the player in the last day? Records it if not.</summary>
+        private static bool MournedAloudToday(Pawn dead)
+        {
+            int now = Find.TickManager.TicksGame;
+            if (lastMournedAloud.TryGetValue(dead.thingIDNumber, out int at) && at <= now && now - at < GenDate.TicksPerDay) return true;
+            lastMournedAloud[dead.thingIDNumber] = now;
+            return false;
+        }
 
         /// <summary>Has this reader already had this kind of feeling about this painter's marks logged in the last day? Records it if not.</summary>
         private static bool LoggedToday(Pawn v, Pawn maker, RM_Reaction reaction)
@@ -751,6 +765,27 @@ namespace RimMandrake.Graffiti
             return grief;
         }
 
+        private static readonly Dictionary<int, List<Pawn>> spreeOver = new Dictionary<int, List<Pawn>>();
+
+        private static void NoteSpreeOver(Pawn by, Pawn maker)
+        {
+            if (!spreeOver.TryGetValue(by.thingIDNumber, out List<Pawn> makers)) spreeOver[by.thingIDNumber] = makers = new List<Pawn>();
+            makers.Add(maker);
+        }
+
+        /// <summary>A painting spree is over: whose work it went over, in one message, if any. Called from MentalState_GraffitiSpree.PostEnd.</summary>
+        internal static void SpreeEnded(Pawn by)
+        {
+            if (by == null || !spreeOver.TryGetValue(by.thingIDNumber, out List<Pawn> makers)) return;
+            spreeOver.Remove(by.thingIDNumber);
+            if (makers.Count == 0 || !RM_GraffitiSettings.socialMessagesEnabled || !by.Spawned) return;
+            List<string> names = makers.Distinct().Select(p => p.LabelShort).ToList();
+            string whose = names.Count == 1 ? names[0] : string.Join(", ", names.Take(names.Count - 1)) + " and " + names.Last();
+            var at = new List<GlobalTargetInfo> { by };
+            at.AddRange(makers.Distinct().Where(p => p.Spawned).Select(p => (GlobalTargetInfo)p));
+            Tell(by.LabelShort + "'s spree went over " + makers.Count + (makers.Count == 1 ? " mark" : " marks") + " of " + whose + "'s work.", new LookTargets(at), MessageTypeDefOf.NegativeEvent);
+        }
+
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
         internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false)
         {
@@ -759,8 +794,14 @@ namespace RimMandrake.Graffiti
             if (GraffitiTemperament.IsNumb(maker)) return;
             GraffitiTemperament.Give(maker, T.RM_Graffiti_WorkDestroyed, by);
             if (by != null) GraffitiTemperament.Give(maker, T.RM_Graffiti_DestroyedMyWork, by);
-            Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.");
-            if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned && !quiet)
+            // Live 2026-11-08: a three-colonist spree sent sixteen "X painted over Y's work" in five hours, one twice on one tick (a mark over two
+            // of the same hand's). A spree is one story, told once when it ends (SpreeEnded); otherwise one painter over one maker's work is
+            // told once a day. The maker's anger and grudge come every time, as before.
+            bool spree = by != null && by.InMentalState;
+            if (spree) NoteSpreeOver(by, maker);
+            bool toldToday = by != null && LoggedToday(maker, by, RM_Reaction.WorkDestroyed);
+            if (!toldToday) Log(maker, by, (by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.");
+            if (RM_GraffitiSettings.socialMessagesEnabled && maker.Spawned && !quiet && !spree && !toldToday)
             {
                 Tell((by?.LabelShort ?? "Someone") + " painted over " + maker.LabelShort + "'s work.", WallTarget(under), MessageTypeDefOf.SilentInput);
             }

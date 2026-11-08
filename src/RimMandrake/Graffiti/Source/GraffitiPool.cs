@@ -148,6 +148,7 @@ namespace RimMandrake.Graffiti
         private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer, float maxWidth, IntVec3? at)
         {
             HashSet<ThingDef> near = at.HasValue && placer?.Map != null ? DefsNear(at.Value, placer.Map) : null;
+            bool edgeOn = at.HasValue && placer?.Map != null && RM_GraffitiKernel.EdgeOn(RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(at.Value, placer.Map)));
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
             int level = placer?.skills?.GetSkill(SkillDefOf.Artistic)?.Level ?? 0;
@@ -155,6 +156,7 @@ namespace RimMandrake.Graffiti
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
                 if (ext == null || !filter(ext) || FitWidthOf(d) > maxWidth) continue;
+                if (edgeOn && !RM_GraffitiKernel.ReadsEdgeOn(ext.form, ext.edgeOn, ext.hasSubject)) continue;
                 if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
                 float w = ext.poolWeight * RM_GraffitiKernel.FormAffinity(ext.form, level);

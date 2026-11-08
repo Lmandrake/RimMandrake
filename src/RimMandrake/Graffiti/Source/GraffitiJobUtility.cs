@@ -60,17 +60,13 @@ namespace RimMandrake.Graffiti
         {
             Map map = pawn.Map;
             float need = GraffitiPool.WidthOf(RMGraffitiDefOf.RM_Graffiti_Mockery);
-            IntVec3 fallback = IntVec3.Invalid, edge = IntVec3.Invalid;
+            IntVec3 fallback = IntVec3.Invalid;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, ReplyRadius, useCenter: true))
             {
                 if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map) || !pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.Some)) continue;
                 if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, against))) continue;
                 bool marked = AlreadyMarked(c, map);
-                if (!OnFace(c, map))
-                {
-                    if (!marked && !edge.IsValid) edge = c;     // a wall seen edge-on: only if no face is near (TryFindMeaningCell)
-                    continue;
-                }
+                if (!OnFace(c, map)) continue;     // a wall seen edge-on would turn the reply's head into a blot (TryFindMeaningCell)
                 if (!marked)
                 {
                     result = c;
@@ -78,7 +74,7 @@ namespace RimMandrake.Graffiti
                 }
                 if (!fallback.IsValid) fallback = c;     // over the top of the answered pawn's own mark
             }
-            result = fallback.IsValid ? fallback : edge;
+            result = fallback;
             return result.IsValid;
         }
 
@@ -99,16 +95,17 @@ namespace RimMandrake.Graffiti
                 centres.Add(subject.Position);
             }
             centres.Add(pawn.Position);
-            // A message is painted where it will be read: a wall's face, not its edge. Live, pass 10: Lark's mockery of Mo went on a wall
-            // seen edge-on, a head-sized scrap on the wall top nobody could read at play zoom. An edge only when no face is near.
+            // A message is painted where it will be read: a wall's face, never its edge. Live, pass 10: Lark's mockery of Mo went on a wall
+            // seen edge-on, a head-sized scrap on the wall top nobody could read at play zoom; pass 14, with an edge still allowed when no face
+            // was near, two mockeries and a memorial in Ashgate were blots. Failing a face near, a face further off; failing that, nothing yet.
             for (int pass = 0; pass < 2; pass++)
             {
                 foreach (IntVec3 centre in centres)
                 {
-                    foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, MeaningRadius, useCenter: true))
+                    foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, pass == 0 ? MeaningRadius : FarMeaningRadius, useCenter: true))
                     {
                         if (!c.InBounds(map) || !c.Standable(map) || !HasCardinalWall(c, map) || KeptClean(c, map)) continue;
-                        if (pass == 0 && !OnFace(c, map)) continue;
+                        if (!OnFace(c, map)) continue;
                         if (need > System.Math.Min(WallRoom(c, map), BareRoom(c, map, pawn, over))) continue;
                         if (!pawn.CanReserveAndReach(c, PathEndMode.OnCell, Danger.None)) continue;
                         result = c;
@@ -126,7 +123,7 @@ namespace RimMandrake.Graffiti
             return RM_GraffitiKernel.FaceOfSide(Filth_Mark.ReadWallSide(c, map)) == RM_GraffitiKernel.FaceFront;
         }
 
-        private const float MeaningRadius = 12f;
+        private const float MeaningRadius = 12f, FarMeaningRadius = 24f;
 
         /// <summary>Owner's pick, 2026-11-07: nobody paints a hospital or a kitchen on their own. A mark is filth, and filth there is infection and
         /// food poisoning. Nor, for ten days, a wall the player ordered scrubbed (MapComponent_GraffitiSocial.HeldClean). The player's own order

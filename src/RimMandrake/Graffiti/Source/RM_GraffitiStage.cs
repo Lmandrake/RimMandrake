@@ -360,6 +360,85 @@ namespace RimMandrake.Graffiti
             return "COMPARE " + origin.x + "," + origin.z + ",26,7";
         }
 
+        /// <summary>Proof only: draw a clumsy hand the pass-13 way (its smeared double over the mark, muddier paint) so the old and new looks can be
+        /// shot on one wall a few seconds apart. Never saved.</summary>
+        internal static bool smearOver;
+
+        /// <summary>SMEAR old|new: switch how clumsy hands draw, and redraw the map. -> SMEAR state.</summary>
+        public static string Smear(string args)
+        {
+            smearOver = args == "old";
+            Find.CurrentMap?.mapDrawer.RegenerateEverythingNow();
+            return "SMEAR " + (smearOver ? "old" : "new");
+        }
+
+        /// <summary>never_reads_as_dirt and mark_ugliness_is_visible on one lit wall, as a player meets them: the ugliest hands (an awful scrawl, an
+        /// awful and a poor glyph, a poor tag), a tally, a tag half weathered away, a good piece, with vanilla filth on the floor in front and at the
+        /// wall's foot. args: the wall's stuff (BlocksGranite by default). -> DIRT rect | x:def:craft:Beauty per mark.</summary>
+        public static string Dirt(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            string[] a = (args ?? "").Split(',');
+            ThingDef stuff = DefDatabase<ThingDef>.GetNamedSilentFail(a[0].NullOrEmpty() || a[0] == "x" ? "BlocksGranite" : a[0]) ?? ThingDefOf.BlocksGranite;
+            bool doors = a.Contains("door");
+            origin = new IntVec3(10, 0, 40);
+            const int Len = 30;
+            Clear(map, new CellRect(origin.x, origin.z, Len, 8), TerrainDefOf.Soil);
+            WallRun(map, stuff, 0, 5, Len - 1, 5);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, Len, 8)) map.areaManager.Home[c] = false;
+            var marks = new (string def, int craft, int weather)[]
+            {
+                ("RM_Graffiti_Vandal", RM_GraffitiKernel.Awful, 0), ("RM_Graffiti_Glyph_HighLife", RM_GraffitiKernel.Awful, 0), ("RM_Graffiti_Tag_A", RM_GraffitiKernel.Poor, 0),
+                ("RM_Graffiti_TallyMarks", RM_GraffitiKernel.Normal, 0), ("RM_Graffiti_Glyph_AnimalPersonhood", RM_GraffitiKernel.Poor, 0),
+                ("RM_Graffiti_Tag_B", RM_GraffitiKernel.Normal, 2), ("RM_Graffiti_Scratches", RM_GraffitiKernel.Normal, 0), ("RM_Graffiti_Piece", RM_GraffitiKernel.Good, 0),
+            };
+            int cursor = 1, now = Find.TickManager.TicksGame;
+            var parts = new List<string>();
+            foreach (var spec in marks)
+            {
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(spec.def);
+                if (def == null) continue;
+                int w = (int)System.Math.Ceiling(GraffitiPool.WidthOf(def));
+                Filth_Mark m = Filth_Mark.MakeMark(C(cursor + w / 2, 4), map, def, hand);
+                if (m != null)
+                {
+                    m.hasCraft = true;
+                    m.craft = spec.craft;
+                    if (spec.weather > 0)
+                    {
+                        // Dated back so its age, not a flag, puts it at that step: WeatherFade starts at 0.6 of a life and is gone at 1.0.
+                        ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                        float life = RM_GraffitiKernel.WeatherDays(ext?.form ?? GraffitiForm.Scrawl, m.craft, !map.roofGrid.Roofed(m.Position), m.thingIDNumber);
+                        m.placedTick = now - (int)((0.6f + 0.4f * (spec.weather - 0.5f) / 4f) * life * GenDate.TicksPerDay);
+                        m.weatherStep = m.WeatherStepNow(out _);
+                    }
+                    parts.Add((cursor + w / 2) + ":" + def.defName.Replace("RM_Graffiti_", "") + ":" + m.CraftLabel + ":" + m.NetBeauty.ToString("+0;-0;0") + (m.weatherStep > 0 ? ":W" + m.weatherStep : ""));
+                }
+                cursor += w + 1;
+            }
+            string[] filth = { "Filth_Dirt", "Filth_Blood", "Filth_Vomit", "Filth_Ash", "Filth_Trash", "Filth_Slime", "Filth_RubbleRock", "Filth_Fuel", "Filth_AnimalFilth" };
+            for (int i = 0; i < filth.Length; i++)
+            {
+                ThingDef f = DefDatabase<ThingDef>.GetNamedSilentFail(filth[i]);
+                if (f == null) continue;
+                FilthMaker.TryMakeFilth(C(2 + 3 * i, 2), map, f, 4);
+                FilthMaker.TryMakeFilth(C(3 + 3 * i, 4), map, f, 2);     // at the wall's foot, right under the paint
+            }
+            if (doors)
+            {
+                // A door put into a painted wall, as a player would: one under the scrawl's own wall cell (the paint goes with its wall), one beside
+                // the piece's (its paint stops at the door, not across it).
+                Put(map, "Door", ThingDefOf.Steel, 2, 5);
+                Put(map, "Door", ThingDefOf.Steel, 22, 5);
+                parts.Add("doors@2,22");
+            }
+            map.mapDrawer.RegenerateEverythingNow();
+            return "DIRT " + origin.x + "," + origin.z + "," + Len + ",7 | " + string.Join(" ", parts);
+        }
+
         /// <summary>Every mark on one wall, worst Beauty on the left, best on the right, in steps of four cells at most. -> LADDER rect | beauty per column,
         /// so the driver can write what each is above it. The stat and the picture, side by side.</summary>
         public static string Ladder(string args)

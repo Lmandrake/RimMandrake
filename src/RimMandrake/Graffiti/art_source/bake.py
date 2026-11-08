@@ -68,7 +68,8 @@ def bake(name, m):
         # Option D has no paper: a poster is what its inks left on the wall, the paper gone.
         rgb, alpha = paste_to_paint(rgb, alpha, rng)
     if m["mode"] not in ("paste", "scratch"):
-        alpha = break_rim(rgb, alpha, rng)
+        if m.get("rim", True):   # rim=False: the dark at the shape's edge is part of the drawing (a mouth, a pupil), not an outline
+            alpha = break_rim(rgb, alpha, rng)
         # The brush runs out: long level streaks through every fill, so no area of colour stays flat.
         streak = P.fractal((H, W), (W / 2.5, 5), rng, 3)
         load = P.fractal((H, W), (W / 4, H / 2.2), rng, 2)

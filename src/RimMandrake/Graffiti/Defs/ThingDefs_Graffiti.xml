@@ -125,6 +125,7 @@
         <category>Code</category>
         <wallThrough>0</wallThrough>
         <form>Glyph</form>
+        <edgeOn>1</edgeOn>  <!-- strokes read turned: RM_GraffitiKernel.ReadsEdgeOn -->
         <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>
@@ -150,6 +151,7 @@
         <category>Code</category>
         <pigmented>true</pigmented>
         <form>Glyph</form>
+        <edgeOn>1</edgeOn>  <!-- a tally reads turned on its side: RM_GraffitiKernel.ReadsEdgeOn -->
         <poolWeight>0.5</poolWeight>
         <designatorEligible>true</designatorEligible>
       </li>

@@ -164,7 +164,8 @@ namespace RimMandrake.Graffiti
                 // Owner's pick, 2026-11-07: measure a mark's real width before painting, so nobody erases a neighbour by accident. A spree
                 // has no such manners: going over is what it's for.
                 if (!pawn.InMentalState) room = System.Math.Min(room, GraffitiJobUtility.BareRoom(cell, Map));
-                ThingDef said = GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject);
+                // Something said about someone goes where it can be read: never turned along an edge-on wall's top, where a head is a blot.
+                ThingDef said = GraffitiJobUtility.OnFace(cell, Map) ? GraffitiSocial.SocialMark(pawn, pawn.InMentalState, room, out subject) : null;
                 if (said != null) return said;
                 ThingDef pick = pawn.InMentalState ? GraffitiPool.PickForSpree(pawn, room, cell) : GraffitiPool.PickForJoy(pawn, room, cell);
                 markFit = pick != null ? GraffitiPool.FitFor(pick, room) : 1f;

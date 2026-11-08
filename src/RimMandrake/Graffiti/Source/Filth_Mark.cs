@@ -551,6 +551,7 @@ namespace RimMandrake.Graffiti
             // A mark nobody's hand made (a staged one, a save from before craft) looks as its form allows: a scrawl is never neat.
             int look = hasCraft ? craft : (ext != null ? System.Math.Min(RM_GraffitiKernel.Normal, RM_GraffitiKernel.CraftCeiling(ext.form)) : RM_GraffitiKernel.Normal);
             RM_GraffitiKernel.CraftLook(look, out float craftThrough, out float wobble, out float mud);
+            if (RM_GraffitiStage.smearOver) RM_GraffitiKernel.CraftLookBefore(look, ref mud);
             slope *= wobble;
             float width = size.x * scale * fit;
             float height = RM_GraffitiKernel.ClimbHeight * Mathf.Min(1f, size.y) * scale * fit;
@@ -588,12 +589,22 @@ namespace RimMandrake.Graffiti
                     Texture2D eaten = WallPlane.Weathered(mat.mainTexture, weatherStep, thingIDNumber);
                     mat = eaten != null ? MaterialPool.MatFrom(new MaterialRequest(eaten, g.Shader, worn)) : MaterialPool.MatFrom(g.path, g.Shader, worn);
                 }
+                float smear = RM_GraffitiKernel.CraftSmear(look);
+                if (smear > 0f && !RM_GraffitiStage.smearOver)
+                {
+                    // A clumsy hand's first go, off true and squashed, in thin paint UNDER the shape it then went over: the ghost of a hand that
+                    // couldn't, around a shape that still reads. Live 2026-11-08: drawn over the mark with its own wall show-through, it washed a poor
+                    // glyph into a green smudge on the day-19 wall, a mess rather than a message.
+                    Color thin = mat.color;
+                    thin.a *= RM_GraffitiKernel.SmearAlpha;
+                    Material under = MaterialPool.MatFrom(new MaterialRequest((Texture2D)mat.mainTexture, mat.shader, thin) { renderQueue = mat.renderQueue - 1 });
+                    WallPlane.Print(layer, this, under, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
+                        -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, 0f, 0.0005f);
+                }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);
-                float smear = RM_GraffitiKernel.CraftSmear(look);
-                if (smear > 0f)
+                if (smear > 0f && RM_GraffitiStage.smearOver)
                 {
-                    // The second go, off true and squashed, thinner paint: a smudged double that reads as a hand that couldn't.
                     WallPlane.Print(layer, this, mat, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
                         -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, Mathf.Clamp(through + 0.22f, 0.04f, 0.6f), 0.0015f);
                 }

@@ -393,12 +393,12 @@ def one(s, a):
     elif a[0] == "gw":
         r = s.call("jawa/list_factions")
         print("GOODWILL t=%s " % s.call("rimworld/get_game_info").get("ticksGame") + " ".join("%s=%s" % (f.get("name"), f.get("goodwill")) for f in r.get("factions", []) if not a[1:] or f.get("name") in a[1:]))
-    elif a[0] == "kv":
+    elif a[0] in ("kv", "kvall"):
         kw = {}
         for pair in a[2:]:
             k, v = pair.split("=", 1)
             kw[k] = True if v == "true" else False if v == "false" else int(v) if v.lstrip("-").isdigit() else v
-        print(json.dumps(s.call(a[1], **kw))[:4000])
+        print(json.dumps(s.call(a[1], **kw))[:4000 if a[0] == "kv" else 2000000])
     elif a[0] == "raw":
         print(json.dumps(s.call(a[1], **json.loads(a[2] if len(a) > 2 else "{}")))[:4000])
     elif a[0] == "schema":

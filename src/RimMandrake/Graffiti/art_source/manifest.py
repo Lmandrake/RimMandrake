@@ -84,7 +84,9 @@ add("stencil_crown_0", F + "Stencil_Crown", 1.25, "spray", 0.3, "A crude crown o
     "a misted double edge along one side where the card slipped, and a thick sloppy slash of paint sprayed right through it on the diagonal. Not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="pale lime white crown, the slash in rust red") + SQ, floor=0.04)
 add("stencil_gear_0", F + "Stencil_Gear", 1.25, "spray", 0.3, "A work gang's emblem: a crude cog hacked out of cardboard with a knife, lopsided and knocked off-true, blunt uneven teeth of different sizes, a ragged hole in the middle, "
     "sprayed through the card; then a careless second burst in another colour sprayed and dragged half across it. Not clean, not symmetrical, not clip-art. " + STENCIL + PIG.format(c="dull blue cog, a smeared burst of rust red sprayed over one side") + SQ, floor=0.04)
-add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A brawler's knuckles seen from the front, four blunt lumps above a block, bloody-minded. " + STENCIL + PIG.format(c="oxblood") + SQ)
+# Pass 14: the old fist (four knuckle lumps in oxblood) read at play zoom as a blood smear on the wall. A raised fist and forearm is a silhouette.
+add("stencil_fist_0", F + "Stencil_Fist", 1.25, "spray", 0.3, "A raised fist and its forearm thrust straight up, the fist clenched with the thumb across the fingers, sprayed in soot black through a crude cardboard stencil "
+    "with blunt bridges cut between the fingers, over a ragged sprayed disc of ochre behind it, the forearm running off the bottom. Defiant, not tidy, not symmetrical, not an icon. " + STENCIL + PIG.format(c="soot black fist, ochre disc") + SQ, floor=0.04)
 # ------ stencil portraits (the defs keep their Paste_ names): sprayed straight onto the wall, no paper, the wall between every part.
 PORTRAIT = ("A big street stencil portrait sprayed straight onto a bare wall. No paper, no sheet, no poster, no rectangle, no backing, no border, no frame, no background panel. "
             "First a few loose patchy clouds of the second colour were misted on with a can, thin, uneven, fading out at their edges, never a block. "
@@ -129,7 +131,7 @@ G = [
  ("Rancher", "the wide horns and long face of a muskox, daubed fast", RAG, "burnt orange and soot"),
  ("Tunneler", "a ragged hole rammed into a heaped mound: the mound three or four rough dry strokes, the hole a jagged flat black gouge in it, not round, and short rays scratched and brushed out of the hole like pick strikes. Flat paint only: no sphere, no dome, no ball, no highlight, no shading", BRUSH, "soot and ochre"),
  ("TreeConnection", "a huge gnarled tree trunk dragged with a filthy rag, branches like arms, its crown wiped out", RAG, "oxide green and soot"),
- ("HighLife", "a long curling plume of smoke rising and thickening into a blot, the plume made with one wet drag", SPRAY, "oxide green and ash grey"),
+ ("HighLife", "a grinning lopsided face with two big spiral eyes, its open mouth breathing out a thick ring. Pass 14: the old smoke plume read as a smudge on the wall; a staring spiral eye was tried beside this and was tidier", BRUSH, "oxide green and soot"),
  ("Proselytizer", "a screaming open mouth in profile with three thick lines of shout flying out of it", BRUSH, "ochre and soot"),
  ("Ritualist", "a ring of squat figures dancing around a blot of fire, thumbed on", RAG, "burnt orange and soot"),
  ("Shipborn", "a blunt star-tailed ship shape rising over a wiped curve of a planet", SPRAY, "dull blue and lime white"),
@@ -137,6 +139,7 @@ G = [
 for name, t, tool, c in G:
     add(name.lower() + "_0", F + "Glyph_" + name, 1.25, "brush" if tool is not CHALK else "chalk", 0.22, f"A crude emblem by a believer, not a centred icon, lopsided and fast, filling the frame: {t}. " + tool + PIG.format(c=c) + SQ, name in ("Nudism", "Loyalist"),
         floor=0.04 if name == "Tunneler" else 0.0)
+M["highlife_0"]["rim"] = False   # its black grin lies at the face's edge and break_rim took it for an outline (pass 14)
 
 
 # ------ marks about somebody: the subject's own head goes in the gap, painted at runtime (WallPlane.PaintedPortrait).

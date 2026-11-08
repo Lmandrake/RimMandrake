@@ -373,6 +373,20 @@ namespace RimMandrake.Graffiti
         /// <summary>A painter can't be seen to have painted the far side of a wall, so nobody chooses it.</summary>
         public static bool SidePaintable(int side) { return side == 0 || side == 1 || side == 3; }
 
+        /// <summary>A wall seen edge-on: the camera shows only the strip of its top, and a mark there is drawn turned along it.</summary>
+        public static bool EdgeOn(int face) { return face == FaceEast || face == FaceWest; }
+
+        /// <summary>Can this drawing go on a wall seen edge-on and still read? Turned along the strip, letters and strokes read as a tag or a
+        /// tally on its side; a picture (a fist, a face, a sigil, a poster, someone's head) becomes a blot. Option D's "a side face stays a
+        /// scrap": a scrap, not a smear. Live pass 14: a third of Ashgate's marks were on such walls, and a fist, a mockery and a memorial
+        /// each came out as a red or green blot that read at play zoom as blood or mould. edgeOn from the def: -1 by form, 0 never, 1 always.</summary>
+        public static bool ReadsEdgeOn(GraffitiForm form, int edgeOn, bool hasSubject)
+        {
+            if (edgeOn >= 0) return edgeOn > 0;
+            if (hasSubject) return false;
+            return form == GraffitiForm.Tag || form == GraffitiForm.ThrowUp || form == GraffitiForm.Scrawl;
+        }
+
         /// <summary>Chance a calm hand picks a whole front face over a side's sliver when it has both within reach.</summary>
         public const float FrontFaceBias = 0.85f;
 
@@ -1042,8 +1056,8 @@ namespace RimMandrake.Graffiti
         {
             switch (quality)
             {
-                case Awful: through = 0.2f; wobble = 3f; mud = 0.65f; return;
-                case Poor: through = 0.1f; wobble = 2f; mud = 0.35f; return;
+                case Awful: through = 0.2f; wobble = 3f; mud = 0.4f; return;
+                case Poor: through = 0.1f; wobble = 2f; mud = 0.2f; return;
                 case Good: through = -0.04f; wobble = 0.8f; mud = 0f; return;
                 case Excellent: through = -0.08f; wobble = 0.6f; mud = 0f; return;
                 case Masterwork: through = -0.12f; wobble = 0.4f; mud = 0f; return;
@@ -1051,6 +1065,18 @@ namespace RimMandrake.Graffiti
                 default: through = 0f; wobble = 1f; mud = 0f; return;
             }
         }
+
+        /// <summary>Pass 13's mud, kept only so a proof can put the old look beside the new on one wall (RM_GraffitiStage.smearOver). Live 2026-11-08:
+        /// at 0.65 an awful mark's pigment went the brown of the ground, and the ugliest marks read as grime, not as paint.</summary>
+        public static void CraftLookBefore(int quality, ref float mud)
+        {
+            if (quality == Awful) mud = 0.65f;
+            else if (quality == Poor) mud = 0.35f;
+        }
+
+        /// <summary>The thin coat of a clumsy hand's first go, as a share of the paint's opacity. It lies under two coats on a face, so it shows at
+        /// about twice this.</summary>
+        public const float SmearAlpha = 0.28f;
 
         /// <summary>How far a clumsy hand slipped and went over its own mark again, off true: 0 for anyone who can paint. Live 2026-11-07: an
         /// awful piece and a legendary one side by side differed only by which drawing each was, so the owner's "a poor artist will paint
