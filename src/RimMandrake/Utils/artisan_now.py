@@ -650,6 +650,72 @@ def parse_progress(text):
     return {"state": short(" ".join(head), 520), "counts": counts, "rows": rows}
 
 
+SNAKE_ID = re.compile(r"^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+$")
+RATCHET_WORD = re.compile(r"\b(false|unseen)\b", re.I)
+PROVEN_ITEM = re.compile(r"[`*]*([A-Za-z0-9_]+)[`*]*(?:\s*\([a-z ]{1,12}\))?(\s*,\s*)?")
+RATCHET_AND = re.compile(r"\band\s+(\d+\.\s+)?`?([A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+)`?", re.I)
+NO_RATCHET_LIST = "UNMEASURED (RATCHET.md lists no bar by id)"
+
+
+def _ratchet_id(tok, ids):
+    """tok as a bar id (lower case), or None. A snake_case word is one; so is any id the north-star walk names."""
+    tok = tok.strip("`*").rstrip(":.,;")
+    if SNAKE_ID.match(tok) or tok.lower() in ids:
+        return tok.lower()
+    return None
+
+
+def parse_ratchet(text, ids=()):
+    """RATCHET.md: `## Proven (locked)` bullets are true bars; `## Remaining` numbered items that open with a bar id are open bars.
+
+    The count is per bar id, never per line, so "Setup", "STORY" and "Owed fix checks" items (not ids) are not counted. A Remaining item says
+    false or unseen if the word is on its line, else "open". An id on both lists stays open: a ratchet must not read as done by accident.
+    Returns the parse_progress shape plus `remaining` (the open count) and `source`; counts hold no bar at all when neither list parses."""
+    ids = {i.lower() for i in ids}
+    sect, proven, remaining = None, {}, {}
+    for line in text.splitlines():
+        h = re.match(r"^##\s+(.*)$", line)
+        if h:
+            t = h[1].strip().lower()
+            sect = "remaining" if t.startswith("remaining") else "proven" if t.startswith("proven") else None
+            continue
+        if sect == "proven":
+            m = re.match(r"^\s*[-*]\s+(.+)$", line)
+            if not m:
+                continue
+            pos = 0
+            while True:
+                t = PROVEN_ITEM.match(m[1], pos)
+                bid = _ratchet_id(t[1], ids) if t else None
+                if bid is None:
+                    break
+                proven[bid] = bid
+                if not t[2]:
+                    break
+                pos = t.end()
+        elif sect == "remaining":
+            m = re.match(r"^\s*(?:\d+\.\s+|[-*]\s+|Bar:\s*)\s*(?:Bar:\s*)?(\S+)(.*)$", line)
+            if not m:
+                continue
+            bid = _ratchet_id(m[1], ids)
+            if bid is None:
+                continue
+            rest = m[2]
+            word = RATCHET_WORD.search(line)
+            found = [(bid, word[1].lower() if word else "open", short(rest.strip(" .,:;—-()|"), 90))]
+            for numbered, a in RATCHET_AND.findall(rest[:160]):
+                a = a.lower()
+                if a != bid:
+                    found.append((a, word[1].lower() if word else "open", ""))
+            for b, v, note in found:
+                remaining[b] = (b, v, note)
+    for b in remaining:
+        proven.pop(b, None)
+    rows = [(b, "true", "") for b in proven] + list(remaining.values())
+    counts = Counter(v for _, v, _ in rows)
+    return {"state": "", "counts": counts, "rows": rows, "remaining": len(remaining), "source": "RATCHET.md"}
+
+
 def parse_north_star(clone):
     """state, must-show and cannot-show counts from the mod's validation walk, named in PROMPT.md."""
     prompt = read_text(os.path.join(clone, "ralph", "PROMPT.md"))
@@ -669,7 +735,8 @@ def parse_north_star(clone):
     must = sec.find("### must show")
     cannot = sec.find("### cannot show")
     box = re.compile(r"^\s*- \[[ xX]\]", re.M)
-    return {"mod": m[1], "state": st[1] if st else "no state line",
+    ids = {x.lower() for x in re.findall(r"^\s*- \[[ xX]\]\s+`?([A-Za-z][A-Za-z0-9_]*)`?", sec, re.M)}
+    return {"mod": m[1], "ids": ids, "state": st[1] if st else "no state line",
             "must": len(box.findall(sec[must:cannot if cannot > must else None])) if must >= 0 else 0,
             "cannot": len(box.findall(sec[cannot:])) if cannot >= 0 else 0}
 
@@ -899,7 +966,6 @@ def collect_loop(rec, sources, cache):
                 rec[key] = read_text(path)
             except OSError as e:
                 un[key] = str(e)
-    rec["prog"] = parse_progress(rec["progress"]) if rec["progress"] else None
     rec["qs"] = parse_questions(rec["questions"]) if rec["questions"] else []
     rec["ns"] = None
     if rdir:
@@ -907,6 +973,19 @@ def collect_loop(rec, sources, cache):
             rec["ns"] = parse_north_star(clone)
         except (Unmeasured, OSError) as e:
             un["north star"] = str(e)
+    # RATCHET.md, when the loop has one, is the count; PROGRESS.md only when it has none.
+    rec["prog"] = rec["ratchet"] = rec["ratchet_t"] = None
+    rpath = os.path.join(rdir, "RATCHET.md") if rdir else None
+    if rpath and os.path.exists(rpath):
+        try:
+            rec["ratchet_t"] = mtime(rpath)
+            rec["ratchet"] = read_text(rpath, 400_000)
+            rec["prog"] = parse_ratchet(rec["ratchet"], (rec["ns"] or {}).get("ids", ()))
+            un.pop("progress", None)
+        except OSError as e:
+            un["progress"] = "RATCHET.md: %s" % e
+    elif rec["progress"]:
+        rec["prog"] = parse_progress(rec["progress"])
 
     # judge verdicts and past claims
     rec["verdicts"] = []
@@ -2055,6 +2134,21 @@ def loop_section(r, machines):
     if un.get("progress"):
         L.append("")
         L.append("Progress: UNMEASURED (%s)." % un["progress"])
+    elif prog and prog.get("source"):
+        c = prog["counts"]
+        L.append("")
+        if sum(c.values()):
+            L.append("Its RATCHET.md (%s old): **%d true, Remaining %d** (%d false, %d unseen, %d open), of %d bars." % (
+                ago(now_s() - r["ratchet_t"]), c["true"], prog["remaining"], c["false"], c["unseen"], c["open"], sum(c.values())))
+            shown = [x for x in prog["rows"] if x[1] != "true"][:30]
+            if shown:
+                L.append("")
+                L.append("Remaining:")
+                L.append("")
+                for bar, val, note in shown:
+                    L.append("- %s: %s%s" % (bar, val, ", " + note if note else ""))
+        else:
+            L.append("Its own count: %s. RATCHET.md (%s old) has no Proven or Remaining bar named by id." % (NO_RATCHET_LIST, ago(now_s() - r["ratchet_t"])))
     elif prog:
         c = prog["counts"]
         L.append("")
@@ -2228,7 +2322,7 @@ def own_counts(rec):
     pts = [(a["n"], a["bars"]) for a in rec["arc"] or [] if a.get("bars")]
     counts = rec["prog"]["counts"] if rec.get("prog") else None
     if rec.get("open_pass") and counts and sum(counts.values()):
-        pts.append((rec["open_pass"]["n"], {k: counts[k] for k in ("true", "false", "unseen")}))
+        pts.append((rec["open_pass"]["n"], {"true": counts["true"], "false": counts["false"] + counts["open"], "unseen": counts["unseen"]}))
     return pts
 
 
@@ -2614,7 +2708,11 @@ def glance_table(loops):
             tok += " of %s, %d%%" % (toks(r["limit"]), round(100 * r["total"] / r["limit"]))
         rate = "%s/h" % toks(r["rate"]) if r.get("rate") and r["state"] == "working" else "none"
         c = r["prog"]["counts"] if r.get("prog") else None
-        bars = "UNMEASURED" if not c and r["unmeasured"].get("progress") else ("%d / %d / %d" % (c["true"], c["false"], c["unseen"]) if c and sum(c.values()) else NO_VERDICT_LIST)
+        if r.get("prog") and r["prog"].get("source"):
+            bars = ("%d true / %d false / %d unseen, **Remaining %d**" % (c["true"], c["false"], c["unseen"], r["prog"]["remaining"])
+                    if sum(c.values()) else NO_RATCHET_LIST)
+        else:
+            bars = "UNMEASURED" if not c and r["unmeasured"].get("progress") else ("%d / %d / %d" % (c["true"], c["false"], c["unseen"]) if c and sum(c.values()) else NO_VERDICT_LIST)
         quiet = ago(now_s() - r["last_active"]) + " ago" if r.get("last_active") else "UNMEASURED"
         L.append("| **%s** | %s | %s | %s | %s | %s | %s | %s |" % (
             cell(r["name"]), cell(STATE_WORD.get(r["state"], r["state"])), r["machine"], pc, tok, rate, quiet, bars))

@@ -70,7 +70,7 @@ class World:
         mod.BRIDGE_FILES = [os.path.join(root, "no_bridge")]
 
     def loop(self, name, events, unit="active", result="success", events_file=True, pass_n=None, pass_age=20,
-             pass_log=True, progress="fine so far\n\n## Count\n- bar_a: true\n- bar_b: unseen\n", stop=False, done=False):
+             pass_log=True, progress="fine so far\n\n## Count\n- bar_a: true\n- bar_b: unseen\n", stop=False, done=False, ratchet=None):
         now = time.time()
         clone = os.path.join(self.root, "scratch", "BENCH", "ralph_" + name)
         rd = os.path.join(clone, "ralph")
@@ -81,6 +81,8 @@ class World:
         open(os.path.join(rd, "PROMPT.md"), "w").write("%s is a planted mod.\n" % name)
         if progress is not None:
             open(os.path.join(rd, "PROGRESS.md"), "w").write(progress)
+        if ratchet is not None:
+            open(os.path.join(rd, "RATCHET.md"), "w").write(ratchet)
         if done:
             open(os.path.join(rd, "DONE.md"), "w").write("I would show this.\n")
         if stop:
@@ -114,6 +116,24 @@ class World:
         return clone
 
 
+RATCHET_TEXT = """# Ratchet
+
+## Remaining (work only on these, in this order)
+0. Setup, not a bar: game B is down.
+1. never_reads_as_dirt (real gap): stage it.
+2. `mark_ugliness_is_visible` (never tried): stage it.
+3. stories_not_a_tax: false on bursts. And 4. mark_register_is_punk_urban (contested).
+Owed fix checks (the bar stays Proven): fitted marks squeeze.
+
+## Proven (locked), 18
+""" + "".join("- done_bar_%d: shot.png\n" % i for i in range(16)) + """- done_bar_16, done_bar_17: both in one line
+- ShotFile.png: not a bar id
+
+## Rules
+1. Whatever_rule_line: not a bar.
+"""
+
+
 def plant(mod, root):
     """The world: healthy loops that must stay quiet, and one planted fault per loop."""
     w = World(mod, root)
@@ -129,6 +149,14 @@ def plant(mod, root):
     # the graffiti case: PROGRESS.md has a Traps line holding "canDig=false;" and no verdict list at all
     w.loop("trapped", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3,
            progress="Pass 8 notes.\n\n## Traps\n- Raid: `kv jawa/lord_set_job args=locomotion=Jog;canDig=false;x`, then step\n- joy: false alarms if nothing paints\n")
+    # the graffiti-after-the-ratchet case: PROGRESS reads 18 / 0 / 0, RATCHET.md says 4 bars remain
+    w.loop("ratcheted", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3,
+           progress="Pass 13.\n\n## Count\n" + "".join("- done_bar_%d: true\n" % i for i in range(18)),
+           ratchet=RATCHET_TEXT)
+    w.loop("ratchetonly", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3, progress=None,
+           ratchet="# R\n\n## Remaining\n1. bar_open_one: unseen\n\n## Proven (locked)\n- bar_p: ok\n")
+    w.loop("ratchetjunk", [(1800, start), (1800, "PASS 3 start, 2000000 tokens so far")], pass_n=3,
+           ratchet="# R\n\nnothing sectioned here, bar_a: true\n")
     w.loop("waiter", [(3600, start), (1800, "GAME_WAIT: a loop ahead has the game, no model running, 3000000 tokens")])
     mod.list_units = lambda sources: w.units
     mod.cgroup_processes = lambda props: (bool((props or {}).get("_model")), [])
@@ -296,7 +324,7 @@ def scenarios(mod):
         check("waiter_names_who", section(page, "waiter").startswith("## waiter: waiting for game") and "gives way to rm-ralph-healthy, which is active" in page)
         check("claim_is_not_acceptance", section(page, "claimed").startswith("## claimed: DONE CLAIMED") and "blind judge owed" in page)
         check("stamp_present", re.search(r"Generated \w+ \d+, \d\d:\d\d:\d\d \w+", page) is not None)
-        check("first_line_is_state", page.splitlines()[4].startswith("**10 loops:"))
+        check("first_line_is_state", page.splitlines()[4].startswith("**13 loops:"))
         # the headline's two figures with nothing to read them from (no learned.md, a loop with no log): UNMEASURED, never 0
         head = page.splitlines()[4]
         check("headline_figures_unmeasured", "Accepted: UNMEASURED." in head and "Accepted: 0" not in head and "Waited for a game: UNMEASURED" in head)
@@ -450,6 +478,20 @@ def scenarios(mod):
         bars = mod.parse_progress("## Count\n- bar_a: true\n- `bar_b`: **false** (why)\n| bar_c | unseen | note |\n- bar_a: false\n| bar_d (cannot) | true | tagged |\n")
         check("bar_lines_counted_once", dict(bars["counts"]) == {"false": 2, "unseen": 1, "true": 1})
         check("trapped_loop_unmeasured", "UNMEASURED (no verdict list)" in glance(first_page, "trapped") and "0 / 1 / 0" not in glance(first_page, "trapped"))
+        # RATCHET.md beats PROGRESS.md: a ratchet with Remaining bars never reads as all true
+        rp = mod.parse_ratchet(RATCHET_TEXT)
+        check("ratchet_counts_proven_and_remaining", rp["counts"]["true"] == 18 and rp["remaining"] == 4 and len(rp["rows"]) == 22)
+        check("ratchet_setup_items_not_counted", not any(r[0].lower().startswith(("setup", "owed", "game", "whatever")) for r in rp["rows"]))
+        check("ratchet_remaining_word", dict((r[0], r[1]) for r in rp["rows"])["stories_not_a_tax"] == "false"
+              and dict((r[0], r[1]) for r in rp["rows"])["never_reads_as_dirt"] == "open")
+        check("ratchet_both_lists_stays_open", mod.parse_ratchet("## Remaining\n1. bar_x\n## Proven\n- bar_x: y\n- bar_y: y\n")["remaining"] == 1
+              and mod.parse_ratchet("## Remaining\n1. bar_x\n## Proven\n- bar_x: y\n- bar_y: y\n")["counts"]["true"] == 1)
+        rat = glance(first_page, "ratcheted")
+        check("ratchet_not_all_true", "Remaining 4" in rat and "18 true" in rat and "18 / 0 / 0" not in rat)
+        check("ratchet_detail_lists_remaining", "Remaining 4" in section(first_page, "ratcheted") and "- never_reads_as_dirt: open" in section(first_page, "ratcheted"))
+        check("ratchet_without_progress_counts", "Remaining 1" in glance(first_page, "ratchetonly") and "UNMEASURED" not in glance(first_page, "ratchetonly").split("|")[-2])
+        check("ratchet_unparsed_unmeasured", "UNMEASURED (RATCHET.md lists no bar by id)" in glance(first_page, "ratchetjunk"))
+        check("no_ratchet_falls_back_to_progress", "0 / 1 / 0" not in glance(first_page, "healthy") and "1 / 0 / 1" in glance(first_page, "healthy"))
     finally:
         shutil.rmtree(root, ignore_errors=True)
     return fails
@@ -468,6 +510,11 @@ MUTANTS = [
     ('(?:[-*]\\s+|\\|\\s*)[`*]*([A-Za-z]', '(?:[-*]\\s+|\\|\\s*)[`*]*(.+?|[A-Za-z]', "trap_line_not_a_bar"),
     ('bars[m[1].lower()] = (', 'bars[len(bars)] = (', "bar_lines_counted_once"),
     ('else NO_VERDICT_LIST)', 'else "no count")', "trapped_loop_unmeasured"),
+    ('        if r.get("prog") and r["prog"].get("source"):\n            bars =', '        if False:\n            bars =', "ratchet_not_all_true"),
+    ('    for b in remaining:\n        proven.pop(b, None)\n', '', "ratchet_both_lists_stays_open"),
+    ('            bid = _ratchet_id(m[1], ids)\n            if bid is None:\n                continue\n            rest = m[2]',
+     '            bid = m[1].strip("`*").rstrip(":.,;").lower()\n            rest = m[2]', "ratchet_setup_items_not_counted"),
+    ('if sum(c.values()) else NO_RATCHET_LIST)', 'if sum(c.values()) else "0 / 0 / 0")', "ratchet_unparsed_unmeasured"),
     ('out[name] = {"why": r["why"], "fresh": False, "data": saved.get(name)}',
      'out[name] = {"why": "", "fresh": True, "data": saved.get(name)}', "old_machine_read_labelled"),
     ('w.append("STOP is set', 'str("STOP is set', "stop_with_unit_warned"),
