@@ -335,9 +335,26 @@ namespace RimMandrake.Graffiti
                 || Find.TickManager.TicksGame - last >= RM_GraffitiKernel.MockeryCooldownTicks;
         }
 
-        public void NoteMocked(Pawn painter, Pawn subject)
+        public void NoteMocked(Pawn painter, Pawn subject, int at = -1)
         {
-            if (painter != null && subject != null) lastMocked[painter.thingIDNumber + " " + subject.thingIDNumber] = Find.TickManager.TicksGame;
+            if (painter == null || subject == null) return;
+            string key = painter.thingIDNumber + " " + subject.thingIDNumber;
+            if (at < 0) at = Find.TickManager.TicksGame;
+            if (!lastMocked.TryGetValue(key, out int had) || had < at) lastMocked[key] = at;
+        }
+
+        /// <summary>A save from before the cooldown has mockeries on its walls and nothing in lastMocked (live pass 13: Karen, whose mockery
+        /// Lark had just answered, painted another of him at once). Every mockery standing on a wall counts from when it was painted.</summary>
+        public override void LoadedGame()
+        {
+            base.LoadedGame();
+            foreach (Map map in Find.Maps)
+            {
+                foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Filth))
+                {
+                    if (t is Filth_Mark m && m.def == RMGraffitiDefOf.RM_Graffiti_Mockery && m.placedTick >= 0) NoteMocked(m.maker, m.subject, m.placedTick);
+                }
+            }
         }
 
         public override void ExposeData()

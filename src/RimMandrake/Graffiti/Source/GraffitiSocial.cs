@@ -527,7 +527,7 @@ namespace RimMandrake.Graffiti
         internal static int messagesSent;
         internal static readonly List<string> messagesKept = new List<string>();
 
-        private static void Tell(string text, LookTargets at, MessageTypeDef type, bool historical = true)
+        internal static void Tell(string text, LookTargets at, MessageTypeDef type, bool historical = true)
         {
             messagesSent++;
             messagesKept.Add(Find.TickManager.TicksGame + " " + text);
@@ -819,7 +819,14 @@ namespace RimMandrake.Graffiti
             bool story = !chore || enemy || rescued || fit;
             if (story || FirstChoreToday(by, maker)) Log(by, rescued ? subject : maker, text);
             if (story) Say(by, crossedOut ? "Not on my wall." : "There. Gone.", Tone.Neutral);
-            if (RM_GraffitiSettings.socialMessagesEnabled && by.Faction == Faction.OfPlayer && (enemy || subject != null || fit))
+            // In a cleaning fit, only the first scrub is told; the fit's end sends the count (MentalState_GraffitiCompulsiveClean.PostEnd).
+            bool tell = enemy || subject != null || fit;
+            if (fit && by.MentalState is MentalState_GraffitiCompulsiveClean fitState)
+            {
+                tell = !fitState.told;
+                fitState.told = true;
+            }
+            if (RM_GraffitiSettings.socialMessagesEnabled && by.Faction == Faction.OfPlayer && tell)
             {
                 Tell(text, WallTarget(mark), MessageTypeDefOf.SilentInput);
             }

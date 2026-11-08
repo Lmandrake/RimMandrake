@@ -159,7 +159,11 @@ namespace RimMandrake.Graffiti
                 if (!floor.InBounds(map)) continue;
                 foreach (Thing t in floor.GetThingList(map))
                 {
-                    if (!(t is Filth_Mark m) || m.wallSide != side || (spare != null && m.maker == spare) || (spare2 != null && m.maker == spare2)) continue;
+                    if (!(t is Filth_Mark m) || m.wallSide != side) continue;
+                    // A last word about the one painting is never spared: it's answered with a rag, a brush stroke or words, not painted over
+                    // (live pass 13: Karen's grudge painted a fresh mockery of Lark straight over his reply).
+                    bool lastWordAtUs = m.lastWord && m.subject != null && (m.subject == spare || m.subject == spare2);
+                    if (!lastWordAtUs && ((spare != null && m.maker == spare) || (spare2 != null && m.maker == spare2))) continue;
                     if (k == 0) return 0f;
                     room = System.Math.Min(room, 2f * (System.Math.Abs(k) - m.Width / 2f) + 0.3f);
                 }

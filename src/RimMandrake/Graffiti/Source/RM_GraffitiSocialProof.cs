@@ -183,7 +183,7 @@ namespace RimMandrake.Graffiti
                 Room r = m.Position.GetRoom(map);
                 sb.AppendLine(m.Position + " " + m.def.defName.Replace("RM_Graffiti_", "") + " craft " + (m.CraftLabel ?? "-") + " beauty "
                     + m.GetStatValue(StatDefOf.Beauty).ToString("0.#") + " by " + (m.maker?.LabelShort ?? "-") + " about " + (m.subject?.LabelShort ?? "-")
-                    + (m.defaced ? " DEFACED" : "") + (m.weatherStep > 0 ? " WEATHER" + m.weatherStep : "") + " side " + m.wallSide + " room beauty " + (r != null && !r.PsychologicallyOutdoors ? r.GetStat(RoomStatDefOf.Beauty).ToString("0.00") : "outdoors"));
+                    + (m.defaced ? " DEFACED" : "") + (m.weatherStep > 0 ? " WEATHER" + m.weatherStep : "") + (m.fit < 0.999f ? " FIT" + m.fit.ToString("0.00") : "") + (m.lastWord ? " LASTWORD" : "") + " side " + m.wallSide + " room beauty " + (r != null && !r.PsychologicallyOutdoors ? r.GetStat(RoomStatDefOf.Beauty).ToString("0.00") : "outdoors"));
             }
             return sb.ToString();
         }

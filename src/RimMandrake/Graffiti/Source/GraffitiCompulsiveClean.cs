@@ -50,6 +50,18 @@ namespace RimMandrake.Graffiti
     {
         public int scrubbed;
         public const int MaxScrubs = 6;
+        // Live pass 13: Mo's fit sent a message per scrub, six in under a game hour. The first scrub tells the player what's going on,
+        // the end says how many came off; the rest go to the log.
+        public bool told;
+
+        public override void PostEnd()
+        {
+            base.PostEnd();
+            if (scrubbed > 0 && RM_GraffitiSettings.socialMessagesEnabled && pawn.Spawned && pawn.Faction == Faction.OfPlayer)
+            {
+                GraffitiSocial.Tell(pawn.LabelShort + " has calmed down after scrubbing " + scrubbed + (scrubbed == 1 ? " mark" : " marks") + " off the walls.", pawn, MessageTypeDefOf.SilentInput);
+            }
+        }
 
         public void Notify_Scrubbed()
         {
@@ -70,6 +82,7 @@ namespace RimMandrake.Graffiti
         {
             base.ExposeData();
             Scribe_Values.Look(ref scrubbed, "rmScrubbed");
+            Scribe_Values.Look(ref told, "rmFitTold");
         }
     }
 

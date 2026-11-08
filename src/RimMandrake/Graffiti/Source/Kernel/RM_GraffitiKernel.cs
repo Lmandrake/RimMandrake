@@ -1184,7 +1184,9 @@ namespace RimMandrake.Graffiti
         /// <summary>A visitor reads a mark on a host's wall: the faction's goodwill moves by this much. The named insult is the lever the player pulls on purpose.</summary>
         public static int GoodwillOf(RM_Meaning meaning, bool namesViewersFaction, bool isTaunt, bool sameIdeo)
         {
-            if (meaning == RM_Meaning.Insult && namesViewersFaction) return -12;
+            // An insult is about the faction it names: live pass 13, a Berro Pact visitor lost goodwill over the insult to Hatlencaora,
+            // through the taunt rule below. Someone else's insult is no business of theirs.
+            if (meaning == RM_Meaning.Insult) return namesViewersFaction ? -12 : 0;
             if (isTaunt) return -1;
             if (meaning == RM_Meaning.Devotion && sameIdeo) return 1;
             return 0;
