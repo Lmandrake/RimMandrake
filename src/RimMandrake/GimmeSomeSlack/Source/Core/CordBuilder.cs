@@ -887,7 +887,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// route standing until a reload. CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: a busy cell (a pipe or conduit laid there) is folded
         /// in too, so building a pipe beside a cord re-lays the loops that would now lasso it (the hose world has no busy
         /// cells, so its shared CordSig.CellSig formula is untouched).</summary>
-        internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c) ^ (w.IsBusy(c) ? 1UL << 62 : 0UL);
+        internal static ulong CellSig(CordWorld w, Cell c) => CordSig.CellSig(w, c) ^ (w.IsBusy(c) ? 1UL << 62 : 0UL) ^ (w.IsFurniture(c) ? 1UL << 61 : 0UL);
 
         /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
         public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
@@ -1607,7 +1607,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>Lay a strand's slack; if it comes out running back alongside itself (<see cref="CordShape.Doubled"/>), so that one cord reads as three, or goes under a door its route
-        /// does not run through (<see cref="CordShape.DoorStrays"/>), so that it reads as more cables out of that doorway, lay it again on the next draw with a little less slack, and keep
+        /// does not run through (<see cref="CordShape.DoorStrays"/>), so that it reads as more cables out of that doorway, or under a machine or furniture it does not need to cross, lay it again on the next draw with a little less slack, and keep
         /// the first that reads as one cord, or the least wrong, a stray door counting first. Try 0 is the old draw, so a cord that was fine has not moved. <paramref name="section"/> is a diving cord's surface section.</summary>
         private static List<V2> SprawlOnce(CordWorld w, List<V2> P, List<V2> plan, LayParams prm, double slack, double maxExtra, ulong seed, string key, int i, int n, int? section, out SettleStats settle)
         {
@@ -1624,7 +1624,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     : (t == 0 ? CordRng.Of(seed, "strand", key, i) : CordRng.Of(seed, "strand", key, i, t));
                 List<V2> Q = CordLayer.Sprawl(w, P, prm, slack * k, maxExtra * k, bundle, strand, n, out SettleStats st);
                 double d = CordShape.Doubled(Q);
-                int rings = CordShape.RingReturns(w, Q, out int atDoors), hard = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan) + atDoors, strays = hard + rings - atDoors;
+                int rings = CordShape.RingReturns(w, Q, out int atDoors), hard = CordShape.DoorStrays(w, Q, plan) + CordShape.MachineStrays(w, Q, plan) + CordShape.FurnitureStrays(w, Q, plan) + atDoors, strays = hard + rings - atDoors;
                 if (strays < bestStrays || (strays == bestStrays && d < bestD)) { best = Q; bestStrays = strays; bestD = d; bestSettle = st; }
                 if (strays == 0 && d <= CordShape.DoubledMax) break;
                 // on a long cord a coil at its own end is worth a few more draws, not six: each is a settle, and a long one is what a frame's budget feels. A coil at a door gets all six

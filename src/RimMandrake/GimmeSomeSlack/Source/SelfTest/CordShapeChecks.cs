@@ -351,6 +351,37 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                         foreach (CordStrand t in p.Strands) { strandsLaid++; straysLaid += CordShape.MachineStrays(room, t.Pts, null); }
             }
             Check(strandsLaid > 0 && straysLaid * 10 <= strandsLaid, $"laying keeps a through cord's slack out from under a bench: {straysLaid} passes in {strandsLaid} strands");
+            // the same under furniture (judge, pass 12: a bed "plugged in twice"): beds either side of a conduit run; the control lays the room with no furniture marked
+            {
+                CordWorld Bedroom(bool furnished)
+                {
+                    var r = new CordWorld(40, 24);
+                    for (int x = 4; x <= 34; x++) r.SetConduit(new Cell(x, 10));
+                    r.Machines.Add(new MachineInfo { Id = "bench", Kind = MachineKind.Consumer, X0 = 17, Z0 = 12, W = 3, H = 1, Hookups = new List<Cell> { new Cell(18, 10) } });
+                    if (furnished)
+                    {
+                        foreach (int x in new[] { 8, 11, 14, 22, 25, 28 }) { r.SetFurniture(new Cell(x, 11)); r.SetFurniture(new Cell(x, 12)); }
+                        foreach (int x in new[] { 10, 13, 20, 23, 26 }) { r.SetFurniture(new Cell(x, 8)); r.SetFurniture(new Cell(x, 9)); }
+                    }
+                    return r;
+                }
+                int under = 0, underOld = 0, strands = 0;
+                CordWorld marks = Bedroom(true);
+                for (ulong seed = 1; seed <= 12; seed++)
+                {
+                    foreach (bool furnished in new[] { true, false })
+                        foreach (LaidPiece p in new CordBuilder().Build(Bedroom(furnished), new BuildOptions { Seed = seed }, c => true))
+                            if (p.EndA != null && !p.EndA.StartsWith("consumer") && !p.EndB.StartsWith("consumer"))
+                                foreach (CordStrand t in p.Strands)
+                                {
+                                    int u = CordShape.FurnitureStrays(marks, t.Pts, null);
+                                    if (furnished) { strands++; under += u; } else underOld += u;
+                                }
+                }
+                Console.WriteLine($"  furniture: {under} passes under a bed in {strands} strands; laid blind to the beds {underOld}");
+                Check(underOld >= 4, $"can-fail: laid blind to the beds, a through cord's slack passes under one {underOld} times");
+                Check(strands > 0 && under * 4 <= underOld, $"laying keeps a through cord's slack out from under beds: {under} passes in {strands} strands (blind to them {underOld})");
+            }
             // a Modern T with a battery right beside it: the battery takes the strip's lead, a straight nub, with no hook round the strip's end
             var w = new CordWorld(30, 20);
             for (int x = 4; x <= 24; x++) w.SetConduit(new Cell(x, 8));

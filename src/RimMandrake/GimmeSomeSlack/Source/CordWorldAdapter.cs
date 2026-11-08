@@ -52,6 +52,15 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>FullBase into <paramref name="into"/> (Reset in place; a new world when null or another size): the
         /// SnapshotCache's periodic check rescan refills its spare instead of allocating a whole-map world.</summary>
+        /// <summary>Furniture a cord's slack should not wander under (<see cref="CordWorld.IsFurniture"/>): a building of two cells or more drawn over the floor,
+        /// a bed, a table, a shelf, a dresser; not a door, a machine (it has its own rule), conduit, a wall or rock. Asked only of a walkable cell.</summary>
+        private static bool Furniture(Building ed) =>
+            ed != null && !(ed is Building_Door) && ed.def.building != null && !ed.def.building.isNaturalRock && ed.def.size.x * ed.def.size.z >= 2
+            && ed.TryGetComp<CompPower>() == null && !ConduitVisuals.IsConduitRuin(ed.def) && !IsLinear(ed.def);
+
+        /// <summary>A furniture cell's route cost (a tree's is 1.5): a cord goes round a bed by up to this many cells a cell rather than in under it.</summary>
+        internal const float FurnitureCost = 3f;
+
         internal static CordWorld FullBase(Map map, CordWorld into)
         {
             int w = map.Size.x, h = map.Size.z;
@@ -74,6 +83,7 @@ namespace RimMandrake.GimmeSomeSlack
                     ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
                     t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
                 if (k.HasValue) world.SetBlocked(cell, k.Value);
+                else if (Furniture(ed)) { world.SetFurniture(cell); world.SetExtraCost(cell, FurnitureCost); }
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);
@@ -88,12 +98,13 @@ namespace RimMandrake.GimmeSomeSlack
             IntVec3 c = map.cellIndices.IndexToCell(idx);
             var cell = new Cell(c.x, c.z);
             BlockKind? k;
-            bool door = false;
+            bool door = false, furn = false;
             if (map.fogGrid.IsFogged(idx)) k = BlockKind.Rock;
             else
             {
                 Building ed = map.edificeGrid[idx];
                 door = ed is Building_Door;
+                furn = Furniture(ed);
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
                 k = SnapshotBlock.Of(map.pathing.Normal.pathGrid.WalkableFast(idx), ed != null,
                     ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
@@ -110,8 +121,9 @@ namespace RimMandrake.GimmeSomeSlack
             bool busy = linear && !k.HasValue;
             if ((world.IsDoor(cell) && !door) || (world.IsBusy(cell) && !busy)) return false;
             world.SetBlocked(cell, k ?? BlockKind.None);
+            world.SetFurniture(cell, furn && !k.HasValue);
             if (door) world.SetDoor(cell);
-            world.SetExtraCost(cell, tree ? 1.5f : 0f);
+            world.SetExtraCost(cell, tree ? 1.5f : furn && !k.HasValue ? FurnitureCost : 0f);
             if (busy) world.SetBusy(cell);
             return true;
         }

@@ -270,6 +270,33 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return strays;
         }
 
+        /// <summary>How many times a strand goes in under furniture (<see cref="CordWorld.IsFurniture"/>: a bed, a table, a shelf) at a cell its route
+        /// <paramref name="plan"/> does not cross: its slack wandering under a bed and out again reads as more cables going into it (judge, pass 12: a bed
+        /// "plugged in twice"). A cord whose route must cross the furniture is no stray there.</summary>
+        internal static int FurnitureStrays(CordWorld w, List<V2> pts, List<V2> plan)
+        {
+            if (pts == null || pts.Count == 0 || !w.HasFurniture) return 0;
+            HashSet<Cell> on = null;
+            if (plan != null) { on = new HashSet<Cell>(); foreach (V2 p in plan) on.Add(p.Floor); }
+            int strays = 0;
+            bool inside = false;
+            bool Under(V2 q)
+            {
+                Cell c = q.Floor;
+                return w.IsFurniture(c) && (on == null || !on.Contains(c));
+            }
+            foreach (V2 p in pts)
+            {
+                // a graze along its edge is under the art's own margin: only a pass FurnitureDeep inside counts
+                bool now = Under(p) && Under(p + new V2(FurnitureDeep, 0)) && Under(p - new V2(FurnitureDeep, 0)) && Under(p + new V2(0, FurnitureDeep)) && Under(p - new V2(0, FurnitureDeep));
+                if (now && !inside) strays++;
+                inside = now;
+            }
+            return strays;
+        }
+        /// <summary>How far in under furniture a cord must go before it reads as passing under it, cells.</summary>
+        public const double FurnitureDeep = 0.2;
+
         /// <summary>The ring round a strand's own end, and round a door, that one cord should cross no more than it has to: a loop inside it draws extra lines at that point.</summary>
         public const double EndRing = 1.5, DoorRing = 1.5;
 

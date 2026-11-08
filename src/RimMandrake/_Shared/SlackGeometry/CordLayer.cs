@@ -147,12 +147,16 @@ namespace RimMandrake.Shared.Slack
             var reach = new double[P.Count];
             const double step = 0.08;
             int steps = (int)(cap / step);
+            bool furn = w.HasFurniture;
             for (int i = 0; i < P.Count; i++)
             {
                 reach[i] = cap;
+                // furniture (GSS): an excursion does not reach in under a bed or a table the route itself is not on
+                bool onFurn = furn && w.IsFurniture(P[i].Floor);
                 for (int k = 1; k <= steps; k++)
                 {
-                    if (w.Clearance(P[i] + N[i] * (sign * k * step)) < LayParams.RC + 0.03)
+                    V2 q = P[i] + N[i] * (sign * k * step);
+                    if (w.Clearance(q) < LayParams.RC + 0.03 || (furn && !onFurn && w.IsFurniture(q.Floor)))
                     {
                         reach[i] = Math.Max(0, (k - 1) * step);
                         break;
