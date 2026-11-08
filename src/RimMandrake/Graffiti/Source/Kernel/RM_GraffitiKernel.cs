@@ -288,6 +288,9 @@ namespace RimMandrake.Graffiti
         /// <summary>A hand's own pull toward the brush, by its Artistic passion (0 none, 1 minor, 2 burning; a modded passion past 2 counts as
         /// burning) and level. Live 2026-11-07, before this: the two weakest hands in an 8-pawn colony made 7 of its 8 marks, all ugly, and the
         /// level-15 artist none, because who painted was blind to art. Now the colony's walls are mostly written by the people who care.</summary>
+        /// <summary>A mourner who hasn't yet painted their dead reaches for the brush this much more often.</summary>
+        public const float GriefUrge = 1.75f;
+
         public static float HandUrge(int passion, int level)
         {
             float p = passion <= 0 ? 0.4f : (passion == 1 ? 1f : 1.6f);
@@ -752,7 +755,9 @@ namespace RimMandrake.Graffiti
             {
                 mock = spree ? 0.65f : (worstOpinion <= HatedOpinion ? 0.4f : 0.2f);
             }
-            if (hasMourned) mourn = spree ? 0.15f : 0.35f;
+            // Live 2026-11-07: at 0.35 Lark, whose lover had died, painted once in two days and it was tallies. Grief that reaches for the
+            // brush mostly says the one thing.
+            if (hasMourned) mourn = spree ? 0.15f : 0.6f;
             if (hasBeloved && !spree) love = 0.2f;
             if (roll < mock) return RM_Meaning.Mockery;
             if (roll < mock + mourn) return RM_Meaning.Memorial;
@@ -1007,14 +1012,22 @@ namespace RimMandrake.Graffiti
         {
             switch (quality)
             {
-                case Awful: through = 0.2f; wobble = 3f; mud = 0.5f; return;
-                case Poor: through = 0.1f; wobble = 2f; mud = 0.25f; return;
+                case Awful: through = 0.2f; wobble = 3f; mud = 0.65f; return;
+                case Poor: through = 0.1f; wobble = 2f; mud = 0.35f; return;
                 case Good: through = -0.04f; wobble = 0.8f; mud = 0f; return;
                 case Excellent: through = -0.08f; wobble = 0.6f; mud = 0f; return;
                 case Masterwork: through = -0.12f; wobble = 0.4f; mud = 0f; return;
                 case Legendary: through = -0.15f; wobble = 0.3f; mud = 0f; return;
                 default: through = 0f; wobble = 1f; mud = 0f; return;
             }
+        }
+
+        /// <summary>How far a clumsy hand slipped and went over its own mark again, off true: 0 for anyone who can paint. Live 2026-11-07: an
+        /// awful piece and a legendary one side by side differed only by which drawing each was, so the owner's "a poor artist will paint
+        /// such a bad graffiti mark that it is ugly" wasn't on the wall.</summary>
+        public static float CraftSmear(int quality)
+        {
+            return quality == Awful ? 1f : quality == Poor ? 0.5f : 0f;
         }
 
         /// <summary>The muddy brown a cheap, overmixed paint goes.</summary>

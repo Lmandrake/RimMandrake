@@ -142,7 +142,8 @@ namespace RimMandrake.Graffiti
         {
             if (p.WorkTagIsDisabled(WorkTags.Artistic)) return 0f;
             SkillRecord art = p.skills?.GetSkill(SkillDefOf.Artistic);
-            return Of(p).paint * RM_GraffitiKernel.HandUrge(art == null ? 0 : (int)art.passion, art?.Level ?? 0);
+            float urge = Of(p).paint * RM_GraffitiKernel.HandUrge(art == null ? 0 : (int)art.passion, art?.Level ?? 0);
+            return urge > 0f && GraffitiSocial.OwesMemorial(p) ? urge * RM_GraffitiKernel.GriefUrge : urge;
         }
 
         /// <summary>Every Graffiti memory goes through here: scaled by the mark's reach and the pawn's temperament for its sign, fitted to the pawn's
@@ -167,10 +168,14 @@ namespace RimMandrake.Graffiti
             List<Thought_Memory> memories = p.needs.mood.thoughts.memories.Memories;
             Thought_Memory existing = null;
             float already = 0f;
+            // A memorial's relief isn't wall pleasure and stands apart from its budget. Live 2026-11-07: Lark, whose lover had died (-16),
+            // took +1.4 from painting the memorial, because funny doodles had already filled the budget, while a near-stranger had taken +5.7.
+            bool apart = def == GraffitiSocial.T.RM_Graffiti_GriefEased;
             for (int i = 0; i < memories.Count; i++)
             {
                 Thought_Memory m = memories[i];
                 if (!IsOurs(m.def)) continue;
+                if (m.def == GraffitiSocial.T.RM_Graffiti_GriefEased && !apart) continue;
                 if (m.def == def && m.otherPawn == other) existing = m;
                 if (social)
                 {
@@ -188,14 +193,14 @@ namespace RimMandrake.Graffiti
                 float had = existing.moodPowerFactor;
                 if (factor < had - 0.01f) return false;
                 already -= System.Math.Abs(existing.MoodOffset());
-                float fit = RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, MoodBudget(t, positive, victim));
+                float fit = apart ? 1f : RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, MoodBudget(t, positive, victim));
                 if (fit <= 0f) return false;
                 existing.moodPowerFactor = System.Math.Max(had, factor * fit);
                 existing.Renew();
                 return true;
             }
             float budget = social ? OpinionCap(positive, victim) : MoodBudget(t, positive, victim);
-            float keep = RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, budget);
+            float keep = apart ? 1f : RM_GraffitiKernel.FitBudget(already, System.Math.Abs(baseValue) * factor, budget);
             if (keep <= 0f) return false;
             Thought_Memory made = ThoughtMaker.MakeThought(def, stage);
             if (made is Thought_MemorySocial ms)

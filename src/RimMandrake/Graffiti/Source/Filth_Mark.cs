@@ -501,6 +501,13 @@ namespace RimMandrake.Graffiti
                 }
                 // A portrait can't flip with its frame: a mark about someone keeps their face the right way round.
                 WallPlane.Print(layer, this, mat, width, height, slide, slope, lift, flip && cachedHeadMat == null, through, 0.001f);
+                float smear = RM_GraffitiKernel.CraftSmear(hasCraft ? craft : RM_GraffitiKernel.Normal);
+                if (smear > 0f)
+                {
+                    // The second go, off true and squashed, thinner paint: a smudged double that reads as a hand that couldn't.
+                    WallPlane.Print(layer, this, mat, width * (1f + 0.12f * smear), height * (1f - 0.18f * smear), slide + 0.09f * smear * width,
+                        -slope, lift - 0.04f * smear, flip && cachedHeadMat == null, Mathf.Clamp(through + 0.22f, 0.04f, 0.6f), 0.0015f);
+                }
                 PrintCrossOut(layer, width, height, slide, slope, lift);
                 return;
             }

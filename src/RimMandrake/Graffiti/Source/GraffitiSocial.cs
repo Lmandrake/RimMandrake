@@ -543,6 +543,14 @@ namespace RimMandrake.Graffiti
             return AlreadySaid(painter.Map, def, subject, painter) ? null : def;
         }
 
+        /// <summary>Grieving someone and not yet painted them a memorial that still stands.</summary>
+        internal static bool OwesMemorial(Pawn p)
+        {
+            if (!RM_GraffitiSettings.socialEnabled || p?.Map == null) return false;
+            Pawn dead = Mourned(p);
+            return dead != null && !AlreadySaid(p.Map, RMGraffitiDefOf.RM_Graffiti_Memorial, dead, p);
+        }
+
         /// <summary>A hand doesn't say the same thing about the same person twice while the first still stands.</summary>
         private static bool AlreadySaid(Map map, ThingDef def, Pawn subject, Pawn painter)
         {

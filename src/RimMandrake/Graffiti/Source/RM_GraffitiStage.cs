@@ -390,6 +390,35 @@ namespace RimMandrake.Graffiti
             return "LADDER " + origin.x + "," + origin.z + "," + Len + ",5 | " + string.Join(" ", parts);
         }
 
+        /// <summary>The owner's art-skill line at a glance: one mark (args: its def, a Piece by default) at every craft from awful to legendary, left to
+        /// right on one granite wall, as the hands of seven skills would leave it. -> CRAFTS rect | x:craft:Beauty per column.</summary>
+        public static string Crafts(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(args.NullOrEmpty() || args == "x" ? "RM_Graffiti_Piece" : args);
+            if (def == null) return "REFUSED no such mark";
+            origin = new IntVec3(6, 0, map.Size.z - 26);
+            int w = (int)System.Math.Ceiling(GraffitiPool.WidthOf(def));
+            int len = 7 * (w + 1) + 1;
+            Clear(map, new CellRect(origin.x, origin.z, len, 5), TerrainDefOf.Concrete);
+            WallRun(map, ThingDefOf.BlocksGranite, 0, 3, len - 1, 3);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, len, 5)) map.areaManager.Home[c] = false;
+            var parts = new List<string>();
+            for (int q = 0; q < 7; q++)
+            {
+                int x = 1 + q * (w + 1) + w / 2;
+                Filth_Mark m = Filth_Mark.MakeMark(C(x, 2), map, def, hand);
+                if (m == null) continue;
+                m.craft = q;
+                parts.Add(x + ":" + m.CraftLabel + ":" + m.NetBeauty.ToString("+0;-0;0"));
+            }
+            map.mapDrawer.RegenerateEverythingNow();
+            return "CRAFTS " + origin.x + "," + origin.z + "," + len + ",5 | " + string.Join(" ", parts);
+        }
+
         /// <summary>One small room in every wall material, each wall carrying marks: the front, both side faces, the hidden south wall from inside and the
         /// front from outside, a wide mark run into a corner, a door in the run, and a free wall end. -> SWEEP rect | rows.</summary>
         public static string Sweep(string args)
