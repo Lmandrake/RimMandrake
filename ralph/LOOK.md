@@ -48,3 +48,11 @@ Least sure of: whether the painted heads still say who is mocked at 64 px (the h
 - `p14_weathered_w2_w3_playzoom.png`, `p14_weathered_w3_128.png`: weathered marks keep a faint stain of their whole shape under what's left.
 
 Least sure of: the darkest tags on dark walls in unlit rooms (a black tag on the corridor's west wall is close to invisible), and the tribute's laurel and sun frames, which the blind judge read as badges.
+
+## Pass 15 (2026-11-08, game A, 64 px unless marked)
+- `p15_lived_south_wall_west.png`: Ashgate's outer south wall at noon with the new tributes: Mo's awful one (a smeared sprayed crown round Karen's head) and Lark's good one (sprayed roses and a ring round Brick's).
+- `p15_lived_corridor_west.png` / `_east.png`, `p15_lived_storeroom.png`: the indoor walls, now lit (the generator was cut off from the lamps' net).
+- `p15_lived_west_edge.png`: the west wall seen edge-on, still carrying pictures painted before pass 14's fix.
+- `p15_dirt_vs_paint_left.png` / `_right.png` / `_awful_tally_128.png`: the staged dirt wall in daylight, vanilla filth on the soil in front.
+
+Least sure of: the portraits (a blind judge read every one as a UI sticker), weathered marks reading as grime, and the awful hand's olive and black reading as mould or soot. Those are the next pass's work.

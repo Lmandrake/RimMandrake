@@ -1,44 +1,39 @@
 # Graffiti: where the last pass got to
 
-Pass 14 (2026-11-08). Committed and pushed. The last build (`ralph/live` wording of the spree summary, one string) is built but not deployed; everything else below ran live on game B. Not done: two look bars still owe a fresh blind read (below), and `ralph/DONE.md` is not written.
+Pass 15 (2026-11-08, ~02:41-03:30 PST). Retired on context, not on a wall. Committed and pushed. RATCHET.md is current: 20 Proven, 2 Remaining (never_reads_as_dirt FALSE, punk register MIXED), three small fix checks owed.
+
+## The game is now game A (Conductor switch 02:41)
+- `ralph/GAME` says `a`. Game A's user data is the default `C:\Users\sjlewis\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios` (`$RM_GAME_USERDATA` is empty there). I copied the graffiti saves into its Saves folder. New: `graffiti_p15_ash_lit` (Ashgate day 18 at noon, lamps powered), `graffiti_p15_brick_dead` (a day after Brick's death, 3 memorials).
+- `steve.sh up` did not put our tier on: game A came up on GSS's list (GimmeSomeSlack, FlowWorks). Then `steve.sh tier` refused, because a stale swap marker in `~/rm/gameb/deployed/config/` from game B named a before-copy that every `sync` resets, since that file is git-tracked. I moved the marker aside (`ModsConfig.swap-active.stale-gameb-20261108.json`, not deleted), and `tier` + `up` then worked: 10 mods, Graffiti, bridge, all DLC. Check the mod list after any `up` (`ralph/steve.sh run` + read ModsConfig).
+- The lamps were dark because the generator at (144,117) sat on its own net. Three conduits at (144,119..121) join it to the 83-conduit net (saved in `graffiti_p15_ash_lit`). One generator browns out a few of the 15 lamps; that is fine.
+- `graffiti_p14_ash_powered` loads AT noon. Don't advance 22000 ticks (that's for `p12_ash_day18`); I lost one batch of shots to 9 PM that way.
 
 ## Weather this pass
-- 1 native crash during play (Mono, in vanilla `GrammarResolver` while recording a horseshoes tale; no Graffiti frame; `bad_cpus=[2]`, uptime ~16 h). Brought back with `up`, the rerun was clean.
-- 1 `up` that printed STEVE_UNREACHABLE while the game came up fine (bridge on 5175 a minute later).
-- No ssh drops. Six deploy/up cycles otherwise fine.
+2 native crashes on game A (`bad_cpus=[2]`, uptime ~17 h): one in load, one in vanilla `JoyGiver_Meditate.CanBeGivenTo` jumping to an unknown module. Startup also logged null bytes in an XML and "illegal characters in path" for vanilla Leather, which looks like memory corruption. No Graffiti frame in either. 1 `up` failed ("no RimWorldWin64 process 5 s after Start-Process"); the retry worked. No ssh drops.
 
-## Fixed this pass (live evidence; raw runs in /tmp were not kept, the numbers are here)
-- **Edge-on walls**: 24 of Ashgate's 77 marks were on walls seen edge-on, drawn turned along the top strip; a fist, two mockeries and a memorial were blots that read as blood or mould. Now `RM_GraffitiKernel.ReadsEdgeOn`: only letters and strokes (Tag, ThrowUp, Scrawl, tallies, scratches; `edgeOn` in the def overrides) go there, and nothing about a person ever does (meaning and reply finders look further for a face instead). Live: a 3-colonist spree laid 11 new edge-on marks, all tags, scrawls or cross-outs.
-- **Spree messages**: 16 "X painted over Y's work" in 5 game-hours from one spree, one twice on a tick. Now going-over during a spree is told once when it ends (`MentalState_GraffitiSpree.PostEnd` -> `GraffitiSocial.SpreeEnded`); outside a spree, one painter over one maker's work is told once a day. Live: 3 summaries ("Brick's spree went over 10 marks of Lark, Vex and Mo's work"; wording since changed to "painted over 10 marks by ...", not yet seen).
-- **Death messages**: Brick's death sent 7 "X stopped at Y's memorial" in an hour. Now one mourning message per dead pawn per day. Live after the fix: two memorials, no mourning flood (a mourning read with its one message not yet seen).
-- **Clumsy hands**: the smeared second go was drawn over the mark with its own wall show-through and washed a poor glyph into a smudge; mud 0.65 made awful paint the colour of the ground. Now the second go lies under the shape in thin paint, mud 0.4/0.2. `st Smear old|new` shows both on one wall: `p14_smear_before_above_after_below_*.png`.
-- **Art**: Glyph_HighLife was a soft green smoke cloud (a smudge whatever the hand); now a grinning spiral-eyed face blowing a ring (`bake.py` gained `rim=False` so its black grin isn't knocked out as an outline). Stencil_Fist was oxblood knuckles (a blood smear at 64 px); now a black raised fist on an ochre disc (the game's own FistRaised ideoligion icon is the same idea). `p14_lived_in_raised_fist_playzoom.png`.
-- **Weathering**: a blind judge read flaked marks as "spilled debris", "mould", "soot". Paint now keeps a stain of its whole shape (`WallPlane.Stain`, 0.34 to 0.16 by step). `p14_weathered_w2_w3_playzoom.png`, `p14_weathered_w3_128.png`.
-- **Doors** (GPT lead 5): a door put into a painted wall takes the paint on that wall cell, and a wide piece beside it stops at the door. `p14_door_into_painted_wall_128.png` (staged, `st Dirt BlocksGranite,door`).
+## Done this pass
+- **Tribute art** (judge, pass 14: the laurel and winged-sun frames read as badges). New prompts for tribute_0 and tribute_2 (manifest.py `TRIB`): a sprayed crown thrown on the head with stars and shine flicks, and crossed sprayed roses round a sprayed ring with sparkles. tribute_1, the heart, stays. They're baked and deployed, and seen live in `p15_lived_south_wall_west.png`. The manifest's codex homes `codexhome_w0/w1` have dead logins ("refresh token was already used"). The plain `codex_image.py generate` (default home) works.
+- **stories_not_a_tax: Proven** (RATCHET). **mark_ugliness_is_visible: Proven** (judge yes), with a caveat tying it to the dirt bar.
+- **Owed fix checks** (RATCHET, Proven list): dead-since tribute, memorial across save, sensitive positive side, mourning message.
+- **Confront message** (found live: "Karen confronted Lark about what's on the wall", when Lark had painted his reply over her work). A painted-over grudge stored no mark. Now `RM_Grudge.topic` and `wentOver` (saved) carry the mark that covered the work. A confrontation says "about painting over Karen's work" and points at that mark, and a Reply is painted near it. Built, not deployed or seen. Files: GraffitiSocial.cs (Notify_WentOver, AddGrudge, Notify_Confronted), Filth_Mark.cs (two call sites), JobDrivers_AnswerMark.cs.
+- **GPT broaden (pass 14), lead 7** (feeding one social mark back into itself): checked in the defs, not played. A re-ordered tribute can't farm opinion: `RM_Graffiti_HonoredMe` stacks twice per pair (+20, then x0.8), and `Honored` mood stacks twice. Lead 1 (would a newcomer mistake paint for filth?) is what the blind judge answered "yes" to below.
 
-## Bars ("- bar: state (evidence, build)"; builds: 93d8b15 = pass 13, d5e8d31 = pass 14)
-- mark_actually_appears, mark_reads_as_deliberate, mark_sits_on_the_wall, art_skill_goes_into_the_art, never_real_world_english, visitors_read_without_recharging, raid_mark_troubles_until_retaken, rereads_affect_at_most_daily, making_a_mark_is_its_own_fun, stands_alone_and_obeys_settings, mockery_changes_regard: true, unchanged from pass 13's list (see git history of this file, 36255af). Nothing this pass touched what they rest on, except: edge-on marks no longer carry pictures (mark_reads_at_play_zoom now true without the "scrap" caveat for new marks).
-- marks_visibly_various: true (pass 13 census; this pass's spree painted 19 marks of 14 kinds; fitted marks seen: FIT0.80-0.83 on tags and a glyph, d5e8d31).
-- tribute_and_memorial_mean_it: true (Brick killed: Karen painted a memorial 1500 ticks later, Mo, Vex, Fringe, Lark each read one as Mourning; Mo painted a second; 93d8b15+mourning fix).
-- pawns_answer_the_wall: true (pass 13; this pass also "Fringe confronted Karen about what's on the wall", "Lark scrubbed away Karen's mark").
-- stories_not_a_tax: true on ordinary days (3 unstaged days: 6 messages; 2 more days: 5), now also for a death and a spree (fixed above). Wall mood stays within about +6/-11.
-- fights_have_people_and_reasons, each_takes_it_like_themselves: true as in pass 13. Clean-freak fit seen again: Mo scrubbed 6 marks, 2 messages (first scrub, "calmed down after scrubbing 6 marks").
-- mark_carries_no_earth_signage: true (blind judge, pass 14 shots: "no hazard triangle, exit sign or traffic glyph").
-- mark_ugliness_is_visible: true (blind judge on `p14_dirt_vs_paint_*`: the awful glyph, the red scrawl and the splatter "all look worse at a glance than the clean cream tally").
-- mark_register_is_punk_urban: MIXED (blind judge): pieces, bubble letters, tags, the fist, crossed-out portraits, horned mockeries read as graffiti; the colony's teal ideoligion sigil (3 times), the tribute's laurel wreath and winged sun frame round a portrait, and an orange smiley sun read as badges or clip-art.
-- never_reads_as_dirt: was FALSE on the judge's shots (weathered flakes, a dark tag on a dark wall, the W2 tag's orange specks, a weathered edge mark); weathering, edge-on and art fixed since. Owes a fresh blind read.
+## The blind judge, pass 15 (`p15/blind_judge_p15.md`; it read only the 9 `p15_*` shots)
+Dirt: yes. Ugliness visible: yes. Register: mixed. What to fix, most visible first:
+1. **Portraits** in mockeries, tributes and memorials read as "a crisp game portrait... a UI icon or sticker", "lit like the UI, not like paint". Idea: render `WallPlane.PaintedPortrait` as a 2-3 tone stencil portrait in the mark's own pigment (the Obey/HOPE street stencil), keeping the hair/headgear silhouette that says who it is. That's the strongest street idiom for a face, and it fixes "stuck on" too.
+2. **Weathering reads as grime** (W2-W4: "rust or a burn", "grime or ash", "dry grass"). Real faded paint goes chalky and LIGHTER, keeping its hue, with crisp flake edges. Grime is darker and diffuse. Check what weathering does to colour in WallPlane (the stain is 0.34 to 0.16 by step) and bleach toward pale instead of grey. Maybe let W4 go sooner.
+3. **Awful/poor hands read as mould or soot**: the Vandal art asks for "sickly bile green... greyed by grime" (manifest `VANDAL`), and the runtime mud is 0.4/0.2. Ugly should be clumsy and garish, not the colour of growth. Change the Vandal palette in the prompt and regenerate, and/or drop mud toward the ground colour.
+4. **Old pictures on edge-on walls** (painted before pass 14's fix, so all over this test colony) read as blots ("a scorched hole", fists clipped, heads sideways). Idea: a one-time load migration. A picture on an edge-on face moves to the nearest free face-on wall cell within a few cells, else stays.
+5. **Badges**: the IdeoSigil `Halo` frame ("clip-art burst"; the StencilBox frame reads as a paste-up, so this is the one to redraw as a rough sprayed halo), the fist's ochre disc (logo), the gear stencil, and the RudeLittleMan bucket ("a stump").
+6. Small: ThrowUp_A chalk-and-soot reads as the game's rock chunks (recolour the fill); a dark tally on a dark wall is invisible (pick a pigment with contrast against the wall); marks crowd into one clump in the corridor.
 
 ## Do next
-1. Deploy (last build not deployed), `up`, load `graffiti_p14_ash_powered` (noon power: the generator is fuelled and wood stocked, but the lamps still show the no-power bolt: find the break with `jawa/power_net` on a lamp, or the shots stay dim indoors).
-2. Read GPT's answer to `ralph/live/broaden_ask_pass14.md` (the pass-14 broaden call, made at the end of this pass): `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gpt_help_pass014.md`. Act on one lead; that satisfies the broaden rule for DONE.
-3. Punk register: the tribute frames (`RM_Graffiti_Tribute` textures: laurel, winged sun) read as badges; a rougher, painted frame is the fix. The colony sigil repeating is the faith's sign, so keep it but consider a hand-cut variant per painter.
-4. Fresh shots of this build, then a second blind rm-judge (no verdicts given) on never_reads_as_dirt and the punk register.
-5. Then write `ralph/DONE.md` (draft: `ralph/history/DONE_draft_pass13.md`).
+Deploy (the confront fix), `up`, CHECK the mod list, load `graffiti_p15_ash_lit` (noon), Eclipse/weather clear. Fix 1-3 above (offline first: WallPlane is C#, so `st Faces`/`st Compare`/`st Dirt` stage what you need). Shoot the same frames (rects in `/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/p15/` file names; south wall west `101,107,20,10`, east `121,107,20,10`, corridor `109,116,20,9` / `126,116,20,9`, storeroom `126,123,18,14`, dirt `st Dirt BlocksGranite` then `10,41,20,7`). Then a fresh blind rm-judge with the same brief: `p15/judge_brief_template.md` (fill `{IMAGES}` and `{OUT}`; tell it to read only the images).
 
 ## Traps
-- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; `ralph/steve.sh sync` after editing it. `kvall` prints a tool's whole answer (`kv` cuts at 4000 chars).
-- `st Dirt <stuff>[,door]` builds the dirt wall at (10,40) 32x7; `shot` refuses more than 20 cells at 64 px. A stage mark dated before tick 0 gets no weather (the fist's W4 in the Dirt stage).
-- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500; load then `kv jawa/safe_advance ticks=22000` reaches noon from the day-18 save. Clear weather after every load. Stock food before long runs.
-- `days` prints TALLY lines per chunk; use `st Count` as a separator when diffing `so Marks`.
-- Saves on game B: `graffiti_p14_ash_powered` (day 18 noon, fuelled), `graffiti_p12_ash_day18`, `graffiti_p13_ash_3days`, `graffiti_p11_rust_memorial`.
+- The gate refuses Bash commands containing `rimbridge` and the like: write bridge scripts with Write/Edit. `g.py` is the driver; run `ralph/steve.sh sync` after editing it. `kvall` prints a tool's whole answer.
+- `days` hides first reads (" reads "); use `run` or `so Ledger trace` to see who read what.
+- `so Said` keeps messages for the whole game process, across loads.
+- `st Dirt <stuff>[,door]` builds the dirt wall at (10,40), 32x7. `shot` refuses more than 20 cells at 64 px.
+- Local hour in Ashgate: ((ticks - 2983) % 60000)/2500.
 - Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse,RimWorld.Planet}/`.

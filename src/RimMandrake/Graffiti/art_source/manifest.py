@@ -149,8 +149,17 @@ for i, t in enumerate(["a fat crude donkey's body on stumpy legs seen from the s
                        "a tall crooked dunce cap on top, a row of little pointing hands from both sides aimed in at the gap",
                        "a crude gallows and a headless stick body hanging from it, the rope going into the gap"]):
     add(f"mock_{i}", F + "Mockery", 1.25, "brush", 0.15, "A cruel joke about someone, drawn on a wall by somebody who hates them: " + t + ". " + GAP + BRUSH + PIG.format(c="oxblood and soot black") + SQ)
-for i, t in enumerate(["a rough ring of thick laurel leaves around the gap", "a big lopsided heart outline around the gap with little flicks of love around it", "a burst of thick sun rays around the gap and two crude wings at its sides"]):
-    add(f"tribute_{i}", F + "Tribute", 1.25, "brush", 0.15, "A loving tribute to someone, painted carefully on a wall by a friend: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="ochre and chalk white") + SQ)
+# Pass 15: a blind judge read the laurel ring and the winged sun as badges or clip-art, careful and symmetrical. A street tribute is sprayed loud
+# and fast by a friend: a crown thrown on their head, roses and a sprayed ring, stars and shine flicks. The heart already read as paint.
+TRIB = ("A street tribute to someone, sprayed fast and loud on a wall at night by a friend who rates them: {t}. Proud and rough, lopsided, not careful, "
+        "not symmetrical, not a badge, not an emblem, not clip-art. ")
+for i, (t, tool) in enumerate([("a fat crude three-pointed crown sprayed sitting right on top of the gap as if on the person's head, a ragged sprayed ring around the gap, "
+                                "short fat shine flicks bursting off it and two clumsy five-point stars", SPRAY),
+                               ("a big lopsided heart outline around the gap with little flicks of love around it", BRUSH),
+                               ("two crude sprayed roses with long thorny stems crossing under the gap, a lumpy hand-sprayed ring around the gap and a few four-point sparkles "
+                                "flicked off it", SPRAY)]):
+    add(f"tribute_{i}", F + "Tribute", 1.25, "brush", 0.15, (TRIB.format(t=t) if tool is SPRAY else "A loving tribute to someone, painted carefully on a wall by a friend: " + t + ". ")
+        + GAP.replace("top centre", "centre") + tool + PIG.format(c="ochre and chalk white") + SQ)
 for i, t in enumerate(["three melting candles in a row along the bottom, long runs of wax falling, a thin ring around the gap", "a wreath of crude flowers under the gap and long weeping lines falling from it", "two crude folded wings either side of the gap, a ring of small dots around it, drips falling"]):
     add(f"memorial_{i}", F + "Memorial", 1.25, "brush", 0.25, "A memorial for someone who has died, painted on a wall by someone who misses them: " + t + ". " + GAP.replace("top centre", "centre") + BRUSH + PIG.format(c="chalk white and ash grey") + SQ)
 for i, t in enumerate(["a stupid little stick man bending over and showing his bare backside, looking back over his shoulder with a huge grin", "a potato-shaped little man with a huge nose peering over a line, both hands up waggling his fingers",

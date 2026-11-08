@@ -359,7 +359,7 @@ namespace RimMandrake.Graffiti
                         repaint = true;
                         if (same.maker != null && same.maker != maker)
                         {
-                            GraffitiSocial.Notify_WentOver(same, maker, tells, reply);
+                            GraffitiSocial.Notify_WentOver(same, maker, tells, reply, same);    // the same drawing, repainted by this hand
                             if (!over.Contains(same.maker.LabelShort)) over.Add(same.maker.LabelShort);
                         }
                     }
@@ -388,7 +388,7 @@ namespace RimMandrake.Graffiti
             foreach (Filth_Mark rival in rivals)
             {
                 if (rival.Destroyed) continue;
-                GraffitiSocial.Notify_WentOver(rival, maker, tells, reply);
+                GraffitiSocial.Notify_WentOver(rival, maker, tells, reply, outFilth as Filth_Mark);
                 if (rival.maker != null && rival.maker != maker && !over.Contains(rival.maker.LabelShort)) over.Add(rival.maker.LabelShort);
                 rival.SkipCleanNotice();
                 rival.Destroy();

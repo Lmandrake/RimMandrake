@@ -12,13 +12,17 @@ namespace RimMandrake.Graffiti
     // It is settled only when the job finishes (MapComponent_GraffitiSocial.Answered), so a blocked wall doesn't use up anyone's answer.
     public class JobGiver_AnswerMark : ThinkNode_JobGiver
     {
+        /// <summary>A confrontation's job.count when the grudge is over work painted out of sight: its message names that, not the mark.</summary>
+        internal const int WentOverCount = 1;
+
         protected override Job TryGiveJob(Pawn pawn)
         {
             if (!RM_GraffitiSettings.socialEnabled || pawn.Map == null || pawn.Downed || pawn.Drafted) return null;
             MapComponent_GraffitiSocial comp = MapComponent_GraffitiSocial.For(pawn.Map);
             RM_Grudge grudge = comp?.GrudgeOf(pawn);
             if (grudge == null) return null;
-            IntVec3 target = grudge.answer == RM_Answer.Confront ? grudge.against.Position : (grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position);
+            Filth_Mark at = grudge.mark ?? (grudge.topic != null && grudge.topic.Spawned ? grudge.topic : null);
+            IntVec3 target = grudge.answer == RM_Answer.Confront ? grudge.against.Position : (at != null && at.Spawned ? at.Position : pawn.Position);
             bool hungry = pawn.needs?.food != null && pawn.needs.food.CurCategory >= HungerCategory.Hungry;
             bool tired = pawn.needs?.rest != null && pawn.needs.rest.CurCategory >= RestCategory.Tired;
             if (RM_GraffitiKernel.AnswerWaits(hungry, tired, PawnUtility.EnemiesAreNearby(pawn, 9, passDoors: true), target.DistanceTo(pawn.Position))) return null;
@@ -35,7 +39,7 @@ namespace RimMandrake.Graffiti
                     break;
                 case RM_Answer.Reply:
                     if (GraffitiSocial.CanReplyInPaint(pawn)
-                        && GraffitiJobUtility.TryFindReplyCell(pawn, grudge.mark != null && grudge.mark.Spawned ? grudge.mark.Position : pawn.Position, out IntVec3 cell, grudge.against))
+                        && GraffitiJobUtility.TryFindReplyCell(pawn, at != null && at.Spawned ? at.Position : pawn.Position, out IntVec3 cell, grudge.against))
                     {
                         job = JobMaker.MakeJob(RMGraffitiDefOf.RM_PaintGraffitiJob, cell, grudge.against);
                         job.ignoreJoyTimeAssignment = true;
@@ -44,7 +48,8 @@ namespace RimMandrake.Graffiti
                 case RM_Answer.Confront:
                     if (pawn.CanReach(grudge.against, PathEndMode.Touch, Danger.Some))
                     {
-                        job = JobMaker.MakeJob(RMGraffitiDefOf.RM_ConfrontPainter, grudge.against, grudge.mark);
+                        job = JobMaker.MakeJob(RMGraffitiDefOf.RM_ConfrontPainter, grudge.against, at);
+                        if (grudge.wentOver) job.count = WentOverCount;
                     }
                     break;
             }
@@ -172,7 +177,7 @@ namespace RimMandrake.Graffiti
                 if (pawn.interactions.TryInteractWith(Painter, RMGraffitiDefOf.RM_Graffiti_Confront))
                 {
                     MapComponent_GraffitiSocial.For(pawn.Map)?.Answered(pawn, About, Painter);
-                    GraffitiSocial.Notify_Confronted(pawn, Painter, About);
+                    GraffitiSocial.Notify_Confronted(pawn, Painter, About, job.count == JobGiver_AnswerMark.WentOverCount);
                 }
             };
             confront.defaultCompleteMode = ToilCompleteMode.Instant;

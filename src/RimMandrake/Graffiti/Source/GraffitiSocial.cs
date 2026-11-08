@@ -18,6 +18,11 @@ namespace RimMandrake.Graffiti
         public int until;
         /// <summary>It was about a mark still standing: when that mark goes, so does the grudge.</summary>
         public bool aboutMark;
+        /// <summary>The grudge is over work painted out of sight: `topic` is the mark that went over it, for where to answer and what to say
+        /// (live 2026-11-08: "Karen confronted Lark about what's on the wall", when he had painted his reply over her work). Not `mark`: the
+        /// grudge outlives it.</summary>
+        public Filth_Mark topic;
+        public bool wentOver;
 
         public void ExposeData()
         {
@@ -28,6 +33,8 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref notBefore, "notBefore");
             Scribe_Values.Look(ref until, "until");
             Scribe_Values.Look(ref aboutMark, "aboutMark");
+            Scribe_References.Look(ref topic, "topic");
+            Scribe_Values.Look(ref wentOver, "wentOver");
         }
     }
 
@@ -172,7 +179,7 @@ namespace RimMandrake.Graffiti
             return n;
         }
 
-        internal void AddGrudge(Pawn pawn, Filth_Mark mark, Pawn against, RM_Answer answer)
+        internal void AddGrudge(Pawn pawn, Filth_Mark mark, Pawn against, RM_Answer answer, Filth_Mark wentUnder = null)
         {
             if (answer == RM_Answer.None || pawn == null || !GraffitiSocial.Answers(pawn)) return;
             int now = Find.TickManager.TicksGame;
@@ -184,7 +191,7 @@ namespace RimMandrake.Graffiti
             }
             grudges.Add(new RM_Grudge
             {
-                pawn = pawn, mark = mark, against = against, answer = answer, aboutMark = mark != null,
+                pawn = pawn, mark = mark, against = against, answer = answer, aboutMark = mark != null, topic = mark ?? wentUnder, wentOver = mark == null && wentUnder != null,
                 notBefore = now + Rand.Range(240, 1200), until = now + RM_GraffitiKernel.GrudgeExpiryTicks,
             });
         }
@@ -787,7 +794,7 @@ namespace RimMandrake.Graffiti
         }
 
         /// <summary>Someone painted over this mark. Its maker takes it personally, and may do something about it, by the same table as anything else.</summary>
-        internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false)
+        internal static void Notify_WentOver(Filth_Mark under, Pawn by, bool quiet = false, bool lastWord = false, Filth_Mark over = null)
         {
             Pawn maker = under.maker;
             if (!RM_GraffitiSettings.socialEnabled || maker == null || maker == by || maker.Dead || maker.needs?.mood == null || maker.Faction != Faction.OfPlayer) return;
@@ -812,7 +819,7 @@ namespace RimMandrake.Graffiti
                 // Gone under a reply: that was the last word, and there's no painting back at it.
                 RM_Answer answer = RM_GraffitiKernel.AnswerOf(RM_Reaction.WorkDestroyed, GraffitiTemperament.IsHot(maker), !maker.WorkTagIsDisabled(WorkTags.Violent), here,
                     CanReplyInPaint(maker) && !lastWord && GameComponent_Graffiti.Get?.MockeryDue(maker, by) != false, Rand.Value, GraffitiTemperament.Of(maker).lean);
-                comp.AddGrudge(maker, null, by, answer);
+                comp.AddGrudge(maker, null, by, answer, over);
             }
         }
 
@@ -932,7 +939,7 @@ namespace RimMandrake.Graffiti
         /// <summary>Had it out with the painter. Owner's pick, "Scale it with temper": whether it comes to blows is rolled on the confronter's own
         /// temper (the game's insult chance for him, times the table's column), at most once in 15 days for the whole game, and never past the
         /// game's own bars on who may fight. The message names both and the wall.</summary>
-        internal static void Notify_Confronted(Pawn by, Pawn painter, Filth_Mark about)
+        internal static void Notify_Confronted(Pawn by, Pawn painter, Filth_Mark about, bool wentOver = false)
         {
             if (!RM_GraffitiSettings.socialEnabled) return;
             GraffitiTemperament.Give(by, T.RM_Graffiti_Answered, null);
@@ -941,7 +948,8 @@ namespace RimMandrake.Graffiti
             bool fight = chance > 0f && game != null && game.FightDue && Rand.Value < chance;
             Trace(by.LabelShort + " confronts " + painter.LabelShort + ": fight chance " + chance.ToString("0.00") + (game != null && !game.FightDue ? " (a fight too recent)" : "") + " -> " + (fight ? "BLOWS" : "words"));
             // Live 2026-11-07: "about what Kinso painted about someone", over a plain tag that was about nobody.
-            string where = about == null ? " what's on the wall"
+            string where = wentOver ? " painting over " + by.LabelShort + "'s work"
+                : about == null ? " what's on the wall"
                 : about.subject != null || !about.subjectName.NullOrEmpty() ? " what " + painter.LabelShort + " painted about " + about.SubjectName
                 : about.maker == painter ? " " + painter.LabelShort + "'s " + about.def.label + " on the wall"
                 : " what's on the wall";
