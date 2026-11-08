@@ -5730,3 +5730,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_ROLE_SHRINK_RUN_COST","result":"broken","detail":"role Operations last launched 87101 s ago (max 86400)","ts":"2026-11-08T02:33:16Z","tsn":1794105196880726499}
 {"seat":"RUNNER","event":"raise","id":"OPS_ROLE_SHRINK_RUN_COST","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-08T02:33:21Z","tsn":1794105201350028068}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-08T12:18:07Z","tsn":1794140287525331343}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 29 min ago (limit 15 min)","ts":"2026-11-08T12:33:23Z","tsn":1794141203272686904}
+{"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-08T12:33:27Z","tsn":1794141207814552224}
