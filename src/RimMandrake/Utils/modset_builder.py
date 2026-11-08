@@ -171,7 +171,7 @@ TIERS = {
         # GSS rides along for the TOOLING, not the test: JawaBench's FlowWorks and GSS playtest runners share one
         # partial class (JawaBenchTerrainTools), so its compiler-generated lambda cache names GSS types and every
         # jawa/playtest_start throws TypeLoadException (LaidPiece) without GSS loaded (live 2026-10-06).
-        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack"],
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches"],
         "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
         "forbid_substr": ["manywaters"],
         "dlc": True,
@@ -217,7 +217,7 @@ TIERS = {
                "the cord overlay alone with the bridge on a dev quicktest map. Harmony and all "
                "five DLCs resolve automatically. REFUSES Invisible Conduit Continued, whose "
                "unconditional wire prefix would erase the overlay lines the script checks.",
-        "want": [BRIDGE, "mandrake.rm.gimmesomeslack"],
+        "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.patches"],
         "forbid": ["glitchgoblin.invisibleconduitcont"],
         "dlc": True,
     },
@@ -604,9 +604,10 @@ TIERS["greentideant"] = {
 TIERS["pyrelands"] = {
     "why": "PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni "
            "fauna/mechanics patch closure for the Pyrelands north-star trial, with "
-           "biome transitions, Map Designer and flora injectors kept off the list.",
+           "biome transitions, Map Designer and flora injectors kept off the list. mandrake.rm.patches "
+           "rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).",
     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
-             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"],
+             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics", "mandrake.rm.patches"],
     "forbid": ["m00nl1ght.geologicallandforms",
                "m00nl1ght.geologicallandforms.biometransitions",
                "zylle.mapdesigner",
