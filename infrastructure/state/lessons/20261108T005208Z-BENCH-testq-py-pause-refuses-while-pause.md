@@ -1,0 +1,1 @@
+testq.py pause refuses while a pause stands ('already paused'); to extend the SteveDesktop lane pause, run 'testq.py resume --reason R && testq.py pause --hours H --reason R' in one line: resume only deletes the pause file and logs, nothing fills the lane in between.
