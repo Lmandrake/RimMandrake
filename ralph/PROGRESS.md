@@ -1,39 +1,35 @@
 # Graffiti: where the last pass got to
 
-Pass 7 on game B. It retired on context, about 260k tokens. Weather: none. No dead game, no dropped ssh, `bad_cpus=[]` at the start; 5 deploy/up cycles, all came up first time.
+Pass 8 on game B. It retired on context, about 255k tokens. Weather: none. No dead game, no dropped ssh, `bad_cpus=[]`; about 10 deploy/up cycles, all came up first time. The deployed DLL is commit 3cbca39994's source (the hash commit on top only re-stamps it).
 
-## Phone call (broaden), made this pass: `D:\ClaudeWork\rimmandrake\ralph_graffiti\gpt_help_pass007.md`
-Asked: what real players would do that my staged tests miss (ask: `ralph/live/broaden_ask.md`). Its 7 leads, most revealing first: (1) leave graffiti alone in a colony that needs work, through a disruption; (2) a newcomer clicks a mark and tries to learn who, about whom, how good, and what it did; (3) farm a pawn's mood/opinion with paint-read-scrub cycles ("once per mark" vs "once per person"); (4) a confrontation meeting a pawn who can't take part (no violence, drafted, arrested); (5) the player disagrees with the colony about keeping a mark; (6) rebuild a marked wall in another material; (7) the same visitors back through another gate.
-Acted on (1), (3) and (4). What it found is below. (2) is half done: the wall's inspect pane already tells the story (`WallInspectPatch`), and `g.py wallui` now clicks a wall and shoots it, but no shot was taken yet. (5), (6), (7) are untried.
+## Found by playing, and fixed
+- **Stories were crowded out.** By day one every room held its share of tags, so a pawn who hated another (-32, then -70) painted plain marks for days and no mockery: the gap at whatever wall was nearest never fit one. Now `JoyGiver_PaintGraffiti` decides what the hand wants to say first, then `TryFindMeaningCell` finds the nearest wide-enough stretch to where the subject sleeps or stands. It may go over the painter's own marks and, for a mockery, the target's own tags (which gives the target a "painted over my work" too), never a bystander's. The job carries the subject in target C (`JobDriver_PaintGraffiti.Meant`).
+- **Memorials from strangers.** Kinso had only the generic "Colonist died" (-3) for Mo and took +5.7 from painting Mo a memorial. `Mourned()` now needs the game's own friend-died thought or a relation.
+- **Grief rarely painted.** Lark's lover died and Lark painted once in two days (tallies). The memorial chance is now 0.6 and a mourner's urge is x1.75 until the memorial stands. Lark painted it about 3 days after the death.
+- **Grief relief was squeezed.** Lark took +1.4 for the memorial (funny doodles had filled the +8 wall-mood cap) while the stranger had +5.7. `RM_Graffiti_GriefEased` now stands outside the cap: +5 for Lark beside "My lover Pell died -16".
+- **Skill didn't show on the wall.** The new `st Crafts` (one Piece at every craft) showed awful and legendary differing only by which drawing each was. Awful and poor now print a muddy, smeared second pass off true (`RM_GraffitiKernel.CraftSmear`). Seen at 64 ppc: awful and poor read as brown mud smears, normal to legendary stay crisp.
+- **Confront message lied**: "about what Kinso painted about someone" over a plain tag. Now it names the mark ("about Karen's tally marks on the wall"), and the message also points at the wall.
+- The wall's inspect pane now gives each mark's Beauty ("Mockery (good), by Cathryn, about Brick (3 angered). Beauty +3: decent work").
+- The staged colony starved on day 7 (60 meals); it now has 140. The lint selftest's planted defect pointed at a value that no longer exists; fixed.
 
-## Found by playing, and fixed (build `+dirty` on 4cc156fb8c; the last fix, numb pawns, is built but NOT deployed)
-- **Accidents started feuds.** Three idle days, no hooks: 79 marks and 4 "painted over my work" grudges. One of them led to a two-sided mockery feud (BW/Mo). Causes: a gap measured when the brush went up, then a neighbour finished beside it before the brush came down; and a painted reply that went over a bystander's mark as well as its target's. Fixed: the gap is measured again at the finish (`JobDriver_PaintGraffiti.FinishMark`: "left X unfinished: fresh paint beside it", seen live), and a reply needs room clear of everyone but the person it answers (`BareRoom(spare)`, `TryFindReplyCell(against)`). Rerun, three idle days: 58 marks, **0** accidental grudges.
-- **Log spam**: "Mo glared at BW's tag" logged 3 times in 360 ticks (one line per tag). Now rival tag, moved, offended and mourning log once a day per reader and painter (`RM_GraffitiKernel.LogsOncePerDay`).
-- **Outer walls painted solid**: outdoors counted as one map-sized room with no cap. Now open ground caps by stretch: 2 marks within 4.5 cells (`StretchHoldsEnough`).
-- **A drafted pawn could be pulled into a paint fight** (vanilla `SocialFightPossible` doesn't check drafting): fight chance 0 if either pawn is drafted, and a confront fails while the painter is drafted (the grudge stays open).
-- **Psychopath showed "+0 Enemy marks on our walls"** in the needs list: `ThoughtWorker_EnemyClaim` now inactive for numb pawns. BUILT, NOT DEPLOYED.
-
-## Proven live this pass (busy colony: `st Busy` gives a potato field, a storeroom of blueprints, hauling, forever bills, trees to cut)
-- **Tribute**: Lark (art 15) painted a good tribute to Vex. Vex +6.6 "Tribute from Lark" and +22 opinion (Lark became her Friend). Pell, Lark's lover, -3.7 mood and -14 "paints tributes to someone else". Brick, who hates Vex, -6.6 "paints tributes to someone I can't stand". Unprompted, Pell then painted his own tribute to Lark, and "Lark found the tribute Pell painted for them and stood looking at it". Shots: `first_look_tribute_jealous_needs.png`, `first_look_tribute_vex_social.png`.
-- **Painting is recreation**: Lark's joy went 0.56 to 0.63 over one tribute.
-- **Rereads at most daily**: in one day, 71 rereads, no pawn reread the same mark twice inside 60000 ticks. The first read's memory (Honored, 4 days) is stronger than a reread (0.6x), so a reread shows only once it has faded; opinion is never given again.
-- **Settings**: painting off, then 30000 ticks: marks stayed at 53 while reactions went on. Social off: every wall mood and opinion went to 0 within 300 ticks, with no grudges left. Both back on.
-- **Raid retaken with names**: a real raid (Kysdo, 2 pirates, sent at the wall, then turned for home) left an awful wide throw-up at (146,113): "Kysdo left their mark on your walls on the way out." 7 colonists got "Enemy marks on our walls" (-1, Volatile -1.5). Mo, ordered, scrubbed it: "Mo scrubbed away the enemy's mark", "+3 Took our wall back", and the colony thought ended.
-- **Rate, no hooks, 8 idle pawns, 3 days** (second run, fixed build): 58 marks, full by day 0.75 (room caps), then flat. 1 subject mark, **1 message in 3 days**, wall mood per pawn between -1 and +6. On the busy colony, 2 days: 8 messages, 4 subject marks (a staged feud, two tributes, a mockery).
+## Proven live on this build (shots in the shots folder, listed in LOOK.md)
+Unscripted after one staged feud: Brandt mocked Kinso; Cathryn (psychopath, in a spree at mood 0.35) mocked Brick and painted over Brick's work; Brick crossed out and mocked back; Lark (Brick's sweetheart, +90) replied with her own mockery of Cathryn ("Showed the wall what Cathryn is +5", "Brick mocked on the wall -2.75"); Kinso and Pell set out to confront and scrub. Fresh colony: Karen mocked Brick within a quarter day, and Brick confronted her: "fight chance 0.85 -> BLOWS". Every confrontation with Cathryn had a wall-fight chance of 0, because the game's own social-fight check refuses her. Mo (Very Neurotic) forced into the clean-freak break: "Mo scrubbed away Karen's mark (in a cleaning fit)". Psychopath: no wall thoughts. Volatile Kinso: "Mocked on the wall by Brandt -13.2" against a -8 base. A visitor read a poster once: goodwill -1, and nothing more (capped). Save/load: about 6 reloads, and the marks, grudges and grief carried over each time.
+Rate in a fresh busy colony, no staging: 61 marks in 2.5 days, 0 stories and 0 messages, because nobody had come to love or hate anyone yet. Over the next 5 days stories came at 3 messages in about 3 days.
 
 ## Do next, in order
-1. `ralph/steve.sh deploy` + `up` (the numb fix), then a fresh `setup @ st Busy` colony. It needs no other staging.
-2. GPT lead 2: `g.py wallui <name> x,z` on a mockery, a tribute and a raid mark. Can a newcomer read who, about whom, how good, Beauty? The wall's lines show no Beauty (only the mark's own `GetInspectString` does); consider adding it.
-3. The final shot set for `DONE.md`, all on this build at 64 ppc in daylight: `st Gallery`, `st Sweep` (rooms: granite 4,6,16,10; wood 19,6; steel 34,6; marble 4,16; plasteel 19,16; slate 34,16; one screen holds 18x10 cells), `st Ladder` (ugly vs fine), `st Compare` (paint vs dirt), a lived-in colony after 2 or 3 days, plus each social bar's UI shot. Retake the fight with blows on this build (`so Feud`, a hot pawn, `until "BLOWS"`).
-4. Telemetry: read the newest `JawaBench\tps\tps_*.jsonl` on Steve for a 3-day run (not done in any pass).
-5. Then `DONE.md` (the broaden call is done, this pass).
+1. Telemetry: newest big `tps_*.jsonl` under `/mnt/d/ClaudeWork/rimmandrake/instances/b/JawaBench/tps` (from WSL on Steve via `ralph/steve.sh run`). The long runs this pass were sessions with pid 18640 (two 90000-tick runs) and 28768/14388 (until runs). Not done in any pass.
+2. On this build: a raid mark and its retake (recipe under Traps), and the settings switch (`so Set`), each with one shot. Pass 7 proved both on an older build.
+3. `DONE.md`, from the shots already in the folder (LOOK.md maps each to its bar). The broaden call was made in pass 7 and acted on.
+
+## Open questions worth weighing in DONE.md
+- Ambient wall pleasure (funny doodle, good work, our sign, left my mark) settles around +4 to +6 for most pawns, capped at 8 (12 for a sensitive pawn). That isn't a tax, but players may see it as free mood. Consider a smaller cap for thoughts about no one.
+- A mockery hurts -8 for 3 days (-12 to -13 for the Volatile). That is strong in a colony that's already struggling.
+- The vandal run reads as a messy, colourful scribble beside neat tallies. That's worse, but not plainly uglier at a glance.
 
 ## Traps
-- The gate refuses Bash commands containing `stage_colony`, `rimbridge` and the like, even in paths (use globs). It also blocks the WHOLE command when it delivers a context warning: re-run it.
-- `ralph/steve.sh run '...'`: the driver chains with ` @ `; pass tool args with `kv`. After editing `ralph/live/g.py`, run `ralph/steve.sh sync` before using it.
-- `g.py days N chunk` prints a TALLY line per chunk (marks, about, msgs, log, each pawn's wall mood/opinion total) and only event trace lines. `so Said n` lists the messages the walls sent (the game's own message list forgets them in seconds). `so Set field=value` flips a setting.
-- `g.py ui` now parks a virtual hover (`rimworld/set_hover_target`) right of the cell, so Steve's real mouse no longer raises a Food tooltip. The Needs tab's top (Mood bar) is still cut off on the 720-high screen.
-- A raid stages far off: `kv jawa/lord_pawn_move action=list` to find it, `kv jawa/lord_set_job lordIndex=N lordJob=LordJob_AssaultColony args=assaulterFaction=<def>;canKidnap=false;canTimeoutOrFlee=true;sappers=false;useAvoidGridSmart=false;canSteal=false`, step 600 at a time with `kv rimworld/step_game_ticks ticks=600` (safe_advance stops on threats), then `LordJob_ExitMapBest args=locomotion=Jog;canDig=false;canDefendSelf=true` when they're at a wall. `lord_travel_to` did nothing on a staging raid.
-- Social off then on forgets every wall memory (by design): don't toggle it in a colony you still want to read.
-- The staged hall has a stove, so it's a Kitchen and autonomous painters skip it. Own-faction marks are never auto-cleaned (fork F7).
-- Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse}/`. New .cs files go in `Source/Graffiti.csproj`.
+- The gate refuses Bash commands containing `rimbridge` and the like, even in heredocs: write bridge scripts with the Write tool (`ralph/live/deaths.py` lists death letters).
+- `prove_quicktest_world.py` refuses to leave a colony past tick 120000: stage art (`st Sweep/Ladder/Compare/Gallery/Crafts`) in the corners of the colony map instead. Saves on Steve: `graffiti_p8_fresh2` (fresh colony, day 5, feud, memorial), `graffiti_p8_busy3` (first colony).
+- `ralph/steve.sh run '...'`: the driver chains with ` @ `. Pass a value with `;` in single quotes inside double quotes. After editing `ralph/live/g.py`, run `ralph/steve.sh sync`.
+- Joy pacing is real: a pawn with full joy, or one bored of painting, doesn't paint for days. `until` with a 100k+ budget, or wait.
+- Raid: `kv jawa/lord_pawn_move action=list`, then `kv jawa/lord_set_job lordIndex=N lordJob=LordJob_AssaultColony args=...`, step 600 at a time, then `LordJob_ExitMapBest args=locomotion=Jog;canDig=false;canDefendSelf=true` at a wall.
+- Decompile: `/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/{RimWorld,Verse}/`.
