@@ -1,0 +1,117 @@
+[
+ {
+  "id": "arteval_RM_Niim_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Niim",
+  "prompt": "A creature sprite for RimWorld: the niim, the lit shoal of the light columns. A shoal of exactly six hand-long alien light-swimmers schooling close together, drawn as one centred group with every body fully visible and nothing cut off: two larger swimmers in the centre and four smaller swimmers around them in a loose ring, the same six in the same positions and sizes in every facing, turned with the camera. Every swimmer is the same design: a pale blue-white body, slim and tapered, a moderate body depth, a smooth wedge-shaped head with a small pointed snout and no gill cover, two slender trailing filament-fins in place of ordinary fins, and one tail: a broad, soft, translucent ribbon veil with two gently curled lobes and softly rippled edges, as wide as the body is deep. This one tail veil is identical in every facing: the same broad flowing shape, the same two lobes, the same curled edges. Along each flank runs one dotted line of cold light, small sharp bright white points set into the body. Each swimmer has a thin, clean, continuous outline in a darker saturated blue around the body, tail veil and filaments; the translucent veil and filaments sit inside a crisp, hard-edged outlined silhouette. Side view: the slim swimmers in profile, snouts pointing the same way, the broad lobed tail veil trailing behind, the dotted flank lines clearly lit, at the game's oblique camera angle. Front view, eyes toward the viewer: the true head-on view of the side-view swimmers, each a small slim oval face with the same body depth and tapered snout as the profile, one dotted light line showing as a short row of dots at either side of the body, the same broad lobed veil with curled edges trailing behind and above the body, with the filaments. Rear view, seen from behind: each swimmer foreshortened at the game's oblique camera angle, the same broad, flowing, lobed tail veil with curled edges nearest the viewer and largest, spread to its full width as in the side view, the body receding upward behind it with the same slim depth as the side view, the head end hidden behind the body, the flank dot-lines visible as short rows at the edges of each body. The palette stays blue-white with cold-light dots and a darker blue outline throughout. Realistic painterly vanilla RimWorld sprite style. Fully transparent background: every pixel outside the fish outlines is empty, with no glow, haze, bloom, ground, water, shadow, text or border around the shoal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1651",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Niim/RM_Niim"
+ },
+ {
+  "id": "arteval_RM_Noolim_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Noolim",
+  "prompt": "A creature sprite for RimWorld: the noolim, a darting shoal of dull silver slivers from the dark floor of the Twilight, seen as a shoal and never as one individual. The shoal is an irregular, swirling, open cloud of about twenty separate slivers, with three or four strays drifting just outside the main spread. Every sliver is the same shape in every facing: a straight-edged, angular, long thin shard of dull silver with a flat narrow cross-section and a sharp point at each end, a crisp painted edge, a thin dark contour line of its own and a dull metallic glint along one edge. Shading is restrained and painterly, in flat-to-two-tone strokes. The slivers have no fin, no tail and no head. They sit at many different angles and depths, streaming and turning together as if darting through water, with clear gaps of transparent background between neighbours. The cloud keeps the same compact oval envelope and the same angular sliver shape in every facing. Front view (south): seen head-on, the same thin angular shards point their sharp tips toward the viewer and appear foreshortened as narrow pointed silver flecks, scattered at varied angles, with the same thinness, dark contour and metallic glint as the side view. Rear view (north): seen from behind, the shoal is the same cloud of the same straight-edged, angular, sharply pointed dull silver shards as the front and side views, each a flat narrow shard with two pointed ends, foreshortened as narrow pointed silver shards at varied angles as they move away from the viewer, gathered in the same compact oval cloud and at the same width as the front view, with the same thin shape, dark contour, edge glint and finish. Side views (east and west): the thin angular shards lie side-on as long slender silver slivers at varied angles in a loose layer with open space showing through the centre, all swept the same way along the direction of travel. Colouring is dull, unlit silver with a deeper shade of the local colour along the edges. Realistic painterly vanilla RimWorld sprite style with clean dark outlines. Exactly ONE shoal, centred, the whole cloud visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1651",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Noolim/RM_Noolim"
+ },
+ {
+  "id": "arteval_RM_IllothLarvae__Smogapillar_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_IllothLarvae__Smogapillar",
+  "prompt": "A creature sprite for RimWorld: the illoth larva, the larval form of the illoth, an alien segmented larva that hosts a fungus. To deter predators it wears the toxic colours of the fungus it hosts: the whole body is painted in the vivid toxic warning colours of its hosted fungus, blotched orange over olive. The body is one broad, low, squat dome of plated segment bands with a ridged crest along the spine, its silhouette about 1.6 times as wide as it is tall, with lobed segment sides that bulge outward equally on the left and right. This wide squat silhouette, with the same width and the same lateral contours at the same scale, is the body in every view. Raised fungal shelves and domed fungus caps in orange and olive rise from the back segments like bracket fungus, larger toward the middle of the back. The head is a smooth, flattened, helmet-like plate with a small vertical slit mouth framed by a few short frond-like feelers, and one round glossy eye with a pale ring on each side of the face. The rear end is a small, smooth, closed, rounded olive tail cap, the same in every view. Front view: the head with both eyes toward the viewer, the full wide squat body width spreading out behind it. Side view: the head to one side with the near eye clearly visible, the fungal shelves along the back, the rounded olive tail cap at the other end. Rear view, seen from behind: the same wide, squat dome as the front view, with identical full width and the same lobed segment spread on left and right; the broad orange-blotched back segments and fungal shelves spread out to the full body width, and the small rounded olive tail cap sits at bottom centre, nearest the viewer. The head is hidden on the far side of the body, eyes hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1651",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.4,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/SmogMoth/Smogapillar"
+ },
+ {
+  "id": "arteval_RM_Vennick_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vennick",
+  "prompt": "A creature sprite for RimWorld: the vennick, an alien silk-runner of the high lines. Fist-sized. The body is built as a raised arch. The bone-white back is one smooth, glossy, domed shell like polished bone, with a low ridged crest along its midline. It rises steeply from a small head at the front, peaks at the middle of the body, and falls away to a narrow pointed rump, so the side view is a pale arch shaped like an upturned boat hull, taller in the middle than at either end. The flanks and underside are pale grey with soft painted shading. The head is a small tapered beak tucked under the front slope of the shell. It has a pair of small dark eyes on its sides, a pair of short soft silk-tufted palps held close beneath the chin, and below them a pair of short fangs curving downward. The rump ends in a visible pair of spinnerets with a short pale silk thread trailing from them. Exactly six fleshy pale-grey legs, three on each side, built for gripping and climbing. Each leg bends out and up at an elbow, then drops to a broad spread foot of three hooked toe-claws clamping a silk line. The body hangs low and close between the legs, and the legs fan wide from the body like a climbing lizard's. The same six legs, the same arched shell and the same downward-curving fangs appear on every facing. Front view: eyes toward the viewer, palps under the chin, fangs curving downward, the arched white shell rising behind the head, three splayed legs per side. Rear view, seen from behind: the domed shell crest, the narrow rump, spinnerets and silk thread, eyes hidden, three legs per side. Side view: the tall arched profile, with three distinct, evenly spaced elbowed legs on the near flank ending in three clamped feet on the ground line, the far-side legs hidden behind the body, the beak, palps and fangs at the low front end and the silk thread at the low rear end. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border. reference: none",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1651",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.35,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vennick/RM_Vennick"
+ },
+ {
+  "id": "arteval_RM_Aveluthia_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Aveluthia_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view), consistent with the accepted front view: same anatomy, same proportions, same charcoal-black colours, seen from behind. A creature sprite for RimWorld: the aveluthia. A tall, ponderous pack beast hung in thick wrinkled folds of black flesh, on four pillar legs with broad splayed toes for loose obsidian scree. Rear view, seen from behind: the back, the broad rump and haunches, and the tail end, with the head carried low and forward beyond the shoulders so its eyes are hidden from the viewer. The body is massive from behind: the two rear pillar legs are thick and heavy, the folded haunches are broad, and the broad splayed toes show at the feet. Size on the canvas: the visible body, from the soles of the feet to the top of the back, spans about 375 px of height on a canvas of the same size as the accepted side view, which is the same body height as the side view. The foreground feet rest on the same ground-contact baseline as the side view, the same distance above the bottom edge of the canvas. The top of the back is at the same height as the side view's top, and the body is centred horizontally, so the animal keeps its place and its size when it turns. The body is no taller than the side view's body, and clear transparent margin surrounds it on every side. Thick wrinkled folds of black flesh hang from the whole body in sharply articulated painterly creases, with high contrast between deep fold shadows and lit ridges, in the charcoal palette of the accepted side view. A faint cool blue-violet rim edge runs around the whole silhouette, over a clean dark outline. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261107_1651",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+ }
+]

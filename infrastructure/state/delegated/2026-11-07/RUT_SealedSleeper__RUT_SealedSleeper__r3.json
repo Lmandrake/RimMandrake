@@ -1,0 +1,58 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.38428679999999993
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_SealedSleeper__RUT_SealedSleeper",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32', 'SCALE_WRONG']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "854d266746d9520a0901a10b7a7bade2ef51e23d9c7aea8fef49faa109433347",
+  "east.png": "a17a67043f95d63f69e3af16fc890af0afa417d289b4a3dd918ef1737376bc35",
+  "north.png": "7f992099432e92fcee8efa2bb8d4be0dbb6595841db7206d09c063b246319e24",
+  "scale.png": "3d191821e13e9240808df5c00a2ef05c2108db9ee124413a267ffe99c3387b2b",
+  "facings.png": "ead5a29d435c35650f93d7835b2e50550075934c7b64bfe7ec7eb882265a7fe7"
+ }
+}

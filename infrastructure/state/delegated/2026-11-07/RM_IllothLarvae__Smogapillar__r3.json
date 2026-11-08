@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3879538
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 37.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1333322
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_IllothLarvae__Smogapillar",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'STYLE_CARTOON']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "8de395fb76b9"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1353c4fd7d1cb3ef4837042f72750da4724703054442d3a33a76f05aa06370de",
+  "east.png": "12ebe91b9b0ea1cb1e85fadee58c68a268687eddb3e8ceab8b3c61101fffbee9",
+  "north.png": "403d110c93bd75b8f61b2e475bb7ff7666142b45cda0e0f07f0cf8a5fe264e60",
+  "scale.png": "3be28a9e5eeac91c106f3a25a881839d54b0120c4496b053097b879a7a213ba2",
+  "facings.png": "fedd4c20e01e6c0599b2e64c189173699ac4483fc8d788c32b1dfaffd7a9172a"
+ }
+}

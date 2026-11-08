@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_Fuzzrunner_s2r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "A single creature sprite for RimWorld, the fuzzrunner, a plains animal of the worn runs under the canopy. Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, centered, readable at small size. Body: a plump, round, fog-fat low-slung body like a living boulder, covered in dense stone-like mottled fur in slate grey, dusty ochre and lichen-green patches with pale speckles, so it looks like a mossy rock when it holds still. Head: a smooth, blunt, wedge-shaped head sunk into the round body, with a flat brow plate and no rodent snout; the eyes are tiny vestigial slits sealed under pale lids, almost hidden in the fur. Sensory organs: dozens of long, thin, stiff sensory filaments grow in rows along the brow, the cheeks and both flanks, fanning outward and swept slightly back like a ring of antennae, longer and more numerous than ordinary whiskers; they are the way it navigates by smell and touch. Limbs: six short, stubby, padded legs, three per side, tucked beneath the belly, ending in blunt hoof-like pads; the rear carries a short tuft of filaments in place of a tail. Front view: head toward the viewer, eyes-slits and brow filaments visible. Rear view, seen from behind: the round back, the filament tuft and the haunches, the head hidden. Side views: profile showing the blunt wedge head, the flank filaments and the three legs on the near side. Same palette, mottling and proportions in every view. reference: none",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_fin_20261107",
+  "drawsize": 0.8,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner"
+ }
+]
