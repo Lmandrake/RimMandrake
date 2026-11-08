@@ -168,7 +168,7 @@
     <label>poison shrub</label>
     <description>A short shrub. Does not typically talk.</description>
     <graphicData>
-      <texPath>StandIn/Plant/PoisonShrub</texPath>
+      <texPath>Plant/PoisonShrub</texPath>
       <drawSize>1.15</drawSize>
       <shadowData>
         <volume>(0.55, 0.2, 0.2)</volume>

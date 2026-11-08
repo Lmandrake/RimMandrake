@@ -1,0 +1,70 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 50.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4035978
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 21.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1256842
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ToxiGrass",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['DESC_MISS']; polish ['WANTS_VARIANTS']",
+  "gpt regen: unsettled ['K1'], own blocking ['DESC_MISS']",
+  "owner_kept not established by the spec (no art-ledger lookup): judged REGEN, NOT filed and no round counted \u2014 re-spec with fauna_spec.py"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v3",
+   "sha": "2337d29a054a"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "4e4c26e4f103"
+  },
+  "template": {
+   "tag": "plant@v3",
+   "sha": "d69b4b6246b6"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "single.png": "2c713f607d5fd82d76da350c3d4899bc983e998148be50c89b5d20c3cec43d5b",
+  "scale.png": "0d174b3177848fe4d3cb353c3a0ad0bf0d4876f6ccdb8ed10b6047463514d785"
+ }
+}
