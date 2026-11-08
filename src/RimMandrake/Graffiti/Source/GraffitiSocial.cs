@@ -65,7 +65,7 @@ namespace RimMandrake.Graffiti
         /// <summary>Since pass 14 nobody paints a picture or a message on a wall seen edge-on, where it prints turned along the wall's top strip
         /// as a blot; a save from before still carries them there (live pass 15, Ashgate: a fist, painted heads, a ring and cogs drawn sideways on
         /// wall tops, which a blind judge read as "a scorched hole"). Once a load, each moves to the nearest free face, in its own room
-        /// if it can, as if it had been painted there; with none within a few cells it stays where it is.</summary>
+        /// if it can, as if it had been painted there; with none within a few cells it is taken down. A pigment its wall swallows is re-picked.</summary>
         private void MoveOffEdges()
         {
             foreach (Filth_Mark m in marks.ToArray())
@@ -91,7 +91,11 @@ namespace RimMandrake.Graffiti
                 }
                 if (!to.IsValid)
                 {
-                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " stays on an edge-on wall at " + m.Position + ": no free face within " + MoveOffEdgeRadius);
+                    // Live pass 16: four stayed, in a bedroom whose one face was full and out on a long outside wall, drawn sideways as scraps a blind
+                    // judge had read as mould. Paint nobody can see as anything but a blot is taken down, quietly: nobody scrubbed it.
+                    GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " taken off an edge-on wall at " + m.Position + ": no free face within " + MoveOffEdgeRadius);
+                    m.SkipCleanNotice();
+                    m.Destroy();
                     continue;
                 }
                 IntVec3 from = m.Position;
@@ -99,6 +103,11 @@ namespace RimMandrake.Graffiti
                 m.wallSide = RM_GraffitiKernel.NoWall;
                 GenSpawn.Spawn(m, to, map);
                 GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + " off an edge-on wall: " + from + " -> " + to);
+            }
+            foreach (Filth_Mark m in marks.ToArray())
+            {
+                int was = m.pigment;
+                if (m.Spawned && m.RepickUnreadPigment()) GraffitiSocial.Trace(m.def.defName.Replace("RM_Graffiti_", "") + "@" + m.Position + " pigment " + was + " -> " + m.pigment + ": its wall swallowed it");
             }
         }
 

@@ -467,6 +467,25 @@ namespace RimMandrake.Graffiti
 
         private const float LookRadius = 9f;
 
+        /// <summary>An older save's pigment that its wall swallows under today's rule (RM_GraffitiKernel.PigmentReads: soot needs a pale wall)
+        /// goes to the next one that reads, so the same mark keeps a colour, just a visible one. True if it changed.</summary>
+        internal bool RepickUnreadPigment()
+        {
+            if (wallSide == RM_GraffitiKernel.NoWall || def.GetModExtension<ModExtension_Graffiti>()?.pigmented != true) return false;
+            Color wall = WallPlane.FaceColor(Position + new Rot4(wallSide).FacingCell, Map);
+            if (RM_GraffitiKernel.PigmentReads(pigment, wall.r, wall.g, wall.b)) return false;
+            for (int k = 1; k < RM_GraffitiKernel.PigmentCount; k++)
+            {
+                int p = (pigment + k) % RM_GraffitiKernel.PigmentCount;
+                if (!RM_GraffitiKernel.PigmentReads(p, wall.r, wall.g, wall.b)) continue;
+                pigment = p;
+                sigilMatsBuilt = false;
+                Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>A poor hand's paint: overmixed toward mud, the colours gone brown and dull.</summary>
         private static Color Muddied(Color c, float mud)
         {
