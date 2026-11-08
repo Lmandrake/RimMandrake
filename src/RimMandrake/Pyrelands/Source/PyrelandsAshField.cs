@@ -151,39 +151,9 @@ namespace RimMandrake.Pyrelands
         {
             base.FinalizeInit();
             EnsureGrids();
-            ReLayLegacyAsh();
             active = ScanForAshField();
             // Re-read the gate (the Baroque Biomes "Pyrelands" toggle lives outside this mod's WriteSettings) on every load.
             PyrelandsAshFieldPatches.ApplySettings();
-        }
-
-        /// <summary>Design §7: the retired rungs survive one cycle as hidden aliases; any cell of one is re-laid to deep ash on load.</summary>
-        private void ReLayLegacyAsh()
-        {
-            TerrainDef deep = DefDatabase<TerrainDef>.GetNamedSilentFail(RM_FireEcoKernel.DeepAshDefName);
-            if (deep == null) return;
-            int relaid = 0;
-            try
-            {
-                TerrainGrid g = map.terrainGrid;
-                foreach (IntVec3 c in map.AllCells)
-                {
-                    TerrainDef t = g.TerrainAt(c);
-                    if (t != null && RM_FireEcoKernel.IsLegacyAsh(t.defName))
-                    {
-                        g.SetTerrain(c, deep);
-                        relaid++;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Warning("[RimMandrake.Pyrelands] ash-field legacy re-lay failed: " + e.Message);
-            }
-            if (relaid > 0)
-            {
-                Log.Message("[RimMandrake.Pyrelands] ash field: re-laid " + relaid + " retired ash-rung cells to deep ash on load.");
-            }
         }
 
         private bool ScanForAshField()

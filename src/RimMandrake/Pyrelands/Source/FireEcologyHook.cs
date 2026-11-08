@@ -510,51 +510,6 @@ namespace RimMandrake.Pyrelands
     }
 
     // ════════════════════════════════════════════════════════════════════
-    // ASH FALL'S OLD DRIFTS, CONVERTED ONCE.
-    //
-    // Ash fall used to lay loose-ash filth drift by drift from this component's tick. Since 2026-11-08 ash is vanilla sand
-    // (PyrelandsAsh: the weather's own sandRate lays it, snow's path), so nothing is left for a tick to do. The component stays
-    // for two reasons: every map in every save lists it by class name (a missing MapComponent class is a load error), and a save
-    // from before the change still holds RM_FE_Filth_LooseAsh. On load each such filth becomes sand depth (a drift level per
-    // point of thickness, RM_FireEcoKernel.LegacyFilthDepth) and is destroyed, so the old ash keeps lying where it lay.
-    // ════════════════════════════════════════════════════════════════════
-    public class MapComponent_PyrelandsAshfall : MapComponent
-    {
-        public MapComponent_PyrelandsAshfall(Map map)
-            : base(map)
-        {
-        }
-
-        public override void FinalizeInit()
-        {
-            base.FinalizeInit();
-            if (!ModsConfig.OdysseyActive || map.sandGrid == null) return;
-            ThingDef legacy = DefDatabase<ThingDef>.GetNamedSilentFail(PyrelandsAsh.LegacyFilthDefName);
-            if (legacy == null) return;
-            List<Thing> old = map.listerThings.ThingsOfDef(legacy);
-            if (old.Count == 0) return;
-            try
-            {
-                var copy = new List<Thing>(old);
-                int n = 0;
-                foreach (Thing t in copy)
-                {
-                    if (t.Destroyed || !t.Spawned) continue;
-                    PyrelandsAsh.RaiseTo(map, t.Position, RM_FireEcoKernel.LegacyFilthDepth((t as Filth)?.thickness ?? 1));
-                    t.Destroy(DestroyMode.Vanish);
-                    n++;
-                }
-                Log.Message("[RimMandrake.Pyrelands] ash on sand: " + n + " loose-ash filth from an older save laid as sand depth on map "
-                            + map.uniqueID + ".");
-            }
-            catch (Exception e)
-            {
-                Log.Warning("[RimMandrake.Pyrelands] ash on sand: converting this save's loose-ash filth failed part way: " + e.Message);
-            }
-        }
-    }
-
-    // ════════════════════════════════════════════════════════════════════
     // SCORCHED RUINS (PYRELANDS_SCORCHED_RUINS_1) — the fourth thing XML
     // cannot do: react to WHERE another genstep just built something.
     //

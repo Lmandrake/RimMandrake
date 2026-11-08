@@ -16,7 +16,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 
 ## Feature inventory -> station
 
-73 features, 44 stations (37 numbered + 7 boards: N0, R, G, S, W, E, L). Stations: see `review/KEYSHEET.md`.
+71 features, 44 stations (37 numbered + 7 boards: N0, R, G, S, W, E, L). Stations: see `review/KEYSHEET.md`.
 
 | kind | feature | source | station | note |
 |---|---|---|---|---|
@@ -24,7 +24,7 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 | terrain | Unburned pockets: soil, rich soil, gravel, sand (RM_FE_Ground_*) | ScorchableGround.xml | 2 |  |
 | terrain | Every ground burns to deep ash in one step (burnedDef) | ScorchableGround.xml | 7 8 |  |
 | terrain | Water ringed with mud and rich soil (terrainPatchMakers) | BiomeDefs/Pyrelands.xml | 3 N0 |  |
-| terrain | Firebreak line: buildable floor that stops fire | TerrainDefs/Firebreak.xml | 4 12 |  |
+| terrain | A vanilla paved strip holds a burn | vanilla Concrete | 4 12 |  |
 | terrain | Retired ash rungs trace/light/heavy (hidden aliases, re-laid on load) | AshField.xml | none | they never stand on a loaded map (re-laid to deep ash at load); the matrix's ground_deep_ash checks none remain. Their three PNGs are orphaned (named on station 1's card). |
 | plant | Ember grass: three drawings, fast growth (growDays 0.8) | ThingDefs_Plants/EmberGrass.xml | 13 15 |  |
 | plant | Ember grass leafless (burnt) drawings, 4 variants | EmberGrass.xml | 8 | only a plant made leafless shows them; 8 shows any survivor of the burn, else they stay unseen |
@@ -111,8 +111,8 @@ python.exe src/RimMandrake/Pyrelands/human_review.py --build --load NS_Pyrelands
 
 ## Stations
 
-- **A GROUND:** 1 DEEP ASH, 2 UNBURNED POCKETS, 3 WATER RING, 4 FIREBREAK LINE, 5 LOOSE ASH DRIFTS, 6 HEAT: SUN VS SHADE
-- **B FIRE:** 7 BEFORE THE BURN, 8 AFTER THE BURN, 9 BURNING NOW, 10 BURN BONUS VS CONTROL, 11 BURROWER, 12 FIREBREAK AND FOAM
+- **A GROUND:** 1 DEEP ASH, 2 UNBURNED POCKETS, 3 WATER RING, 4 PAVED STRIP, 5 ASH ON THE GROUND, 6 HEAT: SUN VS SHADE
+- **B FIRE:** 7 BEFORE THE BURN, 8 AFTER THE BURN, 9 BURNING NOW, 10 BURN BONUS VS CONTROL, 11 BURROWER, 12 PAVING AND FOAM
 - **C PLANTS:** 13 EMBER GRASS: GROWTH, 14 QUICKGRASS: 3 STAGES, 15 GROUND COVER MIX, 16 SCORCH-FRUIT PODS, 17 SCORCH-FRUIT HARVEST, 18 ASH + WATER
 - **D BUILD AND CRAFT:** 19 SHOVEL SAND, 20 PYRELANDS ITEMS
 - **E CREATURES:** 21 FIRE-HAWK, 22 FIRE-WASP, 23 FURNACE-BEAST (GIANT), 24 CONTROL PEN: NO BEAST, 25 ULLAI HERD, 26 ASHWALLOW, 27 EMBERSCYTHE, 28 SYTHECLAW, 29 BARBSLINGER, 30 FLAMEFANG

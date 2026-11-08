@@ -27,13 +27,10 @@ namespace RimMandrake.Pyrelands
     ///               map is vanilla's in every respect.
     ///   footprints  CreatureBehaviors' track grid, the Stillsand's: the Pyrelands' BiomeDef carries an RM_TrackSurfaceExtension
     ///               with minSandDepth, so ash that deep takes prints and the grid buries or clears them as the ash moves.
-    /// The loose-ash filth that carried all this until now is retired: nothing spawns it, and a save that still holds some has
-    /// it converted to depth on load (MapComponent_PyrelandsAshfall.FinalizeInit).
     /// </summary>
     [StaticConstructorOnStartup]
     public static class PyrelandsAsh
     {
-        public const string LegacyFilthDefName = "RM_FE_Filth_LooseAsh";
         private const string NativeBiomeDefName = "RM_Pyrelands";
 
         private static WeatherDef ashFall, cinderfall;

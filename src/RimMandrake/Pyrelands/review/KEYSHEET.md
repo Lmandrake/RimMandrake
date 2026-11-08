@@ -1,6 +1,6 @@
 # Pyrelands review map - key sheet
 
-Load RM_pyre_review_20261015_r2 in RimWorld. Paused, god mode on, research finished, Clear weather locked, noon, Peaceful. Mod Settings are the shipped defaults. Every station carries an in-world sign: its number, a short name, one clause, then LOOK / DO / DECIDE (zoom in to read the last three); this sheet repeats each sign and has the rest. Each station also has a SIGN BOOK in the save itself, on the cell just north of its west corner: mouse over it for the DO line, press i for the whole sign; it needs no agent and no mod. The floating labels return with the save when the JawaBench companion is awake; if they are missing, `--labels` re-pins them. Colonists are drafted inside the cool shelter at F: outside is ~50 C, so anything that sends a colonist out costs Heatstroke.
+Load (no keeper saved yet: build, then --save) in RimWorld. Paused, god mode on, research finished, Clear weather locked, noon, Peaceful. Mod Settings are the shipped defaults. Every station carries an in-world sign: its number, a short name, one clause, then LOOK / DO / DECIDE (zoom in to read the last three); this sheet repeats each sign and has the rest. Each station also has a SIGN BOOK in the save itself, on the cell just north of its west corner: mouse over it for the DO line, press i for the whole sign; it needs no agent and no mod. The floating labels return with the save when the JawaBench companion is awake; if they are missing, `--labels` re-pins them. Colonists are drafted inside the cool shelter at F: outside is ~50 C, so anything that sends a colonist out costs Heatstroke.
 
 Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`. Rows run north to south: A ground, B fire, C plants, D build and craft, E creatures, F campaign cast.
 
@@ -49,13 +49,13 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Nothing.
 
-### 4. Firebreak line
+### 4. Paved strip
 
-*The buildable firebreak floor.*
+*An ordinary paved strip holds a burn.*
 
-**Sign:** LOOK: a stone firebreak strip beside grass. DO: light the grass (Dev > Debug actions > Fire). DECIDE: does the fire stop at the line? does it look deliberate?
+**Sign:** LOOK: a concrete strip beside grass. DO: light the grass (Dev > Debug actions > Fire). DECIDE: does the fire stop at the line?
 
-**Look for:** Architect > Floors > firebreak line. Weak spot: it borrows RoughHewnRock's texture; does it read as a deliberate firebreak beside grass?
+**Look for:** Concrete laid beside grass, the player's way to hold a walking line.
 
 **Poke it:**
 
@@ -64,20 +64,21 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Nothing until you light the grass.
 
-### 5. Loose ash drifts
+### 5. Ash on the ground
 
-*Fire and ash fall leave loose ash.*
+*Fire and ash fall leave ash (sand depth).*
 
-**Sign:** LOOK: loose ash, 1 to 4 layers, west to east. DO: select a drift; clean it if you like. DECIDE: do thick drifts read as ash, or as dirt?
+**Sign:** LOOK: ash at depth 0.25 to 1.0, west to east. DO: select a drift; clean it if you like. DECIDE: do thick drifts read as ash, or as dirt?
 
-**Look for:** RM_FE_Filth_LooseAsh at 1, 2, 3 and 4 passes, west to east. Weak spot: thick drifts may read as dirt.
+**Look for:** Ash at depth 0.25, 0.5, 0.75 and 1.0, west to east, on deep ash. Weak spot: a thin dusting may read as fog.
 
 **Poke it:**
 
-- Select the filth: cleaning removes it.
+- Walk a colonist across it: footprints from depth 0.1.
 - --weather RM_FE_Weather_AshFall lays more over the whole map.
+- Mark a snow/sand clear area on it: colonists clear it.
 
-**If you unpause:** Nothing; colonists may clean it if it is in the home area (it is not).
+**If you unpause:** Nothing; ash is not filth, nobody sweeps it unless a clear area is marked.
 
 ### 6. Heat: sun vs shade
 
@@ -115,9 +116,9 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 *Burned during the build, then put out.*
 
-**Sign:** LOOK: the same pad, burned during the build. DO: hover a cell: fertility shows +50% burn bonus. DECIDE: ash, loose ash, maybe a pod: does it look burned?
+**Sign:** LOOK: the same pad, burned during the build. DO: hover a cell: fertility shows +50% burn bonus. DECIDE: ash, ash on the ground, maybe a pod: does it look burned?
 
-**Look for:** The same pad burned for ~1.5 h: soil -> deep ash in one step, loose ash dusted on it, and maybe a scorch-fruit pod (1 in 20 burned cells). Weak spot: leafless (burnt) grass art; a pod that never appears.
+**Look for:** The same pad burned for ~1.5 h: soil -> deep ash in one step, ash lying on it, and maybe a scorch-fruit pod (1 in 20 burned cells). Weak spot: leafless (burnt) grass art; a pod that never appears.
 
 **Poke it:**
 
@@ -170,17 +171,17 @@ Navigate: `--goto N` (station), `--goto F`, `--goto N0`, `--goto R`, `--goto 0`.
 
 **If you unpause:** Paused: nothing. Lit: the burn crosses the pen; the ashwallow dives and surfaces.
 
-### 12. Firebreak and foam
+### 12. Paving and foam
 
-*Lay your own firebreak, then light it.*
+*Lay your own paved strip, then light it.*
 
-**Sign:** LOOK: an open grass pad: your tools vs fire. DO: lay a firebreak, light one side, spray firefoam. DECIDE: do the firebreak and the foam both stop it?
+**Sign:** LOOK: an open grass pad: your tools vs fire. DO: lay a paved strip, light one side, spray firefoam. DECIDE: do the paving and the foam both stop it?
 
 **Look for:** An unringed grass pad: try the player's tools against fire.
 
 **Poke it:**
 
-- Architect > Floors > firebreak line across the pad, then light one side.
+- Architect > Floors > concrete across the pad, then light one side.
 - Equip a colonist with the firefoam sprayer (D, items) and spray the fire.
 
 **If you unpause:** Paused: nothing. The pad is surrounded by bare ash, so the fire cannot leave the station.
@@ -568,7 +569,7 @@ What the biome grew by itself: the two grasses, deep ash, a pond ringed with ric
 
 **Sign:** LOOK: the nearest ruin on the map. DO: look at the ground under and round it. DECIDE: is the ruin blackened, or pristine?
 
-Ruins on a Pyrelands map stand blackened: deep ash under and round them, loose ash filth, burned stuff. Weak spot: a pristine ruin (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE).
+Ruins on a Pyrelands map stand blackened: deep ash under and round them, ash lying on it, burned stuff. Weak spot: a pristine ruin (PYRE_RUINS_DIAGNOSE_JUNKYARD_STAYS_PRISTINE).
 
 ### G. Weather switch
 
@@ -613,581 +614,3 @@ A Pyrelands map is never fireless: after 2 quiet days the standing burn relights
 ### F. Free area and shelter
 
 A roofed granite shelter with two coolers on a solar + battery net (two batteries, no conduits). Colonists stand drafted inside; undraft one to use him. Stock on the south edge: steel, wood, granite blocks, components, glass sand, survival meals, medicine, two firefoam sprayers.
-
-<details><summary>For the agent: this build</summary>
-
-```
-{
- "stations_ok": 37,
- "verify": {
-  "1": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ash_Deep": 144
-   },
-   "probes": {}
-  },
-  "2": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ground_Soil": 25,
-    "RM_FE_Ground_SoilRich": 25,
-    "RM_FE_Ground_Gravel": 25,
-    "RM_FE_Ground_Sand": 25
-   },
-   "probes": {}
-  },
-  "3": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "WaterShallow": 16
-   },
-   "probes": {}
-  },
-  "4": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_FirebreakLine": 16
-   },
-   "probes": {}
-  },
-  "5": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "6": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {
-    "open": 61.15419,
-    "shade": 61.15419
-   }
-  },
-  "7": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ground_Soil": 64
-   },
-   "probes": {}
-  },
-  "8": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ash_Deep": 64
-   },
-   "probes": {
-    "burned": {
-     "terrain": "RM_FE_Ash_Deep",
-     "fertility": "0.899",
-     "bonus": "0.499",
-     "watered": "False",
-     "burnTick": "681176"
-    }
-   }
-  },
-  "9": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "10": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ash_Deep": 64,
-    "RM_FE_FirebreakLine": 80
-   },
-   "probes": {
-    "burned": {
-     "terrain": "RM_FE_Ash_Deep",
-     "fertility": "0.894",
-     "bonus": "0.494",
-     "watered": "False",
-     "burnTick": "677552"
-    },
-    "control": {
-     "terrain": "RM_FE_Ash_Deep",
-     "fertility": "0.400",
-     "bonus": "0.000",
-     "watered": "False",
-     "burnTick": "-1"
-    }
-   }
-  },
-  "11": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Ashwallow"
-   ],
-   "want_pawns": [
-    "RM_Ashwallow"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "12": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "13": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "14": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "15": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "16": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "17": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "18": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "WaterShallow": 1
-   },
-   "probes": {
-    "beside water": {
-     "terrain": "RM_FE_Ash_Deep",
-     "fertility": "1.400",
-     "bonus": "0.000",
-     "watered": "True",
-     "burnTick": "-1"
-    },
-    "dry": {
-     "terrain": "RM_FE_Ash_Deep",
-     "fertility": "0.400",
-     "bonus": "0.000",
-     "watered": "False",
-     "burnTick": "-1"
-    }
-   }
-  },
-  "19": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {
-    "RM_FE_Ground_Sand": 48
-   },
-   "probes": {}
-  },
-  "20": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {}
-  },
-  "21": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_FireHawk",
-    "RM_FireHawk",
-    "RM_FireHawk",
-    "RM_FireHawk"
-   ],
-   "want_pawns": [
-    "RM_FireHawk",
-    "RM_FireHawk",
-    "RM_FireHawk",
-    "RM_FireHawk"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "22": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_FireWasp",
-    "RM_FireWasp",
-    "RM_FireWasp",
-    "RM_FireWasp"
-   ],
-   "want_pawns": [
-    "RM_FireWasp",
-    "RM_FireWasp",
-    "RM_FireWasp",
-    "RM_FireWasp"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "23": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast"
-   ],
-   "want_pawns": [
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast",
-    "RM_FurnaceBeast"
-   ],
-   "terrain": {},
-   "probes": {
-    "room": 23.3113823
-   }
-  },
-  "24": {
-   "ok": true,
-   "missing": [],
-   "pawns": [],
-   "want_pawns": [],
-   "terrain": {},
-   "probes": {
-    "room": 11.9987621
-   }
-  },
-  "25": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Ullai",
-    "RM_Ullai",
-    "RM_Ullai",
-    "RM_Ullai"
-   ],
-   "want_pawns": [
-    "RM_Ullai",
-    "RM_Ullai",
-    "RM_Ullai",
-    "RM_Ullai"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "26": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Ashwallow",
-    "RM_Ashwallow",
-    "RM_Ashwallow",
-    "RM_Ashwallow"
-   ],
-   "want_pawns": [
-    "RM_Ashwallow",
-    "RM_Ashwallow",
-    "RM_Ashwallow",
-    "RM_Ashwallow"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "27": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Emberscythe",
-    "RM_Emberscythe",
-    "RM_Emberscythe",
-    "RM_Emberscythe"
-   ],
-   "want_pawns": [
-    "RM_Emberscythe",
-    "RM_Emberscythe",
-    "RM_Emberscythe",
-    "RM_Emberscythe"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "28": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Sytheclaw",
-    "RM_Sytheclaw",
-    "RM_Sytheclaw",
-    "RM_Sytheclaw"
-   ],
-   "want_pawns": [
-    "RM_Sytheclaw",
-    "RM_Sytheclaw",
-    "RM_Sytheclaw",
-    "RM_Sytheclaw"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "29": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Barbslinger",
-    "RM_Barbslinger",
-    "RM_Barbslinger",
-    "RM_Barbslinger"
-   ],
-   "want_pawns": [
-    "RM_Barbslinger",
-    "RM_Barbslinger",
-    "RM_Barbslinger",
-    "RM_Barbslinger"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "30": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RM_Flamefang",
-    "RM_Flamefang",
-    "RM_Flamefang",
-    "RM_Flamefang"
-   ],
-   "want_pawns": [
-    "RM_Flamefang",
-    "RM_Flamefang",
-    "RM_Flamefang",
-    "RM_Flamefang"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "31": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Anooba",
-    "RSW_Anooba",
-    "RSW_Anooba",
-    "RSW_Anooba"
-   ],
-   "want_pawns": [
-    "RSW_Anooba",
-    "RSW_Anooba",
-    "RSW_Anooba",
-    "RSW_Anooba"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "32": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Iriaz",
-    "RSW_Iriaz",
-    "RSW_Iriaz",
-    "RSW_Iriaz"
-   ],
-   "want_pawns": [
-    "RSW_Iriaz",
-    "RSW_Iriaz",
-    "RSW_Iriaz",
-    "RSW_Iriaz"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "33": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Nuna",
-    "RSW_Nuna",
-    "RSW_Nuna",
-    "RSW_Nuna"
-   ],
-   "want_pawns": [
-    "RSW_Nuna",
-    "RSW_Nuna",
-    "RSW_Nuna",
-    "RSW_Nuna"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "34": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Orray",
-    "RSW_Orray",
-    "RSW_Orray",
-    "RSW_Orray"
-   ],
-   "want_pawns": [
-    "RSW_Orray",
-    "RSW_Orray",
-    "RSW_Orray",
-    "RSW_Orray"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "35": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Zeer",
-    "RSW_Zeer",
-    "RSW_Zeer",
-    "RSW_Zeer"
-   ],
-   "want_pawns": [
-    "RSW_Zeer",
-    "RSW_Zeer",
-    "RSW_Zeer",
-    "RSW_Zeer"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "36": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Dalgo",
-    "RSW_Dalgo",
-    "RSW_Dalgo",
-    "RSW_Dalgo"
-   ],
-   "want_pawns": [
-    "RSW_Dalgo",
-    "RSW_Dalgo",
-    "RSW_Dalgo",
-    "RSW_Dalgo"
-   ],
-   "terrain": {},
-   "probes": {}
-  },
-  "37": {
-   "ok": true,
-   "missing": [],
-   "pawns": [
-    "RSW_Gizka",
-    "RSW_Gizka",
-    "RSW_Gizka",
-    "RSW_Gizka"
-   ],
-   "want_pawns": [
-    "RSW_Gizka",
-    "RSW_Gizka",
-    "RSW_Gizka",
-    "RSW_Gizka"
-   ],
-   "terrain": {},
-   "probes": {}
-  }
- },
- "notes": [
-  "jawa/order_pawn {\"pawnId\": \"Human94982,Human94985,Human94988\", \"x\": 161, \"z\": 112} refused: {\"success\": false, \"message\": \"0/3 pawn(s) standing on (161,112) after 301 tick(s); 3 moved at all. \\u26a0\\ufe0f LEFT DRAFTED: Human94982, Human94985, Human94988. Pass undraftAfter=true or undraft them yourself.\", \"arriv"
- ],
- "ruin": [
-  117,
-  116,
-  "AncientRazorWire"
- ],
- "colonists": [
-  "Human94982",
-  "Human94985",
-  "Human94988"
- ],
- "in_shelter": [
-  "Human94982",
-  "Human94985",
-  "Human94988"
- ],
- "chilled_pens_c": {
-  "23": 23.3113823,
-  "24": 11.9987621
- },
- "burned": [
-  [
-   8,
-   "26,70,8,8"
-  ],
-  [
-   10,
-   "58,70,4,8"
-  ]
- ],
- "burning_now": [
-  [
-   9,
-   "42,70,1,8"
-  ]
- ],
- "wall_s": 67.4
-}
-```
-
-</details>

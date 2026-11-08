@@ -317,8 +317,8 @@ Pyrelands/diag/*   # dev harness script, not game content
 # 2026-09-13, FORGE_MECHANICS_1 F2/F5/F6 build pass. All six intended to
 # reuse an existing vanilla texPath as a placeholder (Chemfuel/Filth_Blood/
 # ElectricSmelter/FueledSmithy/TableStonecutter) — the same "borrow the
-# nearest legible icon" practice RUT_WickStem.xml and RM_FE_Filth_LooseAsh.xml
-# already established elsewhere in this mod. validate_patch.py refused that
+# nearest legible icon" practice RUT_WickStem.xml
+# already established elsewhere. validate_patch.py refused that
 # choice as a hard ERROR on all six: UtinniPatches already ships its own
 # Things/Building, Things/Item, Things/Filth and Things/Plant trees
 # elsewhere, so its own-namespace heuristic ("'things/' IS this mod's own

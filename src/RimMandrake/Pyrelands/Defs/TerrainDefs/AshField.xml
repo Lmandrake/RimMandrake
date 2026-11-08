@@ -15,11 +15,6 @@
     A burn is ONE step: every RM_FE_Ground_* burnedDef is RM_FE_Ash_Deep (ScorchableGround.xml). Deep ash is not
     flammable and has no burnedDef, so Fire.TryBurnFloor has nothing to escalate, and vanilla's "burnedDef is flammable"
     config check has nothing to flag.
-
-    LEGACY ALIASES (design §7): RM_FE_Ash_Trace / Light / Heavy are the retired ladder rungs, kept ONE cycle so a keeper or
-    review save holding them loads (terrain saves by shortHash; a deleted def would lose the cells with a load error).
-    Same stats as deep ash, in no mapgen; MapComponent_PyrelandsAshField.FinalizeInit re-lays every one of them to deep
-    ash on load. Delete them once the Saves folder has been loaded through once.
   -->
 
   <TerrainDef Name="RM_FE_AshBase" Abstract="true">
@@ -62,31 +57,6 @@
         <wateredFertility>1.40</wateredFertility>
       </li>
     </modExtensions>
-  </TerrainDef>
-
-  <!-- Legacy aliases: re-laid to RM_FE_Ash_Deep on load. Not painted. -->
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Trace</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(255, 255, 255, 255)</color>
-  </TerrainDef>
-
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Light</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(255, 255, 255, 255)</color>
-  </TerrainDef>
-
-  <TerrainDef ParentName="RM_FE_AshBase">
-    <defName>RM_FE_Ash_Heavy</defName>
-    <label>deep ash (legacy)</label>
-    <description>Retired ash rung; becomes deep ash when the map loads.</description>
-    <texturePath>Terrain/Surfaces/RM_FE_Ash_Deep</texturePath>
-    <color>(255, 255, 255, 255)</color>
   </TerrainDef>
 
 </Defs>

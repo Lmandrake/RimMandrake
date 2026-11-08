@@ -80,7 +80,6 @@ ANIMAL_MANIFEST = frozenset([
     "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
     "RM_Ashwallow", "RM_Ullai"])
 DEEP_ASH = "RM_FE_Ash_Deep"   # the ash field (AshField.xml): the biome's ordinary ground
-LEGACY_ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy")   # retired rungs: hidden aliases, re-laid on load
 ASH_FIELD = "RimMandrake.Pyrelands.MapComponent_PyrelandsAshField"     # jawa/static_call probes (PyrelandsAshField.cs)
 # Ash on the ground is Odyssey's sand depth since 2026-11-08 (owner by card, "Rebuild ash on vanilla sand?" -> "Yes"), not a
 # thing: list_things cannot see it. PyrelandsAsh.ProbeAsh reads it, ClearAsh zeroes it (Source/PyrelandsAshSand.cs).
@@ -140,7 +139,7 @@ WATERED_MIN_GAIN = 0.5     # pyre_ash_fertile_when_watered: watered minus dry Fe
 BURN_BONUS_MIN = 0.3       # pyre_fresh_burn_feeds_the_field: bonus right after a burn (shipped +0.50)
 RUIN_SAMPLES = 10
 RUIN_ASH_MIN = 0.9    # the sweep lays deep ash on every non-water footprint+rim cell (the 3x3 sample sits inside the rim)
-RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying loose-ash filth in their 3x3 (the visible scorch; 70% per footprint cell)
+RUIN_FILTH_MIN = 0.3  # share of sampled ruins carrying ash in their 3x3
 # BuildingArtificial things that are natural scenery, not ruins (modcheck.bland_world.NATURAL_SCENERY).
 RUIN_NOT_A_RUIN = ("SteamGeyser", "VHGE_GasGeyser")
 
@@ -1060,7 +1059,7 @@ def grass_cover(t):
 def ruins(t):
     """Ruins are found as what they ARE on the map -- unowned artificial buildings (walls, doors,
     the ruin's own floors' structures) -- and their footprint is read for what GenStep_ScorchPyrelandsRuins
-    lays (deep ash on the footprint and rim, loose-ash filth over it). The earlier probe listed
+    lays (deep ash on the footprint and rim, ash on the ground over it). The earlier probe listed
     things named `RM_FE_ScorchRuins`, which is the GENSTEP def, never a Thing, so it read UNMEASURED on
     every site by construction (2026-10-11 pilot: the map carried 600+ cells of ruin floors)."""
     _pad(t, PAD_PROBE)
@@ -1099,7 +1098,7 @@ def ruins(t):
             # so loose ash (6~9 day lifetime, absolute growTick) is minutes old here and 2-of-10 is a genstep finding.
             # A fixture built before that change still carries the old 6-10 day gap: rebuild it, do not excuse it.
             if filthy < RUIN_FILTH_MIN * len(picks):
-                _fail("%d of %d sampled ruins carry loose ash, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
+                _fail("%d of %d sampled ruins carry ash on the ground, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
 
 
@@ -1204,8 +1203,6 @@ def startup_and_def_wiring(t):
             if "RM_FE_Ground_Soil" not in names:
                 _fail("first terrainPatchMaker (unburned pockets) lacks RM_FE_Ground_Soil: %r" % names)
             every = [th.get("terrain") for m in makers for th in ((m or {}).get("thresholds") or [])]
-            if any(a in every for a in LEGACY_ASH):
-                _fail("a retired ash rung is still painted by a patchmaker: %r" % every)
         t.screenshot()
 
 
@@ -1226,9 +1223,6 @@ def ground_deep_ash(t):
             stock = dict((s_, gen[s_]) for s_ in STOCK_GROUND if gen.get(s_))
             if stock:
                 _fail("stock ground terrains present on a Pyrelands map: %r" % stock)
-            legacy = dict((a_, gen[a_]) for a_ in LEGACY_ASH if gen.get(a_))
-            if legacy:
-                _fail("retired ash rungs on the map (the load re-lay missed them): %r" % legacy)
             if share is None:
                 _unmeasured(t, "no open land read: %r" % gen)
             if share < DEEP_ASH_MIN:

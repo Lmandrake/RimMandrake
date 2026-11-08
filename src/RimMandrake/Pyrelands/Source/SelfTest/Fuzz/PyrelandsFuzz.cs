@@ -825,7 +825,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash does not roll");
                 Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash is not stamped");
                 Check(!RM_FireEcoKernel.IsScorchableGround("Concrete"), "a paved floor counts as scorchable ground");
-                Check(RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Heavy") && !RM_FireEcoKernel.IsLegacyAsh("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsLegacyAsh(null), "IsLegacyAsh");
                 // list parser vs spec
                 string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
                 var sb = new System.Text.StringBuilder(); int parts = r.Next(0, 8);
@@ -943,7 +942,7 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(laid == Math.Max(have, wantD), "a laid scar thinned a deeper drift or missed its target");
 
                 // Ash on sand: wear off an ash map is vanilla's, on one half of it dry plus the rain's wash; the cover's opacity and
-                // the grass dust rise with depth; a legacy filth converts a drift level per point of thickness.
+                // the grass dust rise with depth.
                 float rainA = (float)r.NextDouble() * 1.5f, dA = (float)r.NextDouble(), dB = dA + (float)r.NextDouble() * (1f - dA);
                 Check(RM_FireEcoKernel.OutdoorSandWear(false, rainA) == RM_FireEcoKernel.VanillaSandWear, "a non-ash map's sand wear is not vanilla's");
                 Check(RM_FireEcoKernel.OutdoorSandWear(true, 0f) < RM_FireEcoKernel.VanillaSandWear, "dry ash wears as fast as vanilla sand");
@@ -952,8 +951,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                       "ash cover opacity not monotonic or above 1");
                 Check(RM_FireEcoKernel.AshCoverOpacity(RM_FireEcoKernel.AshVisibleDepth * 0.99f) == 0f, "ash below the visible depth drew");
                 Check(RM_FireEcoKernel.AshDustLevel(dB) >= RM_FireEcoKernel.AshDustLevel(dA), "grass dust not monotonic in depth");
-                int thickA = r.Next(6);
-                Check(RM_FireEcoKernel.LegacyFilthDepth(thickA) == Math.Min(1f, thickA * RM_FireEcoKernel.AshDepthPerLevel), "legacy filth depth");
             });
         }
 

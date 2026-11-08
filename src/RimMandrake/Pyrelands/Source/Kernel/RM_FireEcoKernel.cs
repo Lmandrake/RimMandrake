@@ -76,14 +76,6 @@ namespace RimMandrake.Pyrelands
 
         public const string DeepAshDefName = "RM_FE_Ash_Deep";
 
-        /// <summary>The retired ladder rungs, kept one cycle as hidden legacy aliases and re-laid to deep ash on load.</summary>
-        public static readonly string[] LegacyAshDefNames = { "RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy" };
-
-        public static bool IsLegacyAsh(string n)
-        {
-            return n != null && Array.IndexOf(LegacyAshDefNames, n) >= 0;
-        }
-
         /// <summary>The burn stamp's gate: master on, the bonus on, a spawned ground fire (not a burning pawn) on scorchable ground.
         /// Independent of the ash-dusting and scorch-fruit toggles.</summary>
         public static bool BurnStampMay(bool pyrelandsEnabled, bool bonusOn, bool spawned, bool attachedToPawn, bool scorchable)
@@ -391,8 +383,7 @@ namespace RimMandrake.Pyrelands
         // own sandRate (vanilla SteadyEnvironmentEffects.AddFallenSandAt, snow's code path), a fire lays it on its cell, black rain
         // carries it off, and colonists clear it with vanilla's clear-snow-and-sand job.
 
-        /// <summary>One drift level of the retired loose-ash filth (thickness 1..4) in sand depth: the drift field's targets and a
-        /// legacy filth's thickness both convert at this.</summary>
+        /// <summary>One drift level in sand depth (a drift level is thickness 1..4): the drift field's targets convert at this.</summary>
         public const float AshDepthPerLevel = 0.25f;
         public const float AshDepthEpsilon = 0.001f;
         /// <summary>Ash shallower than this is none: vanilla's own None buildup category (WeatherBuildupUtility, below 0.03).</summary>
@@ -456,14 +447,6 @@ namespace RimMandrake.Pyrelands
         /// <summary>A grass cell dusts light from here (~1.5 hours of ash fall) and full from AshDustFullDepth (~8 hours).</summary>
         public const float AshDustLightDepth = 0.08f;
         public const float AshDustFullDepth = 0.4f;
-
-        /// <summary>A legacy loose-ash filth's thickness as sand depth, for the one-time migration of a save laid before ash moved to sand.</summary>
-        public static float LegacyFilthDepth(int thickness)
-        {
-            if (thickness <= 0) return 0f;
-            float d = thickness * AshDepthPerLevel;
-            return d > 1f ? 1f : d;
-        }
 
         /// <summary>True exactly once per id; the set is cleared wholesale when it passes a bound no live map reaches.</summary>
         public static bool MarkOnce(HashSet<int> rolled, int id, int bound)
