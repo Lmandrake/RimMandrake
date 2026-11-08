@@ -154,6 +154,12 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>PIT_LOOK_TREATMENTS: alpha-blended black for the hole's darkness (floor light, wall shade, contact shadow):
+		/// its own instance so it batches apart from the cream light.</summary>
+		public static Material DepthShadeMat => depthShadeMat ?? (depthShadeMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = ShadeQueue });
+
+		private static Material depthShadeMat;
+
 		public static Material OutlineMat => outlineMat ?? (outlineMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = OutlineQueue });
 
 		private static Material outlineMat;

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Scenarios_StartingWaterBottles: every player start that hands out gear also hands out filled FlowWorks water bottles.
+  Owner ruling, by card, 2026-11-07: "Downed colonist dies of thirst with no bottle: start with bottles — crashlanded (and
+  other) starts include a FlowWorks water bottle, so 'give patients water' works from day 1."
+
+  What is given: RM_Bottle_FreshWater (Defs/LiquidTypes/ThingDefs/RM_LiquidBottles.xml), the FILLED fresh-water bottle (1.5 L,
+  drunk through IngestionOutcomeDoer_RM_Hydrate, so a rescuer can hand it to a downed patient at once). It is stuffed
+  (Leathery / Stony / Metallic, from RM_BottleItemBase), so every part names its <stuff> instead of leaving it to a default:
+  Leather_Plain for the tribe (a bottle stitched at a crafting spot needs no research, recipe RM_Make_Bottle_Leather),
+  Steel for every industrial and later start (every one of them already carries steel). Stack limit 25; counts here are
+  one bottle per starting pawn.
+
+  Counts: Crashlanded 3, LostTribe 5, TheRichExplorer 1, TheAnomaly 4 (3 colonists + the ghoul), Mechanitor 1,
+  Sanguophage 2, TheGravship 3. Tutorial inherits Crashlanded (ParentName), so it gets Crashlanded's three.
+  NakedBrutality is left alone on purpose: it starts with nothing (ScenPart_Naked + ScenPart_NoPossessions).
+
+  Form copied from Core/Defs/Scenarios/Scenarios_Classic.xml: a ScenPart_StartingThing_Defined with def, thingDef, count, stuff.
+  Each op is a PatchOperationConditional on the ScenarioDef existing, because the DLC scenarios (Anomaly, Biotech, Odyssey)
+  must stay harmless when that DLC is absent, and a top-level MayRequire on an Operation is ignored by the engine.
+  Appended at the end of <parts>, so vanilla's own parts keep their order.
+-->
+<Patch>
+
+  <!-- Core: Crashlanded (three survivors; Tutorial inherits it) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="Crashlanded"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="Crashlanded"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>3</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Core: LostTribe (five tribespeople; a leather bottle, craftable at a crafting spot with no research) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="LostTribe"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="LostTribe"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>5</count>
+          <stuff>Leather_Plain</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Core: TheRichExplorer (one explorer) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="TheRichExplorer"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="TheRichExplorer"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>1</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Anomaly DLC: TheAnomaly (three researchers and a ghoul) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="TheAnomaly"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="TheAnomaly"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>4</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Biotech DLC: Mechanitor (one mechanitor and servant mechs) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="Mechanitor"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="Mechanitor"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>1</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Biotech DLC: Sanguophage (one sanguophage and one other colonist) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="Sanguophage"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>2</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Odyssey DLC: TheGravship (crew of three; its <parts> is Inherit="False", the node is still Defs/ScenarioDef/scenario/parts) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ScenarioDef[defName="TheGravship"]/scenario/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ScenarioDef[defName="TheGravship"]/scenario/parts</xpath>
+      <value>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RM_Bottle_FreshWater</thingDef>
+          <count>3</count>
+          <stuff>Steel</stuff>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

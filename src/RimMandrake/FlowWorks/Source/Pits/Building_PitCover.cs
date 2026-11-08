@@ -337,11 +337,16 @@ namespace RimMandrake.FlowWorks.Pits
             if (mat == null)
             {
                 TerrainMimicPrinter.PrintTerrainMimic(this, layer);
-                return;
             }
-            Vector3 center = Position.ToVector3Shifted();
-            center.y = DrawPos.y;
-            Printer_Plane.PrintPlane(layer, center, Vector2.one, mat);
+            else
+            {
+                Vector3 center = Position.ToVector3Shifted();
+                center.y = DrawPos.y;
+                Printer_Plane.PrintPlane(layer, center, Vector2.one, mat);
+            }
+            // PIT_COVER_SOD (bar pit_covered_invisible): the grass round it grows on the ground print too (RM_PitCoverSod);
+            // it refreshes when this section's things mesh regenerates, never per tick
+            RM_PitCoverSod.TryPrint(this, layer, surface);
         }
 
         /// <summary>PIT_COVER_BUILD_SEAM_AT_MAX_ZOOM (bar pit_covered_seam_at_max_zoom): a lid that prints ground draws, close up

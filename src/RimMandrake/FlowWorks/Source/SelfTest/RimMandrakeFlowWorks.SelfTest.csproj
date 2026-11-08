@@ -95,6 +95,8 @@
     <Compile Include="..\Drilling\RM_DrillSurveyMath.cs" />
     <Compile Include="PitCoverBeneathChecks.cs" />
     <Compile Include="PitCoverLookChecks.cs" />
+    <Compile Include="..\Pits\RM_PitCoverSodMath.cs" />
+    <Compile Include="PitCoverSodChecks.cs" />
     <Compile Include="PitDrawHoldChecks.cs" />
     <Compile Include="CoverFloorSurveyChecks.cs" />
     <Compile Include="..\RM_DrawbridgeMath.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="..\RM_FuelFireMath.cs" />
     <Compile Include="..\RM_ExcavationSanityMath.cs" />
     <Compile Include="..\RM_DigDepthMath.cs" />
+    <Compile Include="..\RM_DigProgressMath.cs" />
     <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_RelativeRulesMath.cs" />
@@ -161,6 +164,8 @@
     <Compile Include="..\Machinery\RM_ConversionMath.cs" />
     <Compile Include="..\Machinery\Kits\RM_LiquidBathMath.cs" />
     <Compile Include="..\RM_WallFaceMath.cs" />
+    <Compile Include="..\Superdeep\RM_PitLookMath.cs" />
+    <Compile Include="PitLookChecks.cs" />
     <Compile Include="..\RM_FlowKernel.cs" />
     <Compile Include="..\RM_TerrainWriteBudget.cs" />
     <Compile Include="..\RM_LevelSolve.cs" />
@@ -228,6 +233,7 @@
     <Compile Include="VolumeChecks.cs" />
     <Compile Include="RewireChecks.cs" />
     <Compile Include="DeepDigChecks.cs" />
+    <Compile Include="DigProgressChecks.cs" />
     <Compile Include="PondReturnChecks.cs" />
     <Compile Include="DeepBedChecks.cs" />
     <Compile Include="PocketGridChecks.cs" />

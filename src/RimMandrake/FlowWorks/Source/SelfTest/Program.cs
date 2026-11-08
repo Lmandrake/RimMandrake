@@ -2170,6 +2170,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseWorldPatchChecks.Run(Case);    // HOSE_TICK_REBUILD_ZERO_ALLOC (HoseWorldPatchChecks.cs)
             PumpChecks.Run(Case);              // liquid networks L6: the pump as world mover (PumpChecks.cs)
             DeepDigChecks.Run(Case);           // PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT + DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT (DeepDigChecks.cs)
+            DigProgressChecks.Run(Case);       // live NS_Pyrelands_play_q_col_d3dig: shovel work interruptible by needs, kept per square (DigProgressChecks.cs)
             RelativeRulesChecks.Run(Case);     // PIT_RULES_REWIRE_RELATIVE_NOT_ABSOLUTE: R7 relative rules V2-V6 (RelativeRulesChecks.cs)
             FallRailChecks.Run(Case);          // FALL_GUARDRAILS_BUILD_REAL_OBJECT: rails and fences stop falls off a lip (FallRailChecks.cs)
             SwimChecks.Run(Case);              // DEEP_WATER_BUILD_SWIM_OR_SINK: R12 deep swimming (SwimChecks.cs)
@@ -2232,6 +2233,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SpanBaseChecks.Run(Case);          // SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT: the span base under pit covers, DeckedAt (SpanBaseChecks.cs)
             PitCoverBeneathChecks.Run(Case);   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: a lid laid over a pit occupant keeps her below (PitCoverBeneathChecks.cs)
             PitCoverLookChecks.Run(Case);   // PLANK_COVER_REDRAW_READS_AS_EMPTY_PIT: a lid in an open pit shows its planks (PitCoverLookChecks.cs)
+            PitCoverSodChecks.Run(Case);       // PIT_COVER_SOD: a ground-printing lid grows the grass round it, laid out as vanilla (PitCoverSodChecks.cs)
             PitDrawHoldChecks.Run(Case);       // PIT_BOAR_FIX_SUNBATHES_ON_THE_WALL: the sink holds the DRAWN (tweened) centre above the near lip (PitDrawHoldChecks.cs)
             SpikeDrawChecks.Run(Case);         // PIT_SPIKES_FIX_OVER_WALL_AND_SUBMERGE: stakes on the floor, never the walls; gone under 1 m (SpikeDrawChecks.cs)
             CoverFloorSurveyChecks.Run(Case);   // PIT_COVER_WIDEN_PLANKS_BEAR_BOOTS + DRILL_PLACEMENT_ENFORCE_NO_DRY_HOLES (owner cards 2026-10-22)
@@ -2272,6 +2274,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
             RaiderRescueChecks.Run(Case);      // RAIDERS_FETCH_THEIR_FALLEN: fetch verdicts, duty inserts, call sites (RaiderRescueChecks.cs)
+            PitLookChecks.Run(Case);           // PIT_LOOK_TREATMENTS: oblique face grows every depth step, 4 m / 8 m apart (PitLookChecks.cs)
             BedlessPitPrisonChecks.Run(Case);  // DRAINED_HOLE_IS_A_PRISON: bedless rules, setting, three warden patches, prison door (BedlessPitPrisonChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

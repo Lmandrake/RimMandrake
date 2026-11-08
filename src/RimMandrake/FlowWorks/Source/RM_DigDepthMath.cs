@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks
 		public const int WorkPerNotch = 3200;
 
 		/// <summary>vanilla JobDriver_AffectFloor: work done per tick = 1.7 × the speed stat (RimSage,
-		/// RimWorld/JobDriver_AffectFloor.cs). Used only to state digger-days.</summary>
+		/// RimWorld/JobDriver_AffectFloor.cs). States digger-days, and is the rate RM_JobDriver_ShovelFloor works at (RM_DigProgressMath.AfterTicks).</summary>
 		public const float WorkPerTickAtSpeedOne = 1.7f;
 
 		public const int TicksPerDay = 60000;

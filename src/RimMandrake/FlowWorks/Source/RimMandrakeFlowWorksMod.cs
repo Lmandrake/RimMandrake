@@ -369,6 +369,8 @@ namespace RimMandrake.FlowWorks
         public static bool pitScorchEnabled = true;                // a cut that burned dry reads scorched
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
+        public static bool pitCoverSodEnabled = true;              // PIT_COVER_SOD: a ground-printing lid grows the grass round it (RM_PitCoverSod)
+        public static int pitLookMode = 1;                         // PIT_LOOK_TREATMENTS: 0 bevel, 1 oblique cut, 2 shadow well (RM_PitLook)
         public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors; a shut sluice seals, the grate passes liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
@@ -704,6 +706,8 @@ namespace RimMandrake.FlowWorks
                 disabledFluids = new System.Collections.Generic.List<string>();
             }
             Scribe_Values.Look(ref pitOutlineEnabled, "pitOutlineEnabled", true);
+            Scribe_Values.Look(ref pitCoverSodEnabled, "pitCoverSodEnabled", true);
+            Scribe_Values.Look(ref pitLookMode, "pitLookMode", 1);
             Scribe_Values.Look(ref pitHidesShadowEnabled, "pitHidesShadowEnabled", true);
             Scribe_Values.Look(ref pitScorchEnabled, "pitScorchEnabled", true);
             Scribe_Values.Look(ref pitScorchFadeDays, "pitScorchFadeDays", 20f);
@@ -805,8 +809,9 @@ namespace RimMandrake.FlowWorks
             .Declare("pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled")
             .Declare("pitLipOcclusionEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled")
             .Declare("pitLipOccupantCutEnabled", "pitLipOccupantCutWidth")
-            .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled")
+            .Declare("excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitLookMode")
             .Declare("pitScorchEnabled", "pitScorchFadeDays")
+            .Independent("pitCoverSodEnabled")
             .Declare("liquidBubblesEnabled", "liquidBubbleDensity")
             .Declare("trapTriggerEnabled", "trapSensitivityMultiplier")
             .Declare("superdeepRoomsEnabled", "captureDownEnabled", "pitRoomMinDepthMetres")
@@ -1861,7 +1866,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
+            if (Section(list, "How cuts and liquids look", new[] { "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitLookMode", "pitCoverSodEnabled", "pitScorchEnabled","pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled" }))
             {
             list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
                 "A pawn standing in a dug square is drawn lower the deeper the square, and rises smoothly as it "
@@ -1887,6 +1892,21 @@ namespace RimMandrake.FlowWorks
                   + "to hold a person shows a wall-height face, the deepest cut a taller one. Drawing only. Off: the plain "
                   + "earth-coloured band.");
             }
+            using (Dependent(list, "pitLookMode"))
+            {
+                string[] looks = { "wall bevel (the old look)", "oblique cut", "shadow well" };
+                int was = pitLookMode;
+                list.Label((TaggedString)("  How a pit's depth is drawn: " + looks[Mathf.Clamp(pitLookMode, 0, 2)]), -1f,
+                    "Oblique cut: the far wall's face hangs as far as a pawn in the hole sinks, lit at the rim and dark at "
+                  + "the foot, a line every metre; the near edge hides the occupant's legs. Shadow well: the whole floor in "
+                  + "view, darkness growing from the walls with depth, occupants drawn smaller and darker the deeper they "
+                  + "stand. Drawing only.");
+                pitLookMode = Mathf.RoundToInt(list.Slider(pitLookMode, 0f, 2f));
+                if (pitLookMode != was)
+                {
+                    SectionLayer_RMExcavationWalls.RedrawAll();
+                }
+            }
             using (Dependent(list, "pitOutlineEnabled"))
             {
                 list.CheckboxLabeled("  Cuts are outlined, darkest along the near edge", ref pitOutlineEnabled,
@@ -1894,6 +1914,10 @@ namespace RimMandrake.FlowWorks
                   + "banks and a heavy dark lining on the near (south) edge that grows with depth. Shows even when "
                   + "liquid fills the cut. Drawing only.");
             }
+            list.CheckboxLabeled("A concealed pit's lid grows the grass around it", ref pitCoverSodEnabled,
+                "A lid that looks like the ground also carries the low wild plants the ground around it carries (grass, "
+              + "low weeds), so a covered pit in a field is not a bare square. It updates when that part of the map is "
+              + "redrawn. Drawing only. Off: the lid shows bare ground.");
             list.CheckboxLabeled("A cut that burned dry looks scorched", ref pitScorchEnabled,
                 "After a liquid fire burns a cut dry, it stays an empty pit with charred walls, an ash floor and a scorch "
               + "ring round the rim, until it is refilled or filled in, or the scorch fades. Drawing only. Off: a burned "
@@ -2133,7 +2157,7 @@ namespace RimMandrake.FlowWorks
         private static bool appliedKnown;
         private static float appliedRoomMin = -1f;
         private static bool appliedHollow, appliedClimb, appliedRamps, appliedRooms, appliedWalls, appliedMat, appliedOutline,
-            appliedScorch, appliedLooks, appliedSee, appliedPortable;
+            appliedScorch, appliedLooks, appliedSee, appliedPortable, appliedSod;
         private static float appliedClimbMul;
         private static int appliedRampSpan, appliedPortableReach;
 
@@ -2165,6 +2189,10 @@ namespace RimMandrake.FlowWorks
                 {
                     SectionLayer_RMExcavationWalls.RedrawAll();
                 }
+                if (appliedSod != pitCoverSodEnabled)
+                {
+                    RimMandrake.FlowWorks.Pits.RM_PitCoverSod.RedrawAllLids();
+                }
                 if (appliedLooks != liquidLooksEnabled)
                 {
                     if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
@@ -2183,6 +2211,7 @@ namespace RimMandrake.FlowWorks
             appliedWalls = excavationWallFacesEnabled;
             appliedMat = excavationWallMaterialEnabled;
             appliedOutline = pitOutlineEnabled;
+            appliedSod = pitCoverSodEnabled;
             appliedScorch = pitScorchEnabled;
             appliedLooks = liquidLooksEnabled;
             appliedSee = liquidSeeThroughEnabled;

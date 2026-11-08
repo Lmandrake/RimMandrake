@@ -27,7 +27,7 @@ PZ0, PZ1 = 118 + _SZ, 131 + _SZ   # passage walls run z = PZ0..PZ1 at x = GX-2 a
 PIT = [(x, z) for x in range(GX - 1, GX + 2) for z in (124 + _SZ, 125 + _SZ)]
 PZ = 124 + _SZ
 VIEW = (GX - 6, 119 + _SZ, 13, 12)  # the play-zoom frame: passage, pit and doorway
-ROOT = 7.2                    # ~64 px per cell on Steve's game window
+ROOT = float(os.environ.get("FW_ROOT", "20"))   # play zoom: root 20 ~23 px a cell on Steve (7.2 was closer than a player can zoom)
 STATE = os.path.join(fwb.REPO, "Transient", "ralph_fw", "story1_state.json")
 LOG = os.path.join(fwb.REPO, "Transient", "ralph_fw", "story1.log")
 
@@ -121,8 +121,13 @@ def stage(B, a):
     B.step(5)
     shot(B, "03_pit_covered")
     shot(B, "04_pit_covered_close", rect=(GX - 3, PZ - 2, 7, 6), root=4.0)
-    r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX, z=CZ0 + 4, faction="player", count=3) or {}
-    log("archers", json.dumps(r, default=str)[:400])
+    # his story: "the defenders standing on the other side begin peppering them with arrows" -- three archers drafted in the
+    # passage just north of the pit, the colony side
+    r = B.call("jawa/spawn_pawn", kindDef="Tribal_Archer", x=GX, z=PZ + 4, faction="player", count=3) or {}
+    aids = [p.get("id") for p in r.get("pawns") or [] if p.get("id")]
+    for pid, dx in zip(aids, (-1, 0, 1)):
+        o = B.call("jawa/order_pawn", pawnId=pid, x=GX + dx, z=PZ + 4, draft=True, waitTicks=120) or {}
+        log("archer", pid, json.dumps(o, default=str)[:200])
     st.update(staged=True, d=a.d, cover=a.cover)
     save(st)
 
@@ -131,8 +136,9 @@ def raid(B, a):
     cols = pawns(B, "player")
     ids = ",".join(p["id"] for p in cols)
     spots = [(GX - 1, CZ0 + 3), (GX + 1, CZ0 + 3), (GX, CZ0 + 4), (GX - 2, CZ0 + 2), (GX + 2, CZ0 + 2)]
-    for p, s in zip(cols, spots):
-        B.call("jawa/order_pawn", pawnId=p["id"], x=s[0], z=s[1], draft=True, waitTicks=0)
+    for p, s in zip([c for c in cols if c.get("kindDef") != "Tribal_Archer"], spots):
+        o = B.call("jawa/order_pawn", pawnId=p["id"], x=s[0], z=s[1], draft=True, waitTicks=0) or {}
+        log("order", p.get("name"), s, json.dumps(o, default=str)[:160])
     log("colonists", [brief(p) for p in cols])
     kw = dict(incidentDef="RaidEnemy", points=a.points, forced=True, dryRun=False)
     if a.faction:

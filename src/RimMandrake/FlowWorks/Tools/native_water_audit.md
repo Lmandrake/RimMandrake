@@ -6,14 +6,26 @@ Each row is a Water terrain the biome paints (its BiomeDef's terrains, or a Wate
 
 | biome | roster | terrain | liquid | use class | a native |
 |---|---|---|---|---|---|
+| RM_Cauldron | 15 | Marsh | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+| RM_Cauldron | 15 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+| RM_FeverWood | 11 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_FeverWood | 11 | RM_FeverWoodMirrorPool | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
+| RM_Greentide | 10 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_GreySea | 9 | RM_WaterBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_GreySea | 9 | RM_WaterBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_LanternDeeps | 12 | WaterShallow | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+| RM_LeaningScrub | 19 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_LongShade | 19 | RM_DeepSand | RM_Liquid_NotDrinkable | Never | not water: deep sand; Water-tagged for wading only (DEEP_SAND_FIX_READS_AS_FRESHWATER) |
+| RM_Miasma | 22 | RM_WaterBrackishDeep | RM_Liquid_NotDrinkable | Never | BLOCKED |
+| RM_Miasma | 22 | RM_WaterBrackishShallow | RM_Liquid_NotDrinkable | Never | BLOCKED |
+| RM_Miasma | 22 | RM_WaterBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+| RM_Miasma | 22 | RM_WaterBrineShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+| RM_Pyrelands | 9 | Riverbank | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_Pyrelands | 9 | WaterDeep | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_Pyrelands | 9 | WaterShallow | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_Stillsand | 16 | RM_DeepSand | RM_Liquid_NotDrinkable | Never | not water: deep sand; Water-tagged for wading only (DEEP_SAND_FIX_READS_AS_FRESHWATER) |
+| RM_TheChill | 10 | RM_PropaneDeep | RM_Liquid_Propane | Never | BLOCKED |
+| RM_TheChill | 10 | RM_PropaneShallow | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
 | RM_TheChill | 10 | RM_SolidPropane | RM_Liquid_Propane | Never | not water: frozen propane, a solid |
 | RM_TheChill | 10 | RM_TheChillDeep | RM_Liquid_Propane | Never | drinks (home water, nativeWater) |
 | RM_TheScald | 10 | RM_ScaldMargin | RM_Liquid_NotDrinkable | Never | drinks (home water, nativeWater) |
@@ -25,6 +37,8 @@ Each row is a Water terrain the biome paints (its BiomeDef's terrains, or a Wate
 | RM_TheScald | 10 | RM_ScaldWaterShallow | RM_Liquid_BoilingWater | Never | drinks (home water, nativeWater) |
 | RM_TwilightSea | 18 | WaterOceanDeep | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_TwilightSea | 18 | WaterOceanShallow | RM_Liquid_SaltWater | BreakOnly | drinks (Q12 native rule, BreakOnly) |
+| RM_Warscar | 12 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
+| RM_Wastes | 15 | MarshyTerrain | RM_Liquid_FreshWater | Potable | drinks (potable for everyone) |
 | RM_Wastes | 15 | RM_WastesBrineDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_Wastes | 15 | RM_WastesBrineMovingChestDeep | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |
 | RM_Wastes | 15 | RM_WastesBrineMovingShallow | RM_Liquid_Brine | BreakOnly | drinks (Q12 native rule, BreakOnly) |

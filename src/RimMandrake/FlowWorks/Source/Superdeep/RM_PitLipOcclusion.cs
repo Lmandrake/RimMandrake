@@ -336,7 +336,8 @@ namespace RimMandrake.FlowWorks
 			CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(2);
 			frameEng = eng;
 			frameView = view;
-			frameMesh = Quad(Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
+			// PIT_LOOK_TREATMENTS: in the oblique cut the near bank is solid ground; the sink clamp keeps an occupant's head in view
+			frameMesh = Quad(RM_PitLook.Mode == RM_PitLookMath.Oblique ? 1f : Mathf.Clamp01(RimMandrakeFlowWorksSettings.pitLipOcclusion));
 			shadeUsed = 0;
 			bool edgeShadows = DebugViewSettings.drawShadows && map.Biome?.disableShadows != true;
 			frameEdgeShadows = edgeShadows;

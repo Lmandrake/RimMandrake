@@ -13,7 +13,7 @@ namespace RimMandrake.FlowWorks
 	/// for it to go, but if it would 'overflow' it is destroyed."</i>
 	///
 	/// Deliberately the same shape as the dig chain — Designator_Cells, a
-	/// designation, a WorkGiver_Scanner and a JobDriver_AffectFloor — because
+	/// designation, a WorkGiver_Scanner and a JobDriver_AffectFloor (RM_JobDriver_ShovelFloor) — because
 	/// the two are one ladder read in opposite directions and anything that
 	/// diverges between them is a defect waiting to be found.
 	///

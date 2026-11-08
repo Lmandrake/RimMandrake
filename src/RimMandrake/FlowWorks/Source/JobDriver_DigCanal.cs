@@ -3,11 +3,10 @@ using Verse;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>Cuts a cell one level deeper. Reuses vanilla's own
-	/// JobDriver_AffectFloor (the SmoothFloor engine) -- designation gating,
-	/// reservation, work-speed ticking and the progress bar all come for
-	/// free.</summary>
-	public class JobDriver_DigCanal : JobDriver_AffectFloor
+	/// <summary>Cuts a cell one level deeper. Rides <see cref="RM_JobDriver_ShovelFloor"/>, vanilla's
+	/// JobDriver_AffectFloor (the SmoothFloor engine) rebuilt so the hours a cut takes are interruptible and kept per
+	/// square -- designation gating, reservation, work-speed ticking and the progress bar as vanilla.</summary>
+	public class JobDriver_DigCanal : RM_JobDriver_ShovelFloor
 	{
 		/// <summary>Work scales with the level being cut (ruling 19's four
 		/// depths): deeper spoil is further to move and further to throw. A
@@ -56,6 +55,12 @@ namespace RimMandrake.FlowWorks
 
 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_DigCanal;
 
+		protected override bool IsFill => false;
+
+		/// <summary>A cut refused at this digger's cap keeps its finished work for whoever may make it (the finish action
+		/// below restores the order first).</summary>
+		protected override bool KeepWorkAfterEffect => cutRefusedButOwed;
+
 		/// <summary>Set when this job's cut landed (DoEffect): only then may the finish action re-designate a dig-to square.</summary>
 		private bool cutLanded;
 
@@ -63,8 +68,8 @@ namespace RimMandrake.FlowWorks
 		/// while someone else may still dig the square. Vanilla deleted the designation; the finish action puts it back.</summary>
 		private bool cutRefusedButOwed;
 
-		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": vanilla's AffectFloor deletes the designation after each
-		/// cut (RimWorld/JobDriver_AffectFloor.cs). One designation, one notch, as before; a square with a dig-to target gets its
+		/// <summary>PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT, "dig to N m": the work toil deletes the designation after each
+		/// cut, as vanilla's AffectFloor does (RimWorld/JobDriver_AffectFloor.cs; ours is RM_JobDriver_ShovelFloor). One designation, one notch, as before; a square with a dig-to target gets its
 		/// designation back after a landed cut while it is still above its target and the cap, so the next pawn (or this one)
 		/// cuts the next notch. A cancelled job or a cancelled designation re-adds nothing.</summary>
 		protected override System.Collections.Generic.IEnumerable<Verse.AI.Toil> MakeNewToils()

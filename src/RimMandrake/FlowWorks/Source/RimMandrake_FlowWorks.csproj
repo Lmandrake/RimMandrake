@@ -171,6 +171,7 @@
     <Compile Include="Swale\RM_Swale.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_DigDepthMath.cs" />
+    <Compile Include="RM_DigProgressMath.cs" />
     <Compile Include="RM_DigLabor.cs" />
     <Compile Include="RM_ShovelMath.cs" />
     <Compile Include="RM_Shovels.cs" />
@@ -200,6 +201,8 @@
     <Compile Include="Designator_DigCanal.cs" />
     <Compile Include="WorkGiver_DigCanal.cs" />
     <Compile Include="JobDriver_DigCanal.cs" />
+    <Compile Include="RM_JobDriver_ShovelFloor.cs" />
+    <Compile Include="RM_DigProgress.cs" />
     <Compile Include="Designator_FillInCanal.cs" />
     <Compile Include="Designator_RestoreGround.cs" />
     <Compile Include="WorkGiver_FillInCanal.cs" />
@@ -240,6 +243,8 @@
     <Compile Include="Superdeep\RM_SpikeStakes.cs" />
     <Compile Include="Superdeep\RM_FallRails.cs" />
     <Compile Include="Superdeep\RM_PitDepthDraw.cs" />
+    <Compile Include="Superdeep\RM_PitLook.cs" />
+    <Compile Include="Superdeep\RM_PitLookMath.cs" />
     <Compile Include="RM_PitDrawMath.cs" />
     <Compile Include="Superdeep\RM_FlowDoors.cs" />
     <Compile Include="Superdeep\RM_FlowDoorFacingMath.cs" />
@@ -275,6 +280,8 @@
     <Compile Include="Pits\RM_PitCoverBeneath.cs" />
     <Compile Include="Pits\RM_PitCoverBeneathMath.cs" />
     <Compile Include="Pits\RM_PitCoverLookMath.cs" />
+    <Compile Include="Pits\RM_PitCoverSod.cs" />
+    <Compile Include="Pits\RM_PitCoverSodMath.cs" />
     <Compile Include="Pits\RM_PitDeckMath.cs" />
     <Compile Include="Pits\Building_SpanDeck.cs" />
     <Compile Include="Pits\Suspension\Building_SuspensionDeck.cs" />

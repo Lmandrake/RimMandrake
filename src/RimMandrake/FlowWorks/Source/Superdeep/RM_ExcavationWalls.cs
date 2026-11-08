@@ -82,7 +82,8 @@ namespace RimMandrake.FlowWorks
 				int west = NeighbourLevel(map, eng, c + IntVec3.West, d);
 				int east = NeighbourLevel(map, eng, c + IntVec3.East, d);
 				int south = NeighbourLevel(map, eng, c + IntVec3.South, d);
-				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
+				int look = material ? RM_PitLook.Mode : RM_PitLookMath.Bevel;
+				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled && look == RM_PitLookMath.Bevel)
 				{
 					Outline(c, d, north, south, west, east, y + 0.0009f);
 				}
@@ -116,6 +117,16 @@ namespace RimMandrake.FlowWorks
 						float w = RM_WallFaceMath.SideFaceWidth(ed);
 						QuadV(c.x + 1f - w, c.z, w, 1f, y + 0.001f, Earth, Earth);
 					}
+					continue;
+				}
+				if (look == RM_PitLookMath.Oblique)
+				{
+					ObliqueCell(map, eng, c, d, f, west, east, south, y, sc);
+					continue;
+				}
+				if (look == RM_PitLookMath.Well)
+				{
+					WellCell(map, eng, c, d, f, nd, h, north, west, east, south, y, sc);
 					continue;
 				}
 				float ww = RM_WallFaceMath.SideFaceWidth(wd);
@@ -161,6 +172,181 @@ namespace RimMandrake.FlowWorks
 			if (scorch > 0f)
 			{
 				SootFace(c, xl + il, xr - ir, bot, top, scorch, y + 0.0007f);
+			}
+		}
+
+		// ── PIT_LOOK_TREATMENTS (RM_PitLook): the oblique cut and the shadow well ─────────────────────────
+
+		private const int ColumnScan = 24;
+
+		/// <summary>The far rim over <paramref name="c"/>'s column: the z of the south edge of the first square north of it
+		/// that shows shallower than <paramref name="d"/>, and that square's shown depth.</summary>
+		private static float FarRim(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, out int rimDepth)
+		{
+			IntVec3 q = c;
+			for (int k = 0; k < ColumnScan; k++)
+			{
+				IntVec3 n = q + IntVec3.North;
+				int nl = NeighbourLevel(map, eng, n, d);
+				if (nl < d)
+				{
+					rimDepth = nl;
+					return n.z;
+				}
+				q = n;
+			}
+			rimDepth = 0;
+			return q.z + 1f;
+		}
+
+		/// <summary>The near rim under <paramref name="c"/>'s column: the z of the north edge of the first square south of it
+		/// that shows shallower than <paramref name="d"/>.</summary>
+		private static float NearRim(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d)
+		{
+			IntVec3 q = c;
+			for (int k = 0; k < ColumnScan; k++)
+			{
+				IntVec3 n = q + IntVec3.South;
+				if (NeighbourLevel(map, eng, n, d) < d)
+				{
+					return q.z;
+				}
+				q = n;
+			}
+			return q.z;
+		}
+
+		private static Color32 Black(float a) => new Color32(0, 0, 0, (byte)(255f * Mathf.Clamp01(a)));
+		private static Color32 Cream(float a) => new Color32(255, 248, 232, (byte)(255f * Mathf.Clamp01(a)));
+
+		/// <summary>OBLIQUE CUT: this square's share of a far face that hangs <c>pitSinkPerLevel</c> a notch from the column's
+		/// far rim (the pawn's own sink, so its foot is the occupant's floor line), the floor below it in the hole's light, soft
+		/// shade along the side walls, shade just inside the near lip and a lit lip edge.</summary>
+		private void ObliqueCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int west, int east, int south, float y, float scorch)
+		{
+			float rim = FarRim(map, eng, c, d, out int rimDepth);
+			float near = NearRim(map, eng, c, d);
+			int drop = RM_WallFaceMath.ExposedDrop(d, rimDepth, f);
+			float face = RM_PitLookMath.ObliqueFace(drop, rim - near, RimMandrakeFlowWorksSettings.pitSinkPerLevel, 0.15f);
+			float foot = rim - face;
+			float z0 = c.z, z1 = c.z + 1f;
+			float dark = f > 0 ? 0f : RM_PitLookMath.FloorDark(d, RM_PitLookMath.Oblique);
+			float footDark = RM_WallFaceMath.FootDarkness(d);
+			// the face piece in this square
+			float fa = Mathf.Max(z0, foot), fb = Mathf.Min(z1, rim);
+			if (face > 0f && fb > fa)
+			{
+				IntVec3 rimCell = new IntVec3(c.x, 0, Mathf.RoundToInt(rim));
+				TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, rimCell, out bool stone);
+				Quad(RM_FaceMaterial.FaceMat(ground), c.x, fa, 1f, fb - fa, y, White, White, UvWorld);
+				// lit at the rim like a wall face, falling into the dark of the foot
+				float ta = (rim - fa) / face, tb = (rim - fb) / face;
+				// the sky lights the top of a hole's far wall less than a free-standing wall's face (x1.45, not x1.85), and the
+				// dark climbs faster the deeper the cut goes, so a deep hole reads dark, not as a lit ramp
+				float lit = LightAlpha(1.45f);
+				float pw = d >= 8 ? 0.7f : d >= 4 ? 0.85f : 1.1f;
+				Quad(RM_FaceMaterial.ShadeMat, c.x, fa, 1f, fb - fa, y + 0.0002f, Cream(lit * (1f - ta) * (1f - ta)), Cream(lit * (1f - tb) * (1f - tb)), UvFace);
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, fa, 1f, fb - fa, y + 0.0003f, Black(footDark * Mathf.Pow(ta, pw)), Black(footDark * Mathf.Pow(tb, pw)), UvFace);
+				Quad(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, c.x, fa, 1f, fb - fa, y + 0.0004f, White, White, UvWorld);
+				// a line every metre down the face: the depth can be counted
+				float perLevel = RimMandrakeFlowWorksSettings.pitSinkPerLevel;
+				for (int k = 1; k < 32; k++)
+				{
+					float lz = rim - RM_PitLookMath.StrataLineNotches(k) * perLevel;
+					if (lz <= foot + 0.06f)
+					{
+						break;
+					}
+					if (lz - 0.045f >= fa && lz <= fb)
+					{
+						Quad(RM_FaceMaterial.DepthShadeMat, c.x, lz - 0.045f, 1f, 0.045f, y + 0.0005f, Black(0.42f), Black(0.3f), UvFace);
+					}
+				}
+				if (fb >= rim - 0.001f)
+				{
+					// the far rim's edge: a soft dark crease, not vanilla's black wall outline
+					Quad(RM_FaceMaterial.DepthShadeMat, c.x, rim - 0.035f, 1f, 0.035f, y + 0.0006f, Black(0.35f), Black(0.6f), UvFace);
+				}
+				if (scorch > 0f)
+				{
+					SootFace(c, c.x, c.x + 1f, fa, fb, scorch, y + 0.0007f);
+				}
+			}
+			// the floor in this square, in the hole's light; a contact shadow where it meets the face
+			float la = z0, lb = Mathf.Min(z1, foot);
+			if (lb > la && dark > 0f)
+			{
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, la, 1f, lb - la, y + 0.0003f, Black(dark), Black(dark), UvFace);
+				if (face > 0f && foot <= z1 && foot > z0)
+				{
+					float cs = Mathf.Min(0.3f, foot - z0);
+					Quad(RM_FaceMaterial.DepthShadeMat, c.x, foot - cs, 1f, cs, y + 0.0004f, Black(0f), Black(0.3f), UvFace);
+				}
+			}
+			// soft shade inside the side walls (they stand edge-on to this camera; their shadow is what shows)
+			if (west < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - west, RM_PitLookMath.Oblique);
+				QuadHMat(RM_FaceMaterial.DepthShadeMat, c.x, c.z, w, 1f, y + 0.0006f, Black(0.5f), Black(0f));
+			}
+			if (east < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - east, RM_PitLookMath.Oblique);
+				QuadHMat(RM_FaceMaterial.DepthShadeMat, c.x + 1f - w, c.z, w, 1f, y + 0.0006f, Black(0f), Black(0.38f));
+			}
+			if (south < d)
+			{
+				// the near wall's top edge: shade falling into the hole just behind it, and the lip itself catching the light
+				float w = 0.1f + 0.02f * Mathf.Min(d - south, 8);
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, c.z, 1f, w, y + 0.0007f, Black(0.6f), Black(0f), UvFace);
+				Quad(RM_FaceMaterial.ShadeMat, c.x, c.z - 0.04f, 1f, 0.04f, y + 0.0007f, Cream(0.22f), Cream(0.4f), UvFace);
+			}
+		}
+
+		/// <summary>SHADOW WELL: the short rim band as before, then darkness growing in from all four walls and over the floor
+		/// with depth, the whole floor in view.</summary>
+		private void WellCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int nd, float h, int north, int west, int east, int south, float y, float scorch)
+		{
+			int wd = RM_WallFaceMath.ExposedDrop(d, west, f);
+			int ed = RM_WallFaceMath.ExposedDrop(d, east, f);
+			float ww = RM_WallFaceMath.SideFaceWidth(wd) * 0.6f;
+			float ew = RM_WallFaceMath.SideFaceWidth(ed) * 0.6f;
+			if (nd > 0)
+			{
+				NorthFace(map, eng, c, d, h, ww, ew, y, scorch);
+			}
+			if (f > 0)
+			{
+				return;
+			}
+			const int M = RM_PitLookMath.Well;
+			float dark = RM_PitLookMath.FloorDark(d, M);
+			float top = nd > 0 ? c.z + 1f - h : c.z + 1f;
+			if (top > c.z)
+			{
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, c.z, 1f, top - c.z, y + 0.0003f, Black(dark), Black(dark), UvFace);
+			}
+			float a = 0.25f + 0.35f * Mathf.Min(1f, d / 8f);
+			if (north < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - north, M);
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, top - w, 1f, w, y + 0.0006f, Black(0f), Black(a), UvFace);
+			}
+			if (south < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - south, M);
+				Quad(RM_FaceMaterial.DepthShadeMat, c.x, c.z, 1f, w, y + 0.0006f, Black(a), Black(0f), UvFace);
+				Quad(RM_FaceMaterial.ShadeMat, c.x, c.z - 0.04f, 1f, 0.04f, y + 0.0007f, Cream(0.22f), Cream(0.4f), UvFace);
+			}
+			if (west < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - west, M);
+				QuadHMat(RM_FaceMaterial.DepthShadeMat, c.x, c.z, w, 1f, y + 0.0006f, Black(a), Black(0f));
+			}
+			if (east < d)
+			{
+				float w = RM_PitLookMath.WallShadeWidth(d - east, M);
+				QuadHMat(RM_FaceMaterial.DepthShadeMat, c.x + 1f - w, c.z, w, 1f, y + 0.0006f, Black(0f), Black(a));
 			}
 		}
 

@@ -5,9 +5,10 @@ using Verse.AI;
 
 namespace RimMandrake.FlowWorks
 {
-	/// <summary>Raises a cell one level. Same vanilla JobDriver_AffectFloor
-	/// engine the dig job rides, read in the other direction.</summary>
-	public class JobDriver_FillInCanal : JobDriver_AffectFloor
+	/// <summary>Raises a cell one level. Same <see cref="RM_JobDriver_ShovelFloor"/>
+	/// engine the dig job rides (vanilla's JobDriver_AffectFloor, interruptible and
+	/// with its work kept per square), read in the other direction.</summary>
+	public class JobDriver_FillInCanal : RM_JobDriver_ShovelFloor
 	{
 		/// <summary>Filling in is cheaper than cutting, and cheaper at every
 		/// level: shovelling spoil back into a hole is not the same labour as
@@ -43,6 +44,8 @@ namespace RimMandrake.FlowWorks
 
 		protected override DesignationDef DesDef => RimMandrakeFlowWorks_DefOf.RM_FillInCanal;
 
+		protected override bool IsFill => true;
+
 		/// <summary>DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY: the pit (Floor layer, as vanilla) and one unit of the gravel or chunk
 		/// the filler fetches (targetB; absent for a pit already paid for).</summary>
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -56,8 +59,8 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Owner 2026-10-25: "it takes 1 gravel or 2 chunks to put it all back in again". With targetB set the filler
 		/// first carries one unit to the pit and tips it in as credit (gravel or crushed ice 2, chunk 1); short of a notch's 2 the job ends
-		/// there with the order kept, and the work giver sends someone for more. Then vanilla's fill work, which runs only on
-		/// a paid-up pit.</summary>
+		/// there with the order kept, and the work giver sends someone for more. Then the shovel work (RM_JobDriver_ShovelFloor),
+		/// which runs only on a paid-up pit.</summary>
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			// One toil layout whether or not material is fetched: a save taken after the tip has a destroyed targetB, and a
@@ -99,7 +102,7 @@ namespace RimMandrake.FlowWorks
 			yield return check;
 			foreach (Toil t in base.MakeNewToils())
 			{
-				// a cost switched on mid-work: stop before vanilla's last toil deletes the order of a pit DoEffect left unfilled
+				// a cost switched on mid-work: stop before the work toil deletes the order of a pit DoEffect left unfilled
 				t.FailOn(() => RimMandrakeFlowWorksSettings.fillCostsSpoilEnabled && RM_GroundClassMath.CreditShort(CreditHere()) > 0);
 				yield return t;
 			}
