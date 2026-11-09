@@ -58,6 +58,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             opt.Lay.CordsMax = o.GetProperty("cordsMax").GetInt32();
             foreach (JsonElement t in o.GetProperty("straight").EnumerateArray()) opt.StraightPlugIds.Add(t.GetString());
             opt.PileAt = c => strips.Contains(c) ? PileArt.Strips : boxes.Contains(c) ? PileArt.Junctions : (PileArt?)null;
+            if (o.TryGetProperty("look", out JsonElement lk)) opt.PlugBoot = CordBuilder.PlugBootU(lk.GetString());   // which look's device plug
             return w;
         }
 

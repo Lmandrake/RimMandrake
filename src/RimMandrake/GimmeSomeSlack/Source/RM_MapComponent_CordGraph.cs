@@ -311,6 +311,7 @@ namespace RimMandrake.GimmeSomeSlack
                 Dictionary<Cell, Aerial.CellStyle> st = styled;
                 // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
                 opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+                opt.PlugBootAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
                 // at least 1 ms of lay time: the builder always lays one edge, so a slow snapshot cannot stall the cords
                 opt.LayBudgetMs = complete ? 0 : Math.Max(1.0, FrameBudgetMs - sw.Elapsed.TotalMilliseconds);
                 // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: a frame's build lays no edge itself (one edge alone cost up to 28 ms

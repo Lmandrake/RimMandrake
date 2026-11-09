@@ -354,6 +354,7 @@ namespace RimMandrake.GimmeSomeSlack
             opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
             Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
             opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+            opt.PlugBootAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
             return b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
         }
 

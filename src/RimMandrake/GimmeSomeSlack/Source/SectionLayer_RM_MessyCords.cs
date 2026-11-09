@@ -159,7 +159,11 @@ namespace RimMandrake.GimmeSomeSlack
                             pts = b - a >= 2 ? s.Pts.GetRange(a, b - a) : new List<V2>();
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
-                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
+                        {
+                            bool trimA = pts != s.Pts && s.WhipA > 0, trimB = pts != s.Pts && s.WhipB > 0;
+                            List<V2> sh = ShadowPts(pts, p, trimA, trimB, out bool tuckedA);
+                            verts += Ribbon(CordMaterials.Shadow, sh, ShadowWidth, y - 0.0003f, tuckedA ? s.S0 - ShadowTuck : s.S0, ShadowOffset);
+                        }
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
                         if (!ripples)
                         {
@@ -186,6 +190,7 @@ namespace RimMandrake.GimmeSomeSlack
                         if (d.OnSwayTail && p.Strands.Any(s => s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s))) continue;   // and a wall tail's rides that tail
                         Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
+                        if (d.Plugged && CordMaterials.OutletPlugged != null) m = CordMaterials.OutletPlugged;
                         bool face = CordMaterials.IsFace(d.Kind);
                         // a plug lies over the strip it plugs into: same-altitude sub-meshes draw in whichever order the section met them
                         float y = face ? faceY + 0.002f : d.Kind == DecalKind.PlugTop ? baseY + 0.011f : d.Kind == DecalKind.Plug ? baseY + 0.010f : baseY + 0.009f;
@@ -237,6 +242,53 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>A textured ribbon along a polyline; u runs along the cord (the strip tiles every
         /// 4 widths), v across it. Winding matches Printer_Plane.</summary>
+        /// <summary>The cast shadow falls down and to the right of its strand (cells).</summary>
+        public static readonly Vector2 ShadowOffset = new Vector2(0.03f, -0.045f);
+        /// <summary>How far (cells) a strand's shadow runs on back under the fitting the strand ends in. Owner 2026-11-09 ("Yes all": the
+        /// notch just below each strip plug): a shadow cut square at the strand's tip, then shifted by <see cref="ShadowOffset"/>, showed as
+        /// a step beside the cord just past the plug's boot; started this far back along the end's own axis, its cut lies under the fitting.</summary>
+        public const double ShadowTuck = 0.08;
+        private const double ShadowFittingReach = 0.35;
+
+        /// <summary>The strand's points for its shadow: each end that sits in a fitting of the piece (a plug, socket, outlet, box, strip or
+        /// stub within <see cref="ShadowFittingReach"/>) runs on <see cref="ShadowTuck"/> straight back along its own axis; a free
+        /// or whip-trimmed end is left as it is.</summary>
+        internal static List<V2> ShadowPts(List<V2> pts, LaidPiece p, bool trimA, bool trimB, out bool tuckA)
+        {
+            int n = pts.Count;
+            tuckA = false;
+            if (n < 2) return pts;
+            tuckA = !trimA && InFitting(p, pts[0]);
+            bool tuckB = !trimB && InFitting(p, pts[n - 1]);
+            if (!tuckA && !tuckB) return pts;
+            var q = new List<V2>(n + 2);
+            if (tuckA) q.Add(pts[0] + EndAxis(pts, true) * ShadowTuck);
+            q.AddRange(pts);
+            if (tuckB) q.Add(pts[n - 1] + EndAxis(pts, false) * ShadowTuck);
+            return q;
+        }
+
+        /// <summary>The unit direction out past an end, taken over the first few hundredths of a cell so a near-duplicate point cannot turn it.</summary>
+        private static V2 EndAxis(List<V2> pts, bool atA)
+        {
+            int n = pts.Count;
+            V2 tip = atA ? pts[0] : pts[n - 1];
+            for (int i = 1; i < n; i++)
+            {
+                V2 o = atA ? pts[i] : pts[n - 1 - i];
+                if (V2.Dist(tip, o) >= 0.03) return (tip - o).Norm();
+            }
+            return (tip - (atA ? pts[n - 1] : pts[0])).Norm();
+        }
+
+        private static bool InFitting(LaidPiece p, V2 tip)
+        {
+            foreach (CordDecal d in p.Decals)
+                if (d.Kind != DecalKind.CableTie && d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive
+                    && V2.Dist(d.Pos, tip) <= ShadowFittingReach) return true;
+            return false;
+        }
+
         private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,
                            byte[] alpha = null, float uvz = 0f)
         {

@@ -480,7 +480,13 @@ namespace RimMandrake.GimmeSomeSlack
             Texture2D top = Tex(Dir + "PlugTop"), outlet = Tex(StyleDir + "ExtCord/WallOutlet");
             if (top != null) d[DecalKind.PlugTop] = MaterialPool.MatFrom(new MaterialRequest(top, ShaderDatabase.Transparent) { renderQueue = PlugTopQueue });
             if (outlet != null) d[DecalKind.WallOutlet] = MaterialPool.MatFrom(new MaterialRequest(outlet, ShaderDatabase.Transparent) { renderQueue = FaceQueue });
+            Texture2D plugged = Tex(StyleDir + "ExtCord/WallOutlet_Plugged");
+            if (plugged != null) OutletPlugged = MaterialPool.MatFrom(new MaterialRequest(plugged, ShaderDatabase.Transparent) { renderQueue = FaceQueue });
         }
+
+        /// <summary>The wall outlet with its receptacle filled in, for a side face whose plug covers it (CordDecal.Plugged; owner
+        /// 2026-11-09 "Yes all"). Null when the art is missing: the plain outlet is used.</summary>
+        public static Material OutletPlugged;
 
         /// <summary>A style is selectable when its strand art is installed (every strand variant present).</summary>
         public static bool StyleInstalled(CordStyle s)

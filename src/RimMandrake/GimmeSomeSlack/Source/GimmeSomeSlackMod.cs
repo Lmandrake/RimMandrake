@@ -173,6 +173,7 @@ namespace RimMandrake.GimmeSomeSlack
             var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20),
                                      // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
                                      Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
+            o.PlugBoot = CordBuilder.PlugBootU(Aerial.AerialMaterials.LookOf(style));
             o.DiveThrough = diveThrough;
             o.SlideUnder = slideUnder;
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
