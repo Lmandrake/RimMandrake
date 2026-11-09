@@ -544,26 +544,43 @@ namespace RimMandrake.GimmeSomeSlack.Core
         // RepairPin is the measurement ignore zone and the default protected end run.
         // Preserve its original vertices exactly; cut ends receive longer protected runs.
         internal const double RepairPin = 0.35;
+        private const double RepairRadiusFloor = 0.10, RepairRadiusTarget = 1.15 * RepairRadiusFloor;
         private const double RepairStep = 0.0125, RepairTiePad = 0.08;
         private static readonly (double A, double B)[] RepairWindows =
         {
-            (0.25, 0.25), (0.4, 0.4), (0.6, 0.6), (0.9, 0.9),
-            (1.3, 1.3), (1.9, 1.9), (2.8, 2.8),
-            (0.25, 0.5), (0.5, 0.25), (0.4, 0.8), (0.8, 0.4),
+            (0.9, 0.9), (0.6, 0.6), (1.3, 1.3),
+            (0.4, 0.8), (0.8, 0.4), (1.9, 1.9), (2.8, 2.8),
+            (0.4, 0.4), (0.25, 0.25), (0.25, 0.5), (0.5, 0.25),
             (0.6, 1.2), (1.2, 0.6), (0.9, 1.8), (1.8, 0.9),
             (1.3, 2.6), (2.6, 1.3), (1.9, 3.8), (3.8, 1.9),
             (2.8, 5.6), (5.6, 2.8)
         };
         private static readonly double[] RepairRadii = { 0.32, 0.24, 0.45, 0.6, 0.72, 0.85, 0.18, 0.14, 0.12 };
         private static readonly double[] RepairOffsets = { 0, 0.06, -0.06, 0.18, -0.18, 0.36, -0.36 };
+        private static readonly double[] RepairAwayOffsets = { 0.06, 0, 0.18, -0.06, 0.36, -0.18, -0.36 };
+        private static readonly double[] RepairRescueOffsets = { 0, 0.06, 0.12, 0.18, 0.24, 0.36, -0.06, -0.18, -0.36 };
+        private static readonly double[] RepairRescueRadii = { 0.14, 0.12, 0.18, 0.24, 0.32, 0.45, 0.6, 0.72, 0.85 };
         private static readonly double[] RepairScales = { 0.08, 0.16, 0.24 };
         private static readonly Comparison<Dubins.Path> RepairPathOrder = (a, b) => a.Len.CompareTo(b.Len);
-        // Budgets belong to one window: a difficult fragment must not starve wider windows.
-        private const int RepairSampleLimit = 96, RepairVerifyLimit = 64;
+        // Shared by the entire call; each window also yields promptly to wider windows.
+        private const int RepairSampleLimit = 48, RepairVerifyLimit = 16, RepairOffsetLimit = 112;
+        private const int RepairWindowSamples = 6, RepairWindowVerifies = 4, RepairWindowOffsets = 14;
 
         private sealed class RepairScratch
         {
             internal double[] Cum = Array.Empty<double>(), ScanCum = Array.Empty<double>();
+            internal double[] Positive = Array.Empty<double>(), Negative = Array.Empty<double>();
+            internal int[] MinHeading = Array.Empty<int>(), MaxHeading = Array.Empty<int>();
+            internal readonly int[] Cursors = new int[14];
+            internal readonly HashSet<Cell> Doors = new HashSet<Cell>(), MachineCells = new HashSet<Cell>();
+            internal readonly Dictionary<Cell, double> ClearanceFloors = new Dictionary<Cell, double>();
+            internal readonly RepairCellGrid OriginalGrid = new RepairCellGrid(), Fittings = new RepairCellGrid(), WindowGrid = new RepairCellGrid();
+            internal readonly List<double> KeepOff = new List<double>();
+            internal readonly List<V2> Stuck = new List<V2>();
+            internal readonly RepairQuality BeforeQuality = new RepairQuality(), AfterQuality = new RepairQuality();
+            internal double FittingReach;
+            internal Func<V2, bool> FittingPolicy;
+            internal bool FittingClear(V2 q) => Fittings.PointClear(q, KeepOff, FittingReach);
             internal readonly List<double> Faults = new List<double>(), Remaining = new List<double>();
             internal readonly List<double> QualityFaults = new List<double>();
             internal readonly List<V2> BasePatch = new List<V2>(), Patch = new List<V2>(), Candidate = new List<V2>();
@@ -576,12 +593,102 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 new List<(double S, V2 Dir, double Heading)>();
         }
 
+        // Reused half-cell buckets. Queries visit nearby segments, never the whole strand.
+        private sealed class RepairCellGrid
+        {
+            private const double CellSize = 0.5;
+            private readonly Dictionary<Cell, List<int>> cells = new Dictionary<Cell, List<int>>();
+            private readonly List<List<int>> buckets = new List<List<int>>();
+            private int used;
+            private List<V2> pts;
+            private bool pointsOnly;
+            private static int Index(double x) => (int)Math.Floor(x / CellSize);
+
+            internal void Set(List<V2> points, int first, int last, bool asPoints = false)
+            {
+                for (int i = 0; i < used; i++) buckets[i].Clear();
+                cells.Clear();
+                used = 0;
+                pts = points;
+                pointsOnly = asPoints;
+                int end = asPoints ? last + 1 : last;
+                for (int i = first; i < end; i++)
+                {
+                    V2 a = pts[i], b = asPoints ? a : pts[i + 1];
+                    int x0 = Index(Math.Min(a.X, b.X)), x1 = Index(Math.Max(a.X, b.X));
+                    int z0 = Index(Math.Min(a.Z, b.Z)), z1 = Index(Math.Max(a.Z, b.Z));
+                    for (int x = x0; x <= x1; x++)
+                        for (int z = z0; z <= z1; z++)
+                        {
+                            var c = new Cell(x, z);
+                            if (!cells.TryGetValue(c, out List<int> bucket))
+                            {
+                                if (used == buckets.Count) buckets.Add(new List<int>());
+                                bucket = buckets[used++];
+                                cells.Add(c, bucket);
+                            }
+                            bucket.Add(i);
+                        }
+                }
+            }
+
+            internal double Distance(V2 q, double reach)
+            {
+                double best = double.PositiveInfinity;
+                int x0 = Index(q.X - reach), x1 = Index(q.X + reach);
+                int z0 = Index(q.Z - reach), z1 = Index(q.Z + reach);
+                for (int x = x0; x <= x1; x++)
+                    for (int z = z0; z <= z1; z++)
+                        if (cells.TryGetValue(new Cell(x, z), out List<int> bucket))
+                            for (int k = 0; k < bucket.Count; k++)
+                            {
+                                int i = bucket[k];
+                                best = Math.Min(best, RepairPointSegment2(q, pts[i], pointsOnly ? pts[i] : pts[i + 1]));
+                            }
+                return Math.Sqrt(best);
+            }
+
+            internal bool PointClear(V2 q, List<double> floors, double reach)
+            {
+                int x0 = Index(q.X - reach), x1 = Index(q.X + reach);
+                int z0 = Index(q.Z - reach), z1 = Index(q.Z + reach);
+                for (int x = x0; x <= x1; x++)
+                    for (int z = z0; z <= z1; z++)
+                        if (cells.TryGetValue(new Cell(x, z), out List<int> bucket))
+                            for (int k = 0; k < bucket.Count; k++)
+                            {
+                                int i = bucket[k];
+                                double floor = Math.Max(0, floors[i] - 1e-6);
+                                if (RepairPointSegment2(q, pts[i], pts[i]) < floor * floor) return false;
+                            }
+                return true;
+            }
+
+            internal double CellClearance(Cell c, double reach)
+            {
+                double best = reach;
+                int x0 = Index(c.X - reach), x1 = Index(c.X + 1 + reach);
+                int z0 = Index(c.Z - reach), z1 = Index(c.Z + 1 + reach);
+                for (int x = x0; x <= x1; x++)
+                    for (int z = z0; z <= z1; z++)
+                        if (cells.TryGetValue(new Cell(x, z), out List<int> bucket))
+                            for (int k = 0; k < bucket.Count; k++)
+                            {
+                                int i = bucket[k];
+                                best = Math.Min(best, RepairCellSegmentDistance(pts[i], pts[i + 1], c));
+                                if (best <= -0.5) return -0.5;
+                            }
+                return best;
+            }
+        }
+
         // Fault peaks, normalized by their own thresholds: radius curvature,
         // opposite-peak saw and signed V-turn. Measure the affected neighbourhood
         // and each join separately so an improvement cannot move damage to a join.
         private sealed class RepairQuality
         {
             private readonly double[] peak = new double[9];
+            internal void Clear() => Array.Clear(peak, 0, peak.Length);
 
             internal void Add(string kind, double s, double value, double a, double b)
             {
@@ -593,6 +700,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
 
             internal double Worst => Math.Max(peak[0], Math.Max(peak[1], peak[2]));
+            internal bool RadiusClear => peak[0] == 0;
 
             internal bool NoWorseThan(RepairQuality before)
             {
@@ -602,16 +710,86 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
         }
 
-        private static RepairQuality MeasureRepairQuality(List<V2> pts, List<CordTie> ties, double a, double b)
+        private static RepairQuality MeasureRepairQuality(List<V2> pts, List<CordTie> ties, double a, double b,
+                                                          double radiusTarget = RepairRadiusTarget)
         {
-            var quality = new RepairQuality();
+            RepairQuality quality = RepairWork.BeforeQuality;
+            quality.Clear();
             CurvatureFaults(pts, ties, RepairWork.QualityFaults, a - 1.3, b + 1.3,
-                measure: (kind, s, value) => quality.Add(kind, s, value, a, b));
+                measure: (kind, s, value) => quality.Add(kind, s, value, a, b),
+                radiusTarget: radiusTarget);
             return quality;
         }
 
         [ThreadStatic] private static RepairScratch repairScratch;
         private static RepairScratch RepairWork => repairScratch ?? (repairScratch = new RepairScratch());
+
+        internal static bool HasCurvatureFaults(List<V2> pts, List<CordTie> ties = null)
+        {
+            return MayNeedCurvatureRepair(pts, ties)
+                && CurvatureFaults(pts, ties, RepairWork.Faults).Count != 0;
+        }
+
+        internal static Func<V2, bool> ExistingFittingClearance(List<V2> pts, List<V2> boxes, double reach)
+        {
+            RepairScratch work = RepairWork;
+            work.OriginalGrid.Set(pts, 0, pts.Count - 1);
+            work.Fittings.Set(boxes, 0, boxes.Count - 1, asPoints: true);
+            work.KeepOff.Clear();
+            work.FittingReach = reach;
+            for (int i = 0; i < boxes.Count; i++)
+                work.KeepOff.Add(Math.Min(reach, work.OriginalGrid.Distance(boxes[i], reach)));
+            return work.FittingPolicy ?? (work.FittingPolicy = work.FittingClear);
+        }
+
+        private static double RepairPointSegment2(V2 q, V2 a, V2 b)
+        {
+            V2 d = b - a, v = q - a;
+            double dd = d.X * d.X + d.Z * d.Z;
+            double t = dd > 1e-20 ? Math.Max(0, Math.Min(1, (v.X * d.X + v.Z * d.Z) / dd)) : 0;
+            V2 gap = v - d * t;
+            return gap.X * gap.X + gap.Z * gap.Z;
+        }
+
+        private static double RepairCellPointDistance(V2 q, Cell c)
+        {
+            double x = Math.Max(c.X - q.X, q.X - c.X - 1);
+            double z = Math.Max(c.Z - q.Z, q.Z - c.Z - 1);
+            if (x <= 0 && z <= 0) return Math.Max(x, z);
+            x = Math.Max(0, x); z = Math.Max(0, z);
+            return Math.Sqrt(x * x + z * z);
+        }
+
+        // Exact minimum signed distance from a segment to a unit obstacle cell.
+        // Negative values retain an existing graze inside furniture, without deepening it.
+        private static double RepairCellSegmentDistance(V2 a, V2 b, Cell c)
+        {
+            double best = Math.Min(RepairCellPointDistance(a, c), RepairCellPointDistance(b, c));
+            if (best >= 0)
+                for (int corner = 0; corner < 4; corner++)
+                {
+                    V2 q = new V2(c.X + (corner & 1), c.Z + ((corner >> 1) & 1));
+                    best = Math.Min(best, Math.Sqrt(RepairPointSegment2(q, a, b)));
+                }
+            if (Math.Max(a.X, b.X) < c.X || Math.Min(a.X, b.X) > c.X + 1
+                || Math.Max(a.Z, b.Z) < c.Z || Math.Min(a.Z, b.Z) > c.Z + 1) return best;
+            V2 d = b - a;
+            double C(int side) => side == 0 ? c.X - a.X : side == 1 ? a.X - c.X - 1
+                : side == 2 ? c.Z - a.Z : a.Z - c.Z - 1;
+            double D(int side) => side == 0 ? -d.X : side == 1 ? d.X : side == 2 ? -d.Z : d.Z;
+            // Inside the rectangle the signed distance is the maximum of four affine
+            // functions. Its minimum is at an endpoint or an intersection of two.
+            for (int i = 0; i < 4; i++)
+                for (int j = i + 1; j < 4; j++)
+                {
+                    double den = D(i) - D(j);
+                    if (Math.Abs(den) < 1e-20) continue;
+                    double t = (C(j) - C(i)) / den;
+                    if (t > 0 && t < 1)
+                        best = Math.Min(best, RepairCellPointDistance(a + d * t, c));
+                }
+            return best;
+        }
 
         private static double[] RepairCum(List<V2> pts, ref double[] into)
         {
@@ -629,29 +807,49 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return false;
         }
 
-        /// <summary>A conservative, allocation-free O(n) bound. With at most 23 degrees of absolute
-        /// vertex turn in every 0.20-cell interval, none of the radius, opposite-peak or V-turn tests can fail.
-        /// Duplicate vertices take the exact path rather than concealing a reversal.</summary>
-        internal static bool MayNeedCurvatureRepair(List<V2> pts)
+        /// <summary>Conservative O(n) bounds on the original polyline, using reused buffers.
+        /// Radius needs enough absolute turn over its own diameter; a saw needs both signs;
+        /// a V-turn needs 155 degrees within its tangent span. Broad one-way coils pass cheaply.</summary>
+        internal static bool MayNeedCurvatureRepair(List<V2> pts, List<CordTie> ties = null)
         {
             if (pts == null || pts.Count < 4) return false;
-            double TurnAt(int i) => Math.Abs(SignedTurnDeg(pts[i] - pts[i - 1], pts[i + 1] - pts[i]));
-            double s = V2.Dist(pts[0], pts[1]), leftS = s, turn = 0;
-            if (s < 1e-9) return true;
-            int left = 1;
-            for (int i = 1; i < pts.Count - 1; i++)
+            RepairScratch work = RepairWork;
+            double[] cum = RepairCum(pts, ref work.ScanCum);
+            int n = pts.Count;
+            double L = cum[n - 1];
+            if (L <= 2 * RepairPin) return false;
+            if (work.Positive.Length < n)
             {
-                double next = V2.Dist(pts[i], pts[i + 1]);
-                if (next < 1e-9) return true;
-                if (i > 1) s += V2.Dist(pts[i - 1], pts[i]);
-                turn += TurnAt(i);
-                while (left < i && s - leftS > 0.20 + 1e-9)
+                int size = Math.Max(n, Math.Max(64, work.Positive.Length * 2));
+                Array.Resize(ref work.Positive, size);
+                Array.Resize(ref work.Negative, size);
+            }
+            double[] positive = work.Positive, negative = work.Negative;
+            positive[0] = negative[0] = 0;
+            for (int i = 1; i < n - 1; i++)
+            {
+                if (cum[i] - cum[i - 1] < 1e-9 || cum[i + 1] - cum[i] < 1e-9) return true;
+                if (cum[i - 1] >= RepairPin && cum[i + 1] <= L - RepairPin
+                    && !RepairTied(ties, cum[i - 1], cum[i + 1])
+                    && Radius(pts[i - 1], pts[i], pts[i + 1]) < RepairRadiusTarget) return true;
+                double turn = cum[i] < RepairPin || cum[i] > L - RepairPin || RepairTied(ties, cum[i], cum[i])
+                    ? 0 : SignedTurnDeg(pts[i] - pts[i - 1], pts[i + 1] - pts[i]);
+                positive[i] = positive[i - 1] + Math.Max(0, turn);
+                negative[i] = negative[i - 1] + Math.Max(0, -turn);
+            }
+            for (int pass = 0; pass < 5; pass++)
+            {
+                double span = pass < 3 ? 2 * RepairScales[pass] : pass == 3 ? 0.65 : 0.68;
+                double threshold = pass < 3 ? RepairScales[pass] * 180 / (Math.PI * RepairRadiusTarget) : 155;
+                int left = 1;
+                for (int right = 1; right < n - 1; right++)
                 {
-                    turn -= TurnAt(left);
-                    left++;
-                    leftS += V2.Dist(pts[left - 1], pts[left]);
+                    while (left < right && cum[right] - cum[left] > span + 1e-9) left++;
+                    double p = positive[right] - positive[left - 1];
+                    double m = negative[right] - negative[left - 1];
+                    if (pass == 3 ? p >= 24 - 1e-8 && m >= 24 - 1e-8
+                        : p + m > threshold - 1e-8) return true;
                 }
-                if (turn > 23.0) return true;
             }
             return false;
         }
@@ -661,20 +859,46 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// Own machine runs are intentional, and an existing narrow wall gap may be retained but never narrowed.</summary>
         internal static List<V2> RepairCurvature(CordWorld w, List<V2> pts, List<CordTie> ties = null, Func<V2, bool> extraClear = null,
                                                List<MachineInfo> own = null, Action<string> trace = null,
-                                               double pinA = RepairPin, double pinB = RepairPin)
+                                               double pinA = RepairPin, double pinB = RepairPin, bool faultsReady = false,
+                                               Func<List<V2>, bool> approachClear = null,
+                                               Func<List<V2>, double[], double, (double Lo, double Hi)> approachBounds = null)
         {
-            // Keep the common path outside the method that owns captured clearance delegates.
-            if (!MayNeedCurvatureRepair(pts)) return pts;
-            return RepairCurvatureSlow(w, pts, ties, extraClear, own, trace, pinA, pinB);
+            // FinalCurvature already measured this strand before constructing its fitting policy.
+            if (!faultsReady && !HasCurvatureFaults(pts, ties)) return pts;
+            List<V2> result = RepairCurvatureSlow(w, pts, ties, extraClear, own, trace, pinA, pinB,
+                approachClear: approachClear, approachBounds: approachBounds);
+            if (RepairWork.Faults.Count == 0) return result;
+            // Preserve successful ordinary repairs. Exhaust the alternative bows at
+            // the preferred margin before allowing the smaller, still-safe target.
+            for (int pass = 0; pass < 2; pass++)
+            {
+                double target = pass == 0 ? RepairRadiusTarget : RepairRadiusFloor * 1.001;
+                for (int profile = 1; profile <= 3; profile++)
+                {
+                    CurvatureFaults(result, ties, RepairWork.Faults, radiusTarget: target);
+                    if (RepairWork.Faults.Count == 0) return result;
+                    if (trace != null)
+                        trace("rescue profile " + profile + " radius target "
+                            + target.ToString("0.0000", System.Globalization.CultureInfo.InvariantCulture));
+                    result = RepairCurvatureSlow(w, result, ties, extraClear, own, trace,
+                        pinA, pinB, profile, target, approachClear, approachBounds);
+                }
+            }
+            return result;
         }
 
         private static List<V2> RepairCurvatureSlow(CordWorld w, List<V2> pts, List<CordTie> ties, Func<V2, bool> extraClear,
-                                                   List<MachineInfo> own, Action<string> trace, double pinA, double pinB)
+                                                   List<MachineInfo> own, Action<string> trace, double pinA, double pinB,
+                                                   int bowProfile = 0, double radiusTarget = RepairRadiusTarget,
+                                                   Func<List<V2>, bool> approachClear = null,
+                                                   Func<List<V2>, double[], double, (double Lo, double Hi)> approachBounds = null)
         {
             RepairScratch work = RepairWork;
-            List<double> faults = CurvatureFaults(pts, ties, work.Faults);
+            List<double> faults = work.Faults;
             if (faults.Count == 0) return pts;
-            var doors = new HashSet<Cell>();
+            HashSet<Cell> doors = work.Doors;
+            doors.Clear();
+            work.MachineCells.Clear();
             if (w != null) foreach (V2 q in pts) if (w.IsDoor(q.Floor)) doors.Add(q.Floor);
             // Graph and world may hold different snapshot objects for the same machine.
             bool Own(MachineInfo m)
@@ -687,13 +911,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                 return false;
             }
-            bool OwnFoot(V2 q)
+            if (w != null)
+                for (int i = 0; i < w.Machines.Count; i++)
+                {
+                    MachineInfo m = w.Machines[i];
+                    if (Own(m)) continue;
+                    for (int x = m.X0; x < m.X0 + m.W; x++)
+                    {
+                        for (int z = m.Z0; z < m.Z0 + m.H; z++) work.MachineCells.Add(new Cell(x, z));
+                        if (m.Kind == MachineKind.Lamp) work.MachineCells.Add(new Cell(x, m.Z0 + m.H));
+                    }
+                }
+            bool OwnCell(Cell c)
             {
-                Cell c = q.Floor;
                 if (own != null)
                     for (int i = 0; i < own.Count; i++) if (own[i].Contains(c)) return true;
                 return false;
             }
+            bool Blocked(Cell c) => !OwnCell(c)
+                && (!w.IsWalkable(c) || w.IsFurniture(c) || work.MachineCells.Contains(c));
             string groundWhy = null;
             bool GroundNo(string reason, V2 q)
             {
@@ -703,22 +939,56 @@ namespace RimMandrake.GimmeSomeSlack.Core
             bool Clear(V2 q)
             {
                 if (extraClear != null && !extraClear(q)) return GroundNo("fitting-keep-off", q);
-                if (w == null) return true;
-                Cell c = q.Floor;
-                if (!(OwnFoot(q) || (w.IsWalkable(c) && !w.IsFurniture(c))))
-                    return GroundNo("floor/furniture", q);
-                if (w.IsDoor(c) && !doors.Contains(c)) return GroundNo("new-door", q);
-                for (int i = 0; i < w.Machines.Count; i++)
-                {
-                    MachineInfo m = w.Machines[i];
-                    if (!Own(m) && (m.Contains(c) || CordBuilder.UnderLampArt(m, c)))
-                        return GroundNo("other-machine/art", q);
-                }
+                if (w != null && w.IsDoor(q.Floor) && !doors.Contains(q.Floor)) return GroundNo("new-door", q);
                 return true;
             }
             Func<V2, bool> clearPoint = Clear;
+            bool SegmentClear(V2 a, V2 b)
+            {
+                // Keep fitting and doorway checks through every crossed cell.
+                if (!RepairSegmentClear(null, a, b, clearPoint)) return false;
+                if (w == null) return true;
+                double reach = LayParams.RC;
+                int x0 = (int)Math.Floor(Math.Min(a.X, b.X) - reach);
+                int x1 = (int)Math.Floor(Math.Max(a.X, b.X) + reach);
+                int z0 = (int)Math.Floor(Math.Min(a.Z, b.Z) - reach);
+                int z1 = (int)Math.Floor(Math.Max(a.Z, b.Z) + reach);
+                for (int x = x0; x <= x1; x++)
+                    for (int z = z0; z <= z1; z++)
+                    {
+                        var c = new Cell(x, z);
+                        if (!Blocked(c)) continue;
+                        if (!work.ClearanceFloors.TryGetValue(c, out double floor))
+                        {
+                            floor = work.WindowGrid.CellClearance(c, reach);
+                            work.ClearanceFloors.Add(c, floor);
+                        }
+                        if (RepairCellSegmentDistance(a, b, c) < floor - 1e-6)
+                            return GroundNo("span-clearance " + c, (a + b) * 0.5);
+                    }
+                return true;
+            }
+            double ObstacleDistance(V2 q)
+            {
+                if (w == null) return 0.5;
+                double best = 0.5;
+                int x0 = (int)Math.Floor(q.X - 0.5), x1 = (int)Math.Floor(q.X + 0.5);
+                int z0 = (int)Math.Floor(q.Z - 0.5), z1 = (int)Math.Floor(q.Z + 0.5);
+                for (int x = x0; x <= x1; x++)
+                    for (int z = z0; z <= z1; z++)
+                    {
+                        var c = new Cell(x, z);
+                        if (Blocked(c)) best = Math.Min(best, RepairCellPointDistance(q, c));
+                    }
+                return best;
+            }
             List<V2> P = pts;
-            var stuck = new List<V2>();
+            List<V2> stuck = work.Stuck;
+            stuck.Clear();
+            bool rescue = bowProfile != 0;
+            int verifyLimit = rescue ? 32 : RepairVerifyLimit;
+            int offsetLimit = rescue ? 432 : RepairOffsetLimit;
+            int sampled = 0, verified = 0, offsetTried = 0;
             for (int guard = 0; guard < 12; guard++)
             {
                 double[] cum = RepairCum(P, ref work.Cum);
@@ -736,13 +1006,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 if (S == 0) return P;
                 V2 fault = RepairAt(P, cum, S);
-                int ia = 1, ib = P.Count - 2;
-                while (ia < P.Count - 2 && (cum[ia] < pinA || !Clear(P[ia]))) ia++;
-                while (ib > 1 && (cum[ib] > L - pinB || !Clear(P[ib]))) ib--;
-                if (ib - ia < 2)
+                double windowLo = pinA, windowHi = L - pinB;
+                if (approachBounds != null)
                 {
-                    trace?.Invoke("at " + fault + " no clear window between endpoint poses");
-                    return P;
+                    var bounds = approachBounds(P, cum, S);
+                    windowLo = Math.Max(windowLo, bounds.Lo);
+                    windowHi = Math.Min(windowHi, bounds.Hi);
+                }
+                int ia = 1, ib = P.Count - 2;
+                while (ia < P.Count - 2 && (cum[ia] < windowLo || !Clear(P[ia]))) ia++;
+                while (ib > 1 && (cum[ib] > windowHi || !Clear(P[ib]))) ib--;
+                if (ib - ia < 2 || cum[ia] >= S || cum[ib] <= S)
+                {
+                    trace?.Invoke("at " + fault + " no clear window between protected poses");
+                    stuck.Add(fault);
+                    continue;
                 }
                 List<V2> best = null, partialBest = null;
                 List<CordTie> bestTies = null, partialTies = null;
@@ -764,13 +1042,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 for (int k = 0; k < faults.Count; k++)
                 {
                     if (faults[k] < S) continue;
-                    if (faults[k] - faultEnd > 0.15) break;
+                    if (faults[k] - faultEnd > 0.35) break;
                     faultEnd = faults[k];
                 }
                 for (int wi = -1; wi < RepairWindows.Length; wi++)
                 {
+                    if (sampled >= RepairSampleLimit || verified >= verifyLimit || offsetTried >= offsetLimit) break;
                     var window = wi < 0
-                        ? (A: 0.25, B: Math.Min(5.6, faultEnd - S + 0.25))
+                        ? (A: 0.4, B: Math.Min(5.6, faultEnd - S + 0.4))
                         : RepairWindows[wi];
                     if (trace != null)
                         attempt = "w" + (wi + 1) + "("
@@ -781,8 +1060,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (a < 0) a = ~a - 1;
                     if (b < 0) b = ~b;
                     a = Math.Max(ia, a); b = Math.Min(ib, b);
-                    // A join inside furniture cannot be repaired by moving only
-                    // the middle. Extend this window to clear original vertices.
+                    // Original obstacle clearance is legal at either join. Only a fitting
+                    // or a new doorway requires extending to another original vertex.
                     while (a > ia && !Clear(P[a])) a--;
                     while (b < ib && !Clear(P[b])) b++;
                     if (trace != null)
@@ -793,47 +1072,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     work.Windows.Add((a, b));
                     if (!Clear(P[a]) || !Clear(P[b])) { No(groundWhy ?? "blocked-join"); continue; }
                     if (RepairTied(ties, cum[a], cum[b])) { No("tie"); continue; }
-                    int sampled = 0, verified = 0;
+                    int sampleEnd = Math.Min(RepairSampleLimit, sampled + RepairWindowSamples);
+                    int verifyEnd = Math.Min(verifyLimit, verified + (rescue ? 6 : RepairWindowVerifies));
+                    int offsetEnd = Math.Min(offsetLimit, offsetTried + (rescue ? 54 : RepairWindowOffsets));
                     RepairQuality beforeQuality = null;
                     V2 ta = P[a] - P[a - 1], tb = P[b + 1] - P[b];
                     if (ta.Len < 1e-9 || tb.Len < 1e-9) { No("pose"); continue; }
                     double ha = Math.Atan2(ta.Z, ta.X), hb = Math.Atan2(tb.Z, tb.X), old = cum[b] - cum[a];
                     int oldCrossings = CordBuilder.CrossingsOf(P, a, b);
-                    int nearAt = a;
-                    bool Near(V2 q)
-                    {
-                        // Consecutive arc samples usually remain near the same old segment.
-                        // Search outward from that hit, without allocating or taking square roots.
-                        for (int step = 0; step < b - a; step++)
-                            for (int side = 0; side < (step == 0 ? 1 : 2); side++)
-                            {
-                                int k = nearAt + (side == 0 ? step : -step);
-                                if (k < a || k >= b) continue;
-                                V2 d = P[k + 1] - P[k], v = q - P[k];
-                                double dd = d.X * d.X + d.Z * d.Z;
-                                double u = dd > 1e-12 ? Math.Max(0, Math.Min(1, (v.X * d.X + v.Z * d.Z) / dd)) : 0;
-                                V2 gap = v - d * u;
-                                if (gap.X * gap.X + gap.Z * gap.Z <= 0.25) { nearAt = k; return true; }
-                            }
-                        return false;
-                    }
-                    // Retain the window's existing minimum clearance. Requiring each sample
-                    // to match its nearest old point can forbid rounding within the same narrow gap.
-                    double clearanceFloor = double.MaxValue;
-                    if (w != null)
-                        for (int k = a; k <= b; k++)
-                            if (!OwnFoot(P[k])) clearanceFloor = Math.Min(clearanceFloor, w.Clearance(P[k]));
-                    bool Clearance(V2 q, double margin)
-                    {
-                        if (w == null || OwnFoot(q)) return true;
-                        if (!w.IsWalkable(q.Floor)) return GroundNo("unwalkable", q);
-                        if (w.Clearance(q) < Math.Min(LayParams.RC + margin, clearanceFloor) - 1e-6)
-                            return GroundNo("clearance", q);
-                        return true;
-                    }
-                    Func<V2, double, bool> clearancePoint = Clearance;
+                    work.WindowGrid.Set(P, a, b);
+                    work.ClearanceFloors.Clear();
+                    bool Near(V2 q) => work.WindowGrid.Distance(q, 0.5) <= 0.5;
+                    // Prefer the side with more obstacle clearance. SegmentClear compares
+                    // exact continuous distances against this original window, per obstacle cell.
+                    V2 axis = P[b] - P[a];
+                    V2 normal = axis.Len > 1e-9 ? axis.Norm().Perp : new V2(-Math.Sin(ha), Math.Cos(ha));
+                    double plus = ObstacleDistance(fault + normal * 0.12);
+                    double minus = ObstacleDistance(fault - normal * 0.12);
+                    int away = plus > minus + 1e-6 ? 1 : minus > plus + 1e-6 ? -1 : 0;
+                    double[] offsets = rescue ? RepairRescueOffsets : away == 0 ? RepairOffsets : RepairAwayOffsets;
                     string windowAttempt = attempt;
-                    foreach (double r in RepairRadii)
+                    foreach (double r in rescue ? RepairRescueRadii : RepairRadii)
                     {
                         if (trace != null)
                             attempt = windowAttempt + "/r=" + r.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
@@ -843,9 +1102,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         foreach (Dubins.Path dp in paths)
                         {
                             if (dp.Turning > 2.5 * Math.PI || dp.Len > old + 0.8) { No("turn/length"); continue; }
-                            if (sampled >= RepairSampleLimit || verified >= RepairVerifyLimit)
+                            if (sampled >= sampleEnd || verified >= verifyEnd || offsetTried >= offsetEnd)
                             {
-                                No(sampled >= RepairSampleLimit ? "sample-limit" : "verification-limit");
+                                No("window-budget");
                                 break;
                             }
                             sampled++;
@@ -859,29 +1118,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             if (basePatch.Count < 2) { No("empty"); continue; }
                             basePatch[basePatch.Count - 1] = P[b];
                             string pathAttempt = attempt;
-                            foreach (double offset in RepairOffsets)
+                            for (int oi = 0; oi < offsets.Length && offsetTried < offsetEnd; oi++)
                             {
+                            offsetTried++;
+                            double offset = offsets[oi] * (away == 0 ? 1 : away);
                             if (trace != null)
                                 attempt = pathAttempt + "/side=" + offset.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
-                            List<V2> patch = OffsetRepairPatch(basePatch, ha, offset, work.Patch);
+                            List<V2> patch = OffsetRepairPatch(basePatch, ha, offset, work.Patch, bowProfile);
                             bool near = true;
                             for (int k = 0; k < patch.Count && near; k++) near = Near(patch[k]);
                             if (!near) { No("stray"); continue; }
                             bool clear = true;
                             for (int k = 1; k < patch.Count && clear; k++)
-                                clear = RepairSegmentClear(w, patch[k - 1], patch[k], clearPoint, clearancePoint);
+                                clear = SegmentClear(patch[k - 1], patch[k]);
                             if (!clear) { No(groundWhy ?? "ground/clearance"); continue; }
-                            if (verified >= RepairVerifyLimit)
+                            if (verified >= verifyEnd)
                             {
                                 No("verification-limit");
                                 break;
                             }
-                            verified++;
                             List<V2> Q = work.Candidate;
                             Q.Clear();
                             for (int k = 0; k <= a; k++) Q.Add(P[k]);
                             for (int k = 1; k < patch.Count; k++) Q.Add(patch[k]);
                             for (int k = b + 1; k < P.Count; k++) Q.Add(P[k]);
+                            if (approachClear != null && !approachClear(Q)) { No("slide-under-approach"); continue; }
+                            verified++;
                             if (CordBuilder.CrossingsOf(Q, a, a + patch.Count - 1) > oldCrossings) { No("crossing"); continue; }
                             double delta = Geo.Length(patch) - old;
                             List<CordTie> qt = null;
@@ -908,10 +1170,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             }
                             // Only this window and its joins can change. Extra context contains
                             // every measurement span; distant cord need not be sampled per candidate.
-                            var afterQuality = new RepairQuality();
+                            RepairQuality afterQuality = work.AfterQuality;
+                            afterQuality.Clear();
                             List<double> remaining = CurvatureFaults(Q, qt, work.Remaining,
                                 cum[a] - 1.3, patchEnd + 1.3,
-                                measure: (kind, s, value) => afterQuality.Add(kind, s, value, cum[a], patchEnd));
+                                measure: (kind, s, value) => afterQuality.Add(kind, s, value, cum[a], patchEnd),
+                                radiusTarget: radiusTarget);
                             bool newFault = false;
                             for (int k = 0; k < remaining.Count; k++)
                             {
@@ -922,7 +1186,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                     break;
                                 }
                             }
-                            beforeQuality ??= MeasureRepairQuality(P, ties, cum[a], cum[b]);
+                            // Neither partial improvement nor a retained join bypasses this pass's radius target.
+                            if (!afterQuality.RadiusClear) { No("radius-margin"); continue; }
+                            beforeQuality ??= MeasureRepairQuality(P, ties, cum[a], cum[b], radiusTarget);
                             if (!afterQuality.NoWorseThan(beforeQuality)) { No("worse-fault/join"); continue; }
                             double gain = beforeQuality.Worst - afterQuality.Worst;
                             // Prefer a clean patch. A partial patch must reduce the worst
@@ -945,9 +1211,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             if (trace != null) trace("try " + attempt + " accepted");
                             break;
                             }
-                            if (best != null) break;
+                            // Rescue spends its samples across radii instead of exhausting
+                            // them on several words at the first radius.
+                            if (best != null || rescue) break;
                         }
-                        if (best != null || sampled >= RepairSampleLimit || verified >= RepairVerifyLimit) break;
+                        if (best != null || sampled >= sampleEnd || verified >= verifyEnd || offsetTried >= offsetEnd) break;
                     }
                     if (best != null) break;
                 }
@@ -967,8 +1235,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     P = best;
                     if (ties != null) { ties.Clear(); ties.AddRange(bestTies); }
-                    CurvatureFaults(P, ties, faults);
+                    CurvatureFaults(P, ties, faults, radiusTarget: radiusTarget);
                     stuck.Clear();
+                }
+                if (sampled >= RepairSampleLimit || verified >= verifyLimit || offsetTried >= offsetLimit)
+                {
+                    trace?.Invoke("call budget; remaining fault samples " + faults.Count);
+                    return P;
                 }
             }
             trace?.Invoke("round limit 12; remaining fault samples " + faults.Count);
@@ -976,10 +1249,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
 
-        // Shift the interior to either side while keeping both endpoint positions,
-        // tangents and analytic curvature unchanged. Every variant is subsequently
-        // checked on the actual sampled polyline, through both joins.
-        private static List<V2> OffsetRepairPatch(List<V2> pts, double heading, double amount, List<V2> into)
+        // Every profile preserves endpoint positions and analytic tangents.
+        // Profile 0 also preserves endpoint curvature. Rescue profiles act earlier
+        // near the joins; actual sampled curvature and clearance are still checked.
+        private static List<V2> OffsetRepairPatch(List<V2> pts, double heading, double amount, List<V2> into,
+                                                  int profile = 0)
         {
             into.Clear();
             if (amount == 0)
@@ -1000,7 +1274,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 double u = length > 1e-12 ? s / length : 0;
                 double v = u * (1 - u);
-                into.Add(pts[i] + normal * (amount * 64 * v * v * v));
+                double bow = profile == 0 ? 64 * v * v * v : 16 * v * v;
+                if (profile == 2) bow *= 2 * (1 - u);
+                else if (profile == 3) bow *= 2 * u;
+                into.Add(pts[i] + normal * (amount * bow));
             }
             return into;
         }
@@ -1021,7 +1298,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static List<double> CurvatureFaults(List<V2> pts, List<CordTie> ties = null, List<double> into = null,
                                                      double from = RepairPin, double to = double.MaxValue,
                                                      Action<string, double> report = null,
-                                                     Action<string, double, double> measure = null)
+                                                     Action<string, double, double> measure = null,
+                                                     double radiusTarget = RepairRadiusTarget)
         {
             List<double> faults = into ?? new List<double>();
             faults.Clear();
@@ -1030,7 +1308,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
             double[] cum = RepairCum(pts, ref work.ScanCum);
             double lo = Math.Max(RepairPin, from), hi = Math.Min(cum[pts.Count - 1] - RepairPin, to);
             if (hi <= lo) return faults;
-            V2 At(double s) => RepairAt(pts, cum, s);
+            int[] cursors = work.Cursors;
+            Array.Clear(cursors, 0, cursors.Length);
+            V2 At(double s, int slot)
+            {
+                int i = cursors[slot];
+                while (i < pts.Count - 2 && cum[i + 1] < s) i++;
+                cursors[slot] = i;
+                double len = cum[i + 1] - cum[i];
+                double t = len > 1e-12 ? Math.Max(0, Math.Min(1, (s - cum[i]) / len)) : 0;
+                return pts[i] + (pts[i + 1] - pts[i]) * t;
+            }
             void Add(double a, double b, string kind, double severity)
             {
                 if (a < lo - 1e-9 || b > hi + 1e-9) return;
@@ -1040,13 +1328,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 report?.Invoke(kind, s);
                 measure?.Invoke(kind, s, severity);
             }
-            double? Turn(double s, double h)
+            double? Turn(double s, double h, int slot)
             {
                 if (s - h < lo - 1e-9 || s + h > hi + 1e-9) return null;
-                V2 a = At(s - h), b = At(s), c = At(s + h);
+                V2 a = At(s - h, slot), b = At(s, slot + 1), c = At(s + h, slot + 2);
                 V2 u = b - a, v = c - b;
                 if (u.Len < 1e-10 || v.Len < 1e-10) return null;
                 return SignedTurnDeg(u, v);
+            }
+            // Check original vertices too: span averages can hide a short tight bend.
+            for (int i = 1; i < pts.Count - 1; i++)
+            {
+                if (cum[i - 1] < lo - 1e-9 || cum[i + 1] > hi + 1e-9
+                    || RepairTied(ties, cum[i - 1], cum[i + 1])) continue;
+                double radius = Radius(pts[i - 1], pts[i], pts[i + 1]);
+                if (radius < radiusTarget)
+                    Add(cum[i], cum[i], "radius", radiusTarget / radius);
             }
             int n = Math.Max(0, (int)Math.Floor((hi - lo) / RepairStep + 1e-9));
             var lobes = work.Lobes;
@@ -1057,13 +1354,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 // Fixed spacing: a length change cannot move samples before the repair.
                 double s = lo + RepairStep * i;
-                foreach (double h in RepairScales)
+                for (int scale = 0; scale < RepairScales.Length; scale++)
                 {
-                    double? turn = Turn(s, h);
-                    if (turn.HasValue && Math.Abs(turn.Value) * Math.PI / 180 / h > 9.5)
-                        Add(s - h, s + h, "radius", Math.Abs(turn.Value) * Math.PI / 180 / h / 9.5);
+                    double h = RepairScales[scale];
+                    double? turn = Turn(s, h, 3 * scale);
+                    if (turn.HasValue && Math.Abs(turn.Value) * Math.PI / 180 / h > 1 / radiusTarget)
+                        Add(s - h, s + h, "radius", Math.Abs(turn.Value) * Math.PI / 180 / h * radiusTarget);
                 }
-                double? saw = Turn(s, 0.10);
+                double? saw = Turn(s, 0.10, 9);
                 if (saw.HasValue && Math.Abs(saw.Value) >= 7.5)
                 {
                     int sign = Math.Sign(saw.Value);
@@ -1079,7 +1377,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 if (s - 0.04 >= lo - 1e-9 && s + 0.04 <= hi + 1e-9)
                 {
-                    V2 d = At(s + 0.04) - At(s - 0.04);
+                    V2 d = At(s + 0.04, 13) - At(s - 0.04, 12);
                     if (d.Len > 1e-10)
                     {
                         double heading = tangents.Count == 0 ? 0 : tangents[tangents.Count - 1].Heading + SignedTurnDeg(tangents[tangents.Count - 1].Dir, d);
@@ -1094,13 +1392,31 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (lobes[i].Sign != lobes[j].Sign && Math.Min(lobes[i].Peak, lobes[j].Peak) >= 24)
                         Add(lobes[i].S - 0.10, lobes[j].S + 0.10, "saw", Math.Min(lobes[i].Peak, lobes[j].Peak) / 24.0);
                 }
-            int first = 0;
+            if (work.MinHeading.Length < tangents.Count)
+            {
+                int size = Math.Max(tangents.Count, Math.Max(64, work.MinHeading.Length * 2));
+                Array.Resize(ref work.MinHeading, size);
+                Array.Resize(ref work.MaxHeading, size);
+            }
+            int[] minHeading = work.MinHeading, maxHeading = work.MaxHeading;
+            int first = 0, minFirst = 0, minEnd = 0, maxFirst = 0, maxEnd = 0;
             for (int j = 0; j < tangents.Count; j++)
             {
                 while (tangents[j].S - tangents[first].S > 0.60 + 1e-9) first++;
+                while (minFirst < minEnd && minHeading[minFirst] < first) minFirst++;
+                while (maxFirst < maxEnd && maxHeading[maxFirst] < first) maxFirst++;
+                double heading = tangents[j].Heading;
+                while (minFirst < minEnd && tangents[minHeading[minEnd - 1]].Heading >= heading) minEnd--;
+                while (maxFirst < maxEnd && tangents[maxHeading[maxEnd - 1]].Heading <= heading) maxEnd--;
+                minHeading[minEnd++] = j;
+                maxHeading[maxEnd++] = j;
+                // Most neighbourhoods cannot contain a V-turn. Only enumerate pairs
+                // when an extremum proves one possible; preserve every original hit.
+                if (heading - tangents[minHeading[minFirst]].Heading <= 155
+                    && tangents[maxHeading[maxFirst]].Heading - heading <= 155) continue;
                 for (int i = first; i < j; i++)
-                    if (Math.Abs(tangents[j].Heading - tangents[i].Heading) > 155)
-                        Add(tangents[i].S - 0.04, tangents[j].S + 0.04, "V-turn", Math.Abs(tangents[j].Heading - tangents[i].Heading) / 155.0);
+                    if (Math.Abs(heading - tangents[i].Heading) > 155)
+                        Add(tangents[i].S - 0.04, tangents[j].S + 0.04, "V-turn", Math.Abs(heading - tangents[i].Heading) / 155.0);
             }
             faults.Sort();
             int count = 0;
@@ -1252,12 +1568,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 o.Clear();
                 string w = Words[p.Word];
                 double x = a.X, z = a.Z, h = ha;
-                double[] len = { p.T * p.R, p.P * p.R, p.Q * p.R };
                 for (int sgi = 0; sgi < 3; sgi++)
                 {
                     char k = w[sgi];
-                    int m = Math.Max(1, (int)Math.Ceiling(len[sgi] / step));
-                    double ds = len[sgi] / m;
+                    double len = (sgi == 0 ? p.T : sgi == 1 ? p.P : p.Q) * p.R;
+                    int m = Math.Max(1, (int)Math.Ceiling(len / step));
+                    double ds = len / m;
                     for (int i = 0; i < m; i++)
                     {
                         if (k == 'S') { x += Math.Cos(h) * ds; z += Math.Sin(h) * ds; }
@@ -1269,7 +1585,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             x += Math.Cos(hm) * chord; z += Math.Sin(hm) * chord;
                             h = h1;
                         }
-                        if (len[sgi] > 1e-9) o.Add(new V2(x, z));
+                        if (len > 1e-9) o.Add(new V2(x, z));
                     }
                 }
                 return o;

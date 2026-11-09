@@ -1399,6 +1399,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         // Read once per process; disabled logging adds no per-strand diagnostic allocations.
         private static readonly bool FinalKinkLog = Environment.GetEnvironmentVariable("GSS_R4_KINKLOG") == "1";
+        [ThreadStatic] private static List<V2> finalRepairBoxes;
+        [ThreadStatic] private static List<MachineInfo> finalRepairOwn;
 
         private static List<V2> FinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties, string key,
                                                int strand = 0, bool endA = true, bool endB = true, int section = -1, bool allowRepair = true)
@@ -1407,7 +1409,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // The whole cut-end strand keeps its authored straight run or limp curl.
             bool cut = (endA && na.Type == NodeType.Terminal && !na.Seam)
                 || (endB && nb.Type == NodeType.Terminal && !nb.Seam);
-            bool repair = allowRepair && !cut && CordShape.MayNeedCurvatureRepair(P);
+            bool repair = allowRepair && !cut && CordShape.HasCurvatureFaults(P, ties);
             if (FinalKinkLog)
                 return TraceFinalCurvature(w, g, e, P, ties, key, strand, section, cut, repair, allowRepair);
             return repair ? RepairFinalCurvature(w, g, e, P, ties, null) : P;
@@ -1439,34 +1441,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static List<V2> RepairFinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties,
                                                      Action<string> diagnostic)
         {
-            List<V2> boxes = OtherBoxes(g, e);
-            // An existing fitting clearance may be retained, but never reduced.
-            // A hard keep-off rejected even the original joins beside nearby boxes.
-            var keepOff = new double[boxes.Count];
-            for (int i = 0; i < boxes.Count; i++)
-            {
-                double nearest = BoxKeepOff + 0.01;
-                for (int k = 0; k + 1 < P.Count; k++)
-                {
-                    V2 d = P[k + 1] - P[k], v = boxes[i] - P[k];
-                    double dd = d.X * d.X + d.Z * d.Z;
-                    double u = dd > 1e-12 ? Math.Max(0, Math.Min(1, (v.X * d.X + v.Z * d.Z) / dd)) : 0;
-                    nearest = Math.Min(nearest, V2.Dist(boxes[i], P[k] + d * u));
-                }
-                keepOff[i] = nearest;
-            }
-            bool BoxClear(V2 q)
-            {
-                for (int i = 0; i < boxes.Count; i++)
-                    if (V2.Dist(q, boxes[i]) < keepOff[i] - 1e-6) return false;
-                return true;
-            }
-            var own = new List<MachineInfo>();
-            foreach (VId v in new[] { e.A, e.B })
-            {
-                CordNode nd = g.Nodes[v];
-                if (nd.IsMachine && nd.Machine != null) own.Add(nd.Machine);
-            }
+            List<V2> boxes = OtherBoxes(g, e, finalRepairBoxes ?? (finalRepairBoxes = new List<V2>()));
+            Func<V2, bool> boxClear = CordShape.ExistingFittingClearance(P, boxes, BoxKeepOff);
+            List<MachineInfo> own = finalRepairOwn ?? (finalRepairOwn = new List<MachineInfo>(2));
+            own.Clear();
+            CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            if (na.IsMachine && na.Machine != null) own.Add(na.Machine);
+            if (nb.IsMachine && nb.Machine != null) own.Add(nb.Machine);
             Action<string> trace = null;
             Action<string> sink = HopWhy;
             if (sink != null || diagnostic != null)
@@ -1476,8 +1457,86 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         + "|" + g.Nodes[e.B].OracleName + ":" + g.Nodes[e.B].Cell + " " + msg);
                     diagnostic?.Invoke(msg);
                 };
+            bool slideA = na.IsMachine && na.Machine != null && g.Slides(na.Machine);
+            bool slideB = nb.IsMachine && nb.Machine != null && g.Slides(nb.Machine);
+            Func<List<V2>, bool> approachClear = null;
+            Func<List<V2>, double[], double, (double Lo, double Hi)> approachBounds = null;
+            if (slideA || slideB)
+            {
+                approachClear = q => (!slideA || SlideApproachUnchanged(P, q, na.Machine, true))
+                    && (!slideB || SlideApproachUnchanged(P, q, nb.Machine, false));
+                approachBounds = (q, cum, s) =>
+                {
+                    double lo = 0, hi = cum[q.Count - 1];
+                    if (slideA) SlideApproachBounds(q, cum, na.Machine, true, s, ref lo, ref hi);
+                    if (slideB) SlideApproachBounds(q, cum, nb.Machine, false, s, ref lo, ref hi);
+                    return (lo, hi);
+                };
+            }
             // Cut-end strands were excluded before constructing the clearance policy.
-            return CordShape.RepairCurvature(w, P, ties, BoxClear, own, trace);
+            return CordShape.RepairCurvature(w, P, ties, boxClear, own, trace,
+                faultsReady: true, approachClear: approachClear, approachBounds: approachBounds);
+        }
+
+        // CordSlideUnderChecks measures this much outside the footprint, starting
+        // at the last outside vertex. Include its complete measurement segments.
+        private const double SlideApproachLook = 0.12;
+
+        // A diving section without this machine end has no approach to protect.
+        private static bool ReadSlideApproach(List<V2> q, MachineInfo m, bool atStart, out int outside, out int back)
+        {
+            outside = back = -1;
+            if (q.Count < 2) return false;
+            bool Inside(V2 p) => p.X >= m.X0 && p.X <= m.X0 + m.W
+                && p.Z >= m.Z0 && p.Z <= m.Z0 + m.H;
+            int step = atStart ? 1 : -1, i = atStart ? 0 : q.Count - 1;
+            if (!Inside(q[i])) return false;
+            while (i >= 0 && i < q.Count && Inside(q[i])) i += step;
+            if (i < 0 || i >= q.Count) return false;
+            outside = back = i;
+            double run = 0;
+            while (back + step >= 0 && back + step < q.Count && run < SlideApproachLook)
+            {
+                run += V2.Dist(q[back], q[back + step]);
+                back += step;
+            }
+            return (q[outside] - q[back]).Len > 1e-9;
+        }
+
+        private static bool SlideApproachUnchanged(List<V2> original, List<V2> candidate, MachineInfo m, bool atStart)
+        {
+            if (!ReadSlideApproach(original, m, atStart, out int i, out int j)) return true;
+            if (!ReadSlideApproach(candidate, m, atStart, out int ni, out int nj)) return false;
+            V2 run = original[i] - original[j], nextRun = candidate[ni] - candidate[nj];
+            double cos = (run.X * nextRun.X + run.Z * nextRun.Z) / (run.Len * nextRun.Len);
+            return V2.Dist(original[i], candidate[ni]) <= 0.01
+                && V2.Dist(SlideCrossing(original, m, atStart, i), SlideCrossing(candidate, m, atStart, ni)) <= 0.01
+                && cos >= Math.Cos(2 * Math.PI / 180);
+        }
+
+        // Keep the measured outside run and its footprint-crossing segment verbatim.
+        // A window may stop at either boundary, including on the hidden centroid side.
+        private static void SlideApproachBounds(List<V2> q, double[] cum, MachineInfo m, bool atStart,
+                                                 double s, ref double lo, ref double hi)
+        {
+            if (!ReadSlideApproach(q, m, atStart, out int outside, out int back)) return;
+            int inside = outside + (atStart ? -1 : 1);
+            double a = cum[Math.Min(back, inside)], b = cum[Math.Max(back, inside)];
+            if (s <= a) hi = Math.Min(hi, a);
+            else if (s >= b) lo = Math.Max(lo, b);
+            else { lo = s; hi = s; }
+        }
+
+        // Intersect the last outside-to-inside segment with the closed footprint.
+        private static V2 SlideCrossing(List<V2> q, MachineInfo m, bool atStart, int outside)
+        {
+            V2 a = q[outside], d = q[outside + (atStart ? -1 : 1)] - a;
+            double t = 0;
+            if (a.X < m.X0) t = Math.Max(t, (m.X0 - a.X) / d.X);
+            else if (a.X > m.X0 + m.W) t = Math.Max(t, (m.X0 + m.W - a.X) / d.X);
+            if (a.Z < m.Z0) t = Math.Max(t, (m.Z0 - a.Z) / d.Z);
+            else if (a.Z > m.Z0 + m.H) t = Math.Max(t, (m.Z0 + m.H - a.Z) / d.Z);
+            return a + d * Math.Max(0, Math.Min(1, t));
         }
 
         /// <summary>A strip socket's plug and what stands round it, for <see cref="CordPlugExit"/>; null for an end that is not one.</summary>
@@ -1528,9 +1587,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The junctions, strips, heaps, cut ends and plates near a cord that are not its own ends: a cord laid again whole or round a bend keeps <see cref="BoxKeepOff"/> off
         /// them, so it never runs over a box or lays its body under another cord's end there (pile look rule 2).</summary>
-        private static List<V2> OtherBoxes(CordGraph g, CordEdge e)
+        private static List<V2> OtherBoxes(CordGraph g, CordEdge e, List<V2> into = null)
         {
-            var o = new List<V2>();
+            List<V2> o = into ?? new List<V2>();
+            o.Clear();
             foreach (KeyValuePair<VId, CordNode> kv in NearNodes(g, e))
             {
                 CordNode nd = kv.Value;
