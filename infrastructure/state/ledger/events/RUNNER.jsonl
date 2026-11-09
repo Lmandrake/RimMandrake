@@ -5849,3 +5849,13 @@
 {"seat":"RUNNER","event":"raise","id":"OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T02:33:28Z","tsn":1794191608860226060}
 {"seat":"RUNNER","event":"live","id":"OPS_NIGHTLY_RED_DIAGNOSE_LNTM","result":"broken","detail":"role Operations last launched 173516 s ago (max 172800)","ts":"2026-11-09T02:33:33Z","tsn":1794191613264425287}
 {"seat":"RUNNER","event":"raise","id":"OPS_NIGHTLY_RED_DIAGNOSE_LNTM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T02:33:37Z","tsn":1794191617527923031}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_AUTO_ALLOW_BASH_PERMISSION","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:12Z","tsn":1794196092100279362}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BENCH_MODE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:16Z","tsn":1794196096797566568}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_AGENT_OVER_SLOTS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:21Z","tsn":1794196101070744615}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_AGENT_WITHOUT_MODEL","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:25Z","tsn":1794196105295880158}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_BLANKET_GIT_STAGE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:29Z","tsn":1794196109563054304}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_BLIND_SCAN","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:33Z","tsn":1794196113787200329}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_CANON_CONTRADICTION","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:37Z","tsn":1794196117981824432}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_DELEGATED_CARDS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:42Z","tsn":1794196122338393951}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_DLL_SOURCE_MISMATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:46Z","tsn":1794196126552312517}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_FORGED_VALIDATION","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:50Z","tsn":1794196130754078346}
