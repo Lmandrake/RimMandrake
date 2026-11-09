@@ -30,6 +30,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (JsonElement m in r.GetProperty("machines").EnumerateArray())
             {
                 var i = new MachineInfo { Id = m.GetProperty("id").GetString(), Kind = (MachineKind)m.GetProperty("kind").GetInt32(), X0 = m.GetProperty("x").GetInt32(), Z0 = m.GetProperty("z").GetInt32(), W = m.GetProperty("w").GetInt32(), H = m.GetProperty("h").GetInt32() };
+                if (m.TryGetProperty("def", out JsonElement def)) i.DefName = def.GetString();
+                if (m.TryGetProperty("baseDz", out JsonElement baseDz)) i.BaseDz = baseDz.GetDouble();
                 foreach (JsonElement h in m.GetProperty("hookups").EnumerateArray()) i.Hookups.Add(C(h));
                 foreach (JsonElement l in m.GetProperty("links").EnumerateArray()) i.MachineLinks.Add(l.GetString());
                 i.InsetS = m.GetProperty("insets")[0].GetDouble(); i.InsetN = m.GetProperty("insets")[1].GetDouble(); i.InsetE = m.GetProperty("insets")[2].GetDouble(); i.InsetW = m.GetProperty("insets")[3].GetDouble();

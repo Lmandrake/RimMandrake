@@ -18,6 +18,10 @@ New checks:
   wall_cross   three consecutive vertices in one blocked non-door cell, away from wall fittings
   wall_via_socket  wall-connected strand whose other end uses a socket-seated PlugTop
   kink         strand failing any curvature, saw-tooth, or V-turn threshold
+  lamp_reversal  untied consumer PlugTop exit turning >100 degrees in its first
+                 cell, heading >25 degrees off the decal at arc 0.3, or backward
+  lamp_base    consumer cord end >0.12 cell from its lamp base or on the bulb side;
+               legacy lamp IDs optionally come from Transient/lab/ba/lamps.json
 
 Distances are in cells. Angles in JSON are radians.
 
@@ -34,6 +38,14 @@ import bisect
 STRIP_HEADS, STRIP_HEAD_Z, STRIP_LEAD = [-0.328, -0.128, 0.065, 0.264], -0.049, (0.39, -0.05)
 PLUGTOP_REACH = 0.1445
 ARM_TUCK = 0.40
+
+LAMP_BASE_DEFS = {
+    "StandingLamp", "StandingLampColored", "Morbid_StandingLamp",
+    "Rustic_StandingLamp", "Spikecore_StandingLamp", "Techist_StandingLamp",
+    "Totemic_StandingLamp", "TorchLamp", "Morbid_TorchLamp",
+    "Rustic_TorchLamp", "Spikecore_TorchLamp", "Totemic_TorchLamp",
+    "BuildTorchLamp",
+}
 
 # Fitting-placement conventions inferred from the supplied laid sample.
 # Local +X is (cos(angle), sin(angle)).
@@ -523,6 +535,237 @@ def kink_checks(L, dist_mode):
     return count, msgs
 
 
+def consumer_machine_indices(piece, machines):
+    """Resolve consumer ownership by machine identity, footprint, or hookup."""
+    result = set()
+    for name in (piece["a"], piece["b"]):
+        if not name.startswith("consumer:"):
+            continue
+        candidates = [
+            mi for mi, m in enumerate(machines)
+            if int(m["kind"]) in (2, 3)
+        ]
+        exact = [mi for mi in candidates if machines[mi]["id"] == name]
+        if exact:
+            result.update(exact)
+            continue
+        try:
+            fields = name.split(":", 1)[1].split(",")
+            cell = tuple(int(value) for value in fields)
+            if len(cell) != 2:
+                continue
+        except ValueError:
+            continue
+        x, z = cell
+        result.update(
+            mi for mi in candidates
+            if (
+                machines[mi]["x"] <= x < machines[mi]["x"] + machines[mi]["w"]
+                and machines[mi]["z"] <= z < machines[mi]["z"] + machines[mi]["h"]
+            ) or any(tuple(h[:2]) == cell for h in machines[mi].get("hookups", []))
+        )
+    return result
+
+
+def lamp_reversal_checks(W, L, records):
+    """Check PlugTop ends on consumer pieces with no CableTie decal.
+
+    Use the original first-cell arc window and thresholds, excluding segments
+    touching points hidden inside the piece's own consumer machine footprint.
+    Do not bridge excluded points when measuring turns.
+    The heading measurement uses the segment containing arc 0.3 (the final
+    segment when the strand is shorter). Tied loops are deliberate.
+    Count each failing strand once, reporting both ends when necessary.
+    """
+    tops = [r for r in records if r["d"][0] == "PlugTop"]
+    count, msgs = 0, []
+    for pi, p in enumerate(L["pieces"]):
+        if not (p["a"].startswith("consumer:")
+                or p["b"].startswith("consumer:")):
+            continue
+        if any(d[0] == "CableTie" for d in p["decals"]):
+            continue
+        own = [
+            W["machines"][mi]
+            for mi in consumer_machine_indices(p, W["machines"])
+        ]
+
+        def hidden(point):
+            return any(
+                m["x"] <= point[0] < m["x"] + m["w"]
+                and m["z"] <= point[1] < m["z"] + m["h"]
+                for m in own
+            )
+
+        for si, strand in enumerate(p["strands"]):
+            if len(strand) < 2:
+                continue
+            reasons = []
+            for side, vertices in (
+                    ("first", strand), ("last", list(reversed(strand)))):
+                possible = [
+                    (dist(vertices[0], plugtop_cord(r["d"])), r["d"])
+                    for r in tops if pi in r["pieces"]
+                    and dist(vertices[0], plugtop_cord(r["d"])) <= FIT_END_TOL
+                ]
+                if not possible:
+                    continue
+                _, decal = min(possible, key=lambda item: item[0])
+                axis = (math.cos(decal[3]), math.sin(decal[3]))
+                run, turn, heading = 0.0, 0.0, 0.0
+                initial, previous, back_at = None, None, None
+                for a, b in zip(vertices, vertices[1:]):
+                    if run >= 1.0:
+                        break
+                    vector = (b[0] - a[0], b[1] - a[1])
+                    length = math.hypot(*vector)
+                    if length <= 1e-10:
+                        continue
+                    if hidden(a) or hidden(b):
+                        previous = None
+                        run += length
+                        continue
+                    tangent = (vector[0] / length, vector[1] / length)
+                    if initial is None:
+                        initial = tangent
+                    if previous is not None:
+                        turn += abs(bend_angle(previous, tangent))
+                    if run <= 0.3:
+                        heading = abs(math.degrees(bend_angle(axis, tangent)))
+                    if (back_at is None
+                            and tangent[0] * initial[0]
+                            + tangent[1] * initial[1] < 0):
+                        back_at = run
+                    previous = tangent
+                    run += length
+                if initial is None:
+                    continue
+                failures = []
+                degrees = math.degrees(turn)
+                if degrees > 100.0:
+                    failures.append(
+                        f"absolute turn={degrees:.2f}>100 deg"
+                    )
+                if heading > 25.0:
+                    failures.append(
+                        f"heading at arc {min(0.3, run):.3f}="
+                        f"{heading:.2f}>25 deg off decal"
+                    )
+                if back_at is not None:
+                    failures.append(
+                        f"tangent dot initial<0 at arc {back_at:.3f}"
+                    )
+                if failures:
+                    reasons.append(
+                        f"{side} PlugTop at "
+                        f"{xy_text((decal[1], decal[2]))}, "
+                        f"decal heading={decal[3]:.4f} rad: "
+                        + "; ".join(failures)
+                    )
+            if reasons:
+                count += 1
+                msgs.append(
+                    f"lamp_reversal {piece_name(p, pi)} strand[{si}]: "
+                    + " | ".join(reasons)
+                )
+    return count, msgs
+
+
+def lamp_base_checks(W, L):
+    """Check one nearest strand end per consumer piece and machine.
+
+    Search all strands against the base target, including dive continuations.
+    A selected end farther than 0.4 cell from the centroid is not a lamp end.
+    The legacy ID file alone never labels a machine unless it is a 1x1
+    consumer with exactly one assigned piece.
+    """
+    machines = W.get("machines", [])
+    has_defs = any("def" in m for m in machines)
+    has_offsets = any(float(m.get("baseDz", 0)) != 0 for m in machines)
+    legacy_ids = set()
+    legacy_present = False
+    if not has_defs:
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "..", "..", "Transient", "lab", "ba", "lamps.json",
+        )
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as f:
+                ids = json.load(f)
+            if not isinstance(ids, list):
+                raise ValueError("Transient/lab/ba/lamps.json must be a list of machine ids")
+            legacy_ids = {str(value) for value in ids}
+            legacy_present = True
+        elif not has_offsets:
+            return 0, ["lamp_base: no lamp data"]
+
+    def centroid(m):
+        return m["x"] + m["w"] / 2.0, m["z"] + m["h"] / 2.0
+
+    owned = [[] for _ in machines]
+    for pi, p in enumerate(L["pieces"]):
+        ends = [
+            (si, side, tuple(point[:2]))
+            for si, strand in enumerate(p["strands"]) if len(strand) >= 2
+            for side, point in (("first", strand[0]), ("last", strand[-1]))
+        ]
+        if not ends:
+            continue
+        for mi in sorted(consumer_machine_indices(p, machines)):
+            m = machines[mi]
+            cx, cz = centroid(m)
+            dz = float(m.get("baseDz", 0))
+            if dz == 0 and m.get("def") in LAMP_BASE_DEFS:
+                dz = -0.25
+            if (dz == 0 and not has_defs and legacy_present
+                    and str(m["id"]) in legacy_ids
+                    and int(m["kind"]) == 2 and m["w"] == 1 and m["h"] == 1):
+                dz = -0.25
+            target = (cx, cz + dz)
+            si, side, point = min(
+                ends, key=lambda end: dist(end[2], target)
+            )
+            if dist(point, (cx, cz)) > 0.4 + 1e-9:
+                continue
+            owned[mi].append((pi, si, side, point))
+
+    count, msgs = 0, []
+    for mi, m in enumerate(machines):
+        # Feet and wall homes have separate, intentional endpoint rules.
+        if m.get("foot", False) or m.get("home") is not None:
+            continue
+        dz = float(m.get("baseDz", 0))
+        if dz == 0 and m.get("def") in LAMP_BASE_DEFS:
+            dz = -0.25
+        if (dz == 0 and not has_defs and legacy_present
+                and str(m["id"]) in legacy_ids
+                and int(m["kind"]) == 2 and m["w"] == 1 and m["h"] == 1
+                and len(owned[mi]) == 1):
+            dz = -0.25
+        if dz == 0:
+            continue
+        cx, cz = centroid(m)
+        target = (cx, cz + dz)
+        for pi, si, side, point in owned[mi]:
+            gap = dist(point, target)
+            failures = []
+            if gap > 0.12 + 1e-9:
+                failures.append(f"base gap={gap:.3f}>0.120 cell")
+            if point[1] > cz - 0.1 + 1e-9:
+                failures.append(
+                    f"bulb-side z={point[1]:.3f}>{cz - 0.1:.3f}"
+                )
+            if failures:
+                count += 1
+                msgs.append(
+                    f"lamp_base {piece_name(L['pieces'][pi], pi)} "
+                    f"strand[{si}] {side}: machine {m['id']} "
+                    f"end={xy_text(point)}, base={xy_text(target)}; "
+                    + "; ".join(failures)
+                )
+    return count, msgs
+
+
 def wall_cross_checks(W, L, records):
     blocked = {(b[0], b[1]) for b in W["blocked"]}
     doors = {tuple(d[:2]) for d in W.get("doors", [])}
@@ -569,7 +812,7 @@ def new_checks(W, L, dist_mode=False):
     counts = {
         "lead_device": 0, "loose_plug": 0,
         "double_cord": 0, "wall_vanish": 0, "wall_cross": 0, "kink": 0,
-        "wall_via_socket": 0,
+        "wall_via_socket": 0, "lamp_reversal": 0, "lamp_base": 0,
     }
     msgs = []
     machines = W["machines"]
@@ -866,6 +1109,10 @@ def new_checks(W, L, dist_mode=False):
 
     counts["wall_cross"], cross_msgs = wall_cross_checks(W, L, records)
     msgs.extend(cross_msgs)
+    counts["lamp_reversal"], reversal_msgs = lamp_reversal_checks(W, L, records)
+    msgs.extend(reversal_msgs)
+    counts["lamp_base"], base_msgs = lamp_base_checks(W, L)
+    msgs.extend(base_msgs)
     counts["kink"], kink_msgs = kink_checks(L, dist_mode)
     msgs.extend(kink_msgs)
     return counts, msgs

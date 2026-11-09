@@ -14,7 +14,10 @@ namespace RimMandrake.Shared.Slack
     internal sealed class MachineInfo
     {
         public string Id;
+        public string DefName;
         public MachineKind Kind;
+        /// <summary>World-Z offset from the footprint centroid to the cord's art base; ignored for feet and wall homes.</summary>
+        public double BaseDz;
         public int X0, Z0, W = 1, H = 1;
         /// <summary>Conduit cells this machine hooks into (its connectParent cell, or every
         /// conduit cell orthogonally adjacent to a transmitter building's footprint).</summary>

@@ -265,7 +265,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             BlockKind kh = World.BuriedKind(h);
             if (kh != BlockKind.Wall && kh != BlockKind.Rock) return null;
-            var c = new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+            V2 c = CordBuilder.ArtTarget(m);
             VId? best = null;
             double bd = double.MaxValue;
             foreach (Cell hid in new[] { h }.Concat(BuriedCells.Where(b => b != h && V2.Dist(b.Centre, h.Centre) < 3).OrderBy(b => b)))
@@ -693,6 +693,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// cord then arrives at a diagonal (<see cref="SlideArrive"/>) and runs on under the art to the centroid.</summary>
         internal static V2 PlugPoint(MachineInfo m, Cell hookup, bool slide = false)
         {
+            if (slide && BaseLampApproach(m)) return CordBuilder.LampEntry(m, hookup.Centre);
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
             if (m.Foot) return new V2(m.X0 + m.W / 2.0, m.Z0 - 0.08);   // a pole or mast: in from below, under its foot, whatever side vanilla hooked
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
@@ -737,7 +738,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (nearest < double.MaxValue) return best;
             return m.Foot
                 ? new V2(m.X0 + m.W / 2.0, m.Z0 + CordBuilder.FootTuck)
-                : CordBuilder.Centroid(m);
+                : CordBuilder.ArtTarget(m);
         }
 
         /// <summary>How far into its cell (along the side) a sliding plug point sits: well clear of the 0.5 midpoint.</summary>
@@ -754,10 +755,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return low ? k + SlideFrac : k + 1 - SlideFrac;
         }
 
-        /// <summary>The diagonal a cord arrives at a sliding plug point along: in through the side, and along it toward the
-        /// cell's midpoint (so it slides under the art between two ports, never along one).</summary>
+        /// <summary>A one-cell lamp base needs a direct approach. Ordinary machines retain their diagonal flange entry.</summary>
+        internal static bool BaseLampApproach(MachineInfo m) =>
+            m != null && m.W == 1 && m.H == 1 && m.BaseDz != 0 && !m.Foot && !m.HasHome;
+
+        /// <summary>The arrival at a sliding plug: toward a small lamp's art base, otherwise diagonally under the flange.</summary>
         internal static V2 SlideArrive(MachineInfo m, V2 tip, V2 into)
         {
+            if (BaseLampApproach(m))
+            {
+                V2 toBase = CordBuilder.ArtTarget(m) - tip;
+                return toBase.Len > 1e-9 ? toBase.Norm() : into;
+            }
             double along = into.X != 0 ? tip.Z : tip.X;
             double f = along - Math.Floor(along);
             double s = f < 0.5 ? 1 : -1;

@@ -574,7 +574,7 @@ namespace RimMandrake.GimmeSomeSlack
                     if (w.IsFurniture(c)) furniture.Add(c);
                     if (w.ExtraCost(c) != 0f) costs.Add("[" + x + "," + z + "," + w.ExtraCost(c).ToString(inv) + "]");
                 }
-            var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
+            var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"def\":" + J.S(m.DefName ?? "") + ",\"baseDz\":" + m.BaseDz.ToString(inv) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
                 + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
                 + ParentFields(m.Id) + ",\"hasHookup\":" + J.B(m.Hookups.Count > 0)
                 + ",\"hasLink\":" + J.B(m.MachineLinks.Count > 0 || incoming.Contains(m.Id))

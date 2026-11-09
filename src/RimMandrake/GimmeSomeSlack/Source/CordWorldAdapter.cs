@@ -192,6 +192,7 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(th))
                     if (world.IsConduit(C(adj)) && !touching.Contains(C(adj))) touching.Add(C(adj));
                 m.Hookups.AddRange(HookupPick.PickCarrier(world, touching, ref conduitRuns));
+                ArtInsets(th.def, m);
                 SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
                 // a standing pole or mast takes its floor cord under its foot (owner, sitting 2026-11-08: "Items should connect to the bottom of a power pole")
                 if (!m.HasHome && Aerial.CompAerialAnchor.Of(th) != null && !(th.def.building?.isAttachment ?? false)) m.Foot = true;
@@ -376,6 +377,7 @@ namespace RimMandrake.GimmeSomeSlack
             Thing wall = GenConstruct.GetWallAttachedTo(th);
             if (wall == null) return;
             m.HasHome = true; m.HomeX = wall.Position.x; m.HomeZ = wall.Position.z;
+            m.BaseDz = 0;
         }
 
         /// <summary>Where a machine's drawn art stands in from its footprint edge (owner review 2026-10-04 B10): the cord runs on
@@ -384,6 +386,26 @@ namespace RimMandrake.GimmeSomeSlack
         /// +0.06 so the plug tucks under the panel. Unlisted machines: their art reaches the edge (0).</summary>
         public static readonly System.Collections.Generic.Dictionary<string, float[]> InsetsSNEW =
             new System.Collections.Generic.Dictionary<string, float[]> { { "SolarGenerator", new[] { 0.40f, 0f, 0f, 0f } } };
+
+        // Owner 2026-11-08: under to the base centre, 0.25 cell south of the
+        // footprint centroid. Exact names exclude wall lamps, SunLamp and ruins.
+        private static readonly Dictionary<string, double> BaseOffsets =
+            new Dictionary<string, double>(StringComparer.Ordinal)
+            {
+                { "StandingLamp", -0.25 },
+                { "StandingLampColored", -0.25 },
+                { "Morbid_StandingLamp", -0.25 },
+                { "Rustic_StandingLamp", -0.25 },
+                { "Spikecore_StandingLamp", -0.25 },
+                { "Techist_StandingLamp", -0.25 },
+                { "Totemic_StandingLamp", -0.25 },
+                { "TorchLamp", -0.25 },
+                { "Morbid_TorchLamp", -0.25 },
+                { "Rustic_TorchLamp", -0.25 },
+                { "Spikecore_TorchLamp", -0.25 },
+                { "Totemic_TorchLamp", -0.25 },
+                { "BuildTorchLamp", -0.25 }
+            };
 
         private static MachineInfo ParentMachine(CompPower c, Dictionary<Thing, MachineInfo> transmitters,
             Dictionary<string, MachineInfo> machines)
@@ -405,8 +427,17 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static void ArtInsets(ThingDef d, MachineInfo m)
         {
-            if (d == null || !InsetsSNEW.TryGetValue(d.defName, out float[] v)) return;
-            m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
+            m.DefName = d == null ? null : d.defName;
+            m.BaseDz = 0;
+            if (d == null) return;
+            if (m.W == 1 && m.H == 1 && !m.HasHome && !m.Foot
+                && !(d.building != null && d.building.isAttachment)
+                && BaseOffsets.TryGetValue(d.defName, out double dz))
+                m.BaseDz = dz;
+            if (InsetsSNEW.TryGetValue(d.defName, out float[] v))
+            {
+                m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
+            }
         }
 
         /// <summary>A standing lamp reads as a Consumer on purpose: the cord slides under it to the centroid like any other
