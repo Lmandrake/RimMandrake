@@ -36,6 +36,20 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
   game on a machine loads one `Mods` folder, and a deploy with two games up is unmeasured.
 - A good offline list to name: the mod's selftests and kernel fuzz. A shape lab or an offline geometry solve beats a pass of screenshots.
 
+## Bars, flags and sittings here
+
+The rules are in the general skills (owner's card, 2026-11-08). What is local:
+
+- **Bar levels (v1, polish, out of scope) and locks go in the loop's `ralph/RATCHET.md`, not in the mod's `## north star`.**
+  The north star's validated hash covers its prose, so writing levels there needs his re-validation the same sitting.
+- **Reuse search here:** vanilla 1.6 and every DLC (RimSage, the decompiled source), our `src/`, and Workshop mods in both
+  mod roots, inactive ones included (`infrastructure/state/facts/instrument_traps.md`).
+- **Plain play here:** the player's own orders only: no dev spawns, no forced jobs, no god mode, at play zoom and speed 1-2.
+- **Help for a flag:** the Conductor looks; GPT on the item is `python3 src/RimMandrake/Utils/gpt_consult.py "<question>" -f
+  <file>...`; a message to the owner is a question card through the Conductor.
+- **A sitting packet here:** the options to look at as savegames (back up the Saves folder first), raids and threats off,
+  the advanced-zoom mod in the list, and the bridge released.
+
 ## The game gate
 
 `ralph/game_gate.py` is the gate. Its pattern matches the playtest runner's and proof scripts' filenames anywhere in a local command, a `grep`
