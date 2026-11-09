@@ -5879,3 +5879,13 @@
 {"seat":"RUNNER","event":"live","id":"CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:05Z","tsn":1794197945631731088}
 {"seat":"RUNNER","event":"live","id":"CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:10Z","tsn":1794197950395033133}
 {"seat":"RUNNER","event":"live","id":"CONDUCTOR_RESET_FIX_KILLED_MID_READ","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:15Z","tsn":1794197955070332681}
+{"seat":"RUNNER","event":"live","id":"DELEGATED_CARDS_FIX_HELD_OUT_RECALL","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:13Z","tsn":1794198793145162386}
+{"seat":"RUNNER","event":"live","id":"GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:17Z","tsn":1794198797640056361}
+{"seat":"RUNNER","event":"live","id":"HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:21Z","tsn":1794198801834844496}
+{"seat":"RUNNER","event":"live","id":"HANDOFF_RESTART_AUDIT_FILES_OWED","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:26Z","tsn":1794198806214100155}
+{"seat":"RUNNER","event":"live","id":"HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:30Z","tsn":1794198810477932324}
+{"seat":"RUNNER","event":"live","id":"HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:34Z","tsn":1794198814897634710}
+{"seat":"RUNNER","event":"live","id":"HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:39Z","tsn":1794198819214931723}
+{"seat":"RUNNER","event":"live","id":"MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:43Z","tsn":1794198823407666725}
+{"seat":"RUNNER","event":"live","id":"NIGHTLY_COP_FIX_RED_ATJKEB_FBYD","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:47Z","tsn":1794198827668416753}
+{"seat":"RUNNER","event":"live","id":"SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:51Z","tsn":1794198831911237584}
