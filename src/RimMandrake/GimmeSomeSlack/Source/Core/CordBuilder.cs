@@ -1568,6 +1568,48 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return a + d * Math.Max(0, Math.Min(1, t));
         }
 
+        /// <summary>One socket end's boot pose. Only a short socket-to-socket edge between different strips may turn both
+        /// plugs sideways toward each other; true means this end uses that right-angle pose. All other poses are unchanged.</summary>
+        private static bool StripSocketPose(CordGraph g, CordEdge e, bool atA, BuildOptions opt,
+                                             StripPose sp, Cell arm, int socket, out V2 tip, out V2 outward)
+        {
+            tip = sp.PlugTip(arm, socket);
+            outward = sp.PlugOut(arm);
+            if (e.Knots.Count != 0 || e.A == e.B) return false;
+            CordNode here = g.Nodes[atA ? e.A : e.B], far = g.Nodes[atA ? e.B : e.A];
+            if (here.Type != NodeType.Junction || far.Type != NodeType.Junction || here.Cell == far.Cell
+                || opt.PileFor(here.Cell) != PileArt.Strips || opt.PileFor(far.Cell) != PileArt.Strips) return false;
+            // A socket tip is less than 0.81 cell from its node, including the wall stand-back.
+            // Reject distant edges before posing or allocating the other end.
+            if (Math.Abs(far.Pos.X - here.Pos.X) > 3.3 || Math.Abs(far.Pos.Z - here.Pos.Z) > 3.3) return false;
+            StripPose other = PoseStrip(g, atA ? e.B : e.A, opt.Seed);
+            V2 ad = ArmDir(g, e, !atA);
+            var otherArm = new Cell((int)ad.X, (int)ad.Z);
+            int otherSocket = StripSocketFor(g, atA ? e.B : e.A, e, !atA, other);
+            if (otherSocket < 0) return false;
+            V2 otherOut = other.PlugOut(otherArm);
+            V2 delta = other.PlugTip(otherArm, otherSocket) - tip;
+            double gap = delta.Len;
+            if (gap < 1e-6 || gap >= 1.6) return false;
+            V2 toward = delta * (1 / gap);
+            double facing = outward.X * toward.X + outward.Z * toward.Z;
+            double otherFacing = -(otherOut.X * toward.X + otherOut.Z * toward.Z);
+            // Both boots must be transverse: never turn plugs already facing along the connection.
+            if (Math.Abs(facing) > 0.5 || Math.Abs(otherFacing) > 0.5) return false;
+            V2 turned = outward.Perp, otherTurned = otherOut.Perp;
+            if (turned.X * toward.X + turned.Z * toward.Z < 0) turned = -turned;
+            if (otherTurned.X * toward.X + otherTurned.Z * toward.Z > 0) otherTurned = -otherTurned;
+            V2 newTip = sp.SocketAt(socket) + turned * PlugTopReach;
+            V2 otherTip = other.SocketAt(otherSocket) + otherTurned * PlugTopReach;
+            V2 run = otherTip - newTip;
+            // Turning the boots must leave a real gap with both exits facing into it.
+            if (run.Len < 0.1 || turned.X * run.X + turned.Z * run.Z <= 0
+                || otherTurned.X * run.X + otherTurned.Z * run.Z >= 0) return false;
+            tip = newTip;
+            outward = turned;
+            return true;
+        }
+
         /// <summary>A strip socket's plug and what stands round it, for <see cref="CordPlugExit"/>; null for an end that is not one.</summary>
         private static CordPlugExit.Site PlugSite(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, BuildOptions opt)
         {
@@ -1579,7 +1621,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var arm = new Cell((int)ad.X, (int)ad.Z);
             int socket = StripSocketFor(g, v, e, atA, sp);
             if (socket < 0) return null;
-            V2 tip = sp.PlugTip(arm, socket), u = sp.PlugOut(arm);
+            StripSocketPose(g, e, atA, opt, sp, arm, socket, out V2 tip, out V2 u);
             var site = new CordPlugExit.Site { Tip = tip, Out = u };
             foreach (var end in IncidentEnds(g, v))
             {
@@ -2706,11 +2748,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else
                 {
                     // a bundle shares one plug, as a device lead does: its strands close up to the socket
-                    target = sp.PlugTip(arm, socket);
-                    arrive = -sp.PlugOut(arm);
+                    bool rightAngle = StripSocketPose(g, e, atA, opt, sp, arm, socket, out target, out V2 boot);
+                    arrive = -boot;
                     straight = 0.22;
                     roomy = 1.2;
-                    swing = arm == sp.BackArm ? 1 : 0;
+                    swing = !rightAngle && arm == sp.BackArm ? 1 : 0;
                 }
             }
             else if (nd.Type == NodeType.Junction)
@@ -3344,7 +3386,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // square onto the socket whatever the bundle's last point did: one plug, on the art's own plug
                 Cell arm = new Cell((int)ad.X, (int)ad.Z);
                 // round 3: the plug stands ON the socket seen from above, covering it; its boot points the way the cord leaves
-                if (socket >= 0) { V2 u = sp.PlugOut(arm); piece.Decals.Add(new CordDecal(DecalKind.PlugTop, sp.SocketAt(socket), Math.Atan2(u.Z, u.X), PlugTopScale)); }
+                if (socket >= 0)
+                {
+                    StripSocketPose(g, e, atStart, opt, sp, arm, socket, out _, out V2 u);
+                    piece.Decals.Add(new CordDecal(DecalKind.PlugTop, sp.SocketAt(socket), Math.Atan2(u.Z, u.X), PlugTopScale));
+                }
             }
             else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
