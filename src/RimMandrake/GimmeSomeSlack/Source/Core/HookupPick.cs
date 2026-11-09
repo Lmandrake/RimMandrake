@@ -89,6 +89,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return id;
         }
 
+        /// <summary>Round 3 (owner 2026-11-08 5:18 PM: "solar panels that are connected but no connection is drawn"): vanilla joins buildings that carry
+        /// power (PowerNetMaker.ContiguousPowerBuildings, decompiled 1.6) by cardinal adjacency of their footprints, so a solar panel or battery set
+        /// against another one is on its net with no conduit of its own. A transmitter building (adapter id "t...") touching no conduit links to a drawn
+        /// transmitter it touches, breadth-first so a row of them chains. Idempotent; returns how many links it added.</summary>
+        internal static int ChainTransmitters(IList<MachineInfo> ms)
+        {
+            bool T(MachineInfo m) => m.Id != null && m.Id.StartsWith("t", StringComparison.Ordinal);
+            var drawn = new HashSet<MachineInfo>();
+            foreach (MachineInfo m in ms) if (m.Hookups.Count > 0 || m.MachineLinks.Count > 0) drawn.Add(m);
+            int n = 0;
+            for (bool grew = true; grew;)
+            {
+                grew = false;
+                foreach (MachineInfo m in ms)
+                {
+                    if (drawn.Contains(m) || !T(m)) continue;
+                    MachineInfo to = null;
+                    foreach (MachineInfo o in ms) if (o != m && drawn.Contains(o) && T(o) && Touch(m, o)) { to = o; break; }
+                    if (to == null) continue;
+                    m.MachineLinks.Add(to.Id); drawn.Add(m); grew = true; n++;
+                }
+            }
+            return n;
+        }
+
+        /// <summary>Do two footprints share an edge (vanilla's cardinal adjacency, not a corner)?</summary>
+        internal static bool Touch(MachineInfo a, MachineInfo b)
+        {
+            bool ox = a.X0 < b.X0 + b.W && b.X0 < a.X0 + a.W, oz = a.Z0 < b.Z0 + b.H && b.Z0 < a.Z0 + a.H;
+            bool tx = a.X0 + a.W == b.X0 || b.X0 + b.W == a.X0, tz = a.Z0 + a.H == b.Z0 || b.Z0 + b.H == a.Z0;
+            return (oz && tx) || (ox && tz);
+        }
+
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "they should ALL draw in the piping and conduit
         /// the same way"): the hookup cells of a wrecked machine, which has no power comp, no connectParent and no net. Only a
         /// conduit under or beside its footprint draws in, one cord per conduit run: the run's first END touching the ruin (so no

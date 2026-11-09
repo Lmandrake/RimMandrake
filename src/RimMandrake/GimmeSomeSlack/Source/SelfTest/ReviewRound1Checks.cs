@@ -58,7 +58,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             List<LaidPiece> ps = bs.Build(w, new BuildOptions { Pile = PileArt.Strips }, c => true);
             ArtFitResult rs = CordAudit.ArtFit(bs.Graph, ps, c => true);
             LaidPiece ts = ps.First(p => p.Key.StartsWith("tangle:"));
-            int plugs = ts.Decals.Count(d => d.Kind == DecalKind.Plug);
+            int plugs = ts.Decals.Count(d => d.Kind == DecalKind.PlugTop);   // round 3: plugs seated face-on on the sockets
             Check(rs.Strips >= 1 && rs.PileJunctions == 0, $"modern look: {rs.Strips} strips, {rs.PileJunctions} junction boxes in the pile");
             Check(rs.PileLooseEnds == 0 && rs.PileIdleConnectors == 0 && plugs >= 2 * rs.Strips,
                   $"B13: strips plugged in: {rs.PileLooseEnds} loose ends, {rs.PileIdleConnectors} strips with < 2 cables, {plugs} plugs for {rs.Strips} strips");
@@ -66,7 +66,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             LaidPiece bad = new LaidPiece { Key = ts.Key, Decals = new List<CordDecal>(ts.Decals) };
             bad.Strands.AddRange(ts.Strands.Skip(1));
             var moved = new List<V2>(ts.Strands[0].Pts);
-            moved[0] = moved[0] + new V2(0.3, 0);
+            moved[0] = moved[0] + new V2(0.45, 0.45);   // round 3: off the line of sockets (0.176 apart on the 256x128 art), so it lands on no port
             bad.Strands.Add(new CordStrand { Pts = moved });
             bad.Decals.Add(new CordDecal(DecalKind.PowerStrip, new V2(8.5, 8.5), 0, CordBuilder.StripScale));
             ArtFitResult rb = CordAudit.ArtFit(bs.Graph, ps.Where(p => p != ts).Concat(new[] { bad }).ToList(), c => true);

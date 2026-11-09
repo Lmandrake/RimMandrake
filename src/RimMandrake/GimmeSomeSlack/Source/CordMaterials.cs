@@ -58,7 +58,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// (MapDrawLayer.RefreshSubMeshBounds, decompiled 1.6), so transparent submeshes tie on sort
         /// distance and their altitude alone does not order them: an explicit queue does. Shadow under
         /// strand, end pieces over strand, face pieces (wall/rock stubs, hanging tails) last.</summary>
-        public static int StrandQueue, ShadowQueue, PieceQueue, FaceQueue;
+        public static int StrandQueue, ShadowQueue, PieceQueue, PlugTopQueue, FaceQueue;
 
         public static readonly string[] ExtCordColors = Aerial.ConduitStyles.Colours;
         public static readonly string[] StarWarsKinds = Aerial.ConduitStyles.IndustrialKinds;
@@ -70,7 +70,9 @@ namespace RimMandrake.GimmeSomeSlack
             StrandQueue = q;
             ShadowQueue = q - 1;
             PieceQueue = q + 1;
-            FaceQueue = q + 2;
+            // round 3: a plug seated on a strip's socket draws over the strip (same-queue sub-meshes tie, so altitude alone cannot order them)
+            PlugTopQueue = q + 2;
+            FaceQueue = q + 3;
             Highlight = MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent, new Color(1f, 0.85f, 0.35f, 0.42f)) { renderQueue = FaceQueue + 1 });
             Build();
             BuildAll();
@@ -217,6 +219,7 @@ namespace RimMandrake.GimmeSomeSlack
             d[DecalKind.PowerStripDark] = StripDarkMat(style, true);
             // the wire tie on a plug's strain-relief loop (owner 2026-11-08 round 2): one band for every look, never the cord's colour
             d[DecalKind.CableTie] = SlotMat(style, "CableTie", PieceQueue);
+            AddRound3(d);
             decals = d;
             // B14 (owner review 2026-10-04): in the extension-cord look every connection piece takes its net's cord colour.
             // The shipped pieces carry ORANGE cord stubs; Styles/ExtCord/<Colour>/<slot> are the recoloured copies
@@ -337,6 +340,7 @@ namespace RimMandrake.GimmeSomeSlack
                 d[DecalKind.FrayLive] = SlotMat(style, "EndFrayed_Live", PieceQueue, null, null, false);
                 d[DecalKind.PowerStripDark] = StripDarkMat(style, false);
                 d[DecalKind.CableTie] = SlotMat(style, "CableTie", PieceQueue, null, null, false);
+                AddRound3(d);
                 if (look == "Modern" && ExtCordColors[v] != "Orange")
                     foreach (var kv in ColourSlots)
                     {
@@ -443,7 +447,7 @@ namespace RimMandrake.GimmeSomeSlack
         public static readonly Dictionary<DecalKind, string> ColourSlots = new Dictionary<DecalKind, string>
         {
             { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" },
-            { DecalKind.StubWall, "StubWall" }, { DecalKind.StubRock, "StubRock" }, { DecalKind.FrayDead, "EndFrayed_Dead" }
+            { DecalKind.FrayDead, "EndFrayed_Dead" }
         };
 
         /// <summary>A piece in its net's cord colour (falls back to the style's own piece).</summary>
@@ -456,7 +460,16 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>The texture behind a piece variant (state read for the probe), or null.</summary>
         public static string DecalTexName(DecalKind k, int variant) => Decal(k, variant)?.mainTexture?.name;
 
-        public static bool IsFace(DecalKind k) => k == DecalKind.StubWall || k == DecalKind.StubRock;
+        public static bool IsFace(DecalKind k) => k == DecalKind.StubWall || k == DecalKind.StubRock || k == DecalKind.WallOutlet;
+
+        /// <summary>Round 3 (owner 2026-11-08 5:18 PM): the plug seated on a strip socket seen from above, and the Modern wall outlet with its plug.
+        /// One piece each for every colour: the plug is black rubber, the cord (drawn by code) carries the colour.</summary>
+        private static void AddRound3(Dictionary<DecalKind, Material> d)
+        {
+            Texture2D top = Tex(Dir + "PlugTop"), outlet = Tex(StyleDir + "ExtCord/WallOutlet");
+            if (top != null) d[DecalKind.PlugTop] = MaterialPool.MatFrom(new MaterialRequest(top, ShaderDatabase.Transparent) { renderQueue = PlugTopQueue });
+            if (outlet != null) d[DecalKind.WallOutlet] = MaterialPool.MatFrom(new MaterialRequest(outlet, ShaderDatabase.Transparent) { renderQueue = FaceQueue });
+        }
 
         /// <summary>A style is selectable when its strand art is installed (every strand variant present).</summary>
         public static bool StyleInstalled(CordStyle s)

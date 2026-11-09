@@ -191,6 +191,11 @@ namespace RimMandrake.GimmeSomeSlack
                 transmitterMachines[th] = m;
                 if (m.Hookups.Count > 0) world.Machines.Add(m);
             }
+            // round 3: a transmitter building touching no conduit but touching a drawn one (a solar panel against a solar panel or a battery)
+            // is on that net through it: its cord runs to its neighbour (HookupPick.ChainTransmitters; CordGraph runs it again, idempotent)
+            var tlist = transmitterMachines.Values.ToList();
+            HookupPick.ChainTransmitters(tlist);
+            foreach (MachineInfo m in tlist) if (m.Hookups.Count == 0 && m.MachineLinks.Count > 0 && !world.Machines.Contains(m)) world.Machines.Add(m);
             // connectors (consumers, generators, lamps, batteries wired by a hookup)
             foreach (CompPower c in connectors)
             {

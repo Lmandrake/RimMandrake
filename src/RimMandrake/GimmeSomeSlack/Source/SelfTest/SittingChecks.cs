@@ -135,8 +135,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (LaidPiece p in ps)
             {
                 if ((p.EndA ?? p.Key ?? "").StartsWith("tangle", StringComparison.Ordinal)) continue;
-                foreach (CordDecal d in p.Decals.Where(d => d.Kind == DecalKind.Plug && Math.Abs(d.Scale - CordBuilder.PilePlugScale) < 1e-3))
+                // round 3: a strip plug is a PlugTop on its socket; the cord leaves its boot end. Read as the old side plug (at the cord's end,
+                // pointing back into the strip) so the rows below keep their meaning
+                foreach (CordDecal top in p.Decals.Where(d => d.Kind == DecalKind.PlugTop))
                 {
+                    var d = new CordDecal(DecalKind.Plug, top.Pos + CordAudit.Dir(top.Angle) * CordBuilder.PlugTopReach, top.Angle + Math.PI, CordBuilder.PilePlugScale);
                     CordStrand best = null;
                     bool bestEnd = false;
                     double bd = double.MaxValue;

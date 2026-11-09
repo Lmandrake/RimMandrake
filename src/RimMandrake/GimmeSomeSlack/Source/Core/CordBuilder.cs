@@ -8,7 +8,7 @@ using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Core
 {
-    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark, CableTie }
+    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark, CableTie, PlugTop, WallOutlet }
 
     /// <summary>A decal's drawn height over its width. The power strip's art is 64x32 lit AND dark (GPT source read 2026-10-06
     /// A19: the dark strip drew at aspect 1, twice as tall as the lit one).</summary>
@@ -1809,6 +1809,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (!diveB && nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
                     if (!diveA) P = PastFace(P, true, na);
                     if (!diveB) P = PastFace(P, false, nb);
+                    if (!diveA) P = WallPlugTail(P, true, na, opt);
+                    if (!diveB) P = WallPlugTail(P, false, nb, opt);
                     if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
                     if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
@@ -1925,6 +1927,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The plug head's centre (the tan box in Styles/ExtCord/Plug.png, x 94..122 of 128), in plug widths from the
         /// texture centre: a plug's centre stands this far out from its socket.</summary>
         public const double PlugHeadCentre = 0.344;
+        /// <summary>Round 3 (owner 2026-11-08 5:18 PM: "Power strips don't plug into the sides, they plug in from above"): PlugTop.png, a plug seen
+        /// from above seated face-on on its socket, body centred on the canvas, its strain-relief boot along art +X ending at PlugTopReach
+        /// (cells, at PlugTopScale) as wide as the cord; the cord is drawn by code from that boot end (gss_sitting tools/r3_art.py measured both).</summary>
+        public const double PlugTopScale = 0.3425, PlugTopReach = 0.1445;
+        /// <summary>The side-view plug (Plug.png, tail stripped) where a Modern cord plugs into a side or the hidden north face of a wall: its
+        /// head face (art +0.46) on the wall face; at this scale its boot end is the cord's width.</summary>
+        public const double WallPlugScale = 0.72;
         /// <summary>The strip's bar in PowerStrip.png, canvas widths from the centre: middle (X, Z) and half sizes.</summary>
         public const double StripBarX = -0.0234, StripBarZ = -0.0547, StripBarHalfAlong = 0.43, StripBarHalfAcross = 0.086;
         /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
@@ -1958,7 +1967,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return Side * Math.Cos(t) - Along * Math.Sin(t);
             }
             /// <summary>Where a cord from this arm plugged into socket k ends: the plug's own centre, its head on the socket.</summary>
-            internal V2 PlugTip(Cell arm, int k) => At(StripHeads[k], StripHeadZ) + PlugOut(arm) * (PlugHeadCentre * PilePlugScale);
+            internal V2 PlugTip(Cell arm, int k) => SocketAt(k) + PlugOut(arm) * PlugTopReach;
+            /// <summary>Socket k's centre on the strip's face: a PlugTop is drawn centred here, covering it.</summary>
+            internal V2 SocketAt(int k) => At(StripHeads[k], StripHeadZ);
             internal V2 LeadTip => At(StripLeadX, StripLeadZ);
 
             internal int SocketFor(Cell arm) =>
@@ -2339,6 +2350,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         public const double PastFaceDepth = 0.03;
 
+        /// <summary>Round 3: under the side-view plug of a Modern cord plugged into a side or the hidden north face of a wall, the cord runs dead
+        /// straight along into for the plug's whole length (head face to boot end), so nothing of a bend shows past the plug's body.</summary>
+        private static List<V2> WallPlugTail(List<V2> P, bool atStart, CordNode nd, BuildOptions opt)
+        {
+            if (P.Count < 2 || nd.Type != NodeType.StubWall || nd.WallTerminal || nd.Into.Len < 0.5 || opt.PileFor(nd.Cell) != PileArt.Strips
+                || WallMount.FaceOf(nd.Into) == WallFaceKind.South) return P;
+            double L = (CordAudit.PlugFaceU + 0.14) * WallPlugScale;
+            var o = new List<V2>(P);
+            if (atStart) o.Reverse();
+            V2 tip = o[o.Count - 1];
+            double Back(V2 q) => (tip.X - q.X) * nd.Into.X + (tip.Z - q.Z) * nd.Into.Z;
+            while (o.Count > 2 && Back(o[o.Count - 2]) < L) o.RemoveAt(o.Count - 2);
+            o.RemoveAt(o.Count - 1);
+            V2 start = tip - nd.Into * L;
+            int k = Math.Max(2, (int)Math.Ceiling(L / 0.04));
+            for (int i = 0; i <= k; i++) o.Add(start + nd.Into * (L * i / k));
+            if (atStart) o.Reverse();
+            return o;
+        }
+
         private static List<V2> PastFace(List<V2> P, bool atStart, CordNode nd)
         {
             if (P.Count < 2 || !(nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock) || nd.Into.Len < 0.5) return P;
@@ -2391,7 +2422,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 // one plug per end, at the footprint centroid where every strand converges (round 2), its head pointing
                 // INTO the machine along the cord's last straight run; drawn under the building like the cord
-                V2 a = atStart ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];
+                // round 3: the strand end that lies AT the machine (shots 03/06: a strip-to-device lead in one cell runs machine-to-strip against
+                // the piece's a->b, and its plug was drawn at the strip pointing into the strip's end, a doubled lead)
+                MachineInfo mi = nd.Machine;
+                bool atS = atStart;
+                if (mi != null)
+                {
+                    double RectD(V2 q) => Math.Max(Math.Max(mi.X0 - q.X, q.X - (mi.X0 + mi.W)), Math.Max(mi.Z0 - q.Z, q.Z - (mi.Z0 + mi.H)));
+                    atS = RectD(first[0]) <= RectD(first[first.Count - 1]);
+                }
+                tip = atS ? first[0] : first[first.Count - 1];
+                V2 a = atS ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];
                 V2 into = Snap4(tip - a);
                 piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - into * (PlugScale * 0.25), Math.Atan2(into.Z, into.X), PlugScale));
             }
@@ -2403,18 +2444,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 int socket = sp.SocketFor(new Cell((int)ad.X, (int)ad.Z));
                 // square onto the socket whatever the bundle's last point did: one plug, on the art's own plug
                 Cell arm = new Cell((int)ad.X, (int)ad.Z);
-                if (socket >= 0) { V2 u = sp.PlugOut(arm); piece.Decals.Add(new CordDecal(DecalKind.Plug, sp.PlugTip(arm, socket), Math.Atan2(-u.Z, -u.X), PilePlugScale)); }
+                // round 3: the plug stands ON the socket seen from above, covering it; its boot points the way the cord leaves
+                if (socket >= 0) { V2 u = sp.PlugOut(arm); piece.Decals.Add(new CordDecal(DecalKind.PlugTop, sp.SocketAt(socket), Math.Atan2(u.Z, u.X), PlugTopScale)); }
             }
             else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
-                // round 5: a cord entering a strip pile plugs into its socket like the pile's own cables
+                // round 5: a cord entering a strip pile plugs into its socket like the pile's own cables; round 3: face-on, on the port's socket
+                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true));
                 foreach (CordStrand s in piece.Strands)
                 {
                     if (atStart ? s.DiveA : s.DiveB) continue;
                     V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                     V2 a = atStart ? s.Pts[Math.Min(s.Pts.Count - 1, 1)] : s.Pts[Math.Max(0, s.Pts.Count - 2)];
-                    V2 into = (t - a).Norm();
-                    piece.Decals.Add(new CordDecal(DecalKind.Plug, t, Math.Atan2(into.Z, into.X), PilePlugScale));
+                    V2 outv = (a - t).Norm();
+                    if (ports.Count > 0)
+                    {
+                        PilePort q = ports.OrderBy(o => V2.Dist(o.Tip, t)).First();
+                        if (V2.Dist(q.Tip, t) < 0.05) outv = q.Out;
+                    }
+                    piece.Decals.Add(new CordDecal(DecalKind.PlugTop, t - outv * PlugTopReach, Math.Atan2(outv.Z, outv.X), PlugTopScale));
                 }
             }
             else if (nd.Type == NodeType.Terminal && !nd.Seam)      // A3: a ring's seam is not an end
@@ -2442,7 +2490,24 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // round 4 (owner 2026-10-04: "They should look mounted ON the wall"): the plate / hole is drawn INSIDE the wall
                 // cell, on the face it belongs to, cropped to the plate (WallMount): the visible south face shows it whole in
                 // its band; an edge-on side face or the hidden north face shows a thin strip. Nothing lands on the open floor.
-                if (nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock)
+                if (nd.Type == NodeType.StubWall && opt.PileFor(nd.Cell) == PileArt.Strips && !nd.WallTerminal)
+                {
+                    // round 3 (owner 2026-11-08 5:18 PM: "for the modern look, they should PLUG into the wall, not just vanish into a hole"): a wall
+                    // outlet with the plug seated in it. On the visible south face the outlet art carries the plug, its boot at the face line
+                    // where the cord arrives; on a side or the hidden north face the plug stands out of the face, seen side-on, the cord in its back
+                    piece.Decals.Add(WallMount.OutletDecal(nd.Face, nd.Into));
+                    if (WallMount.FaceOf(nd.Into) != WallFaceKind.South)
+                        foreach (CordStrand s in piece.Strands)
+                        {
+                            if (atStart ? s.DiveA : s.DiveB) continue;
+                            V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                            V2 sd = Side(nd.Into);
+                            V2 headFace = nd.Face + nd.Into * 0.005 + sd * ((t - nd.Face).X * sd.X + (t - nd.Face).Z * sd.Z);
+                            piece.Decals.Add(new CordDecal(DecalKind.Plug, headFace - nd.Into * (CordAudit.PlugFaceU * WallPlugScale), Math.Atan2(nd.Into.Z, nd.Into.X), WallPlugScale));
+                        }
+                    hole = nd.Face;
+                }
+                else if (nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock)
                 {
                     CordDecal plate = WallMount.EntryDecal(nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock, nd.Face, nd.Into);
                     piece.Decals.Add(plate);
@@ -2544,8 +2609,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     {
                         V2 o = k % 2 == 0 ? side : -side;
                         // the plug's head face sits on the socket; the cable leaves the plug's tail
-                        V2 socket = d.Pos + along * (StripSockets[k] * d.Scale) + o * (0.1 * d.Scale);
-                        ports.Add(new PilePort { Tip = socket + o * (0.46 * PilePlugScale), Out = o, Connector = i });
+                        // round 3: the socket centres of the 256x128 art (the junction strip's StripHeads), a plug seated face-on over each
+                        V2 socket = d.Pos + along * (StripHeads[k] * d.Scale) + side * (StripHeadZ * d.Scale);
+                        ports.Add(new PilePort { Tip = socket + o * PlugTopReach, Out = o, Connector = i });
                     }
                 }
             }
@@ -3040,7 +3106,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 foreach (int k in used.OrderBy(x => x))
                 {
                     PilePort q = ports[k];
-                    p.Decals.Add(new CordDecal(DecalKind.Plug, q.Tip, Math.Atan2(-q.Out.Z, -q.Out.X), PilePlugScale));
+                    p.Decals.Add(new CordDecal(DecalKind.PlugTop, q.Tip - q.Out * PlugTopReach, Math.Atan2(q.Out.Z, q.Out.X), PlugTopScale));
                 }
             return p;
         }

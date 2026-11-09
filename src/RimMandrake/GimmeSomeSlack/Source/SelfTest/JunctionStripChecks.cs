@@ -104,7 +104,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 var b = new CordBuilder();
                 List<LaidPiece> ps = b.Build(w, new BuildOptions { Pile = PileArt.Strips, Seed = 3, Lay = { CordsMax = 1 } }, c => true);
                 int PlugsAt(int x, int z) => ps.Where(p => p.EndA != null && (p.EndA.EndsWith(":" + x + "," + z) || p.EndB.EndsWith(":" + x + "," + z)))
-                                               .Sum(p => p.Decals.Count(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, new V2(x + 0.5, z + 0.5)) < 0.6));
+                                               .Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PlugTop && V2.Dist(d.Pos, new V2(x + 0.5, z + 0.5)) < 0.6));
                 Check(PlugsAt(10, 12) == 2, $"a T wears {PlugsAt(10, 12)} plugs (want 2 cords plus the lead)");
                 Check(PlugsAt(22, 12) == 3, $"a + wears {PlugsAt(22, 12)} plugs (want 3 cords plus the lead)");
             }
@@ -172,7 +172,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     if (p.EndA == null) return p;
                     var q = new LaidPiece { Key = p.Key, Owner = p.Owner, EndA = p.EndA, EndB = p.EndB };
                     q.Strands.AddRange(p.Strands);
-                    q.Decals.AddRange(p.Decals.Where(d => d.Kind != DecalKind.Plug));
+                    q.Decals.AddRange(p.Decals.Where(d => d.Kind != DecalKind.Plug && d.Kind != DecalKind.PlugTop));
                     return q;
                 }).ToList();
                 Check(CordAudit.ArtFit(b.Graph, unplugged, c => true).JunctionFaults > 0, "planted: cords on sockets with their plugs gone is a junction fault");

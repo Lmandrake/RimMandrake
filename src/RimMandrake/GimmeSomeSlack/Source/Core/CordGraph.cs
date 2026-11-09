@@ -216,6 +216,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
             }
             MergeStubs();
+            HookupPick.ChainTransmitters(world.Machines);   // round 3: a transmitter fed through the one it touches gets its cord
             foreach (MachineInfo m in world.Machines)
             {
                 VId mv = VId.Mach(m.Id);
