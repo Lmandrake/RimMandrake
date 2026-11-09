@@ -693,7 +693,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// cord then arrives at a diagonal (<see cref="SlideArrive"/>) and runs on under the art to the centroid.</summary>
         internal static V2 PlugPoint(MachineInfo m, Cell hookup, bool slide = false)
         {
-            if (slide && BaseLampApproach(m)) return CordBuilder.LampEntry(m, hookup.Centre);
+            if (BaseLampApproach(m)) return CordBuilder.LampEntry(m, hookup.Centre);
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
             if (m.Foot) return new V2(m.X0 + m.W / 2.0, m.Z0 - 0.08);   // a pole or mast: in from below, under its foot, whatever side vanilla hooked
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
@@ -714,7 +714,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// exterior approach, end under the machine itself so surrounding barriers remain intermediate dive cells.</summary>
         internal static V2 MachinePlugPoint(CordWorld w, MachineInfo m, Cell hookup, bool slide)
         {
-            V2 preferred = PlugPoint(m, hookup, slide);
+            V2 preferred = BaseLampApproach(m)
+                ? CordBuilder.LampEntryOnFloor(w, m, hookup.Centre)
+                : PlugPoint(m, hookup, slide);
             if (w.IsWalkable(preferred.Floor) || m.Contains(preferred.Floor)) return preferred;
             int hx = Math.Max(m.X0, Math.Min(m.X0 + m.W - 1, hookup.X));
             int hz = Math.Max(m.Z0, Math.Min(m.Z0 + m.H - 1, hookup.Z));
@@ -759,13 +761,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static bool BaseLampApproach(MachineInfo m) =>
             m != null && m.W == 1 && m.H == 1 && m.BaseDz != 0 && !m.Foot && !m.HasHome;
 
-        /// <summary>The arrival at a sliding plug: toward a small lamp's art base, otherwise diagonally under the flange.</summary>
+        /// <summary>Base lamps arrive horizontally at the foot or radially upward
+        /// through the bottom; ordinary sliding plugs retain their diagonal under the flange.</summary>
         internal static V2 SlideArrive(MachineInfo m, V2 tip, V2 into)
         {
             if (BaseLampApproach(m))
             {
-                V2 toBase = CordBuilder.ArtTarget(m) - tip;
-                return toBase.Len > 1e-9 ? toBase.Norm() : into;
+                V2 c = CordBuilder.ArtTarget(m);
+                if (tip.Z < m.Z0)
+                    return (c - tip).Norm();
+                return new V2(tip.X < c.X ? 1 : -1, 0);
             }
             double along = into.X != 0 ? tip.Z : tip.X;
             double f = along - Math.Floor(along);

@@ -1161,7 +1161,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // any cord the bar still counts against: each sharp bend re-laid round, its window of cord either side laid again as a Dubins path (a hairpin becomes a round loop)
                 if (!jointFit && !fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
                 List<CordTie> ties = null;
-                if (!jointFit && !fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, true, true, out ties);
+                if (!jointFit && !fell && prm.FairBends)
+                {
+                    P = PlugExits(w, g, e, piece, P, opt, true, true, out ties);
+                    P = RoundLampArrival(w, g, e, P, ties, true);
+                    P = RoundLampArrival(w, g, e, P, ties, false);
+                }
                 if (prm.FairBends || FinalKinkLog)
                     P = FinalCurvature(w, g, e, P, ties, key, i, allowRepair: prm.FairBends && !jointFit);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
@@ -1478,8 +1483,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         + "|" + g.Nodes[e.B].OracleName + ":" + g.Nodes[e.B].Cell + " " + msg);
                     diagnostic?.Invoke(msg);
                 };
-            bool slideA = na.IsMachine && na.Machine != null && g.Slides(na.Machine);
-            bool slideB = nb.IsMachine && nb.Machine != null && g.Slides(nb.Machine);
+            bool slideA = na.IsMachine && na.Machine != null
+                && (g.Slides(na.Machine) || CordGraph.BaseLampApproach(na.Machine));
+            bool slideB = nb.IsMachine && nb.Machine != null
+                && (g.Slides(nb.Machine) || CordGraph.BaseLampApproach(nb.Machine));
             Func<List<V2>, bool> approachClear = null;
             Func<List<V2>, double[], double, (double Lo, double Hi)> approachBounds = null;
             if (slideA || slideB)
@@ -1516,7 +1523,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (i < 0 || i >= q.Count) return false;
             outside = back = i;
             double run = 0;
-            while (back + step >= 0 && back + step < q.Count && run < SlideApproachLook)
+            double look = CordGraph.BaseLampApproach(m) ? 0.3 : SlideApproachLook;
+            while (back + step >= 0 && back + step < q.Count && run < look)
             {
                 run += V2.Dist(q[back], q[back + step]);
                 back += step;
@@ -1755,12 +1763,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (V2.Dist(from, c) < 1e-6 || m.Contains(from.Floor)) return false;
                     // Use the same base-directed entry as the ordinary lay.
                     bool baseLamp = CordGraph.BaseLampApproach(m);
-                    point = baseLamp ? LampEntry(m, from) : ArtEntry(m, from, 0.02);
+                    point = baseLamp ? LampEntryOnFloor(w, m, from) : ArtEntry(m, from, 0.02);
                     V2 into = baseLamp
                         ? CordGraph.SlideArrive(m, point, IntoMachine(m, point))
                         : (c - point).Norm();
                     direction = first ? -into : into;
-                    if (baseLamp) lead = Math.Max(0, 0.3 - V2.Dist(point, c));
+                    if (baseLamp) lead = 0.02;
                     return direction.Len > 0.5;
                 }
                 if (!EndPose(w, g, e, first, P, 0, 1, opt,
@@ -1789,10 +1797,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 && x.X0 == y.X0 && x.Z0 == y.Z0 && x.W == y.W && x.H == y.H;
             bool OwnCell(V2 q) => (ma != null && ma.Contains(q.Floor))
                 || (mb != null && mb.Contains(q.Floor));
+            V2 tailA = a, tailB = b;
+            bool OnLampTail(MachineInfo m, V2 entry, V2 q)
+            {
+                if (!CordGraph.BaseLampApproach(m)
+                    || q.X < m.X0 || q.X > m.X0 + m.W
+                    || q.Z < m.Z0 || q.Z > m.Z0 + m.H) return true;
+                V2 c = ArtTarget(m), axis = entry - c, offset = q - c;
+                double length = axis.Len;
+                if (length < 1e-9) return offset.Len <= 1e-8;
+                double along = (offset.X * axis.X + offset.Z * axis.Z) / length;
+                double across = Math.Abs(offset.X * axis.Z - offset.Z * axis.X) / length;
+                return across <= 1e-8 && along >= -1e-8 && along <= length + 1e-8
+                    && q.Z <= c.Z + 0.12;
+            }
             bool Clear(V2 q)
             {
                 Cell c = q.Floor;
                 bool own = OwnCell(q);
+                if (!OnLampTail(ma, tailA, q) || !OnLampTail(mb, tailB, q)) return false;
                 // No exemption for a blocked cell, even on a machine tail.
                 // Devices needing an under-building exemption use ordinary lay.
                 if (!w.IsWalkable(c) || (!own && w.IsFurniture(c))) return false;
@@ -1812,10 +1835,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             bool Clearance(V2 q, double margin) => OwnCell(q) || w.Clearance(q) >= LayParams.RC + margin;
 
-            // A small offset base cannot use a radial pose chosen independently
-            // of the strip's stiff boot. Fit one circular turn and its tangent
-            // tail together. The turn finishes before the machine entry, so
-            // entry-to-base is straight and cannot acquire an under-art loop.
+            // A south arrival may remain radial through the bottom edge.
+            // Side arrivals stay horizontal. Reserve only a short exterior
+            // straight; the source boot retains its full stiff length.
+            // Clear permits only the candidate's straight tail in the footprint.
             bool lampAtA = CordGraph.BaseLampApproach(ma) && mb == null;
             bool lampAtB = CordGraph.BaseLampApproach(mb) && ma == null;
             if (lampAtA || lampAtB)
@@ -1840,14 +1863,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         double radius = (along * sn - across * cs) / (1 - cs);
                         if (radius < 0.12) continue;
                         double tail = (across - radius * (1 - cs)) / sn;
-                        if (tail < 0.3) continue;
+                        if (tail <= 0) continue;
                         V2 direction = (outward * cs + lateral * sn).Norm();
-                        V2 entry = LampEntry(lamp, c - direction);
+                        V2 entry = ArtEntry(lamp, c - direction, 0.02);
                         V2 arrival = CordGraph.SlideArrive(lamp, entry, IntoMachine(lamp, entry));
-                        if (V2.Dist(arrival, direction) > 1e-6
-                            || tail + 1e-9 < V2.Dist(entry, c)) continue;
+                        if (V2.Dist(arrival, direction) > 1e-8
+                            || tail + 1e-9 < V2.Dist(entry, c) + 0.02) continue;
                         V2 contact = c - direction * tail;
-                        if (contact.X < lamp.X0 || contact.X > lamp.X0 + lamp.W) continue;
+                        if (lampAtA) tailA = entry;
+                        else tailB = entry;
 
                         var Q = new List<V2> { source };
                         void AddLamp(V2 q)
@@ -1891,6 +1915,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                 if (bestLamp != null) return bestLamp;
             }
+            tailA = a;
+            tailB = b;
 
             // At HeapTurnR the heading turns at most about 80 degrees per cell.
             // Do not shrink the radius until a short lead can make a tight loop.
@@ -1988,7 +2014,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     V2 a2 = IntoMachine(m, t2);
                     if (g.Slides(m) || CordGraph.BaseLampApproach(m)) a2 = CordGraph.SlideArrive(m, t2, a2);
                     double s2 = CordGraph.BaseLampApproach(m)
-                        ? Math.Max(straight, 0.3 - V2.Dist(t2, ArtTarget(m))) : straight;
+                        ? Math.Max(straight, 0.3) : straight;
                     o.Add(new HopEnd { T = t2, Arrive = a2.Norm(), Straight = s2, Clear = ArriveClear(w, C, t2, m) });
                 }
             return o;
@@ -2007,6 +2033,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             var why = HopWhy == null ? null : new Dictionary<string, int>();
             void No(string t) { if (why != null) why[t] = why.TryGetValue(t, out int k) ? k + 1 : 1; }
             CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            bool lampA = CordGraph.BaseLampApproach(na.IsMachine ? na.Machine : null);
+            bool lampB = CordGraph.BaseLampApproach(nb.IsMachine ? nb.Machine : null);
             CordRng r = CordRng.Of(opt.Seed, "hop", key);
             List<V2> boxes = OtherBoxes(g, e);
             int sg = r.Sign();
@@ -2027,7 +2055,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     double gap = Math.Max(V2.Dist(A.T, B.T), 0.3);
                     double ha = Math.Atan2(-A.Arrive.Z, -A.Arrive.X), hb = Math.Atan2(B.Arrive.Z, B.Arrive.X);
                     HopEnd a0 = A, b0 = B;
-                    Func<V2, bool> clear = q => V2.Dist(q, a0.T) < 0.3 || V2.Dist(q, b0.T) < 0.3 || (a0.Clear(q) && b0.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff));
+                    Func<V2, bool> clear = q => (!lampA || a0.Clear(q)) && (!lampB || b0.Clear(q))
+                        && (V2.Dist(q, a0.T) < 0.3 || V2.Dist(q, b0.T) < 0.3
+                            || (a0.Clear(q) && b0.Clear(q) && !boxes.Any(bx => V2.Dist(q, bx) < BoxKeepOff)));
                     foreach (double rad in HopRadii)
                         foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(ea, ha, eb, hb, rad).OrderBy(d => d.Len).Take(2))
                         {
@@ -2142,7 +2172,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 VId v = atA ? e.A : e.B;
                 CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
-                if (nd.Type != NodeType.Junction || !far.IsMachine || far.Machine == null || far.Machine.Foot || opt.PileFor(nd.Cell) != PileArt.Strips) continue;   // a pole's or mast's lead goes in under its foot, never a nub into its side (owner 2026-11-08)
+                if (nd.Type != NodeType.Junction || !far.IsMachine || far.Machine == null || far.Machine.Foot
+                    || CordGraph.BaseLampApproach(far.Machine) || opt.PileFor(nd.Cell) != PileArt.Strips) continue;
                 V2 ad = ArmDir(g, e, atA);
                 var arm = new Cell((int)ad.X, (int)ad.Z);
                 if (!g.MachineArmsOf(v).Contains(arm)) continue;
@@ -2180,7 +2211,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 VId v = atA ? e.A : e.B;
                 CordNode nd = g.Nodes[v], far = g.Nodes[atA ? e.B : e.A];
-                if (nd.Type != NodeType.Junction || nd.IsBlob || !v.IsCellish || !far.IsMachine || far.Machine == null || far.Machine.Foot || opt.PileFor(nd.Cell) == PileArt.Strips) continue;
+                if (nd.Type != NodeType.Junction || nd.IsBlob || !v.IsCellish || !far.IsMachine || far.Machine == null
+                    || far.Machine.Foot || CordGraph.BaseLampApproach(far.Machine) || opt.PileFor(nd.Cell) == PileArt.Strips) continue;
                 V2 a = ArmDir(g, e, atA);
                 if (!g.MachineArmsOf(v).Contains(new Cell((int)a.X, (int)a.Z))) continue;
                 MachineInfo m = far.Machine;
@@ -2333,7 +2365,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
                     List<CordTie> ties = null;
-                    if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, !diveA, !diveB, out ties);
+                    if (!fell && prm.FairBends)
+                    {
+                        P = PlugExits(w, g, e, piece, P, opt, !diveA, !diveB, out ties);
+                        if (!diveA) P = RoundLampArrival(w, g, e, P, ties, true);
+                        if (!diveB) P = RoundLampArrival(w, g, e, P, ties, false);
+                    }
                     if (prm.FairBends || FinalKinkLog)
                         P = FinalCurvature(w, g, e, P, ties, key, i, !diveA, !diveB, si, prm.FairBends);
                     piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
@@ -2693,11 +2730,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // or beside ran past the lamp and hooked back over it (blind judge p15a, every look: "the lamp lead overshoots and hairpins back"). The run
                 // under the lamp's art to its centre hides which side it went in by
                 bool baseLamp = CordGraph.BaseLampApproach(nd.Machine);
-                if (baseLamp || (nd.Machine.Kind == MachineKind.Lamp && nd.Machine.W == 1 && nd.Machine.H == 1))
+                if (baseLamp)
+                    target = LampEntryOnFloor(w, nd.Machine, BackAlong(P, !atA, LampLook));
+                else if (nd.Machine.Kind == MachineKind.Lamp && nd.Machine.W == 1 && nd.Machine.H == 1)
                     target = LampEntry(nd.Machine, BackAlong(P, !atA, LampLook));
                 arrive = IntoMachine(nd.Machine, target);
                 if (g.Slides(nd.Machine) || baseLamp) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
-                if (baseLamp) straight = Math.Max(straight, 0.3 - V2.Dist(target, ArtTarget(nd.Machine)));
+                if (baseLamp) straight = Math.Max(straight, 0.3);
             }
             else if (nd.IsStub && nd.Into.Len > 0.5)
             {
@@ -2769,13 +2808,178 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         V2 a2 = IntoMachine(m, t2);
                         if (g.Slides(m) || CordGraph.BaseLampApproach(m)) a2 = CordGraph.SlideArrive(m, t2, a2);
                         double s2 = CordGraph.BaseLampApproach(m)
-                            ? Math.Max(straight, 0.3 - V2.Dist(t2, ArtTarget(m))) : straight;
+                            ? Math.Max(straight, 0.3) : straight;
                         List<V2> r2 = CordShape.ArriveRound(P, !atA, t2, a2, s2, ArriveClear(w, P, t2, m), out double turned2, keepFar);
                         if (r2 != null && turned2 < turned - SideSwitchGain) { round = r2; turned = turned2; }
                     }
                 if (round != null) return round;
             }
             return CordLayer.Approach(w, P, !atA, target, arrive, straight, roomy);
+        }
+
+        /// <summary>Replace a faulty base approach after fairing and plug exits.
+        /// Fit from an unchanged incoming segment to a short exterior straight,
+        /// then continue along that same line under the foot. Preserve the far
+        /// fitting and every tie; accept only a clear turn with clean joins.</summary>
+        private static List<V2> RoundLampArrival(CordWorld w, CordGraph g, CordEdge e,
+                                                 List<V2> P, List<CordTie> ties, bool atStart)
+        {
+            CordNode nd = g.Nodes[atStart ? e.A : e.B];
+            MachineInfo m = nd.IsMachine ? nd.Machine : null;
+            if (!CordGraph.BaseLampApproach(m) || P.Count < 4) return P;
+            V2 c = ArtTarget(m);
+            if (!m.Contains(c.Floor)) return P;
+            double oldLength = Geo.Length(P);
+            if (CordShape.CurvatureFaults(P, ties,
+                from: atStart ? 0 : Math.Max(0, oldLength - 3.5),
+                to: atStart ? 3.5 : double.MaxValue).Count == 0) return P;
+
+            var Q = new List<V2>(P);
+            if (atStart) Q.Reverse();
+            if (V2.Dist(Q[Q.Count - 1], c) > 0.01) return P;
+            double[] cum = Geo.CumLen(Q);
+            double keepFar = 0.35;
+            List<CordTie> orientedTies = ties;
+            if (atStart && ties != null)
+            {
+                orientedTies = new List<CordTie>(ties.Count);
+                foreach (CordTie original in ties)
+                {
+                    CordTie t = original;
+                    t.S0 = oldLength - original.S1;
+                    t.S1 = oldLength - original.S0;
+                    orientedTies.Add(t);
+                }
+            }
+            if (orientedTies != null)
+                foreach (CordTie t in orientedTies)
+                    keepFar = Math.Max(keepFar, t.S1 + 0.1);
+            double maxBack = Math.Min(3.5, oldLength - keepFar);
+            if (maxBack < 0.4) return P;
+
+            List<V2> boxes = OtherBoxes(g, e);
+            Func<V2, bool> ground = ArriveClear(w, Q, c, m);
+            bool Inside(V2 q) => q.X >= m.X0 && q.X <= m.X0 + m.W
+                && q.Z >= m.Z0 && q.Z <= m.Z0 + m.H;
+            bool CommonClear(V2 q)
+            {
+                if (!w.IsWalkable(q.Floor)) return false;
+                foreach (MachineInfo other in w.Machines)
+                    if (UnderLampArt(other, q.Floor)) return false;
+                foreach (V2 box in boxes)
+                    if (V2.Dist(q, box) < BoxKeepOff) return false;
+                return true;
+            }
+            bool BodyClear(V2 q) => CommonClear(q) && ground(q);
+            bool Clearance(V2 q, double margin) =>
+                Inside(q) || w.Clearance(q) >= LayParams.RC + margin;
+
+            foreach (double radius in new[] { 0.78, 0.62, 0.5, 0.4, 0.3, 0.24, 0.18, 0.14, 0.125 })
+            {
+                List<V2> best = null;
+                double bestCost = double.MaxValue;
+                int lastJoin = -1;
+                for (double back = 0.4; back <= maxBack + 1e-9; back += 0.1)
+                {
+                    int j = Array.BinarySearch(cum, oldLength - back);
+                    if (j < 0) j = ~j;
+                    j = Math.Max(1, Math.Min(j, Q.Count - 2));
+                    if (j == lastJoin || cum[j] < keepFar || !BodyClear(Q[j])) continue;
+                    lastJoin = j;
+                    V2 incoming = Q[j] - Q[j - 1];
+                    if (incoming.Len < 1e-9) continue;
+                    double heading = Math.Atan2(incoming.Z, incoming.X);
+                    V2 preferred = ArtEntry(m, Q[j], 0.02);
+                    V2[] entries =
+                    {
+                        preferred,
+                        new V2(m.X0 + m.W + 0.02, c.Z),
+                        new V2(m.X0 - 0.02, c.Z)
+                    };
+                    for (int ei = 0; ei < entries.Length; ei++)
+                    {
+                        V2 entry = entries[ei];
+                        bool duplicate = false;
+                        for (int k = 0; k < ei; k++)
+                            if (V2.Dist(entry, entries[k]) < 1e-8) duplicate = true;
+                        if (duplicate || !BodyClear(entry)) continue;
+                        V2 arrive = (c - entry).Norm();
+                        if (arrive.Len < 0.5) continue;
+                        double arrivalHeading = Math.Atan2(arrive.Z, arrive.X);
+                        V2 axis = entry - c;
+                        double tailLength = axis.Len;
+                        bool Clear(V2 q)
+                        {
+                            if (!CommonClear(q)) return false;
+                            if (!Inside(q)) return ground(q);
+                            V2 offset = q - c;
+                            double along = (offset.X * axis.X + offset.Z * axis.Z) / tailLength;
+                            double across = Math.Abs(offset.X * axis.Z - offset.Z * axis.X) / tailLength;
+                            return across <= 1e-8 && along >= -1e-8
+                                && along <= tailLength + 1e-8 && q.Z <= c.Z + 1e-8;
+                        }
+                        foreach (double straight in new[] { 0.0, 0.06, 0.18, 0.3 })
+                        {
+                            V2 end = entry - arrive * straight;
+                            if (!BodyClear(end)) continue;
+                            foreach (CordShape.Dubins.Path dp in
+                                CordShape.Dubins.All(Q[j], heading, end, arrivalHeading, radius))
+                            {
+                                double newTail = dp.Len + straight + tailLength;
+                                double cost = dp.Turning
+                                    + 0.15 * Math.Abs(newTail - (oldLength - cum[j]))
+                                    + 0.005 * back;
+                                if (cost >= bestCost || dp.Turning > Math.PI
+                                    || newTail > oldLength - cum[j] + 0.8) continue;
+                                List<V2> arc = CordShape.Dubins.Sample(Q[j], heading, dp, 0.0125);
+                                if (arc.Count == 0 || V2.Dist(arc[arc.Count - 1], end) > 1e-6) continue;
+                                arc[arc.Count - 1] = end;
+                                var R = Q.GetRange(0, j + 1);
+                                void Add(V2 q)
+                                {
+                                    if (V2.Dist(R[R.Count - 1], q) > 1e-8) R.Add(q);
+                                }
+                                void Line(V2 to)
+                                {
+                                    V2 from = R[R.Count - 1];
+                                    int steps = Math.Max(1, (int)Math.Ceiling(V2.Dist(from, to) / 0.0125));
+                                    for (int k = 1; k <= steps; k++)
+                                        Add(from + (to - from) * (k / (double)steps));
+                                }
+                                foreach (V2 q in arc) Add(q);
+                                Line(entry);
+                                Line(c);
+                                bool clear = true;
+                                for (int k = j; k + 1 < R.Count && clear; k++)
+                                    clear = CordShape.RepairSegmentClear(null, R[k], R[k + 1], Clear, Clearance);
+                                if (!clear
+                                    || CrossingsOf(R, j, R.Count - 1) > CrossingsOf(Q, j, Q.Count - 1)
+                                    || CordShape.CurvatureFaults(R, orientedTies,
+                                        from: Math.Max(CordShape.RepairPin, cum[j] - 0.65),
+                                        radiusTarget: 0.12).Count != 0) continue;
+                                best = R;
+                                bestCost = cost;
+                            }
+                        }
+                    }
+                }
+                if (best == null) continue;
+                if (atStart)
+                {
+                    double delta = Geo.Length(best) - oldLength;
+                    if (ties != null)
+                        for (int k = 0; k < ties.Count; k++)
+                        {
+                            CordTie t = ties[k];
+                            t.S0 += delta;
+                            t.S1 += delta;
+                            ties[k] = t;
+                        }
+                    best.Reverse();
+                }
+                return best;
+            }
+            return P;
         }
 
         /// <summary>A one-cell machine moves its plug to another side only for this much less turn (radians): where the hookup's own side comes round well, it stays.</summary>
@@ -2799,6 +3003,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return q =>
             {
                 Cell c = q.Floor;
+                // The routed body must stay outside a base lamp. IntoArt alone
+                // adds its straight, low run inside the closed footprint.
+                if (CordGraph.BaseLampApproach(own)
+                    && q.X >= own.X0 && q.X <= own.X0 + own.W
+                    && q.Z >= own.Z0 && q.Z <= own.Z0 + own.H) return false;
                 if (!w.IsWalkable(c)) return own != null && own.Contains(c) && V2.Dist(q, target) < 0.3;
                 if (V2.Dist(q, target) < 0.3) return true;
                 if (w.IsFurniture(c) || (w.IsDoor(c) && !doors.Contains(c)) || machine.Contains(c)) return false;
@@ -2831,8 +3040,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How far back along a cord (cells) <see cref="LampEntry"/> looks to see which side of a lamp it comes from.</summary>
         public const double LampLook = 1.1;
 
-        /// <summary>The entry on the ray from the art base toward the incoming cord.
-        /// A small offset base keeps its whole terminal run within the footprint's X range.</summary>
+        /// <summary>Base lamps enter below the foot or horizontally at base height.
+        /// Zero-offset lamps retain their existing entry geometry.</summary>
         internal static V2 LampEntry(MachineInfo m, V2 from)
         {
             if (!CordGraph.BaseLampApproach(m))
@@ -2842,13 +3051,42 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (Math.Abs(dx) >= Math.Abs(dz)) return new V2(dx > 0 ? m.X0 + 1.08 : m.X0 - 0.08, cz - 0.1);
                 return new V2(cx, m.Z0 - 0.08);
             }
-            V2 entry = ArtEntry(m, from, 0.08);
-            return new V2(Geo.Clamp(entry.X, m.X0, m.X0 + m.W), entry.Z);
+            return ArtEntry(m, from, 0.08);
+        }
+
+        // LampEntry has no world. Its callers choose an open exterior side;
+        // a nearly centred approach from above prefers east, then west.
+        internal static V2 LampEntryOnFloor(CordWorld w, MachineInfo m, V2 from)
+        {
+            V2 preferred = LampEntry(m, from);
+            if (!CordGraph.BaseLampApproach(m) || w.IsWalkable(preferred.Floor)) return preferred;
+            V2 c = ArtTarget(m);
+            bool westFirst = preferred.X < m.X0
+                || (preferred.Z < m.Z0 && from.X < c.X - 0.15);
+            foreach (int sign in westFirst ? new[] { -1, 1 } : new[] { 1, -1 })
+            {
+                V2 entry = new V2(sign > 0 ? m.X0 + m.W + 0.08 : m.X0 - 0.08, c.Z);
+                if (w.IsWalkable(entry.Floor)) return entry;
+            }
+            return preferred;
         }
 
         private static V2 ArtEntry(MachineInfo m, V2 from, double pad)
         {
             V2 c = ArtTarget(m), d = from - c;
+            if (CordGraph.BaseLampApproach(m))
+            {
+                // A ray that reaches the bottom keeps its radial tail.
+                // Other approaches enter horizontally at base height.
+                if (d.Z < 0
+                    && Math.Abs(d.X) * (c.Z - m.Z0) <= -d.Z * (m.W / 2.0))
+                {
+                    V2 edge = c + d * ((m.Z0 - c.Z) / d.Z);
+                    return edge + d.Norm() * pad;
+                }
+                bool east = Math.Abs(d.X) < 0.15 || d.X > 0;
+                return new V2(east ? m.X0 + m.W + pad : m.X0 - pad, c.Z);
+            }
             d = d.Len > 1e-9 ? d.Norm() : new V2(0, -1);
             double t = double.MaxValue;
             if (d.X > 1e-9) t = Math.Min(t, (m.X0 + m.W - c.X) / d.X);
@@ -2922,10 +3160,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else of.AddRange(ext);
                 return of;
             }
-            if (slide && !CordGraph.BaseLampApproach(m))
+            if (CordGraph.BaseLampApproach(m))
+            {
+                // The entry is padded outside the footprint. Start the hidden
+                // extension on its boundary, then run directly to the base.
+                // Every added point stays in the footprint's X range and at
+                // or below base height; there is no final hook or overrun.
+                V2 edge = tip.Z < m.Z0 && c.Z > tip.Z
+                    ? tip + (c - tip) * ((m.Z0 - tip.Z) / (c.Z - tip.Z))
+                    : new V2(Geo.Clamp(tip.X, m.X0, m.X0 + m.W),
+                        Geo.Clamp(tip.Z, m.Z0, c.Z));
+                if (V2.Dist(tip, edge) > 1e-9) ext.Add(edge);
+                int steps = Math.Max(1, (int)Math.Ceiling(V2.Dist(edge, c) / 0.05));
+                for (int i = 1; i <= steps; i++)
+                {
+                    V2 q = edge + (c - edge) * (i / (double)steps);
+                    V2 previous = ext.Count > 0 ? ext[ext.Count - 1] : tip;
+                    if (V2.Dist(previous, q) > 1e-9) ext.Add(q);
+                }
+                var lamp = new List<V2>(P);
+                if (atStart) { ext.Reverse(); lamp.InsertRange(0, ext); }
+                else lamp.AddRange(ext);
+                return lamp;
+            }
+            if (slide)
             {
                 // Ordinary machines carry their diagonal under the flange.
-                // A small offset base already arrives directly toward c.
                 V2 dia = CordGraph.SlideArrive(m, tip, into), mid = tip + dia * SlideCarry;
                 int k0 = Math.Max(1, (int)Math.Ceiling(SlideCarry / 0.05));
                 for (int i = 1; i <= k0; i++) ext.Add(tip + (mid - tip) * (i / (double)k0));
@@ -2933,10 +3193,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             // Continue along the actual way in to the art base. In particular,
             // do not add a cardinal hook over the last CentroidApproach cells.
-            double remaining = V2.Dist(tip, c);
-            bool baseLamp = CordGraph.BaseLampApproach(m);
-            if (baseLamp && remaining > 1e-9) into = (c - tip).Norm();
-            double approach = baseLamp ? Math.Min(CentroidApproach, remaining) : CentroidApproach;
+            double approach = CentroidApproach;
             V2 pre = c - into * approach;
             double d1 = V2.Dist(tip, pre);
             int k1 = Math.Max(1, (int)Math.Ceiling(d1 / 0.05));
@@ -3210,7 +3467,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How far from its ends a strand's corners are left alone: a dead end's limp curl is a corner on purpose, and a live end sticks straight out.</summary>
         /// <summary>How much of a strand's end <see cref="CordShape.Fair"/> leaves as laid: a cut end's whole straight run or limp curl, else the fitting's own straight bit.</summary>
         private static double FairPin(CordNode nd, Func<Cell, bool> isLive) =>
-            nd.Type == NodeType.Terminal && !nd.Seam ? (isLive(nd.Cell) ? 0.6 : 1.0) : 0.2;
+            nd.Type == NodeType.Terminal && !nd.Seam ? (isLive(nd.Cell) ? 0.6 : 1.0)
+                : CordGraph.BaseLampApproach(nd.IsMachine ? nd.Machine : null) ? 0.3 : 0.2;
 
         private static double LimpSkip(CordNode na, CordNode nb, Func<Cell, bool> isLive) =>
             (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam) ? 1.0 : 0.25;

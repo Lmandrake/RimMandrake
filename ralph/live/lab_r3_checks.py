@@ -22,6 +22,8 @@ New checks:
                  cell, heading >25 degrees off the decal at arc 0.3, or backward
   lamp_base    consumer cord end >0.12 cell from its lamp base or on the bulb side;
                legacy lamp IDs optionally come from Transient/lab/ba/lamps.json
+  lamp_foot    owning lamp strand crosses its footprint above base z + 0.12;
+               measures the first inside-to-outside crossing from the lamp end
 
 Distances are in cells. Angles in JSON are radians.
 
@@ -671,8 +673,8 @@ def lamp_reversal_checks(W, L, records):
     return count, msgs
 
 
-def lamp_base_checks(W, L):
-    """Check one nearest strand end per consumer piece and machine.
+def _lamp_checks(W, L, foot=False):
+    """Share lamp ownership between endpoint and footprint-crossing checks.
 
     Search all strands against the base target, including dive continuations.
     A selected end farther than 0.4 cell from the centroid is not a lamp end.
@@ -697,7 +699,7 @@ def lamp_base_checks(W, L):
             legacy_ids = {str(value) for value in ids}
             legacy_present = True
         elif not has_offsets:
-            return 0, ["lamp_base: no lamp data"]
+            return 0, [f"{'lamp_foot' if foot else 'lamp_base'}: no lamp data"]
 
     def centroid(m):
         return m["x"] + m["w"] / 2.0, m["z"] + m["h"] / 2.0
@@ -747,6 +749,50 @@ def lamp_base_checks(W, L):
         cx, cz = centroid(m)
         target = (cx, cz + dz)
         for pi, si, side, point in owned[mi]:
+            if foot:
+                strand = L["pieces"][pi]["strands"][si]
+                vertices = strand if side == "first" else list(reversed(strand))
+
+                def inside(q):
+                    return (
+                        m["x"] <= q[0] <= m["x"] + m["w"]
+                        and m["z"] <= q[1] <= m["z"] + m["h"]
+                    )
+
+                crossing = None
+                if inside(vertices[0]):
+                    for a, b in zip(vertices, vertices[1:]):
+                        if inside(b):
+                            continue
+                        dx, dz_out = b[0] - a[0], b[1] - a[1]
+                        exits = []
+                        if dx > 0:
+                            exits.append((m["x"] + m["w"] - a[0]) / dx)
+                        elif dx < 0:
+                            exits.append((m["x"] - a[0]) / dx)
+                        if dz_out > 0:
+                            exits.append((m["z"] + m["h"] - a[1]) / dz_out)
+                        elif dz_out < 0:
+                            exits.append((m["z"] - a[1]) / dz_out)
+                        t = max(0.0, min(1.0, min(exits)))
+                        crossing = (a[0] + t * dx, a[1] + t * dz_out)
+                        break
+                limit = target[1] + 0.12
+                if crossing is None or crossing[1] > limit + 1e-9:
+                    count += 1
+                    detail = (
+                        f"crossing={xy_text(crossing)}, "
+                        f"z={crossing[1]:.3f}>{limit:.3f}, "
+                        f"z-m.z={crossing[1] - m['z']:.3f}"
+                        if crossing is not None
+                        else f"no inside-to-outside crossing from end={xy_text(point)}"
+                    )
+                    msgs.append(
+                        f"lamp_foot {piece_name(L['pieces'][pi], pi)} "
+                        f"strand[{si}] {side}: machine {m['id']} "
+                        + detail
+                    )
+                continue
             gap = dist(point, target)
             failures = []
             if gap > 0.12 + 1e-9:
@@ -764,6 +810,14 @@ def lamp_base_checks(W, L):
                     + "; ".join(failures)
                 )
     return count, msgs
+
+
+def lamp_base_checks(W, L):
+    return _lamp_checks(W, L)
+
+
+def lamp_foot_checks(W, L):
+    return _lamp_checks(W, L, foot=True)
 
 
 def wall_cross_checks(W, L, records):
@@ -812,7 +866,7 @@ def new_checks(W, L, dist_mode=False):
     counts = {
         "lead_device": 0, "loose_plug": 0,
         "double_cord": 0, "wall_vanish": 0, "wall_cross": 0, "kink": 0,
-        "wall_via_socket": 0, "lamp_reversal": 0, "lamp_base": 0,
+        "wall_via_socket": 0, "lamp_reversal": 0, "lamp_base": 0, "lamp_foot": 0,
     }
     msgs = []
     machines = W["machines"]
@@ -1113,6 +1167,8 @@ def new_checks(W, L, dist_mode=False):
     msgs.extend(reversal_msgs)
     counts["lamp_base"], base_msgs = lamp_base_checks(W, L)
     msgs.extend(base_msgs)
+    counts["lamp_foot"], foot_msgs = lamp_foot_checks(W, L)
+    msgs.extend(foot_msgs)
     counts["kink"], kink_msgs = kink_checks(L, dist_mode)
     msgs.extend(kink_msgs)
     return counts, msgs
