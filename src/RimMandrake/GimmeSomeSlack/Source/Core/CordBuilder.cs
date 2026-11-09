@@ -817,8 +817,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             full.Append(d.X).Append('/').Append(d.Z);
                         }
                         full.Append(';');
-                        // Socket allocation depends on every incident graph end, including repeated arms.
-                        foreach (var end in IncidentEnds(g, v)) full.Append(end.Key).Append(';');
+                        // Socket allocation depends on every incident graph end and which edge owns
+                        // the captive lead, even when a different lead takes the same cardinal arm.
+                        foreach (var end in IncidentEnds(g, v))
+                            full.Append(end.Key).Append(ReferenceEquals(end.Edge, upstream) ? 'L' : '-').Append(';');
                     }
                     if (nn.Type == NodeType.Tangle)
                     {
@@ -865,8 +867,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return res;
         }
 
-        /// <summary>Everything CordGraph.Reduce reads, in its reading order: the map size, the reduce options, every conduit cell
-        /// with its buried kind, the ground around a buried hookup (IsBuried / BuriedKind are the only per-cell world reads), and every machine field.</summary>
+        /// <summary>Inputs that determine CordGraph.Reduce: map size, reduce options, conduit cells and their buried kinds,
+        /// ground around buried hookups, machine fields, and terrain-dependent machine plug positions.</summary>
         private static void GraphInputs(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, InputBuf into)
         {
             into.Clear();
@@ -906,6 +908,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 nums.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); nums.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
                 if (m.HasHome) { nums.Add(1); nums.Add(m.HomeX); nums.Add(m.HomeZ); } else nums.Add(0);
                 nums.Add(m.Foot ? 1 : 0);
+                // MachinePlugPoint reads terrain outside the conduit cells. Record its selected positions so a wall
+                // built or removed beside a machine cannot reuse a graph with the previous approach.
+                bool slides = opt.SlideUnder && m.Kind != MachineKind.Lamp && !m.Foot
+                    && (opt.StraightPlugIds == null || !opt.StraightPlugIds.Contains(m.Id ?? ""));
+                for (int hi = 0; hi < Math.Max(1, m.Hookups.Count); hi++)
+                {
+                    Cell h = m.Hookups.Count == 0 ? new Cell(m.X0, m.Z0) : m.Hookups[hi];
+                    V2 p = CordGraph.MachinePlugPoint(w, m, h, slides);
+                    nums.Add(BitConverter.DoubleToInt64Bits(p.X));
+                    nums.Add(BitConverter.DoubleToInt64Bits(p.Z));
+                }
             }
         }
 
@@ -2042,8 +2055,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (!diveB) P = PastFace(P, false, nb);
                     if (!diveA) P = WallPlugTail(P, true, na, opt);
                     if (!diveB) P = WallPlugTail(P, false, nb, opt);
-                    if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
-                    if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
+                    if (diveA)
+                    {
+                        DiveSpan d = pl.Dives[si - 1];
+                        P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind));
+                        if (d.OutKind == BlockKind.Wall)
+                            P = WallPlugTail(P, true, new CordNode
+                            {
+                                Type = NodeType.StubWall, Cell = piece.Owner, Face = d.OutFace, Into = d.OutInto
+                            }, opt);
+                    }
+                    if (diveB)
+                    {
+                        DiveSpan d = pl.Dives[si];
+                        P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind));
+                        if (d.InKind == BlockKind.Wall)
+                            P = WallPlugTail(P, false, new CordNode
+                            {
+                                Type = NodeType.StubWall, Cell = piece.Owner, Face = d.InFace, Into = d.InInto
+                            }, opt);
+                    }
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
                     List<CordTie> ties = null;
                     if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, !diveA, !diveB, out ties);
@@ -2055,9 +2086,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             foreach (DiveSpan d in pl.Dives)
             {
-                DecalKind? kin = DivePlate(d.InKind), kout = DivePlate(d.OutKind);
-                if (kin.HasValue) piece.Decals.Add(WallMount.EntryDecal(kin.Value, d.InFace, d.InInto));
-                if (kout.HasValue) piece.Decals.Add(WallMount.EntryDecal(kout.Value, d.OutFace, d.OutInto));
+                DiveDecor(piece, d.InFace, d.InInto, d.InKind, false, opt);
+                DiveDecor(piece, d.OutFace, d.OutInto, d.OutKind, true, opt);
             }
             piece.Dives = pl.Dives.Count;
             piece.PathLen = Ltot;
@@ -2068,6 +2098,31 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
             return piece;
+        }
+
+        /// <summary>Dive faces use the same fittings as conduit stubs: a Modern wall crossing has a receptacle and seated
+        /// plug on each face, with no strand drawn through the wall between them.</summary>
+        private static void DiveDecor(LaidPiece piece, V2 face, V2 into, BlockKind kind, bool atStart, BuildOptions opt)
+        {
+            if (kind == BlockKind.Wall && opt.PileFor(piece.Owner) == PileArt.Strips)
+            {
+                piece.Decals.Add(WallMount.OutletDecal(face, into));
+                if (WallMount.FaceOf(into) == WallFaceKind.South) return;
+                foreach (CordStrand s in piece.Strands)
+                {
+                    if (!(atStart ? s.DiveA : s.DiveB)) continue;
+                    V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                    if (V2.Dist(t, face + into * PastFaceDepth) > 0.2) continue;
+                    V2 sd = Side(into);
+                    V2 headFace = face + into * 0.005 + sd * ((t - face).X * sd.X + (t - face).Z * sd.Z);
+                    piece.Decals.Add(new CordDecal(DecalKind.Plug,
+                        headFace - into * (CordAudit.PlugFaceU * WallPlugScale),
+                        Math.Atan2(into.Z, into.X), WallPlugScale));
+                }
+                return;
+            }
+            DecalKind? plate = DivePlate(kind);
+            if (plate.HasValue) piece.Decals.Add(WallMount.EntryDecal(plate.Value, face, into));
         }
 
         /// <summary>Run one end of P on from the face along into, to just past the face (the barrier hides the overrun).</summary>
@@ -2286,7 +2341,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 faces = new Cell(-(int)d.Z, (int)d.X);
             }
             Cell lead = new Cell(faces.Z, -faces.X);                                         // -90 degrees from the sockets
-            bool toWall = g.WallArmsOf(v).Contains(lead);
+            // With an upstream edge, clearance follows that actual lead connection.
+            // The geometric arm rule is only a fallback when no upstream edge exists.
+            bool toWall;
+            if (upstream != null)
+            {
+                bool atA = upstream.A == v;
+                CordNode far = g.Nodes[atA ? upstream.B : upstream.A];
+                toWall = !far.WallTerminal
+                    && (far.Type == NodeType.StubWall || far.Type == NodeType.StubRock)
+                    && V2.Dist(nd.Pos, atA ? upstream.PB : upstream.PA) <= CordGraph.BesideWall;
+            }
+            else toWall = g.WallArmsOf(v).Contains(lead);
             Cell free = new Cell(-lead.X, -lead.Z), back = new Cell(-faces.X, -faces.Z);
             bool hasBack = arms.Contains(back), hasFree = arms.Contains(free), hasFace = arms.Contains(faces);
             double skew = r.Range(-StripSkew, StripSkew);

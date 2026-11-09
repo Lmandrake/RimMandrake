@@ -626,7 +626,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                              m.Kind == MachineKind.Lamp ? NodeType.Lamp :
                              m.Kind == MachineKind.Transmitter ? NodeType.Transmitter : NodeType.Consumer;
                 Cell hook = m.Hookups.Count > 0 ? m.Hookups[0] : new Cell(m.X0, m.Z0);
-                return new CordNode { Type = t, Pos = PlugPoint(m, hook, Slides(m)), Cell = hook, Machine = m };
+                return new CordNode { Type = t, Pos = MachinePlugPoint(World, m, hook, Slides(m)), Cell = hook, Machine = m };
             }
             if (v.T == 's')
             {
@@ -708,6 +708,38 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return new V2(qx, qz);
         }
 
+        /// <summary>A machine approach must not put the planner's endpoint in an adjacent wall: A* permits its endpoint cell,
+        /// and that cell is not a dive. Prefer the existing plug point, then an open side nearest the hookup. With no open
+        /// exterior approach, end under the machine itself so surrounding barriers remain intermediate dive cells.</summary>
+        internal static V2 MachinePlugPoint(CordWorld w, MachineInfo m, Cell hookup, bool slide)
+        {
+            V2 preferred = PlugPoint(m, hookup, slide);
+            if (w.IsWalkable(preferred.Floor) || m.Contains(preferred.Floor)) return preferred;
+            int hx = Math.Max(m.X0, Math.Min(m.X0 + m.W - 1, hookup.X));
+            int hz = Math.Max(m.Z0, Math.Min(m.Z0 + m.H - 1, hookup.Z));
+            V2 best = default(V2);
+            double nearest = double.MaxValue;
+            foreach (Cell side in new[]
+            {
+                new Cell(hx, m.Z0 + m.H),
+                new Cell(m.X0 + m.W, hz),
+                new Cell(hx, m.Z0 - 1),
+                new Cell(m.X0 - 1, hz)
+            })
+            {
+                V2 q = m.Kind == MachineKind.Lamp && m.W == 1 && m.H == 1
+                    ? CordBuilder.LampEntry(m, side.Centre)
+                    : PlugPoint(m, side, slide);
+                if (!w.IsWalkable(q.Floor)) continue;
+                double d = V2.Dist(q, hookup.Centre);
+                if (d < nearest) { nearest = d; best = q; }
+            }
+            if (nearest < double.MaxValue) return best;
+            return m.Foot
+                ? new V2(m.X0 + m.W / 2.0, m.Z0 + CordBuilder.FootTuck)
+                : CordBuilder.Centroid(m);
+        }
+
         /// <summary>How far into its cell (along the side) a sliding plug point sits: well clear of the 0.5 midpoint.</summary>
         public const double SlideFrac = 0.18;
 
@@ -778,7 +810,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (v.T == 'm' && nd.Machine.Hookups.Count > 1)
             {
                 VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
-                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = PlugPoint(nd.Machine, hc, Slides(nd.Machine));
+                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = MachinePlugPoint(World, nd.Machine, hc, Slides(nd.Machine));
             }
             return p;
         }
@@ -921,7 +953,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         private readonly Dictionary<VId, CordEdge> stripLeadTable = new Dictionary<VId, CordEdge>();
 
-        /// <summary>A strip's upstream edge: toward a supply or an uncut wall/rock outlet by graph distance.
+        /// <summary>A strip's upstream edge: an adjacent uncut wall outlet first, otherwise toward a supply or
+        /// uncut wall/rock outlet by graph distance. Equal candidates use deterministic edge order.
         /// Device branches never supply a strip. Built once before the graph is published.</summary>
         internal CordEdge StripLeadOf(VId v) => stripLeadTable.TryGetValue(v, out CordEdge lead) ? lead : null;
 
@@ -956,18 +989,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                 }
                 Dictionary<VId, CordEdge> t = stripLeadTable;
-                var best = new Dictionary<VId, int>();
+                var best = new Dictionary<VId, (int Priority, int Distance)>();
                 void Pick(VId n, VId other, CordEdge e)
                 {
                     if (n == other || Nodes[n].Type != NodeType.Junction) return;
-                    NodeType kind = Nodes[other].Type;
+                    CordNode far = Nodes[other];
+                    NodeType kind = far.Type;
                     if (kind == NodeType.Consumer || kind == NodeType.Lamp) return;
                     if (!distance.TryGetValue(other, out int d)) return;
-                    if (best.TryGetValue(n, out int old) && d >= old) return;
-                    best[n] = d;
+                    bool adjacentWall = kind == NodeType.StubWall && !far.WallTerminal
+                        && V2.Dist(Nodes[n].Pos, e.A == n ? e.PB : e.PA) <= BesideWall;
+                    int priority = adjacentWall ? 0 : 1;
+                    if (best.TryGetValue(n, out var old)
+                        && (priority > old.Priority || (priority == old.Priority && d >= old.Distance))) return;
+                    best[n] = (priority, d);
                     t[n] = e;
                 }
-                foreach (CordEdge e in CordEdges())
+                // Pick retains the first equal-ranked candidate; make that order explicit,
+                // including parallel edges whose endpoint pair is the same.
+                foreach (CordEdge e in CordEdges().OrderBy(e => e.A).ThenBy(e => e.B)
+                    .ThenBy(e => string.Join(";", e.Via), StringComparer.Ordinal))
                 {
                     Pick(e.A, e.B, e);
                     Pick(e.B, e.A, e);

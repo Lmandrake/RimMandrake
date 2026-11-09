@@ -15,6 +15,8 @@ New checks:
   loose_plug   side-view machine plug lacking a cord end or machine seating
   double_cord  more than one strand end assigned to a plug fitting
   wall_vanish  strand end in/against blocked geometry without an allowed fitting
+  wall_cross   three consecutive vertices in one blocked non-door cell, away from wall fittings
+  wall_via_socket  wall-connected strand whose other end uses a socket-seated PlugTop
   kink         strand failing any curvature, saw-tooth, or V-turn threshold
 
 Distances are in cells. Angles in JSON are radians.
@@ -521,10 +523,53 @@ def kink_checks(L, dist_mode):
     return count, msgs
 
 
+def wall_cross_checks(W, L, records):
+    blocked = {(b[0], b[1]) for b in W["blocked"]}
+    doors = {tuple(d[:2]) for d in W.get("doors", [])}
+    plates = [
+        (r["d"][1], r["d"][2]) for r in records
+        if r["d"][0] in ("StubWall", "WallOutlet")
+    ]
+    count, msgs = 0, []
+    for pi, p in enumerate(L["pieces"]):
+        for si, strand in enumerate(p["strands"]):
+            previous, run, start = None, 0, 0
+            longest, best_start, best_end, best_cell = 0, 0, 0, None
+            for vi, v in enumerate(strand):
+                point = tuple(v[:2])
+                cell = (math.floor(point[0]), math.floor(point[1]))
+                bad = (
+                    cell in blocked and cell not in doors
+                    and not any(dist(point, q) <= 0.25 for q in plates)
+                )
+                if bad:
+                    if cell == previous:
+                        run += 1
+                    else:
+                        run, start = 1, vi
+                    if run > longest:
+                        longest = run
+                        best_start, best_end, best_cell = start, vi, cell
+                    previous = cell
+                else:
+                    previous, run = None, 0
+            if longest >= 3:
+                count += 1
+                msgs.append(
+                    f"wall_cross {piece_name(p, pi)} strand[{si}]: "
+                    f"{longest} consecutive vertices in blocked cell "
+                    f"{best_cell}, vertices[{best_start}..{best_end}], "
+                    f"{xy_text(strand[best_start])} -> "
+                    f"{xy_text(strand[best_end])}"
+                )
+    return count, msgs
+
+
 def new_checks(W, L, dist_mode=False):
     counts = {
         "lead_device": 0, "loose_plug": 0,
-        "double_cord": 0, "wall_vanish": 0, "kink": 0,
+        "double_cord": 0, "wall_vanish": 0, "wall_cross": 0, "kink": 0,
+        "wall_via_socket": 0,
     }
     msgs = []
     machines = W["machines"]
@@ -665,6 +710,55 @@ def new_checks(W, L, dist_mode=False):
         if r["d"][0] in ("PowerStrip", "PowerStripDark")
     ]
     top_fittings = [f for f in fittings if f["d"][0] == "PlugTop"]
+
+    # A wall feed must use the strip's captive lead. Match both ends of the
+    # SAME strand, and require the PlugTop centre to lie on an actual socket.
+    # The strand meets the PlugTop's boot, not its socket-centred decal origin.
+    wall_points = [
+        (r["d"], wall_cord_seat(r["d"])) for r in records
+        if r["d"][0] in ("WallOutlet", "StubWall")
+    ]
+    seated_tops = [
+        (f, st, k)
+        for f in top_fittings
+        for st in strips
+        for k, hx in enumerate(STRIP_HEADS)
+        if dist(
+            (f["d"][1], f["d"][2]),
+            strip_pt(st, hx, STRIP_HEAD_Z),
+        ) <= SOCKET_CENTRE_TOL
+    ]
+    for pi, p in enumerate(L["pieces"]):
+        for si, strand in enumerate(p["strands"]):
+            if len(strand) < 2:
+                continue
+            for wall_end, strip_end in (
+                    (strand[0], strand[-1]), (strand[-1], strand[0])):
+                wall_match = next(
+                    (q for q in wall_points
+                     if dist(wall_end, q[1]) <= FIT_END_TOL), None
+                )
+                socket_match = next(
+                    (q for q in seated_tops
+                     if dist(strip_end, q[0]["xy"]) <= FIT_END_TOL), None
+                )
+                if wall_match is None or socket_match is None:
+                    continue
+                wd, wall_point = wall_match
+                fitting, st, k = socket_match
+                lead = strip_pt(st, *STRIP_LEAD)
+                counts["wall_via_socket"] += 1
+                msgs.append(
+                    f"wall_via_socket {piece_name(p, pi)} strand[{si}]: "
+                    f"{wd[0]} cord point {xy_text(wall_point)} -> "
+                    f"strip socket[{k}] PlugTop at "
+                    f"{xy_text((fitting['d'][1], fitting['d'][2]))}; "
+                    f"strip end={xy_text(strip_end)}, "
+                    f"captive lead={xy_text(lead)}, "
+                    f"lead gap={dist(strip_end, lead):.3f}"
+                )
+                break                       # count each strand once
+
     for pi, p in enumerate(L["pieces"]):
         kinds = name_kinds(p["a"], machines) | name_kinds(p["b"], machines)
         if not (kinds & {2, 3}):
@@ -770,6 +864,8 @@ def new_checks(W, L, dist_mode=False):
             + detail
         )
 
+    counts["wall_cross"], cross_msgs = wall_cross_checks(W, L, records)
+    msgs.extend(cross_msgs)
     counts["kink"], kink_msgs = kink_checks(L, dist_mode)
     msgs.extend(kink_msgs)
     return counts, msgs
