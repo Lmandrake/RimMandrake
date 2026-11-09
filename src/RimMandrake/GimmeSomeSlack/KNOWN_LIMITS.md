@@ -26,3 +26,10 @@ A wrecked machine has no power comp (`RM_RuinDrawsConduit`, `Source/Core/HookupP
 With this mod off, or the conduit def unticked in its settings, a conduit ending at a ruin stops at the footprint.
 
 - A blast that leaves a stump of 1 or 2 conduit cells off a junction, with no conduit in line within 6 cells of its end, draws no broken end: the stump reads as needless conduit and becomes a loop (`CordGraph.FacesGap`, `PruneSpurs`). Longer stumps and in-line cuts draw their ends. Telling them apart would need saved state, and the mod saves none for cords.
+
+## Round 4 residuals
+
+- 15 device-end S-bends over the four looks stay under the 0.10 cell kink floor (`ralph/live/lab_r3_checks.py` kink): the first 0.4-0.9 cell off a plug or slide-under pose is pinned, so the repair cannot widen them.
+- A solar panel that touches no conduit and has no `connectParent` (gss_ba_Modern t39713/t39714) is unpowered in vanilla and draws no cord.
+- A strip with two wall feeds plugs the second wall cord into a socket (`wall_via_socket`); only the strip's lead takes the outlet beside it.
+- Live M2c unforced bends: 7 on gss_ba_Modern (4 in round 3).
