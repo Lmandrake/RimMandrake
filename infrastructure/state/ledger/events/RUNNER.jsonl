@@ -5893,3 +5893,4 @@
 {"seat":"RUNNER","event":"live","id":"STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:48:32Z","tsn":1794199712093252749}
 {"seat":"RUNNER","event":"live","id":"OPS_TESTQ_UNSTICK_ECPK","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/testq/tick.log is 21951 s old (max 21600)","ts":"2026-11-09T05:48:07Z","tsn":1794203287526510236}
 {"seat":"RUNNER","event":"raise","id":"OPS_TESTQ_UNSTICK_ECPK","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T05:48:12Z","tsn":1794203292590543564}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-09T11:48:09Z","tsn":1794224889157123666}
