@@ -209,6 +209,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(strands > 100 && folds <= strands / 20, $"{folds} folds in {strands} strands (bar: one in twenty, where the bend would leave open ground)");
             Console.WriteLine($"  cord folds: {folds} in {strands} strands");
             PolishChecks();
+            CurvatureRepairChecks();
 
             // no sawtooth (seen in a lived-in colony 2026-11-07: a stretch of settled cord buckled into a jag on a run cut to two cells), walled room and open alike
             foreach (var scene in new (string name, Func<CordWorld> make, bool laidHere)[] { ("open runs", Room, true), ("short stumps", ShortStumps, true), ("heap", ReviewRound1Checks.PileWorld, false) })
@@ -410,7 +411,88 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
         }
 
-        /// <summary>The polish: a planted sawtooth and a planted corner read as faults and come out, the ends stay point for point; a strip beside a machine draws its lead as one straight nub.</summary>
+        private static void CurvatureRepairChecks()
+        {
+            var open = new CordWorld(40, 40);
+            bool Same(V2 a, V2 b) => a.X == b.X && a.Z == b.Z;
+            bool Pinned(List<V2> before, List<V2> after)
+            {
+                double[] s = Geo.CumLen(before);
+                int a = 0, b = before.Count - 1;
+                while (a < before.Count - 1 && s[a] < CordShape.RepairPin) a++;
+                while (b > 0 && s[b] > s[s.Length - 1] - CordShape.RepairPin) b--;
+                if (after.Count < Math.Max(a + 1, before.Count - b)) return false;
+                for (int i = 0; i <= a; i++) if (!Same(before[i], after[i])) return false;
+                for (int i = b; i < before.Count; i++)
+                    if (!Same(before[i], after[after.Count - before.Count + i])) return false;
+                return true;
+            }
+
+            var elbow = new List<V2>();
+            for (int i = 0; i <= 100; i++) elbow.Add(new V2(5 + i * 0.05, 10));
+            for (int i = 1; i <= 100; i++) elbow.Add(new V2(10, 10 + i * 0.05));
+            Check(CordShape.CurvatureFaults(elbow).Count > 0, "final repair sees a planted corner");
+            List<V2> round = CordShape.RepairCurvature(open, elbow);
+            Check(CordShape.CurvatureFaults(round).Count == 0, "final repair rounds the corner through both joins");
+            Check(Pinned(elbow, round), "final repair preserves both 0.35-cell end runs exactly");
+
+            var tied = new List<V2>();
+            for (int i = 0; i <= 100; i++)
+                tied.Add(new V2(5 + i * 0.05, 20 + (i > 35 && i < 65 ? 0.06 * Math.Sin(i * 2.2) : 0)));
+            int loopStart = tied.Count - 1;
+            V2 crossing = tied[loopStart];
+            double s0 = Geo.Length(tied);
+            for (int i = 1; i <= 64; i++)
+            {
+                double h = -Math.PI / 2 + 2 * Math.PI * i / 64;
+                tied.Add(i == 64 ? crossing : new V2(crossing.X + 0.16 * Math.Cos(h), crossing.Z + 0.16 + 0.16 * Math.Sin(h)));
+            }
+            double s1 = Geo.Length(tied);
+            for (int i = 1; i <= 100; i++) tied.Add(crossing + new V2(i * 0.05, 0));
+            var ties = new List<CordTie> { new CordTie { S0 = s0, S1 = s1, At = crossing } };
+            Check(CordShape.CurvatureFaults(tied, ties).Count > 0, "a tied loop does not hide a separate planted sawtooth");
+            List<V2> calm = CordShape.RepairCurvature(open, tied, ties);
+            Check(CordShape.CurvatureFaults(calm, ties).Count == 0, "final repair removes the separate sawtooth");
+            int start = calm.FindIndex(q => Same(q, crossing));
+            bool kept = start >= 0 && start + 64 < calm.Count;
+            for (int i = 0; i <= 64 && kept; i++) kept = Same(tied[loopStart + i], calm[start + i]);
+            Check(kept && Pinned(tied, calm), "final repair preserves the entire tied loop and both end runs exactly");
+            if (kept)
+            {
+                double[] s = Geo.CumLen(calm);
+                Check(Math.Abs(ties[0].S0 - s[start]) < 1e-9 && Math.Abs(ties[0].S1 - s[start + 64]) < 1e-9,
+                    "a repair before a tie updates its arc offsets");
+            }
+
+            var broad = new List<V2>();
+            for (int i = 0; i <= 200; i++)
+                broad.Add(new V2(20 + 2 * Math.Cos(i * 0.025), 20 + 2 * Math.Sin(i * 0.025)));
+            Check(!CordShape.MayNeedCurvatureRepair(broad)
+                && CordShape.CurvatureFaults(broad).Count == 0
+                && ReferenceEquals(broad, CordShape.RepairCurvature(open, broad)),
+                "a broad clean curve takes the cheap path and retains its original list");
+            var duplicateElbow = new List<V2>(elbow);
+            duplicateElbow.Insert(101, elbow[100]);
+            Check(CordShape.MayNeedCurvatureRepair(duplicateElbow)
+                && CordShape.CurvatureFaults(CordShape.RepairCurvature(open, duplicateElbow)).Count == 0,
+                "a duplicate vertex cannot hide a corner from the cheap bound");
+            var shifted = new List<V2>(elbow);
+            shifted.Add(elbow[elbow.Count - 1] + new V2(0, 0.007));
+            List<double> beforeShift = CordShape.CurvatureFaults(elbow);
+            List<double> afterShift = CordShape.CurvatureFaults(shifted);
+            Check(beforeShift.SequenceEqual(afterShift),
+                "a distant length change does not move existing curvature samples");
+
+            var blocked = new CordWorld(30, 30);
+            blocked.SetBlocked(new Cell(10, 10), BlockKind.Wall);
+            Check(!CordShape.RepairSegmentClear(blocked, new V2(9.8, 10.3), new V2(10.3, 9.8)),
+                "segment clearance catches a blocked corner between clear endpoints");
+            Check(!CordShape.RepairSegmentClear(null, new V2(9, 5), new V2(12, 5), q => q.X < 10 || q.X > 11),
+                "segment clearance applies the supplied ground rule between vertices");
+        }
+
+        /// <summary>The polish: planted sawtooth and corners come out, the ends stay point for point;
+        /// a strip beside a device keeps its captive lead upstream and takes the device through a socket PlugTop.</summary>
         private static void PolishChecks()
         {
             var open = new CordWorld(40, 40);
@@ -477,15 +559,71 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Check(underOld >= 4, $"can-fail: laid blind to the beds, a through cord's slack passes under one {underOld} times");
                 Check(strands > 0 && under * 4 <= underOld, $"laying keeps a through cord's slack out from under beds: {under} passes in {strands} strands (blind to them {underOld})");
             }
-            // a Modern T with a battery right beside it: the battery takes the strip's lead, a straight nub, with no hook round the strip's end
+            // A Modern T beside a device: the captive lead takes the upstream arm;
+            // this device branch must attach to a socket through a seated PlugTop.
             var w = new CordWorld(30, 20);
             for (int x = 4; x <= 24; x++) w.SetConduit(new Cell(x, 8));
+            // World/lab machine kind 0 is a source. Without a supply this fixture
+            // cannot assert which graph edge is upstream.
+            w.SetBlocked(new Cell(5, 6), BlockKind.Device);
+            w.Machines.Add(new MachineInfo { Id = "supply", Kind = (MachineKind)0, X0 = 5, Z0 = 6, W = 1, H = 1, Hookups = new List<Cell> { new Cell(5, 8) } });
             w.SetBlocked(new Cell(14, 9), BlockKind.Device);
             w.Machines.Add(new MachineInfo { Id = "lamp", Kind = MachineKind.Consumer, X0 = 14, Z0 = 9, W = 1, H = 1, Hookups = new List<Cell> { new Cell(14, 8) } });
             var b = new CordBuilder();
             List<LaidPiece> ps = b.Build(w, JunctionStripChecks.Modern(), c => true);
             LaidPiece lead = ps.FirstOrDefault(p => p.EndA != null && (p.EndA.StartsWith("consumer") || p.EndB.StartsWith("consumer")));
-            Check(lead != null && lead.Strands.Count == 1 && CordShapeAudit.Corners(lead.Strands[0].Pts, 0).Count == 0 && Geo.Length(lead.Strands[0].Pts) < 1.6, "a strip's lead into the machine beside it is one straight nub");
+            CordEdge device = b.Graph.CordEdges().First(e =>
+                (b.Graph.Nodes[e.A].IsMachine && b.Graph.Nodes[e.A].Machine?.Id == "lamp")
+                || (b.Graph.Nodes[e.B].IsMachine && b.Graph.Nodes[e.B].Machine?.Id == "lamp"));
+            VId v = b.Graph.Nodes[device.A].IsMachine ? device.B : device.A;
+            bool atA = device.A.Equals(v);
+            CordBuilder.StripPose sp = CordBuilder.PoseStrip(b.Graph, v, JunctionStripChecks.Modern().Seed);
+            V2 ad = CordBuilder.ArmDir(b.Graph, device, atA);
+            var deviceArm = new Cell((int)ad.X, (int)ad.Z);
+            CordEdge upstream = b.Graph.StripLeadOf(v);
+            V2 supplyDir = upstream == null ? default(V2) : CordBuilder.ArmDir(b.Graph, upstream, upstream.A.Equals(v));
+            Check(upstream != null && !ReferenceEquals(upstream, device)
+                && sp.LeadArm == new Cell((int)supplyDir.X, (int)supplyDir.Z)
+                && sp.LeadArm != deviceArm,
+                "a strip's captive lead takes the upstream arm, not the machine beside it");
+
+            bool DeviceSocketRule(LaidPiece cord)
+            {
+                if (cord == null || cord.Strands.Count != 1) return false;
+                List<CordDecal> tops = cord.Decals.Where(d => d.Kind == DecalKind.PlugTop).ToList();
+                if (tops.Count != 1) return false;
+                CordDecal top = tops[0];
+                if (!Enumerable.Range(0, CordBuilder.StripHeads.Length)
+                    .Any(k => V2.Dist(top.Pos, sp.SocketAt(k)) < 1e-8)) return false;
+                V2 outDir = CordAudit.Dir(top.Angle);
+                if (V2.Dist(outDir, sp.PlugOut(deviceArm)) > 1e-8) return false;
+                V2 boot = top.Pos + outDir * CordBuilder.PlugTopReach;
+                foreach (CordStrand s in cord.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 2) return false;
+                    V2 a = s.Pts[0], z = s.Pts[s.Pts.Count - 1];
+                    if (V2.Dist(atA ? a : z, boot) > 1e-7
+                        || V2.Dist(a, sp.LeadTip) < 1e-7
+                        || V2.Dist(z, sp.LeadTip) < 1e-7) return false;
+                }
+                return true;
+            }
+            Check(DeviceSocketRule(lead),
+                "the adjacent machine's cord ends at a socket PlugTop boot; neither end uses the captive lead point");
+            if (lead != null && lead.Strands.Count == 1 && lead.Strands[0].Pts.Count >= 2)
+            {
+                var missingPlug = new LaidPiece
+                {
+                    Strands = lead.Strands,
+                    Decals = lead.Decals.Where(d => d.Kind != DecalKind.PlugTop).ToList()
+                };
+                Check(!DeviceSocketRule(missingPlug), "can-fail: a missing socket PlugTop is rejected");
+                var wrong = new List<V2>(lead.Strands[0].Pts);
+                wrong[atA ? 0 : wrong.Count - 1] = sp.LeadTip;
+                var stolenLead = new LaidPiece { Decals = lead.Decals };
+                stolenLead.Strands.Add(new CordStrand { Pts = wrong });
+                Check(!DeviceSocketRule(stolenLead), "can-fail: a device strand ending at the captive lead point is rejected");
+            }
         }
     }
 }

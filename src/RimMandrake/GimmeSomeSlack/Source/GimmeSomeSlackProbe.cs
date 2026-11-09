@@ -535,6 +535,34 @@ namespace RimMandrake.GimmeSomeSlack
             var busy = new List<Cell>();
             var furniture = new List<Cell>();
             var costs = new List<string>();
+            CompPower[] powers = CordWorldAdapter.MachinePowerComps(map).ToArray();
+            var powerById = new Dictionary<string, CompPower>(StringComparer.Ordinal);
+            foreach (CompPower c in powers)
+            {
+                powerById["t" + c.parent.thingIDNumber] = c;
+                powerById["c" + c.parent.thingIDNumber] = c;
+            }
+            var shown = new HashSet<string>(w.Machines.Select(m => m.Id), StringComparer.Ordinal);
+            var incoming = new HashSet<string>(w.Machines.SelectMany(m => m.MachineLinks), StringComparer.Ordinal);
+            string ParentFields(string id)
+            {
+                powerById.TryGetValue(id, out CompPower c);
+                Thing p = c?.connectParent?.parent;
+                return ",\"connectParent\":" + (p == null ? "null" : "[" + p.Position.x + "," + p.Position.z + "]")
+                    + ",\"parentDraw\":" + (p == null ? "null" : J.S(ConduitVisuals.HookupTo(p).ToString()));
+            }
+            var unhooked = new List<string>();
+            foreach (CompPower c in powers)
+            {
+                Thing th = c.parent;
+                string suffix = th.thingIDNumber.ToString();
+                if (shown.Contains("t" + suffix) || shown.Contains("c" + suffix)) continue;
+                string id = (c.TransmitsPowerNow ? "t" : "c") + suffix;
+                CellRect r = th.OccupiedRect();
+                unhooked.Add("{\"id\":" + J.S(id) + ",\"x\":" + r.minX + ",\"z\":" + r.minZ
+                    + ",\"w\":" + r.Width + ",\"h\":" + r.Height + ParentFields(id)
+                    + ",\"hasHookup\":false,\"hasLink\":" + J.B(incoming.Contains(id)) + "}");
+            }
             for (int z = 0; z < w.Height; z++)
                 for (int x = 0; x < w.Width; x++)
                 {
@@ -548,8 +576,11 @@ namespace RimMandrake.GimmeSomeSlack
                 }
             var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
                 + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
+                + ParentFields(m.Id) + ",\"hasHookup\":" + J.B(m.Hookups.Count > 0)
+                + ",\"hasLink\":" + J.B(m.MachineLinks.Count > 0 || incoming.Contains(m.Id))
                 + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + (m.Foot ? ",\"foot\":true" : "") + "}");
             string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy) + ",\"furniture\":" + L(furniture) + ",\"costs\":[" + string.Join(",", costs) + "]"
+                + ",\"connectParentData\":true,\"unhooked\":[" + string.Join(",", unhooked) + "]"
                 + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
                 + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))
                 + ",\"opt\":{\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)

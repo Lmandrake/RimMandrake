@@ -1,24 +1,85 @@
 #!/usr/bin/env python3
-"""Round 3 offline checks (owner 2026-11-08 5:18 PM look at the round-2 build), over a shape-lab world and its laid output, plus the
-mod's textures. Runs here on files, no game.
+"""Round 3 offline checks over a shape-lab world and its laid output.
 
-    python3 ralph/live/lab_r3_checks.py WORLD.json LAID.json [--tex TEXTURES_DIR] [--json OUT]
+    python3 ralph/live/lab_r3_checks.py WORLD.json LAID.json \
+        [--tex TEXTURES_DIR] [--json OUT] [--dist]
 
-Counts (each must be 0):
-  side_entry    side-view plugs lying against a power strip's edge ("power strips don't plug into the sides, they plug in from above")
-  uncovered     strip sockets a cord ends at with no face-on plug (PlugTop) centred on them
-  wall_no_plug  Modern (strip-look) wall entries drawn as a hole plate, not an outlet with a seated plug
-  dead_end      strand ends at no port, decal, machine, wall face, fray or other strand end
-  undrawn       transmitter buildings ('t' ids) on a net through a touching drawn transmitter that no strand reaches
-  baked_stub    (--tex) decal textures whose opaque pixels run where the code draws the cord: behind a plug's boot, from a wall/rock
-                stub's cord side, past a junction arm's tuck point (a cord baked into the art)
-Exit 1 when any count is non-zero.
+Every count must be zero.
+
+Existing checks:
+  side_entry, uncovered, wall_no_plug, dead_end, undrawn, baked_stub
+
+New checks:
+  parent_no_cord  machine has connectParent but no hookup/link; legacy dumps count 0
+  lead_device  device connection at a strip that is not socket-seated
+  loose_plug   side-view machine plug lacking a cord end or machine seating
+  double_cord  more than one strand end assigned to a plug fitting
+  wall_vanish  strand end in/against blocked geometry without an allowed fitting
+  kink         strand failing any curvature, saw-tooth, or V-turn threshold
+
+Distances are in cells. Angles in JSON are radians.
+
+--dist prints per-strand measurements and percentile distributions, including
+unflagged strands. It does not change thresholds or exit-status behavior.
+
+The kink thresholds below are provisional: calibrate them against the FULL
+baseline with --dist. A first-point/last-point/count sample cannot measure bends.
+Only baked() imports PIL/numpy.
 """
 import argparse, glob, json, math, os, sys
+import bisect
 
 STRIP_HEADS, STRIP_HEAD_Z, STRIP_LEAD = [-0.328, -0.128, 0.065, 0.264], -0.049, (0.39, -0.05)
 PLUGTOP_REACH = 0.1445
 ARM_TUCK = 0.40
+
+# Fitting-placement conventions inferred from the supplied laid sample.
+# Local +X is (cos(angle), sin(angle)).
+#
+# Machine Plug:
+#   strand end = decal centre + 0.25 * scale * local +X
+#   art head   = decal centre + 0.46 * scale * local +X
+#
+# These are endpoint placement conventions, not a claim that art +X is its boot.
+# The renderer can terminate a strand under the fitting's opaque pixels.
+PLUG_CORD_X = 0.25
+PLUG_HEAD_X = 0.46
+PLUGTOP_REFERENCE_SCALE = 0.343
+WALL_PAST_FACE_DEPTH = 0.03     # CordBuilder.PastFaceDepth, in cells
+WALL_FACE_MARGIN = 0.01        # WallMount.FaceMargin, in cells
+
+FIT_END_TOL = 0.065
+SOCKET_CENTRE_TOL = 0.025
+STRIP_CONNECTION_PAD = 0.20
+LEAD_END_TOL = 0.10
+MACHINE_HEAD_PAD = 0.08
+LAMP_HEAD_PAD = 0.02            # require the lamp's plug head to be under it
+WALL_PAIR_HEAD_TOL = 0.12
+WALL_PAIR_ANGLE_COS = 0.97
+WALL_END_PAD = 0.06             # also catches endpoints on wall corners/faces
+FRAY_END_TOL = 0.08
+
+# Kink thresholds: provisional until the full baseline has been measured.
+KINK_END_IGNORE = 0.35
+KINK_SAMPLE_STEP = 0.025
+KINK_HALF_WINDOWS = (0.08, 0.16, 0.24)
+KINK_MIN_RADIUS = 0.10          # fail when effective radius is smaller
+
+SAW_HALF_WINDOW = 0.10
+SAW_NOISE_DEG = 7.5
+SAW_MAX_SEPARATION = 0.45
+SAW_MIN_OPPOSITE_DEG = 25.0     # weaker of two opposite bend peaks
+
+V_TANGENT_HALF_WINDOW = 0.04
+V_MAX_ARC = 0.60
+V_MAX_TURN_DEG = 160.0           # fail when signed heading change exceeds this
+
+# CableTie marks the crossing of an intentional strain-relief loop.
+# Recover its two visits on this strand; exempt that arc, not a nearby disc.
+TIED_LOOP_REACH = 0.40
+TIED_LOOP_VISIT_TOL = 0.05
+TIED_LOOP_ARC_PAD = 0.08
+KINK_FRAY_RADIUS_IGNORE = 2.5
 
 
 def rot(x, z, a):
@@ -36,8 +97,711 @@ def dist(p, q):
     return math.hypot(p[0] - q[0], p[1] - q[1])
 
 
-def lab_checks(W, L):
-    out, msgs = {}, []
+def piece_name(p, pi):
+    label = p.get("name") or p.get("id")
+    route = f"{p['a']} -> {p['b']}"
+    return f"piece[{pi}]" + (f" {label}" if label is not None else "") + f" {route}"
+
+
+def xy_text(p):
+    return f"({p[0]:.3f},{p[1]:.3f})"
+
+
+def validate_laid(L):
+    """Reject trimmed samples before the unchanged existing checks see them."""
+    for pi, p in enumerate(L["pieces"]):
+        for si, strand in enumerate(p["strands"]):
+            for vi, v in enumerate(strand):
+                if (not isinstance(v, (list, tuple)) or len(v) < 2
+                        or any(isinstance(t, bool) or not isinstance(t, (int, float))
+                               or not math.isfinite(t) for t in v[:2])):
+                    raise ValueError(
+                        f"piece[{pi}] strand[{si}] vertex[{vi}] is not a finite "
+                        "[x,z] point. Supply the full laid polyline; the trimmed "
+                        "[first_point,last_point,count] sample is not runnable input."
+                    )
+
+
+def box_distance(p, x, z, w, h):
+    dx = max(x - p[0], 0.0, p[0] - (x + w))
+    dz = max(z - p[1], 0.0, p[1] - (z + h))
+    return math.hypot(dx, dz)
+
+
+def machine_distance(p, m):
+    return box_distance(p, m["x"], m["z"], m["w"], m["h"])
+
+
+def local_axis_point(d, x):
+    return d[1] + math.cos(d[3]) * x, d[2] + math.sin(d[3]) * x
+
+
+def wall_cord_seat(d):
+    # EntryDecal/OutletDecal centre = face + into * (margin + depth / 2).
+    # PastFace/Overrun end = face + into * 0.03.
+    # These depths are cells, independent of the decal's across scale.
+    into_z = math.sin(d[3])
+    depth = 0.32 if into_z > 0.5 else 0.06 if into_z < -0.5 else 0.10
+    return local_axis_point(
+        d, WALL_PAST_FACE_DEPTH - WALL_FACE_MARGIN - depth / 2.0
+    )
+
+
+def plugtop_cord(d):
+    # PLUGTOP_REACH is already in cells at the reference decal scale.
+    return local_axis_point(
+        d, PLUGTOP_REACH * d[4] / PLUGTOP_REFERENCE_SCALE
+    )
+
+
+def unique_decals(L):
+    """Deduplicate repeated fitting declarations, preserving piece ownership."""
+    result, lookup = [], {}
+    for pi, p in enumerate(L["pieces"]):
+        for d in p["decals"]:
+            key = (
+                d[0], round(d[1], 6), round(d[2], 6),
+                round(math.cos(d[3]), 6), round(math.sin(d[3]), 6),
+                round(d[4], 6),
+            )
+            if key not in lookup:
+                lookup[key] = len(result)
+                result.append({"d": d, "pieces": set()})
+            result[lookup[key]]["pieces"].add(pi)
+    return result
+
+
+def name_kinds(nm, machines):
+    exact = [m for m in machines if m["id"] == nm]
+    if exact:
+        return {int(m["kind"]) for m in exact}
+    prefix = nm.split(":", 1)[0].lower()
+    return {
+        "source": {0},
+        "battery": {1},
+        # The sample calls device branches "consumer"; allow lamp ownership too.
+        "consumer": {2, 3},
+        "lamp": {3},
+        "transmitter": {4},
+    }.get(prefix, set())
+
+
+def intended_machines(piece_indices, L, machines):
+    """Prefer explicit machine identities/cells; otherwise constrain by kind."""
+    exact, kinds = [], set()
+    for pi in piece_indices:
+        p = L["pieces"][pi]
+        for nm in (p["a"], p["b"]):
+            nk = name_kinds(nm, machines)
+            kinds.update(nk)
+            explicit = [m for m in machines if m["id"] == nm]
+            if explicit:
+                exact.extend(explicit)
+                continue
+            if not nk or ":" not in nm:
+                continue
+            try:
+                fields = nm.split(":", 1)[1].split(",")
+                if len(fields) != 2:
+                    continue
+                x, z = (float(v) for v in fields)
+            except ValueError:
+                continue
+            exact.extend(
+                m for m in machines
+                if int(m["kind"]) in nk and m["x"] == x and m["z"] == z
+            )
+    if exact:
+        return exact
+    if kinds:
+        return [m for m in machines if int(m["kind"]) in kinds]
+    return machines
+
+
+def bend_angle(u, v):
+    if math.hypot(*u) < 1e-10 or math.hypot(*v) < 1e-10:
+        return None
+    return math.atan2(u[0] * v[1] - u[1] * v[0],
+                      u[0] * v[0] + u[1] * v[1])
+
+
+def strand_metrics(strand, cable_ties=(), fray_ends=(False, False)):
+    """Measure geometry using physical arc length, not vertex counts.
+
+    Effective radius at s and half-window h:
+        h / abs(turn between chords [s-h,s] and [s,s+h])
+
+    This recovers R on a circular arc and remains finite at a sharp reversal.
+    Multiple fixed windows expose both narrow bends and broader hairpins.
+
+    Saw value:
+        maximum weaker peak of opposite signed bends within the stated arc gap.
+
+    V value:
+        maximum absolute signed change of smoothed tangent heading over ANY
+        subinterval of at most V_MAX_ARC. Tangents are unwrapped incrementally.
+        Intervals crossing an authored CableTie loop are exempt.
+        Tied-loop support is also excluded from radius and saw measurements.
+        A matching fray exempts only its final 2.5 cells from radius measurement.
+    """
+    points = []
+    for v in strand:
+        q = (float(v[0]), float(v[1]))
+        if not points or dist(points[-1], q) > 1e-10:
+            points.append(q)
+
+    arc = [0.0]
+    for a, b in zip(points, points[1:]):
+        arc.append(arc[-1] + dist(a, b))
+    total = arc[-1] if points else 0.0
+    lo, hi = KINK_END_IGNORE, total - KINK_END_IGNORE
+
+    m = {
+        "length": total, "vertices": len(strand),
+        "curvature": 0.0, "radius": math.inf, "radius_at": None,
+        "saw_deg": 0.0, "saw_at": None, "saw_gap": 0.0,
+        "v_deg": 0.0, "v_at": None, "v_arc": 0.0,
+        "radius_samples": 0, "tangent_samples": 0,
+    }
+    if len(points) < 2 or hi <= lo:
+        return m
+
+    def at(s):
+        s = min(total, max(0.0, s))
+        i = min(len(points) - 2, max(0, bisect.bisect_right(arc, s) - 1))
+        t = (s - arc[i]) / (arc[i + 1] - arc[i])
+        return (points[i][0] + t * (points[i + 1][0] - points[i][0]),
+                points[i][1] + t * (points[i + 1][1] - points[i][1]))
+
+    tied_ranges = []
+    for tie in cable_ties:
+        visits = []
+        for i, (a, b) in enumerate(zip(points, points[1:])):
+            dx, dz = b[0] - a[0], b[1] - a[1]
+            dd = dx * dx + dz * dz
+            u = max(0.0, min(1.0, (
+                (tie[0] - a[0]) * dx + (tie[1] - a[1]) * dz
+            ) / dd))
+            q = (a[0] + u * dx, a[1] + u * dz)
+            gap = dist(q, tie)
+            if gap > TIED_LOOP_VISIT_TOL:
+                continue
+            s = arc[i] + u * (arc[i + 1] - arc[i])
+            if (visits and s - visits[-1][2]
+                    <= 2 * TIED_LOOP_VISIT_TOL + KINK_SAMPLE_STEP):
+                best_s, best_gap, _ = visits[-1]
+                if gap < best_gap:
+                    best_s, best_gap = s, gap
+                visits[-1] = (best_s, best_gap, s)
+            else:
+                visits.append((s, gap, s))
+        for a, b in zip(visits, visits[1:]):
+            sa, sb = a[0], b[0]
+            if not 0.20 <= sb - sa <= 2.5:
+                continue
+            support = [at(sa), at(sb)] + [
+                q for q, s in zip(points, arc) if sa < s < sb
+            ]
+            if all(dist(q, tie) <= TIED_LOOP_REACH for q in support):
+                tied_ranges.append((sa, sb))
+
+    def tied_span(a, b):
+        return any(
+            a <= end + TIED_LOOP_ARC_PAD
+            and b >= start - TIED_LOOP_ARC_PAD
+            for start, end in tied_ranges
+        )
+
+    n = max(1, int(math.ceil((hi - lo) / KINK_SAMPLE_STEP)))
+    positions = [lo + (hi - lo) * i / n for i in range(n + 1)]
+
+    def turn_at(s, h):
+        if (s - h < lo - 1e-9 or s + h > hi + 1e-9
+                or tied_span(s - h, s + h)):
+            return None
+        a, b, c = at(s - h), at(s), at(s + h)
+        return bend_angle((b[0] - a[0], b[1] - a[1]),
+                          (c[0] - b[0], c[1] - b[1]))
+
+    for s in positions:
+        if ((fray_ends[0] and s <= KINK_FRAY_RADIUS_IGNORE)
+                or (fray_ends[1] and total - s <= KINK_FRAY_RADIUS_IGNORE)):
+            continue
+        for h in KINK_HALF_WINDOWS:
+            angle = turn_at(s, h)
+            if angle is None:
+                continue
+            m["radius_samples"] += 1
+            curvature = abs(angle) / h
+            if curvature > m["curvature"]:
+                m["curvature"] = curvature
+                m["radius"] = 1.0 / curvature
+                m["radius_at"] = at(s)
+
+    # Condense adjacent same-sign bend samples into lobes. This avoids treating
+    # every densely sampled vertex as a separate saw tooth.
+    lobes = []
+    for s in positions:
+        angle = turn_at(s, SAW_HALF_WINDOW)
+        if angle is None:
+            continue
+        degrees = math.degrees(angle)
+        if abs(degrees) < SAW_NOISE_DEG:
+            continue
+        sign = 1 if degrees > 0 else -1
+        if (lobes and lobes[-1]["sign"] == sign
+                and s - lobes[-1]["last"] <= SAW_MAX_SEPARATION):
+            lobe = lobes[-1]
+            lobe["last"] = s
+            if abs(degrees) > lobe["peak"]:
+                lobe["peak"], lobe["s"] = abs(degrees), s
+        else:
+            lobes.append({
+                "sign": sign, "peak": abs(degrees), "s": s, "last": s
+            })
+
+    for i, a in enumerate(lobes):
+        for b in lobes[i + 1:]:
+            gap = b["s"] - a["s"]
+            if gap > SAW_MAX_SEPARATION:
+                # Peak positions are ordered because lobes occupy disjoint runs.
+                break
+            if (a["sign"] == b["sign"]
+                    or tied_span(a["s"] - SAW_HALF_WINDOW,
+                                 b["s"] + SAW_HALF_WINDOW)):
+                continue
+            value = min(a["peak"], b["peak"])
+            if value > m["saw_deg"]:
+                m["saw_deg"] = value
+                m["saw_gap"] = gap
+                m["saw_at"] = at((a["s"] + b["s"]) / 2.0)
+
+    tangents = []
+    h = V_TANGENT_HALF_WINDOW
+    for s in positions:
+        if (s - h < lo - 1e-9 or s + h > hi + 1e-9
+                or tied_span(s - h, s + h)):
+            continue
+        a, b = at(s - h), at(s + h)
+        vector = (b[0] - a[0], b[1] - a[1])
+        if math.hypot(*vector) > 1e-10:
+            tangents.append((s, vector))
+    m["tangent_samples"] = len(tangents)
+
+    if tangents:
+        headings = [0.0]
+        for a, b in zip(tangents, tangents[1:]):
+            angle = bend_angle(a[1], b[1])
+            headings.append(headings[-1] + (angle if angle is not None else 0.0))
+
+        def tied_loop_turn(i, j):
+            return tied_span(tangents[i][0] - h, tangents[j][0] + h)
+
+        first = 0
+        for j, (sj, _) in enumerate(tangents):
+            while sj - tangents[first][0] > V_MAX_ARC + 1e-9:
+                first += 1
+            for i in range(first, j):
+                value = math.degrees(abs(headings[j] - headings[i]))
+                if tied_loop_turn(i, j):
+                    continue
+                if value > m["v_deg"]:
+                    si = tangents[i][0]
+                    m["v_deg"] = value
+                    m["v_arc"] = sj - si
+                    m["v_at"] = at((si + sj) / 2.0)
+    return m
+
+
+def percentile(values, fraction):
+    ordered = sorted(values)
+    if not ordered:
+        return None
+    x = (len(ordered) - 1) * fraction
+    i = int(math.floor(x))
+    j = min(i + 1, len(ordered) - 1)
+    return ordered[i] + (ordered[j] - ordered[i]) * (x - i)
+
+
+def kink_checks(L, dist_mode):
+    count, msgs, records = 0, [], []
+    for pi, p in enumerate(L["pieces"]):
+        cable_ties = [
+            (d[1], d[2]) for d in p["decals"] if d[0] == "CableTie"
+        ]
+        frays = [
+            (d[1], d[2]) for d in p["decals"]
+            if d[0] in ("FrayLive", "FrayDead")
+        ]
+        for si, strand in enumerate(p["strands"]):
+            if len(strand) < 2:
+                continue
+            fray_ends = tuple(
+                any(dist(point, fray) <= FRAY_END_TOL for fray in frays)
+                for point in (strand[0], strand[-1])
+            )
+            m = strand_metrics(strand, cable_ties, fray_ends)
+            label = f"{piece_name(p, pi)} strand[{si}]"
+            records.append((label, m))
+            reasons = []
+            if m["radius"] < KINK_MIN_RADIUS:
+                reasons.append(
+                    f"radius={m['radius']:.4f}<{KINK_MIN_RADIUS:.3f} cell "
+                    f"at {xy_text(m['radius_at'])} "
+                    f"(curvature={m['curvature']:.3f}/cell)"
+                )
+            if m["saw_deg"] >= SAW_MIN_OPPOSITE_DEG:
+                reasons.append(
+                    f"saw={m['saw_deg']:.2f}>={SAW_MIN_OPPOSITE_DEG:.1f} deg "
+                    f"at {xy_text(m['saw_at'])}, "
+                    f"opposite-peak gap={m['saw_gap']:.3f} cell"
+                )
+            if m["v_deg"] > V_MAX_TURN_DEG:
+                reasons.append(
+                    f"V-turn={m['v_deg']:.2f}>{V_MAX_TURN_DEG:.1f} deg "
+                    f"in {m['v_arc']:.3f} cell at {xy_text(m['v_at'])}"
+                )
+            if reasons:
+                count += 1
+                msgs.append(
+                    f"kink {label}: " + "; ".join(reasons)
+                    + f"; length={m['length']:.3f}, vertices={m['vertices']}"
+                )
+
+    if dist_mode:
+        msgs.append(
+            "dist thresholds: "
+            f"radius<{KINK_MIN_RADIUS:.3f} cell; "
+            f"saw>={SAW_MIN_OPPOSITE_DEG:.1f} deg within "
+            f"{SAW_MAX_SEPARATION:.3f} cell; "
+            f"V-turn>{V_MAX_TURN_DEG:.1f} deg within {V_MAX_ARC:.3f} cell; "
+            f"end-ignore={KINK_END_IGNORE:.3f} cell"
+        )
+        for label, m in records:
+            radius = "inf" if math.isinf(m["radius"]) else f"{m['radius']:.4f}"
+            location = (
+                xy_text(m["radius_at"]) if m["radius_at"] is not None else "-"
+            )
+            msgs.append(
+                f"dist strand {label}: length={m['length']:.3f} "
+                f"kappa_max={m['curvature']:.4f}/cell "
+                f"radius_min={radius} at {location}; "
+                f"saw_max={m['saw_deg']:.2f} deg "
+                f"at {xy_text(m['saw_at']) if m['saw_at'] else '-'}; "
+                f"V_max={m['v_deg']:.2f} deg "
+                f"at {xy_text(m['v_at']) if m['v_at'] else '-'}; "
+                f"radius_samples={m['radius_samples']} "
+                f"tangent_samples={m['tangent_samples']}"
+            )
+
+        # Quantiles are over one maximum per measured strand, not over vertices.
+        groups = (
+            ("kappa_max /cell", [
+                m["curvature"] for _, m in records if m["radius_samples"]
+            ]),
+            ("saw_max deg", [
+                m["saw_deg"] for _, m in records if m["radius_samples"]
+            ]),
+            ("V_max deg", [
+                m["v_deg"] for _, m in records if m["tangent_samples"] >= 2
+            ]),
+        )
+        for title, values in groups:
+            summary = " ".join(
+                f"p{int(q * 100):02d}={percentile(values, q):.4f}"
+                for q in (0, .5, .75, .9, .95, .99, 1)
+            ) if values else "no measurable strands"
+            msgs.append(f"dist {title}: n={len(values)} {summary}")
+
+        short = sum(m["radius_samples"] == 0 for _, m in records)
+        msgs.append(
+            f"dist coverage: strands={len(records)}, "
+            f"without radius support after end trimming={short}"
+        )
+    return count, msgs
+
+
+def new_checks(W, L, dist_mode=False):
+    counts = {
+        "lead_device": 0, "loose_plug": 0,
+        "double_cord": 0, "wall_vanish": 0, "kink": 0,
+    }
+    msgs = []
+    machines = W["machines"]
+    records = unique_decals(L)
+
+    ends = []
+    piece_ends = [[] for _ in L["pieces"]]
+    for pi, p in enumerate(L["pieces"]):
+        for si, strand in enumerate(p["strands"]):
+            if len(strand) < 2:
+                continue
+            for side, point in (("first", strand[0]), ("last", strand[-1])):
+                ei = len(ends)
+                ends.append({
+                    "xy": tuple(point[:2]), "pi": pi, "si": si, "side": side
+                })
+                piece_ends[pi].append(ei)
+
+    def end_label(ei):
+        e = ends[ei]
+        return (
+            f"{piece_name(L['pieces'][e['pi']], e['pi'])} "
+            f"strand[{e['si']}] {e['side']}"
+        )
+
+    # Match separately emitted wall Plug decals to their WallOutlet assemblies.
+    # An assembly gets one endpoint counter, not one counter per overlapping decal.
+    wall_records = [r for r in records if r["d"][0] == "WallOutlet"]
+    paired_plugs = set()
+    wall_has_plug = set()
+    for ri, r in enumerate(records):
+        d = r["d"]
+        if d[0] != "Plug":
+            continue
+        head = local_axis_point(d, PLUG_HEAD_X * d[4])
+        possible = []
+        for wi, wr in enumerate(wall_records):
+            wd = wr["d"]
+            if not (r["pieces"] & wr["pieces"]):
+                continue
+            if math.cos(d[3] - wd[3]) < WALL_PAIR_ANGLE_COS:
+                continue
+            gap = dist(head, (wd[1], wd[2]))
+            if gap <= WALL_PAIR_HEAD_TOL:
+                possible.append((gap, wi))
+        if possible:
+            _, wi = min(possible)
+            paired_plugs.add(ri)
+            wall_has_plug.add(wi)
+
+    fittings = []
+    for ri, r in enumerate(records):
+        d = r["d"]
+        kind = d[0]
+        if kind == "Plug" and ri not in paired_plugs:
+            point = local_axis_point(d, PLUG_CORD_X * d[4])
+        elif kind == "PlugTop":
+            point = plugtop_cord(d)
+        elif kind == "WallOutlet":
+            point = wall_cord_seat(d)
+        else:
+            continue
+        fittings.append({
+            "d": d, "xy": point, "pieces": r["pieces"],
+            "ends": [], "record": ri,
+        })
+
+    # Assign each actual strand end to at most one fitting. Nearby sockets do not
+    # all claim the same end merely because their tolerance circles overlap.
+    for ei, e in enumerate(ends):
+        possible = [
+            (dist(e["xy"], f["xy"]), fi)
+            for fi, f in enumerate(fittings)
+            if dist(e["xy"], f["xy"]) <= FIT_END_TOL
+        ]
+        if possible:
+            _, fi = min(possible)
+            fittings[fi]["ends"].append(ei)
+
+    for f in fittings:
+        if len(f["ends"]) > 1:
+            counts["double_cord"] += 1
+            msgs.append(
+                f"double_cord {f['d'][0]} at "
+                f"{xy_text((f['d'][1], f['d'][2]))}, "
+                f"cord point {xy_text(f['xy'])}: "
+                f"{len(f['ends'])} strand ends; "
+                + "; ".join(end_label(ei) for ei in f["ends"])
+            )
+
+    # Only unmatched side-view Plugs are machine fittings. Wall-seated Plugs were
+    # consumed by the assembly matching above.
+    for f in fittings:
+        d = f["d"]
+        if d[0] != "Plug":
+            continue
+        head = local_axis_point(d, PLUG_HEAD_X * d[4])
+        candidates = intended_machines(f["pieces"], L, machines)
+        machine = min(
+            candidates, key=lambda m: machine_distance(head, m), default=None
+        )
+        reasons = []
+        if not f["ends"]:
+            nearest = min(
+                (dist(f["xy"], e["xy"]) for e in ends), default=math.inf
+            )
+            reasons.append(
+                f"no strand end at cord point {xy_text(f['xy'])}; "
+                f"nearest end={nearest:.3f} cell, tolerance={FIT_END_TOL:.3f}"
+            )
+        if machine is None:
+            reasons.append(f"head {xy_text(head)} has no candidate machine")
+        else:
+            gap = machine_distance(head, machine)
+            pad = LAMP_HEAD_PAD if int(machine["kind"]) == 3 else MACHINE_HEAD_PAD
+            if gap > pad:
+                reasons.append(
+                    f"head {xy_text(head)} is {gap:.3f} cell outside "
+                    f"machine {machine['id']} kind={machine['kind']} "
+                    f"rect=({machine['x']},{machine['z']},"
+                    f"{machine['w']},{machine['h']}), allowance={pad:.3f}"
+                )
+        if reasons:
+            counts["loose_plug"] += 1
+            owners = "; ".join(
+                piece_name(L["pieces"][pi], pi) for pi in sorted(f["pieces"])
+            )
+            msgs.append(
+                f"loose_plug at {xy_text((d[1], d[2]))}: "
+                + "; ".join(reasons) + "; " + owners
+            )
+
+    # A direct device branch must arrive at a socket-seated PlugTop.
+    # A valid socket fit takes precedence over proximity to the captive lead:
+    # the final socket and lead can be close after rotation/scaling.
+    strips = [
+        r["d"] for r in records
+        if r["d"][0] in ("PowerStrip", "PowerStripDark")
+    ]
+    top_fittings = [f for f in fittings if f["d"][0] == "PlugTop"]
+    for pi, p in enumerate(L["pieces"]):
+        kinds = name_kinds(p["a"], machines) | name_kinds(p["b"], machines)
+        if not (kinds & {2, 3}):
+            continue
+        for st in strips:
+            if abs(st[4]) < 1e-10:
+                continue
+            lead = strip_pt(st, *STRIP_LEAD)
+            sockets = [strip_pt(st, hx, STRIP_HEAD_Z) for hx in STRIP_HEADS]
+            socket_tops = [
+                f for f in top_fittings
+                if any(
+                    dist((f["d"][1], f["d"][2]), sk) <= SOCKET_CENTRE_TOL
+                    for sk in sockets
+                )
+            ]
+            anchors = [lead] + [f["xy"] for f in socket_tops]
+            possible = []
+            for ei in piece_ends[pi]:
+                e = ends[ei]["xy"]
+                ux, uz = e[0] - st[1], e[1] - st[2]
+                lx = (ux * math.cos(st[3]) + uz * math.sin(st[3])) / st[4]
+                lz = (-ux * math.sin(st[3]) + uz * math.cos(st[3])) / st[4]
+                edge_gap = math.hypot(
+                    max(abs(lx) - .45, 0.0),
+                    max(abs(lz) - .09, 0.0),
+                ) * abs(st[4])
+                if edge_gap <= STRIP_CONNECTION_PAD:
+                    possible.append((
+                        min(dist(e, a) for a in anchors), ei
+                    ))
+            if not possible:
+                continue
+            # One device-to-strip connection per piece/strip. Wall-separated
+            # fragments in that piece must not count as additional connections.
+            _, ei = min(possible)
+            if any(ei in f["ends"] for f in socket_tops):
+                continue
+
+            e = ends[ei]["xy"]
+            lead_gap = dist(e, lead)
+            nearest_socket = min(range(len(sockets)), key=lambda k: dist(e, sockets[k]))
+            reason = (
+                "device uses captive lead/end cap"
+                if lead_gap <= LEAD_END_TOL
+                else "device connection is not a socket-seated PlugTop"
+            )
+            counts["lead_device"] += 1
+            msgs.append(
+                f"lead_device {end_label(ei)} at {xy_text(e)}: {reason}; "
+                f"strip centre={xy_text((st[1], st[2]))}, "
+                f"angle={st[3]:.4f}, scale={st[4]:.4f}; "
+                f"lead={xy_text(lead)}, lead gap={lead_gap:.3f}; "
+                f"nearest socket[{nearest_socket}]="
+                f"{xy_text(sockets[nearest_socket])}"
+            )
+
+    # Unlike dead_end, a bare wall face is not an explanation.
+    blocked = {(b[0], b[1]) for b in W["blocked"]}
+    allowed_wall_points = []
+    for r in records:
+        d = r["d"]
+        if d[0] in ("WallOutlet", "StubWall"):
+            allowed_wall_points.append((
+                wall_cord_seat(d), FIT_END_TOL, d[0]
+            ))
+        elif d[0] in ("FrayLive", "FrayDead"):
+            allowed_wall_points.append((
+                (d[1], d[2]), FRAY_END_TOL, d[0]
+            ))
+
+    for ei, e in enumerate(ends):
+        point = e["xy"]
+        hit = []
+        for x in range(math.floor(point[0] - WALL_END_PAD),
+                       math.floor(point[0] + WALL_END_PAD) + 1):
+            for z in range(math.floor(point[1] - WALL_END_PAD),
+                           math.floor(point[1] + WALL_END_PAD) + 1):
+                if (x, z) in blocked:
+                    gap = box_distance(point, x, z, 1, 1)
+                    if gap <= WALL_END_PAD + 1e-9:
+                        hit.append((x, z, gap))
+        if not hit:
+            continue
+        if any(dist(point, q) <= tolerance
+               for q, tolerance, _ in allowed_wall_points):
+            continue
+        counts["wall_vanish"] += 1
+        nearest = min(
+            ((dist(point, q), kind, q)
+             for q, _, kind in allowed_wall_points),
+            default=None,
+        )
+        detail = (
+            f"; nearest allowed fitting={nearest[1]} "
+            f"at {xy_text(nearest[2])}, gap={nearest[0]:.3f}"
+            if nearest is not None else "; no allowed fittings"
+        )
+        msgs.append(
+            f"wall_vanish {end_label(ei)} at {xy_text(point)}: "
+            f"blocked cells="
+            + ",".join(f"({x},{z};gap={gap:.3f})" for x, z, gap in hit)
+            + detail
+        )
+
+    counts["kink"], kink_msgs = kink_checks(L, dist_mode)
+    msgs.extend(kink_msgs)
+    return counts, msgs
+
+
+def parent_no_cord(W):
+    rows = W.get("machines", []) + W.get("unhooked", [])
+    if not W.get("connectParentData", False) and not any(
+            "connectParent" in m for m in rows):
+        return 0, ["no connectParent data"]
+    msgs, seen = [], set()
+    for m in rows:
+        if m.get("connectParent") is None or m.get("parentDraw") == "PatchCable":
+            continue
+        if (m.get("hookups") or m.get("links")
+                or m.get("hasHookup", False) or m.get("hasLink", False)):
+            continue
+        if m["id"] in seen:
+            continue
+        seen.add(m["id"])
+        msgs.append(
+            f"parent_no_cord {m['id']} "
+            f"rect=({m['x']},{m['z']},{m['w']},{m['h']}) "
+            f"connectParent={m['connectParent']}: no hookup/link"
+        )
+    return len(msgs), msgs
+
+
+def lab_checks(W, L, dist_mode=False):
+    validate_laid(L)
+    parent_count, msgs = parent_no_cord(W)
+    out = {"parent_no_cord": parent_count}
     decals = [d for p in L["pieces"] for d in p["decals"]]
     ends = []
     for p in L["pieces"]:
@@ -116,6 +880,10 @@ def lab_checks(W, L):
         if not any(m["x"] - 0.2 <= e[0] <= m["x"] + m["w"] + 0.2 and m["z"] - 0.2 <= e[1] <= m["z"] + m["h"] + 0.2 for e in ends):
             und += 1; msgs.append(f"undrawn transmitter {m['id']} at {m['x']},{m['z']}")
     out["undrawn"] = und
+
+    extra, extra_msgs = new_checks(W, L, dist_mode)
+    out.update(extra)
+    msgs.extend(extra_msgs)
     return out, msgs
 
 
@@ -148,13 +916,26 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("world"); ap.add_argument("laid")
     ap.add_argument("--tex"); ap.add_argument("--json")
+    ap.add_argument(
+        "--dist", action="store_true",
+        help="print per-strand bend measurements and percentile distributions",
+    )
     a = ap.parse_args()
-    out, msgs = lab_checks(json.load(open(a.world)), json.load(open(a.laid)))
+    try:
+        with open(a.world, encoding="utf-8") as f:
+            W = json.load(f)
+        with open(a.laid, encoding="utf-8") as f:
+            L = json.load(f)
+        out, msgs = lab_checks(W, L, a.dist)
+    except ValueError as exc:
+        ap.error(str(exc))
     if a.tex:
         out["baked_stub"], m2 = baked(a.tex); msgs += m2
     print(" ".join(f"{k}={v}" for k, v in out.items()))
-    for m in msgs[:40]:
+    # Do not truncate: every flagged strand and all --dist records must print.
+    for m in msgs:
         print("  " + m)
     if a.json:
-        json.dump({"counts": out, "msgs": msgs}, open(a.json, "w"), indent=1)
+        with open(a.json, "w", encoding="utf-8") as f:
+            json.dump({"counts": out, "msgs": msgs}, f, indent=1)
     sys.exit(1 if any(out.values()) else 0)

@@ -14,6 +14,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// too, so the swap never strands it. Verse-free so the selftest runs the production rule.</summary>
     public static class HookupPick
     {
+        /// <summary>A missing cord's authoritative connectParent, within six cells of the nearest occupied footprint
+        /// cell. targetExists tests the snapshot conduit or an eligible transmitter building. Uses no Map, adjacency
+        /// requirement, conduit-end preference or nearest-conduit substitution.</summary>
+        internal static Cell? ParentHookup(Cell min, Cell max, Cell? parentCell, Func<Cell, bool> targetExists)
+        {
+            if (!parentCell.HasValue || max.X < min.X || max.Z < min.Z
+                || targetExists == null || !targetExists(parentCell.Value)) return null;
+            Cell p = parentCell.Value;
+            int dx = Math.Max(min.X - p.X, Math.Max(0, p.X - max.X));
+            int dz = Math.Max(min.Z - p.Z, Math.Max(0, p.Z - max.Z));
+            return dx * dx + dz * dz <= 36 ? parentCell : (Cell?)null;
+        }
+
         /// <summary>Cells under the footprint, then the cardinal ring around it, in a fixed order.</summary>
         internal static List<Cell> Touching(MachineInfo m)
         {

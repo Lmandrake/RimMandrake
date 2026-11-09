@@ -211,6 +211,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     List<V2> q = new List<V2>(s.Pts);
                     if (RectD(q[0]) < RectD(q[q.Count - 1])) q.Reverse();
                     V2 e = q[q.Count - 1];
+                    if (m.Kind == MachineKind.Lamp)
+                    {
+                        // The lamp hides its connector. Its cord must still reach the base;
+                        // omitting a plug must not exempt a detached lamp lead.
+                        V2 basePoint = m.Foot
+                            ? new V2(m.X0 + m.W / 2.0, m.Z0 + CordBuilder.FootTuck)
+                            : m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5)
+                            : new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+                        if (V2.Dist(e, basePoint) > 0.03)
+                        {
+                            pbad++;
+                            pmsg.Add($"{nd.Cell} lamp cord ends {V2.Dist(e, basePoint):0.000} from its base");
+                        }
+                        continue;
+                    }
                     CordDecal? plug = decals.Where(d => d.Kind == DecalKind.Plug).OrderBy(d => V2.Dist(d.Pos, e)).Cast<CordDecal?>().FirstOrDefault();
                     if (plug == null || V2.Dist(plug.Value.Pos, e) > 0.3) { pbad++; pmsg.Add($"{nd.Cell} no plug at the cord end"); continue; }
                     V2 head = plug.Value.Pos + Dir(plug.Value.Angle) * (PlugFace * plug.Value.Scale);

@@ -452,7 +452,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>All a heap's piece reads: its cells, the seed, its look and live flag, the lay options, and every cell two round it (walkable, door, cost, busy,
         /// furniture, conduit, machine), which its connectors and the ground its cables walk are made of.</summary>
-        private static string TangleKey(CordWorld w, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
+        private static string TangleKey(CordWorld w, CordGraph g, VId v, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
         {
             List<Cell> comp = nd.Cells;
             int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
@@ -473,7 +473,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     var c = new Cell(x, z);
                     h = (h ^ CellSig(w, c) ^ (w.IsConduit(c) ? 1UL << 60 : 0UL) ^ (machine.Contains(c) ? 1UL << 59 : 0UL)) * 1099511628211UL;
                 }
-            return nd.Cell + "|" + h + "|" + opt.Seed + "|" + opt.PileFor(nd.Cell) + "|" + (isLive(nd.Cell) ? 'L' : 'D') + "|" + (opt.Lay.FairBends ? 'F' : '-') + "|" + comp.Count;
+            return nd.Cell + "|" + h + "|" + opt.Seed + "|" + opt.PileFor(nd.Cell) + "|" + (isLive(nd.Cell) ? 'L' : 'D') + "|" + (opt.Lay.FairBends ? 'F' : '-') + "|" + comp.Count
+                + "|" + (opt.PileFor(nd.Cell) == PileArt.Strips ? string.Join(";", IncidentEnds(g, v).Select(end => end.Key)) : "");
         }
 
         /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>
@@ -688,8 +689,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else if (nd.Type == NodeType.Tangle)
                 {
                     // a heap's cables are walked out over its whole ground (pass 17: 16 ms a Build for the Scrapper colony's heap): kept while nothing in or round it changes
-                    string tk = TangleKey(w, nd, opt, isLive);
-                    if (!tangleCache.TryGetValue(tk, out LaidPiece tp)) tp = TanglePiece(w, nd, opt, isLive);
+                    string tk = TangleKey(w, g, kv.Key, nd, opt, isLive);
+                    if (!tangleCache.TryGetValue(tk, out LaidPiece tp)) tp = TanglePiece(w, g, kv.Key, nd, opt, isLive);
                     tangleNext[tk] = tp;
                     outp.Add(tp);
                 }
@@ -802,6 +803,29 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         .Append(nn.Cls).Append(nn.Out.X).Append('/').Append(nn.Out.Z)
                         .Append(nn.Into.X.ToString("0.00", inv)).Append('/').Append(nn.Into.Z.ToString("0.00", inv))
                         .Append(nn.Face.X.ToString("0.00", inv)).Append('/').Append(nn.Face.Z.ToString("0.00", inv)).Append(',');
+                    if (nn.Type == NodeType.Junction)
+                    {
+                        // A distant supply edit can turn this strip without changing this edge's chain.
+                        full.Append('P');
+                        HashSet<Cell> arms = g.ArmsOf(v), walls = g.WallArmsOf(v);
+                        foreach (Cell d in Cell.Dirs4)
+                            full.Append(arms.Contains(d) ? '1' : '0').Append(walls.Contains(d) ? 'W' : '-');
+                        CordEdge upstream = g.StripLeadOf(v);
+                        if (upstream != null)
+                        {
+                            V2 d = ArmDir(g, upstream, upstream.A == v);
+                            full.Append(d.X).Append('/').Append(d.Z);
+                        }
+                        full.Append(';');
+                        // Socket allocation depends on every incident graph end, including repeated arms.
+                        foreach (var end in IncidentEnds(g, v)) full.Append(end.Key).Append(';');
+                    }
+                    if (nn.Type == NodeType.Tangle)
+                    {
+                        // Incoming pile sockets are allocated across all incident ends.
+                        full.Append('P');
+                        foreach (var end in IncidentEnds(g, v)) full.Append(end.Key).Append(';');
+                    }
                 }
                 var liveCells = new List<Cell>();
                 var liveSeam = new List<bool>();
@@ -825,6 +849,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     {
                         partB.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
                         foreach (Cell c in g.Nodes[v].Cells) partB.Append(';').Append(c.X).Append(',').Append(c.Z);
+
                     }
                 // the boxes, cut ends and plates round it: a cord laid again keeps off them (OtherBoxes), so one appearing re-lays it
                 full.Append('N');
@@ -921,6 +946,50 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         private static string PairKey(VId a, VId b) => a.CompareTo(b) <= 0 ? a + "|" + b : b + "|" + a;
 
+        private sealed class IncidentIndex
+        {
+            public readonly Dictionary<VId, List<(CordEdge Edge, bool AtA, string Key)>> Ends =
+                new Dictionary<VId, List<(CordEdge Edge, bool AtA, string Key)>>();
+        }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CordGraph, IncidentIndex> incidentIndexes =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<CordGraph, IncidentIndex>();
+        private static readonly List<(CordEdge Edge, bool AtA, string Key)> noIncidentEnds =
+            new List<(CordEdge Edge, bool AtA, string Key)>();
+
+        // Called by the graph constructor, before any frame or lay worker can read it.
+        internal static void PrepareIncidentIndex(CordGraph g) { IncidentEnds(g, default(VId)); }
+
+        /// <summary>Every graph cord end at a node, including both ends of a self-loop, in stable order.
+        /// Indexed once per immutable graph so fitting allocation never scans the whole graph per end.</summary>
+        private static List<(CordEdge Edge, bool AtA, string Key)> IncidentEnds(CordGraph g, VId v)
+        {
+            IncidentIndex index = incidentIndexes.GetValue(g, graph =>
+            {
+                var result = new IncidentIndex();
+                var counts = new Dictionary<string, int>();
+                foreach (CordEdge edge in graph.CordEdges())
+                {
+                    string pair = PairKey(edge.A, edge.B);
+                    counts.TryGetValue(pair, out int mult);
+                    counts[pair] = mult + 1;
+                    string key = EdgeKey(graph, edge, mult);
+                    void Add(VId node, bool atA)
+                    {
+                        if (!result.Ends.TryGetValue(node, out var list))
+                            result.Ends[node] = list = new List<(CordEdge Edge, bool AtA, string Key)>();
+                        list.Add((edge, atA, key + (atA ? ":A" : ":B")));
+                    }
+                    Add(edge.A, true);
+                    Add(edge.B, false);
+                }
+                foreach (var list in result.Ends.Values)
+                    list.Sort((a, b) => StringComparer.Ordinal.Compare(a.Key, b.Key));
+                return result;
+            });
+            return index.Ends.TryGetValue(v, out var ends) ? ends : noIncidentEnds;
+        }
+
         /// <summary>Seed from the two endpoint cells, their node types and positions, plus the index
         /// among parallel edges: an unrelated edit never reshuffles a cord (§8.2.5).</summary>
         public static string EdgeKey(CordGraph g, CordEdge e, int mult)
@@ -987,14 +1056,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // round 3 (owner 2026-10-04, station 9: "very odd triple cords going a short distance from the wall to a lamp.
             // Should just be one cord"): a device's own lead is ONE cord into its one plug; bundles stay between junctions,
             // stubs and conduit ends. The draw above still runs, so every later seeded value is unchanged.
-            if (DeviceLead(na, nb)) n = 1;
+            if (DeviceLead(na, nb)
+                || ((na.Type == NodeType.Junction || na.Type == NodeType.Tangle) && opt.PileFor(na.Cell) == PileArt.Strips)
+                || ((nb.Type == NodeType.Junction || nb.Type == NodeType.Tangle) && opt.PileFor(nb.Cell) == PileArt.Strips)) n = 1;
             double slack = rr.Range(prm.SlackLo, prm.SlackHi) * prm.SlackScale;
             double maxExtra = prm.SlackScale <= 0 ? 0 : Math.Min(Math.Max(slack * L, prm.MinExtra * Math.Min(1, prm.SlackScale)), prm.MaxExtra);
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
             int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
             double laid = 0;
             List<V2> nub = StripNub(g, e, opt) ?? (prm.FairBends ? BoxNub(w, g, e, opt) : null);
-            if (nub != null) n = 1;
+            if (nub != null)
+            {
+                n = 1;
+                // Nubs skip the ordinary shaping pipeline below, but still need its final repair.
+                if (prm.FairBends || FinalKinkLog) nub = FinalCurvature(w, g, e, nub, null, key, allowRepair: prm.FairBends);
+            }
             for (int i = 0; i < n; i++)
             {
                 if (nub != null)
@@ -1039,6 +1115,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (P.Skip(1).Take(Math.Max(0, P.Count - 2)).Any(q => !w.IsWalkable(q.Floor)))
                 {
                     P = new List<V2>(C);
+                    P = AttachEnd(w, g, e, true, P, i, n, opt);
+                    P = AttachEnd(w, g, e, false, P, i, n, opt);
                     fell = true;
                 }
                 // the loops and the settle leave folds a cord cannot make: its ribbon spikes there (live, a real colony: 2.9 a strand)
@@ -1063,6 +1141,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (!fell && prm.FairBends) P = SmoothBends(w, g, e, piece, P, na, nb, isLive);
                 List<CordTie> ties = null;
                 if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, true, true, out ties);
+                if (prm.FairBends || FinalKinkLog)
+                    P = FinalCurvature(w, g, e, P, ties, key, i, allowRepair: prm.FairBends);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
                 laid += Geo.Length(P);
             }
@@ -1317,6 +1397,89 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The tie band's scale, cells: a band round a doubled cord (owner: "small closed loop with a tie band").</summary>
         public const double CableTieScale = 0.16;
 
+        // Read once per process; disabled logging adds no per-strand diagnostic allocations.
+        private static readonly bool FinalKinkLog = Environment.GetEnvironmentVariable("GSS_R4_KINKLOG") == "1";
+
+        private static List<V2> FinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties, string key,
+                                               int strand = 0, bool endA = true, bool endB = true, int section = -1, bool allowRepair = true)
+        {
+            CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            // The whole cut-end strand keeps its authored straight run or limp curl.
+            bool cut = (endA && na.Type == NodeType.Terminal && !na.Seam)
+                || (endB && nb.Type == NodeType.Terminal && !nb.Seam);
+            bool repair = allowRepair && !cut && CordShape.MayNeedCurvatureRepair(P);
+            if (FinalKinkLog)
+                return TraceFinalCurvature(w, g, e, P, ties, key, strand, section, cut, repair, allowRepair);
+            return repair ? RepairFinalCurvature(w, g, e, P, ties, null) : P;
+        }
+
+        private static List<V2> TraceFinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties,
+                                                    string key, int strand, int section, bool cut, bool repair, bool allowRepair)
+        {
+            // Measure without tie exclusions too: a protected fault must explain its skip.
+            string faults = CordShape.CurvatureFaultSummary(P);
+            if (faults.Length == 0) return repair ? RepairFinalCurvature(w, g, e, P, ties, null) : P;
+            var log = new StringBuilder("GSS_R4_KINKLOG key=").Append(key).Append(" strand=").Append(strand);
+            if (section >= 0) log.Append(" section=").Append(section);
+            log.Append(" faults=[").Append(faults).Append(']');
+            List<V2> result = P;
+            if (!allowRepair) log.Append(" | skip=fallback/repair-disabled; no windows tried");
+            else if (cut) log.Append(" | skip=cut-end-authored; no windows tried");
+            else if (!repair) log.Append(" | skip=cheap-bound; no windows tried");
+            else if (CordShape.CurvatureFaults(P, ties).Count == 0)
+                log.Append(" | skip=protected-tie; no windows tried");
+            else
+                result = RepairFinalCurvature(w, g, e, P, ties, msg => log.Append(" | ").Append(msg));
+            string remaining = CordShape.CurvatureFaultSummary(result);
+            Console.Error.WriteLine(log.Append(" | remaining=[")
+                .Append(remaining.Length == 0 ? "none" : remaining).Append(']').ToString());
+            return result;
+        }
+
+        private static List<V2> RepairFinalCurvature(CordWorld w, CordGraph g, CordEdge e, List<V2> P, List<CordTie> ties,
+                                                     Action<string> diagnostic)
+        {
+            List<V2> boxes = OtherBoxes(g, e);
+            // An existing fitting clearance may be retained, but never reduced.
+            // A hard keep-off rejected even the original joins beside nearby boxes.
+            var keepOff = new double[boxes.Count];
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                double nearest = BoxKeepOff + 0.01;
+                for (int k = 0; k + 1 < P.Count; k++)
+                {
+                    V2 d = P[k + 1] - P[k], v = boxes[i] - P[k];
+                    double dd = d.X * d.X + d.Z * d.Z;
+                    double u = dd > 1e-12 ? Math.Max(0, Math.Min(1, (v.X * d.X + v.Z * d.Z) / dd)) : 0;
+                    nearest = Math.Min(nearest, V2.Dist(boxes[i], P[k] + d * u));
+                }
+                keepOff[i] = nearest;
+            }
+            bool BoxClear(V2 q)
+            {
+                for (int i = 0; i < boxes.Count; i++)
+                    if (V2.Dist(q, boxes[i]) < keepOff[i] - 1e-6) return false;
+                return true;
+            }
+            var own = new List<MachineInfo>();
+            foreach (VId v in new[] { e.A, e.B })
+            {
+                CordNode nd = g.Nodes[v];
+                if (nd.IsMachine && nd.Machine != null) own.Add(nd.Machine);
+            }
+            Action<string> trace = null;
+            Action<string> sink = HopWhy;
+            if (sink != null || diagnostic != null)
+                trace = msg =>
+                {
+                    sink?.Invoke("repair " + g.Nodes[e.A].OracleName + ":" + g.Nodes[e.A].Cell
+                        + "|" + g.Nodes[e.B].OracleName + ":" + g.Nodes[e.B].Cell + " " + msg);
+                    diagnostic?.Invoke(msg);
+                };
+            // Cut-end strands were excluded before constructing the clearance policy.
+            return CordShape.RepairCurvature(w, P, ties, BoxClear, own, trace);
+        }
+
         /// <summary>A strip socket's plug and what stands round it, for <see cref="CordPlugExit"/>; null for an end that is not one.</summary>
         private static CordPlugExit.Site PlugSite(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, BuildOptions opt)
         {
@@ -1326,14 +1489,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
             StripPose sp = PoseStrip(g, v, opt.Seed);
             V2 ad = ArmDir(g, e, atA);
             var arm = new Cell((int)ad.X, (int)ad.Z);
-            int socket = sp.SocketFor(arm);
+            int socket = StripSocketFor(g, v, e, atA, sp);
             if (socket < 0) return null;
             V2 tip = sp.PlugTip(arm, socket), u = sp.PlugOut(arm);
             var site = new CordPlugExit.Site { Tip = tip, Out = u };
-            foreach (Cell a in new[] { sp.BackArm, sp.FreeArm, sp.SocketArm })
+            foreach (var end in IncidentEnds(g, v))
             {
-                int k = sp.SocketFor(a);
+                int k = StripSocketFor(g, v, end.Edge, end.AtA, sp);
                 if (k < 0 || k == socket) continue;
+                V2 d = ArmDir(g, end.Edge, end.AtA);
+                var a = new Cell((int)d.X, (int)d.Z);
                 V2 hd = sp.At(StripHeads[k], StripHeadZ);
                 site.Neighbours.Add(new[] { hd, sp.PlugTip(a, k) + sp.PlugOut(a) * 0.25 });
             }
@@ -1640,8 +1805,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The length a whole-laid short cord aims at, as a multiple of the gap; it never takes one longer than <see cref="HopMaxRatio"/>.</summary>
         private const double HopSlack = 1.3, HopMaxRatio = 2.4;
 
-        /// <summary>A strip right beside a machine points its lead at it, so that lead is a short straight nub off the strip's end and on under the machine's art. Sent to the machine's sliding plug point, off to
-        /// one side, it doubled back round the strip's end in a flat hook (blind judge's "two short cords to one machine"; shape lab). Null when this edge is no such lead, or the line misses the machine.</summary>
+        /// <summary>A strip right beside its supply can take a short captive lead straight under that supply's art.
+        /// Null for device branches, socket connections, or a line that misses the supply.</summary>
         private static List<V2> StripNub(CordGraph g, CordEdge e, BuildOptions opt)
         {
             foreach (bool atA in new[] { true, false })
@@ -1653,7 +1818,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var arm = new Cell((int)ad.X, (int)ad.Z);
                 if (!g.MachineArmsOf(v).Contains(arm)) continue;
                 StripPose sp = PoseStrip(g, v, opt.Seed);
-                if (sp.SocketFor(arm) >= 0) continue;
+                if (StripSocketFor(g, v, e, atA, sp) >= 0) continue;
                 var line = new List<V2>();
                 double reached = -1;
                 for (double t = 0; t <= StripNubReach; t += 0.05)
@@ -1668,7 +1833,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 int sgn = CordRng.Of(opt.Seed, "nub", nd.Cell.X, nd.Cell.Z).Sign();
                 for (int i = 0; i < line.Count; i++)
                     line[i] = line[i] + sp.Side * (sgn * StripNubBelly * reached * Math.Sin(Math.PI * Math.Min(1, i * 0.05 / Math.Max(reached, 0.05))));
-                if (!atA) return line;
+                if (atA) return line;
                 line.Reverse();
                 return line;
             }
@@ -1765,7 +1930,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 secC.Add(C);
             }
             int n = rr.Int(prm.CordsMin, Math.Max(prm.CordsMin, prm.CordsMax));
-            if (DeviceLead(na, nb)) n = 1;
+            if (DeviceLead(na, nb)
+                || ((na.Type == NodeType.Junction || na.Type == NodeType.Tangle) && opt.PileFor(na.Cell) == PileArt.Strips)
+                || ((nb.Type == NodeType.Junction || nb.Type == NodeType.Tangle) && opt.PileFor(nb.Cell) == PileArt.Strips)) n = 1;
             double slack = rr.Range(prm.SlackLo, prm.SlackHi) * prm.SlackScale;
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
             int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
@@ -1802,6 +1969,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (P.Skip(1).Take(Math.Max(0, P.Count - 2)).Any(q => !w.IsWalkable(q.Floor)))
                     {
                         P = new List<V2>(C);
+                        if (!diveA) P = AttachEnd(w, g, e, true, P, i, n, opt);
+                        if (!diveB) P = AttachEnd(w, g, e, false, P, i, n, opt);
+                        if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = CordLayer.Approach(w, P, false, d.OutFace, d.OutInto, 0.15); }
+                        if (diveB) { DiveSpan d = pl.Dives[si]; P = CordLayer.Approach(w, P, true, d.InFace, d.InInto, 0.15); }
                         fell = true;
                     }
                     if (!fell && prm.FairBends) P = CordShape.Fair(w, P, diveA ? 0.2 : FairPin(na, isLive), diveB ? 0.2 : FairPin(nb, isLive), CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB));
@@ -1816,6 +1987,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (!fell) P = CordShape.Unfold(w, P, LimpSkip(na, nb, isLive));
                     List<CordTie> ties = null;
                     if (!fell && prm.FairBends) P = PlugExits(w, g, e, piece, P, opt, !diveA, !diveB, out ties);
+                    if (prm.FairBends || FinalKinkLog)
+                        P = FinalCurvature(w, g, e, P, ties, key, i, !diveA, !diveB, si, prm.FairBends);
                     piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB, DoorStrays = CordShape.DoorStrays(w, P, C), Ties = ties });
                     laid += Geo.Length(P);
                 }
@@ -1976,6 +2149,54 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 arm == SocketArm ? SocketOfSocketArm : arm == FreeArm ? SocketOfFreeArm : arm == BackArm ? SocketOfBackArm : -1;
         }
 
+        /// <summary>One captive lead and one distinct socket per other graph end.
+        /// Different edges sharing a cardinal arm must not share that arm's plug.</summary>
+        private static int StripSocketFor(CordGraph g, VId v, CordEdge e, bool atA, StripPose sp)
+        {
+            var ends = IncidentEnds(g, v);
+            if (ends.Count > StripHeads.Length + 1)
+                throw new InvalidOperationException("Strip at " + g.Nodes[v].Cell + " needs another strip: all sockets are occupied.");
+            CordEdge upstream = g.StripLeadOf(v);
+            int lead = -1, wanted = -1;
+            for (int k = 0; k < ends.Count; k++)
+            {
+                var q = ends[k];
+                if (lead < 0 && upstream != null && ReferenceEquals(q.Edge, upstream)) lead = k;
+                if (ReferenceEquals(q.Edge, e) && q.AtA == atA) wanted = k;
+            }
+            if (wanted < 0) throw new KeyNotFoundException("Cord end is absent from its graph's incident index.");
+            if (lead < 0)
+                for (int k = 0; k < ends.Count; k++)
+                {
+                    V2 d = ArmDir(g, ends[k].Edge, ends[k].AtA);
+                    if (new Cell((int)d.X, (int)d.Z) == sp.LeadArm) { lead = k; break; }
+                }
+            // Degree is at most five: bit masks preserve the same two-pass allocation.
+            int assigned = 0, used = 0, result = -1;
+            for (int k = 0; k < ends.Count; k++)
+            {
+                if (k == lead) { assigned |= 1 << k; continue; }
+                var q = ends[k];
+                V2 d = ArmDir(g, q.Edge, q.AtA);
+                int socket = sp.SocketFor(new Cell((int)d.X, (int)d.Z));
+                if (socket < 0 || (used & (1 << socket)) != 0) continue;
+                used |= 1 << socket;
+                assigned |= 1 << k;
+                if (k == wanted) result = socket;
+            }
+            for (int k = 0; k < ends.Count; k++)
+            {
+                if ((assigned & (1 << k)) != 0) continue;
+                int socket = 0;
+                while (socket < StripHeads.Length && (used & (1 << socket)) != 0) socket++;
+                if (socket == StripHeads.Length)
+                    throw new InvalidOperationException("Strip at " + g.Nodes[v].Cell + " needs another strip: all sockets are occupied.");
+                used |= 1 << socket;
+                if (k == wanted) result = socket;
+            }
+            return result;
+        }
+
         private static Cell Turn(Cell d) => new Cell(-d.Z, d.X);                         // +90 degrees
         private static V2 AsV2(Cell d) => new V2(d.X, d.Z);
 
@@ -1997,18 +2218,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // fewer than three arms: keep the sockets on a side a cord really arrives from, and the lead on its own arm
                 foreach (Cell c in order) if (arms.Contains(c) && arms.Contains(new Cell(c.Z, -c.X))) { faces = c; break; }
             }
-            // a machine right beside the strip takes the strip's own lead: with the sockets facing it, a through cord plugging in ran along
-            // the machine's edge and read as a second cord into it (blind judge; owner 2026-11-07, "multiple cables for no reason")
-            bool beside = false;
-            foreach (Cell c in order)
-                if (g.MachineArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); beside = true; break; }
-            // and a strip right beside a wall outlet is plugged into it by its own lead: with the sockets facing the wall, the cords to its
-            // other arms plugged in beside the outlet and read as two or three cables going into the one outlet (owner 2026-11-07)
-            bool toWall = false;
-            if (!beside)
-                foreach (Cell c in order)
-                    if (g.WallArmsOf(v).Contains(c)) { faces = new Cell(-c.Z, c.X); toWall = true; break; }
+            // the captive lead supplies the strip: aim it along the upstream graph edge, never a device branch
+            CordEdge upstream = g.StripLeadOf(v);
+            if (upstream != null)
+            {
+                V2 d = ArmDir(g, upstream, upstream.A == v);
+                faces = new Cell(-(int)d.Z, (int)d.X);
+            }
             Cell lead = new Cell(faces.Z, -faces.X);                                         // -90 degrees from the sockets
+            bool toWall = g.WallArmsOf(v).Contains(lead);
             Cell free = new Cell(-lead.X, -lead.Z), back = new Cell(-faces.X, -faces.Z);
             bool hasBack = arms.Contains(back), hasFree = arms.Contains(free), hasFace = arms.Contains(faces);
             double skew = r.Range(-StripSkew, StripSkew);
@@ -2058,7 +2276,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 StripPose sp = PoseStrip(g, v, opt.Seed);
                 V2 ad = ArmDir(g, e, atA);
                 var arm = new Cell((int)ad.X, (int)ad.Z);
-                int socket = sp.SocketFor(arm);
+                int socket = StripSocketFor(g, v, e, atA, sp);
                 if (socket < 0)
                 {
                     // the strip's own lead: into the nub at its end, no plug
@@ -2112,10 +2330,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else if (nd.Type == NodeType.Tangle && nd.Cells != null)
             {
-                // round 5: the cord runs on into the pile and plugs into one of its connectors' ports, along that port
-                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true));
+                // Junction piles retain nearest-port entry. Strip piles allocate distinct sockets
+                // to graph ends, then reserve those sockets against internal heap cables.
+                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true, IncidentEnds(g, v).Count));
                 if (ports.Count == 0) return false;
-                PilePort q = EntryPort(ports, atA ? e.PA : e.PB);
+                PilePort q = opt.PileFor(nd.Cell) == PileArt.Strips
+                    ? ports[PileSockets(g, v, ports)[(e, atA)]]
+                    : EntryPort(ports, atA ? e.PA : e.PB);
                 target = q.Tip + Side(q.Out) * (lat * 0.02);
                 arrive = -q.Out;
                 straight = 0.22;
@@ -2385,18 +2606,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return o;
         }
 
-        /// <summary>Points from one end of P whose arc length stays within len (at least 3), never more than half the strand.</summary>
+        /// <summary>Points from one end of P whose arc length stays within len (at least 3), never more than half the strand's arc length.</summary>
         internal static int TailCount(List<V2> P, bool atStart, double len)
         {
             int n = P.Count;
             if (n < 6) return 0;
+            // Local repairs change sampling density; half the vertices is not half the cord.
+            double limit = Math.Min(len, Geo.Length(P) * 0.5);
             double acc = 0;
             int c = 1;
-            for (int k = 1; k < n / 2; k++)
+            for (int k = 1; k < n; k++)
             {
                 int i = atStart ? k : n - 1 - k, j = atStart ? k - 1 : n - k;
                 acc += V2.Dist(P[i], P[j]);
-                if (acc > len) break;
+                if (acc > limit) break;
                 c++;
             }
             return c >= 3 ? c : 0;
@@ -2425,6 +2648,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // round 3: the strand end that lies AT the machine (shots 03/06: a strip-to-device lead in one cell runs machine-to-strip against
                 // the piece's a->b, and its plug was drawn at the strip pointing into the strip's end, a doubled lead)
                 MachineInfo mi = nd.Machine;
+                // The cord already runs into the lamp base through IntoArt; its connector is hidden by the lamp.
+                if (mi != null && mi.Kind == MachineKind.Lamp) return;
                 bool atS = atStart;
                 if (mi != null)
                 {
@@ -2441,7 +2666,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a cord into a junction strip plugs into its socket; the strip's own lead wears no plug
                 StripPose sp = PoseStrip(g, v, opt.Seed);
                 V2 ad = ArmDir(g, e, atStart);
-                int socket = sp.SocketFor(new Cell((int)ad.X, (int)ad.Z));
+                int socket = StripSocketFor(g, v, e, atStart, sp);
                 // square onto the socket whatever the bundle's last point did: one plug, on the art's own plug
                 Cell arm = new Cell((int)ad.X, (int)ad.Z);
                 // round 3: the plug stands ON the socket seen from above, covering it; its boot points the way the cord leaves
@@ -2450,7 +2675,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
             {
                 // round 5: a cord entering a strip pile plugs into its socket like the pile's own cables; round 3: face-on, on the port's socket
-                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true));
+                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true, IncidentEnds(g, v).Count));
                 foreach (CordStrand s in piece.Strands)
                 {
                     if (atStart ? s.DiveA : s.DiveB) continue;
@@ -2638,7 +2863,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
         /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
 
-        internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
+        internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit, int incoming = 0)
         {
             List<Cell> comp = nd.Cells;
             bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
@@ -2647,7 +2872,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
             // a strip every four cells: at one in seven the Modern heap was a thin net of a few cords between four strips beside the junction looks' dense
             // boxes (dense_grid_reads_as_tangle; the owner: "a huge tangle of nasty wires and power strips all swirled together terribly")
-            int want = strips ? Math.Max(1, 1 + (int)(comp.Count / 4 * HeapDensity)) : Math.Max(3, 1 + (int)(comp.Count / 2 * HeapDensity));   // still MANY boxes (review 1, B2)
+            int want = strips ? Math.Max(2, 1 + (int)(comp.Count / 4 * HeapDensity)) : Math.Max(3, 1 + (int)(comp.Count / 2 * HeapDensity));   // still MANY boxes (review 1, B2)
+            // Internal cables need another strip to connect to. Reserve two sockets on
+            // EVERY strip for them; incoming graph ends use the remaining capacity.
+            if (strips) want = Math.Max(want, (incoming + StripHeads.Length - 3) / (StripHeads.Length - 2));
             var cons = new List<CordDecal>();
             int portsSoFar = 0;
             foreach (Cell c in cells)
@@ -2666,11 +2894,40 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (cons.Any(o => V2.Dist(o.Pos, at) < 0.45)) continue;
                 // GSS pre-release A2: never more ports than MaxPileCables cables can fill (two ports each), so a big pile
                 // has no idle junction boxes; the first connectors always stand (a small pile is unchanged)
-                if (cons.Count >= 2 && portsSoFar + mine.Count > 2 * MaxPileCables) break;
+                if (cons.Count >= 2 && portsSoFar + mine.Count > 2 * MaxPileCables + (strips ? incoming : 0)) break;
                 portsSoFar += mine.Count;
                 cons.Add(d);
             }
             return cons;
+        }
+
+
+        /// <summary>Distinct strip-pile sockets for incoming graph ends, in stable order.
+        /// Each end takes its nearest available port; internal heap cables reserve these ports.</summary>
+        private static Dictionary<(CordEdge Edge, bool AtA), int> PileSockets(CordGraph g, VId v, List<PilePort> ports)
+        {
+            var slots = new Dictionary<(CordEdge Edge, bool AtA), int>();
+            var used = new HashSet<int>();
+            var incomingCapacity = ports.GroupBy(p => p.Connector)
+                .ToDictionary(group => group.Key, group => Math.Max(0, group.Count() - 2));
+            foreach (var end in IncidentEnds(g, v))
+            {
+                V2 from = end.AtA ? end.Edge.PA : end.Edge.PB;
+                int socket = -1;
+                double nearest = double.MaxValue;
+                for (int k = 0; k < ports.Count; k++)
+                {
+                    if (used.Contains(k) || incomingCapacity[ports[k].Connector] == 0) continue;
+                    double d = V2.Dist(ports[k].Tip + ports[k].Out * 0.22, from);
+                    if (d < nearest) { nearest = d; socket = k; }
+                }
+                if (socket < 0)
+                    throw new InvalidOperationException("Strip pile at " + g.Nodes[v].Cell + " has no free incoming socket.");
+                used.Add(socket);
+                incomingCapacity[ports[socket].Connector]--;
+                slots[(end.Edge, end.AtA)] = socket;
+            }
+            return slots;
         }
 
         /// <summary>The pile port a cord ENTERING the pile plugs into (round 5, station 1: "the cable entering the mass does not
@@ -3004,31 +3261,67 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// Jawa and Cybertek piles use many + and T junction boxes (the praised T junction art); the modern
         /// extension-cord pile uses power strips with a plug in their sockets.
         /// </summary>
-        private static LaidPiece TanglePiece(CordWorld w, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
+        private static LaidPiece TanglePiece(CordWorld w, CordGraph g, VId v, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
         {
             var p = new LaidPiece { Key = "tangle:" + nd.Cell, Owner = nd.Cell };
             List<Cell> comp = nd.Cells;
             bool lit = isLive(nd.Cell);
             p.LiveKeys.Add(nd.Cell);
             bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
-            List<CordDecal> cons = PileConnectors(w, nd, opt, lit);
+            List<CordDecal> cons = PileConnectors(w, nd, opt, lit, IncidentEnds(g, v).Count);
             List<PilePort> ports = PortsOf(cons);
+            if (strips)
+            {
+                var reserved = new HashSet<int>(PileSockets(g, v, ports).Values);
+                ports = ports.Where((port, k) => !reserved.Contains(k)).ToList();
+            }
             // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
             // HeapDensity thins a big heap; a small one keeps the old count up to HeapMinCables, so it is still a rats-nest and not a few loose cords (review 1, B2)
             int old = Math.Min(14, 4 + comp.Count / 3);
             int n = Math.Min(MaxPileCables, Math.Max(Math.Max(Math.Min(old, HeapMinCables), (int)(old * HeapDensity)), (ports.Count + 1) / 2));
+            // A strip socket takes one cable end. An odd spare socket stays empty.
+            if (strips) n = Math.Min(n, ports.Count / 2);
             var used = new HashSet<int>();
+            var internalEnds = new int[cons.Count];
             // the heap may spill a cell past its conduit onto open floor: kept to the conduit's own cells, its cables drew the block's square
             // outline with straight sides (blind judge p14a/p15a, every look: "squared heaps with straight strokes")
             HashSet<Cell> compSet = PileGround(w, comp);
             Func<V2, bool> onGround = null;
             V2 mid = new V2(comp.Average(c => c.X + 0.5), comp.Average(c => c.Z + 0.5));
-            for (int i = 0; i < n && ports.Count >= 2; i++)
+            int attempts = strips ? n * SlackRetries : n;
+            for (int i = 0; i < attempts && p.Strands.Count < n && ports.Count >= 2; i++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i);
                 int a = i % ports.Count, b = (i + ports.Count / 2) % ports.Count;
                 for (int k = 0; k < ports.Count && cons.Count > 1 && ports[b].Connector == ports[a].Connector; k++) b = (b + 1) % ports.Count;
+                if (strips)
+                {
+                    a = -1;
+                    int rotation = i / Math.Max(1, n);
+                    // Cover every strip before filling extra sockets. Rotate tied choices
+                    // on retries so an unusable port does not starve the entire pile.
+                    for (int k = 0; k < ports.Count; k++)
+                    {
+                        int candidate = (k + rotation) % ports.Count;
+                        if (used.Contains(candidate)) continue;
+                        if (a < 0 || internalEnds[ports[candidate].Connector] < internalEnds[ports[a].Connector])
+                            a = candidate;
+                    }
+                    if (a < 0) break;
+                    b = -1;
+                    // Prefer another strip, giving its least-connected connector priority.
+                    for (int pass = 0; pass < 2 && b < 0; pass++)
+                        for (int k = 0; k < ports.Count; k++)
+                        {
+                            int candidate = (a + ports.Count / 2 + k + rotation) % ports.Count;
+                            if (candidate == a || used.Contains(candidate)
+                                || (pass == 0 && ports[candidate].Connector == ports[a].Connector)) continue;
+                            if (b < 0 || internalEnds[ports[candidate].Connector] < internalEnds[ports[b].Connector])
+                                b = candidate;
+                        }
+                    if (b < 0) break;
+                }
                 if (a == b) continue;
                 PilePort pa = ports[a], pb = ports[b];
                 if (opt.Lay.FairBends)
@@ -3061,6 +3354,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     {
                         p.Strands.Add(new CordStrand { Pts = walk, S0 = rw.Value() });
                         used.Add(a); used.Add(b);
+                        internalEnds[pa.Connector]++; internalEnds[pb.Connector]++;
                         continue;
                     }
                     System.Threading.Interlocked.Increment(ref HeapWalkMisses);
@@ -3099,6 +3393,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (!P.All(q => compSet.Contains(q.Floor))) continue;
                 p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
                 used.Add(a); used.Add(b);
+                internalEnds[pa.Connector]++; internalEnds[pb.Connector]++;
             }
             // ---- connectors are printed over the cables; a strip gets a plug in every socket a cable uses
             p.Decals.AddRange(cons);

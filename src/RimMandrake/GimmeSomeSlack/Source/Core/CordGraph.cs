@@ -253,6 +253,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (VId v in keep) Nodes[v] = Classify(v);
             WallTerminals();
             Endpoints();
+            BuildStripLeads();
+            CordBuilder.PrepareIncidentIndex(this);
         }
 
         private readonly HashSet<VId> machineStubs = new HashSet<VId>();
@@ -915,6 +917,61 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 System.Threading.Volatile.Write(ref wallArmTable, t);
             }
             return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : NoArms;
+        }
+
+        private readonly Dictionary<VId, CordEdge> stripLeadTable = new Dictionary<VId, CordEdge>();
+
+        /// <summary>A strip's upstream edge: toward a supply or an uncut wall/rock outlet by graph distance.
+        /// Device branches never supply a strip. Built once before the graph is published.</summary>
+        internal CordEdge StripLeadOf(VId v) => stripLeadTable.TryGetValue(v, out CordEdge lead) ? lead : null;
+
+        private void BuildStripLeads()
+        {
+                var links = new Dictionary<VId, List<VId>>();
+                foreach (VId n in Nodes.Keys) links[n] = new List<VId>();
+                foreach (CordEdge e in Edges)
+                {
+                    links[e.A].Add(e.B);
+                    links[e.B].Add(e.A);
+                }
+                var distance = new Dictionary<VId, int>();
+                var queue = new Queue<VId>();
+                foreach (var kv in Nodes.OrderBy(kv => kv.Key))
+                {
+                    CordNode nd = kv.Value;
+                    bool supply = nd.Type == NodeType.Source || nd.Type == NodeType.Battery || nd.Type == NodeType.Transmitter;
+                    bool outlet = !nd.WallTerminal && (nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock);
+                    if (!supply && !outlet) continue;
+                    distance[kv.Key] = 0;
+                    queue.Enqueue(kv.Key);
+                }
+                while (queue.Count > 0)
+                {
+                    VId n = queue.Dequeue();
+                    foreach (VId other in links[n])
+                    {
+                        if (distance.ContainsKey(other)) continue;
+                        distance[other] = distance[n] + 1;
+                        queue.Enqueue(other);
+                    }
+                }
+                Dictionary<VId, CordEdge> t = stripLeadTable;
+                var best = new Dictionary<VId, int>();
+                void Pick(VId n, VId other, CordEdge e)
+                {
+                    if (n == other || Nodes[n].Type != NodeType.Junction) return;
+                    NodeType kind = Nodes[other].Type;
+                    if (kind == NodeType.Consumer || kind == NodeType.Lamp) return;
+                    if (!distance.TryGetValue(other, out int d)) return;
+                    if (best.TryGetValue(n, out int old) && d >= old) return;
+                    best[n] = d;
+                    t[n] = e;
+                }
+                foreach (CordEdge e in CordEdges())
+                {
+                    Pick(e.A, e.B, e);
+                    Pick(e.B, e.A, e);
+                }
         }
 
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>

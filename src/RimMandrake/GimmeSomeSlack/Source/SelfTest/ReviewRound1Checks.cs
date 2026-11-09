@@ -27,6 +27,49 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return m;
         }
 
+        private static void MachineEntryAuditChecks()
+        {
+            var w = new CordWorld(18, 12);
+            for (int x = 4; x <= 10; x++) w.SetConduit(new Cell(x, 5));
+            MachineInfo lamp = M(w, "audit_lamp", MachineKind.Lamp, 3, 5, 1, 1, new Cell(4, 5));
+            M(w, "audit_consumer", MachineKind.Consumer, 11, 5, 1, 1, new Cell(10, 5));
+            var builder = new CordBuilder();
+            List<LaidPiece> pieces = builder.Build(w, new BuildOptions { Tangles = false, NeedlessLoops = false }, c => true);
+            ArtFitResult good = CordAudit.ArtFit(builder.Graph, pieces, c => true);
+            Check(good.PlugEnds >= 2 && good.PlugFaults == 0,
+                $"machine entries: hidden lamp connector and plugged Consumer must pass ({good.PlugFaults} faults)");
+            V2 lampBase = CordBuilder.Centroid(lamp);
+            Check(!pieces.SelectMany(p => p.Decals).Any(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, lampBase) < 0.3),
+                "machine entries: lamp fixture must exercise the hidden-connector rule");
+
+            List<LaidPiece> unplugged = pieces.Select(p => new LaidPiece
+            {
+                Key = p.Key, EndA = p.EndA, EndB = p.EndB, Strands = p.Strands,
+                Decals = p.Decals.Where(d => d.Kind != DecalKind.Plug).ToList()
+            }).ToList();
+            Check(CordAudit.ArtFit(builder.Graph, unplugged, c => true).PlugFaults > 0,
+                "can fail: Consumer without its plug must fail the machine-entry audit");
+
+            CordNode lampNode = builder.Graph.Nodes.Values.First(n => n.IsMachine && n.Machine != null && n.Machine.Id == lamp.Id);
+            string lampEnd = lampNode.OracleName + ":" + lampNode.Cell.X + "," + lampNode.Cell.Z;
+            List<LaidPiece> detached = pieces.Select(p => new LaidPiece
+            {
+                Key = p.Key, EndA = p.EndA, EndB = p.EndB, Decals = p.Decals,
+                Strands = p.Strands.Select(s =>
+                {
+                    var q = new List<V2>(s.Pts);
+                    if (p.EndA == lampEnd || p.EndB == lampEnd)
+                    {
+                        int k = V2.Dist(q[0], lampBase) < V2.Dist(q[q.Count - 1], lampBase) ? 0 : q.Count - 1;
+                        q[k] = lampBase + new V2(0.4, 0);
+                    }
+                    return new CordStrand { Pts = q, OverFace = s.OverFace };
+                }).ToList()
+            }).ToList();
+            Check(CordAudit.ArtFit(builder.Graph, detached, c => true).PlugFaults > 0,
+                "can fail: lamp cord stopping away from its base must fail without requiring a visible plug");
+        }
+
         /// <summary>Station 4 of the review map: battery, a run, a 3x3 conduit block (a tangle), a run, a heater.</summary>
         internal static CordWorld PileWorld()
         {
@@ -41,6 +84,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         public static void Run()
         {
+            MachineEntryAuditChecks();
             // ---- B1/B2/B15: junction piles
             CordWorld w = PileWorld();
             var bj = new CordBuilder();
@@ -62,15 +106,20 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(rs.Strips >= 1 && rs.PileJunctions == 0, $"modern look: {rs.Strips} strips, {rs.PileJunctions} junction boxes in the pile");
             Check(rs.PileLooseEnds == 0 && rs.PileIdleConnectors == 0 && plugs >= 2 * rs.Strips,
                   $"B13: strips plugged in: {rs.PileLooseEnds} loose ends, {rs.PileIdleConnectors} strips with < 2 cables, {plugs} plugs for {rs.Strips} strips");
-            // planted faults: a cable end pulled off its port, and an empty strip, must both be seen
-            LaidPiece bad = new LaidPiece { Key = ts.Key, Decals = new List<CordDecal>(ts.Decals) };
-            bad.Strands.AddRange(ts.Strands.Skip(1));
-            var moved = new List<V2>(ts.Strands[0].Pts);
-            moved[0] = moved[0] + new V2(0.45, 0.45);   // round 3: off the line of sockets (0.176 apart on the 256x128 art), so it lands on no port
-            bad.Strands.Add(new CordStrand { Pts = moved });
-            bad.Decals.Add(new CordDecal(DecalKind.PowerStrip, new V2(8.5, 8.5), 0, CordBuilder.StripScale));
-            ArtFitResult rb = CordAudit.ArtFit(bs.Graph, ps.Where(p => p != ts).Concat(new[] { bad }).ToList(), c => true);
-            Check(rb.PileLooseEnds >= 1 && rb.PileIdleConnectors >= 1, $"can fail: planted loose end -> {rb.PileLooseEnds}, planted empty strip -> idle {rb.PileIdleConnectors}");
+            Check(ts.Strands.Count > 0, "B13: the strip pile must contain cables before planting a loose end");
+            // Keep reporting failures if production emits an empty pile; do not abort the suite.
+            if (ts.Strands.Count > 0)
+            {
+                // planted faults: a cable end pulled off its port, and an empty strip, must both be seen
+                LaidPiece bad = new LaidPiece { Key = ts.Key, Decals = new List<CordDecal>(ts.Decals) };
+                bad.Strands.AddRange(ts.Strands.Skip(1));
+                var moved = new List<V2>(ts.Strands[0].Pts);
+                moved[0] = moved[0] + new V2(0.45, 0.45);   // off every socket
+                bad.Strands.Add(new CordStrand { Pts = moved });
+                bad.Decals.Add(new CordDecal(DecalKind.PowerStrip, new V2(8.5, 8.5), 0, CordBuilder.StripScale));
+                ArtFitResult rb = CordAudit.ArtFit(bs.Graph, ps.Where(p => p != ts).Concat(new[] { bad }).ToList(), c => true);
+                Check(rb.PileLooseEnds >= 1 && rb.PileIdleConnectors >= 1, $"can fail: planted loose end -> {rb.PileLooseEnds}, planted empty strip -> idle {rb.PileIdleConnectors}");
+            }
             // determinism: same world, same pile
             List<LaidPiece> pj2 = new CordBuilder().Build(PileWorld(), new BuildOptions { Pile = PileArt.Junctions }, c => true);
             Check(pj2.First(p => p.Key.StartsWith("tangle:")).GeometryHash() == tj.GeometryHash(), "pile geometry not deterministic");

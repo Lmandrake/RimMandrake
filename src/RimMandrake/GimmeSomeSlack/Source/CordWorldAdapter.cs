@@ -20,6 +20,13 @@ namespace RimMandrake.GimmeSomeSlack
         internal static Cell C(IntVec3 c) => new Cell(c.x, c.z);
         internal static IntVec3 I(Cell c) => new IntVec3(c.X, 0, c.Z);
 
+        /// <summary>Every spawned machine power comp, including comps absent from the current net lists.
+        /// Conduits themselves are cells, not machine nodes.</summary>
+        internal static IEnumerable<CompPower> MachinePowerComps(Map map) =>
+            map.listerThings.AllThings.OfType<ThingWithComps>()
+                .Where(th => th.Spawned && !ConduitVisuals.IsTarget(th.def) && !ConduitVisuals.IsOtherConduit(th.def))
+                .SelectMany(th => th.AllComps.OfType<CompPower>());
+
         internal static CordWorld Snapshot(Map map) => Snapshot(map, null);
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: with a cache, the per-cell base (fog, walls, doors, water,
@@ -234,11 +241,46 @@ namespace RimMandrake.GimmeSomeSlack
             }
             AddRuinHookups(map, world, fog);
             AddTapNodes(map, world);
+            AddParentHookups(map, world, transmitterMachines);
             // round 2: machines in id order, not power-net list order, so a net rebuilt in another order (a hypothesis for the
             // live far-dig re-reduce) leaves CordBuilder's graph inputs, and so the graph, unchanged. OrderBy is stable.
             List<MachineInfo> byId = world.Machines.OrderBy(m => m.Id, StringComparer.Ordinal).ToList();
             world.Machines.Clear();
             world.Machines.AddRange(byId);
+        }
+
+        /// <summary>A final fallback for every machine power comp: when no existing cord reaches it, draw its actual
+        /// connectParent, including a nonadjacent parent within six cells. Existing hookups and incoming/outgoing machine
+        /// links take precedence. PatchCable parents, including aerial anchors, retain their existing drawing.</summary>
+        private static void AddParentHookups(Map map, CordWorld world, Dictionary<Thing, MachineInfo> transmitters)
+        {
+            var machines = new Dictionary<string, MachineInfo>(StringComparer.Ordinal);
+            foreach (MachineInfo m in world.Machines) machines[m.Id] = m;
+            var incoming = new HashSet<string>(world.Machines.SelectMany(m => m.MachineLinks));
+            foreach (CompPower c in MachinePowerComps(map))
+            {
+                CompPower parent = c.connectParent;
+                Thing pt = parent?.parent;
+                if (pt == null || !pt.Spawned) continue;
+                HookupDraw how = ConduitVisuals.HookupTo(pt);
+                if (how == HookupDraw.PatchCable) continue;
+                MachineInfo m = ParentMachine(c, transmitters, machines);
+                if (m.Hookups.Count > 0 || m.MachineLinks.Count > 0 || incoming.Contains(m.Id)) continue;
+                Cell? at = HookupPick.ParentHookup(
+                    new Cell(m.X0, m.Z0), new Cell(m.X0 + m.W - 1, m.Z0 + m.H - 1), C(pt.Position),
+                    cell => how == HookupDraw.MachineLink || world.IsConduit(cell));
+                if (!at.HasValue) continue;
+                if (how == HookupDraw.ConduitCell) m.Hookups.Add(at.Value);
+                else
+                {
+                    MachineInfo tm = ParentMachine(parent, transmitters, machines);
+                    if (tm.Id == m.Id) continue;
+                    m.MachineLinks.Add(tm.Id);
+                    incoming.Add(tm.Id);
+                    if (!world.Machines.Contains(tm)) world.Machines.Add(tm);
+                }
+                if (!world.Machines.Contains(m)) world.Machines.Add(m);
+            }
         }
 
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a wrecked machine draws in the conduit touching it as its repaired
@@ -342,6 +384,24 @@ namespace RimMandrake.GimmeSomeSlack
         /// +0.06 so the plug tucks under the panel. Unlisted machines: their art reaches the edge (0).</summary>
         public static readonly System.Collections.Generic.Dictionary<string, float[]> InsetsSNEW =
             new System.Collections.Generic.Dictionary<string, float[]> { { "SolarGenerator", new[] { 0.40f, 0f, 0f, 0f } } };
+
+        private static MachineInfo ParentMachine(CompPower c, Dictionary<Thing, MachineInfo> transmitters,
+            Dictionary<string, MachineInfo> machines)
+        {
+            Thing th = c.parent;
+            if (transmitters.TryGetValue(th, out MachineInfo m)) return m;
+            string suffix = th.thingIDNumber.ToString();
+            if (machines.TryGetValue("t" + suffix, out m) || machines.TryGetValue("c" + suffix, out m)) return m;
+            bool transmitter = c.TransmitsPowerNow;
+            m = new MachineInfo { Id = (transmitter ? "t" : "c") + suffix, Kind = KindOf(c, transmitter) };
+            CellRect r = th.OccupiedRect();
+            m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+            ArtInsets(th.def, m);
+            SetWallHome(th, m);
+            if (!m.HasHome && Aerial.CompAerialAnchor.Of(th) != null && !(th.def.building?.isAttachment ?? false)) m.Foot = true;
+            machines[m.Id] = m;
+            return m;
+        }
 
         private static void ArtInsets(ThingDef d, MachineInfo m)
         {
