@@ -897,6 +897,32 @@
    "render_match": "Jawa|scrapper"
   },
   {
+   "key": "GSS_10_Strand_0Scrapper_ScrapTaped",
+   "part": "Strand",
+   "look": "Scrapper",
+   "variant": "ScrapTaped",
+   "section": "GSS",
+   "label": "ground cord \u2014 Scrapper (ScrapTaped)",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Strand_ScrapTaped"
+   ],
+   "size": {
+    "drawSize": [
+     0.32,
+     0.08
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "SectionLayer_RM_MessyCords.StrandWidth 0.08 cells across; RibbonInto tiles one texture every width*4 = 0.32 cells along the cord"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Strand_ScrapTaped"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
    "key": "GSS_10_Strand_1Industrial_BlackRubber",
    "part": "Strand",
    "look": "Industrial",
@@ -1780,7 +1806,111 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_15_StubWall_0Scrapper",
+   "key": "GSS_15_PlugTop_0Scrapper",
+   "part": "PlugTop",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "plug seated face-on in a socket \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/PlugTop"
+   ],
+   "size": {
+    "drawSize": [
+     0.3425,
+     0.3425
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs PlugTopScale 0.3425"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/PlugTop"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_16_CableTie_0Scrapper",
+   "part": "CableTie",
+   "look": "Scrapper",
+   "variant": "",
+   "section": "GSS",
+   "label": "cable tie band \u2014 Scrapper",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/CableTie"
+   ],
+   "size": {
+    "drawSize": [
+     0.16,
+     0.16
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/CordBuilder.cs CableTieScale 0.16"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/CableTie"
+   ],
+   "render_match": "Jawa|scrapper"
+  },
+  {
+   "key": "GSS_17_WallOutlet_2Modern",
+   "part": "WallOutlet",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall outlet (Modern cord plugs into a wall) \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/WallOutlet"
+   ],
+   "size": {
+    "drawSize": [
+     0.8,
+     0.8
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs OutletDecal: v 0.277-0.727 drawn PlateAcross 0.36 across, so the whole art is 0.36 / 0.45 = 0.8 cells; foreshortened by Squash on the face"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/WallOutlet"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_18_WallOutlet_Plugged_2Modern",
+   "part": "WallOutlet_Plugged",
+   "look": "Modern",
+   "variant": "",
+   "section": "GSS",
+   "label": "wall outlet, plug seated \u2014 Modern",
+   "resources": [
+    "RimMandrake/GimmeSomeSlack/Styles/ExtCord/WallOutlet_Plugged"
+   ],
+   "size": {
+    "drawSize": [
+     0.8,
+     0.8
+    ],
+    "footprint": [
+     1,
+     1
+    ],
+    "source": "Source/Core/WallMount.cs OutletDecal (CordMaterials.OutletPlugged, same crop as WallOutlet)"
+   },
+   "former": [
+    "RimMandrake/MessyConduit/Styles/ExtCord/WallOutlet_Plugged"
+   ],
+   "render_match": "ExtCord|modern"
+  },
+  {
+   "key": "GSS_19_StubWall_0Scrapper",
    "part": "StubWall",
    "look": "Scrapper",
    "variant": "",
@@ -1806,7 +1936,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_15_StubWall_1Industrial",
+   "key": "GSS_19_StubWall_1Industrial",
    "part": "StubWall",
    "look": "Industrial",
    "variant": "",
@@ -1832,7 +1962,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_15_StubWall_2Modern",
+   "key": "GSS_19_StubWall_2Modern",
    "part": "StubWall",
    "look": "Modern",
    "variant": "",
@@ -1858,7 +1988,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_15_StubWall_2Modern_Blue",
+   "key": "GSS_19_StubWall_2Modern_Blue",
    "part": "StubWall",
    "look": "Modern",
    "variant": "Blue",
@@ -1884,7 +2014,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_15_StubWall_2Modern_Brown",
+   "key": "GSS_19_StubWall_2Modern_Brown",
    "part": "StubWall",
    "look": "Modern",
    "variant": "Brown",
@@ -1910,7 +2040,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_15_StubWall_2Modern_Green",
+   "key": "GSS_19_StubWall_2Modern_Green",
    "part": "StubWall",
    "look": "Modern",
    "variant": "Green",
@@ -1936,7 +2066,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_15_StubWall_2Modern_Yellow",
+   "key": "GSS_19_StubWall_2Modern_Yellow",
    "part": "StubWall",
    "look": "Modern",
    "variant": "Yellow",
@@ -1962,7 +2092,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_15_StubWall_3Futuristic",
+   "key": "GSS_19_StubWall_3Futuristic",
    "part": "StubWall",
    "look": "Futuristic",
    "variant": "",
@@ -1988,7 +2118,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_16_StubRock_0Scrapper",
+   "key": "GSS_20_StubRock_0Scrapper",
    "part": "StubRock",
    "look": "Scrapper",
    "variant": "",
@@ -2014,7 +2144,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_16_StubRock_1Industrial",
+   "key": "GSS_20_StubRock_1Industrial",
    "part": "StubRock",
    "look": "Industrial",
    "variant": "",
@@ -2040,7 +2170,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_16_StubRock_2Modern",
+   "key": "GSS_20_StubRock_2Modern",
    "part": "StubRock",
    "look": "Modern",
    "variant": "",
@@ -2066,7 +2196,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_16_StubRock_2Modern_Blue",
+   "key": "GSS_20_StubRock_2Modern_Blue",
    "part": "StubRock",
    "look": "Modern",
    "variant": "Blue",
@@ -2092,7 +2222,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_16_StubRock_2Modern_Brown",
+   "key": "GSS_20_StubRock_2Modern_Brown",
    "part": "StubRock",
    "look": "Modern",
    "variant": "Brown",
@@ -2118,7 +2248,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_16_StubRock_2Modern_Green",
+   "key": "GSS_20_StubRock_2Modern_Green",
    "part": "StubRock",
    "look": "Modern",
    "variant": "Green",
@@ -2144,7 +2274,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_16_StubRock_2Modern_Yellow",
+   "key": "GSS_20_StubRock_2Modern_Yellow",
    "part": "StubRock",
    "look": "Modern",
    "variant": "Yellow",
@@ -2170,7 +2300,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_16_StubRock_3Futuristic",
+   "key": "GSS_20_StubRock_3Futuristic",
    "part": "StubRock",
    "look": "Futuristic",
    "variant": "",
@@ -2196,7 +2326,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_0Scrapper",
+   "key": "GSS_21_EndFrayed_Dead_0Scrapper",
    "part": "EndFrayed_Dead",
    "look": "Scrapper",
    "variant": "",
@@ -2222,7 +2352,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_1Industrial",
+   "key": "GSS_21_EndFrayed_Dead_1Industrial",
    "part": "EndFrayed_Dead",
    "look": "Industrial",
    "variant": "",
@@ -2248,7 +2378,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_2Modern",
+   "key": "GSS_21_EndFrayed_Dead_2Modern",
    "part": "EndFrayed_Dead",
    "look": "Modern",
    "variant": "",
@@ -2274,7 +2404,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_2Modern_Blue",
+   "key": "GSS_21_EndFrayed_Dead_2Modern_Blue",
    "part": "EndFrayed_Dead",
    "look": "Modern",
    "variant": "Blue",
@@ -2300,7 +2430,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_2Modern_Brown",
+   "key": "GSS_21_EndFrayed_Dead_2Modern_Brown",
    "part": "EndFrayed_Dead",
    "look": "Modern",
    "variant": "Brown",
@@ -2326,7 +2456,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_2Modern_Green",
+   "key": "GSS_21_EndFrayed_Dead_2Modern_Green",
    "part": "EndFrayed_Dead",
    "look": "Modern",
    "variant": "Green",
@@ -2352,7 +2482,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_2Modern_Yellow",
+   "key": "GSS_21_EndFrayed_Dead_2Modern_Yellow",
    "part": "EndFrayed_Dead",
    "look": "Modern",
    "variant": "Yellow",
@@ -2378,7 +2508,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_17_EndFrayed_Dead_3Futuristic",
+   "key": "GSS_21_EndFrayed_Dead_3Futuristic",
    "part": "EndFrayed_Dead",
    "look": "Futuristic",
    "variant": "",
@@ -2404,7 +2534,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_18_EndFrayed_Live_0Scrapper",
+   "key": "GSS_22_EndFrayed_Live_0Scrapper",
    "part": "EndFrayed_Live",
    "look": "Scrapper",
    "variant": "",
@@ -2430,7 +2560,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_18_EndFrayed_Live_1Industrial",
+   "key": "GSS_22_EndFrayed_Live_1Industrial",
    "part": "EndFrayed_Live",
    "look": "Industrial",
    "variant": "",
@@ -2456,7 +2586,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_18_EndFrayed_Live_2Modern",
+   "key": "GSS_22_EndFrayed_Live_2Modern",
    "part": "EndFrayed_Live",
    "look": "Modern",
    "variant": "",
@@ -2482,7 +2612,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_18_EndFrayed_Live_3Futuristic",
+   "key": "GSS_22_EndFrayed_Live_3Futuristic",
    "part": "EndFrayed_Live",
    "look": "Futuristic",
    "variant": "",
@@ -2508,7 +2638,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_19_PowerStrip_0Scrapper",
+   "key": "GSS_23_PowerStrip_0Scrapper",
    "part": "PowerStrip",
    "look": "Scrapper",
    "variant": "",
@@ -2534,7 +2664,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_20_PowerStrip_Off_2Modern",
+   "key": "GSS_24_PowerStrip_Off_2Modern",
    "part": "PowerStrip_Off",
    "look": "Modern",
    "variant": "",
@@ -2560,7 +2690,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_21_PowerSwitch_0Scrapper",
+   "key": "GSS_25_PowerSwitch_0Scrapper",
    "part": "PowerSwitch",
    "look": "Scrapper",
    "variant": "",
@@ -2586,7 +2716,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_21_PowerSwitch_1Industrial",
+   "key": "GSS_25_PowerSwitch_1Industrial",
    "part": "PowerSwitch",
    "look": "Industrial",
    "variant": "",
@@ -2612,7 +2742,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_21_PowerSwitch_2Modern",
+   "key": "GSS_25_PowerSwitch_2Modern",
    "part": "PowerSwitch",
    "look": "Modern",
    "variant": "",
@@ -2638,7 +2768,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_21_PowerSwitch_3Futuristic",
+   "key": "GSS_25_PowerSwitch_3Futuristic",
    "part": "PowerSwitch",
    "look": "Futuristic",
    "variant": "",
@@ -2664,7 +2794,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_22_PowerSwitch_Off_0Scrapper",
+   "key": "GSS_26_PowerSwitch_Off_0Scrapper",
    "part": "PowerSwitch_Off",
    "look": "Scrapper",
    "variant": "",
@@ -2690,7 +2820,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_22_PowerSwitch_Off_1Industrial",
+   "key": "GSS_26_PowerSwitch_Off_1Industrial",
    "part": "PowerSwitch_Off",
    "look": "Industrial",
    "variant": "",
@@ -2716,7 +2846,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_22_PowerSwitch_Off_2Modern",
+   "key": "GSS_26_PowerSwitch_Off_2Modern",
    "part": "PowerSwitch_Off",
    "look": "Modern",
    "variant": "",
@@ -2742,7 +2872,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_22_PowerSwitch_Off_3Futuristic",
+   "key": "GSS_26_PowerSwitch_Off_3Futuristic",
    "part": "PowerSwitch_Off",
    "look": "Futuristic",
    "variant": "",
@@ -2768,7 +2898,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_23_StandingLamp_0Scrapper",
+   "key": "GSS_27_StandingLamp_0Scrapper",
    "part": "StandingLamp",
    "look": "Scrapper",
    "variant": "",
@@ -2794,7 +2924,7 @@
    "render_match": "Jawa|scrapper"
   },
   {
-   "key": "GSS_23_StandingLamp_1Industrial",
+   "key": "GSS_27_StandingLamp_1Industrial",
    "part": "StandingLamp",
    "look": "Industrial",
    "variant": "",
@@ -2820,7 +2950,7 @@
    "render_match": "StarWars|industrial"
   },
   {
-   "key": "GSS_23_StandingLamp_2Modern",
+   "key": "GSS_27_StandingLamp_2Modern",
    "part": "StandingLamp",
    "look": "Modern",
    "variant": "",
@@ -2846,7 +2976,7 @@
    "render_match": "ExtCord|modern"
   },
   {
-   "key": "GSS_23_StandingLamp_3Futuristic",
+   "key": "GSS_27_StandingLamp_3Futuristic",
    "part": "StandingLamp",
    "look": "Futuristic",
    "variant": "",
@@ -2872,7 +3002,7 @@
    "render_match": "Cybertek|futuristic"
   },
   {
-   "key": "GSS_24_SparkGlow_8shared",
+   "key": "GSS_28_SparkGlow_8shared",
    "part": "SparkGlow",
    "look": "shared",
    "variant": "",
@@ -3817,6 +3947,6 @@
    "render_match": "Cybertek|futuristic"
   }
  ],
- "textures_seen": 176,
- "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 111 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
+ "textures_seen": 181,
+ "lead_html": "<div style='border:2px solid #c9a227;padding:10px 14px;margin:0 0 12px;font-size:15px;line-height:1.5'><b>1. What this is:</b> every picture Gimme Some Slack draws in the game \u2014 116 rows, one per part per look (Scrapper, Industrial, Modern, Futuristic; Modern cords also per colour), each at its true in-game size beside a human, the same part's looks banded together. The power-tap clamp is first; the last 40 rows are hose art that <b>moved to FlowWorks</b>.<br><b>2. What you rule on:</b> for each picture in each look, keep it or redo it (say why in the note). The clamp rows also hold the new clamp candidates \u2014 pick one per look.<br><b>3. Your clicks save automatically.</b> The blue IN GAME frame is only the agent's starting point (a prefill, counted separately), never your choice; nothing installs until you say the sheet is done.</div>"
 }

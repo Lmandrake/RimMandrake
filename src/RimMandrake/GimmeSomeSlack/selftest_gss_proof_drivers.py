@@ -162,9 +162,9 @@ def t_m21():
                 got, want = A.drip_expected_points(0, 0, ln, 0, drip), _ts_count(ln, drip)
                 check("M21c/d point count len %.2f drip %s matches the C# loop port" % (ln, drip), got == want, (got, want))
         check("M21c 12-cell span OFF is 25 points", A.drip_expected_points(0, 0, 12, 0, False) == 25)
-        check("M21d 12-cell span ON is 36 points", A.drip_expected_points(0, 0, 12, 0, True) == 36)
+        check("M21d 12-cell span ON is 48 points (12 loop samples per end)", A.drip_expected_points(0, 0, 12, 0, True) == 48)
         ends = [[0.0, 0.0, 12.0, 0.0], [0.0, 0.3, 12.0, 0.3]]
-        sp_on = [{"kind": "Power", "strandPts": [36, 36], "strandEnds": ends, "verts": 144}]
+        sp_on = [{"kind": "Power", "strandPts": [48, 48], "strandEnds": ends, "verts": 192}]
         sp_off = [{"kind": "Power", "strandPts": [25, 25], "strandEnds": ends, "verts": 100}]
         check("M21d ON counts pass ON", A.drip_verdict(sp_on, True)[:2] == ("PASS", "MOD"))
         check("M21c OFF counts pass OFF", A.drip_verdict(sp_off, False)[:2] == ("PASS", "MOD"))

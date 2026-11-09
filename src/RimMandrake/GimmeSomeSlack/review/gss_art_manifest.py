@@ -52,6 +52,10 @@ PARTS = {
     "Junction_T":      ("cord junction (T, taped)", [1.15, 1.15], f"{CB}:501 JunctionScale 1.15"),
     "Junction_X":      ("cord junction (X, tin)", [1.15, 1.15], f"{CB}:501 JunctionScale 1.15 (pile junctions 0.6-1.05)"),
     "Plug":            ("plug", [0.55, 0.55], f"{CB}:502 PlugScale 0.55"),
+    "PlugTop":         ("plug seated face-on in a socket", [0.3425, 0.3425], f"{CB} PlugTopScale 0.3425"),
+    "CableTie":        ("cable tie band", [0.16, 0.16], f"{CB} CableTieScale 0.16"),
+    "WallOutlet":      ("wall outlet (Modern cord plugs into a wall)", [0.8, 0.8], "Source/Core/WallMount.cs OutletDecal: v 0.277-0.727 drawn PlateAcross 0.36 across, so the whole art is 0.36 / 0.45 = 0.8 cells; foreshortened by Squash on the face"),
+    "WallOutlet_Plugged": ("wall outlet, plug seated", [0.8, 0.8], "Source/Core/WallMount.cs OutletDecal (CordMaterials.OutletPlugged, same crop as WallOutlet)"),
     "StubWall":        ("wall hole (cord enters a wall)", [1.0, 1.0], "Source/Core/WallMount.cs PlateAcross, cropped to the plate; shown as the whole 1-cell art"),
     "StubRock":        ("rock hole (cord enters rock)", [1.0, 1.0], "Source/Core/WallMount.cs PlateAcross, cropped to the hole; shown as the whole 1-cell art"),
     "EndFrayed_Dead":  ("cut cord end, dead", [0.5, 0.5], f"{CB}:755 fray decal scale 0.5"),
@@ -134,7 +138,7 @@ def classify_gss(rel: str):
             variant, name = name[len("Strand_"):], "Strand"
         return name, look, variant, res
     name = p[0]
-    alias = {"Strand_Jawa": ("Strand", "Jawa"), "Junction_Tape": ("Junction_T", ""), "Junction_Tin": ("Junction_X", "")}
+    alias = {"Strand_Jawa": ("Strand", "Jawa"), "Strand_ScrapTaped": ("Strand", "ScrapTaped"), "Junction_Tape": ("Junction_T", ""), "Junction_Tin": ("Junction_X", "")}
     if name in alias:
         name, variant = alias[name]
     if name == "ConduitTransparent":
