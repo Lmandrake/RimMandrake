@@ -161,8 +161,8 @@ namespace RimMandrake.GimmeSomeSlack
                         if (!s.OverFace && CordMaterials.Shadow != null)
                         {
                             bool trimA = pts != s.Pts && s.WhipA > 0, trimB = pts != s.Pts && s.WhipB > 0;
-                            List<V2> sh = ShadowPts(pts, p, trimA, trimB, out bool tuckedA);
-                            verts += Ribbon(CordMaterials.Shadow, sh, ShadowWidth, y - 0.0003f, tuckedA ? s.S0 - ShadowTuck : s.S0, ShadowOffset);
+                            float[] grow = ShadowGrow(pts, p, trimA, trimB);
+                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, ShadowOffset, grow: grow);
                         }
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
                         if (!ripples)
@@ -244,41 +244,41 @@ namespace RimMandrake.GimmeSomeSlack
         /// 4 widths), v across it. Winding matches Printer_Plane.</summary>
         /// <summary>The cast shadow falls down and to the right of its strand (cells).</summary>
         public static readonly Vector2 ShadowOffset = new Vector2(0.03f, -0.045f);
-        /// <summary>How far (cells) a strand's shadow runs on back under the fitting the strand ends in. Owner 2026-11-09 ("Yes all": the
-        /// notch just below each strip plug): a shadow cut square at the strand's tip, then shifted by <see cref="ShadowOffset"/>, showed as
-        /// a step beside the cord just past the plug's boot; started this far back along the end's own axis, its cut lies under the fitting.</summary>
-        public const double ShadowTuck = 0.08;
+        /// <summary>Where a strand leaves a fitting its shadow starts under the strand itself (no offset, the strand's own width) and grows to its
+        /// full offset and width over <see cref="ShadowGrowLen"/> past <see cref="ShadowHold"/> (cells along the strand from the tip). A shadow cut
+        /// square at the tip and shifted by <see cref="ShadowOffset"/> showed as a notch below each strip plug (owner 2026-11-09 "Yes all"); run
+        /// back under the fitting instead, its wider offset band showed as a hard-topped dark block beside each plug's boot (Conductor 2026-11-09).</summary>
+        public const double ShadowHold = 0.12, ShadowGrowLen = 0.3;
         private const double ShadowFittingReach = 0.35;
 
-        /// <summary>The strand's points for its shadow: each end that sits in a fitting of the piece (a plug, socket, outlet, box, strip or
-        /// stub within <see cref="ShadowFittingReach"/>) runs on <see cref="ShadowTuck"/> straight back along its own axis; a free
-        /// or whip-trimmed end is left as it is.</summary>
-        internal static List<V2> ShadowPts(List<V2> pts, LaidPiece p, bool trimA, bool trimB, out bool tuckA)
+        /// <summary>Per point of the strand, how far its shadow has grown (0 = hidden under the strand, 1 = full offset and width); null when
+        /// neither end sits in a fitting of the piece (a plug, socket, outlet, box, strip or stub within <see cref="ShadowFittingReach"/>).
+        /// A free or whip-trimmed end is left full.</summary>
+        internal static float[] ShadowGrow(List<V2> pts, LaidPiece p, bool trimA, bool trimB)
         {
             int n = pts.Count;
-            tuckA = false;
-            if (n < 2) return pts;
-            tuckA = !trimA && InFitting(p, pts[0]);
-            bool tuckB = !trimB && InFitting(p, pts[n - 1]);
-            if (!tuckA && !tuckB) return pts;
-            var q = new List<V2>(n + 2);
-            if (tuckA) q.Add(pts[0] + EndAxis(pts, true) * ShadowTuck);
-            q.AddRange(pts);
-            if (tuckB) q.Add(pts[n - 1] + EndAxis(pts, false) * ShadowTuck);
-            return q;
+            if (n < 2) return null;
+            bool inA = !trimA && InFitting(p, pts[0]), inB = !trimB && InFitting(p, pts[n - 1]);
+            if (!inA && !inB) return null;
+            double[] cum = Geo.CumLen(pts);
+            double L = cum[n - 1];
+            var k = new float[n];
+            for (int i = 0; i < n; i++)
+            {
+                double g = 1;
+                if (inA) g = Math.Min(g, Grow01(cum[i]));
+                if (inB) g = Math.Min(g, Grow01(L - cum[i]));
+                k[i] = (float)g;
+            }
+            return k;
         }
 
-        /// <summary>The unit direction out past an end, taken over the first few hundredths of a cell so a near-duplicate point cannot turn it.</summary>
-        private static V2 EndAxis(List<V2> pts, bool atA)
+        private static double Grow01(double fromTip)
         {
-            int n = pts.Count;
-            V2 tip = atA ? pts[0] : pts[n - 1];
-            for (int i = 1; i < n; i++)
-            {
-                V2 o = atA ? pts[i] : pts[n - 1 - i];
-                if (V2.Dist(tip, o) >= 0.03) return (tip - o).Norm();
-            }
-            return (tip - (atA ? pts[n - 1] : pts[0])).Norm();
+            double t = (fromTip - ShadowHold) / ShadowGrowLen;
+            if (t <= 0) return 0;
+            if (t >= 1) return 1;
+            return t * t * (3 - 2 * t);
         }
 
         private static bool InFitting(LaidPiece p, V2 tip)
@@ -290,7 +290,7 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,
-                           byte[] alpha = null, float uvz = 0f)
+                           byte[] alpha = null, float uvz = 0f, float[] grow = null)
         {
             if (pts.Count < 2) return 0;
             LayerSubMesh sm = GetSubMesh(mat);
@@ -303,9 +303,13 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 Geo.TanNorm(pts, i, out V2 t, out V2 n);
                 if (i > 0) u += V2.Dist(pts[i - 1], pts[i]) / tile;
-                V2 l = pts[i] + n * hw, r = pts[i] - n * hw;
-                sm.verts.Add(new Vector3((float)l.X + offset.x, y, (float)l.Z + offset.y));
-                sm.verts.Add(new Vector3((float)r.X + offset.x, y, (float)r.Z + offset.y));
+                // a shadow grows out from under its strand where the strand leaves a fitting (ShadowGrow)
+                float g = grow != null && i < grow.Length ? grow[i] : 1f;
+                double hwi = grow == null ? hw : (StrandWidth + (width - StrandWidth) * g) / 2f;
+                float ox = offset.x * g, oz = offset.y * g;
+                V2 l = pts[i] + n * hwi, r = pts[i] - n * hwi;
+                sm.verts.Add(new Vector3((float)l.X + ox, y, (float)l.Z + oz));
+                sm.verts.Add(new Vector3((float)r.X + ox, y, (float)r.Z + oz));
                 sm.uvs.Add(new Vector3((float)u, 1f, uvz));
                 sm.uvs.Add(new Vector3((float)u, 0f, uvz));
                 byte al = alpha != null && i < alpha.Length ? alpha[i] : (byte)255;

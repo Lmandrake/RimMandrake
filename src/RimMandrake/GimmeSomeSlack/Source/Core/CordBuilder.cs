@@ -2634,6 +2634,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// its machine) takes the whole lead as one ease from the plug's axis to that end, dropping the router's slack wiggle (a tight S).
         /// The plug itself never moves: the cord end stays on the machine's centroid.</summary>
         public const double DeviceSlideReach = 0.7;
+        /// <summary>The longest cord (cells along it) that whole-lead ease may take: a short lead's slack S, never a laid loop (a lamp's cord
+        /// coiling to a strip socket 0.6 cells away lost its loop and its seat to it: Conductor 2026-11-09, r3_11 allfix).</summary>
+        public const double DeviceLeadArc = 2.0;
 
         private static double Dot(V2 a, V2 b) => a.X * b.X + a.Z * b.Z;
 
@@ -2696,15 +2699,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bool bridge = a != null && b != null && (jA < 0 || jB < 0 || jA >= jB);
                 if (!bridge && a != null && jA < 0) jA = n - 1;
                 if (!bridge && b != null && jB < 0) jB = 0;
+                int jA0 = jA, jB0 = jB;
                 // a course left shorter than SeatTail past the ease is the far fitting's own lead-in: ease right to that end, along its
                 // own end direction, not from a tangent inside the router's wiggle (owner 2026-11-09 "Yes all": a box beside its machine)
                 // a device plug close to its box: the whole lead is one ease, its slack wiggle dropped (a tight S between two fittings)
-                if (!bridge && a != null && b == null && (L - cum[jA] < SeatTail || a.Decal >= 0 && V2.Dist(P[n - 1], bootA) < DeviceSlideReach)) jA = n - 1;
-                if (!bridge && b != null && a == null && (cum[jB] < SeatTail || b.Decal >= 0 && V2.Dist(P[0], bootB) < DeviceSlideReach)) jB = 0;
+                if (!bridge && a != null && b == null && (L - cum[jA] < SeatTail || a.Decal >= 0 && V2.Dist(P[n - 1], bootA) < DeviceSlideReach && L < DeviceLeadArc)) jA = n - 1;
+                if (!bridge && b != null && a == null && (cum[jB] < SeatTail || b.Decal >= 0 && V2.Dist(P[0], bootB) < DeviceSlideReach && L < DeviceLeadArc)) jB = 0;
                 // a tied strain-relief loop inside a stretch laid again would lose its band: leave that end alone
                 if (s.Ties != null && s.Ties.Count > 0)
                 {
                     if (bridge) continue;
+                    // a whole-lead ease that would run over the tie falls back to the plug's own ease: the lamp's cord to a strip socket
+                    // lost its seat that way and left the boot's side on a diagonal (Conductor 2026-11-09, r3_11 allfix)
+                    if (a != null && jA != jA0 && s.Ties.Any(t => t.S0 < cum[jA])) jA = jA0;
+                    if (b != null && jB != jB0 && s.Ties.Any(t => t.S1 > cum[jB])) jB = jB0;
                     if (a != null && s.Ties.Any(t => t.S0 < cum[jA])) { a = null; jA = 0; bootA = P[0]; }
                     if (b != null && s.Ties.Any(t => t.S1 > cum[jB])) { b = null; jB = n - 1; bootB = P[n - 1]; }
                     if (a == null && b == null) continue;
