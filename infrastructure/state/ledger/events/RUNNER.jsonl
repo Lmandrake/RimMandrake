@@ -5869,3 +5869,13 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_WORKTREES","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:37Z","tsn":1794197017307100939}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_CONDUCTOR_GOODBYE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:41Z","tsn":1794197021665685969}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_QUEUE_LINT","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:45Z","tsn":1794197025870737477}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_SET_SESSION_TITLE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:32Z","tsn":1794197912660509219}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_WARN_SKILL_UNWIRED","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:37Z","tsn":1794197917499486645}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_WARN_UNCLOSED_QUEUE_ITEM","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:42Z","tsn":1794197922209456326}
+{"seat":"RUNNER","event":"live","id":"AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:46Z","tsn":1794197926772215256}
+{"seat":"RUNNER","event":"live","id":"AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:51Z","tsn":1794197931587657587}
+{"seat":"RUNNER","event":"live","id":"CALL_DEADLINES_ENFORCE_130_OPEN_ENDED","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:18:56Z","tsn":1794197936350855724}
+{"seat":"RUNNER","event":"live","id":"CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:00Z","tsn":1794197940997251610}
+{"seat":"RUNNER","event":"live","id":"CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:05Z","tsn":1794197945631731088}
+{"seat":"RUNNER","event":"live","id":"CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:10Z","tsn":1794197950395033133}
+{"seat":"RUNNER","event":"live","id":"CONDUCTOR_RESET_FIX_KILLED_MID_READ","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:19:15Z","tsn":1794197955070332681}
