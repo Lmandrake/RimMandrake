@@ -16,7 +16,7 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 | | |
 |---|---|
 | Units | `rm-ralph-*` (`systemctl --user list-units 'rm-ralph*'`) |
-| Clones and `ralph/` | `/home/mandrake/rm/scratch/BENCH/ralph_<mod>/`. Read only unless you are the head writing `OWNER_NOTE`, `PROMPT.md` or `STOP` |
+| Clones and `ralph/` | `/home/mandrake/rm/scratch/BENCH/ralph_<mod>/`. Read only except for the head writing `OWNER_NOTE`, `PROMPT.md` or `STOP`, or the stall auditor recording its audit in `RATCHET.md` |
 | Logs, shots, verdicts | `D:\ClaudeWork\rimmandrake\ralph_<mod>\` |
 | The page | `D:\ClaudeWork\rimmandrake\conductor\ARTISAN_NOW.md`, and `ARTISAN_NOW_PHONE.md` beside it (`src/RimMandrake/Utils/artisan_now.py`, `rm-artisan-now.timer`, every minute, no model) |
 | The frozen statement | The mod's `## north star` in `design/validation_walks/RimMandrake/<Mod>.md` |
@@ -29,9 +29,8 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 
 ## Writing the prompt here
 
-- Name the telemetry database and its history as a resource (`telemetry` skill): *"The artisan loops have access to the full telemetry we
-  built into BRIDGE, right? That's a very robust database of performance and useful extractions, as well as its historical database should
-  they wish to understand current trends vs. past trends. That's important to provide."*
+- Name the full BRIDGE telemetry database and its recorded history as resources (`telemetry` skill), including performance data and useful
+  extractions. Tell the loop it can compare current trends with past trends.
 - Name what it may not touch ("Stay inside <Mod>"), and keep a loop's writable mods disjoint from any other loop's on the same machine: every
   game on a machine loads one `Mods` folder, and a deploy with two games up is unmeasured.
 - A good offline list to name: the mod's selftests and kernel fuzz. A shape lab or an offline geometry solve beats a pass of screenshots.
@@ -40,15 +39,15 @@ Scoreboard per mod: [references/scoreboard.md](references/scoreboard.md). Update
 
 The rules are in the general skills (owner's card, 2026-11-08). What is local:
 
-- **Bar levels (v1, polish, out of scope) and locks go in the loop's `ralph/RATCHET.md`, not in the mod's `## north star`.**
-  The north star's validated hash covers its prose, so writing levels there needs his re-validation the same sitting.
+- **Record bar levels (v1, polish, out of scope) and locks in the loop's `ralph/RATCHET.md`, not in the mod's `## north star`.**
+  The north star's validated hash covers its prose; writing levels there requires the owner's re-validation in the same sitting.
 - **Reuse search here:** vanilla 1.6 and every DLC (RimSage, the decompiled source), our `src/`, and Workshop mods in both
   mod roots, inactive ones included (`infrastructure/state/facts/instrument_traps.md`).
 - **Plain play here:** the player's own orders only: no dev spawns, no forced jobs, no god mode, at play zoom and speed 1-2.
-- **Help for a flag:** the Conductor looks; GPT on the item is `python3 src/RimMandrake/Utils/gpt_consult.py "<question>" -f
-  <file>...`; a message to the owner is a question card through the Conductor.
-- **A sitting packet here:** the options to look at as savegames (back up the Saves folder first), raids and threats off,
-  the advanced-zoom mod in the list, and the bridge released.
+- **Help for a flag:** the Conductor reviews the evidence, consults GPT about the item using `python3 src/RimMandrake/Utils/gpt_consult.py "<question>" -f
+  <file>...`, then sends the owner a question card through the Conductor.
+- **A sitting packet here:** provide the options for review as savegames (back up the Saves folder first), turn raids and
+  threats off, include the advanced-zoom mod in the list, and release the bridge.
 
 ## The game gate
 
@@ -69,10 +68,10 @@ script leaves the game running, so pause it.
 A loop's unit and agent run on Archmagi; only the game and its tools run on SteveDesktop, through `ralph/steve.sh`. No credential moves. So
 `systemctl --user is-active` over ssh there reads such a unit as inactive.
 
-- 🔴 **Never reboot that machine for a game problem** (owner): *"Even with CPU faults, rebooting the game often clears any damage caused sufficient
-  for this kind of testing. Don't keep rebooting it. It's slow and hard on the machine."* `ralph/steve.sh reboot` is the last resort, only when the
+- 🔴 **Do not reboot that machine for a game problem except as the last resort below** (owner). Restarting the game often clears enough
+  CPU-fault damage for this testing; machine reboots are slow and hard on the machine. Use `ralph/steve.sh reboot` only as a last resort, when the
   game won't come up at all after a retry.
-  The machine hosts two games, and a reboot drops both: a copied `steve.sh` either drops `reboot` or keeps the guard (`ralph/reboot_guard.sh`,
+  The machine hosts two games, and a reboot drops both: a copied `steve.sh` must either drop `reboot` or keep the guard (`ralph/reboot_guard.sh`,
   which refuses while another instance runs, fails closed, `STEVE_REBOOT_BOTH=1` overrides; test `bash ralph/reboot_guard_test.sh`). Restart your own game by pid.
 - It has a CPU fault nobody has cured, showing some minutes after boot. If `ralph/steve.sh status` shows `bad_cpus` other than `[]`, or a result
   surprises you, restart the game and rerun before acting on it. Uptime alone isn't a reason to do anything.
