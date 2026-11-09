@@ -189,6 +189,8 @@ namespace RimMandrake.GimmeSomeSlack
                         bool face = CordMaterials.IsFace(d.Kind);
                         // a plug lies over the strip it plugs into: same-altitude sub-meshes draw in whichever order the section met them
                         float y = face ? faceY + 0.002f : d.Kind == DecalKind.PlugTop ? baseY + 0.011f : d.Kind == DecalKind.Plug ? baseY + 0.010f : baseY + 0.009f;
+                        // a plug seated on an east/west wall outlet lies over the outlet's receptacle (owner 2026-11-09)
+                        if (d.OverFace) { m = CordMaterials.OverFaceOf(m); y = faceY + 0.004f; }
                         float aspect = DecalAspect.Of(d.Kind);
                         verts += d.Cropped
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)

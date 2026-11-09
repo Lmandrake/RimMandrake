@@ -440,6 +440,17 @@ namespace RimMandrake.GimmeSomeSlack
 
         public static Material Decal(DecalKind k) => decals.TryGetValue(k, out Material m) ? m : null;
 
+        private static readonly Dictionary<Material, Material> overFace = new Dictionary<Material, Material>();
+        /// <summary>The same decal one queue above the face pieces (CordDecal.OverFace): a plug seated on a wall outlet draws over its
+        /// receptacle (owner 2026-11-09). Cached per source material; main thread only (section regeneration).</summary>
+        public static Material OverFaceOf(Material m)
+        {
+            if (m == null) return null;
+            if (!overFace.TryGetValue(m, out Material o))
+                overFace[m] = o = MaterialPool.MatFrom(new MaterialRequest(m.mainTexture, m.shader, m.color) { renderQueue = FaceQueue + 1 });
+            return o;
+        }
+
         private static Dictionary<DecalKind, Material>[] variantDecals = new Dictionary<DecalKind, Material>[0];
         /// <summary>State read: the cord colour each piece variant was built for (extension-cord look only).</summary>
         public static readonly List<string> PieceColors = new List<string>();

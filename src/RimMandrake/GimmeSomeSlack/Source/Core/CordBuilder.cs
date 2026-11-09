@@ -38,7 +38,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Round 4: the art sub-rectangle printed (u along art X, v along art Z); U1 = 0 means the whole canvas. A wall
         /// plate prints only its plate, never the art's own curl of cord (WallMount).</summary>
         public double U0, U1, V0, V1;
-        internal CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; }
+        /// <summary>Drawn over the wall-face decals (owner 2026-11-09: a plug seated on an east/west wall outlet covers its three prongs).</summary>
+        public bool OverFace;
+        internal CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; OverFace = false; }
         public bool Cropped => U1 > 0;
         public double ScaleX => Scale * (Squash > 0 ? Squash : 1);
     }
@@ -2449,10 +2451,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                     if (V2.Dist(t, face + into * PastFaceDepth) > 0.2) continue;
                     V2 sd = Side(into);
-                    V2 headFace = face + into * 0.005 + sd * ((t - face).X * sd.X + (t - face).Z * sd.Z);
-                    piece.Decals.Add(new CordDecal(DecalKind.Plug,
-                        headFace - into * (CordAudit.PlugFaceU * WallPlugScale),
-                        Math.Atan2(into.Z, into.X), WallPlugScale));
+                    V2 headFace = face + into * WallPlugSeat(into) + sd * ((t - face).X * sd.X + (t - face).Z * sd.Z);
+                    piece.Decals.Add(WallPlug(headFace, into));
                 }
                 return;
             }
@@ -2557,6 +2557,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The side-view plug (Plug.png, tail stripped) where a Modern cord plugs into a side or the hidden north face of a wall: its
         /// head face (art +0.46) on the wall face; at this scale its boot end is the cord's width.</summary>
         public const double WallPlugScale = 0.72;
+        /// <summary>Owner 2026-11-09 8:05 AM PST: "the plug doesn't cover the outlet graphic. Please make it shift in space to completely cover
+        /// the image of the three prongs ... a displacement setting for east west plugs." How deep into the wall (cells, along into) the
+        /// side-view plug's head face sits: on an east/west face the far edge of the outlet strip (WallMount.OutletDecal), so the head
+        /// covers the whole receptacle and draws over it (OverFace); on the hidden north face it stays on the face line as before.</summary>
+        internal static double WallPlugSeat(V2 into) =>
+            WallMount.FaceOf(into) == WallFaceKind.Side ? WallMount.FaceMargin + WallMount.PlateDepth(WallFaceKind.Side) : 0.005;
+
+        private static CordDecal WallPlug(V2 headFace, V2 into) =>
+            new CordDecal(DecalKind.Plug, headFace - into * (CordAudit.PlugFaceU * WallPlugScale), Math.Atan2(into.Z, into.X), WallPlugScale)
+            { OverFace = WallMount.FaceOf(into) == WallFaceKind.Side };
         /// <summary>The strip's bar in PowerStrip.png, canvas widths from the centre: middle (X, Z) and half sizes.</summary>
         public const double StripBarX = -0.0234, StripBarZ = -0.0547, StripBarHalfAlong = 0.43, StripBarHalfAcross = 0.086;
         /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
@@ -3447,8 +3457,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             if (atStart ? s.DiveA : s.DiveB) continue;
                             V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                             V2 sd = Side(nd.Into);
-                            V2 headFace = nd.Face + nd.Into * 0.005 + sd * ((t - nd.Face).X * sd.X + (t - nd.Face).Z * sd.Z);
-                            piece.Decals.Add(new CordDecal(DecalKind.Plug, headFace - nd.Into * (CordAudit.PlugFaceU * WallPlugScale), Math.Atan2(nd.Into.Z, nd.Into.X), WallPlugScale));
+                            V2 headFace = nd.Face + nd.Into * WallPlugSeat(nd.Into) + sd * ((t - nd.Face).X * sd.X + (t - nd.Face).Z * sd.Z);
+                            piece.Decals.Add(WallPlug(headFace, nd.Into));
                         }
                     hole = nd.Face;
                 }
