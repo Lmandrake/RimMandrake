@@ -33,3 +33,10 @@ With this mod off, or the conduit def unticked in its settings, a conduit ending
 - A solar panel that touches no conduit and has no `connectParent` (gss_ba_Modern t39713/t39714) is unpowered in vanilla and draws no cord.
 - A strip with two wall feeds plugs the second wall cord into a socket (`wall_via_socket`); only the strip's lead takes the outlet beside it.
 - Live M2c unforced bends: 7 on gss_ba_Modern (4 in round 3).
+
+## Round 5 residuals
+
+- Lamp entry (owner card 2026-11-08 11:40 PM, "Under to base centre"): lamp cords end under the lamp's base, 0.25 cell south of the footprint centre (`MachineInfo.BaseDz`, table `BaseOffsets` in CordWorldAdapter for the standing and torch lamp defs; wall lamps keep their wall home), entering through the bottom edge or a side edge at base height, never the top. The 0.25 is measured from StandingLamp art; the DLC-style standing and torch lamps share it unmeasured (no live crop of those styles yet).
+- Three live unforced bends remain on gss_ba_Modern (round 4: 7, round 3: 4), all at a plug exit: junction:210,102|junction:211,102 (a one-cell cord between two adjacent strips whose boots face opposite ways: a double U that cannot be one slow curve), junction:180,102|transmitter:180,102 (strip lead to a pole foot, 92 degrees 0.1 cell after the start) and junction:194,94|consumer:194,94 (92 degrees at a strip exit into a device plug). The GPT judge's class 6 still lists r3_18/20/21/22/23 (small steps beside strips, 22 and 23 are those rows). A general two-pose fit for strip-to-strip and strip-to-pole leads was tried (gss_r5_f): it fixed piece 47's heading but regressed one selftest row (strip-socket hooks 4 > 3) and added a lamp_reversal, so it was reverted.
+- Offline kink residual is 0 on Modern and 2 on the other three looks (was 3/4/4/4): device-end S-bends of non-lamp machines, which keep the diagonal flange arrival the plug rows require.
+- `r3_35_device` (the research bench) shows no cord in its crop because the cord enters the bench's top edge and runs under the 5x2 art; a wide crop (gss_sitting/r5/live/r5_bench_*) shows it.
