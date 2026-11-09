@@ -1,0 +1,1 @@
+ralph/live gss_stage.load returns 0 even when LOAD fails (save missing from the Saves folder) and the harness then shoots the PREVIOUS map under the new name. Check the loaded map name before shooting; gss_ba_* saves live in D:/ClaudeWork/rimmandrake/gss_sitting/saves/ and must be copied into the game Saves folder. (GSS allfix 2026-11-09)
