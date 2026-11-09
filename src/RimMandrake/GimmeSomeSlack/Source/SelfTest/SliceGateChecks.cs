@@ -15,9 +15,18 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 {
     internal static class SliceGateChecks
     {
+        /// <summary>Spin until <paramref name="done"/> or 120 s pass; a stalled worker fails a check instead of hanging the run (Codex review 2026-11-09).</summary>
+        private static void WaitFor(Func<bool> done, string what)
+        {
+            var t = Stopwatch.StartNew();
+            while (!done()) { if (t.Elapsed.TotalSeconds > 120) { Program.Check(false, $"slice gate: worker wait '{what}' timed out after 120 s"); return; } System.Threading.Thread.Sleep(1); }
+        }
+
         /// <summary>The slice bound: the game's frame budget (8 ms) plus one worst edge and the node/reach tail, well under
         /// the 20 ms the live re-measure requires.</summary>
-        private const double BudgetMs = 8.0, SliceBoundMs = 20.0;
+        // SyncLayBoundMs is for the budgeted lay on the caller, which the game no longer uses (it lays on a worker, AsyncLay, held to SliceBoundMs below) except for an edge whose
+        // worker lay threw. Since a cord can be laid again when it coils on a door or its end (pass 10), one edge there can cost several settles: 20 ms became 30 for that path only.
+        private const double BudgetMs = 8.0, SliceBoundMs = 20.0, SyncLayBoundMs = 30.0;
 
         internal static void Run()
         {
@@ -159,7 +168,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 between?.Invoke(builds);
                 // a frame later: the worker has landed something, or stopped (then the next Build queues what is left)
                 System.Threading.Thread.Sleep(2);
-                while (!b.LayReady) System.Threading.Thread.Sleep(1);
+                WaitFor(() => b.LayReady, "converge");
             }
             return (builds, worst, onCaller, minPieces, outp);
         }
@@ -240,7 +249,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Program.Check(stale.Count > 0 && b3b.LastLanded > 0, $"async: stale-corridor case is blind (pieces over the wall {stale.Count}, landed {b3b.LastLanded})");
                 int adopted = after3b.Count(p => stale.Contains(p.Key));
                 Program.Check(adopted == 0, $"async: {adopted} landed piece(s) laid before the wall dropped were adopted despite a changed corridor");
-                while (b3b.LayRunning) System.Threading.Thread.Sleep(1);
+                WaitFor(() => !b3b.LayRunning, "b3b idle");
             }
 
             // (5) a worker lay that throws: the fault is recorded, the key is not queued again, and the caller lays it itself,
@@ -259,13 +268,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     builds5++;
                     caller5 += b5.LastLaidOnCaller;
                     if (b5.LastPending == 0) break;
-                    while (!b5.LayReady) System.Threading.Thread.Sleep(1);
+                    WaitFor(() => b5.LayReady, "b5 ready");
                 }
                 Program.Check(b5.LastLayFault != null && b5.LastLayFault.Contains("selftest worker fault"), "async: the worker fault was not recorded (LastLayFault " + (b5.LastLayFault ?? "null") + ")");
                 Program.Check(b5.LastPending == 0 && builds5 < 60, $"async: a faulted key stayed pending after {builds5} Builds (it must be laid on the caller)");
                 Program.Check(caller5 > 0, "async: no faulted edge was laid on the caller");
                 Program.Check(last5 != null && GssFuzz.Digest(last5) == want, "async: the Builds after a worker fault did not end equal to one unbudgeted Build");
-                while (b5.LayRunning) System.Threading.Thread.Sleep(1);
+                WaitFor(() => !b5.LayRunning, "b5 idle");
             }
 
             // (4) an unbudgeted Build after an async run is still complete and lays on the caller only what it misses
@@ -274,7 +283,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
             Program.Check(u.LastPending == 0 && GssFuzz.Digest(u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live)) == want,
                           "async: an unbudgeted Build after an async Build was not complete");
-            while (u.LayRunning) System.Threading.Thread.Sleep(1);
+            WaitFor(() => !u.LayRunning, "u idle");
         }
 
         /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS (live round 6: maxSliceMs 18 -> 39 -> 47/75 -> 87/98 ms as lattices piled
@@ -369,7 +378,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     last = b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
                     builds++;
                     if (b.LastPending == 0 && !b.LayRunning) break;
-                    while (!b.LayReady) System.Threading.Thread.Sleep(1);
+                    WaitFor(() => b.LayReady, "ready");
                 }
                 Program.Check(b.LastGraphFault != null && b.LastGraphFault.Contains("selftest graph fault"), "graph worker: the job fault was not recorded");
                 Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, $"graph worker: after a job fault the Builds did not end equal to one unbudgeted Build ({builds} Builds)");
@@ -482,7 +491,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var opt = new BuildOptions { LayBudgetMs = BudgetMs };
             var b = new CordBuilder();
             var (slices, worst, last, _) = Converge(b, RebuildPerDigChecks.LiveScene(), opt, dead);
-            Program.Check(worst <= SliceBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms (bound {SliceBoundMs} ms, budget {BudgetMs} ms)");
+            Program.Check(worst <= SyncLayBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms (bound {SyncLayBoundMs} ms, budget {BudgetMs} ms)");
             Program.Check(slices > 1, $"slice: the cold build finished in {slices} Build (the budget never deferred an edge: instrument blind)");
             Program.Check(b.LastPending == 0 && GssFuzz.Digest(last) == want, "slice: the budgeted Builds did not end bit-identical to one unbudgeted Build");
             Console.WriteLine($"slice: cold E={edges} planned over {slices} Builds, worst {worst:0.0} ms (budget {BudgetMs} ms)");
@@ -494,7 +503,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             full2.Lay.SlackScale = opt2.Lay.SlackScale;
             var (slices2, worst2, last2, minEdges2) = Converge(b, RebuildPerDigChecks.LiveScene(), opt2, dead);
             ulong wantLit = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), full2, dead));
-            Program.Check(worst2 <= SliceBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
+            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms over {slices2} Builds");
             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");
 

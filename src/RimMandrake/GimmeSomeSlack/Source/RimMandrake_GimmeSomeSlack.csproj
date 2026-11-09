@@ -36,7 +36,10 @@
   <ItemGroup>
     <Compile Include="..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="TipSparks.cs" />
     <Compile Include="Core\CordGraph.cs" />
+    <Compile Include="Core\CordShapeAudit.cs" />
+    <Compile Include="Core\CordPlugExit.cs" />
     <Compile Include="Core\SnapshotBlock.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="Core\SnapshotPool.cs" />
     <Compile Include="Core\SliceWindow.cs" />
     <Compile Include="Core\CordAudit.cs" />
+    <Compile Include="Core\CordShape.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />
     <Compile Include="Core\HookupPick.cs" />
@@ -99,6 +103,7 @@
     <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
     <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
     <Compile Include="Aerial\RM_FallenWireShock.cs" />
+    <Compile Include="Aerial\RM_LiveWirePathCost.cs" />
     <Compile Include="Aerial\Alert_WireDown.cs" />
     <Compile Include="Aerial\SectionLayer_RM_AerialGround.cs" />
     <Compile Include="Aerial\AerialProbe.cs" />

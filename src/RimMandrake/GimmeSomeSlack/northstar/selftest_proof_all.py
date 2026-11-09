@@ -71,6 +71,8 @@ def stub_blocks(P, boom=None):
     P.log_budget = lb
     P.save_load = lambda: P.row("save_load", "SL1_x", "PASS", "MOD", {})
     P.d4_save = lambda: None
+    P.scenes = lambda: None
+    P.statics = lambda: None
 
 
 def run_session(boom, base):

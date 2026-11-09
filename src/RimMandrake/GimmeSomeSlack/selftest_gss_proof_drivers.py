@@ -98,10 +98,10 @@ def _ts_count(ln, drip, depth=0.12, reach=0.45, step=0.5):
         return max(4, int(math.ceil(ln / step))) + 1
     reach = min(reach, ln / 4)
     tr = reach / ln
-    ts = [tr * k / 6 for k in range(6)]
+    ts = [tr * k / 12 for k in range(12)]
     n = max(2, int(math.ceil((1 - 2 * tr) * ln / step)))
     ts += [tr + (1 - 2 * tr) * k / n for k in range(n + 1)]
-    ts += [1 - tr * k / 6 for k in range(5, -1, -1)]
+    ts += [1 - tr * k / 12 for k in range(11, -1, -1)]
     return len(ts)
 
 

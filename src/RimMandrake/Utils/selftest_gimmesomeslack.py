@@ -74,7 +74,7 @@ def main(argv):
         print("selftest build FAILED")
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else [])
+    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else [])
     for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
@@ -84,6 +84,9 @@ def main(argv):
     if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
         i = argv.index("--unroutable-census")
         args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
+    if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
+        i = argv.index("--lab")
+        args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
     return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)

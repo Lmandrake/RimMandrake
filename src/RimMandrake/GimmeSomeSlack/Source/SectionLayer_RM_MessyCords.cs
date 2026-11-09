@@ -159,7 +159,11 @@ namespace RimMandrake.GimmeSomeSlack
                             pts = b - a >= 2 ? s.Pts.GetRange(a, b - a) : new List<V2>();
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
-                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
+                        {
+                            bool trimA = pts != s.Pts && s.WhipA > 0, trimB = pts != s.Pts && s.WhipB > 0;
+                            float[] grow = ShadowGrow(pts, p, trimA, trimB);
+                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, ShadowOffset, grow: grow);
+                        }
                         // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
                         if (!ripples)
                         {
@@ -183,10 +187,15 @@ namespace RimMandrake.GimmeSomeSlack
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
+                        if (d.OnSwayTail && p.Strands.Any(s => s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s))) continue;   // and a wall tail's rides that tail
                         Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
+                        if (d.Plugged && CordMaterials.OutletPlugged != null) m = CordMaterials.OutletPlugged;
                         bool face = CordMaterials.IsFace(d.Kind);
-                        float y = face ? faceY + 0.002f : baseY + 0.009f;
+                        // a plug lies over the strip it plugs into: same-altitude sub-meshes draw in whichever order the section met them
+                        float y = face ? faceY + 0.002f : d.Kind == DecalKind.PlugTop ? baseY + 0.011f : d.Kind == DecalKind.Plug ? baseY + 0.010f : baseY + 0.009f;
+                        // a plug seated on an east/west wall outlet lies over the outlet's receptacle (owner 2026-11-09)
+                        if (d.OverFace) { m = CordMaterials.OverFaceOf(m); y = faceY + 0.004f; }
                         float aspect = DecalAspect.Of(d.Kind);
                         verts += d.Cropped
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)
@@ -209,12 +218,12 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>The same ribbon as Ribbon, written into plain lists (the component's per-frame meshes use it).</summary>
-        internal static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0)
+        internal static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0, double aspect = 4.0)
         {
             if (pts.Count < 2) return;
             int start = verts.Count;
             float hw = width / 2f;
-            double tile = width * 4.0, u = s0 * 4.0;
+            double tile = width * aspect, u = s0 * 4.0;   // one texture repeat spans `aspect` widths (CordMaterials.Aspect)
             for (int i = 0; i < pts.Count; i++)
             {
                 Geo.TanNorm(pts, i, out V2 t, out V2 n);
@@ -233,23 +242,74 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>A textured ribbon along a polyline; u runs along the cord (the strip tiles every
         /// 4 widths), v across it. Winding matches Printer_Plane.</summary>
+        /// <summary>The cast shadow falls down and to the right of its strand (cells).</summary>
+        public static readonly Vector2 ShadowOffset = new Vector2(0.03f, -0.045f);
+        /// <summary>Where a strand leaves a fitting its shadow starts under the strand itself (no offset, the strand's own width) and grows to its
+        /// full offset and width over <see cref="ShadowGrowLen"/> past <see cref="ShadowHold"/> (cells along the strand from the tip). A shadow cut
+        /// square at the tip and shifted by <see cref="ShadowOffset"/> showed as a notch below each strip plug (owner 2026-11-09 "Yes all"); run
+        /// back under the fitting instead, its wider offset band showed as a hard-topped dark block beside each plug's boot (Conductor 2026-11-09).</summary>
+        public const double ShadowHold = 0.12, ShadowGrowLen = 0.3;
+        private const double ShadowFittingReach = 0.35;
+
+        /// <summary>Per point of the strand, how far its shadow has grown (0 = hidden under the strand, 1 = full offset and width); null when
+        /// neither end sits in a fitting of the piece (a plug, socket, outlet, box, strip or stub within <see cref="ShadowFittingReach"/>).
+        /// A free or whip-trimmed end is left full.</summary>
+        internal static float[] ShadowGrow(List<V2> pts, LaidPiece p, bool trimA, bool trimB)
+        {
+            int n = pts.Count;
+            if (n < 2) return null;
+            bool inA = !trimA && InFitting(p, pts[0]), inB = !trimB && InFitting(p, pts[n - 1]);
+            if (!inA && !inB) return null;
+            double[] cum = Geo.CumLen(pts);
+            double L = cum[n - 1];
+            var k = new float[n];
+            for (int i = 0; i < n; i++)
+            {
+                double g = 1;
+                if (inA) g = Math.Min(g, Grow01(cum[i]));
+                if (inB) g = Math.Min(g, Grow01(L - cum[i]));
+                k[i] = (float)g;
+            }
+            return k;
+        }
+
+        private static double Grow01(double fromTip)
+        {
+            double t = (fromTip - ShadowHold) / ShadowGrowLen;
+            if (t <= 0) return 0;
+            if (t >= 1) return 1;
+            return t * t * (3 - 2 * t);
+        }
+
+        private static bool InFitting(LaidPiece p, V2 tip)
+        {
+            foreach (CordDecal d in p.Decals)
+                if (d.Kind != DecalKind.CableTie && d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive
+                    && V2.Dist(d.Pos, tip) <= ShadowFittingReach) return true;
+            return false;
+        }
+
         private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,
-                           byte[] alpha = null, float uvz = 0f)
+                           byte[] alpha = null, float uvz = 0f, float[] grow = null)
         {
             if (pts.Count < 2) return 0;
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
             if (start + 2 * pts.Count > MaxMeshVerts) { OverflowDrops++; return 0; }   // 16-bit index mesh: drop, never corrupt (counted: GPT review #15)
             float hw = width / 2f;
-            double tile = width * 4.0;
+            double tile = width * CordMaterials.Aspect(mat);   // one texture repeat spans the texture's own width over height, in strand widths
             double u = s0 * 4.0;
             for (int i = 0; i < pts.Count; i++)
             {
                 Geo.TanNorm(pts, i, out V2 t, out V2 n);
                 if (i > 0) u += V2.Dist(pts[i - 1], pts[i]) / tile;
-                V2 l = pts[i] + n * hw, r = pts[i] - n * hw;
-                sm.verts.Add(new Vector3((float)l.X + offset.x, y, (float)l.Z + offset.y));
-                sm.verts.Add(new Vector3((float)r.X + offset.x, y, (float)r.Z + offset.y));
+                // a shadow grows out from under its strand where the strand leaves a fitting (ShadowGrow)
+                float g = grow != null && i < grow.Length ? grow[i] : 1f;
+                double hwi = grow == null ? hw : (StrandWidth + (width - StrandWidth) * g) / 2f;
+                float ox = offset.x * g, oz = offset.y * g;
+                V2 l = pts[i] + n * hwi, r = pts[i] - n * hwi;
+                sm.verts.Add(new Vector3((float)l.X + ox, y, (float)l.Z + oz));
+                sm.verts.Add(new Vector3((float)r.X + ox, y, (float)r.Z + oz));
                 sm.uvs.Add(new Vector3((float)u, 1f, uvz));
                 sm.uvs.Add(new Vector3((float)u, 0f, uvz));
                 byte al = alpha != null && i < alpha.Length ? alpha[i] : (byte)255;

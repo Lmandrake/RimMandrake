@@ -29,8 +29,14 @@
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
     <Compile Include="..\Core\CordGraph.cs" />
+    <Compile Include="..\Core\CordShapeAudit.cs" />
+    <Compile Include="..\Core\CordPlugExit.cs" />
+    <Compile Include="LabWorld.cs" />
     <Compile Include="..\Core\SnapshotBlock.cs" />
     <Compile Include="WaterStubChecks.cs" />
+    <Compile Include="JunctionStripChecks.cs" />
+    <Compile Include="CordShapeChecks.cs" />
+    <Compile Include="..\Core\CordShape.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="..\Core\CordBuilder.cs" />
@@ -88,11 +94,14 @@
     <Compile Include="..\Core\SnapshotPool.cs" />
     <Compile Include="SnapshotPoolChecks.cs" />
     <Compile Include="..\Core\SliceWindow.cs" />
+    <Compile Include="SittingChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="oracle_scenes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="matrix_det_scenes.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="sitting_ba_Modern.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="sitting_ba_Scrapper.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

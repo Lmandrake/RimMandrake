@@ -6,6 +6,8 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using RimMandrake.GimmeSomeSlack.Core;
+using RimMandrake.Shared.Slack;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
@@ -80,8 +82,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             pendingAuto.Remove(a);
             pendingSince.Remove(a);
             anchorLive.Remove(a.thingIDNumber);
-            lastTerminals.Remove(a.thingIDNumber);
-            termSigs.Remove(a.thingIDNumber);
             DirtyCell(a.Position);
         }
         public void Register(CompPowerTap t) => taps.Add(t);
@@ -158,6 +158,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 contactsDirty = false;
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_LiveWirePathCost.Sync(map, shockCells);
             }
             if (sweep)
             {
@@ -168,6 +169,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 PollFallen();
                 FallenGroundCheck();
                 RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_LiveWirePathCost.Sync(map, shockCells);
                 RM_FallenWireShock.TryIgnite(map, liveTips);
                 TapRegistry.Prune();
             }
@@ -291,10 +293,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
                 var others = AutoLinkCandidates(AerialLineProfiles.LookOfThing(a.parent), a, a.Position, a.Kind);
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), a.Range);
-                if (pick < 0) continue;
-                if (CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
+                if (pick >= 0 && CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
+                // a pole put up where one died takes back every span that fell with it: each neighbour whose wires lie on the ground
+                // aimed at this cell (pass 12, played: a lamp mast rebuilt after a mortar came back linked to its nearest neighbour
+                // only; the other's wires lay live in the yard with no cut to re-string, and no way back but the link gizmo)
+                foreach (CompAerialAnchor o in others)
+                {
+                    if (!o.fallen.Any(f => FellToward(f, a.Position)) || o.links.Any(l => l.other == a)) continue;
+                    if (CompAerialAnchor.Verdict(a, o.parent) != LinkVerdict.Ok) continue;
+                    o.fallen.RemoveAll(f => FellToward(f, a.Position));
+                    if (CompAerialAnchor.TryLink(a, o.parent) == LinkVerdict.Ok) { autoLinks++; orphanRelinks++; }
+                }
             }
         }
+
+        /// <summary>Did <paramref name="f"/> fall when a pole on (or right beside) <paramref name="cell"/> died? Its partner is
+        /// dead and it is aimed at that cell: a pole rebuilt a cell off the old spot takes the span back too.</summary>
+        private static bool FellToward(FallenCord f, IntVec3 cell) => f.cutPartner == -1 && f.toward.DistanceToSquared(cell) <= 2;
+
+        public int orphanRelinks;
 
         /// <summary>The anchors auto-link may pick for a pole of <paramref name="look"/> at <paramref name="at"/>: same look only
         /// (design 2.3). Shared by the real auto-link and the placement ghost's preview line (GPT pre-release C11: the ghost
@@ -471,12 +488,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (FallenCord f in a.fallen)
                 {
                     if (++n > MaxSparkingEnds) return;
-                    int period = Mathf.Max(12, Mathf.RoundToInt(60 / GimmeSomeSlackSettings.sparkIntensity));
-                    if ((tick + (f.seed & 0x7fff)) % period != 0) continue;
-                    FallenLay l = Lay(a, f);
-                    var at = new Vector3((float)l.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)l.Tip.Z);
-                    FleckMaker.ThrowMicroSparks(at, map);
-                    if (((tick / period + f.seed) & 3) == 0) FleckMaker.ThrowLightningGlow(at, map, 0.5f);
+                    int period = Mathf.Max(8, Mathf.RoundToInt(TipSparks.Period / GimmeSomeSlackSettings.sparkIntensity));
+                    List<FallenLay> ls = Lays(a, f);
+                    // every wire's own end sparks, each in its turn
+                    for (int w = 0; w < ls.Count; w++)
+                    {
+                        if ((tick + (f.seed & 0x7fff) + w * period / ls.Count) % period != 0) continue;
+                        FallenLay l = ls[w];
+                        TipSparks.Throw(map, (float)l.TipNow.X, (float)l.TipNow.Z, (float)l.OutNow.X, (float)l.OutNow.Z);
+                    }
                 }
             }
         }
@@ -585,14 +605,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!AerialSettings.enabled) return;   // drops, clamps and live-end glow are power-only
             DrawLocalDrops(view);
             DrawTaps(view);
+            DrawFallenTails(view);
             DrawFallenGlow();
         }
 
         // ------------------------------------------------------------------ local drops (owner round 2, 2026-10-04)
         public int lastLocalDrops;
-        /// <summary>State read: per anchor id, device id -> terminal index used on the last frame.</summary>
-        public readonly Dictionary<int, Dictionary<int, int>> lastTerminals = new Dictionary<int, Dictionary<int, int>>();
-        private readonly Dictionary<int, int> termSigs = new Dictionary<int, int>();
         private readonly Dictionary<long, KeyValuePair<int, Mesh[]>> dropMeshes = new Dictionary<long, KeyValuePair<int, Mesh[]>>();
         private readonly HashSet<long> dropUsed = new HashSet<long>();
 
@@ -632,53 +650,40 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         private readonly List<Thing> devsScratch = new List<Thing>();
-        private readonly List<(int, double)> termScratch = new List<(int, double)>();
 
-        /// <summary>Each local connection is a drop wire from the device's CENTROID up to the pole terminal
-        /// AerialMath.AssignTerminals gave it (spread over the crossarm, shared only when there are more devices than
-        /// insulators). The part over the device's own art is drawn BENEATH the building (SmallWire), so it vanishes into the
-        /// device whatever its art; the rest hangs at span altitude and ends exactly on the insulator tip.</summary>
+        /// <summary>Each local connection is a cord on the ground from under the pole's foot to the device's centroid (owner, sitting
+        /// 2026-11-08 12:20 PM: "Items should connect to the bottom of a power pole (beneath its base), not run a line up to the top of the
+        /// power pole"; it used to hang from a crossarm terminal). It lies at floor-cord altitude, so it goes in under the pole's art and
+        /// under the device's.</summary>
         private void DrawLocalDrops(CellRect view)
         {
             lastLocalDrops = 0;
             if (!AerialSettings.enabled || AerialMaterials.Span == null) return;
             dropUsed.Clear();
-            float under = AltitudeLayer.SmallWire.AltitudeFor(), over = SpanAltitude;
             CellRect near = view.ExpandedBy(6);
             List<Thing> devs = devsScratch;
             foreach (CompAerialAnchor a in Anchors)
             {
                 if (!near.Contains(a.Position)) continue;
                 LocalConnections(a, devs);
-                if (devs.Count == 0) { lastTerminals.Remove(a.thingIDNumber); continue; }
-                List<P2> tips = a.InsulatorTips();
-                if (tips.Count == 0) continue;
+                if (devs.Count == 0) continue;
                 AerialMaterials.LookMats lm = AerialMaterials.For(AerialMaterials.LookOf(a));
                 if (lm.Span == null) continue;
                 Vector3 bp = a.BasePoint;
-                termScratch.Clear();
-                for (int di = 0; di < devs.Count; di++) termScratch.Add((devs[di].thingIDNumber, (double)(devs[di].TrueCenter().x - bp.x)));
-                // GPT pre-release C16: the assignment (a sort and a dictionary) only changes with the devices, their x or the
-                // insulator count, so it is recomputed only when that signature does, not every frame
-                int tsig = AerialMath.TerminalSig(termScratch, tips.Count);
-                if (!lastTerminals.TryGetValue(a.thingIDNumber, out Dictionary<int, int> term) || !termSigs.TryGetValue(a.thingIDNumber, out int had) || had != tsig)
-                {
-                    term = AerialMath.AssignTerminals(termScratch, tips.Count);
-                    lastTerminals[a.thingIDNumber] = term;
-                    termSigs[a.thingIDNumber] = tsig;
-                }
+                var foot = new P2(bp.x, bp.z);
                 foreach (Thing d in devs)
                 {
-                    P2 tip = tips[Mathf.Clamp(term[d.thingIDNumber], 0, tips.Count - 1)];
                     long key = ((long)a.thingIDNumber << 32) ^ (uint)d.thingIDNumber;
                     dropUsed.Add(key);
                     Vector3 c = DeviceHome(d);
-                    int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
+                    int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), foot.X.GetHashCode() ^ foot.Z.GetHashCode()),
                                                  Gen.HashCombineInt(Mathf.RoundToInt(lm.Width * 1000f), d.Rotation.AsInt));
+                    // it lies on open floor: a wall built across it re-lays it (under the wall, when nothing clears)
+                    sig = Gen.HashCombineInt(sig, (int)DropGroundSig(a.Position, c));
                     if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
                     {
                         if (kv.Value != null) foreach (Mesh old in kv.Value) if (old != null) UnityEngine.Object.Destroy(old);
-                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, new P2(c.x, c.z), tip, under, over, lm.Width));
+                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, a, new P2(c.x, c.z), foot, lm.Width));
                         dropMeshes[key] = kv;
                     }
                     foreach (Mesh m in kv.Value)
@@ -707,32 +712,44 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return d.TrueCenter();
         }
 
-        /// <summary>The device's drawn extent (its footprint united with its graphic rect, and the wall a wall-mounted device
-        /// hangs on), in which the drop runs under it.</summary>
-        public static bool InDeviceArt(Thing d, P2 p)
+        /// <summary>A walkability signature of the ground a drop from the mast at <paramref name="home"/> to <paramref name="dev"/> can lie on.</summary>
+        private ulong DropGroundSig(IntVec3 home, Vector3 dev)
         {
-            CellRect r = d.OccupiedRect();
-            if (p.X >= r.minX && p.X <= r.maxX + 1 && p.Z >= r.minZ && p.Z <= r.maxZ + 1) return true;
-            if (d.def.building != null && d.def.building.isAttachment && d.Spawned)
-            {
-                Thing wall = GenConstruct.GetWallAttachedTo(d);
-                if (wall != null && p.X >= wall.Position.x && p.X <= wall.Position.x + 1 && p.Z >= wall.Position.z && p.Z <= wall.Position.z + 1) return true;
-            }
-            if (d.Graphic == null) return false;
-            Vector3 g = d.TrueCenter() + d.Graphic.DrawOffset(d.Rotation);
-            Vector2 sz = d.Graphic.drawSize;
-            if (d.Rotation.IsHorizontal && d.Graphic.ShouldDrawRotated) sz = new Vector2(sz.y, sz.x);
-            return Math.Abs(p.X - g.x) <= sz.x / 2f && Math.Abs(p.Z - g.z) <= sz.y / 2f;
+            PathGrid pg = map.pathing.Normal.pathGrid;
+            int x0 = Math.Min(home.x, (int)dev.x) - 2, x1 = Math.Max(home.x, (int)dev.x) + 2, z0 = Math.Min(home.z, (int)dev.z) - 2, z1 = Math.Max(home.z, (int)dev.z) + 2;
+            ulong h = 1469598103934665603UL;
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    var q = new IntVec3(x, 0, z);
+                    h = (h ^ (ulong)(!q.InBounds(map) ? 3 : pg.WalkableFast(q) ? 1 : 2)) * 1099511628211UL;
+                }
+            return h ^ (h >> 32);
         }
 
-        private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over, float width)
+        /// <summary>The drop's mesh: <see cref="AerialMath.LayFootDrop"/>'s too-long cord from the anchor's foot, lying on the ground under
+        /// pawns and buildings like any floor cord, so it goes in under the pole's art and the device's.</summary>
+        private static Mesh[] DropMeshes(Thing d, CompAerialAnchor a, P2 from, P2 foot, float width)
         {
-            List<P2> pts = AerialMath.SpanCurve(from, tip, 0.04, 0.2);
-            int split = 0;
-            while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;
-            var lo = pts.GetRange(0, Math.Min(pts.Count, split + 1));
-            var hi = pts.GetRange(split, pts.Count - split);
-            return new[] { Ribbon(lo, under, "RM_AerialDropUnder", width), Ribbon(hi, over, "RM_AerialDrop", width) };
+            Func<int, int, bool> walk = (x, z) => true;
+            Map map = a.parent.Map;
+            if (map != null)
+            {
+                PathGrid pg = map.pathing.Normal.pathGrid;
+                IntVec3 home = a.Position;
+                CellRect dr = d.OccupiedRect();
+                Thing wall = d.def.building != null && d.def.building.isAttachment && d.Spawned ? GenConstruct.GetWallAttachedTo(d) : null;
+                IntVec3 wallAt = wall?.Position ?? IntVec3.Invalid;
+                walk = (x, z) =>
+                {
+                    var q = new IntVec3(x, 0, z);
+                    if (!q.InBounds(map)) return false;
+                    return q == home || q == wallAt || dr.Contains(q) || pg.WalkableFast(q);
+                };
+            }
+            FallenLay lay = AerialMath.LayFootDrop(foot, from, d.thingIDNumber, walk);
+            float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the fallen wire's ground altitude: under pawns, like any floor cord
+            return new[] { Ribbon(lay.Pts, groundY, "RM_AerialDropGround", width) };
         }
 
         private static Mesh Ribbon(List<P2> pts, float y, string name, float width)
@@ -780,11 +797,99 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 foreach (FallenCord f in a.fallen)
                 {
                     if (++n > MaxSparkingEnds) return;
-                    FallenLay l = Lay(a, f);
-                    float k = Mathf.PerlinNoise(t * 9f, (f.seed & 0xff) * 0.37f);
-                    float size = (0.38f + 0.42f * k * k) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
-                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)l.Tip.X, y, (float)l.Tip.Z), Quaternion.identity, new Vector3(size, 1f, size)), AerialMaterials.Glow, 0);
-                    lastGlowDraws++;
+                    List<FallenLay> ls = Lays(a, f);
+                    for (int w = 0; w < ls.Count; w++)
+                    {
+                        FallenLay l = ls[w];
+                        float k = Mathf.PerlinNoise(t * 9f, ((f.seed + w * 37) & 0xff) * 0.37f);
+                        float pop = Mathf.Repeat(t * 0.8f + ((f.seed + w * 37) & 0xff) * 0.0173f, 1f);
+                        float size = (0.30f + 0.32f * k * k + (pop < 0.09f ? 0.45f * (1f - pop / 0.09f) : 0f)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
+                        Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)l.TipNow.X, y, (float)l.TipNow.Z), Quaternion.identity, new Vector3(size, 1f, size)), AerialMaterials.Glow, 0);
+                        lastGlowDraws++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Do this anchor's fallen wires writhe? Live, and the Cables tab's whip setting on: the same rule as a floor cord's live end.</summary>
+        public bool FallenWrithes(CompAerialAnchor a) =>
+            GimmeSomeSlackSettings.whip && GimmeSomeSlackSettings.breakReadout && (FallenLiveCached(a) ?? false);
+
+        private readonly Dictionary<FallenCord, Mesh> tailMeshes = new Dictionary<FallenCord, Mesh>();
+        private readonly Dictionary<FallenLay, CordMotion.WhipCursor> tailCursors = new Dictionary<FallenLay, CordMotion.WhipCursor>();
+        private readonly List<V2> tailLaid = new List<V2>(), tailBent = new List<V2>();
+        private readonly List<Vector3> tailV = new List<Vector3>();
+        private readonly List<Vector2> tailU = new List<Vector2>();
+        private readonly List<int> tailT = new List<int>();
+
+        private Func<int, int, bool> tailOpen;
+        private Func<int, int, bool> TailOpen => tailOpen ?? (tailOpen = (x, z) =>
+        {
+            var c = new IntVec3(x, 0, z);
+            return c.InBounds(map) && map.pathing.Normal.pathGrid.WalkableFast(c);
+        });
+
+        /// <summary>The writhing end of every live fallen wire, drawn per frame like a floor cord's whip tail (<see cref="WireMesh"/> stops where it starts), with its
+        /// frayed end on it. The spark and glow read TipNow (owner 2026-11-07: "the spark of the cut powerline should follow the writhing edge of the cable").</summary>
+        private void DrawFallenTails(CellRect view)
+        {
+            if (AerialMaterials.FrayLive == null) return;
+            float now = Time.realtimeSinceStartup;
+            float y = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
+            bool still = SectionLayer_RM_MessyCords.FarNow;
+            int n = 0;
+            foreach (CompAerialAnchor a in Anchors)
+            {
+                if (a.fallen.Count == 0 || !FallenWrithes(a)) continue;
+                AerialMaterials.LookMats lm = AerialMaterials.AnchorMats(a);
+                foreach (FallenCord f in a.fallen)
+                {
+                    tailV.Clear(); tailU.Clear(); tailT.Clear();
+                    bool animate = !still && ++n <= MaxSparkingEnds;
+                    bool seen = false;
+                    foreach (FallenLay l in Lays(a, f))
+                    {
+                        int cnt = AerialMath.WireTailCount(l, CordMotion.WireWhipLen);
+                        if (cnt == 0) continue;
+                        tailLaid.Clear();
+                        for (int i = l.Pts.Count - cnt; i < l.Pts.Count; i++) tailLaid.Add(new V2(l.Pts[i].X, l.Pts[i].Z));
+                        List<V2> bent = tailLaid;
+                        if (animate)
+                        {
+                            tailCursors.TryGetValue(l, out CordMotion.WhipCursor cur);
+                            CordMotion.WhipRoom(tailLaid, CordMotion.WireWhipAmp, TailOpen, out double roomPos, out double roomNeg);
+                            CordMotion.WhipInto(tailLaid, now, unchecked((ulong)(long)(f.seed * 2654435761L + l.Pts.Count)), CordMotion.WireWhipAmp, tailBent, ref cur, roomPos, roomNeg);
+                            tailCursors[l] = cur;
+                            bent = tailBent;
+                        }
+                        V2 tip = bent[bent.Count - 1], way = (tip - bent[Math.Max(0, bent.Count - 4)]).Norm();
+                        l.TipNow = new P2(tip.X, tip.Z);
+                        l.OutNow = new P2(way.X, way.Z);
+                        if (!view.Contains(new IntVec3((int)tip.X, 0, (int)tip.Z))) continue;
+                        seen = true;
+                        int v0 = tailV.Count;
+                        for (int i = 0; i < bent.Count; i++)
+                        {
+                            V2 p0 = bent[Math.Max(0, i - 1)], p1 = bent[Math.Min(bent.Count - 1, i + 1)];
+                            V2 d = (p1 - p0).Norm();
+                            float w = lm.Width / 2f;
+                            tailV.Add(new Vector3((float)bent[i].X - (float)d.Z * w, y, (float)bent[i].Z + (float)d.X * w));
+                            tailV.Add(new Vector3((float)bent[i].X + (float)d.Z * w, y, (float)bent[i].Z - (float)d.X * w));
+                            float u = i * 0.15f / (lm.Width * 4f);
+                            tailU.Add(new Vector2(u, 1f)); tailU.Add(new Vector2(u, 0f));
+                            if (i == 0) continue;
+                            int q = v0 + 2 * (i - 1);
+                            tailT.Add(q); tailT.Add(q + 2); tailT.Add(q + 3);
+                            tailT.Add(q); tailT.Add(q + 3); tailT.Add(q + 1);
+                        }
+                        float ang = (float)Math.Atan2(way.Z, way.X) * Mathf.Rad2Deg;
+                        Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)tip.X, y + 0.002f, (float)tip.Z), Quaternion.Euler(0f, -ang, 0f), new Vector3(0.55f, 1f, 0.55f)), AerialMaterials.FrayLive, 0);
+                    }
+                    if (!seen || lm.Span == null) continue;
+                    if (!tailMeshes.TryGetValue(f, out Mesh m) || m == null) tailMeshes[f] = m = new Mesh { name = "RM_AerialFallenTail" };
+                    m.Clear();
+                    m.SetVertices(tailV); m.SetUVs(0, tailU); m.SetTriangles(tailT, 0); m.RecalculateBounds();
+                    Graphics.DrawMesh(m, Matrix4x4.identity, lm.Span, 0);
                 }
             }
         }
@@ -800,6 +905,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             float w = AerialMaterials.AnchorMats(a).Width;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(w * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.AttachZ(a) * 1000f));
+            bool writhes = FallenWrithes(a);
+            sig = Gen.HashCombineInt(sig, writhes ? 1 : 0);
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
             float groundY = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;   // the ground layer's cordY: under pawns, like any floor cord
@@ -807,6 +914,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
             List<P2> pts = lay.Pts;
             if (pts.Count < 2) continue;
+            // the writhing end is drawn per frame and starts on this mesh's last point
+            int tail = writhes ? AerialMath.WireTailCount(lay, CordMotion.WireWhipLen) : 0;
+            if (tail > 0) pts = pts.GetRange(0, pts.Count - tail + 1);
+            lay.TipNow = lay.Tip;
             int v0 = verts.Count;
             double u = 0;
             for (int i = 0; i < pts.Count; i++)

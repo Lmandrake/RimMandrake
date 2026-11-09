@@ -63,6 +63,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return d;
         }
 
+        /// <summary>Round 3: Styles/ExtCord/WallOutlet.png (Modern), a wall outlet seen face-on with a plug seated in its lower receptacle, the plate's top
+        /// along art +X (into the wall) and the plug's boot along art -X ending at OutletU0, the boot end centred across (v 0.5) and as wide as
+        /// the cord at PlateAcross. Measured by gss_sitting tools/r3_art.py.</summary>
+        public const double OutletU0 = 0.102, OutletU1 = 0.871, OutletV0 = 0.277, OutletV1 = 0.727;
+
+        /// <summary>The outlet a Modern cord plugs into: on the south face the whole outlet foreshortened into the band, the boot end on the face line
+        /// (the cord's tip, PastFace, lies 0.02 under it); on a side or north face the edge-on far strip, as the plate.</summary>
+        internal static CordDecal OutletDecal(V2 face, V2 into)
+        {
+            WallFaceKind f = FaceOf(into);
+            double depth = PlateDepth(f);
+            double u0 = f == WallFaceKind.South ? OutletU0 : Math.Max(OutletU0, EdgeU0);
+            return new CordDecal(DecalKind.WallOutlet, face + into * (FaceMargin + depth / 2), Math.Atan2(into.Z, into.X), PlateAcross)
+            {
+                Squash = depth / PlateAcross,
+                U0 = u0, U1 = OutletU1, V0 = OutletV0, V1 = OutletV1
+            };
+        }
+
         /// <summary>The socket point on a plate (where the grommet / hole is): the plate's centre.</summary>
         internal static V2 Socket(CordDecal d) => d.Pos;
 

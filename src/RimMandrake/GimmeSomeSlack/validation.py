@@ -115,7 +115,7 @@ SETTINGS = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings"
 TRANSPARENT = "RimMandrake/GimmeSomeSlack/ConduitTransparent"
 
 SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "loopBudget": "16f",
-           "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
+           "cordsPerConnection": "1", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
@@ -254,7 +254,7 @@ def o4_oracle(rows):
 # Every style's required PNGs (paths relative to Textures/RimMandrake/GimmeSomeSlack), canvas, and kind. Wired by
 # src/RimMandrake/Utils/mockups/messy_conduit/wire_style_art.py; slots not listed fall back to the Jawa root set.
 STYLE_FILES = {
-    "StarWarsJawa": ["Strand_Jawa", "Junction_Tape", "Junction_Tin", "Plug", "StubWall", "StubRock", "EndFrayed_Dead"],
+    "StarWarsJawa": ["Strand_Jawa", "Strand_ScrapTaped", "Junction_Tape", "Junction_Tin", "Plug", "StubWall", "StubRock", "EndFrayed_Dead"],
     "Cybertek": ["Styles/Cybertek/" + n for n in ("Strand", "Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
     "ExtensionCord": ["Styles/ExtCord/Strand_" + c for c in ("Orange", "Green", "Brown", "Yellow", "Blue")] +
                      ["Styles/ExtCord/" + n for n in ("Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
@@ -273,6 +273,8 @@ ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
 
 def _canvas_for(rel):
     n = rel.split("/")[-1]
+    if n == "Strand_ScrapTaped":
+        return (1024, 32)          # pass 12: a 2.56-cell repeat; the ribbon's repeat follows the texture's aspect (CordMaterials.Aspect)
     if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
         return (128, 32)
     if n == "TapClamp":
@@ -536,9 +538,9 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("D2 a lamp's run is its connection's", "Aerial/RM_MapComponent_ConduitRuns.cs", "ConduitStyles.LampHooked(parent != null, parent != null && set.Contains(parent), touches)"),
     ("D9 restyle keeps a foreign-styled lamp", "Aerial/RM_MapComponent_ConduitRuns.cs", "foreignStyle: ForeignStyled(l)"),
     ("B14 ripple draws into reused buffers", "RM_MapComponent_CordGraph.cs", "CordMotion.RippleInto(s.Pts, gt, MotionSeed(p, s, 2, si)"),
-    ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, 0.12, bentBuf, ref cur);"),
+    ("B15 whip resumes its snap cursor", "RM_MapComponent_CordGraph.cs", "CordMotion.WhipInto(tail, now, seed, CordMotion.WhipAmp, bentBuf, ref cur, roomPos, roomNeg);"),
     ("B24 unchanged settings close re-prints nothing", "GimmeSomeSlackMod.cs", "if (GimmeSomeSlackSettings.ChangedSinceApply) GimmeSomeSlackSettings.Apply();"),
-    ("C16 terminal assignment cached by signature", "Aerial/RM_MapComponent_Aerial.cs", "int tsig = AerialMath.TerminalSig(termScratch, tips.Count);"),
+    ("a pole's lead lies from its foot (owner 2026-11-08)", "Aerial/RM_MapComponent_Aerial.cs", "FallenLay lay = AerialMath.LayFootDrop(foot, from, d.thingIDNumber, walk);"),
     ("C12 the re-string gizmo only places the order", "Aerial/CompAerialAnchor.cs", "action = () => Restringing.SetDesignated(parent, !Restringing.Designated(parent)),"),
     ("C12 the colonist job restores the span", "Aerial/RestringJob.cs", "int n = Restringing.RestringAll(a, out int refused);"),
     ("re-string worker never shocked by the wire he fixes", "Aerial/RM_FallenWireShock.cs", "AlreadyOut(p), OnOwnCut(p, map, c))"),
@@ -779,6 +781,35 @@ def _reraise_harness_stop(ex):
         raise ex
 
 
+def inwall_hookup_rows(B, rows):
+    """A run wholly inside a wall is how many colonies are wired. Two rooms: a lamp across the floor from the walled run draws one
+    cord out of the wall's face (M1e); the same room on HiddenConduit draws nothing (M3 is why: hidden conduit stays hidden)."""
+    fx, fz = (X0 - 70, Z0 + 12) if X0 >= 80 else (X0 + 70, Z0 + 12)
+    for did, conduit, want in (("M1e_machine_on_inwall_run_draws_a_cord", "PowerConduit", True),
+                               ("M1f_machine_on_hidden_conduit_draws_none", "HiddenConduit", False)):
+        frect = "%d,%d,12,10" % (fx - 1, fz - 1)
+        OFF_SITE_RECTS.append(frect)
+        B.call("jawa/destroy_batch", rects=frect, categories="All")
+        B.call("jawa/set_terrain_batch", ops="Soil:" + frect)
+        B.call("jawa/set_fog", action="unfog", rect=frect)
+        ring = [(fx + i, fz + j) for i in range(10) for j in range(8) if i in (0, 9) or j in (0, 7)]
+        walls = B.call("jawa/build_batch", ops=ops("Wall", ring), faction="player", stuff="Steel", wipeExisting=False)
+        run = B.call("jawa/build_batch", ops=ops(conduit, ring), faction="player", wipeExisting=False)
+        lamp = B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % (fx + 4, fz + 4), faction="player", wipeExisting=False)
+        B.ticks(3)
+        B.probe("rebuild")
+        built = walls.get("survived") == len(ring) and run.get("survived") == len(ring) and lamp.get("survived") == 1
+        c = B.probe("rect:%s" % frect)
+        pos = [n["t"] for n in c.get("nodes") or []]
+        got = (c.get("cordEdges") or 0) >= 1 and (c.get("decals") or {}).get("StubWall", 0) >= 1
+        row(rows, did, "UNMEASURED" if not built else ("PASS" if got == want and c.get("verticesInUnwalkable") == 0 else "FAIL"),
+            "SITE" if not built else "MOD",
+            {"built": built, "cordEdges": c.get("cordEdges"), "decals": c.get("decals"), "nodeTypes": sorted(set(pos)), "unwalkable": c.get("verticesInUnwalkable"), "wantCord": want})
+        B.call("jawa/destroy_batch", rects=frect, categories="All")
+        OFF_SITE_RECTS.remove(frect)
+        fz += 12
+
+
 def live_battery(B, fresh_map=False, rows=None):
     """The live tier on B's map. `rows` (optional) is filled in place, so a caller sees every row measured
     before an abort."""
@@ -901,6 +932,13 @@ def live_battery(B, fresh_map=False, rows=None):
     # M2 is written after the break (M8) so it is evaluated on the post-break census too -- see there.
     row(rows, "M2b_no_vertex_unwalkable", "PASS" if c0.get("verticesInUnwalkable") == 0 and c0.get("interiorVertices", 0) > 0 else "FAIL",
         "MOD", {k: c0.get(k) for k in ("verticesInUnwalkable", "interiorVertices", "fellBack", "unroutable")})
+    # never_taut_straight_cord (owner 2026-11-07 7:07 PM, Conductor pass rule 2026-11-08 1:18 AM): no turn tighter than 90 degrees within one cell
+    # anywhere on a cord, ends included, that no wall, building, door or socket forces (CordShapeAudit.Bends; broad loops are the north star's own)
+    kk = (B.probe("bends") or {}).get("tally") or {}
+    row(rows, "M2c_no_sharp_bends", "UNMEASURED" if not kk.get("strands") else ("PASS" if kk.get("unforced", 1) == 0 else "FAIL"),
+        "MOD" if kk.get("strands") else "HARNESS",
+        {"strands": kk.get("strands"), "bends": kk.get("bends"), "unforced": kk.get("unforced"), "why": kk.get("why"),
+         "where": [r for r in (kk.get("rows") or []) if r.get("why") == "unforced"][:8], "bar": "zero unforced"})
     # ---------------------------------------------------------------- M6: hookup wire hidden, overlay intact
     m6 = (c0.get("hookupWiresSuppressed") or 0) > 0 and (c0.get("overlayConnectorVerts") or 0) > 0
     row(rows, "M6_overlay_lines_intact", "PASS" if m6 else "FAIL", "MOD",
@@ -1063,8 +1101,8 @@ def lane_a_live(B, rows, log):
         m0.get("settleMaxLenDev", 1) <= 0.05 else "FAIL", "MOD",
         {k: m0.get(k) for k in ("settledStrands", "settleMaxStretch", "settleMaxLenDev", "endHeaps", "laidPoints", "lastRebuildMs")})
     # L2 tangle entity + lit strips
-    row(rows, "B6_tangle_lit_strips", "PASS" if m0.get("tangles", 0) >= 1 and m0.get("litStrips", 0) > 0 and m0.get("darkStrips", 1) == 0 else "FAIL",
-        "MOD", {k: m0.get(k) for k in ("tangles", "tangleMinUsed", "litStrips", "darkStrips", "stubs", "mergedStubs")})
+    row(rows, "B6_tangle_lit_strips", "PASS" if m0.get("tangles", 0) >= 1 and m0.get("tangleLitStrips", 0) > 0 and m0.get("tangleDarkStrips", 1) == 0 else "FAIL",
+        "MOD", {k: m0.get(k) for k in ("tangles", "tangleMinUsed", "tangleLitStrips", "tangleDarkStrips", "litStrips", "darkStrips", "stubs", "mergedStubs")})
     shot(B, "p1b_01_wide", SITE, log)
     shot(B, "p1b_02_tangle_lit_and_downed_wire", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
     # B3 whip
@@ -1074,6 +1112,13 @@ def lane_a_live(B, rows, log):
     m1 = motion(B)
     B.probe("set:whip=True")
     m1b = motion(B)
+    # the spark rides the whip (owner 2026-11-07): the glow's point differs from the laid tip and moves between two looks, paused or not
+    tips0 = (motion(B).get("sparkTips") or [])
+    time.sleep(0.4)
+    tips1 = (motion(B).get("sparkTips") or [])
+    rode = [a for a, b in zip(tips0, tips1) if a["laid"] == b["laid"] and a["now"] != b["now"] and (a["now"] != a["laid"] or b["now"] != b["laid"])]
+    row(rows, "B3c_spark_rides_whip", "PASS" if tips0 and len(rode) == len(tips0) else "FAIL", "MOD",
+        {"ends": len(tips0), "rode": len(rode), "first": tips0[:2], "then": tips1[:2], "meaning": "PASS = every live floor end's spark point moves with its tail"})
     row(rows, "B3_whip_live_ends", "PASS" if w_on > 0 and m0.get("whipTails", 0) > 0 and m1.get("whipDraws") == 0 and m1b.get("whipDraws", 0) > 0 else "FAIL",
         "MOD", {"whipDraws_on": w_on, "whipTails": m0.get("whipTails"), "liveFloorEnds": m0.get("liveFloorEnds"),
                 "deadFloorEnds": m0.get("deadFloorEnds"), "whipDraws_off": m1.get("whipDraws"), "whipDraws_on_again": m1b.get("whipDraws")})
@@ -1154,6 +1199,7 @@ def lane_a_live(B, rows, log):
     B.call("jawa/destroy_batch", rects=frect, categories="All")
     if frect in OFF_SITE_RECTS:
         OFF_SITE_RECTS.remove(frect)
+    inwall_hookup_rows(B, rows)
     B.ticks(2)
     B.probe("poll")
     frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
@@ -1222,8 +1268,8 @@ def lane_a_live(B, rows, log):
     frame_fit(B, SITE)
     d1 = motion(B)
     shot(B, "p1b_06_tangle_dark", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
-    row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("darkStrips", 0) > 0 and d1.get("litStrips") == 0 else "FAIL", "MOD",
-        {k: d1.get(k) for k in ("litStrips", "darkStrips", "liveWallEnds")})
+    row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("tangleDarkStrips", 0) > 0 and d1.get("tangleLitStrips") == 0 else "FAIL", "MOD",
+        {k: d1.get(k) for k in ("tangleLitStrips", "tangleDarkStrips", "litStrips", "darkStrips", "liveWallEnds")})
     if bat2:
         B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0)
     B.probe("set:style=StarWarsJawa")              # back to the shipped default look for the rows after lane A
@@ -1586,7 +1632,9 @@ def style_live(B, rows, log, shots_prefix=None):
     plug_ids = {st: ((per[st].get("slots") or {}).get("Plug") or {}).get("id") for st in STYLES}
     # owner review 2026-10-04 B12: the Modern (ExtensionCord) look's overhead lines stay BLACK while its floor cords are
     # multi-coloured, so its span cable is the black rubber strand, not its first floor strand
-    span_want = {st: ("Strand_BlackRubber" if st == "ExtensionCord" else (strand_sets[st][0] if strand_sets[st] else None)) for st in STYLES}
+    # f3be8bcd3a: the Scrapper (StarWarsJawa) floor cord became spliced salvage (Strand_ScrapTaped); its overhead and fallen wires keep Strand_Jawa
+    span_want = {st: ("Strand_BlackRubber" if st == "ExtensionCord" else "Strand_Jawa" if st == "StarWarsJawa"
+                      else (strand_sets[st][0] if strand_sets[st] else None)) for st in STYLES}
     span_ok = {st: per[st].get("aerialSpanTex") == span_want[st] for st in STYLES}
     row(rows, "ST2_switch_changes_textures", "PASS" if distinct and all(printed_ok.values()) and len(set(plug_ids.values())) == len(STYLES)
         and all(span_ok.values()) else "FAIL", "MOD",
@@ -1858,6 +1906,7 @@ ROW_SHOWS = {
     "B1_rope_settle": ["cord_lies_slack_in_loops", "never_taut_straight_cord"],
     "M1c_end_pieces": ["cord_meets_wall_at_its_face"],
     "M2b_no_vertex_unwalkable": ["never_cord_across_impassable"],
+    "M1e_machine_on_inwall_run_draws_a_cord": ["conduit_reads_invisible", "cord_meets_wall_at_its_face"],
     "B6_tangle_lit_strips": ["dense_grid_reads_as_tangle"],
     "M8_break_two_ends_live_dead": ["break_live_and_dead_ends_differ"],
     "B6b_strips_dark_when_dead": ["break_live_and_dead_ends_differ"],

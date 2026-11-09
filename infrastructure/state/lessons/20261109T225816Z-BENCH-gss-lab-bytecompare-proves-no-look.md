@@ -1,0 +1,2 @@
+To prove a GSS correctness fix leaves the approved cord look alone without a live shoot: run selftest_gimmesomeslack.py --lab <sitting worlds dir> <out> on the approved branch and on the fixed tree and cmp the *.out.json files. Byte-identical means identical geometry. In the GSS landing this cleared 4 fix batches. It is not enough alone: a planner change (off-map dive goal) passed the lab compare but diverged 807 astar dives from the reference heap check, so run the full selftest too.
+home: src/RimMandrake/Utils/selftest_gimmesomeslack.py

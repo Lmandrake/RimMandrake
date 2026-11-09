@@ -150,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private readonly ICollection<string> straightPlug;
 
         /// <summary>Does a cord into this machine slide under it (not a lamp, not a drawn connector such as the tap clamp)?</summary>
-        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !straightPlug.Contains(m.Id ?? "");
+        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !m.Foot && !straightPlug.Contains(m.Id ?? "");
 
         internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax, bool slideUnder = true,
                                          ICollection<string> straightPlug = null) =>
@@ -216,12 +216,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
             }
             MergeStubs();
+            HookupPick.ChainTransmitters(world.Machines);   // round 3: a transmitter fed through the one it touches gets its cord
             foreach (MachineInfo m in world.Machines)
             {
                 VId mv = VId.Mach(m.Id);
                 bool any = false;
                 foreach (Cell h in m.Hookups)
-                    if (Cells.Contains(h)) { Link(mv, Vid(h), null, h); any = true; }
+                {
+                    if (!Cells.Contains(h)) continue;
+                    any = true;
+                    // conduit run inside a wall or rock: the machine's cord comes out of the face nearest it, as any other stub
+                    // (a hidden-conduit hookup stays hidden: M3); with no open face left it stays in the wall too
+                    if (BuriedCells.Contains(h) && FaceFor(m, h) is VId face)
+                    {
+                        machineStubs.Add(face);
+                        Link(mv, face, null, null);
+                        Link(face, Vid(face.B), null, face.B);
+                    }
+                    else Link(mv, Vid(h), null, h);
+                }
                 foreach (string other in m.MachineLinks)
                 {
                     MachineInfo om = world.Machines.FirstOrDefault(x => x.Id == other);
@@ -240,6 +253,36 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (VId v in keep) Nodes[v] = Classify(v);
             WallTerminals();
             Endpoints();
+            BuildStripLeads();
+            CordBuilder.PrepareIncidentIndex(this);
+        }
+
+        private readonly HashSet<VId> machineStubs = new HashSet<VId>();
+
+        /// <summary>The stub a machine hooked to buried cell h draws its cord from: the open face of that buried run closest to the
+        /// machine, h's own first. A machine standing against the face has no cord to draw, and null keeps it the hidden link.</summary>
+        private VId? FaceFor(MachineInfo m, Cell h)
+        {
+            BlockKind kh = World.BuriedKind(h);
+            if (kh != BlockKind.Wall && kh != BlockKind.Rock) return null;
+            V2 c = CordBuilder.ArtTarget(m);
+            VId? best = null;
+            double bd = double.MaxValue;
+            foreach (Cell hid in new[] { h }.Concat(BuriedCells.Where(b => b != h && V2.Dist(b.Centre, h.Centre) < 3).OrderBy(b => b)))
+            {
+                BlockKind k = World.BuriedKind(hid);
+                if (k != BlockKind.Wall && k != BlockKind.Rock) continue;
+                foreach (Cell dd in Cell.Dirs4)
+                {
+                    Cell w = hid + dd;
+                    if (m.Contains(w)) return null;
+                    if (!World.InBounds(w) || World.IsBuried(w)) continue;
+                    double d = V2.Dist(w.Centre, c);
+                    if (d < bd) { bd = d; best = VId.S(w, hid); }
+                }
+                if (best != null) break;      // h's own face is the one vanilla's wire went to
+            }
+            return best;
         }
 
         private VId Vid(Cell c)
@@ -502,13 +545,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return new Cell(c.X - n.X, c.Z - n.Z);
         }
 
-        /// <summary>render.Net.end_class, only the "break" answer matters: a dead end facing
-        /// another conduit cell within 3 cells across a gap.</summary>
+        /// <summary>render.Net.end_class, only the "break" answer matters: a dead end facing another conduit cell across a gap of up to 5 cells.
+        /// Was 3 reach, which a blast's gap of 3 cells beat: both short stumps of a real cut were pruned as needless spurs and the cut drew no ends at all.</summary>
         private bool FacesGap(Cell c)
         {
             if (NetDeg(c) != 1 || hookCells.Contains(c)) return false;
             Cell o = OutDir(c);
-            for (int k = 1; k <= 3; k++)
+            for (int k = 1; k <= 6; k++)
             {
                 var q = new Cell(c.X + o.X * k, c.Z + o.Z * k);
                 if (Cells.Contains(q)) return true;
@@ -583,7 +626,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                              m.Kind == MachineKind.Lamp ? NodeType.Lamp :
                              m.Kind == MachineKind.Transmitter ? NodeType.Transmitter : NodeType.Consumer;
                 Cell hook = m.Hookups.Count > 0 ? m.Hookups[0] : new Cell(m.X0, m.Z0);
-                return new CordNode { Type = t, Pos = PlugPoint(m, hook, Slides(m)), Cell = hook, Machine = m };
+                return new CordNode { Type = t, Pos = MachinePlugPoint(World, m, hook, Slides(m)), Cell = hook, Machine = m };
             }
             if (v.T == 's')
             {
@@ -593,7 +636,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 NodeType t = k == BlockKind.Rock ? NodeType.StubRock : k == BlockKind.Water ? NodeType.StubWater :
                              k == BlockKind.Device ? NodeType.StubDevice : k == BlockKind.Hidden ? NodeType.StubHidden :
                              NodeType.StubWall;
-                return new CordNode { Type = t, Pos = w.Centre + into * 0.44, Cell = w, Into = into, Face = w.Centre + into * 0.5, Buried = hid };
+                // a machine's own stub has no conduit in its walk cell: it stands for the buried cell, the one on the net
+                return new CordNode { Type = t, Pos = w.Centre + into * 0.44, Cell = Cells.Contains(w) ? w : hid, Into = into, Face = w.Centre + into * 0.5, Buried = hid };
             }
             if (v.T == 't' || v.T == 'k')
             {
@@ -649,7 +693,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// cord then arrives at a diagonal (<see cref="SlideArrive"/>) and runs on under the art to the centroid.</summary>
         internal static V2 PlugPoint(MachineInfo m, Cell hookup, bool slide = false)
         {
+            if (BaseLampApproach(m)) return CordBuilder.LampEntry(m, hookup.Centre);
             if (m.Kind == MachineKind.Lamp) return new V2(m.X0 + 0.5, m.Z0 + 1.02);
+            if (m.Foot) return new V2(m.X0 + m.W / 2.0, m.Z0 - 0.08);   // a pole or mast: in from below, under its foot, whatever side vanilla hooked
             double hx = hookup.X + 0.5, hz = hookup.Z + 0.5;
             double x0 = m.X0, z0 = m.Z0, x1 = m.X0 + m.W, z1 = m.Z0 + m.H;
             double qx = Geo.Clamp(hx, x0 + 0.25, x1 - 0.25), qz = Geo.Clamp(hz, z0 + 0.25, z1 - 0.25);
@@ -661,6 +707,40 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (slide && sideZ) qx = SlideAlong(hx, x0, x1, m);
             else if (slide && sideX) qz = SlideAlong(hz, z0, z1, m);
             return new V2(qx, qz);
+        }
+
+        /// <summary>A machine approach must not put the planner's endpoint in an adjacent wall: A* permits its endpoint cell,
+        /// and that cell is not a dive. Prefer the existing plug point, then an open side nearest the hookup. With no open
+        /// exterior approach, end under the machine itself so surrounding barriers remain intermediate dive cells.</summary>
+        internal static V2 MachinePlugPoint(CordWorld w, MachineInfo m, Cell hookup, bool slide)
+        {
+            V2 preferred = BaseLampApproach(m)
+                ? CordBuilder.LampEntryOnFloor(w, m, hookup.Centre)
+                : PlugPoint(m, hookup, slide);
+            if (w.IsWalkable(preferred.Floor) || m.Contains(preferred.Floor)) return preferred;
+            int hx = Math.Max(m.X0, Math.Min(m.X0 + m.W - 1, hookup.X));
+            int hz = Math.Max(m.Z0, Math.Min(m.Z0 + m.H - 1, hookup.Z));
+            V2 best = default(V2);
+            double nearest = double.MaxValue;
+            foreach (Cell side in new[]
+            {
+                new Cell(hx, m.Z0 + m.H),
+                new Cell(m.X0 + m.W, hz),
+                new Cell(hx, m.Z0 - 1),
+                new Cell(m.X0 - 1, hz)
+            })
+            {
+                V2 q = m.Kind == MachineKind.Lamp && m.W == 1 && m.H == 1
+                    ? CordBuilder.LampEntry(m, side.Centre)
+                    : PlugPoint(m, side, slide);
+                if (!w.IsWalkable(q.Floor)) continue;
+                double d = V2.Dist(q, hookup.Centre);
+                if (d < nearest) { nearest = d; best = q; }
+            }
+            if (nearest < double.MaxValue) return best;
+            return m.Foot
+                ? new V2(m.X0 + m.W / 2.0, m.Z0 + CordBuilder.FootTuck)
+                : CordBuilder.ArtTarget(m);
         }
 
         /// <summary>How far into its cell (along the side) a sliding plug point sits: well clear of the 0.5 midpoint.</summary>
@@ -677,10 +757,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return low ? k + SlideFrac : k + 1 - SlideFrac;
         }
 
-        /// <summary>The diagonal a cord arrives at a sliding plug point along: in through the side, and along it toward the
-        /// cell's midpoint (so it slides under the art between two ports, never along one).</summary>
+        /// <summary>A one-cell lamp base needs a direct approach. Ordinary machines retain their diagonal flange entry.</summary>
+        internal static bool BaseLampApproach(MachineInfo m) =>
+            m != null && m.W == 1 && m.H == 1 && m.BaseDz != 0 && !m.Foot && !m.HasHome;
+
+        /// <summary>Base lamps arrive horizontally at the foot or radially upward
+        /// through the bottom; ordinary sliding plugs retain their diagonal under the flange.</summary>
         internal static V2 SlideArrive(MachineInfo m, V2 tip, V2 into)
         {
+            if (BaseLampApproach(m))
+            {
+                V2 c = CordBuilder.ArtTarget(m);
+                if (tip.Z < m.Z0)
+                    return (c - tip).Norm();
+                return new V2(tip.X < c.X ? 1 : -1, 0);
+            }
             double along = into.X != 0 ? tip.Z : tip.X;
             double f = along - Math.Floor(along);
             double s = f < 0.5 ? 1 : -1;
@@ -696,7 +787,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 for (int side = 0; side < 2; side++)
                 {
                     VId s = side == 0 ? e.A : e.B, h = side == 0 ? e.B : e.A;
-                    if (s.T == 's' && Nodes.TryGetValue(h, out CordNode hn) && hn.Type == NodeType.HiddenEnd)
+                    if (s.T == 's' && !machineStubs.Contains(s) && Nodes.TryGetValue(h, out CordNode hn) && hn.Type == NodeType.HiddenEnd)
                         Nodes[s].WallTerminal = true;
                 }
             }
@@ -733,7 +824,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (v.T == 'm' && nd.Machine.Hookups.Count > 1)
             {
                 VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
-                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = PlugPoint(nd.Machine, hc, Slides(nd.Machine));
+                if (linkCell.TryGetValue((nxt, v), out Cell hc)) p = MachinePlugPoint(World, nd.Machine, hc, Slides(nd.Machine));
             }
             return p;
         }
@@ -746,6 +837,197 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         public IEnumerable<CordEdge> CordEdges() => Edges.Where(e => !e.Hidden);
+
+        private List<KeyValuePair<string, string>> hiddenLinks;
+
+        /// <summary>The cell tokens each hidden edge joins, as a laid piece's net tokens name them; tabled once per graph.</summary>
+        internal List<KeyValuePair<string, string>> HiddenLinks
+        {
+            get
+            {
+                if (hiddenLinks == null)
+                {
+                    var l = new List<KeyValuePair<string, string>>();
+                    foreach (CordEdge e in Edges)
+                        if (e.Hidden && Nodes.TryGetValue(e.A, out CordNode a) && Nodes.TryGetValue(e.B, out CordNode b))
+                            l.Add(new KeyValuePair<string, string>(a.Cell.X + "," + a.Cell.Z, b.Cell.X + "," + b.Cell.Z));
+                    hiddenLinks = l;
+                }
+                return hiddenLinks;
+            }
+        }
+
+        private Dictionary<VId, HashSet<Cell>> armTable;
+
+        /// <summary>The cardinal directions a node's cords leave it in, tabled once per graph: posing a junction reads this for
+        /// each of its cords, on the lay worker and the frame alike, and a whole-graph walk per read was quadratic.</summary>
+        internal HashSet<Cell> ArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref armTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, CordEdge e, bool atA)
+                {
+                    if (Nodes[n].Type != NodeType.Junction) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e, true); Arm(e.B, e, false); }
+                System.Threading.Volatile.Write(ref armTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : new HashSet<Cell>();
+        }
+
+        private Dictionary<long, List<KeyValuePair<VId, CordNode>>> nodeGrid;
+        private const int NodeGridSize = 8;
+
+        /// <summary>The graph's nodes that are neither a machine nor a seam (boxes, strips, heaps, cut ends, plates) with their cell in the rectangle, in a fixed order: what a cord laid
+        /// again keeps off (CordBuilder.OtherBoxes) and what goes into its edge's key, so a box that appears beside a cord re-lays it.</summary>
+        internal List<KeyValuePair<VId, CordNode>> NodesNear(int x0, int z0, int x1, int z1)
+        {
+            Dictionary<long, List<KeyValuePair<VId, CordNode>>> t = System.Threading.Volatile.Read(ref nodeGrid);
+            if (t == null)
+            {
+                t = new Dictionary<long, List<KeyValuePair<VId, CordNode>>>();
+                foreach (KeyValuePair<VId, CordNode> kv in Nodes.OrderBy(kv => kv.Key.ToString(), StringComparer.Ordinal))
+                {
+                    if (kv.Value.IsMachine || kv.Value.Seam) continue;
+                    Cell c = kv.Value.Cell;
+                    long k = ((long)Math.Floor(c.X / (double)NodeGridSize) << 32) ^ (uint)(int)Math.Floor(c.Z / (double)NodeGridSize);
+                    if (!t.TryGetValue(k, out List<KeyValuePair<VId, CordNode>> l)) t[k] = l = new List<KeyValuePair<VId, CordNode>>();
+                    l.Add(kv);
+                }
+                System.Threading.Volatile.Write(ref nodeGrid, t);
+            }
+            var o = new List<KeyValuePair<VId, CordNode>>();
+            for (int gx = (int)Math.Floor(x0 / (double)NodeGridSize); gx <= (int)Math.Floor(x1 / (double)NodeGridSize); gx++)
+                for (int gz = (int)Math.Floor(z0 / (double)NodeGridSize); gz <= (int)Math.Floor(z1 / (double)NodeGridSize); gz++)
+                    if (t.TryGetValue(((long)gx << 32) ^ (uint)gz, out List<KeyValuePair<VId, CordNode>> l))
+                        foreach (KeyValuePair<VId, CordNode> kv in l)
+                        {
+                            Cell c = kv.Value.Cell;
+                            if (c.X >= x0 && c.X <= x1 && c.Z >= z0 && c.Z <= z1) o.Add(kv);
+                        }
+            return o;
+        }
+
+        private Dictionary<VId, HashSet<Cell>> machineArmTable;
+        /// <summary>How far a machine's plug may be from a junction for the machine to count as right beside it, cells.</summary>
+        public const double BesideMachine = 1.6;
+
+        /// <summary>The arms of a junction whose cord is a short lead into a machine right beside it.</summary>
+        internal HashSet<Cell> MachineArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref machineArmTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, VId other, CordEdge e, bool atA)
+                {
+                    if (Nodes[n].Type != NodeType.Junction || !Nodes[other].IsMachine) return;
+                    if (V2.Dist(Nodes[n].Pos, atA ? e.PB : e.PA) > BesideMachine) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e.B, e, true); Arm(e.B, e.A, e, false); }
+                System.Threading.Volatile.Write(ref machineArmTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : NoArms;
+        }
+        private static readonly HashSet<Cell> NoArms = new HashSet<Cell>();
+
+        private Dictionary<VId, HashSet<Cell>> wallArmTable;
+        /// <summary>How far a wall or rock face may be from a junction for the conduit to count as going into the wall right beside it, cells.</summary>
+        public const double BesideWall = 1.0;
+
+        /// <summary>The arms of a junction whose cord is a short hop into a wall or rock face right beside it.</summary>
+        internal HashSet<Cell> WallArmsOf(VId v)
+        {
+            Dictionary<VId, HashSet<Cell>> t = System.Threading.Volatile.Read(ref wallArmTable);
+            if (t == null)
+            {
+                t = new Dictionary<VId, HashSet<Cell>>();
+                void Arm(VId n, VId other, CordEdge e, bool atA)
+                {
+                    NodeType o = Nodes[other].Type;
+                    if (Nodes[n].Type != NodeType.Junction || (o != NodeType.StubWall && o != NodeType.StubRock)) return;
+                    if (V2.Dist(Nodes[n].Pos, atA ? e.PB : e.PA) > BesideWall) return;
+                    if (!t.TryGetValue(n, out HashSet<Cell> s)) t[n] = s = new HashSet<Cell>();
+                    V2 a = CordBuilder.ArmDir(this, e, atA);
+                    s.Add(new Cell((int)a.X, (int)a.Z));
+                }
+                foreach (CordEdge e in CordEdges()) { Arm(e.A, e.B, e, true); Arm(e.B, e.A, e, false); }
+                System.Threading.Volatile.Write(ref wallArmTable, t);
+            }
+            return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : NoArms;
+        }
+
+        private readonly Dictionary<VId, CordEdge> stripLeadTable = new Dictionary<VId, CordEdge>();
+
+        /// <summary>A strip's upstream edge: an adjacent uncut wall outlet first, otherwise toward a supply or
+        /// uncut wall/rock outlet by graph distance. Equal candidates use deterministic edge order.
+        /// Device branches never supply a strip. Built once before the graph is published.</summary>
+        internal CordEdge StripLeadOf(VId v) => stripLeadTable.TryGetValue(v, out CordEdge lead) ? lead : null;
+
+        private void BuildStripLeads()
+        {
+                var links = new Dictionary<VId, List<VId>>();
+                foreach (VId n in Nodes.Keys) links[n] = new List<VId>();
+                foreach (CordEdge e in Edges)
+                {
+                    links[e.A].Add(e.B);
+                    links[e.B].Add(e.A);
+                }
+                var distance = new Dictionary<VId, int>();
+                var queue = new Queue<VId>();
+                foreach (var kv in Nodes.OrderBy(kv => kv.Key))
+                {
+                    CordNode nd = kv.Value;
+                    bool supply = nd.Type == NodeType.Source || nd.Type == NodeType.Battery || nd.Type == NodeType.Transmitter;
+                    bool outlet = !nd.WallTerminal && (nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock);
+                    if (!supply && !outlet) continue;
+                    distance[kv.Key] = 0;
+                    queue.Enqueue(kv.Key);
+                }
+                while (queue.Count > 0)
+                {
+                    VId n = queue.Dequeue();
+                    foreach (VId other in links[n])
+                    {
+                        if (distance.ContainsKey(other)) continue;
+                        distance[other] = distance[n] + 1;
+                        queue.Enqueue(other);
+                    }
+                }
+                Dictionary<VId, CordEdge> t = stripLeadTable;
+                var best = new Dictionary<VId, (int Priority, int Distance)>();
+                void Pick(VId n, VId other, CordEdge e)
+                {
+                    if (n == other || Nodes[n].Type != NodeType.Junction) return;
+                    CordNode far = Nodes[other];
+                    NodeType kind = far.Type;
+                    if (kind == NodeType.Consumer || kind == NodeType.Lamp) return;
+                    if (!distance.TryGetValue(other, out int d)) return;
+                    bool adjacentWall = kind == NodeType.StubWall && !far.WallTerminal
+                        && V2.Dist(Nodes[n].Pos, e.A == n ? e.PB : e.PA) <= BesideWall;
+                    int priority = adjacentWall ? 0 : 1;
+                    if (best.TryGetValue(n, out var old)
+                        && (priority > old.Priority || (priority == old.Priority && d >= old.Distance))) return;
+                    best[n] = (priority, d);
+                    t[n] = e;
+                }
+                // Pick retains the first equal-ranked candidate; make that order explicit,
+                // including parallel edges whose endpoint pair is the same.
+                foreach (CordEdge e in CordEdges().OrderBy(e => e.A).ThenBy(e => e.B)
+                    .ThenBy(e => string.Join(";", e.Via), StringComparer.Ordinal))
+                {
+                    Pick(e.A, e.B, e);
+                    Pick(e.B, e.A, e);
+                }
+        }
 
         /// <summary>The conduit cell a node stands for (oracle's node["cell"]).</summary>
         internal Cell CellOf(VId v) => Nodes[v].Cell;

@@ -19,9 +19,11 @@ namespace RimMandrake.GimmeSomeSlack
             SectionLayer_RM_MessyCords.PrintedStatic.Clear();   // B16: the old maps' section keys and strand names
             Aerial.StylePicker.ClearPicks();                    // D11: a new game starts on the default look, not the
             Aerial.ConduitStylePicker.ClearPicks();             //      last colony's picks
+            GimmeSomeSlackProbe.ResetSameFrame();              // the last game's probe wall and map: never touched, never kept alive
             GimmeSomeSlackProbe.request = "";                  // B22: a probe request queued in the last game never fires
             Aerial.AerialProbe.request = "";                   //      in this one (thing ids repeat across loads)
             Aerial.CompAerialAnchor.debugSkipReseed = false;   // C15: an interrupted negative control never leaks into a game
+            Aerial.RM_LiveWirePathCost.Clear();                 // map ids repeat across games: the last one's priced cells go
         }
     }
 

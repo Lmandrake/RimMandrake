@@ -40,11 +40,16 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         private static int Main(string[] args)
         {
+            int lab = Array.IndexOf(args, "--lab");
+            if (lab >= 0) return LabWorld.Run(args[lab + 1], args[lab + 2]);
             int uc = Array.IndexOf(args, "--unroutable-census");
             if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
             if (args.Contains("--scale-bench")) { CordScaleBench.Run(args); return 0; }
             if (args.Contains("--fuzz-only")) { GssFuzz.Run(args); Console.WriteLine($"{checks - fails}/{checks} checks passed (fuzz only)"); return fails == 0 ? 0 : 1; }
+            int fd = Array.IndexOf(args, "--fallen-dump");
+            if (fd >= 0) { AerialSelfTest.DumpFallen(args[fd + 1]); return 0; }
             bool probe = args.Contains("--probe");
             int di = Array.IndexOf(args, "--dump");
             if (di >= 0) { dumpDir = args[di + 1]; Directory.CreateDirectory(dumpDir); }
@@ -88,13 +93,19 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             WireSwayModeChecks.Run();      // aerial sway radio: Auto vs Always differ (TheftChecks.cs)
             DripLoopChecks.Run();          // design 2.5 drip loops (TheftChecks.cs)
             SwitchFlipChecks.Run();        // GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED aerial half: SwitchFlipChecks.cs
+            MotionBucketChecks.SparkRidesTail();
             MotionBucketChecks.Run();      // CORD_GRAPH_TOPOLOGY_REVISION_1 perf half: MotionBucketChecks.cs
             ConduitTargetChecks.Run();     // design 5 per-def conduit toggles (MotionBucketChecks.cs)
             PhantomSparkChecks.Run();      // GSS_CORD_SILENCE_PHANTOM_SPARK (owner 2026-10-16): PhantomSparkChecks.cs
+            SolarParentHookupCheck();      // nonadjacent connectParent fallback: production helper, no Map
+            CurvatureRepairCheck();
             LoopLassoChecks.Run();         // CORD_LOOP_UNTANGLE_LASSOED_A_PIPE (live 2026-10-23): LoopLassoChecks.cs
             EndHeapBudgetChecks.Run();     // GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET (GPT review 2026-10-23): EndHeapBudgetChecks.cs
             DoorLoopChecks.Run();          // GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (GPT FB_hose_gss_3.4): DoorLoopChecks.cs
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
+            CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
+            SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
+            JunctionStripChecks.Run();     // d_modern_junction_strip (owner 2026-11-05): JunctionStripChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs
             SliceGateChecks.Run();         // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD + far-dig gate (live round 4): SliceGateChecks.cs
@@ -106,6 +117,51 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
+        }
+
+        private static void CurvatureRepairCheck()
+        {
+            List<V2> original = Geo.Resample(new List<V2>
+            {
+                new V2(2, 2), new V2(3, 2), new V2(3.1, 2.2),
+                new V2(3.2, 2), new V2(4.5, 2)
+            }, 0.05);
+            Check(CordShape.CurvatureFaults(original).Count > 0,
+                "curvature repair: planted sharp reversal must be detected");
+            List<V2> repaired = CordShape.RepairCurvature(null, original);
+            Check(CordShape.CurvatureFaults(repaired).Count == 0,
+                "curvature repair: open-floor reversal must be repaired through both joins");
+            double[] cum = Geo.CumLen(original);
+            double length = cum[cum.Length - 1];
+            List<V2> head = original.Where((q, i) => cum[i] <= CordShape.RepairPin + 1e-9).ToList();
+            List<V2> tail = original.Where((q, i) => length - cum[i] <= CordShape.RepairPin + 1e-9).ToList();
+            bool same = repaired.Count >= head.Count + tail.Count
+                && head.Zip(repaired.Take(head.Count), (a, b) => V2.Dist(a, b) < 1e-12).All(x => x)
+                && tail.Zip(repaired.Skip(repaired.Count - tail.Count), (a, b) => V2.Dist(a, b) < 1e-12).All(x => x);
+            Check(same, "curvature repair: original protected end vertices and headings must not move");
+        }
+
+        private static void SolarParentHookupCheck()
+        {
+            var panel = new MachineInfo { Id = "t_solar_parent", Kind = MachineKind.Source, X0 = 180, Z0 = 115, W = 4, H = 4 };
+            var min = new Cell(180, 115);
+            var max = new Cell(183, 118);
+            var parent = new Cell(183, 113);
+            var conduit = new HashSet<Cell>(Enumerable.Range(174, 19).Select(x => new Cell(x, 113)));
+            Check(!HookupPick.Touching(panel).Any(conduit.Contains)
+                && Cell.Dirs4.Count(d => conduit.Contains(parent + d)) == 2,
+                "solar parent: regression setup has no touching conduit and its parent is inside the conduit row");
+            Cell? hookup = HookupPick.ParentHookup(min, max, parent, conduit.Contains);
+            Check(hookup.HasValue && hookup.Value.Equals(parent),
+                "solar parent: panel 180..183 x 115..118 must hook connectParent (183,113) despite the gap");
+            Cell? six = HookupPick.ParentHookup(min, max, new Cell(183, 109), c => c.Z == 109);
+            Check(six.HasValue && six.Value.Equals(new Cell(183, 109)),
+                "solar parent: a parent six cells from the footprint is accepted");
+            Check(!HookupPick.ParentHookup(min, max, new Cell(183, 108), c => true).HasValue,
+                "solar parent: a parent beyond six cells is rejected");
+            Check(!HookupPick.ParentHookup(min, max, null, conduit.Contains).HasValue
+                && !HookupPick.ParentHookup(min, max, parent, c => false).HasValue,
+                "solar parent: no parent or an unavailable target creates no hookup");
         }
 
         // ------------------------------------------------------------------ scene -> world
@@ -265,6 +321,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     {
                         CordNode nd = g.Nodes[atA ? e.A : e.B];
                         if (nd.Type == NodeType.Tangle && nd.Cells != null) return nd.Cells.Any(c => V2.Dist(c.Centre, pt) < 0.75);
+                        // FairBends: a one-cell machine takes its plug on whichever side the cord comes round to, so the end is anywhere just off its cell
+                        MachineInfo m1 = nd.IsMachine ? nd.Machine : null;
+                        if (m1 != null && m1.W == 1 && m1.H == 1 && pt.X > m1.X0 - 0.3 && pt.X < m1.X0 + 1.3 && pt.Z > m1.Z0 - 0.3 && pt.Z < m1.Z0 + 1.3) return true;
                         return V2.Dist(atA ? e.PA : e.PB, pt) < 0.45 + CordBuilder.ArmTuck * (CordBuilder.JunctionScale - 1);
                     }
                     bool okA = g.CordEdges().Any(e => (At(e, true, a) && At(e, false, z)) || (At(e, false, a) && At(e, true, z)));
@@ -307,7 +366,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             ArtFitResult r = CordAudit.ArtFit(g, ps, live.Contains);
             string msg = string.Join("; ", r.Messages.Take(4));
             Check(r.JunctionFaults == 0, $"{name}: junction art does not fit its cords ({r.JunctionFaults} faults over {r.Junctions} junctions): {msg}");
-            Check(r.PlugFaults == 0, $"{name}: plugs do not enter their machines ({r.PlugFaults}/{r.PlugEnds}): {msg}");
+            Check(r.PlugFaults == 0, $"{name}: machine cord ends do not fit their machines ({r.PlugFaults}/{r.PlugEnds}; lamps enter their bases, other machines require plugs): {msg}");
             Check(r.StubFaults == 0, $"{name}: {r.StubFaults}/{r.Stubs} wall/rock stub decals not on the face along the cord: {msg}");
             Check(r.DeadFaults == 0, $"{name}: {r.DeadFaults}/{r.DeadEnds} dead ends not visibly limp (tip must fall >=0.22 cell off the conduit line and curl >=50deg)");
             Check(r.LiveFaults == 0, $"{name}: {r.LiveFaults}/{r.LiveEnds} live ends not straight out of the conduit end: {msg}");

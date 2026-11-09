@@ -75,7 +75,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var d = AerialMath.SpanCurveDrip(a, b, 0.06, 0.12, 0.45);
             Check(P2.Dist(d[0], a) < 1e-12 && P2.Dist(d[d.Count - 1], b) < 1e-12, "ends stay exactly on the insulators");
             double len = P2.Dist(a, b), sag = 0.06 * len;
-            double Plain(double t) => a.Z + (b.Z - a.Z) * t - sag * 4 * t * (1 - t);
+            double Plain(double t) => a.Z + (b.Z - a.Z) * t - sag * AerialMath.Droop(t);
             double dipA = 0, dipB = 0, beyond = 0;
             foreach (P2 p in d)
             {

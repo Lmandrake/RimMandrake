@@ -57,6 +57,7 @@ ROW_G = [(X0 + 4 * i, Z0 + 8) for i in range(4)]      # god mode
 COPY_AT = (X0 + 20, Z0 + 8)                           # copy of the god-mode Industrial mast
 REINSTALL_AT = (X0 + 20, Z0)                          # the build-mode Futuristic mast moves here
 LEGACY_AT = (X0 + 4, Z0 + 14)                         # built by jawa/build_batch: no designator, no style
+LEGACY_JOINED_AT = (X0 + 12, Z0 + 14)                  # the same, strung to the styled masts by auto-link (S8b)
 TWIN_AT = (X0 + 8, Z0 + 11)                           # a second Modern god mast 3 cells from the first: a same-look span
 
 
@@ -275,8 +276,11 @@ def run_live(args):
           {"reinstall": ri, "after": {k: moved.get(k) for k in ("id", "rawStyle", "graphicPath")}})
 
     # ---------------------------------------------------------------- S8 (scene part): a legacy mast, no designator, no style
+    # stood alone: auto-link would string it to a styled mast, and a member joining a run that stores its look stores it too (S8b)
+    B.ap("set:autoLink=False")
     V_build = B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % LEGACY_AT, faction="player", wipeExisting=False)
     B.ticks(3)
+    B.ap("set:autoLink=True")
     st = B.ap("styles")
     bp = _by_pos(st)
     lg = bp.get(LEGACY_AT) or {}
@@ -285,6 +289,23 @@ def run_live(args):
           and "/Styles/%s/" % dl in (lg.get("graphicPath") or "") else "FAIL", "MOD",
           {"build": V_build.get("success"), "legacy": {k: lg.get(k) for k in ("rawStyle", "style", "graphicPath")}, "defaultLook": dl,
            "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"})
+    # GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK: the same unstyled mast strung to a styled run stores the run's look, so a later
+    # change of the default cannot split the one run into two looks. The other side of S8's coin: it goes red if either rule goes.
+    B.ap("set:autoLink=False")
+    B.call("jawa/build_batch", ops="RM_AerialMast:%d,%d" % LEGACY_JOINED_AT, faction="player", wipeExisting=False)
+    B.ticks(3)
+    B.ap("set:autoLink=True")
+    pos = {(a.get("x"), a.get("z")): a.get("id") for a in B.ap("census").get("anchors") or []}
+    partner_at = ROW_G[3]
+    verdict = B.ap("link:%s,%s" % (pos.get(LEGACY_JOINED_AT), pos.get(partner_at))).get("verdict")
+    B.ap("cprocess")
+    B.ticks(2)
+    bp = _by_pos(B.ap("styles"))
+    stored, partner = (bp.get(LEGACY_JOINED_AT) or {}).get("rawStyle"), (bp.get(partner_at) or {}).get("rawStyle")
+    joined = verdict in ("Ok", "Linked", "Success") and partner is not None
+    V.row(rows, "S8b_legacy_joined_to_styled_stores_look", ("PASS" if stored == partner else "FAIL") if joined else "UNMEASURED",
+          "MOD" if joined else "SITE", {"verdict": verdict, "stored": stored, "partner": partner,
+                                        "meaning": "PASS = strung to a styled run, an unstyled mast stores that run's look"})
 
     # ---------------------------------------------------------------- S6: spans draw in their poles' look
     bad, mixed, same = [], 0, 0
@@ -379,12 +400,16 @@ def s12_style_run_suspects(B, rows):
         st2 = _cst(B)
     finally:
         B.probe("set:style=StarWarsJawa")
-    one = []
+    one, missing = [], []
     for st in (st1, st2):
         mem = _members(st)
+        # every run cell and the mast must be in the snapshot: a failed mast placement leaves an all-unstyled run that
+        # reads one look too and would PASS without exercising D1 (Codex review 2026-11-09)
+        missing.append([c for c in D1_RUN + [D1_MAST] if c not in mem])
         one.append(_looks_of_run(mem, D1_RUN + [D1_MAST], st.get("defaultLook")))
-    V.row(rows, "S12a_D1_legacy_run_one_look", "PASS" if bb.get("success") and len(one[0]) == 1 and len(one[1]) == 1 else "FAIL", "MOD",
-          {"looksBefore": one[0], "looksAfterDefaultChange": one[1], "mast": m.get("success"),
+    ok = bb.get("success") and m.get("success") and not missing[0] and not missing[1] and len(one[0]) == 1 and len(one[1]) == 1
+    V.row(rows, "S12a_D1_legacy_run_one_look", "PASS" if ok else "FAIL", "MOD",
+          {"looksBefore": one[0], "looksAfterDefaultChange": one[1], "mast": m.get("success"), "missingCells": missing,
            "meaning": "PASS = a styled mast built onto an unstyled run leaves ONE look on the run, and a later default change cannot split it (D1 refuted); FAIL = D1 confirmed"})
     # D7: a bulk styled spawn: RunOf visits for N cells vs 2N cells (O(N) ~ 2x, O(N^2) ~ 4x)
     def visits():
@@ -400,6 +425,7 @@ def s12_style_run_suspects(B, rows):
           {"visitsN": n1, "visits2N": n2, "ratio": ratio,
            "meaning": "PASS = doubling a styled line about doubles RunOf visits (linear); ~4x = the suspected O(N^2) flood per placement (D7 confirmed)"})
     s12c_d5_multilink(B, rows)
+    s12e_batched_links(B, rows)
     # D4 needs a save + reload; it rides the script's own save (run_live, --save NAME). proof_all's one save is a plain
     # rimworld/save_game after a zero-tick BEFORE census (S7/S9e compare it with the load), so a member staged in that
     # save would change those sets: SHARED leaves D4 to the standalone run.
@@ -471,6 +497,51 @@ def s12c_d5_multilink(B, rows):
     else:
         V.row(rows, "S12c_D5_multilink_one_frame", "PASS" if len(looks_m) == 1 and looks_m == looks_c else "FAIL", "MOD", ev)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % D5_RECT, categories="All")
+    B.ticks(2)
+
+
+# S12e (GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE): masts A and C already one Industrial run through a conduit line; B a Modern mast set back
+# from the line's middle, nearer each than they are to each other. The gizmo's spanning forest strings A-B and B-C in one call: each
+# new span's check could find the other end round through the other new span, and neither merged.
+Z12E = Z0 + 40                                          # past SITE2's top; read and cleared on its own rect
+E_A, E_C, E_B = (X0 + 14, Z12E), (X0 + 20, Z12E), (X0 + 17, Z12E + 2)
+E_RECT = (X0 + 14, Z12E, 7, 3)
+
+
+def _cst_e(B):
+    B.ap("cprocess")
+    B.ticks(2)
+    return B.ap("cstyles:%d,%d,%d,%d" % E_RECT)
+
+
+def s12e_batched_links(B, rows):
+    if not prepare_site(B, E_RECT, rows, "S12e_site_ready"):
+        V.row(rows, "S12e_batched_links_merge", "UNMEASURED", "SITE", "site not ready (terrain)")
+        return
+    B.ap("set:autoLink=False")
+    try:
+        built = all([B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % E_A).get("success"),
+                     B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (E_A[0] + 1, Z12E, E_C[0] - 1, Z12E)).get("success"),
+                     B.ap("place:RM_AerialMast:Industrial:%d,%d:god" % E_C).get("success"),
+                     B.ap("place:RM_AerialMast:Modern:%d,%d:god" % E_B).get("success")])
+        st0 = _cst_e(B)
+        cells = ";".join("%d,%d" % c for c in (E_A, E_B, E_C))
+        plan = B.ap("cmultilink:%s:plan" % cells)
+        ml = B.ap("cmultilink:%s" % cells)
+        st = _cst_e(B)
+    finally:
+        B.ap("set:autoLink=True")
+    dl = st.get("defaultLook")
+    every = [E_A, E_C, E_B] + [(x, Z12E) for x in range(E_A[0] + 1, E_C[0])]
+    before, after = _looks_of_run(_members(st0), every, st0.get("defaultLook")), _looks_of_run(_members(st), every, dl)
+    runs = {(_members(st).get(c) or {}).get("run") for c in every}
+    ev = {"built": built, "planPairs": plan.get("pairs"), "linked": ml.get("linked"), "looksBefore": before, "looksAfter": after, "runs": sorted(runs, key=str),
+          "meaning": "PASS = two spans strung in one call onto an already-joined pair leave ONE look on the run"}
+    if not (built and ml.get("success")) or len(set(before)) < 2 or not ml.get("linked") or len(plan.get("pairs") or []) != 2:
+        V.row(rows, "S12e_batched_links_merge", "UNMEASURED", "HARNESS", ev)
+    else:
+        V.row(rows, "S12e_batched_links_merge", "PASS" if len(after) == 1 and len(runs) == 1 and None not in runs else "FAIL", "MOD", ev)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % E_RECT, categories="All")
     B.ticks(2)
 
 

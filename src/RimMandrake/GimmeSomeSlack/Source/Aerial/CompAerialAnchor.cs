@@ -217,8 +217,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                         length = Vector3.Distance(p.BasePoint, BasePoint) * 1.05f,
                         seed = (int)AerialMath.Hash(p.thingIDNumber, thingIDNumber, 7),
                     });
-                // a cut half lying at the survivor stays (it is the survivor's own cable now)
-                foreach (FallenCord f in p.fallen) if (f.cutPartner == thingIDNumber) f.cutPartner = -1;
+                // a cut half lying at the survivor stays (it is the survivor's own cable now). It keeps lying where it lies (its aim is the
+                // cut point), but it now belongs to this pole's cell, like the cable that falls when a pole dies: a pole put up here takes
+                // it back, and so does a link by hand (pass 12, played and reloaded: a span cut by a blast, then a mortar on its far pole;
+                // the rebuilt pole never took that span back, because the cable still pointed at the cut seven cells away)
+                foreach (FallenCord f in p.fallen)
+                    if (f.cutPartner == thingIDNumber)
+                    {
+                        if (float.IsNaN(f.towardX)) { f.towardX = f.toward.x + 0.5f; f.towardZ = f.toward.z + 0.5f; }
+                        f.cutPartner = -1;
+                        f.toward = Position;
+                    }
             }
             if (plan.Grounded.Count > 0) NotifyGroundedAtLaunch(plan.Grounded.Count);
             // GS-1: spans to partners flying with us are kept. Cable lying at our foot is cleared either way: its
@@ -475,9 +484,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 .Where(b => b != null && b.Spawned && b.Faction == Faction.OfPlayer).ToList();   // GPT read A4: never string someone else's anchors
             var byId = sel.ToDictionary(b => b.thingIDNumber);
             // phase 4: one spanning forest per kind, each at its own range (a pipe pole never links to a power mast)
+            foreach ((int a, int b) in AutoLinkPairs(sel))
+                TryLink(byId[a], byId[b].parent);
+        }
+
+        /// <summary>The pairs "Auto-link selected" strings: one spanning forest per kind, each at its own range.</summary>
+        internal static List<(int, int)> AutoLinkPairs(IEnumerable<CompAerialAnchor> sel)
+        {
+            var pairs = new List<(int, int)>();
             foreach (IGrouping<AerialLineKind, CompAerialAnchor> g in sel.GroupBy(s => s.Kind))
                 foreach ((int a, int b) in AerialMath.MinimumSpanningLinks(g.Select(s => s.Info()).ToList(), AerialLineProfiles.RangeFor(g.Key)))
-                    TryLink(byId[a], byId[b].parent);
+                    pairs.Add((a, b));
+            return pairs;
         }
 
         public static string VerdictText(LinkVerdict v) => VerdictText(v, AerialLineKind.Power);

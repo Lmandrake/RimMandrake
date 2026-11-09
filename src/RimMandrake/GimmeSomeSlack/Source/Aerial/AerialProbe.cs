@@ -25,6 +25,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// </summary>
     public static class AerialProbe
     {
+        /// <summary>Marks a blast as Kinetic Arms' mod does: the hook matches this extension by its type NAME, so a list without
+        /// that mod can drive the real explosion path (explode:x,z,r,dmg,kinetic).</summary>
+        private sealed class RM_KineticBlastExtension : DefModExtension { }
+
+        private static DamageDef kineticDamage;
+
+        private static DamageDef KineticDamage()
+        {
+            if (kineticDamage != null) return kineticDamage;
+            var d = (DamageDef)typeof(object).GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(DamageDefOf.Bomb, null);
+            d.modExtensions = new List<DefModExtension> { new RM_KineticBlastExtension() };
+            return kineticDamage = d;
+        }
+
         public static string request = "";
         public static string result = "";
         public static int serial;
@@ -110,6 +124,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return Ok(cmd, "\"designated\":" + B(Restringing.Designated(ra.parent)) + ",\"cut\":" + ra.links.Count(l => l.state == SpanState.Cut) +
                                ",\"jobsDone\":" + Restringing.jobsDone + ",\"spansRestrung\":" + Restringing.spansRestrung + (by != null ? ",\"by\":" + S(by) : ""));
             }
+            if (cmd.StartsWith("restringwhy:"))
+            {
+                CompAerialAnchor wa = CompAerialAnchor.Of(ById(map, int.Parse(cmd.Substring(12), CultureInfo.InvariantCulture)));
+                if (wa == null) return Fail(cmd, "not an anchor");
+                var wg = new WorkGiver_RestringSpan();
+                var rows = map.mapPawns.FreeColonistsSpawned.Select(c => "{\"id\":" + c.thingIDNumber + ",\"drafted\":" + B(c.Drafted) + ",\"job\":" + S(c.CurJobDef?.defName ?? "") +
+                    ",\"disabled\":" + B(c.WorkTypeIsDisabled(DefDatabase<WorkTypeDef>.GetNamed("Construction"))) + ",\"active\":" + B(c.workSettings != null && c.workSettings.WorkIsActive(DefDatabase<WorkTypeDef>.GetNamed("Construction"))) +
+                    ",\"priority\":" + (c.workSettings?.GetPriority(DefDatabase<WorkTypeDef>.GetNamed("Construction")) ?? -1) + ",\"hasJob\":" + B(wg.HasJobOnThing(c, wa.parent)) +
+                    ",\"forbidden\":" + B(wa.parent.IsForbidden(c)) + ",\"reserve\":" + B(Verse.AI.ReservationUtility.CanReserve(c, wa.parent)) + ",\"target\":" + B(Restringing.WorkTarget(c, wa).IsValid) + "}");
+                return Ok(cmd, "\"restringable\":" + B(Restringing.Restringable(wa)) + ",\"pawns\":[" + string.Join(",", rows) + "]");
+            }
             if (cmd.StartsWith("restring:")) { var (a, b) = Pair(map, cmd.Substring(9)); return Ok(cmd, "\"done\":" + B(a != null && b != null && CompAerialAnchor.Restring(a, b))); }
             if (cmd.StartsWith("kill:") || cmd.StartsWith("dismantle:"))
             {
@@ -125,9 +150,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 var c = new IntVec3(int.Parse(p[0], CultureInfo.InvariantCulture), 0, int.Parse(p[1], CultureInfo.InvariantCulture));
                 float r = float.Parse(p[2], CultureInfo.InvariantCulture);
                 int dmg = int.Parse(p[3], CultureInfo.InvariantCulture);
-                int before = comp.explosionCuts;
-                GenExplosion.DoExplosion(c, map, r, DamageDefOf.Bomb, null, dmg);
-                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before));
+                int before = comp.explosionCuts, swaysBefore = comp.kineticSways;
+                GenExplosion.DoExplosion(c, map, r, AerialMath.ExplodeWantsKinetic(p) ? KineticDamage() : DamageDefOf.Bomb, null, dmg);
+                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before) + ",\"sways\":" + (comp.kineticSways - swaysBefore));
             }
             if (cmd.StartsWith("set:"))
             {
@@ -202,7 +227,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     double len = 0;
                     for (int i = 1; i < lay.Pts.Count; i++) len += P2.Dist(lay.Pts[i - 1], lay.Pts[i]);
                     fl.Add("{\"toward\":[" + f.toward.x + "," + f.toward.z + "],\"cutPartner\":" + f.cutPartner + ",\"pts\":" + lay.Pts.Count +
-                           ",\"wireStart\":[" + F((float)lay.Pts[0].X) + "," + F((float)lay.Pts[0].Z) + "],\"breakAt\":[" + F(f.AimX) + "," + F(f.AimZ) + "]" + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + ",\"wires\":" + comp.Lays(a, f).Count + ",\"wireStarts\":[" +
+                           ",\"wireStart\":[" + F((float)lay.Pts[0].X) + "," + F((float)lay.Pts[0].Z) + "],\"breakAt\":[" + F(f.AimX) + "," + F(f.AimZ) + "]" + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + ",\"wires\":" + comp.Lays(a, f).Count + ",\"wireEnds\":[" +
+                           string.Join(",", comp.Lays(a, f).Select(w => "{\"laid\":[" + F((float)w.Tip.X) + "," + F((float)w.Tip.Z) + "],\"now\":[" + F((float)w.TipNow.X) + "," + F((float)w.TipNow.Z) + "],\"grounded\":" + B(w.TipGrounded) + "}")) + "],\"wireStarts\":[" +
                            string.Join(",", comp.Lays(a, f).Select(w => "[" + F((float)w.Pts[0].X) + "," + F((float)w.Pts[0].Z) + "]")) + "]}");
                     fallenN++;
                 }
@@ -233,7 +259,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                       ",\"externalContacts\":" + RM_FallenWireShock.externalContacts +
                       ",\"shockCellList\":[" + string.Join(",", audit.cells.Take(200).Select(c => "[" + c.x + "," + c.z + "]")) + "]");
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
-                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
+                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"orphanRelinks\":" + comp.orphanRelinks + ",\"liveWirePriced\":" + RM_LiveWirePathCost.CountOn(map) + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +

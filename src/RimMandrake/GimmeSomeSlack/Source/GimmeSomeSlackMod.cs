@@ -45,7 +45,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// once on load (LegacyName.LoopBudgetOnLoad).</summary>
         public static float loopBudget = 16f;
         /// <summary>Cords drawn per connection: 1..this, seeded per edge, never by load.</summary>
-        public static int cordsPerConnection = 3;
+        public static int cordsPerConnection = 1;
         /// <summary>Dense conduit fields drawn as one heap (§8.7.4).</summary>
         public static bool tangles = true;
         /// <summary>Short needless spurs drawn as pointless loops in the cord (§8.7.5).</summary>
@@ -110,7 +110,7 @@ namespace RimMandrake.GimmeSomeSlack
                 Scribe_Values.Look(ref legacy, LegacyName.OldLoopBudgetKey, LegacyName.Unset);
                 loopBudget = LegacyName.LoopBudgetOnLoad(loopBudget, legacy, 16f);
             }
-            Scribe_Values.Look(ref cordsPerConnection, "cordsPerConnection", 3);
+            Scribe_Values.Look(ref cordsPerConnection, "cordsPerConnection", 1);
             Scribe_Values.Look(ref tangles, "tangles", true);
             Scribe_Values.Look(ref needlessLoops, "needlessLoops", true);
             Scribe_Values.Look(ref diveThrough, "diveThrough", true);
@@ -144,7 +144,7 @@ namespace RimMandrake.GimmeSomeSlack
             style = CordStyle.StarWarsJawa;
             slack = 1f;
             loopBudget = 16f;
-            cordsPerConnection = 3;
+            cordsPerConnection = 1;
             tangles = true;
             needlessLoops = true;
             diveThrough = true;
@@ -173,6 +173,7 @@ namespace RimMandrake.GimmeSomeSlack
             var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20),
                                      // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
                                      Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
+            o.PlugBoot = CordBuilder.PlugBootU(Aerial.AerialMaterials.LookOf(style));
             o.DiveThrough = diveThrough;
             o.SlideUnder = slideUnder;
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
@@ -269,7 +270,7 @@ namespace RimMandrake.GimmeSomeSlack
             list.Label("Loop budget: up to " + loopBudget.ToString("0") + " cells of each cord in loops and heaps",
                     tooltip: "How much cord one cord may spend on loops, figure-eights and heaps. This is not a length cap: a cord's side-to-side wander comes on top, so a short lead can still lie several times its distance.");
             loopBudget = list.Slider(loopBudget, 2f, 40f);
-            list.Label("Cords per connection: 1 to " + cordsPerConnection);
+            list.Label(cordsPerConnection == 1 ? "Cords per connection: one" : "Cords per connection: 1 to " + cordsPerConnection);
             cordsPerConnection = Mathf.RoundToInt(list.Slider(cordsPerConnection, 1f, 3f));
             list.CheckboxLabeled("Dense conduit fields become one tangle", ref tangles);
             list.CheckboxLabeled("Needless conduit stubs become pointless loops", ref needlessLoops);

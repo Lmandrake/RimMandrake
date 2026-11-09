@@ -14,6 +14,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
     /// too, so the swap never strands it. Verse-free so the selftest runs the production rule.</summary>
     public static class HookupPick
     {
+        /// <summary>A missing cord's authoritative connectParent, within six cells of the nearest occupied footprint
+        /// cell. targetExists tests the snapshot conduit or an eligible transmitter building. Uses no Map, adjacency
+        /// requirement, conduit-end preference or nearest-conduit substitution.</summary>
+        internal static Cell? ParentHookup(Cell min, Cell max, Cell? parentCell, Func<Cell, bool> targetExists)
+        {
+            if (!parentCell.HasValue || max.X < min.X || max.Z < min.Z
+                || targetExists == null || !targetExists(parentCell.Value)) return null;
+            Cell p = parentCell.Value;
+            int dx = Math.Max(min.X - p.X, Math.Max(0, p.X - max.X));
+            int dz = Math.Max(min.Z - p.Z, Math.Max(0, p.Z - max.Z));
+            return dx * dx + dz * dz <= 36 ? parentCell : (Cell?)null;
+        }
+
         /// <summary>Cells under the footprint, then the cardinal ring around it, in a fixed order.</summary>
         internal static List<Cell> Touching(MachineInfo m)
         {
@@ -51,6 +64,85 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return res;
             }
             return null;
+        }
+
+        /// <summary>A building that carries power itself (a battery, a generator, a switch) joins every conduit it touches, but a conduit running along its side is one line, not
+        /// many (seen in a lived-in colony 2026-11-07: seven cords and a row of strips into one solar panel, the owner's "multiple cables for no reason"). From what it touches: every
+        /// conduit END, since a free end beside it would spark; and for a run with no end there, one cell. Two separate runs each keep their cord, because this building is what joins them.
+        /// <paramref name="runs"/> is filled once per snapshot, cell to run number.</summary>
+        internal static List<Cell> PickCarrier(CordWorld w, IList<Cell> touching, ref Dictionary<Cell, int> runs)
+        {
+            var res = new List<Cell>();
+            if (touching.Count <= 1) { res.AddRange(touching); return res; }
+            var served = new HashSet<int>();
+            foreach (Cell c in touching)
+                if (Degree(w, c) <= 1) { res.Add(c); served.Add(RunOf(w, c, ref runs)); }
+            foreach (Cell c in touching)
+                if (served.Add(RunOf(w, c, ref runs))) res.Add(c);
+            return res;
+        }
+
+        private static int RunOf(CordWorld w, Cell c, ref Dictionary<Cell, int> runs)
+        {
+            runs = runs ?? new Dictionary<Cell, int>();
+            if (runs.TryGetValue(c, out int id)) return id;
+            id = runs.Count;
+            runs[c] = id;
+            var open = new Stack<Cell>();
+            open.Push(c);
+            while (open.Count > 0)
+            {
+                Cell q = open.Pop();
+                foreach (Cell d in Cell.Dirs4)
+                {
+                    Cell n = q + d;
+                    if (w.IsConduit(n) && (w.LinkAllowed == null || w.LinkAllowed(q, n)) && !runs.ContainsKey(n)) { runs[n] = id; open.Push(n); }
+                }
+            }
+            return id;
+        }
+
+        /// <summary>Round 3 (owner 2026-11-08 5:18 PM: "solar panels that are connected but no connection is drawn"): vanilla joins buildings that carry
+        /// power (PowerNetMaker.ContiguousPowerBuildings, decompiled 1.6) by cardinal adjacency of their footprints, so a solar panel or battery set
+        /// against another one is on its net with no conduit of its own. A transmitter building (adapter id "t...") touching no conduit links to a drawn
+        /// transmitter it touches, breadth-first so a row of them chains. Idempotent; returns how many links it added.</summary>
+        internal static int ChainTransmitters(IList<MachineInfo> ms)
+        {
+            bool T(MachineInfo m) => m.Id != null && m.Id.StartsWith("t", StringComparison.Ordinal);
+            var drawn = new HashSet<MachineInfo>();
+            foreach (MachineInfo m in ms) if (m.Hookups.Count > 0 || m.MachineLinks.Count > 0) drawn.Add(m);
+            // the touching transmitters of each one, in list order, found once: a pass then visits neighbours, not the whole
+            // list per building (Codex review 2026-11-09: O(n^3) on a long row). Same links, same order as before.
+            var near = new Dictionary<MachineInfo, List<MachineInfo>>();
+            foreach (MachineInfo m in ms)
+            {
+                if (drawn.Contains(m) || !T(m)) continue;
+                var l = new List<MachineInfo>();
+                foreach (MachineInfo o in ms) if (o != m && T(o) && Touch(m, o)) l.Add(o);
+                near[m] = l;
+            }
+            int n = 0;
+            for (bool grew = true; grew;)
+            {
+                grew = false;
+                foreach (MachineInfo m in ms)
+                {
+                    if (drawn.Contains(m) || !T(m)) continue;
+                    MachineInfo to = null;
+                    foreach (MachineInfo o in near[m]) if (drawn.Contains(o)) { to = o; break; }
+                    if (to == null) continue;
+                    m.MachineLinks.Add(to.Id); drawn.Add(m); grew = true; n++;
+                }
+            }
+            return n;
+        }
+
+        /// <summary>Do two footprints share an edge (vanilla's cardinal adjacency, not a corner)?</summary>
+        internal static bool Touch(MachineInfo a, MachineInfo b)
+        {
+            bool ox = a.X0 < b.X0 + b.W && b.X0 < a.X0 + a.W, oz = a.Z0 < b.Z0 + b.H && b.Z0 < a.Z0 + a.H;
+            bool tx = a.X0 + a.W == b.X0 || b.X0 + b.W == a.X0, tz = a.Z0 + a.H == b.Z0 || b.Z0 + b.H == a.Z0;
+            return (oz && tx) || (ox && tz);
         }
 
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: "they should ALL draw in the piping and conduit

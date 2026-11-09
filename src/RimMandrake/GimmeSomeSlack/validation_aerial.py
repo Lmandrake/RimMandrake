@@ -218,11 +218,19 @@ def run_live(args):
         a = anchors_by_pos(c)
         return {k: (a[p]["net"] if p in a else None) for k, p in (("m1", M1), ("m2", M2), ("m3", M3))}
 
+    # a mast missing from the census reads None, and None == None != -1 is True: a net is only real when it is a
+    # registered id (Codex review 2026-11-09)
+    def real(x):
+        return isinstance(x, int) and not isinstance(x, bool) and x != -1
+
+    def one_net(n, *keys):
+        return all(real(n[k]) for k in keys) and len({n[k] for k in keys}) == 1
+
     # ---------------------------------------------------------------- M13: one net across the gap
     n0 = nets(c0)
     lamp0 = net_at(B, LAMP)
     lamp_on = any(t.get("powerOn") for t in lamp0.get("things") or [])
-    m13 = n0["m1"] != -1 and n0["m1"] == n0["m2"] == n0["m3"] and ap0[M1]["netLive"] and c0.get("spansUp") == 2 \
+    m13 = one_net(n0, "m1", "m2", "m3") and ap0[M1]["netLive"] and c0.get("spansUp") == 2 \
         and c0.get("autoLinks", 0) >= 2 and c0.get("postfixAppends", 0) > 0
     V.row(rows, "M13a_linked_one_net_across_gap", "PASS" if m13 else "FAIL", "MOD",
           {"nets": n0, "gapCells": M2[0] - M1[0], "spansUp": c0.get("spansUp"), "autoLinks": c0.get("autoLinks"),
@@ -243,8 +251,8 @@ def run_live(args):
     B.ap("link:%d,%d" % (i2, i3))
     B.ticks(3)
     n1b = nets(B.ap("census"))
-    V.row(rows, "M13c_unlink_two_nets_relink_one", "PASS" if (n1["m3"] not in (-1, n1["m1"]) and n1["m1"] == n1["m2"] and off and
-                                                           n1b["m1"] == n1b["m3"] != -1) else "FAIL", "MOD",
+    V.row(rows, "M13c_unlink_two_nets_relink_one", "PASS" if (one_net(n1, "m1", "m2") and real(n1["m3"]) and n1["m3"] != n1["m1"] and off and
+                                                           one_net(n1b, "m1", "m3")) else "FAIL", "MOD",
           {"afterUnlink": n1, "lampOffAfterUnlink": off, "afterRelink": n1b})
     v_far = B.ap("link:%d,%d" % (i1, i3))
     v_hm = B.ap("link:%d,%d" % (i3, ih))
@@ -270,11 +278,13 @@ def run_live(args):
 
     # ---------------------------------------------------------------- M14: the despawn gap
     B.ap("skipreseed:true")
-    B.ap("dismantle:%d" % i2)
-    B.ticks(2)
-    cg = B.ap("census")
-    ng = nets(cg)
-    B.ap("skipreseed:false")
+    try:                                            # a governor stop mid-control must not leave reseeding off in the game
+        B.ap("dismantle:%d" % i2)
+        B.ticks(2)
+        cg = B.ap("census")
+        ng = nets(cg)
+    finally:
+        B.ap("skipreseed:false")
     agc = anchors_by_pos(cg)
     raw = {k: agc[p].get("compNet") for k, p in (("m1", M1), ("m3", M3)) if p in agc}
     V.row(rows, "M14_gap_control_without_fix", "PASS" if ng["m3"] == -1 and ng["m1"] == -1 else "FAIL", "HARNESS",
@@ -308,7 +318,7 @@ def run_live(args):
     nd = nets(cd)
     B.ticks(260)                                    # one watchdog sweep
     cd2 = B.ap("census")
-    m14a = nd["m1"] != -1 and nd["m3"] != -1 and nd["m1"] != nd["m3"] and cd.get("fallenCords") == 0 and \
+    m14a = real(nd["m1"]) and real(nd["m3"]) and nd["m1"] != nd["m3"] and cd.get("fallenCords") == 0 and \
         cd2.get("netRepairs") == nr0 and cd2.get("watchdogRuns", 0) > 0
     V.row(rows, "M14a_remove_middle_both_ends_resolve", "PASS" if m14a else "FAIL", "MOD",
           {"nets": nd, "fallenCords(dismantle coils)": cd.get("fallenCords"), "netRepairs": [nr0, cd2.get("netRepairs")],
@@ -326,7 +336,7 @@ def run_live(args):
     # M1's cable falls toward M2 across the walled room: it must stop at the room's west wall ("the rest is over the
     # wall"); M3's lies on open ground and must reach out its full length (12 cells x 1.05).
     m14b = len(f1) == 1 and len(f3) == 1 and ak[M1]["fallenLive"] is True and ak[M3]["fallenLive"] is False and \
-        nk["m1"] != -1 and nk["m3"] != -1 and f1[0]["toward"] == list(M2) and f1[0]["blocked"] and f1[0]["tip"][0] < ROOM[0] and \
+        real(nk["m1"]) and real(nk["m3"]) and f1[0]["toward"] == list(M2) and f1[0]["blocked"] and f1[0]["tip"][0] < ROOM[0] and \
         not f3[0]["blocked"] and f3[0]["laidLen"] > 0.85 * 12.6
     V.row(rows, "M14b_dead_pole_drops_live_and_dead_cords", "PASS" if m14b else "FAIL", "MOD",
           {"m1Fallen": f1, "m1Live": ak[M1]["fallenLive"], "m3Fallen": f3, "m3Live": ak[M3]["fallenLive"], "nets": nk})
@@ -344,7 +354,7 @@ def run_live(args):
     ax = anchors_by_pos(cx)
     nx = nets(cx)
     halves = [f for p in (M2, M3) for f in ax.get(p, {}).get("fallen", []) if f.get("cutPartner", -1) != -1]
-    m15 = ce.get("cuts") == 1 and cx.get("spansCut") == 1 and len(halves) == 2 and nx["m1"] == nx["m2"] != -1 and nx["m3"] not in (-1, nx["m1"])
+    m15 = ce.get("cuts") == 1 and cx.get("spansCut") == 1 and len(halves) == 2 and one_net(nx, "m1", "m2") and real(nx["m3"]) and nx["m3"] != nx["m1"]
     V.row(rows, "M15_explosion_cuts_span", "PASS" if m15 else "FAIL", "MOD",
           {"cuts": ce.get("cuts"), "spansCut": cx.get("spansCut"), "halves": halves, "nets": nx,
            "m2Live": ax.get(M2, {}).get("fallenLive"), "m3Live": ax.get(M3, {}).get("fallenLive")})
@@ -357,7 +367,7 @@ def run_live(args):
     rs = B.ap("restring:%d,%d" % (i2, i3)) if i2 else {}
     B.ticks(3)
     nrs = nets(B.ap("census"))
-    V.row(rows, "M15b_restring_rejoins", "PASS" if rs.get("done") and nrs["m1"] == nrs["m3"] != -1 else "FAIL", "MOD", {"nets": nrs})
+    V.row(rows, "M15b_restring_rejoins", "PASS" if rs.get("done") and one_net(nrs, "m1", "m3") else "FAIL", "MOD", {"nets": nrs})
     al2 = B.ap("alert")
     V.row(rows, "M15c_wire_down_alert_clears_on_restring", "PASS" if rs.get("done") and al2.get("down") == 0 else "FAIL", "MOD", {"down": al2.get("down")})
     # M15e (owner by card 2026-10-15: "Re-stringing a cut power line is instant and free... What ships? -> Make it a colonist
@@ -365,6 +375,7 @@ def run_live(args):
     if i2:
         B.ap("cut:%d,%d" % (i2, i3))
         B.ticks(2)
+        home = {p["id"]: p.get("pos") for p in B.probe("colonists").get("pawns") or []}
         o = B.ap("restringorder:%d" % i2)
         B.ticks(5)
         st0 = B.ap("restringstate:%d" % i2)
@@ -382,10 +393,41 @@ def run_live(args):
             V.row(rows, "M15e_restring_is_a_colonist_job", "UNMEASURED", "SITE", {"order": o, "job": j, "meaning": "no free colonist could take the job"})
         else:
             ok = o.get("designated") and st0.get("cut", 0) >= 1 and st1.get("cut") == 0 and st1.get("jobsDone", 0) > st0.get("jobsDone", 0) \
-                and not st1.get("designated") and nre["m1"] == nre["m3"] != -1
+                and not st1.get("designated") and one_net(nre, "m1", "m3")
             V.row(rows, "M15e_restring_is_a_colonist_job", "PASS" if ok else "FAIL", "MOD",
-                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre,
+                  {"order": o, "before": st0, "after": st1, "by": j.get("by"), "nets": nre, "jobDef": "RM_RestringSpan",
                    "meaning": "PASS = the order alone leaves the span cut; the colonist's job restores it, clears the order and rejoins the nets"})
+        # HARNESS (runs of 2026-11-06, downed at 108,183, "health 1"): the splicer is left standing on the span's line, and M15f
+        # cuts that span again: a live wire falls on him and the shock is the mod working. Back where he came from, held there.
+        for pid, pos in home.items():
+            if pos:
+                B.probe("pawn:%d=tp:%d,%d" % (pid, pos[0], pos[1]))
+            B.probe("pawn:%d=draft" % pid)
+
+    # M15f (GSS_RESTRING_FIX_STYLES_UNRECONCILED): cut the only span joining two runs, give each side its own look, re-string:
+    # the joined run must carry one look. Patch_Restring_Bridge queues the bridge rule; the job and the verb both call Restring.
+    if i2:
+        B.ap("cut:%d,%d" % (i2, i3))
+        B.ticks(2)
+        B.ap("cprocess")
+        ra, rb = B.ap("crestyle:%d,%d:Modern_Orange" % M2), B.ap("crestyle:%d,%d:Industrial" % M3)
+        def look_of(st, p):
+            return next((m.get("look") for m in st.get("members") or [] if (m.get("x"), m.get("z")) == p), None)
+        split = B.ap("cstyles")
+        before = (look_of(split, M2), look_of(split, M3))
+        rs3 = B.ap("restring:%d,%d" % (i2, i3))
+        B.ticks(3)
+        B.ap("cprocess")
+        joined = B.ap("cstyles")
+        after = (look_of(joined, M2), look_of(joined, M3))
+        ev = {"restyled": (ra.get("success"), rb.get("success")), "before": before, "after": after, "restring": rs3.get("done"),
+              "meaning": "PASS = two looks before the re-string, one look on the rejoined run after it"}
+        if not (ra.get("success") and rb.get("success") and rs3.get("done")) or None in before or before[0] == before[1]:
+            V.row(rows, "M15f_restring_joined_run_one_look", "UNMEASURED", "HARNESS", ev)
+        else:
+            V.row(rows, "M15f_restring_joined_run_one_look", "PASS" if after[0] == after[1] and None not in after else "FAIL", "MOD", ev)
+        B.ap("crestyle:%d,%d:%s" % (M2[0], M2[1], joined.get("defaultKey") or "Scrapper"))
+        B.ap("cprocess")
 
     # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
     # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is
@@ -416,9 +458,11 @@ def run_live(args):
         t = ((p1x - ax_) * dx + (p1z - az_) * dz) / L2
         perp = abs((p1x - ax_) * dz - (p1z - az_) * dx) / L2 ** 0.5
         same = abs(p1x - p2x) < 0.01 and abs(p1z - p2z) < 0.01
-        tips = all(not f["blocked"] and abs(f["tip"][0] - f["breakAt"][0]) < 0.05 and abs(f["tip"][1] - f["breakAt"][1]) < 0.05 for f in dh)
+        # a fallen wire lies as a loose cut cord: its end lies somewhere near the break, and the two halves' ends apart, never pinched to one point (blind judge, pass 1)
+        tips = all(not f["blocked"] and ((f["tip"][0] - f["breakAt"][0]) ** 2 + (f["tip"][1] - f["breakAt"][1]) ** 2) ** 0.5 < 4.0 for f in dh) \
+            and ((dh[0]["tip"][0] - dh[1]["tip"][0]) ** 2 + (dh[0]["tip"][1] - dh[1]["tip"][1]) ** 2) ** 0.5 > 0.3
         centre = all(abs(f["breakAt"][0] - (f["toward"][0] + 0.5)) < 0.01 and abs(f["breakAt"][1] - (f["toward"][1] + 0.5)) < 0.01 for f in dh)
-        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsAtBreak": tips,
+        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsNearBreakApart": tips, "tips": [dh[0]["tip"], dh[1]["tip"]],
                "isCellCentre(old aim)": centre}
         m15d = same and perp < 0.1 and 0 < t < 1 and tips and not centre
     V.row(rows, "M15d_diagonal_cut_halves_meet_on_line", "PASS" if m15d else "FAIL", "MOD",
@@ -501,7 +545,8 @@ def run_live(args):
     cm1 = B.ap("census")
     r1 = cm1.get("tapGuardRefused")
     mtap = next((t for t in cm1.get("taps") or [] if t.get("id") not in (tap.get("id"),)), {})
-    mixed_net = net_at(B, MHCOND[0]).get("net") == net_at(B, MOCOND).get("net")
+    mn_a, mn_b = net_at(B, MHCOND[0]).get("net"), net_at(B, MOCOND).get("net")
+    mixed_net = real(mn_a) and mn_a == mn_b                 # two failed reads (None == None) are not one net
     ours = ap0[M1].get("faction")
     m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and r1 == r0
     st19, cl19 = m19m_status(mixed_net, m19m)
@@ -772,14 +817,14 @@ def owner_change_verdict(cut_on, linked_before, a_after, b_after, id_a, id_b):
 
 def drip_expected_points(ax, az, bx, bz, drip, depth=0.12, reach=0.45, step=DRIP_STEP):
     """The point count AerialMath builds for one strand A->B: SpanCurve n+1 with n = max(4, ceil(len/step));
-    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 6 loop samples + (n'+1) + 6 with reach' = min(reach, len/4),
+    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 12 loop samples + (n'+1) + 12 with reach' = min(reach, len/4),
     n' = max(2, ceil((1 - 2 reach'/len) len / step))."""
     ln = math.hypot(bx - ax, bz - az)
     if not drip or not (depth > 0) or not (reach > 0) or ln < 1e-6:
         return max(4, int(math.ceil(ln / max(0.05, step)))) + 1
     r = min(reach, ln / 4)
     n = max(2, int(math.ceil((1 - 2 * r / ln) * ln / max(0.05, step))))
-    return n + 13
+    return n + 25
 
 
 def drip_verdict(spans, drip_on, depth=0.12, reach=0.45):
@@ -812,7 +857,7 @@ def _aerial_setting(B, key):
 
 def four_switches_block(B, rows, res):
     """M21a-f on the flips site (FSITE, cleared). Two player masts F1, F2 linked; then per switch OFF and ON."""
-    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship")
+    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship", "kineticSway")
     c0 = B.ap("census").get("settings") or {}
     prior = {k: c0.get(k) for k in keys}
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
@@ -913,6 +958,22 @@ def _four_switches(B, rows, res):
         V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
                                   "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
 
+    # ------------------------------------------------ M22a/b kineticSway (GSS_SWAY_PROVE_KINETIC_LIVE_ROW)
+    # PROVE  a real GenExplosion with a blast marked kinetic (the marker Kinetic Arms sets, matched by name), mid-span.
+    # EXPECT on: the span swings and stays up; off: nothing. A bomb's own cut is M15; a blast here never wounds.
+    mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+    for rid, val, want in (("M22a_kinetic_sway_on_swings_never_cuts", True, True), ("M22b_kinetic_sway_off_does_nothing", False, False)):
+        i1, i2, up = _scene_pair(B)
+        s = B.ap("set:kineticSway=%s" % val)
+        if not (i1 and up and s.get("success")):
+            V.row(rows, rid, "UNMEASURED", "SITE", {"linked": up, "set": s})
+            continue
+        ex = B.ap("explode:%d,%d,2.5,50,kinetic" % mid)
+        B.ticks(3)
+        ap_ = anchors_by_pos(B.ap("census"))
+        still = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2))
+        ok = ex.get("success") and still and ex.get("cuts") == 0 and (ex.get("sways", 0) > 0) == want
+        V.row(rows, rid, "PASS" if ok else "FAIL", "MOD", {"explode": ex, "spanStillUp": still, "wantSway": want})
     # ------------------------------------------------ M21e/f keepWiresOnGravship
     # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
     #        verb's echo).
@@ -1233,7 +1294,7 @@ def theft_day(B, rows, res):
     res["day"].update({"goodwill1": gw1, "goodwillCharged1": gc1, "taps": taps})
     dc = int(gc1 or 0) - int(gc0 or 0)
     V.row(rows, "PT_A3_goodwill_day", "PASS" if gw0 is not None and gw1 is not None and dc == -per and gw0 - gw1 == per else "FAIL",
-          "MOD", {"goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
+          "MOD", {"setting": "theftGoodwill", "goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
                   "chargeAtPlayed": st.get("chargeAtPlayed"), "chargeShot": st.get("chargeShot"), "taps": taps})
 
 

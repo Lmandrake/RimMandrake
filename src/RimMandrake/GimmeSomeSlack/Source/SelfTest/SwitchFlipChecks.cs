@@ -23,6 +23,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(AerialMath.SpanStrands(a, ins, b, ib, 7, 3).Count == 3 && AerialMath.SpanStrands(a, ins, b, ib, 7, 1).Count == 1,
                   "maxStrands flips the strands a span lays");
 
+            // the explode probe's optional fifth part
+            Check(AerialMath.ExplodeWantsKinetic("1,2,2.5,50,kinetic".Split(',')) && !AerialMath.ExplodeWantsKinetic("1,2,2.5,50".Split(',')) && !AerialMath.ExplodeWantsKinetic("1,2,2.5,50,bomb".Split(',')),
+                  "explode: only the word kinetic asks for the kinetic blast");
             // explosionsCut / kineticSway
             Check(AerialMath.BlastKindFor(true, false, 10, true, true) == AerialMath.BlastKind.Cut
                   && AerialMath.BlastKindFor(true, false, 10, false, true) == AerialMath.BlastKind.None, "explosionsCut on cuts, off spares");
@@ -84,7 +87,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(Regex.IsMatch(comp, @"void MapComponentUpdate\(\)[\s\S]{0,400}!AerialLineProfiles\.AnyKindOn")
                   && Regex.IsMatch(comp, @"foreach \(CompAerialAnchor a in Anchors\)\s*\{\s*if \(!AerialLineProfiles\.KindOn\(a\.Kind\)\) continue;"),
                   "span draw: runs while any kind is on, skips an anchor whose kind is off");
-            Check(Regex.IsMatch(comp, @"if \(!AerialSettings\.enabled\) return;[^\n]*\n\s*DrawLocalDrops\(view\);\s*DrawTaps\(view\);\s*DrawFallenGlow\(\);"),
+            Check(Regex.IsMatch(comp, @"if \(!AerialSettings\.enabled\) return;[^\n]*\n\s*DrawLocalDrops\(view\);\s*DrawTaps\(view\);\s*DrawFallenTails\(view\);\s*DrawFallenGlow\(\);"),
                   "drops, clamps and live-end glow stay behind the power master");
             Check(comp.Contains("if (!AerialLineProfiles.KindBehaviour(a.Kind, AerialSettings.autoLink)) continue;")
                   && anchor.Contains("AerialLineProfiles.KindBehaviour(Kind, AerialSettings.autoLink)) comp?.QueueAutoLink(this);"),
@@ -101,7 +104,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   "no bare power-master read left in the placeworkers, ground layer, re-string or alert (the clamp keeps its own)");
         }
 
-        private static string AerialSourceDir()
+        internal static string AerialSourceDir()
         {
             for (DirectoryInfo d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
             {

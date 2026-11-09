@@ -14,7 +14,10 @@ namespace RimMandrake.Shared.Slack
     internal sealed class MachineInfo
     {
         public string Id;
+        public string DefName;
         public MachineKind Kind;
+        /// <summary>World-Z offset from the footprint centroid to the cord's art base; ignored for feet and wall homes.</summary>
+        public double BaseDz;
         public int X0, Z0, W = 1, H = 1;
         /// <summary>Conduit cells this machine hooks into (its connectParent cell, or every
         /// conduit cell orthogonally adjacent to a transmitter building's footprint).</summary>
@@ -31,6 +34,11 @@ namespace RimMandrake.Shared.Slack
         /// the CENTRE of that wall cell, beneath the wall, instead of the footprint centroid. HasHome false = the centroid.</summary>
         public bool HasHome;
         public int HomeX, HomeZ;
+
+        /// <summary>An aerial anchor (power pole, lamp mast): owner 2026-11-08 12:20 PM, "Items should connect to the bottom of a power
+        /// pole (beneath its base), not run a line up to the top of the power pole". Its cord comes in from below whatever side vanilla
+        /// hooked, and ends tucked just under the foot of the art, never at a side of the cell (a mast's side box, mid-height).</summary>
+        public bool Foot;
 
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
@@ -182,6 +190,22 @@ namespace RimMandrake.Shared.Slack
         }
         public bool IsBusy(Cell c) => busy != null && InBounds(c) && busy[Idx(c)];
 
+        // ---------------------------------------------------------------- furniture (GSS: a bed looked plugged in twice)
+        // A walkable cell under furniture drawn over the floor (a bed, a table, a shelf: a passable building of two cells or more,
+        // not a door or a machine). A cord's slack that wanders in under one and out again reads as more cables going into it.
+        // Nothing set (the hose world, every SelfTest scene before this) = no cell furnished and every lay unchanged.
+        private bool[] furniture;
+        private bool[] furnitureSpare;
+
+        public bool HasFurniture => furniture != null;
+        public void SetFurniture(Cell c, bool v = true)
+        {
+            if (!InBounds(c) || (!v && furniture == null)) return;
+            if (furniture == null) furniture = TakeSpare(ref furnitureSpare) ?? new bool[Width * Height];
+            furniture[Idx(c)] = v;
+        }
+        public bool IsFurniture(Cell c) => furniture != null && InBounds(c) && furniture[Idx(c)];
+
         // ---------------------------------------------------------------- reuse (HOSE_TICK_FIX_SPIKES_AT_SUPERFAST)
         // Live round 9: every whole-map hose snapshot was a new ~1.3 MB world (325 map: five grids, the band grid, the link
         // set) and every lay-pool copy of a dropped snapshot was garbage too, so rebuilds fed the Boehm heap that freezes a
@@ -211,6 +235,7 @@ namespace RimMandrake.Shared.Slack
             if (band != null) { bandSpare = band; band = null; }
             if (bandLinks != null) { bandLinks.Clear(); linksSpare = bandLinks; bandLinks = null; }
             if (busy != null) { busySpare = busy; busy = null; }
+            if (furniture != null) { furnitureSpare = furniture; furniture = null; }
             Machines.Clear();
             LinkAllowed = null;
         }
@@ -243,6 +268,12 @@ namespace RimMandrake.Shared.Slack
                 if (busy == null) { busy = busySpare ?? new bool[Width * Height]; busySpare = null; }
                 Array.Copy(src.busy, busy, busy.Length);
             }
+            if (src.furniture == null) { if (furniture != null) { furnitureSpare = furniture; furniture = null; } }
+            else
+            {
+                if (furniture == null) { furniture = furnitureSpare ?? new bool[Width * Height]; furnitureSpare = null; }
+                Array.Copy(src.furniture, furniture, furniture.Length);
+            }
             Machines.Clear();
             Machines.AddRange(src.Machines);
             LinkAllowed = src.LinkAllowed;
@@ -263,6 +294,7 @@ namespace RimMandrake.Shared.Slack
             if (band != null) o.band = (int[])band.Clone();
             if (bandLinks != null) o.bandLinks = new HashSet<long>(bandLinks);
             if (busy != null) o.busy = (bool[])busy.Clone();
+            if (furniture != null) o.furniture = (bool[])furniture.Clone();
             o.Machines.AddRange(Machines);
             o.LinkAllowed = LinkAllowed;
             return o;

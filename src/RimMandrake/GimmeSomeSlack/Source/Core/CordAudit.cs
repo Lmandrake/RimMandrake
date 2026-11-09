@@ -17,7 +17,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public List<string> Messages = new List<string>();
         /// <summary>Piles (owner review 2026-10-04 B2/B13): connectors in tangles, strips anywhere, cable ends in a pile that
         /// land on no connector port, connectors with fewer than two cables plugged in, rock holes drawn unforeshortened.</summary>
-        public int Piles, PileConnectors, PileJunctions, Strips, PileLooseEnds, PileIdleConnectors, FlatRockHoles, FlatWallPlates;
+        public int JunctionStrips, Piles, PileConnectors, PileJunctions, Strips, PileLooseEnds, PileIdleConnectors, FlatRockHoles, FlatWallPlates;
         public int Faults => JunctionFaults + PlugFaults + StubFaults + DeadFaults + LiveFaults + PileLooseEnds + PileIdleConnectors + FlatRockHoles + FlatWallPlates;
     }
 
@@ -59,6 +59,52 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static readonly double[] TapeArms = { 0, Math.PI, -Math.PI / 2 };
         private static readonly double[] TinArms = { 0, Math.PI / 2, Math.PI, -Math.PI / 2 };
         private const double TapeAnchorZ = 0.152, PlugFace = 0.46;
+        /// <summary>The side-view plug's head face, art +X, in decal widths (Plug.png).</summary>
+        internal const double PlugFaceU = PlugFace;
+        //   PowerStrip (256x128): four sockets on art +Z, centres at these canvas-width X and -0.049 Z; its lead ends under the
+        //   +X end cap at (0.39, -0.05). Copies of CordBuilder.StripHeads / StripHeadZ / StripLeadX / StripLeadZ: change in step.
+        private static readonly double[] StripHeadX = { -0.328, -0.128, 0.065, 0.264 };
+        private const double StripHeadZ = -0.049, StripLeadX = 0.39, StripLeadZ = -0.05, StripNodeReach = 0.15;
+
+        /// <summary>Do the cords at a junction fit its strip? Read off the decal alone, not the builder's pose: each cord end
+        /// lands on the lead's nub arriving along the strip, or on a socket with a plug on it arriving along that socket. A
+        /// cord stopping short, or plugged nowhere, is a fault; so is a strip with no plugged cord.</summary>
+        private static bool StripFits(CordDecal strip, IEnumerable<CordStrand> strands, List<CordDecal> decals, List<string> msg, Cell at)
+        {
+            V2 along = Dir(strip.Angle), side = along.Perp;
+            V2 Art(double x, double z) => strip.Pos + along * (x * strip.Scale) + side * (z * strip.Scale);
+            V2 lead = Art(StripLeadX, StripLeadZ);
+            bool ok = true;
+            int plugged = 0, leads = 0;
+            foreach (CordStrand s in strands)
+            {
+                List<V2> q = EndAt(s.Pts, strip.Pos);
+                V2 e = q[q.Count - 1];
+                double arriveAng = Ang(e - PointBack(q, 0.1));
+                if (V2.Dist(e, lead) < 0.08)
+                {
+                    leads++;
+                    if (AngDiff(arriveAng, Ang(-along)) > 35 * Deg) { ok = false; msg.Add($"{at} lead arrives {AngDiff(arriveAng, Ang(-along)) / Deg:0}deg off the strip"); }
+                    continue;
+                }
+                // round 3 (owner 2026-11-08 5:18 PM): its plug seen from above, seated ON a socket and covering it, the cord in the end of its
+                // boot and arriving along the boot; a side-view plug lying against the strip's edge is the side entry he rejected
+                int pi = decals.FindIndex(d => d.Kind == DecalKind.PlugTop && V2.Dist(d.Pos + Dir(d.Angle) * CordBuilder.PlugTopReach, e) < 0.03);
+                if (pi < 0)
+                {
+                    ok = false;
+                    msg.Add(decals.Any(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, e) < 0.2) ? $"{at} side-entry plug at the strip's edge" : $"{at} a cord on a socket wears no plug");
+                    continue;
+                }
+                CordDecal plug = decals[pi];
+                double near = StripHeadX.Min(x => V2.Dist(plug.Pos, Art(x, StripHeadZ)));
+                if (near > 0.02) { ok = false; msg.Add($"{at} plug {near:0.00} off every socket (socket uncovered)"); continue; }
+                plugged++;
+                if (AngDiff(arriveAng, plug.Angle + Math.PI) > 35 * Deg) { ok = false; msg.Add($"{at} cord arrives {AngDiff(arriveAng, plug.Angle + Math.PI) / Deg:0}deg off its plug's boot"); }
+            }
+            if (plugged == 0 || leads > 3) { ok = false; msg.Add($"{at} strip with {plugged} plugged cords, {leads} on its lead"); }
+            return ok;
+        }
 
         internal static double AngDiff(double a, double b)
         {
@@ -113,9 +159,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
             //     every cord ending at an arm's tip and arriving along it
             int jn = 0, jbad = 0;
             var jmsg = new List<string>();
-            foreach (CordNode nd in g.Nodes.Values.Where(n => n.Type == NodeType.Junction && !n.IsBlob))
+            foreach (CordNode nd in g.Nodes.Values.Where(n => n.Type == NodeType.Junction))
             {
                 jn++;
+                // a Modern junction draws the long strip: every cord ends on a socket under its plug, or in the strip's own lead
+                CordDecal? strip = decals.Where(x => x.Kind == DecalKind.PowerStrip || x.Kind == DecalKind.PowerStripDark)
+                    .OrderBy(x => V2.Dist(x.Pos, nd.Pos)).Cast<CordDecal?>().FirstOrDefault();
+                if (strip != null && V2.Dist(strip.Value.Pos, nd.Pos) < StripNodeReach)
+                {
+                    R.JunctionStrips++;
+                    if (!StripFits(strip.Value, StrandsAt(ps, nd), decals, jmsg, nd.Cell)) jbad++;
+                    continue;
+                }
                 CordDecal? best = null;
                 double bd = 9;
                 foreach (CordDecal d in decals.Where(x => x.Kind == DecalKind.JunctionTape || x.Kind == DecalKind.JunctionTin))
@@ -156,10 +211,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     List<V2> q = new List<V2>(s.Pts);
                     if (RectD(q[0]) < RectD(q[q.Count - 1])) q.Reverse();
                     V2 e = q[q.Count - 1];
+                    if (m.Kind == MachineKind.Lamp)
+                    {
+                        // The lamp hides its connector. Its cord must still reach the base;
+                        // omitting a plug must not exempt a detached lamp lead.
+                        V2 basePoint = m.Foot
+                            ? new V2(m.X0 + m.W / 2.0, m.Z0 + CordBuilder.FootTuck)
+                            : m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5)
+                            : new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+                        if (V2.Dist(e, basePoint) > 0.03)
+                        {
+                            pbad++;
+                            pmsg.Add($"{nd.Cell} lamp cord ends {V2.Dist(e, basePoint):0.000} from its base");
+                        }
+                        continue;
+                    }
                     CordDecal? plug = decals.Where(d => d.Kind == DecalKind.Plug).OrderBy(d => V2.Dist(d.Pos, e)).Cast<CordDecal?>().FirstOrDefault();
                     if (plug == null || V2.Dist(plug.Value.Pos, e) > 0.3) { pbad++; pmsg.Add($"{nd.Cell} no plug at the cord end"); continue; }
                     V2 head = plug.Value.Pos + Dir(plug.Value.Angle) * (PlugFace * plug.Value.Scale);
                     bool inside = head.X > m.X0 && head.X < m.X0 + m.W && head.Z > m.Z0 && head.Z < m.Z0 + m.H;
+                    // a wall-mounted device's cord runs on into the wall it hangs on (CordBuilder.IntoArt): the plug ends there
+                    if (m.HasHome && head.X > m.HomeX && head.X < m.HomeX + 1 && head.Z > m.HomeZ && head.Z < m.HomeZ + 1) inside = true;
                     double ax = plug.Value.Angle % (Math.PI / 2);   // C# % keeps the sign: fold negatives into [0, pi/2)
                     if (ax < 0) ax += Math.PI / 2;
                     double axis = Math.Min(ax, Math.PI / 2 - ax);
@@ -179,7 +251,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 sn++;
                 DecalKind k = nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock;
-                CordDecal? d = decals.Where(x => x.Kind == k).OrderBy(x => V2.Dist(x.Pos, nd.Face)).Cast<CordDecal?>().FirstOrDefault();
+                // round 3: a Modern wall entry is an outlet with a seated plug (WallMount.OutletDecal), judged as the plate it replaces
+                CordDecal? d = decals.Where(x => x.Kind == k || (k == DecalKind.StubWall && x.Kind == DecalKind.WallOutlet)).OrderBy(x => V2.Dist(x.Pos, nd.Face)).Cast<CordDecal?>().FirstOrDefault();
                 if (d == null) { sbad++; continue; }
                 WallMount.DepthSpan(d.Value, nd.Face, nd.Into, out double near, out double far);
                 double lateral = Math.Abs((d.Value.Pos.X - nd.Face.X) * nd.Into.Z - (d.Value.Pos.Z - nd.Face.Z) * nd.Into.X);
@@ -273,7 +346,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public static List<string> EndsOnBodies(List<LaidPiece> ps)
         {
             var faults = new List<string>();
-            List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive).ToList();
+            List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive && d.Kind != DecalKind.CableTie).ToList();   // a tie band on a strain-relief loop joins nothing
             // a connector's centre and every port on it (junction arm tips, strip sockets): a cable plugged into an arm ends
             // a box-half away from the box's centre
             var nodes = cons.Select(d => d.Pos).Concat(CordBuilder.PortsOf(cons).Select(q => q.Tip)).ToList();
@@ -329,9 +402,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 V2 a = P[k], b = P[k + 1], ab = b - a;
                 double len2 = ab.X * ab.X + ab.Z * ab.Z;
                 double t = len2 < 1e-12 ? 0 : ((e.X - a.X) * ab.X + (e.Z - a.Z) * ab.Z) / len2;
-                t = Math.Max(0, Math.Min(1, t));
-                double s = cum[k] + t * (cum[k + 1] - cum[k]);
-                if (s < lo || s > hi) continue;
+                // the nearest point on the part of this segment inside [lo, hi], not a skip when the projection
+                // falls outside it (Codex review 2026-11-09)
+                double seg = cum[k + 1] - cum[k];
+                double t0 = seg < 1e-12 ? 0 : Math.Max(0, (lo - cum[k]) / seg), t1 = seg < 1e-12 ? 1 : Math.Min(1, (hi - cum[k]) / seg);
+                t = Math.Max(t0, Math.Min(t1, t));
                 best = Math.Min(best, V2.Dist(a + ab * t, e));
             }
             return best;

@@ -1,0 +1,2 @@
+selftest_gss_proof_drivers.py is RED on ralph/gss before the strip commit: M21d hardcodes a 12-cell drip span ON = 36 points (and sp_on strandPts [36,36]), but validation_aerial.drip_expected_points now returns 48 (12+n+12+1 loop samples; changed in 579f157071). The C#-port parity rows pass, so the hardcoded 36 and the sp_on fixture are stale, not the formula. Owed: whoever owns GSS aerial drip updates the literal and fixture to the formula's value. Not touched by the strip install.
+home: src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py

@@ -90,6 +90,16 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);
             if (cmd == "artfit") return ArtFit(map, comp);
+            if (cmd == "shapetable") return ShapeTable(comp);
+            if (cmd == "kinks") return KinkTable(comp);
+            if (cmd == "shapeaudit") return ShapeAudit(comp);
+            if (cmd == "bends") return BendTable(comp);
+            if (cmd.StartsWith("worlddump:")) return WorldDump(map, comp, cmd.Substring(10));
+            if (cmd.StartsWith("strandsnear:")) return StrandsNear(comp, cmd.Substring(12));
+            if (cmd == "doorstrays") return "{\"success\":true,\"cmd\":\"doorstrays\",\"strands\":" + comp.Pieces.Sum(p => p.Strands.Count) + ",\"strays\":" + comp.Pieces.Sum(p => p.Strands.Sum(q => q.DoorStrays)) + "}";
+            if (cmd == "slack") return SlackTable(comp);
+            if (cmd == "statics") return Statics();
+            if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
             {
@@ -341,8 +351,10 @@ namespace RimMandrake.GimmeSomeSlack
             var b = new CordBuilder();
             // GPT review 2026-10-08 #24: the same inputs production builds with (its per-cell PileAt), and stale extras counted
             BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
             Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
             opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+            opt.PlugBootAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? CordBuilder.PlugBootU(cs.Look) : (double?)null;
             return b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
         }
 
@@ -355,7 +367,8 @@ namespace RimMandrake.GimmeSomeSlack
             return h.ToString("x16");
         }
 
-        private static Thing sameFrameWall;
+        internal static Thing sameFrameWall;   // emptied by GssSessionReset: a Thing from a prior game must never pass the Map check (Codex review 2026-11-09)
+        private static Map sameFrameMap;
 
         /// <summary>GPT pre-release A8 (the builtFrame latch): ALL inside one frame (this runs in MapComponentUpdate) --
         /// comp.Rebuild() latches builtFrame, then ONE steel wall is spawned on the middle cell of a plain floor strand
@@ -365,19 +378,30 @@ namespace RimMandrake.GimmeSomeSlack
         /// changes the route at all (pre-wall pieces vs a fresh build with the wall) and whether the component's pieces
         /// were still the pre-wall set right after the in-frame regenerate (inFrameStale: the latch held). The harness
         /// waits 2 frames and runs `fresh`. "sameframe:clear" destroys the wall. Writes: one wall.</summary>
+        /// <summary>Destroys the tracked probe wall where it stands, if it still stands on the map it was spawned on (the
+        /// session reset forgets a prior game's wall, so a Thing from another game is never touched).</summary>
+        private static bool DestroySameFrameWall()
+        {
+            bool had = sameFrameWall != null && sameFrameMap != null && sameFrameWall.Spawned && sameFrameWall.Map == sameFrameMap;
+            if (had) sameFrameWall.Destroy(DestroyMode.Vanish);
+            return had;
+        }
+
+        /// <summary>Forgets the probe wall and its map (session reset, and after every clear).</summary>
+        internal static void ResetSameFrame() { sameFrameWall = null; sameFrameMap = null; }
+
         private static string SameFrame(Map map, RM_MapComponent_CordGraph comp, string args)
         {
             if (args == "clear")
             {
-                bool had = sameFrameWall != null && sameFrameWall.Spawned && sameFrameWall.Map == map;   // a Thing from a prior game is never touched
-                if (had) sameFrameWall.Destroy(DestroyMode.Vanish);
-                sameFrameWall = null;
+                bool had = DestroySameFrameWall();
+                ResetSameFrame();
                 return "{\"success\":true,\"cmd\":\"sameframe:clear\",\"destroyed\":" + J.B(had) + "}";
             }
             int[] a = args.Split(',').Select(t => int.Parse(t.Trim(), CultureInfo.InvariantCulture)).ToArray();
             var rect = new CellRect(a[0], a[1], a[2], a[3]);
-            if (sameFrameWall != null && sameFrameWall.Spawned && sameFrameWall.Map == map) sameFrameWall.Destroy(DestroyMode.Vanish);   // review: never leave an earlier wall behind
-            sameFrameWall = null;
+            DestroySameFrameWall();   // review: never leave an earlier wall behind, on whichever map of this game it stands
+            ResetSameFrame();
             int frame = UnityEngine.Time.frameCount;
             comp.Rebuild(true);
             string pre = SceneHash(comp.Pieces);
@@ -397,6 +421,7 @@ namespace RimMandrake.GimmeSomeSlack
             Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.Steel);
             wall.SetFaction(Faction.OfPlayer);
             sameFrameWall = GenSpawn.Spawn(wall, cell, map);
+            sameFrameMap = map;
             bool haveView = Find.CurrentMap == map && Find.CameraDriver != null;
             CellRect view = haveView ? Find.CameraDriver.CurrentViewRect : CellRect.Empty;
             int regenerated = 0, sectionsTried = 0;
@@ -440,6 +465,197 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same
         /// Core.CordAudit the SelfTest runs), every decal's pose, the render queues our materials hold,
         /// and the queue/shader/altitude of whatever wall and rock edifices our stubs sit on.</summary>
+        /// <summary>cord_shape_variation_probe: the pairwise shape distance table per length class of the cords now laid.</summary>
+        private static string ShapeTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            string one(ShapeClass c) => "{\"length\":" + c.Length + ",\"cords\":" + c.Cords + ",\"pairs\":" + c.Pairs + ",\"tooAlike\":" + c.TooAlike +
+                ",\"min\":" + (c.Pairs > 0 ? c.MinDistance.ToString("0.000", inv) : "null") + ",\"mean\":" + c.MeanDistance.ToString("0.000", inv) + "}";
+            List<ShapeClass> t = CordShape.Table(comp.Pieces);
+            return "{\"success\":true,\"cmd\":\"shapetable\",\"tooAlikeBelow\":" + CordShape.TooAlikeBelow.ToString("0.00", inv) +
+                   ",\"classes\":[" + string.Join(",", t.Select(one)) + "]}";
+        }
+
+        /// <summary>never_taut_straight_cord as a number: laid length over the chord of every cord strand spanning 3+ cells, tautest first.
+        /// A straight line reads 1 through the same arithmetic.</summary>
+        private static string SlackTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var all = new List<KeyValuePair<double, string>>();
+            foreach (LaidPiece p in comp.Pieces)
+            {
+                if (p.EndA == null || p.Unroutable) continue;
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.OverFace || s.Pts.Count < 2) continue;
+                    double len = 0;
+                    for (int i = 1; i < s.Pts.Count; i++) len += Math.Sqrt(Math.Pow(s.Pts[i].X - s.Pts[i - 1].X, 2) + Math.Pow(s.Pts[i].Z - s.Pts[i - 1].Z, 2));
+                    V2 a = s.Pts[0], b = s.Pts[s.Pts.Count - 1];
+                    double chord = Math.Sqrt(Math.Pow(b.X - a.X, 2) + Math.Pow(b.Z - a.Z, 2));
+                    if (chord < 3) continue;
+                    double r = len / chord;
+                    all.Add(new KeyValuePair<double, string>(r, "{\"key\":" + J.S(p.Key) + ",\"chord\":" + chord.ToString("0.0", inv) + ",\"ratio\":" + r.ToString("0.000", inv) + "}"));
+                }
+            }
+            all.Sort((x, y) => x.Key.CompareTo(y.Key));
+            return "{\"success\":true,\"cmd\":\"slack\",\"strands\":" + all.Count + ",\"under115\":" + all.Count(k => k.Key < 1.15) + ",\"under13\":" + all.Count(k => k.Key < 1.3) +
+                   ",\"median\":" + (all.Count > 0 ? all[all.Count / 2].Key.ToString("0.000", inv) : "null") +
+                   ",\"tautest\":[" + string.Join(",", all.Take(12).Select(k => k.Value)) + "]}";
+        }
+
+        /// <summary>The session-wide tables GssSessionReset empties, read back (sc_statics_new_game).</summary>
+        private static string Statics()
+        {
+            return "{\"success\":true,\"cmd\":\"statics\",\"resets\":" + GssSessionReset.resets + ",\"taps\":" + Aerial.TapRegistry.Count +
+                   ",\"conduitPick\":" + J.S(Aerial.ConduitStylePicker.LastPicked(ThingDefOf.PowerConduit) ?? "") + ",\"skipReseed\":" + J.B(Aerial.CompAerialAnchor.debugSkipReseed) + "}";
+        }
+
+        /// <summary>Sharp corners and straight rods on every laid strand (CordShapeAudit), as drawn.</summary>
+        private static string ShapeAudit(RM_MapComponent_CordGraph comp)
+        {
+            var t = new CordShapeAudit.Tally();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands) t.Add(p, s);
+            return "{\"success\":true,\"cmd\":\"shapeaudit\",\"audit\":" + t.Json() + "}";
+        }
+
+        /// <summary>strandsnear:x,z,r -- the polyline of every strand passing within r cells of a point.</summary>
+        private static string StrandsNear(RM_MapComponent_CordGraph comp, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            var at = new V2(a[0], a[1]);
+            var rows = new List<string>();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                    if (s.Pts != null && s.Pts.Any(q => V2.Dist(q, at) <= a[2]))
+                        rows.Add("{\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + ",\"pts\":[" + string.Join(",", s.Pts.Select(q => "[" + q.X.ToString("0.###", inv) + "," + q.Z.ToString("0.###", inv) + "]")) + "]}");
+            return "{\"success\":true,\"cmd\":\"strandsnear\",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
+        /// <summary>worlddump:NAME -- this map's cord world, options and live cells as JSON beside the game's saves, for the offline shape lab (SelfTest --lab).</summary>
+        private static string WorldDump(Map map, RM_MapComponent_CordGraph comp, string name)
+        {
+            CordWorld w = CordWorldAdapter.Snapshot(map);
+            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
+            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
+            var inv = CultureInfo.InvariantCulture;
+            string L(IEnumerable<Cell> cs) => "[" + string.Join(",", cs.Select(c => "[" + c.X + "," + c.Z + "]")) + "]";
+            var conduit = w.ConduitCells().ToList();
+            var blocked = new List<string>();
+            var doors = new List<Cell>();
+            var buried = new List<Cell>();
+            var busy = new List<Cell>();
+            var furniture = new List<Cell>();
+            var costs = new List<string>();
+            CompPower[] powers = CordWorldAdapter.MachinePowerComps(map).ToArray();
+            var powerById = new Dictionary<string, CompPower>(StringComparer.Ordinal);
+            foreach (CompPower c in powers)
+            {
+                powerById["t" + c.parent.thingIDNumber] = c;
+                powerById["c" + c.parent.thingIDNumber] = c;
+            }
+            var shown = new HashSet<string>(w.Machines.Select(m => m.Id), StringComparer.Ordinal);
+            var incoming = new HashSet<string>(w.Machines.SelectMany(m => m.MachineLinks), StringComparer.Ordinal);
+            string ParentFields(string id)
+            {
+                powerById.TryGetValue(id, out CompPower c);
+                Thing p = c?.connectParent?.parent;
+                return ",\"connectParent\":" + (p == null ? "null" : "[" + p.Position.x + "," + p.Position.z + "]")
+                    + ",\"parentDraw\":" + (p == null ? "null" : J.S(ConduitVisuals.HookupTo(p).ToString()));
+            }
+            var unhooked = new List<string>();
+            foreach (CompPower c in powers)
+            {
+                Thing th = c.parent;
+                string suffix = th.thingIDNumber.ToString();
+                if (shown.Contains("t" + suffix) || shown.Contains("c" + suffix)) continue;
+                string id = (c.TransmitsPowerNow ? "t" : "c") + suffix;
+                CellRect r = th.OccupiedRect();
+                unhooked.Add("{\"id\":" + J.S(id) + ",\"x\":" + r.minX + ",\"z\":" + r.minZ
+                    + ",\"w\":" + r.Width + ",\"h\":" + r.Height + ParentFields(id)
+                    + ",\"hasHookup\":false,\"hasLink\":" + J.B(incoming.Contains(id)) + "}");
+            }
+            for (int z = 0; z < w.Height; z++)
+                for (int x = 0; x < w.Width; x++)
+                {
+                    var c = new Cell(x, z);
+                    if (!w.IsWalkable(c)) blocked.Add("[" + x + "," + z + "," + (int)w.BlockAt(c) + "]");
+                    if (w.IsDoor(c)) doors.Add(c);
+                    if (w.IsWalkable(c) && w.IsBuried(c)) buried.Add(c);
+                    if (w.IsBusy(c)) busy.Add(c);
+                    if (w.IsFurniture(c)) furniture.Add(c);
+                    if (w.ExtraCost(c) != 0f) costs.Add("[" + x + "," + z + "," + w.ExtraCost(c).ToString(inv) + "]");
+                }
+            var machines = w.Machines.Select(m => "{\"id\":" + J.S(m.Id) + ",\"def\":" + J.S(m.DefName ?? "") + ",\"baseDz\":" + m.BaseDz.ToString(inv) + ",\"kind\":" + (int)m.Kind + ",\"x\":" + m.X0 + ",\"z\":" + m.Z0 + ",\"w\":" + m.W + ",\"h\":" + m.H + ",\"hookups\":" + L(m.Hookups)
+                + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
+                + ParentFields(m.Id) + ",\"hasHookup\":" + J.B(m.Hookups.Count > 0)
+                + ",\"hasLink\":" + J.B(m.MachineLinks.Count > 0 || incoming.Contains(m.Id))
+                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + (m.Foot ? ",\"foot\":true" : "") + "}");
+            string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy) + ",\"furniture\":" + L(furniture) + ",\"costs\":[" + string.Join(",", costs) + "]"
+                + ",\"connectParentData\":true,\"unhooked\":[" + string.Join(",", unhooked) + "]"
+                + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
+                + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))
+                + ",\"opt\":{\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)
+                + ",\"slide\":" + J.B(opt.SlideUnder) + ",\"seed\":" + opt.Seed + ",\"slack\":" + opt.Lay.SlackScale.ToString(inv) + ",\"maxExtra\":" + opt.Lay.MaxExtra.ToString(inv) + ",\"cordsMax\":" + opt.Lay.CordsMax
+                + ",\"straight\":[" + string.Join(",", opt.StraightPlugIds.Select(J.S)) + "]}}";
+            string dir = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath, "GssWorlds");
+            System.IO.Directory.CreateDirectory(dir);
+            string path = System.IO.Path.Combine(dir, name + ".json");
+            System.IO.File.WriteAllText(path, text);
+            return "{\"success\":true,\"cmd\":\"worlddump\",\"path\":" + J.S(path) + ",\"bytes\":" + text.Length + "}";
+        }
+
+        /// <summary>never_taut_straight_cord's count (CordShapeAudit.Bends): every bend tighter than 90 degrees within a cell on every laid floor strand, ends included, with what forces it.</summary>
+        private static string BendTable(RM_MapComponent_CordGraph comp)
+        {
+            var t = new CordShapeAudit.BendTally();
+            CordWorld w = comp.LastWorld;
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands) t.Add(w, p, s);
+            return "{\"success\":true,\"cmd\":\"bends\",\"world\":" + J.B(w != null) + ",\"tally\":" + t.Json() + "}";
+        }
+
+        /// <summary>Where a laid strand folds back on itself (CordShape.Kinks), grouped by how the piece ends.</summary>
+        private static string KinkTable(RM_MapComponent_CordGraph comp)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var rows = new List<string>();
+            int strands = 0, kinks = 0;
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                {
+                    strands++;
+                    foreach (V2 k in CordShape.Kinks(s.Pts))
+                    {
+                        kinks++;
+                        if (rows.Count < 200)
+                            rows.Add("{\"x\":" + k.X.ToString("0.00", inv) + ",\"z\":" + k.Z.ToString("0.00", inv) + ",\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + "}");
+                    }
+                }
+            return "{\"success\":true,\"cmd\":\"kinks\",\"strands\":" + strands + ",\"kinks\":" + kinks + ",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
+        /// <summary>ends:x,z,r -- every strand with an end within r cells of a point: what it is and where its two ends lie.</summary>
+        private static string EndsNear(RM_MapComponent_CordGraph comp, string args)
+        {
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            var at = new V2(a[0], a[1]);
+            var rows = new List<string>();
+            foreach (LaidPiece p in comp.Pieces)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.Pts == null || s.Pts.Count < 2) continue;
+                    V2 e0 = s.Pts[0], e1 = s.Pts[s.Pts.Count - 1];
+                    if (V2.Dist(e0, at) > a[2] && V2.Dist(e1, at) > a[2]) continue;
+                    rows.Add("{\"piece\":" + J.S(p.EndA == null ? p.Key : p.EndA + "|" + p.EndB) + ",\"a\":[" + e0.X.ToString("0.00", inv) + "," + e0.Z.ToString("0.00", inv) + "],\"b\":[" +
+                             e1.X.ToString("0.00", inv) + "," + e1.Z.ToString("0.00", inv) + "],\"overFace\":" + J.B(s.OverFace) + ",\"pts\":" + s.Pts.Count + "}");
+                }
+            return "{\"success\":true,\"cmd\":\"ends\",\"rows\":[" + string.Join(",", rows) + "]}";
+        }
+
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)
         {
             if (comp.Graph == null) return "{\"success\":false,\"error\":\"no graph\"}";
@@ -489,6 +705,11 @@ namespace RimMandrake.GimmeSomeSlack
             F("paused", J.B(Find.TickManager.Paused));
             F("frame", UnityEngine.Time.frameCount.ToString());
             F("whipDraws", RM_MapComponent_CordGraph.WhipDraws.ToString());
+            F("sparkTips", J.Arr(comp.SparkEnds().Where(e => !e.Wall).Select(e =>
+            {
+                V2 now = comp.SparkTipNow(e);
+                return "{\"laid\":[" + J.D(e.Tip.X) + "," + J.D(e.Tip.Z) + "],\"now\":[" + J.D(now.X) + "," + J.D(now.Z) + "]}";
+            }).ToList()));
             int whipTails = comp.Pieces.Sum(p => p.Strands.Sum(x => (x.WhipA > 0 ? 1 : 0) + (x.WhipB > 0 ? 1 : 0)));
             F("whipTails", whipTails.ToString());
             int liveFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && (comp.EndLive(e.NetCell) ?? false)));
@@ -592,6 +813,10 @@ namespace RimMandrake.GimmeSomeSlack
             F("endHeaps", settled.Sum(x => x.Settle.EndHeaps).ToString());
             F("litStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
             F("darkStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
+            // a Modern junction draws a strip too (d_modern_junction_strip), on its own net: the tangle rows read their own strips
+            Func<LaidPiece, bool> isTangle = p => p.Key != null && p.Key.StartsWith("tangle:");
+            F("tangleLitStrips", comp.Pieces.Where(isTangle).Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
+            F("tangleDarkStrips", comp.Pieces.Where(isTangle).Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
             F("lastRebuildMs", J.D(comp.LastRebuildMs));
             F("builds", comp.Builds.ToString());       // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG live re-measure
             F("farSkips", comp.FarSkips.ToString());

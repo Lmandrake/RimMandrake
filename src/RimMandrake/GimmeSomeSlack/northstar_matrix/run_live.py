@@ -477,7 +477,7 @@ class MockBridge(object):
             nodes.append({"t": "terminal", "c": [x + t[0], z + (h - 1 - t[1])], "netLive": bool(t[2]), "wt": False})
         for t in e["wall_terminals"]:
             nodes.append({"t": "_wt", "c": [x, z], "netLive": bool(t[2]), "wt": True})
-        cpc = int(self.settings.get("cordsPerConnection", 3))
+        cpc = int(self.settings.get("cordsPerConnection", 1))
         return {"success": True, "cmd": "rect", "graph": True, "nets": O.nets(sc), "nodes": nodes, "cordEdges": e["cord_edges"],
                 "cordsAcrossNets": 0, "cordEndsWithoutNet": 0, "strands": e["cord_edges"] * (1 if cpc == 1 else 2),
                 "verticesInUnwalkable": 0, "fellBack": 0, "unroutable": 0, "strandBBox": [x, z, x + w - 1, z + h - 1],

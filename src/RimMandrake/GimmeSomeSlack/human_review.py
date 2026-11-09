@@ -700,7 +700,7 @@ def stations_round2(mk):
        ["god mode: build the gap blueprint (or unpause and let colonists build): nets merge, the dark lamp lights",
         "save, load, compare (this is the save-load station)", "--style ExtensionCord for the colour checks"],
        conduit=line(2, 20, 2) + line(2, 20, 4) + line(2, 20, 6) + line(2, 10, 12) + line(12, 20, 12) + line(2, 8, 18),
-       devs=[("Battery", (1, 2), 0, 1.0), ("Battery", (1, 4), 0, 1.0), ("Battery", (1, 6), 0, 1.0),
+       devs=[("Battery", (0, 2), 1, 1.0), ("Battery", (0, 4), 1, 1.0), ("Battery", (0, 6), 1, 1.0),  # rot 1: 1x2 batteries lie along their own row, never end to end
              ("StandingLamp", (21, 2), None, None), ("StandingLamp", (21, 4), None, None), ("StandingLamp", (21, 6), None, None),
              ("Battery", (1, 12), 0, 1.0), ("StandingLamp", (21, 12), None, None),
              ("Battery", (1, 18), 0, 1.0), ("StandingLamp", (4, 20), None, None)],
@@ -744,7 +744,7 @@ def art_slots(tex=TEX):
     """[(piece, {look: (status, path)})] with status 'own' | 'fallback: <what>' | 'n/a'."""
     def has(rel):
         return os.path.exists(os.path.join(tex, rel + ".png"))
-    strand = {"Scrapper": "Strand_Jawa", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
+    strand = {"Scrapper": "Strand_ScrapTaped", "Industrial": "Styles/StarWars/Strand_BlackRubber", "Modern": "Styles/ExtCord/Strand_Orange",
               "Futuristic": "Styles/Cybertek/Strand"}
     rows = []
 
@@ -998,7 +998,7 @@ SETTINGS = [
     ("gss", "hideHookupWires", "True", "hide vanilla's thin machine hookup wires", "15"),
     ("gss", "slack", "1.0", "slack, 0 = path-tight", "1-4, 12"),
     ("gss", "loopBudget", "16", "cells of each cord in loops and heaps", "1-4"),
-    ("gss", "cordsPerConnection", "3", "cords per connection, 1 to 3", "1-4, 16"),
+    ("gss", "cordsPerConnection", "1", "cords per connection, 1 to 3", "1-4, 16"),
     ("gss", "tangles", "True", "dense conduit fields become one tangle", "1-4 (the 3x3), 16"),
     ("gss", "tangleMin", "9", "cells before a dense field becomes a tangle", "1-4, 16"),
     ("gss", "needlessLoops", "True", "needless stubs (2 cells or less) become pointless loops", "25 (the stub)"),
@@ -1023,7 +1023,7 @@ SETTINGS = [
     ("aerial", "sag", "0.06", "sag, share of the span", "21"),
     ("aerial", "autoLink", "True", "new anchors link to the nearest in range", "F, 28"),
     ("aerial", "maxStrands", "3", "wires per span, 1 to this", "6, 22"),
-    ("aerial", "dripLoops", "True", "drip loops at the insulators", "6"),
+    ("aerial", "dripLoops", "False", "drip loops at the insulators", "6"),
     ("aerial", "keepWiresOnGravship", "True", "wires on a launched gravship stay strung", "no station (needs a gravship launch)"),
     ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 21 (unpause)"),
     ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),

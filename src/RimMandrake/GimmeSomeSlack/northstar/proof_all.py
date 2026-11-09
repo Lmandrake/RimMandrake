@@ -72,7 +72,7 @@ import validation as V  # noqa: E402
 SCRATCH_WIN = rm_win("scratch", "gss_proof")
 SCRATCH_POSIX = rm_str("scratch", "gss_proof")
 SPEC_NAME = "scenes_design.json"
-BLOCKS = ["matrix", "core", "aerial", "style", "save_load", "d4_save"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
+BLOCKS = ["matrix", "core", "aerial", "style", "scenes", "save_load", "d4_save", "statics"]   # hose/maze/relay/carry/style_hose moved to FlowWorks/northstar/proof_hose.py (hose port)
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site
 
 # The row ids a full live run emits, per block, for the required-check manifest (the walk's `checkout:` header names
@@ -80,11 +80,15 @@ PARK = (125, 165)                     # colonists moved here, out of the matrix 
 # of 2026-10-05 08:24-08:52 (144 rows each). The matrix block is NOT listed: its ids are the reduced spec's scenes,
 # computed below. A row the run emits that is not declared shows in the report as "observed, not in manifest"; a
 # declared row the run no longer emits shows as not reached -- so this list can drift visibly, never silently.
+SCENE_ROWS = __import__("scene_rows").ROWS
 DECLARED_ROWS = {
+    "scenes": SCENE_ROWS,
+    "statics": ["SC_statics_clear_between_games"],
     "preflight": ["P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_site_pinned_region_empty"],
-    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable",
+    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable", "M2c_no_sharp_bends",
+             "M1e_machine_on_inwall_run_draws_a_cord", "M1f_machine_on_hidden_conduit_draws_none",
              "M6_overlay_lines_intact", "M5_local_invalidation", "M8_break_two_ends_live_dead", "M2_cords_only_within_net",
-             "B1_rope_settle", "B6_tangle_lit_strips", "B3_whip_live_ends", "B4_downed_wire_bursts",
+             "B1_rope_settle", "B6_tangle_lit_strips", "B3c_spark_rides_whip", "B3_whip_live_ends", "B4_downed_wire_bursts",
              "B4b_sparks_thrown_ticking", "B4c_spark_intensity_scales_downed", "B4d_spark_budget_shared_visible_first", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
              "B5_selection_highlight", "B8_lod_far_zoom", "B9_cutscene_guard_idle", "B6b_strips_dark_when_dead",
              "M10_tangle_threshold_setting", "M11_dive_through_setting",
@@ -95,15 +99,16 @@ DECLARED_ROWS = {
                "M13d_refusals", "M13e_hostile_mast_not_autolinked", "R1_span_altitude_above_pawns_below_blueprints",
                "R2_spans_and_heads_drawn", "M14_gap_control_without_fix", "M14a_remove_middle_both_ends_resolve",
                "M14b_dead_pole_drops_live_and_dead_cords", "M14c_live_tip_glows", "M15_explosion_cuts_span",
-               "M15a_wire_down_alert_lists_cut", "M15b_restring_rejoins", "M15c_wire_down_alert_clears_on_restring", "M15e_restring_is_a_colonist_job", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control",
+               "M15a_wire_down_alert_lists_cut", "M15b_restring_rejoins", "M15c_wire_down_alert_clears_on_restring", "M15e_restring_is_a_colonist_job", "M15f_restring_joined_run_one_look", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control",
                "M20a_fallen_wire_shock_flip", "M20b_fallen_wire_knockback_flip", "M20c_fallen_wire_ignites_flip", "M20d_keep_wires_setting_roundtrip", "M20e_shock_cells_die_with_wire",
                "M21a_cut_wires_on_owner_change_off_keeps_link", "M21b_cut_wires_on_owner_change_on_cuts_link",
                "M21c_drip_loops_off_plain_curve", "M21d_drip_loops_on_loop_samples",
-               "M21e_keep_wires_on_gravship_off_setting_state", "M21f_keep_wires_on_gravship_on_setting_state"],
+               "M21e_keep_wires_on_gravship_off_setting_state", "M21f_keep_wires_on_gravship_on_setting_state",
+               "M22a_kinetic_sway_on_swings_never_cuts", "M22b_kinetic_sway_off_does_nothing"],
     "style": ["S1_pick_reaches_blueprint", "S2_blueprint_frame_building", "S3_god_mode", "S4_copy_carries_look",
-              "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S6_spans_in_pole_look",
+              "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S8b_legacy_joined_to_styled_stores_look", "S6_spans_in_pole_look",
               "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
-              "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost"],
+              "S9d_restyle_and_materials", "S10_legacy_default_materials", "S11_lamp_master_off_vanilla", "S12a_D1_legacy_run_one_look", "S12b_D7_bulk_spawn_cost", "S12e_batched_links_merge"],
     "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
     "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal",
                   "S12d_D4_pending_queue_save"],
@@ -326,6 +331,32 @@ def install_no_shots():
 
     V.shot = v_shot
     VA.A.shot = a_shot
+
+
+def install_draft_hold():
+    """HARNESS (the "downed (health 1)" stops, 2026-11-06/07: RM_FallenWireShock on a colonist who had walked onto the M20 site). P3 drafts every
+    colonist, but vanilla's AutoUndrafter frees a drafted pawn idle for 6,000 ticks, so a run past that length had colonists wandering across
+    live test wires, and where it stopped moved with the row count. The draft is renewed on the run's own clock, before it can lapse, and a
+    pawn on a job is left to it. A Bridge with hold_off set is staging a colonist on purpose."""
+    base = V.VC._BridgeBase
+    if getattr(base, "draft_hold", False):
+        return
+    base.draft_hold = True
+    orig = base.ticks
+    state = {"since": 0}
+
+    def ticks(self, n):
+        state["since"] += int(n)
+        if state["since"] >= 3000 and not getattr(self, "hold_off", False):
+            state["since"] = 0
+            for p in self.probe("colonists").get("pawns") or []:
+                if p.get("downed") or p.get("job") not in (None, "Wait_Combat", "Wait_Wander", "GotoWander", "Wait"):
+                    continue
+                if p.get("drafted"):
+                    self.probe("pawn:%d=undraft" % p["id"])
+                self.probe("pawn:%d=draft" % p["id"])
+        return orig(self, n)
+    base.ticks = ticks
 
 
 def _RI():
@@ -671,6 +702,18 @@ class Proof(object):
         self.take("core", {"rows": rows, "aborted": res.get("aborted")})
         self.res["core_ticks"] = res.get("ticks")
 
+    def scenes(self):
+        import scene_rows as SR
+        rows = []
+        SR.run(VA.A(), V, rows)
+        self.take("scenes", {"rows": rows})
+
+    def statics(self):
+        import scene_rows as SR
+        rows = []
+        SR.statics_new_game(VA.A(), V, rows)
+        self.take("statics", {"rows": rows})
+
     # ------------------------------------------------------------------ 4. the one save
     def save_load(self):
         """The ONE save + load. Hoses (H10, R4, SL4) moved with the hose to FlowWorks/northstar/proof_hose.py (hose port)."""
@@ -745,13 +788,16 @@ class Proof(object):
             time.sleep(1.0)
             s9_b = B.ap("cstyles:%d,%d,%d,%d" % VS.SITE2)
             sty_b = B.ap("styles")
+        # owner 2026-10-22 on identical polylines after load: "I don't value that ... Strike that." Which cords exist must survive; their exact lay need not, so it is reported and not compared
+        hash_a, hash_b = cords_a.get("edgeHashes") or {}, cords_b.get("edgeHashes") or {}
+        relaid = sum(1 for k in hash_a if k in hash_b and hash_a[k] != hash_b[k])
         parts = {
             "aerial(M16)": (VA._aerial_set(aer_a), VA._aerial_set(aer_b)),
             "mastStyles(S7)": (VS._snapshot(sty_a), VS._snapshot(sty_b)),
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
             # the floor cords themselves (GPT review 8.2): cords_a/cords_b were read and never compared, so a load
             # that dropped or moved every laid cord still read SL3 PASS on the aerial + style sets alone
-            "floorCords": (V._cord_set(cords_a), V._cord_set(cords_b)),
+            "floorCords": (dict(V._cord_set(cords_a), edgeHashes=sorted(hash_a), geometryHash=None), dict(V._cord_set(cords_b), edgeHashes=sorted(hash_b), geometryHash=None)),
         }
         empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])
                  or (k == "floorCords" and not a.get("edgeHashes"))]
@@ -766,7 +812,7 @@ class Proof(object):
                     differ[k] = {"missing": [x for x in a if x not in b][:4], "extra": [x for x in b if x not in a][:4]}
         sl3 = not differ and not empty and bool(parts["aerial(M16)"][0]["fallen"])
         self.row("save_load", "SL3_after_load_census_equal", "PASS" if sl3 else "FAIL", "MOD",
-                 {"differs": differ, "emptyBefore": empty, "loadSeconds": waited,
+                 {"differs": differ, "emptyBefore": empty, "loadSeconds": waited, "relaidEdges": relaid, "edges": len(hash_a),
                   "sizes": {"aerialLinks": len(parts["aerial(M16)"][0]["links"]), "aerialFallen": len(parts["aerial(M16)"][0]["fallen"]),
                             "masts": len(parts["mastStyles(S7)"][0]), "runCells": len(parts["runStyles(S9e)"][0][0])},
                   "spawned": cords_b.get("spawnedConduitTexture")})
@@ -930,6 +976,7 @@ class Proof(object):
                 import reduced as RD
                 sp = RD.reduce_spec(sp)
             boards = RL.make_boards(_no_hose(sp["scenes"]))
+        install_draft_hold()
         self.block("preflight", lambda: (self.p1_fresh_map(), self.p2_tier_and_startup_log(), self.p2c_control_noise(),
                                           self.p3_probes_and_site(boards)))
         if any(r["status"] != "PASS" for r in self.rows if r.get("block") == "preflight"):
@@ -939,11 +986,13 @@ class Proof(object):
         self.block("core", self.core)
         self.block("aerial", lambda: self.take("aerial", VA.run_live(self.ns())))
         self.block("style", lambda: self.take("style", VS.run_live(self.ns())))
+        self.block("scenes", self.scenes)
         if self.want("matrix"):
             self.block("determinism", self.determinism)
         self.block("save_load", self.save_load)
         self.block("d4_save", self.d4_save)
         self.block("log_budget", self.log_budget)
+        self.block("statics", self.statics)
 
 
 def summary(res):

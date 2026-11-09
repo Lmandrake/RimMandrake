@@ -7,7 +7,10 @@ status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_condu
 
 ## must be true
 - M1. The cord graph of the current map exists (`RM_MapComponent_CordGraph`), its node census matches the conduit grid (machines, junctions, terminals at every conduit end, a stub where conduit goes into a wall, a wall terminal where it ends inside one), cords are printed into the section meshes, and `PowerConduit`/`WaterproofConduit` render with the fully transparent texture. (validation.py: M1_conduit_transparent, M1_cords_exist, M1_node_census, M1c_end_pieces)
+- M1e. A machine wired to conduit that runs inside a wall or rock draws one cord, out of the face nearest it and across the floor; on hidden conduit it draws none (M3), and a machine hard against the face has no floor to cross. (live rows M1e_machine_on_inwall_run_draws_a_cord, M1f_machine_on_hidden_conduit_draws_none; offline CordShapeChecks.InWallHookups)
 - M2. No cord edge joins two nodes in different `PowerNet`s (on the built scene AND after the M8 break, where a cord across the gap would be one), and no laid cord vertex lies in an unwalkable cell. (M2_cords_only_within_net, M2b_no_vertex_unwalkable; offline O3 asserts both on 7 oracle scenes)
+- M2d. One connection draws one cord at the shipped settings, machine lead or not (owner 2026-11-07, three cables out of a doorway); `cordsPerConnection` is the player's opt-in. A live end's glow and sparks ride its whipping tail (owner 2026-11-07). (live SC_doorway_run_is_one_cord, B3c_spark_rides_whip; offline MotionBucketChecks.SparkRidesTail)
+- M2c. No laid cord folds back on itself into a spike or a sharp elbow; a heap's tight coils are not folds. (live M2c_no_folded_cords, probe `kinks`; offline CordShapeChecks)
 - M3. Vanilla `HiddenConduit` stays invisible and is never drawn as a cord: it is excluded from the target defs and counts as buried conduit (connectivity kept, nothing drawn). (offline: ConduitVisuals target list; live census `texPaths` lists only PowerConduit and WaterproofConduit)
 - M5. Placing conduit far from a cord does not change that cord's geometry hash, and the rebuild re-plans only the touched edge. (M5_local_invalidation)
 - M6. With the mod on, the power overlay still prints its connector lines (`SectionLayer_ThingsPowerGrid` sub-mesh for `MatConnectorLine` non-empty) while the thin hookup wire is suppressed for our conduit. (M6_overlay_lines_intact)
@@ -16,6 +19,7 @@ status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_condu
 - M10. Overhead lines: masts link into one net across a gap and power a far consumer; unlink/relink, out-of-range / hostile / non-anchor links are refused; a removed middle mast resolves both ends, a killed one drops a live and a dead cord, an explosion cuts a span that restrings; the power tap drains a foreign grid one way and stops when taps are off. (validation_aerial.py: M13a-e, R1-R3, M14-M15b, M19, M19n; matrix MX_A scenes; links and fallen cords survive SL3)
 - M10b. A "Wire down" alert lists every player anchor whose wire is cut or lying on the ground, clicking it jumps to the anchor (where Re-string cut wires lives), it clears once the span is re-strung, and the settings toggle (`wireDownAlert`) turns it off. (validation_aerial.py: M15a_wire_down_alert_lists_cut, M15c_wire_down_alert_clears_on_restring; probe `alert`) WIRE_DOWN_ALERT_1
 - M11/M12 (hoses, colonist-carried hoses) moved with the hose to `FlowWorks.md` at the hose port (2026-10-11).
+- M12b. Every 3-way, 4-way and blob junction draws one joining piece with every cord on it: the long power strip in a Modern run (cords on its sockets with a plug, one arm its own lead, LEDs reading the net), the look's box otherwise; a 2-way bend draws none. (offline SelfTest/JunctionStripChecks.cs; `artfit` junctionFaults, owner d_modern_junction_strip)
 - M13. Per-build styles: a picked look reaches the blueprint, frame and building in build and god mode, survives copy and reinstall, spans and conduit runs draw their run's look (largest run wins on a bridge, a split keeps it, a restyle repaints one run), and an unstyled (older) mast, run or reel stores nothing and draws the default look. (validation_style.py S1-S6, S8, S9a-d, S10; every stored style survives SL3; the reel's per-build look moved to FlowWorks with the hose)
 
 ## the walk
@@ -32,6 +36,13 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
 
 ## anti-guessing notes
+
+- RULED OUT (2026-11-07, Ralph GSS pass 3): "the colonist downed in AERIAL_block is the mod misfiring or a staging site". The hediff is RM_FallenWireShock on a colonist who had walked onto a live test wire, undrafted though P3 drafted everyone: a drafted pawn left idle comes undrafted (seen live; vanilla AutoUndrafter from memory, 6,000 ticks, no decompiled tree on this machine). Why the stop moved between runs and began only when pass 2's rows made the run longer. HARNESS, the mod working. proof_all renews the draft on its own clock (install_draft_hold).
+- RULED OUT (2026-11-07, Ralph GSS pass 3): "the work scheduler never gives a colonist the re-string job". Two of my rows said so; they had freed a colonist without Construction switched on. Every builder freed: job taken in 750 ticks (SC_restring_work_scheduler_takes_it).
+- RULED OUT (2026-11-07, Ralph GSS pass 3): "no wiggle" as an owner ruling on fallen wires. His words are one continuous cable (B21) and three wires on the ground; "no wiggle" was an agent's comment. A straight lay read as a span still strung, so fallen wires lie in a slack S now.
+
+- RULED OUT (2026-11-06, Ralph GSS pass 2): "S8 going red means a mast stamped a style by accident". Its mast auto-linked to a styled mast, and GSS_STYLED_WINNER_FIX deliberately stores the look on a member joining a run that stores one. HARNESS. S8 now stands the mast alone and S8b pins the join.
+- RULED OUT (2026-11-06, Ralph GSS pass 2): "a battery-to-machine cord in another look is a style bug". A cord with no conduit in its run is legacy and draws the Mod Settings default; the staged default was Modern. M13's rule, working.
 
 - RULED OUT (2026-11-03, test pilot GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS): "the snapshot-pool fix still breaks the 20 ms
   slice bar live". Both A1 FAILs (07:42, 08:27) ran on a 28-mod game with no GimmeSomeSlack loaded and the pre-fix DLL

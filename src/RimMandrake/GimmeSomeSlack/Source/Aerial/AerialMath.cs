@@ -108,6 +108,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         public List<P2> Pts = new List<P2>();
         public P2 Tip;
+        /// <summary>Where the end is on screen now, and which way it points: the writhing end moves, its spark and glow go with it. Tip while it is still.</summary>
+        public P2 TipNow, OutNow;
         /// <summary>True when an unwalkable cell stopped the cord before its length ran out ("the rest is over the wall").</summary>
         public bool Blocked;
         /// <summary>Index into <see cref="Pts"/> of the first point that lies ON THE GROUND (the touchdown); points before it
@@ -138,32 +140,61 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         // ------------------------------------------------------------------ the span curve (design 2.5)
         /// <summary>
-        /// P(t) = lerp(A, B, t) + (0, -sag * 4t(1-t)), sag = sagFactor * |AB|, sampled about every
-        /// <paramref name="step"/> cells. Top-down RimWorld fakes height as +z on screen, so a screen-down droop
-        /// reads as a hanging wire from any direction. Ends are exactly A and B.
+        /// P(t) = lerp(A, B, t) + (0, -sag * Droop(t)), sag = sagFactor * |AB|, sampled about every
+        /// <paramref name="step"/> cells plus <see cref="SpanEndSamples"/> by each insulator. Top-down RimWorld fakes height as +z on
+        /// screen, so a screen-down droop reads as a hanging wire from any direction. Ends are exactly A and B.
         /// </summary>
         public static List<P2> SpanCurve(P2 a, P2 b, double sagFactor, double step = 0.5)
         {
             double len = P2.Dist(a, b);
             double sag = Math.Max(0, sagFactor) * len;
-            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.05, step)));
-            var pts = new List<P2>(n + 1);
-            for (int i = 0; i <= n; i++)
+            List<double> ts = SpanTs(len, step);
+            var pts = new List<P2>(ts.Count);
+            foreach (double t in ts)
             {
-                double t = i / (double)n;
                 P2 p = P2.Lerp(a, b, t);
-                p.Z -= sag * 4 * t * (1 - t);
+                p.Z -= sag * Droop(t);
                 pts.Add(p);
             }
             pts[0] = a;
-            pts[n] = b;
+            pts[pts.Count - 1] = b;
             return pts;
+        }
+
+        /// <summary>The span's droop as a fraction of its mid-span sag: sin^2(pi t), 0 with zero slope at both insulators, 1 at t = 0.5.
+        /// The owner's pole photo (sitting 2026-11-08, "The top of power poles shows needless kinks in the wires where they connect"):
+        /// a line comes in straight, rests on the insulator and goes out straight; it sags only mid-span. The old parabola 4t(1-t)
+        /// left every insulator 13.5 deg off the chord (atan(4 x 0.06)), so two spans met in a 25 deg V on top of a straight pole
+        /// (offline sweep gss_sitting/tools/pole_top_sweep.py: parabola 25.4 deg, sin^2 with the end samples 0.7 deg).</summary>
+        public static double Droop(double t)
+        {
+            if (t <= 0 || t >= 1) return 0;
+            double s = Math.Sin(Math.PI * t);
+            return s * s;
+        }
+
+        /// <summary>Extra samples this many cells from each insulator, so the drawn first segment follows the flat end of
+        /// <see cref="Droop"/> (with only the 0.5-cell steps a straight pole still showed a 4-12 deg V).</summary>
+        public static readonly double[] SpanEndSamples = { 0.08, 0.16, 0.3 };
+
+        /// <summary>The span fractions SpanCurve samples: uniform about every step cells, plus SpanEndSamples (those inside a quarter span) at each end.</summary>
+        public static List<double> SpanTs(double len, double step)
+        {
+            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.05, step)));
+            var ts = new List<double>(n + 1 + 2 * SpanEndSamples.Length);
+            for (int i = 0; i <= n; i++) ts.Add(i / (double)n);
+            if (len > 1e-6)
+                foreach (double d in SpanEndSamples)
+                    if (d < len / 4) { ts.Add(d / len); ts.Add(1 - d / len); }
+            ts.Sort();
+            for (int i = ts.Count - 1; i > 0; i--) if (ts[i] - ts[i - 1] < 1e-9) ts.RemoveAt(i);
+            return ts;
         }
 
         /// <summary>
         /// CPU sway (design 2.5 option 2): perpendicular ground-plane offset of the sample at span fraction t,
-        /// amp x min(wind, 1.5) / 1.5 x sin(pi t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)), w 1.1-1.6 rad/s seeded.
-        /// Zero at both insulators and with no wind; |offset| never exceeds 1.3 x amp x min(wind, 1.5) / 1.5 (below amp x min(wind, 1.5)).
+        /// amp x min(wind, 1.5) / 1.5 x Droop(t) x (sin(w time + phi) + 0.3 sin(2.3 w time + phi2)), w 1.1-1.6 rad/s seeded.
+        /// Zero, and flat, at both insulators (Droop, not sin(pi t), since 2026-11-08: a swaying wire still leaves the insulator straight) and with no wind; |offset| never exceeds 1.3 x amp x min(wind, 1.5) / 1.5 (below amp x min(wind, 1.5)).
         /// </summary>
         public static double Sway(double t, double timeSec, double wind, double amp, int seed)
         {
@@ -171,7 +202,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double w = 1.1 + 0.5 * U(seed, 2);
             double phi = 2 * Math.PI * U(seed, 3), phi2 = 2 * Math.PI * U(seed, 4);
             double wave = (Math.Sin(w * timeSec + phi) + 0.3 * Math.Sin(2.3 * w * timeSec + phi2)) / 1.3;
-            return amp * Math.Min(wind, 1.5) / 1.5 * Math.Sin(Math.PI * t) * wave * 1.3;
+            return amp * Math.Min(wind, 1.5) / 1.5 * Droop(t) * wave * 1.3;
         }
 
         // ------------------------------------------------------------------ link rules (design 2.2.5, 2.4)
@@ -247,11 +278,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>A span is drawn, damaged and owned by the end with the lower thingIDNumber.</summary>
         public static bool Owns(int self, int other) => self < other;
 
+        /// <summary>The drip-loop setting's default (AerialSettings.dripLoops): off since the owner's sitting of 2026-11-08 12:20 PM, "The top
+        /// of power poles shows needless kinks in the wires where they connect too" (the drip loop at every insulator).</summary>
+        public const bool DripLoopsDefault = false;
+
         /// <summary>Design 2.5 "each strand gets a short drip loop below the insulator" (unbuilt until the 2026-10-10 build-out;
-        /// setting dripLoops, default ON since 2026-10-15). The span curve as
+        /// setting dripLoops, default ON 2026-10-15, OFF since 2026-11-08). The span curve as
         /// <see cref="SpanCurve"/>, plus within <paramref name="reach"/> cells of each end a dip of up to
-        /// <paramref name="depth"/> cells (screen-down = hanging) shaped sin(pi d / reach), so the wire leaves the insulator,
-        /// sags into a small loop and rises back to the span. Ends stay exactly A and B; the ends are sampled densely (6 per
+        /// <paramref name="depth"/> cells (screen-down = hanging) shaped (1 - cos(2 pi d / reach)) / 2, so the wire leaves the insulator
+        /// level, sags into a small loop and rises back to the span: a sine left a sharp peak on every insulator, and two spans meeting there drew a zigzag along the crossarm
+        /// (blind judge, pass 1: "small wiggles on top of the crossarm"). Ends stay exactly A and B; the ends are sampled densely (12 per
         /// loop); beyond the loops the points are the plain curve's. depth or reach 0 returns SpanCurve unchanged.</summary>
         public static List<P2> SpanCurveDrip(P2 a, P2 b, double sagFactor, double depth, double reach, double step = 0.5)
         {
@@ -260,7 +296,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             reach = Math.Min(reach, len / 4);
             double sag = Math.Max(0, sagFactor) * len, tr = reach / len;
             var ts = new List<double>();
-            const int loopN = 6;
+            const int loopN = 12;
             for (int k = 0; k < loopN; k++) ts.Add(tr * k / loopN);
             int n = Math.Max(2, (int)Math.Ceiling((1 - 2 * tr) * len / Math.Max(0.05, step)));
             for (int k = 0; k <= n; k++) ts.Add(tr + (1 - 2 * tr) * k / n);
@@ -269,9 +305,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             foreach (double t in ts)
             {
                 P2 p = P2.Lerp(a, b, t);
-                p.Z -= sag * 4 * t * (1 - t);
+                p.Z -= sag * Droop(t);
                 double d = Math.Min(t, 1 - t) * len;
-                if (d < reach) p.Z -= depth * Math.Sin(Math.PI * d / reach);
+                if (d < reach) p.Z -= depth * 0.5 * (1 - Math.Cos(2 * Math.PI * d / reach));
                 pts.Add(p);
             }
             pts[0] = a;
@@ -290,8 +326,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         // ------------------------------------------------------------------ the cast shadow of a span (owner review B24)
         /// <summary>
         /// The ground shadow of a sagging span (owner review 2026-10-04 B24: the old straight base-to-base line read as a
-        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x 4t(1-t) above the
-        /// straight ground line between the pole feet; its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
+        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x Droop(t) above the
+        /// straight ground line between the pole feet (Droop: sin^2(pi t) since 2026-11-08); its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
         /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
         /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
         /// </summary>
@@ -303,7 +339,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             for (int i = 0; i <= n; i++)
             {
                 double t = i / (double)n;
-                double h = Math.Max(0, hA + (hB - hA) * t - Math.Max(0, sagFactor) * len * 4 * t * (1 - t));
+                double h = Math.Max(0, hA + (hB - hA) * t - Math.Max(0, sagFactor) * len * Droop(t));
                 P2 g = P2.Lerp(baseA, baseB, t);
                 pts.Add(new P2(g.X + kx * h, g.Z + kz * h));
             }
@@ -396,40 +432,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return Math.Max(0, Math.Min(insulators - 1, i));
         }
 
-        // ------------------------------------------------------------------ local drops onto a pole's terminals (owner round 2, 2026-10-04)
-        /// <summary>A signature of <see cref="AssignTerminals"/>'s inputs: equal signatures give the same assignment
-        /// (order-independent over the devices, as the assignment sorts them). GPT pre-release C16.</summary>
-        public static int TerminalSig(IList<(int Id, double X)> devices, int insulators)
-        {
-            unchecked
-            {
-                int h = insulators * 397 ^ devices.Count, sum = 0, xor = 0;
-                for (int i = 0; i < devices.Count; i++)
-                {
-                    int d = (devices[i].Id * 31) ^ Math.Round(devices[i].X, 3).GetHashCode();
-                    sum += d * 0x2F0B3C1; xor ^= (int)Hash(devices[i].Id, (int)Math.Round(devices[i].X * 1000));
-                }
-                return (h * 31 + sum) * 31 + xor;
-            }
-        }
-
-        /// <summary>
-        /// Which insulator (terminal, left to right) each LOCAL connection of one pole takes: the devices wired to it and the
-        /// transmitters standing beside it. Ordered by where they stand across the crossarm (<c>X</c>, east = right), then id,
-        /// so wires never cross needlessly. Up to one per insulator they never share (one device takes the middle, two the
-        /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
-        /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
-        /// </summary>
-        public static Dictionary<int, int> AssignTerminals(IList<(int Id, double X)> devices, int insulators)
-        {
-            var r = new Dictionary<int, int>();
-            var order = devices.OrderBy(d => d.X).ThenBy(d => d.Id).ToList();
-            int k = order.Count, n = Math.Max(1, insulators);
-            for (int i = 0; i < k; i++)
-                r[order[i].Id] = n <= 1 ? 0 : k <= n ? InsulatorIndex(i, k, n) : Math.Min(n - 1, i * n / k);
-            return r;
-        }
-
         // ------------------------------------------------------------------ the wall bracket (owner round 2, 2026-10-04)
         /// <summary>How far the bracket art's wall-side extreme reaches past the wall's outer face INTO the wall (cells), per face
         /// (round 4, owner 2026-10-04: plates "should look mounted ON the wall"; "do they extend OUT of the wall? If so, it's not
@@ -485,62 +487,225 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         // ------------------------------------------------------------------ a fallen / cut wire (design 2.6, owner review B11/B21)
         /// <summary>
         /// A cut or orphaned wire as ONE continuous cable (owner review 2026-10-04 B21: never a hanging drop joined to a
-        /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down
-        /// tangent-free to a touchdown point and lies on the ground the rest of the way to the break at
-        /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the break point. The ground path is the
-        /// straight line base -> break with one gentle seeded bow (at most 0.22 cell; no wiggle), checked cell by cell:
-        /// the first unwalkable cell stops it (Blocked; the rest "is over the wall"). Height above the ground path is
-        /// h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0.
-        /// <paramref name="length"/> (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance.
-        /// The first 0.75 cell is never checked: a wall bracket's base sits on its wall face.
+        /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down and out
+        /// to its own side to a touchdown point and lies on the ground the rest of the way, so the polyline's LAST point (Tip)
+        /// is the end, near <paramref name="toward"/> but not on its line. On the ground it is a loose cut cord (blind judge,
+        /// pass 1: "a downed wire must read as a loose cut cord lying there"): uneven seeded bends at uneven places, a small
+        /// wander so no stretch runs straight, a hook at the end, and on anything over 3 cells an uneven coil or two. Slack that
+        /// would cross an unwalkable cell is halved and halved again before giving up; then the first unwalkable cell on the
+        /// bare line stops it (Blocked; the rest "is over the wall"). Height above the ground path is h (1 - s/s0)^2 up to the
+        /// touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0. <paramref name="length"/>
+        /// (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance. The first 0.75 cell is never
+        /// checked: a wall bracket's base sits on its wall face. <paramref name="side"/> picks the side it falls to (0 = by
+        /// seed, and it falls closer in: the middle wire between two outer ones).
         /// </summary>
-        public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable)
+        public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable, int side = 0)
         {
             var lay = new FallenLay();
             lay.Pts.Add(top);
-            lay.Tip = top;
+            lay.Tip = lay.TipNow = top;
             double dist = P2.Dist(basePt, toward);
             double h = top.Z - basePt.Z, ix = top.X - basePt.X;
             if (dist < 1e-6 || length <= 0) return lay;
-            double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
-            double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
-            double bow = (U(seed, 9) < 0.5 ? -1 : 1) * Math.Min(0.22, 0.06 + 0.02 * want) * (0.6 + 0.4 * U(seed, 10));
-            Func<double, double, P2> ground = (s, r) =>
+            double ax = (toward.X - basePt.X) / dist, az = (toward.Z - basePt.Z) / dist;
+            double ux = ax, uz = az, nx = -uz, nz = ux;
+            double cable = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
+            int sgn = side != 0 ? Math.Sign(side) : U(seed, 9) < 0.5 ? -1 : 1;
+            // the plan of the ground path over `want` cells of its line (the cable's length, or less where something stops it)
+            double want = 0, fit = 0, s0 = 0, fanIn = 0, fan = 0, wanderA = 0, wanderL = 0, wanderP = 0, hookL = 0, hookA = 0;
+            int bends = 0;
+            var bendAt = new double[4]; var bendW = new double[4]; var bendA = new double[4];
+            Action<double> plan = w =>
             {
-                double off = bow * Math.Sin(Math.PI * Math.Min(1, s / r));
+                want = w;
+                fit = Math.Min(1, want / 3);
+                // the bends: uneven, at uneven places, the last of them late so the cord still wanders into its end
+                bends = want < 2 ? 1 : Math.Min(4, 2 + (int)(want / 5));
+                int sign = sgn;
+                for (int b = 0; b < bends; b++)
+                {
+                    bendAt[b] = want * (b == bends - 1 ? 0.62 + 0.26 * U(seed, 40 + b) : 0.14 + 0.5 * (b + U(seed, 40 + b)) / bends);
+                    bendW[b] = Math.Max(0.8, Math.Min(2.6, want * (0.13 + 0.1 * U(seed, 50 + b))));
+                    bendA[b] = sign * Math.Min(1.8, 0.25 + 0.32 * want) * (0.5 + 0.5 * U(seed, 60 + b));
+                    sign = U(seed, 70 + b) < 0.8 ? -sign : sign;
+                }
+                wanderA = (0.07 + 0.09 * U(seed, 10)) * fit; wanderL = 0.55 + 0.4 * U(seed, 11); wanderP = 6.283 * U(seed, 12);
+                hookL = Math.Min(1.7, 0.35 * want); hookA = (U(seed, 13) < 0.5 ? -1 : 1) * Math.Min(0.95, 0.24 * want) * (0.6 + 0.4 * U(seed, 14));
+                fan = sgn * (side != 0 ? 0.75 + 0.45 * U(seed, 15) : 0.3 + 0.25 * U(seed, 15)) * fit;
+            };
+            // which way it lies: the break's own line turned by t (radians); a wire falling away up the screen doubles back past its
+            // own drop, and the wider the touchdown, the rounder that turn
+            Action<double> aim = t =>
+            {
+                double c = Math.Cos(t), sn = Math.Sin(t);
+                ux = ax * c - az * sn; uz = ax * sn + az * c; nx = -uz; nz = ux;
+                s0 = Math.Min(want * 0.6, Math.Max(0.7, Math.Abs(h) * (0.45 + 0.5 * Math.Max(0, uz))));
+                fanIn = s0 * (1.3 + 0.7 * Math.Max(0, uz));
+            };
+            Func<double, double, P2> ground = (s, k) =>
+            {
+                double off = 0;
+                double on = Smooth01(s / Math.Max(0.5, fanIn));
+                for (int b = 0; b < bends; b++)
+                {
+                    double q = (s - bendAt[b]) / bendW[b];
+                    off += bendA[b] * Math.Exp(-q * q);
+                }
+                off = on * (off + wanderA * Math.Sin(s / wanderL + wanderP)) + fan * Smooth01(s / Math.Max(0.5, fanIn)) * (1 - Smooth01((s - fanIn) / Math.Max(0.5, want - fanIn)));
+                if (s > want - hookL) { double q = (s - (want - hookL)) / Math.Max(1e-6, hookL); off += hookA * q * q; }
+                off = Geo2Clamp(k * off, Math.Min(2.6, 0.4 * want + 0.3));
                 return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
             };
-            // pass 1: how far the ground path is open
-            double reach = want;
-            for (double s = 0.25; s <= want + 1e-9; s += 0.25)
+            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
+            // how far along its line the ground path at slack k stays on open ground (want when all of it does)
+            Func<double, double> clearTo = k =>
             {
-                P2 g = ground(s, want);
-                if (s > 0.75 && !walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z))) { lay.Blocked = true; reach = Math.Max(0, s - 0.25); break; }
+                double last = 0;
+                for (double s = 0.2; s <= want + 1e-9; s += 0.2)
+                {
+                    if (s > 0.75 && !open(ground(s, k))) return Math.Max(0, s - 0.2);
+                    last = s;
+                }
+                // the tip itself, when want is not on the 0.2 grid (Codex review 2026-11-09: a tip landed in a blocked cell)
+                if (want > last + 1e-9 && want > 0.75 && !open(ground(want, k))) return last;
+                return want;
+            };
+            // the widest slack this ground takes, on the break's own line first, then turned to its own side and the other, up to 50
+            // degrees; the same bends mirrored before any less of them. A wire beside a rock bends away from it, and one whose line
+            // crosses a shed built under the span falls beside the shed, a loose cord, instead of halving into a rod that stops at
+            // its wall (a mortar on a lamp mast over a shed, pass 12)
+            plan(cable);
+            double slack = 0, turn = 0, reach = -1;
+            foreach (double[] ks in SlackLevels)
+            {
+                foreach (double t in AimTurns)
+                {
+                    aim(t * sgn);
+                    foreach (double k in ks)
+                        if (clearTo(k) >= want) { slack = k; turn = t * sgn; reach = want; break; }
+                    if (reach >= 0) break;
+                }
+                if (reach >= 0) break;
             }
-            if (reach < 0.05) return lay;
-            double s0 = Math.Min(reach * 0.75, Math.Max(0.9, Math.Abs(h) * 0.85));
-            // pass 2: the one cable, insulator -> touchdown -> break (0.1 cell samples while hanging, 0.25 lying)
+            // nothing lies its whole length (a wall across every way it could fall): it lies as far as the ground lets it, along the
+            // way that goes furthest, its bends drawn in to that stretch, and the cable it has left piles up against what stopped it
+            if (reach < 0)
+            {
+                lay.Blocked = true;
+                for (int pass = 0; pass < 3 && reach < 0; pass++)
+                {
+                    double best = 0, bestK = 0, bestT = 0;
+                    foreach (double[] ks in SlackLevels)
+                        foreach (double t in AimTurns)
+                        {
+                            aim(t * sgn);
+                            foreach (double k in ks)
+                            {
+                                double r = clearTo(k);
+                                if (r > best + 0.05) { best = r; bestK = k; bestT = t * sgn; }
+                            }
+                        }
+                    if (best < 0.05) break;
+                    plan(best);   // the bends drawn in to the stretch it has; it may lie whole now, or stop sooner and try again
+                    aim(bestT);
+                    if (clearTo(bestK) >= want) { slack = bestK; turn = bestT; reach = want; }
+                }
+                if (reach < 0)
+                {
+                    plan(cable);   // nothing at all clears: the bare line, as far as it goes
+                    aim(0);
+                    slack = 0; turn = 0; reach = clearTo(0);
+                    if (reach >= 0.05) plan(reach);
+                }
+                if (reach < 0.05) return lay;
+            }
+            aim(turn);
+            s0 = Math.Min(reach * 0.6, s0);
+            // where the coils go: never on the hanging part, never on the end that writhes; a cord that stopped short piles the cable
+            // it has left in more of them, in front of what stopped it
+            double spare = Math.Max(0, cable - reach * 1.15);
+            var coilsAt = new List<double>();
+            if (want >= 3) coilsAt.Add(want * (0.3 + 0.35 * U(seed, 16)));
+            if (want >= 7 && U(seed, 17) < 0.65) coilsAt.Add(want * (0.68 + 0.14 * U(seed, 18)));
+            double lo = Math.Max(s0 + 0.2, 0.3 * reach), hi = reach - 1.85;
+            if (lay.Blocked && hi > lo)
+            {
+                int more = Math.Min(3, (int)Math.Round(spare / 2.2)) - coilsAt.Count;
+                for (int c = 0; c < more; c++) coilsAt.Add(lo + (hi - lo) * (c + U(seed, 90 + c)) / more);
+                coilsAt.Sort();
+            }
+            bool piling = lay.Blocked && spare > 1;
+            int coilIdx = 0;
+            // the one cable, insulator -> touchdown -> end
             double sPos = 0;
             while (true)
             {
-                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.1 : 0.25));
+                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.06 : 0.1));
                 double k = sPos < s0 ? 1 - sPos / s0 : 0;
-                P2 g = ground(sPos, want);   // GPT review #18: the curve pass 1 checked (ground(s, reach) bowed differently)
+                P2 g = ground(sPos, slack);
                 lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
                 if (k == 0 && lay.GroundFrom < 0) lay.GroundFrom = lay.Pts.Count - 1;
+                while (k == 0 && coilIdx < coilsAt.Count && sPos >= coilsAt[coilIdx])
+                {
+                    if (sPos <= reach - 1.8 && (slack != 0 || piling))
+                    {
+                        double drift = 0.1 + 0.25 * U(seed, 80 + coilIdx);
+                        if (AddCoil(lay.Pts, ground(sPos + 0.05, slack), seed + 1009 * coilIdx, Math.Max(piling ? 0.8 : 0, Math.Abs(slack)), drift, want >= 5 || piling, open))
+                            sPos = Math.Min(reach - 1.5, sPos + drift);
+                    }
+                    coilIdx++;
+                }
                 if (sPos >= reach - 1e-9) break;
             }
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
+            lay.TipNow = lay.Tip;
             return lay;
+        }
+
+        /// <summary>The slack a fallen wire tries, widest first; each level the bends one way and then mirrored.</summary>
+        private static readonly double[][] SlackLevels = { new[] { 1.0, -1.0 }, new[] { 0.5, -0.5 }, new[] { 0.25, -0.25 } };
+        /// <summary>The turns off the break's own line a fallen wire tries, its own side first (radians: 0, 12, 24, 36, 50 degrees).</summary>
+        private static readonly double[] AimTurns = { 0, 0.21, -0.21, 0.42, -0.42, 0.63, -0.63, 0.87, -0.87 };
+
+        private static double Geo2Clamp(double v, double lim) => Math.Max(-lim, Math.Min(lim, v));
+
+        private static double Smooth01(double x) { x = Math.Max(0, Math.Min(1, x)); return x * x * (3 - 2 * x); }
+
+        /// <summary>A turn of slack on the end of <paramref name="pts"/>, leaving and coming back the way the cable was heading: never a stamped circle (it stretches, bulges
+        /// to one side, and a double turn comes in tighter on its second round). Comes out <paramref name="drift"/> further on. False, and left out, if it would cross an unwalkable cell.</summary>
+        private static bool AddCoil(List<P2> pts, P2 next, int seed, double slack, double drift, bool mayDouble, Func<P2, bool> open)
+        {
+            P2 p = pts[pts.Count - 1];
+            double tx = next.X - p.X, tz = next.Z - p.Z, tl = Math.Sqrt(tx * tx + tz * tz);
+            double r = (0.26 + 0.28 * U(seed, 20)) * Math.Max(0.5, slack);
+            if (tl < 1e-9 || r < 0.1) return false;
+            tx /= tl; tz /= tl;
+            int side = U(seed, 21) < 0.5 ? -1 : 1;
+            double nx = -tz * side, nz = tx * side;
+            int wraps = mayDouble && U(seed, 22) < 0.35 ? 2 : 1;
+            double stretch = 0.8 + 0.65 * U(seed, 23), bulge = 0.1 + 0.25 * U(seed, 24), bulgeAt = 6.283 * U(seed, 25), tighten = wraps == 2 ? 0.22 + 0.2 * U(seed, 26) : 0;
+            int n = 24 * wraps;
+            var turn = new List<P2>(n);
+            for (int i = 1; i <= n; i++)
+            {
+                double th = 2 * Math.PI * wraps * i / n, end = Math.Sin(th / 2 / wraps);
+                double rr = r * (1 + bulge * Math.Sin(th + bulgeAt) * end * end - tighten * end * end);
+                double along = rr * stretch * Math.Sin(th) + drift * i / n, across = rr * (1 - Math.Cos(th));
+                var q = new P2(p.X + tx * along + nx * across, p.Z + tz * along + nz * across);
+                if (!open(q)) return false;
+                turn.Add(q);
+            }
+            pts.AddRange(turn);
+            return true;
         }
 
         /// <summary>
         /// Round 3 (owner 2026-10-04: "If we're going to have three wires connecting between poles, then three wires should be
         /// laying on the ground when broken by explosion"): a broken span drops EVERY one of its <paramref name="count"/>
         /// wires. Wire i leaves the insulator the span's strand i used on this anchor (<see cref="InsulatorIndex"/>, the same
-        /// fan as <see cref="SpanStrands"/>), lies toward the break offset sideways by (i - (count-1)/2) x
-        /// <see cref="FallenSpread"/> so the wires lie side by side rather than on top of each other, and gets its own seed
-        /// (its own bow). Each lay is <see cref="LayFallen"/>'s one continuous cable.
+        /// fan as <see cref="SpanStrands"/>) and is its own cut cord, with its own seed: it bends out to its own side and ends
+        /// on its own spot, <see cref="FallenSpread"/> from its neighbour's and short of the break by its own amount, so the wires
+        /// never pinch to one point (blind judge, pass 1). Each lay is <see cref="LayFallen"/>'s one continuous cable.
         /// </summary>
         public static List<FallenLay> LayFallenStrands(IList<P2> tips, P2 basePt, P2 toward, double length, int seed, int count, Func<int, int, bool> walkable)
         {
@@ -548,14 +713,239 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int n = Math.Max(1, count);
             double dist = P2.Dist(basePt, toward);
             double ux = dist > 1e-6 ? (toward.X - basePt.X) / dist : 1, uz = dist > 1e-6 ? (toward.Z - basePt.Z) / dist : 0;
+            double spread = FallenSpread * Math.Min(1, dist / 4);
             for (int i = 0; i < n; i++)
             {
+                int wseed = unchecked(seed + 7919 * i);
                 P2 top = tips.Count > 0 ? tips[InsulatorIndex(i, n, tips.Count)] : basePt;
-                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * FallenSpread;
-                var to = new P2(toward.X - uz * lat, toward.Z + ux * lat);
-                r.Add(LayFallen(top, basePt, to, length, unchecked(seed + 7919 * i), walkable));
+                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * spread;
+                // one wire alone reaches the break; of several, each stops short by its own amount
+                double shortBy = n == 1 ? 0 : dist * (0.06 + 0.2 * U(wseed, 17));
+                var to = new P2(toward.X - ux * shortBy - uz * lat, toward.Z - uz * shortBy + ux * lat);
+                r.Add(LayFallen(top, basePt, to, length, wseed, walkable, Math.Sign(lat)));
             }
             return r;
+        }
+
+        /// <summary>How many points of a fallen wire's end writhe, or 0 if it has too little lying on the ground.</summary>
+        public static int WireTailCount(FallenLay l, double len)
+        {
+            if (l.GroundFrom < 0) return 0;
+            double acc = 0;
+            int c = 1;
+            for (int i = l.Pts.Count - 1; i > l.GroundFrom; i--)
+            {
+                acc += P2.Dist(l.Pts[i], l.Pts[i - 1]);
+                if (acc > len) break;
+                c++;
+            }
+            return c >= 3 ? c : 0;
+        }
+
+        /// <summary>
+        /// A pole's or mast's local lead to a device: a too-long extension cord lying on the ground the whole way, from under the anchor's foot
+        /// <paramref name="basePt"/> to <paramref name="device"/> (owner, sitting 2026-11-08 12:20 PM: "Items should connect to the bottom of a
+        /// power pole (beneath its base), not run a line up to the top of the power pole"; it used to hang from the crossarm insulator and then
+        /// lie down, shots 121837/121857). The run is a <see cref="LooseRun"/> kept no further up the screen than the higher of its two ends plus
+        /// <see cref="DropRise"/> (ground up-screen of those is behind the pole: a run wandering there read as a cord strung from the crossarm),
+        /// else any open run, else one under a wall (vanilla wires a lamp indoors to a pole outside: the cord goes in under the wall, as floor cords
+        /// do), else a shallow bow. Never null; <see cref="FallenLay.GroundFrom"/> is 0 (all of it on the ground) and it ends exactly on the device.
+        /// </summary>
+        public static FallenLay LayFootDrop(P2 basePt, P2 device, int seed, Func<int, int, bool> walkable)
+        {
+            var lay = new FallenLay();
+            double dist = P2.Dist(basePt, device);
+            Func<P2, bool> open = g => walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z));
+            double cap = Math.Max(basePt.Z, device.Z) + DropRise;
+            List<P2> run = dist < 0.3 ? null
+                : LooseRun(basePt, device, seed, g => g.Z <= cap && open(g)) ?? LooseRun(basePt, device, seed, open) ?? LooseRun(basePt, device, seed, _ => true);
+            if (run == null || run.Count < 2)
+            {
+                // a device right at the foot (or nothing lies): a shallow bow, to one side
+                run = new List<P2>();
+                double nx = dist < 1e-6 ? 0 : -(device.Z - basePt.Z) / dist, nz = dist < 1e-6 ? 0 : (device.X - basePt.X) / dist;
+                double bow = (U(seed, 33) < 0.5 ? -1 : 1) * Math.Min(0.25, 0.2 * dist + 0.05);
+                int n = Math.Max(4, (int)Math.Ceiling(dist / 0.06));
+                for (int i = 0; i <= n; i++)
+                {
+                    double t = i / (double)n, k = 4 * t * (1 - t) * bow;
+                    run.Add(new P2(basePt.X + (device.X - basePt.X) * t + nx * k, basePt.Z + (device.Z - basePt.Z) * t + nz * k));
+                }
+            }
+            run[0] = basePt;
+            run[run.Count - 1] = device;
+            lay.Pts.AddRange(run);
+            lay.GroundFrom = 0;
+            lay.Tip = lay.TipNow = device;
+            return lay;
+        }
+
+        /// <summary>The least a loose run lies, as a share of the ground it covers: under it a draw reads as a rod laid there.</summary>
+        private const double LooseMin = 1.32;
+
+        /// <summary>How far up the screen past the higher of its touchdown and its device a drop's ground run may wander, cells.</summary>
+        public const double DropRise = 0.35;
+
+        /// <summary>
+        /// A loose cord lying on the ground from <paramref name="from"/> to <paramref name="to"/>, 1.5-1.9x as long as the distance plus a little:
+        /// its heading bends by a curvature made of two slow waves of uneven length, so it swings in wide arcs of uneven size, drawn gently toward
+        /// the far end; the whole lay is then turned and scaled about its start so it ends exactly there, which keeps every bend (steering it in
+        /// hard flattened the last stretch into a straight). Owner, 2026-11-07 7:07 PM: "cords take slowly curving paths rather than straight
+        /// lines often: what they avoid are sharp curves unless they must", so the bends are wide (radius mostly over a cell) and a long gentle
+        /// sweep is kept; only a dead-straight stretch over 2.2 cells gets a wide, shallow bow. Up to twelve draws: none whose cord crosses an
+        /// unwalkable cell, none that loops round its own end or coils on it (the doorway lesson: a coil at an end reads as more cables), the
+        /// first with no dead-straight stretch, else the least straight. Null when no draw lies on open ground.
+        /// </summary>
+        public static List<P2> LooseRun(P2 from, P2 to, int seed, Func<P2, bool> open, double ds = 0.05)
+        {
+            double dist = P2.Dist(from, to);
+            if (dist < 1e-6) return null;
+            double baseA = Math.Atan2(to.Z - from.Z, to.X - from.X);
+            int salt = 200;
+            Func<double> rnd = () => U(seed, salt++);
+            List<P2> best = null;
+            double bestStraight = double.MaxValue, nearEnd = Math.Min(0.75, 0.4 * dist);
+            var pts = new List<P2>();
+            var hs = new List<double>();
+            for (int attempt = 0; attempt < 24 && (attempt < 12 || best == null); attempt++)
+            {
+                int sgn = rnd() < 0.5 ? -1 : 1;
+                // the later draws, only when none of the first twelve lay clear: a shorter, gentler cord for a tight spot
+                double tight = attempt < 12 ? 1 : 0.7;
+                double A = (0.75 + 0.35 * rnd()) * tight, l1 = 3.2 + 1.4 * rnd(), l2 = 5.5 + 2.5 * rnd(), p1 = 6.283 * rnd(), p2 = 6.283 * rnd();
+                double want = attempt < 12 ? dist * (1.55 + 0.35 * rnd()) + 0.8 : dist * (1.4 + 0.2 * rnd()) + 0.4;
+                double h = baseA + sgn * (0.5 + 0.5 * rnd()), x = from.X, z = from.Z, L = 0;
+                pts.Clear(); hs.Clear();
+                pts.Add(from); hs.Add(h);
+                while (L < want)
+                {
+                    double err = WrapPi(Math.Atan2(to.Z - z, to.X - x) - h);
+                    h += (A * (0.65 * Math.Sin(6.283 * L / l1 + p1) + 0.35 * Math.Sin(6.283 * L / l2 + p2)) + 0.45 * err) * ds;
+                    x += ds * Math.Cos(h); z += ds * Math.Sin(h); L += ds;
+                    pts.Add(new P2(x, z)); hs.Add(h);
+                }
+                double ex = x - from.X, ez = z - from.Z, el = Math.Sqrt(ex * ex + ez * ez);
+                if (el < 1e-6) continue;
+                double sc = dist / el;
+                if (sc < 0.75 || sc > (attempt < 12 ? 1.35 : 1.8) || L * sc < LooseMin * dist) continue;
+                double rot = baseA - Math.Atan2(ez, ex), c = Math.Cos(rot), sn = Math.Sin(rot);
+                var o = new List<P2>(pts.Count);
+                bool ok = true;
+                int n = pts.Count, tail = (int)(1.0 / ds);
+                for (int i = 0; i < n && ok; i++)
+                {
+                    double px = pts[i].X - from.X, pz = pts[i].Z - from.Z;
+                    var q = i == n - 1 ? to : new P2(from.X + sc * (px * c - pz * sn), from.Z + sc * (px * sn + pz * c));
+                    if (i < n - tail && P2.Dist(q, to) < nearEnd) ok = false;   // it comes back round its own end
+                    else if (!open(q)) ok = false;
+                    o.Add(q);
+                }
+                if (!ok) continue;
+                if (Math.Abs(hs[n - 1] - hs[Math.Max(0, n - 1 - (int)(1.6 / ds))]) > 4.2) continue;   // a coil on its own end
+                for (int b = 0; b < 5; b++)
+                {
+                    if (StraightAt(o, DeadStraight, out int i0, out int i1) <= 2.2) break;
+                    o = Bowed(o, i0, i1, rnd, open) ?? o;
+                }
+                double st = LongestStraight(o, DeadStraight);
+                if (st < bestStraight) { bestStraight = st; best = new List<P2>(o); }
+                if (st <= 2.2) break;
+            }
+            if (best != null) return best;
+            // a short run that no draw lays clear of its own end: one wide, lazy arc to whichever side is open
+            double ux = (to.X - from.X) / dist, uz = (to.Z - from.Z) / dist, b0 = Math.Max(0.35, 0.45 * dist) * (rnd() < 0.5 ? -1 : 1);
+            for (int side = 0; side < 2; side++, b0 = -b0)
+            {
+                var arc = new List<P2>();
+                int m = Math.Max(8, (int)(dist / ds));
+                bool ok = true;
+                for (int i = 0; i <= m && ok; i++)
+                {
+                    double t = i / (double)m, off = b0 * Math.Sin(Math.PI * t);
+                    var q = i == m ? to : new P2(from.X + ux * dist * t - uz * off, from.Z + uz * dist * t + ux * off);
+                    ok = open(q);
+                    arc.Add(q);
+                }
+                if (ok) return arc;
+            }
+            return null;
+        }
+
+        /// <summary>The longest stretch of a dense polyline (points a twentieth of a cell apart) within <paramref name="tol"/> of its chord, and its ends.</summary>
+        private static double StraightAt(List<P2> p, double tol, out int i0, out int i1)
+        {
+            double best = 0; i0 = i1 = 0;
+            for (int i = 0; i < p.Count; i += 2)
+                for (int j = i + 12; j < p.Count; j += 2)
+                {
+                    double L = P2.Dist(p[i], p[j]);
+                    if (L < 0.01) break;
+                    bool ok = true;
+                    for (int m = i + 1; m < j && ok; m += 2)
+                        ok = Math.Abs((p[m].X - p[i].X) * (p[j].Z - p[i].Z) - (p[m].Z - p[i].Z) * (p[j].X - p[i].X)) / L <= tol;
+                    if (!ok) break;
+                    if (L > best) { best = L; i0 = i; i1 = j; }
+                }
+            return best;
+        }
+
+        /// <summary>A soft bow across the stretch <paramref name="i0"/>..<paramref name="i1"/> (sin squared, so it joins the cord on either side
+        /// without a corner), to whichever side lies on open ground; null when neither does.</summary>
+        private static List<P2> Bowed(List<P2> p, int i0, int i1, Func<double> rnd, Func<P2, bool> open)
+        {
+            double L = P2.Dist(p[i0], p[i1]);
+            if (L < 1e-6 || i1 <= i0) return null;
+            double nx = -(p[i1].Z - p[i0].Z) / L, nz = (p[i1].X - p[i0].X) / L;
+            double amp = (0.22 + 0.13 * rnd()) * Math.Min(1, L / 3) * (rnd() < 0.5 ? -1 : 1);
+            for (int side = 0; side < 2; side++, amp = -amp)
+            {
+                var o = new List<P2>(p);
+                bool ok = true;
+                for (int m = i0; m <= i1 && ok; m++)
+                {
+                    double t = (m - i0) / (double)(i1 - i0), w = Math.Sin(Math.PI * t);
+                    o[m] = new P2(p[m].X + nx * amp * w * w, p[m].Z + nz * amp * w * w);
+                    ok = open(o[m]);
+                }
+                if (ok) return o;
+            }
+            return null;
+        }
+
+        /// <summary>Within this of its chord a stretch is dead straight, a rod (a gentle sweep bends further than this over 2 cells).</summary>
+        public const double DeadStraight = 0.06;
+
+        private static double WrapPi(double a)
+        {
+            while (a > Math.PI) a -= 2 * Math.PI;
+            while (a < -Math.PI) a += 2 * Math.PI;
+            return a;
+        }
+
+        /// <summary>The longest stretch of <paramref name="pts"/> whose points all lie within <paramref name="tol"/> cell of its own chord
+        /// (ralph/live/lab_straight.py's measure of a rod).</summary>
+        public static double LongestStraight(List<P2> pts, double tol)
+        {
+            var q = new List<P2>();
+            for (int i = 1; i < pts.Count; i++)
+            {
+                int n = Math.Max(1, (int)(P2.Dist(pts[i - 1], pts[i]) / 0.1));
+                for (int j = 0; j < n; j++) q.Add(P2.Lerp(pts[i - 1], pts[i], j / (double)n));
+            }
+            if (pts.Count > 0) q.Add(pts[pts.Count - 1]);
+            double best = 0;
+            for (int i = 0; i < q.Count; i += 3)
+                for (int j = i + 10; j < q.Count; j += 3)
+                {
+                    double L = P2.Dist(q[i], q[j]);
+                    if (L < 0.01) break;
+                    bool ok = true;
+                    for (int m = i + 1; m < j && ok; m += 2)
+                        ok = Math.Abs((q[m].X - q[i].X) * (q[j].Z - q[i].Z) - (q[m].Z - q[i].Z) * (q[j].X - q[i].X)) / L <= tol;
+                    if (!ok) break;
+                    best = Math.Max(best, L);
+                }
+            return best;
         }
 
         /// <summary>The points of <paramref name="l"/> that lie on the ground: the only ones a pawn can touch (GPT pre-release
@@ -594,7 +984,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static readonly (int dx, int dz)[] Ring8 = { (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1) };
 
         /// <summary>Sideways gap between neighbouring fallen wires at the break (cells). PROVISIONAL.</summary>
-        public const double FallenSpread = 0.22;
+        public const double FallenSpread = 1.15;
 
         // ------------------------------------------------------------------ explosion hit test (design 2.6)
         public static double ClosestT(P2 a, P2 b, P2 c)
@@ -617,6 +1007,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <paramref name="kineticSway"/> is on, otherwise does nothing. Every other harmful blast keeps the design 2.6
         /// rule: cut when the setting is on and the damage is positive.
         /// </summary>
+        public static bool ExplodeWantsKinetic(string[] parts) => parts.Length > 4 && parts[4] == "kinetic";
+
         public static BlastKind BlastKindFor(bool harmsHealth, bool kinetic, double damage, bool explosionsCut, bool kineticSway)
         {
             if (!harmsHealth) return BlastKind.None;

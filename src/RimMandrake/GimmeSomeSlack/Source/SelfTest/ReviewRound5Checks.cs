@@ -34,7 +34,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     bool atA = (p.EndA ?? "").StartsWith("tangle");
                     V2 t = atA ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                     gaps.Add(ports.Count == 0 ? double.MaxValue : ports.Min(q => V2.Dist(q.Tip, t)));
-                    if (p.Decals.Any(d => d.Kind == DecalKind.Plug && V2.Dist(d.Pos, t) < 0.02)) plugsAtEntry++;
+                    if (p.Decals.Any(d => d.Kind == DecalKind.PlugTop && V2.Dist(d.Pos + CordAudit.Dir(d.Angle) * CordBuilder.PlugTopReach, t) < 0.02)) plugsAtEntry++;
                 }
             return gaps;
         }

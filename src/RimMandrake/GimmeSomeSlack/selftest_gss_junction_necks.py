@@ -22,8 +22,11 @@ SCALE_CELLS, PX, STRAND = 1.15, 128, 0.08
 CELL_PER_PX = SCALE_CELLS / PX
 FOLDERS = ["ExtCord", "ExtCord/Blue", "ExtCord/Brown", "ExtCord/Green", "ExtCord/Yellow", "Cybertek"]
 # meeting point (x, y image px) and arm tips (direction, tip coordinate along it) measured on the shipped art
-SLOTS = {"Junction_T": ((63.5, 44.5), {"left": 0, "right": 127, "bottom": 108}, ["top"]),
-         "Junction_X": ((63.5, 63.5), {"left": 0, "right": 127, "top": 0, "bottom": 127}, [])}
+# Round 3 (owner 2026-11-08 5:18 PM: "I think you still have wires printed into static graphic textures ... Just stop that approach entirely"):
+# the necks stop at the tuck radius, 0.44 canvas from the meeting point (the code's cord ends under them at CordBuilder.ArmTuck 0.40);
+# no cable runs on to the canvas edge any more (gss_sitting tools/r3_install.py cut them; ralph/live/lab_r3_checks.py baked_stub).
+SLOTS = {"Junction_T": ((63.5, 44.5), {"left": 8, "right": 119, "bottom": 100}, ["top"]),
+         "Junction_X": ((63.5, 63.5), {"left": 8, "right": 119, "top": 8, "bottom": 119}, [])}
 ALPHA = 40
 
 
@@ -51,9 +54,12 @@ def check(path, slot):
         if r_tip is None:  # within 2 px of the shipped tip (the shipped Cybertek arms stop 1 px short of the edge)
             fails.append(f"{side}: no arm tip at {tip}")
             continue
-        if tip == 108 and any(run_across(im, False, y) is not None for y in range(tip + 3, PX)):
+        if tip == SLOTS["Junction_T"][1]["bottom"] and slot == "Junction_T" and any(run_across(im, False, y) is not None for y in range(tip + 3, PX)):
             fails.append(f"{side}: art runs past the shipped tip {tip}")
         r = run_across(im, h, tip + inward)
+        if r is None:   # an opaque tip with nothing 2 px in is a failed neck, not a crash of the whole checker
+            fails.append(f"{side}: no arm {abs(inward)} px inside the tip {tip}")
+            continue
         centre = (r[0] + r[1]) / 2
         want = my if h else mx
         if abs(centre - want) > 3:

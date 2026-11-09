@@ -1,0 +1,2 @@
+GSS CordBuilder: a machine flag that changes where a cord enters (e.g. MachineInfo.Foot, a pole/mast lead under its foot) must also be honoured by the nub routes StripNub (Strips) and BoxNub (Junctions): they lay a strip or box beside the machine and bypass PlugPoint/IntoArt entirely. Foot was ignored by them until 2026-11-08 (MastFoot 6 of 8 ends at the mast's side box).
+home: src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs

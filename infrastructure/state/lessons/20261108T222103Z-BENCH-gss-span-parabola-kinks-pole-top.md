@@ -1,0 +1,2 @@
+A parabolic span droop 4t(1-t) leaves each insulator atan(4*sag) off the chord (13.5 deg at sag 0.06), so two spans through a straight pole draw a 25 deg V even with drip loops off. Use a zero-end-slope droop (sin^2(pi t), same mid sag) AND add samples 0.08/0.16/0.3 cell from each end: with only 0.5-cell steps the first drawn segment still kinks 4-12 deg. AerialMath.Droop/SpanTs, SittingChecks.PoleTops.
+home: src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs

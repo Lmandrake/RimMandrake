@@ -63,7 +63,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool cutWiresOnOwnerChange = true;
         /// <summary>Design 2.5: each strand dips into a small drip loop below its insulator. Default ON (owner by card 2026-10-15; built OFF 2026-10-10):
         /// the spans reviewed before had none.</summary>
-        public static bool dripLoops = true;
+        public static bool dripLoops = AerialMath.DripLoopsDefault;
         public const double DripDepth = 0.12, DripReach = 0.45;
 
         public override void ExposeData()
@@ -91,7 +91,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
             Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
-            Scribe_Values.Look(ref dripLoops, "dripLoops", true);
+            Scribe_Values.Look(ref dripLoops, "dripLoops", AerialMath.DripLoopsDefault);
             RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
         }
 
@@ -118,7 +118,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             fallenWireKnockback = 2;
             wireDownAlert = true;
             cutWiresOnOwnerChange = true;
-            dripLoops = true;
+            dripLoops = AerialMath.DripLoopsDefault;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);

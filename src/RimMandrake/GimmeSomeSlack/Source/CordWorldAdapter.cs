@@ -20,6 +20,13 @@ namespace RimMandrake.GimmeSomeSlack
         internal static Cell C(IntVec3 c) => new Cell(c.x, c.z);
         internal static IntVec3 I(Cell c) => new IntVec3(c.X, 0, c.Z);
 
+        /// <summary>Every spawned machine power comp, including comps absent from the current net lists.
+        /// Conduits themselves are cells, not machine nodes.</summary>
+        internal static IEnumerable<CompPower> MachinePowerComps(Map map) =>
+            map.listerThings.AllThings.OfType<ThingWithComps>()
+                .Where(th => th.Spawned && !ConduitVisuals.IsTarget(th.def) && !ConduitVisuals.IsOtherConduit(th.def))
+                .SelectMany(th => th.AllComps.OfType<CompPower>());
+
         internal static CordWorld Snapshot(Map map) => Snapshot(map, null);
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: with a cache, the per-cell base (fog, walls, doors, water,
@@ -52,6 +59,15 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>FullBase into <paramref name="into"/> (Reset in place; a new world when null or another size): the
         /// SnapshotCache's periodic check rescan refills its spare instead of allocating a whole-map world.</summary>
+        /// <summary>Furniture a cord's slack should not wander under (<see cref="CordWorld.IsFurniture"/>): a building of two cells or more drawn over the floor,
+        /// a bed, a table, a shelf, a dresser; not a door, a machine (it has its own rule), conduit, a wall or rock. Asked only of a walkable cell.</summary>
+        private static bool Furniture(Building ed) =>
+            ed != null && !(ed is Building_Door) && ed.def.building != null && !ed.def.building.isNaturalRock && ed.def.size.x * ed.def.size.z >= 2
+            && ed.TryGetComp<CompPower>() == null && !ConduitVisuals.IsConduitRuin(ed.def) && !IsLinear(ed.def);
+
+        /// <summary>A furniture cell's route cost (a tree's is 1.5): a cord goes round a bed by up to this many cells a cell rather than in under it.</summary>
+        internal const float FurnitureCost = 3f;
+
         internal static CordWorld FullBase(Map map, CordWorld into)
         {
             int w = map.Size.x, h = map.Size.z;
@@ -74,6 +90,7 @@ namespace RimMandrake.GimmeSomeSlack
                     ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
                     t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
                 if (k.HasValue) world.SetBlocked(cell, k.Value);
+                else if (Furniture(ed)) { world.SetFurniture(cell); world.SetExtraCost(cell, FurnitureCost); }
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);
@@ -88,12 +105,13 @@ namespace RimMandrake.GimmeSomeSlack
             IntVec3 c = map.cellIndices.IndexToCell(idx);
             var cell = new Cell(c.x, c.z);
             BlockKind? k;
-            bool door = false;
+            bool door = false, furn = false;
             if (map.fogGrid.IsFogged(idx)) k = BlockKind.Rock;
             else
             {
                 Building ed = map.edificeGrid[idx];
                 door = ed is Building_Door;
+                furn = Furniture(ed);
                 TerrainDef t = map.terrainGrid.TerrainAt(idx);
                 k = SnapshotBlock.Of(map.pathing.Normal.pathGrid.WalkableFast(idx), ed != null,
                     ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && (ed.TryGetComp<CompPower>() != null || ConduitVisuals.IsConduitRuin(ed.def)),
@@ -110,8 +128,9 @@ namespace RimMandrake.GimmeSomeSlack
             bool busy = linear && !k.HasValue;
             if ((world.IsDoor(cell) && !door) || (world.IsBusy(cell) && !busy)) return false;
             world.SetBlocked(cell, k ?? BlockKind.None);
+            world.SetFurniture(cell, furn && !k.HasValue);
             if (door) world.SetDoor(cell);
-            world.SetExtraCost(cell, tree ? 1.5f : 0f);
+            world.SetExtraCost(cell, tree ? 1.5f : furn && !k.HasValue ? FurnitureCost : 0f);
             if (busy) world.SetBusy(cell);
             return true;
         }
@@ -160,20 +179,31 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (CompPower c in net.connectors)
                     if (c?.parent != null && c.parent.Spawned) connectors.Add(c);
             }
-            // transmitter buildings (batteries, switches): nodes hooked to every orthogonally
-            // adjacent conduit cell around their footprint
+            // transmitter buildings (batteries, switches, generators): nodes hooked to the conduit around their footprint, one cord a run
+            Dictionary<Cell, int> conduitRuns = null;
+            var touching = new List<Cell>();
             foreach (CompPower t in transmitterBuildings)
             {
                 Thing th = t.parent;
                 var m = new MachineInfo { Id = "t" + th.thingIDNumber, Kind = KindOf(t, true) };
                 CellRect r = th.OccupiedRect();
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+                touching.Clear();
                 foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(th))
-                    if (world.IsConduit(C(adj)) && !m.Hookups.Contains(C(adj))) m.Hookups.Add(C(adj));
+                    if (world.IsConduit(C(adj)) && !touching.Contains(C(adj))) touching.Add(C(adj));
+                m.Hookups.AddRange(HookupPick.PickCarrier(world, touching, ref conduitRuns));
+                ArtInsets(th.def, m);
                 SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
+                // a standing pole or mast takes its floor cord under its foot (owner, sitting 2026-11-08: "Items should connect to the bottom of a power pole")
+                if (!m.HasHome && Aerial.CompAerialAnchor.Of(th) != null && !(th.def.building?.isAttachment ?? false)) m.Foot = true;
                 transmitterMachines[th] = m;
                 if (m.Hookups.Count > 0) world.Machines.Add(m);
             }
+            // round 3: a transmitter building touching no conduit but touching a drawn one (a solar panel against a solar panel or a battery)
+            // is on that net through it: its cord runs to its neighbour (HookupPick.ChainTransmitters; CordGraph runs it again, idempotent)
+            var tlist = transmitterMachines.Values.ToList();
+            HookupPick.ChainTransmitters(tlist);
+            foreach (MachineInfo m in tlist) if (m.Hookups.Count == 0 && m.MachineLinks.Count > 0 && !world.Machines.Contains(m)) world.Machines.Add(m);
             // connectors (consumers, generators, lamps, batteries wired by a hookup)
             foreach (CompPower c in connectors)
             {
@@ -212,11 +242,46 @@ namespace RimMandrake.GimmeSomeSlack
             }
             AddRuinHookups(map, world, fog);
             AddTapNodes(map, world);
+            AddParentHookups(map, world, transmitterMachines);
             // round 2: machines in id order, not power-net list order, so a net rebuilt in another order (a hypothesis for the
             // live far-dig re-reduce) leaves CordBuilder's graph inputs, and so the graph, unchanged. OrderBy is stable.
             List<MachineInfo> byId = world.Machines.OrderBy(m => m.Id, StringComparer.Ordinal).ToList();
             world.Machines.Clear();
             world.Machines.AddRange(byId);
+        }
+
+        /// <summary>A final fallback for every machine power comp: when no existing cord reaches it, draw its actual
+        /// connectParent, including a nonadjacent parent within six cells. Existing hookups and incoming/outgoing machine
+        /// links take precedence. PatchCable parents, including aerial anchors, retain their existing drawing.</summary>
+        private static void AddParentHookups(Map map, CordWorld world, Dictionary<Thing, MachineInfo> transmitters)
+        {
+            var machines = new Dictionary<string, MachineInfo>(StringComparer.Ordinal);
+            foreach (MachineInfo m in world.Machines) machines[m.Id] = m;
+            var incoming = new HashSet<string>(world.Machines.SelectMany(m => m.MachineLinks));
+            foreach (CompPower c in MachinePowerComps(map))
+            {
+                CompPower parent = c.connectParent;
+                Thing pt = parent?.parent;
+                if (pt == null || !pt.Spawned) continue;
+                HookupDraw how = ConduitVisuals.HookupTo(pt);
+                if (how == HookupDraw.PatchCable) continue;
+                MachineInfo m = ParentMachine(c, transmitters, machines);
+                if (m.Hookups.Count > 0 || m.MachineLinks.Count > 0 || incoming.Contains(m.Id)) continue;
+                Cell? at = HookupPick.ParentHookup(
+                    new Cell(m.X0, m.Z0), new Cell(m.X0 + m.W - 1, m.Z0 + m.H - 1), C(pt.Position),
+                    cell => how == HookupDraw.MachineLink || world.IsConduit(cell));
+                if (!at.HasValue) continue;
+                if (how == HookupDraw.ConduitCell) m.Hookups.Add(at.Value);
+                else
+                {
+                    MachineInfo tm = ParentMachine(parent, transmitters, machines);
+                    if (tm.Id == m.Id) continue;
+                    m.MachineLinks.Add(tm.Id);
+                    incoming.Add(tm.Id);
+                    if (!world.Machines.Contains(tm)) world.Machines.Add(tm);
+                }
+                if (!world.Machines.Contains(m)) world.Machines.Add(m);
+            }
         }
 
         /// <summary>WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: a wrecked machine draws in the conduit touching it as its repaired
@@ -312,6 +377,7 @@ namespace RimMandrake.GimmeSomeSlack
             Thing wall = GenConstruct.GetWallAttachedTo(th);
             if (wall == null) return;
             m.HasHome = true; m.HomeX = wall.Position.x; m.HomeZ = wall.Position.z;
+            m.BaseDz = 0;
         }
 
         /// <summary>Where a machine's drawn art stands in from its footprint edge (owner review 2026-10-04 B10): the cord runs on
@@ -321,12 +387,62 @@ namespace RimMandrake.GimmeSomeSlack
         public static readonly System.Collections.Generic.Dictionary<string, float[]> InsetsSNEW =
             new System.Collections.Generic.Dictionary<string, float[]> { { "SolarGenerator", new[] { 0.40f, 0f, 0f, 0f } } };
 
-        private static void ArtInsets(ThingDef d, MachineInfo m)
+        // Owner 2026-11-08: under to the base centre, 0.25 cell south of the
+        // footprint centroid. Exact names exclude wall lamps, SunLamp and ruins.
+        private static readonly Dictionary<string, double> BaseOffsets =
+            new Dictionary<string, double>(StringComparer.Ordinal)
+            {
+                { "StandingLamp", -0.25 },
+                { "StandingLampColored", -0.25 },
+                { "Morbid_StandingLamp", -0.25 },
+                { "Rustic_StandingLamp", -0.25 },
+                { "Spikecore_StandingLamp", -0.25 },
+                { "Techist_StandingLamp", -0.25 },
+                { "Totemic_StandingLamp", -0.25 },
+                { "TorchLamp", -0.25 },
+                { "Morbid_TorchLamp", -0.25 },
+                { "Rustic_TorchLamp", -0.25 },
+                { "Spikecore_TorchLamp", -0.25 },
+                { "Totemic_TorchLamp", -0.25 },
+                { "BuildTorchLamp", -0.25 }
+            };
+
+        private static MachineInfo ParentMachine(CompPower c, Dictionary<Thing, MachineInfo> transmitters,
+            Dictionary<string, MachineInfo> machines)
         {
-            if (d == null || !InsetsSNEW.TryGetValue(d.defName, out float[] v)) return;
-            m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
+            Thing th = c.parent;
+            if (transmitters.TryGetValue(th, out MachineInfo m)) return m;
+            string suffix = th.thingIDNumber.ToString();
+            if (machines.TryGetValue("t" + suffix, out m) || machines.TryGetValue("c" + suffix, out m)) return m;
+            bool transmitter = c.TransmitsPowerNow;
+            m = new MachineInfo { Id = (transmitter ? "t" : "c") + suffix, Kind = KindOf(c, transmitter) };
+            CellRect r = th.OccupiedRect();
+            m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+            ArtInsets(th.def, m);
+            SetWallHome(th, m);
+            if (!m.HasHome && Aerial.CompAerialAnchor.Of(th) != null && !(th.def.building?.isAttachment ?? false)) m.Foot = true;
+            machines[m.Id] = m;
+            return m;
         }
 
+        private static void ArtInsets(ThingDef d, MachineInfo m)
+        {
+            m.DefName = d == null ? null : d.defName;
+            m.BaseDz = 0;
+            if (d == null) return;
+            if (m.W == 1 && m.H == 1 && !m.HasHome && !m.Foot
+                && !(d.building != null && d.building.isAttachment)
+                && BaseOffsets.TryGetValue(d.defName, out double dz))
+                m.BaseDz = dz;
+            if (InsetsSNEW.TryGetValue(d.defName, out float[] v))
+            {
+                m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
+            }
+        }
+
+        /// <summary>A standing lamp reads as a Consumer on purpose: the cord slides under it to the centroid like any other
+        /// device, the look the owner walked on 2026-10-16. MachineKind.Lamp is the Python oracle's node type (its top-of-the-lamp
+        /// plug point predates the centroid rule, round 2); only the oracle's scenes raise it.</summary>
         private static MachineKind KindOf(CompPower c, bool transmitter)
         {
             if (c is CompPowerPlant) return MachineKind.Source;

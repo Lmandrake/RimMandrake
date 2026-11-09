@@ -118,11 +118,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 {
                     if (exclude != null && exclude.Contains(n)) continue;
                     if (cutA != null && ((x == cutA && n == cutB) || (x == cutB && n == cutA)) && !Touching(x, n)) continue;
+                    // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE: a span still waiting for its own check is not there yet, as a member
+                    // still waiting is not; else two spans strung together each find the other's way round and neither merges
+                    if (cutA != null && IsPendingSpan(x, n) && !Touching(x, n)) continue;
                     if (seen.Add(n)) stack.Push(n);
                 }
             }
             res.Sort((p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber));
             return res;
+        }
+
+        private bool IsPendingSpan(Thing a, Thing b)
+        {
+            foreach ((Thing p, Thing q) in pendingLinks)
+                if ((p == a && q == b) || (p == b && q == a)) return true;
+            return false;
         }
 
         private static bool Touching(Thing a, Thing b)
@@ -262,7 +272,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             ConduitStyles.Plan plan = ConduitStyles.PlanPlacement(ownLook, ownColour, infos, StylePicker.DefaultLook);
             if (plan.Look == null) return;
             string colour = Apply(plan, runs, infos);
-            if (plan.MaterialiseWinner) Unpaint(x); else Paint(x, plan.Look, colour);
+            if (plan.MaterialiseWinner) Unpaint(x); else Paint(x, plan.Look, colour, true);
             if (runs.Count == 1) adopted++;
             Finish();
             if (plan.Repaint.Count > 0) Announce(plan, infos, x);
@@ -291,10 +301,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private string Apply(ConduitStyles.Plan plan, List<List<Thing>> runs, List<ConduitStyles.Run> infos)
         {
             string colour = plan.Colour;
+            // GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK: joined to a run that stores its look, a member storing nothing stores it too, though it
+            // draws the same today: left bare it would follow a later change of the default, and the one run would draw two looks
+            bool stored = !plan.MaterialiseWinner && plan.Look != null;
             foreach (int i in plan.Repaint)
             {
                 List<Thing> lamps = LampsOf(runs[i]);            // round 6: the loser's lamps, read before it is repainted
-                foreach (Thing t in runs[i]) { if (plan.MaterialiseWinner) Unpaint(t); else Paint(t, plan.Look, colour); }
+                foreach (Thing t in runs[i]) { if (plan.MaterialiseWinner) Unpaint(t); else Paint(t, plan.Look, colour, stored); }
                 foreach (Thing l in lamps)
                 {
                     if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false, ForeignStyled(l))) { lampsKeptOwn++; continue; }

@@ -246,7 +246,7 @@ class Net:
             return "open"
         if nxt in self.rock:
             return "grommet"
-        for k in range(1, 4):
+        for k in range(1, 7):
             q = (c[0] + o[0] * k, c[1] + o[1] * k)
             if q in self.cells:
                 return "break"
