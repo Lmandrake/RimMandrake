@@ -5898,3 +5898,4 @@
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T12:18:34Z","tsn":1794226714319646974}
 {"seat":"RUNNER","event":"live","id":"OPS_TESTQ_UNSTICK_ECPK","result":"kept","detail":"sweep: running again","ts":"2026-11-09T16:18:07Z","tsn":1794241087507979082}
 {"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_DD30","kind":"task","needs":"offline","title":"SteveDesktop lane PAUSED, unowned 10 min: paused until 2026-11-09T22:22:55Z: STEVE_BUILD_ARTISAN_LOOPER_THIRTEEN_MINUTES: GSS on game A and Graffiti on game B s","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-09T22:34:32Z","tsn":1794263672886830365}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_DD30","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-11-09T22:54:33Z","tsn":1794264873192786944}
