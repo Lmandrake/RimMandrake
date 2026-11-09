@@ -95,7 +95,7 @@ def test_refuse():
     for args, word in (((("BENCH", "NOT_AN_ITEM", "b", "sonnet", 600, 5)), "not a ledger item"),
                        ((("BENCH", "SOME_ITEM_TO_BUILD", "b", "gpt", 600, 5)), "model"),
                        ((("BENCH", "SOME_ITEM_TO_BUILD", "  ", "sonnet", 600, 5)), "empty brief"),
-                       ((("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 99999, 5)), "--max-s"),
+                       ((("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 30, 5)), "--max-s"),
                        ((("NOPE", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5)), "seat")):
         rc, text = DH.launch(*args, now=T0, runner=run, known=KNOWN, clone=CLONE)
         check(rc == 2 and word in text, "refuse: %s (%s)" % (word, text[:60]))
@@ -118,6 +118,17 @@ def test_launch_and_finish():
     check("RuntimeMaxSec=%d" % (1800 + DH.GRACE_S) in argv and "CLAUDE_SCOPE_RUNTIME_MAX=%d" % (1800 + DH.GRACE_S) in argv,
           "argv: wall time bounded twice (unit and scope)")
     check(argv[argv.index("--max-budget-usd") + 1] == "12", "argv: spend bounded by --max-budget-usd")
+    calls2, run2 = recorder()
+    rc2, _ = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build the thing.", "opus", DH.DEFAULT_MAX_S, 12, now=T0,
+                       runner=run2, known=KNOWN, clone=CLONE)
+    a2 = calls2[0][0]
+    check(rc2 == 0 and DH.DEFAULT_MAX_S is None, "unbounded: the default is no limit")
+    check(not any(x.startswith("RuntimeMaxSec=") or x.startswith("CLAUDE_SCOPE_RUNTIME_MAX") for x in a2),
+          "unbounded: argv carries no RuntimeMaxSec and no scope bound")
+    msg2 = a2[a2.index("--") :][a2[a2.index("--"):].index("-p") + 1]
+    check("no wall-time bound" in msg2 and "Wall-time bound" not in msg2, "unbounded: footer says no wall-time bound")
+    check(a2[a2.index("--max-budget-usd") + 1] == "12", "unbounded: spend bound kept")
+    check(DH.parse_max_s("none") is None and DH.parse_max_s("0") is None and DH.parse_max_s("900") == 900, "parse_max_s")
     check(any(a.startswith("ExecStopPost=/usr/bin/python3 ") and a.endswith("finish --unit " + argv[argv.index("--unit") + 1])
               for a in argv), "argv: ExecStopPost runs finish for this unit")
     check("RM_DISPATCHER_STATE=" + os.environ["RM_DISPATCHER_STATE"] in argv, "argv: the finish step finds the record")

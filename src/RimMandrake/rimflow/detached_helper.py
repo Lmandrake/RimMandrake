@@ -5,7 +5,7 @@ An in-process helper (the Agent tool) dies with its window, so a window past its
 one runs. A detached run lives in its own transient systemd unit and survives the window's restart:
 
   python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item ITEM_ID --brief-file F \
-      [--model opus|sonnet] [--max-s 3600] [--budget-usd 15]
+      [--model opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
@@ -16,7 +16,8 @@ the whole run (lesson 20261107T214121Z-BENCH-detached-helper-item-not-origin). O
 infrastructure/state/ledger/events/ at origin/main; no hit refuses (exit 2) and names the local shard to publish first.
 It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
-model passed, wall time bounded twice (the unit's RuntimeMaxSec and claude_bounded's scope), spend bounded by
+model passed, NO wall-time limit by default (owner, 2026-11-08: "No time limits please"; --max-s none or 0). An explicit
+--max-s SECONDS still bounds it twice (the unit's RuntimeMaxSec and claude_bounded's scope). Spend is bounded by
 claude --max-budget-usd. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
 imperative NEXT on the item as a rimflow note and publish the shard.
 finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
@@ -47,8 +48,8 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import run_tmp  # noqa: E402  (its own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
 
-DEFAULT_MAX_S = 3600
-CAP_MAX_S = 4 * 3600
+DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCOPE_RUNTIME_MAX (owner 2026-11-08)
+MIN_MAX_S = 60
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 DEFAULT_BUDGET_USD = 15.0
 MODELS = ("opus", "sonnet", "haiku")
@@ -61,7 +62,7 @@ FOOTER = """
 
 ---
 You are a DETACHED helper: you run in your own systemd unit, outside any window, in the clone {clone} (your cwd).
-Ledger item: {item}. Seat: {seat}. Wall-time bound: {max_s} s; spend bound ${budget}.
+Ledger item: {item}. Seat: {seat}. {bound_text}; spend bound ${budget}.
 - Work only in that clone. Land code with `./publish -m "subject" <explicit paths>` (never git add -A, never --force).
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
@@ -396,7 +397,7 @@ def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
     bounded = os.path.join(clone, "src", "RimMandrake", "Utils", "claude_bounded.sh")
-    bound = int(rec["max_s"]) + GRACE_S
+    bound = int(rec["max_s"]) + GRACE_S if rec.get("max_s") else None     # None: unbounded
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     finish = "/usr/bin/python3 %s finish --unit %s" % (shlex.quote(os.path.abspath(__file__)), unit)
     wrapup = "-+/usr/bin/python3 %s unit --unit %s --seat %s --clone %s" % (
@@ -416,9 +417,16 @@ def launch_argv(rec, msg, claude):
             "--setenv", "CLAUDE_SCOPE_UNIT=" + scope_name(seat, unit)[:-len(".scope")],
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
-            "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
-            "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=30",
+            *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
+            "-p", "TimeoutStopSec=30",
             "--setenv", "PATH=" + path, "--"] + cmd
+
+
+def parse_max_s(v):
+    """None, 0, "", "none", "0" -> None (unbounded); else whole seconds (ValueError on junk)."""
+    if v is None or str(v).strip().lower() in ("", "none", "0", "infinity", "unbounded"):
+        return None
+    return int(v)
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None):
@@ -430,9 +438,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         return 2, "refused: model %r is not one of %s" % (model, ", ".join(MODELS))
     if not (brief or "").strip():
         return 2, "refused: empty brief"
-    max_s = int(max_s)
-    if not 60 <= max_s <= CAP_MAX_S:
-        return 2, "refused: --max-s %d outside 60..%d" % (max_s, CAP_MAX_S)
+    max_s = parse_max_s(max_s)
+    if max_s is not None and max_s < MIN_MAX_S:
+        return 2, "refused: --max-s %d is under %d (use none for no limit)" % (max_s, MIN_MAX_S)
     if known is None:
         import helper_checkpoint as HC
         known = HC.known_items()
@@ -454,7 +462,8 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
-    msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat, max_s=max_s, budget="%g" % budget)
+    msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
+                                         bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound", budget="%g" % budget)
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)
@@ -467,9 +476,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         return 1, "LAUNCH FAILED %s: %s" % (unit, rec["why"])
     rec["status"] = "running"
     write_record(rec, root)
-    return 0, ("DETACHED %s\n  item %s, model %s, bound %d s, $%g\n  clone %s (%s)\n  record %s\n"
+    return 0, ("DETACHED %s\n  item %s, model %s, bound %s, $%g\n  clone %s (%s)\n  record %s\n"
                "  it ends with a note on %s and a line in the Conductor log; `detached_helper.py status` lists runs"
-               % (unit, item, model, max_s, budget, clone, how, record_path(unit, root), item))
+               % (unit, item, model, ("%d s" % max_s) if max_s else "none", budget, clone, how, record_path(unit, root), item))
 
 
 def conductor_log_path():
@@ -584,7 +593,7 @@ def main(argv=None):
     g.add_argument("--brief")
     g.add_argument("--brief-file")
     a.add_argument("--model", default="sonnet")
-    a.add_argument("--max-s", type=int, default=DEFAULT_MAX_S)
+    a.add_argument("--max-s", default=DEFAULT_MAX_S, help="seconds, or none/0 for no wall-time limit (default)")
     a.add_argument("--budget-usd", type=float, default=DEFAULT_BUDGET_USD)
     a.add_argument("--clone", help="an existing clone to run in (default: a pool clone <ITEM>.det)")
     f = sub.add_parser("finish")
