@@ -1178,6 +1178,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.LaidRatio = n > 0 ? laid / n / Math.Max(L, 1e-6) : 0;
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
+            SeatPlugTails(g, e, piece, opt);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -2431,6 +2432,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.LaidRatio = n > 0 ? laid / n / Math.Max(Ltot, 1e-6) : 0;
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
+            SeatPlugTails(g, e, piece, opt);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -2567,6 +2569,139 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static CordDecal WallPlug(V2 headFace, V2 into) =>
             new CordDecal(DecalKind.Plug, headFace - into * (CordAudit.PlugFaceU * WallPlugScale), Math.Atan2(into.Z, into.X), WallPlugScale)
             { OverFace = WallMount.FaceOf(into) == WallFaceKind.Side };
+
+        /// <summary>Owner 2026-11-09 8:10 AM PST: "the wires don't leave the outlet plug at the right angle. You're not matching both position and slope.
+        /// ... Match position AND slope, and match the slope where your adapter plug ENDS... that's the point that must agree." Where the side-view
+        /// plug's strain-relief boot ends (ExtCord Plug.png's opaque tail end, art u = -ExtPlugBootU in plug widths from the texture centre), and how
+        /// far along the cord past that point (cells) the cord eases from the plug's own axis back onto its laid course.</summary>
+        public const double ExtPlugBootU = 0.102, SeatBlend = 0.4, SeatStiff = 1.6;
+        private const double SeatStep = 0.04;
+
+        /// <summary>A fitting a cord end leaves: the point where the fitting ends (Boot) and the way the cord leaves it (Out). A strip's own lead
+        /// leaves from its tip under the strip's end cap (Lead: the boot is the strand's own tip).</summary>
+        private sealed class PlugSeat { public V2 Boot, Out, LeadTip; public bool Lead; }
+
+        private static double Dot(V2 a, V2 b) => a.X * b.X + a.Z * b.Z;
+
+        /// <summary>Lays the end of every cord leaving a Modern side-view plug (an east/west wall plug, a device plug) or a power strip's own lead
+        /// again so it agrees with the fitting in position AND slope where the fitting ends: straight along the plug's axis from the tip to the boot
+        /// end, then a cubic eased from the axis onto the laid cord SeatBlend further on (owner 2026-11-09 8:10 AM). North wall plugs (no OverFace)
+        /// and strip sockets (PlugTop, <see cref="CordPlugExit"/>) are left as they are.</summary>
+        private static void SeatPlugTails(CordGraph g, CordEdge e, LaidPiece piece, BuildOptions opt)
+        {
+            if (piece.Strands.Count == 0) return;
+            var seats = new List<PlugSeat>();
+            foreach (CordDecal d in piece.Decals)
+            {
+                if (d.Kind != DecalKind.Plug) continue;
+                bool wall = d.OverFace && d.Scale == WallPlugScale;
+                bool device = !d.OverFace && d.Scale == PlugScale && opt.PileFor(piece.Owner) == PileArt.Strips;
+                if (!wall && !device) continue;
+                V2 dir = new V2(Math.Cos(d.Angle), Math.Sin(d.Angle));
+                seats.Add(new PlugSeat { Boot = d.Pos - dir * (ExtPlugBootU * d.Scale), Out = -dir });
+            }
+            foreach (bool atA in new[] { true, false })
+            {
+                VId v = atA ? e.A : e.B;
+                CordNode nd = g.Nodes[v];
+                if (nd.Type != NodeType.Junction || opt.PileFor(nd.Cell) != PileArt.Strips) continue;
+                StripPose sp = PoseStrip(g, v, opt.Seed);
+                if (StripSocketFor(g, v, e, atA, sp) >= 0) continue;
+                seats.Add(new PlugSeat { LeadTip = sp.LeadTip, Out = sp.Along, Lead = true });
+            }
+            if (seats.Count == 0) return;
+            foreach (CordStrand s in piece.Strands)
+            {
+                if (s.Lifted || s.OverFace || s.SwayW != null || s.Pts == null || s.Pts.Count < 2) continue;
+                List<V2> P = s.Pts;
+                int n = P.Count;
+                // a dive end seats too: DiveDecor plugs a Modern wall crossing's strand ends into the wall
+                PlugSeat a = s.WhipA > 0 ? null : SeatOf(seats, P[0]);
+                PlugSeat b = s.WhipB > 0 ? null : SeatOf(seats, P[n - 1]);
+                V2 bootA = a == null ? P[0] : SeatBoot(a, P[0]), bootB = b == null ? P[n - 1] : SeatBoot(b, P[n - 1]);
+                if (a == null && b == null) continue;
+                double[] cum = Geo.CumLen(P);
+                double L = cum[n - 1];
+                int jA = 0, jB = n - 1;
+                if (a != null)
+                {
+                    double want = V2.Dist(P[0], bootA) + SeatBlend;
+                    jA = -1;
+                    for (int i = 1; i < n; i++)
+                        if (cum[i] >= want && Dot(P[i] - bootA, a.Out) >= 0.05) { jA = i; break; }
+                }
+                if (b != null)
+                {
+                    double want = V2.Dist(P[n - 1], bootB) + SeatBlend;
+                    jB = -1;
+                    for (int i = n - 2; i >= 0; i--)
+                        if (L - cum[i] >= want && Dot(P[i] - bootB, b.Out) >= 0.05) { jB = i; break; }
+                }
+                bool bridge = a != null && b != null && (jA < 0 || jB < 0 || jA >= jB);
+                if (!bridge && a != null && jA < 0) jA = n - 1;
+                if (!bridge && b != null && jB < 0) jB = 0;
+                // a tied strain-relief loop inside a stretch laid again would lose its band: leave that end alone
+                if (s.Ties != null && s.Ties.Count > 0)
+                {
+                    if (bridge) continue;
+                    if (a != null && s.Ties.Any(t => t.S0 < cum[jA])) { a = null; jA = 0; bootA = P[0]; }
+                    if (b != null && s.Ties.Any(t => t.S1 > cum[jB])) { b = null; jB = n - 1; bootB = P[n - 1]; }
+                    if (a == null && b == null) continue;
+                }
+                var q = new List<V2>(n + 24);
+                void Put(V2 p) { if (q.Count == 0 || V2.Dist(q[q.Count - 1], p) > 1e-6) q.Add(p); }
+                void Line(V2 p0, V2 p1)
+                {
+                    int m = Math.Max(1, (int)Math.Ceiling(V2.Dist(p0, p1) / SeatStep));
+                    for (int k = 0; k <= m; k++) Put(p0 + (p1 - p0) * ((double)k / m));
+                }
+                // a cubic Hermite whose handle at a fitting end is SeatStiff times longer: the cord holds the plug's axis a little way, then turns
+                void Ease(V2 p0, V2 t0, V2 p1, V2 t1, bool stiff0, bool stiff1)
+                {
+                    double m = V2.Dist(p0, p1), m0 = stiff0 ? m * SeatStiff : m, m1 = stiff1 ? m * SeatStiff : m;
+                    int c = Math.Max(2, (int)Math.Ceiling(m * 1.3 / SeatStep));
+                    for (int k = 0; k <= c; k++)
+                    {
+                        double u = (double)k / c, u2 = u * u, u3 = u2 * u;
+                        Put(p0 * (2 * u3 - 3 * u2 + 1) + t0 * (m0 * (u3 - 2 * u2 + u)) + p1 * (-2 * u3 + 3 * u2) + t1 * (m1 * (u3 - u2)));
+                    }
+                }
+                V2 Tan(int j) => (j <= 0 ? P[1] - P[0] : j >= n - 1 ? P[n - 1] - P[n - 2] : P[j + 1] - P[j - 1]).Norm();
+                if (a != null) Line(P[0], bootA); else Put(P[0]);
+                double headCut = 0;
+                if (bridge) Ease(bootA, a.Out, bootB, -b.Out, true, true);
+                else
+                {
+                    if (a != null) Ease(bootA, a.Out, P[jA], Tan(jA), true, false);
+                    headCut = Geo.Length(q) - cum[jA];
+                    for (int i = jA; i <= jB; i++) Put(P[i]);
+                    if (b != null) Ease(P[jB], Tan(jB), bootB, -b.Out, false, true);
+                }
+                if (b != null) Line(bootB, P[n - 1]); else Put(P[n - 1]);
+                if (q.Count < 2) continue;
+                if (s.Ties != null && headCut != 0)
+                    for (int i = 0; i < s.Ties.Count; i++) { CordTie t = s.Ties[i]; t.S0 += headCut; t.S1 += headCut; s.Ties[i] = t; }
+                s.Pts = q;
+            }
+        }
+
+        private static PlugSeat SeatOf(List<PlugSeat> seats, V2 tip)
+        {
+            foreach (PlugSeat st in seats)
+            {
+                if (st.Lead)
+                {
+                    if (V2.Dist(tip, st.LeadTip) < 0.08) return st;
+                    continue;
+                }
+                V2 d = tip - st.Boot;
+                double al = Dot(d, st.Out), lat = Math.Abs(Dot(d, st.Out.Perp));
+                if (lat < 0.03 && al > -0.6 && al < 0.03) return st;
+            }
+            return null;
+        }
+
+        private static V2 SeatBoot(PlugSeat st, V2 tip) => st.Lead ? tip : st.Boot;
         /// <summary>The strip's bar in PowerStrip.png, canvas widths from the centre: middle (X, Z) and half sizes.</summary>
         public const double StripBarX = -0.0234, StripBarZ = -0.0547, StripBarHalfAlong = 0.43, StripBarHalfAcross = 0.086;
         /// <summary>How far off square a junction strip lies, radians: dropped on the floor, not installed.</summary>
