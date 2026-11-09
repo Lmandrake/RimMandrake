@@ -5845,3 +5845,7 @@
 {"seat":"RUNNER","event":"raise","id":"STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-08T21:03:21Z","tsn":1794171801668033037}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 88 min ago (limit 15 min)","ts":"2026-11-08T21:03:26Z","tsn":1794171806357363599}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-08T21:03:31Z","tsn":1794171811069723903}
+{"seat":"RUNNER","event":"live","id":"OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE","result":"broken","detail":"role Operations last launched 173515 s ago (max 172800)","ts":"2026-11-09T02:33:24Z","tsn":1794191604101939601}
+{"seat":"RUNNER","event":"raise","id":"OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T02:33:28Z","tsn":1794191608860226060}
+{"seat":"RUNNER","event":"live","id":"OPS_NIGHTLY_RED_DIAGNOSE_LNTM","result":"broken","detail":"role Operations last launched 173516 s ago (max 172800)","ts":"2026-11-09T02:33:33Z","tsn":1794191613264425287}
+{"seat":"RUNNER","event":"raise","id":"OPS_NIGHTLY_RED_DIAGNOSE_LNTM","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-09T02:33:37Z","tsn":1794191617527923031}
