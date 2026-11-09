@@ -5889,3 +5889,5 @@
 {"seat":"RUNNER","event":"live","id":"MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:43Z","tsn":1794198823407666725}
 {"seat":"RUNNER","event":"live","id":"NIGHTLY_COP_FIX_RED_ATJKEB_FBYD","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:47Z","tsn":1794198827668416753}
 {"seat":"RUNNER","event":"live","id":"SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:33:51Z","tsn":1794198831911237584}
+{"seat":"RUNNER","event":"live","id":"SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:48:27Z","tsn":1794199707293744157}
+{"seat":"RUNNER","event":"live","id":"STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:48:32Z","tsn":1794199712093252749}
