@@ -5859,3 +5859,13 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_DELEGATED_CARDS","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:42Z","tsn":1794196122338393951}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_DLL_SOURCE_MISMATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:46Z","tsn":1794196126552312517}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_FORGED_VALIDATION","result":"kept","detail":"sweep: running again","ts":"2026-11-09T03:48:50Z","tsn":1794196130754078346}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_HAND_EDITED_SHEET","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:07Z","tsn":1794196987345521757}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_LEDGER_LINT","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:11Z","tsn":1794196991735510377}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_PASTE_HANDOFF","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:15Z","tsn":1794196995979828607}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_SHARED_TREE_MERGE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:20Z","tsn":1794197000240299406}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_TMPFS_CLONE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:24Z","tsn":1794197004630360998}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_UNBOUNDED_AGENT","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:28Z","tsn":1794197008808059899}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_UNLEDGERED_TEXTURE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:33Z","tsn":1794197013012835405}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_BLOCK_WORKTREES","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:37Z","tsn":1794197017307100939}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_CONDUCTOR_GOODBYE","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:41Z","tsn":1794197021665685969}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_QUEUE_LINT","result":"kept","detail":"sweep: running again","ts":"2026-11-09T04:03:45Z","tsn":1794197025870737477}
