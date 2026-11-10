@@ -21,6 +21,7 @@ makes a camp only while its camper list is empty, so the toggle rows run FIRST o
      LordJob_ExitMapNear; a live T3 on the map -> no eligible kind is T3     (A4, A5 passage)
 """
 import argparse
+from live_results import aggregate
 import json
 import os
 import sys
@@ -35,6 +36,10 @@ HOOKS = "RimMandrake.TitanicCreatures.TitanValidationHooks"
 SETTINGS = "RimMandrake.HugeThings.RM_HugeThingsSettings"
 FIELDS = ["corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteCampsEnabled",
           "corpseSiteCampDailyChance", "corpseSiteCampHours", "titanEventsEnabled"]
+
+ROWS = ("A5_both_off", "A3_camp_arrives", "A5_scavengers_off", "A3_camp_leaves", "A5_camps_off", "A2_draw",
+        "A2_eat", "A5_titan_events_off", "A4_water_law", "A4_pending_and_letter",
+        "A4_still_pending_through_tremors", "A4_arrives", "A4_no_second_t3")
 
 
 class Run(object):
@@ -77,7 +82,7 @@ class Run(object):
     def save(self):
         with open(self.out, "w", encoding="utf-8") as f:
             json.dump(dict(script="titan_events_live.py", when=time.strftime("%Y-%m-%dT%H:%M:%S"), rows=self.rows,
-                           calls=self.log), f, indent=1, default=str)
+                           calls=self.log, summary=aggregate(self.rows, ROWS)), f, indent=1, default=str)
 
 
 def parse_site(txt):
@@ -122,7 +127,9 @@ def main():
             print("  restored %r" % dict((f, R.get(f)) for f in FIELDS), flush=True)
             R.save()
     print("rows -> %s" % a.out)
-    return 0
+    summary = aggregate(R.rows, ROWS)
+    print("RESULT: %s" % summary)
+    return 0 if summary["gameplay_pass"] else 1
 
 
 def body(R, a):

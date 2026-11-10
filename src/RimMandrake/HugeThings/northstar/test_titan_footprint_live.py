@@ -4,7 +4,7 @@ titan_test_races_live.py, then the sixth row the item's spec names and that runn
   python.exe src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py [--site X,Z] [--out FILE]
 
 LIST: Huge Things + Huge Things Test Races + Large Pawns (neku.largepawns, workshop 3777700657) + Harmony, all five DLC.
-Exit 0 only when every one of ROWS (the runner's five plus large_pawns_footprint_bridge) is PASS or a MOD-classified FAIL; 2 (no verdict)
+Exit 0 only when every one of ROWS (the runner's five plus large_pawns_footprint_bridge) is PASS; 2 (no verdict)
 when the bridge cannot be reached; 1 else.
 
 R6 large_pawns_footprint_bridge, existing bridge tools only (no new C#):
@@ -18,6 +18,7 @@ R6 large_pawns_footprint_bridge, existing bridge tools only (no new C#):
 The three spawned test titans are left alive on the map (wild, manhunterOnDamageChance 0): throwaway quicktest maps only.
 """
 import argparse
+from live_results import aggregate
 import json
 import math
 import os
@@ -71,13 +72,12 @@ def judge_footprint(ladder, edges):
     return "PASS", d
 
 
+def classification_verdict(rows):
+    return 0 if aggregate(rows, ROWS)["all_rows_classified"] else 1
+
+
 def verdict(rows):
-    got = {r["id"]: r for r in rows}
-    for rid in ROWS:
-        r = got.get(rid)
-        if r is None or not (r["status"] == "PASS" or (r["status"] == "FAIL" and r["cls"] == "MOD")):
-            return 1
-    return 0
+    return 0 if aggregate(rows, ROWS)["gameplay_pass"] else 1
 
 
 def footprint(R, cells):
@@ -154,6 +154,7 @@ def main():
         return L.NO_VERDICT
     with rb:
         R = L.Run(rb, a.out)
+        R.required_rows = ROWS
         R.rows = list(prior)
         mi = R.call("jawa/map_info")
         size = mi.get("size") or mi.get("mapSize") or {}
@@ -166,7 +167,8 @@ def main():
         R.save()
     v = verdict(R.rows)
     print("rows -> %s (five-row runner exit %r)" % (a.out, rc))
-    print("VERDICT: %s (%d rows, %d wanted)" % ("PASS" if v == 0 else "FAIL", len(R.rows), len(ROWS)))
+    print("ALL ROWS CLASSIFIED: %s" % (classification_verdict(R.rows) == 0))
+    print("GAMEPLAY VERDICT: %s (%d rows, %d wanted)" % ("PASS" if v == 0 else "FAIL", len(R.rows), len(ROWS)))
     return v
 
 

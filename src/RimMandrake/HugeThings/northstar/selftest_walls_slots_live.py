@@ -67,7 +67,7 @@ for b_ in (2, 3, 4, 6):
 rc, rows, out = run("--dry-run")
 check(rc == 0 and "DRY RUN" in out, "--dry-run exits 0")
 rc, rows, out = run("--mock")
-check(rc == 0 and rows and not [r for r in rows if r["status"] == "FAIL"], "clean --mock: no FAIL row (%d rows)" % len(rows))
+check(rc != 0 and rows and not [r for r in rows if r["status"] == "FAIL"], "clean --mock: owed work prevents strict success; no FAIL row (%d rows)" % len(rows))
 check(len([r for r in rows if r["status"] == "PASS"]) > 80, "clean --mock exercises > 80 PASS rows")
 # review wave 6 (2026-10-19): a mock run wrote seven ledger-ready `rimflow verify --result pass` lines against the fake game.
 check("verify lines 0 " in out, "a --mock run writes no ledger-ready verify line (a mock proves paths, never the game)")
@@ -76,6 +76,7 @@ check("verify lines 0 " in out, "a partial (--only) run writes no ledger-ready v
 for fault, prefix in (("hold", "A3_"), ("squeeze", "A2_cost"), ("roof", "A3_"), ("rock", "A2_"), ("scrape", "A6_scrape"),
                       ("defaults", "A8_defaults"), ("label", "A8_dialog_group")):
     rc, rows, out = run("--mock", "--mock-fault", fault)
+    check(rc != 0, "planted %s fault returns nonzero strict exit" % fault)
     check(any(r["status"] == "FAIL" and r["id"].startswith(prefix) for r in rows), "--mock-fault %s turns a %s row to FAIL" % (fault, prefix))
 rc, rows, out = run("--mock", "--mock-fault", "unsealed")
 a3 = [r for r in rows if r["criterion"] == "A3"]
@@ -84,5 +85,16 @@ check(a3 and all(r["status"] == "UNMEASURED" and r["cls"] == "SITE" for r in a3)
 rc, rows, out = run("--mock", "--mock-fault", "norock")
 check(any(r["id"] == "A2_canyons" and r["status"] == "UNMEASURED" for r in rows) and not [r for r in rows if r["status"] == "FAIL"],
       "no placeable rock = A2 UNMEASURED, never PASS or FAIL")
+from live_results import aggregate, scrape_widening
+check(scrape_widening([], []) == "UNMEASURED", "no dead flank cannot pass widening")
+check(scrape_widening([(1, 2)], []) == "FAIL", "dead flank still present fails widening")
+check(scrape_widening([(1, 2)], [(1, 2)]) == "PASS", "observed removed flank passes widening")
+for status, cls in (("FAIL", "MOD"), ("UNMEASURED", "SITE"), ("SKIP", "OWED"), ("PASS", "OWED")):
+    check(not aggregate([dict(id="r", status=status, cls=cls)], ["r"])["gameplay_pass"],
+          "%s/%s cannot pass gameplay" % (status, cls))
+check(not aggregate([], ["missing"])["gameplay_pass"], "missing required row cannot pass")
+check(W.verdicts([dict(id="ok", criterion="A7", status="PASS", cls="MOD"),
+                  dict(id="load", criterion="A7", status="SKIP", cls="OWED")])["A7"][0] != "pass",
+      "owed save/load prevents criterion PASS")
 print("FAILS: %d" % len(FAILS))
 sys.exit(1 if FAILS else 0)

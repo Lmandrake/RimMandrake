@@ -133,7 +133,8 @@ def judges():
     check("judge_thick: no penalty fails", L.judge_thick(t2 % ("13.0", "13.0"), tc)[0] == "FAIL")
     rows = [dict(id=i, status="PASS", cls="MOD") for i in L.ROWS]
     check("verdict: five PASS rows -> 0", L.verdict(rows) == 0)
-    check("verdict: a MOD FAIL still has a verdict -> 0", L.verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="FAIL", cls="MOD")]) == 0)
+    check("classification: a MOD FAIL still has a verdict -> 0", L.classification_verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="FAIL", cls="MOD")]) == 0)
+    check("strict verdict: a MOD FAIL -> 1", L.verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="FAIL", cls="MOD")]) == 1)
     check("verdict: an UNMEASURED row -> 1", L.verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="UNMEASURED", cls="SITE")]) == 1)
     check("verdict: a missing row -> 1", L.verdict(rows[:-1]) == 1)
 
@@ -264,6 +265,15 @@ def footprint_row():
     check("judge_footprint: an unread edge fails", F.judge_footprint(good_l, dict(good_e, **{L.T2: None}))[0] == "FAIL")
     rows = [dict(id=r, status="PASS", cls="MOD") for r in F.ROWS]
     check("wrapper verdict: six PASS -> 0", F.verdict(rows) == 0)
+    failed = rows[:-1] + [dict(id=F.FOOT, status="FAIL", cls="MOD")]
+    check("wrapper strict fails but all rows classified", F.verdict(failed) == 1 and F.classification_verdict(failed) == 0)
+    import titan_events_live as E
+    from live_results import aggregate
+    event_rows = [dict(id=r, status="PASS", cls="MOD") for r in E.ROWS]
+    check("events: all expected rows pass", aggregate(event_rows, E.ROWS)["gameplay_pass"])
+    check("events: missing work cannot pass", not aggregate(event_rows[:-1], E.ROWS)["gameplay_pass"])
+    event_rows[-1]["status"] = "FAIL"
+    check("events: planted MOD failure cannot pass", not aggregate(event_rows, E.ROWS)["gameplay_pass"])
     check("wrapper verdict: the runner's five alone -> 1", F.verdict(rows[:-1]) == 1)
     check("wrapper verdict: footprint UNMEASURED SITE (no Large Pawns) -> 1",
           F.verdict(rows[:-1] + [dict(id=F.FOOT, status="UNMEASURED", cls="SITE")]) == 1)

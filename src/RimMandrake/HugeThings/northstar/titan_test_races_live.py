@@ -21,9 +21,10 @@ Rows {id, criterion, status PASS|FAIL|UNMEASURED, cls MOD|SITE|HARNESS, detail};
   R5 thick_roof_route_excluded      ThickRoofCostProbe: a T2's step cost under RoofRockThick >= 2000 and above open ground;
                                     the control's two costs are equal.
 Refuses to judge (UNMEASURED SITE) when the custom tier ladder (tierThresholdsCustom, startup-read) is on.
-Exit 0 when all five rows are PASS or a FAIL classified MOD (the criterion: each row gets a verdict); 1 otherwise.
+Exit 0 only when all five rows PASS; classification coverage is reported separately.
 """
 import argparse
+from live_results import aggregate
 import json
 import os
 import re
@@ -80,6 +81,7 @@ def sites(txt):
 class Run(object):
     def __init__(self, rb, out):
         self.rb, self.out, self.rows, self.log = rb, out, [], []
+        self.required_rows = ROWS
 
     def call(self, tool, **kw):
         try:
@@ -118,17 +120,15 @@ class Run(object):
         os.makedirs(os.path.dirname(self.out), exist_ok=True)
         with open(self.out, "w", encoding="utf-8") as f:
             json.dump(dict(script="titan_test_races_live.py", item=ITEM, when=time.strftime("%Y-%m-%dT%H:%M:%S"), rows=self.rows,
-                           calls=self.log), f, indent=1, default=str)
+                           calls=self.log, summary=aggregate(self.rows, self.required_rows)), f, indent=1, default=str)
+
+
+def classification_verdict(rows):
+    return 0 if aggregate(rows, ROWS)["all_rows_classified"] else 1
 
 
 def verdict(rows):
-    """0 when every one of ROWS has exactly a PASS or a MOD-classified FAIL; 1 otherwise (UNMEASURED, HARNESS, missing)."""
-    got = {r["id"]: r for r in rows}
-    for rid in ROWS:
-        r = got.get(rid)
-        if r is None or not (r["status"] == "PASS" or (r["status"] == "FAIL" and r["cls"] == "MOD")):
-            return 1
-    return 0
+    return 0 if aggregate(rows, ROWS)["gameplay_pass"] else 1
 
 
 def judge_tiers(rep):
@@ -309,7 +309,8 @@ def main():
             R.save()
     print("rows -> %s" % a.out)
     v = verdict(R.rows)
-    print("VERDICT: %s (%d rows)" % ("PASS" if v == 0 else "FAIL", len(R.rows)))
+    print("ALL ROWS CLASSIFIED: %s" % (classification_verdict(R.rows) == 0))
+    print("GAMEPLAY VERDICT: %s (%d rows)" % ("PASS" if v == 0 else "FAIL", len(R.rows)))
     return v
 
 

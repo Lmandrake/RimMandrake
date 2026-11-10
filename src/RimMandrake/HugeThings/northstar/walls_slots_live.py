@@ -57,6 +57,7 @@ Unknown: how a bridge places NATURAL ROCK (spawn_batch / build_batch with the ro
 cannot, every rock row is UNMEASURED/HARNESS with that reason, never a PASS).
 """
 import argparse
+from live_results import aggregate, scrape_widening
 import json
 import math
 import os
@@ -487,7 +488,8 @@ class Session(object):
         p = os.path.join(self.out_dir, "session.json")
         with open(p + ".tmp", "w", encoding="utf-8") as f:
             json.dump(dict(script="walls_slots_live.py", mode="mock" if self.mock else "live", env=self.env, timing=self.timing,
-                           arena=self.arena, cast=self.cast.live, rows=self.rows, notes=self.notes, args=vars(self.args)), f,
+                           arena=self.arena, cast=self.cast.live, rows=self.rows, notes=self.notes, args=vars(self.args),
+                           summary=session_results(self.rows, self.env.get("partial", False))), f,
                       indent=1, default=str)
         os.replace(p + ".tmp", p)
 
@@ -1502,8 +1504,8 @@ def scrape_runner(s, lane):
     # widening: a dead flank widens the gap (S+1 where it died) -- read from the walls left
     left = [t["cell"] for t in s.things(lane.zone, "Wall")]
     widened = [c for c in dead if c not in left]
-    s.row("A6_scrape_widens", "A6", "PASS" if (not dead or widened) else "FAIL", "MOD",
-          dict(dead=len(dead), removed=len(widened), note="UNMEASURED-in-spirit when nothing died in ten crossings (wood 195 HP, 20 a step: the 10th hit)"),
+    s.row("A6_scrape_widens", "A6", scrape_widening(dead, widened), "MOD",
+          dict(dead=len(dead), removed=len(widened), note="widening requires an observed flank death and removal"),
           "B5")
     s.kill_pawns([pid])
 
@@ -1859,7 +1861,7 @@ ORDER = tuple(b["id"] for b in BLOCKS)
 def verdicts(rows):
     by = {}
     for r in rows:
-        if r["criterion"] in ("-", None) or r["cls"] == "OWED" or r["status"] == "SKIP":
+        if r["criterion"] in ("-", None):
             continue
         by.setdefault(r["criterion"], []).append(r)
     out = {}
@@ -1875,6 +1877,20 @@ def verdicts(rows):
             continue
         out[k] = (res, [r["id"] for r in rs])
     return out
+
+
+def session_results(rows, partial=False):
+    # Every block and criterion must be represented; OWED/SKIP rows remain in aggregation.
+    coverage = ({r.get("block") for r in rows} >= set(ORDER) and
+                {r.get("criterion") for r in rows} >= {"A%d" % n for n in range(2, 9)})
+    required = {"B0_tier_truth", "B0_largepawns", "B0_rock_placeable", "A8_defaults",
+                "A8_dialog_group", "A4_plug", "A6_scrape", "A6_scrape_widens",
+                "A6_roof_ratio", "A6_roof_collapse_vanilla", "A7_save_reload",
+                "A7_concurrency", "A7_wall_destroyed_en_route", "A5_breakout_at_100"}
+    result = aggregate(rows, required)
+    result["gameplay_pass"] &= coverage and not partial
+    result["all_rows_classified"] &= coverage and not partial
+    return result
 
 
 def write_verify_lines(s):
@@ -2501,7 +2517,9 @@ def main(argv=None):
     eyes = sorted({r["id"] for r in s.rows if r.get("eyes")})
     s.say("OWNER EYES (%d): %s" % (len(eyes), "; ".join(eyes)))
     s.say("A mock verdict proves the script's paths, never the game." if a.mock else "Partial run: not recordable." if s.env["partial"] else "")
-    return 0
+    summary = session_results(s.rows, s.env["partial"])
+    s.say("RESULT: %s" % summary)
+    return 0 if summary["gameplay_pass"] else 1
 
 
 if __name__ == "__main__":
