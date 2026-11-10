@@ -24,13 +24,13 @@ namespace RimMandrake.HugeThings
 
         /// <summary>This variant as the kernel's mask. wholeQuad: the picture box is the full quad (an unmeasured
         /// picture, whose extent is only known to be the quad).</summary>
-        public HugeMask Mask(float measuredSize, bool wholeQuad = false)
+        public HugeMask Mask(float measuredSize, bool wholeQuad = false, FootprintWorkBudget budget = null)
         {
             if (mask != null && !wholeQuad) return mask;
             HugeMask m = wholeQuad
                 ? new HugeMask { U0 = 0f, V0 = 0f, U1 = 1f, V1 = 1f, MeasuredSize = measuredSize }
                 : new HugeMask { U0 = opaqueMin.x, V0 = opaqueMin.y, U1 = opaqueMax.x, V1 = opaqueMax.y, MeasuredSize = measuredSize };
-            for (int i = 0; i < contact.Count; i++) m.Contact.Add(RM_HugeFootprintKernel.Key(contact[i].x, contact[i].z));
+            for (int i = 0; i < contact.Count; i++) { budget?.Spend(); m.Contact.Add(RM_HugeFootprintKernel.Key(contact[i].x, contact[i].z)); }
             if (!wholeQuad) mask = m;
             return m;
         }
@@ -67,17 +67,18 @@ namespace RimMandrake.HugeThings
         [Unsaved] private HugeMask unionMask;
 
         /// <summary>The kernel mask for the picture drawn: the measured variant, or the union over the whole quad.</summary>
-        public HugeMask MaskFor(HugePlantVariant v, bool measured)
+        public HugeMask MaskFor(HugePlantVariant v, bool measured, FootprintWorkBudget budget = null)
         {
-            if (measured) return v.Mask(measuredSize);
-            return unionMask ?? (unionMask = Union.Mask(measuredSize, wholeQuad: true));
+            if (measured) return v.Mask(measuredSize, budget: budget);
+            return unionMask ?? (unionMask = GetUnion(budget).Mask(measuredSize, wholeQuad: true, budget: budget));
         }
 
-        public HugePlantVariant Find(string texture)
+        public HugePlantVariant Find(string texture, FootprintWorkBudget budget = null)
         {
             if (texture == null) return null;
             for (int i = 0; i < variants.Count; i++)
             {
+                budget?.Spend();
                 if (variants[i] != null && variants[i].texture == texture) return variants[i];
             }
             return null;
@@ -85,16 +86,21 @@ namespace RimMandrake.HugeThings
 
         /// <summary>For a picture the tool never measured (an immature or leafless graphic): every variant's
         /// contact cells together, and the full quad as the picture.</summary>
-        public HugePlantVariant Union
+        public HugePlantVariant Union => GetUnion(null);
+
+        public HugePlantVariant GetUnion(FootprintWorkBudget budget)
         {
-            get
+            if (union != null) return union;
+            var all = new HashSet<IntVec2>();
+            foreach (HugePlantVariant variant in variants)
             {
-                if (union != null) return union;
-                HashSet<IntVec2> all = new HashSet<IntVec2>();
-                for (int i = 0; i < variants.Count; i++) if (variants[i]?.contact != null) all.UnionWith(variants[i].contact);
-                union = new HugePlantVariant { texture = null, contact = new List<IntVec2>(all) };
-                return union;
+                budget?.Spend();
+                if (variant?.contact == null) continue;
+                foreach (IntVec2 cell in variant.contact) { budget?.Spend(); all.Add(cell); }
             }
+            budget?.Spend(all.Count);
+            union = new HugePlantVariant { texture = null, contact = new List<IntVec2>(all) };
+            return union;
         }
 
         public override IEnumerable<string> ConfigErrors()

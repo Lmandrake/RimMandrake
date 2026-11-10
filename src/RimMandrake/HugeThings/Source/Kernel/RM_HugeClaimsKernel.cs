@@ -15,10 +15,45 @@ using System.Collections.Generic;
 
 namespace RimMandrake.HugeThings
 {
+    /// <summary>Logical work units, not elapsed time. Callers charge visits and reserve bulk copies/sorts BEFORE doing
+    /// them. Exhaustion is caught only at a read/transaction boundary; no unproved blocker is spawned. Oversized read
+    /// jobs remain deferred (safe open cells), rather than bypassing the cap. Runtime latency is UNVERIFIED.</summary>
+    public sealed class FootprintWorkBudget
+    {
+        public readonly int Limit;
+        public int Used { get; private set; }
+        public int Refusals { get; private set; }
+        private readonly FootprintWorkBudget parent;
+        public FootprintWorkBudget(int limit, FootprintWorkBudget parent = null) { this.parent = parent; if (limit < 0) throw new ArgumentOutOfRangeException(nameof(limit)); Limit = limit; }
+        public void Spend(long units = 1)
+        {
+            if (units < 0) throw new ArgumentOutOfRangeException(nameof(units));
+            if (units > Limit - Used) { Refusals++; throw new FootprintBudgetExhausted(); }
+            parent?.Spend(units);
+            Used += (int)units;
+        }
+    }
+
+    public sealed class FootprintBudgetExhausted : Exception { }
+
+    /// <summary>FIFO with deduplicated owners; requeue AFTER a visit. No phase can monopolize a tick.</summary>
+    public sealed class FootprintOwnerQueue
+    {
+        private readonly Queue<int> queue = new Queue<int>();
+        private readonly HashSet<int> queued = new HashSet<int>();
+        public int Count => queue.Count;
+        public void Add(int id) { if (queued.Add(id)) queue.Enqueue(id); }
+        public bool Next(out int id)
+        {
+            if (queue.Count == 0) { id = -1; return false; }
+            id = queue.Dequeue(); queued.Remove(id); return true;
+        }
+    }
+
     public sealed class ClaimLedger
     {
         private readonly Dictionary<long, SortedSet<int>> cellOwners = new Dictionary<long, SortedSet<int>>();
-        private readonly Dictionary<int, HashSet<long>> ownerCells = new Dictionary<int, HashSet<long>>();
+        private readonly Dictionary<int, SortedSet<long>> ownerCells = new Dictionary<int, SortedSet<long>>();
 
         public bool IsClaimed(long cell) => cellOwners.ContainsKey(cell);
 
@@ -38,7 +73,7 @@ namespace RimMandrake.HugeThings
 
         public IEnumerable<long> CellsOf(int owner)
         {
-            if (ownerCells.TryGetValue(owner, out HashSet<long> c)) return c;
+            if (ownerCells.TryGetValue(owner, out SortedSet<long> c)) return c;
             return Array.Empty<long>();
         }
 
@@ -46,9 +81,9 @@ namespace RimMandrake.HugeThings
         public void Set(int owner, IEnumerable<long> cells, List<long> becameClaimed, List<long> becameFree)
         {
             HashSet<long> want = new HashSet<long>(cells);
-            if (!ownerCells.TryGetValue(owner, out HashSet<long> had))
+            if (!ownerCells.TryGetValue(owner, out SortedSet<long> had))
             {
-                had = new HashSet<long>();
+                had = new SortedSet<long>();
                 ownerCells[owner] = had;
             }
             List<long> drop = new List<long>();
@@ -82,6 +117,38 @@ namespace RimMandrake.HugeThings
             if (had.Count == 0) ownerCells.Remove(owner);
         }
 
+        public bool AddCell(int owner, long cell)
+        {
+            if (!ownerCells.TryGetValue(owner, out SortedSet<long> cells)) ownerCells[owner] = cells = new SortedSet<long>();
+            cells.Add(cell);
+            bool fresh = !cellOwners.TryGetValue(cell, out SortedSet<int> owners);
+            if (fresh) cellOwners[cell] = owners = new SortedSet<int>();
+            owners.Add(owner); return fresh;
+        }
+
+        public bool ReleaseCell(int owner, long cell)
+        {
+            if (!ownerCells.TryGetValue(owner, out SortedSet<long> cells) || !cells.Remove(cell)) return false;
+            if (cells.Count == 0) ownerCells.Remove(owner);
+            SortedSet<int> owners = cellOwners[cell]; owners.Remove(owner);
+            if (owners.Count > 0) return false;
+            cellOwners.Remove(cell); return true;
+        }
+
+        public int CountOf(int owner) => ownerCells.TryGetValue(owner, out SortedSet<long> cells) ? cells.Count : 0;
+
+        /// <summary>One affected claim, for budgeted mass removal; never walks remaining blockers.</summary>
+        public bool RemoveNext(int owner, out long cell, out bool freed)
+        {
+            cell = 0; freed = false;
+            if (!ownerCells.TryGetValue(owner, out SortedSet<long> cells) || cells.Count == 0) return false;
+            cell = cells.Min; cells.Remove(cell);
+            if (cells.Count == 0) ownerCells.Remove(owner);
+            SortedSet<int> owners = cellOwners[cell]; owners.Remove(owner);
+            if (owners.Count == 0) { cellOwners.Remove(cell); freed = true; }
+            return true;
+        }
+
         public void Remove(int owner, List<long> becameFree) => Set(owner, Array.Empty<long>(), null, becameFree);
     }
 
@@ -99,10 +166,9 @@ namespace RimMandrake.HugeThings
     {
         public const int Margin = 4;
 
-        /// <summary>The planning window for a plant: every cell it could claim (its whole footprint, realized or not) and
-        /// its root, grown by Margin. It must NOT depend on which cells happen to be open yet, or a later pass would judge
-        /// reachability against a nearer border than an earlier one did (measured: 134/3000 fuzz cases closed cells on a
-        /// second pass that the first had refused).</summary>
+        /// <summary>Bounds a local reconnection proof by the supplied cells/root plus Margin. Runtime retries use a
+        /// single candidate; batch callers can supply a fixed whole-footprint window for fixpoint idempotence. The
+        /// global safety proof never treats this window's border as a map exit: ambiguous closures stay open.</summary>
         public static CellBox Window(IEnumerable<long> footprint, long root)
         {
             int minX = RM_HugeFootprintKernel.KeyX(root), minZ = RM_HugeFootprintKernel.KeyZ(root), maxX = minX, maxZ = minZ;
@@ -124,7 +190,7 @@ namespace RimMandrake.HugeThings
         /// path through deleted anchors can then substitute that local path. Ambiguous closures stay open. Clearance
         /// boxes specify occupied width/height (their position is irrelevant); 1x1 is always checked too.
         /// </summary>
-        public static List<long> Plan(IList<long> wanted, IList<long> roots, Func<long, CellFlags> flagsAt, CellBox window, IList<CellBox> clearance = null)
+        public static List<long> Plan(IList<long> wanted, IList<long> roots, Func<long, CellFlags> flagsAt, CellBox window, IList<CellBox> clearance = null, FootprintWorkBudget budget = null)
         {
             List<long> accepted = new List<long>();
             if (wanted == null || wanted.Count == 0) return accepted;
@@ -132,23 +198,30 @@ namespace RimMandrake.HugeThings
             long lw = (long)maxX - minX + 1, lh = (long)maxZ - minZ + 1;
             if (lw <= 0 || lh <= 0 || lw * lh > MaxWindowCells) return accepted;   // A3.12: refuse an unbounded window
             int w = (int)lw, h = (int)lh;
+            budget?.Spend(w * (long)h);
             bool[] pass = new bool[w * h];
             for (int z = 0; z < h; z++)
                 for (int x = 0; x < w; x++)
+                {
+                    budget?.Spend();
                     pass[z * w + x] = (flagsAt(RM_HugeFootprintKernel.Key(minX + x, minZ + z)) & CellFlags.Passable) != 0;
+                }
 
-            bool[] before = Reach(pass, w, h);
+            bool[] before = Reach(pass, w, h, budget);
             List<int> rootIdx = new List<int>();
             if (roots != null)
             {
                 foreach (long k in roots)
                 {
+                    budget?.Spend();
                     if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) continue;
                     int i = (RM_HugeFootprintKernel.KeyZ(k) - minZ) * w + (RM_HugeFootprintKernel.KeyX(k) - minX);
                     if (RootServed(i, pass, pass, w, h)) rootIdx.Add(i);   // only roots that have access now must keep it
                 }
             }
 
+            // Reserve copies, hashing and comparison-sort work before allocating them.
+            budget?.Spend(8L * wanted.Count * (1 + (long)Math.Ceiling(Math.Log(wanted.Count + 1, 2))));
             List<long> order = new List<long>(new HashSet<long>(wanted));
             order.Sort((a, b) =>
             {
@@ -164,27 +237,32 @@ namespace RimMandrake.HugeThings
                 progress = false;
                 for (int n = 0; n < order.Count; n++)
                 {
+                    budget?.Spend();
                     long k = order[n];
                     CellFlags f = flagsAt(k);
                     if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) continue;
                     if ((f & CellFlags.Passable) == 0 || (f & (CellFlags.Pawn | CellFlags.Item | CellFlags.Protected)) != 0) continue;
                     int i = (RM_HugeFootprintKernel.KeyZ(k) - minZ) * w + (RM_HugeFootprintKernel.KeyX(k) - minX);
+                    budget?.Spend(rootIdx.Count);
                     if (rootIdx.Contains(i) || !pass[i]) continue;
                     pass[i] = false;
-                    bool[] after = Reach(pass, w, h);
-                    bool ok = Reconnects(i, pass, w, h, 1, 1);
+                    bool[] after = Reach(pass, w, h, budget);
+                    bool ok = Reconnects(i, pass, w, h, 1, 1, budget);
                     if (clearance != null)
                         foreach (CellBox size in clearance)
                         {
+                            budget?.Spend();
                             if (!ok) break;
-                            ok = Reconnects(i, pass, w, h, size.MaxX - size.MinX + 1, size.MaxZ - size.MinZ + 1);
+                            ok = Reconnects(i, pass, w, h, size.MaxX - size.MinX + 1, size.MaxZ - size.MinZ + 1, budget);
                         }
                     for (int j = 0; j < pass.Length && ok; j++)
                     {
+                        budget?.Spend();
                         if (pass[j] && before[j] && !after[j]) ok = false;     // a cell that reached the border no longer does
                     }
                     for (int r = 0; r < rootIdx.Count && ok; r++)
                     {
+                        budget?.Spend();
                         if (!RootServed(rootIdx[r], pass, pass, w, h)) ok = false;
                     }
                     if (ok)
@@ -208,16 +286,18 @@ namespace RimMandrake.HugeThings
         // pass already has the candidate closed. In the anchor graph, closing a physical cell deletes all
         // previously valid occupied rectangles containing it. Require ALL surviving neighbours of that set to
         // reconnect locally. This is conservative even when the deleted anchors had separate components before.
-        private static bool Reconnects(int cell, bool[] pass, int w, int h, int sx, int sz)
+        private static bool Reconnects(int cell, bool[] pass, int w, int h, int sx, int sz, FootprintWorkBudget budget)
         {
             int cx = cell % w, cz = cell / w;
             if (sx <= 0 || sz <= 0 || cx - sx < 0 || cz - sz < 0 || cx + sx >= w || cz + sz >= h) return false;
             bool Fits(int x, int z, bool before)
             {
+                budget?.Spend();
                 if (x < 0 || z < 0 || x + sx > w || z + sz > h) return false;
                 for (int dz = 0; dz < sz; dz++)
                     for (int dx = 0; dx < sx; dx++)
                     {
+                        budget?.Spend();
                         int i = (z + dz) * w + x + dx;
                         if (!pass[i] && !(before && i == cell)) return false;
                     }
@@ -242,6 +322,7 @@ namespace RimMandrake.HugeThings
             foreach (int i in boundary) { todo.Push(i); seen.Add(i); break; }
             while (todo.Count > 0)
             {
+                budget?.Spend();
                 int i = todo.Pop();
                 boundary.Remove(i);
                 if (boundary.Count == 0) return true;
@@ -287,22 +368,26 @@ namespace RimMandrake.HugeThings
         }
 
         /// <summary>4-connected flood from every passable border cell.</summary>
-        public static bool[] Reach(bool[] pass, int w, int h)
+        public static bool[] Reach(bool[] pass, int w, int h, FootprintWorkBudget budget = null)
         {
+            budget?.Spend(pass.Length); // allocation/zeroing
             bool[] seen = new bool[pass.Length];
             Stack<int> st = new Stack<int>();
             for (int x = 0; x < w; x++)
             {
+                budget?.Spend();
                 Seed(x, pass, seen, st);
                 Seed((h - 1) * w + x, pass, seen, st);
             }
             for (int z = 0; z < h; z++)
             {
+                budget?.Spend();
                 Seed(z * w, pass, seen, st);
                 Seed(z * w + w - 1, pass, seen, st);
             }
             while (st.Count > 0)
             {
+                budget?.Spend();
                 int i = st.Pop();
                 int x = i % w, z = i / w;
                 if (x > 0) Seed(i - 1, pass, seen, st);
@@ -340,10 +425,11 @@ namespace RimMandrake.HugeThings
         /// footprint. preferred(src, k): e.g. the same stockpile as the source.
         /// </summary>
         public static Dictionary<long, List<long>> Assign(IDictionary<long, int> itemCounts, Func<long, int> capacity,
-                                                          Func<long, bool> excluded, Func<long, long, bool> preferred)
+                                                          Func<long, bool> excluded, Func<long, long, bool> preferred, FootprintWorkBudget budget = null)
         {
             Dictionary<long, List<long>> outMoves = new Dictionary<long, List<long>>();
             Dictionary<long, int> used = new Dictionary<long, int>();
+            budget?.Spend(8L * itemCounts.Count * (1 + (long)Math.Ceiling(Math.Log(itemCounts.Count + 1, 2))));
             List<long> srcs = new List<long>(itemCounts.Keys);
             srcs.Sort();
             foreach (long src in srcs)
@@ -352,12 +438,13 @@ namespace RimMandrake.HugeThings
                 if (need <= 0) continue;
                 List<long> dests = new List<long>();
                 Dictionary<long, int> take = new Dictionary<long, int>();
-                foreach (long k in Ring(src, capacity, preferred))
+                foreach (long k in Ring(src, capacity, preferred, budget))
                 {
                     if (k == src || excluded(k)) continue;
                     int cap = capacity(k) - (used.TryGetValue(k, out int u) ? u : 0) - (take.TryGetValue(k, out int t) ? t : 0);
                     while (cap > 0 && dests.Count < need)
                     {
+                        budget?.Spend();
                         dests.Add(k);
                         take[k] = (take.TryGetValue(k, out int t2) ? t2 : 0) + 1;
                         cap--;
@@ -380,12 +467,13 @@ namespace RimMandrake.HugeThings
         public static Dictionary<long, List<long>> AssignAndPlan(IDictionary<long, int> itemCounts, Func<long, int> capacity,
                                                                  Func<long, bool> excluded, Func<long, long, bool> preferred,
                                                                  Func<Dictionary<long, List<long>>, List<long>> plan,
-                                                                 out List<long> accepted)
+                                                                 out List<long> accepted, FootprintWorkBudget budget = null)
         {
+            budget?.Spend(itemCounts.Count);
             var counts = new Dictionary<long, int>(itemCounts);
             while (true)
             {
-                Dictionary<long, List<long>> moves = Assign(counts, capacity, excluded, preferred);
+                Dictionary<long, List<long>> moves = Assign(counts, capacity, excluded, preferred, budget);
                 accepted = plan(moves);
                 var ok = new HashSet<long>(accepted);
                 var refused = new List<long>();
@@ -397,7 +485,7 @@ namespace RimMandrake.HugeThings
 
         /// <summary>Cells reachable from src over capacity >= 0 ground, nearest first (BFS layers), preferred first within a
         /// layer, then by key.</summary>
-        private static IEnumerable<long> Ring(long src, Func<long, int> capacity, Func<long, long, bool> preferred)
+        private static IEnumerable<long> Ring(long src, Func<long, int> capacity, Func<long, long, bool> preferred, FootprintWorkBudget budget)
         {
             HashSet<long> seen = new HashSet<long> { src };
             List<long> layer = new List<long> { src };
@@ -406,14 +494,17 @@ namespace RimMandrake.HugeThings
                 List<long> next = new List<long>();
                 foreach (long k in layer)
                 {
+                    budget?.Spend();
                     int x = RM_HugeFootprintKernel.KeyX(k), z = RM_HugeFootprintKernel.KeyZ(k);
                     long[] ns = { RM_HugeFootprintKernel.Key(x + 1, z), RM_HugeFootprintKernel.Key(x - 1, z),
                                   RM_HugeFootprintKernel.Key(x, z + 1), RM_HugeFootprintKernel.Key(x, z - 1) };
                     foreach (long n in ns)
                     {
+                        budget?.Spend();
                         if (seen.Add(n) && capacity(n) >= 0) next.Add(n);
                     }
                 }
+                budget?.Spend(8L * next.Count * (1 + (long)Math.Ceiling(Math.Log(next.Count + 1, 2))));
                 next.Sort((a, b) =>
                 {
                     bool pa = preferred != null && preferred(src, a), pb = preferred != null && preferred(src, b);

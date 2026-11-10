@@ -99,10 +99,22 @@ namespace RimMandrake.HugeThings
         /// footprint never leaves the art). Works for any scale without gaps. The root cell is never returned: an
         /// impassable edifice there would wipe the plant (GenSpawn.SpawningWipes, BlocksPlanting).
         /// </summary>
-        public static List<long> ContactCells(int rootX, int rootZ, HugeQuad q, float blockScale, bool flip, HugeMask m)
+        public static List<long> ContactCells(int rootX, int rootZ, HugeQuad q, float blockScale, bool flip, HugeMask m, FootprintWorkBudget budget = null)
         {
-            List<long> outCells = new List<long>();
-            if (m == null || m.Contact.Count == 0 || m.MeasuredSize <= 0f || q.Size <= 0f || blockScale <= 0f) return outCells;
+            var result = new List<long>();
+            foreach (long? step in ContactSteps(rootX, rootZ, q, blockScale, flip, m))
+            {
+                budget?.Spend();
+                if (step.HasValue) result.Add(step.Value);
+            }
+            return result;
+        }
+
+        /// <summary>Resumable geometry visits; null is a scanned cell, a key is an accepted contact. No cell scan is hidden
+        /// inside an uncharged MoveNext, so even a very large mask can advance over several budgeted ticks.</summary>
+        public static IEnumerable<long?> ContactSteps(int rootX, int rootZ, HugeQuad q, float blockScale, bool flip, HugeMask m)
+        {
+            if (m == null || m.Contact.Count == 0 || m.MeasuredSize <= 0f || q.Size <= 0f || blockScale <= 0f) yield break;
             PictureBounds(q, m, flip, out float px0, out float pz0, out float px1, out float pz1);
             float bs = q.Size * blockScale;
             float left = q.CentreX - bs / 2f, bottom = q.MinZ;
@@ -112,6 +124,7 @@ namespace RimMandrake.HugeThings
             {
                 for (int x = x0; x < x1; x++)
                 {
+                    yield return null; // one charged/resumable visit even when this cell is rejected
                     if (x == rootX && z == rootZ) continue;
                     float cx = x + 0.5f, cz = z + 0.5f;
                     if (cx < px0 || cx > px1 || cz < pz0 || cz > pz1) continue;
@@ -120,10 +133,9 @@ namespace RimMandrake.HugeThings
                     if (flip) u = 1f - u;
                     int dx = (int)Math.Floor(0.5f + (u - 0.5f) * m.MeasuredSize);
                     int dz = (int)Math.Floor(v * m.MeasuredSize);
-                    if (m.Contact.Contains(Key(dx, dz))) outCells.Add(Key(x, z));
+                    if (m.Contact.Contains(Key(dx, dz))) yield return Key(x, z);
                 }
             }
-            return outCells;
         }
 
         /// <summary>The selection rect: the picture, every blocked cell and the root cell.</summary>

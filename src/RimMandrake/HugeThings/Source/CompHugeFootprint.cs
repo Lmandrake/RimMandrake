@@ -67,26 +67,27 @@ namespace RimMandrake.HugeThings
 
         /// <summary>The measured variant of the picture actually drawn, or the union stand-in when the drawn texture was
         /// never measured (an immature or leafless graphic, an art override).</summary>
-        private HugePlantVariant DrawnVariant(RM_HugePlantExtension ext, out bool measured, out int maskId)
+        private HugePlantVariant DrawnVariant(RM_HugePlantExtension ext, out bool measured, out int maskId, FootprintWorkBudget budget = null)
         {
             Graphic g = Plant.Graphic;
             if (g is Graphic_Random gr && gr.SubGraphicsCount > 0) g = gr.SubGraphicAtIndex(variantIndex);
             string path = g?.path;
             string name = path == null ? null : path.Substring(path.LastIndexOf('/') + 1);
-            HugePlantVariant v = ext.Find(name);
+            HugePlantVariant v = ext.Find(name, budget);
+            budget?.Spend(ext.variants.Count);
             measured = v != null;
             maskId = measured ? ext.variants.IndexOf(v) + 1 : 0;
-            return v ?? ext.Union;
+            return v ?? ext.GetUnion(budget);
         }
 
         /// <summary>Everything the footprint and the selection rect depend on right now.</summary>
-        public FootprintSignature Signature(out HugeMask mask)
+        public FootprintSignature Signature(out HugeMask mask, FootprintWorkBudget budget = null)
         {
             Plant p = Plant;
             RM_HugePlantExtension ext = Ext;
             Roll();
-            HugePlantVariant v = DrawnVariant(ext, out bool measured, out int maskId);
-            mask = ext.MaskFor(v, measured);
+            HugePlantVariant v = DrawnVariant(ext, out bool measured, out int maskId, budget);
+            mask = ext.MaskFor(v, measured, budget);
             return new FootprintSignature
             {
                 RootX = p.Position.x,
@@ -109,18 +110,18 @@ namespace RimMandrake.HugeThings
             => RM_HugeFootprintKernel.Quad(s.RootX, s.RootZ, s.DrawX, s.Visual, s.JitterX, s.JitterZ);
 
         /// <summary>Ground-contact cells wanted now, as cell keys (empty when blocking is off or the plant is too young).</summary>
-        public List<long> DesiredKeys()
+        public List<long> DesiredKeys(FootprintWorkBudget budget = null)
         {
             Plant p = Plant;
             if (p == null || !p.Spawned || Ext == null) return new List<long>();
-            FootprintSignature s = Signature(out HugeMask m);
-            return DesiredKeys(s, m);
+            FootprintSignature s = Signature(out HugeMask m, budget);
+            return DesiredKeys(s, m, budget);
         }
 
-        private static List<long> DesiredKeys(FootprintSignature s, HugeMask m)
+        private static List<long> DesiredKeys(FootprintSignature s, HugeMask m, FootprintWorkBudget budget = null)
         {
             if (!s.Blocking || !s.OldEnough) return new List<long>();
-            return RM_HugeFootprintKernel.ContactCells(s.RootX, s.RootZ, QuadOf(s), s.BlockScale, s.Flip, m);
+            return RM_HugeFootprintKernel.ContactCells(s.RootX, s.RootZ, QuadOf(s), s.BlockScale, s.Flip, m, budget);
         }
 
         /// <summary>The cells this plant could EVER claim at full growth and the largest setting: the fixed planning window
@@ -186,6 +187,8 @@ namespace RimMandrake.HugeThings
                 + " scale=" + s.BlockScale + " flip=" + s.Flip + " desired=" + DesiredKeys(s, m).Count + " takenOnce=" + takenOnce;
         }
 
+        public void MarkTaken(FootprintSignature signature) { lastTaken = signature; takenOnce = true; }
+
         public void MarkTaken()
         {
             lastTaken = Signature(out _);
@@ -212,7 +215,8 @@ namespace RimMandrake.HugeThings
         /// runs from a Plant.TickLong postfix instead (HugeThingsCore). Harvest is caught by a PlantCollected postfix.</summary>
         public void Notify_PlantTickedLong()
         {
-            if (Changed()) parent.Map?.GetComponent<MapComponent_HugeFootprints>()?.MarkDirty(this);
+            // Queue cheaply; signature/geometry work belongs to the shared budgeted map scheduler.
+            parent.Map?.GetComponent<MapComponent_HugeFootprints>()?.MarkDirty(this);
         }
     }
 }
