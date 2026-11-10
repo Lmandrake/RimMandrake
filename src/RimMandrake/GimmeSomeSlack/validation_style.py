@@ -346,8 +346,7 @@ def run_live(args):
         d4_built = s12d_stage(B)
         pre_save = _cst(B)      # review 9.1: S9e's before-set is read HERE, after every SITE2 build (s12 D1/D7 included)
         res["save"] = _save_load(B, rows, args.save, B.ap("styles"), stage=d4_built)
-        s9_after_load(B, rows, s9, s10, pre_save)
-        s12d_after_load(B, rows, d4_built)
+        after_load_checks(B, rows, res["save"], s9, s10, pre_save, d4_built)
     elif not V.SHARED:               # SHARED: S7 + S9e are proof_all's SL3 over the session's one save (doc section 2)
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
         V.row(rows, "S9e_runs_save_load", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
@@ -758,7 +757,7 @@ def _s9_snap(st):
 def s9_before_state(s9, s10, pre_save=None):
     """S9e's baseline: the read taken just before the save. The stage-2 reads (s10, s9) pre-date s12's D1/D7 builds inside
     SITE2, so comparing against them reported those builds as 'changed by the load' (review 9.1)."""
-    return pre_save or s10.get("st") or s9.get("st") or {}
+    return pre_save if pre_save is not None else s10.get("st") or s9.get("st") or {}
 
 
 def s9_after_load(B, rows, s9, s10, pre_save=None):
@@ -782,13 +781,22 @@ def _snapshot(st):
                   for a in st.get("anchors") or [])
 
 
+def after_load_checks(B, rows, saved, s9, s10, pre_save, d4_built):
+    if saved.get("load_completed") is True:
+        s9_after_load(B, rows, s9, s10, pre_save)
+        s12d_after_load(B, rows, d4_built)
+    else:
+        for rid in ("S9e_runs_save_load", "S12d_D4_pending_queue_save"):
+            V.row(rows, rid, "UNMEASURED", "HARNESS", "save/load did not complete; current map is not an after-load observation")
+
+
 def _save_load(B, rows, name, before_st, stage=False):
     """stage=True: the save is written by csavenow (S12d), which places the D4 Modern joiner and saves in ONE call."""
     _D4_SAVE.clear()                        # review: never read a previous run's staging
     before = V._saves_stat()
     if name + ".rws" in before:
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", "%s.rws exists" % name)
-        return {}
+        return {"load_completed": False}
     if stage:
         sv = B.ap("csavenow:PowerConduit:Modern_Orange:%d,%d:%s" % (D4_STAGED[3] + (name,)), wait_s=120.0)
         _D4_SAVE.clear()
@@ -804,12 +812,15 @@ def _save_load(B, rows, name, before_st, stage=False):
     changed = sorted(n for n in before if n in after and after[n] != before[n])
     if new != [name + ".rws"] or changed:
         V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", {"new": new, "changed": changed})
-        return {}
-    B.call("rimworld/load_game", saveName=name)
+        return {"load_completed": False}
+    load = B.call("rimworld/load_game", saveName=name)
+    if load.get("success") is not True:
+        V.row(rows, "S7_save_load_styles", "FAIL", "HARNESS", {"loadRefused": load})
+        return {"load_completed": False}
     ok, waited = V._wait_playing(B)
     if not ok:
         V.row(rows, "S7_save_load_styles", "FAIL", "SITE", {"state": waited})
-        return {}
+        return {"load_completed": False}
     B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
     st, t0 = {}, time.time()
     while time.time() - t0 < 12.0:          # anchors register a little after load (validation_aerial LEARNED)
@@ -821,7 +832,7 @@ def _save_load(B, rows, name, before_st, stage=False):
     a, b = _snapshot(before_st), _snapshot(st)
     V.row(rows, "S7_save_load_styles", "PASS" if a == b and a else "FAIL", "MOD",
           {"anchors": len(a), "differs": [x for x in a if x not in b][:4], "loadSeconds": waited})
-    return st
+    return dict(st, load_completed=True)
 
 
 _D4_SAVE = {}

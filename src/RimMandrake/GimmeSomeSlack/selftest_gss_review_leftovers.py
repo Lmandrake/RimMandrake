@@ -17,6 +17,7 @@ import scene_rows as S
 import run_live as R
 import render as MR
 import validation_aerial as A
+import validation_style as VS
 
 
 def png_bytes():
@@ -27,6 +28,34 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_style_after_load_requires_explicit_successful_load(self):
+        self.assertEqual(VS.s9_before_state({'st': {'old': 1}}, {'st': {'old': 2}}, {}), {})
+        for saved in ({}, {'load_completed': False}, {'load_completed': True}):
+            rows = []
+            with patch.object(VS, 's9_after_load') as runs, patch.object(VS, 's12d_after_load') as pending:
+                VS.after_load_checks(object(), rows, saved, {}, {}, {'before': 1}, True)
+            if saved.get('load_completed') is True:
+                self.assertEqual((runs.call_count, pending.call_count), (1, 1))
+                self.assertEqual(runs.call_args.args[-1], {'before': 1})
+            else:
+                self.assertEqual((runs.call_count, pending.call_count), (0, 0))
+                self.assertEqual([r['status'] for r in rows], ['UNMEASURED', 'UNMEASURED'])
+        calls = []
+        B = SimpleNamespace(call=lambda tool, **kw: calls.append(tool) or {'success': False})
+        with patch.object(VS.V, '_saves_stat', return_value={'exists.rws': 1}):
+            self.assertIs(VS._save_load(B, [], 'exists', {})['load_completed'], False)
+        self.assertFalse(calls)
+        with patch.object(VS.V, '_saves_stat', side_effect=[{}, {'fresh.rws': 1}]), patch.object(VS.V, '_wait_saved'), \
+             patch.object(VS.V, '_wait_playing') as playing:
+            self.assertIs(VS._save_load(B, [], 'fresh', {})['load_completed'], False)
+            playing.assert_not_called()
+        self.assertEqual(calls, ['rimworld/save_game', 'rimworld/load_game'])
+        st = {'anchors': [{'x': 1, 'z': 2, 'rawStyle': 'Industrial', 'graphicPath': 'path', 'spans': []}]}
+        B = SimpleNamespace(call=lambda *a, **kw: {'success': True}, ticks=lambda n: None, ap=lambda cmd: st)
+        with patch.object(VS.V, '_saves_stat', side_effect=[{}, {'fresh.rws': 1}]), patch.object(VS.V, '_wait_saved'), \
+             patch.object(VS.V, '_wait_playing', return_value=(True, 1)), patch.object(VS.time, 'sleep'):
+            self.assertIs(VS._save_load(B, [], 'fresh', st)['load_completed'], True)
+
     def test_theft_controls_require_observed_counters_and_removed_clamp(self):
         self.assertEqual(A.counter_status(None, None), 'UNMEASURED')
         self.assertEqual(A.counter_status('1', 1), 'PASS')
