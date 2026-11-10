@@ -114,7 +114,7 @@ goes worse, we should take it seriously and have hard conversations or debug why
   bytes and working set (Mono's `Process.WorkingSet64` read 0 on every full-list session 2026-10-26..28), the Unity
   Profiler totals, `upS` (process uptime, giving load seconds at the menu row), Verse.Log's message count and cap
   state, and error/warning entries counted from Verse.Log's own message queue: null until one scan succeeds, and
-  `logErrLowerBound` when the queue may have evicted entries unseen (itself a breach: over 1,000 messages a minute). A release player reads `gfxMB` 0, so GPU memory is UNMEASURED until another
+  `logErrLowerBound` (sticky) when the queue may have evicted entries unseen, and `logEvicted` (this scan's verdict). The owner split the judgment by card 2026-11-09 ("Two limits: load and play"): `log.load_messages` (cold load from the archived Player.log + the load-end scan's count, limit in game_health_thresholds.json) and `log.play_evicted` (an eviction or a 1,000+ rise after the load-end scan); the sticky flag is a fact, not a limit. A release player reads `gfxMB` 0, so GPU memory is UNMEASURED until another
   source exists. The archived Player.log is not used for error counts: it carries no stack traces, so a grep for
   `Verse.Log:Error` reads 0 on a log full of errors.
 - **Threshold to debug.** `src/RimMandrake/Utils/game_health_thresholds.json` holds the limits, each with what it

@@ -180,8 +180,9 @@ with tempfile.TemporaryDirectory() as tmp:
             r["logCapReached"] = True
             r["logErrLowerBound"] = True
     s6 = G.summarize("6" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in cap], 0, RULES, now=NOW)
-    check("log: cap from logCapReached and a lower-bound count both breach",
-          {"log.cap_reached", "log.errors_lower_bound"} <= {b["key"] for b in s6["breaches"]}, s6["breaches"])
+    check("log: cap from logCapReached breaches; the sticky lower-bound flag alone is a fact, not a breach",
+          "log.cap_reached" in {b["key"] for b in s6["breaches"]} and s6["metrics"]["log.errors_lower_bound"] is True
+          and not {"log.errors_lower_bound", "log.play_evicted"} & {b["key"] for b in s6["breaches"]}, s6["breaches"])
     noscan = session_rows(sid="5" * 32)
     for r in noscan:
         if r["kind"] == "context":
@@ -240,8 +241,9 @@ with tempfile.TemporaryDirectory() as tmp:
                "session": "9" * 32, "kind": "log", "archived": "C:/x/Player_9.log"})
     s9 = G.summarize("9" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in rp], 0, RULES, now=NOW)
     a9, k9 = s9["attribution"], {b["key"] for b in s9["breaches"]}
-    check("attribution: replay still breaches heap peak, private peak, errors and the lower bound",
-          {"mem.managed_peak_mb", "mem.private_peak_mb", "log.errors", "log.errors_lower_bound"} <= k9, sorted(k9))
+    check("attribution: replay still breaches heap peak, private peak and errors (the sticky flag is not a limit)",
+          {"mem.managed_peak_mb", "mem.private_peak_mb", "log.errors"} <= k9 and "log.errors_lower_bound" not in k9,
+          sorted(k9))
     check("attribution: every breach carries one", set(a9) == k9, (sorted(a9), sorted(k9)))
     mem = " | ".join(a9.get("mem.managed_peak_mb", []))
     check("attribution: heap names the largest map and its scale", "924x924 RM_Big" in mem and "13.7x" in mem, mem)
@@ -272,9 +274,115 @@ with tempfile.TemporaryDirectory() as tmp:
           cen)
     check("log_census: no log, no claim", "UNMEASURED" in census(None)[0] and "UNMEASURED" in
           census("C:\\none\\Player.log")[0], census(None))
-    lb = " | ".join(a9.get("log.errors_lower_bound", []))
-    check("attribution: lower bound says the first read was already full, and no scan interval proves eviction",
-          "first queue read" in lb and "under the queue size" in lb, lb)
+    # LOAD vs PLAY (owner by card 2026-11-09, "What should the limit judge? -> Two limits: load and play"). The cold
+    # load overruns Verse.Log's queue before the first scan on every full-list session (the sticky flag rises there);
+    # it is scored against LOAD (messages up to the first map), and only an overrun AFTER the load-end scan is PLAY.
+    lp_dir = os.path.join(tmp, "lp")
+    os.makedirs(lp_dir)
+
+    def cold_log(name, n):
+        pl = os.path.join(lp_dir, name)
+        with open(pl, "w") as fh:
+            fh.write("Mono path[0] = 'x'\n")                          # a Unity line, never a Verse.Log message
+            for k in range(n):
+                fh.write("Def error %d in SomeMod\n  at Verse.Foo ()\n" % k)   # message + a stack frame (not one)
+            # the marker spelled out here, not taken from the code under test (GPT review 2026-11-09)
+            fh.write("[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.\n")
+            fh.write("after the bridge, not the cold load\n" * 50)
+        return pl
+
+    def lp_session(sid, plog, play_evict=None, tweak=None):
+        rows = session_rows(sid=sid, heap_rate_h=0, errs_per_min=0, ratio1=1.0, minutes=40)
+        cs = [r for r in rows if r["kind"] == "context"]
+        for k, r in enumerate(cs):
+            r.update(logErrLowerBound=True, logEvicted=(k == 0), logMsgs=400 + k * 20)   # full at the first read
+        if play_evict == "flag":
+            cs[20]["logEvicted"] = True
+        elif play_evict == "rise":                     # an older companion: no logEvicted, a 1000+ rise between scans
+            for r in cs:
+                r.pop("logEvicted", None)
+            for r in cs[20:]:
+                r["logMsgs"] += 1500
+        elif play_evict == "reset":                    # Log.Clear between two scans, then 1000+ since the reset
+            for k, r in enumerate(cs):
+                r["logMsgs"] = 400 + k * 60 if k < 20 else 1100 + (k - 20) * 10   # 1540 -> 1100: a reset, 1100 since
+                r.pop("logEvicted", None)
+        if tweak:
+            rows = tweak(rows, cs)
+        last = rows[-1]
+        rows.append({"seq": last["seq"] + 1, "v": 2, "utc": last["utc"], "mono": last["mono"], "session": sid,
+                     "kind": "log", "archived": plog})
+        sm = G.summarize(sid, [dict(r, _t=G.T._epoch(r["utc"])) for r in rows], 0, RULES, now=NOW)
+        return sm, {b["key"] for b in sm["breaches"]}
+
+    lim = {x["key"]: x["value"] for x in RULES["limits"]}
+    check("load/play: both limits live in the thresholds file with a why, and the old sticky limit is gone",
+          isinstance(lim.get("log.load_messages"), int) and lim.get("log.play_evicted") is True
+          and "log.errors_lower_bound" not in lim
+          and all(x.get("why") for x in RULES["limits"] if x["key"] in ("log.load_messages", "log.play_evicted")), lim)
+    sa, ka = lp_session("a1" * 16, cold_log("Player_a1.log", 3000))
+    ma = sa["metrics"]
+    check("load/play (a): a cold-load-only overrun does NOT breach PLAY",
+          ma.get("log.play_evicted") is False and ma.get("log.play_evictions") == 0 and "log.play_evicted" not in ka
+          and ma.get("log.errors_lower_bound") is True, (ma.get("log.play_evicted"), sorted(ka)))
+    check("load/play (a): it is scored against LOAD: cold messages walked (frames and Unity lines out) + load-end scan",
+          ma.get("log.cold_load_messages") == 3000 and ma.get("log.load_messages") == 3400
+          and "log.load_messages" not in ka, (ma.get("log.cold_load_messages"), ma.get("log.load_messages"), sorted(ka)))
+    lims = {x["key"]: x for x in RULES["limits"]}
+    check("load/play: the LOAD limit is the ruled 4500 with '>' (loosening it must turn this red)",
+          lims.get("log.load_messages", {}).get("value") == 4500 and lims["log.load_messages"].get("op") == ">"
+          and lims.get("log.play_evicted", {}).get("op") == "==", lims.get("log.load_messages"))
+    s45, k45 = lp_session("e1" * 16, cold_log("Player_e1.log", 4100))      # 4100 + 400 at the load-end scan = 4500
+    check("load/play: exactly 4500 load messages passes LOAD", s45["metrics"].get("log.load_messages") == 4500
+          and "log.load_messages" not in k45, (s45["metrics"].get("log.load_messages"), sorted(k45)))
+    sb, kb = lp_session("b1" * 16, cold_log("Player_b1.log", 4101))       # 4501
+    check("load/play (a): a cold load past the LOAD limit breaches LOAD, not PLAY, and says where the lines came from",
+          "log.load_messages" in kb and "log.play_evicted" not in kb
+          and "before RimBridge came up" in " | ".join(sb["attribution"].get("log.load_messages", [])), sorted(kb))
+    for how in ("flag", "rise", "reset"):
+        sc, kc = lp_session("c%s" % how[0] * 16, cold_log("Player_c%s.log" % how, 3000), play_evict=how)
+        check("load/play (b): an in-play overrun DOES breach PLAY (%s)" % how,
+              "log.play_evicted" in kc and sc["metrics"]["log.play_evictions"] >= 1 and "log.load_messages" not in kc
+              and "after the load" in " | ".join(sc["attribution"].get("log.play_evicted", [])), sorted(kc))
+    clean = cold_log("Player_f.log", 3000)
+
+    def busy_end(rows, cs):              # the load-end walk was busy: the next walk's first-read verdict is the cold load
+        cs[0].update(logScan="busy", logErrLowerBound=None)
+        cs[0].pop("logEvicted", None)
+        cs[1]["logEvicted"] = True
+        return rows
+    sf, kf = lp_session("f1" * 16, clean, tweak=busy_end)
+    check("load/play: a busy load-end walk moves the load end to the next walk; its first-read overrun is not PLAY",
+          "log.play_evicted" not in kf and sf["metrics"].get("log.play_evicted") is False
+          and sf["metrics"].get("log.load_messages") == 3420, (sorted(kf), sf["metrics"].get("log.load_messages")))
+
+    def no_count(rows, cs):              # a later row with no count still carries the companion's eviction verdict
+        cs[20]["logMsgs"] = None
+        cs[20]["logEvicted"] = True
+        return rows
+    sg, kg = lp_session("g1" * 16, clean, tweak=no_count)
+    check("load/play: an eviction verdict on a row with no logMsgs still breaches PLAY", "log.play_evicted" in kg,
+          sorted(kg))
+
+    def flag_false(rows, cs):            # the companion says no eviction although the count rose 1500 (repeats)
+        for r in cs[20:]:
+            r["logMsgs"] += 1500
+        return rows
+    sh, kh = lp_session("h1" * 16, clean, tweak=flag_false)
+    check("load/play: the companion's per-scan verdict outranks a count rise", "log.play_evicted" not in kh
+          and sh["metrics"].get("log.play_evicted") is False, sorted(kh))
+
+    def one_scan(rows, cs):              # nothing after the load-end scan: PLAY was never observed
+        drop = {id(r) for r in cs[1:]}
+        return [r for r in rows if id(r) not in drop]
+    si, ki = lp_session("i1" * 16, clean, tweak=one_scan)
+    check("load/play: no scan after the load-end scan is PLAY UNMEASURED, not a pass",
+          not G.is_m(si["metrics"].get("log.play_evicted")) and G.is_m(si["metrics"].get("log.load_messages")),
+          (si["metrics"].get("log.play_evicted"), si["metrics"].get("log.load_messages")))
+    sd, kd = lp_session("d1" * 16, "C:/nowhere/Player_d1.log")
+    check("load/play: no readable archive is LOAD UNMEASURED (never 0), and PLAY is still judged",
+          not G.is_m(sd["metrics"]["log.load_messages"]) and sd["metrics"]["log.play_evicted"] is False,
+          sd["metrics"]["log.load_messages"])
     # explain verb (OPS_GAME_HEALTH_DEBUG_PXQI): re-reads a session from disk, so a row recorded before attribution
     # existed (history rows are never re-summarized) is still explained; it must print every breach's attribution.
     import contextlib
@@ -288,8 +396,8 @@ with tempfile.TemporaryDirectory() as tmp:
     ex = buf.getvalue()
     check("explain: exit 0 and every breach key printed with its attribution lines",
           rc9 == 0 and all(("  %s\n" % k) in ex for k in k9) and ex.count("    - ") >= len(k9), (rc9, ex[-600:]))
-    check("explain: names the largest map, the stale save and the first-read lower bound",
-          "924x924 RM_Big" in ex and "BENCH_STALE_SAVE" in ex and "first queue read" in ex, ex[-600:])
+    check("explain: names the largest map, the stale save and the archived log",
+          "924x924 RM_Big" in ex and "BENCH_STALE_SAVE" in ex and "Player_9.log" in ex, ex[-600:])
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         rcx = G.main(["explain", "--dir", rec9, "--session", "0123"])

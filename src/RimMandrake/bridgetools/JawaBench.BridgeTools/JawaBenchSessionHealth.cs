@@ -18,6 +18,11 @@
 //                             process registered. logErrLowerBound = true when the queue may have evicted entries
 //                             before they were seen (full queue at the first read, or a full queue whose oldest entry
 //                             is new). Unity-only messages that never pass Verse.Log are not in the queue.
+//   logEvicted                THIS scan's verdict, not sticky (owner by card 2026-11-09, "Two limits: load and play"):
+//                             true when this scan found the queue full and its oldest entry unseen (or full at the first
+//                             read), so entries were evicted since the scan before; null when the scan did not run (busy,
+//                             unreadable). The reader judges it only after the load-end scan (game_health_check.py
+//                             log.play_evicted); the sticky logErrLowerBound is set by every cold load at the first read.
 //
 // ⛔ NO HOOK, NO PATCH, NO SUBSCRIPTION: game_health_record.md forbids new always-on hooks until the overhead test
 // (RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP) passes. This is a once-a-minute read beside the GC.GetTotalMemory the
@@ -74,7 +79,7 @@ namespace JawaBench.BridgeTools
 
         private static Dictionary<LogMessage, int> _seen = new Dictionary<LogMessage, int>(new RefEq());
         private static long _err, _warn;
-        private static bool _lower, _first = true, _psapiFailed;
+        private static bool _lower, _evicted, _first = true, _psapiFailed;
 
         private static string MB(double bytes) => M.F(bytes / 1048576.0, 1);
 
@@ -117,7 +122,8 @@ namespace JawaBench.BridgeTools
             // until one scan has succeeded the counts are unknown: null, never a healthy-looking 0 (GPT review P1)
             if (_first) sb.Append(",\"logErr\":null,\"logWarn\":null,\"logErrLowerBound\":null");
             else sb.Append(",\"logErr\":").Append(_err).Append(",\"logWarn\":").Append(_warn)
-                   .Append(",\"logErrLowerBound\":").Append(_lower ? "true" : "false");
+                   .Append(",\"logErrLowerBound\":").Append(_lower ? "true" : "false")
+                   .Append(",\"logEvicted\":").Append(scan != "ok" ? "null" : _evicted ? "true" : "false");
             return sb.ToString();
         }
 
@@ -155,7 +161,8 @@ namespace JawaBench.BridgeTools
                     next[m] = m.repeats;
                     i++;
                 }
-                if (i >= max && (_first || oldestNew)) _lower = true;
+                _evicted = i >= max && (_first || oldestNew);
+                if (_evicted) _lower = true;
                 _first = false;
                 _seen = next;
                 return "ok";

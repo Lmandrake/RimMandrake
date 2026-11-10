@@ -28,9 +28,12 @@ the growth AFTER the last map change (a bigger map is scale, growth on a fixed m
 breach names the error classes MEASURED from the archived Player.log (session ee0fbaa8: the save loaded inside the
 biggest jump was once called dead def names by assumption, which sent Operations away from 3476 chunk errors and 3200
 Beer errors that were no such thing), the biggest scan-to-scan jump and the save loaded inside it, and how many were
-already queued at the first read (the cold load); the lower bound says whether the queue was already full at the first read (load messages evicted) and the largest scan-to-scan
-rise of Verse.Log's message count (>= the queue size proves an eviction between two scans). Attribution never
-removes or softens a breach. `explain [--session ID]` re-reads a session from disk and prints it.
+already queued at the first read (the cold load). Log overflow is two limits (owner by card 2026-11-09, "Two limits:
+load and play"): log.load_messages counts what the load writes up to the first map (the cold load from the archived
+Player.log, which no context row sees because PlayDataLoader resets Verse.Log's count, plus the load-end scan's count),
+and log.play_evicted judges only scans after that one (the companion's per-scan logEvicted, or a rise of the queue size
+or more); log.errors_lower_bound, the companion's sticky flag, stays a fact. Attribution never removes or softens a
+breach. `explain [--session ID]` re-reads a session from disk and prints it.
 
 A finished session stays the newest row until the next full-list session, so once its breaches are debugged the alarm
 would re-ring on the same numbers for good (session e50b27df re-opened this item 19 times). `debugged --session ID --item
@@ -266,7 +269,9 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
     if le:
         m["log.errors"] = int(le[-1][0])
         m["log.warnings"] = int(le[-1][1] or 0)
-        # entries evicted from Verse.Log's 1000-entry queue between two scans were never counted: the count is a floor
+        # entries evicted from Verse.Log's 1000-entry queue between two scans were never counted: the count is a floor.
+        # A fact, not a limit: the companion's flag is sticky and the cold load sets it at the first read on every
+        # full-list session, so the owner split the judgment into log.load_messages and log.play_evicted (below)
         m["log.errors_lower_bound"] = any(r.get("logErrLowerBound") is True for r in ctx)
         if t0 is not None:
             cb = {}
@@ -278,11 +283,12 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
         for k in ("log.errors", "log.warnings", "log.errors_lower_bound"):
             m[k] = U("no context row carries logErr (companion predates the always-on counter, or no log scan "
                      "succeeded)")
+    logrow = (kinds.get("log") or [{}])[-1]
+    m.update(load_play(ctx, t0, logrow.get("archived")))
     row["metrics"] = m
     row["curves"] = curves
     row["curveAxis"] = "minutes since first game load; mem [min, median MB, max MB]; ratio [min, median ratio, median tps]"
     row["breaches"] = breaches(m, rules)
-    logrow = (kinds.get("log") or [{}])[-1]
     if logrow.get("archived"):
         row["playerLog"] = logrow["archived"]
     row["attribution"] = attribute(row["breaches"], kinds, ctx, t0, m, row.get("playerLog"))
@@ -291,6 +297,93 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
 
 
 QUEUE_MAX = 1000      # Verse.LogMessageQueue.maxMessages (decompiled 1.6, JawaBenchSessionHealth.cs header)
+# RimBridge logs this once play data has loaded; PlayDataLoader queues Log.ResetMessageCount at the end of the same load
+# (decompiled 1.6, PlayDataLoader.cs), so no context row's logMsgs ever counts the cold load: the archived Player.log does
+BRIDGE_READY = "[RimBridge] Startup conditions satisfied after play-data load"
+
+
+def _local_path(p):
+    p = str(p)
+    if not os.path.exists(p):
+        p = p.replace("\\", "/")
+        if len(p) > 2 and p[1] == ":":
+            p = "/mnt/%s%s" % (p[0].lower(), p[2:])
+    return p
+
+
+def cold_load_messages(player_log):
+    """Verse.Log messages the cold load wrote before RimBridge came up, walked from the archived Player.log with
+    log_rise_census.message_index (the walk that lands within 1% of Verse.Log's 10000 cap) -> int, or UNMEASURED."""
+    if not player_log:
+        return U("no archived Player.log (no clean shutdown, or the companion predates the archive): the cold load's "
+                 "messages are not in any context row")
+    try:
+        with open(_local_path(player_log), errors="replace", newline="\n") as fh:
+            lines = [x.rstrip("\r") for x in fh.read().split("\n")]
+    except OSError as e:
+        return U("archived Player.log unreadable: %s" % e)
+    mk = next((i for i, x in enumerate(lines) if x.startswith(BRIDGE_READY)), None)
+    if mk is None:
+        return U("archived Player.log has no '%s' line: the cold load's end is not marked" % BRIDGE_READY)
+    import log_rise_census as C
+    return len(C.message_index(lines, 0, mk))
+
+
+def _walked(r):
+    """The companion's queue walk ran on this row (logScan "ok"; a companion older than logScan walked every row)."""
+    return r.get("logScan", "ok") == "ok"
+
+
+def play_scans(ctx, t0):
+    """(load-end scan, [(scan before, scan, rise or None)] evicting after it, scans after it). The companion forces a
+    context row right after the game row (JawaBenchTpsSampler: _lastContext = -1), so the first row at or after the
+    first game load whose queue walk ran closes the load: its window covers the menu and the first map's load. A busy
+    or unreadable walk does not close it, because the next walk's first-read verdict still covers the cold load (GPT
+    review 2026-11-09). A later scan evicted when the companion says so (`logEvicted`, per scan; trusted over the count
+    whenever it is true or false, since repeats coalesce and a Log.Clear hides a rise), or, on a row with no verdict
+    (an older companion, or a busy walk), when Verse.Log's count rose by the queue size or more since the last row
+    with a count (a drop is a count reset, so the rise is then the count itself: a lower bound)."""
+    after = [r for r in ctx if t0 is not None and r["_t"] >= t0]
+    end = next((i for i, r in enumerate(after) if _walked(r)), None)
+    if end is None:
+        return None, [], []
+    ev, prev, later = [], after[end], after[end + 1:]
+    for b in later:
+        x, y = num(prev.get("logMsgs")), num(b.get("logMsgs"))
+        rise = None if x is None or y is None else int(y - x if y >= x else y)
+        verdict = b.get("logEvicted")
+        if verdict is True or (verdict is None and rise is not None and rise >= QUEUE_MAX):
+            ev.append((prev, b, rise))
+        if y is not None:
+            prev = b
+    return after[end], ev, later
+
+
+def load_play(ctx, t0, player_log):
+    """Owner ruling by card 2026-11-09, 'What should the limit judge? -> Two limits: load and play': the cold load is
+    judged by how much it writes (log.load_messages), play by whether the queue evicted after the load (log.play_evicted)."""
+    end, ev, later = play_scans(ctx, t0)
+    if end is None:
+        why = "no context row with a queue walk at or after the first game load (no game loaded, or every walk failed)"
+        return {"log.cold_load_messages": U(why), "log.load_messages": U(why), "log.play_evictions": U(why),
+                "log.play_evicted": U(why)}
+    cold = cold_load_messages(player_log)
+    n = num(end.get("logMsgs"))
+    if not is_m(cold):
+        load = U(cold["why"])
+    elif n is None:
+        load = U("the load-end scan at %s carries no logMsgs" % _hm(end["_t"]))
+    else:
+        load = cold + int(n)
+    out = {"log.cold_load_messages": cold, "log.load_messages": load}
+    if ev or any(_walked(r) or num(r.get("logMsgs")) is not None for r in later):
+        out.update({"log.play_evictions": len(ev), "log.play_evicted": bool(ev)})
+    else:
+        why = "no scan after the load-end scan at %s observed play" % _hm(end["_t"])
+        out.update({"log.play_evictions": U(why), "log.play_evicted": U(why)})
+    return out
+
+
 REF_CELLS = 250 * 250  # the default map size, the unit the attribution states map area in
 
 
@@ -401,28 +494,20 @@ def attribute(brs, kinds, ctx, t0, m, player_log=None):
         out["log.errors"] = log_census(player_log) + s       # first: ops_watch forwards the first 600 chars of the join
     if "log.cap_reached" in keys:
         out["log.cap_reached"] = log_census(player_log) + out["log.cap_reached"]
-    if "log.errors_lower_bound" in keys and le:
-        s = out["log.errors_lower_bound"]
-        if le[0].get("logErrLowerBound") is True:
-            s.append("the first queue read (%s) already found the %d-entry queue full: messages from the cold load "
-                     "were evicted before any scan; the flag is sticky, so later evictions cannot be told from it" % (
-                         _hm(le[0]["_t"]), QUEUE_MAX))
-        else:
-            fl = next((r for r in le if r.get("logErrLowerBound") is True), None)
-            if fl:
-                s.append("the flag first rose at %s, after the first read" % _hm(fl["_t"]))
-        mc = [(r["_t"], num(r.get("logMsgs"))) for r in ctx if num(r.get("logMsgs")) is not None]
-        rises = [(b[1] - a[1], b[0]) for a, b in zip(mc, mc[1:]) if b[1] >= a[1]]   # a drop is a count reset
-        if rises:
-            big = max(rises)
-            s.append("largest scan-to-scan rise of Verse.Log's message count: %d at %s (%s)" % (
-                int(big[0]), _hm(big[1]), "an eviction between two scans" if big[0] >= QUEUE_MAX else
-                "under the queue size: no scan interval proves an eviction"))
-            if big[0] >= QUEUE_MAX:
-                s.append("which source wrote each rise: Utils/log_rise_census.py --session <id> --log <archived log> --record <tps dir>")
-        else:
-            s.append("no two context rows carry logMsgs: scan-to-scan eviction UNMEASURED")
-        out["log.errors_lower_bound"] = s
+    if "log.load_messages" in keys:
+        end, _, _ = play_scans(ctx, t0)
+        out.setdefault("log.load_messages", []).append(
+            "%s messages before RimBridge came up (cold load, archived Player.log) + %d from the end of play-data load "
+            "to the first map (the load-end scan at %s)" % (m.get("log.cold_load_messages"), int(num(end["logMsgs"])),
+                                                            _hm(end["_t"])))
+        out["log.load_messages"] = log_census(player_log) + out["log.load_messages"]
+    if "log.play_evicted" in keys:
+        _, ev, _ = play_scans(ctx, t0)
+        s = out.setdefault("log.play_evicted", [])
+        s.append("%d scan(s) after the load found Verse.Log's %d-entry queue overrun: %s" % (len(ev), QUEUE_MAX, ", ".join(
+            "%s %s%s%s" % (_hm(b["_t"]), "+?" if rise is None else "+%d" % rise, " (companion: evicted)" if b.get("logEvicted") is True else "",
+                            " save %s" % b["save"] if b.get("save") else "") for a, b, rise in ev[:8])))
+        s.append("which source wrote each rise: Utils/log_rise_census.py --session <id> --log <archived log> --record <tps dir>")
     return out
 
 
