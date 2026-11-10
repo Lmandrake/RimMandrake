@@ -105,34 +105,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The run containing seed (flood fill), never stepping onto an excluded member or across the cut link.</summary>
         public List<Thing> RunOf(Thing seed, HashSet<Thing> exclude = null, Thing cutA = null, Thing cutB = null)
         {
-            var seen = new HashSet<Thing> { seed };
-            var stack = new Stack<Thing>();
-            stack.Push(seed);
-            var res = new List<Thing>();
-            while (stack.Count > 0)
-            {
-                Thing x = stack.Pop();
-                runOfVisits++;
-                if (x == seed || !IsBridgeConduit(x.def)) res.Add(x);
-                foreach (Thing n in Neighbours(x))
-                {
-                    if (exclude != null && exclude.Contains(n)) continue;
-                    if (cutA != null && ((x == cutA && n == cutB) || (x == cutB && n == cutA)) && !Touching(x, n)) continue;
-                    // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE: a span still waiting for its own check is not there yet, as a member
-                    // still waiting is not; else two spans strung together each find the other's way round and neither merges
-                    if (cutA != null && IsPendingSpan(x, n) && !Touching(x, n)) continue;
-                    if (seen.Add(n)) stack.Push(n);
-                }
-            }
-            res.Sort((p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber));
-            return res;
-        }
-
-        private bool IsPendingSpan(Thing a, Thing b)
-        {
-            foreach ((Thing p, Thing q) in pendingLinks)
-                if ((p == a && q == b) || (p == b && q == a)) return true;
-            return false;
+            return ConduitStyles.RunMembers(
+                seed, Neighbours, exclude, cutA, cutB, Touching, pendingLinks,
+                t => IsBridgeConduit(t.def),
+                (p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber),
+                () => runOfVisits++);
         }
 
         private static bool Touching(Thing a, Thing b)
@@ -255,9 +232,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             HashSet<Thing> exclude = pendingSet;                         // still holds x itself and every later spawn
             string ownLook = ConduitStylePicker.LookOf(StylePicker.RawStyle(x), out string ownColour);
             List<Thing> nbrs = Neighbours(x).Where(n => !exclude.Contains(n)).ToList();
-            // fast path (big legacy maps, map generation, gravship landings): an unstyled piece among unstyled neighbours
-            // joins only legacy runs (a run is uniform) and writes nothing -- no flood fill
-            if (ownLook == null && nbrs.All(n => StylePicker.RawStyle(n) == null)) return;
+            // Fast path for placements that need no run resolution.
+            if (ConduitPlacementGate.CanSkip(ownLook, nbrs.Select(n =>
+                new ConduitPlacementGate.Neighbour(
+                    StylePicker.RawStyle(n) != null, IsBridgeConduit(n.def))))) return;
             var runs = new List<List<Thing>>();
             var seen = new HashSet<Thing>();
             foreach (Thing n in nbrs)

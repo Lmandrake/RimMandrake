@@ -77,6 +77,7 @@
     <Compile Include="StyleStage1Checks.cs" />
     <Compile Include="..\Aerial\ConduitStyles.cs" />
     <Compile Include="StyleStage2Checks.cs" />
+    <Compile Include="BatchedLinkStyleMergeChecks.cs" />
     <Compile Include="TheftChecks.cs" />
     <Compile Include="TapWindowChecks.cs" />
     <Compile Include="TapClampPoseChecks.cs" />
@@ -95,6 +96,9 @@
     <Compile Include="SnapshotPoolChecks.cs" />
     <Compile Include="..\Core\SliceWindow.cs" />
     <Compile Include="SittingChecks.cs" />
+    <Compile Include="HiddenConduitSeedChecks.cs" />
+    <Compile Include="..\Core\ConduitPlacementGate.cs" />
+    <Compile Include="StyledWinnerLegacyBridgeChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -151,6 +151,50 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return res;
         }
 
+        /// <summary>The map run flood, separated from Verse for offline checks.
+        /// A cut activates link-check semantics: the current and later queued spans
+        /// are hidden, while touching connections remain traversable.</summary>
+        public static List<T> RunMembers<T>(
+            T seed,
+            Func<T, IEnumerable<T>> Neighbours,
+            HashSet<T> exclude,
+            T cutA,
+            T cutB,
+            Func<T, T, bool> Touching,
+            IEnumerable<(T, T)> pendingLinks,
+            Func<T, bool> isBridgeConduit,
+            Comparison<T> compare,
+            Action visit = null) where T : class
+        {
+            bool IsPendingSpan(T a, T b)
+            {
+                foreach ((T p, T q) in pendingLinks)
+                    if ((p == a && q == b) || (p == b && q == a)) return true;
+                return false;
+            }
+
+            var seen = new HashSet<T> { seed };
+            var stack = new Stack<T>();
+            stack.Push(seed);
+            var res = new List<T>();
+            while (stack.Count > 0)
+            {
+                T x = stack.Pop();
+                visit?.Invoke();
+                if (x == seed || !isBridgeConduit(x)) res.Add(x);
+                foreach (T n in Neighbours(x))
+                {
+                    if (exclude != null && exclude.Contains(n)) continue;
+                    if (cutA != null && ((x == cutA && n == cutB) || (x == cutB && n == cutA)) && !Touching(x, n)) continue;
+                    // Later queued spans cannot provide an alternate route.
+                    if (cutA != null && IsPendingSpan(x, n) && !Touching(x, n)) continue;
+                    if (seen.Add(n)) stack.Push(n);
+                }
+            }
+            res.Sort(compare);
+            return res;
+        }
+
         /// <summary>One run as the rules see it.</summary>
         public sealed class Run
         {

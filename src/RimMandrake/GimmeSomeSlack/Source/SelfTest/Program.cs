@@ -84,6 +84,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             PileLookChecks.Run(scenes);    // MESSYCONDUIT_CABLE_PILE_LOOK_1 (owner 2026-10-04): pile strips, ends on bodies, hose fittings: PileLookChecks.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
+            BatchedLinkStyleMergeChecks.Run(); // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE
             LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
@@ -110,6 +111,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs
             SliceGateChecks.Run();         // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD + far-dig gate (live round 4): SliceGateChecks.cs
             RebuildTailChecks.Run();       // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS (live round 7): RebuildTailChecks.cs
+            HiddenConduitSeedChecks.Run(); // I3_HIDDEN_SEED: hidden connections preserve one legacy net seed
+            StyledWinnerLegacyBridgeChecks.Run(); // I5_STYLED_WINNER_BRIDGE: placement fast path must resolve runs behind bridge conduits
             SnapshotPoolChecks.Run();      // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS round 10 (live round 9): SnapshotPoolChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             AStarHeapChecks.Run();         // CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC: stamped arrays + indexed heap, identical routes: AStarHeapChecks.cs
