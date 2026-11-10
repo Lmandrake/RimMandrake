@@ -16,6 +16,7 @@ sys.path[:0] = [str(HERE / 'northstar'), str(HERE / 'northstar_matrix'), str(HER
 import scene_rows as S
 import run_live as R
 import render as MR
+import validation_aerial as A
 
 
 def png_bytes():
@@ -26,6 +27,35 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_wire_trial_rejects_missing_health_and_positions(self):
+        valid = {'id': 7, 'pos': [3, 4], 'dead': False, 'health': {'hediffs': []}}
+
+        def trial(start, end, observed=True):
+            reads = iter([start, end])
+
+            def call(tool, **kw):
+                if tool == 'jawa/spawn_pawn':
+                    return {'success': True, 'pawns': [{'id': 7}]}
+                if tool == 'jawa/list_pawns':
+                    return {'success': observed, 'pawns': [next(reads)]}
+                return {'success': True}
+
+            return A._wire_trial(SimpleNamespace(call=call, ticks=lambda n: None), (3, 4))
+
+        self.assertIs(trial(valid, valid)['shocked'], False)
+        hot = copy.deepcopy(valid)
+        hot['health']['hediffs'] = [{'def': 'RM_FallenWireShock'}]
+        self.assertIs(trial(valid, hot)['shocked'], True)
+        for key in ('health', 'pos', 'dead'):
+            bad = copy.deepcopy(valid)
+            del bad[key]
+            self.assertIn('error', trial(valid, bad))
+        bad = copy.deepcopy(valid)
+        bad['health'] = {}
+        self.assertIn('error', trial(valid, bad))
+        self.assertIn('error', trial({'id': 7}, valid))
+        self.assertIn('error', trial(valid, valid, observed=False))
+
     def test_closed_conduit_loop_is_rendered_once_without_ends(self):
         ring = [(x, y) for x in range(2, 7) for y in range(2, 7) if x in (2, 6) or y in (2, 6)]
         sc = {'w': 12, 'h': 12, 'conduit': ring, 'walls': [], 'rock': [], 'water': [], 'doors': [], 'trees': [], 'machines': []}

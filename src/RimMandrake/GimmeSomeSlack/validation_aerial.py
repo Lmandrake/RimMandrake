@@ -612,6 +612,8 @@ def _pos_of(p):
 
 def _pawn_row(B, pid, cell):
     r = B.call("jawa/list_pawns", rect="%d,%d,9,9" % (cell[0] - 4, cell[1] - 4), includeHealth=True, limit=50)
+    if r.get("success") is not True:
+        return None
     return next((p for p in r.get("pawns") or [] if p.get("id") == pid), None)
 
 
@@ -629,9 +631,18 @@ def _wire_trial(B, cell, settle=24):
     p1 = _pawn_row(B, pid, cell)
     if p0 is None or p1 is None:
         return {"error": "pawn not in list_pawns", "id": pid}
-    hed = [h.get("def") for h in ((p1.get("health") or {}).get("hediffs") or [])]
+    health = p1.get("health")
+    if (not isinstance(health, dict) or not isinstance(health.get("hediffs"), list)
+            or any(not isinstance(h, dict) or not isinstance(h.get("def"), str) for h in health["hediffs"])):
+        return {"error": "pawn health.hediffs not observed", "id": pid}
+    start, end = _pos_of(p0), _pos_of(p1)
+    if any(not isinstance(v, (int, float)) or isinstance(v, bool) or not math.isfinite(v) for v in start + end):
+        return {"error": "pawn start/end position not observed", "id": pid}
+    if not isinstance(p1.get("dead"), bool):
+        return {"error": "pawn dead state not observed", "id": pid}
+    hed = [h["def"] for h in health["hediffs"]]
     return {"id": pid, "shocked": "RM_FallenWireShock" in hed, "dead": bool(p1.get("dead")),
-            "start": _pos_of(p0), "end": _pos_of(p1)}
+            "start": start, "end": end}
 
 
 def _trial_errors(*trials):

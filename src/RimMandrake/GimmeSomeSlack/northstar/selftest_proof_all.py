@@ -374,7 +374,8 @@ class FakeB:
             self.pawns[self.n] = {"pos": [kw["x"], kw["z"]], "age": 0, "shocked": False}
             return {"pawns": [{"id": self.n}]}
         if tool == "jawa/list_pawns":
-            return {"pawns": [{"id": i, "pos": list(pw["pos"]), "health": {"hediffs": [{"def": "RM_FallenWireShock"}] if pw["shocked"] else []}} for i, pw in self.pawns.items()]}
+            return {"success": True, "pawns": [{"id": i, "pos": list(pw["pos"]), "dead": False,
+                     "health": {"hediffs": [{"def": "RM_FallenWireShock"}] if pw["shocked"] else []}} for i, pw in self.pawns.items()]}
         if tool == "jawa/list_things":
             if kw.get("defName") == "Fire":
                 on = (self.s["fallenWireIgnites"] == "True") if self.faithful else True
