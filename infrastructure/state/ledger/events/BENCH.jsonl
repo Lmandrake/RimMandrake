@@ -19296,3 +19296,4 @@
 {"seat":"CONDUCTOR","event":"bridge","state":"released","ts":"2026-11-09T23:32:19Z","tsn":1794267139489946544}
 {"seat":"CONDUCTOR","event":"verify","id":"GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN","result":"pass","config":"run_selftests --only 14 GSS/SlackGeometry tests on main (bench clone)","evidence":"/mnt/d/ClaudeWork/rimmandrake/gss_land/selftests_main.txt","sha":"a148b06ad47d984ca2bb60c3a09ce68534449fea","level":"L0","ts":"2026-11-09T23:33:04Z","tsn":1794267184298636749}
 {"seat":"CONDUCTOR","event":"drop","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_F086","reason":"steward: SteveDesktop lane RUNNING again (running J20261106T210556Z-98b38b)","why":"steward: the lane recovered by itself","ts":"2026-11-09T23:43:09Z","tsn":1794267789751205816}
+{"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-09T23:33:52Z","tsn":1794267232760283948}
