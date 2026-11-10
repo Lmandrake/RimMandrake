@@ -1,0 +1,1 @@
+Designer question sets must not ask the owner UI questions (how a player compares urgency, what a screen shows): we use RimWorld's existing UI, and a timely message is the most we add. Owner, 2026-11-10, on GelatinousSlime Q1: 'This is game ui work. We make it work in their existing ui.' Also: a per-biome colonist-behaviour question is usually a cross-biome rule (LongShade Q1).
