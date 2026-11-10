@@ -203,17 +203,25 @@ class Net:
         stops = [c for c in sorted(self.cells) if self.deg[c] != 2]
         seen = set()
         self.chains = []
+
+        def walk(s, n):
+            if frozenset((s, n)) in seen:
+                return
+            path = [s, n]
+            while self.deg[path[-1]] == 2 and path[-1] != s:
+                a, b = self.nb[path[-1]]
+                path.append(a if a != path[-2] else b)
+            seen.update(frozenset(e) for e in zip(path, path[1:]))
+            self.chains.append(path)
+
         for s in stops:
             for n in sorted(self.nb[s]):
-                path = [s, n]
-                while self.deg[path[-1]] == 2:
-                    a, b = self.nb[path[-1]]
-                    path.append(a if a != path[-2] else b)
-                key = frozenset(frozenset(e) for e in zip(path, path[1:]))
-                if key in seen:
-                    continue
-                seen.add(key)
-                self.chains.append(path)
+                walk(s, n)
+        # A component with no stops is a closed ring. Its remaining edges still
+        # owe a chain, with the seam repeated at the end and no terminal fitting.
+        for s in sorted(self.cells):
+            for n in sorted(self.nb[s]):
+                walk(s, n)
 
     def _live(self):
         src = [tuple(m["hookup"]) for m in self.sc["machines"] if m.get("source")]
@@ -240,6 +248,8 @@ class Net:
             return "plug"
         if d == 0:
             return "cap"
+        if d == 2:
+            return "seam"
         o = self.out_dir(c)
         nxt = (c[0] + o[0], c[1] + o[1])
         if self.sc.get("open_edges") and not self.inside(nxt):
@@ -262,7 +272,7 @@ class Net:
         ctr = np.array([c[0] + 0.5, c[1] + 0.5])
         if cls in ("t", "x"):
             return [self.knot(c)]
-        if cls == "plug":
+        if cls in ("plug", "seam"):
             return [ctr]
         o = np.array(self.out_dir(c), float)
         ext = {"cap": 0.2, "break": 0.36, "open": 0.75, "grommet": 0.5}[cls]
@@ -319,7 +329,7 @@ def build_strands(net, sty, lvl, opts):
         taper_len = 0.5
 
         def tap_end(cls, s):
-            if cls in ("break", "open", "grommet"):
+            if cls in ("break", "open", "grommet", "seam"):
                 return np.ones_like(s)
             return 0.15 + 0.85 * sstep(s / taper_len)
         tap = tap_end(ca, cl) * tap_end(cb, L - cl)
@@ -413,10 +423,15 @@ def build_strands(net, sty, lvl, opts):
                 splices.append({"s": cl[j] + rr.uniform(-0.2, 0.2), "C": C, "strands": chain_strands,
                                 "rr": R(seed, "tape", c), "kind": "tape", "frac": ci / max(1, ncell - 1)})
         for cls, cell, P0 in ((ca, path[0], C[0]), (cb, path[-1], C[-1])):
+            if cls == "seam":
+                continue
             ends.append({"cls": cls, "cell": cell, "p": P0, "C": C, "at_start": cell == path[0],
                          "strands": chain_strands, "live": cell in net.live})
             if cls in ("cap", "plug") and (rr.random() < lvl["coil_p"] or opts.get("force_coil")):
                 coils.append({"cell": cell, "kind": rr.choice(chain_strands)["kind"], "rr": R(seed, "coil", cell)})
+        if ca == cb == "seam":
+            for st in chain_strands:
+                st["pts"][-1] = st["pts"][0]
         strands += chain_strands
     # junction knots
     for c in sorted(net.cells):

@@ -15,6 +15,7 @@ HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE / 'northstar'), str(HERE / 'northstar_matrix'), str(HERE), str(HERE.parent / 'Utils')]
 import scene_rows as S
 import run_live as R
+import render as MR
 
 
 def png_bytes():
@@ -25,6 +26,26 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_closed_conduit_loop_is_rendered_once_without_ends(self):
+        ring = [(x, y) for x in range(2, 7) for y in range(2, 7) if x in (2, 6) or y in (2, 6)]
+        sc = {'w': 12, 'h': 12, 'conduit': ring, 'walls': [], 'rock': [], 'water': [], 'doors': [], 'trees': [], 'machines': []}
+        net = MR.Net(sc, 1)
+        self.assertEqual(len(net.chains), 1)
+        chain = net.chains[0]
+        self.assertEqual(chain[0], chain[-1])
+        self.assertEqual(set(chain), set(ring))
+        self.assertEqual(len(chain), len(ring) + 1)
+        strands, extras = MR.build_strands(net, MR.STYLES['jawa'], dict(MR.LEVELS['default']), {})
+        self.assertTrue(strands)
+        self.assertEqual(extras['ends'], [])
+        self.assertTrue(all((s['pts'][0] == s['pts'][-1]).all() for s in strands))
+        # A separate ordinary chain keeps both ends, and adding the ring duplicates no edge.
+        sc['conduit'] = ring + [(9, y) for y in range(2, 7)]
+        net = MR.Net(sc, 1)
+        self.assertEqual(len(net.chains), 2)
+        edges = [frozenset(e) for path in net.chains for e in zip(path, path[1:])]
+        self.assertEqual(len(edges), len(set(edges)))
+
     def test_matrix_negative_guards_require_observations(self):
         self.assertEqual(R.pawn_site_status({'success': True, 'pawns': []})[0], 'PASS')
         self.assertEqual(R.pawn_site_status({'success': True, 'pawns': [{'id': 1}]})[0], 'FAIL')
