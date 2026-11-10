@@ -107,6 +107,8 @@ import shutil
 import subprocess
 import sys
 import time
+import uuid
+import zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODDIR = os.path.dirname(HERE)
@@ -522,6 +524,42 @@ def compare(exp, got, plot_game):
 def shot_run_dir(t, pid):
     """The folder (under SHOTS) one run's screenshots go to: its start second and process id, unique per run."""
     return "run_%s_%d" % (time.strftime("%Y%m%dT%H%M%S", time.localtime(t)), pid)
+
+
+def png_complete(path):
+    """The asynchronous writer has finished only when all chunks and the IEND CRC are present. No PIL dependency."""
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+    except OSError:
+        return False
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        return False
+    offset, header, pixels = 8, False, False
+    while offset + 12 <= len(data):
+        size = int.from_bytes(data[offset:offset + 4], "big")
+        end = offset + 12 + size
+        if end > len(data):
+            return False
+        kind = data[offset + 4:offset + 8]
+        if zlib.crc32(data[offset + 4:end - 4]) & 0xffffffff != int.from_bytes(data[end - 4:end], "big"):
+            return False
+        header |= kind == b"IHDR" and size == 13 and offset == 8
+        pixels |= kind == b"IDAT"
+        if kind == b"IEND":
+            return header and pixels and size == 0 and end == len(data)
+        offset = end
+    return False
+
+
+def wait_png(path, timeout_s=4.0):
+    deadline = time.monotonic() + timeout_s
+    while True:
+        if png_complete(path):
+            return True
+        if time.monotonic() >= deadline:
+            return False
+        time.sleep(0.05)
 
 
 def sprawl_check(rc, plot_game):
@@ -1143,6 +1181,7 @@ class Run(object):
     def _shot(self, name, pg, root, frame):
         B = self.B
         render = self.shots
+        capture_name = "mcx_" + name + "_" + uuid.uuid4().hex
         self.nshots += 1 if render else 0
         settle = self.settle if self.settle is not None else 1.5
         if frame:
@@ -1157,7 +1196,7 @@ class Run(object):
             self._framed = None
             if not render:
                 return {"file": None, "kind": "skipped", "ok": None, "skipped": "--no-shots", "rect": pg}
-            r = B.call("jawa/take_screenshot", fileName="mcx_" + name)
+            r = B.call("jawa/take_screenshot", fileName=capture_name)
         elif not render:
             # --no-shots: the capture tool also moves the camera to the rect; the cord graph rebuilds off camera-driven section
             # regeneration, so make the same move (frame_cell_rect, same settle) and skip only render + PNG + copy.
@@ -1169,15 +1208,14 @@ class Run(object):
             # LEARNED smoke 2026-10-02: rootSize overrides the rect framing (a wide frame with the scene small and
             # off-centre), so the cell-rect capture takes the tool's own rect fit; Z is set on the live camera.
             r = B.call("rimworld/screenshot_cell_rect", x=pg[0], z=pg[1], width=pg[2], height=pg[3], paddingCells=PAD,
-                       fileName="mcx_" + name, suppressMessage=True)
+                       fileName=capture_name, suppressMessage=True)
         src = r.get("path") or r.get("filePath")
-        for _ in range(80):
-            if src and os.path.exists(src):
-                break
-            time.sleep(0.05)
+        ready = r.get("success") is True and bool(src) and wait_png(src)
         rec = {"file": None, "kind": "frame" if frame else "cell_rect", "src": src,
-               "ok": r.get("success"), "pad": PAD, "rect": pg}
-        if src and os.path.exists(src):
+               "ok": ready, "pad": PAD, "rect": pg}
+        if not ready:
+            rec["error"] = "capture failed or PNG did not finish before the deadline"
+        if ready:
             rec["file"] = self.shot_run + "/" + name + ".png"          # relative to SHOTS, '/' in the JSON
             dst = os.path.join(SHOTS, self.shot_run, name + ".png")
             os.makedirs(os.path.dirname(dst), exist_ok=True)

@@ -4,6 +4,9 @@ import copy
 from pathlib import Path
 import sys
 import unittest
+import struct
+import tempfile
+import zlib
 from unittest.mock import patch
 from types import SimpleNamespace
 
@@ -13,7 +16,40 @@ import scene_rows as S
 import run_live as R
 
 
+def png_bytes():
+    def chunk(kind, data):
+        return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data) & 0xffffffff)
+    return (b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', 1, 1, 8, 2, 0, 0, 0))
+            + chunk(b'IDAT', zlib.compress(b'\x00\xff\x00\x00')) + chunk(b'IEND', b''))
+
+
 class ReviewLeftovers(unittest.TestCase):
+    def test_capture_waits_for_complete_png_and_uses_unique_names(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / 'capture.png'
+            data = png_bytes()
+            for bad in (b'', data[:-1], data[:40], data[:-5] + b'xxxxx'):
+                p.write_bytes(bad)
+                self.assertFalse(R.wait_png(p, timeout_s=0))
+            p.write_bytes(data)
+            self.assertTrue(R.wait_png(p, timeout_s=0))
+            names = []
+
+            def capture(tool, **kw):
+                names.append(kw['fileName'])
+                src = Path(td) / (kw['fileName'] + '.png')
+                src.write_bytes(data)
+                return {'success': True, 'path': str(src)}
+
+            run = R.Run(SimpleNamespace(call=capture), SimpleNamespace(shot_settle=0))
+            with patch.object(R, 'SHOTS', td):
+                a = run._shot('same', [0, 0, 2, 2], 11, False)
+                b = run._shot('same', [0, 0, 2, 2], 11, False)
+                run.finish_copies()
+                self.assertNotEqual(names[0], names[1])
+                self.assertTrue(a['ok'] and b['ok'])
+                self.assertEqual((Path(td) / b['file']).read_bytes(), data)
+
     def test_aerial_liveness_is_compared_without_count_changes(self):
         sc = {'build': [{'op': 'anchor', 'cells': [[1, 1], [5, 1]]},
                         {'op': 'build', 'id': 'h_air', 'def': 'Heater', 'cells': [[7, 1]]}]}
