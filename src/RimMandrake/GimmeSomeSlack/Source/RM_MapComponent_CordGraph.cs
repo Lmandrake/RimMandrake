@@ -383,9 +383,9 @@ namespace RimMandrake.GimmeSomeSlack
                     sigKeys.UnionWith(printedSig.Keys);
                     foreach (IntVec2 s in sigKeys)
                     {
-                        ulong cur = RebuildTail.SectionSig(nextBy.TryGetValue(s, out List<LaidPiece> nl) ? nl : null, netSeeds, matIdx, elig);
+                        ulong cur = SectionSig(nextBy.TryGetValue(s, out List<LaidPiece> nl) ? nl : null, netSeeds, matIdx, elig);
                         if (!printedSig.TryGetValue(s, out ulong was))
-                            was = RebuildTail.SectionSig(prevBy.TryGetValue(s, out List<LaidPiece> pl) ? pl : null, prevSeeds, prevMat, elig);
+                            was = SectionSig(prevBy.TryGetValue(s, out List<LaidPiece> pl) ? pl : null, prevSeeds, prevMat, elig);
                         if (was != cur) DirtySection(s);
                         if (cur == 0UL) printedSig.Remove(s); else printedSig[s] = cur;
                         LastSigSections++;
@@ -477,7 +477,21 @@ namespace RimMandrake.GimmeSomeSlack
             finally { OwnDirty = false; }
         }
 
-        // A section's owned-set signature (piece keys, geometry, lane C net seed, material, eligibility): RebuildTail.SectionSig.
+        // GSS_STRIP_LED_FIX_MISSED_REPAINT: include the published decals' live/dark kinds.
+        // LiveNow can consume a power flip during Build, leaving PollLive no flip to detect.
+        private static ulong SectionSig(List<LaidPiece> ps, Dictionary<LaidPiece, int> seeds,
+            Dictionary<LaidPiece, int> mats, Func<CordStrand, int> elig)
+        {
+            ulong sig = RebuildTail.SectionSig(ps, seeds, mats, elig);
+            if (ps != null)
+                foreach (LaidPiece p in ps)
+                {
+                    sig = unchecked((sig ^ 0xffUL) * 1099511628211UL);
+                    foreach (CordDecal d in p.Decals)
+                        sig = unchecked((sig ^ (ulong)(int)d.Kind) * 1099511628211UL);
+                }
+            return sig;
+        }
 
         private bool LiveNow(Cell c)
         {
