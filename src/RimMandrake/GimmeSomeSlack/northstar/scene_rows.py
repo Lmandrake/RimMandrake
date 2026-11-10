@@ -174,21 +174,32 @@ def _span(B, V, a, b, batt):
     return ia, ib, f.get("fallenLive"), tip
 
 
+def drafted_control_observed(roster, replies):
+    pawns = roster.get("pawns")
+    return (roster.get("success") is True and isinstance(pawns, list) and bool(pawns)
+            and all(isinstance(p, dict) and p.get("id") is not None
+                    and replies.get(p["id"], {}).get("success") is True
+                    and replies[p["id"]].get("pawn", {}).get("id") == p["id"]
+                    and replies[p["id"]].get("pawn", {}).get("drafted") is True for p in pawns))
+
+
 def restring(B, V, rows):
     """sc_restring's control, then the road M15e skips: the work scheduler itself gives a free colonist the job."""
     x, z = SC0
     _site(B, V)
     from validation_aerial import _wire_trial
-    home = {p["id"]: p.get("pos") for p in B.probe("colonists").get("pawns") or []}
+    roster = B.probe("colonists")
+    home = {p["id"]: p.get("pos") for p in roster.get("pawns") or [] if isinstance(p, dict) and p.get("id") is not None}
     ia, ib, live, tip = _span(B, V, (x + 2, z + 4), (x + 16, z + 4), None)
-    for pid in home:
-        B.probe("pawn:%d=draft" % pid)
+    drafts = {pid: B.probe("pawn:%d=draft" % pid) for pid in home}
     o = B.ap("restringorder:%d" % ia)
     B.ticks(600)
     st = B.ap("restringstate:%d" % ia)
     al = B.ap("alert")
     ok = o.get("designated") and st.get("cut", 0) >= 1 and al.get("down", 0) >= 1
-    V.row(rows, "SC_restring_drafted_no_job", "PASS" if ok else "FAIL", "MOD", {"order": o, "after600": st, "alert": al.get("down"),
+    measured = drafted_control_observed(roster, drafts)
+    V.row(rows, "SC_restring_drafted_no_job", ("PASS" if ok else "FAIL") if measured else "UNMEASURED", "MOD" if measured else "HARNESS",
+          {"order": o, "after600": st, "alert": al.get("down"), "roster": roster, "drafts": drafts,
                                                                               "meaning": "PASS = every colonist drafted, the order stands and nobody splices"})
     # the builders free to work, standing by: which of them has Construction switched on is the quicktest's roll. The wire is dead for this, so a
     # free pawn who wanders across it is safe; the live wire comes next.
