@@ -410,7 +410,7 @@ namespace RimMandrake.HugeThings.SelfTest
             public CellFlags At(long k)
             {
                 int x = K.KeyX(k), z = K.KeyZ(k);
-                if (x < 0 || z < 0 || x >= W || z >= H) return CellFlags.Passable;   // beyond the board: open map
+                if (x < 0 || z < 0 || x >= W || z >= H) return CellFlags.None;   // actual map bounds are impassable, never a reconnection shortcut
                 return F[z * W + x];
             }
         }
@@ -430,6 +430,77 @@ namespace RimMandrake.HugeThings.SelfTest
             return g;
         }
 
+        // Independent WHOLE-MAP oracle: label anchor components before and after. Every pair of surviving
+        // anchors connected before must remain connected. No planning-window border participates in this oracle.
+        private static bool GlobalConnectivity(Grid g, HashSet<long> closed, int sx, int sz)
+        {
+            Dictionary<long, int> Labels(bool after)
+            {
+                var labels = new Dictionary<long, int>();
+                bool Fits(int x, int z)
+                {
+                    if (x < 0 || z < 0 || x + sx > g.W || z + sz > g.H) return false;
+                    for (int oz = 0; oz < sz; oz++)
+                        for (int ox = 0; ox < sx; ox++)
+                            if ((g.F[(z + oz) * g.W + x + ox] & CellFlags.Passable) == 0 ||
+                                (after && closed.Contains(K.Key(x + ox, z + oz)))) return false;
+                    return true;
+                }
+                int component = 0;
+                for (int z = 0; z < g.H; z++)
+                    for (int x = 0; x < g.W; x++)
+                    {
+                        long start = K.Key(x, z);
+                        if (labels.ContainsKey(start) || !Fits(x, z)) continue;
+                        var queue = new Queue<long>();
+                        queue.Enqueue(start); labels[start] = ++component;
+                        while (queue.Count > 0)
+                        {
+                            long at = queue.Dequeue();
+                            int ax = K.KeyX(at), az = K.KeyZ(at);
+                            foreach (long next in new[] { K.Key(ax+1, az), K.Key(ax-1, az), K.Key(ax, az+1), K.Key(ax, az-1) })
+                                if (!labels.ContainsKey(next) && Fits(K.KeyX(next), K.KeyZ(next)))
+                                { labels[next] = component; queue.Enqueue(next); }
+                        }
+                    }
+                return labels;
+            }
+            var before = Labels(false); var afterLabels = Labels(true);
+            var destinations = new Dictionary<int, int>();
+            foreach (var pair in afterLabels)
+            {
+                int original = before[pair.Key];
+                if (destinations.TryGetValue(original, out int destination) && destination != pair.Value) return false;
+                destinations[original] = pair.Value;
+            }
+            return true;
+        }
+
+        private static string CaseGlobalPlanner(int seed)
+        {
+            int shift = new Random(seed).Next(6), gateZ = 30 + shift;
+            var g = new Grid { W = 72, H = 72, F = Enumerable.Repeat(CellFlags.Passable, 72*72).ToArray() };
+            for (int z = 10; z <= 60; z++) { g.F[z*g.W+10] = CellFlags.None; g.F[z*g.W+60] = CellFlags.None; }
+            for (int x = 10; x <= 60; x++) { g.F[10*g.W+x] = CellFlags.None; g.F[60*g.W+x] = CellFlags.None; }
+            long gate = K.Key(10, gateZ); g.F[gateZ*g.W+10] = CellFlags.Passable;
+            var wanted = new List<long> { gate }; var roots = new List<long> { K.Key(12, gateZ+2) };
+            var window = Planner.Window(wanted, roots[0]);
+            Check(!GlobalConnectivity(g, new HashSet<long> { gate }, 1, 1), "global oracle failed to catch old large-enclosure closure");
+            Check(Planner.Plan(wanted, roots, g.At, window).Count == 0, "sole entrance of enclosure extending beyond window closed");
+            // A 4-wide gate narrowed to 3: still connected for a 1x1 pawn, disconnected for a 4x4 pawn.
+            for (int z = 0; z < g.H; z++)
+                for (int x = 0; x < g.W; x++) g.F[z*g.W+x] = x == 32 && (z < 29 || z > 32) ? CellFlags.None : CellFlags.Passable;
+            long edge = K.Key(32, 29); wanted[0] = edge; roots[0] = K.Key(30, 30);
+            window = new CellBox(22, 19, 42, 42);
+            var sizes = new List<CellBox> { new CellBox(0, 0, 3, 3) };
+            Check(GlobalConnectivity(g, new HashSet<long> { edge }, 1, 1), "clearance fixture must remain open to 1x1");
+            Check(!GlobalConnectivity(g, new HashSet<long> { edge }, 4, 4), "global oracle missed large-pawn clearance loss");
+            Check(Planner.Plan(wanted, roots, g.At, window, sizes).Count == 0, "narrowed sole large-pawn entrance");
+            // Ordinary open terrain uses only the supplied local window and still closes.
+            Check(Planner.Plan(wanted, roots, k => CellFlags.Passable, window, sizes).Count == 1, "obviously safe open cell refused");
+            return "";
+        }
+
         /// <summary>The planner never closes a pawn/item/protected/impassable cell, never cuts a passable cell off from the
         /// border it reached, keeps every served root served, is order-independent and idempotent.</summary>
         internal static string CasePlanner(int seed)
@@ -441,7 +512,9 @@ namespace RimMandrake.HugeThings.SelfTest
             var roots = new List<long> { K.Key(w / 2, h / 2 - 1) };
             wanted.Remove(roots[0]);
             CellBox win = Planner.Window(wanted, roots[0]);
-            List<long> acc = Planner.Plan(wanted, roots, g.At, win);
+            int sx = 1 + r.Next(4), sz = 1 + r.Next(4);
+            var clearance = new List<CellBox> { new CellBox(0, 0, sx - 1, sz - 1) };
+            List<long> acc = Planner.Plan(wanted, roots, g.At, win, clearance);
             var accSet = new HashSet<long>(acc);
             Check(accSet.Count == acc.Count, "duplicate planned cells");
             Check(accSet.IsSubsetOf(wanted), "planned a cell nobody wanted");
@@ -454,7 +527,9 @@ namespace RimMandrake.HugeThings.SelfTest
                 Check((f & CellFlags.Protected) == 0, "closed a protected cell");
                 Check(!roots.Contains(k), "closed a root");
             }
-            // independent reachability over the planner's window, flooded by separate code (the window border = open map)
+            Check(GlobalConnectivity(g, accSet, 1, 1), "whole-map 1x1 component split");
+            Check(GlobalConnectivity(g, accSet, sx, sz), "whole-map clearance component split");
+            // Retain the old window oracle as an additional (weaker) check.
             bool[] Board(HashSet<long> closed, out int bw, out int bh)
             {
                 bw = win.MaxX - win.MinX + 1; bh = win.MaxZ - win.MinZ + 1;
@@ -496,12 +571,12 @@ namespace RimMandrake.HugeThings.SelfTest
             }
             // order independence
             var shuffled = wanted.OrderBy(_ => r.Next()).ToList();
-            List<long> acc2 = Planner.Plan(shuffled, roots, g.At, win);
+            List<long> acc2 = Planner.Plan(shuffled, roots, g.At, win, clearance);
             Check(acc2.SequenceEqual(acc), "planning depends on the order cells were wanted in");
             // idempotence: with the accepted cells closed, the rest stays deferred
             Grid g2 = new Grid { W = w, H = h, F = (CellFlags[])g.F.Clone() };
             foreach (long k in acc) g2.F[K.KeyZ(k) * w + K.KeyX(k)] = CellFlags.None;
-            List<long> again = Planner.Plan(wanted.Where(k => !accSet.Contains(k)).ToList(), roots, g2.At, win);
+            List<long> again = Planner.Plan(wanted.Where(k => !accSet.Contains(k)).ToList(), roots, g2.At, win, clearance);
             Check(again.Count == 0, "a second plan on the same map closed " + again.Count + " more cells (not idempotent)");
             return string.Join(" ", acc);
         }
@@ -730,7 +805,11 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "boundary") ok &= Family("boundary", N(5000), one, CaseBoundary);
             if (only == null || only == "symmetry") ok &= Family("symmetry", N(3000), one, CaseSymmetry);
             if (only == null || only == "ledger") ok &= Family("ledger", N(4000), one, CaseLedger);
-            if (only == null || only == "planner") ok &= Family("planner", N(3000), one, CasePlanner);
+            if (only == null || only == "planner")
+            {
+                ok &= Family("global-planner", N(30), one, CaseGlobalPlanner);
+                ok &= Family("planner", N(3000), one, CasePlanner);
+            }
             if (only == null || only == "items") ok &= Family("items", N(4000), one, CaseItems);
             if (only == null || only == "root") ok &= Family("root", N(2000), one, CaseRoot);
             if (only == null || only == "cache") ok &= Family("cache", N(2000), one, CaseCache);

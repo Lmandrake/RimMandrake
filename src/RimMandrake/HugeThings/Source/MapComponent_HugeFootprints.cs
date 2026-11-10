@@ -260,9 +260,12 @@ namespace RimMandrake.HugeThings
             foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) mine.Add(k);
             if (mine.Count == 0) return;
             mine.Sort();
-            CellBox window = Planner.Window(c.MaxKeys(), Key(c.parent.Position));
+            List<CellBox> clearance = PawnClearance(out HashSet<long> occupied, out int margin);
+            CellBox window = ClearanceWindow(Planner.Window(c.MaxKeys(), Key(c.parent.Position)), margin);
             Dictionary<long, CellFlags> flags = Flags(window);
-            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, roots, window, out List<long> ok);
+            foreach (long k in occupied)
+                if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn;
+            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, roots, window, clearance, out List<long> ok);
             Planner.RealizeInOrder(ok, k =>
             {
                 if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) return false;
@@ -272,10 +275,33 @@ namespace RimMandrake.HugeThings
             });
         }
 
+        private static CellBox ClearanceWindow(CellBox w, int margin) => new CellBox(w.MinX - margin, w.MinZ - margin,
+                                                                                  w.MaxX + margin, w.MaxZ + margin);
+
+        // OccupiedRect is the engine/integration truth, including Large Pawns. Protect every occupied cell, not just
+        // the pawn's ThingGrid anchor. Preserve anchor connectivity for each present shape and its rotated shape.
+        private List<CellBox> PawnClearance(out HashSet<long> occupied, out int margin)
+        {
+            occupied = new HashSet<long>();
+            margin = 0;
+            var sizes = new HashSet<long>();
+            var result = new List<CellBox>();
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+            {
+                CellRect rect = pawn.OccupiedRect();
+                foreach (IntVec3 cell in rect) occupied.Add(Key(cell));
+                int sx = rect.Width, sz = rect.Height;
+                margin = System.Math.Max(margin, System.Math.Max(sx, sz));
+                if (sizes.Add(RM_HugeFootprintKernel.Key(sx, sz))) result.Add(new CellBox(0, 0, sx - 1, sz - 1));
+                if (sizes.Add(RM_HugeFootprintKernel.Key(sz, sx))) result.Add(new CellBox(0, 0, sz - 1, sx - 1));
+            }
+            return result;
+        }
+
         /// <summary>Owner ruling 2026-10-07 21:08: for each wanted cell held ONLY by items (no pawn, nothing protected), a
         /// destination per item in the nearest free valid cell outside every footprint, preferring the source's own storage;
         /// at most once per PendingRetryInterval per cell. Cells whose items do not all fit are left out (they stay open).</summary>
-        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, List<long> roots, CellBox window,
+        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, List<long> roots, CellBox window, List<CellBox> clearance,
                                                            out List<long> accepted)
         {
             List<long> Plan(Dictionary<long, List<long>> mv)
@@ -284,7 +310,7 @@ namespace RimMandrake.HugeThings
                 {
                     if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
                     return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;   // movable: plan it as if clear
-                }, window);
+                }, window, clearance);
             }
             Dictionary<long, int> counts = new Dictionary<long, int>();
             if (RM_HugeThingsSettings.PlantItemPushActive)   // Mod Settings off: the cell stays open
@@ -574,8 +600,11 @@ namespace RimMandrake.HugeThings
                 + " claimed=" + mine.Count + " realized=" + real + " pending=" + pend + " | " + comp.DebugDescribe() + " | " + head;
             if (pendList.Count == 0) return s;
             pendList.Sort();
-            CellBox window = Planner.Window(comp.MaxKeys(), Key(comp.parent.Position));
+            List<CellBox> clearance = mc.PawnClearance(out HashSet<long> occupied, out int margin);
+            CellBox window = ClearanceWindow(Planner.Window(comp.MaxKeys(), Key(comp.parent.Position)), margin);
             Dictionary<long, CellFlags> flags = mc.Flags(window);
+            foreach (long k in occupied)
+                if (flags.TryGetValue(k, out CellFlags f)) flags[k] = f | CellFlags.Pawn;
             int notPass = 0, pawn = 0, item = 0, prot = 0, outside = 0;
             foreach (long k in pendList)
             {
@@ -588,7 +617,7 @@ namespace RimMandrake.HugeThings
             }
             List<long> roots = new List<long>();
             foreach (CompHugeFootprint c in mc.comps.Values) roots.Add(Key(c.parent.Position));
-            int accept = Planner.Plan(pendList, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, window).Count;
+            int accept = Planner.Plan(pendList, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.None, window, clearance).Count;
             return s + " | pendingFlags notPassable=" + notPass + " pawn=" + pawn + " item=" + item + " protected=" + prot
                 + " outsideWindow=" + outside + " window=" + window.MinX + "," + window.MinZ + ".." + window.MaxX + "," + window.MaxZ
                 + " dryPlanAccepts=" + accept;

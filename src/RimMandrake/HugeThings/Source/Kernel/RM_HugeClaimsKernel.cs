@@ -6,7 +6,7 @@
 //   Planner          which claimed-but-open cells may close NOW: never a cell holding a pawn or an item (so nothing is ever
 //                    moved aside or destroyed), never a protected cell (buildings, blueprints, frames, their interaction cells,
 //                    door approaches, trees, other giants, unwalkable ground), and never one whose closing would cut a
-//                    passable cell off from the window's border (no trapped pawns, no new pockets) or cut a giant's root off
+//                    passable component apart anywhere on the map (including pawn clearance) or cut a giant's root off
 //                    from every open 4-neighbour (it must stay cuttable). A refused cell is deferred, not dropped.
 //   FootprintSignature  everything the geometry depends on, compared field by field (the selection/refresh cache key).
 //   DamageDedup      one forwarded hit per (tick, source, owner): a beam or blast crossing several cells of one giant hits it once.
@@ -119,11 +119,12 @@ namespace RimMandrake.HugeThings
 
         /// <summary>
         /// Decide which of `wanted` (claimed, not yet blocked) may close now, in a deterministic order. flagsAt answers for
-        /// any cell; roots are giants' own cells that must keep an open 4-neighbour reachable from the window border if
-        /// they have one now. The window's border stands for "the rest of the map"; a pocket larger than the window is not
-        /// seen (see REWORK.md, Needs owner). Cells of `wanted` outside the window are refused.
+        /// any cell; roots keep an open neighbour. Local reconnection is a sufficient proof of GLOBAL connectivity:
+        /// every surviving neighbour of the deleted anchor set must reconnect without leaving the window. Every global
+        /// path through deleted anchors can then substitute that local path. Ambiguous closures stay open. Clearance
+        /// boxes specify occupied width/height (their position is irrelevant); 1x1 is always checked too.
         /// </summary>
-        public static List<long> Plan(IList<long> wanted, IList<long> roots, Func<long, CellFlags> flagsAt, CellBox window)
+        public static List<long> Plan(IList<long> wanted, IList<long> roots, Func<long, CellFlags> flagsAt, CellBox window, IList<CellBox> clearance = null)
         {
             List<long> accepted = new List<long>();
             if (wanted == null || wanted.Count == 0) return accepted;
@@ -144,7 +145,7 @@ namespace RimMandrake.HugeThings
                 {
                     if (!window.Contains(RM_HugeFootprintKernel.KeyX(k), RM_HugeFootprintKernel.KeyZ(k))) continue;
                     int i = (RM_HugeFootprintKernel.KeyZ(k) - minZ) * w + (RM_HugeFootprintKernel.KeyX(k) - minX);
-                    if (RootServed(i, pass, before, w, h)) rootIdx.Add(i);   // only roots that have access now must keep it
+                    if (RootServed(i, pass, pass, w, h)) rootIdx.Add(i);   // only roots that have access now must keep it
                 }
             }
 
@@ -171,14 +172,20 @@ namespace RimMandrake.HugeThings
                     if (rootIdx.Contains(i) || !pass[i]) continue;
                     pass[i] = false;
                     bool[] after = Reach(pass, w, h);
-                    bool ok = true;
+                    bool ok = Reconnects(i, pass, w, h, 1, 1);
+                    if (clearance != null)
+                        foreach (CellBox size in clearance)
+                        {
+                            if (!ok) break;
+                            ok = Reconnects(i, pass, w, h, size.MaxX - size.MinX + 1, size.MaxZ - size.MinZ + 1);
+                        }
                     for (int j = 0; j < pass.Length && ok; j++)
                     {
                         if (pass[j] && before[j] && !after[j]) ok = false;     // a cell that reached the border no longer does
                     }
                     for (int r = 0; r < rootIdx.Count && ok; r++)
                     {
-                        if (!RootServed(rootIdx[r], pass, after, w, h)) ok = false;
+                        if (!RootServed(rootIdx[r], pass, pass, w, h)) ok = false;
                     }
                     if (ok)
                     {
@@ -196,6 +203,56 @@ namespace RimMandrake.HugeThings
             // round depends on cells accepted before it; every prefix of this list is safe to close on its own, so a realizer
             // must spawn in this order and stop at its first failure (RealizeInOrder).
             return accepted;
+        }
+
+        // pass already has the candidate closed. In the anchor graph, closing a physical cell deletes all
+        // previously valid occupied rectangles containing it. Require ALL surviving neighbours of that set to
+        // reconnect locally. This is conservative even when the deleted anchors had separate components before.
+        private static bool Reconnects(int cell, bool[] pass, int w, int h, int sx, int sz)
+        {
+            int cx = cell % w, cz = cell / w;
+            if (sx <= 0 || sz <= 0 || cx - sx < 0 || cz - sz < 0 || cx + sx >= w || cz + sz >= h) return false;
+            bool Fits(int x, int z, bool before)
+            {
+                if (x < 0 || z < 0 || x + sx > w || z + sz > h) return false;
+                for (int dz = 0; dz < sz; dz++)
+                    for (int dx = 0; dx < sx; dx++)
+                    {
+                        int i = (z + dz) * w + x + dx;
+                        if (!pass[i] && !(before && i == cell)) return false;
+                    }
+                return true;
+            }
+            var boundary = new HashSet<int>();
+            int[] dxs = { 1, -1, 0, 0, 1, 1, -1, -1 }, dzs = { 0, 0, 1, -1, 1, -1, 1, -1 };
+            for (int z = cz - sz + 1; z <= cz; z++)
+                for (int x = cx - sx + 1; x <= cx; x++)
+                {
+                    if (!Fits(x, z, true)) continue;
+                    // Include diagonal boundary edges too; reconnect via cardinal steps, a sufficient proof for both.
+                    for (int d = 0; d < 8; d++)
+                    {
+                        int nx = x + dxs[d], nz = z + dzs[d];
+                        if (Fits(nx, nz, false)) boundary.Add(nz * w + nx);
+                    }
+                }
+            if (boundary.Count <= 1) return true;
+            var seen = new HashSet<int>();
+            var todo = new Stack<int>();
+            foreach (int i in boundary) { todo.Push(i); seen.Add(i); break; }
+            while (todo.Count > 0)
+            {
+                int i = todo.Pop();
+                boundary.Remove(i);
+                if (boundary.Count == 0) return true;
+                for (int d = 0; d < 4; d++)
+                {
+                    int x = i % w + dxs[d], z = i / w + dzs[d];
+                    int next = z * w + x;
+                    if (Fits(x, z, false) && seen.Add(next)) todo.Push(next);
+                }
+            }
+            return false;
         }
 
         /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.3): realize `accepted` in order and stop at the first cell that fails, leaving it and
