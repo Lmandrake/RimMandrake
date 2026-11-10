@@ -1,0 +1,90 @@
+staging src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj -> D:\ClaudeWork\rimmandrake\build\JawaBench
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JawaBench.BridgeTools -> D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.97
+
+bundle contents (/home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench):
+  JawaBench.BridgeTools.dll                 4756480 B
+
+OK: bundle ships only JawaBench.BridgeTools.dll
+source hash embedded: 48258bf21f617ff5 (companion_identity.py checks it on every lane)
+
+GM tools EXCLUDED (default). Pass --gm to include jawa/fire_incident and jawa/send_letter.
+  verified absent from the DLL: jawa/fire_incident, jawa/send_letter
+
+closure_scan: clean - 636 fields on 2 shared types, none names an optional mod's type
+
+deploy plan
+  from : /home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  to   : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  state: differs -- built from a DIFFERENT COMMIT (expected after any commit)
+         game copy : 446ec4d7dbb5
+         this build: dcc5bf5a7047
+         The build is deterministic per commit, so this alone does NOT mean
+         the tool code changed. Deploy to make them agree.
+
+*** THIS DEPLOY WOULD REMOVE TOOLS ***
+  LOSES  jawa/animal_bond
+  LOSES  jawa/animal_train
+  LOSES  jawa/animal_train_wanted
+  LOSES  jawa/animal_trainable_visibility
+  LOSES  jawa/difficulty_tune
+  LOSES  jawa/explosion_at
+  LOSES  jawa/fire_incident
+  LOSES  jawa/fire_raid
+  LOSES  jawa/game_comp_timing
+  LOSES  jawa/game_condition
+  LOSES  jawa/gravship_land
+  LOSES  jawa/gravship_launch
+  LOSES  jawa/incident_queue_clear
+  LOSES  jawa/incident_queue_remove
+  LOSES  jawa/incident_schedule
+  LOSES  jawa/instant_recruit
+  LOSES  jawa/letter_send_delayed
+  LOSES  jawa/lord_assault_spawn
+  LOSES  jawa/lord_defend_spawn
+  LOSES  jawa/lord_destroy
+  LOSES  jawa/lord_poke
+  LOSES  jawa/lord_set_job
+  LOSES  jawa/lord_set_point
+  LOSES  jawa/lord_travel_to
+  LOSES  jawa/map_comp_timing
+  LOSES  jawa/map_explosion
+  LOSES  jawa/map_fire
+  LOSES  jawa/map_skyfaller
+  LOSES  jawa/oracle_configure
+  LOSES  jawa/oracle_test_ohm_letter
+  LOSES  jawa/pawns_patrol_route
+  LOSES  jawa/raid_shape_fire
+  LOSES  jawa/rain_suppress
+  LOSES  jawa/ritual_start
+  LOSES  jawa/scenario_part_add
+  LOSES  jawa/send_letter
+  LOSES  jawa/settlement_attack
+  LOSES  jawa/signal_send
+  LOSES  jawa/sky_glow_set
+  LOSES  jawa/social_cancel
+  LOSES  jawa/social_gathering_start
+  LOSES  jawa/social_marry
+  LOSES  jawa/spawn_mech_cluster
+  LOSES  jawa/static_call
+  LOSES  jawa/storyteller_fire
+  LOSES  jawa/storyteller_swap
+  LOSES  jawa/tps_test_attribution
+  LOSES  jawa/tps_test_block
+  LOSES  jawa/weather_roll_next
+  LOSES  jawa/weather_set
+  The game copy has these and this build does not. If you did not
+  intend to reduce the companion, you are probably missing a build
+  flag -- --gm is OFF by default and drops the GM pair.
+  Deliberate? Re-run with --allow-tool-removal.
+
+plan only. Re-run with --apply to deploy.

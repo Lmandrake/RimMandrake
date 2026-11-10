@@ -1,0 +1,35 @@
+staging src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj -> D:\ClaudeWork\rimmandrake\build\JawaBench
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JawaBench.BridgeTools -> D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.02
+
+bundle contents (/home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench):
+  JawaBench.BridgeTools.dll                 5171712 B
+
+OK: bundle ships only JawaBench.BridgeTools.dll
+source hash embedded: 48258bf21f617ff5 (companion_identity.py checks it on every lane)
+
+*** GM TOOLS INCLUDED - this build can act on the player. ***
+  jawa/fire_incident       in DLL
+  jawa/send_letter         in DLL
+
+closure_scan: clean - 675 fields on 2 shared types, none names an optional mod's type
+
+deploy plan
+  from : /home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  to   : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  state: differs -- built from a DIFFERENT COMMIT (expected after any commit)
+         game copy : 446ec4d7dbb5
+         this build: dcc5bf5a7047
+         The build is deterministic per commit, so this alone does NOT mean
+         the tool code changed. Deploy to make them agree.
+
+plan only. Re-run with --apply to deploy.

@@ -1,0 +1,51 @@
+{
+  "entrypoint": "/home/mandrake/dev/MandrakeWorkflows/whittle/run.py --runner codex",
+  "worker_session": "01a1c649-561e-7fa1-8ff0-fc747364b402",
+  "worker_started_utc": "2026-11-10T16:27:37Z",
+  "worker_completed_utc": "2026-11-10T16:55:49Z",
+  "runner_exit": 2,
+  "claim": "BLOCKED; no accepted whole piece",
+  "transport": {
+    "runner": "codex",
+    "usage": {
+      "input_tokens": 17903334,
+      "output_tokens": 53289
+    },
+    "state": "done",
+    "quota": {
+      "codex.week_used_pct": {
+        "v": 66.0,
+        "m": "MEASURED",
+        "unit": "% of the weekly quota used",
+        "x": {
+          "reading_at": "2026-11-10T16:27:33Z",
+          "files": 1169
+        }
+      },
+      "codex.hours_to_reset": {
+        "v": 14.3,
+        "m": "MEASURED",
+        "unit": "h to the weekly reset"
+      },
+      "codex.runway": {
+        "v": 2.38,
+        "m": "MEASURED",
+        "unit": "x the time to reset",
+        "x": {
+          "rate_pct_h": 1.0,
+          "rate_from": "readings over the last 24 h"
+        }
+      }
+    },
+    "sandbox": "danger-full-access",
+    "model": "config",
+    "effort": "high",
+    "codex_side": "wsl",
+    "codex_home": "/home/mandrake/.codex",
+    "error": null,
+    "returncode": 0
+  },
+  "last_bridge": "driver lock FREE; bridge FREE",
+  "last_game": "DOWN, measured NOT RUNNING",
+  "quota_end_pct": 68
+}

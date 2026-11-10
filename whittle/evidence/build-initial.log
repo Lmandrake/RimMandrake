@@ -1,0 +1,17 @@
+staging src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj -> D:\ClaudeWork\rimmandrake\build\FlowWorks
+  src/RimMandrake/FlowWorks/Source/
+  src/RimMandrake/_Shared/StylePicker/
+  src/RimMandrake/_Shared/SettingsKit/
+  src/RimMandrake/_Shared/SlackGeometry/
+  src/RimMandrake/_Shared/HarmonyResilience/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\FlowWorks\src\RimMandrake\FlowWorks\Source\RimMandrake_FlowWorks.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RimMandrake_FlowWorks -> D:\ClaudeWork\rimmandrake\build\FlowWorks\src\RimMandrake\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:07.67
+BUILT src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll (source dcc5bf5a7047+dirty)

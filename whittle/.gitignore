@@ -1,0 +1,4 @@
+.stop_state.json
+run*.jsonl*
+run*.spend.json
+*.err
