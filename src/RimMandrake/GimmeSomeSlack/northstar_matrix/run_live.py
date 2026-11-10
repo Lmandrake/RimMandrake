@@ -1672,12 +1672,32 @@ def write_review(res, recs, out):
 # ============================================================================ compare runs
 def compare_runs(pa, pb):
     a, b = json.load(open(pa, encoding="utf-8")), json.load(open(pb, encoding="utf-8"))
-    ids = sorted(set(a["scenes"]) & set(b["scenes"]))
-    ids = [i for i in ids if a["scenes"][i].get("geometryHash") and b["scenes"][i].get("geometryHash")]
-    diff = [i for i in ids if (a["scenes"][i]["geometryHash"], a["scenes"][i].get("got")) !=
-            (b["scenes"][i]["geometryHash"], b["scenes"][i].get("got"))]
-    if len(ids) < 20:
-        return False, "only %d comparable scenes (sanity floor 20)" % len(ids)
+    for key in ("spec_hash", "catalog", "mode"):
+        if not a.get(key) or a.get(key) != b.get(key):
+            return False, "incompatible or missing %s" % key
+    if a.get("aborted") or b.get("aborted"):
+        return False, "an aborted run is incomplete"
+    if set(a.get("scenes") or {}) != set(b.get("scenes") or {}):
+        return False, "scene coverage differs"
+    ids = sorted(a.get("scenes") or {})
+    diff, measured = [], 0
+    for sid in ids:
+        left, right = a["scenes"][sid], b["scenes"][sid]
+        if any(left.get(k) != right.get(k) for k in ("settings", "expected", "group", "factors", "plot_game")):
+            return False, "incompatible scene specification: " + sid
+        if any(s.get("status") != "PASS" or not isinstance(s.get("got"), dict) or not s["got"] for s in (left, right)):
+            return False, "missing or failed census: " + sid
+        off = (left.get("settings") or {}).get("enabled") == "False"
+        if not off:
+            if not left.get("geometryHash") or not right.get("geometryHash"):
+                return False, "missing geometry measurement: " + sid
+            measured += 1
+        # Master-off controls deliberately have no cord geometry. They still owe
+        # their complete census and equal coverage; never silently discard them.
+        if any(left.get(k) != right.get(k) for k in ("geometryHash", "got", "aerial_got")):
+            diff.append(sid)
+    if measured < 20:
+        return False, "only %d geometry measurements (sanity floor 20)" % measured
     return not diff, "%d scenes compared (geometry hash + census), %d differ %s" % (len(ids), len(diff), diff[:8])
 
 

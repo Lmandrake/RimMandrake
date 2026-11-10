@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Offline regression cases for the post-approval GSS proof-harness findings. No bridge or game."""
 import copy
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -24,6 +25,39 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_compare_runs_requires_complete_compatible_measurements(self):
+        good = {'spec_hash': 'same-spec', 'catalog': 'test', 'mode': 'live', 'scenes': {
+            str(i): {'status': 'PASS', 'geometryHash': 'h%d' % i, 'got': {'strands': 1}, 'settings': {}}
+            for i in range(30)}}
+        with tempfile.TemporaryDirectory() as td:
+            a, b = Path(td) / 'a.json', Path(td) / 'b.json'
+            a.write_text(json.dumps(good))
+
+            def same(result):
+                b.write_text(json.dumps(result))
+                return R.compare_runs(a, b)[0]
+
+            self.assertTrue(same(good))
+            partial = copy.deepcopy(good)
+            for i in range(20, 30):
+                del partial['scenes'][str(i)]
+            self.assertFalse(same(partial))  # original 20-scene intersection falsely passed
+            for field, value in (('geometryHash', None), ('got', None), ('status', 'UNMEASURED')):
+                bad = copy.deepcopy(good)
+                bad['scenes']['0'][field] = value
+                self.assertFalse(same(bad))
+            for field in ('spec_hash', 'catalog', 'mode'):
+                bad = copy.deepcopy(good)
+                bad[field] = 'different'
+                self.assertFalse(same(bad))
+            off = copy.deepcopy(good)
+            off['scenes']['off'] = {'status': 'PASS', 'geometryHash': None, 'got': {'enabled': False},
+                                     'settings': {'enabled': 'False'}}
+            a.write_text(json.dumps(off))
+            self.assertTrue(same(off))
+            del off['scenes']['off']
+            self.assertFalse(same(off))
+
     def test_streamed_log_budget_retains_errors_and_rejects_gaps(self):
         class Bridge:
             def __init__(self):
