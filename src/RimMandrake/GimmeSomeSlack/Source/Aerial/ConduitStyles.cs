@@ -209,6 +209,102 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             public object Tag;
         }
 
+        /// <summary>Only for one synchronous placement batch. Known members share an exact run summary;
+        /// extending that run needs no flood or sort. A merge replaces all discovered memberships.</summary>
+        public sealed class PlacementBatch<T> where T : class
+        {
+            public sealed class Group
+            {
+                public readonly Run Info = new Run { Oldest = int.MaxValue };
+                public readonly List<T> Members = new List<T>();
+                internal int oldestStyled = int.MaxValue;
+                internal string modernColour;
+
+                internal void Add(Run member)
+                {
+                    Info.Area += member.Area;
+                    Info.Oldest = Math.Min(Info.Oldest, member.Oldest);
+                    if (member.Look != null && member.Oldest < oldestStyled)
+                    {
+                        oldestStyled = member.Oldest;
+                        Info.Look = member.Look;
+                    }
+                    if (member.Area > 0 && member.Look == "Modern" && member.Colour != null)
+                        modernColour = modernColour == null ? member.Colour
+                            : modernColour == member.Colour ? modernColour : Mix;
+                    Info.Colour = Info.Look == "Modern" ? modernColour : null;
+                }
+
+                internal void AddGroup(Group other)
+                {
+                    Info.Area += other.Info.Area;
+                    Info.Oldest = Math.Min(Info.Oldest, other.Info.Oldest);
+                    if (other.oldestStyled < oldestStyled)
+                    {
+                        oldestStyled = other.oldestStyled;
+                        Info.Look = other.Info.Look;
+                    }
+                    if (other.modernColour != null)
+                        modernColour = modernColour == null ? other.modernColour
+                            : modernColour == other.modernColour ? modernColour : Mix;
+                    Info.Colour = Info.Look == "Modern" ? modernColour : null;
+                }
+            }
+
+            private readonly Dictionary<T, Group> known = new Dictionary<T, Group>();
+            public void Clear() => known.Clear();
+
+            public List<Group> Groups(IEnumerable<T> neighbours)
+            {
+                var groups = new List<Group>();
+                foreach (T n in neighbours)
+                {
+                    if (!known.TryGetValue(n, out Group found)) return null;
+                    if (!groups.Contains(found)) groups.Add(found);
+                }
+                return groups;
+            }
+
+            public void Extend(T member, Run info, Group group)
+            {
+                group.Add(info);
+                group.Members.Add(member);
+                known[member] = group;
+            }
+
+            public void Refresh(Group group, Func<T, Run> describe)
+            {
+                var fresh = new Group();
+                foreach (T member in group.Members) fresh.Add(describe(member));
+                group.Info.Area = fresh.Info.Area;
+                group.Info.Oldest = fresh.Info.Oldest;
+                group.Info.Look = fresh.Info.Look;
+                group.Info.Colour = fresh.Info.Colour;
+                group.oldestStyled = fresh.oldestStyled;
+                group.modernColour = fresh.modernColour;
+            }
+
+            public void Merge(T member, Run info, List<Group> groups)
+            {
+                // Update only the smaller membership tables; long runs never get
+                // copied again for each one-cell island joining their growing end.
+                Group keep = groups.OrderByDescending(g => g.Members.Count).First();
+                foreach (Group other in groups)
+                {
+                    if (other == keep) continue;
+                    keep.AddGroup(other);
+                    foreach (T old in other.Members) { keep.Members.Add(old); known[old] = keep; }
+                }
+                Extend(member, info, keep);
+            }
+
+            public void Remember(IEnumerable<T> members, Func<T, Run> describe)
+            {
+                var group = new Group();
+                foreach (T member in members) Extend(member, describe(member), group);
+            }
+        }
+
         /// <summary>The run whose style survives a bridge (owner 2026-10-04): the most conduit cells; a tie goes to the older
         /// run (lowest member id). Returns the index into runs, -1 for none.</summary>
         public static int Winner(IList<Run> runs)

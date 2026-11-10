@@ -57,6 +57,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         public static void Run()
         {
+            BatchSummaries();
             Check(
                 !ConduitStyles.NeedsWrite(
                     false, true, "Industrial", null, "Industrial", false)
@@ -69,6 +70,61 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     foreach (bool reverse in new[] { false, true })
                         foreach (bool styledWinner in new[] { false, true })
                             Placement(look, bridge, reverse, styledWinner);
+        }
+
+        private static void BatchSummaries()
+        {
+            foreach (int count in new[] { 1000, 2000 })
+            {
+                int reads = 0;
+                ConduitStyles.Run DescribeOne(Node n)
+                {
+                    reads++;
+                    return new ConduitStyles.Run { Area = 1, Oldest = n.Id, Look = n.StoredLook,
+                        Colour = n.StoredLook == "Modern" ? (n.Id % 3 == 0 ? "Orange" : "Blue") : null };
+                }
+                ConduitStyles.Run Reference(List<Node> members)
+                {
+                    var ordered = members.OrderBy(n => n.Id).ToList();
+                    string look = ordered.Select(n => n.StoredLook).FirstOrDefault(l => l != null);
+                    return new ConduitStyles.Run { Area = ordered.Count, Oldest = ordered[0].Id, Look = look,
+                        Colour = look == "Modern" ? ConduitStyles.RunColour(ordered.Where(n => n.StoredLook == "Modern")
+                            .Select(n => n.Id % 3 == 0 ? "Orange" : "Blue")) : null };
+                }
+                void Equal(ConduitStyles.Run a, ConduitStyles.Run b, string why) =>
+                    Check(a.Area == b.Area && a.Oldest == b.Oldest && a.Look == b.Look && a.Colour == b.Colour, why);
+                var batch = new ConduitStyles.PlacementBatch<Node>();
+                var members = new List<Node> { new Node(count * 2, "Industrial") };
+                batch.Remember(members, DescribeOne);
+                for (int i = 1; i < count; i++)
+                {
+                    // Reverse ids, mixed raw storage and colours exercise Info's oldest-styled rule.
+                    var n = new Node(count * 2 - i, i % 5 == 0 ? null : i % 3 == 0 ? "Industrial" : "Modern");
+                    var groups = batch.Groups(new[] { members[0], members[members.Count - 1] });
+                    Check(groups != null && groups.Count == 1, "batch: repeated neighbours resolve one cached run");
+                    batch.Merge(n, DescribeOne(n), groups);
+                    members.Add(n);
+                }
+                Equal(batch.Groups(new[] { members[0] })[0].Info, Reference(members), "batch: extension matches sorted Info");
+                Check(reads == count, "batch: " + count + " placements describe exactly " + count + " members, no growing-run scan");
+
+                var island = new Node(1, "Modern");
+                batch.Remember(new[] { island }, DescribeOne);
+                var two = batch.Groups(new[] { members[0], island });
+                var plan = ConduitStyles.PlanPlacement(null, null, two.Select(g => g.Info).ToList(), "Scrapper");
+                Check(plan.Winner == 0, "batch: cached area keeps the larger run's style");
+                // The actual style sink is read again after repaint, including a failed/missing-style write.
+                island.StoredLook = "Industrial";
+                batch.Refresh(two[1], DescribeOne);
+                var bridge = new Node(0);
+                batch.Merge(bridge, DescribeOne(bridge), two);
+                members.Add(island); members.Add(bridge);
+                Equal(batch.Groups(new[] { island, members[0], bridge })[0].Info, Reference(members),
+                    "batch: repaint + small-to-large merge matches sorted Info");
+                Check(batch.Groups(new[] { new Node(-1) }) == null, "batch: unknown neighbours require discovery");
+                batch.Clear();
+                Check(batch.Groups(new[] { members[0] }) == null, "batch: no run state survives the batch");
+            }
         }
 
         private static void Placement(

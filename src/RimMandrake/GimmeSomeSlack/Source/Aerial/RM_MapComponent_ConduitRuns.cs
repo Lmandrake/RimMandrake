@@ -55,13 +55,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         public void ProcessPending()
         {
+            var batch = new ConduitStyles.PlacementBatch<Thing>();
             // in spawn order; a member still waiting is not part of any run yet (pendingSet), so a god-mode line of cells
             // resolves cell by cell exactly as if built one at a time
             for (int i = 0; i < pending.Count; i++)
             {
                 Thing t = pending[i];
-                try { if (t.Spawned && t.Map == map) Place(t); }
-                catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] run rule: " + ex, 0x5E1E03); }
+                try { if (t.Spawned && t.Map == map) Place(t, batch); }
+                catch (Exception ex) { batch.Clear(); Log.ErrorOnce("[GimmeSomeSlack] run rule: " + ex, 0x5E1E03); }
                 pendingSet.Remove(t);
             }
             pending.Clear();
@@ -226,7 +227,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         // ------------------------------------------------------------------ the rules
-        private void Place(Thing x)
+        private static ConduitStyles.Run MemberInfo(Thing t)
+        {
+            bool conduit = ConduitStylePicker.IsConduit(t.def);
+            string look = ConduitStylePicker.LookOf(StylePicker.RawStyle(t), out string colour);
+            return new ConduitStyles.Run { Area = conduit ? 1 : 0, Oldest = t.thingIDNumber,
+                Look = look, Colour = conduit && look == "Modern" ? colour : null };
+        }
+
+        private void Place(Thing x, ConduitStyles.PlacementBatch<Thing> batch)
         {
             processed++;
             HashSet<Thing> exclude = pendingSet;                         // still holds x itself and every later spawn
@@ -235,7 +244,31 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             // Fast path for placements that need no run resolution.
             if (ConduitPlacementGate.CanSkip(ownLook, nbrs.Select(n =>
                 new ConduitPlacementGate.Neighbour(
-                    StylePicker.RawStyle(n) != null, IsBridgeConduit(n.def))))) return;
+                    StylePicker.RawStyle(n) != null, IsBridgeConduit(n.def))))) { batch.Clear(); return; }
+            // A bridge seed is included in RunOf's result, but other bridge cells are not.
+            // Preserve that existing rule by resolving bridge neighbours through the original flood.
+            bool bridgeNeighbour = nbrs.Any(n => IsBridgeConduit(n.def));
+            var groups = bridgeNeighbour ? null : batch.Groups(nbrs);
+            if (groups != null && groups.Count > 0)
+            {
+                var cachedInfos = groups.Select(gr => gr.Info).ToList();
+                ConduitStyles.Plan cachedPlan = ConduitStyles.PlanPlacement(ownLook, ownColour, cachedInfos, StylePicker.DefaultLook);
+                if (cachedPlan.Look != null)
+                {
+                    // Only losers are painted by Apply. Do not enumerate or sort
+                    // the growing winner for every placement that joins it.
+                    var cachedRuns = groups.Select((gr, i) => i == cachedPlan.Winner ? null
+                        : gr.Members.OrderBy(t => t.thingIDNumber).ToList()).ToList();
+                    string cachedColour = Apply(cachedPlan, cachedRuns, cachedInfos);
+                    if (cachedPlan.MaterialiseWinner) Unpaint(x); else Paint(x, cachedPlan.Look, cachedColour, true);
+                    if (groups.Count == 1) adopted++;
+                    Finish();
+                    if (cachedPlan.Repaint.Count > 0) Announce(cachedPlan, cachedInfos, x);
+                    foreach (int i in cachedPlan.Repaint) batch.Refresh(groups[i], MemberInfo);
+                }
+                batch.Merge(x, MemberInfo(x), groups);
+                return;
+            }
             var runs = new List<List<Thing>>();
             var seen = new HashSet<Thing>();
             foreach (Thing n in nbrs)
@@ -245,15 +278,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 seen.UnionWith(r);
                 runs.Add(r);
             }
-            if (runs.Count == 0) return;
+            if (runs.Count == 0) { batch.Remember(new[] { x }, MemberInfo); return; }
             List<ConduitStyles.Run> infos = runs.Select(Info).ToList();
             ConduitStyles.Plan plan = ConduitStyles.PlanPlacement(ownLook, ownColour, infos, StylePicker.DefaultLook);
-            if (plan.Look == null) return;
-            string colour = Apply(plan, runs, infos);
-            if (plan.MaterialiseWinner) Unpaint(x); else Paint(x, plan.Look, colour, true);
-            if (runs.Count == 1) adopted++;
-            Finish();
-            if (plan.Repaint.Count > 0) Announce(plan, infos, x);
+            if (plan.Look != null)
+            {
+                string colour = Apply(plan, runs, infos);
+                if (plan.MaterialiseWinner) Unpaint(x); else Paint(x, plan.Look, colour, true);
+                if (runs.Count == 1) adopted++;
+                Finish();
+                if (plan.Repaint.Count > 0) Announce(plan, infos, x);
+            }
+            List<Thing> joined = runs.SelectMany(r => r).Concat(new[] { x }).Distinct().ToList();
+            if (bridgeNeighbour || joined.Any(t => IsBridgeConduit(t.def))) batch.Clear();
+            else batch.Remember(joined, MemberInfo);
         }
 
         /// <summary>A new span between a and b: if it joined two runs, the bridge rule.</summary>
