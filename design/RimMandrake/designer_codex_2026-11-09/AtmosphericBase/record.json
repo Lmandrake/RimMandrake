@@ -1,0 +1,1806 @@
+{
+    "dry_run":  true,
+    "mod":  "AtmosphericBase",
+    "author":  "Codex Designer rehearsal, 2026-11-10. All descriptions, proposed requirements and guesses are agent text.",
+    "repo":  "D:/Luke/dev/RimMandrake",
+    "stage_status":  "Stages 0 and 1 rehearsal only. No stage completion, sent ask, approval, waiver, first-touch certification or ledger write.",
+    "root":  null,
+    "scope":  [
+                  {
+                      "id":  "s_framework",
+                      "speaker":  "agent",
+                      "source":  "design/RimMandrake/atmospheric_base_mod_definition.md",
+                      "text":  "Framework owns primitives and channels; campaign owns god meanings and world consequences. L1: no ship self. L2: illumination has its ordinary physical consequences; no raid or other unrelated world effect caused by a light claim. Both light and sound belong to finished shipping scope; light-first build phases do not authorise light-only release."
+                  },
+                  {
+                      "id":  "s_latest_package",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792815316954720401",
+                      "text":  "Card decisions: map-wide explicit hand-over button, widened warm palette, drawn layer bounded to embers and Narrator, reserved-white token, hand-switch silence without anger, live baseline before scheduler B before Phase 5, sound notes non-gating, external colour edit releases while preserving the edit, reload restarts gently. These are settled; not questions."
+                  },
+                  {
+                      "id":  "s_campaign",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792817025990070835",
+                      "text":  "Card decisions: Nine only aboard Utinni gravships; neutral player patterns elsewhere; Sh\u0027kaar gold and Rekko bronze; Full is Full for dark gods while Gentle has a floor; authored canon pairings and leader shape elsewhere. Event text identifies the campaign-gate wording as the recorder\u0027s reading; it is not stored here as an owner quotation."
+                  },
+                  {
+                      "id":  "s_aesthetics",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792814429861400830",
+                      "text":  "Owner explicitly rejected colourblind/photosensitivity planning and requested maximised aesthetics. Gentle default remains a taste ruling. Do not revive the rejected review card."
+                  },
+                  {
+                      "id":  "s_frozen_walk",
+                      "speaker":  "agent",
+                      "source":  "design/validation_walks/RimMandrake/AtmosphericBase.md:135",
+                      "text":  "Existing north star is DRAFT and stopped pending owner live play. Preserve the no-refinement/no-speculative-automation ruling and the removed default_scheme_is_livable bar. This rehearsal proposes dialogue, not amendments to that checklist."
+                  },
+                  {
+                      "id":  "s_canvas",
+                      "speaker":  "agent",
+                      "source":  "infrastructure/state/ledger/events.jsonl",
+                      "text":  "Frozen ledger records owner dropping ATMOSPHERIC_BASE_CANVAS_1 on 2026-09-17: manual irregular lights, anger on removal below minimum; not a major canvas threat for this mod to track. Old build-programme statements that this item blocks Phase 3 are historical. No new light count or minimum is invented."
+                  },
+                  {
+                      "id":  "s_boundaries",
+                      "speaker":  "agent",
+                      "source":  "CLAUDE.md",
+                      "text":  "All DLC assumed; no worldgen; no source edits, builds, deployment, bridge or save changes in this reading dry run. Only the authorised working folder is writable. AtmosphericBase is not a biome; no biome experience row is substituted for its own commission."
+                  }
+              ],
+    "decisions":  [
+                      {
+                          "id":  "d_provenance",
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer.md",
+                          "text":  "root remains null. root_draft is agent proposal. Only exact tsns actually found in OWNER.jsonl get OWNER references, stored as strings. Earlier owner words preserved in paths/frozen ledger are cited by path, never assigned invented tsns."
+                      },
+                      {
+                          "id":  "d_proof",
+                          "speaker":  "agent",
+                          "source":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:7262",
+                          "text":  "Do not repeat never live: live Evaluate cost failures and the dark-lamp proof bug were recorded 2026-10-24, followed by November live failures/infra holds. No current fingerprint or accepted owner look was verified. Stale means historical evidence, including failed or partial evidence; it does not mean a passing feature."
+                      },
+                      {
+                          "id":  "d_ranking_home",
+                          "speaker":  "agent",
+                          "source":  "src/RimUtinni/Rites/Source/GameComponent_Ninefold.cs:187",
+                          "text":  "The rank/front supplier is present in Salvation Rites, not absent as old AtmosphericBase comments say. It provides live loudness ranking and a separately officiated front. No AtmosphericBase consumer calling it was found; consumer wiring must respect that distinction rather than create a second campaign rule."
+                      },
+                      {
+                          "id":  "d_question_bank",
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                          "text":  "Eight draft questions, with root and flagship first. At most three per real turn. Author-only evidence/wording check; no independent pass or token charge fabricated. Readability questions use labelled text mocks/exploratory descriptions, never gameplay proof. Existing choices and removed/default bar are not reopened."
+                      },
+                      {
+                          "id":  "d_cost",
+                          "speaker":  "agent",
+                          "source":  "design/RimMandrake/atmospheric_base_cost_2026-11-02.md",
+                          "text":  "Offline kernel timings and counted write requests are not live whole-frame/regrid timing. Historical C1 bar was explicitly provisional. Neither changing it nor claiming the cost problem solved is justified by this rehearsal."
+                      }
+                  ],
+    "asks":  [
+                 {
+                     "id":  "a1",
+                     "text":  "What would make those feel like the same mod to you, and which sentence in the proposed root gets the relationship wrong?",
+                     "decision":  "The promise that joins the parts — ASK FIRST",
+                     "about":  [
+                                   "package",
+                                   "neutral_pattern_library",
+                                   "mood_claims",
+                                   "signature_support_and_god_gate",
+                                   "sound_channel",
+                                   "campaign_signatures"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792817025990070835"
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "design/RimMandrake/atmospheric_base_mod_definition.md",
+                     "ask_first":  true,
+                     "why_it_matters":  "F1/F2. A general lighting framework and a campaign\u0027s expressive language can coexist, but a root led entirely by either can obscure why the other belongs. Their built capabilities are already accounted for.",
+                     "guess":  "The lamps are a medium others can use; the Utinni is its richest use. I recommend that emphasis, with the neutral patterns a complete experience of their own.",
+                     "tree_changes":  "If expression leads, organise the root around who is speaking and what changes in play. If the reusable medium leads, organise it around ownership, claims and consumers. If ordinary colony beauty is equally central, give it an independent promise and scene. Every answer retains built coverage; correcting the paragraph changes dependent draft claims. No answer means root remains unapproved."
+                 },
+                 {
+                     "id":  "a2",
+                     "text":  "Which scene should come first when deciding whether AtmosphericBase has understood you, and what one failure there would make you stop?",
+                     "decision":  "The first demonstration — ASK FIRST",
+                     "about":  [
+                                   "takeover_controls",
+                                   "external_edits",
+                                   "territory_shapes",
+                                   "tremor",
+                                   "general_gestures_narrator",
+                                   "campaign_signatures"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:274",
+                     "ask_first":  true,
+                     "why_it_matters":  "F1/F2/F3. The old catalogue recommends a handover, but I found no recorded owner flagship pick. The first scene should reveal the mod\u0027s point without hiding its unfinished parts.",
+                     "guess":  "B, with deliberately different test palettes and an honest label on the simulated ranks. I recommend A as a separate ownership demonstration and C once its machinery exists.",
+                     "tree_changes":  "The chosen scene becomes the proposed first showcase, bound only after his recorded pick. A leads with reversibility; B leads with separate presences and movement; C leads with preemption and restoration and needs explicit build dependencies. Other capabilities keep their own scenes or ordinary checks. Choosing C does not certify its implementation."
+                 },
+                 {
+                     "id":  "a3",
+                     "text":  "What should an experienced player be entitled to conclude from that movement: who is demanding attention, what sort of trouble it is, where to act, or something else?",
+                     "decision":  "What a warning is allowed to tell you",
+                     "about":  [
+                                   "general_gestures_narrator",
+                                   "gameplay_consumers_and_anger"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "design/RimMandrake/atmospheric_base_scheme_catalog.md",
+                     "ask_first":  false,
+                     "why_it_matters":  "F1. An unmistakably different warning is already intended. A direction that looks useful but is merely decorative would promise information the framework does not possess.",
+                     "guess":  "Identity and a recognisable warning are the common promise; a useful direction is earned only when a consumer supplies a real target. I recommend avoiding a false instruction to visit the engine.",
+                     "tree_changes":  "Identity alone gives distinct warning vocabulary without a location promise. A trouble category needs authored, distinguishable categories. A location promise needs a real consumer target and an exploration where the trouble moves but the old location remains tempting. A deliberately deceptive god needs a specifically authored deception, not arbitrary wrong pointers. Lights still cause no raid or other unrelated world effect."
+                 },
+                 {
+                     "id":  "a4",
+                     "text":  "After a deed really changes who is in front, what should let you notice that this was a change of power rather than the border\u0027s ordinary wandering?",
+                     "decision":  "The moment a new god takes the front",
+                     "about":  [
+                                   "territory_shapes",
+                                   "mood_claims",
+                                   "gameplay_consumers_and_anger"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792817025990070835"
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "src/RimUtinni/Rites/Source/GameComponent_Ninefold.cs:206",
+                     "ask_first":  false,
+                     "why_it_matters":  "F1. The source can reorder claims and the neighbour already owns the front decision. Neither fact settles how the player recognises the transition. A pretty moving border can conceal the event.",
+                     "guess":  "A brief, recognisable handover in the incoming presence\u0027s own motion, then ordinary contested territory resumes. I recommend exploring that against a control with the same two occupants but no change of front.",
+                     "tree_changes":  "If a distinct handover matters, add a bounded transition promise tied to the real front event. If changed territory and the occupants\u0027 usual motions suffice, require correspondence to the event without inventing another flourish. If a spoken acknowledgement carries the event, the campaign owns that acknowledgement and its witness rule. The framework still reads rank from outside; this asks no new ranking algorithm."
+                 },
+                 {
+                     "id":  "a5",
+                     "text":  "What would make that old rhythm feel like a memory of A rather than A still controlling the lamp?",
+                     "decision":  "A trace of the previous occupant",
+                     "about":  [
+                                   "scar_modifier",
+                                   "territory_shapes",
+                                   "tremor",
+                                   "god_rekko"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs:124",
+                     "ask_first":  false,
+                     "why_it_matters":  "F1. Scar is built, so its presence is not up for keeping. Its meaning has to survive beside both an actual moving border and a third occupant\u0027s brief intrusion.",
+                     "guess":  "B\u0027s continuing motion and peaks should make present ownership clear while A remains recognisable in the low moments. I recommend showing it beside a genuine return of A and a third-presence flicker.",
+                     "tree_changes":  "If the new occupant\u0027s motion carries ownership, require it to remain recognisable through the trace. If the surrounding border provides the explanation, stage the trace with enough territory in view and check that context. If an inspect explanation is essential, add it as a supporting readout while retaining the intended visual distinction. If he delegates the exact cue, record that delegation and compare labelled explorations. The built memory and its authored exception stay accounted for; no answer licenses a third territorial owner or interpolated colours."
+                 },
+                 {
+                     "id":  "a6",
+                     "text":  "What should that pause mean to the player: someone listened, someone approved, someone is about to answer, or another meaning?",
+                     "decision":  "What a listening room says",
+                     "about":  [
+                                   "hush_modifier",
+                                   "witness_ledger",
+                                   "gameplay_consumers_and_anger"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs:59",
+                     "ask_first":  false,
+                     "why_it_matters":  "F1/F2. A local hush is built, but the witness ledger and its consumers are not. Reusing the same pause for approval and menace could turn an intended acknowledgement into a false promise.",
+                     "guess":  "It means attention was received, with approval or displeasure carried by the occupant\u0027s other behaviour. I recommend keeping the hush distinct from the Narrator\u0027s ship-wide white hold.",
+                     "tree_changes":  "Attention alone needs a witness-gated acknowledgement with no guaranteed reward. Approval needs a matching campaign state and a control where the deed is seen but disapproved. A coming answer needs a defined follow-up or an honest expiry. If the meaning varies by occupant, each authored use must establish its meaning; the framework does not infer a witness from the effect it just produced."
+                 },
+                 {
+                     "id":  "a7",
+                     "text":  "What should you see as you read and dismiss those two letters: one continuous address, a fresh rise for each, or a deliberate sequence of separate performances?",
+                     "decision":  "Two letters before the lights have returned",
+                     "about":  [
+                                   "general_gestures_narrator",
+                                   "external_edits",
+                                   "reload_restart"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792815316954720401"
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "design/RimMandrake/atmospheric_base_mod_definition.md",
+                     "ask_first":  false,
+                     "why_it_matters":  "F2/F3. White priority, real time through pause and returning to the current underlying pattern are settled. Overlapping addresses still need an identity and end condition; a timer-only gesture can finish while someone is still reading or strand white forever.",
+                     "guess":  "One continuous white address while any Narrator letter being addressed remains open, then one return. I recommend it because a second white rise from white carries little new information.",
+                     "tree_changes":  "A continuous address needs overlapping lifetime ownership and a last-close rule. Separate rises need an observable restart without losing the underlying alarm. A queue needs cancellation and close-order rules. All variants retain the Narrator above the alarm and restore the current underlying state, including any intervening external lamp edit. Reload still restarts gently; it does not acquire mid-gesture persistence through this question."
+                 },
+                 {
+                     "id":  "a8",
+                     "text":  "During that predator\u0027s silence, what should remain audible from the gods, and what should the sudden quiet mean?",
+                     "decision":  "When another creature makes the world go quiet",
+                     "about":  [
+                                   "sound_channel",
+                                   "gameplay_consumers_and_anger"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal 2026-11-10",
+                     "status":  "draft",
+                     "review":  {
+                                    "by":  null,
+                                    "verdict":  "pending",
+                                    "why":  "Author evidence and wording check only; no independent reviewer run or invented pass."
+                                },
+                     "source":  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs",
+                     "ask_first":  false,
+                     "why_it_matters":  "F1/F2. Camera listening, both channels shipping together and leaving the cathedral hum\u0027s system alone are settled. The predator currently ends biome ambient sounds; it has no agreement with the future AtmosphericBase beds. Simply adding another loop could erase a meaningful survival cue.",
+                     "guess":  "The predator cue should stay legible, while the occupants\u0027 response has an authored meaning of its own. I recommend comparing a bed that yields briefly with one that continues as an unmistakably separate voice, using existing cathedral behaviour as a fixed neighbour.",
+                     "tree_changes":  "Yielding adds a silence-event interaction and exact recovery of AtmosphericBase\u0027s own bed. Continuing requires the predator cue to remain understandable alongside it, judged by listening. A god-specific response belongs in the campaign\u0027s authored mapping. Nothing here authorises editing the cathedral hum, inferring a current third-party mod list, or turning sound playtest notes into an automated gate."
+                 }
+             ],
+    "inventory":  [
+                      {
+                          "id":  "package",
+                          "source":  "src/RimMandrake/AtmosphericBase/About/About.xml",
+                          "text":  "Campaign-agnostic package, net472 assembly, explicit compile list, no Harmony reference or game/third-party def edits, shared SettingsKit linked.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBase.csproj",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseMod.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5513"
+                                             ],
+                          "proof_note":  "Historical build/selftest report; supplied DLL and srchash exist, not rebuilt or matched to deployment here.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "emitter_discovery",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_EmitterDiscovery.cs",
+                          "text":  "Player-owned spawned Building plus CompGlower capability discovery, not a lamp whitelist.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_EmitterDiscovery.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5513"
+                                             ],
+                          "proof_note":  "Offline facts/kernel and live API probes exist; current compatibility not established.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "hard_exclusions",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_AtmosphericKernel.cs:53",
+                          "text":  "Pawns, plants, apparel/equipment and marked or name-detected holograms excluded before capability; opt-out mod extension provided. Name fallback alone cannot recognise every possible hologram.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_AtmosphericKernel.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericExcluded.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5513",
+                                                 "src/RimMandrake/AtmosphericBase/validation.py:355"
+                                             ],
+                          "proof_note":  "Kernel checks and aggregate live rejection probe; current individually staged examples for all four exclusions absent.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "takeover_controls",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericDesignators.cs",
+                          "text":  "Per-fixture hand-over and release reverse-designator buttons; re-register after database replacement; scenario-decides hides both; channel/buttons settings gate player choice; API takeover remains explicit.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericDesignators.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:102"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5513"
+                                             ],
+                          "proof_note":  "Proof calls designators directly, not owner mouse interaction; no current game result matched.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "whole_map_takeover",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:123",
+                          "text":  "Whole-map opt-in and reverse release, eligibility count and settings feedback; refused where player may not choose.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs:153",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs:21"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Historical built report; no adequate actual whole-map button exercise/reversal result located.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "exact_colour_restore",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs",
+                          "text":  "Snapshot null-versus-present CompGlower colour override, reflection binding refusal and exact release; radius never written, preserving LightLedger\u0027s ownership.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:192"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5513",
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs"
+                                             ],
+                          "proof_note":  "Offline CompGlower test replaces writer with field-only seam. That cannot prove live lit re-registration or a concurrent radius owner.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "external_edits",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:146",
+                          "text":  "Saved last-left override detects external colour edits, releases without overwriting them, including ordinary release and map removal; isolated subscriber event/counters report displeasure when scenarioDecides is true. Event is not actual god anger.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs:36"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7228",
+                                                 "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:499"
+                                             ],
+                          "proof_note":  "Built/offline policy checks; live two-writer order and real campaign subscriber not established. scenarioDecides is a generic flag also used as the Utinni proxy.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "unlit_and_off",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:356",
+                          "text":  "Unlit fixtures skipped; hand-switch off remains held, silent and without colour-edit offence. Channel off releases all; compositor off shows own glow while retaining ownership.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:245",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7263",
+                                                 "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.criteria"
+                                             ],
+                          "proof_note":  "Historical proof left lamps unpowered; undo and snapshot fixes now in source, later successful live acceptance not located. Missing current proof is not missing implementation.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "ownership_lifecycle",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:231",
+                          "text":  "Prune destroyed/leaving fixtures; surviving departing lamps restored; MapRemoved uses field-only restore and clears moods/groups. Held fixtures, prior/last-left colours, scenario and god intensity saved; registered groups must be re-registered; legacy single mood migration.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:378",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:394"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No adequate minify/reinstall, transport with retained source map, removed map or existing-map landing acceptance located. MapRemoved alone does not prove every landing reset.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "reload_restart",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:125",
+                          "text":  "New compositor starts pattern clock at first evaluation, retaining saved ownership/moods but not phase/scars/hush; reload restarts, not mid-performance continuation.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:122",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:394"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Optional R1 only tests held status and Showing null after release; it does not compare exact original override or demonstrate a gentle restart.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "groups",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs",
+                          "text":  "Default whole-map/rooms/halls/exterior groups plus named registered memberships taking precedence; room-role heuristic, periodic membership refresh and register/unregister API. No individual-room player picker was found.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:276",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:357"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5517"
+                                             ],
+                          "proof_note":  "One-mood empty-group control exists; overlapping/disjoint two-claim permission boundaries lack discriminating live control.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "mood_claims",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:325",
+                          "text":  "One saved mood per claimant; replacement, release, cap 16, finite-rank validation, deterministic tie ordering; fallback default only when no usable pushed mood; CurrentMood and per-fixture Showing readouts.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryKernel.cs:79"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7225",
+                                                 "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:229"
+                                             ],
+                          "proof_note":  "Historical virtual-clock/rank-swap apparatus; no genuine campaign supply demonstrated.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "scheme_data_and_guards",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericSchemeDef.cs",
+                          "text":  "XML scheme data, cached validation/data, fixed palettes up to eight, invalid-config diagnostics, black/motion checks and reserved-white distance guard; Drive checks membership against loaded valid palettes.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:55"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                                                 "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:469"
+                                             ],
+                          "proof_note":  "Static/member checks do not prove perceived colour distinction or L8 movement. White distance 100 and white token 255/255/255 remain calibration choices, not approved perceptual constants.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "compositor_clock_and_change_tracking",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:284",
+                          "text":  "Real-time MapComponentUpdate, every six frames; palette-index output and changed-value tracker, substrate restore; per-fixture/territory/tremor/hitch/graph counters. Quantisation bounds outputs but does not eliminate per-evaluation work.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7262",
+                                                 "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:1382"
+                                             ],
+                          "proof_note":  "Virtual time proves evaluation not frame-loop delivery. Paused real-clock test exists; current matching result not recovered.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "lamplight_fireflies",
+                          "source":  "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml",
+                          "text":  "Shipped widened three-level warm room-breathing Lamplight default and independent warm Fireflies sparks; declared working-light palettes, no full black/flashers.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5517",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7228"
+                                             ],
+                          "proof_note":  "Palette/default offline checks exist; actual floor illumination/work speeds and owner experience not accepted here. Removed livability bar stays removed.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "neutral_pattern_library",
+                          "source":  "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml:63",
+                          "text":  "Tidewater, Lanternwalk, Rings and Duskfall neutral schemes, beside Lamplight and Fireflies. Pattern menu selects these without god labels.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml",
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternChoice.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "ChoiceTests and disk/wiring judges exist; no accepted live geometry/motion look located.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792817025990070835"
+                      },
+                      {
+                          "id":  "player_pattern_controls",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternChoice.cs",
+                          "text":  "Neutral pattern choice, Slow/Shipped/Lively tempo and Gentle/Full index clamping apply to default mood only; floor 176 and omitted top flare for four-entry palettes. Pushed moods retain their own timing/intensity.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs:226",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:486"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline ChoiceTests and wiring checks; no current settings-to-floor/readable-pattern experience proof.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792817025990070835"
+                      },
+                      {
+                          "id":  "layer_grammar",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                          "text":  "Layer stacks with palette slices, Over/Max index composition, primitive registry/code extension, parameters and errors, legacy pattern compatibility, cost classes and analytic/conservative NextChange interface.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/SelfTest/PatternTests.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Built harness includes boundary/mutation checks. NextChange capability is not an installed sparse scheduler; no current run claimed.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "steady_breath_spark",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                          "text":  "Steady fixed index; Breath by room/fixture/field with phase spread; deterministic independent Spark slots with rise/fall; NextChange implementations and flasher override.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:5517",
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/PatternTests.cs"
+                                             ],
+                          "proof_note":  "Old one-pattern offline evidence; extended layered variants lack current matched results.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "room_graph_anchors",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternGraph.cs",
+                          "text":  "Per-map rooms/doors graph, stable keys, cached BFS fields; Core/Medoid/Threshold/Open/Grandest/Shrine/Power anchors with Core fallback; separate fixture membership/position key. Game builder caps traversal at 400 rooms, reads WorshipRoom and power comps; outdoors handled explicitly.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:218",
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternGraph.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Kernel cache/topology tests and static wiring judges; actual wall/door editing, room-role changes, multiple maps and 400-room limit not accepted live.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "tide_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:17",
+                          "text":  "Tide layer floods/ebbs along anchored door distance, band/hold/ragged/low/high, stable shell tie breaks; single-room geometry falls back to angular sweep.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:17"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "PatternTests contain geometry/NextChange checks; source existence is not runtime appearance proof.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "ripple_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:157",
+                          "text":  "Ripple shell or bloom from anchor/fixture/hull, inward/outward, repeated or one-shot, graph distance and NextChange.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:157"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline test family exists; no current live primitive scene.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "sweep_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:290",
+                          "text":  "Axis/turn/outward-to-threshold sweeps, lit width, deterministic pause/hold and acceleration warp, island ordering and NextChange.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs:290"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline direction/island/warped-boundary tests exist; visual direction remains unaccepted.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "walker_substrate",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:29",
+                          "text":  "Cached tours/neighbour graph, nearest-neighbour fixture ordering within DFS room order, per-room pick orders, multi-map weak-key caches. Conduits graph falls back to adjacency; room-tour backtracks/lap wraps can jump.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:29"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "WalkerTests exercise map isolation and graph cases; no claim of real conduit following or globally adjacent tours.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "procession_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:185",
+                          "text":  "Multiple procession heads, tails, dwell/hop, walk/jump, overlap handoff, paired eyes and trace; fixtures or whole rooms; real grid embers supported, drawnInBlack flag has no drawing effect.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:185"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline head/overlap/ember tests; live partial-territory readability and drawn motion not established.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "coil_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:284",
+                          "text":  "Up to three persistent direction-biased random-walk coils, bounded tails, crossing flare, per-map/per-layer state, deterministic time indexing and NextChange.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:284"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Incremental trail replay is unbounded in elapsed steps after a fresh graph/fixture set or long gap. No live long-uptime/hitch cost accepted.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "tell_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:404",
+                          "text":  "Layer-local deterministic brief foreign-entry tell; default one at fleet \u003e=8, explicit cap clamped to three. This differs from compositor tremor\u0027s \u003e=10/one-tenth rule.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:404"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline tests exist. Do not use its separate quota as proof of cross-claim tremor ceiling.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "count_primitive",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:469",
+                          "text":  "Marked/rest entries, per-room/global count, spread/nearest-anchor selection, trembling and accumulating beat. Brightest pick falls back to Spread because fixture brightness is not supplied.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:469"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline count/stability tests exist; no actual brightest-fixture implementation or live vigil acceptance.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "echo_approach_modifiers",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs:15",
+                          "text":  "Echo delayed/inverted room answers with jitter; approach-pause-withdraw front envelope, slow/fast withdrawal, Pass outside and combined NextChange. Echo on stateful Coil rejected.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs:15"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "ModifierTests cover mechanics and errors; no approved meaning or live authored use inferred.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "scar_modifier",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs:124",
+                          "text":  "Saved-in-session previous-claimant trace after territory flip, shown on new owner\u0027s lowest index; bounded linger unless scarKeeps, handles reordered pair and discards departed claimant; not persisted across load.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:494"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline Decide checks exist; actual compositor recognition as memory versus ownership is unresolved.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "hush_modifier",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs:155",
+                          "text":  "API requests room hush: settle to held middle entry, hold, recover; repeated witness can extend hold; dark hush uses keeper. Caller, not framework, must establish witness. Requests ephemeral.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs:59",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:104",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:511"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Kernel modifier tests exist; no actual witnessed event consumer, live recovery or perceived meaning accepted.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "territory_shapes",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryShapes.cs",
+                          "text":  "Top two claimants allocate fixtures, never mix colours; rotating wedge, leader tide and authored paired tides/hunter surge, minShare and degenerate fallback. Circuit runs as Tide(Power). Period/share/ragged tuning and cached allocation key.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryKernel.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:361"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7225",
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/TerritoryTests.cs"
+                                             ],
+                          "proof_note":  "Historical wedge build/live-run reports and shape kernel tests; current campaign signatures are present, but no matched owner look. Union allocation can assign a claimant a lamp outside its own group.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792817025990070835"
+                      },
+                      {
+                          "id":  "tremor",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryKernel.cs:192",
+                          "text":  "At most three quieter claimants intrude briefly in their own palettes, group membership respected on source selection; louder wins contested fixture, stable-hash instant cap. Territory-off starts tremor at second rank.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:420"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:7225",
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/QuotaTests.cs"
+                                             ],
+                          "proof_note":  "Tests and historical virtual series; third presence versus territory still unaccepted by eye.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "flasher_selection",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs",
+                          "text":  "Stable hashed subset plays fast palette role while mass remains slow; integer cap keeps at least one non-flasher. Cache per claimant keyed by mood string and total taken count.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:297",
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_Quotas.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl:11444"
+                                             ],
+                          "proof_note":  "Small-count quota accepted historically offline; no shipped neutral scheme requests flashers and cache invalidation has a membership hole.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "small_count_hitch_ember",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_Quotas.cs",
+                          "text":  "Integer per-mille tremor/flasher rules, 0..25 sweep; hitch counted after 0.5 s, no obsolete visible transition queue; one ember travels dark hushed room by x/z order every four seconds, single-lamp blink and empty-room fallback.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_Quotas.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:442"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "ITEM:ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS",
+                                                 "infrastructure/state/ledger/events/RUNNER.jsonl:2105",
+                                                 "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_wiring.py"
+                                             ],
+                          "proof_note":  "L0 hardening pass/close 7edd675e57a4 on Nov 3, not full-frame live proof. Visible write bound does not bound Coil\u0027s internal historical-step reconstruction.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "signature_support_and_god_gate",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_SignatureDef.cs",
+                          "text":  "Signature data holds resting/pleased/angry schemes, territory/tell/pairings, cached scheme lookup; signature moods gated by scenarioDecides plus player grav engine. Scenario owns Gentle/Full (provisional GodFloor 48); ordinary owner, scar and tremor paths apply floor.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_GodGate.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs:299",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs:88"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Gate/NineTests and campaign XML exist. No matched current loaded/consumer result; generic scenarioDecides is not independently verified Utinni identity. Authored defs are separate from active gameplay supply.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792817025990070835"
+                      },
+                      {
+                          "id":  "settings_ui",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs",
+                          "text":  "Persisted light/button/compositor/default/group controls, neutral choices, territory/tremor knobs; searchable collapsible settings sections, reset to shipped defaults, scope labels and scrolling. No sound controls or animated showcase preview built here.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseMod.cs",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Static/default checks exist; full settings interactions/all-off/actual clamp effects not demonstrated here. Some text still says at least one tremor below the newer integer minimum.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "proof_apparatus",
+                          "source":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py",
+                          "text":  "Modcheck takeover/one-mood/territory chains; live ProofSample sanity/pick/series/settings/cost/snapshot and per-thing wrappers; virtual, paused real and optional save clocks; independent metrics, stub mutations, log budget and classified missing/site results; lit-state restoration regression checks.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/validation.py",
+                                                "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs",
+                                                "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase.py"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl:14292",
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl:15044",
+                                                 "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.txt"
+                                             ],
+                          "proof_note":  "UndoFlick/current R2 fix exists; offline PASS/implemented and later game UNMEASURED/infra holds, not live acceptance. No scene journal/hold was executed.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "kernel_proof_and_measurement",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                          "text":  "Kernel/real-CompGlower field seam, pattern boundaries/geometry, modifier/walker/choice/Nine/quota tests and wiring mutation tests; offline kernel measurement at 11/200/1000.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/Source/SelfTest/RimMandrakeAtmosphericBase.SelfTest.csproj",
+                                                "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_kernel.py",
+                                                "src/RimMandrake/AtmosphericBase/measurements/quota_cost_11_200_1000.txt"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl:11444",
+                                                 "design/RimMandrake/atmospheric_base_cost_2026-11-02.md"
+                                             ],
+                          "proof_note":  "Historical L0 pass and raw offline measurement; complete current selftest not run. NineTests XML was located and parsed. Write counts are requested dirties, not measured regrid execution time.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "proof_site_builder",
+                          "source":  "src/RimMandrake/AtmosphericBase/stage_proof_site.py",
+                          "text":  "Young-quicktest guard, clear/build row of 14 powered StandingLamps and linked fuelled generators/conduits, power-net readback, proof-save writer and dry-run ops.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/AtmosphericBase/stage_proof_site.py"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No live acceptance. Bare-row arithmetic: with final end lamp reserved as control, 13 subjects span seven four-cell blocks, below MIN_SPREAD 8. Extra existing lamps/selection order can mask it. No recovery journal, excluded subjects or multi-room irregular canvas; tick age alone does not prove disposable map.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "sparse_scheduler",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:284",
+                          "text":  "Proposal B heap/deadline scheduler with bounded work and stale-event invalidation.",
+                          "impl":  "absent",
+                          "search_scope":  "Read Update/Evaluate and all kernel NextChange interfaces; searched AtmosphericBase .cs for heap/deadline/priority queue. Production still scans every six frames; analytic NextChange functions exist separately.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "general_gestures_narrator",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:482",
+                          "text":  "Finite ranked gesture layer, Narrator reserved-white rise/hold/return over alarm with exact underlying restoration.",
+                          "impl":  "absent",
+                          "search_scope":  "Read API, map component, compositor, scheme guard, all .cs symbols and ProofSample scenario dispatch. No gesture/PlayNarrator path; gesture/narrator_alarm return unknown_scenario. Hush and one-shot Ripple are not a general gesture system.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                      },
+                      {
+                          "id":  "sound_channel",
+                          "source":  "design/RimMandrake/atmospheric_base_mod_definition.md:301",
+                          "text":  "Beds, stings and acoustic territory on same claims; camera listener, own volume/channel controls, power behaviour and cathedral overlap.",
+                          "impl":  "absent",
+                          "search_scope":  "Enumerated AtmosphericBase source/project/defs and read API/settings/compositor; no sound emitter, Sustainer implementation, SoundDef, sting API or audio settings. Neighbour\u0027s hum is a separate implementation.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                      },
+                      {
+                          "id":  "witness_ledger",
+                          "source":  "design/RimMandrake/atmospheric_base_mod_definition.md:266",
+                          "text":  "Event witness records and query API; presence in affected group, darkness witnessed, power blackout referable after resolution; prevents false claims in prose.",
+                          "impl":  "absent",
+                          "search_scope":  "Read AtmosphericBase API, saved fields and compositor; searched source for witness/WasWitnessed/event handles. Hush only documents caller responsibility; no witness store or query found.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                      },
+                      {
+                          "id":  "declarative_signal_hooks",
+                          "source":  "design/RimMandrake/atmospheric_base_mod_definition.md",
+                          "text":  "XML-only group and named signal-to-claim binding, beyond existing scheme and signature Def data.",
+                          "impl":  "absent",
+                          "search_scope":  "Read all AtmosphericBase Def classes, project compile list, API and shipped XML; no declarative signal/group hook parser/dispatcher found. Scheme XML alone is already present and separately inventoried.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                      },
+                      {
+                          "id":  "campaign_signatures",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml",
+                          "text":  "The Nine\u0027s authored signature/readings XML, with canon pairings and constrained gold/bronze colours.",
+                          "impl":  "present",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792817025990070835",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof_note":  "Campaign XML contains nine signatures with resting/pleased/angry readings and two canon pairings, guarded on AtmosphericBase. Full rendered identity, dark-motion continuity, truth of described target/conduit behaviour and real consumer supply remain unaccepted. Values and approximations are explicitly provisional in comments."
+                      },
+                      {
+                          "id":  "gameplay_consumers_and_anger",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs",
+                          "text":  "Real campaign rank/mood supply, omen/authored-letter triggers, scenario registration, blackout/stripping anger and external-edit consequence subscriber, total landing reset/re-registration.",
+                          "impl":  "absent",
+                          "search_scope":  "Searched all src .cs/.xml outside only the exact src/RimMandrake/AtmosphericBase root and obj/bin for AtmosphericBase, atmosphericbase, RM_Atmospheric, RM_SignatureDef, LampEditedAboardUtinni and PushMood. Campaign signature XML and About dependency/comment exist; no code consumer/subscriber found. Rites loudness/front present; event/flag/defs alone do not implement anger.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                      },
+                      {
+                          "id":  "drawn_layer_and_showcase",
+                          "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                          "text":  "Bounded drawn ember/Narrator wash and a cycling settings showcase/preview surface.",
+                          "impl":  "absent",
+                          "search_scope":  "Read DrawnLayerBuilt=false, drawnInBlack no-op, game compositor and whole settings window. No draw callback/material/preview renderer or demo-map generator found; neutral pattern selection is built separately.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792815316954720401"
+                      },
+                      {
+                          "id":  "god_ishko",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:30",
+                          "text":  "Paired orange eyes, room/field coal breath, pleased true-black baseline with rare eyes, angry rotating sightline and multiple pairs. Core tide paired with TaBaa threshold. Drawn embers absent; per-room darkness motion not established.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_ohm",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:100",
+                          "text":  "Cold blue pulses, pleased extra heads/ripple, angry short approach/fast withdrawal and one flasher; Circuit territory currently Tide(Power). Conduits are adjacency fallback; waking-machine ripple currently selects a fixture rather than consumer-provided event target.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_oomo",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:162",
+                          "text":  "Sea-coloured slow sweep/tide and trembling per-room droplet; pleased higher tide, angry inward bloom; Medoid tide. Family count remains consumer supplied, not built here.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_mobunloo",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:222",
+                          "text":  "Copper/verdigris count on strict eight-second beat, pleased field chime, angry held unpaid Copper entry; clean wedge territory. Restart-one-short tally not expressible and approximated.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_rekko",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:284",
+                          "text":  "Bronze walking mender/trace, pleased faster round, angry unmending and missing lamp; Shrine tide; scarLinger 240 with scarKeeps in all readings. Reverse walk and immediate whole-room restoration are approximate; scar timing provisional.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_tabaa",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:348",
+                          "text":  "Outward wind-grey waves, pleased accelerating horizon waves, angry advance/hold/fast withdrawal; Threshold tide paired with Ishko Core. Real thrust-axis Unmooring remains a later consumer scheme switch.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_zizzik",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:410",
+                          "text":  "Resting bile-green Tell; pleased two persistent green coils over black; angry Spark plus two flashers; ragged Medoid tide. Mimic remains a consumer switch; angry jumps are approximated by very short multi-entry Spark.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_shkaar",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:479",
+                          "text":  "Gold/brass field breath, pleased shimmer, angry pausing beam; Open tide with minShare 0.4; authored hunting pair against Ishko. Palettes explicitly moved away from Narrator white; choosing darkest actual room and below-share Tell substitution not supplied by a current consumer.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "god_ozzik",
+                          "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml:540",
+                          "text":  "Purple/gold tiered bloom and crowns, pleased higher bloom/more crowns, angry falling mourning sweep/tarnish; Grandest tide. Brightest pick falls back to Spread; one-by-one crown tarnishing approximated by simultaneous state.",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_evidence":  [
+                                                 "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs"
+                                             ],
+                          "proof_note":  "Authored data and strict-loader/primitive tests exist, not a current rendered look or actual gameplay trigger. Specific provisional approximations are inventory limits, not approved new owner requirements.",
+                          "scope":  "not_opened"
+                      }
+                  ],
+    "contradictions":  [
+                           {
+                               "id":  "c_live_history",
+                               "source":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:7262",
+                               "status":  "resolved_for_reading",
+                               "text":  "Walk/package never-live language is stale. Live runs measured cost failure and proof-induced dark lamps. Later L0/offline implementation events and game infra holds are not an accepted live owner look."
+                           },
+                           {
+                               "id":  "c_consumers",
+                               "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml",
+                               "status":  "resolved_for_reading",
+                               "text":  "Rank/front supplier found in Rites; nine signatures and 27 readings found in campaign Defs/AtmosphericBase. Search excludes only the exact framework root; identically named neighbour directories remain searched. Authored data is present; active code consumer/subscriber still not found."
+                           },
+                           {
+                               "id":  "c_proof_contract",
+                               "source":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py",
+                               "status":  "audited",
+                               "text":  "Script families accounted for below. Preparation, negative controls and finally blocks exist, but full state restoration, persistent recovery journal, review hold and owner perception coverage are not complete. No build items filed in this rehearsal."
+                           },
+                           {
+                               "id":  "c_scope_edges",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:365",
+                               "status":  "risks_recorded",
+                               "text":  "Union allocation can overstep a claimant\u0027s group; flasher cache omits membership identity; L8 validation tests primitive label rather than actual visible motion; Coil reconstructs historical steps despite bounded-hitch prose. These are engineering risks, not requests to reduce built scope."
+                           },
+                           {
+                               "id":  "c_front_rank",
+                               "source":  "src/RimUtinni/Rites/Source/GameComponent_Ninefold.cs:206",
+                               "status":  "integration_gap",
+                               "text":  "Officiated front can differ from live loudest. Framework orders supplied ranks and uses a fixed/tuned territorial share, not engagement-magnitude share. Wiring must derive intended priority from existing campaign rules; no owner question asks him to repeat those rules."
+                           },
+                           {
+                               "id":  "c_freeze",
+                               "source":  "design/validation_walks/RimMandrake/AtmosphericBase.md:135",
+                               "status":  "preserved",
+                               "text":  "The DRAFT north star was stopped for live play, later TBD item dropped rather than certified. No evidence located of a later owner live look approving refined bars. Question bank is prospective dialogue; it neither edits nor automates that section."
+                           },
+                           {
+                               "id":  "c_staged_spread",
+                               "source":  "src/RimMandrake/AtmosphericBase/stage_proof_site.py:34",
+                               "status":  "static_mismatch",
+                               "text":  "At x=110+2*i for 14 lamps and fixed z, removing final end lamp as Pick control leaves 13 subjects in seven distinct x/4 blocks; MIN_SPREAD is 8. Local PowerShell arithmetic confirms this conditional bare-site mismatch. No runtime order or actual existing-map selection was measured."
+                           }
+                       ],
+    "failure_modes":  [
+                          "F1: Beautiful motion says nothing true: presences blur together, ordinary drift looks like a change of power, or chosen darkness looks like failed wiring. It may even read as the ship emoting. Sources: design/RimMandrake/atmospheric_base_mod_definition.md; design/validation_walks/RimMandrake/AtmosphericBase.md.",
+                          "F2: A convincing light demo stands in for the finished mod: sound, Narrator restoration, real campaign consumers or honest witness records are missing while synthetic claims appear complete. Sources: src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:482; design/RimMandrake/atmospheric_base_mod_definition.md.",
+                          "F3: Borrowing the lighting breaks trust or play: lamps outside intended groups change, external edits/ownership are mishandled, tests leave state behind, or long-running patterns stall the game despite changed-only writes. Sources: src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:365; src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs:352; infrastructure/state/ledger/events/FOUNDRY.jsonl:7262."
+                      ],
+    "failure_mode_sources":  [
+                                 {
+                                     "id":  "F1",
+                                     "source":  "design/RimMandrake/atmospheric_base_mod_definition.md"
+                                 },
+                                 {
+                                     "id":  "F2",
+                                     "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:482"
+                                 },
+                                 {
+                                     "id":  "F3",
+                                     "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs:365"
+                                 }
+                             ],
+    "neighbours":  [
+                       {
+                           "id":  "n_vanilla",
+                           "source":  "infrastructure/state/items/ATMOSPHERIC_BASE_BUILD_PROGRAM_1.md",
+                           "owner":  "Vanilla CompGlower/GlowGrid/reverse designators",
+                           "text":  "Existing coloured-light and opt-in gizmo machinery is reused. Phase 0 contains decompile-based engine answers. This run did not remeasure engine internals or rely on current external docs."
+                       },
+                       {
+                           "id":  "n_lightledger",
+                           "source":  "src/RimMandrake/_Shared/LightLedger/LightLedger.cs",
+                           "owner":  "Shared LightLedger",
+                           "text":  "Radius ownership belongs here; AtmosphericBase intentionally writes colour only. No duplicate radius restore or fresh modifier introduced."
+                       },
+                       {
+                           "id":  "n_rites",
+                           "source":  "src/RimUtinni/Rites/Source/GameComponent_Ninefold.cs:187",
+                           "owner":  "Salvation Rites / Ninefold engine",
+                           "text":  "Actual loudness, ranking, officiated front and landing reckoning; no AtmosphericBase binding found. Legacy Ninefold item points at old source home."
+                       },
+                       {
+                           "id":  "n_campaign_pack",
+                           "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml",
+                           "owner":  "Utinni campaign layer",
+                           "text":  "Campaign tier authors the Nine, three readings each and canon pairings, all guarded on AtmosphericBase, with loadAfter in About. Comments mark provisional values, real-conduit/brightest/reverse-walk and other approximations. Actual god moods still require a consumer."
+                       },
+                       {
+                           "id":  "n_cathedral",
+                           "source":  "src/RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs",
+                           "owner":  "RustCathedral (formerly RustCathedralHum)",
+                           "text":  "Independent layered hum and survival silence. Preserve existing system; future AtmosphericBase bed controls affect its own sound only."
+                       },
+                       {
+                           "id":  "n_silence",
+                           "source":  "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs",
+                           "owner":  "CreatureBehaviors silence service",
+                           "text":  "Named overlapping reasons hush Biome.soundsAmbient, restore only after last reason; predator path exists. Future AtmosphericBase beds need explicit interaction meaning, not a second map-silence owner."
+                       },
+                       {
+                           "id":  "n_event_spine",
+                           "source":  "design/RimMandrake/atmospheric_base_hook_ecosystem.md:131",
+                           "owner":  "Existing ChronicleEvents/Aftermath and authored letter producers",
+                           "text":  "Historical ecosystem points to a reusable event spine and authored-letter trigger, not an Oracle-only Narrator. No current AtmosphericBase subscription found; no new general event bus proposed."
+                       },
+                       {
+                           "id":  "n_greatbole",
+                           "source":  "ITEM:GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1",
+                           "owner":  "Greatbole/Greentide soundscape work",
+                           "text":  "Song/scalar soundscape is neighbour work; the word atmosphere in that item is not a built AtmosphericBase capability or a reason to add thermal/pilgrim mechanics here."
+                       }
+                   ],
+    "script_audit":  [
+                         {
+                             "id":  "audit_takeover",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:46",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/validation.py::take_over_proof",
+                             "start":  "Selects current map, binding and eligible untouched fixtures; returns missing/site results. Excluded counts reported per kind but suite only gates aggregate \u003e0.",
+                             "control":  "Untaken neighbour, post-release drive refusal, channel/button/scenario refusal. Useful mechanical controls, no actual mouse click or four independently staged exclusions.",
+                             "restore":  "finally releases test fixture and restores channel/buttons/scenario. No pre-mutation persistent recovery record; API refusal/release state is tested but interruption not recovered.",
+                             "hold":  "No owner-review hold.",
+                             "missing":  [
+                                             "individually asserted four exclusion subjects",
+                                             "actual UI/selection scene",
+                                             "persistent recovery and hold",
+                                             "full save/leave-map lifecycle"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_one_mood",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:152",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/validation.py::one_mood_proof",
+                             "start":  "Valid Lamplight and freshly handed-over lit fixture, optional untouched neighbour. Other held fixtures weaken changed-only observation and are not isolated.",
+                             "control":  "Empty group, compositor-off, default-off, same-time zero writes and untouched neighbour distinguish mechanisms.",
+                             "restore":  "finally restores prior mood list/settings and releases test fixture, but not compositor clock/history/counters or every preheld lamp\u0027s visible state; no recovery journal.",
+                             "hold":  "No hold; suite\u0027s unlit and reload components explicitly unmeasured.",
+                             "missing":  [
+                                             "isolated preheld-state contract",
+                                             "full transient/compositor restoration",
+                                             "persistent recovery and review hold",
+                                             "real floor/work-light observation"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_territory",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:274",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/validation.py::territory_proof",
+                             "start":  "At least two untaken lit lamps, capped at 40; two shared whole-map proof groups and extra tremor claimants. No asserted irregular multi-room canvas or distinct god vocabulary.",
+                             "control":  "Territory-off and extra fourth tremor claimant; per-fixture palette/owner checks. Same whole-map groups cannot expose group-permission leakage; similar warm palettes cannot establish perceived distinctness.",
+                             "restore":  "Releases new fixtures and restores settings/moods; resets/advances shared compositor and does not snapshot all its transient state.",
+                             "hold":  "Human perception component stays unmeasured; no explicit held exploration.",
+                             "missing":  [
+                                             "disjoint/overlap permission control",
+                                             "real multi-room irregular preparation",
+                                             "perception over a motion sequence",
+                                             "full recovery and hold"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_virtual_series",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:474",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py::v_rows",
+                             "start":  "MIN_LIT 10 / MIN_SPREAD 8 four-cell blocks, valid schemes, sanity forced colours, three phases; at most 40 proof fixtures. Flat row site is functional preparation, not a visual hull.",
+                             "control":  "Untaken static fixture, deterministic repeat, off-palette/white/rank-swap/short-period/unlit and planted bad models. Several observations share the production hook; independent metrics do not make the sampler independent.",
+                             "restore":  "Session finally restores settings/moods and new held fixtures, UndoFlick now restores power. R2 compares colour and lit state after V rows only; not exact overrides/ownership and not whole later R/G session.",
+                             "hold":  "No scene-begin/end/hold integration.",
+                             "missing":  [
+                                             "persistent recovery",
+                                             "full-session exact-state check including K/R/G",
+                                             "preheld fixture/caches restoration",
+                                             "new primitive live P/G scenes",
+                                             "campaign dark readings exercised under actual gate/intensity",
+                                             "real consumer"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_paused_clock",
+                             "source":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:1382",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py::l10",
+                             "start":  "Repicks fixture; two real windows, ticksGame delta must be zero.",
+                             "control":  "Untaken Showing null; fake pause and blind sampler mutations. Showing changes do not prove rendered illumination or glyph motion.",
+                             "restore":  "finally releases fixture and restores speed; no scene journal or final full-session snapshot.",
+                             "hold":  "No hold.",
+                             "missing":  [
+                                             "whole-session recovery",
+                                             "frame/zoom and multi-map observation",
+                                             "actual rendered cue distinctness"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_reload",
+                             "source":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py:1422",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py::reload_row",
+                             "start":  "Explicit --with-reload, holds named fixture, saves/loads proof save.",
+                             "control":  "Checks held survives and Showing becomes null on release, not actual prior colour/null override or gentle restart.",
+                             "restore":  "Failure branches have limited release attempts; missing fixture return has no durable recovery. Reload writes a save and changes current session, not restored by a full original-session recipe.",
+                             "hold":  "No hold.",
+                             "missing":  [
+                                             "exact override/radius/ownership observer",
+                                             "original-session recovery",
+                                             "asserted restart perceptibility",
+                                             "retained-map and new-map landing reset scenes"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_cost_and_site",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs:655",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/stage_proof_site.py::main",
+                             "start":  "Site script limits ticks, clears strip, creates lamps/conduits/generators, reads power and saves; no exclusions or multiple rooms. Cost times Evaluate on capped proof fixtures; offline QuotaTests handles synthetic larger counts. Static check: intended 14-lamp row minus end control gives seven spread blocks, below eight required.",
+                             "control":  "Snapshot/counters and offline hitch comparison. No complete frame/regrid baseline at 11/200/1000 or engine cost attribution.",
+                             "restore":  "Site writes map/save without snapshot/recovery journal; Session.Close is local cleanup, not persistent recovery. Tick age is not explicit disposable-map identity.",
+                             "hold":  "No labelled owner-review hold.",
+                             "missing":  [
+                                             "recorded site restoration",
+                                             "full-frame and engine regrid timing",
+                                             "burst/long-uptime geometry-edit cases",
+                                             "multi-room/exclusion preparation"
+                                         ]
+                         },
+                         {
+                             "id":  "audit_offline_and_future",
+                             "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                             "entry_point":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_kernel.py::main",
+                             "start":  "Pure synthetic geometries, scheme parsing, current campaign XML and field-only engine seam. NineTests expects that same located campaign XML; no current run executed.",
+                             "control":  "Mutations and analytic boundary checks are useful kernel discrimination; not live acceptance.",
+                             "restore":  "Offline process normally ends; no game state touched by a pure kernel run. This run did not execute it.",
+                             "hold":  "Not a gameplay scene. General gesture, sound, witness, real consumer and drawn-layer scenes absent rather than passing.",
+                             "missing":  [
+                                             "current complete kernel result",
+                                             "gameplay scenes for built extended primitives",
+                                             "implementation and scenes for unbuilt approved features"
+                                         ]
+                         }
+                     ],
+    "built_reviewed":  [
+                           {
+                               "id":  "file_1",
+                               "ref":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/proof_atmosphere.py",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_2",
+                               "ref":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase.py",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_3",
+                               "ref":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_kernel.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_kernel.py",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_4",
+                               "ref":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_wiring.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/selftest_atmosphericbase_wiring.py",
+                               "covered_by":  "small_count_hitch_ember",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_5",
+                               "ref":  "src/RimMandrake/AtmosphericBase/stage_proof_site.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/stage_proof_site.py",
+                               "covered_by":  "proof_site_builder",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_6",
+                               "ref":  "src/RimMandrake/AtmosphericBase/validation.py",
+                               "source":  "src/RimMandrake/AtmosphericBase/validation.py",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_7",
+                               "ref":  "src/RimMandrake/AtmosphericBase/About/About.xml",
+                               "source":  "src/RimMandrake/AtmosphericBase/About/About.xml",
+                               "covered_by":  "package",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_8",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Assemblies/RimMandrakeAtmosphericBase.dll",
+                               "source":  "src/RimMandrake/AtmosphericBase/Assemblies/RimMandrakeAtmosphericBase.dll",
+                               "covered_by":  "package",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_9",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Assemblies/RimMandrakeAtmosphericBase.dll.srchash",
+                               "source":  "src/RimMandrake/AtmosphericBase/Assemblies/RimMandrakeAtmosphericBase.dll.srchash",
+                               "covered_by":  "package",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_10",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml",
+                               "source":  "src/RimMandrake/AtmosphericBase/Defs/RM_AtmosphericSchemes.xml",
+                               "covered_by":  "neutral_pattern_library",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_11",
+                               "ref":  "src/RimMandrake/AtmosphericBase/measurements/quota_cost_11_200_1000.txt",
+                               "source":  "src/RimMandrake/AtmosphericBase/measurements/quota_cost_11_200_1000.txt",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_12",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBase.csproj",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBase.csproj",
+                               "covered_by":  "package",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_13",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseAPI.cs",
+                               "covered_by":  "mood_claims",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_14",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseMod.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseMod.cs",
+                               "covered_by":  "package",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_15",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseProof.cs",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_16",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericBaseSettings.cs",
+                               "covered_by":  "settings_ui",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_17",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericCompositor.cs",
+                               "covered_by":  "compositor_clock_and_change_tracking",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_18",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericDesignators.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericDesignators.cs",
+                               "covered_by":  "takeover_controls",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_19",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericExcluded.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericExcluded.cs",
+                               "covered_by":  "hard_exclusions",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_20",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericSchemeDef.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_AtmosphericSchemeDef.cs",
+                               "covered_by":  "scheme_data_and_guards",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_21",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_EmitterDiscovery.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_EmitterDiscovery.cs",
+                               "covered_by":  "emitter_discovery",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_22",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_GlowAccess.cs",
+                               "covered_by":  "exact_colour_restore",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_23",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_MapComponent_AtmosphericBase.cs",
+                               "covered_by":  "ownership_lifecycle",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_24",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/RM_SignatureDef.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/RM_SignatureDef.cs",
+                               "covered_by":  "signature_support_and_god_gate",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_25",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_AtmosphericKernel.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_AtmosphericKernel.cs",
+                               "covered_by":  "hard_exclusions",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_26",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_GodGate.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_GodGate.cs",
+                               "covered_by":  "signature_support_and_god_gate",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_27",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternChoice.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternChoice.cs",
+                               "covered_by":  "player_pattern_controls",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_28",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternFronts.cs",
+                               "covered_by":  "tide_primitive",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_29",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternGraph.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternGraph.cs",
+                               "covered_by":  "room_graph_anchors",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_30",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternKernel.cs",
+                               "covered_by":  "layer_grammar",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_31",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternModifiers.cs",
+                               "covered_by":  "hush_modifier",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_32",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_PatternWalkers.cs",
+                               "covered_by":  "walker_substrate",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_33",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_Quotas.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_Quotas.cs",
+                               "covered_by":  "small_count_hitch_ember",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_34",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_SchemeKernel.cs",
+                               "covered_by":  "steady_breath_spark",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_35",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryKernel.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryKernel.cs",
+                               "covered_by":  "tremor",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_36",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryShapes.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/Kernel/RM_TerritoryShapes.cs",
+                               "covered_by":  "territory_shapes",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_37",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/ChoiceTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/ChoiceTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_38",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/ModifierTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/ModifierTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_39",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/NineTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_40",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/PatternTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/PatternTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_41",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/Program.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_42",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/QuotaTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/QuotaTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_43",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/RimMandrakeAtmosphericBase.SelfTest.csproj",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/RimMandrakeAtmosphericBase.SelfTest.csproj",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_44",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/TerritoryTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/TerritoryTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "file_45",
+                               "ref":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/WalkerTests.cs",
+                               "source":  "src/RimMandrake/AtmosphericBase/Source/SelfTest/WalkerTests.cs",
+                               "covered_by":  "kernel_proof_and_measurement",
+                               "text":  "Capability accounting of current file; not a full-file CLEAN certificate or current runtime proof."
+                           },
+                           {
+                               "id":  "item_ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS",
+                               "ref":  "ITEM:ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS",
+                               "source":  "ITEM:ATMOSPHERIC_BASE_HARDEN_SMALL_LAMP_COUNTS",
+                               "covered_by":  "small_count_hitch_ember",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1",
+                               "ref":  "ITEM:GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1",
+                               "source":  "ITEM:GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1",
+                               "covered_by":  "sound_channel",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_ATMOSBASE_COST_MEASURE_ELEVEN_TIMES_THE_BAR",
+                               "ref":  "ITEM:ATMOSBASE_COST_MEASURE_ELEVEN_TIMES_THE_BAR",
+                               "source":  "ITEM:ATMOSBASE_COST_MEASURE_ELEVEN_TIMES_THE_BAR",
+                               "covered_by":  "compositor_clock_and_change_tracking",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_ATMOSBASE_COST_FIX_TEN_TIMES_THE_BAR",
+                               "ref":  "ITEM:ATMOSBASE_COST_FIX_TEN_TIMES_THE_BAR",
+                               "source":  "ITEM:ATMOSBASE_COST_FIX_TEN_TIMES_THE_BAR",
+                               "covered_by":  "compositor_clock_and_change_tracking",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_ATMOSPHERIC_BASE_BUILD_PROGRAM_1",
+                               "ref":  "ITEM:ATMOSPHERIC_BASE_BUILD_PROGRAM_1",
+                               "source":  "ITEM:ATMOSPHERIC_BASE_BUILD_PROGRAM_1",
+                               "covered_by":  "package",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_REACTIVE_SHIP_LIGHTING_1",
+                               "ref":  "ITEM:REACTIVE_SHIP_LIGHTING_1",
+                               "source":  "ITEM:REACTIVE_SHIP_LIGHTING_1",
+                               "covered_by":  "package",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_NINEFOLD_LOUDNESS_FRONT_1",
+                               "ref":  "ITEM:NINEFOLD_LOUDNESS_FRONT_1",
+                               "source":  "ITEM:NINEFOLD_LOUDNESS_FRONT_1",
+                               "covered_by":  "gameplay_consumers_and_anger",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP",
+                               "ref":  "ITEM:ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP",
+                               "source":  "ITEM:ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Read item prose where present and matching frozen/shard evidence. Historical or neighbour scope, not a current pass."
+                           },
+                           {
+                               "id":  "item_ATMOSPHERIC_BASE_CANVAS_1",
+                               "ref":  "ITEM:ATMOSPHERIC_BASE_CANVAS_1",
+                               "source":  "ITEM:ATMOSPHERIC_BASE_CANVAS_1",
+                               "not_a_capability":  "Design/lifecycle or proof-adaptation history. Does not establish a newly shipped feature or owner approval in this rehearsal."
+                           },
+                           {
+                               "id":  "item_ATMOSPHERIC_BASE_LAW_CONFLICTS_1",
+                               "ref":  "ITEM:ATMOSPHERIC_BASE_LAW_CONFLICTS_1",
+                               "source":  "ITEM:ATMOSPHERIC_BASE_LAW_CONFLICTS_1",
+                               "not_a_capability":  "Design/lifecycle or proof-adaptation history. Does not establish a newly shipped feature or owner approval in this rehearsal."
+                           },
+                           {
+                               "id":  "item_NORTH_STAR_ATMOSPHERIC_TBD_1",
+                               "ref":  "ITEM:NORTH_STAR_ATMOSPHERIC_TBD_1",
+                               "source":  "ITEM:NORTH_STAR_ATMOSPHERIC_TBD_1",
+                               "not_a_capability":  "Design/lifecycle or proof-adaptation history. Does not establish a newly shipped feature or owner approval in this rehearsal."
+                           },
+                           {
+                               "id":  "item_ATMOSPHERICBASE_DESIGN_FIRST_TOUCH",
+                               "ref":  "ITEM:ATMOSPHERICBASE_DESIGN_FIRST_TOUCH",
+                               "source":  "ITEM:ATMOSPHERICBASE_DESIGN_FIRST_TOUCH",
+                               "not_a_capability":  "Design/lifecycle or proof-adaptation history. Does not establish a newly shipped feature or owner approval in this rehearsal."
+                           },
+                           {
+                               "id":  "item_ATMOWALK_DRAIN_BARS_TO_WATCHERS",
+                               "ref":  "ITEM:ATMOWALK_DRAIN_BARS_TO_WATCHERS",
+                               "source":  "ITEM:ATMOWALK_DRAIN_BARS_TO_WATCHERS",
+                               "not_a_capability":  "Design/lifecycle or proof-adaptation history. Does not establish a newly shipped feature or owner approval in this rehearsal."
+                           },
+                           {
+                               "id":  "proof_59",
+                               "ref":  "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.criteria",
+                               "source":  "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.criteria",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Recipe/criterion pointer, not successful proof output."
+                           },
+                           {
+                               "id":  "proof_60",
+                               "ref":  "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.txt",
+                               "source":  "infrastructure/state/live_proofs/ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP.txt",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Recipe/criterion pointer, not successful proof output."
+                           },
+                           {
+                               "id":  "item_NORTHSTAR_MOTION_FRAMES_1",
+                               "ref":  "ITEM:NORTHSTAR_MOTION_FRAMES_1",
+                               "source":  "infrastructure/state/items/closed/NORTHSTAR_MOTION_FRAMES_1.md",
+                               "not_a_capability":  "Shared frame-sequence judging was built elsewhere; item explicitly leaves AtmosphericBase checklist unchanged. Not implementation of this mod."
+                           },
+                           {
+                               "id":  "item_NORTH_STAR_WALK_AUTHORING_1",
+                               "ref":  "ITEM:NORTH_STAR_WALK_AUTHORING_1",
+                               "source":  "infrastructure/state/items/NORTH_STAR_WALK_AUTHORING_1.md",
+                               "not_a_capability":  "Global authoring history, not another AtmosphericBase feature."
+                           },
+                           {
+                               "id":  "file_campaign_nine_xml",
+                               "ref":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml",
+                               "source":  "src/RimUtinni/UtinniPatches/Defs/AtmosphericBase/RUT_NineSignatures.xml",
+                               "covered_by":  "campaign_signatures",
+                               "text":  "Parsed all signature and reading elements, palettes/layers/territories/pairings/descriptions/comments; individual god capabilities separately inventoried."
+                           }
+                       ],
+    "reading_limits":  {
+                           "id":  "limits",
+                           "source":  "src/RimMandrake/rimflow/roles/designer_grounding.md",
+                           "text":  "Bounded source and proof audit, requested role packets/example, relevant design corpus, matching live/closed item prose and ledger shards/frozen events searched. Source file mapping is capability accounting, not a CLEAN full-file review certificate. No launcher-folded required evidence list or aliases, git history, build/runtime fingerprints, current live game or erased historical logs available/used. No stage marked done."
+                       },
+    "snapshot":  {
+                     "id":  "mirror_snapshot",
+                     "source":  "MIRROR_HEAD",
+                     "text":  "e778203767084830441d123f4cf4d5768c641aeb 2026-11-10T02:04:22-08:00",
+                     "note":  "The mirror refreshed externally during reading: the earlier observed head is in text and final observed head in end_reading. No atomic full-tree or runtime snapshot claimed. Source-reference validation ran against the final reading.",
+                     "end_reading":  "1db614cc18e41ff2a351f2f34548c839bf972e0f 2026-11-10T02:19:35-08:00"
+                 },
+    "root_draft":  {
+                       "id":  "proposed_root",
+                       "speaker":  "agent",
+                       "source":  "design/RimMandrake/atmospheric_base_mod_definition.md",
+                       "basis":  [
+                                     "src/RimMandrake/AtmosphericBase/About/About.xml",
+                                     "OWNER:1792815316954720401",
+                                     "OWNER:1792817025990070835",
+                                     "design/validation_walks/RimMandrake/AtmosphericBase.md"
+                                 ],
+                       "text":  "AtmosphericBase lets other mods speak through a colony\u0027s existing lights and ambient sound. The player hands lamps over and can take them back with their own colour restored; animals, plants, worn gear and holograms keep their own light. Away from the Utinni, the handed-over lamps offer beautiful, gentle patterns the player chooses. Aboard an Utinni gravship, the gods choose: two presences hold separate, slowly moving areas, and quieter presences intrude briefly in their own colours. Hue and movement carry identity; real illumination makes their choices matter to colony life. The Narrator commands a reserved white above everything, even an alarm, then returns the lamps to what should be showing underneath. Chosen darkness carries motion; a power failure silences the powered channels. The gods are tenants using the wiring, never feelings of the ship itself. The framework supplies the common patterns, claims and restoration; the campaign supplies their meaning and consequences. Sound shares that language, with the camera as listener. Both channels belong to the finished mod."
+                   }
+}

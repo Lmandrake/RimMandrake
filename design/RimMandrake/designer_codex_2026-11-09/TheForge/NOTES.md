@@ -1,0 +1,41 @@
+DRY RUN — TheForge Designer, stages 0 and 1 only
+
+All new prose and guesses are agent-authored. The historical owner experience is quoted only with its actual file source. `root` is null; `root_draft` is proposed. The six asks remain drafts, with 01–02 marked first. Nothing has been approved, waived, sent through the role, put on the ledger or handed to a builder.
+
+The mod was found at the expected `src/RimMandrake/TheForge` path. It ships as a source member of `mandrake.rm.biomes`, not a standalone deployed mod. The read mirror reports `27a9c378b04a540da7f3ceac2f1e194b916cd21c`, 2026-11-10 01:18:26 PST. External mirror refresh means the reading is not an atomic full-tree snapshot.
+
+What the reading resolved
+
+- The grand cycle, sky pastures and homing, white fronts, dhokkur tracks/shoving, spunstone study and doors/hull, dhoggur swell and ummisk edge behaviour are present. The walk and several item NEXT sections lag the source. Present does not mean accepted.
+- The fuel-saving keel brace and launch ring were removed in `061f5d693`; `OWNER:1792759866253411416` exists. The door, hull, study and material remain. Old keelwork prose and the suite's chain name must not resurrect the removed feature.
+- The dhoggur's later cards settle attacks as the default trigger and permit death on shrinking (`OWNER:1792168744418962364`, `OWNER:1792168745383071025`). The item file's earlier environmental-trigger question is stale. Vanilla audio is also settled (`OWNER:1791087946251037563`).
+- The old LavaSnail/glass-trail proposal is not the built ummisk: it follows a lava edge on a visual steam cushion and changes no terrain. Resident dhuvvox stay as dormant pawns; the additional rain swarm has a separate destroy-with-ash-trace lifecycle. Those two facts must not be collapsed.
+- Campaign features already exist outside this mod: patch-added canon fauna, tower entrance/one-floor shell, salvage and its second study source, tibanna tapping, the Contagion ring and zersium placement. Their existence does not establish a franchise-free ruin encounter or prove their campaign play. The salvage cache now lives in TerminalBiomes behind the Utinni requirement; its study patch already exists.
+
+What I could not verify
+
+- No gameplay, builds, deploys, bridge calls, scene staging, save changes or source tests ran. No proof is `current`: the running code, composed deployment, settings, art and content fingerprints were not matched. `missing` means adequate acceptance was not located here, not that the owner never tried it.
+- Historical evidence has limits. Sky pastures has a conditional L0 WEAK acceptance followed by failed L2 A1 and L1 A2 on November 4. Current source then adds homing and repairs the deployed-tree probe; a later successful run was not located. The dhuvvox remainder closed on conditional L0 WEAK evidence. Dhoggur's OWNER note records a historical 16/16 live pass and shown swollen art; it is not a new run or current acceptance.
+- Raw evidence at `/home/mandrake/rm/relentless/...` and expired `Transient/...` paths was not recovered. Original early card transcripts for dhokkur wall/fade details, structural beam/lightness and some enrichment choices were not found as matching OWNER events. Reported rulings retain their ITEM/shard/path provenance; none became invented owner quotations or new questions.
+- The owner's experience sentence was found in the explicitly authorised experience file and corroborating walk. No OWNER tsn for that sentence was located. It is an experience source, not approval of this proposed root or a flagship selection.
+- End-to-end safe work remains unproven: a survivable first rain burst, recall/rescue at colony scale, a real crust expedition and retreat, useful floatstone construction progress, actual researcher study, door speed/airtightness, multi-cycle livestock and habitat viability, meaningful hunter counterplay, and save/reload/toggle transitions. The garden's one-block yield is intentional economy normalization; its practical payoff is still an open experience issue.
+- Sky source predicates do not accept flight, prey choice, column appearance, selection readability or performance. The greater bulloo lacks the drifter comp used by pasture governance. VEF guards make gel production, fission, floating and weird eating conditional. No actual escort-following behaviour or blue-gel machinery consumer was found in the bounded exact-name search. Heatsink fungus room-cooling remains unknown despite its description. Textures were accounted for by path, not visually judged.
+- The proof-scene audit is in `record.json`. The suite disables shared scald for long cycle scenes, uses debug phase jumps, observes dormancy mainly through inspect text and debug-reveals spunstone. It has useful negative arms but lacks several independent controls. Its cleanup restores some settings and removes fixtures, not the original terrain, time, knowledge, fires, flooding or all wandering wildlife; it has no explicit restoration/hold journal. Gentle melt also kills plants and may deconstruct buildings, so the walk's blanket “harms nothing” wording is too broad.
+
+Top five correctness risks from source reading — source-supported risks, not newly reproduced live findings
+
+1. `src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:827` — relocation searches only eight cells and has no failure branch, so a survivor with no nearby safe cell can remain on restored impassable lava, including in gentle/off mode.
+2. `src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:194` — `End()` stops voices but does not restore crust or resolve gardens/swarm, leaving a prematurely ended condition's temporary world changes without its lifecycle owner.
+3. `src/RimMandrake/EnvironmentalHazards/Source/RM_Plant_FlashFlora.cs:45` — flash plants consult only the shared pulse switch, so disabling Forge's local master/pulse can leave its plants at the outside-window penalty while the shared switch remains on.
+4. `src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs:169` — the front marks heat before its filled-cell guard and never checks enclosure, allowing plume heat to cross walls/roofs independently of vanilla smoke and the drawn threat.
+5. `src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:651` — dhokkur wander selects the nearest column and never consumes saved wear, so it need not revisit old tracks or move between vents as the path-warning promise implies.
+
+Dry-run boundaries and artifact checks
+
+The source mirror was only read. Writes are confined to this working folder; preexisting `designer_brief.md` and the externally growing `designer.log` are not our deliverables. No system fault, lesson, priority or first-touch result was filed, because the brief expressly forbids ledger work.
+
+This is not a launcher session: no injected run ID, stage packet/budget, alias fold, `stage.json` or `result.json` was fabricated. `built_reviewed` accounts for shipped files, relevant item prose/ledger references and proof-command pointers; it is not an official replayed launcher done-set or full-file code-review certificate. No git history was fetched and no tools were installed. Reads and artifact checks used PowerShell because `rg` was unavailable on PATH.
+
+The fresh author-independent reviewer (`/root/review_forge_questions`) returned PASS for the current six drafts after corrections. The original question 01 was struck because an environmental-only alternative risked shrinking the already-promised physical campaign works; it now asks only about ordinary RM play before a tower visit. Smoke injection, vanilla dhokkur anatomy/no-food and shared bulloo art were corrected. Greater-bulloo column exclusion remains a scope/proof uncertainty, not an established defect. The record preserves that review and binds it to the question file's SHA-256. It supplies no owner answer or root approval.
+
+JSON structure, inventory enums/fields, source-path existence, exact OWNER-tsn presence, linked IDs, question count and retained capability accounting are checked locally. These checks and the independent draft review do not accept gameplay or advance a stage. No launcher budget or review charge was fabricated.

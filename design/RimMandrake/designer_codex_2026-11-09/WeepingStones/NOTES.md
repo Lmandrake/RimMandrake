@@ -1,0 +1,58 @@
+﻿DRY RUN — WeepingStones Designer, stages 0 and 1 only
+
+All new prose and guesses are agent-authored. `root` is null; `root_draft` is a proposal built around the owner's existing chosen experience sentence, sourced to `design/RimMandrake/biome_experiences_2026-10-20.md`. The eight asks are drafts. There is no approved root, flagship pick, waiver, sent turn, stage result, locked tree, build item or ledger write. Only this working folder was written; the source mirror was read.
+
+What the reading establishes
+
+The expected folder exists: `src/RimMandrake/WeepingStones`. This is source for the composed Baroque Biomes package, `mandrake.rm.biomes`. The walk's free-tier test target is `weepingstones_solo`, with every DLC. A standalone dev-folder package or a campaign-enriched load cannot silently substitute for that free-tier test.
+
+`record.json` separates implementation, proof and scope across the built kit, supporting data and integrations. It includes the native cast and ordinary gorrask, stocked fauna, wild fishing, plants and harvests, the later talvessar and Colossia, dewsilk, huldu fur, pens and jobs, health/danger/escape, cuisine and thoughts, the shared truce, the unique condenser and all three choices, its portable water plant, both quests, exclusive claims/faction slots, settings, carriers, scanner payload, art/reeds/campaign wiring and proof tools. Additional entries distinguish absent or uncertain obligations from those built parts. `built_reviewed` accounts for source files, relevant live/closed prose, subject-family closed ledger items and proof pointers. This is capability accounting, not a CLEAN code-review certificate or the launcher's folded required set.
+
+The old documents contain substantial historical state. The first build item still says the folder does not exist. The October 2 review calls murrin, dewsilk, truce suppression, settings and the giant unbuilt; those implementations now exist. The walk still names ambrosia and old donors, describes one setting and placeholder art, and cites old component counts. Current XML has no ambrosia or eyeling roster row, has Colossia and talvessar, and has multiple feature switches. The followup closed November 1 after source/art-binding checks. None of this authorises removing built content or asking him to reapprove it.
+
+Settled boundaries preserved
+
+- The owner's chosen sentence is an existing documented source, as explicitly instructed for this run. It is not a fabricated OWNER event. No OWNER tsn was created for his September choices or the October 20 experience. All `OWNER:` references used here were checked against OWNER.jsonl.
+- Wild gentle versus stocked nasty and real doubt-meat thoughts are already settled. Minor injuries were BENCH-settled, not an owner quotation. Vanilla gestation/litter data exists; failure to find a custom pool-breeding engine is not proof that animal reproduction is impossible.
+- Capture is a thrown net whose landing and target speed matter (`OWNER:1791380355976654559`). The old frozen-channel remedy is gone. Current skarrin has no flight fields, despite the legacy flier item/proof language. Mirrik and dewglider still have real flight fields. No flyer was tested.
+- Wind-hour and the born-and-dying-water proposal were rejected. The farm's health must not grow into that rejected general water-budget simulation. The crab's separately chosen seasonal pool is already built. The four October 2 new-mark options remain recorded close misses, not new pitches.
+- The Refused Toll's October 2 enthusiasm is superseded for v1 by the actual October 23 v2 retarget, `OWNER:1792755168241448197`. Its old item prose is not permission to put it back in this root.
+- Shared EnvironmentalHazards owns both truce halves and radius. OasisMaker owns its separate slow oasis machine. Shared sun/shade owns heat, and the later one-Direct-Sun ruling governs; local old heat fields and arrival prose need reconciliation, not another per-biome heat choice. The scanner payload is an optional scanner integration, not a built ambient soundscape.
+
+Top five correctness risks noticed while reading (source-level findings, not live diagnoses)
+
+1. `src/RimMandrake/WeepingStones/Source/RM_WorkGiver_HarvestPoolPen.cs:75` — Every eligible resident in a pen is autonomous harvest work, with no breeder reserve or player harvest instruction; ordinary animal work can empty a farm without a deliberate overdraw decision.
+2. `src/RimMandrake/WeepingStones/Source/RM_WalkingCondenser.cs:310` — Sell stores buyer/expiry and pays silver, but the read sale/phase/quest paths never consume those fields to deliver the promised season pool at the buyer's settlement.
+3. `src/RimMandrake/WeepingStones/Source/RM_WalkingCondenser.cs:328` — Extraction dries/rebuilds the truce field before `crab.Kill(null)`, removing its own water and supplying no guilty damaging instigator for the promised first-strike retribution.
+4. `src/RimMandrake/WeepingStones/Defs/ThingDefs_Races/RM_WeepingStonesNatives.xml:691` — The current vhakk description explicitly sells ambushing drinkers at the water's edge, directly contradicting the frozen ambush ban and the built hunt suppression.
+5. `src/RimMandrake/WeepingStones/Source/RM_JobDriver_NetPoolBreeder.cs:202` — Bagging destroys the animal before resolving/placing breeding stock and ignores `TryPlaceThing` failure; a missing output or failed placement can lose the captured animal instead of preserving it.
+
+What I could not verify
+
+No game, bridge, save, ModsConfig, deployment, code/art build, live proof, art judgment or acceptance scene was used. No inventory proof is `current`: the running build, composed XML, settings and art were not fingerprint-matched. Historical build/close records often explicitly say live proof remains owed. `missing` describes evidence found here, not whether the owner may ever have tried a feature.
+
+The ledger records handler-fate A1 passes on November 5 and A2 on November 6. The proof commands and criteria are in the mirror; the raw `/home/mandrake/rm/relentless/live/...` outputs and this session's runtime are not established. `prove_job_net.py` deliberately accepts either capture PASS or capture FAIL if the handler remained observable. An A2 pass therefore cannot be reported as successful netting. Likewise, the November 5 OWNER note describing a joint chase is followed by the wrong-modlist complaint and BENCH's note that the correctly staged sitting did not run before he went to bed. I did not turn invitation/staging into accepted flight or capture.
+
+The following remain unverified experiences: a naturally populated map that reads as pale wet stone and secret shade; stock remaining in water and replacing itself through repeated harvest; meaningful species mixes and an actual ivvol benefit; useful health warnings and recovery; safe bank feeding; escaped eels finding a sensible destination and being recaptured; real cooking/ingestion mood effects; fur obtainable through the intended farming route; dewsilk shear → spin → apparel; both truce halves and self-defence attribution; the condenser's stable settling, movement, terrain restoration and reload; meaningful sale fulfilment; extraction's truce consequence; ship placement and useful water output; both quest branches, genuine freedom and farmers at the pool; settings effects and persistence; faction-carrier generation and scanner results. Defs, text and commands alone accept none of those experiences.
+
+The current fauna have ordinary animal reproduction fields, but STOCK releases neutral animals and the pen component counts whichever pawns happen to stand in its cells. No sustainable pen cycle was demonstrated. Specialized courtship, water-combing, digging, pilgrim arrival patterns, learned mimicry and species-specific harvesting must not be inferred from descriptions. Some were explicitly nonblocking/v2 in the roster. Missing mechanics do not automatically expand v1 scope.
+
+The plant and animal art bindings exist, but no sprite was visually judged in this reading. Descriptions changed after art; the vhakk contradiction is particularly clear. The local heat extension still carries the older 14 C/minimum 7 C/55-degree scheme, and the arrival letter says roofs do nothing and parasols barely help regardless of location. That prose is already too broad even for the extension's own overhead switch and conflicts with later standing guidance. Effective final heat after every composed patch remains unverified; the appropriate followup is evidence recovery and compliance with the existing shared rule.
+
+Proof-scene audit
+
+`record.json.script_audit` covers read-only groups, settings, condenser wiring, dewsilk, oasis flora, the zone designator, NET, handler-fate controls, STOCK including rejection, FEED, HARVEST, CULL and generated flora chains, plus experiences with no staged entry point. It records asserted starts, discriminating controls, restoration and holds separately.
+
+The script does prepare a pad, resolve the real designator, check some fixture populations, preserve dependent-chain failure state, distinguish a missing handler from a mechanic verdict, and use no-job/off-pad controls for disappearance. Those are real capabilities, not an empty harness. They do not substitute for a proof of each experience. FEED checks ground-item disappearance rather than feed credit; STOCK's positive outcome is counted on the pad rather than inside the zone; forced jobs bypass autonomous work; the condenser chain checks wiring, not its choices or movement. The dewsilk harvest and oasis map census deliberately remain UNMEASURED.
+
+Restoration is the largest shared scene-contract gap: `_reset_pad` and `_teardown` delete all pool zones and use map-wide non-colonist destruction, `_enter` drafts existing colonists, terrain is painted, and preflight locks weather. Cleanup is not restoration of the original map, pawns, zones, draft states or weather. Several settings routines restore shipped defaults rather than captured prior values. There is no concept recovery journal or owner-review hold. A future disposable-map scene needs a recorded recovery/reload and verified end, not just a cleanup call. This run stages nothing and opens no recovery obligation.
+
+Dry-run limits
+
+The user requested a combined stages 0–1 rehearsal outside the launcher. I fabricated no run ID, stage packet, aliases, budget, stage.json or result.json, and marked no stage done. A real launcher pass must regenerate its exact built-evidence references and compare them with this inventory. All paths refer to the read-only mirror snapshot recorded in `record.json`; the mirror refreshed externally during this reading. The initial head was `4c3da9726b26d26e6e7fc80cde263e9c2964aed5`; the end head was `e778203767084830441d123f4cf4d5768c641aeb`. Both are recorded. Critical risk lines were re-read at the end; this is not an atomic tree snapshot.
+
+The question bank received only local author review. The required fresh author-independent question review has not run; no reviewer or pass verdict was invented. The eight questions are not one sent dialogue turn. Start with 01–02 and use the replies to prune the rest. The pictures are labelled written thought experiments, not rendered mocks or in-game evidence. Appearance/interaction choices still need a labelled visual exploration before binding them.
+
+No repo tool was invoked that could write review status, state, a queue, a lesson or the ledger. The user-authorised output is these three local artifacts. Checks here validate the artifacts' structure, references, enums, provenance and coverage links; they are not gameplay tests, an exam or the Designer launcher's stage acceptance.
+
+

@@ -1,0 +1,3077 @@
+{
+  "dry_run": true,
+  "mod": "TheSump",
+  "author": "Codex Designer rehearsal, 2026-11-10. All descriptions, guesses and proposed requirements are agent-authored.",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "working_folder": "D:/ClaudeWork/rimmandrake/designer_codex/TheSump",
+  "stage_status": "Stage 0 grounding plus stage 1 question-bank rehearsal. No launcher result, sent ask, root approval, stage advance, handoff or ledger write.",
+  "root": null,
+  "root_draft": {
+    "id": "proposed_root",
+    "speaker": "agent",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+    "basis": [
+      "design/validation_walks/RimMandrake/TheSump.md",
+      "infrastructure/state/items/closed/SUMP_DESIGN_SITTING_1.md",
+      "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "OWNER:1790946483826463687"
+    ],
+    "text": "TheSump makes settling a cold tar basin a struggle over ordinary actions: moving, working, staying clean and getting back what the black has kept. A colony learns to read its mice and plants, chooses routes through sticky ground, and turns the same troublesome tar into useful materials, beautiful gaslight and a pantry that preserves at the price of solvent. Digging buys a chance at deep-time finds while risking a preserved trap or something much larger below. Channels and gates let the colony put tar to work, but a belch or a careless burn can change the ground it thought it understood. An ordinarily woken tar beast is a catastrophe to evacuate ahead of; deliberately pouring solvent wakes a different danger that hunts the map. The tools make a messy settlement possible without making the Sump surrender."
+  },
+  "scope": [
+    {
+      "id": "experience_anchor",
+      "speaker": "agent",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "text": "Use the TheSump row under The experience, in the owner's words as the existing owner experience. Exact existing sentence is quoted with its file source in QUESTIONS.md. No ledger tsn was invented for the row."
+    },
+    {
+      "id": "no_precipitation",
+      "speaker": "agent",
+      "source": "OWNER:1792391256078801116",
+      "text": "Later no-precipitation card overrides earlier mod-versus-campaign tar-rain split. No tar rain in the root or question bank."
+    },
+    {
+      "id": "solvent_exception",
+      "speaker": "agent",
+      "source": "OWNER:1790946483826463687",
+      "text": "Deliberate solvent pour instantly wakes a manhunter. Distinct from ordinary non-hunting station-eater; no day-warning delay added to pour."
+    },
+    {
+      "id": "free_tier",
+      "speaker": "agent",
+      "source": "infrastructure/state/items/closed/SUMP_FREE_TIER_MOVE_BUILD_1.md",
+      "text": "Tar coping kit belongs to free Baroque Biomes; Hssiss/name/worship are campaign additions. Shared code and remaining campaign filth patches must not be confused with complete free-tier wiring."
+    },
+    {
+      "id": "old_rulings",
+      "speaker": "agent",
+      "source": "infrastructure/state/items/closed/SUMP_DESIGN_SITTING_1.md",
+      "text": "Do not re-ask flier/stilt legs, tameable mice, honest pallick tell, slow dorvel, two walkway tiers, cap/pratfalls, generous weak solvent, vault's solvent gate, gaslight chemistry, or ship glasswalk/lamps/statues. Original texts reside in cited items/rosters; many early OWNER shard rows have no tsn and cannot become OWNER:<invented timestamp>."
+    },
+    {
+      "id": "v2_rites",
+      "speaker": "agent",
+      "source": "OWNER:1792755156861474805",
+      "text": "Sinking and effigy rituals belong to v2. Other-faith Holy Flame and deliberate solvent weapon are distinct; v2_nine_rituals explicitly exempts Holy Flame."
+    },
+    {
+      "id": "world_boundary",
+      "speaker": "agent",
+      "source": "CLAUDE.md",
+      "text": "Fixed shipped planet, no alternative-world generation, no terminal repaint here, all DLC assumed. Existing placement code is inventoried without making it a player promise."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d_provenance",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "text": "Root stays null. All eight asks are draft; guesses never become replies. OWNER refs used only for exact tsns found in OWNER.jsonl. No events created."
+    },
+    {
+      "id": "d_proof_currency",
+      "speaker": "agent",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "text": "No current proof: runtime/compose/source/settings/data fingerprints were not matched. Historical passes are stale, failed/incomplete histories remain visible. Missing acceptance is not proof of never exercised."
+    },
+    {
+      "id": "d_question_bank",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "text": "Eight candidate asks, serve root and flagship first and at most three per real turn after fresh-agent review. This dry run has local review only. No keep/remove offers and no repeated settled cards."
+    },
+    {
+      "id": "d_no_mutations",
+      "speaker": "agent",
+      "source": "CLAUDE.md",
+      "text": "Only the three requested deliverables written in the permitted working folder. No code/art/bridge/save/mod-list/deploy/tooling execution or ledger action."
+    },
+    {
+      "id": "d_vanilla_comparator",
+      "speaker": "agent",
+      "source": "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+      "text": "The existing granite-vs-Glasswalk same-pawn comparison is the relevant vanilla control. A fresh popular-mod survey would not resolve these owner experience choices."
+    }
+  ],
+  "inventory": [
+    {
+      "id": "package",
+      "text": "Standalone RM content, compiled DLL and compose member; donor-free About dependencies are CreatureBehaviors and EnvironmentalHazards. FlowWorks supplies referenced tar.",
+      "source": "src/RimMandrake/TheSump/About/About.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/About/About.xml",
+        "src/RimMandrake/TheSump/Source/RM_TheSump.csproj",
+        "ITEM:THESUMP_RM_MOD_BUILD_1",
+        "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:THESUMP_RM_MOD_BUILD_1",
+        "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1"
+      ],
+      "proof_note": "Historical scaffold/tier-move closes prove authored work, not current live free-tier independence.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "biome_ground",
+      "text": "Owned grassy-sand/lush-grass donor ports and world icon; density, diseases, forage and cast wiring.",
+      "source": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+        "src/RimMandrake/TheSump/Defs/RM_TheSump_DonorPorts.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml"
+      ],
+      "proof_note": "THE_SUMP_FIRST_SCRIPT_1 A2 def-resolution pass 2026-10-07; no regenerated-map acceptance or current fingerprint match.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "placement_worker",
+      "text": "Existing tile-score worker and rarity slider for alternative-world generation; retained as built evidence, outside the campaign/player promise.",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpBiome.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_TheSumpBiome.cs",
+        "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No alternative planet generated, and none is proposed. World-generation capability is ruled out by CLAUDE.md.",
+      "scope": "out",
+      "speaker": "agent"
+    },
+    {
+      "id": "retired_mutator_ports",
+      "text": "Authored RM_TarLakes TileMutatorDef and LandmarkDef, with tar patches; these are compatibility content, not authority to generate a new planet.",
+      "source": "src/RimMandrake/TheSump/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_TheSump.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_TheSump.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Authored XML only; no new-world exercise.",
+      "scope": "out",
+      "speaker": "agent"
+    },
+    {
+      "id": "dusk_weather",
+      "text": "Permanent forced dry weather, fog overlay/sky colours, biome glow multiplier and sunlight-stat suppression; actual permanent amber visibility remains unaccepted.",
+      "source": "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml",
+        "src/RimMandrake/TheSump/Defs/WeatherDefs/RM_SumpWeather.xml",
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+        "OWNER:1792391256078801116"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "deep_black_mere",
+      "text": "Map-site GenStep grows a connected deep-tar landmark and shallow rim, only on Sump with its setting; skips an undersized/obstructed site.",
+      "source": "src/RimMandrake/TheSump/Source/RM_GenStep_DeepBlackMere.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_GenStep_DeepBlackMere.cs",
+        "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+        "src/RimMandrake/TheSump/Defs/MapGeneration/RM_GenStep_DeepBlackMere.xml",
+        "src/RimMandrake/TheSump/Patches/RM_GenStep_DeepBlackMere_Register.xml",
+        "ITEM:SUMP_TAR_HYDROLOGY_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_HYDROLOGY_1"
+      ],
+      "proof_note": "Historical offline build and kernel fuzz apparatus; no map-generation run proving landmark size/readability here.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "tar_channels",
+      "text": "FlowWorks owns tar fluid, excavated channels, sluices, source bodies and edge sinks; Sump supplies its local mere. This is local map hydrology.",
+      "source": "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+        "ITEM:SUMP_TAR_HYDROLOGY_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_HYDROLOGY_1"
+      ],
+      "proof_note": "Hydrology item records generic reuse; this run did not exercise or fingerprint the channel/source/sink chain.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "poured_moat",
+      "text": "Buildable slow tar floor, Chemfuel cost placeholder, burned spent terrain and ability to re-pour.",
+      "source": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_TarMoat.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_TarMoat.xml",
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "fuse_post",
+      "text": "Player ignition queues connected poured/natural tar terrain and starts vanilla Fire at a staggered rate; not the same mechanism as the gate-aware liquid front.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFloodIgniter.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFloodIgniter.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_MoatFusePost.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No proof starts from the actual fuse-post order and establishes smoke/passage refusal, gate safety, duration and spent conversion together.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "legacy_burn_support",
+      "text": "TimedTerrainBurn and smoke-column support were built for the old TarBlaze. TheSump has no TarBlaze def/consumer now; code presence does not make a smoke wall.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTimedTerrainBurn.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTimedTerrainBurn.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_ThresholdSmokeColumn.cs",
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof_note": "Historical support build only; source/XML search found no TarBlaze ThingDef in current src.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "tar_network_fire",
+      "text": "FlowWorks central creeping liquid fire, burn-off and sluice firebreak checks; shut gate blocks catch/front and lifted gate admits it.",
+      "source": "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_FireMath.cs",
+        "ITEM:SUMP_TAR_FIRE_NETWORK_1",
+        "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.txt"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_FIRE_NETWORK_1",
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.criteria"
+      ],
+      "proof_note": "2026-11-04 A1/A2/A3 FAIL events; later implementation/carry and 2026-11-06 stale-build refusal located, no later PASS located. Existing, not accepted.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "belch_flood",
+      "text": "Tar-pit incident selects tar epicentre, releases a real tar flood and letter; FlowWorks owns spread and cooled front, TheSump redirects cooling to Glasswalk.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_TarPitBelch.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_TarPitBelch.cs",
+        "src/RimMandrake/TheSump/Defs/IncidentDefs/RM_TarPitBelch.xml",
+        "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml",
+        "ITEM:SUMP_TAR_BELCH_EVENT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_BELCH_EVENT_1"
+      ],
+      "proof_note": "2026-09-29 note proves a spawned flood, not the actual Sump incident; noted ordinary-ground confinement caveat. Actual incident plus living responders not proven.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "tar_coating",
+      "text": "Shared coating API and source comp lay tar filth onto surfaces; beast trail uses it.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_TarCoatingUtility.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_TarCoatingUtility.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_Comp_TarCoatingSource.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_TarCoatingUtility.cs"
+      ],
+      "proof_note": "SUMP_TAR_NASTINESS_1 A1 PASS 2026-10-07; exact scope/raw artifact not independently replayed.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "tarred_condition",
+      "text": "Carried-tar hediff link and exposure drive staged move/work/mood/flammability penalties. Ordinary shallow-tar pickup is still patched by Utinni.",
+      "source": "src/RimMandrake/TheSump/Defs/HediffDefs/RM_Tarred_Hediffs.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/HediffDefs/RM_Tarred_Hediffs.xml",
+        "src/RimMandrake/TheSump/Defs/ThoughtDefs/RM_Tarred_Thoughts.xml",
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "src/RimMandrake/TheSump/Defs/HediffDefs/RM_Tarred_Hediffs.xml"
+      ],
+      "proof_note": "Historical nastiness PASS is bounded; free-tier and full exposure/cleaning loop not accepted here.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "solvents",
+      "text": "Broodmother seepwax -> rendered thrummel seepwax -> generous weak-solvent recipe; strong-solvent item/trade-tag hook, not a demonstrated foreign supply route.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Tarred_Solvents.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Tarred_Solvents.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+        "ITEM:SUMP_TAR_NASTINESS_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "scrub_reaction",
+      "text": "Health-operation cure consumes solvents and on successful hediff removal produces tar gas; surgery patch adds it to flesh races.",
+      "source": "src/RimMandrake/TheSump/Defs/RecipeDefs/RM_Tarred_Surgery.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/RecipeDefs/RM_Tarred_Surgery.xml",
+        "src/RimMandrake/TheSump/Patches/RM_TarredSurgery_RecipeUsers.xml",
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof_note": "2026-09-25 two failed live cures recorded; 2026-10-10 note proposes surgery-failure/carried-filth explanation. No successful ordinary bill proof recovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "duckboards",
+      "text": "Cheap fast clean wood floor, flammable and slow when tar filth accumulates; Brindeth no longer yields WoodLog despite old comments.",
+      "source": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml",
+        "ITEM:SUMP_WALKWAYS_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_WALKWAYS_1"
+      ],
+      "proof_note": "Walkways A3 partial 2026-10-10. Current free-tier tracking and local wood source unresolved.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "glasswalk",
+      "text": "Bitumen floor refuses all filth and adds path cost 3; cooling patch makes natural flood edges the same floor.",
+      "source": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+        "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml",
+        "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+        "ITEM:SUMP_GLASSWALK_SPEED_RATIO_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_GLASSWALK_SPEED_RATIO_1",
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl"
+      ],
+      "proof_note": "A1 L2 PASS 2026-11-06T23:49:30Z at 3369575b5c78; raw /home/... log unavailable in mirror and runtime fingerprint not matched. ~81% is for standard pawn, not universal ratio.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "glasswalk_slips",
+      "text": "Shared slippery-walkway watcher applies damage-free stun to moving/hauling pawns, with toggle and chance.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GlasswalkSlip.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GlasswalkSlip.cs",
+        "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+        "ITEM:SUMP_WALKWAYS_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_WALKWAYS_1"
+      ],
+      "proof_note": "Partial walkways event is not a complete harmless-pratfall/gravship acceptance.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "vault_seal",
+      "text": "Normal-ticking shelf scans held things, disables rot, forbids items and scribes its seal ledger.",
+      "source": "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarVault.xml",
+        "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+        "ITEM:SUMP_TAR_VAULT_1",
+        "ITEM:SUMP_TARVAULT_TICKER_NEVER_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "vault_extract",
+      "text": "Menu consumes one weak/strong solvent per stack administratively from anywhere on map, unseals original in place; no solvent destroys/replaces it with ruined goods.",
+      "source": "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarRuinedGoods.xml",
+        "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+        "ITEM:SUMP_TAR_VAULT_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "ProofVault reads flags immediately; no extraction/next-scan/hauling acceptance. Quantity is per stack, not a proven per-unit economy.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "kethrel_shell",
+      "text": "Real ThingOwner shell with mass thresholds, armour/speed hediff stages, whole-body directional graphics, saved contents and inspect tab.",
+      "source": "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_Kethrel.xml",
+        "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+        "ITEM:SUMP_KETHREL_BUILD_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "kethrel_pickup",
+      "text": "Rare-tick searches weapons/listed scrap near tar, respects forbidden/value/home-area checks and sends an idle animal toward reachable distant scrap; close pickup has no reach/LOS check.",
+      "source": "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+        "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "kethrel_molt",
+      "text": "Automatic loaded molt, player coax command with best able Animals colonist/charge chance, and death/despawn release of carried items.",
+      "source": "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+        "ITEM:SUMP_KETHREL_BUILD_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "ProofKethrel calls PickUp/Molt directly; no real handling job, reach, exit/reload conservation or full-shell off transition proven. Coax currently acts instantly.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "kethrel_density",
+      "text": "Startup reflection scales/removes kethrel wild commonality; setting labelled next-start.",
+      "source": "src/RimMandrake/TheSump/Source/RM_KethrelStartup.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_KethrelStartup.cs",
+        "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "capstan_combat",
+      "text": "Powered host, turning top and shared tether pull for visible enemies, one-cell reel, mass/size/struggle snap, damage and line cues.",
+      "source": "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_CapstanTurret.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompTetherPull.cs",
+        "ITEM:SUMP_CAPSTAN_TURRET_BUILD_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "ProofPull bypasses normal acquisition/timer via TryRope and DebugReelNow; no clean live result recovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "capstan_rescue",
+      "text": "With no enemy, shared tether can acquire downed colonists and pull them toward the powered turret.",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompTetherPull.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompTetherPull.cs",
+        "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_CapstanTurret.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Walk explicitly labels downed rescue and struggle snap uncovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "drawjoint_learning",
+      "text": "Deep strata yield preserved draw-joints; study two consumes them and unlocks capstan research, plus shared analyzable grants traction-lance research; ordinary and pit-rigged material variants.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_PreservedDrawJoint.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_PreservedDrawJoint.xml",
+        "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_CapstanTurret.xml",
+        "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_CapstanTurret.xml",
+        "ITEM:SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1",
+        "ITEM:SUMP_CAPSTAN_LOCAL_RECIPE_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1",
+        "ITEM:SUMP_CAPSTAN_LOCAL_RECIPE_1"
+      ],
+      "proof_note": "Historical closes explicitly static-only/live owed; no study-to-built-turret acceptance.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "salvage_winch",
+      "text": "Ordered unpowered hook drags wrecks, corpses and downed beasts along ground; refuses standing/too-heavy targets and cannot lift; own research after capstan.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_SalvageWinch.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_SalvageWinch.xml",
+        "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_SalvageWinch.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSalvageWinch.cs",
+        "ITEM:SHIP_TOW_LINE_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SHIP_TOW_LINE_1"
+      ],
+      "proof_note": "SHIP_TOW_LINE_1 A2 PASS 2026-10-09 at ca1f07384d9a; no current full-use proof, placeholder capstan-base art.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "dig_lottery",
+      "text": "Manual Mining work, progress/depth persistence, four weighted strata, increasing trap weight and deep-dig wake signal; most loot is vanilla salvage placeholders plus real draw-joints.",
+      "source": "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_DigShaft.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompWorkedLottery.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_WorkLottery.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_WorkLottery.cs",
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "dig_disarm",
+      "text": "Fuse countdown, deterministic Mining threshold and failure detonation; automatic disarm WorkGiver does not prefilter skill. Weight/whole-body-remains ConfigErrors are built.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompWorkedLottery.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompWorkedLottery.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_LotteryTableDef.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_DisarmLotteryTrap.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_JobDriver_DisarmLotteryTrap.cs",
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_MECHANICS_1"
+      ],
+      "proof_note": "2026-09-26 def wiring verified only; no actual skilled/low-skill job/fuse sequence. ArmTrap has inspect ticks only, no click/letter.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "beast_dormancy",
+      "text": "Deep-tar set-piece places bulge; stock damage/construction wake, lottery relay and working deep-drill proximity emerge actual tar beast.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+        "src/RimMandrake/TheSump/Defs/MapGeneration/RM_SumpTarBeastGenStep.xml",
+        "src/RimMandrake/TheSump/Patches/RM_SumpTarBeastGenStep_Register.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompBeastWakeRelay.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+        "ITEM:SUMP_TAR_BEAST_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_BEAST_BUILD_1"
+      ],
+      "proof_note": "Historical close/body wiring; no complete wake-cause matrix/GenStep/blocked emergence proof. Pump list defaults empty; ordinary deep drill is the concrete pump consumer.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "beast_station_eater",
+      "text": "Body size 9, slow pace, reachable dense-building selection, timed crushing bites, filth trail, stagger nearby pawns, mound/letter, satiation/timer and sink to new deep-tar bulge.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompStationEater.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_TarBeast.xml",
+        "ITEM:SUMP_TAR_BEAST_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_BEAST_BUILD_1"
+      ],
+      "proof_note": "Body exists and historical item closed; no ordinary evacuation/obstructed base/end-to-end sink-back acceptance recovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "solvent_weapon",
+      "text": "Ordered solvent haul/pour, explicit danger confirmation, hiss/splash, pending wake record, permanent manhunter attempt/retry and letter; optional Ninefold deltas.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_TarSolventPour.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_TarSolventPour.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+        "OWNER:1790946483826463687",
+        "ITEM:SUMP_SOLVENT_WAKE_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_SOLVENT_WAKE_BUILD_1"
+      ],
+      "proof_note": "Historical close and static seams, no within-job-end wake/mental state/solvent consumption control recovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "mouse_tracks",
+      "text": "Tameable mouse opts into dread-avoiding wander destinations and deposits tracks on shallow tar; bulge/awake beast register dread.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+        "src/RimMandrake/TheSump/Defs/ThinkTreeDefs/RM_ThinkTree_SumpMouseWander.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RM_Filth_MouseTrack.xml",
+        "src/RimMandrake/TheSump/Patches/RM_BeastBulge_DreadRegistration.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_DreadAvoidWander.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFilthTrail.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DreadField.cs",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_FilthAcceptance.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Destination rejection is not whole-path avoidance; no actual moving mouse/track absence control on a free-tier Sump map.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "native_fauna",
+      "text": "Gulveth, thrummel/warden/broodmother, dredgel and skarrid are authored wild races/kinds with ordinary diets/combat/leather/chitin/seepwax yields. Mouse and skellarn have separate entries; no donor animals remain inline.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFaunaItems.xml",
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+        "ITEM:SUMP_FAUNA_ROSTER_1",
+        "ITEM:SUMP_FAUNA_WIRING_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_FAUNA_ROSTER_1",
+        "ITEM:SUMP_FAUNA_WIRING_BUILD_1"
+      ],
+      "proof_note": "Roster/def-resolution history proves bodies, not custom ecology. Brommet is absent from current defs and roster after recorded sheet cut.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "skellarn_flight",
+      "text": "Skellarn native race/kind carries MaxFlightTime/FlightCooldown and takeoff/speed flags, stilt fiction and chitin yield.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+        "ITEM:SUMP_FAUNA_ROSTER_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No flyer live test or visual acceptance; no flyingAnimationFramePathPrefix in this def. Owner must be present for a later flight sitting.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "native_flora",
+      "text": "Dorvel slow food crop, skelver forage, korveth pitch, brindeth scrub, soffeth/tolleth indicators, velloch tar film, mirrelin crust and pallick visual body. growMinGlow/growOptimalGlow=0 provide dark growth; special tell/collapse mechanics are separate gaps.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml",
+        "ITEM:SUMP_FLORA_ROSTER_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_FLORA_ROSTER_1"
+      ],
+      "proof_note": "Historical roster construction/defs proof; no current cold/dark growth, edge placement or food-sufficiency acceptance. Brindeth harvest is explicitly empty/0 now.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "lanneth",
+      "text": "Wild amber-pod plant, owned art and RawTasty harvested pods; Cuisine's generic PlantFoodRaw roast accepts them without a new canon claim.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_Lanneth.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_Lanneth.xml",
+        "design/Jawa/worldbuilding/biomes/sump_noothelm_b_plant_2026-10-10.md",
+        "ITEM:SUMP_NOOTHELM_B_PLANT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_NOOTHELM_B_PLANT_1"
+      ],
+      "proof_note": "Implemented 2c46325202a3; source document says not live verified and awaiting owner look.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "bitumen",
+      "text": "Korveth pitch refined 2:1 into bitumen, spent on Glasswalk, vault, lamps, local capstan and sealing recipes.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Bitumen.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Bitumen.xml",
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+        "ITEM:SUMP_TAR_NASTINESS_1"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "gaslight_chemistry",
+      "text": "Bitumen plus weak solvent crafts stackable tar gas at machining bench behind research; own resource, not a Helixien pipe-network implementation.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarGas.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarGas.xml",
+        "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_Sump_Research.xml",
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof_note": "Historical research gate/refuel observations, not completed ordinary production-chain acceptance.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "warbling_lamp",
+      "text": "Fueled/flickable lamp, warm hue/radius pulses and room-beauty reward via shared warbling-glow comp.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_GaslightLamp.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_GaslightLamp.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_Comp_WarblingGlow.cs",
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof_note": "Historical successful refuel; daylight look did not confirm animation. No dusk/close-zoom owner judgment recovered.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "flame_statuary_neighbour",
+      "text": "Retired RM_FlameStatuary def and glow survive for save compatibility only; no craft/build/reward entry. Current secular flame statues belong to FlameStatues.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_FlameStatuary.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_FlameStatuary.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_Comp_WarblingGlow.cs",
+        "ITEM:SUMP_GASLIGHT_1",
+        "src/RimMandrake/FlameStatues/Defs/ThingDefs_Buildings/RM_FlameStatues.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_GASLIGHT_1"
+      ],
+      "proof_note": "Historical staged retired statue is not acceptance of current flame statues. Current neighbour XML has Ember/Dancer/Colossus, quality flame points and Chemfuel/pipenet support; no Sump-gas link established.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "living_map",
+      "text": "Shared hourly diff queues soffeth rings, delays mouse dread on fresh RM_TarGlass and migrates mirrelin; settings and saved responder queues exist.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs",
+        "ITEM:SUMP_TAR_LIVING_SYSTEMS_1",
+        "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_TAR_LIVING_SYSTEMS_1",
+        "infrastructure/state/ledger/events/RUNNER.jsonl"
+      ],
+      "proof_note": "RUNNER pass 2026-11-06T16:04:15Z at 89b4c56d88e335b8e5902cf0d8f30281e521f521. Raw report unavailable; synthetic RM_TarGlass proof bypasses actual patched cooling.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "tar_sealed_food",
+      "text": "Optional ColdStorage vat and bills seal meat/fish/eggs/produce with bitumen; 30-day pitch aging, bad-cook ruin chance, sealing failures and preserved-taste data; independent of shelf vault.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+        "ITEM:COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT"
+      ],
+      "proof_note": "Historical close dff5f0da7b; ColdStorage engine and runtime optional-parent/filter/aging interactions not fully reviewed or exercised in this bounded pass.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "acoustic_payload",
+      "text": "Optional AcousticScanner patch identifies dormant bulge, still hunter, brood and hidden caves, with Sump-specific readings.",
+      "source": "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Data/guard present; scanner runtime and post-compose guard not exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "arrival_letter",
+      "text": "Biome extension gives first-arrival surface-reading advice; Utinni patch supplies campaign voice.",
+      "source": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+        "src/RimUtinni/UtinniPatches/Patches/BiomeArrivalLetters_TheSump.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml"
+      ],
+      "proof_note": "Authored text, no fresh landing/one-shot delivery observation.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "save_aliases",
+      "text": "RM_DefAliasDef maps old campaign tar items/buildings/hediff/floors/research to RM names via shared alias infrastructure.",
+      "source": "src/RimMandrake/TheSump/Defs/Misc/RM_SumpTierMove_Aliases.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Defs/Misc/RM_SumpTierMove_Aliases.xml",
+        "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1"
+      ],
+      "proof_note": "Historical close explicitly says alias live proof owed. No campaign save touched.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "settings",
+      "text": "Persisted local feature toggles/tuning, search/collapse/reset and timing labels; shared hazard/tether controls live with their owning mods. Moat/lottery/mouse toggles remain gaps.",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompTetherPull.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No adequate gameplay acceptance located for this complete capability; not a claim it was never exercised.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "proof_apparatus",
+      "text": "Static XML/C# seam validation; live defs/settings/vault/kethrel/capstan hooks; exact-clock Glasswalk runner and fake-bridge regression model; filth-mask mutants; Verse-free kethrel/vault/mere fuzz kernels.",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheSump/validation.py",
+        "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+        "src/RimMandrake/TheSump/test_glasswalk_speed_model.py",
+        "src/RimMandrake/TheSump/selftest_tar_filth_flags.py",
+        "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+        "src/RimMandrake/TheSump/Source/SelfTest/SumpFuzz.cs",
+        "src/RimMandrake/TheSump/Source/SelfTest/Program.cs",
+        "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+        "ITEM:THESUMP_COVERAGE_GAPS_1",
+        "ITEM:THE_SUMP_FIRST_SCRIPT_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:THESUMP_COVERAGE_GAPS_1",
+        "ITEM:THE_SUMP_FIRST_SCRIPT_1"
+      ],
+      "proof_note": "Script audit below; apparatus exists, but this run executed no repository scripts. The filth test writes a mutant beside itself, so running in the mirror would violate the user's boundary.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "campaign_hssiss",
+      "text": "Campaign-only conditional patch adds RSW_Hssiss to RM_TheSump when both defs exist.",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Sump.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Sump.xml",
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof_note": "Source guard corrected; no current merged-dump or spawn observation.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "campaign_gas_label",
+      "text": "Campaign relabels tar gas to Sumpgas; free mod owns resource and recipes.",
+      "source": "src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TarGas_SumpgasLabel.xml",
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof_note": "Authored patch; no current player-visible fuel-label sweep.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "campaign_holy_flame",
+      "text": "Holy Flame precept/event/memory and Use effect now target UtinniStatues' Shkaar idol through ShkaarIdol_HolyAct, not retired secular statuary; v2 Nine-rite deferral explicitly excludes this other-faith rite.",
+      "source": "src/RimUtinni/UtinniPatches/Patches/ShkaarIdol_HolyAct.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/ShkaarIdol_HolyAct.xml",
+        "src/RimUtinni/UtinniPatches/Source/RUT_CompUseEffect_HolyFlame.cs",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_HolyFlamePrecepts.xml",
+        "design/RimMandrake/v2_nine_rituals.md",
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:SUMP_UTINNI_LAYER_1"
+      ],
+      "proof_note": "Historical wiring, no current idol/precept/memory interaction proof; neighbour boundary only.",
+      "scope": "not_opened",
+      "speaker": "agent"
+    },
+    {
+      "id": "false_floor_behaviour",
+      "text": "Pallick body is built; false-floor collapse and mouse avoidance specifically over pallick are absent in inspected src.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Searched current src *.cs/*.xml for RM_Pallick, inspected plant comps/extensions and all Sump dread consumers; found inert plant/roster only.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "species_ecology",
+      "text": "Custom thrummel mound/guard radius/queen ends hive; dredgel dig-attraction; moving skarrid dread are not wired onto current native bodies.",
+      "source": "infrastructure/state/items/closed/SUMP_FAUNA_ROSTER_1.md",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Searched current src *.cs/*.xml for RM_Thrummel/RM_Dredgel/RM_Skarrid; inspected races and shared dread source. Generic animals/products and scanner target data found, no specialised consumers.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "native_tar_crossing",
+      "text": "Shared special tar-cost/entry exemption for sump-mice and grounded skellarn not located.",
+      "source": "infrastructure/state/items/closed/SUMP_FAUNA_ROSTER_1.md",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Read current Sump fauna stats/extensions and searched src for species refs; no per-species tar-crossing hook found; generic movement/flight is not this capability.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "indicator_placement",
+      "text": "Initial soffeth gas-seep and tolleth rich-find placement, reliably cooled-ground-only mirrelin/pallick and margin-only flora are not implemented by these plant defs.",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Inspected plants, biome wildPlants, all Sump map-generation defs, shared living-map code and src references for indicator species; ordinary wild placement plus later artificial rewrite rings only.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "prewake_warning",
+      "text": "Ordinary disturbance's day-ahead room-sized bubble/ring warning not located; instant solvent weapon is deliberately separate.",
+      "source": "infrastructure/state/items/closed/SUMP_TAR_BEAST_BUILD_1.md",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Read bulge, stock wake fields, BeastWakeRelay, CompTarBeast and TarSolventPour; no scheduled prewake-warning state or sound found. Solvent hiss/letter is already present.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "natural_flame_discovery",
+      "text": "Natural seep flames plus first-flame/geyser encounter discovery and first-tar technology trigger not located; current gaslight/rendering are ordinary research rows.",
+      "source": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_Sump_Research.xml",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Searched src Sump/EH code/defs and RM_GaslightChemistry/RM_TarRendering references; read SUMP_GASLIGHT_1 history and current research. Draw-joint analysis exists separately.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "special_archive_finds",
+      "text": "Lore-specific bones/hides/casings and live ancient-machine/Assailant dig-wake outcomes not authored in current Sump lottery; existing draw-joint is real.",
+      "source": "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Read every authored stratum and WorkedLottery yield path: generic vanilla salvage, traps and draw-joints; no living excavation creature generation. No proposal to restore normal preserved fauna.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "moat_wall_integration",
+      "text": "Current actual fuse-post path has no TarBlaze consumer establishing promised impassable long-burning smoke wall and column.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompFloodIgniter.cs",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Searched src for TarBlaze and TimedTerrainBurn consumers, read post comps and igniter. Support C# survives, but igniter only calls TryStartFireIn; no TarBlaze ThingDef located.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "feature_toggle_gaps",
+      "text": "Moat ignition, lottery and mouse-trail/dread major-feature toggles absent; local UI honestly points at shared controls but shared fields do not cover these.",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Read local settings/consumers; searched shared EnvironmentalHazards settings for lottery/dread/floodIgniter/filthTrail toggles and checked corresponding execution paths.",
+      "proof": "missing",
+      "scope": "approved"
+    },
+    {
+      "id": "tar_rain_removed",
+      "text": "Sump precipitation/tar-rain feature removed by later owner card; not future work.",
+      "source": "OWNER:1792391256078801116",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Current Sump weather/condition/biome and source search: zero rain/snow, no tar-rain consumer.",
+      "proof": "missing",
+      "scope": "out"
+    },
+    {
+      "id": "wick_and_brommet_removed",
+      "text": "Historical built wick crop/stem and brommet/wool are absent from current Sump bodies/products; biome comments record owner sheet cuts. They must not demand showcase scenes.",
+      "source": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Current TheSump Defs parsed and src names searched; no matching def bodies located. Original sheet decision file not recovered; cite current path, not invented OWNER event.",
+      "proof": "missing",
+      "scope": "out"
+    },
+    {
+      "id": "nine_rites_v2",
+      "text": "The Sinking and Mob'Unloo effigy rite are deferred outside v1 by explicit owner retarget; no current Sump effect implementation found.",
+      "source": "OWNER:1792755156861474805",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": "Searched current src for Sinking/effigy item IDs and read v2_nine_rituals; inert/history references do not establish a running rite.",
+      "proof": "missing",
+      "scope": "later"
+    },
+    {
+      "id": "inhabited_future",
+      "text": "Campaign faction weighting, expedition ruins, attempted refineries and moisture farmers belong to the Inhabited pass; no installed Sump-specific injection chain verified.",
+      "source": "infrastructure/state/items/SUMP_INHABITED_NOTES_1.md",
+      "speaker": "agent",
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "later",
+      "uncertainty": "Bounded pass read this item and directly touching Sump source; did not audit every Inhabited template and tile matrix. Do not infer absent world content."
+    },
+    {
+      "id": "titan_passage_neighbour",
+      "text": "Ledger-only native/visiting giant question exists; dormant tar beast set-piece is not automatically a HugeThings passage candidate.",
+      "source": "OWNER:1792619035339066953",
+      "speaker": "agent",
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "open_question",
+      "uncertainty": "No Sump passage extension in this mod's current defs; did not replay all HugeThings current pool/override data. Recover at roster sitting; no new giant invented in this root."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "neighbour_tar_system",
+      "speaker": "agent",
+      "source": "infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md",
+      "status": "implementation resolved; acceptance gap",
+      "text": "Both network-fire halves are built now; old no-gates/no-fire prose is historical. Central fire honors sluices, but actual fuse-post queues are separate and not gated. Gate proof starts central fire, not the post."
+    },
+    {
+      "id": "beast_lifecycle",
+      "speaker": "agent",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+      "status": "implementation resolved; behavioural gaps remain",
+      "text": "Actual beast body/wake/eat/sink/manhunter record exist. Warning, movement/path limits and all wake/exit variants remain unproved; do not call the whole beast unbuilt."
+    },
+    {
+      "id": "later_content",
+      "speaker": "agent",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "status": "resolved additions and boundary",
+      "text": "ColdStorage vat and ordered salvage winch are built additions. Sinking/effigy are v2. Old secular statuary is retired; current FlameStatues and Holy Flame idol are separate neighbours."
+    },
+    {
+      "id": "free_filth_wiring",
+      "speaker": "agent",
+      "source": "src/RimUtinni/UtinniPatches/Patches/RUT_TarShallow_GeneratedFilth.xml:36",
+      "status": "unresolved correctness risk",
+      "text": "Both shallow-tar generated-filth and acceptance patches remain in UtinniPatches. Repo-wide search found no free-tier equivalent. Composition importer not seen importing Utinni. Independent free-tier mice/tar-on-boots promise cannot be assumed."
+    },
+    {
+      "id": "glass_terrain_mismatch",
+      "speaker": "agent",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs:116",
+      "status": "unresolved correctness risk",
+      "text": "Actual Sump cooling redirects to RM_Glasswalk; living-map IsTarGlass admits only RM_TarGlass. Direct proof uses RM_TarGlass, so historical pass may miss the actual composed chain."
+    },
+    {
+      "id": "archive_and_tells",
+      "speaker": "agent",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "status": "partial built bodies; absent specific behaviours",
+      "text": "Plants/races exist while several promised ecological meanings have no authoritative placement/behaviour. Arrival text tells the player to rely on signs before those signs have full mechanics."
+    },
+    {
+      "id": "local_wood",
+      "speaker": "agent",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "status": "unresolved dependency",
+      "text": "Brindeth harvest was set empty/0 under later tree-size ruling. Duckboards and fueled vat still consume WoodLog. Do not repeat old claim that Brindeth supplies it; investigate supply without reversing the wood ruling."
+    },
+    {
+      "id": "statue_tar_link",
+      "speaker": "agent",
+      "source": "src/RimMandrake/FlameStatues/Defs/ThingDefs_Buildings/RM_FlameStatues.xml",
+      "status": "unknown integration",
+      "text": "Current statues use Chemfuel base fuel and optional Helixien pipenet; this bounded read did not establish a tar-gas fuel link or gravship construction proof."
+    }
+  ],
+  "failure_modes": [
+    "F1: The Sump's signs lie: mice, plants, fresh crust or a hidden trap fail to tell a careful player what the ground now means. Sources: design/RimMandrake/biome_experiences_2026-10-20.md; design/Jawa/worldbuilding/biomes/sump_flora_roster_2026-09-24.md; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs.",
+    "F2: Resistance becomes empty punishment: the colony cleans and trudges without meaningful finds, warm light, preservation or useful control of tar; the opposite false success makes the place surrender once a floor is built. Sources: infrastructure/state/items/SUMP_INHABITED_NOTES_1.md; infrastructure/state/items/SUMP_GASLIGHT_1.md; infrastructure/state/items/closed/SUMP_TAR_VAULT_1.md.",
+    "F3: Colony-scale coping fails or silently changes: vault recovery re-seals food, settings strand preservation, a burn outruns its firebreak, or a giant's evacuation offers no useful decision. A neat direct-method proof still passes. Sources: src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs; src/RimMandrake/EnvironmentalHazards/Source/RM_CompFloodIgniter.cs; src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs."
+  ],
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "speaker": "agent"
+    },
+    {
+      "id": "F2",
+      "source": "infrastructure/state/items/SUMP_INHABITED_NOTES_1.md",
+      "speaker": "agent"
+    },
+    {
+      "id": "F3",
+      "source": "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+      "speaker": "agent"
+    }
+  ],
+  "scene_audit": [
+    {
+      "id": "defs_resolve",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "entry_point": "src/RimMandrake/TheSump/validation.py::_build_suite/defs_resolve",
+      "capabilities": [
+        "package",
+        "biome_ground",
+        "native_flora",
+        "native_fauna"
+      ],
+      "start": "Parses current deployed/held XML and uses whatever bridge session is supplied; does not assert matching active compose/build fingerprint itself.",
+      "control": "Deliberately absent def must return notFound.",
+      "restore": "Read-only; no map restoration needed.",
+      "hold": "None; read only.",
+      "missing": [
+        "Post-patch data/load fingerprint binding",
+        "Behaviour and picture are not proved by resolution"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "settings_roundtrip",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "entry_point": "src/RimMandrake/TheSump/validation.py::_build_suite/settings_roundtrip",
+      "capabilities": [
+        "settings"
+      ],
+      "start": "Reads current field values, alters bool/numeric values one at a time.",
+      "control": "Write/read/restore equality; no effect-off comparison, no save/reload round trip.",
+      "restore": "finally restores original field and verifies it read back; no scene recovery journal.",
+      "hold": "Immediate.",
+      "missing": [
+        "Actual effects and off transitions",
+        "Serialized persistence/restart behaviour",
+        "Recovery across interruption while a shared static field is changed"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "vault_direct",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+      "entry_point": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs::ProofVault",
+      "capabilities": [
+        "vault_seal",
+        "vault_extract"
+      ],
+      "start": "Asserts clear shelf footprint and no existing weak/strong solvent on map; spawns shelf/meals and invokes ScanNow.",
+      "control": "No-solvent ruin versus two-solvent clean branch; reads immediate disabled/forbidden flags.",
+      "restore": "Destroys spawned content on normal exit; no finally. Ruined-goods search can match unrelated nearby goods; all weak solvent on map destroyed at cleanup.",
+      "hold": "Immediate; no held review or recovery record.",
+      "missing": [
+        "Elapsed rot control with ordinary unsealed food",
+        "Extraction across next scheduled scan and actual haul",
+        "Off, despawn, reload, large corpse and stack-size cases",
+        "Exception-safe restoration of only its own content"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "kethrel_direct",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+      "entry_point": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs::ProofKethrel",
+      "capabilities": [
+        "kethrel_shell",
+        "kethrel_pickup",
+        "kethrel_molt"
+      ],
+      "start": "Finds one clear cell, spawns animal and steel; no asserted tar, home-area/value/forbidden state or clear five-cell steel radius.",
+      "control": "Stage 0 to 2 to 3 and return to 0; no real rare-tick seek/pickup control. Can count pre-existing steel.",
+      "restore": "Destroys every steel thing in five-cell radius and animal on normal exit; no finally/snapshot.",
+      "hold": "Immediate.",
+      "missing": [
+        "Ordinary pickup and through-wall rejection",
+        "Coax handling job and panic case",
+        "Off/death/exit/reload inventory conservation",
+        "Identity-bound cleanup and guarded start"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "capstan_pull_and_heavy",
+      "source": "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+      "entry_point": "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs::RM_CapstanTurretProof.ProofPull",
+      "capabilities": [
+        "capstan_combat",
+        "capstan_rescue"
+      ],
+      "start": "Requires unfogged standable 13x4 strip without pawn/building; forces power on; creates hostile or thrumbo.",
+      "control": "Heavy target is a meaningful mass-cap rejection. Successful light pull uses TryRope/DebugReelNow, bypasses acquisition/timing and leaves random struggle snap enabled.",
+      "restore": "Destroys target/turret on normal exit, no finally or persistent-state snapshot.",
+      "hold": "Immediate.",
+      "missing": [
+        "Automatic enemy acquisition and real power-off control",
+        "Downed-colonist rescue and struggle snap",
+        "Actual rope/ratchet/top motion observation",
+        "Deterministic proof setup and interruption recovery"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "mechanics_stubs",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "entry_point": "src/RimMandrake/TheSump/validation.py::_build_suite/map_mechanics",
+      "capabilities": [
+        "deep_black_mere",
+        "fuse_post",
+        "dig_lottery",
+        "beast_dormancy",
+        "beast_station_eater",
+        "solvent_weapon",
+        "mouse_tracks",
+        "dusk_weather"
+      ],
+      "start": "No scenes staged; functions explicitly mark missing setup/instrument UNMEASURED.",
+      "control": "None.",
+      "restore": "No mutation because they are stubs.",
+      "hold": "None.",
+      "missing": [
+        "Asserted generated Sump site",
+        "Real action and discriminating controls per mechanic",
+        "Restoration and owner-review hold",
+        "A generated-map need is not an invitation to generate an alternative planet"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "glasswalk_speed",
+      "source": "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+      "entry_point": "src/RimMandrake/TheSump/prove_glasswalk_speed.py::main/walk_exact/judge",
+      "capabilities": [
+        "glasswalk"
+      ],
+      "start": "Creates disposable local map (RM_GreySea), roofed lane, refuelled lamps and measured lane glow; selects standard-speed colonist; paused exact clock and speed stability gates.",
+      "control": "Same pawn crosses granite and glass repeatedly with slip off; per-walk base/additive-3 checks and fake-bridge mutants reject implausible timing.",
+      "restore": "setting context restores slip; finally tears scene down and drops map. No Designer scene-begin/end record or owner-review hold.",
+      "hold": "Immediate.",
+      "missing": [
+        "Dusk/native Sump ordinary routes and filth/slips are separate scenes",
+        "Does not prove a universal 80% ratio",
+        "No recorded Designer interruption recovery"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "living_map_rewrite",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs",
+      "entry_point": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_SumpLivingMap.cs::RM_SumpLivingMapProof.ProofRewrite",
+      "capabilities": [
+        "living_map"
+      ],
+      "start": "Finds clear unroofed/plant-free 12x12 ordinary ground; forces toggle/pace, clears existing queues, rebaselines; writes 4x4 RM_TarGlass and drives synthetic ten-day time.",
+      "control": "on/off with counts, early/late dread and actual spawned soffeth/mirrelin; proves bounded responder methods.",
+      "restore": "finally restores changed terrain and its plants/settings, but clears original responder/crust queues instead of snapshotting/restoring them; RNG/snapshot not restored.",
+      "hold": "Immediate.",
+      "missing": [
+        "Actual belch/cooling terrain, which is patched to RM_Glasswalk",
+        "Mouse route/tracks and honest placement of tells",
+        "Saved queues/reload and natural growth under real clock",
+        "Restoration of pre-existing component state"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "fire_gate_chain",
+      "source": "src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py",
+      "entry_point": "src/RimMandrake/FlowWorks/northstar/proof_tar_fire_gate.py::main",
+      "capabilities": [
+        "tar_network_fire",
+        "belch_flood"
+      ],
+      "start": "Scripts dry/dug tar canal, shut WoodLog sluice and dry arm, enables required settings; chain depends on earlier burn steps.",
+      "control": "Shut gate absent/pending-free far side versus lifted gate far-side burning; belch arm must actually receive tar, not no-op.",
+      "restore": "finally restores settings; canal, fluid, building, terrain/fire state not restored from original snapshot.",
+      "hold": "No owner-review hold or recovery journal; throwaway-map discipline needed.",
+      "missing": [
+        "Actual fuse-post ignition entry point",
+        "Real IncidentWorker rather than direct flood tool",
+        "Verified restored/discarded map and interrupted-run recovery"
+      ],
+      "speaker": "agent"
+    },
+    {
+      "id": "offline_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/SelfTest/SumpFuzz.cs",
+      "entry_point": "src/RimMandrake/TheSump/Source/SelfTest/Program.cs::Main",
+      "capabilities": [
+        "proof_apparatus"
+      ],
+      "start": "Verse-free kernels with generated action sequences and controlled grid/RNG, plus XML/fake bridge scripts.",
+      "control": "Model invariants and mutants exist. Vault Settings action is a no-op; natural render/tick/job state is not represented.",
+      "restore": "In-memory for fuzz; selftest_tar_filth_flags.py writes/deletes a mutant file beside itself and so must not be executed in this read-only mirror.",
+      "hold": "None.",
+      "missing": [
+        "Engine integration, job/tick lifecycle and visual experience coverage",
+        "A PASS of the model cannot accept the gaps above"
+      ],
+      "speaker": "agent"
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "title": "The ordinary moment — ASK FIRST",
+      "picture": "A worker carries lunch across black ground, brings tar indoors, and gets the useful find home only after another awkward journey. That evening the same colony sits beside a lamp made from tar and acid.",
+      "text": "Which ordinary moment makes that your Sump, and where does the proposed root give you the wrong picture?",
+      "why": "F1/F2. A catalogue of hazards can miss your sentence's force: even an ordinary errand must feel like dealing with this place.",
+      "guess": "The everyday struggle comes first, with clever use of the same tar making life possible. I recommend that as the root's centre.",
+      "tree_change": "If everyday resistance leads, root acceptance follows a complete working day. If reading hidden danger leads, lead with a careful expedition and its decisions. If making use of tar leads, lead with production and preservation. All existing capabilities retain coverage; a correction rewrites dependent claims. No answer approves a root.",
+      "about": [
+        "tarred_condition",
+        "mouse_tracks",
+        "vault_extract",
+        "warbling_lamp"
+      ],
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "decision": "Root emphasis and its ordinary-play rejection case.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q02",
+      "title": "The first demonstration — ASK FIRST",
+      "picture": "A: a first expedition reads the mice, works a shaft, and hears the click. B: forty colonists keep food, routes and lamps working through a normal dirty day. C: a defended station operates its tar channels and firebreaks, then evacuates ahead of the ordinary station-eating beast. These are three scene drafts, not captures or accepted demonstrations.",
+      "text": "Which scene goes first when you decide whether we understood the Sump, and what failure there would stop you?",
+      "why": "F1–F3. No flagship pick was found. A spectacular fire could hide an empty daily life; a tidy little test could hide a colony that cannot cope.",
+      "guess": "B first: your experience sentence is about every action. A follows to test the hidden dangers, then C for consequences at a larger scale.",
+      "tree_change": "A selects expedition as showcase 1; B selects ordinary colony life; C selects station emergency. The actual owner pick must later be recorded separately from root approval. Other independent capabilities keep their scenes; later showcases must add different functionality.",
+      "about": [
+        "dig_lottery",
+        "mouse_tracks",
+        "tarred_condition",
+        "vault_seal",
+        "warbling_lamp",
+        "tar_network_fire",
+        "beast_station_eater"
+      ],
+      "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "decision": "Owner's flagship scene and its immediate reject case.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q03",
+      "title": "A settlement that knows what it is doing",
+      "picture": "The colony now has forty people, glass routes, stocked solvent, a pantry and dependable lamps. The player has learned the place and supplied the coping tools. Tar still comes home from outside work.",
+      "text": "What still takes your attention on an ordinary day here, and what should the colony now manage for itself?",
+      "why": "F2/F3. Your dirty-colony rule and generous local solvent are settled. The unresolved bar is whether mature play means recurring decisions or repeatedly issuing the same cleaning and retrieval orders.",
+      "guess": "I still choose routes, work sites and where to spend effort; stocked routine cleaning and food handling run through ordinary colony work. The colony stays dirty without constant repeated clicks.",
+      "tree_change": "If routine care should run itself, require repeatable ordinary jobs and stock/solvent controls at colony scale. If hands-on extraction is part of play, require useful batch orders and an explicit amount of attention. If only special emergencies need attention, tighten the routine-day bar. This clarifies functioning tools, without reopening either walkway or preservation system.",
+      "about": [
+        "tarred_condition",
+        "scrub_reaction",
+        "duckboards",
+        "glasswalk",
+        "vault_extract",
+        "settings"
+      ],
+      "source": "infrastructure/state/items/SUMP_INHABITED_NOTES_1.md",
+      "decision": "Mature-colony workload and ordinary-job versus manual-order boundary.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q04",
+      "title": "Between the click and the blast",
+      "picture": "A shaft arms a trap while the good miner is elsewhere. A novice also has Mining enabled. The current code shows a countdown only when inspected and can send that novice to disarm automatically; failing its skill gate detonates it. The high-skill disarm rule itself is already settled.",
+      "text": "What should you be able to do between noticing the click and the explosion, and what would make losing that novice feel deserved?",
+      "why": "F1/F3. A real chance to react is different from a fuse that runs unnoticed while an automatic job makes the fatal choice.",
+      "guess": "I can stop the nearby work, get people clear, and send a suitable miner if one is close enough. A novice touching it should follow an informed choice, rather than a surprise automatic reassignment.",
+      "tree_change": "If the choice is local retreat, assert time and a readable cue for workers already there. If selecting a specialist is essential, require a deliberate or correctly gated assignment and demonstrate a nearby specialist reaching it. If automatic response is intended, require that its eligibility and lethal risk are clear before normal work assigns it. All branches preserve skilled disarm and failure detonation.",
+      "about": [
+        "dig_lottery",
+        "dig_disarm"
+      ],
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_WorkGiver_DisarmLotteryTrap.cs",
+      "decision": "Player reaction window and responsibility for the disarm assignment.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q05",
+      "title": "What a successful evacuation saves",
+      "picture": "The ordinary beast wakes after disturbance. People can walk away faster than it moves, but the dense station contains stores, beds and production. This is the station-eater, separate from the deliberately poured-solvent manhunter weapon. A day-ahead warning is already in its specification.",
+      "text": "When you call that evacuation a success, what has the colony carried away, and what has the tar taken back?",
+      "why": "F2/F3. Outwalking a slow pawn proves little if recovering anything useful is impossible, or if a giant's appetite can be satisfied by a few throwaway fixtures.",
+      "guess": "People and a chosen portion of valuable stores can escape; saving every building is not the bargain. I recommend a costly retreat with real choices, rather than a guaranteed loss or a cheap decoy solution.",
+      "tree_change": "People-only success sets a human survival scene and bounded warning. A meaningful salvage success adds hauling time, access and a limited useful recovery target. Relocation of most operations requires a longer preparation/recovery case. If a cheap decoy is an intended tactic, make that limit explicit; otherwise test it as a counterexample to station-eating. No answer reopens the beast's existence or the separate solvent weapon.",
+      "about": [
+        "beast_dormancy",
+        "beast_station_eater",
+        "prewake_warning",
+        "salvage_winch"
+      ],
+      "source": "infrastructure/state/items/closed/SUMP_TAR_BEAST_BUILD_1.md",
+      "decision": "Useful evacuation outcome, appetite pacing and cheap-decoy rejection case.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q06",
+      "title": "Yesterday's mouse-line after a belch",
+      "picture": "A belch has changed a route. Old tracks remain where workers remember walking; the new ground and plants have not yet settled. Later the mice and margins redraw. Honest mouse tells and slow living-map response are already required; their safe relationship during that interval is not spelled out.",
+      "text": "What should warn a careful returning worker's player that yesterday's route no longer tells the truth?",
+      "why": "F1. A living map can pass a plant-spawn test while its old signs actively mislead the player during the dangerous hours.",
+      "guess": "The fresh change in the ground is legible and old tracks cease to look like current evidence; new mouse behaviour becomes trustworthy as it appears. I would start with the ground and the animals themselves, consistent with the existing rule against a mouse-warning overlay.",
+      "tree_change": "If the new surface is sufficient, bind a read of an actual rewritten route with stale tracks still present. If old tracks must disappear or visibly age, require their transition and a control with an unchanged route. If the worker must wait for fresh mouse traffic, state that rule and demonstrate a practical way to distinguish old from new evidence. Any appearance choice needs a labelled mock or game exploration before a visual leaf is fixed.",
+      "about": [
+        "belch_flood",
+        "living_map",
+        "mouse_tracks",
+        "indicator_placement"
+      ],
+      "source": "infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md",
+      "decision": "Honesty of navigation signs during the rewrite-to-recovery interval.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q07",
+      "title": "What makes another day's digging worth it",
+      "picture": "The colony has spent a day working the tar and has had to deal with a trap. Most current lottery finds are ordinary salvage; the preserved draw-joint is a real exception that teaches useful machinery. The ruled archive of older remains and machines has much more character than those placeholders.",
+      "text": "What single find would change tomorrow's plans enough to make that day's risk worthwhile?",
+      "why": "F2. A weighted table can work perfectly while the archive is merely a slow source of sellable junk. The prize must affect play, not just carry an ancient-sounding label.",
+      "guess": "A useful preserved mechanism that changes what I can build or safely attempt, with remains and lesser salvage making the dig feel like deep time. The draw-joint is a good concrete starting example.",
+      "tree_change": "A new practical tool requires a complete find-to-use scene, extending the existing learning model only as needed. Valuable material requires a meaningful production/trade decision. Historical discovery requires a recognisable reveal and a reason to care. A dangerous ancient machine adds a separately bounded wake/recovery scene. Whole prohibited ancient bodies and ordinary live-preserved fauna stay ruled out under every answer.",
+      "about": [
+        "dig_lottery",
+        "special_archive_finds",
+        "drawjoint_learning"
+      ],
+      "source": "design/Jawa/worldbuilding/biomes/the_sump.md",
+      "decision": "Archive reward that changes a colony decision, beyond generic currency.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    },
+    {
+      "id": "q08",
+      "title": "Two ways to put food under tar",
+      "picture": "A haul of food comes home. The shelf vault preserves the original and charges solvent to retrieve it; with Cold Storage installed, the vat instead makes sealed food that can age into pitch-aged food. Both systems are built, and bodies and hides also give the vault a wider job.",
+      "text": "What would make you put one haul in the vault and the next into sealed jars?",
+      "why": "F2/F3. These two built preservation systems arrived through different work. Their combined daily play needs a clear reason for choosing, without inventing a second solvent tax or making one a hidden trap.",
+      "guess": "The vault is flexible storage for food and other perishables I want back unchanged; the jars are deliberate food preparation, portable supplies and aging for a better ingredient. I recommend proving that distinction with ordinary cook and haul work.",
+      "tree_change": "If immediate flexible storage versus prepared/aged food is the choice, require both useful routes and an ordinary meal/hauling scene. If one is the emergency option, bind its access/time tradeoff. If there is a different distinction, derive only that contract. If the distinction does not matter, treat it as advisory while still covering both built systems; neither is offered for removal.",
+      "about": [
+        "vault_seal",
+        "vault_extract",
+        "tar_sealed_food"
+      ],
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "decision": "Combined purpose and ordinary-use contract of the two built preservation systems.",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "Local evidence/wording check only; independent author review pending; not sent."
+    }
+  ],
+  "built_reviewed": [
+    {
+      "ref": "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+      "covered_by": "glasswalk",
+      "source": "src/RimMandrake/TheSump/prove_glasswalk_speed.py",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/selftest_tar_filth_flags.py",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/selftest_tar_filth_flags.py",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/test_glasswalk_speed_model.py",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/test_glasswalk_speed_model.py",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/validation.py",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/validation.py",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/About/About.xml",
+      "covered_by": "package",
+      "source": "src/RimMandrake/TheSump/About/About.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll",
+      "covered_by": "package",
+      "source": "src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll.srchash",
+      "covered_by": "package",
+      "source": "src/RimMandrake/TheSump/Assemblies/RimMandrake.TheSump.dll.srchash",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/RM_TheSump_DonorPorts.xml",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Defs/RM_TheSump_DonorPorts.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml",
+      "covered_by": "dusk_weather",
+      "source": "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/HediffDefs/RM_Tarred_Hediffs.xml",
+      "covered_by": "tarred_condition",
+      "source": "src/RimMandrake/TheSump/Defs/HediffDefs/RM_Tarred_Hediffs.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/IncidentDefs/RM_TarPitBelch.xml",
+      "covered_by": "belch_flood",
+      "source": "src/RimMandrake/TheSump/Defs/IncidentDefs/RM_TarPitBelch.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+      "covered_by": "dig_lottery",
+      "source": "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RM_DigStratumTable.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/MapGeneration/RM_GenStep_DeepBlackMere.xml",
+      "covered_by": "deep_black_mere",
+      "source": "src/RimMandrake/TheSump/Defs/MapGeneration/RM_GenStep_DeepBlackMere.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/MapGeneration/RM_SumpTarBeastGenStep.xml",
+      "covered_by": "beast_dormancy",
+      "source": "src/RimMandrake/TheSump/Defs/MapGeneration/RM_SumpTarBeastGenStep.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/Misc/RM_SumpTierMove_Aliases.xml",
+      "covered_by": "save_aliases",
+      "source": "src/RimMandrake/TheSump/Defs/Misc/RM_SumpTierMove_Aliases.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/RecipeDefs/RM_Tarred_Surgery.xml",
+      "covered_by": "scrub_reaction",
+      "source": "src/RimMandrake/TheSump/Defs/RecipeDefs/RM_Tarred_Surgery.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_CapstanTurret.xml",
+      "covered_by": "capstan_combat",
+      "source": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_CapstanTurret.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_SalvageWinch.xml",
+      "covered_by": "salvage_winch",
+      "source": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_SalvageWinch.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_Sump_Research.xml",
+      "covered_by": "gaslight_chemistry",
+      "source": "src/RimMandrake/TheSump/Defs/ResearchProjectDefs/RM_Sump_Research.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_TheSump.xml",
+      "covered_by": "retired_mutator_ports",
+      "source": "src/RimMandrake/TheSump/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_TheSump.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+      "covered_by": "glasswalk",
+      "source": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_TarMoat.xml",
+      "covered_by": "poured_moat",
+      "source": "src/RimMandrake/TheSump/Defs/TerrainDefs/RM_TarMoat.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+      "covered_by": "beast_dormancy",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_BeastBulge.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_CapstanTurret.xml",
+      "covered_by": "capstan_combat",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_CapstanTurret.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_DigShaft.xml",
+      "covered_by": "dig_lottery",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_DigShaft.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_GaslightLamp.xml",
+      "covered_by": "warbling_lamp",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_GaslightLamp.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_MoatFusePost.xml",
+      "covered_by": "fuse_post",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_MoatFusePost.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_SalvageWinch.xml",
+      "covered_by": "salvage_winch",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_SalvageWinch.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "covered_by": "tar_sealed_food",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarVault.xml",
+      "covered_by": "vault_seal",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarVault.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Bitumen.xml",
+      "covered_by": "bitumen",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Bitumen.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_PreservedDrawJoint.xml",
+      "covered_by": "drawjoint_learning",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_PreservedDrawJoint.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFaunaItems.xml",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFaunaItems.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarGas.xml",
+      "covered_by": "gaslight_chemistry",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarGas.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Tarred_Solvents.xml",
+      "covered_by": "solvents",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Tarred_Solvents.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarRuinedGoods.xml",
+      "covered_by": "vault_extract",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_TarRuinedGoods.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RM_Filth_MouseTrack.xml",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RM_Filth_MouseTrack.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_Lanneth.xml",
+      "covered_by": "lanneth",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_Lanneth.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_Kethrel.xml",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_Kethrel.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_TarBeast.xml",
+      "covered_by": "beast_dormancy",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_TarBeast.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThinkTreeDefs/RM_ThinkTree_SumpMouseWander.xml",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Defs/ThinkTreeDefs/RM_ThinkTree_SumpMouseWander.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/ThoughtDefs/RM_Tarred_Thoughts.xml",
+      "covered_by": "tarred_condition",
+      "source": "src/RimMandrake/TheSump/Defs/ThoughtDefs/RM_Tarred_Thoughts.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Defs/WeatherDefs/RM_SumpWeather.xml",
+      "covered_by": "dusk_weather",
+      "source": "src/RimMandrake/TheSump/Defs/WeatherDefs/RM_SumpWeather.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Languages/English/Keyed/RM_Kethrel.xml",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Languages/English/Keyed/RM_Kethrel.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Languages/English/Keyed/RM_TarPitBelch.xml",
+      "covered_by": "belch_flood",
+      "source": "src/RimMandrake/TheSump/Languages/English/Keyed/RM_TarPitBelch.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml",
+      "covered_by": "acoustic_payload",
+      "source": "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_BeastBulge_DreadRegistration.xml",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Patches/RM_BeastBulge_DreadRegistration.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_GenStep_DeepBlackMere_Register.xml",
+      "covered_by": "deep_black_mere",
+      "source": "src/RimMandrake/TheSump/Patches/RM_GenStep_DeepBlackMere_Register.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_SumpTarBeastGenStep_Register.xml",
+      "covered_by": "beast_dormancy",
+      "source": "src/RimMandrake/TheSump/Patches/RM_SumpTarBeastGenStep_Register.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_TarredSurgery_RecipeUsers.xml",
+      "covered_by": "scrub_reaction",
+      "source": "src/RimMandrake/TheSump/Patches/RM_TarredSurgery_RecipeUsers.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml",
+      "covered_by": "belch_flood",
+      "source": "src/RimMandrake/TheSump/Patches/RM_Tar_GlasswalkCooling.xml",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+      "covered_by": "capstan_combat",
+      "source": "src/RimMandrake/TheSump/Source/RM_CapstanTurret.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+      "covered_by": "vault_seal",
+      "source": "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_GenStep_DeepBlackMere.cs",
+      "covered_by": "deep_black_mere",
+      "source": "src/RimMandrake/TheSump/Source/RM_GenStep_DeepBlackMere.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Source/RM_Kethrel.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_KethrelStartup.cs",
+      "covered_by": "kethrel_density",
+      "source": "src/RimMandrake/TheSump/Source/RM_KethrelStartup.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_TheSump.csproj",
+      "covered_by": "package",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSump.csproj",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_TheSumpBiome.cs",
+      "covered_by": "placement_worker",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpBiome.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs",
+      "covered_by": "settings",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/RM_TheSumpProof.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/Kernel/RM_SumpKernel.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/SelfTest/Program.cs",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/SelfTest/Program.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/SelfTest/RimMandrakeTheSump.SelfTest.csproj",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/SelfTest/RimMandrakeTheSump.SelfTest.csproj",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Source/SelfTest/SumpFuzz.cs",
+      "covered_by": "proof_apparatus",
+      "source": "src/RimMandrake/TheSump/Source/SelfTest/SumpFuzz.cs",
+      "speaker": "agent"
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/StandIn/Terrain/Surfaces/AB_GrassySand_Polluted.png",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Textures/StandIn/Terrain/Surfaces/AB_GrassySand_Polluted.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/StandIn/Terrain/Surfaces/AB_LushGrass_Polluted.png",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Textures/StandIn/Terrain/Surfaces/AB_LushGrass_Polluted.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_GrassySand.png",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_GrassySand.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_LushGrass.png",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_LushGrass.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/CapstanTurret/RM_CapstanTurret_Base.png",
+      "covered_by": "capstan_combat",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/CapstanTurret/RM_CapstanTurret_Base.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/CapstanTurret/RM_CapstanTurret_Top.png",
+      "covered_by": "capstan_combat",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/CapstanTurret/RM_CapstanTurret_Top.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/Furniture/RM_GaslightLamp/RM_GaslightLamp.png",
+      "covered_by": "warbling_lamp",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/Furniture/RM_GaslightLamp/RM_GaslightLamp.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/Natural/RUT_BeastBulge/RUT_BeastBulge_a.png",
+      "covered_by": "beast_station_eater",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/Natural/RUT_BeastBulge/RUT_BeastBulge_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/Production/RUT_MoatFusePost.png",
+      "covered_by": "fuse_post",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/Production/RUT_MoatFusePost.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/Production/RUT_DigShaft/RUT_DigShaft.png",
+      "covered_by": "dig_lottery",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/Production/RUT_DigShaft/RUT_DigShaft.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Building/RM_TarVault/RM_TarVault.png",
+      "covered_by": "vault_extract",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Building/RM_TarVault/RM_TarVault.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Filth/RUT_MouseTrack/RUT_MouseTrack_a.png",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Filth/RUT_MouseTrack/RUT_MouseTrack_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Bitumen/RM_Bitumen.png",
+      "covered_by": "bitumen",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Bitumen/RM_Bitumen.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Bitumen/RM_Bitumen_b.png",
+      "covered_by": "bitumen",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Bitumen/RM_Bitumen_b.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Seepwax/RM_Seepwax.png",
+      "covered_by": "solvents",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Seepwax/RM_Seepwax.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_StrongTarSolvent/RM_StrongTarSolvent.png",
+      "covered_by": "solvents",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_StrongTarSolvent/RM_StrongTarSolvent.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarGas/RM_TarGas.png",
+      "covered_by": "warbling_lamp",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarGas/RM_TarGas.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods.png",
+      "covered_by": "vault_extract",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_ThrummelSeepwax/RM_ThrummelSeepwax.png",
+      "covered_by": "solvents",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_ThrummelSeepwax/RM_ThrummelSeepwax.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_WeakTarSolvent/RM_WeakTarSolvent.png",
+      "covered_by": "solvents",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_WeakTarSolvent/RM_WeakTarSolvent.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint.png",
+      "covered_by": "drawjoint_learning",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Gulveth/RM_Gulveth_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_east.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_north.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_south.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_east.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_north.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_south.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage1_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_east.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_north.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_south.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage2_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_east.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_north.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_south.png",
+      "covered_by": "kethrel_shell",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage3_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skarrid/RM_Skarrid_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Skellarn/RM_Skellarn_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_east.png",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_south.png",
+      "covered_by": "mouse_tracks",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_east.png",
+      "covered_by": "beast_station_eater",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_north.png",
+      "covered_by": "beast_station_eater",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_south.png",
+      "covered_by": "beast_station_eater",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_TarBeast/RM_TarBeast_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_east.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_east.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_north.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_north.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_south.png",
+      "covered_by": "native_fauna",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden_south.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Brindeth/RM_Brindeth_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Brindeth/RM_Brindeth_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Brindeth/RM_Brindeth_a/RM_Brindeth_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Brindeth/RM_Brindeth_a/RM_Brindeth_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Dorvel/RM_Dorvel_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Dorvel/RM_Dorvel_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Dorvel/RM_Dorvel_a/RM_Dorvel_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Dorvel/RM_Dorvel_a/RM_Dorvel_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Korveth/RM_Korveth_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Korveth/RM_Korveth_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Korveth/RM_Korveth_a/RM_Korveth_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Korveth/RM_Korveth_a/RM_Korveth_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Lanneth/RM_Lanneth.png",
+      "covered_by": "lanneth",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Lanneth/RM_Lanneth.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Mirrelin/RM_Mirrelin_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Mirrelin/RM_Mirrelin_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Mirrelin/RM_Mirrelin_a/RM_Mirrelin_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Mirrelin/RM_Mirrelin_a/RM_Mirrelin_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Pallick/RM_Pallick_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Pallick/RM_Pallick_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Pallick/RM_Pallick_a/RM_Pallick_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Pallick/RM_Pallick_a/RM_Pallick_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Skelver/RM_Skelver_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Skelver/RM_Skelver_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Skelver/RM_Skelver_a/RM_Skelver_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Skelver/RM_Skelver_a/RM_Skelver_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Soffeth/RM_Soffeth_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Soffeth/RM_Soffeth_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Soffeth/RM_Soffeth_a/RM_Soffeth_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Soffeth/RM_Soffeth_a/RM_Soffeth_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Tolleth/RM_Tolleth_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Tolleth/RM_Tolleth_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Velloch/RM_Velloch_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Velloch/RM_Velloch_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Velloch/RM_Velloch_a/RM_Velloch_a_a.png",
+      "covered_by": "native_flora",
+      "source": "src/RimMandrake/TheSump/Textures/Things/Plant/RM_Velloch/RM_Velloch_a/RM_Velloch_a_a.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "src/RimMandrake/TheSump/Textures/World/Biomes/RM_Sump.png",
+      "covered_by": "biome_ground",
+      "source": "src/RimMandrake/TheSump/Textures/World/Biomes/RM_Sump.png",
+      "speaker": "agent",
+      "note": "Asset existence accounted for; not visual acceptance."
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_EFFIGY_RITE_BUILD_1.md",
+      "source": "infrastructure/state/items/SUMP_EFFIGY_RITE_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "nine_rites_v2"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_GASLIGHT_1.md",
+      "source": "infrastructure/state/items/SUMP_GASLIGHT_1.md",
+      "speaker": "agent",
+      "covered_by": "warbling_lamp"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_INHABITED_NOTES_1.md",
+      "source": "infrastructure/state/items/SUMP_INHABITED_NOTES_1.md",
+      "speaker": "agent",
+      "covered_by": "inhabited_future"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_MECHANICS_1.md",
+      "source": "infrastructure/state/items/SUMP_MECHANICS_1.md",
+      "speaker": "agent",
+      "covered_by": "dig_lottery"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_NOOTHELM_B_PLANT_1.md",
+      "source": "infrastructure/state/items/SUMP_NOOTHELM_B_PLANT_1.md",
+      "speaker": "agent",
+      "covered_by": "lanneth"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_SINKING_RITE_BUILD_1.md",
+      "source": "infrastructure/state/items/SUMP_SINKING_RITE_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "nine_rites_v2"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md",
+      "source": "infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md",
+      "speaker": "agent",
+      "covered_by": "tar_network_fire"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md",
+      "source": "infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md",
+      "speaker": "agent",
+      "covered_by": "living_map"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_TAR_NASTINESS_1.md",
+      "source": "infrastructure/state/items/SUMP_TAR_NASTINESS_1.md",
+      "speaker": "agent",
+      "covered_by": "tarred_condition"
+    },
+    {
+      "ref": "infrastructure/state/items/SUMP_WALKWAYS_1.md",
+      "source": "infrastructure/state/items/SUMP_WALKWAYS_1.md",
+      "speaker": "agent",
+      "covered_by": "glasswalk"
+    },
+    {
+      "ref": "infrastructure/state/items/THE_SUMP_FIRST_SCRIPT_1.md",
+      "source": "infrastructure/state/items/THE_SUMP_FIRST_SCRIPT_1.md",
+      "speaker": "agent",
+      "covered_by": "proof_apparatus"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_BEDAZZLE_SITTING_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_BEDAZZLE_SITTING_1.md",
+      "speaker": "agent",
+      "not_a_capability": "Completed design sitting, not an additional capability; successor work and changed rulings accounted for."
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_CAPSTAN_TURRET_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_CAPSTAN_TURRET_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "capstan_combat"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_DESIGN_SITTING_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_DESIGN_SITTING_1.md",
+      "speaker": "agent",
+      "not_a_capability": "Completed design sitting, not an additional capability; successor work and changed rulings accounted for."
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_FAUNA_ROSTER_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_FAUNA_ROSTER_1.md",
+      "speaker": "agent",
+      "covered_by": "native_fauna"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_FAUNA_WIRING_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_FAUNA_WIRING_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "native_fauna"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_FLORA_ROSTER_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_FLORA_ROSTER_1.md",
+      "speaker": "agent",
+      "covered_by": "native_flora"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_FREE_TIER_MOVE_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_FREE_TIER_MOVE_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "save_aliases"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_HUNGRY_GOD_TEXT_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_HUNGRY_GOD_TEXT_1.md",
+      "speaker": "agent",
+      "not_a_capability": "Text correction: current About says hungry, not evil; no new gameplay."
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_KETHREL_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_KETHREL_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "kethrel_shell"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_SOLVENT_WAKE_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_SOLVENT_WAKE_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "solvent_weapon"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_TAR_BEAST_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_TAR_BEAST_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "beast_station_eater"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_TAR_HYDROLOGY_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_TAR_HYDROLOGY_1.md",
+      "speaker": "agent",
+      "covered_by": "tar_channels"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_TAR_VAULT_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_TAR_VAULT_1.md",
+      "speaker": "agent",
+      "covered_by": "vault_seal"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/SUMP_UTINNI_LAYER_1.md",
+      "source": "infrastructure/state/items/closed/SUMP_UTINNI_LAYER_1.md",
+      "speaker": "agent",
+      "covered_by": "campaign_holy_flame"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/THESUMP_COVERAGE_GAPS_1.md",
+      "source": "infrastructure/state/items/closed/THESUMP_COVERAGE_GAPS_1.md",
+      "speaker": "agent",
+      "covered_by": "proof_apparatus"
+    },
+    {
+      "ref": "infrastructure/state/items/closed/THESUMP_RM_MOD_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/THESUMP_RM_MOD_BUILD_1.md",
+      "speaker": "agent",
+      "covered_by": "package"
+    },
+    {
+      "ref": "ITEM:SUMP_EFFIGY_RITE_BUILD_1",
+      "source": "ITEM:SUMP_EFFIGY_RITE_BUILD_1",
+      "covered_by": "nine_rites_v2",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_GASLIGHT_1",
+      "source": "ITEM:SUMP_GASLIGHT_1",
+      "covered_by": "warbling_lamp",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_INHABITED_NOTES_1",
+      "source": "ITEM:SUMP_INHABITED_NOTES_1",
+      "covered_by": "inhabited_future",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_MECHANICS_1",
+      "source": "ITEM:SUMP_MECHANICS_1",
+      "covered_by": "dig_lottery",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_NOOTHELM_B_PLANT_1",
+      "source": "ITEM:SUMP_NOOTHELM_B_PLANT_1",
+      "covered_by": "lanneth",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_SINKING_RITE_BUILD_1",
+      "source": "ITEM:SUMP_SINKING_RITE_BUILD_1",
+      "covered_by": "nine_rites_v2",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_FIRE_NETWORK_1",
+      "source": "ITEM:SUMP_TAR_FIRE_NETWORK_1",
+      "covered_by": "tar_network_fire",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_LIVING_SYSTEMS_1",
+      "source": "ITEM:SUMP_TAR_LIVING_SYSTEMS_1",
+      "covered_by": "living_map",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_NASTINESS_1",
+      "source": "ITEM:SUMP_TAR_NASTINESS_1",
+      "covered_by": "tarred_condition",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_WALKWAYS_1",
+      "source": "ITEM:SUMP_WALKWAYS_1",
+      "covered_by": "glasswalk",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:THE_SUMP_FIRST_SCRIPT_1",
+      "source": "ITEM:THE_SUMP_FIRST_SCRIPT_1",
+      "covered_by": "proof_apparatus",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_CAPSTAN_TURRET_BUILD_1",
+      "source": "ITEM:SUMP_CAPSTAN_TURRET_BUILD_1",
+      "covered_by": "capstan_combat",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_FAUNA_ROSTER_1",
+      "source": "ITEM:SUMP_FAUNA_ROSTER_1",
+      "covered_by": "native_fauna",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_FAUNA_WIRING_BUILD_1",
+      "source": "ITEM:SUMP_FAUNA_WIRING_BUILD_1",
+      "covered_by": "native_fauna",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_FLORA_ROSTER_1",
+      "source": "ITEM:SUMP_FLORA_ROSTER_1",
+      "covered_by": "native_flora",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1",
+      "source": "ITEM:SUMP_FREE_TIER_MOVE_BUILD_1",
+      "covered_by": "save_aliases",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_KETHREL_BUILD_1",
+      "source": "ITEM:SUMP_KETHREL_BUILD_1",
+      "covered_by": "kethrel_shell",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_SOLVENT_WAKE_BUILD_1",
+      "source": "ITEM:SUMP_SOLVENT_WAKE_BUILD_1",
+      "covered_by": "solvent_weapon",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_BEAST_BUILD_1",
+      "source": "ITEM:SUMP_TAR_BEAST_BUILD_1",
+      "covered_by": "beast_station_eater",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_HYDROLOGY_1",
+      "source": "ITEM:SUMP_TAR_HYDROLOGY_1",
+      "covered_by": "tar_channels",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_VAULT_1",
+      "source": "ITEM:SUMP_TAR_VAULT_1",
+      "covered_by": "vault_seal",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_UTINNI_LAYER_1",
+      "source": "ITEM:SUMP_UTINNI_LAYER_1",
+      "covered_by": "campaign_holy_flame",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:THESUMP_COVERAGE_GAPS_1",
+      "source": "ITEM:THESUMP_COVERAGE_GAPS_1",
+      "covered_by": "proof_apparatus",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:THESUMP_RM_MOD_BUILD_1",
+      "source": "ITEM:THESUMP_RM_MOD_BUILD_1",
+      "covered_by": "package",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TAR_BELCH_EVENT_1",
+      "source": "ITEM:SUMP_TAR_BELCH_EVENT_1",
+      "covered_by": "belch_flood",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TARVAULT_TICKER_NEVER_1",
+      "source": "ITEM:SUMP_TARVAULT_TICKER_NEVER_1",
+      "covered_by": "vault_seal",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1",
+      "source": "ITEM:SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1",
+      "covered_by": "drawjoint_learning",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_CAPSTAN_LOCAL_RECIPE_1",
+      "source": "ITEM:SUMP_CAPSTAN_LOCAL_RECIPE_1",
+      "covered_by": "drawjoint_learning",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_GLASSWALK_SPEED_RATIO_1",
+      "source": "ITEM:SUMP_GLASSWALK_SPEED_RATIO_1",
+      "covered_by": "glasswalk",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_PROOF_HARDEN_IMPLAUSIBLE_READ",
+      "source": "ITEM:SUMP_PROOF_HARDEN_IMPLAUSIBLE_READ",
+      "covered_by": "proof_apparatus",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SUMP_TITAN_POPULATE_DRAIN_WITHOUT_A_GIANT",
+      "source": "ITEM:SUMP_TITAN_POPULATE_DRAIN_WITHOUT_A_GIANT",
+      "covered_by": "titan_passage_neighbour",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:SHIP_TOW_LINE_1",
+      "source": "ITEM:SHIP_TOW_LINE_1",
+      "covered_by": "salvage_winch",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+      "source": "ITEM:COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+      "covered_by": "tar_sealed_food",
+      "speaker": "agent"
+    },
+    {
+      "ref": "ITEM:GLASSWALK_MIGRATE_EXACT_EDGES",
+      "source": "ITEM:GLASSWALK_MIGRATE_EXACT_EDGES",
+      "covered_by": "proof_apparatus",
+      "speaker": "agent"
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.txt",
+      "source": "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.txt",
+      "covered_by": "tar_network_fire",
+      "speaker": "agent"
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.criteria",
+      "source": "infrastructure/state/live_proofs/SUMP_TAR_FIRE_NETWORK_1.criteria",
+      "covered_by": "tar_network_fire",
+      "speaker": "agent"
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/SUMP_GLASSWALK_SPEED_RATIO_1.txt",
+      "source": "infrastructure/state/live_proofs/SUMP_GLASSWALK_SPEED_RATIO_1.txt",
+      "covered_by": "glasswalk",
+      "speaker": "agent"
+    },
+    {
+      "ref": "infrastructure/state/live_proofs/SUMP_GLASSWALK_SPEED_RATIO_1.criteria",
+      "source": "infrastructure/state/live_proofs/SUMP_GLASSWALK_SPEED_RATIO_1.criteria",
+      "covered_by": "glasswalk",
+      "speaker": "agent"
+    }
+  ],
+  "neighbours": [
+    {
+      "id": "environmental_hazards",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompTarBeast.cs",
+      "speaker": "agent",
+      "text": "Owns weather/glow, coating/hediffs, beast/solvent/mouse/lottery/living-map reusable mechanisms and shared settings; TheSump supplies consumers."
+    },
+    {
+      "id": "flowworks",
+      "source": "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs",
+      "speaker": "agent",
+      "text": "Owns actual tar liquid, depth channels/sources/sinks/sluices, flood cooling and central burn; no duplicate Sump fluid engine."
+    },
+    {
+      "id": "creature_behaviors",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompTetherPull.cs",
+      "speaker": "agent",
+      "text": "Owns common pawn pull with Webwork traction lance and separate ordered salvage winch. Capstan supplies host gating/numbers."
+    },
+    {
+      "id": "cold_storage",
+      "source": "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RM_TarSealing.xml",
+      "speaker": "agent",
+      "text": "Optional sealed/aged-food engine; TheSump contributes bitumen vat, recipes/products and local gate/hazard setting fields. Not the vault's rot-disable ledger."
+    },
+    {
+      "id": "campaign_layer",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Sump.xml",
+      "speaker": "agent",
+      "text": "Adds Hssiss, Sumpgas label and campaign narration; Holy Flame belongs to Shkaar idol. Current location of essential tar-filth patches is a boundary defect risk."
+    },
+    {
+      "id": "flame_statues",
+      "source": "src/RimMandrake/FlameStatues/Defs/ThingDefs_Buildings/RM_FlameStatues.xml",
+      "speaker": "agent",
+      "text": "Current secular statue art/flame point/quality system. Retired EH statuary is save-only; do not reimplement statuary in Sump."
+    },
+    {
+      "id": "scanner",
+      "source": "src/RimMandrake/TheSump/Patches/RM_AcousticPayload_TheSump.xml",
+      "speaker": "agent",
+      "text": "AcousticScanner consumes optional Sump target/payload data; this is an instrument, not proof that biological tells work."
+    },
+    {
+      "id": "huge_things",
+      "source": "OWNER:1792619035339066953",
+      "speaker": "agent",
+      "text": "Passage question is ledger-only neighbouring content; size-9 dormant set-piece is not a replacement for passage population by inference."
+    }
+  ],
+  "reading_limits": [
+    "No build/deploy/live/game scripts or scene mutations were executed; evidence is source and historical item/ledger reading.",
+    "Read requested role documents and HugeThings exemplar; scanned design name/content matches and focused on Sump sheet, rosters, bedazzle, kit, experience/walk and direct neighbours. Unrelated all-biome/faction/campaign hits were not exhaustively audited.",
+    "Frozen events.jsonl plus ledger/events shards were filtered by SUMP_/THESUMP_/THE_SUMP_ and directly related title/path/Glasswalk/tarseal/tow-line work. This is not official model replay or an initialized launcher's exact What-is-already-built packet.",
+    "Some early OWNER rows genuinely lack tsn; no timestamp conversion/guess was used to manufacture OWNER ids. Path/ITEM citations preserve those histories.",
+    "Historical raw Linux/stevedesktop reports and October owner review sheets were not recovered from other machines/history; no .git/history recovery or remote engine/source fetch.",
+    "Inventory covers present authored capabilities and explicitly separates absent bespoke behaviour from present bodies. Asset paths are accounted for without visual quality/owner-approval claims.",
+    "Questions have only local author evidence/wording review, matching the requested HugeThings-style rehearsal. No independent reviewer, charge, protocol pass or sent turn fabricated.",
+    "Launcher not run: no run id, stage.json, result.json, tree, floor, locked state or official stage acceptance invented."
+  ],
+  "snapshot": {
+    "source": "MIRROR_HEAD",
+    "speaker": "agent",
+    "head_at_discovery": "bc9b4bbb74d7dce9c020658c8f7e6dd6b2308b66 2026-11-10T01:33:38-08:00",
+    "head_at_accounting": "bc9b4bbb74d7dce9c020658c8f7e6dd6b2308b66 2026-11-10T01:33:38-08:00",
+    "atomic": false,
+    "note": "Read-only mirror can refresh externally. Head unchanged at the two recorded reads; no live content/build currency inferred."
+  }
+}

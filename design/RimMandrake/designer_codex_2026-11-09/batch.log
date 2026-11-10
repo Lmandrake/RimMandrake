@@ -1,0 +1,47 @@
+23:42 launched Abyss (quota 52.0)
+23:42 launched BlueDesert (quota 52.0)
+23:42 launched Cauldron (quota 52.0)
+23:58 Abyss exit 0 quota_before 52.0
+23:58 launched Contagion (quota 52.0)
+23:58 Cauldron exit 0 quota_before 52.0
+23:59 launched CrackedLands (quota 53.0)
+00:06 BlueDesert exit 0 quota_before 52.0
+00:06 launched FeverWood (quota 53.0)
+00:17 Contagion exit 0 quota_before 52.0
+00:17 launched GelatinousSlime (quota 54.0)
+00:18 CrackedLands exit 0 quota_before 53.0
+00:18 launched Greentide (quota 55.0)
+00:31 FeverWood exit 0 quota_before 53.0
+00:31 launched LanternDeeps (quota 55.0)
+00:43 GelatinousSlime exit 0 quota_before 54.0
+00:43 launched LeaningScrub (quota 56.0)
+00:43 Greentide exit 0 quota_before 55.0
+00:43 launched LongShade (quota 57.0)
+00:50 LanternDeeps exit 0 quota_before 55.0
+00:50 launched Miasma (quota 57.0)
+01:01 LongShade exit 0 quota_before 57.0
+01:01 launched NightsideIce (quota 58.0)
+01:08 LeaningScrub exit 0 quota_before 56.0
+01:08 launched RustCathedral (quota 58.0)
+01:16 Miasma exit 0 quota_before 57.0
+01:16 launched Stillsand (quota 59.0)
+01:19 NightsideIce exit 0 quota_before 58.0
+01:20 launched TheForge (quota 59.0)
+01:22 RustCathedral exit 0 quota_before 58.0
+01:23 launched TheRot (quota 60.0)
+01:33 Stillsand exit 0 quota_before 59.0
+01:33 launched TheSump (quota 60.0)
+01:44 TheForge exit 0 quota_before 59.0
+01:45 launched Wasteland (quota 61.0)
+01:46 TheRot exit 0 quota_before 60.0
+01:46 launched Webwork (quota 61.0)
+01:54 TheSump exit 0 quota_before 60.0
+01:54 launched WeepingStones (quota 62.0)
+02:04 Wasteland exit 0 quota_before 61.0
+02:04 launched Scarlands (quota 62.0)
+02:13 Webwork exit 0 quota_before 61.0
+02:13 launched AtmosphericBase (quota 63.0)
+02:13 WeepingStones exit 0 quota_before 62.0
+02:23 Scarlands exit 0 quota_before 62.0
+02:37 AtmosphericBase exit 0 quota_before 63.0
+02:37 BATCH DONE

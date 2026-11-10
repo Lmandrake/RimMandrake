@@ -1,0 +1,2747 @@
+{
+  "dry_run": true,
+  "mod": "TheForge",
+  "author": "Codex Designer rehearsal, 2026-11-10. New prose, proposed requirements and guesses are agent-authored. The separately attributed 2026-10-20 experience sentence is historical owner text.",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "stage_status": "Stages 0 and 1 reading/question rehearsal. No launcher run, root approval, sent ask, stage completion, waiver, ledger write or build handoff.",
+  "root": null,
+  "root_draft": {
+    "id": "proposed_root",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:24",
+    "speaker": "agent",
+    "text": "TheForge makes living in a ruined volcanic forge feel like trespassing in something still at work. Fire and water set the colony's working day: gas ignites exposed growth, boiling rain drives people to shelter and floods the ground, and lava briefly becomes a walkable, steaming crust where floatstone gardens grow. The opportunity closes with glowing cracks, drifting gardens and the return of the melt. Its animals belong to that same place: apparent outcrops wake in rain, swarms run on the wet interval, herds and hunters gather around the vapour columns, and a placid dhoggur becomes a fire-spitting danger when attacked. Survival means reading the mountain and making deliberate trips into it; floatstone and its strong, light construction are a reason to risk those trips. The old works must feel present in the experience, while the campaign's tower dungeon, gas monopoly and other lore remain separately owned integrations. Settings let the player tune the built dangers without leaving broken terrain or stranded creatures.",
+    "basis": [
+      "src/RimMandrake/TheForge/About/About.xml",
+      "ITEM:FORGE_CYCLE_MECHANICS_1",
+      "ITEM:FORGE_RULED_CONTENT_1",
+      "ITEM:FORGE_GPT_ENRICHMENT_1",
+      "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml"
+    ]
+  },
+  "experience_anchor": {
+    "id": "owner_experience",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:24",
+    "attribution": "Historical owner's words, typed 2026-10-20, as explicitly authorised by this dry-run brief. No matching OWNER tsn located; no event invented.",
+    "text": "Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence.",
+    "corroboration": "design/validation_walks/RimMandrake/TheForge.md"
+  },
+  "scope": [
+    {
+      "id": "s_existing",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "speaker": "agent",
+      "text": "Built capabilities stay in inventory regardless of proof gaps. not_opened records no reopening; it is not a proposal to withhold or remove them."
+    },
+    {
+      "id": "s_native_content",
+      "source": "ITEM:FORGE_RULED_CONTENT_1",
+      "speaker": "agent",
+      "text": "Four native cast additions and floatstone were admitted; floatstone is the single growth-phase form. Later source additions, owned donor ports, dhoggur and ummisk are included, not pitched again."
+    },
+    {
+      "id": "s_exclusions",
+      "source": "ITEM:FORGE_RULED_CONTENT_1",
+      "speaker": "agent",
+      "text": "Later sitting struck vent machines beyond vanilla geothermal, ship heat exchanger, fireweed scald-gear economy and two-faiths map content. Older kit promises do not restore them."
+    },
+    {
+      "id": "s_audio",
+      "source": "OWNER:1791087946251037563",
+      "speaker": "agent",
+      "text": "Vanilla audio ships pending later sound work; bespoke sound replacement is not owed by this pass."
+    },
+    {
+      "id": "s_dhoggur",
+      "source": "OWNER:1792163490612412095",
+      "speaker": "agent",
+      "text": "Chemical swell, real x3 size/health/bite, 8 hours and one-day recovery from the end are settled.",
+      "also": [
+        "OWNER:1792168744418962364",
+        "OWNER:1792168745383071025"
+      ],
+      "note": "Later card excludes environment by default and accepts death on shrink. These OWNER events actually exist."
+    },
+    {
+      "id": "s_nodule",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "speaker": "agent",
+      "text": "2026-10-09 note, tsn 1791525555386695234, reports the October 8 card retaining resident pawn-as-nodule, no separate Thing conversion. This is a reported card, not recovered owner quotation."
+    },
+    {
+      "id": "s_ummisk",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeUmmisk.cs:8",
+      "speaker": "agent",
+      "text": "Current code records the owner's October 20 selection: edge-wandering steam-cushion ummisk. Earlier pitch's glass trail is not implemented and is not proposed."
+    },
+    {
+      "id": "s_keel",
+      "source": "OWNER:1792759866253411416",
+      "speaker": "agent",
+      "text": "Owner-shard drop records delegated fluff-cut authority and removal 061f5d693. The brace/ring is absent; hull/door/study still ship. This is not a new agent cut."
+    },
+    {
+      "id": "s_rain_bar",
+      "source": "design/Jawa/worldbuilding/biomes/kits/forge_kit_spec.md:438",
+      "speaker": "agent",
+      "text": "Historical ruled bar: a first boiling burst is survivable, downed/scarred rather than instant death. The old fireweed gear clause was later struck with its economy; do not reinstate it."
+    },
+    {
+      "id": "s_economy",
+      "source": "design/RimMandrake/plant_economy_rule_2026-11-01.md",
+      "speaker": "agent",
+      "text": "Current garden harvestYield 1 was intentional E1 normalization from 35; experience tuning must reconcile the existing bar and construction costs, not silently reset yield."
+    },
+    {
+      "id": "s_bounds",
+      "source": "CLAUDE.md",
+      "speaker": "agent",
+      "text": "No worldgen feature/alternative planets or tile-count defect. All DLC assumed. This read-only mirror stays untouched. Biome mechanics guaranteed in our framework; flight testing requires owner presence and deterministic state reads."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d_root",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "Approved root remains null; root_draft is a proposal. No OWNER authority is assigned to new prose."
+    },
+    {
+      "id": "d_proof",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "speaker": "agent",
+      "text": "No proof is current: no running/deployed/settings/art/content fingerprint was checked. stale preserves historical records; missing means adequate acceptance not located, not never exercised. Conditional WEAK acceptance and later failed live runs remain visible."
+    },
+    {
+      "id": "d_questions",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "speaker": "agent",
+      "text": "Six draft asks, 01 and 02 first; serve no more than three per real turn after review. Explicit root approval is separate from flagship selection. Silence changes nothing."
+    },
+    {
+      "id": "d_no_reasks",
+      "source": "infrastructure/state/ledger/events/OWNER.jsonl",
+      "speaker": "agent",
+      "text": "Excluded asks about vanilla audio, keeping built features, keelwork payload, dhoggur environment/death triggers, restoring fireweed and converting resident nodules. Older dhokkur wall/fade questions and ship-beam questions require original card recovery before being raised again."
+    },
+    {
+      "id": "d_no_actions",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "No build, deploy, bridge, live scene, art creation, queue/state/ledger mutation, tests in the source tree, formal stage init or stage advancement. This folder holds only the requested dry-run deliverables plus preexisting launcher files."
+    }
+  ],
+  "inventory": [
+    {
+      "id": "package",
+      "text": "Forge source composes into Baroque Biomes, with linked shared settings/patch code, Harmony startup and a checked-in assembly; it is not a separately deployed package.",
+      "source": "src/RimMandrake/TheForge/About/About.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/About/About.xml",
+        "src/RimMandrake/TheForge/Source/RM_TheForge.csproj",
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSpunstone.cs:120"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:THEFORGE_RM_MOD_BUILD_1"
+      ],
+      "proof_note": "Original mod-build close at 86ddebac; current composed load/build/art fingerprints not matched.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "biome",
+      "text": "Owned volcanic biome: terrain fertility bands, densities, diseases, forage, movement, world texture and local lava pools/seams with cooled banks. Legacy hot/high tile-scoring worker exists but is inert on the authored fixed planet; no player-facing worldgen promise is inferred.",
+      "source": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:96",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:96",
+        "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml",
+        "src/RimMandrake/TheForge/Source/RM_BiomeWorker_TheForge.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:THEFORGE_RM_MOD_BUILD_1",
+        "ITEM:FORGE_LAVA_TERRAIN_1",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical original build and lava terrain closes; suite biome_wiring checks defs, not safe connected routes on real maps.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "weather",
+      "text": "Owned still heat, boiling rain, red fog, volcanic ash and ash rain, with accuracy/mood/ambient effects. Pulse normally forces its own weather; not every declared weather is ordinarily reached.",
+      "source": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_ForgeStill.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_ForgeStill.xml",
+        "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_BoilingRain.xml",
+        "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_RedFog.xml",
+        "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/TheForge.md"
+      ],
+      "proof_note": "Walk records the 2026-10-04 forced-weather failure and SnapForcedWeather fix. No current weather rotation proof.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "flash_flora",
+      "text": "Fire lavender glows; cinder crust is a distinct heat-resistant fungus; heatsink fungus has heat-tolerant growth data. All three use shared flash-window growth (8x/0.05x), retaining vanilla growth factors. Cooling a room is a description, not verified behaviour.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_Plant_FlashFlora.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_FlashCycle.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_RULED_CONTENT_1"
+      ],
+      "proof_note": "Ruled-content implementation close a61ef118c and def tests; no controlled live growth/cooling or local-toggle-off proof.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "firevine",
+      "text": "Owned donor-port firevine tree: nonflammable, heat tolerant, sown under its existing vanilla research conditions, with wood harvest. It is separate from the three flash-flora subclasses.",
+      "source": "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Source and proof entry points read; adequate gameplay acceptance was not located. This does not assert that it was never exercised.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "cycle_clock",
+      "text": "Saved grand-cycle phase clock: still heat, gas wash, rain, freeze, growth, cracks, then melt work and return to still heat; short random bursts only during still heat when cycle is active. Batching limits work, and an empty freeze closes early.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:217",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:217",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_CycleKernel.cs",
+        "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/TheForge.md",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Walk records historical live cycle debugging; debug stepping is not a natural multi-day/reload acceptance run.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "gas_wash",
+      "text": "Gas waves select exposed flammable plants, ignite fuel and give effects/message; fuel-list selection avoids the sparse-map random-cell failure. Roofed cells are excluded.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:509",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:509",
+        "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:511",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Source comment identifies the 2026-10-06 live failure; cycle suite observes fire/counter and off arm. No source-matched fresh result.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "rain_scald",
+      "text": "Rain forces the shared pulse for the phase; short bursts also exist. Shared damage targets unroofed eligible pawns with RM_Scald, heat armour and drifter exemptions; it opens a shared flash window.",
+      "source": "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml:38",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml:38",
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:410",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Forge's long-cycle suite turns environmentalDamageEnabled off. Def resolution and a dhoggur receiving synthetic scald do not prove a survivable exposed colonist/rescue, roof or armour case.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "flooding",
+      "text": "Rain releases actual FlowWorks water floods on eligible unroofed non-water non-dangerous ground, with configured volume and counted release messages.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:572",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:572"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "cycle_walk observes released floods; no located Forge-side low-ground flow, flood extent, obstruction, drainage or equal-volume control.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "freeze_crust",
+      "text": "LavaDeep gets temporary basalt/pumice crust in batches; foundations and existing temp terrain are respected. Base lava remains underneath; phase terrain makes the crust walkable.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:598",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:598",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_CycleKernel.cs",
+        "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_ForgeCycleTerrain.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/TheForge.md",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical cycle script evidence exists; no current connected crossing, blocked return or 6000-cell/reload case.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "garden_cycle",
+      "text": "Growth seeds floatstone gardens on crust; unharvested gardens vanish with dust and a counted drift message when cracks start. Growth window shares the phase clock; not a literal off-map flying garden.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:648",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:648",
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/TheForge.md",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "cycle_walk stages and counts bloom/drift; no current natural maturity-to-work-to-retreat scene.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "melt",
+      "text": "Melt removes only owned temp crust, burns pawns, destroys items/plants/buildings and counts losses. Survivors/items try local relocation. Gentle/off mode avoids pawn burns and item destruction, but still kills plants and deconstructs obstructing buildings.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:726",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:726",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_CycleKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_MELT_FIX_PROJECTILE_LOSS",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical melt loss whitelist fix 8d0c8127c9; suite small-pad positive and gentle arms. No no-safe-cell or occupied-building control.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "warnings_voices",
+      "text": "Hiss/freeze/cracks/melt letters, phase/time description and loss messages; phase sustainers, coughs, basalt ticks, glass notes, stingers and crack pulse. Mute forces textual voice cues on the viewed map; camera departure stops sustainers.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeVoices.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeVoices.cs",
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:263",
+        "src/RimMandrake/TheForge/Defs/SoundDefs/RM_ForgeVoices.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_VOICES_AUDIO_1",
+        "ITEM:FORGE_VOICE_ROWS_FINISH_HALF_SUNG",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Vanilla audio accepted as the source, OWNER:1791087946251037563. Suite checks one positive Rain cue and GasWash off; all phases, leave-map cleanup and useful reaction time remain unproven.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dormancy",
+      "text": "Wild dhokkur, julmox and dhuvvox seal/wake through stock CompCanBeDormant with jobDormancy and frozen needs; rain/flash flags differ. Faction-owned, downed, drafted, threatened or mentally disturbed pawns do not seal; minimum awake time and saved state are present.",
+      "source": "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_DormancyKernel.cs",
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "dormancy uses inspect lines, not independent Awake/job/needs state. A hidden line with the toggle off alone cannot prove waking.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhuvvox_clock",
+      "text": "Resident dhuvvox keeps its pawn identity as a nodule, with dormant art, click/sparks, a run countdown, final-quarter-hour slowing, scuttle whose gaps stretch, and counted curl cues. Clock does not make separate nodule Things.",
+      "source": "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs:97",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs:97",
+        "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhuvvoxRunSlowing.xml",
+        "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml",
+        "src/RimMandrake/TheForge/Defs/SoundDefs/RM_ForgeVoices.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_DHUVVOX_SWARM_REMAINDER_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "November 3 closure is conditional L0 WEAK proof-gap acceptance, not a complete live lifecycle/audio pass; historical card report retained.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "extra_swarm",
+      "text": "Rain spawns up to 60 additional wild dhuvvox around residents; Freeze destroys surviving unfactioned extras with ash scars and one counted message, releasing tamed/dead entries. Extra swarm lifecycle differs from resident pawn-as-nodule dormancy.",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:870",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:870"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Counters and source budget exist; resident persistence ruling does not itself accept this distinct extra-swarm destruction. Full-cycle/interrupt/taming/reload acceptance not located.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "swarm_budget",
+      "text": "Offline population estimate parses roster and patch rows, checks a mutated high-commonality case and sound cap. No aggregation implementation: current design uses independent pawns. Estimate is not a measured worst-case runtime guarantee.",
+      "source": "src/RimMandrake/TheForge/selftest_dhuvvox_swarm_budget.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/selftest_dhuvvox_swarm_budget.py"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_DHUVVOX_SWARM_REMAINDER_1"
+      ],
+      "proof_note": "Closed remainder records an offline budget and capped voices, conditionally accepted with a proof gap; selftest not rerun.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhokkur_native",
+      "text": "Giant plated rain-drinker with owned race/kind/art using vanilla hoofed-quadruped anatomy, no food requirement (foodType None), heat resistance, large body/combat stats and butchered heat-shielding RM_DhokkurHide; dormancy drawing swaps to outcrop art.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml",
+        "src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_RULED_CONTENT_1"
+      ],
+      "proof_note": "Admitted cast built at a61ef118c. No current giant body, hide usefulness or dormant visual acceptance.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhokkur_wake",
+      "text": "Rain wake is detected from sealed-to-awake transitions: stone groan, water sounds, splash/dust and a timed pour. Settings gate wake effects.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:65",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:65"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_DHOKKUR_WAYS_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "L1 pass 2026-10-07 at ca4f97aca476; raw Transient sweep absent. Effect timing and audio unaccepted here.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhokkur_tracks",
+      "text": "Saved per-cell wear/cooldown creates polished temporary trails after repeated steps; sealing wears a local depression. Optional fade restores base terrain; default is permanent tracks.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:273",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:273",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_DhokkurKernel.cs",
+        "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_DhokkurTrail.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_DHOKKUR_WAYS_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "Same historical L1 event; no suite chain drives the path-memory settings. Stored wear is not proof it returns along the path.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhokkur_shove",
+      "text": "Adjacent obstructing artificial buildings on polished trail cells can be moved one cell intact; fallback minifies, then damages a percentage. Natural rock excluded. One attempt per interval; several values are provisional settings.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:184",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs:184",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_DhokkurKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_DHOKKUR_WAYS_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "Historical L1 source/load evidence, not an occupied-room/repeated-blockage acceptance; no suite chain drives these settings.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "julmox",
+      "text": "Owned tameable plated ground grazer/herd, awake through flash windows and sealed otherwise while wild. Colony ownership bypasses the wild seal rule.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+        "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs:290"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_RULED_CONTENT_1"
+      ],
+      "proof_note": "Cast implementation closed; no current multi-cycle husbandry/food/thermal viability proof.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "fleet_flier",
+      "text": "Owned small sky grazer, core flight stats/flight behaviour, vapor drifter forage radius and scald exemption, directional textures and life-stage data. Fireweed in description is stale after its roster removal; diet is ordinary rough vegetation.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_RULED_CONTENT_1",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical art/roster close and sky flock trials; no current owner-present flight-state or sustainable food proof.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "bulloo",
+      "text": "Owned small jelly-grazer body/kind using shared TerminalBiomes stand-in Aerofleet art, explosive death and column drifter; VEF-guarded floating, asexual reproduction, blue-gel production and special trainables. RM_BlueGel ships here; battery/generator text does not establish consumers.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Guarded VEF features only exist with that mod; no complete fission/product/explosion integration proof located.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "greater_bulloo",
+      "text": "Owned greater bulloo: VEF-guarded floating, 100 blue gel/5 days and fission into RM_Bulloo, explosive death, plus a separate render tree with spastic feeler nodes. This definition carries no VaporDrifter comp; it is not governed by the current pasture Leash method.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml",
+        "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:588"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Definition/render plumbing is present. No actual following escort, column congregation or core flight-state evidence inferred from its description.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "metallovore",
+      "text": "Owned alien slug body/kind/art; VEF-guarded weird-eater consumes metal stock/ore with partial destruction and digs slag when none remains; otherwise basic vanilla animal data.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Metallovore.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Metallovore.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "No stockpile exclusion, safe feeding or metal-consumption acceptance found; VEF guard is a real mod dependency for the special behaviour.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "sky_field",
+      "text": "Shared EnvironmentalHazards vapor field rebuilds around geysers, gas emitters and dangerous avoidWander terrain; basic drifter comp supplies data/exemption, Forge adds static haze mesh and camera-near ash spirals.",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_VaporColumns.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_VaporColumns.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:25",
+        "src/RimMandrake/TheForge/Defs/MapMeshFlagDefs/RM_SkyColumns.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SKY_PASTURES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Sky source checks and historical conditional L0; later live A1/A2 failed at c898cfa38b5d, before current homing and deployed-tree probe changes.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "sky_wander",
+      "text": "Wild drifters and awake wild dhokkur wander near columns; a separate Animal_PreMain homing node precedes ordinary needs, yielding to urgently hungry/exhausted pawns. No reachable column falls through to vanilla.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:579",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:579",
+        "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_SkyKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SKY_PASTURES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "src/RimMandrake/TheForge/live_proof.py"
+      ],
+      "proof_note": "Live A1 failed 2026-11-04; current source adds homing based on that observation. No later successful result located. Flock probe counts only its test birds; no feature-off control.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "sky_highlight",
+      "text": "Selecting a vapor drifter draws nearby column edges, capped by distance; deselection stops drawing. Highlight is search-radius geography, not a proven traversable route.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:265",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:265"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Source checks examine selection-only logic; no visual/live reachability acceptance located.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "jossur_hunt",
+      "text": "Owned aerial predator with MaxFlightTime, column-biased vanilla prey score, and a real StartFlying stoop within its distance band/cooldown. Vanilla target eligibility remains; gameplay may still choose non-column prey.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:487",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_SkyKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Source-level test only; no owner-present flight-state, hunt outcome or crew-counterplay acceptance found. No unattended flyer test permitted.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "plumes",
+      "text": "Saved moving quench fronts spawn from newly crusted cells. They mark a temporary heat field, emit vanilla BlindSmoke, lay Filth_Water and visual flecks; +25 C times strength feeds vanilla heatstroke. Vapor drifters/non-flesh get configured exemption; no AI path avoidance is implemented.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_PlumeKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_WHITE_PLUME_FRONTS_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical L1 at 09ccb3ca555e; source plus debug counter/soak tests. Actual shot effect, heatstroke, wall/roof exposure and exemption remain unaccepted.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "dhoggur_swell",
+      "text": "Owned docile ash-forager with real chemical swell: attacks causing damage (pawn/turret/trap) trigger x3 body/health/bite/render and FireSpit, wild manhunter, 8 hours then 1 day cooldown from end, no hit refresh. Environment default off; death on shrink accepted. Saved state/registry handles world pawns; source fixes caravan persistence.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Dhoggur.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Dhoggur.xml",
+        "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+        "src/RimMandrake/TheForge/Source/Kernel/RM_SwellKernel.cs",
+        "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhoggurSwell.xml",
+        "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DhoggurSwellBody.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "OWNER:1792168744418962364",
+        "ITEM:DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR",
+        "ITEM:DHOGGUR_SWELL_FIX_STUCK_IN_CARAVAN"
+      ],
+      "proof_note": "Owner event records historical 16/16 live pass at 64cba2bdb and shown art; original item prose still says environment/death open. No current FireSpit cast, caravan or full-base encounter accepted here.",
+      "scope": "approved",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent",
+      "scope_source": "OWNER:1792163490612412095"
+    },
+    {
+      "id": "ummisk",
+      "text": "Owned faceless tube-colony body, no food/rest/gender needs; slow lava-edge wander returns toward LavaDeep edges, follows changing live terrain and gives steam puffs. It does not make glass trails or alter terrain.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Ummisk.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Ummisk.xml",
+        "src/RimMandrake/TheForge/Source/RM_ForgeUmmisk.cs",
+        "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_UmmiskLavaEdge.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "2026-10-20 L1 verify events cite tracking and after-dome probes at cbcba6fa8; Transient raw files not located. Not a current visual/multi-cycle proof.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "floatstone",
+      "text": "Garden harvest supplies a light, strong, nonflammable, beautiful valuable Stony stuff plus unique SpunstoneWeave category. Generic walls use vanilla stuff drawing; bespoke product textures exist. Yield now 1 per garden, not old 35.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml",
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+        "src/RimMandrake/TheForge/Defs/StuffCategoryDefs/RM_SpunstoneWeave.xml"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_RULED_CONTENT_1",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical built-content close and harvest chain; current acquisition-to-use economy/art not accepted.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "spunstone_study",
+      "text": "Mature gardens use shared vanilla CompStudiable-derived found-tech study; project-specific colony knowledge reveals research at threshold with letter. Local facade imports legacy save keys; study off exposes the project. Campaign salvage is a separate patched source.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSpunstone.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeSpunstone.cs",
+        "src/RimMandrake/TheForge/Defs/ResearchProjectDefs/RM_SpunstoneBonding.xml",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_FoundTechStudy.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SPUNSTONE_SOURCES_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical L1 source/load evidence; spunstone chain uses debug Reveal, not actual researcher study and knowledge progression.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "floatstone_door",
+      "text": "Research-gated floatstone-only fast unpowered airtight door with its own installed art; disabling hides the menu entry at next game start, leaving built instances.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml:36",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml:36",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSpunstoneParts.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SPUNSTONE_SOURCES_1",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical L1 build evidence; source-only restriction/gate test, not current opening speed, airtightness, clicks or restart behaviour.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "spunstone_hull",
+      "text": "Research-gated floatstone-only airtight hull, substructure-only affordance, own texture and menu gate at restart. Low material mass does not save gravship fuel.",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml:70",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml:70",
+        "src/RimMandrake/TheForge/Source/RM_ForgeSpunstoneParts.cs"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:FORGE_SPUNSTONE_SOURCES_1",
+        "src/RimMandrake/TheForge/validation.py"
+      ],
+      "proof_note": "Historical L1 evidence; current placement, pressure containment and startup gate unaccepted.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "settings",
+      "text": "Scrollable saved feature switches and tuning/reset panels; master combines through Active and registered pulse/study gates. Door/hull switches are startup-only. Five visibly labelled inert scaffolding fields still exist (gas rate, drifter immunity, towers, ring density, vent speed).",
+      "source": "src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Suite reads defaults and exercises selected arms; it does not establish every slider/toggle, all-off recovery, or that XML-only phase durations are player-tunable.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "arrival_scanner",
+      "text": "Biome-arrival letter gives drafted warning prose. Optional FindMod-gated Acoustic Scanner payload reports crack crust, gardens, heavy dhokkur and hidden lava tubes using scanner-owned banded readings.",
+      "source": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:119",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:119",
+        "src/RimMandrake/TheForge/Patches/RM_AcousticPayload_TheForge.xml"
+      ],
+      "proof": "missing",
+      "proof_evidence": [],
+      "proof_note": "Source integration present; no current arrival/scan or muted-return experience acceptance found.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "proof_tools",
+      "text": "Debug phase/report/reveal/front/flock actions; modcheck suite and composed-deploy preflight; A1/A2 sky wrappers, offline mock/mutation tests, Verse-free C# kernels and fuzz runner. These are tools, not gameplay proof.",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeCycleDebugActions.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TheForge/Source/RM_ForgeCycleDebugActions.cs",
+        "src/RimMandrake/TheForge/validation.py",
+        "src/RimMandrake/TheForge/northstar_plan.py",
+        "src/RimMandrake/TheForge/northstar_site.py",
+        "src/RimMandrake/TheForge/live_proof.py",
+        "src/RimMandrake/TheForge/selftest_theforge.py",
+        "src/RimMandrake/TheForge/Source/SelfTest/TheForgeFuzz.cs",
+        "src/RimMandrake/TheForge/Source/SelfTest/Program.cs",
+        "src/RimMandrake/TheForge/Source/SelfTest/RimMandrakeTheForge.SelfTest.csproj"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "ITEM:THE_FORGE_FIRST_SCRIPT_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "proof_note": "Historical script/verify records and built kernels read. No suite/selftest executed during this dry run.",
+      "scope": "not_opened",
+      "scope_note": "Built scope is retained; no owner reopening or removal proposed.",
+      "speaker": "agent"
+    },
+    {
+      "id": "removed_keelwork",
+      "text": "Historical fuel-saving keel brace, link patch, launch ring and related toggles were removed. Door/hull/study remain. No restoration proposed.",
+      "source": "OWNER:1792759866253411416",
+      "speaker": "agent",
+      "impl": "absent",
+      "search_scope": [
+        "src/RimMandrake/TheForge/Defs",
+        "src/RimMandrake/TheForge/Source/",
+        "src/RimMandrake/TheForge/Patches",
+        "src"
+      ],
+      "impl_evidence": [
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:76"
+      ],
+      "proof": "stale",
+      "proof_evidence": [
+        "OWNER:1792759866253411416",
+        "src/RimMandrake/TheForge/validation.py:1810"
+      ],
+      "scope": "out",
+      "scope_source": "OWNER:1792759866253411416",
+      "proof_note": "Owner-shard drop cites 061f5d693; source search found no remaining brace def/class/link patch, only historical/research prose."
+    }
+  ],
+  "failure_modes": [
+    "F1 — A hot harvest biome passes its mechanics while the owner's ruined forge never exists in play, and its alien beasts are scenery or generic donor behaviour. Sources: design/RimMandrake/biome_experiences_2026-10-20.md:24; src/RimMandrake/TheForge/About/About.xml; src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs.",
+    "F2 — The cycle or wildlife harms a colony without a useful, truthful chance to react: warnings arrive too late, smoke and heat disagree about shelter, tracks fail to predict a giant, or a temporary floor leaves survivors stranded. Sources: src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs; src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs; src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs.",
+    "F3 — The temptation and mastery never pay: scarce floatstone cannot meaningfully advance a project, research is only debug-revealed, or off/load/recovery leaves the world in a broken state. Sources: src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml; src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml; src/RimMandrake/TheForge/validation.py:1730."
+  ],
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:24",
+      "speaker": "agent",
+      "text": "Presence and identity."
+    },
+    {
+      "id": "F2",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs",
+      "speaker": "agent",
+      "text": "Readable danger and physical consistency."
+    },
+    {
+      "id": "F3",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+      "speaker": "agent",
+      "text": "Useful payoff and safe persistence."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "c_built",
+      "source": "design/validation_walks/RimMandrake/TheForge.md",
+      "speaker": "agent",
+      "text": "Resolved for inventory: the walk's unbuilt labels for paths/fronts/pastures are stale against present classes. The same walk later adds a sky source-check line. Do not promote present into proven.",
+      "status": "resolved_for_inventory"
+    },
+    {
+      "id": "c_history",
+      "source": "ITEM:DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR",
+      "speaker": "agent",
+      "text": "Item NEXT says environment/death open, but OWNER:1792168744418962364 and OWNER:1792168745383071025 answer both; current source follows them.",
+      "status": "resolved"
+    },
+    {
+      "id": "c_campaign",
+      "source": "src/RimMandrake/TheForge/About/About.xml",
+      "speaker": "agent",
+      "text": "Unresolved experience boundary: towers appear in RM biome description, but dungeon placement/shell is Utinni. Standalone physical ruin identity needs q01. Existing tower and cache code is preserved, not called absent.",
+      "status": "open_question",
+      "ask": "q01"
+    },
+    {
+      "id": "c_population",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs:913",
+      "speaker": "agent",
+      "text": "Resident nodule keeps its pawn, whereas additional rain swarm destroys survivors at Freeze with ash traces. Preserve both implementation facts. Recover original mass-eruption/card scope before calling that distinction authorised or proposing a lifecycle rewrite.",
+      "status": "unresolved_authority"
+    },
+    {
+      "id": "c_route",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs:644",
+      "speaker": "agent",
+      "text": "Nearest-column wander/homing reads no path-wear memory and can stay around the same column. Track data exists; returning along old routes/vent-to-vent movement is not established.",
+      "status": "unresolved_correctness"
+    },
+    {
+      "id": "c_heat",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs:163",
+      "speaker": "agent",
+      "text": "Front propagation ignores walls/roofs: heat marks cells before the filled-cell guard, and smoke is directly injected in every non-filled cell in the radius, including behind walls. Vanilla handles later gas spread. q05 settles desired shelter behaviour, not whether those code paths exist.",
+      "status": "open_question",
+      "ask": "q05"
+    },
+    {
+      "id": "c_greater",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml",
+      "speaker": "agent",
+      "text": "Greater bulloo lacks a VaporDrifter comp and no current class makes the escort described in its text. The small-bulloo source reports a later narrower pasture cast (Fumerider, fleet flier, jossur). Column exclusion alone is not established as a defect; recover authoritative scope before widening that cast.",
+      "status": "unresolved_scope_or_proof"
+    },
+    {
+      "id": "c_cooling",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+      "speaker": "agent",
+      "text": "Heatsink fungus says it cools a room. Read def has no cooling comp; exact-name src search found no cooling wiring. A generic external effect was not ruled out, so room cooling remains unknown rather than invented as built.",
+      "status": "unknown",
+      "search_scope": [
+        "src/**/*.cs",
+        "src/**/*.xml"
+      ]
+    },
+    {
+      "id": "c_fuel",
+      "source": "src/RimMandrake/TheForge/Defs/ResearchProjectDefs/RM_SpunstoneBonding.xml",
+      "speaker": "agent",
+      "text": "Research prose still mentions bracing a gravship; actual fuel-saving keelwork is gone. No brace scene or requirement is inferred.",
+      "status": "resolved_for_inventory"
+    },
+    {
+      "id": "c_master",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_Plant_FlashFlora.cs",
+      "speaker": "agent",
+      "text": "Shared flash flora checks global EnvironmentalHazards weatherPulseEnabled only; switching off Forge's master/pulse does not restore the vanilla growth rate while the shared switch remains on.",
+      "status": "unresolved_correctness"
+    },
+    {
+      "id": "c_stats",
+      "source": "design/validation_walks/RimMandrake/TheForge.md",
+      "speaker": "agent",
+      "text": "Walk defaults, def groups, old RUT_Scald names, dependency list and counts predate present source. No declared old count used as current census.",
+      "status": "resolved_for_inventory"
+    },
+    {
+      "id": "c_legacy_worker",
+      "source": "src/RimMandrake/TheForge/Source/RM_BiomeWorker_TheForge.cs",
+      "speaker": "agent",
+      "status": "standing_ruling_conflict",
+      "text": "Worker comments still claim worldgen for other players is permitted, whereas current CLAUDE.md permanently excludes alternative planets. Legacy implementation is inventoried, not offered as a new player capability or changed in this dry run."
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "text": "What should the crew encounter in that ordinary RM day, before any campaign tower visit, for the proposed root to describe the right experience?",
+      "decision": "Clarify the ordinary RM pre-tower experience; existing physical campaign towers/machines and their ownership remain promised.",
+      "about": [
+        "biome",
+        "cycle_clock",
+        "arrival_scanner",
+        "warnings_voices"
+      ],
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:24",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": true,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 01",
+      "guess_is_answer": false
+    },
+    {
+      "id": "q02",
+      "text": "Which would you put first when deciding whether this mod understands the Forge, and what one wrong moment would make you reject it?",
+      "decision": "Pick cycle expedition, dhokkur ways or sky hunt as flagship; define its reject case.",
+      "about": [
+        "cycle_clock",
+        "garden_cycle",
+        "dhokkur_tracks",
+        "jossur_hunt"
+      ],
+      "source": "ITEM:FORGE_GPT_ENRICHMENT_1",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": true,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 02",
+      "guess_is_answer": false
+    },
+    {
+      "id": "q03",
+      "text": "By the time each danger arrives, what should an attentive colony have been able to finish: recalling exposed workers, getting a rescue out, recovering the last load, or something else?",
+      "decision": "Useful preparation window for different hazards, preserving survivable-first-burst ruling.",
+      "about": [
+        "warnings_voices",
+        "rain_scald",
+        "gas_wash",
+        "melt"
+      ],
+      "source": "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 03",
+      "guess_is_answer": false
+    },
+    {
+      "id": "q04",
+      "text": "What should a successful trip let the colony do when it gets home, and how many such trips should a meaningful piece of floatstone construction represent?",
+      "decision": "Practical acquisition-to-use payoff under current yield/cost/economy constraints.",
+      "about": [
+        "floatstone",
+        "garden_cycle",
+        "floatstone_door",
+        "spunstone_hull"
+      ],
+      "source": "design/RimMandrake/plant_economy_rule_2026-11-01.md",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 04",
+      "guess_is_answer": false
+    },
+    {
+      "id": "q05",
+      "text": "What protection should the workers in those three places actually get as the front passes?",
+      "decision": "Steam-front protection in open ground, open-sided roof and closed room.",
+      "about": [
+        "plumes",
+        "rain_scald"
+      ],
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs:163",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 05",
+      "guess_is_answer": false
+    },
+    {
+      "id": "q06",
+      "text": "What should a well-planned crew be able to do about that hunter, and what mistake should make its presence costly?",
+      "decision": "Human counterplay at a sky pasture alongside expedition risk.",
+      "about": [
+        "jossur_hunt",
+        "sky_wander",
+        "sky_field",
+        "garden_cycle"
+      ],
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:24",
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Designer dry run 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "status": "reviewed_draft",
+        "by": "/root/review_forge_questions",
+        "verdict": "pass",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "artifact": "D:/ClaudeWork/rimmandrake/designer_codex/TheForge/QUESTIONS.md",
+        "sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+        "why": "Fresh author-independent reviewer checked authoritative sources and returned q01–q06 PASS after corrections. Wording/evidence review only; no owner answer, root approval or stage acceptance."
+      },
+      "picture": "QUESTIONS.md question 06",
+      "guess_is_answer": false
+    }
+  ],
+  "neighbours": [
+    {
+      "id": "n_composed",
+      "source": "src/RimMandrake/Biomes.compose.json",
+      "speaker": "agent",
+      "text": "Baroque Biomes owns deployed composition; TheForge is one source member. Shared SettingsKit and PatchApplier are compiled links.",
+      "owner": "Biomes and _Shared"
+    },
+    {
+      "id": "n_pulse",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WeatherPulse.cs",
+      "speaker": "agent",
+      "text": "Shared pulse owns weather snapping, short bursts, scald and flash-window writes. Forge subclasses it; no second weather/damage engine proposed.",
+      "owner": "EnvironmentalHazards"
+    },
+    {
+      "id": "n_flow",
+      "source": "src/RimMandrake/FlowWorks/Source/Flood_FlowWorks.cs",
+      "speaker": "agent",
+      "text": "Forge releases water through FlowWorks Flood_FlowWorks; FlowWorks owns spreading and liquid behaviour.",
+      "owner": "FlowWorks"
+    },
+    {
+      "id": "n_vapor",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_VaporColumns.cs",
+      "speaker": "agent",
+      "text": "Shared field and drifter props; Forge owns display, homing, prey-score bias and stoop.",
+      "owner": "EnvironmentalHazards / TheForge"
+    },
+    {
+      "id": "n_study",
+      "source": "src/RimMandrake/EnvironmentalHazards/Source/RM_FoundTechStudy.cs",
+      "speaker": "agent",
+      "text": "Shared project-keyed knowledge/study/hidden-research machinery, also used by Greentide. Forge facade preserves legacy save import.",
+      "owner": "EnvironmentalHazards"
+    },
+    {
+      "id": "n_cauldron",
+      "source": "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+      "speaker": "agent",
+      "text": "FireSpit stays Cauldron-owned in the composed package; Forge dhoggur's swell hediff grants it.",
+      "owner": "Cauldron"
+    },
+    {
+      "id": "n_vef",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Metallovore.xml",
+      "speaker": "agent",
+      "text": "VEF optional mod guards own weird eating, floating, animal products and fission. Guarded behaviour is conditional; no DLC-absent design branch.",
+      "owner": "Vanilla Expanded Framework"
+    },
+    {
+      "id": "n_vanilla",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml",
+      "speaker": "agent",
+      "text": "Vanilla lava terrain, temporary terrain, gas, Heatstroke, dormancy jobs, study, predators and airtight construction already provide the appropriate mechanisms. No new payload/fuel system is proposed.",
+      "owner": "RimWorld"
+    },
+    {
+      "id": "n_scanner",
+      "source": "src/RimMandrake/TheForge/Patches/RM_AcousticPayload_TheForge.xml",
+      "speaker": "agent",
+      "text": "Optional scanner owns reading bands/UI; Forge supplies content strings and def targets.",
+      "owner": "AcousticScanner"
+    },
+    {
+      "id": "n_sun",
+      "source": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:113",
+      "speaker": "agent",
+      "text": "Ambient volcanic heat uses ordinary temperature; sun/shade remains geometry governed by the standing ruling. No bespoke solar heat.",
+      "owner": "CreatureBehaviors / Sun and Shade"
+    },
+    {
+      "id": "n_flora_economy",
+      "source": "src/RimMandrake/ExplosiveGrowth/Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml",
+      "speaker": "agent",
+      "text": "ExplosiveGrowth also registers Forge plants. Shared water/tree rules and plant-economy normalization must be reconciled with flash growth; no current combined harvest-rate measurement.",
+      "owner": "ExplosiveGrowth"
+    },
+    {
+      "id": "n_huge",
+      "source": "ITEM:FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT",
+      "speaker": "agent",
+      "text": "HugeThings consumes biome-native/passers hints for titan passage; the old missing RUT twin item is not evidence the present RM biome lacks a giant. Do not invent a new titan from stale twin data.",
+      "owner": "HugeThings"
+    }
+  ],
+  "campaign_integrations": [
+    {
+      "id": "campaign_cast",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml",
+      "speaker": "agent",
+      "text": "Patch adds RSW_LavaFlea, RSW_Beldon, RSW_Maguana and RSW_Tibidee to RM_TheForge. They are present in src, not RM inline or guaranteed on the RM proof tier.",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_tower",
+      "source": "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml",
+      "speaker": "agent",
+      "text": "Campaign places tower entrances on RM_TheForge; one-floor MapPortal generator has heat, melt channels, ScatterRuinsSimple shell, salvage and tender gensteps. Shell existence is not finished machine/room content or live acceptance.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_study",
+      "source": "src/RimUtinni/UtinniPatches/Patches/RUT_FoundrySalvageCache_SpunstoneStudy.xml",
+      "speaker": "agent",
+      "text": "Second study source is already patched onto RM_FoundrySalvageCache, tickerType Rare. Cache now lives in composed TerminalBiomes behind Utinni requirement with shared wreck salvage. Old sources saying unwired are stale.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Buildings/RM_FoundrySalvageCache.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_gas",
+      "source": "src/RimUtinni/UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml",
+      "speaker": "agent",
+      "text": "Beldon tap and tibanna remain campaign/canon layer. The gas monopoly's plot is not a new Forge feature to design or a missing RM capability.",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_ring",
+      "source": "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ContagionRingScatter.xml",
+      "speaker": "agent",
+      "text": "Campaign edge ring uses shared RM_DeadCreep on RM_TheForge; existing content belongs to this layer.",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_zersium",
+      "source": "ITEM:ZERSIUM_FORGE_BIOME_1",
+      "speaker": "agent",
+      "text": "Rare Forge zersium is already built in Armoury/Utinni; alloy forge consumption and asteroids have separate owners. No new ore proposed.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ZersiumForgeLumps.xml",
+        "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Zersium.xml"
+      ],
+      "proof": "missing",
+      "scope": "not_opened"
+    }
+  ],
+  "script_audit": [
+    {
+      "id": "log_clean",
+      "source": "src/RimMandrake/TheForge/validation.py:854",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Reads current Player.log tail and checks message cap.",
+      "control": "Error matching can fail; offline mutation coverage read.",
+      "restore": "Read-only.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Log filters are not a complete clean-load certificate."
+    },
+    {
+      "id": "defs_resolve",
+      "source": "src/RimMandrake/TheForge/validation.py:889",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Parses XML and floors; queries loaded defs/package ownership.",
+      "control": "Known missing-def probe; mesh and temporary-terrain checks.",
+      "restore": "Read-only.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Existence does not prove effect, inheritance or art."
+    },
+    {
+      "id": "def_wiring",
+      "source": "src/RimMandrake/TheForge/validation.py:948",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Loaded comps/flight-stat/harvest/gate checks.",
+      "control": "Numeric field parsing/broken mock cases, not physical controls.",
+      "restore": "Read-only.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "No flight/dormancy action acceptance."
+    },
+    {
+      "id": "biome_wiring",
+      "source": "src/RimMandrake/TheForge/validation.py:1013",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Reads densities/rosters/condition/heat/lava patch makers.",
+      "control": "Absent/race probe honesty checks.",
+      "restore": "Read-only.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "No connected route or actual population/farming acceptance."
+    },
+    {
+      "id": "settings",
+      "source": "src/RimMandrake/TheForge/validation.py:1113",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Source-derived defaults and settings surface.",
+      "control": "Default/scaffolding checks are not all feature-off effects.",
+      "restore": "Closes settings window.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Five inert values explicit; not every slider/toggle exercised."
+    },
+    {
+      "id": "cycle_walk",
+      "source": "src/RimMandrake/TheForge/validation.py:1160",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Clears pad to soil/lava, verifies layers, starts condition; disables shared scald.",
+      "control": "Phases plus independent weather/terrain/thing/letter reads; lacks natural timing and unmodified hazard controls.",
+      "restore": "Best-effort wind-down/pad destruction and raw settings restore; no original terrain/fog/fire/phase/time rollback.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Global fire/flood/swarm can affect outside pad; debug stepping can leave long rain/flash windows. No safe human expedition accepted."
+    },
+    {
+      "id": "cycle_arms",
+      "source": "src/RimMandrake/TheForge/validation.py:1347",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Fresh pad and per-arm phase setup.",
+      "control": "Off/on arms for ignition/flood/crust/bloom/melt/warnings/gates.",
+      "restore": "Best-effort wind-down/pad clear/raw setting restore, no snapshot/reload verification.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Gentle case uses pawn/items on small pad, not buildings or no safe cell; not harmless all-off acceptance."
+    },
+    {
+      "id": "still_heat_hiss",
+      "source": "src/RimMandrake/TheForge/validation.py:1503",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Fresh still heat; jumps near hiss boundary.",
+      "control": "Gas off prevents hiss, on produces before wash.",
+      "restore": "Wind-down and teardown.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Timing label, not useful colony recall time."
+    },
+    {
+      "id": "dormancy",
+      "source": "src/RimMandrake/TheForge/validation.py:1540",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Plain yard, wild cohorts, past old flash window; still heat then rain/growth.",
+      "control": "Toggle readout/fresh cohorts; slow hediff independently queried.",
+      "restore": "Wind-down/pad clear; animals can leave, time jumps permanent.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Actual Awake/job/frozen needs not read; end-of-run identity/curl/message invariant missing."
+    },
+    {
+      "id": "voices",
+      "source": "src/RimMandrake/TheForge/validation.py:1678",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Fresh condition with scald disabled.",
+      "control": "GasWash voices-off; Rain cue on.",
+      "restore": "Hazard settings restore, wind-down/teardown.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "No all-phase/muted/other-map/sustainer observer; audio not heard."
+    },
+    {
+      "id": "spunstone",
+      "source": "src/RimMandrake/TheForge/validation.py:1730",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Requires fresh unrevealed unfinished project.",
+      "control": "Study off exposes; debug Reveal opens.",
+      "restore": "Missing: knowledge and letter permanently changed; no reset/reload.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "No researcher's autonomous study job."
+    },
+    {
+      "id": "floatstone_harvest",
+      "source": "src/RimMandrake/TheForge/validation.py:1772",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Empty pad/no product, mature gardens, fed/rested undrafted worker.",
+      "control": "No immature/unreachable/no-order case.",
+      "restore": "Pad clear, no terrain/fog/time restore; escaping worker not guaranteed recovered.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Product follows ordered Harvest; gardens are on soil, not cycle crust. No haul/build/retreat."
+    },
+    {
+      "id": "keelwork",
+      "source": "src/RimMandrake/TheForge/validation.py:1810",
+      "speaker": "agent",
+      "kind": "offline_or_read_only",
+      "start": "Source reads of present door/hull/scuttle.",
+      "control": "Source predicates can fail; no live startup/build/mass control.",
+      "restore": "Read-only.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Name survives brace removal; never count it as fuel-saving proof."
+    },
+    {
+      "id": "plume_fronts",
+      "source": "src/RimMandrake/TheForge/validation.py:1858",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Fresh pad/Freeze/crust, debug front.",
+      "control": "Front-off/soak-off; other properties source-only.",
+      "restore": "Wind-down/pad clear; no restore of gas/puddles/fronts outside pad/clock/wildlife.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Counts/cell population do not track movement; shot/heatstroke/exemption/shelter unmeasured."
+    },
+    {
+      "id": "sky_pastures",
+      "source": "src/RimMandrake/TheForge/validation.py:2037",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Source predicates and tagged six-pawn wild flock 18–30 cells from columns/outside leashes.",
+      "control": "No same-site feature-off flock. Tags/distance/job counters improve causality; threshold provisional.",
+      "restore": "finally removes tracked flock/corpses via raw action, no clock/world rollback or confirmed recovery.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Current homing follows prior live failure. Flight-capable test flock means wrapper's no-flight assertion is no verified guarantee; owner presence required."
+    },
+    {
+      "id": "dhoggur_swell",
+      "source": "src/RimMandrake/TheForge/validation.py:2183",
+      "speaker": "agent",
+      "kind": "acceptance_candidate",
+      "start": "Fresh dhoggur, animal-instigator decoy and calm baseline; declared manhunter disturbance.",
+      "control": "Environment non-trigger, attack trigger, off, no refresh, cooldown, environment opt-in; independent health census.",
+      "restore": "finally vanishes tracked dhoggur/decoy by id and pad clear, no time/terrain/world restore.",
+      "hold": "missing: no explicit scene-hold/scene-end or owner-review recovery journal",
+      "notes": "Deflected damage is UNMEASURED. Jumped time does not prove natural AI/FireSpit cast, save/caravan or human encounter."
+    }
+  ],
+  "built_reviewed": [
+    {
+      "id": "item_THEFORGE_RM_MOD_BUILD_1",
+      "source": "ITEM:THEFORGE_RM_MOD_BUILD_1",
+      "ref": "ITEM:THEFORGE_RM_MOD_BUILD_1",
+      "covered_by": "package",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_LAVA_TERRAIN_1",
+      "source": "ITEM:FORGE_LAVA_TERRAIN_1",
+      "ref": "ITEM:FORGE_LAVA_TERRAIN_1",
+      "covered_by": "biome",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_RULED_CONTENT_1",
+      "source": "ITEM:FORGE_RULED_CONTENT_1",
+      "ref": "ITEM:FORGE_RULED_CONTENT_1",
+      "covered_by": "floatstone",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_CYCLE_MECHANICS_1",
+      "source": "ITEM:FORGE_CYCLE_MECHANICS_1",
+      "ref": "ITEM:FORGE_CYCLE_MECHANICS_1",
+      "covered_by": "cycle_clock",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_GPT_ENRICHMENT_1",
+      "source": "ITEM:FORGE_GPT_ENRICHMENT_1",
+      "ref": "ITEM:FORGE_GPT_ENRICHMENT_1",
+      "covered_by": "warnings_voices",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_SKY_PASTURES_1",
+      "source": "ITEM:FORGE_SKY_PASTURES_1",
+      "ref": "ITEM:FORGE_SKY_PASTURES_1",
+      "covered_by": "sky_wander",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_SPUNSTONE_SOURCES_1",
+      "source": "ITEM:FORGE_SPUNSTONE_SOURCES_1",
+      "ref": "ITEM:FORGE_SPUNSTONE_SOURCES_1",
+      "covered_by": "spunstone_study",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_WHITE_PLUME_FRONTS_1",
+      "source": "ITEM:FORGE_WHITE_PLUME_FRONTS_1",
+      "ref": "ITEM:FORGE_WHITE_PLUME_FRONTS_1",
+      "covered_by": "plumes",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_DHOKKUR_WAYS_1",
+      "source": "ITEM:FORGE_DHOKKUR_WAYS_1",
+      "ref": "ITEM:FORGE_DHOKKUR_WAYS_1",
+      "covered_by": "dhokkur_tracks",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_DHUVVOX_SWARM_REMAINDER_1",
+      "source": "ITEM:FORGE_DHUVVOX_SWARM_REMAINDER_1",
+      "ref": "ITEM:FORGE_DHUVVOX_SWARM_REMAINDER_1",
+      "covered_by": "dhuvvox_clock",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_KEELWORK_REMAINDER_1",
+      "source": "ITEM:FORGE_KEELWORK_REMAINDER_1",
+      "ref": "ITEM:FORGE_KEELWORK_REMAINDER_1",
+      "covered_by": "removed_keelwork",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_VOICES_AUDIO_1",
+      "source": "ITEM:FORGE_VOICES_AUDIO_1",
+      "ref": "ITEM:FORGE_VOICES_AUDIO_1",
+      "covered_by": "warnings_voices",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_VOICE_ROWS_FINISH_HALF_SUNG",
+      "source": "ITEM:FORGE_VOICE_ROWS_FINISH_HALF_SUNG",
+      "ref": "ITEM:FORGE_VOICE_ROWS_FINISH_HALF_SUNG",
+      "covered_by": "warnings_voices",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_ENRICHMENT_QUICKTEST_1",
+      "source": "ITEM:FORGE_ENRICHMENT_QUICKTEST_1",
+      "ref": "ITEM:FORGE_ENRICHMENT_QUICKTEST_1",
+      "covered_by": "proof_tools",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_THE_FORGE_FIRST_SCRIPT_1",
+      "source": "ITEM:THE_FORGE_FIRST_SCRIPT_1",
+      "ref": "ITEM:THE_FORGE_FIRST_SCRIPT_1",
+      "covered_by": "proof_tools",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_MISSING_ART_1",
+      "source": "ITEM:FORGE_MISSING_ART_1",
+      "ref": "ITEM:FORGE_MISSING_ART_1",
+      "covered_by": "flash_flora",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION",
+      "source": "ITEM:FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION",
+      "ref": "ITEM:FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION",
+      "covered_by": "dhoggur_swell",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB",
+      "source": "ITEM:DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB",
+      "ref": "ITEM:DHOGGUR_USE_DECIDE_SNUFFLING_FOR_A_JOB",
+      "covered_by": "dhoggur_swell",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR",
+      "source": "ITEM:DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR",
+      "ref": "ITEM:DHOGGUR_SWELL_PROVE_LIVE_POKE_THE_BEAR",
+      "covered_by": "dhoggur_swell",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+      "source": "ITEM:FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+      "ref": "ITEM:FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND",
+      "covered_by": "ummisk",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_MELT_FIX_PROJECTILE_LOSS",
+      "source": "ITEM:FORGE_MELT_FIX_PROJECTILE_LOSS",
+      "ref": "ITEM:FORGE_MELT_FIX_PROJECTILE_LOSS",
+      "covered_by": "melt",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_DHOGGUR_SWELL_FIX_STUCK_IN_CARAVAN",
+      "source": "ITEM:DHOGGUR_SWELL_FIX_STUCK_IN_CARAVAN",
+      "ref": "ITEM:DHOGGUR_SWELL_FIX_STUCK_IN_CARAVAN",
+      "covered_by": "dhoggur_swell",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER",
+      "source": "ITEM:FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER",
+      "ref": "ITEM:FORGE_CHECKS_FIX_PASSING_ON_WRONG_NUMBER",
+      "covered_by": "proof_tools",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_BEDAZZLE_SITTING_1",
+      "source": "ITEM:FORGE_BEDAZZLE_SITTING_1",
+      "ref": "ITEM:FORGE_BEDAZZLE_SITTING_1",
+      "covered_by": "cycle_clock",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_MECHANICS_1",
+      "source": "ITEM:FORGE_MECHANICS_1",
+      "ref": "ITEM:FORGE_MECHANICS_1",
+      "covered_by": "cycle_clock",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT",
+      "source": "ITEM:FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT",
+      "ref": "ITEM:FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT",
+      "covered_by": "dhokkur_native",
+      "text": "Read item prose where present and/or matching frozen/seat-shard ledger evidence. Current source read separately; historical closure is not current proof."
+    },
+    {
+      "id": "item_FORGE_ROSTER_UNRECONCILED_BMT_1",
+      "source": "ITEM:FORGE_ROSTER_UNRECONCILED_BMT_1",
+      "ref": "ITEM:FORGE_ROSTER_UNRECONCILED_BMT_1",
+      "not_a_capability": "Premise falsified: retired names were eviction history, not live roster."
+    },
+    {
+      "id": "item_ZERSIUM_FORGE_BIOME_1",
+      "source": "ITEM:ZERSIUM_FORGE_BIOME_1",
+      "ref": "ITEM:ZERSIUM_FORGE_BIOME_1",
+      "not_a_capability": "Already built campaign_zersium, outside RM inline."
+    },
+    {
+      "id": "item_TIBANNA_EMBARGO_PLOT_1",
+      "source": "ITEM:TIBANNA_EMBARGO_PLOT_1",
+      "ref": "ITEM:TIBANNA_EMBARGO_PLOT_1",
+      "not_a_capability": "Campaign plot consumes existing gas, not a new core capability."
+    },
+    {
+      "id": "item_BIOME_FLORA_ROSTERS_DIR_POLLUTION_1",
+      "source": "ITEM:BIOME_FLORA_ROSTERS_DIR_POLLUTION_1",
+      "ref": "ITEM:BIOME_FLORA_ROSTERS_DIR_POLLUTION_1",
+      "not_a_capability": "Roster tool/file placement repair, not gameplay."
+    },
+    {
+      "id": "item_DONOR_CODE_REPLACE_CAST_1",
+      "source": "ITEM:DONOR_CODE_REPLACE_CAST_1",
+      "ref": "ITEM:DONOR_CODE_REPLACE_CAST_1",
+      "not_a_capability": "Replacement-slot work maps to current dhoggur; other biome rows outside this mod."
+    },
+    {
+      "id": "item_VALIDATION_UNPOISON_AUDIT_STATEFUL_CHAINS",
+      "source": "ITEM:VALIDATION_UNPOISON_AUDIT_STATEFUL_CHAINS",
+      "ref": "ITEM:VALIDATION_UNPOISON_AUDIT_STATEFUL_CHAINS",
+      "not_a_capability": "Cross-suite latch audit; Forge portion covered by proof_tools."
+    },
+    {
+      "id": "pointer_FORGE_SKY_PASTURES_1_txt",
+      "source": "infrastructure/state/live_proofs/FORGE_SKY_PASTURES_1.txt",
+      "ref": "infrastructure/state/live_proofs/FORGE_SKY_PASTURES_1.txt",
+      "covered_by": "sky_wander",
+      "text": "Command/criterion pointer, not result."
+    },
+    {
+      "id": "pointer_FORGE_SKY_PASTURES_1_criteria",
+      "source": "infrastructure/state/live_proofs/FORGE_SKY_PASTURES_1.criteria",
+      "ref": "infrastructure/state/live_proofs/FORGE_SKY_PASTURES_1.criteria",
+      "covered_by": "sky_wander",
+      "text": "Command/criterion pointer, not result."
+    },
+    {
+      "id": "pointer_ZERSIUM_FORGE_BIOME_1_txt",
+      "source": "infrastructure/state/live_proofs/ZERSIUM_FORGE_BIOME_1.txt",
+      "ref": "infrastructure/state/live_proofs/ZERSIUM_FORGE_BIOME_1.txt",
+      "not_a_capability": "Command pointer to Utinni row, not its result; campaign_zersium."
+    },
+    {
+      "id": "file_live_proof_py",
+      "source": "src/RimMandrake/TheForge/live_proof.py",
+      "ref": "src/RimMandrake/TheForge/live_proof.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_northstar_plan_py",
+      "source": "src/RimMandrake/TheForge/northstar_plan.py",
+      "ref": "src/RimMandrake/TheForge/northstar_plan.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_northstar_site_py",
+      "source": "src/RimMandrake/TheForge/northstar_site.py",
+      "ref": "src/RimMandrake/TheForge/northstar_site.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_selftest_dhuvvox_swarm_budget_py",
+      "source": "src/RimMandrake/TheForge/selftest_dhuvvox_swarm_budget.py",
+      "ref": "src/RimMandrake/TheForge/selftest_dhuvvox_swarm_budget.py",
+      "covered_by": "swarm_budget",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_selftest_theforge_py",
+      "source": "src/RimMandrake/TheForge/selftest_theforge.py",
+      "ref": "src/RimMandrake/TheForge/selftest_theforge.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_validation_py",
+      "source": "src/RimMandrake/TheForge/validation.py",
+      "ref": "src/RimMandrake/TheForge/validation.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_About_About_xml",
+      "source": "src/RimMandrake/TheForge/About/About.xml",
+      "ref": "src/RimMandrake/TheForge/About/About.xml",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Assemblies_RimMandrake_TheForge_dll",
+      "source": "src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll",
+      "ref": "src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Assemblies_RimMandrake_TheForge_dll_srchash",
+      "source": "src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll.srchash",
+      "ref": "src/RimMandrake/TheForge/Assemblies/RimMandrake.TheForge.dll.srchash",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_RM_TheForge_DonorPorts_xml",
+      "source": "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/RM_TheForge_DonorPorts.xml",
+      "covered_by": "biome",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_BiomeDefs_RM_TheForge_Biome_xml",
+      "source": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml",
+      "covered_by": "biome",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_GameConditionDefs_RM_ForgePulse_xml",
+      "source": "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml",
+      "covered_by": "cycle_clock",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_HediffDefs_RM_DhoggurSwell_xml",
+      "source": "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhoggurSwell.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhoggurSwell.xml",
+      "covered_by": "dhoggur_swell",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_HediffDefs_RM_DhuvvoxRunSlowing_xml",
+      "source": "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhuvvoxRunSlowing.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/HediffDefs/RM_DhuvvoxRunSlowing.xml",
+      "covered_by": "dhuvvox_clock",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_MapMeshFlagDefs_RM_SkyColumns_xml",
+      "source": "src/RimMandrake/TheForge/Defs/MapMeshFlagDefs/RM_SkyColumns.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/MapMeshFlagDefs/RM_SkyColumns.xml",
+      "covered_by": "sky_field",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_PawnRenderTreeDefs_RM_ColossalAerofleet_Twitch_xml",
+      "source": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_ColossalAerofleet_Twitch.xml",
+      "covered_by": "greater_bulloo",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_PawnRenderTreeDefs_RM_DhoggurSwellBody_xml",
+      "source": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DhoggurSwellBody.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DhoggurSwellBody.xml",
+      "covered_by": "dhoggur_swell",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_PawnRenderTreeDefs_RM_DormantAnimalBody_xml",
+      "source": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml",
+      "covered_by": "dhuvvox_clock",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ResearchProjectDefs_RM_SpunstoneBonding_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ResearchProjectDefs/RM_SpunstoneBonding.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ResearchProjectDefs/RM_SpunstoneBonding.xml",
+      "covered_by": "spunstone_study",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_SoundDefs_RM_ForgeVoices_xml",
+      "source": "src/RimMandrake/TheForge/Defs/SoundDefs/RM_ForgeVoices.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/SoundDefs/RM_ForgeVoices.xml",
+      "covered_by": "warnings_voices",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_StuffCategoryDefs_RM_SpunstoneWeave_xml",
+      "source": "src/RimMandrake/TheForge/Defs/StuffCategoryDefs/RM_SpunstoneWeave.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/StuffCategoryDefs/RM_SpunstoneWeave.xml",
+      "covered_by": "floatstone",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_TerrainDefs_RM_DhokkurTrail_xml",
+      "source": "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_DhokkurTrail.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_DhokkurTrail.xml",
+      "covered_by": "dhokkur_tracks",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_TerrainDefs_RM_ForgeCycleTerrain_xml",
+      "source": "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_ForgeCycleTerrain.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/TerrainDefs/RM_ForgeCycleTerrain.xml",
+      "covered_by": "freeze_crust",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Buildings_RM_SpunstoneParts_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml",
+      "covered_by": "floatstone_door",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Items_RM_TheForgeItems_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml",
+      "covered_by": "dhokkur_native",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Plants_RM_TheForge_Flora_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml",
+      "covered_by": "flash_flora",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_Bulloo_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml",
+      "covered_by": "bulloo",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_ColossalAerofleet_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml",
+      "covered_by": "greater_bulloo",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_Dhoggur_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Dhoggur.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Dhoggur.xml",
+      "covered_by": "dhoggur_swell",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_FleetFlier_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml",
+      "covered_by": "fleet_flier",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_Metallovore_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Metallovore.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Metallovore.xml",
+      "covered_by": "metallovore",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_TheForgeNatives_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml",
+      "covered_by": "dormancy",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThingDefs_Races_RM_Ummisk_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Ummisk.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Ummisk.xml",
+      "covered_by": "ummisk",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThinkTreeDefs_RM_ThinkTree_ForgeSkyPasture_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_ForgeSkyPasture.xml",
+      "covered_by": "sky_wander",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_ThinkTreeDefs_RM_ThinkTree_UmmiskLavaEdge_xml",
+      "source": "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_UmmiskLavaEdge.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/ThinkTreeDefs/RM_ThinkTree_UmmiskLavaEdge.xml",
+      "covered_by": "ummisk",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_WeatherDefs_RM_BoilingRain_xml",
+      "source": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_BoilingRain.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_BoilingRain.xml",
+      "covered_by": "weather",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_WeatherDefs_RM_ForgeStill_xml",
+      "source": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_ForgeStill.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_ForgeStill.xml",
+      "covered_by": "weather",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Defs_WeatherDefs_RM_RedFog_xml",
+      "source": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_RedFog.xml",
+      "ref": "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_RedFog.xml",
+      "covered_by": "weather",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Patches_RM_AcousticPayload_TheForge_xml",
+      "source": "src/RimMandrake/TheForge/Patches/RM_AcousticPayload_TheForge.xml",
+      "ref": "src/RimMandrake/TheForge/Patches/RM_AcousticPayload_TheForge.xml",
+      "covered_by": "arrival_scanner",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_BiomeWorker_TheForge_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_BiomeWorker_TheForge.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_BiomeWorker_TheForge.cs",
+      "covered_by": "biome",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_CompForgeCycleDormancy_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_CompForgeCycleDormancy.cs",
+      "covered_by": "dormancy",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeCycleDebugActions_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeCycleDebugActions.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeCycleDebugActions.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeCycleExtension_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeCycleExtension.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeCycleExtension.cs",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeDhoggurSwell_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+      "covered_by": "dhoggur_swell",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeDhokkurWays_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeDhokkurWays.cs",
+      "covered_by": "dhokkur_wake",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgePlumeFronts_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs",
+      "covered_by": "plumes",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeSkyPastures_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeSkyPastures.cs",
+      "covered_by": "greater_bulloo",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeSpunstone_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSpunstone.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeSpunstone.cs",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeSpunstoneParts_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeSpunstoneParts.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeSpunstoneParts.cs",
+      "covered_by": "floatstone_door",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeUmmisk_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeUmmisk.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeUmmisk.cs",
+      "covered_by": "ummisk",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_ForgeVoices_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_ForgeVoices.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_ForgeVoices.cs",
+      "covered_by": "warnings_voices",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_GameCondition_ForgeCycle_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_GameCondition_ForgeCycle.cs",
+      "covered_by": "cycle_clock",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_PawnRenderNodeWorker_DormantBody_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs",
+      "covered_by": "dhokkur_native",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_TheForge_csproj",
+      "source": "src/RimMandrake/TheForge/Source/RM_TheForge.csproj",
+      "ref": "src/RimMandrake/TheForge/Source/RM_TheForge.csproj",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_TheForgeDefOf_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_TheForgeDefOf.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_TheForgeDefOf.cs",
+      "covered_by": "package",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_RM_TheForgeMod_cs",
+      "source": "src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs",
+      "ref": "src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs",
+      "covered_by": "settings",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_CycleKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_CycleKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_CycleKernel.cs",
+      "covered_by": "cycle_clock",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_DhokkurKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_DhokkurKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_DhokkurKernel.cs",
+      "covered_by": "dhokkur_tracks",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_DormancyKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_DormancyKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_DormancyKernel.cs",
+      "covered_by": "dormancy",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_PlumeKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_PlumeKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_PlumeKernel.cs",
+      "covered_by": "plumes",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_SkyKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_SkyKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_SkyKernel.cs",
+      "covered_by": "sky_wander",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_Kernel_RM_SwellKernel_cs",
+      "source": "src/RimMandrake/TheForge/Source/Kernel/RM_SwellKernel.cs",
+      "ref": "src/RimMandrake/TheForge/Source/Kernel/RM_SwellKernel.cs",
+      "covered_by": "dhoggur_swell",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_SelfTest_Program_cs",
+      "source": "src/RimMandrake/TheForge/Source/SelfTest/Program.cs",
+      "ref": "src/RimMandrake/TheForge/Source/SelfTest/Program.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_SelfTest_RimMandrakeTheForge_SelfTest_csproj",
+      "source": "src/RimMandrake/TheForge/Source/SelfTest/RimMandrakeTheForge.SelfTest.csproj",
+      "ref": "src/RimMandrake/TheForge/Source/SelfTest/RimMandrakeTheForge.SelfTest.csproj",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Source_SelfTest_TheForgeFuzz_cs",
+      "source": "src/RimMandrake/TheForge/Source/SelfTest/TheForgeFuzz.cs",
+      "ref": "src/RimMandrake/TheForge/Source/SelfTest/TheForgeFuzz.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting, not a full-file review certificate."
+    },
+    {
+      "id": "file_Textures_StandIn_Terrain_Surfaces_AB_HardenedGrass_Polluted_png",
+      "source": "src/RimMandrake/TheForge/Textures/StandIn/Terrain/Surfaces/AB_HardenedGrass_Polluted.png",
+      "ref": "src/RimMandrake/TheForge/Textures/StandIn/Terrain/Surfaces/AB_HardenedGrass_Polluted.png",
+      "covered_by": "biome",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Terrain_Surfaces_AB_BlackPebbles_png",
+      "source": "src/RimMandrake/TheForge/Textures/Terrain/Surfaces/AB_BlackPebbles.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Terrain/Surfaces/AB_BlackPebbles.png",
+      "covered_by": "biome",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Terrain_Surfaces_AB_HardenedGrass_png",
+      "source": "src/RimMandrake/TheForge/Textures/Terrain/Surfaces/AB_HardenedGrass.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Terrain/Surfaces/AB_HardenedGrass.png",
+      "covered_by": "biome",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Building_Linked_RM_SpunstoneHull_RM_SpunstoneHull_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Building/Linked/RM_SpunstoneHull/RM_SpunstoneHull.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Building/Linked/RM_SpunstoneHull/RM_SpunstoneHull.png",
+      "covered_by": "spunstone_hull",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Building_RM_FloatstoneDoor_RM_FloatstoneDoor_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Building/RM_FloatstoneDoor/RM_FloatstoneDoor.png",
+      "covered_by": "floatstone_door",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Item_Resource_RM_BlueGel_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Item/Resource/RM_BlueGel.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Item/Resource/RM_BlueGel.png",
+      "covered_by": "bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Item_RM_Floatstone_RM_Floatstone_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Item/RM_Floatstone/RM_Floatstone.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Item/RM_Floatstone/RM_Floatstone.png",
+      "covered_by": "floatstone",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_Bell_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_Bell_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_Bell_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_RM_ColossalAerofleet_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerA_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerA_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerA_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerA_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerB_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerB_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerB_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerB_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerC_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerC_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerC_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerC_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerD_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_east.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerD_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_north.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_ColossalAerofleet_Feelers_RM_ColossalAerofleet_FeelerD_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_ColossalAerofleet/Feelers/RM_ColossalAerofleet_FeelerD_south.png",
+      "covered_by": "greater_bulloo",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_east.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_north.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_south.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_Swollen_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_east.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_Swollen_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_north.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhoggur_RM_Dhoggur_Swollen_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhoggur/RM_Dhoggur_Swollen_south.png",
+      "covered_by": "dhoggur_swell",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhokkur_RM_Dhokkur_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_east.png",
+      "covered_by": "dhokkur_native",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhokkur_RM_Dhokkur_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_north.png",
+      "covered_by": "dhokkur_native",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhokkur_RM_Dhokkur_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur_south.png",
+      "covered_by": "dhokkur_native",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_DhokkurDormant_RM_DhokkurDormant_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant.png",
+      "covered_by": "dhokkur_native",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhuvvox_RM_Dhuvvox_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_east.png",
+      "covered_by": "dhuvvox_clock",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhuvvox_RM_Dhuvvox_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_north.png",
+      "covered_by": "dhuvvox_clock",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Dhuvvox_RM_Dhuvvox_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox_south.png",
+      "covered_by": "dhuvvox_clock",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_DhuvvoxNodule_RM_DhuvvoxNodule_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule.png",
+      "covered_by": "dhuvvox_clock",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_B_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_east.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_B_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_north.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_B_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_B_south.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_C_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_east.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_C_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_north.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlierV_C_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlierV_C_south.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlier_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_east.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlier_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_north.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_FleetFlier_RM_FleetFlier_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier_south.png",
+      "covered_by": "fleet_flier",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jossur_RM_Jossur_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_east.png",
+      "covered_by": "jossur_hunt",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jossur_RM_Jossur_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_north.png",
+      "covered_by": "jossur_hunt",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jossur_RM_Jossur_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jossur/RM_Jossur_south.png",
+      "covered_by": "jossur_hunt",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Julmox_RM_Julmox_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_east.png",
+      "covered_by": "julmox",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Julmox_RM_Julmox_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_north.png",
+      "covered_by": "julmox",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Julmox_RM_Julmox_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Julmox/RM_Julmox_south.png",
+      "covered_by": "julmox",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jurrox_RM_Jurrox_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_east.png",
+      "covered_by": "package",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jurrox_RM_Jurrox_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_north.png",
+      "covered_by": "package",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Jurrox_RM_Jurrox_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Jurrox/RM_Jurrox_south.png",
+      "covered_by": "package",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Metallovore_RM_Metallovore_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_east.png",
+      "covered_by": "metallovore",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Metallovore_RM_Metallovore_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_north.png",
+      "covered_by": "metallovore",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Metallovore_RM_Metallovore_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Metallovore/RM_Metallovore_south.png",
+      "covered_by": "metallovore",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Ummisk_RM_Ummisk_east_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_east.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_east.png",
+      "covered_by": "ummisk",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Ummisk_RM_Ummisk_north_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_north.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_north.png",
+      "covered_by": "ummisk",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Pawn_Animal_RM_Ummisk_RM_Ummisk_south_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_south.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Pawn/Animal/RM_Ummisk/RM_Ummisk_south.png",
+      "covered_by": "ummisk",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_FireLavender_FireLavender_a_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/FireLavender/FireLavender_a.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/FireLavender/FireLavender_a.png",
+      "covered_by": "flash_flora",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_HeatsinkFungus_HeatsinkFungus_a_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/HeatsinkFungus/HeatsinkFungus_a.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/HeatsinkFungus/HeatsinkFungus_a.png",
+      "covered_by": "flash_flora",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_HeatsinkFungus_HeatsinkFungus_b_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/HeatsinkFungus/HeatsinkFungus_b.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/HeatsinkFungus/HeatsinkFungus_b.png",
+      "covered_by": "flash_flora",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_RM_CinderCrust_RM_CinderCrust_a_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_CinderCrust/RM_CinderCrust_a.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_CinderCrust/RM_CinderCrust_a.png",
+      "covered_by": "flash_flora",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_RM_FirevineTree_RM_FirevineTree_a_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_FirevineTree/RM_FirevineTree_a.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_FirevineTree/RM_FirevineTree_a.png",
+      "covered_by": "firevine",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_Things_Plant_RM_FloatstoneGarden_RM_FloatstoneGarden_a_png",
+      "source": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_FloatstoneGarden/RM_FloatstoneGarden_a.png",
+      "ref": "src/RimMandrake/TheForge/Textures/Things/Plant/RM_FloatstoneGarden/RM_FloatstoneGarden_a.png",
+      "covered_by": "garden_cycle",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    },
+    {
+      "id": "file_Textures_World_Biomes_RM_Forge_png",
+      "source": "src/RimMandrake/TheForge/Textures/World/Biomes/RM_Forge.png",
+      "ref": "src/RimMandrake/TheForge/Textures/World/Biomes/RM_Forge.png",
+      "covered_by": "biome",
+      "text": "Shipped asset path accounted for; not visually reviewed/accepted."
+    }
+  ],
+  "snapshot": {
+    "id": "mirror_snapshot",
+    "source": "MIRROR_HEAD",
+    "speaker": "agent",
+    "text": "27a9c378b04a540da7f3ceac2f1e194b916cd21c 2026-11-10T01:18:26-08:00",
+    "note": "External mirror refreshes independently; not an atomic frozen full-tree read."
+  },
+  "reading_limits": {
+    "id": "limits",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "speaker": "agent",
+    "text": "Read requested role packets in order, HugeThings house-style example, Forge implementation/defs, principal script bodies, original and later specs/items and frozen/seat-shard history. Full fuzz file and mock suite were inspected by structure, not certified by full-file review. No official launcher replay, git history, current game, external erased Transient logs, or independent engine source inspection. No formal stage done claim."
+  },
+  "review_history": [
+    {
+      "id": "review_original",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "speaker": "agent",
+      "by": "/root/review_forge_questions",
+      "text": "Original q01 struck: environmental-only fork risked shrinking already-promised physical campaign towers/machines. q02–q06 passed. Requested full path prefixes, direct smoke-injection wording and anatomy/art corrections."
+    },
+    {
+      "id": "review_revision",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "speaker": "agent",
+      "by": "/root/review_forge_questions",
+      "text": "Current q01–q06 PASS. q01 narrowed to ordinary RM pre-tower experience with physical campaign works retained. q05 clarifies direct smoke injection; dhokkur anatomy/no-food and shared bulloo art corrected. Greater-bulloo column exclusion is scope/proof uncertainty, not automatically a defect.",
+      "questions_sha256": "d7ea10a56be7c48148facc5bb5a3947444a6479d9fb5d612934f8e252fb82679",
+      "charge": "No launcher run/budget exists in this dry run; no charge or ledger event fabricated."
+    }
+  ]
+}

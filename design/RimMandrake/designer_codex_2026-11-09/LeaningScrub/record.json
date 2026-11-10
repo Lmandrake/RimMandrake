@@ -1,0 +1,3574 @@
+{
+  "dry_run": true,
+  "mod": "LeaningScrub",
+  "author": "Codex Designer rehearsal, 2026-11-10. Agent-authored proposals; no owner answers inferred.",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "stage_status": "Stages 0 and 1 rehearsal; question bank draft. No launcher stage completion, sent ask, root approval, waiver or ledger write.",
+  "root": null,
+  "scope": [
+    {
+      "id": "experience_basis",
+      "speaker": "agent",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:17",
+      "text": "Root is derived from the existing owner-chosen experience. The root proposal is wholly agent text and is not approved."
+    },
+    {
+      "id": "venomvine_settled",
+      "speaker": "agent",
+      "source": "OWNER:1792214340734750172",
+      "text": "All forms stay; rarer forms are rooms, Strangler/Weeper/Lure go wild. Amount, height and independent creep already ruled; no keep/remove or reapproval questions."
+    },
+    {
+      "id": "later_sitting_scope",
+      "speaker": "agent",
+      "source": "OWNER:1793283060347198938",
+      "text": "Agents settle art/forms and stage growing patches; owner walks and may overrule spreading. Does not convert historical open pitch into permission to thin the built set here."
+    },
+    {
+      "id": "no_warning_product",
+      "speaker": "agent",
+      "source": "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+      "text": "Trim law rules out alarm buildings/radar/warning UI. Natural weather and ecology remain noticeable. Do not generalise this into removing the later optional scanner payload."
+    },
+    {
+      "id": "narrowed_vaporator",
+      "speaker": "agent",
+      "source": "OWNER:1792111546358402235",
+      "text": "Plain powered vaporator taught by dead farmstead; drying scar is out. Old sheet V-blight and About's unbuilt concealment wording cannot define today's scope."
+    },
+    {
+      "id": "removed_guardians_and_farmers",
+      "speaker": "agent",
+      "source": "OWNER:1792759871491132479",
+      "basis": [
+        "OWNER:1792559332453684332"
+      ],
+      "text": "Bark-wardens deliberately removed. Farmer camps removed and farmerFaction unset; scavenger camps remain conditional. No new guardian/faction decision solicited."
+    },
+    {
+      "id": "rulings_not_reopened",
+      "speaker": "agent",
+      "source": "CLAUDE.md",
+      "text": "All DLC assumed; biome mechanics promised inside owned biomes; no worldgen/player planet alternatives; painting once at end; no roster evictions, no unattended flyer tests. This run reads only the mirror and writes only the designated working folder."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "provenance",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "text": "Approved root remains null; proposed text separate. OWNER references must resolve to real OWNER shard tsns. Agent summaries of cards are not verbatim owner speech."
+    },
+    {
+      "id": "proof_policy",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "text": "No current proof claimed: no runtime/content/settings/art fingerprints matched. stale preserves located historical evidence, missing means adequate acceptance not found, never that the owner has never run it."
+    },
+    {
+      "id": "built_first",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "text": "No existing capability offered for removal. Deliberately removed guardians/scar/farmer camps are recorded separately, and explicit fauna stubs do not erase their built ordinary animals."
+    },
+    {
+      "id": "draft_bank",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "text": "Eight drafts; begin with q01-q02, then at most three in one real dialogue turn. Guesses are not stand-in answers. No sent status, result.json, ledger charge, stage advance or first-touch release."
+    },
+    {
+      "id": "review_revisions",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "text": "Fresh reviewer struck original q03/q05/q06/q07/q08. Replacements preserve settled crossings/reliable protein, arsonist target, premium fuel and ongoing visits. Exact revised bank was independently re-read and all eight passed. Root's suggested precision edit changed decoy to shed a twitching arm."
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "title": "The promise in one ordinary day",
+      "first": true,
+      "picture": "Written play sketch, not a capture: By the end of the first season, the colony has steady turbine power, a modest fog-water supply and a well-used route winding between tall black vine islands. The fuzz keeps moving; small animals come and go beneath it. Daily work still takes planning.",
+      "text": "What should that colony be able to do comfortably by now, and what should still make stepping outside a considered choice?",
+      "why": "F1/F2. Your chosen sentence names abundance and insecure footing; it does not yet set the everyday balance between a viable home and a place you must continually negotiate.",
+      "guess": "A dependable home and a few familiar routes, with journeys beyond them still demanding attention. I would make earned familiarity the payoff while the wider plain remains dangerous.",
+      "tree_change": "If familiar routes become dependable, the root needs a routine-work/established-route promise alongside wild travel. If even familiar routes remain precarious, acceptance must show sustainable ongoing upkeep rather than implying permanent safety. If the main reward is roaming rather than settling, reorder the root and flagship around expeditions while retaining built colony features. A correction changes the proposed root; silence approves nothing.",
+      "decision": "Everyday colony promise and root emphasis, without changing the chosen experience sentence.",
+      "about": [
+        "wind_weather",
+        "vine_islands",
+        "vine_creep",
+        "gale_power",
+        "vaporator"
+      ],
+      "owner_cites": [],
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:17",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q02",
+      "title": "The first demonstration",
+      "first": true,
+      "picture": "Three written scene candidates, not staged maps: A, send a worker through a vine island to a useful harvest and bring them home. B, run a small working colony through steady wind, Stall and Gale. C, work around a named sweetline tree, see animals rub their coats off, then spend the felt.",
+      "text": "Which scene would you start with when judging LeaningScrub, and what one failure there would make you stop the demonstration?",
+      "why": "F1/F2. There is already a per-form venomvine review map in the history. Its specific sitting is settled, but I found no owner pick of a flagship for the whole mod; specimens alone can miss living here.",
+      "guess": "B, with a short trip into the vines in ordinary wind; then a separate vine journey and tree scene. It is the closest test of your entire sentence.",
+      "tree_change": "A puts a dangerous but purposeful expedition first; B puts weather, power and routine work first; C puts landmark ecology and material reward first. His pick binds showcase 1 only after a real answer is recorded. Other capabilities retain their own acceptance scenes, and later showcases must add different coverage. The stated failure becomes a candidate rejection case, not an automatically approved leaf.",
+      "decision": "Flagship showcase pick and first reject example.",
+      "about": [
+        "vine_islands",
+        "smother_craft",
+        "wind_weather",
+        "gale_power",
+        "sweetline_rub",
+        "felt_comfort"
+      ],
+      "owner_cites": [],
+      "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q03",
+      "title": "Choosing to cross the thorns",
+      "picture": "Evidence, then a written play sketch: A historical test sent a drafted colonist on a roughly 113-cell walk across a real Scrub map and the colonist was downed by scratches and venom. That does not prove an ordinary hauling job chose the same route, and its cause was not traced. Now picture a normal hauling order with a long clear way round an island and a much shorter thorny passage through it.",
+      "text": "What should make a pawn commit to that dangerous passage rather than the clear way round?",
+      "why": "F2/F3. Dangerous vines are settled scope. The open issue is whether routine work can commit the colony to that risk without a deliberate choice, rather than how much vine should remain or whether its venom should be weaker.",
+      "guess": "Routine work takes a usable clear detour; a deliberately ordered expedition can accept the thorn route. I would first compare real hauling and explicit crossing on the same two-route fixture.",
+      "tree_change": "If routine jobs avoid the risk, add a route-choice requirement with clear-detour, no-detour and explicitly ordered crossing cases. If colonists may choose a risky shortcut, acceptance needs the reason the player can understand and a useful way to control that commitment. If only specially prepared pawns should use it, define the preparation and how jobs recognise it. Every answer retains the built hazards and ruled abundance; none declares the old drafted walk proof of a hauling defect.",
+      "decision": "Routine job commitment to hazardous vine passage versus deliberate expedition.",
+      "about": [
+        "vine_islands",
+        "hollow_passage",
+        "sworn",
+        "lean_scent"
+      ],
+      "owner_cites": [
+        "OWNER:1792167263801507527"
+      ],
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q04",
+      "title": "What the Gale asks of the colony",
+      "picture": "Written play sketch: Forty colonists have workshops, growlights, outdoor haulers and several turbines. The Gale brings extra output, possible breakdowns, muffled outdoor speech and hearing, concealment changes and greater raid weight among threats. The current surge and breakdown interval are provisional numbers.",
+      "text": "When the Gale starts, what useful change of plan should a well-run colony make?",
+      "why": "F2. A list of penalties and bonuses can all function while the player simply ignores the weather. The desired decision sets the useful size of the power windfall and maintenance cost.",
+      "guess": "Use the extra power for worthwhile work while protecting exposed jobs and keeping repair capacity ready. I would judge it by a credible colony plan, without adding an alarm product.",
+      "tree_change": "A production window needs surplus that materially enables named work and a measurable repair burden. A shelter-and-defend window needs consequences that reward pausing or rerouting outdoor jobs. A mostly ecological spectacle adds no compulsory colony-response leaf; the existing mechanics still receive ordinary checks. His picture tunes consequences; it does not reopen whether those built effects exist.",
+      "decision": "Meaningful Gale opportunity/cost and tuning target.",
+      "about": [
+        "gale_power",
+        "gale_deafening",
+        "gale_raid_weight",
+        "ripple",
+        "gale_dust"
+      ],
+      "owner_cites": [],
+      "source": "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "evidence_sources": [
+        "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs"
+      ],
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q05",
+      "title": "A day's hunting at the crossing",
+      "picture": "Written play sketch: The reliable protein is already supposed to be at exposed crossings between covered runways. A hunter watches one: prey under fuzz is visible as a shimmer but cannot be targeted; prey on bare ground can be. Movement in a Stall or a windbreak's calm lee can also expose covered prey. In one version, a skilled hunter spends most of the day there with no useful opening. In another, reading the wind and movement brings a modest but dependable catch. Neither picture is an observed test.",
+      "text": "What would a good day's hunting at that crossing look like, and what would make you say the promised reliable protein has failed?",
+      "why": "F2/F3. Reliable interface hunting is already in the biome sheet. Direct invisibility checks do not establish whether ordinary animal movement produces usable hunting opportunities, or whether the player's time and risk pay off.",
+      "guess": "A competent hunter who chooses the crossing and approach well can usually bring back useful food, with misses and danger still possible. I would test naturally occurring exposure before inventing a new flushing action.",
+      "tree_change": "If waiting at a well-chosen crossing should pay, require natural exposure and completed hunts over a bounded representative workday. If the hunter must arrange movement or stalk between crossings, define that action and prove it yields a usable shot without removing concealment. If reliability is a season-level supply rather than every workday, use that horizon and include unsuccessful days. This clarifies the settled promise's success bar; it does not reopen protein, crossings or ripple.",
+      "decision": "Practical time/risk/reward bar for the settled interface-hunting promise.",
+      "about": [
+        "ripple",
+        "runway_bloom",
+        "lean_scent",
+        "native_cast",
+        "windbreak_lee"
+      ],
+      "owner_cites": [],
+      "source": "design/Jawa/worldbuilding/biomes/arid_shrubland.md",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q06",
+      "title": "When the premium fuel becomes practical",
+      "picture": "Written pacing comparison, not measured gameplay: A blanket costs 40 fuzz fiber and 15 sweetline felt, banks one stand for about 30 days at current defaults, then leaves dead cane. Picture A: a small colony sets aside a few stands and uses their premium fuel next season. Picture B: a settled colony tends inherited claims over several seasons before it can rely on the reserve. Both preserve the promised long-and-hot fuel and the trade craft.",
+      "text": "At what point in a colony's life should that first useful reserve pay back the felt and the wait?",
+      "why": "F2. Premium fuel is already the purpose; clearing or trade income cannot substitute for it. The unresolved bar is when this seasonal investment should become practical, while scarce felt also has comfortable uses.",
+      "guess": "A modest reserve should pay off for an established small colony by a later season, with a larger industry taking longer. I would stage the current 30-day cycle and compare its useful burn time with ordinary wood before proposing different numbers.",
+      "tree_change": "If the next-season small reserve is right, acceptance must show a modest colony can obtain the inputs, tend claims and recover a useful premium reserve in that horizon. If it is a mature multi-season industry, require a sustainable pipeline and an honest long wait, without promising early independence. If it is earlier or later still, his concrete horizon sets timer/yield tuning and the scene duration. Every answer retains the premium fuel advantage, the blanket trade/craft and their separate checks; useful heat superiority must be proved rather than inferred from a fuel filter.",
+      "decision": "Practical colony stage and time-to-payoff for the settled premium-fuel promise.",
+      "about": [
+        "smother_craft",
+        "dead_cane_fuel",
+        "sweetline_shed",
+        "sweetline_rub",
+        "felt_comfort",
+        "felt_apparel"
+      ],
+      "owner_cites": [],
+      "source": "design/Jawa/worldbuilding/biomes/arid_shrubland.md",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q07",
+      "title": "How the giants find the arsonist",
+      "picture": "Written play sketch: A colonist lights a patch and runs behind a separate wall. The biome sheet already says the titans come down on the arsonist. Current stamping code damages burning things but does not record or pursue a departed lighter; the calling-pyre separately brings some giants already raging. Compare a giant that saw the act, one that arrives after the person vanished, and an innocent worker beside the spreading fire.",
+      "text": "How should the giants connect the fire to its maker, and what could that person do to escape them?",
+      "why": "F2/F3. The arsonist being at risk is settled. Attribution, pursuit and escape are not specified by that promise, and cannot silently be replaced by ritual-style hostility to everybody.",
+      "guess": "The giants follow a readable physical connection to the act or its immediate source, with a chance to break contact and escape. I would show the three cases before binding any rule that gives them knowledge across walls.",
+      "tree_change": "Witnessed action needs attribution when the giant can perceive the act and a defined loss-of-contact rule. A persistent trail needs an actual readable trace, finite pursuit and an escape case. A broader association with nearby fire-making needs a concrete identification rule and an innocent-worker control. Under every answer, the arsonist remains the promised target; ordinary stamping and the ritual's raging arrivals keep separate acceptance.",
+      "decision": "Believable attribution, pursuit and escape for the settled arsonist consequence.",
+      "about": [
+        "fire_stamping",
+        "calling_pyre",
+        "lean_fire"
+      ],
+      "owner_cites": [],
+      "source": "design/Jawa/worldbuilding/biomes/arid_shrubland.md",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    },
+    {
+      "id": "q08",
+      "title": "A visit that appears only in the tree's memory",
+      "picture": "Written play sketch: You watch a sweetline tree throughout the day. Its history then says a road-party camped under it, or a pilgrim left a token, but no person ever appeared. That is how visits are currently implemented: counters, ash or tokens rather than arriving pawns.",
+      "text": "What must happen in the world for the tree's history to call something a visit?",
+      "why": "F2/F3. Existing visits are built and historically tested, but a passing counter test cannot decide whether remembered travellers are enough for the living-road promise.",
+      "guess": "For a visit dated during play, I would expect someone to arrive and stay if the player watches throughout. Timed traces remain a valid existing mechanism; I would first make the claim about them honest before treating a counter as proof of a person.",
+      "tree_change": "If timed traces are the intended representation, retain the ongoing timer, marks and counters, with wording and acceptance that honestly describe those traces. If a live visit must include people, add arrival, time under the tree, departure and token/history agreement to the existing timed system, reusing suitable visitor/camp services. A different explanation must still account for the ongoing visit event. No answer removes the built timer or restores bark-wardens or farmer factions.",
+      "decision": "Truth of live tree visits versus abstract history.",
+      "about": [
+        "sweetline_visits",
+        "sweetline_name_history",
+        "scavenger_camps"
+      ],
+      "owner_cites": [],
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:171",
+      "speaker": "agent",
+      "author": "Codex Designer rehearsal 2026-11-10",
+      "offers_removal": false,
+      "status": "draft",
+      "review_status": "independent review pass; draft, not sent",
+      "review": {
+        "by": "/root/question_review",
+        "verdict": "pass",
+        "why": "Fresh author-independent reviewer re-read exact revised QUESTIONS.md and record.json; all eight passed. This is question review, not owner approval.",
+        "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      }
+    }
+  ],
+  "inventory": [
+    {
+      "id": "packaging",
+      "text": "Source member of Baroque Biomes; own assembly, explicit shared SettingsKit links, EnvironmentalHazards and CreatureBehaviors dependencies; not a separately deployable gameplay package.",
+      "source": "src/RimMandrake/Biomes.compose.json",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrub.csproj",
+        "src/RimMandrake/LeaningScrub/About/About.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical standalone load proof precedes composed packaging; current deployed content fingerprint not matched.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:LEANINGSCRUB_RM_MOD_BUILD_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "biome_rosters",
+      "text": "Owned BiomeDef, terrain/disease/density tables, weather and native plant/animal rosters, extra map steps; optional franchise animals injected by UtinniPatches. Zero painted world tiles is expected.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Fresh-map wildlife verification passed Nov 3 after fixing an instrument that ignored factionless rows; raw log is outside the mirror. Does not accept all species/distributions.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/live_proofs/SCRUB_WILDLIFE_PROVE_NOBODY_CAME.txt"
+      ]
+    },
+    {
+      "id": "fuzz_flora",
+      "text": "Fuzz, whipfuzz, pillowmoss, tanglefuzz, cruststar, grellbush, grellspine, wild healroot, tanni vine and salvessa with owned art paths and harvest/stat data; fuzz fiber and salvessa pods. Pillowmoss fog production is descriptive, not an implemented water system.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Fuzz.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Fuzz.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVanillaReplacements.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_TanniVine.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Salvessa.xml",
+        "src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical flora spawn checks; naturally readable plain and useful harvests not accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:LEANINGSCRUB_RULED_CONTENT_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "native_cast",
+      "text": "Fuzzrunner, Thornhold, Shokka, Zellik, Fuzzviper, Surrik, Ribbonwhip, Vissler, Dustflutter, Shirrel, Crustweevil, Rollbug and Tikkit have race/kind definitions, stats, tools, life-stage art and ecology hooks; specialised behaviour accounted separately.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical spawn checks and art wiring; spawning a line-up does not prove distinct ecology.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:LEANINGSCRUB_RULED_CONTENT_1",
+        "ITEM:LEANINGSCRUB_ART_WIRING_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "rehomed_fauna",
+      "text": "Owned Chikka, Durrok, Mullgoth, Vurra and yanker (TunnelSnake); Chikka hide/meat plus save aliases for old support names and rehomed references.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Durrok.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Mullgoth.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Vurra.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_TunnelSnake.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_ChikkaSupport.xml",
+        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_Chikka_Aliases.xml",
+        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Chikka move recorded Oct 24; no current save-alias or art acceptance performed.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "OWNER:1792852740424170723"
+      ]
+    },
+    {
+      "id": "absorbed_fauna",
+      "text": "Absorbed Baseopsis, Diplocaulus, Holcorobeus, Platyhystrix, Protosolpuga, Protovermes, Segnosaurus and Termitotron definitions and fertilised/unfertilised egg support. Definition ownership is not evidence of membership in this biome's current wild roster.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Baseopsis.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Baseopsis.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Diplocaulus.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Holcorobeus.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Platyhystrix.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protosolpuga.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protovermes.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Segnosaurus.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Termitotron.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "wind_weather",
+      "text": "Steady wind and wind-fog, calm Stall, high-wind Gale; windy Overcast/GrayPall/DryThunderstorm twins. Weather tables remain loaded with master off.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical defs/biome-weather and twins checks passed; no current loaded-weather read.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "scope_source": "OWNER:1792525009391726212"
+    },
+    {
+      "id": "wind_soundscape",
+      "text": "Ordinary wind weather layers vanilla wind and jungle insect ambient beds; Gale uses storm wind and Stall has no weather ambient bed. Vanilla audio is shipped content, not missing bespoke SoundDefs.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml",
+        "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "one_heading",
+      "text": "Single direction derived from tile-to-substellar geometry via CreatureBehaviors SunGeometry; scent, fire, lean, dust, lee and creep consume it. No rolled or saved heading.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+        "src/RimMandrake/LeaningScrub/site_spec.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Lean site clauses A1-A4 recorded pass Nov 2; script and old item wording about rolled/scribed headings are historical.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.txt"
+      ],
+      "scope_source": "OWNER:1792544480517795041"
+    },
+    {
+      "id": "plant_lean",
+      "text": "Variant-aware Plant.Print mirroring makes listed scrub/fuzz face the east/west side nearest the wind, N/S tie east; seeded random draw still consumed, refresh when settings written.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs",
+        "src/RimMandrake/LeaningScrub/selftest_scrub_wind.py",
+        "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubPlantLeanCheck.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Kernel/data checks and historical live hook evidence; counters are not a judgement of the visible lean.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "scope_source": "OWNER:1792525009391726212"
+    },
+    {
+      "id": "gale_dust",
+      "text": "Dual panning dust overlay follows shared heading; owned A/B textures loaded with vanilla fog fallback, independently toggled.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs",
+        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_A.png",
+        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_B.png"
+      ],
+      "proof": "stale",
+      "proof_note": "A/B alpha art installed Oct 23; overlay hook historically passed. Final in-game appearance remains unverified here.",
+      "scope": "approved",
+      "proof_evidence": [
+        "OWNER:1792758762946045552",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "scope_source": "OWNER:1792525009391726212"
+    },
+    {
+      "id": "stall_freeze",
+      "text": "Stall replaces small wild animal wander jobs with waits; feeding, fleeing, tether and other higher-priority jobs continue. Feature/master switches and body-size tuning.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_StallHuntKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical suite passes; shared +12,+12 anomaly retired Nov 4 after four misses, not retained as a confirmed Stall defect.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:LEANINGSCRUB_STALL_SHARED_MOVE_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "gale_deafening",
+      "text": "Exposed non-mech pawns receive temporary hearing/speech impairment; roofs protect, hediff decays after exposure ends.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical exposed/roofed/off arms passed; no current state or user experience measured.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "gale_power",
+      "text": "Gale turbine output multiplier plus periodic colony-turbine breakdown risk; tuning and feature gate.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical owned-turbine surge/breakdown checks; useful colony power budget and maintenance load unaccepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "gale_raid_weight",
+      "text": "Gale multiplies RaidEnemy ChanceFactorNow among threats; does not add threat events, and is independently tunable.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Patch arming and settings read/write exist; walk explicitly leaves actual storyteller weighting uncovered.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "lean_scent",
+      "text": "Wild non-predators flee humanlikes upwind within configurable scent range; adequate flee distance beyond the threat. No general hunting-AI rewrite or implemented island scent masking.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 2 upwind/downwind proof recorded pass; current fingerprints not checked.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "lean_fire",
+      "text": "Fire spread biased downwind, with vanilla ignition checks; other spreads keep vanilla behaviour.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 2 statistical paired fire proof recorded pass; not a colony fire escape or stamping integration acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "ripple",
+      "text": "Small wild animals on designated cover become psychologically invisible with player-visible shimmer; Gale expands body-size eligibility; movement in Stall exposes; mental states/downed/swimming exceptions.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs",
+        "src/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml",
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Current proof directly calls the pass for still animals; moving-Stall, Gale, targetability and visual readability require separate acceptance.",
+      "scope": "approved",
+      "scope_source": "OWNER:1792111547253164962",
+      "proof_evidence": []
+    },
+    {
+      "id": "windbreak_lee",
+      "text": "Solid wind-blocking impassable edifices create local calm for ripple eligibility; shares map wind and has its own switch.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "stall_hunter",
+      "text": "Idle wild Zellik takes vanilla PredatorHunt on visible acceptable reachable prey during Stall; still hidden animals remain protected, feature off leaves vanilla hunting.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_StallHuntKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "runway_bloom",
+      "text": "Footstep disturbance queues staggered Scatter/Bolt/Erupt/Shed/Sway/Surface responses; real flight launch, held ribbonwhip sway and crust-swimmer exit holes, mental-state and toggle protections, no animal despawn.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Misc/RM_SurrikExitHole.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical bloom evidence and toggle fault; present source clears queued work when disabled and preserves manhunters. Full staged wave and flying appearance unaccepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1"
+      ]
+    },
+    {
+      "id": "vissler_arm_food",
+      "text": "Shed arm is rottable meat; vanilla hunger search attracts eligible eaters, with a per-item IngestibleNow settings gate. No unconditional lure AI or anatomical arm regrowth system located.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_LeaningScrubItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical ingestibility verification, later hook tests food-search choice; actual approach/eating is a different observation.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1"
+      ]
+    },
+    {
+      "id": "surrik_swim",
+      "text": "Surrik opts into CreatureBehaviors crust/sand-swim on this biome's terrains, submerged invisibility and surfacing strike; bloom forces surface and leaves exit hole, ripple avoids double hiding.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Surrik.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+        "src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "thornhold_den",
+      "text": "Venom quill tool, species venom immunity, reachable venomvine den and home tether; when struck at home, scoped aggression against the attacker only. Passing a person never starts the stand.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+        "src/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml",
+        "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Offline build and suite fixtures present; owner close explicitly leaves live rows next.",
+      "scope": "approved",
+      "proof_evidence": [
+        "OWNER:1793026319921383290"
+      ],
+      "scope_source": "OWNER:1793026308267200510"
+    },
+    {
+      "id": "rollbug_larder",
+      "text": "Wild Rollbug hauls eligible flesh corpse to home, strips gear and takes actual body-part bites over time; colony dead allowed by default, independent exclusion setting, interrupted carry returns corpse.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+        "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Built choice recorded; full job/pool/gear conservation and long-lived larder not accepted in this rehearsal.",
+      "scope": "approved",
+      "proof_evidence": [
+        "OWNER:1793026322182514467"
+      ],
+      "scope_source": "OWNER:1793026311920217783"
+    },
+    {
+      "id": "shirrel_glide",
+      "text": "Real Gale-only, downwind tree-launched glide, flight gate, nearest sweetline association/home tether; other trees allowed by provisional data, no tree means no launch point.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GlideKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Build recorded, live flight look requires owner. Current PawnKindDef has a flying prefix despite stale source/walk comments saying no frames.",
+      "scope": "approved",
+      "proof_evidence": [
+        "OWNER:1793026178326420760"
+      ],
+      "scope_source": "OWNER:1793026178326420760"
+    },
+    {
+      "id": "flight_art",
+      "text": "Zellik, Dustflutter and Shirrel PawnKindDefs carry real flight frame prefixes and draw-size/frame metadata; flight stats and ground facings also present.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES and SHIRREL_BILLOW_WIDEN_NORTH_FAINT closed; metadata/closed art work is not observed animation acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES",
+        "ITEM:SHIRREL_BILLOW_WIDEN_NORTH_FAINT",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "smother_craft",
+      "text": "Fuzz-fiber/felt blanket recipe and right-click hauling/work job bank an individual stand; saved start tick, inspect countdown, deferred maturation into growth-scaled fuel stacks; off blocks new/active jobs and pauses maturation, clocks still age.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+        "src/RimMandrake/LeaningScrub/Patches/RM_VenomvineThicket_Smotherable.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical claim maturation and mid-job toggle checks; no season-long labour/reward acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "dead_cane_fuel",
+      "text": "Dead venomvine item, smother and Walking tail outputs; patch adds it to refuelable filters explicitly naming WoodLog. Sleeper plant with same label is separate. No special fuel-energy multiplier located.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical campfire test corrected a too-full fire; premium fuel efficiency is not established by acceptance in a filter.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_DEAD_VENOMVINE_RECONCILE_FUEL"
+      ]
+    },
+    {
+      "id": "dripping",
+      "text": "Harvest raw venom and reset growth to 0.3 while regrow on; startup/WriteSettings changes the plant def, off restores destructive harvest.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Recorded harvest/30% growth; old failure matched Growth rate rather than growth and was corrected. Live field writes do not call Apply.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "twitcher_lash",
+      "text": "Map-level proximity strike with damage and recovery tuning, growth/flying exclusions, saved ready tick and poised/spent inspect state. No visual droop graphic swap located in lash driver.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical injuries/on-off checks; text saying drooping is not a visible spent pose.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "hollow_passage",
+      "text": "Hollow galleries have wider body-size passage bands and no contact-venom comp, using EnvironmentalHazards barrier; all form size gates use this mod's registered mechanic gate.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+        "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Venomvine.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "crown_mob",
+      "text": "During Stall sends idle wild Dustflutters to crown, counting residents and in-flight arrivals toward cap; flight launch delegates to shared helper.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical gathering and cap-30 verification exists; newer repro contract remains and raw run unavailable.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt"
+      ]
+    },
+    {
+      "id": "rearing",
+      "text": "Entry by qualifying bodies rears stand, reveals invisible pawns inside and emits limited messages outside Gale; duration grows during Stall, saved state.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "walking",
+      "text": "Gale-onset young downwind runners and mature tail dieback into fuel, per-map Walking count limit and smother stop; distinct from ordinary creep.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "hoard",
+      "text": "Delayed absorption of loose items and optional corpse gear into saved ThingOwner; inspect contents and return on despawn including cutting/smothering. Stored contents have no explicit ticking route here.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "quench",
+      "text": "Nearby fire triggers foam explosion and recovery timer with inspect state; per-feature gate and recovery tuning.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "sworn",
+      "text": "Researchable sowable hedge plus craftable expiring sap-mark; marked pawns of any faction spared by marked-thorn branch; on/off sparing preserves stand.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "shedding",
+      "text": "Gale-onset downwind V of cleanable/fading thorn litter, local scratch clock and EnvironmentalHazards venom settings.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "strangler",
+      "text": "Wraps adjacent wall/tree, tightens and damages it; auto-designates harmful stand for trimming, inspect target/progress.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical on/off form verification; specialised limits remain: actual trimming, pollution cap/cleanup, small-body negative, or animal approach/eating are not all covered.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_STRANGLER_VINE_1"
+      ]
+    },
+    {
+      "id": "weeper",
+      "text": "Leaves venom-pool filth and limited cumulative polluted soil cells, saved pollution count and independent pollution toggle.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical on/off form verification; specialised limits remain: actual trimming, pollution cap/cleanup, small-body negative, or animal approach/eating are not all covered.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_WEEPER_VINE_1"
+      ]
+    },
+    {
+      "id": "sleeper",
+      "text": "Dead-looking harmless stand wakes to live variant when qualifying grounded body approaches, lashes nearby grounded pawns and emits message.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical on/off form verification; specialised limits remain: actual trimming, pollution cap/cleanup, small-body negative, or animal approach/eating are not all covered.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_SLEEPER_VINE_1"
+      ]
+    },
+    {
+      "id": "lure",
+      "text": "Drops capped nearby rottable edible fruit; relies on vanilla food search to bring animals into thorns.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical on/off form verification; specialised limits remain: actual trimming, pollution cap/cleanup, small-body negative, or animal approach/eating are not all covered.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_LURE_VINE_1"
+      ]
+    },
+    {
+      "id": "vine_islands",
+      "text": "Initial islands target 15% open ground, protected start, spacing/connectivity checks, wind stretch and rarer rooms with crown in biggest island; settings and tall form art.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_IslandKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_VenomvineIslands_GenStep.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 1 five hook rows passed and real-map share/rooms/perf passed, but pathing downed a colonist; parent verify is PARTIAL, not accepted.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH"
+      ],
+      "scope_source": "OWNER:1792214337674231269"
+    },
+    {
+      "id": "vine_creep",
+      "text": "Independent slow downwind-biased runners on natural free ground, young runners unarmed, smothered stands excluded; cap 22% and sweep budget. Floors/zones/buildings/roofs protected in this route.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+        "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 1 direct on/off/cap hooks passed; natural long-game corridors and bias not accepted.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "scope_source": "OWNER:1792214339685592859"
+    },
+    {
+      "id": "vine_growth_exemption",
+      "text": "Owned ExplosiveGrowth roster exempts all venomvine forms from soak and ordinary growth bands; safe-young contact growth gates and tall thicket patch.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
+        "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical exemption hook passed; content fingerprint not matched.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "scope_source": "OWNER:1792214339685592859"
+    },
+    {
+      "id": "sweetline_landmark",
+      "text": "Rare ancient mature sweetline map step, non-destructive felt harvest and very slow growth/longevity; A-N art, canopy/trunk extension, Better Trees immunity. No built road-between-trees system established.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_SweetlineTrees_GenStep.xml",
+        "src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Placement hook and historical harvest; separate canopy/trunk redraw/crop concerns remain ledger work, no art look accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:SWEETLINE_TREE_MAP_STEP_1",
+        "ITEM:SWEETLINE_CANOPY_REDRAW_TRUNKS_THAT_EARN_IT",
+        "ITEM:SWEETLINE_TRUNK_FIX_HARD_CROP_LINES",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "sweetline_name_history",
+      "text": "Unique generated name, saved short dated history, label/History gizmo. Current namer is plain landmark English, replacing older coined-register proposal.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+        "src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical name/inspect checks and Oct 9 naming close; actual save/reload/history UI not exercised here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "sweetline_shed",
+      "text": "Saved staggered free felt timer continues after first maturity even following harvest; inspect countdown and history.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+        "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 3 A1 recorded PASS; probe clock jump/direct Long tick differs from season-long play.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/live_proofs/LEANINGSCRUB_SWEETLINE_SHED_LIVE_1.txt"
+      ]
+    },
+    {
+      "id": "sweetline_rub",
+      "text": "Any eligible shearable animal can visit reachable tree, drop own coat and bank felt share, fullness reset; wild-coat Active patch and tree registry, no reservation bottleneck.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+        "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_SweetlineScratching.xml",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical tame sheep job/felt-store test; spontaneous wild visits, failed placement and full-store conservation not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1"
+      ]
+    },
+    {
+      "id": "felt_comfort",
+      "text": "Felt stuff gives +0.10 furniture Comfort through shared stat pipeline; independently toggled.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+        "src/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical abstract armchair delta on/off; use and comfort UI not accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:SWEETLINE_FELT_COMFORT_BUILD_1"
+      ]
+    },
+    {
+      "id": "felt_apparel",
+      "text": "Any felt garment gives single non-stacking +2 mood thought; independent setting.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "sweetline_visits",
+      "text": "Abstract road-party/pilgrim visits on home maps: saved counters/history and tokens/ash. No visiting human pawn or real camp arrival is generated.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical counter/token checks; proves abstract marks, not people camping.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "ITEM:LEANINGSCRUB_SWEETLINE_VISITORS_1"
+      ]
+    },
+    {
+      "id": "ruin_sites",
+      "text": "Home-map generation places dead farmstead with research techprint, mid-cycle smother fields and hedge homesteads with clearance/spacing and ruined objects.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_InjectionKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Proof counts sites/wrecks after direct generation; whole discovery/use journey not accepted.",
+      "scope": "approved",
+      "scope_source": "OWNER:1792111548147315505"
+    },
+    {
+      "id": "vaporator",
+      "text": "Techprint-gated powered vanilla fog-water spawner plus salvageable wreck; works without terrain restriction, capped adjacent output. Uses vanilla building/water placeholder graphics, no new drying scar.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "ProofVaporator checks defs, not study/research/build/power/output jobs. No dedicated feature toggle in own Settings located.",
+      "scope": "approved",
+      "scope_source": "OWNER:1792111546358402235"
+    },
+    {
+      "id": "scavenger_camps",
+      "text": "Conditional living scavenger camps with defend-until-hostile lord, beds/resources and periodic food/rest sustenance; generic list empty, Utinni patch supplies existing clans. Farmer slot unset.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "comb_tombstone",
+      "text": "Banned Comb Holds faction/kinds/namers retained as loadable tombstone, hidden and non-generating. Current farmer camp field is absent; source comments about OutlanderCivil replacement are stale.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No current kept-save census or tombstone-removal gate evaluated.",
+      "scope": "out",
+      "proof_evidence": [
+        "ITEM:COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE"
+      ],
+      "scope_source": "OWNER:1792559332453684332"
+    },
+    {
+      "id": "fire_stamping",
+      "text": "Opt-in wild giants converge on qualifying outdoor fire clusters, destroy nearby fires and blunt-damage burning things/buildings; messages and gates. Does not track or pursue a departed igniter.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_BlazeKernel.cs",
+        "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Historical suite UNMEASURED without stamper on tier. Hook calls are not natural pathing through size-gated islands.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "calling_pyre",
+      "text": "Ideology ritual with forbidden/last-rite/venerated beliefs and meme gates; ignites fields, calls loaded stamper kinds from edge (some manhunters), records history/mood and honest no-herd/thin-fire outcome.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_PyreKernel.cs",
+        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Defs/ignite/call hooks bypass full ritual and do not prove local species pool, complete ceremony, memories or colony fallout.",
+      "scope": "approved",
+      "scope_source": "OWNER:1792111545451492977"
+    },
+    {
+      "id": "acoustic_payload",
+      "text": "Optional Acoustic Scanner payload names moving crust creatures, sweetline roots, hollow vine and hidden caves; guarded extension belongs to scanner, not a new warning product.",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation located; no adequate current acceptance evidence established in this dry run.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "settings",
+      "text": "Persisted master/feature settings, tuning, shared dependency greying and scope labels; WriteSettings reapplies dripping and redraws lean. Vanilla data remains loaded with master off.",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitMasters.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Current dependency declarations are built despite old SCRUB_SETTINGS item prose; field roundtrips do not prove every effect, all-off or invalid stored values.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "proof_tools",
+      "text": "Suite, live C# hooks, kernel tables/fuzz and mutation checks; source selftests for site, fauna, wind/sound, shed probe and zero-wildlife instrument; diagnostic crown/Stall scripts.",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/validation.py",
+        "src/RimMandrake/LeaningScrub/selftest_leaningscrub.py",
+        "src/RimMandrake/LeaningScrub/Source/SelfTest/Program.cs",
+        "src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py",
+        "src/RimMandrake/LeaningScrub/repro_crown_mob.py",
+        "src/RimMandrake/LeaningScrub/repro_stall_move.py",
+        "src/RimMandrake/LeaningScrub/check_stall_move.py",
+        "src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical verification includes classified FAIL/UNMEASURED; current feature PASS is never inferred from test-file existence.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "saved_site",
+      "text": "Shared disposable-site recipe, native-fauna and tile/heading save-reload checks, preflight/northstar plan and literal per-clause live wrapper; source now expects v3.",
+      "source": "src/RimMandrake/LeaningScrub/site_spec.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/site_spec.py",
+        "src/RimMandrake/LeaningScrub/prep_site.py",
+        "src/RimMandrake/LeaningScrub/northstar_site.py",
+        "src/RimMandrake/LeaningScrub/northstar_plan.py",
+        "src/RimMandrake/LeaningScrub/preflight_leaningscrub.py",
+        "src/RimMandrake/LeaningScrub/live_proof.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 2 saved-site clauses passed on earlier registry; current source/current save were not fingerprint matched.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.txt"
+      ]
+    },
+    {
+      "id": "review_and_mapgen_tools",
+      "text": "Real-map island/performance/path checks and numbered per-form keeper review stations; fresh-map wildlife diagnostic names zero-spawn routes. Staging is not owner approval.",
+      "source": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+        "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 1 keeper staged with stations; islands check partial due to damaging walk. Nov 3 wildlife proof passed; raw outputs external.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "bark_wardens_removed",
+      "text": "Former bark-warden roost, species, aggression and settings were deliberately removed; not new content owed.",
+      "source": "OWNER:1792759871491132479",
+      "impl": "absent",
+      "search_scope": "Current Source, explicit csproj compile list and Defs contain no guardian implementation; removal digest confirms 86b7eaaa9.",
+      "proof": "missing",
+      "scope": "out",
+      "scope_source": "OWNER:1792759871491132479"
+    },
+    {
+      "id": "drying_scar_removed",
+      "text": "Vaporator V-blight terrain drying is out under later plain-vaporator ruling.",
+      "source": "OWNER:1792111546358402235",
+      "impl": "absent",
+      "search_scope": "Current WindVaporator.xml explicitly excludes wake/terrain morph; compiled Source and own Defs have no drying terrain mechanic.",
+      "proof": "missing",
+      "scope": "out",
+      "scope_source": "OWNER:1792111546358402235"
+    },
+    {
+      "id": "shokka_ambush",
+      "text": "Specialised fuzz-edge flat-hold ambush; the animal is already built as an ordinary predator.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
+      "impl": "absent",
+      "search_scope": "Read current fauna def and compiled LeaningScrub sources; searched src C#/XML for SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY and proposed ambush extension names. Only explicit STUB ownership found; no opt-in site-rule implementation.",
+      "proof": "missing",
+      "scope": "not_opened",
+      "scope_note": "Existing build-item brief and source STUB found; missing owner-scope provenance is not permission to re-vote inclusion. No retention question is drafted."
+    },
+    {
+      "id": "fuzzviper_ambush",
+      "text": "Specialised run-wall ambush; ordinary predator is built.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444",
+      "impl": "absent",
+      "search_scope": "Read current fauna def and compiled LeaningScrub sources; searched src C#/XML for SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY and proposed ambush extension names. Only explicit STUB ownership found; no opt-in site-rule implementation.",
+      "proof": "missing",
+      "scope": "not_opened",
+      "scope_note": "Existing build-item brief and source STUB found; missing owner-scope provenance is not permission to re-vote inclusion. No retention question is drafted."
+    },
+    {
+      "id": "ribbonwhip_confinement",
+      "text": "Canopy-only movement confinement; ripple and bloom sway already built.",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642",
+      "impl": "absent",
+      "search_scope": "Read current fauna def and compiled LeaningScrub sources; searched src C#/XML for SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY and proposed ambush extension names. Only explicit STUB ownership found; no opt-in site-rule implementation.",
+      "proof": "missing",
+      "scope": "not_opened",
+      "scope_note": "Existing build-item brief and source STUB found; missing owner-scope provenance is not permission to re-vote inclusion. No retention question is drafted."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "guardian_history",
+      "speaker": "agent",
+      "source": "OWNER:1792759871491132479",
+      "status": "resolved",
+      "text": "Bark-wardens removed, confirmed by source compile list/Defs and fluff-cut digest. About and older missing-warden item are stale; no guardian build proposed."
+    },
+    {
+      "id": "vaporator_history",
+      "speaker": "agent",
+      "source": "OWNER:1792111546358402235",
+      "status": "resolved",
+      "text": "Plain powered vaporator present; scar explicitly out. Old V-blight spec is historical."
+    },
+    {
+      "id": "farmer_history",
+      "speaker": "agent",
+      "source": "OWNER:1792559332453684332",
+      "status": "resolved",
+      "text": "Farmer camps removed. Current GenStep has no farmerFaction; source headers/CombHolds comment referring to OutlanderCivil are stale. Scavenger camps remain."
+    },
+    {
+      "id": "shirrel_frames",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022",
+      "status": "resolved",
+      "text": "Flight prefix is wired despite stale RM_ShirrelGlide.cs and walk text. Independent flight animation/visual proof not claimed."
+    },
+    {
+      "id": "wind_dust_history",
+      "speaker": "agent",
+      "source": "OWNER:1792758762946045552",
+      "status": "resolved",
+      "text": "Owned A/B textures are present; old placeholder header is not current art state. Live final look not verified."
+    },
+    {
+      "id": "source_of_fire",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:220",
+      "status": "open",
+      "text": "The frozen biome sheet already makes the arsonist the target; current code damages burning things only. q07 asks attribution/pursuit/escape, never whether burning material alone fulfils the promise."
+    },
+    {
+      "id": "hidden_hunting",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:13",
+      "status": "open",
+      "text": "Reliable protein at exposed interface crossings is already promised in the frozen biome sheet. Psychological invisibility and direct Pass checks do not establish useful exposure/time/reward. q05 clarifies that acceptance bar, not whether hunting exists."
+    },
+    {
+      "id": "abstract_visits",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:171",
+      "status": "open",
+      "text": "Built visit counters/marks are abstract; no found owner event settles whether live arrival is required. q08, not a claim that visits are unbuilt."
+    },
+    {
+      "id": "premium_fuel",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+      "status": "open",
+      "text": "Fuel acceptance is built; long/hot superiority has no own energy field/hook located. Reward/pacing q06; do not invent a multiplier as his number."
+    },
+    {
+      "id": "stubbed_ambush",
+      "speaker": "agent",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
+      "status": "unresolved_build_scope",
+      "text": "Shokka/Fuzzviper special ambush and Ribbonwhip canopy confinement still point at SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY. Ordinary animals, ripple/sway and Surrik/den/larder/glide are already built. Need no question asking whether animals exist."
+    },
+    {
+      "id": "acceptance_history",
+      "speaker": "agent",
+      "source": "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+      "status": "unverified_current",
+      "text": "Nov 1 island hooks 5/5 and share/perf/rooms pass, but natural path walk MOD fail (downed colonist); overall partial. Oct 23 suite verification includes classified FAIL/UNMEASURED. No current all-pass inferred."
+    }
+  ],
+  "failure_modes": [
+    "F1: The endless moving plain and plentiful tall venomvine do not read in play, so the owner's chosen experience becomes generic shrubland. Source: design/RimMandrake/biome_experiences_2026-10-20.md:17.",
+    "F2: Wind, concealment, dangerous passages and usable resources fail to create coherent colony choices, despite individually present features. Source: infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md.",
+    "F3: Hidden hazards, silent losses or misleading proof/settings make the biome unfair or falsely accepted. Source: src/RimMandrake/rimflow/roles/designer_scene_contract.md."
+  ],
+  "owner_experience": {
+    "id": "chosen_experience",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:17",
+    "speaker": "owner",
+    "provenance": "Existing owner-chosen sentence, picked by card 2026-10-20 as recorded by that document. This is not approval of this run's root draft; no OWNER tsn invented.",
+    "text": "Endless leaning grass, endless motion, endless venomvine. Power is free here, but footing is not."
+  },
+  "root_draft": {
+    "id": "proposed_root",
+    "speaker": "agent",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:17",
+    "basis": [
+      "OWNER:1792167263801507527",
+      "OWNER:1792214337674231269",
+      "OWNER:1792544480517795041",
+      "ITEM:LEANINGSCRUB_MECHANICS_BUILD_1"
+    ],
+    "text": "LeaningScrub is an endless moving fuzz plain where steady wind makes power plentiful and tall, dangerous venomvine makes footing costly. One wind shapes the plants, carries scent and drives fire, through a rich soundscape of small life. Beneath the canopy, a passing body sets off a wave of scattering, swaying and surfacing creatures; some burst into the air, others shed a twitching arm or retreat toward their home. The Stall exposes movement, while the Gale brings noise, turbine surges and breakdown risk, and a busier plain. Venomvine forms make islands with different dangers and rewards, creeping slowly downwind while the colony works its ways through. Fuzz and sweetline felt become blankets that bank premium fuel for future seasons; rare named sweetline trees gather coats, shed felt and keep a history. Dead farmsteads teach powered fog-water harvesting, and eligible scavenger clans can inhabit the land. Open fires bring giants down on the blaze and its maker; the calling-pyre makes that danger a deliberate, costly act. A viable home is possible here, but its people must earn their routes, read the wind and respect the life concealed beneath their feet."
+  },
+  "snapshot": {
+    "id": "mirror_snapshot",
+    "source": "MIRROR_HEAD",
+    "text": "db3efe23c5f58b6a5a86caff67d7876323b7e8cf 2026-11-10T00:32:21-08:00",
+    "note": "Mirror can refresh externally; this is a read snapshot, not a guaranteed atomic full-tree capture."
+  },
+  "script_audit": [
+    {
+      "id": "load_data",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::defs_chain / patches_chain / settings_chain / log_chain",
+      "about": [
+        "packaging",
+        "biome_rosters",
+        "settings"
+      ],
+      "start": "Loaded composed package, DLC and named defs checked; settings preflight requires defaults.",
+      "control": "Schema/patch/default failures reject; armed patch does not demonstrate its effect.",
+      "restore": "Settings roundtrips restore shipped defaults; log/data reads mostly observational.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Gameplay effect controls for armed patches; original-value snapshots if preflight is bypassed; load fingerprint binding."
+      ]
+    },
+    {
+      "id": "fauna_flora",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::fauna_chain / flora_chain",
+      "about": [
+        "native_cast",
+        "fuzz_flora",
+        "flight_art"
+      ],
+      "start": "Cleared soil pad; polluted-only plant cells treated separately; live spawned things checked.",
+      "control": "Spawn/readability errors fail; flight capability stat read only.",
+      "restore": "Pad deletion in finally, roof removal; wildlife and bystanders elsewhere have already been changed.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Natural distribution and play-zoom recognition; original pad/terrain/wildlife recovery; owner hold."
+      ]
+    },
+    {
+      "id": "windlean_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::windlean_chain",
+      "about": [
+        "plant_lean",
+        "gale_dust",
+        "wind_weather"
+      ],
+      "start": "Weather locked/read back; actual Scrub extension required for lean.",
+      "control": "Lean toggle-off and side counters; twins carry wind; overlay direction/draw hook.",
+      "restore": "Settings/defaults and Clear weather; hook restores prior lean setting and redraws.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Actual appearance through motion/play zoom and study zoom; accepted alpha art look; original-weather snapshot and owner hold."
+      ]
+    },
+    {
+      "id": "lean_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::lean_chain -> Source/RM_TheLeanProof.cs",
+      "about": [
+        "one_heading",
+        "lean_scent",
+        "lean_fire"
+      ],
+      "start": "Real Scrub map/heading required; proof hooks prepare their own actors and fires.",
+      "control": "Upwind/downwind/off scent arms; statistical biased vs ordinary fire arms.",
+      "restore": "C# fixture/settings cleanup; external suite returns weather to Clear.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Natural hunting and spreading fire interaction; persistent recovery/hold journal; current site fingerprint."
+      ]
+    },
+    {
+      "id": "stall_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::stall_chain",
+      "about": [
+        "stall_freeze"
+      ],
+      "start": "Clear pad, full small Thornhold/large Shirrel, asserted Stall; sampled jobs distinguish wander from other movement.",
+      "control": "Larger animal must move/wander; feature/master off must release small animal.",
+      "restore": "Deletes pad, strips roof and resets Clear; no original wildlife restored.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Stillness judged in an ecology scene without starving/fleeing/tether contamination; saved recovery and owner hold."
+      ]
+    },
+    {
+      "id": "gale_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::gale_chain",
+      "about": [
+        "gale_deafening",
+        "gale_power",
+        "gale_raid_weight"
+      ],
+      "start": "Roofed/exposed pawn fixture, colony-owned turbine; weather and output inspected.",
+      "control": "Roofed and toggle-off pawns; surge on/off; breakdown test accelerates MTB.",
+      "restore": "Deletes fixtures; restores default fields and Clear; terrain and pre-existing actors not recovered.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Storyteller probability observation; ordinary breakdown pacing and useful power/communication consequences; original state recovery/hold."
+      ]
+    },
+    {
+      "id": "lash_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::lash_chain",
+      "about": [
+        "twitcher_lash"
+      ],
+      "start": "Mature stand and test pawn; injury/venom counted separately from ambient heat/glare.",
+      "control": "Toggle off first, poised on, recovery time window.",
+      "restore": "Pad cleanup and default settings; no restoration of removed prior world content.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Visible poised/spent change; actual approach/outside/flying negatives; saved cooldown roundtrip; recovery/hold."
+      ]
+    },
+    {
+      "id": "smother_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::smother_chain",
+      "about": [
+        "smother_craft",
+        "dead_cane_fuel"
+      ],
+      "start": "Blanket/stand/job setup and shortened maturation; campfire burned enough to accept fuel.",
+      "control": "Feature-off holds claims, active job off check elsewhere; fuel actually accepted.",
+      "restore": "Default settings restored, pad objects removed; long clock advance remains.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Original-time/map recovery; true season-scale cost and fuel advantage; blanket consumption/failed output conservation; hold."
+      ]
+    },
+    {
+      "id": "dripping_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::dripping_chain",
+      "about": [
+        "dripping"
+      ],
+      "start": "Mature planted stand, actual harvest work, inspect growth and venom stacks.",
+      "control": "Regrow-off branch cannot be changed by bridge field alone; startup/WriteSettings Apply needed.",
+      "restore": "Pad cleanup.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "A discriminating destructive-harvest OFF run through real WriteSettings/reload, not a field roundtrip; recovery/hold."
+      ]
+    },
+    {
+      "id": "crown_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::crown_chain / repro_crown_mob.py",
+      "about": [
+        "crown_mob"
+      ],
+      "start": "Mature crown, fed Dustflutters, asserted Stall, job/distance samples.",
+      "control": "Toggle off expects distance, on expects gathering; nonidle cohort can be UNMEASURED.",
+      "restore": "Pad cleanup can miss fled animals outside pad; no original animal snapshot.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Busy/ripple/flight interplay and cap case as ordinary acceptance; safe owner-present motion review; original-state recovery/hold."
+      ]
+    },
+    {
+      "id": "bloom_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::bloom_chain",
+      "about": [
+        "runway_bloom",
+        "vissler_arm_food",
+        "surrik_swim"
+      ],
+      "start": "Explicit animals/fuzz/walker, health and timing; subsurface hook stages real under-crust state.",
+      "control": "Toggle-off and master-off controls; Sway/exit-hole hook has under-crust setup.",
+      "restore": "Pad and weather cleanup; fled actors can escape pad bounds, direct hook may affect other nearby fauna.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Complete visible sequence with owner for flyers; actual arm eating and surfacing strike; journal/hold and all created IDs recovered."
+      ]
+    },
+    {
+      "id": "ripple_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::ripple_chain -> Source/RM_Ripple.cs::ProofRipple",
+      "about": [
+        "ripple",
+        "windbreak_lee"
+      ],
+      "start": "Fuzz patch, small spawned animal, direct Pass; original weather retained by hook.",
+      "control": "On/off psychological invisibility and still-Stall case.",
+      "restore": "Hook removes own pawn/restores values; outer patch cleanup is not finally and does not restore original terrain/plants.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Moving-Stall, Gale size threshold, lee/no-wall, hunt targetability and visible shimmer; exception-safe recovery/hold."
+      ]
+    },
+    {
+      "id": "stallhunt_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::stallhunt_chain -> Source/RM_StallHunt.cs::ProofStallHunt",
+      "about": [
+        "stall_hunter"
+      ],
+      "start": "Hawk/prey generated, forced Stall; ripple explicitly OFF so prey visible.",
+      "control": "Toggle on/off job selection; tests hunter's assigned target.",
+      "restore": "Own pawn/weather/settings restored.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Wind/hidden-still/moving-Stall interaction under ripple ON; actual hunt outcome; flyer review only with owner; journal/hold."
+      ]
+    },
+    {
+      "id": "dens_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::dens_chain",
+      "about": [
+        "thornhold_den",
+        "rollbug_larder"
+      ],
+      "start": "Prepared stand, attacker, bug, corpse and larder; real giver/driver hooks.",
+      "control": "Stand-off, carrion-off and colony-corpse exclusion; same corpse count checked after haul.",
+      "restore": "Finally pad/actor cleanup; removes standing Thornhold before bug case.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Ordinary unprovoked passing, chase/disengage, interrupted corpse carry and all gear/part conservation over days; original site recovery/hold."
+      ]
+    },
+    {
+      "id": "forms_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::forms_chain -> Source/RM_VenomvineForms.cs::ProofForm",
+      "about": [
+        "rearing",
+        "walking",
+        "hoard",
+        "quench",
+        "sworn",
+        "shedding"
+      ],
+      "start": "Per-form stand/people/fire/items fixture; fixed downwind vector for Walk/Shed, not natural Gale trigger.",
+      "control": "Each form on/off; marked/unmarked scratch, contents and foam effects.",
+      "restore": "C# hook restores displaced plants/own things/settings; bystander suite protects identified objects.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Natural Gale onset, long-game spread safety/caps, held-item rot/lifecycle, reload; real visible state changes; journal/hold."
+      ]
+    },
+    {
+      "id": "four_forms_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::four_forms_chain -> Source/RM_VenomvineFourForms.cs::ProofForm",
+      "about": [
+        "strangler",
+        "weeper",
+        "sleeper",
+        "lure"
+      ],
+      "start": "Grown form plus adjacent target or pawn as needed; direct long ticks/sweep.",
+      "control": "Per-feature on/off result checks.",
+      "restore": "Hook removes own fixtures/restores settings.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Actual auto-trim work; Weeper cap/cleanup; small/airborne sleeper negatives plus hazard settings; fruit approach/eating; journal/hold."
+      ]
+    },
+    {
+      "id": "islands_hooks",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::islands_chain",
+      "about": [
+        "vine_islands",
+        "vine_creep",
+        "vine_growth_exemption"
+      ],
+      "start": "Current disposable map; uses real Scrub extension even off-biome, own start marker and growth fixture.",
+      "control": "Creep on/off/at cap and young unarmed; island share/start/reach readback; no paired island-off map.",
+      "restore": "ProofIslands leaves newly laid map-wide islands; creep hooks clean their fixture; no map snapshot restoration.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Actual initial-gen on/off, downwind bias on real heading and repeated natural growth; no journal, confirmed reload or hold."
+      ]
+    },
+    {
+      "id": "islands_map_and_keeper",
+      "source": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py::check / stage",
+      "about": [
+        "review_and_mapgen_tools",
+        "vine_islands"
+      ],
+      "start": "Real saved Scrub map, counts components/rooms/clearance and probes colonist paths/performance.",
+      "control": "Directional routes and thresholds discriminate bad paths/perf; no matched no-island control for all costs.",
+      "restore": "check alters pawn position/jobs/draft/time speed; stage creates signs/stations and saves keeper.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Recorded persistent recovery and hold; ordinary-route health acceptance (historical MOD fail); owner's art/mechanic judgement is still distinct from successful keeper save."
+      ]
+    },
+    {
+      "id": "sweetline_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::sweetline_chain / sweetline_shed_probe.py",
+      "about": [
+        "sweetline_landmark",
+        "sweetline_name_history",
+        "sweetline_shed",
+        "sweetline_rub",
+        "sweetline_visits",
+        "felt_comfort",
+        "felt_apparel"
+      ],
+      "start": "Mature tree/inspect, sheep full-coat hook, timer jump +5.5d then +13d visit arms; comfort via abstract stat pipeline.",
+      "control": "Station/scratch/visits/comfort off arms; map-step 0 and 1.",
+      "restore": "Pad deleted; off-pad generated trees remain; global time jumps and draft/heal changes not restored.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Name/history save/reload; apparel mood actually worn; wild visits/conservation; physical visitors if promised; true furniture use; original-time/map recovery and hold."
+      ]
+    },
+    {
+      "id": "stamp_pyre",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::stamp_chain / pyre_chain",
+      "about": [
+        "fire_stamping",
+        "calling_pyre"
+      ],
+      "start": "Outdoor crop/fire fixtures; kind with stamper marker required; defs/meme gate checks.",
+      "control": "Feature off; roof/no-threshold fire; thin-cluster helper in edge-fix suite.",
+      "restore": "Hooks track fixture/new fires and restore settings; outer crop cleanup lacks durable recovery journal.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "No full ritual beliefs/quality/memory run",
+        "no believable source pursuit or fire-in-island route",
+        "hook dispatch not natural path proof",
+        "owner hold."
+      ]
+    },
+    {
+      "id": "injections_scene",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::injections_chain -> Source/RM_ScrubInjections.cs::ProofInjections",
+      "about": [
+        "ruin_sites",
+        "vaporator",
+        "scavenger_camps"
+      ],
+      "start": "Runs real map step on current home map with switches forced on; needs eligible existing faction for camps.",
+      "control": "Counts sites and vaporator wrecks, conditional camp check; no generation-off paired map.",
+      "restore": "Restores switches only; explicitly leaves ruins/camp on disposable map.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Asserted faction/start suitability, absence control, actual research/construction/water cycle, camp diplomacy; durable recovery/hold."
+      ]
+    },
+    {
+      "id": "bystanders_edges",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/validation.py::bystanders_chain / edge_fixes_chain",
+      "about": [
+        "proof_tools"
+      ],
+      "start": "Protected plant/steel/fire/actor witnesses around proof hooks; edge helper fixtures.",
+      "control": "Witnesses must survive; known old destructive paths must make row red.",
+      "restore": "Witness cleanup and default restoration; original pad still destroyed in preparation.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Whole-scene recovery outside local witnesses; proof of real experience not furnished by harness safety rows."
+      ]
+    },
+    {
+      "id": "fresh_wildlife",
+      "source": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py",
+      "entry_point": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py::inner",
+      "about": [
+        "biome_rosters",
+        "saved_site"
+      ],
+      "start": "Fresh disposable world/map, real Scrub native set, no clean/save/registry write.",
+      "control": "Unfiltered wild list cross-checks per-native census; zero/unreadable input fails and names diagnostic routes.",
+      "restore": "Creates a scratch world/map; no prior game reload journal in this script.",
+      "hold": "No scene-begin/scene-end/scene-hold journal or owner-review hold in this entry point.",
+      "missing": [
+        "Current fingerprint, stable restoration of prior loaded game and owner hold if reviewed; no distribution/ecology/art acceptance."
+      ]
+    }
+  ],
+  "neighbours": [
+    {
+      "id": "hazard_kit",
+      "source": "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Venomvine.xml",
+      "owner": "EnvironmentalHazards",
+      "text": "Base thicket, body-size barriers, contact venom, trap/race immunity and global hazard settings. LeaningScrub opts in through comps and registered mechanic gates; special lash routes must respect the promised settings boundary."
+    },
+    {
+      "id": "creature_kit",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+      "owner": "CreatureBehaviors",
+      "text": "Surrik swim/strike, home tether/scoped aggression and shared SunGeometry. Reuse and verify those opt-ins rather than building rival AI."
+    },
+    {
+      "id": "biomes_shell",
+      "source": "src/RimMandrake/Biomes.compose.json",
+      "owner": "Baroque Biomes",
+      "text": "Packaging and shell; sweetline canopy renderer extension lives in shared Biomes code. Own folder presence is not deployed package truth."
+    },
+    {
+      "id": "utinni",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml",
+      "owner": "UtinniPatches/SWBestiary",
+      "text": "Franchise roster, thunderstep stamper and existing scavenger-clan choices. Own-RM fauna appearance bars are distinct from this cast. No new faction invented."
+    },
+    {
+      "id": "giants",
+      "source": "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+      "owner": "HugeThings",
+      "text": "Giant physical passage/warnings are a separate service. LeaningScrub fire-stamp marker/kind choice is not automatically a native T2+ passage roster. LEANINGSCRUB_TITAN_POPULATE_SCRUB_UNSTOMPED remains a roster/passers task, not a new generic engine."
+    },
+    {
+      "id": "growth",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
+      "owner": "ExplosiveGrowth",
+      "text": "Venomvine explicitly opts out of soak and ordinary growth bands. Sweetline longevity is separately ruled; no dry-scar system inferred."
+    },
+    {
+      "id": "scanner",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
+      "owner": "Acoustic Scanner",
+      "text": "Existing optional payload, guarded and string-resolved. Not authority to construct the prohibited ecology-warning product."
+    },
+    {
+      "id": "vanilla",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml",
+      "owner": "Vanilla RimWorld",
+      "text": "CompSpawner water production, techprints/research, food-search scavenging, shearing coats, ritual framework and fuel filters already do those jobs. Acceptance must use them, rather than infer play from static hook checks."
+    }
+  ],
+  "reading_limits": {
+    "id": "reading_limits",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "text": "Requested guidance and HugeThings example read; affected compiled sources/defs, scripts, primary design/spec history and relevant item/ledger excerpts inspected. Broad cross-reference search bounded to this mod and direct neighbours. Historical large docs/items sometimes read by selected sections; no full-file code-review CLEAN certificate or official launcher folded inventory claimed. No runtime, build, art judgement or live acceptance run."
+  },
+  "built_reviewed": [
+    {
+      "id": "source_0",
+      "ref": "src/RimMandrake/LeaningScrub/About/About.xml",
+      "source": "src/RimMandrake/LeaningScrub/About/About.xml",
+      "covered_by": "packaging",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_1",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
+      "covered_by": "biome_rosters",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_2",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml",
+      "covered_by": "thornhold_den",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_3",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
+      "covered_by": "vine_growth_exemption",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_4",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml",
+      "covered_by": "comb_tombstone",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_5",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml",
+      "covered_by": "gale_deafening",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_6",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml",
+      "covered_by": "ripple",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_7",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Surrik.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Surrik.xml",
+      "covered_by": "surrik_swim",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_8",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+      "covered_by": "calling_pyre",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_9",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml",
+      "covered_by": "rollbug_larder",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_10",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_SweetlineScratching.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_SweetlineScratching.xml",
+      "covered_by": "sweetline_rub",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_11",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml",
+      "covered_by": "comb_tombstone",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_12",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_SweetlineTrees_GenStep.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_SweetlineTrees_GenStep.xml",
+      "covered_by": "sweetline_landmark",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_13",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_VenomvineIslands_GenStep.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_VenomvineIslands_GenStep.xml",
+      "covered_by": "vine_islands",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_14",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/Misc/RM_Chikka_Aliases.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/Misc/RM_Chikka_Aliases.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_15",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_16",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml",
+      "covered_by": "sweetline_name_history",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_17",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml",
+      "covered_by": "vaporator",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_18",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_19",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_ChikkaSupport.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_ChikkaSupport.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_20",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_LeaningScrubItems.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_LeaningScrubItems.xml",
+      "covered_by": "vissler_arm_food",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_21",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml",
+      "covered_by": "dead_cane_fuel",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_22",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml",
+      "covered_by": "sweetline_visits",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_23",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml",
+      "covered_by": "shedding",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_24",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFourFormsSupport.xml",
+      "covered_by": "lure",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_25",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Misc/RM_SurrikExitHole.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Misc/RM_SurrikExitHole.xml",
+      "covered_by": "runway_bloom",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_26",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Fuzz.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Fuzz.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_27",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_28",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVanillaReplacements.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVanillaReplacements.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_29",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml",
+      "covered_by": "hollow_passage",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_30",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Salvessa.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Salvessa.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_31",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml",
+      "covered_by": "sweetline_landmark",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_32",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_TanniVine.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_TanniVine.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_33",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml",
+      "covered_by": "lure",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_34",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
+      "covered_by": "sworn",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_35",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Baseopsis.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Baseopsis.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_36",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Diplocaulus.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Diplocaulus.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_37",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Holcorobeus.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Holcorobeus.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_38",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Platyhystrix.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Platyhystrix.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_39",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protosolpuga.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protosolpuga.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_40",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protovermes.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protovermes.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_41",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Segnosaurus.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Segnosaurus.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_42",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Termitotron.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Termitotron.xml",
+      "covered_by": "absorbed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_43",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Chikka.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_44",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Durrok.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Durrok.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_45",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
+      "covered_by": "ribbonwhip_confinement",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_46",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Mullgoth.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Mullgoth.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_47",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_TunnelSnake.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_TunnelSnake.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_48",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Vurra.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Vurra.xml",
+      "covered_by": "rehomed_fauna",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_49",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml",
+      "covered_by": "felt_apparel",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_50",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
+      "covered_by": "wind_soundscape",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_51",
+      "ref": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml",
+      "source": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml",
+      "covered_by": "wind_soundscape",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_52",
+      "ref": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+      "source": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+      "covered_by": "review_and_mapgen_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_53",
+      "ref": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py",
+      "source": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py",
+      "covered_by": "review_and_mapgen_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_54",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml",
+      "covered_by": "packaging",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_55",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml",
+      "covered_by": "sweetline_landmark",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_56",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
+      "covered_by": "acoustic_payload",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_57",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
+      "covered_by": "dead_cane_fuel",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_58",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml",
+      "covered_by": "fuzz_flora",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_59",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml",
+      "covered_by": "ripple",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_60",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml",
+      "covered_by": "felt_comfort",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_61",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_VenomvineThicket_Smotherable.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_VenomvineThicket_Smotherable.xml",
+      "covered_by": "smother_craft",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_62",
+      "ref": "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
+      "source": "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
+      "covered_by": "vine_growth_exemption",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_63",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_BlazeKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_BlazeKernel.cs",
+      "covered_by": "fire_stamping",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_64",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs",
+      "covered_by": "sweetline_rub",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_65",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+      "covered_by": "hoard",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_66",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FourFormsKernel.cs",
+      "covered_by": "lure",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_67",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GlideKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GlideKernel.cs",
+      "covered_by": "shirrel_glide",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_68",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_InjectionKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_InjectionKernel.cs",
+      "covered_by": "ruin_sites",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_69",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_IslandKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_IslandKernel.cs",
+      "covered_by": "vine_islands",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_70",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+      "covered_by": "one_heading",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_71",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_PyreKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_PyreKernel.cs",
+      "covered_by": "calling_pyre",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_72",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs",
+      "covered_by": "windbreak_lee",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_73",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+      "covered_by": "smother_craft",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_74",
+      "ref": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_StallHuntKernel.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_StallHuntKernel.cs",
+      "covered_by": "stall_hunter",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_75",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFourFormsCheck.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFourFormsCheck.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_76",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFuzz.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFuzz.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_77",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFuzz2.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubFuzz2.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_78",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubGlideCheck.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubGlideCheck.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_79",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubIslandCheck.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubIslandCheck.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_80",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubPlantLeanCheck.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubPlantLeanCheck.cs",
+      "covered_by": "plant_lean",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_81",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubTonightCheck.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/LeaningScrubTonightCheck.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_82",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/Program.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/Program.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_83",
+      "ref": "src/RimMandrake/LeaningScrub/Source/SelfTest/RimMandrakeLeaningScrub.SelfTest.csproj",
+      "source": "src/RimMandrake/LeaningScrub/Source/SelfTest/RimMandrakeLeaningScrub.SelfTest.csproj",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_84",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs",
+      "covered_by": "calling_pyre",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_85",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs",
+      "covered_by": "fire_stamping",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_86",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs",
+      "covered_by": "sweetline_landmark",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_87",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrub.csproj",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrub.csproj",
+      "covered_by": "packaging",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_88",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubDefOf.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubDefOf.cs",
+      "covered_by": "wind_weather",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_89",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+      "covered_by": "settings",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_90",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs",
+      "covered_by": "plant_lean",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_91",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs",
+      "covered_by": "windbreak_lee",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_92",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs",
+      "covered_by": "surrik_swim",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_93",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs",
+      "covered_by": "rollbug_larder",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_94",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs",
+      "covered_by": "scavenger_camps",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_95",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs",
+      "covered_by": "shirrel_glide",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_96",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs",
+      "covered_by": "smother_craft",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_97",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs",
+      "covered_by": "stall_hunter",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_98",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs",
+      "covered_by": "felt_apparel",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_99",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs",
+      "covered_by": "sweetline_rub",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_100",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
+      "covered_by": "sweetline_visits",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_101",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs",
+      "covered_by": "lean_fire",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_102",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs",
+      "covered_by": "lean_fire",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_103",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs",
+      "covered_by": "twitcher_lash",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_104",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs",
+      "covered_by": "shedding",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_105",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs",
+      "covered_by": "lure",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_106",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs",
+      "covered_by": "vine_creep",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_107",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs",
+      "covered_by": "crown_mob",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_108",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs",
+      "covered_by": "vissler_arm_food",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_109",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs",
+      "covered_by": "gale_dust",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_110",
+      "ref": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
+      "covered_by": "gale_raid_weight",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_111",
+      "ref": "src/RimMandrake/LeaningScrub/check_stall_move.py",
+      "source": "src/RimMandrake/LeaningScrub/check_stall_move.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_112",
+      "ref": "src/RimMandrake/LeaningScrub/live_proof.py",
+      "source": "src/RimMandrake/LeaningScrub/live_proof.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_113",
+      "ref": "src/RimMandrake/LeaningScrub/northstar_plan.py",
+      "source": "src/RimMandrake/LeaningScrub/northstar_plan.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_114",
+      "ref": "src/RimMandrake/LeaningScrub/northstar_site.py",
+      "source": "src/RimMandrake/LeaningScrub/northstar_site.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_115",
+      "ref": "src/RimMandrake/LeaningScrub/preflight_leaningscrub.py",
+      "source": "src/RimMandrake/LeaningScrub/preflight_leaningscrub.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_116",
+      "ref": "src/RimMandrake/LeaningScrub/prep_site.py",
+      "source": "src/RimMandrake/LeaningScrub/prep_site.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_117",
+      "ref": "src/RimMandrake/LeaningScrub/repro_crown_mob.py",
+      "source": "src/RimMandrake/LeaningScrub/repro_crown_mob.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_118",
+      "ref": "src/RimMandrake/LeaningScrub/repro_stall_move.py",
+      "source": "src/RimMandrake/LeaningScrub/repro_stall_move.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_119",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_leaningscrub.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_leaningscrub.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_120",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py",
+      "covered_by": "surrik_swim",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_121",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_122",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_shirrel_glide.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_shirrel_glide.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_123",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_site.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_site.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_124",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py",
+      "covered_by": "wind_soundscape",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_125",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_126",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_scrub_wind.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_scrub_wind.py",
+      "covered_by": "plant_lean",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_127",
+      "ref": "src/RimMandrake/LeaningScrub/selftest_sweetline_shed_probe.py",
+      "source": "src/RimMandrake/LeaningScrub/selftest_sweetline_shed_probe.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_128",
+      "ref": "src/RimMandrake/LeaningScrub/site_spec.py",
+      "source": "src/RimMandrake/LeaningScrub/site_spec.py",
+      "covered_by": "saved_site",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_129",
+      "ref": "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py",
+      "source": "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py",
+      "covered_by": "sweetline_shed",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "source_130",
+      "ref": "src/RimMandrake/LeaningScrub/validation.py",
+      "source": "src/RimMandrake/LeaningScrub/validation.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/file accounting from own source tree; not a full-file review or runtime proof."
+    },
+    {
+      "id": "prose_0",
+      "ref": "infrastructure/state/items/COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE.md",
+      "source": "infrastructure/state/items/COMB_HOLDS_DEF_RETIRE_AFTER_THE_REMAKE.md",
+      "covered_by": "comb_tombstone",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_1",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_BARK_WARDEN_DESIGN_MISSING_ONE.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_BARK_WARDEN_DESIGN_MISSING_ONE.md",
+      "covered_by": "bark_wardens_removed",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_2",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_DEAD_VENOMVINE_RECONCILE_FUEL.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_DEAD_VENOMVINE_RECONCILE_FUEL.md",
+      "covered_by": "dead_cane_fuel",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_3",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_ENRICHMENT_QUICKTEST_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_ENRICHMENT_QUICKTEST_1.md",
+      "covered_by": "runway_bloom",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_4",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md",
+      "covered_by": "runway_bloom",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_5",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_KEPT_ART_JUDGE_FOR_OWNER_DIGEST.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_KEPT_ART_JUDGE_FOR_OWNER_DIGEST.md",
+      "covered_by": "native_cast",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_6",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+      "covered_by": "wind_weather",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_7",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_SHEET_ART_REDO_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_SHEET_ART_REDO_1.md",
+      "covered_by": "native_cast",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_8",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_SWEETLINE_ROSTER_VERIFY_BUILT.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_SWEETLINE_ROSTER_VERIFY_BUILT.md",
+      "covered_by": "sweetline_landmark",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_9",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_SWEETLINE_VISITORS_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_SWEETLINE_VISITORS_1.md",
+      "covered_by": "sweetline_visits",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_10",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_VENOMVINE_SITTING_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_VENOMVINE_SITTING_1.md",
+      "covered_by": "vine_islands",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_11",
+      "ref": "infrastructure/state/items/LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1.md",
+      "source": "infrastructure/state/items/LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1.md",
+      "covered_by": "vissler_arm_food",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_12",
+      "ref": "infrastructure/state/items/SCRUB_SETTINGS_WIRE_MASTER_CANNOT_GREY.md",
+      "source": "infrastructure/state/items/SCRUB_SETTINGS_WIRE_MASTER_CANNOT_GREY.md",
+      "covered_by": "settings",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_13",
+      "ref": "infrastructure/state/items/SCRUB_WIND_BUILD_LEAN_ON_PURPOSE.md",
+      "source": "infrastructure/state/items/SCRUB_WIND_BUILD_LEAN_ON_PURPOSE.md",
+      "covered_by": "plant_lean",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_14",
+      "ref": "infrastructure/state/items/closed/CHIKKA_HOME_DECIDE_NOT_STAR_WARS.md",
+      "source": "infrastructure/state/items/closed/CHIKKA_HOME_DECIDE_NOT_STAR_WARS.md",
+      "covered_by": "rehomed_fauna",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_15",
+      "ref": "infrastructure/state/items/closed/FARMER_CAMPS_EXCISE_COMBS_LEFTOVERS.md",
+      "source": "infrastructure/state/items/closed/FARMER_CAMPS_EXCISE_COMBS_LEFTOVERS.md",
+      "covered_by": "comb_tombstone",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_16",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_ART_AUDIT_GPT_UNKEPT_REDO_LIST.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_ART_AUDIT_GPT_UNKEPT_REDO_LIST.md",
+      "covered_by": "native_cast",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_17",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_DESCS_CORRECT_GPT_REWRITES.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_DESCS_CORRECT_GPT_REWRITES.md",
+      "covered_by": "native_cast",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_18",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_GPT_ENRICHMENT_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_GPT_ENRICHMENT_1.md",
+      "covered_by": "runway_bloom",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_19",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_LURE_VINE_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_LURE_VINE_1.md",
+      "covered_by": "lure",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_20",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_RM_MOD_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_RM_MOD_BUILD_1.md",
+      "covered_by": "packaging",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_21",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_RULED_CONTENT_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_RULED_CONTENT_1.md",
+      "covered_by": "fuzz_flora",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_22",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1.md",
+      "covered_by": "runway_bloom",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_23",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_SLEEPER_VINE_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_SLEEPER_VINE_1.md",
+      "covered_by": "sleeper",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_24",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_STRANGLER_VINE_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_STRANGLER_VINE_1.md",
+      "covered_by": "strangler",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_25",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_SWEETLINE_GUARDIAN_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_SWEETLINE_GUARDIAN_1.md",
+      "covered_by": "bark_wardens_removed",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_26",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.md",
+      "covered_by": "sweetline_name_history",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_27",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1.md",
+      "covered_by": "vine_islands",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_28",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_WEEPER_RECHECK_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_WEEPER_RECHECK_1.md",
+      "covered_by": "weeper",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_29",
+      "ref": "infrastructure/state/items/closed/LEANINGSCRUB_WEEPER_VINE_1.md",
+      "source": "infrastructure/state/items/closed/LEANINGSCRUB_WEEPER_VINE_1.md",
+      "covered_by": "weeper",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_30",
+      "ref": "infrastructure/state/items/closed/LEANING_SCRUB_FIRST_SCRIPT_1.md",
+      "source": "infrastructure/state/items/closed/LEANING_SCRUB_FIRST_SCRIPT_1.md",
+      "covered_by": "proof_tools",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_31",
+      "ref": "infrastructure/state/items/closed/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.md",
+      "source": "infrastructure/state/items/closed/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.md",
+      "covered_by": "saved_site",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_32",
+      "ref": "infrastructure/state/items/closed/SHRUBLAND_TREE_GUARDIAN_1.md",
+      "source": "infrastructure/state/items/closed/SHRUBLAND_TREE_GUARDIAN_1.md",
+      "covered_by": "bark_wardens_removed",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_33",
+      "ref": "infrastructure/state/items/closed/SWEETLINE_FELT_COMFORT_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SWEETLINE_FELT_COMFORT_BUILD_1.md",
+      "covered_by": "felt_comfort",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_34",
+      "ref": "infrastructure/state/items/closed/SWEETLINE_SCRATCHING_TREE_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/SWEETLINE_SCRATCHING_TREE_BUILD_1.md",
+      "covered_by": "sweetline_rub",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_35",
+      "ref": "infrastructure/state/items/closed/SWEETLINE_TREE_MAP_STEP_1.md",
+      "source": "infrastructure/state/items/closed/SWEETLINE_TREE_MAP_STEP_1.md",
+      "covered_by": "sweetline_landmark",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "prose_36",
+      "ref": "infrastructure/state/items/closed/SWEETLINE_WOOL_HARVEST_1.md",
+      "source": "infrastructure/state/items/closed/SWEETLINE_WOOL_HARVEST_1.md",
+      "covered_by": "sweetline_landmark",
+      "text": "Matching live/closed item prose is historical context, not authoritative current state. Current source and later ledger rulings take precedence."
+    },
+    {
+      "id": "ledger_SWEETLINE_WOOL_HARVEST_1",
+      "ref": "ITEM:SWEETLINE_WOOL_HARVEST_1",
+      "source": "ITEM:SWEETLINE_WOOL_HARVEST_1",
+      "covered_by": "sweetline_landmark",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_RM_MOD_BUILD_1",
+      "ref": "ITEM:LEANINGSCRUB_RM_MOD_BUILD_1",
+      "source": "ITEM:LEANINGSCRUB_RM_MOD_BUILD_1",
+      "covered_by": "packaging",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_BEDAZZLE_SITTING_1",
+      "ref": "ITEM:LEANINGSCRUB_BEDAZZLE_SITTING_1",
+      "source": "ITEM:LEANINGSCRUB_BEDAZZLE_SITTING_1",
+      "covered_by": "native_cast",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_RULED_CONTENT_1",
+      "ref": "ITEM:LEANINGSCRUB_RULED_CONTENT_1",
+      "source": "ITEM:LEANINGSCRUB_RULED_CONTENT_1",
+      "covered_by": "fuzz_flora",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_GPT_ENRICHMENT_1",
+      "ref": "ITEM:LEANINGSCRUB_GPT_ENRICHMENT_1",
+      "source": "ITEM:LEANINGSCRUB_GPT_ENRICHMENT_1",
+      "covered_by": "runway_bloom",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY",
+      "ref": "ITEM:LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY",
+      "source": "ITEM:LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY",
+      "covered_by": "saved_site",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_WIND_BUILD_LEAN_ON_PURPOSE",
+      "ref": "ITEM:SCRUB_WIND_BUILD_LEAN_ON_PURPOSE",
+      "source": "ITEM:SCRUB_WIND_BUILD_LEAN_ON_PURPOSE",
+      "covered_by": "plant_lean",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_STALL_SHARED_MOVE_1",
+      "ref": "ITEM:LEANINGSCRUB_STALL_SHARED_MOVE_1",
+      "source": "ITEM:LEANINGSCRUB_STALL_SHARED_MOVE_1",
+      "covered_by": "stall_freeze",
+      "text": "Observed historical drop ledger evidence, last selected verification fail. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_WILDLIFE_PROVE_NOBODY_CAME",
+      "ref": "ITEM:SCRUB_WILDLIFE_PROVE_NOBODY_CAME",
+      "source": "ITEM:SCRUB_WILDLIFE_PROVE_NOBODY_CAME",
+      "covered_by": "proof_tools",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_SWEETLINE_SHED_LIVE_1",
+      "ref": "ITEM:LEANINGSCRUB_SWEETLINE_SHED_LIVE_1",
+      "source": "ITEM:LEANINGSCRUB_SWEETLINE_SHED_LIVE_1",
+      "covered_by": "sweetline_shed",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_WILDLIFE_FIX_Z4_Z5_FINGERPRINTS",
+      "ref": "ITEM:SCRUB_WILDLIFE_FIX_Z4_Z5_FINGERPRINTS",
+      "source": "ITEM:SCRUB_WILDLIFE_FIX_Z4_Z5_FINGERPRINTS",
+      "covered_by": "proof_tools",
+      "text": "Observed historical close ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_ART_WIRING_1",
+      "ref": "ITEM:LEANINGSCRUB_ART_WIRING_1",
+      "source": "ITEM:LEANINGSCRUB_ART_WIRING_1",
+      "covered_by": "native_cast",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1",
+      "ref": "ITEM:LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1",
+      "source": "ITEM:LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1",
+      "covered_by": "vine_islands",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
+      "ref": "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
+      "source": "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
+      "covered_by": "bark_wardens_removed",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1",
+      "ref": "ITEM:LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1",
+      "source": "ITEM:LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1",
+      "covered_by": "sweetline_name_history",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_SWEETLINE_VISITORS_1",
+      "ref": "ITEM:LEANINGSCRUB_SWEETLINE_VISITORS_1",
+      "source": "ITEM:LEANINGSCRUB_SWEETLINE_VISITORS_1",
+      "covered_by": "sweetline_visits",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1",
+      "ref": "ITEM:LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1",
+      "source": "ITEM:LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1",
+      "covered_by": "vissler_arm_food",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1",
+      "ref": "ITEM:LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1",
+      "source": "ITEM:LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1",
+      "covered_by": "runway_bloom",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_ENRICHMENT_QUICKTEST_1",
+      "ref": "ITEM:LEANINGSCRUB_ENRICHMENT_QUICKTEST_1",
+      "source": "ITEM:LEANINGSCRUB_ENRICHMENT_QUICKTEST_1",
+      "covered_by": "runway_bloom",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANING_SCRUB_FIRST_SCRIPT_1",
+      "ref": "ITEM:LEANING_SCRUB_FIRST_SCRIPT_1",
+      "source": "ITEM:LEANING_SCRUB_FIRST_SCRIPT_1",
+      "covered_by": "proof_tools",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SWEETLINE_SCRATCHING_TREE_BUILD_1",
+      "ref": "ITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1",
+      "source": "ITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1",
+      "covered_by": "sweetline_rub",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SWEETLINE_FELT_COMFORT_BUILD_1",
+      "ref": "ITEM:SWEETLINE_FELT_COMFORT_BUILD_1",
+      "source": "ITEM:SWEETLINE_FELT_COMFORT_BUILD_1",
+      "covered_by": "felt_comfort",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SWEETLINE_TREE_MAP_STEP_1",
+      "ref": "ITEM:SWEETLINE_TREE_MAP_STEP_1",
+      "source": "ITEM:SWEETLINE_TREE_MAP_STEP_1",
+      "covered_by": "sweetline_landmark",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_STRANGLER_VINE_1",
+      "ref": "ITEM:LEANINGSCRUB_STRANGLER_VINE_1",
+      "source": "ITEM:LEANINGSCRUB_STRANGLER_VINE_1",
+      "covered_by": "strangler",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_WEEPER_VINE_1",
+      "ref": "ITEM:LEANINGSCRUB_WEEPER_VINE_1",
+      "source": "ITEM:LEANINGSCRUB_WEEPER_VINE_1",
+      "covered_by": "weeper",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_SLEEPER_VINE_1",
+      "ref": "ITEM:LEANINGSCRUB_SLEEPER_VINE_1",
+      "source": "ITEM:LEANINGSCRUB_SLEEPER_VINE_1",
+      "covered_by": "sleeper",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_LURE_VINE_1",
+      "ref": "ITEM:LEANINGSCRUB_LURE_VINE_1",
+      "source": "ITEM:LEANINGSCRUB_LURE_VINE_1",
+      "covered_by": "lure",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_WEEPER_RECHECK_1",
+      "ref": "ITEM:LEANINGSCRUB_WEEPER_RECHECK_1",
+      "source": "ITEM:LEANINGSCRUB_WEEPER_RECHECK_1",
+      "covered_by": "weeper",
+      "text": "Observed historical close ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY",
+      "ref": "ITEM:SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY",
+      "source": "ITEM:SCRUB_CROWNMOB_FIX_CAP_THIRTY_IS_SIXTY",
+      "covered_by": "crown_mob",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST",
+      "ref": "ITEM:SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST",
+      "source": "ITEM:SCRUB_WARDEN_FIX_RELEASE_PRUNED_FIRST",
+      "covered_by": "bark_wardens_removed",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS",
+      "ref": "ITEM:SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS",
+      "source": "ITEM:SCRUB_WARDEN_FIX_TAMED_BOSS_STILL_REIGNS",
+      "covered_by": "bark_wardens_removed",
+      "text": "Observed historical drop ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM",
+      "ref": "ITEM:SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM",
+      "source": "ITEM:SCRUB_GALE_FIX_LATCH_SLEEPS_THROUGH_STORM",
+      "covered_by": "shedding",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING",
+      "ref": "ITEM:SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING",
+      "source": "ITEM:SCRUB_THORN_FIX_COOLDOWN_PAID_FOR_NOTHING",
+      "covered_by": "shedding",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_SMOTHER_FIX_BLANKET_IGNORES_OFF",
+      "ref": "ITEM:SCRUB_SMOTHER_FIX_BLANKET_IGNORES_OFF",
+      "source": "ITEM:SCRUB_SMOTHER_FIX_BLANKET_IGNORES_OFF",
+      "covered_by": "smother_craft",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL",
+      "ref": "ITEM:SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL",
+      "source": "ITEM:SCRUB_PROOF_FIX_TIDIES_EVERYONES_STEEL",
+      "covered_by": "proof_tools",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification pass. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_DESCS_CORRECT_GPT_REWRITES",
+      "ref": "ITEM:LEANINGSCRUB_DESCS_CORRECT_GPT_REWRITES",
+      "source": "ITEM:LEANINGSCRUB_DESCS_CORRECT_GPT_REWRITES",
+      "covered_by": "native_cast",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUB_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+      "ref": "ITEM:LEANINGSCRUB_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+      "source": "ITEM:LEANINGSCRUB_ART_AUDIT_GPT_UNKEPT_REDO_LIST",
+      "covered_by": "native_cast",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUBSTUBS_FIX_POINT_AT_UNOWNING_ITEM",
+      "ref": "ITEM:LEANINGSCRUBSTUBS_FIX_POINT_AT_UNOWNING_ITEM",
+      "source": "ITEM:LEANINGSCRUBSTUBS_FIX_POINT_AT_UNOWNING_ITEM",
+      "covered_by": "proof_tools",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+      "ref": "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+      "source": "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+      "covered_by": "proof_tools",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SHIRREL_DECIDE_GALE_GLIDE",
+      "ref": "ITEM:SHIRREL_DECIDE_GALE_GLIDE",
+      "source": "ITEM:SHIRREL_DECIDE_GALE_GLIDE",
+      "covered_by": "shirrel_glide",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SHIRREL_BILLOW_WIDEN_NORTH_FAINT",
+      "ref": "ITEM:SHIRREL_BILLOW_WIDEN_NORTH_FAINT",
+      "source": "ITEM:SHIRREL_BILLOW_WIDEN_NORTH_FAINT",
+      "covered_by": "flight_art",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES",
+      "ref": "ITEM:SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES",
+      "source": "ITEM:SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES",
+      "covered_by": "flight_art",
+      "text": "Observed historical close ledger evidence. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "ledger_VENOMVINE_BUILD_SCRUB_GROWS_TEETH",
+      "ref": "ITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH",
+      "source": "ITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH",
+      "covered_by": "vine_islands",
+      "text": "Observed historical nonterminal ledger evidence, last selected verification partial. Scanned raw frozen+seat events, not an official model replay. Removed content is not recast as a missing build."
+    },
+    {
+      "id": "live_pointer_0_txt",
+      "ref": "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt",
+      "source": "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt",
+      "covered_by": "crown_mob",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_0_criteria",
+      "ref": "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.criteria",
+      "source": "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.criteria",
+      "covered_by": "crown_mob",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_1_txt",
+      "ref": "infrastructure/state/live_proofs/LEANINGSCRUB_SWEETLINE_SHED_LIVE_1.txt",
+      "source": "infrastructure/state/live_proofs/LEANINGSCRUB_SWEETLINE_SHED_LIVE_1.txt",
+      "covered_by": "sweetline_shed",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_1_criteria",
+      "ref": "infrastructure/state/live_proofs/LEANINGSCRUB_SWEETLINE_SHED_LIVE_1.criteria",
+      "source": "infrastructure/state/live_proofs/LEANINGSCRUB_SWEETLINE_SHED_LIVE_1.criteria",
+      "covered_by": "sweetline_shed",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_2_txt",
+      "ref": "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.txt",
+      "source": "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.txt",
+      "covered_by": "saved_site",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_2_criteria",
+      "ref": "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.criteria",
+      "source": "infrastructure/state/live_proofs/LEANING_SCRUB_SITE_BUILD_LEANS_ONE_WAY.criteria",
+      "covered_by": "saved_site",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_3_txt",
+      "ref": "infrastructure/state/live_proofs/SCRUB_WILDLIFE_PROVE_NOBODY_CAME.txt",
+      "source": "infrastructure/state/live_proofs/SCRUB_WILDLIFE_PROVE_NOBODY_CAME.txt",
+      "covered_by": "proof_tools",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    },
+    {
+      "id": "live_pointer_3_criteria",
+      "ref": "infrastructure/state/live_proofs/SCRUB_WILDLIFE_PROVE_NOBODY_CAME.criteria",
+      "source": "infrastructure/state/live_proofs/SCRUB_WILDLIFE_PROVE_NOBODY_CAME.criteria",
+      "covered_by": "proof_tools",
+      "text": "Read as proof command/criteria configuration, not a recorded successful execution or current fingerprint."
+    }
+  ],
+  "coverage_note": {
+    "id": "coverage_method",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "text": "Built inventory accounts for own source/defs/patches/test tooling and observed terminal subject items. Library content is covered by explicit opt-ins. Generated obj/bin artifacts excluded, shipped DLL/texture presence covered by packaging/asset capabilities; no binary or every-frame artistic verification. No injected built-evidence packet or alias list exists in this rehearsal, so official stage accounting remains unclaimed."
+  },
+  "review": {
+    "id": "question_review",
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "speaker": "agent",
+    "by": "/root/question_review",
+    "verdict": "pass",
+    "scope": "Exact revised eight-ask bank and proposed root; follow-up pass after initial strikes. Reviewer read authoritative code/spec/OWNER evidence, not just the author's interpretation.",
+    "adaptation": "No token charge or ledger event: user explicitly required no ledger. Drafts remain drafts, root remains null.",
+    "struck_then_revised": [
+      "q03: generic maintenance replaced by routine-route commitment",
+      "q05: settled crossings retained; practical hunting success clarified",
+      "q06: premium fuel/trade retained; only payoff horizon asked",
+      "q07: arsonist target retained; attribution/pursuit/escape clarified",
+      "q08: ongoing timed visits retained; representation clarified"
+    ]
+  },
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:17",
+      "speaker": "agent",
+      "text": "F1: The endless moving plain and plentiful tall venomvine do not read in play, so the owner's chosen experience becomes generic shrubland. Source: design/RimMandrake/biome_experiences_2026-10-20.md:17."
+    },
+    {
+      "id": "F2",
+      "source": "infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md",
+      "speaker": "agent",
+      "text": "F2: Wind, concealment, dangerous passages and usable resources fail to create coherent colony choices, despite individually present features. Source: infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md."
+    },
+    {
+      "id": "F3",
+      "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "speaker": "agent",
+      "text": "F3: Hidden hazards, silent losses or misleading proof/settings make the biome unfair or falsely accepted. Source: src/RimMandrake/rimflow/roles/designer_scene_contract.md."
+    }
+  ]
+}

@@ -1,0 +1,1767 @@
+{
+    "dry_run":  true,
+    "mod":  "NightsideIce",
+    "current_mod":  "SleepingIce",
+    "author":  "Codex Designer rehearsal, 2026-11-10 PST. All descriptions, interpretations, proposed requirements and guesses are agent text.",
+    "repo":  "D:/Luke/dev/RimMandrake",
+    "stage_status":  "Stages 0 and 1 reading/dialogue rehearsal only. No official completion, owner approval, waiver, sent ask, stage advancement or ledger write.",
+    "root":  null,
+    "root_draft":  {
+                       "id":  "proposed_root",
+                       "speaker":  "agent",
+                       "source":  "design/RimMandrake/biome_experiences_2026-10-20.md",
+                       "basis":  [
+                                     "design/Jawa/worldbuilding/biomes/sleeping_ice.md",
+                                     "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md",
+                                     "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs",
+                                     "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs",
+                                     "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                 ],
+                       "text":  "The Sleeping Ice makes a crossing, a salvage stop and a journey below the surface three ways of facing the same place: dirty white ice that preserves what it swallows and responds dangerously to warmth. The surface is sparse and still. A comfortable camp announces itself to blind shivven travelling inside the ice; their moving cracks and rumble let you follow the approach. Open ice beside the camp can develop an attackable breach, with a precisely warned first encounter and less certain later ones. Cold and constructed floors are real defences. Staying longer brings the larger story already designed for this biome: softened slabs give up preserved remains, apparently lifeless ground can spend its one movement, and insects and young wyrms foreshadow the apex below. Digging for what the ice kept and recovering someone taken beneath it are deliberate expeditions with readable danger and a way home. Frozen wrecks reward stopping; Lantern Deeps supplies its own persistent caves beneath qualifying ground. The choice is what to risk and recover before moving on, and what it takes to make a longer stay possible."
+                   },
+    "scope":  [
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/RimMandrake/biome_experiences_2026-10-20.md",
+                      "id":  "s_anchor",
+                      "text":  "Use the NightsideIce experience row chosen by the owner on 2026-10-20 as the root basis. The historical quotation is documented by that path, not an invented OWNER tsn. Root approval remains absent."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792637163737194094",
+                      "id":  "s_identity",
+                      "text":  "NightsideIce is now SleepingIce, RM_SleepingIce, mandrake.rm.sleepingice, RimMandrake.SleepingIce. The requested old folder exists but contains only obj build residue. Current runtime source and walk are under SleepingIce; composed packaging is Baroque Biomes."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md",
+                      "id":  "s_bans",
+                      "text":  "Frozen sheet: sparse dirty white ice; no native plants/photosynthesis, farmable soil, liquid water, geothermal heat, surface-resident glow, ordinary resident animal silhouettes, interior precipitation/wind, or native visual/sound/vibration sensing. Thermal sensing only. Lost visitors and ruled emergence/one-move exceptions retain their own scope."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:277",
+                      "id":  "s_hull",
+                      "text":  "A burst never comes through constructed floor or gravship hull. Open ice at the base edge is the breach ring; flooring is real defence. This is settled. Changes after a crack begins need a transition contract, not a new vote on protection."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:347",
+                      "id":  "s_passed",
+                      "text":  "Owner passed the Breath-Choir, Witness Method, kesshet and Keel-Press. Hessarund is only a behaviourless mineable landform; Cold Ledger alone was admitted among the proposed rites. These are historical documented decisions, not new quotations or general waivers fabricated here. OWNER.jsonl line 160 has no tsn; cite the path instead."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:351",
+                      "id":  "s_backlog",
+                      "text":  "Carry the ruled backlog: thaw/calving, sky, sohl, larder, apex ladder, ice forms and art, in the documented order. A later agent triage recommendation to ask/cut is not an owner reversal. This dry run creates no build items."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "OWNER:1793487472985576162",
+                      "id":  "s_delegated",
+                      "text":  "New-life adjudication was left with agents. The 2026-11-03 delegated verdict admits the named organisms with amendments; it is not an owner quotation or proof their defs/C# exist."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "design/RimMandrake/titan_passage_dark_side_calls_2026-11-05.md",
+                      "id":  "s_titan",
+                      "text":  "Sleeping Ice has a deliberate no-walking-titan-passage call. Its designed dhorrumak breaches from the ice; that is distinct from HugeThings surface passage. The current patch targets RM_SleepingIce; the doc also records the retired RUT twin."
+                  },
+                  {
+                      "speaker":  "agent",
+                      "source":  "CLAUDE.md",
+                      "id":  "s_bounds",
+                      "text":  "All five expansions assumed. No planet generation or alternatives. Colony-map GenSteps are ordinary content. No tile-count defect. Biome mechanics promised in our framework; do not propose new cross-biome switches. Source mirror and ledger remain read-only."
+                  }
+              ],
+    "decisions":  [
+                      {
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer.md",
+                          "id":  "d_provenance",
+                          "text":  "Approved root is null; root_draft is agent text. OWNER references are exact tsns found in OWNER.jsonl, stored as strings. Historical chosen experience uses its designated file source. No new text is represented as his words."
+                      },
+                      {
+                          "speaker":  "agent",
+                          "source":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                          "id":  "d_proof",
+                          "text":  "The 2026-10-07 L2 A2 and GREEN-MIN A3 events pass the suite criteria; A3 allows classified failures. Repeated prior failures and workerClass UNMEASURED survive in the history. The raw result JSON is absent here. The October review separately reports particular rows passing. Preserve historical evidence as stale, never promote it to current gameplay acceptance."
+                      },
+                      {
+                          "speaker":  "agent",
+                          "source":  "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json",
+                          "id":  "d_judge",
+                          "text":  "Carry judge amendments: frissim flightless/not food and renewed dormancy; hessarund no research/behaviour; saallen scraping reduces preference only; oolm is sohl lineage, per-colony identity, passive hardening, no unbuilt wall-insulation claim; neshkoll Rot4 approximate; dead need real warmth and recoverable theft, tablet optional. Do not re-ask admission or those answered points."
+                      },
+                      {
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                          "id":  "d_bank",
+                          "text":  "Eight draft asks, first q01 and q02; serve no more than three in a real turn after independent review. No author-independent reviewer was run or invented. This is the requested question-stage dry run, not a sent dialogue."
+                      },
+                      {
+                          "speaker":  "agent",
+                          "source":  "design/validation_walks/RimMandrake/SleepingIce.md",
+                          "id":  "d_walk",
+                          "text":  "The walk and About contain stale stub/donor claims. Current code wins implementation accounting; historical sheet rulings remain scope authority. Reading does not repair mirror files or certify code CLEAN."
+                      }
+                  ],
+    "inventory":  [
+                      {
+                          "id":  "package_identity",
+                          "text":  "Current SleepingIce package/assembly, explicit compilation, sidecar and composed Baroque Biomes membership; old NightsideIce root is residue.",
+                          "source":  "src/RimMandrake/SleepingIce/About/About.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_SleepingIce.csproj",
+                                                "src/RimMandrake/SleepingIce/Assemblies/RimMandrake.SleepingIce.dll",
+                                                "src/RimMandrake/SleepingIce/Assemblies/RimMandrake.SleepingIce.dll.srchash",
+                                                "src/RimMandrake/Biomes.compose.json",
+                                                "OWNER:1792637163737194094"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical rename/rebuild and earlier load report. No deployment asserted.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "OWNER:1792637163737194094",
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "ice_doctrine",
+                          "text":  "Own extreme IceSheet-shaped biome; Ice fertility terrain, roads, no rivers/farming camps/plants/fish/pond maker, Clear-only weighted weather and no wind ambient. Density 0.2; disease list remains human flu/plague/organ decay.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:88",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Terrain proof explicitly tolerates some shallow prefab water, contrary to the sheet ban; no dynamic absence guarantee inferred.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:432",
+                                                 "src/RimMandrake/SleepingIce/validation.py:449"
+                                             ]
+                      },
+                      {
+                          "id":  "surface_roster",
+                          "text":  "One inline RM_Zhissa visitor; campaign patches add RSW_CaveLemming, RSW_Wampa and RSW_Tauntaun at 0.03. Six old donor residents were excluded; no new eviction proposed.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:174",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:198",
+                                                "src/RimUtinni/UtinniPatches/Patches/WildAnimals_SleepingIce.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Current proof only checks inline rows; patch-added cast needs explicit acceptance.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:438",
+                                                 "ITEM:NIGHTSIDEICE_EVICTION_HOUSEKEEPING_1"
+                                             ]
+                      },
+                      {
+                          "id":  "zhissa_livestock",
+                          "text":  "Owned RM_Zhissa port: milk, breeding, herd/trade roles, own accepted alien art and full body; unusual thermal-only prose is not a custom sensory implementation.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Zhissa.xml:13",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Zhissa.xml",
+                                                "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Zhissa/RM_Zhissa_south.png"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No milk/breeding/thermal sensing gameplay acceptance located; source art header records acceptance, not a new visual judgment.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "zhissa_electric",
+                          "text":  "RM_Electric melee tools/capacity/maneuver/damage, shock hediff with consciousness ceilings and escalating heart-attack risk.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Zhissa.xml:164",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Zhissa.xml:164"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Def resolution is not evidence of delivered shocks, heart risk or recovery.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "tellurox_livestock",
+                          "text":  "RM_TelluroxRace/Kind and shell stuff: cold/toxin-tolerant pack beast, breeding/trade, shell butcher product and existing body/pack art. Housed in this module, not on its inline wild roster.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Tellurox.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Tellurox.xml",
+                                                "OWNER:1792859729611947407"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Earlier spawn/corpse proof is in HELIX_TELLUROX_BUILD_1; current RM rehome validated statically. Graphic_Single body remains a known facing issue; ownership is not an ecological admission to the wild roster.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md",
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl:13233"
+                                             ]
+                      },
+                      {
+                          "id":  "heat_measurement",
+                          "text":  "Measures player working heat pushers, any map fires, player powered consumption and every enclosed warm room against outdoors into a continuous saturating target.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:63",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:63",
+                                                "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:29"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Fire-raises-raw proof covers one contribution; insulation and source ownership are not accepted by it.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:432",
+                                                 "ITEM:NIGHTSIDEICE_HEAT_DIAL_1"
+                                             ]
+                      },
+                      {
+                          "id":  "heat_cadence",
+                          "text":  "Biome/master/feature-gated hourly dial, halfway easing and Scribed dial value. Measurement parts and source cache recompute.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:44",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:44",
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:174",
+                                                "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:47"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "ProofDial snaps to target without applying gates; no ordinary hourly map or save/load scene located.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "thermal_alert",
+                          "text":  "Current-map thermal-signature percent alert with threshold/toggle and component breakdown.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:224",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:224"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No alert readability/usefulness, map-switch or boundary scene found.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "hottest_source",
+                          "text":  "Cached map-wide strongest working player heat pusher, first wins ties; dead/off cache invalidates, 250-tick cache. Fire contributes pressure but is not a strike target.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:123",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:116",
+                                                "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:57"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline source/cache harness exists; no multi-source live choice, local-range or inaccessible-source acceptance found.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "shivven_heat_seek",
+                          "text":  "Periodic shivven brain picks heat source, checks sense range, seeks/waits/strikes with inspect state; leaves pawn fights and mental states alone; no food/rest need.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:60",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:60",
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Seeking is checked, not displacement or preference against a moving pawn.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:434",
+                                                 "ITEM:NIGHTSIDEICE_SHIVVEN_BUILD_1"
+                                             ]
+                      },
+                      {
+                          "id":  "ice_routing_hull",
+                          "text":  "Ice-only eight-neighbour BFS with diagonal corner guards, bounded search and short Goto legs; shared next-step guard stops a swimmer leaving Ice. Floors block approach, adjacency permits a heater strike, off-ice spawn can return.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:112",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:179",
+                                                "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:164",
+                                                "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs:167"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Straight strip and final terrain sample do not prove detour completion or all intermediate cells.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:435"
+                                             ]
+                      },
+                      {
+                          "id":  "underice_and_tells",
+                          "text":  "CreatureBehaviors submersion/invisibility and strike/hit surfacing, directional travelling crack fleck, pale wake and own rumble/breach sound defs. Generic kill sign exists; this is not a larder.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml:22",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml",
+                                                "src/RimMandrake/SleepingIce/Defs/SoundDefs/RM_ShivvenSounds.xml",
+                                                "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Live seeks row never asserts submerged=True; no moving visual/audio judgment. Sound grains and crack art are explicitly placeholders. Shared kit has its own global toggle.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "shivven_combat",
+                          "text":  "Dog-sized authored body, claws/incisors, armour and cold range; surfaces to strike heaters, retaliates when struck; no meat/leather harvest. Separate strike toggle.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml:67",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml:67",
+                                                "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:94"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No completed heater attack/damage, retaliation or off-setting transition scene located.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "breach_pressure",
+                          "text":  "Hourly heat-gated chance, quadratic dial scaling, two-day cooldown, one active crack reference and dial-scaled shivven count; ordinary loop runs five ticks after dial.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:53",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:53",
+                                                "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:79"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Forced TryOpen bypasses the chance/gates; fuzz covers pure maths, not a natural warm/cold loop.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "crack_placement",
+                          "text":  "Attackable 220-HP selectable standable crack placed on standable, unfogged, unroofed Ice with no edifice, nearest colony building 3â€“12 cells; search anchored by hottest source or random colony building.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:126",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:126",
+                                                "src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_BreachCrack.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Positive placement only; no fully floored/roofed rejection or post-placement terrain change acceptance.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:433",
+                                                 "ITEM:NIGHTSIDEICE_BREACH_CRACKS_1"
+                                             ]
+                      },
+                      {
+                          "id":  "breach_warning",
+                          "text":  "First-ever per-map crack has teaching letter, configured countdown, inspect time and once-only 6h/1h warnings; later 8â€“16h cracks hide countdown and use vague message when enabled.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:93",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:93",
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:183",
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:237"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Output checks taught flag, not letter comprehension, warning timing or chance to act.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:433"
+                                             ]
+                      },
+                      {
+                          "id":  "breach_release_stop",
+                          "text":  "Expiry releases shivven near crack with crack sound/rubble/message and destroys object; destruction prevents that object ticking to release. Later breach remains untaught.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:208",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:208",
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:305"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. DestroyStops checks immediate pawn counts only; it does not step past the deadline or execute an ordinary attack job.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:433"
+                                             ]
+                      },
+                      {
+                          "id":  "persistence",
+                          "text":  "Scribes dial, firstTaught/cooldown/open-crack reference, crack timer/count/warning flags and shivven state; shared kit Scribes surfacing window.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:166",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:166",
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:246",
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:174",
+                                                "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:196",
+                                                "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Scribe declarations and fuzz comments are not real serialize/reload acceptance. Source/goal deliberately recompute; pending scenes must test continuity.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "settings",
+                          "text":  "Master plus per-feature heat/alert/seek/ice-confinement/strike/breach/warning toggles, tuning, Scribe, scrolling/search/collapse UI, per-section resets and scope timing labels.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs:17",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs",
+                                                "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+                                                "src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Roundtrip does not exercise master-all-off, pending crack, inherited swim toggle or correct feature effects.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md:440"
+                                             ]
+                      },
+                      {
+                          "id":  "frozen_wrecks",
+                          "text":  "Frozen hull section, tank and expedition rig children with own variant art/Light affordance, Wreckage family salvage and Frozen weathering; also shared by Lantern Deeps.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml",
+                                                "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Generic Wreckage L1 history does not demonstrate a SleepingIce salvage job, preservation or payoff.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "wreck_field",
+                          "text":  "Riddled-density map-local GenStep, provisional 2:2:1 hull/tank/rig weights and spacing, wired by biome extraGenSteps and Wreckage SleepingIce setting.",
+                          "source":  "src/RimMandrake/SleepingIce/Defs/MapGeneration/RM_SleepingIceWreckField.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Defs/MapGeneration/RM_SleepingIceWreckField.xml",
+                                                "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:170",
+                                                "src/RimMandrake/Biomes.compose.json"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "No SleepingIce-specific field/preservation/settings scene located; known generic evidence explicitly did not measure this field.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "scanner_payload",
+                          "text":  "FindMod-guarded Acoustic Scanner data: crack threat, frozen wreck and hidden-cave/void targets, quiet reading; scanner owns banded detection.",
+                          "source":  "src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Generic scanner proof is not per-payload detection; an echo does not prove a usable entrance.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "deeps_host",
+                          "text":  "LanternDeeps owns selectable entrance-biome settings; RM_SleepingIce is a default host for natural emergence/mineshaft and persistent cave destination. Integration capability, not SleepingIce-owned warren.",
+                          "source":  "src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "The October mechanics review reports host placement/toggle tests, with entering the Deep untested by that run; no present roundtrip fingerprint.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+                                             ]
+                      },
+                      {
+                          "id":  "no_titan_passage",
+                          "text":  "HugeThings conditional extension opts RM_SleepingIce out of ordinary surface titan passage; does not revoke designed apex breaches.",
+                          "source":  "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "2026-11-06 runner L0 PASS for dark-side contract; not current live patch application. Patch only has current RM biome; doc also records retired RUT call.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/RUNNER.jsonl:5097",
+                                                 "design/RimMandrake/titan_passage_dark_side_calls_2026-11-05.md"
+                                             ]
+                      },
+                      {
+                          "id":  "validation_harness",
+                          "text":  "Static doctrine/settings/build wiring checks and live chains: defs, settings, doctrine, roster, map regeneration/site, dial, shivven, breach and terrain; C# static-call helpers create their own fixtures.",
+                          "source":  "src/RimMandrake/SleepingIce/validation.py",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/validation.py",
+                                                "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:179",
+                                                "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:203",
+                                                "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:257",
+                                                "design/validation_walks/RimMandrake/SleepingIce.md"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical 2026-10-07 suite events and 2026-10-22 review report; no present runtime/build fingerprint matched and raw per-row result file unavailable. Historical A2/A3 pass is evidence a run was collected/classified. This audit lists remaining discriminating-control/recovery gaps.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl:3615"
+                                             ]
+                      },
+                      {
+                          "id":  "kernel_fuzz",
+                          "text":  "Production Verse-free heat/source/breach/crack/edge/path maths directly compiled into net8 selftest; seeded families, range/boundary/independent-path invariants and non-vacuity counters; wrapper stages build.",
+                          "source":  "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/SleepingIce/Source/SelfTest/Program.cs",
+                                                "src/RimMandrake/SleepingIce/Source/SelfTest/SleepingIceFuzz.cs",
+                                                "src/RimMandrake/SleepingIce/Source/SelfTest/RimMandrakeSleepingIce.SelfTest.csproj",
+                                                "src/RimMandrake/Utils/selftest_sleepingice_fuzz.py"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Harness read but not run; no content-matched output recovered. Kernel path correctness does not prove the vanilla movement adapter follows that path.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "lint_tooling",
+                          "text":  "Offline mod-specific kernel-call-site, settings, crack, naming, extension and tuning-text lint plus planted-defect selftest.",
+                          "source":  "src/RimMandrake/Utils/lint_sleepingice_defs.py",
+                          "speaker":  "agent",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/Utils/lint_sleepingice_defs.py",
+                                                "src/RimMandrake/Utils/selftest_sleepingice_lint.py"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Read only; lint/selftest not run and no new passing certificate claimed.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "thaw_calving",
+                          "text":  "Heat-driven subzero ice softening/slump/calving and preserved inclusions; not a liquid melt pool.",
+                          "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:195",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No SleepingIce condition/incident/inclusion generator found. Ordinary frozen wreck field is not calving.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:195"
+                      },
+                      {
+                          "id":  "lost_soul",
+                          "text":  "Dying traveller rescue incident with tunnelers approaching; a distinct event from static wrecks.",
+                          "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:224",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No matching incident found in SleepingIce or searched source.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:224"
+                      },
+                      {
+                          "id":  "surface_sky",
+                          "text":  "Local reconnection storm with radiation/circuit/tunneler effects and margin rime-fall/ablation; aurora-clear presentation.",
+                          "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:196",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No owned surface sky mechanics found. WeatherSuite can supply ordinary geometry-gated aurora; Deeps owns its separate aurora condition, neither establishes this surface event.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:196"
+                      },
+                      {
+                          "id":  "sohl",
+                          "text":  "Dormant landform -\u003e exactly one commitment -\u003e persistent inert-alive spent body; later sohl-lineage fragment hook.",
+                          "source":  "infrastructure/state/items/SOHL_BUILD_ONE_MOVE_TOTAL.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Sohl implementation; names/art records and filed design do not constitute runtime content.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/SOHL_BUILD_ONE_MOVE_TOTAL.md"
+                      },
+                      {
+                          "id":  "frissim",
+                          "text":  "Thaw-released flightless inclusion insects; no native food harvest, return to dormancy; not the deposited dayside swarm.",
+                          "source":  "infrastructure/state/items/FRISSIM_BUILD_WAITS_FOR_THAW.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Frissim def/comp/release hook.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/FRISSIM_BUILD_WAITS_FOR_THAW.md"
+                      },
+                      {
+                          "id":  "wyrmlet",
+                          "text":  "Frissim-feeding young wyrms that visibly surface and submerge as apex foreshadow.",
+                          "source":  "infrastructure/state/items/WYRMLET_BUILD_SHIVVEN_HAND_ME_DOWNS.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Wyrmlet implementation.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/WYRMLET_BUILD_SHIVVEN_HAND_ME_DOWNS.md"
+                      },
+                      {
+                          "id":  "dhorrumak",
+                          "text":  "Sustained-heat apex, disturbed-nest trigger and nest eruption with eggs/young; incident-borne, not wild roster or walking passage.",
+                          "source":  "infrastructure/state/items/DHORRUMAK_BUILD_BIGGEST_LAST.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Dhorrumak implementation/nest event.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/DHORRUMAK_BUILD_BIGGEST_LAST.md"
+                      },
+                      {
+                          "id":  "hessarund",
+                          "text":  "Behaviourless mineable living ridge, catalyst crust yield; no bargaining, creep or biome-specific research.",
+                          "source":  "infrastructure/state/items/HESSARUND_BUILD_JUST_A_RIDGE.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Hessarund plate/line scatter implementation.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/HESSARUND_BUILD_JUST_A_RIDGE.md"
+                      },
+                      {
+                          "id":  "saallen",
+                          "text":  "Heat-blistering seam crust, local breach placement preference, scraping removes additional weight only.",
+                          "source":  "infrastructure/state/items/SAALLEN_BUILD_BLISTERS_ON_CUE.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Saallen or weighting hook.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/SAALLEN_BUILD_BLISTERS_ON_CUE.md"
+                      },
+                      {
+                          "id":  "oolm",
+                          "text":  "Sessile sohl-lineage lobes, separate colony identity and passive mining hardening; no assumed material-specific wall insulation.",
+                          "source":  "infrastructure/state/items/OOLM_BUILD_ONE_BODY_MANY_LOBES.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Oolm implementation.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/OOLM_BUILD_ONE_BODY_MANY_LOBES.md"
+                      },
+                      {
+                          "id":  "neshkoll",
+                          "text":  "Ambiguously living frost fans near leaks, approximately directed at heat, decay and inspect source.",
+                          "source":  "infrastructure/state/items/NESHKOLL_BUILD_POINTS_AT_LEAKS.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Neshkoll implementation.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/NESHKOLL_BUILD_POINTS_AT_LEAKS.md"
+                      },
+                      {
+                          "id":  "ice_kept_dead",
+                          "text":  "Cut frozen body out with preserved corpse/gear; only real heat can draw shivven; readable recoverable theft and optional tablet.",
+                          "source":  "infrastructure/state/items/ICEKEPT_DEAD_BUILD_CUT_OUT_COLD.md",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No held-body/extraction implementation. LanternDeeps well-provisioned dead is its own content, not this surface mechanism.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/items/ICEKEPT_DEAD_BUILD_CUT_OUT_COLD.md"
+                      },
+                      {
+                          "id":  "larder",
+                          "text":  "Shivven drag downed/dead under ice into storage, readable trail/named loss and cut-down recovery into warren territory.",
+                          "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:261",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No SleepingIce custody/drag/recovery jobs or warren entry. Generic sand-swim kill sign deliberately leaves a corpse; that is not larder storage.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:261"
+                      },
+                      {
+                          "id":  "hoarfrost",
+                          "text":  "Interior hoarfrost crystal gardens, frost flowers, depth-hoar columns and feathered blades, terrain features rather than plants.",
+                          "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:287",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No RM_Hoarfrost implemented scatter/defs. Design/art commissions do not place formations.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:287"
+                      },
+                      {
+                          "id":  "catalyst_crust",
+                          "text":  "Shared mineable catalyst-crust resource and ordinary crafting use across admitted landforms.",
+                          "source":  "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No corresponding SleepingIce resource/recipes found; admission of shared resource does not establish quantities or new research.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                      },
+                      {
+                          "id":  "insect_fall",
+                          "text":  "Rare deposition of freeze-dried dayside swarm as food and warren stimulus; not precipitation or native-frissim harvest.",
+                          "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:246",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No matching SleepingIce deposition event found.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:246"
+                      },
+                      {
+                          "id":  "heat_assailants",
+                          "text":  "Heat-drawn assailant raid and manhunter-style pack incidents; visitor incidents, not native wildlife.",
+                          "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:251",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No heat-coupled SleepingIce incident pair found; generic assailant content elsewhere is not the required coupling.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:251"
+                      },
+                      {
+                          "id":  "cold_ledger",
+                          "text":  "Admitted campaign consolation rite. Detailed tablet/drop/host requirement remains proposal; not part of current free-tier mechanics.",
+                          "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:354",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No ColdLedger/Cold Ledger implementation found in searched src; admission alone is not a built rite.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "approved",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:354"
+                      },
+                      {
+                          "id":  "passed_marks",
+                          "text":  "Breath-Choir, Witness Method, kesshet hull crust and Keel-Press.",
+                          "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:353",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "No runtime capability found; the scope is a documented pass, not a gap to fill or re-ask.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "out",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:353"
+                      },
+                      {
+                          "id":  "ridge_research",
+                          "text":  "Bargaining/creeping hessarund and new cold-rejection learned-tech offering.",
+                          "source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:352",
+                          "speaker":  "agent",
+                          "impl":  "absent",
+                          "search_scope":  [
+                                               "src/ .cs/.xml/.py excluding generated obj/bin/__pycache__; searched old and current names, current SleepingIce content and direct neighbour implementations",
+                                               "design/Jawa/worldbuilding/biomes/rosters/sleeping_ice.json",
+                                               "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json"
+                                           ],
+                          "search_result":  "Absent; owner landform ruling plus delegated research correction rule these proposals out.",
+                          "proof":  "missing",
+                          "proof_note":  "No implementation to accept in the searched source; does not deny historical concept/art work.",
+                          "scope":  "out",
+                          "scope_source":  "design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:352"
+                      }
+                  ],
+    "contradictions":  [
+                           {
+                               "status":  "resolved for inventory; mirror prose untouched",
+                               "speaker":  "agent",
+                               "source":  "design/validation_walks/RimMandrake/SleepingIce.md",
+                               "id":  "c_stale_walk",
+                               "text":  "Walk says stub/master gates nothing and generated terrain unmeasured, while code has the heat loop and historical live checks. About still claims seven AA rows and live proof owed. Current source and historical event detail are recorded separately."
+                           },
+                           {
+                               "status":  "open implementation/acceptance gap",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:100",
+                               "id":  "c_heat_leak",
+                               "text":  "Sheet insulation and cold exteriors suppress visibility, but raw sums warm enclosed room volume and nominal active heat/power, without wall insulation/exterior-leak geometry. Source selection is only a working heat pusher; fires/pawns/warm rooms can add or promise signals without being selected as a target. Cannot accept the full thermal fiction from the fire proof."
+                           },
+                           {
+                               "status":  "open correctness gap",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/validation.py:470",
+                               "id":  "c_water",
+                               "text":  "Hard sheet ban is no liquid water anywhere. Map acceptance permits small shallow prefab puddles and describes gravel/rock; all-Ice-without-water name overstates its oracle. No owner relaxation found; do not ask for tolerance or adopt this as settled."
+                           },
+                           {
+                               "status":  "open correctness risk",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:183",
+                               "id":  "c_master",
+                               "text":  "Existing crack Tick/BreakOpen lacks master/breach gate, while Mod Settings says no mechanic runs off. Shared sand-swim submersion is separately gated by CreatureBehaviors, not the SleepingIce master."
+                           },
+                           {
+                               "status":  "open implementation risk and q05 transition detail",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:208",
+                               "id":  "c_hull_transition",
+                               "text":  "Crack placement guards Ice/roof/edifice, expiry does not revalidate and adjacent emergence cells are merely closewalkable. Recheck/reject flooring/hull breaches; desired visible outcome for a sealed pending crack is not specified."
+                           },
+                           {
+                               "status":  "open risk and q06 target semantics",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:82",
+                               "id":  "c_target_route",
+                               "text":  "Select global strongest source before pawn range; do not try a nearer source when it is outside range. BFS supplies a Goto endpoint, not the actual vanilla path; a shorter floor shortcut can repeatedly be refused by the next-step guard."
+                           },
+                           {
+                               "status":  "open correctness risk",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:69",
+                               "id":  "c_scope",
+                               "text":  "Heat-seek does not require dial.Applies, heatDialEnabled or SleepingIce biome; existing shivven may keep seeking on another biome or when the dial is disabled. No new cross-biome feature is proposed."
+                           },
+                           {
+                               "status":  "resolved provenance",
+                               "speaker":  "agent",
+                               "source":  "infrastructure/state/delegated/2026-11-03/NIGHTSIDE_ICE_NEW_LIFE_1.json",
+                               "id":  "c_delegation",
+                               "text":  "Draft header says every row DRAFT, but later header/item/JSON record delegated admission and amendments. Closed NIGHTSIDE_ICE_NEW_LIFE_1 proves adjudication and ticket-out, not that the organisms have been built."
+                           },
+                           {
+                               "status":  "known defect; do not re-ask",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Tellurox.xml:165",
+                               "id":  "c_tellurox",
+                               "text":  "Tellurox is built and rehomed here but not on inline wildlife roster. Body Graphic_Single does not turn; existing ledger item TELLUROX_FACINGS_REDRAW_ALWAYS_SIDEWAYS names the observed defect (BENCH.jsonl:13233). No source mirror change made."
+                           }
+                       ],
+    "failure_modes":  [
+                          "F1: The highway has no journey: empty scenery and a heat meter give no worthwhile reason to cross, stop, dig or go below; a scanner echo or spawned pawn is mistaken for a usable route. Sources: design/RimMandrake/biome_experiences_2026-10-20.md; design/Jawa/worldbuilding/biomes/sleeping_ice.md; src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml.",
+                          "F2: Warmth is an arbitrary punishment: shelter/insulation does not help as described, the warning affords no useful decision, tunnelers cannot follow believable heat, or flooring fails to protect the camp. Sources: design/Jawa/worldbuilding/biomes/sleeping_ice.md:174; design/Jawa/worldbuilding/biomes/sleeping_ice.md:277; src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs; src/RimMandrake/SleepingIce/Source/RM_Shivven.cs; src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs.",
+                          "F3: The ice breaks its own truth: forbidden water or ordinary resident ecology appears, off/reload/routing changes leave live hazards or stalled creatures, or a taken pawn cannot be traced and recovered. Sources: design/Jawa/worldbuilding/biomes/sleeping_ice.md:261; design/Jawa/worldbuilding/biomes/sleeping_ice.md:322; src/RimMandrake/SleepingIce/validation.py:449; src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs:19."
+                      ],
+    "failure_mode_sources":  [
+                                 {
+                                     "id":  "F1",
+                                     "source":  "design/RimMandrake/biome_experiences_2026-10-20.md"
+                                 },
+                                 {
+                                     "id":  "F2",
+                                     "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:174"
+                                 },
+                                 {
+                                     "id":  "F3",
+                                     "source":  "design/Jawa/worldbuilding/biomes/sleeping_ice.md:322"
+                                 }
+                             ],
+    "scene_audit":  [
+                        {
+                            "start":  "Parses actual shipped defs and asserts response/read count.",
+                            "hold":  "No explicit hold; ordinary read.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::defs_resolve",
+                            "id":  "a_defs",
+                            "control":  "Bogus biome must report notFound; useful instrument control.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:194",
+                            "restore":  "Read-only.",
+                            "missing":  [
+                                            "Loaded content fingerprint; per-feature use is separate."
+                                        ]
+                        },
+                        {
+                            "start":  "Reads old field and refuses no value.",
+                            "hold":  "No explicit hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::settings_roundtrip",
+                            "id":  "a_settings",
+                            "control":  "Writes a distinct bool/int/float and reads it; tests storage, not behaviour.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:212",
+                            "restore":  "finally restores field; subsequent read verifies restore on normal flow.",
+                            "missing":  [
+                                            "Interrupted recovery journal",
+                                            "feature-effect controls",
+                                            "reload/persistence and all-off transition scenes"
+                                        ]
+                        },
+                        {
+                            "start":  "Read success and uncapped lists asserted; workerClass instrument limit honestly UNMEASURED.",
+                            "hold":  "No hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::biome_doctrine and biome_roster",
+                            "id":  "a_doctrine_roster",
+                            "control":  "Absent creature control; compares inline animals and weather to source; no broken-doctrine control.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:242",
+                            "restore":  "Read-only.",
+                            "missing":  [
+                                            "Patch-added roster expectations",
+                                            "actual spawning/visitor behaviour",
+                                            "no-water/no-geothermal/no-wind outcome beyond static table"
+                                        ]
+                        },
+                        {
+                            "start":  "Requires current tile, changes biome/temp/hilliness, commits and regenerates, asserts mapBiome; spawns colonists and destroys hostiles.",
+                            "hold":  "No scene-hold/end record.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::site",
+                            "id":  "a_site",
+                            "control":  "No paired control; setup only.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:351",
+                            "restore":  "No snapshot or restoration for tile/map/pawns/hostiles.",
+                            "missing":  [
+                                            "Disposable-world assertion",
+                                            "asserted initial terrain/temperature and settings",
+                                            "recorded recovery or named review hold"
+                                        ]
+                        },
+                        {
+                            "start":  "ProofDial measures and snaps target on any map; no cold/heat baseline or normal cadence assertion.",
+                            "hold":  "No review hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::heat_dial",
+                            "id":  "a_dial",
+                            "control":  "Before/after temporary size-1 fire distinguishes contribution; not insulation or feature gates.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:376",
+                            "restore":  "Fire removed on normal exit; no try/finally for failure, no restore of dial/measurement snapshot.",
+                            "missing":  [
+                                            "ordinary hourly easing",
+                                            "master/feature/biome negative controls",
+                                            "multiple contributions and insulation case",
+                                            "alert use/readability",
+                                            "recovery journal"
+                                        ]
+                        },
+                        {
+                            "start":  "Makes roofed Soil room with player campfire, advances cache; zero-heater fixture may be UNMEASURED. ProofSeek rewrites natural terrain to Ice and spawns pawn.",
+                            "hold":  "No explicit hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::shivven; RM_ShivvenProof.ProofSeek",
+                            "id":  "a_shivven",
+                            "control":  "No paired moving-pawn/cold-source/floor-detour case. Test accepts seeking/striking plus Ice, never asserts submerged=True. Later check only samples final terrain.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:394",
+                            "restore":  "No room/roof/terrain/fire/pawn/settings snapshot or restoration.",
+                            "missing":  [
+                                            "assert submerged state and travelling tell",
+                                            "trace actual movement and successful heater damage",
+                                            "near/far/multiple targets",
+                                            "blocked route with legal detour",
+                                            "floor/hull path control",
+                                            "ordinary off-setting transitions",
+                                            "recovery or owner hold"
+                                        ]
+                        },
+                        {
+                            "start":  "Fresh map requested in prose, not asserted. ProofOpen bypasses chance/gates, lays Ice if needed, forces dial \u003e=0.6, mutates firstTaught/cooldown and opens crack.",
+                            "hold":  "No explicit hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::breach_cracks; RM_BreachProof",
+                            "id":  "a_breach",
+                            "control":  "Release is forced. DestroyStops destroys and compares pawn counts immediately; no elapsed deadline and no attacker job. Does not reject fully floored map or changing floor.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:431",
+                            "restore":  "No restoration of terrain, dial, timers, flags, cracks, rubble or generated pawns.",
+                            "missing":  [
+                                            "warm/cold natural hourly chance contrast",
+                                            "actual warning/countdown and response window",
+                                            "real attack control stepped beyond expiry",
+                                            "non-Ice/roof/floor/hull controls at placement and release",
+                                            "settings/reload transitions",
+                                            "scene recovery/hold"
+                                        ]
+                        },
+                        {
+                            "start":  "Requires biome; full terrain read after earlier chains mutate map. Coverage uses sizeX squared even for rectangular maps.",
+                            "hold":  "No hold.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/validation.py::_build_suite::map_mechanics",
+                            "id":  "a_map",
+                            "control":  "No forbidden terrain fixture. Allows small shallow water amount despite no-water ban.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py:449",
+                            "restore":  "Read-only here, but site/Soil/ice writes earlier remain.",
+                            "missing":  [
+                                            "separate pre-mutation terrain snapshot",
+                                            "strict liquid-water rejection",
+                                            "rectangular coverage truth",
+                                            "naturally staged cold still biome",
+                                            "recovery from site"
+                                        ]
+                        },
+                        {
+                            "start":  "Seeded generated states with explicit family/nonzero-case guards; production kernel directly compiled.",
+                            "hold":  "None needed offline.",
+                            "entry_point":  "src/RimMandrake/SleepingIce/Source/SelfTest/Program.cs::Main",
+                            "id":  "a_offline",
+                            "control":  "Formula, independent grid validity/distance search and boundary cases; exact-path mirror also exists. Lint harness plants defects.",
+                            "source":  "src/RimMandrake/SleepingIce/Source/SelfTest/SleepingIceFuzz.cs",
+                            "restore":  "Pure process state; wrapper stages build outside permitted folder and was not run.",
+                            "missing":  [
+                                            "real serialization (reload is a no-op comment in fuzz)",
+                                            "Verse job/path adapter",
+                                            "art/audio experience",
+                                            "current execution output"
+                                        ]
+                        },
+                        {
+                            "start":  "No complete crossing, cold camp, insulation, salvage job, scanner payload, Deeps roundtrip or 40-colonist routine fixture.",
+                            "hold":  "Absent.",
+                            "entry_point":  "No SleepingIce acceptance entry point for these yet",
+                            "id":  "a_uncovered",
+                            "control":  "Absent.",
+                            "source":  "src/RimMandrake/SleepingIce/validation.py",
+                            "restore":  "Absent.",
+                            "missing":  [
+                                            "all four scene-contract parts for these experiences",
+                                            "larder and ruled-unbuilt features need script entry points after implementation",
+                                            "flagship owner pick and efficient orthogonal coverage remain future stage work"
+                                        ]
+                        }
+                    ],
+    "asks":  [
+                 {
+                     "id":  "q01",
+                     "title":  "ASK FIRST — What the journey has to mean",
+                     "ask_first":  true,
+                     "picture":  "Your clan crosses a silent ice plateau, pauses at an abandoned expedition rig, and finds a way below. A longer stay needs warmth, and that warmth starts trouble around the camp.",
+                     "text":  "Which part of that journey makes your sentence true, and where does my proposed root give you the wrong picture?",
+                     "decision":  "F1/F2. “Nobody stays” could mean a place people usually traverse, or a place where a successful long stay still feels like an expedition. The existing settlement mechanics remain covered under either reading.",
+                     "why":  "F1/F2. “Nobody stays” could mean a place people usually traverse, or a place where a successful long stay still feels like an expedition. The existing settlement mechanics remain covered under either reading.",
+                     "guess":  "Crossing is the normal story; a salvage camp or buried refuge is an exceptional commitment that must earn its trouble. I recommend leading with the journey and showing what makes a stop costly.",
+                     "tree_change":  "If moving on is central, the root and walk follow arrival, a chosen stop and departure; the warm-base loop gets its own acceptance scene. If a hard-won refuge is equally central, routine occupation becomes part of the main walk too. If my linking idea is wrong, rewrite the root before deriving leaves. Existing mechanics and admitted backlog are not put up for removal; no reply means no approved root.",
+                     "about":  [
+                                   "ice_doctrine",
+                                   "heat_measurement",
+                                   "wreck_field",
+                                   "deeps_host",
+                                   "larder"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`design/RimMandrake/biome_experiences_2026-10-20.md`; `design/Jawa/worldbuilding/biomes/sleeping_ice.md` §§4, 7–8.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q02",
+                     "title":  "ASK FIRST — The first demonstration",
+                     "ask_first":  true,
+                     "picture":  "A, a small warm camp: the dial rises, a first crack warns, and you stop one breach while a second example releases shivven. B, a crossing with a useful salvage detour and a clear reason to leave. C, a journey down and back, with the Lantern Deeps entrance and the still-unbuilt warren rescue shown as separate destinations.",
+                     "text":  "Which demonstration would you put first when deciding whether this biome understands you, and what failure there would make you stop watching?",
+                     "decision":  "F1/F2. The first showcase should test his experience, rather than merely the easiest built mechanism. His experience choice is not itself a flagship pick.",
+                     "why":  "F1/F2. The first showcase should test his experience, rather than merely the easiest built mechanism. His experience choice is not itself a flagship pick.",
+                     "guess":  "A first, because it can show the biome\u0027s central bargain with the existing build; B then puts it into a journey. I recommend A, while being explicit that C\u0027s warren portion needs building.",
+                     "tree_change":  "The chosen scene becomes showcase 1 only after a recorded owner pick. A needs an ordinary ticking warm/cold contrast and a real attack on a crack; B needs a successful crossing and salvage payoff; C needs the actual chosen descent and return. Other capabilities remain covered by distinct scenes, with interaction checks where systems meet. Choosing an unbuilt flagship does not make it ready to stage.",
+                     "about":  [
+                                   "heat_cadence",
+                                   "breach_pressure",
+                                   "crack_placement",
+                                   "underice_and_tells",
+                                   "frozen_wrecks",
+                                   "deeps_host",
+                                   "larder"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`src/RimMandrake/SleepingIce/validation.py`; `src/RimMandrake/rimflow/roles/designer_scene_contract.md`; `src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q03",
+                     "title":  "A place forty people can occupy without forgetting where they are",
+                     "ask_first":  false,
+                     "picture":  "A forty-person colony has made a warm, floored refuge. They still need to go outside for salvage. Compare a routine where the edge needs occasional attention with one where every workday is interrupted by another urgent crack.",
+                     "text":  "What should a normal day\u0027s compromise between comfort and danger look like once that refuge is working?",
+                     "decision":  "F2/F3. More heat already means more and larger breaches, and insulation/cold outside are already part of the design. The missing experience bar is how much useful work and quiet remain at colony scale. A fixed “three days” in the settings cannot answer that by itself.",
+                     "why":  "F2/F3. More heat already means more and larger breaches, and insulation/cold outside are already part of the design. The missing experience bar is how much useful work and quiet remain at colony scale. A fixed “three days” in the settings cannot answer that by itself.",
+                     "guess":  "A prepared refuge gets stretches of useful work; heating carelessly creates a visible trend toward trouble. I recommend making risk a reason to manage the camp, with enough quiet to notice the stillness.",
+                     "tree_change":  "Occasional interventions need a sustained routine-use scene measuring useful work and warning load. Constant watchfulness needs an explicit staffing/attention cost in the main promise. If the exact cadence does not matter, keep frequency tuning advisory and accept only readable heat escalation, recovery and functional defences. No answer reopens the hull rule or makes the source\u0027s current heat formula the acceptance oracle.",
+                     "about":  [
+                                   "heat_measurement",
+                                   "thermal_alert",
+                                   "breach_pressure",
+                                   "settings"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`design/Jawa/worldbuilding/biomes/sleeping_ice.md:174`; `src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs:34`; `src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:63`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q04",
+                     "title":  "Enough warning to make a decision",
+                     "ask_first":  false,
+                     "picture":  "The first crack appears while a worker is far from camp. Its letter gives an exact countdown. You can recall the worker, send someone to break the crack, or prepare to meet what comes through. The shipped first timer is 24 in-game hours; that is tuning, not a newly approved bar.",
+                     "text":  "Which preparations should that first countdown let a small travelling party finish, and what mistake should still cost them?",
+                     "decision":  "F2. The first breach being taught and timed is already settled. A countdown can still fail to give a traveller a useful response, or erase all danger by allowing every preparation.",
+                     "why":  "F2. The first breach being taught and timed is already settled. A countdown can still fail to give a traveller a useful response, or erase all danger by allowing every preparation.",
+                     "guess":  "Recall exposed people and make one deliberate response; ignoring the warning should leave them facing a real breach. I recommend that as the first scene\u0027s success and rejection pair.",
+                     "tree_change":  "A recall-and-response window needs dispersed workers, actual travel and an ordinary attack order before expiry. A fortification window also needs construction labour and material costs in the fixture. A deliberately narrow escape window needs an honest departure route and recovery of the party. Later warnings remain vague under every answer; this does not ask for a second teaching letter or precise later directions.",
+                     "about":  [
+                                   "breach_warning",
+                                   "breach_release_stop",
+                                   "settings"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`design/Jawa/worldbuilding/biomes/sleeping_ice.md:255`; `src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:103`; `src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs:37`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q05",
+                     "title":  "Flooring a crack that has already started",
+                     "ask_first":  false,
+                     "picture":  "A crack has opened outside. Before its timer ends, the crew completes a constructed floor across that spot. The rule that a burst cannot come through floor or hull is already fixed; the code currently checks open ice when placing the crack and does not check it again when releasing shivven.",
+                     "text":  "What should the crew see happen to that existing crack, and where should the pressure beneath it go?",
+                     "decision":  "F2/F3. The hull rule settles where a burst may emerge. It does not settle the story of a crack sealed after it began. This is a transition of a built capability, not an offer to remove breaches.",
+                     "why":  "F2/F3. The hull rule settles where a burst may emerge. It does not settle the story of a crack sealed after it began. This is a transition of a built capability, not an offer to remove breaches.",
+                     "guess":  "The floor visibly seals this opening; a warm camp can later attract another crack on eligible open ice. I recommend preserving both the successful local defence and the ongoing cost of warmth.",
+                     "tree_change":  "A sealed opening needs a completion-before-expiry control and no emergence through the new floor. Continued pressure beneath it needs an honest blocked state and a defined outcome when that floor is later lost. Movement to another opening needs a readable relocation, legal ice cells and the agreed warning treatment. No answer permits emergence through a floor, including in adjacent spawn cells.",
+                     "about":  [
+                                   "crack_placement",
+                                   "breach_release_stop",
+                                   "ice_routing_hull"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`design/Jawa/worldbuilding/biomes/sleeping_ice.md:277`; `src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:146`; `src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs:208`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q06",
+                     "title":  "A decoy heater and a safer camp",
+                     "ask_first":  false,
+                     "picture":  "A strong heater is enclosed behind flooring. A weaker working heater is exposed beside open ice. A shivven can reach the weaker one; the stronger one is either behind that barrier or beyond its sensing range. Today it selects the map\u0027s strongest working heater before considering its own range and route.",
+                     "text":  "What should that shivven do as it reaches the strongest warmth it can actually approach, and what should make a decoy succeed or fail?",
+                     "decision":  "F2/F3. Heat sensing and floor protection are settled. Lingering at a protected beacon, pursuing an exposed local source and ignoring everything because a remote heater won a global comparison produce very different player strategies.",
+                     "why":  "F2/F3. Heat sensing and floor protection are settled. Lingering at a protected beacon, pursuing an exposed local source and ignoring everything because a remote heater won a global comparison produce very different player strategies.",
+                     "guess":  "It follows warmth within reach and waits at a real barrier; a decoy can draw it somewhere useful only while it supplies a believable stronger local signal. A remote out-of-range heater should not make nearby heat cease to exist.",
+                     "tree_change":  "Strongest sensed source needs selection within the sensing boundary before pursuit. A stronger protected beacon that holds attention needs a visible waiting state and a source-off transition. Switching to accessible heat needs distinct targets and demonstrated target changes. Range and barrier cases remain separate: inability to travel is not inability to sense. No answer adds light, sound or vibration as a native sense.",
+                     "about":  [
+                                   "hottest_source",
+                                   "shivven_heat_seek",
+                                   "ice_routing_hull"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs:123`; `src/RimMandrake/SleepingIce/Source/RM_Shivven.cs:82`; `design/Jawa/worldbuilding/biomes/sleeping_ice.md:336`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q07",
+                     "title":  "What makes a salvage stop worth the warmth",
+                     "ask_first":  false,
+                     "picture":  "The party has reached a frozen hull and expedition rig. Spending the day recovering useful cargo means feeding and protecting a warm camp; passing by means arriving sooner. The ice-kept bodies and deliberate thaw/calving will add further finds when their existing backlog is built.",
+                     "text":  "What should the party bring away from a successful day\u0027s stop that makes you glad they took the risk?",
+                     "decision":  "F1/F2. The wreck field is built; the recovery story remains thin if its reward is indistinguishable from incidental scrap. This asks for the payoff, without re-pitching the passed learned technology, ship crust or rites.",
+                     "why":  "F1/F2. The wreck field is built; the recovery story remains thin if its reward is indistinguishable from incidental scrap. This asks for the payoff, without re-pitching the passed learned technology, ship crust or rites.",
+                     "guess":  "A useful haul of unusually well-preserved equipment or materials, with enough visible evidence of the failed expedition to make the stop memorable. I recommend a practical cargo payoff before adding another progression system.",
+                     "tree_change":  "A material payoff needs a complete salvage-and-haul scene with useful quantities and work costs. Recoverable equipment needs actual usable items and condition preserved. If the abandoned expedition\u0027s readable story is essential, add a bounded recognition requirement against a real scene; show a labelled mock before specifying its look. If the story is incidental, it stays advisory. Cold Ledger remains admitted campaign design, and its detailed props are not inferred from this answer.",
+                     "about":  [
+                                   "frozen_wrecks",
+                                   "wreck_field",
+                                   "ice_kept_dead",
+                                   "thaw_calving"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml`; `infrastructure/state/items/ICEKEPT_DEAD_BUILD_CUT_OUT_COLD.md`; `design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:347`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 },
+                 {
+                     "id":  "q08",
+                     "title":  "Going under to bring someone home",
+                     "ask_first":  false,
+                     "picture":  "In the designed larder story a named colonist has been dragged under, leaving a trail and a warning. You assemble a rescue party at the crack. A nearby Lantern Deeps entrance already leads to that mod\u0027s persistent cave, but it is not yet a route into the shivven\u0027s stored victims.",
+                     "text":  "Walk me from the rescue order to bringing that colonist home: where does the party go, and what can they do while below?",
+                     "decision":  "F1/F3. Drag-under storage and cut-down recovery are already ruled; reusing an underground movement kit does not implement them. “Go under it” needs a player action and destination, with a real distinction between the larder and the Deeps.",
+                     "why":  "F1/F3. Drag-under storage and cut-down recovery are already ruled; reusing an underground movement kit does not implement them. “Go under it” needs a player action and destination, with a real distinction between the larder and the Deeps.",
+                     "guess":  "Cutting down opens a bounded, dangerous rescue site with a return route, where the missing pawn and their condition remain accounted for. I recommend establishing that complete rescue before promising a second colonisable underground world.",
+                     "tree_change":  "An enterable warren needs entry, party transfer, victim storage/condition, rescue and return acceptance. A local excavation with combat above needs retrieval jobs and an observable underground custody state instead. A connection to the Deeps needs an explicit integration scene and ownership boundary, alongside each mod\u0027s own proof. If the proposed picture misses his meaning, revise the descent claim; do not quietly call a scanner echo a traversable passage. No answer permits a pawn to vanish without a sign.",
+                     "about":  [
+                                   "larder",
+                                   "deeps_host",
+                                   "scanner_payload"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "basis":  "`design/Jawa/worldbuilding/biomes/sleeping_ice.md:261`; `design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md:198`; `src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115`.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; local evidence/wording check only; not sent"
+                 }
+             ],
+    "built_reviewed":  [
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/validation.py",
+                               "covered_by":  "validation_harness"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/About/About.xml",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Assemblies/RimMandrake.SleepingIce.dll",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Assemblies/RimMandrake.SleepingIce.dll.srchash",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml",
+                               "covered_by":  "ice_doctrine"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Shivven.xml",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Tellurox.xml",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Zhissa.xml",
+                               "covered_by":  "zhissa_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/MapGeneration/RM_SleepingIceWreckField.xml",
+                               "covered_by":  "wreck_field"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/SoundDefs/RM_ShivvenSounds.xml",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_BreachCrack.xml",
+                               "covered_by":  "crack_placement"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml",
+                               "covered_by":  "scanner_payload"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/RM_BreachCracks.cs",
+                               "covered_by":  "breach_pressure"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/RM_HeatDial.cs",
+                               "covered_by":  "heat_measurement"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/RM_Shivven.cs",
+                               "covered_by":  "shivven_heat_seek"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/RM_SleepingIce.csproj",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/RM_SleepingIceMod.cs",
+                               "covered_by":  "settings"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs",
+                               "covered_by":  "kernel_fuzz"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/SelfTest/Program.cs",
+                               "covered_by":  "kernel_fuzz"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/SelfTest/RimMandrakeSleepingIce.SelfTest.csproj",
+                               "covered_by":  "kernel_fuzz"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Source/SelfTest/SleepingIceFuzz.cs",
+                               "covered_by":  "kernel_fuzz"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/RM_SleepingIce/Effects/RM_ShivvenTell.png",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/RM_SleepingIce/Fauna/Shivven/RM_Shivven_east.png",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/RM_SleepingIce/Fauna/Shivven/RM_Shivven_north.png",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/RM_SleepingIce/Fauna/Shivven/RM_Shivven_south.png",
+                               "covered_by":  "underice_and_tells"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideExpeditionRig/RM_NightsideExpeditionRig_A.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideExpeditionRig/RM_NightsideExpeditionRig_B.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideWreckHull/RM_NightsideWreckHull_A.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideWreckHull/RM_NightsideWreckHull_B.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideWreckTank/RM_NightsideWreckTank_A.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Building/Wrecks/RM_NightsideWreckTank/RM_NightsideWreckTank_B.png",
+                               "covered_by":  "frozen_wrecks"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Tellurox/RM_Tellurox.png",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Tellurox/RM_TelluroxPack_east.png",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Tellurox/RM_TelluroxPack_north.png",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Tellurox/RM_TelluroxPack_south.png",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Tellurox/RM_TelluroxPack_west.png",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Zhissa/RM_Zhissa_east.png",
+                               "covered_by":  "zhissa_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Zhissa/RM_Zhissa_north.png",
+                               "covered_by":  "zhissa_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/Things/Pawn/Animal/RM_Zhissa/RM_Zhissa_south.png",
+                               "covered_by":  "zhissa_livestock"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/SleepingIce/Textures/World/Biomes/RM_SleepingIce.png",
+                               "covered_by":  "ice_doctrine"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/FRISSIM_BUILD_WAITS_FOR_THAW.md",
+                               "covered_by":  "frissim"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDEICE_RM_MOD_BUILD_1.md",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDE_ICE_NEW_LIFE_1.md",
+                               "covered_by":  "sohl"
+                           },
+                           {
+                               "ref":  "ITEM:NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK",
+                               "covered_by":  "no_titan_passage",
+                               "note":  "Ledger-only item, not invented missing prose."
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDE_ICE_DEF_1.md",
+                               "covered_by":  "ice_doctrine"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/SALVAGE_WRECKAGE_EVERYWHERE_1.md",
+                               "covered_by":  "wreck_field"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/SOHL_BUILD_ONE_MOVE_TOTAL.md",
+                               "covered_by":  "sohl"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDE_ICE_FIRST_SCRIPT_1.md",
+                               "covered_by":  "validation_harness"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDEICE_HEAT_DIAL_BUILD_1.md",
+                               "covered_by":  "heat_measurement"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/HESSARUND_BUILD_JUST_A_RIDGE.md",
+                               "covered_by":  "hessarund"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDE_ICE_DESIGN_SITTING_1.md",
+                               "covered_by":  "surface_roster"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/WYRMLET_BUILD_SHIVVEN_HAND_ME_DOWNS.md",
+                               "covered_by":  "wyrmlet"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/ICEKEPT_DEAD_BUILD_CUT_OUT_COLD.md",
+                               "covered_by":  "ice_kept_dead"
+                           },
+                           {
+                               "ref":  "ITEM:NIGHTSIDEICE_EVICTION_HOUSEKEEPING_1",
+                               "covered_by":  "surface_roster",
+                               "note":  "Ledger-only item, not invented missing prose."
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/NIGHTSIDEICE_SHEET_ART_REDO_1.md",
+                               "covered_by":  "surface_roster"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDEICE_BREACH_CRACKS_1.md",
+                               "covered_by":  "breach_pressure"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/DHORRUMAK_BUILD_BIGGEST_LAST.md",
+                               "covered_by":  "dhorrumak"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md",
+                               "covered_by":  "tellurox_livestock"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/NESHKOLL_BUILD_POINTS_AT_LEAKS.md",
+                               "covered_by":  "neshkoll"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDEICE_BEDAZZLE_SITTING_1.md",
+                               "covered_by":  "hoarfrost"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/SAALLEN_BUILD_BLISTERS_ON_CUE.md",
+                               "covered_by":  "saallen"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md",
+                               "covered_by":  "package_identity"
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDEICE_SHIVVEN_BUILD_1.md",
+                               "covered_by":  "shivven_heat_seek"
+                           },
+                           {
+                               "ref":  "ITEM:NIGHTSIDEICE_HEAT_DIAL_1",
+                               "covered_by":  "heat_measurement",
+                               "note":  "Ledger-only item, not invented missing prose."
+                           },
+                           {
+                               "ref":  "infrastructure/state/items/OOLM_BUILD_ONE_BODY_MANY_LOBES.md",
+                               "covered_by":  "oolm"
+                           },
+                           {
+                               "not_a_capability":  "Only generated Source/obj remnants remain under old requested name. All current source capabilities accounted under SleepingIce.",
+                               "ref":  "src/RimMandrake/NightsideIce"
+                           },
+                           {
+                               "not_a_capability":  "Historical world-layer/placement work, not this biome runtime.",
+                               "ref":  "infrastructure/state/items/closed/ASHKARR_NIGHTSIDE_LAYER_SUPERSEDED_1.md"
+                           },
+                           {
+                               "not_a_capability":  "Frozen campaign settlement geography verification, not a SleepingIce mod feature.",
+                               "ref":  "infrastructure/state/items/closed/FDE_NIGHTSIDE_VERIFY_1.md"
+                           },
+                           {
+                               "not_a_capability":  "Blue Desert placement/design belongs to neighbouring biome, not this one.",
+                               "ref":  "infrastructure/state/items/closed/NIGHTSIDE_BLUE_DESERT_1.md"
+                           },
+                           {
+                               "ref":  "Transient/biome_ffar/nightsideice_sheet_2026-10-05.decisions.json",
+                               "covered_by":  "surface_roster",
+                               "note":  "Existing decisions artifact read, historical art directions only. No invented tsn or new approval; stable item/roster paths remain primary citations."
+                           },
+                           {
+                               "ref":  "src/RimMandrake/Utils/lint_sleepingice_defs.py",
+                               "covered_by":  "lint_tooling"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/Utils/selftest_sleepingice_lint.py",
+                               "covered_by":  "lint_tooling"
+                           },
+                           {
+                               "ref":  "src/RimMandrake/Utils/selftest_sleepingice_fuzz.py",
+                               "covered_by":  "kernel_fuzz"
+                           },
+                           {
+                               "ref":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:3279",
+                               "covered_by":  "validation_harness"
+                           },
+                           {
+                               "ref":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                               "covered_by":  "validation_harness"
+                           },
+                           {
+                               "ref":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:3615",
+                               "covered_by":  "validation_harness"
+                           }
+                       ],
+    "neighbours":  [
+                       {
+                           "source":  "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+                           "id":  "n_swim",
+                           "text":  "CreatureBehaviors owns injection, submersion, surface/breach state, wake/audio and last-step confinement. SleepingIce owns heat pursuit and retunes data. Shared switch can disable confinement/submersion independently; master relationship needs proof. Generic kill sign is not larder."
+                       },
+                       {
+                           "source":  "src/RimMandrake/Biomes.compose.json",
+                           "id":  "n_wreckage",
+                           "text":  "Wreckage is an engine member before SleepingIce in composed Baroque Biomes; owns family classes, loot, density/settings, weathering and salvage. SleepingIce owns three frozen children and field configuration; LanternDeeps reuses children. About declares CreatureBehaviors but not every new Wreckage dependency; standalone/load claims need current compose-aware validation."
+                       },
+                       {
+                           "source":  "src/RimMandrake/SleepingIce/Patches/RM_AcousticPayload_SleepingIce.xml",
+                           "id":  "n_scanner",
+                           "text":  "Acoustic Scanner owns detection and banded readings; SleepingIce owns optional payload, guarded by FindMod. Scanner sound is a player tool, not native sound sensing or the passed Breath-Choir."
+                       },
+                       {
+                           "source":  "src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115",
+                           "id":  "n_deeps",
+                           "text":  "LanternDeeps owns persistent caves, two entrance kinds and configurable host set. RM_SleepingIce is one default host. The Deeps has its own dark/light ecology and aurora; do not relabel that implementation a SleepingIce warren or local reconnection storm."
+                       },
+                       {
+                           "source":  "src/RimUtinni/AshkarrWeatherSuite/Defs/WeatherGeometryDefs/WeatherGeometryDefs_Ashkarr.xml",
+                           "id":  "n_weather",
+                           "text":  "Campaign geometry/WeatherSuite supplies fixed-planet nightside aurora and geothermal cutoff through separate systems. Ordinary aurora is not the promised surface reconnection storm or margin weather. No per-biome sun/heat kind is introduced."
+                       },
+                       {
+                           "source":  "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                           "id":  "n_titan",
+                           "text":  "HugeThings owns surface passage opt-out. SleepingIce designed apex surfacing and one-move body stay separate. No roster fill for a walking passage giant is reopened."
+                       },
+                       {
+                           "source":  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_SleepingIce.xml",
+                           "id":  "n_campaign",
+                           "text":  "Utinni/SWBestiary own canon visitors; patch-added cast must be included. RM_Zhissa and rehomed RM_Tellurox are free-tier defs. No canon provenance research or new species design performed."
+                       },
+                       {
+                           "source":  "src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:92",
+                           "id":  "n_vanilla",
+                           "text":  "Vanilla owns BiomeWorker_IceSheet, ordinary temperature/rooms, animal jobs and pathfinder. Thin-air/static bans must survive other generators/prefabs. Popular-mod prior-art claims from old bedazzle sheet are historical, not independently researched here."
+                       }
+                   ],
+    "reading_limits":  [
+                           {
+                               "source":  "src/RimMandrake/rimflow/roles/designer_grounding.md",
+                               "id":  "r_scope",
+                               "text":  "Bounded reading: current SleepingIce complete substantive source/defs/harness, old folder residue, requested role/example/design/roster/item evidence; direct neighbours only to resolve named integration uncertainties. No new absent capability feasibility design was attempted."
+                           },
+                           {
+                               "source":  "infrastructure/state/ledger/events.jsonl",
+                               "id":  "r_ledger",
+                               "text":  "Read matching old/current mod events in frozen ledger and all shards; relevant live/closed prose and delegated item family. No official launcher alias/done-set replay or exact injected What is already built packet exists for this external rehearsal. built_reviewed is explicit accounting, not a Stage 0 acceptance claim."
+                           },
+                           {
+                               "source":  "infrastructure/state/ledger/events/FOUNDRY.jsonl:3614",
+                               "id":  "r_proof",
+                               "text":  "Historical live run JSON is unavailable in this mirror; October mechanics review reports individual successes. No current proofs. No matching Nightside/SleepingIce live-proof txt located (the sleeping-storms proof belongs to campaign WeatherSuite)."
+                           },
+                           {
+                               "source":  "infrastructure/state/items/NIGHTSIDEICE_SHEET_ART_REDO_1.md",
+                               "id":  "r_art",
+                               "text":  "Read existing decisions JSON and current art paths; no images judged or new art made. Item Tauntaun-no-port warning is stale: current patch names RSW_Tauntaun. Known tellurox facing defect is already filed; no duplicate ask. Art-pipeline jobs/render recovery not executed."
+                           },
+                           {
+                               "source":  "src/RimMandrake/rimflow/roles/designer.md",
+                               "id":  "r_protocol",
+                               "text":  "No persisted run/budget/packet/state, result.json, tree, floor, exam or scenes artifact fabricated. No source fixes, ledger filings, lessons, stage acceptance or handoff. Question review remains pending; draft bank is not a sent turn."
+                           },
+                           {
+                               "source":  "MIRROR_HEAD",
+                               "id":  "r_environment",
+                               "text":  "rg unavailable; PowerShell UTF8/JSON/XML used. No source tool run, build or dependency installation. All write operations limited to this work folder; temporary local writer script used to assemble and validate deliverables."
+                           }
+                       ],
+    "snapshot":  {
+                     "first_read":  "bc9dba6c8443c82f7964fd9b45d6b92dbe2112aa 2026-11-10T00:47:51-08:00",
+                     "mirror_head":  "27a9c378b04a540da7f3ceac2f1e194b916cd21c 2026-11-10T01:18:26-08:00",
+                     "source":  "MIRROR_HEAD",
+                     "note":  "Externally refreshed read-only export, not guaranteed atomic; marker changed during reading. No git operation, source import, game build or gameplay check was run."
+                 }
+}

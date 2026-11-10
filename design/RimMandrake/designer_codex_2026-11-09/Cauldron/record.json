@@ -1,0 +1,3202 @@
+{
+  "dry_run": true,
+  "mod": "Cauldron",
+  "author": "Codex Designer, stages 0–1 dry run, 2026-11-09; all proposals and guesses are agent text.",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "working_folder": "D:/ClaudeWork/rimmandrake/designer_codex/Cauldron",
+  "stage_status": "Reading and draft question bank only. No official stage completion, root approval, sent asks, build handoff or ledger writes.",
+  "root": null,
+  "owner_experience": {
+    "id": "owner_experience",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+    "attribution": "Existing owner-authored sentence, typed 2026-10-20; preserved from the source the user explicitly identified. This is not a new owner event or approval of our root.",
+    "text": "The sky roils with eternal anger and lightning yet no rain ever falls. Water is acid, animals are minerals, and life twists under the load… including you."
+  },
+  "root_draft": {
+    "id": "proposed_root",
+    "speaker": "agent",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+    "basis": [
+      "src/RimMandrake/Cauldron/About/About.xml",
+      "ITEM:CAULDRON_MECHANICS_BUILD_1",
+      "ITEM:CAULDRON_RULED_CONTENT_1",
+      "ITEM:VEXXITH_USES_1"
+    ],
+    "text": "The Cauldron is a wet, mineral forest beneath a roiling, rainless storm sky. Its open water carries acid and dissolved poisons, and its fauna carries minerals in living bodies. Its beauty and its livelihood come from chemistry that has reshaped its living things and burdens unprotected newcomers. Cold vents breathe drifting, flammable gas; their falter and the stillness of native animals announce a bloom that loads exposed bodies with metal. Thornwood pays wood and metal for slow, exposed work; mineral creatures turn the same chemistry into food, danger and rare acid-proof plate. The vexxiss tends this breathing ground while fouling water and contesting the colony's taps, and rhossak renew the groves the colony harvests. Roofs, sealed clothing, vexxith and the corroded rigs' filter technology let a colony turn dangerous liquids into useful reagents and drinking water, while acid still threatens unprotected people and ships. Living here means choosing how to work with that ecology, and how much of its burden to take into the colony."
+  },
+  "scope": [
+    {
+      "id": "s_anchor",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "speaker": "agent",
+      "text": "Root anchored in his actual sentence; temporary illness versus lasting change remains unresolved, not assumed mutation."
+    },
+    {
+      "id": "s_storm",
+      "source": "OWNER:1792370870264139349",
+      "speaker": "agent",
+      "text": "Dry thunderstorms are welcome; do not treat the stock DryThunderstorm row as an accidental defect or ask him again."
+    },
+    {
+      "id": "s_falter",
+      "source": "OWNER:1792108481222070856",
+      "speaker": "agent",
+      "text": "About one in-game hour of warning is already ruled. The weather-transition mechanism needs measurement against that, not another duration vote."
+    },
+    {
+      "id": "s_gas",
+      "source": "OWNER:1792114302644040420",
+      "speaker": "agent",
+      "text": "A brand-new burnable gas type is ruled; the separate grid is built. Preserve other gases."
+    },
+    {
+      "id": "s_extras",
+      "source": "OWNER:1792111463695647001",
+      "speaker": "agent",
+      "text": "Filter-Works, ruins and Oomo shrine are in. Seismometer is out. The old rejected GPT extensions do not cancel the ruled machines."
+    },
+    {
+      "id": "s_rhossak",
+      "source": "OWNER:1792460018243907000",
+      "speaker": "agent",
+      "text": "They are his mechanic: animals that bind. Existing sprouting, rooting and edible galls are built, not donor ideas offered for keeping."
+    },
+    {
+      "id": "s_soils",
+      "source": "OWNER:1792525010750756319",
+      "speaker": "agent",
+      "text": "Dark distinguishable soil art was commissioned; source PNGs and terrain wiring now exist."
+    },
+    {
+      "id": "s_imports",
+      "source": "ITEM:CAULDRON_RULED_CONTENT_1",
+      "speaker": "agent",
+      "text": "Owner-kept imports override older sheet bans where stated; no evictions or roster cuts proposed. Current source and the Utinni patch supersede historical roster names."
+    },
+    {
+      "id": "s_audio",
+      "source": "infrastructure/state/items/closed/CAULDRON_ENRICHMENT_AUDIO_1.md",
+      "speaker": "agent",
+      "text": "Vanilla sounds for now; no new sound-source question or bespoke soundscape work inferred."
+    },
+    {
+      "id": "s_protection",
+      "source": "ITEM:VEXXITH_USES_1",
+      "speaker": "agent",
+      "text": "Containers, gates, environmental suits and ship lining are already requested and built. No poor-weapons restriction, no scab-scrapers; strong general material stands."
+    },
+    {
+      "id": "s_boundaries",
+      "source": "CLAUDE.md",
+      "speaker": "agent",
+      "text": "Fixed hand-made world; no player worldgen or alternative planet. All DLC assumed; Direct Sun follows geometry. Chemical vents add no heat. Biome mechanics promised within the framework."
+    },
+    {
+      "id": "s_dryrun",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "No source, art, bridge, live game, saves, ModSettings or ledger changes. Draft bank is not a sent dialogue turn."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d_root",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "Keep root null and proposed text in root_draft. Existing experience sentence is authoritative as a source, not approval of the expanded paragraph."
+    },
+    {
+      "id": "d_proof",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "speaker": "agent",
+      "text": "No current proof claimed: neither deployed/runtime fingerprints nor current settings and art were matched. Historical successes and failures are retained; missing means adequate acceptance not found, never that the owner did not exercise it."
+    },
+    {
+      "id": "d_review",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "speaker": "agent",
+      "text": "Questions are draft, with local evidence/wording review only; independent review pending. At most three may be served in a real turn. No invented reviewer, charge, owner answer or waiver."
+    },
+    {
+      "id": "d_source_order",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:81",
+      "speaker": "agent",
+      "text": "Read behaviour below stale comments: vent drinking and scaffold prying are present despite NOT BUILT comments. The walk's four natives/eleven plants/martyr/dormant overlays are historical, not current scope."
+    },
+    {
+      "id": "d_historical_results",
+      "source": "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json",
+      "speaker": "agent",
+      "text": "The October 21 b report passes ruins/drift but fails works on inspect-status parsing; c passes works. The files are targeted runs with skipped rows, not whole-mod all-green evidence."
+    },
+    {
+      "id": "d_latest_evidence",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl:4955",
+      "speaker": "agent",
+      "text": "November 6 vent enrichment verify is fail; later November 10 UTC retries were quarantined with no verdict (5986/5989/5992). Do not replace that with the older October passes."
+    },
+    {
+      "id": "d_no_titan_scope",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "speaker": "agent",
+      "text": "Vexxiss is already a giant. The old passage-pool finding is not evidence the biome lacks one today; no creature invented or moved in this dry run."
+    }
+  ],
+  "inventory": [
+    {
+      "id": "biome_identity",
+      "source": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "text": "Owned biome, world-map face, nonzero animal density, flora/fauna weights, diseases, foraging and travel properties; RM tier plus composed Baroque Biomes packaging.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Load/roster checks exist; historical roster data and tile records are not today's resolved roster.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "soils",
+      "source": "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml",
+      "text": "Own plain/rich terrain defs, distinct installed dark soil textures and fertility bands.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 3 offline soil/art verification at 53a4897ba80a05f4423c13fe8e0403297d51329f; no current in-place visual acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:2272",
+        "src/RimMandrake/Cauldron/selftest_cauldron_soils.py"
+      ]
+    },
+    {
+      "id": "weather",
+      "source": "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml",
+      "text": "Scatter-dusk, vapour bank, dewfall and vent bloom with wind, sky/accuracy/overlay differences and no precipitation; stock dry thunderstorm remains welcome.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical suite/ledger evidence only; not matched to today's runtime. Selection/def reads cannot prove storm mood, eternal dusk or lightning cadence.",
+      "scope": "approved",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/Cauldron.md"
+      ],
+      "scope_source": "OWNER:1792370870264139349"
+    },
+    {
+      "id": "placement_legacy",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs",
+      "text": "Existing tile-scoring worker and rarity slider for generated planets; recorded as present legacy code, outside the player's fixed-world promise.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "No world generation run performed or proposed.",
+      "scope": "out",
+      "scope_source": "CLAUDE.md"
+    },
+    {
+      "id": "settings",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+      "text": "Persistent feature toggles, strength sliders, scroll/search/collapse/reset UI, timing labels and Harmony failure notice.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Roundtrip tests read fields; they do not demonstrate every toggle's effect, startup timing or all-off interaction.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "flora_base",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+      "text": "Owned thornwood, dark crust/vein moss, crystal flower, blood bouquet, raven nettle, red bugloss, giant agaritox, keening cordax, giant toxic flower and xithess. Chemosynthetic growth overrides where specified; xithess yields chemfuel.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Flora spawn and def reads exist; yield/appearance/species-by-species light survival are not established by merely spawning them.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "design/validation_walks/RimMandrake/Cauldron.md"
+      ]
+    },
+    {
+      "id": "forestry",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+      "text": "Growth-scaled steel beside wood at actual successful harvest, with high harvest work and vanilla smithing sound; metal-yield toggle/factor.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Yield rerun verified and closed Oct 20 at e9d3ca356; actual harvest controls exist. Forty-colonist economy and sustained labour not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6384",
+        "ITEM:CAULDRON_YIELD_LIVE_RERUN_1"
+      ]
+    },
+    {
+      "id": "assay",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs:83",
+      "text": "Inspect grade and expected metal amount follow growth and tuning; unripe/fair/rich/lode distinctions.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs:83"
+      ],
+      "proof": "stale",
+      "proof_note": "November 6 enrichment verify passes but raw external report unavailable; earlier assay and off/factor rows exist.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4954",
+        "src/RimMandrake/Cauldron/validation.py:1461"
+      ]
+    },
+    {
+      "id": "assay_flecks",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:184",
+      "text": "Light/heavy metal fleck overlays registered through Plant.Print and assay bands; PNGs installed; settings remesh.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:184",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Light.png",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Heavy.png"
+      ],
+      "proof": "stale",
+      "proof_note": "October texture existence verified; separate off-trunk/palette defect remains filed. No visual pass or newly measured alpha percentages claimed.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6935",
+        "ITEM:CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR"
+      ]
+    },
+    {
+      "id": "dew_beads",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:40",
+      "text": "Chemical-dew filth during dewfall outside the home area, bounded density and automatic expiry; no contact dose added by this visual.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:40"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "dew_saturation",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:109",
+      "text": "Weather-dependent alternate graphics on the five accent plants, texture fallback and remesh on weather/toggle changes; existing dew PNGs activate the code.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs:109",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_CrystalFlower_dew.png"
+      ],
+      "proof": "stale",
+      "proof_note": "Texture-existence close Oct 23; old 'none installed/dormant' walk text is obsolete. Silhouette registration and in-game transitions not judged.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6935"
+      ]
+    },
+    {
+      "id": "shore_gardens",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs",
+      "text": "Roster-opted raven nettles colonise toxic-water shore cells at map creation and by slow sampling; existing zones/occupants respected.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 7 A3 ledger pass exists; Nov 6 enrichment verify pass does not resolve missing A4 nettle off arm. Exact live report unavailable.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3756",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4954",
+        "ITEM:CAULDRON_NETTLE_OFFARM_BUILD_TWO_OF_THREE"
+      ]
+    },
+    {
+      "id": "vent_gardens",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs:101",
+      "text": "State-keyed rings: crystal at stable vents, blood bouquet at leaks, giant toxic flower after blowout; mapgen replaces eligible wild non-trees, later fills empty space.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs:101"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 23 ring fix present; Nov 6 vent enrichment verify FAIL. Fresh map and off-at-mapgen comparison still required; never infer acceptance from source fix.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4955",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:7053"
+      ]
+    },
+    {
+      "id": "tsevrix_food",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml",
+      "text": "Harvested toxic raw pulp and a stove recipe for safe roasted food, including corrected raw-food thought handling.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_TsevrixRoast.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 23 live roasted-food memory check passed with an injected-memory control. Full raw-versus-roasted ingestion/normal recipe path not proven here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6940"
+      ]
+    },
+    {
+      "id": "ixalith_beauty",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Fragile iridescent beauty plant with no harvest yield.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "fexxil_hazard",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Cobalt thicket with path cost, contact scratch/toxic hediff via EnvironmentalHazards, glass-shard harvest and startup venom toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/DamageDefs/RM_FexxilScratch.xml",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "No live contact-versus-plain-cell or real shard-harvest acceptance found.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "sessarix_fuel",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Slow chemfuel resin plant with explicit soil blacklist and fertility bypass; expansion roster switch.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Blacklist/spawn wiring is not a measured no-soil field sample or harvested-fuel proof.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "kissaveth_gas",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs:21",
+      "text": "Toxic gas on violence and on actual plant-cut destruction, a leak rather than an explosive comp.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs:21"
+      ],
+      "proof": "missing",
+      "proof_note": "Cut comp exists; no real cut/damage/plain control and no-explosion observation located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "selvix_medicine",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "text": "Crystal-rimmed medicine plant yielding herbal medicine.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "suush_ecology",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Docile tamable atmospheric feeder: no food need, no attack tools, solitary native and directional art.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Built resolution recorded in Suush item; routine taming and airborne appearance not accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ]
+    },
+    {
+      "id": "suush_flight",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Core flight-stat mechanism for near-continuous drifting; not VEF floating dependency.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite reports canEverFly only; real motion judged with owner present. No flight test run.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1358",
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ]
+    },
+    {
+      "id": "suush_burst",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Bullet/Bomb starts wick, death backstop and toxic gas blast; melee is not a wick trigger.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Current suite compares live melee/shot subjects but equates death/disappearance with detonation; no blast-specific acceptance established.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1377",
+        "ITEM:SUUSH_CAULDRON_DRIFTER_1"
+      ]
+    },
+    {
+      "id": "vexxiss_shear",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Solid giant, no explosive comp, tame-only shear of vexxith, living material supply, native art/variant and ordinary animal systems.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Def reads check shear material and absence of explosion comp; actual tame/shear cycle and economic cadence not demonstrated.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "water_poisoning",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:150",
+      "text": "Vexxiss converts clean named water terrains around its feet to toxic equivalents; per-animal warning letter/cooldown and independent toggles.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:150"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical actual terrain/letter/off rows; Nov 6 enrichment pass lacks accessible raw report. Terrain poison is not automatically FlowWorks AcidWater.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4954",
+        "src/RimMandrake/Cauldron/validation.py:1771"
+      ]
+    },
+    {
+      "id": "fire_warden",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:203",
+      "text": "Awake able vexxiss takes BeatFire or attacks reachable recorded igniter, spares same faction; bounded attack job.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:203"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite can see BeatFire job; it does not prove fire extinguished, original igniter chased, same-faction exception, or combined gas/raid interaction.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1868"
+      ]
+    },
+    {
+      "id": "vent_drinking",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:407",
+      "text": "Wild vexxiss seeks reachable live vents, inhales toward suppression, silences them for days, with recovery; cooldown and persisted state.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:407",
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs:117"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical Oct 7 A2 pass; Nov 6 aggregate vent-enrichment FAIL does not identify a mechanism cause. Suite accelerates silence duration for recovery.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3647",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4955",
+        "src/RimMandrake/Cauldron/validation.py:2119"
+      ]
+    },
+    {
+      "id": "vexxiss_tracks",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs",
+      "text": "Heading-aligned prints use CreatureBehaviors track grid, with maker hover, bounded saved expiry ledger and no water/floor/flying prints.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Own code and grid API link present; no complete record-hover-expire-reload acceptance located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "vent_sites",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:286",
+      "text": "Natural chemical vents on new Cauldron maps, safe start/spacing, mixed stable/leaking states and recent-blowout memory; generation idempotent and setting-gated.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:286"
+      ],
+      "proof": "missing",
+      "proof_note": "Main vents chain manually spawns a vent; it does not prove automatic placement, distribution, non-heat or every map's usable site.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "vent_cycle_falter",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "text": "Weather-output multipliers, transition-led falter, message and short renewing native hush jobs; saved suppression/blowout/hush state.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Hush save/load verified Oct 23. The suite samples 120/480 ticks and transition completion, not ruled ~2500-tick useful warning.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:6948",
+        "src/RimMandrake/Cauldron/validation.py:2046"
+      ],
+      "scope_source": "OWNER:1792108481222070856"
+    },
+    {
+      "id": "bloom_load",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+      "text": "Separate stacking metal-load hediff with stages and slow decay; roof/flesh/native/resistance eligibility, no weather ToxicBuildup flag.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Roof/native/exposed/off/factor controls exist. Long decay, worn-gear behaviour and safety for already impaired pawns remain unaccepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1630"
+      ]
+    },
+    {
+      "id": "local_exposure",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385",
+      "text": "Bloom dose strongest near recovering active vents, with residual floor and old-map/no-vent fallback.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385"
+      ],
+      "proof": "stale",
+      "proof_note": "Near/far/off historical evidence; cap state is absent from weight calculation, unlike gas emission. Correct consequence needs clarity.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl:3646",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4955"
+      ]
+    },
+    {
+      "id": "gas_grid",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "text": "Separate persistent vent-gas byte grid, passability-aware emission/diffusion/dissipation and section rendering; vanilla gas storage kept separate.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical gas rows plus kernel tests; no current loaded grid/renderer/gas-isolation fingerprint or colony-scale cost measurement.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:CAULDRON_MECHANICS_BUILD_1",
+        "src/RimMandrake/Cauldron/validation.py:2186"
+      ]
+    },
+    {
+      "id": "gas_drift",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs:222",
+      "text": "Wind-driven cloud movement, daily map-seeded heading, diagonal wall-corner guard and centroid tooling.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs:222"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b: actual seeded cloud centroid PASS plus heading/chance PASS. This is targeted historical state proof, not visual judgement.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json",
+        "src/RimMandrake/Cauldron/validation.py:2644"
+      ]
+    },
+    {
+      "id": "gas_ignition",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs:172",
+      "text": "Nearby fire consumes thick vent gas, makes vanilla toxic smoke and propagating fires carrying the initial instigator; ignition/smoke switches.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs:172"
+      ],
+      "proof": "stale",
+      "proof_note": "ON/OFF burn-count/residue rows exist; clean-burn smoke-off, barriers, pools and igniter interaction lack complete proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2230"
+      ]
+    },
+    {
+      "id": "gas_tap",
+      "source": "src/RimMandrake/Cauldron/Source/RM_GasTap.cs",
+      "text": "Vent-only scaffold caps emission, banks condensate, delivers conserved whole bank units of 200 litres to touching FlowWorks tanks, resumes leaking when destroyed.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_GasTap.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Suite reads capped line/bank/delivered counts. Pipeline through actual tanks to production and no-tank/full-tank/reload conservation not comprehensively accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2276"
+      ]
+    },
+    {
+      "id": "tap_prying",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:425",
+      "text": "Wild drinking damages ordinary scaffold; lined tap is pry-proof; prying toggle leaves drinking.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:425"
+      ],
+      "proof": "stale",
+      "proof_note": "ON/OFF HP comparison exists; no acceptance for warning-before-damage, destroyed-cap leak recovery or lined-control interaction.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2302"
+      ]
+    },
+    {
+      "id": "ruin_site",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+      "text": "Mapgen corroded filter rig with once-only dressed tanks/toxic water, broken pipes/slag, kept-clear study interaction ring.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+        "src/RimMandrake/Cauldron/Defs/GenStepDefs/RM_CauldronRuinScatter.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b actual generated-map rig/dressing PASS. Empty open site failure, mapgen-off and no-duplicate-after-reload still need controls.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json"
+      ]
+    },
+    {
+      "id": "study_research",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "text": "Study corroded rig in place using vanilla analysis system, unlock Filter-Works research, then normal research prerequisite.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+        "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Built definitions and unlock wiring; works proof directly builds machinery and bypasses study/research/construction.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "filter_works",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "text": "Powered cartridge-fed Industrial refine/detox converter: condensate to reagent items, toxic/acid water to fresh, existing FlowWorks process and machine toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/LiquidDefs/RM_Liquid_VentCondensate.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 c works run PASS for condensate, toxic water, cartridge and power controls. Acid input, normal research path and full tap-to-works supply loop not proved.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json"
+      ]
+    },
+    {
+      "id": "vexxith_material",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+      "text": "Rare Metallic/plate stuff; general structural strength, zero flammability and high heat armour; acid marker on stuff/Thing defs and guarded AcidBurn/BloomAcid damage markers.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Vexxith-versus-steel AcidBurn and toggle controls are scripted; material durability is not universal temperature or pawn immunity.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_CLOSED_LOOP_BUILD_1",
+        "src/RimMandrake/Cauldron/validation.py:1297"
+      ]
+    },
+    {
+      "id": "vexxith_door",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml",
+      "text": "Plate-only acid-proof door, startup architect-menu gate, already built doors preserved.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Acid state comparison scripted; normal placement, opening and startup menu timing not established here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:1297"
+      ]
+    },
+    {
+      "id": "containers_gates",
+      "source": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+      "text": "Vexxith bottle/bucket/barrel recipes preserve ingredient stuff and exclude rare plate from plain-metal recipes; FlowWorks classifies Vexxith and lets canal-gate acid reach immunity hook.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterialMath.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 1 offline acceptance of uses; first live gear/load/art work separately owed. No real craft/fill/pour/canal shutoff proof inferred.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:9673",
+        "ITEM:VEXXITH_USES_1"
+      ]
+    },
+    {
+      "id": "lined_machines",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "text": "Vexxith filter vessel gives quarter cartridge use and acid immunity; lined vent tap acid/pry protection; existing rates/processes retained.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Uses offline checks and c works proof runs the vexxith vessel; not a comparative 4x cartridge-lifetime proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json",
+        "ITEM:VEXXITH_USES_1"
+      ]
+    },
+    {
+      "id": "vexxith_gear",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+      "text": "Environmental suit/helmet and recipes with sealing, heat protection and acid-proof item markers; startup availability switch.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Offline uses acceptance; first live load, worn sealing, crafting and own art were separately owed by VEXXITH_GEAR_PROVE_ONE_LOAD_AWAY.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630",
+        "ITEM:VEXXITH_USES_1"
+      ]
+    },
+    {
+      "id": "acid_air",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:54",
+      "text": "Cauldron/Forge opt into hourly ambient AcidBurn on unroofed, unsealed non-native pawns, all factions; existing native/condition immunity rules and strength toggle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:54",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Kernel/offline checks; no live colonist/raider/suit/roof comparison accepted here.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_USES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630"
+      ]
+    },
+    {
+      "id": "acid_hull",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:71",
+      "text": "Exposed player buildings on ship substructure slowly burn toward a 30% floor; warning once; vexxith immunity or one hull liner rig stops sampled damage.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:71",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Offline uses proof; no live separated ships, edge exposure, actual floor, save/reload warning or protected-control proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "ITEM:VEXXITH_USES_1",
+        "infrastructure/state/ledger/events/BENCH.jsonl:9630"
+      ]
+    },
+    {
+      "id": "rhossak_bind",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:101",
+      "text": "Own rhossak/galled animals bind nearest thornwood, report bound/unbound, rebind after loss; existing CreatureBehaviors tether acts on wild idle wandering.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:101"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 6 rhossak verify PASS, raw external report unavailable. Bind/stay/off rows do not prove tame tethering or inaccessible-tree recovery.",
+      "scope": "approved",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:4957",
+        "ITEM:RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD"
+      ],
+      "scope_source": "OWNER:1792460018243907000"
+    },
+    {
+      "id": "rhossak_sprout",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:149",
+      "text": "Sleeping seed-bearing rhossak seeds nearby eligible non-tree plants from current biome roster; galled excluded.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:149"
+      ],
+      "proof": "missing",
+      "proof_note": "Grove script exists but only counts nearby plants after lowering Rest; it does not assert sleep/location/parentage or provide off/galled controls.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "rhossak_grove",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:174",
+      "text": "Three nearby seed-bearing kin accumulate awake time, hold progress asleep, reset when apart; root thornwood with cooldown, bind trio and message.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:174"
+      ],
+      "proof": "missing",
+      "proof_note": "Pen-and-wait count scene exists; no two-animal/off/galled/sleep-resume control or natural unpenned cadence accepted.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "galled_food",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml",
+      "text": "Seedless galled rhossak sheds edible rhossak-meat galls periodically, including wild; own animal lifecycle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Grove script checks map-wide meat total without isolated producer/starting total; not adequate attribution.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "zisska",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Herd mineral rasper with toxic valued meat, trace steel on butcher; fire-spit ability/projectile when VEF is present.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+        "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "FireSpit owner assignment recorded; def reads not actual butcher/ingestion/fire-spit combat proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "OWNER:1792161415424935554"
+      ]
+    },
+    {
+      "id": "eskith",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "text": "Ground-sensing small flock with native hush role and ordinary animal behaviour/art.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Spawn and hush-job reads exist; signalling in play and flock experience not visually judged.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/validation.py:2013"
+      ]
+    },
+    {
+      "id": "bedbug",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml",
+      "text": "Owned insect, paralysis bite chain, eggs/hatching and ordinary lifecycle with art variants.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "crystalmit",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "text": "Owned crystal-bodied mineral eater with VEF guarded chunk-eating and random stone-block production.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Optional VEF comps built; no actual eating/output/load-set proof. Generic animal spawn is insufficient.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "garsulix",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml",
+      "text": "Owned floating predator port: guarded VEF jelly production, asexual reproduction/floating, death explosion and native roster.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "ossrith",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml",
+      "text": "Radyak/ossrith owned port, milk, guarded crystal production and refinery recipe turning crystals into uranium.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "sikka",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml",
+      "text": "Owned Sikka Sikka, eggs/hatching, sheared silk and ordinary animal lifecycle.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "shared_cast",
+      "source": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "text": "Roster also uses owned neighbours' visceral, decay drake, bileworm and mullgoth; guards/load-set matter. These are real roster capabilities, not locally defined natives.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No new cross-biome guarantee inferred. Current post-compose availability must be read in game.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "campaign_cast",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+      "text": "Utinni patch adds Neebray, Mynock, GraniteSlug, VentStalker, Lylek, Skalder and Silooth; campaign toxic-prized-meat layer remains external.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_CauldronPrizedMeats.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Nov 3 roster-boundary offline pass at 8454f352342f01f1492677e6346bf3f4a2712586. No current resolved cast or individual mechanics pass implied.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:2110"
+      ]
+    },
+    {
+      "id": "oomo_shrine",
+      "source": "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+      "text": "Utinni-only grudging shrine patched into ruin-kit slot; Natural meditation focus and biome-local lore.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_OomoGrudgingShrine.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Oct 21 b shrine-at-mapgen PASS; actual meditation usefulness remains inferred from def.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json"
+      ]
+    },
+    {
+      "id": "scanner_payload",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml",
+      "text": "Optional AcousticScanner readings for vents, listening fauna, resin and hidden cavities; existing scanner owns the mechanic.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "growth_stalled",
+      "source": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "text": "ExplosiveGrowth data registers Cauldron in stalled terminator band, using shared engine rather than new local growth mechanics.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "aerosol_neighbour",
+      "source": "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml",
+      "text": "Warscar marks Cauldron as polluted for its aerosol-screen system; consumer and mechanics live in Scarlands.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Implementation read; adequate current experience acceptance not located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "proof_tooling",
+      "source": "src/RimMandrake/Cauldron/validation.py",
+      "text": "Modcheck suite, mock/fault tests, Verse-free fuzz kernels, saved-site recipe/preflight, centroid fixtures, art/roster/soil/trunk-design tests and mutant script.",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Cauldron/validation.py",
+        "src/RimMandrake/Cauldron/northstar_plan.py",
+        "src/RimMandrake/Cauldron/prep_site.py",
+        "src/RimMandrake/Cauldron/northstar_site.py",
+        "src/RimMandrake/Cauldron/preflight_cauldron.py",
+        "src/RimMandrake/Cauldron/Source/SelfTest/CauldronFuzz.cs",
+        "src/RimMandrake/Cauldron/selftest_cauldron.py",
+        "src/RimMandrake/Cauldron/selftest_vexxith_uses.py",
+        "src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Built tooling is inventoried separately from acceptance. No scripts run; targeted stored results inspected. Scene audit lists contract gaps.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "trunk_deposit_coat",
+      "source": "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md",
+      "text": "Designed additive age-based scab/crystal-fan coat with independent toggle; separate from already-built assay flecks.",
+      "impl": "absent",
+      "search_scope": [
+        "src/RimMandrake/Cauldron/Source",
+        "src/RimMandrake/Cauldron/Defs",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant",
+        "src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj"
+      ],
+      "impl_note": "No RM_TrunkDepositsExtension, DepositTier, trunkDepositsEnabled or deposit PNGs found. Selftest pins the design and conditionally tests any installed overlays; it does not implement the coat.",
+      "proof": "missing",
+      "scope": "not_opened",
+      "scope_note": "Already filed build work, not a new keep/remove decision.",
+      "impl_evidence": [
+        "ITEM:CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS",
+        "src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py"
+      ]
+    },
+    {
+      "id": "lasting_change",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "text": "Whether 'including you' requires lasting bodily/behavioural adaptation beyond transient metal illness, wounds and protective equipment.",
+      "impl": "absent",
+      "search_scope": [
+        "src/RimMandrake/Cauldron/Source",
+        "src/RimMandrake/Cauldron/Defs",
+        "src (C#/XML references to RM_VentMetalLoad and Cauldron, including direct neighbours)"
+      ],
+      "impl_note": "No Cauldron-specific mutation/adaptation hook found. This is bounded absence of that hook, not a claim that no mod anywhere has a mutation system.",
+      "proof": "missing",
+      "scope": "open_question"
+    },
+    {
+      "id": "acid_pool_binding",
+      "source": "OWNER:1793251119194850898",
+      "text": "Natural toxic/acid pools and terrain-to-FlowWorks-liquid mapping in the actual fixed-world Cauldron experience.",
+      "impl": "unknown",
+      "impl_note": "Owner explicitly says toxic pools are there. Local code poisons terrain and FlowWorks filters AcidWater/ToxicWater; the selected tile mutators, post-patch liquid binding and delivered save were not verified. Never infer that pools are absent from local defs.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1793251119194850898"
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "c_including_you",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "speaker": "agent",
+      "text": "Local harm is illness/wounds; owner sentence can suggest lasting change. No local transformation hook found; q01 resolves meaning without inventing mutation mechanics.",
+      "status": "open_decision",
+      "about": [
+        "lasting_change",
+        "bloom_load",
+        "acid_air"
+      ]
+    },
+    {
+      "id": "c_water",
+      "source": "OWNER:1793251119194850898",
+      "speaker": "agent",
+      "text": "Owner explicitly affirms toxic pools. Actual terrain/liquid composition and fixed-world tile mutators remain unverified; read those before proposing new pool generation.",
+      "status": "evidence_gap",
+      "about": [
+        "acid_pool_binding",
+        "water_poisoning",
+        "filter_works"
+      ]
+    },
+    {
+      "id": "c_cap",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385",
+      "speaker": "agent",
+      "text": "Capping blocks gas emission and banks it, but bloom dose uses proximity times Recovery01 and ignores IsCapped. Need clarify what safety the cap promises during a bloom, not assume both hazards are removed.",
+      "status": "open_behaviour",
+      "about": [
+        "local_exposure",
+        "gas_tap"
+      ]
+    },
+    {
+      "id": "c_falter",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:112",
+      "speaker": "agent",
+      "text": "Falter follows weather TransitionLerpFactor, while existing owner target is about an in-game hour. Script proves ordering only, not duration/actionable time.",
+      "status": "proof_gap",
+      "other_source": "OWNER:1792108481222070856"
+    },
+    {
+      "id": "c_nonlethal",
+      "source": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml:79",
+      "speaker": "agent",
+      "text": "Claimed nonlethal metal load reduces lethal capacities additively; an already impaired pawn may die. This is a correctness risk to test, not a request to relax a bar.",
+      "status": "unverified_risk"
+    },
+    {
+      "id": "c_stale_walk",
+      "source": "design/validation_walks/RimMandrake/Cauldron.md",
+      "speaker": "agent",
+      "text": "Walk still names removed martyr, four natives/eleven plants, no installed overlays, unbuilt vent drinking and old terrain boundary. Current defs and implementations govern inventory; visual bar prose is still DRAFT.",
+      "status": "resolved_by_current_source"
+    },
+    {
+      "id": "c_coat",
+      "source": "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md",
+      "speaker": "agent",
+      "text": "Designed scab/slag age coat is not implemented. Flecks and dew art are on disk, with a separate filed flecks-registration defect. No keep/remove or additional-plant proposal.",
+      "status": "confirmed_gap"
+    },
+    {
+      "id": "c_proof",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl:4955",
+      "speaker": "agent",
+      "text": "Latest located unquarantined vent-enrichment verify is FAIL; subsequent Nov 10 UTC retries are quarantined with no verdict. No causal diagnosis from missing reports.",
+      "status": "historical_failure",
+      "other_sources": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5986",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5989",
+        "infrastructure/state/ledger/events/RUNNER.jsonl:5992"
+      ]
+    },
+    {
+      "id": "c_gas_water",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs:210",
+      "speaker": "agent",
+      "text": "Ignition propagates via Fire things and creates none on water. Flammable gas may cross a pool while the burning chain stops there; q06 clarifies the physical rule.",
+      "status": "open_boundary"
+    },
+    {
+      "id": "c_economy",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "speaker": "agent",
+      "text": "Tap/processing/shearing/forestry rates are provisional and individually tested incompletely. No full sustainable forty-colonist operating cycle or forest recovery proof.",
+      "status": "experience_gap"
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "title": "What happens to the person who lives here?",
+      "first": true,
+      "picture": "Written thought experiment, not a capture or staged game: Two colonists spend weeks working in the Cauldron. One shelters and seals up; the other repeatedly takes the forest's chemistry into their body. They finally leave. The current local mechanics give metal-load illness that fades and acid wounds; I found no Cauldron-specific lasting adaptation.",
+      "text": "At departure, what should be different about the second colonist, and what in my proposed root misses your meaning of “including you”?",
+      "why": "F1. Your sentence can mean slow poisoning, a lasting cost, or an actual change in what a person becomes. Those require different core promises; illness alone must not silently stand in for the last one.",
+      "guess": "I suspect you mean more than an ordinary poison meter, but I would not invent a mutation lottery. My starting guess is a readable, cumulative bodily consequence whose persistence you can describe.",
+      "tree_change": "If the difference is recoverable illness, bind exposure, noticeable impairment and recovery to the root and add no transformation leaf. If it is lasting damage, require the specific lasting cost and a protected control. If it is adaptation or mutation, add only the change you describe and first resolve its relationship to existing mutation systems; do not build a parallel engine by assumption. A different interpretation rewrites the root. No answer leaves it unapproved.",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "about": [
+        "lasting_change",
+        "bloom_load",
+        "acid_air",
+        "vexxith_gear"
+      ],
+      "owner_cites": [],
+      "decision": "Meaning of the owner's bodily-consequence promise and correction/approval of expanded root.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q02",
+      "title": "The first scene that must convince you",
+      "first": true,
+      "picture": "Written scene drafts, not staged or accepted: A, a working party reads the vent falter, sees the animals go still, and gets through a bloom. B, a wild vexxiss approaches the colony's tap, drinks and interferes with it while the workers react. C, a colony uses the corroded rig's technology to turn dangerous local fluids into drinking water and useful stock. Each scene includes the forest it belongs in.",
+      "text": "Which scene would you put first to decide whether this is your Cauldron, and what single wrong moment would make you stop it?",
+      "why": "F1/F2. The built mod has weather, ecology and industry. I found no owner pick of its flagship demonstration; approving a root would not pick one.",
+      "guess": "A first: the breathing ground is the common cause of both the life and the industry. Then a different scene for the production loop and another for the giant's interference, with overlap limited to what staging needs.",
+      "tree_change": "Your selected scene becomes showcase 1 only after your recorded pick; its rejection case supplies the acceptance emphasis. The others remain separate feature scenes or later showcases when they add different coverage. A combined scene also needs independent feature checks and an interaction check. A new scene you describe replaces my candidate list without removing built coverage.",
+      "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "about": [
+        "vent_cycle_falter",
+        "bloom_load",
+        "vent_drinking",
+        "tap_prying",
+        "filter_works",
+        "flora_base"
+      ],
+      "owner_cites": [],
+      "decision": "Owner flagship pick, first rejection case and efficient showcase order.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q03",
+      "title": "A good day after the colony has learned to live here",
+      "picture": "Written thought experiment, not a staged game: A forty-colonist base has reliable roofs, sealed work clothes, filters, cartridges and ship protection. On a good day its machines work, its workers come home, and it has something useful to show for living here.",
+      "text": "What still makes that colony plan its day around the Cauldron, and what makes the successful day worth the effort?",
+      "why": "F3. The individual hazards and machines are already built. Their combined result could be satisfying chemical industry, a continuing negotiation with the wildlife, or repetitive upkeep. The intended successful life is not settled by the current rates.",
+      "guess": "Competence should buy a workable routine and worthwhile materials. The ecology and an exposed expedition can still change the plan, while correctly used protection remains dependable. I would reject constant busywork as the whole payoff.",
+      "tree_change": "If successful industry is the payoff, add a sustained production scene with actual supplies, useful output and bounded labour. If the living ecology must remain the central pressure, add the named interruption and a meaningful response alongside that stable baseline. If the successful life is expeditionary, demonstrate what a trip brings home and why staying longer costs more. None of these answers weakens the already-built protection or introduces an unavoidable new tax.",
+      "source": "ITEM:VEXXITH_USES_1",
+      "about": [
+        "filter_works",
+        "gas_tap",
+        "vexxith_gear",
+        "acid_hull",
+        "forestry",
+        "tap_prying"
+      ],
+      "owner_cites": [],
+      "decision": "Successful routine, payoff and acceptable ongoing labour at colony scale.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q04",
+      "title": "A capped vent during a bloom",
+      "picture": "Written thought experiment, not a staged game: A worker caps a breathing vent. Its gas cloud begins to thin and a tank starts filling. A bloom then arrives. In the current code the cap stops gas emission, but the nearby worker's bloom metal-load calculation still treats that vent as a source; ordinary acidic air is a separate danger.",
+      "text": "What should the worker be able to infer from that cap, and what should tell you which danger is still present?",
+      "why": "F2. A cap can truthfully stop a flammable leak while looking like it made the whole area safe. The player must understand what changed before choosing to work beside it.",
+      "guess": "The sealed leak and the wider weather should have distinct, honest signs. My guess is that capturing the local discharge should reduce its local contribution, while the bloom's wider burden and ordinary acid air still need shelter or gear.",
+      "tree_change": "If a cap also reduces the local bloom source, bind dose to capping and compare capped/uncapped workers under identical weather, holding other vents and acid exposure fixed. If it controls only the flammable gas, state that boundary and require the remaining bloom danger to be legible. If a cap can cease containing it, define that specific failure and warning before adding any overload mechanic. Existing gas containment and condensate production remain.",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385",
+      "about": [
+        "gas_tap",
+        "local_exposure",
+        "bloom_load",
+        "acid_air"
+      ],
+      "owner_cites": [],
+      "decision": "Safety meaning of capping and truthful communication of remaining exposure.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q05",
+      "title": "The giant comes for the colony's tap",
+      "picture": "Written thought experiment, not a staged game: A wild vexxiss is approaching a working scaffold. It will drink and may damage the scaffold until the vent leaks again. Its tracks can be followed, but the current drinking job can begin prying without an explicit warning about the scaffold.",
+      "text": "At what moment should you understand what it is about to do, and what useful choice should still be open then?",
+      "why": "F2/F3. A living rival becomes arbitrary building damage if you discover its purpose after the apparatus fails. The material, drinking and prying mechanics are already there; the missing decision is their readable encounter.",
+      "guess": "Its approach and interest in the vent should be understandable early enough to withdraw workers, accept the lost production, or protect the equipment. I would start with the creature's readable behaviour and existing tracks rather than assume every arrival needs a letter.",
+      "tree_change": "If its approach is the warning, require a demonstration where its intent is readable before damage. If a message is necessary, tie it to a real approach/drink state and suppress repeats. If deliberate close work beside it is the accepted risk, bind that shorter response window and make the protected lined-tap contrast explicit. A new response you name gets its own bounded scene; no new taming, wild-shearing or bait system is inferred.",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:425",
+      "about": [
+        "tap_prying",
+        "vent_drinking",
+        "vexxiss_tracks",
+        "lined_machines"
+      ],
+      "owner_cites": [],
+      "decision": "Readable advance cue and usable response in the built wildlife/industry encounter.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q06",
+      "title": "Burning gas over a pool",
+      "picture": "Written thought experiment, not a staged game: One continuous cloud lies over a toxic pool and both banks. A spark catches the near bank. The gas can spread over water, but the current burning chain advances through ground fires and creates none on the water, so it can stop before the far bank.",
+      "text": "What happens above that pool, and what physical boundary should actually stop the burning cloud?",
+      "why": "F2. Highly flammable gas and ground fire are different things. Choosing the wrong boundary changes whether a pool is protection, whether smoke reaches the far bank, and how the player can contain the hazard.",
+      "guess": "A continuous flammable cloud can burn over water; the water stops a lasting ground fire, while a real break in gas or a sealed barrier stops the cloud's flame. I would demonstrate that rule beside a genuinely separated cloud.",
+      "tree_change": "If continuous gas carries ignition across the pool, add a gas-to-gas propagation requirement with a separated-cloud/closed-barrier control and toxic-smoke observations. If the pool reliably stops it, bind that rule and give the player a readable physical explanation. If only dense or short spans carry it, specify the visible condition and test both sides. This does not change the existing requirement that vent gas burns into toxic smoke.",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs:210",
+      "about": [
+        "gas_ignition",
+        "gas_grid",
+        "water_poisoning"
+      ],
+      "owner_cites": [
+        "OWNER:1792114302644040420"
+      ],
+      "decision": "Ignition boundary across water and gas gaps; physical containment rule.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    },
+    {
+      "id": "q07",
+      "title": "A forest after a week of profitable work",
+      "picture": "Written thought experiment, not a staged game: The colony sends a serious forestry party into mature thornwood over several days. Steel and wood come home; the harvested stand changes. Bound rhossak still sprout the ground, and groups can root new thornwood. Vexxith is a different supply, sheared from a living tame giant on a long cycle.",
+      "text": "At the end of that week, what should show that the expedition paid, and what price should be visible in the forest and the colony's work?",
+      "why": "F3. A small metal stack can pass a harvest test without making the biome worth working. Regrowth and grove animals can also erase the cost so quickly that the forest becomes a free resource machine. The right trade-off needs a picture of labour and aftermath.",
+      "guess": "A worthwhile haul for a real commitment of workers and exposed time, with a visibly worked stand that takes time and living ecology to renew. I would keep the rewards from forestry and living vexxiss distinct rather than make either replace the other.",
+      "tree_change": "If extraction should visibly deplete old stands, require a before/after work-and-yield scene and a later recovery observation with ordinary growth separated from rhossak effects. If tending groves is the intended sustainable livelihood, require an actual manageable cycle and its labour/material accounting. If forestry is mainly a short visit's windfall, bind that payoff without promising it can sustain a permanent industrial colony. Existing harvesting, binding, sprouting, rooting and shearing stay covered.",
+      "source": "ITEM:CAULDRON_RULED_CONTENT_1",
+      "about": [
+        "forestry",
+        "assay",
+        "rhossak_bind",
+        "rhossak_sprout",
+        "rhossak_grove",
+        "vexxiss_shear"
+      ],
+      "owner_cites": [
+        "OWNER:1792460018243907000"
+      ],
+      "decision": "Worthwhile forestry labour, ecological cost and recovery at sustained colony scale.",
+      "speaker": "agent",
+      "author": "Codex Designer dry run",
+      "status": "draft",
+      "offers_removal": false,
+      "review_status": "Local source/wording check only; independent review pending. Not sent."
+    }
+  ],
+  "failure_modes": [
+    "F1: The place tells the wrong story: ordinary daylight or harmless-looking water, plants and animals that read as familiar scenery, or 'including you' reduced to a health number when he meant a changed person. Sources: design/RimMandrake/biome_experiences_2026-10-20.md:9; design/Jawa/worldbuilding/biomes/cauldron.md; OWNER:1792370870264139349.",
+    "F2: Its chemistry is arbitrary: a cap looks safe while the worker is dosed, a quiet forest offers no useful warning, fire ignores a believable boundary, or an unannounced giant wrecks the apparatus. Sources: src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385; src/RimMandrake/Cauldron/Source/RM_VentGas.cs:210; OWNER:1792108481222070856.",
+    "F3: Mastery produces chores or a hollow reward: illness, cartridges and exposed work dominate a large colony without a worthwhile forest/material economy, or isolated tests pass while the study-to-production and ecology loops cannot sustain play. Sources: ITEM:CAULDRON_GPT_ENRICHMENT_1; ITEM:VEXXITH_USES_1; src/RimMandrake/Cauldron/validation.py:2409."
+  ],
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:9",
+      "speaker": "agent",
+      "text": "Identity and bodily consequence"
+    },
+    {
+      "id": "F2",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:385",
+      "speaker": "agent",
+      "text": "Readable, causally believable danger"
+    },
+    {
+      "id": "F3",
+      "source": "ITEM:CAULDRON_GPT_ENRICHMENT_1",
+      "speaker": "agent",
+      "text": "Useful, sustainable life within the ecology"
+    }
+  ],
+  "scene_audit": [
+    {
+      "id": "a_reads",
+      "source": "src/RimMandrake/Cauldron/validation.py:742",
+      "scenes": [
+        "load",
+        "settings",
+        "items",
+        "log"
+      ],
+      "start": "Def/type probes include deliberately nonexistent entries; live settings required at defaults. Source wiring reads included.",
+      "control": "Useful missing-def/field controls; field roundtrip, comp existence, logged patch census or diet declaration is not live feature acceptance. Log buffer/truncation limits remain.",
+      "restore": "Settings reset defaults. Log reads and startup-gated field changes do not restore broader map state; ordinary read checks do not need destructive staging.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_weather",
+      "source": "src/RimMandrake/Cauldron/validation.py:1116",
+      "scenes": [
+        "weather"
+      ],
+      "start": "Live WeatherDef rates/wind and each forced-weather readback.",
+      "control": "Does not observe natural storm/phase cadence, actual sky/lighting, precipitation over time or useful visibility.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_fauna",
+      "source": "src/RimMandrake/Cauldron/validation.py:1340",
+      "scenes": [
+        "fauna"
+      ],
+      "start": "Cleared pad, every locally parsed kind spawned/read alive; Suush canEverFly report.",
+      "control": "No read of motion, body selection, taming, feeding, reproduction or conditional VEF effects; spawn floor alone insufficient.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_suush",
+      "source": "src/RimMandrake/Cauldron/validation.py:1377",
+      "scenes": [
+        "suush"
+      ],
+      "start": "Separated melee and shot subjects; small Cut/Bullet damage and 400-tick windows.",
+      "control": "Melee subject surviving is useful. Shot subject merely dead/absent passes: no explosion-specific trace, blast radius/damage or toxin attribution asserted.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_flora",
+      "source": "src/RimMandrake/Cauldron/validation.py:1428",
+      "scenes": [
+        "flora"
+      ],
+      "start": "Cleared pad; blacklisted plants staged on rock; growth set for assay grades.",
+      "control": "Unripe/fair/lode, assay off and factor controls. No actual no-soil rejection, fexxil contact, kissaveth gas/cut, yields or dew/fleck visual transition acceptance.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_harvest",
+      "source": "src/RimMandrake/Cauldron/validation.py:1542",
+      "scenes": [
+        "yield"
+      ],
+      "start": "Three full-grown thornwoods, healthy worker, starting steel=0, wood read to distinguish actual completed harvest.",
+      "control": "Factor-1/factor-2/off steel with wood guard is discriminating; slow-work cost, young trees, unripe loss and sustained forestry not measured.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_bloom",
+      "source": "src/RimMandrake/Cauldron/validation.py:1630",
+      "scenes": [
+        "bloom"
+      ],
+      "start": "Sealed roofed room read back, exposed/roofed colonists, live roster native/non-native pair, completed weather transition and scheduled exposure tick.",
+      "control": "Roof/native/off/factor and no weather-toxin double tax. No worn suit, injured subject, multi-day decay, acid-air overlap or local cap case.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_water",
+      "source": "src/RimMandrake/Cauldron/validation.py:1771",
+      "scenes": [
+        "water"
+      ],
+      "start": "Three clean ponds read back, fresh animals, baseline letter count; repeated water laid under same animal for cooldown.",
+      "control": "Poison-on/off and letter-on/off/cooldown meaningful. Actor location not checked equally in all arms; no whole-pool chemistry or terrain/liquid conversion proof.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_warden",
+      "source": "src/RimMandrake/Cauldron/validation.py:1868",
+      "scenes": [
+        "fire"
+      ],
+      "start": "Spawn wood/actual fire, awake fed vexxiss; poll standing fire and job.",
+      "control": "BeatFire versus feature-off; job uptake is not completion, igniter retaliation, same-faction guard, bellow or original-instigator attribution.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_vents",
+      "source": "src/RimMandrake/Cauldron/validation.py:1951",
+      "scenes": [
+        "vents"
+      ],
+      "start": "Hand-spawn vent, clear competing vexxiss, set weather. Near/far colonists and actual drink job plus suppression inspect.",
+      "control": "Weather multiplier/off, native hush/off, near/far/local-off, drink/off and accelerated silence/recovery. No ruled warning-duration measure, natural placement, complete default-duration recovery, cap dose or actual warning message read.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_gas",
+      "source": "src/RimMandrake/Cauldron/validation.py:2186",
+      "scenes": [
+        "gas"
+      ],
+      "start": "Hand-spawn vent on cleared open-sky site; cloud density/standing fire/tap/touching tank and drink actors.",
+      "control": "Emission off, ignition off, prying off. Burning uses cumulative counter and nearby tox; clean-smoke-off has no fresh isolated arm. Tap says capped but no post-cap emission census; no lined/unlined recovery or full bank/tank conservation.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_ruins",
+      "source": "src/RimMandrake/Cauldron/validation.py:986",
+      "scenes": [
+        "ruins"
+      ],
+      "start": "Generated RM_Cauldron map checked; rig, tanks, pipes, toxic content, clear interaction ring and campaign shrine read.",
+      "control": "Existing map census is useful but no absent-mapgen toggle or guaranteed valid site control. Rig study, research gating and meditation remain undriven.",
+      "restore": "Read-only chain; prior suite chains may clear a rig. Fresh saved-site load and a recorded generation context required; no new state to restore if read-only.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_ventgardens",
+      "source": "src/RimMandrake/Cauldron/validation.py:1075",
+      "scenes": [
+        "vent_gardens"
+      ],
+      "start": "Requires Cauldron map, ring-pass marker, matching vents and enough fertile ring/far-control cells.",
+      "control": "Density contrast can reject flat rings; a separately generated off map intended. Source thresholds are provisional; not ongoing spread or nettle-toggle proof.",
+      "restore": "Read-only; compare fresh separately generated saved sites with recovery/hold records, not live switch on same prebuilt map.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_works",
+      "source": "src/RimMandrake/Cauldron/validation.py:2409",
+      "scenes": [
+        "works"
+      ],
+      "start": "Directly builds vexxith vessel, battery and tanks; fills/refuels with fixtures, validates status and input content.",
+      "control": "Empty-cartridge guard, input/totals/product movement, toxic-water run and no-power stop are useful. No study/research/build path, acid-water arm, cartridge lifetime ratio, item placement/full output conservation or tap-to-works loop.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_drift",
+      "source": "src/RimMandrake/Cauldron/validation.py:2554",
+      "scenes": [
+        "drift"
+      ],
+      "start": "Calls live kernel for heading/chance; seeds full-density cloud on a clear pad, emission off, reads centroid mass and heading/wind conditions.",
+      "control": "Drift off versus on, direction and mass guards useful. Difference between separate random runs does not prove wall/door/pool boundaries or actual naturally emitted cloud visibility.",
+      "restore": "ClearOf empties entire map gas before each arm, not just pad; recovery must restore saved gas/world state. Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_rhossak",
+      "source": "src/RimMandrake/Cauldron/validation.py:2711",
+      "scenes": [
+        "rhossak"
+      ],
+      "start": "One thornwood, both animal kinds; bind line, stay-near window and own-comp/bridge identity diagnostics.",
+      "control": "Off read guards stale type identity, but no killed-tree/rebind, no-tree, inaccessible-tree or tame-versus-wild control. Distance after one window is weaker than demonstrated return home.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_grove",
+      "source": "src/RimMandrake/Cauldron/validation.py:2822",
+      "scenes": [
+        "grove"
+      ],
+      "start": "Counted closed pen with hay, three rhossak; a separate intended sleeper and galled animal on cleared ground.",
+      "control": "Rest=0 is not asserted sleep or stable location. Nearby plant counts admit wild regrowth; rooted tree count has no two-animal/off control; galls use map-wide total without starting delta. No proven no-seed galled contrast.",
+      "restore": "Most active chains call _stable: reset to scatter-dusk/unlock, destroy pad things and vanish actors, strip roofs; not restoration of original terrain/things/pawns/weather. _setting restores shipped defaults and rereads, not arbitrary pre-run values. No concept scene journal.",
+      "hold": "No scene-begin/end/hold journal; no owner-review hold."
+    },
+    {
+      "id": "a_offline",
+      "source": "src/RimMandrake/Cauldron/Source/SelfTest/CauldronFuzz.cs",
+      "scenes": [
+        "kernel fuzz",
+        "mock fault injection",
+        "site/roster/soils/trunk-design/gpt-fix/vexxith tests"
+      ],
+      "start": "Source/kernel/mock/art contracts only; read as supporting tooling.",
+      "control": "Fault injection can prove harness sensitivity; mirrored equations/source strings cannot substitute for actual game behaviour. Trunk coat script is design pinning, not proof it exists.",
+      "restore": "No tests executed. Mutant script edits source, so was not run against read-only mirror; future isolated clone/workspace required.",
+      "hold": "Offline only; no showcase acceptance."
+    }
+  ],
+  "neighbours": [
+    {
+      "id": "n_flowworks",
+      "source": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterialMath.cs",
+      "speaker": "agent",
+      "text": "FlowWorks owns liquid identity/stock, containers, canal-gate corrosion, networks and converter; Cauldron supplies content/markers/recipes and the tap adapter. Do not build another liquid system."
+    },
+    {
+      "id": "n_eh",
+      "source": "src/RimMandrake/Cauldron/About/About.xml:20",
+      "speaker": "agent",
+      "text": "EnvironmentalHazards owns reusable contact venom and map scatterer; Cauldron authors fexxil and ruin site content."
+    },
+    {
+      "id": "n_creatures",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs:14",
+      "speaker": "agent",
+      "text": "CreatureBehaviors owns home tether and the planet's track grid. Cauldron owns grove state and maker/expiry metadata."
+    },
+    {
+      "id": "n_growth",
+      "source": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "speaker": "agent",
+      "text": "ExplosiveGrowth owns the stalled growth regime; do not infer all Cauldron plants need new local growth code."
+    },
+    {
+      "id": "n_tiers",
+      "source": "src/RimMandrake/Cauldron/About/About.xml:108",
+      "speaker": "agent",
+      "text": "Utinni owns campaign roster patch, prized meat and Oomo lore; actual fauna mechanics live in their owned mods. RM general tier names no god/franchise."
+    },
+    {
+      "id": "n_other_biomes",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+      "speaker": "agent",
+      "text": "Forge is an acid-air consumer; Scarlands supplies acid damage/aerosol neighbour; acoustic scanner consumes payload. Direct Sun/light geometry is independent."
+    },
+    {
+      "id": "n_vanilla",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "speaker": "agent",
+      "text": "Vanilla already provides study/research, roof shelter, gear stats, animal shearing, explosive wick and weather machinery. Existing converter/tank work is already shared; no redundant engine proposed."
+    },
+    {
+      "id": "n_vef",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "speaker": "agent",
+      "text": "Optional VEF guards implement several ported animal products/feeding/fission/FireSpit. Ported def identity alone does not mean independent native implementation of every behaviour."
+    },
+    {
+      "id": "n_titans",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "speaker": "agent",
+      "text": "HugeThings/large-body services own general giant consequences. This dry run does not invent a second giant engine or infer passage eligibility from old prose."
+    }
+  ],
+  "built_reviewed": [
+    {
+      "id": "ref_001",
+      "source": "src/RimMandrake/Cauldron/mutants_cauldron_trunk_deposits.sh",
+      "ref": "src/RimMandrake/Cauldron/mutants_cauldron_trunk_deposits.sh",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_002",
+      "source": "src/RimMandrake/Cauldron/northstar_plan.py",
+      "ref": "src/RimMandrake/Cauldron/northstar_plan.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_003",
+      "source": "src/RimMandrake/Cauldron/northstar_site.py",
+      "ref": "src/RimMandrake/Cauldron/northstar_site.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_004",
+      "source": "src/RimMandrake/Cauldron/preflight_cauldron.py",
+      "ref": "src/RimMandrake/Cauldron/preflight_cauldron.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_005",
+      "source": "src/RimMandrake/Cauldron/prep_site.py",
+      "ref": "src/RimMandrake/Cauldron/prep_site.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_006",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_007",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron_gpt_fixes.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron_gpt_fixes.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_008",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron_roster_boundary.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron_roster_boundary.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_009",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron_site.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron_site.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_010",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron_soils.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron_soils.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_011",
+      "source": "src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_cauldron_trunk_deposits.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_012",
+      "source": "src/RimMandrake/Cauldron/selftest_vexxith_uses.py",
+      "ref": "src/RimMandrake/Cauldron/selftest_vexxith_uses.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_013",
+      "source": "src/RimMandrake/Cauldron/site_spec.py",
+      "ref": "src/RimMandrake/Cauldron/site_spec.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_014",
+      "source": "src/RimMandrake/Cauldron/validation.py",
+      "ref": "src/RimMandrake/Cauldron/validation.py",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_015",
+      "source": "src/RimMandrake/Cauldron/About/About.xml",
+      "ref": "src/RimMandrake/Cauldron/About/About.xml",
+      "covered_by": "biome_identity",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_016",
+      "source": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "ref": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll",
+      "covered_by": "biome_identity",
+      "note": "File and stamp presence only; no build/hash/runtime verification."
+    },
+    {
+      "id": "ref_017",
+      "source": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+      "ref": "src/RimMandrake/Cauldron/Assemblies/RimMandrake.Cauldron.dll.srchash",
+      "covered_by": "biome_identity",
+      "note": "File and stamp presence only; no build/hash/runtime verification."
+    },
+    {
+      "id": "ref_018",
+      "source": "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+      "covered_by": "zisska",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_019",
+      "source": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+      "covered_by": "biome_identity",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_020",
+      "source": "src/RimMandrake/Cauldron/Defs/DamageDefs/RM_FexxilScratch.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/DamageDefs/RM_FexxilScratch.xml",
+      "covered_by": "fexxil_hazard",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_021",
+      "source": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml",
+      "covered_by": "growth_stalled",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_022",
+      "source": "src/RimMandrake/Cauldron/Defs/GenStepDefs/RM_CauldronRuinScatter.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/GenStepDefs/RM_CauldronRuinScatter.xml",
+      "covered_by": "ruin_site",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_023",
+      "source": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+      "covered_by": "bloom_load",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_024",
+      "source": "src/RimMandrake/Cauldron/Defs/JobDefs/RM_VexxissDrinkVent.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/JobDefs/RM_VexxissDrinkVent.xml",
+      "covered_by": "vexxiss_shear",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_025",
+      "source": "src/RimMandrake/Cauldron/Defs/LiquidDefs/RM_Liquid_VentCondensate.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/LiquidDefs/RM_Liquid_VentCondensate.xml",
+      "covered_by": "filter_works",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_026",
+      "source": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_TsevrixRoast.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_TsevrixRoast.xml",
+      "covered_by": "tsevrix_food",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_027",
+      "source": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+      "covered_by": "containers_gates",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_028",
+      "source": "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml",
+      "covered_by": "study_research",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_029",
+      "source": "src/RimMandrake/Cauldron/Defs/StuffCategoryDefs/RM_VexxithPlate.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/StuffCategoryDefs/RM_VexxithPlate.xml",
+      "covered_by": "vexxith_material",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_030",
+      "source": "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml",
+      "covered_by": "soils",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_031",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+      "covered_by": "ruin_site",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_032",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronVent.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronVent.xml",
+      "covered_by": "vent_sites",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_033",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+      "covered_by": "filter_works",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_034",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml",
+      "covered_by": "acid_hull",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_035",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml",
+      "covered_by": "gas_tap",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_036",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml",
+      "covered_by": "vexxith_door",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_037",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Filth/RM_CauldronFilth.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Filth/RM_CauldronFilth.xml",
+      "covered_by": "dew_beads",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_038",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml",
+      "covered_by": "local_exposure",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_039",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml",
+      "covered_by": "local_exposure",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_040",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml",
+      "covered_by": "local_exposure",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_041",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+      "covered_by": "vexxith_material",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_042",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+      "covered_by": "flora_base",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_043",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+      "covered_by": "flora_base",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_044",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml",
+      "covered_by": "bedbug",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_045",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+      "covered_by": "vexxiss_shear",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_046",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml",
+      "covered_by": "crystalmit",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_047",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml",
+      "covered_by": "garsulix",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_048",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml",
+      "covered_by": "ossrith",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_049",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml",
+      "covered_by": "rhossak_bind",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_050",
+      "source": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml",
+      "covered_by": "sikka",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_051",
+      "source": "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml",
+      "ref": "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml",
+      "covered_by": "biome_identity",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_052",
+      "source": "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json",
+      "ref": "src/RimMandrake/Cauldron/northstar/live_ruins_works_drift_20261021b.json",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_053",
+      "source": "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json",
+      "ref": "src/RimMandrake/Cauldron/northstar/live_works_20261021c.json",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_054",
+      "source": "src/RimMandrake/Cauldron/northstar/live_works_drift_20261021.json",
+      "ref": "src/RimMandrake/Cauldron/northstar/live_works_drift_20261021.json",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_055",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml",
+      "ref": "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml",
+      "covered_by": "scanner_payload",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_056",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml",
+      "ref": "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml",
+      "covered_by": "ruin_site",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_057",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+      "ref": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+      "covered_by": "biome_identity",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_058",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml",
+      "ref": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml",
+      "covered_by": "vexxith_material",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_059",
+      "source": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+      "ref": "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+      "covered_by": "containers_gates",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_060",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+      "covered_by": "acid_air",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_061",
+      "source": "src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj",
+      "covered_by": "biome_identity",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_062",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs",
+      "covered_by": "placement_legacy",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_063",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+      "covered_by": "dew_saturation",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_064",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs",
+      "covered_by": "kissaveth_gas",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_065",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+      "covered_by": "settings",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_066",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+      "covered_by": "ruin_site",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_067",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "covered_by": "vent_cycle_falter",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_068",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+      "covered_by": "forestry",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_069",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+      "covered_by": "rhossak_bind",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_070",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs",
+      "covered_by": "vent_drinking",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_071",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs",
+      "covered_by": "shore_gardens",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_072",
+      "source": "src/RimMandrake/Cauldron/Source/RM_GasTap.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_GasTap.cs",
+      "covered_by": "gas_tap",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_073",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+      "covered_by": "bloom_load",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_074",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+      "covered_by": "gas_grid",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_075",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs",
+      "covered_by": "vexxiss_tracks",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_076",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+      "covered_by": "vexxith_material",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_077",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs",
+      "covered_by": "acid_air",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_078",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_RhossakKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_RhossakKernel.cs",
+      "covered_by": "rhossak_bind",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_079",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+      "covered_by": "gas_grid",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_080",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_VentKernel.cs",
+      "covered_by": "vent_cycle_falter",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_081",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_VexxissKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_VexxissKernel.cs",
+      "covered_by": "vexxiss_tracks",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_082",
+      "source": "src/RimMandrake/Cauldron/Source/Kernel/RM_YieldKernel.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/Kernel/RM_YieldKernel.cs",
+      "covered_by": "forestry",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_083",
+      "source": "src/RimMandrake/Cauldron/Source/SelfTest/CauldronFuzz.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/SelfTest/CauldronFuzz.cs",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_084",
+      "source": "src/RimMandrake/Cauldron/Source/SelfTest/Program.cs",
+      "ref": "src/RimMandrake/Cauldron/Source/SelfTest/Program.cs",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_085",
+      "source": "src/RimMandrake/Cauldron/Source/SelfTest/RimMandrakeCauldron.SelfTest.csproj",
+      "ref": "src/RimMandrake/Cauldron/Source/SelfTest/RimMandrakeCauldron.SelfTest.csproj",
+      "covered_by": "proof_tooling",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ref_086",
+      "source": "src/RimMandrake/Cauldron/Textures/Terrain/Surfaces/RM_CauldronSoil.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Terrain/Surfaces/RM_CauldronSoil.png",
+      "covered_by": "soils",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_087",
+      "source": "src/RimMandrake/Cauldron/Textures/Terrain/Surfaces/RM_CauldronSoilRich.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Terrain/Surfaces/RM_CauldronSoilRich.png",
+      "covered_by": "soils",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_088",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Building/RM_CauldronVent.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Building/RM_CauldronVent.png",
+      "covered_by": "biome_identity",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_089",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Building/RM_VexxithDoor/RM_VexxithDoor.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Building/RM_VexxithDoor/RM_VexxithDoor.png",
+      "covered_by": "vexxith_door",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_090",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_FexxilShard.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_FexxilShard.png",
+      "covered_by": "fexxil_hazard",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_091",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixPulp.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixPulp.png",
+      "covered_by": "tsevrix_food",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_092",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixRoasted.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixRoasted.png",
+      "covered_by": "tsevrix_food",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_093",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/Resource/RM_SikkaSikkaSilk.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/Resource/RM_SikkaSikkaSilk.png",
+      "covered_by": "sikka",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_094",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_BedBugEggFertilized/RM_BedBugEggFertilized.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_BedBugEggFertilized/RM_BedBugEggFertilized.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_095",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_Vexxith/RM_Vexxith.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Item/RM_Vexxith/RM_Vexxith.png",
+      "covered_by": "vexxith_material",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_096",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet_east.png",
+      "covered_by": "garsulix",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_097",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet_south.png",
+      "covered_by": "garsulix",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_098",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Dessicated_Beetlefleet_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Dessicated_Beetlefleet_east.png",
+      "covered_by": "garsulix",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_099",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_east.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_100",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_north.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_101",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_D_south.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_102",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_east.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_103",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_north.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_104",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBugV_E_south.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_105",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_east.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_106",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_north.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_107",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_BedBug/RM_BedBug_south.png",
+      "covered_by": "bedbug",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_108",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_east.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_109",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_north.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_110",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B_south.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_111",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_east.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_112",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_north.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_113",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C_south.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_114",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_east.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_115",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_north.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_116",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit_south.png",
+      "covered_by": "crystalmit",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_117",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_east.png",
+      "covered_by": "eskith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_118",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_north.png",
+      "covered_by": "eskith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_119",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Eskith/RM_Eskith_south.png",
+      "covered_by": "eskith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_120",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_east.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_121",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_north.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_122",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_GalledRhossak/RM_GalledRhossak_south.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_123",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_east.png",
+      "covered_by": "ossrith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_124",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_north.png",
+      "covered_by": "ossrith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_125",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Radyak/RM_Radyak_south.png",
+      "covered_by": "ossrith",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_126",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_east.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_127",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_north.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_128",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Rhossak/RM_Rhossak_south.png",
+      "covered_by": "rhossak_bind",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_129",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_east.png",
+      "covered_by": "sikka",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_130",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_north.png",
+      "covered_by": "sikka",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_131",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_SikkaSikka/RM_SikkaSikka_south.png",
+      "covered_by": "sikka",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_132",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_east.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_133",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_north.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_134",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_B_south.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_135",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_east.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_136",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_north.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_137",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_SuushV_C_south.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_138",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_east.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_139",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_north.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_140",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Suush/RM_Suush_south.png",
+      "covered_by": "suush_ecology",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_141",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_east.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_142",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_north.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_143",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_VexxissV_E_south.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_144",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_east.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_145",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_north.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_146",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss_south.png",
+      "covered_by": "vexxiss_shear",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_147",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_east.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_east.png",
+      "covered_by": "zisska",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_148",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_north.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_north.png",
+      "covered_by": "zisska",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_149",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_south.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Pawn/Animal/RM_Zisska/RM_Zisska_south.png",
+      "covered_by": "zisska",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_150",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Heavy.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Heavy.png",
+      "covered_by": "assay_flecks",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_151",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Light.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Light.png",
+      "covered_by": "assay_flecks",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_152",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_153",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_154",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_DarkCrust/RM_DarkCrust_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_DarkCrust/RM_DarkCrust_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_155",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_BloodBouquet_dew.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_BloodBouquet_dew.png",
+      "covered_by": "dew_saturation",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_156",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_CrystalFlower_dew.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_CrystalFlower_dew.png",
+      "covered_by": "dew_saturation",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_157",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_GiantToxicFlower_dew.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_GiantToxicFlower_dew.png",
+      "covered_by": "dew_saturation",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_158",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_KeeningCordax_dew.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_KeeningCordax_dew.png",
+      "covered_by": "dew_saturation",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_159",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_RedBugloss_dew.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_RedBugloss_dew.png",
+      "covered_by": "dew_saturation",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_160",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Fexxil/RM_Fexxil.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Fexxil/RM_Fexxil.png",
+      "covered_by": "fexxil_hazard",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_161",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_GiantAgariTox/RM_GiantAgariTox_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_GiantAgariTox/RM_GiantAgariTox_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_162",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_163",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Ixalith/RM_Ixalith.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Ixalith/RM_Ixalith.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_164",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_165",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_b.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_b.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_166",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_c.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a/RM_KeeningCordax_a_c.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_167",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Kissaveth/RM_Kissaveth.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Kissaveth/RM_Kissaveth.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_168",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_RavenNettle/RM_RavenNettle_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_RavenNettle/RM_RavenNettle_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_169",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_RedBugloss/RM_RedBugloss_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_RedBugloss/RM_RedBugloss_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_170",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Selvix/RM_Selvix.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Selvix/RM_Selvix.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_171",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Sessarix/RM_Sessarix.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Sessarix/RM_Sessarix.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_172",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Tsevrix/RM_Tsevrix.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Tsevrix/RM_Tsevrix.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_173",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_TwistingThornwood/TwistingThornwood_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_TwistingThornwood/TwistingThornwood_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_174",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Xithess/RM_Xithess_a.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Xithess/RM_Xithess_a.png",
+      "covered_by": "flora_base",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_175",
+      "source": "src/RimMandrake/Cauldron/Textures/Things/Projectile/RM_FireSpit.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/Things/Projectile/RM_FireSpit.png",
+      "covered_by": "zisska",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_176",
+      "source": "src/RimMandrake/Cauldron/Textures/UI/Abilities/RM_FireSpit.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/UI/Abilities/RM_FireSpit.png",
+      "covered_by": "zisska",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_177",
+      "source": "src/RimMandrake/Cauldron/Textures/World/Biomes/RM_Cauldron.png",
+      "ref": "src/RimMandrake/Cauldron/Textures/World/Biomes/RM_Cauldron.png",
+      "covered_by": "biome_identity",
+      "note": "Asset existence/wiring accounting, not visual judgement or art acceptance."
+    },
+    {
+      "id": "ref_178",
+      "source": "infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md",
+      "ref": "infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md",
+      "covered_by": "shore_gardens",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_179",
+      "source": "infrastructure/state/items/CAULDRON_ENRICHMENT_VISUALS_1.md",
+      "ref": "infrastructure/state/items/CAULDRON_ENRICHMENT_VISUALS_1.md",
+      "covered_by": "dew_saturation",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_180",
+      "source": "infrastructure/state/items/CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR.md",
+      "ref": "infrastructure/state/items/CAULDRON_FLECKS_FIX_NUGGETS_IN_MIDAIR.md",
+      "covered_by": "assay_flecks",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_181",
+      "source": "infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md",
+      "ref": "infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md",
+      "covered_by": "local_exposure",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_182",
+      "source": "infrastructure/state/items/CAULDRON_KEPT_ART_JUDGE_FOR_OWNER_DIGEST.md",
+      "ref": "infrastructure/state/items/CAULDRON_KEPT_ART_JUDGE_FOR_OWNER_DIGEST.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_183",
+      "source": "infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md",
+      "ref": "infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md",
+      "covered_by": "gas_grid",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_184",
+      "source": "infrastructure/state/items/CAULDRON_NETTLE_OFFARM_BUILD_TWO_OF_THREE.md",
+      "ref": "infrastructure/state/items/CAULDRON_NETTLE_OFFARM_BUILD_TWO_OF_THREE.md",
+      "covered_by": "shore_gardens",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_185",
+      "source": "infrastructure/state/items/CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS.md",
+      "ref": "infrastructure/state/items/CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS.md",
+      "covered_by": "trunk_deposit_coat",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_186",
+      "source": "infrastructure/state/items/CAULDRON_VENT_ENRICHMENT_HOOKS_1.md",
+      "ref": "infrastructure/state/items/CAULDRON_VENT_ENRICHMENT_HOOKS_1.md",
+      "covered_by": "vent_gardens",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_187",
+      "source": "infrastructure/state/items/RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD.md",
+      "ref": "infrastructure/state/items/RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD.md",
+      "covered_by": "rhossak_bind",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_188",
+      "source": "infrastructure/state/items/closed/CAULDRON_ART_AUDIT_GPT_UNKEPT_REDO_LIST.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_ART_AUDIT_GPT_UNKEPT_REDO_LIST.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_189",
+      "source": "infrastructure/state/items/closed/CAULDRON_BEDAZZLE_SITTING_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_BEDAZZLE_SITTING_1.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_190",
+      "source": "infrastructure/state/items/closed/CAULDRON_DESCS_CORRECT_GPT_REWRITES.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_DESCS_CORRECT_GPT_REWRITES.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_191",
+      "source": "infrastructure/state/items/closed/CAULDRON_ENRICHMENT_AUDIO_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_ENRICHMENT_AUDIO_1.md",
+      "not_a_capability": "Historical bespoke audio request was dropped; existing vanilla sound use belongs to weather/forestry, no new sound build.",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_192",
+      "source": "infrastructure/state/items/closed/CAULDRON_FIRST_SCRIPT_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_FIRST_SCRIPT_1.md",
+      "covered_by": "proof_tooling",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_193",
+      "source": "infrastructure/state/items/closed/CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_FLECKS_FILL_SEVEN_STILL_BLANK.md",
+      "covered_by": "dew_saturation",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_194",
+      "source": "infrastructure/state/items/closed/CAULDRON_FLORA_EXPANSION_BUILD_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_FLORA_EXPANSION_BUILD_1.md",
+      "covered_by": "tsevrix_food",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_195",
+      "source": "infrastructure/state/items/closed/CAULDRON_FULL_RENAME_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_FULL_RENAME_1.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_196",
+      "source": "infrastructure/state/items/closed/CAULDRON_GPT_ENRICHMENT_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_GPT_ENRICHMENT_1.md",
+      "covered_by": "local_exposure",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_197",
+      "source": "infrastructure/state/items/closed/CAULDRON_ROSTER_BOUNDARY_RECONCILE_PATCH.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_ROSTER_BOUNDARY_RECONCILE_PATCH.md",
+      "covered_by": "campaign_cast",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_198",
+      "source": "infrastructure/state/items/closed/CAULDRON_RULED_CONTENT_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_RULED_CONTENT_1.md",
+      "covered_by": "biome_identity",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_199",
+      "source": "infrastructure/state/items/closed/CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_SUITE_WIDEN_RUINS_STILL_UNREAD.md",
+      "covered_by": "proof_tooling",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_200",
+      "source": "infrastructure/state/items/closed/CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS.md",
+      "covered_by": "trunk_deposit_coat",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_201",
+      "source": "infrastructure/state/items/closed/CAULDRON_YIELD_LIVE_RERUN_1.md",
+      "ref": "infrastructure/state/items/closed/CAULDRON_YIELD_LIVE_RERUN_1.md",
+      "covered_by": "forestry",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_202",
+      "source": "infrastructure/state/items/closed/SUUSH_CAULDRON_DRIFTER_1.md",
+      "ref": "infrastructure/state/items/closed/SUUSH_CAULDRON_DRIFTER_1.md",
+      "covered_by": "suush_ecology",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_203",
+      "source": "infrastructure/state/items/closed/VEXXITH_CLOSED_LOOP_BUILD_1.md",
+      "ref": "infrastructure/state/items/closed/VEXXITH_CLOSED_LOOP_BUILD_1.md",
+      "covered_by": "vexxith_material",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_204",
+      "source": "infrastructure/state/items/closed/VEXXITH_USES_1.md",
+      "ref": "infrastructure/state/items/closed/VEXXITH_USES_1.md",
+      "covered_by": "containers_gates",
+      "note": "Item prose read as historical/design evidence; ledger state not inferred from folder location."
+    },
+    {
+      "id": "ref_205",
+      "source": "infrastructure/state/live_proofs/RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD.txt",
+      "ref": "infrastructure/state/live_proofs/RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD.txt",
+      "covered_by": "rhossak_bind",
+      "note": "Capability accounting only; not a full-file code review or a new pass."
+    },
+    {
+      "id": "ledger_gear",
+      "source": "infrastructure/state/ledger/events/BENCH.jsonl:9630",
+      "ref": "ITEM:VEXXITH_GEAR_PROVE_ONE_LOAD_AWAY",
+      "covered_by": "vexxith_gear",
+      "note": "Ledger-only item: separately owed first live gear/acid-air load and own art; no prose file located."
+    },
+    {
+      "id": "ledger_soil",
+      "source": "infrastructure/state/ledger/events/RUNNER.jsonl:2272",
+      "ref": "ITEM:CAULDRON_SOILS_BUILD_DIRT_THAT_BREATHES",
+      "covered_by": "soils",
+      "note": "Offline art/soil acceptance, not current visual runtime proof."
+    },
+    {
+      "id": "ledger_storm",
+      "source": "OWNER:1792370870264139349",
+      "ref": "ITEM:CAULDRON_BIOME_FIX_DRY_STORM_LEFTOVER",
+      "covered_by": "weather",
+      "note": "Owner explicitly resolves old GPT false-positive; dry storm stays."
+    },
+    {
+      "id": "ledger_fire",
+      "source": "OWNER:1792161415424935554",
+      "ref": "ITEM:FIRESPIT_EXPLAIN_BEFORE_JUDGING",
+      "covered_by": "zisska",
+      "note": "Owner keeps FireSpit for a Cauldron creature; assignment to zisska in event text is agent implementation, not all words owner-authored."
+    }
+  ],
+  "snapshot": {
+    "id": "mirror_snapshot",
+    "source": "MIRROR_HEAD",
+    "text": "21799c432b8a693540f258c7e42949e9399d6501 2026-11-09T23:42:07-08:00",
+    "note": "Read from externally refreshed mirror during grounding; no atomic whole-tree or live-game snapshot claimed."
+  },
+  "reading_limits": {
+    "id": "reading_limits",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "text": "Read requested role packets/examples, mod runtime/defs, principal proof chains, mod-specific docs/roster/items, bounded direct-neighbour references and ledger evidence. Historical broad design/queue hits were filtered to Cauldron scope. No full-file CLEAN code review, launcher ledger fold, live runtime, current fingerprint, art visual judgement, remote report recovery, game or official stage check."
+  },
+  "correctness_risks": [
+    {
+      "id": "R1",
+      "source": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml:79",
+      "text": "Top stage subtracts BloodFiltration/Breathing/Consciousness despite the nonlethal claim; already impaired pawns may cross lethal capacity thresholds.",
+      "confidence": "plausible; requires actual injured-subject capacity test"
+    },
+    {
+      "id": "R2",
+      "source": "src/RimMandrake/Cauldron/Source/RM_VentGas.cs:184",
+      "text": "BurnScan ignites all eight neighbours without the drift kernel's diagonal corner/passability checks, so gas pre-existing in diagonally separated rooms can transmit ignition through a sealed corner.",
+      "confidence": "source-traced risk; live boundary reproduction not run"
+    },
+    {
+      "id": "R3",
+      "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs:80",
+      "text": "One liner on any player ship substructure marks the entire map's ship-building list lined, potentially protecting a disconnected second ship/hull as well.",
+      "confidence": "source-traced; whether disconnected hulls coexist in the intended fixture unverified"
+    },
+    {
+      "id": "R4",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs:398",
+      "text": "ExposureWeight uses Recovery01 but ignores IsCapped, so a cap stops gas emission without reducing that vent's bloom-dose contribution; the safety promise needs q04 clarified.",
+      "confidence": "source-confirmed behaviour; design defect depends on answer"
+    },
+    {
+      "id": "R5",
+      "source": "src/RimMandrake/Cauldron/validation.py:1409",
+      "text": "suush_detonates_when_shot accepts death/disappearance without observing an explosion, blast effect or released gas, allowing a non-exploding kill to pass.",
+      "confidence": "source-confirmed proof weakness"
+    }
+  ]
+}
+

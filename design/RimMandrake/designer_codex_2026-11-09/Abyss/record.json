@@ -1,0 +1,3632 @@
+{
+  "dry_run": true,
+  "mod": "Abyss",
+  "author": "Codex Designer — agent",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "stage_status": {
+    "id": "dry_run_status",
+    "source": "src/RimMandrake/rimflow/roles/designer.md",
+    "text": "Bounded stages 0–1 rehearsal through a draft question bank. No launcher run id, packet hash, aliases, budget or result invented; neither stage is certified done. No tree, lock, handoff, owner approval or ledger write."
+  },
+  "root": null,
+  "root_draft": {
+    "id": "root_proposal",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md:7",
+    "speaker": "agent",
+    "text": "The Abyss makes shelter and dread come from the same Dark. It shields a fugitive ship while hiding terrors close enough to matter; warmth opens clear air, living lamps sustain the colony, and a rare Unveiling turns the country into a moment of wonder before the Dark closes again. Beauty and danger both recur, and a familiar safe routine can become frightening very quickly. Living here means tending light, reading the gusts and the creatures that answer them, gathering food and the fallen grain that becomes fuel, and staying quiet when a searching probe passes. Going deeper offers a greater temptation: salvage a rescue wreck and retrieve an egg and a great bone beside a sleeping, landscape-sized summ whose waking means flight. The haul restores the player's own ship, and raising the summ brings power together with hunger, aggression and growing demands. Rings, exchanges and dreams make a long stay feel increasingly personal, while the Nhaleth remain a fear that nobody can prove. Each of these built promises needs its own demonstration; feature switches and tuning belong to the experience.",
+    "status": "proposed",
+    "note": "Agent-authored paragraph built around the owner's chosen experience, not his quotation or root approval."
+  },
+  "scope": [
+    {
+      "id": "experience_anchor",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:7",
+      "speaker": "agent",
+      "text": "The row is the owner's typed experience, selected by him at the 2026-10-20 sitting. It is the source of protection, close terrors, recurrent beauty, sudden nightmare and fear of staying. It approves that experience, not this new root text.",
+      "owner_words_excerpt": "The dark is a palpable tide that protects you yet conceals terrors close by. Wonders emerge just as often for moments of transcendent beauty, only to twist into nightmares just as swiftly. You fear staying here too long will find the source of the nightmares themselves.",
+      "quote_source": "design/RimMandrake/biome_experiences_2026-10-20.md:7"
+    },
+    {
+      "id": "existing_features",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "speaker": "agent",
+      "text": "Present capabilities are inventoried and clarified, never offered for keeping or removal. not_opened means this sitting has not opened their scope; it does not mean forbidden or unapproved."
+    },
+    {
+      "id": "hard_boundaries",
+      "source": "design/Jawa/worldbuilding/biomes/abyss.md",
+      "speaker": "agent",
+      "text": "No geothermal, no steady-wind promise, no water rain, no permanent Clear, no clean long-range sensing, no sun-dependent resident ecology, no certain Nhaleth sighting/faction/body. No fantasy-dragon tells. Standing later rulings and source conflicts recorded separately; nothing waived."
+    },
+    {
+      "id": "frozen_planet",
+      "source": "CLAUDE.md",
+      "speaker": "agent",
+      "text": "No new/alternative planet generation, now or later. Existing worker/mutator code is accounted for, not offered as a player capability. Local map content staging is distinct. Zero owned biome tiles is expected pending final repaint and is not a defect."
+    },
+    {
+      "id": "tier_boundary",
+      "source": "design/Jawa/worldbuilding/biomes/abyss_cast_bible_2026-10-01.md:28",
+      "speaker": "agent",
+      "text": "Invented creatures and cryptid live in RM; canon Taozin, Empire probes/Sith whisper and Lightfall placement are neighbours. Earlier free-tier ship-touch exclusion conflicts with code location, not grounds to remove built cover. Campaign intent is the bounded root here."
+    },
+    {
+      "id": "brood_existing_intent",
+      "source": "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1",
+      "speaker": "agent",
+      "text": "One lair, salvage-only wreck, hidden learnable wake threshold, essentially unkillable landscape mother, great-bone imprint gate, aggressive hungry UV-sensitive dark-seeing beast, continuous troublesome growth. These are carried requirements; no question reasks them."
+    },
+    {
+      "id": "settings_and_heat",
+      "source": "design/RimMandrake/standing_rulings.md",
+      "speaker": "agent",
+      "text": "Feature switches, shipped defaults and tuning; ordinary vanilla ambient heat, no new heat kind. Mechanics are promised in our biomes only. No broader compatibility test matrix inferred."
+    },
+    {
+      "id": "no_ledger",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "speaker": "agent",
+      "text": "User-authorised adaptation: write only local record.json, QUESTIONS.md and NOTES.md; no owner note, filing, result, stage advance or first-touch certification."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "muffle_ship_on",
+      "source": "OWNER:1793468468383798501",
+      "speaker": "owner",
+      "authority_form": "byCard",
+      "text": "Default sound muffling ships on; owner can adjust later. Do not ask for this default again.",
+      "recorded_card": "Abyss sound → Ship on, adjust later"
+    },
+    {
+      "id": "muffle_listen_disposition",
+      "source": "OWNER:1793734741105713828",
+      "speaker": "agent",
+      "text": "Verification event applies the owner's earlier ship-on card to the owed listening clause. This is not evidence of a new listening session or audio quality measurement."
+    },
+    {
+      "id": "near_black_world",
+      "source": "OWNER:1792559134552404364",
+      "speaker": "owner",
+      "authority_form": "ownerSaid",
+      "text": "Abyss world appearance is to be darker with eerie swirling. Applies to the world-face request, not by itself to local-map visibility acceptance.",
+      "owner_words_excerpt": "Abyss I had envisioned as far darker still with eerie swirling within it."
+    },
+    {
+      "id": "taozin_home",
+      "source": "OWNER:1792259396570326944",
+      "speaker": "owner",
+      "authority_form": "byCard",
+      "text": "Abyss is the Crags meant for the Taozin roster and nest; preserve campaign patch-added content.",
+      "recorded_card": "Is the Abyss the Crags you meant? → Yes, the Abyss"
+    },
+    {
+      "id": "older_quoted_events",
+      "source": "infrastructure/state/ledger/events/OWNER.jsonl",
+      "speaker": "agent",
+      "text": "Relevant Oct 1 OWNER rows contain real ownerSaid but have no tsn. Their exact file lines or ITEM/docs may be cited; no timestamp-derived OWNER id was minted. No approval of this root or flagship was found."
+    },
+    {
+      "id": "etchfall_kept",
+      "source": "design/RimMandrake/fluff_cuts_2026-10-23.md",
+      "speaker": "agent",
+      "text": "Later delegated veto digest explicitly kept Abyss Etchfall. The Oct 22 review's suggestions to keep/cut features are opinions, not owner scope openings."
+    }
+  ],
+  "inventory": [
+    {
+      "id": "biome_body",
+      "text": "Owned RM_Abyss BiomeDef: climate-independent content, diseases, fertile/dark ground, positive animalDensity, weather and flora/fauna tables, extra map steps; no fishery authored.",
+      "source": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
+        "ITEM:ABYSS_FULL_RENAME_1",
+        "ITEM:FORSAKENCRAGS_RM_MOD_BUILD_1"
+      ],
+      "proof_note": "Historical scaffold and load records, not a present resolved-def/roster census.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "owned_terrain",
+      "text": "Owned fine forsaken sand and fertile forsaken sand; footprints, pollution surfaces and terrain tools. Donor-derived art includes marked polluted stand-ins. About.xml's remaining donor-terrain warning is stale.",
+      "source": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts.xml"
+      ],
+      "proof_note": "Source ports replace donor terrains; no present composite load/art judgement inferred.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "legacy_weather_ports",
+      "text": "Owned compatibility weather defs copied from donor: RM_ForsakenNight, RM_ForsakenRainyNight and RM_ForsakenThunderstorm. The active RM_Abyss weather table uses the newer three weathers.",
+      "source": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts_Weathers.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts_Weathers.xml"
+      ],
+      "proof_note": "Compatibility surface is built; no independent gameplay promise inferred."
+    },
+    {
+      "id": "placement_worker",
+      "text": "Existing biome score worker and rarity slider. It can score new planets in code; player-facing worldgen is permanently outside the campaign, not a future feature.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssBiome.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "out",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssBiome.cs",
+        "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs"
+      ],
+      "proof_note": "Inventory preserves existing code, without authorising planet generation."
+    },
+    {
+      "id": "dark_field",
+      "text": "Temperature-structured Dark: outdoor drifting pockets, warm roofed rooms clear, fold-lane and phantom clearance compose. The numeric field is built; no spatial Dark renderer was located here.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+        "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs",
+        "ITEM:ABYSS_DARK_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "murk",
+      "text": "Humanlike sight/aim/melee hediff follows local Dark; removal comp clears it after leaving an Abyss-held map, including world pawns.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:136",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:136",
+        "src/RimMandrake/Abyss/Defs/HediffDefs/RM_Hediffs_Dark.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "dark_lamps",
+      "text": "Artificial CompGlowers shrink toward a floor in local Dark and recover; living plants are excluded. Deepfire-tagged glowers are spared by default. Shared ledger composes Dark and krizzak effects.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:179",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:179",
+        "src/RimMandrake/_Shared/LightLedger/LightLedger.cs"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "unveiling",
+      "text": "Rare nonrepeatable Unveiling weather removes the Dark field, restores weather accuracy, changes sky palette, announces nearby cairns, and doubles grain multiplier; no global fog reveal implemented.",
+      "source": "src/RimMandrake/Abyss/Defs/WeatherDefs/RM_Weathers_Abyss.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/WeatherDefs/RM_Weathers_Abyss.xml",
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:112"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "storm_call",
+      "text": "Witchfire weather has wind/lightning and poor accuracy; delayed rumble/flash may bring a manhunting Summ, with threat letter. Natural storm schedule separate from stolen-egg call.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs:104",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs:104",
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:209",
+        "src/RimMandrake/Abyss/Defs/WeatherDefs/RM_Weathers_Abyss.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "light_ledger",
+      "text": "Abyss opts into the shared multiplicative light ledger for Dark and krizzak ownership; recovery clears only its own contribution.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs:120",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs:120",
+        "src/RimMandrake/_Shared/LightLedger/LightLedger.cs",
+        "src/RimMandrake/_Shared/LightLedger/LightLedgerKernel.cs"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "heat_observation",
+      "text": "A colonist in clear air near a visible active heat source under otherwise dark ambient air completes the observation project and unlocks heat-folding. Option off grants observation on load.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:131",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:131",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_FoldLamp.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "fold_lamp",
+      "text": "Fuelled, rotatable heater-lamp with a forward lane of Dark clearance; walls stop each column, clearance fades with distance. Plain heat/light remains without Dark.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:65",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:65",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_FoldLamp.xml",
+        "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "wickwood",
+      "text": "Extractable/replantable living lamp tree; overlight radius 4.5 supports crops, emits ordinary light, grows without sunlight and yields timber. Restart setting disables farming overlight and wild entry.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Wickwood.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Wickwood.xml",
+        "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:33",
+        "ITEM:ABYSS_LAMP_CROPS_BUILD_1"
+      ],
+      "proof_note": "Oct 7 suite checks overlight def value, not a transplanted tree growing a real crop.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "gust_signal",
+      "text": "Saved shared gust detector reads vanilla wind excursions with hysteresis, minimum/maximum duration and cooldown; force hook for proof. It observes wind, not a turbine/power generator.",
+      "source": "src/RimMandrake/Abyss/Source/RM_GustController.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_GustController.cs",
+        "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs:24"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "gharrek",
+      "text": "Gharrek creature opens and gains nutrition once per shared gust; stillness applies a movement-capping dormant hediff. Current art has facings, not a separately demonstrated fan-opening animation.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompGharrek.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompGharrek.cs",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Gharrek.xml",
+        "ITEM:ABYSS_GHARREK_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "gill_ash",
+      "text": "Gharrek shearable gill-ash product, brittle chitin hide; gill-ash refines to chemfuel at BiofuelRefinery. Shearing is ordinary time-based vanilla, not gust-gated.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_GillAsh.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_GillAsh.xml",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Gharrek.xml",
+        "src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "sorter_rings",
+      "text": "Wild sorter (RM_Durrgak) places capped shard rings away from home; a colonist seeing a cairn gains a memory.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompDurrgak.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompDurrgak.cs",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Durrgak.xml",
+        "ITEM:ABYSS_DURRGAK_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "sorter_tidy",
+      "text": "Tameable, Advanced-trainable sorter: vanilla haul training and existing CreatureBehaviors EatCleanable extension for filth eating/cleaning; no custom second tidy engine.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Durrgak.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Durrgak.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_EatCleanableExtension.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_ThinkNode_EatCleanable.cs"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "sorter_sites",
+      "text": "Map step scatters stocked den, loose row of rings and optional salvage cache using forbidden steel/components; proof hook calls actual placement but not new-map wiring.",
+      "source": "src/RimMandrake/Abyss/Source/RM_GenStep_DurrgakSigns.cs",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_GenStep_DurrgakSigns.cs",
+        "src/RimMandrake/Abyss/Defs/MapGeneration/RM_DurrgakSigns_GenStep.xml"
+      ],
+      "proof_note": "Oct 7 suite/Oct 22 review report placement pass; current generation, placement completeness and art unverified.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "krizzak_flight",
+      "text": "Krizzak creature with MaxFlightTime, cooldown, flight flags and directional whole-body frames; current frame count follows shipped def rather than an old commission.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Krizzak.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Krizzak.xml",
+        "ITEM:ABYSS_KRIZZAK_BUILD_1"
+      ],
+      "proof_note": "Oct 7 suite reports canEverFly; eligibility does not demonstrate an actual takeoff, travel or animation. No unattended flight run.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "krizzak_dimming",
+      "text": "Wild krizzaks seek reachable lit things, dim their radii, feed, avoid heat and leave lights recovering; tame ones do not steal. Nearby feeding lacks a sight-line check; reload restores dimming by design.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs",
+        "ITEM:ABYSS_KRIZZAK_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "light_aversion",
+      "text": "Ishvarith (RM_Skarnix) responds to PsychGlow by fleeing to a reachable dark cell with a cooldown. It does not currently test heated space or forbid crossing a lit path.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompLightAversion.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompLightAversion.cs",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Skarnix.xml",
+        "ITEM:ABYSS_INVENTED_CREATURES_TO_RM_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "cold_drain",
+      "text": "Saevitha (RM_Cindermare) has no bite tool: cold-drain grip applies its own injury DamageDef/Hediff chain; untameable and no live shear loop.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Cindermare.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Cindermare.xml",
+        "ITEM:ABYSS_INVENTED_CREATURES_TO_RM_1"
+      ],
+      "proof_note": "Older RSW cold-drain chain was exercised on a target (legacy predator item); RM port has source/load evidence, no present fight acceptance.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "quill_warning",
+      "text": "Ombrathia (RM_Drokattak) pauses, emits text and rattle once per new hunt/melee job; does not throw quills. Warning timing is at job start, not measured at lunging distance.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompQuillHackle.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompQuillHackle.cs",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Drokattak.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "summ_hide",
+      "text": "Summ creature is tough, regenerates healable injuries and develops a readable sunburn under bright open sky; shade/Dark cool it. Regeneration and UV sensitivity have switches.",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompSummHide.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_CompSummHide.cs",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+        "ITEM:ABYSS_DONOR_BEASTS_FREED_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "summ_growth",
+      "text": "Summ/summing use finite baby/juvenile/adult/elder/ancient size, hunger and health stages. Summing generates young. This is age-based growth but not constant lifelong growth.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+        "ITEM:ABYSS_DONOR_BEASTS_FREED_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "continuous_growth",
+      "text": "Constant problematic lifelong summ growth with escalating size/hunger/space is ruled in item prose, but no continuous growth implementation was located; finite stage plateaus do not fulfil it.",
+      "source": "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1",
+      "impl": "absent",
+      "proof": "missing",
+      "scope": "approved",
+      "search_scope": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+        "src/RimMandrake/Abyss/Source/RM_CompSummHide.cs",
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs",
+        "src/RimMandrake/Abyss/Source/RM_Abyss.csproj",
+        "src/RimMandrake/HugeThings/Source"
+      ],
+      "proof_note": "Source gap, not a request to reapprove the requirement."
+    },
+    {
+      "id": "etchfall",
+      "text": "Falling grain samples unroofed natural rock and steel-stuff edifices, deals deterioration, leaves tholin and turns destroyed rock ground into etch-hollow. Roofs protect; strength=0 disables; Unveiling doubles attempts.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentEtchfall.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentEtchfall.cs",
+        "ITEM:ABYSS_ETCHFALL_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "tholin_fuel",
+      "text": "Owned tholin resource and refinery recipe: grain harvest becomes chemfuel; the same refinery supplies gill-ash conversion. Ordinary item stacks, not a new cleaning job.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_Tholin.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_Tholin.xml",
+        "src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "etchcap",
+      "text": "Slow, low-yield dark-grown etchcap and gourmet ingredient, etch-hollow terrain and own variant art. Current growth gate is fertilityMin 0.9, which also admits ordinary RM_ForsakenSand fertility 1.0.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Etchcap.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Etchcap.xml",
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_EtchcapCap.xml",
+        "src/RimMandrake/Abyss/Defs/TerrainDefs/RM_EtchHollow.xml",
+        "ITEM:ABYSS_ETCHCAP_BUILD_1"
+      ],
+      "proof_note": "Definitions/texture linkage had historical suite evidence. Hollow-only growth is not enforced by this gate.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "aveluthia",
+      "text": "Pack beast with vanilla milk and herd breeding; current kind uses owned adult art for all stages, with owned calf/female variants still unverified.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Aveluthia.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Aveluthia.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "lirrith",
+      "text": "Small scavenging omnivore with toxic bite, breeding and own facings; no custom corpse-stripping engine in this file.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Lirrith.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Lirrith.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "moravatha",
+      "text": "Large herd grazer and pack animal with live-young breeding and own art; trainability None. Donor low-rest hediff was dropped, so 'hardly sleeps' is not implemented here.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Moravatha.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Moravatha.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "ysvaltha",
+      "text": "Fast carnivore/egg eater with surprise-attack stun tools and own age/facing art; wing-like blades do not establish flight.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ysvaltha.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ysvaltha.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "sesserith",
+      "text": "Toxic-bite predator, surprise stun, advanced training and special trainables. Description mentions a spine spray but no ranged-quill verb was located in this def.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Sesserith.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Sesserith.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "ossumatha",
+      "text": "Omnivorous herd animal, high manhunter-on-damage chance and training; no dedicated hungry digging or group-rage routine found in this file.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ossumatha.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ossumatha.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "olumetha",
+      "text": "Plated-brow herd grazer with vanilla milk and live-young breeding; trainability None. Current facing files exist, but owner-note compliance was not visually checked.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Olumetha.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Olumetha.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "nevarithia",
+      "text": "Rare owned many-eyed grazer with ordinary melee/race data and art. Port explicitly omits donor death eclipse/ability and says portable Dark/release remain owed.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Ported defs had L1 verification 2026-10-07 at 627a6aea5b3a; no current resolved-def or ecological demonstration.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "nevarithia_halo",
+      "text": "A portable knot of Dark and its release on death are promised in the current description but absent from the port implementation.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml:8",
+      "impl": "absent",
+      "proof": "missing",
+      "scope": "open_question",
+      "search_scope": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml",
+        "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+        "src/RimMandrake/CreatureBehaviors/Source",
+        "src (C#/XML searches for RM_Nevarithia/DarkHalo/Darkbeast)"
+      ],
+      "proof_note": "Explicit port omission and bounded source search. Frozen sheet and description promise a halo; cast bible says the later slate was never admitted. Resolve provenance before scoping build, not through an invented approval."
+    },
+    {
+      "id": "giant_glow_globe",
+      "text": "Natural bright sunlamp: glow 10, overlight 7, plantable via TreeSowing and own variants.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantGlowGlobe.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantGlowGlobe.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "glow_globe",
+      "text": "Decorative living light, sowable, ingestible plant, own large variants; 'deeply poisonous' remains description only per the file header. Current def retains growMinGlow 0.3.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowGlobe.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowGlobe.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "glowberry",
+      "text": "Living lamp with edible ordinary RawBerries harvest, TreeSowing and own variants; no separate harvested glowing-berry item.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "glowing_grass",
+      "text": "Dark-grown grass carpet with tinted variant art. No CompGlower in current def: appearance is not actual emitted map light.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowingGrass.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowingGrass.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "paddle_vine",
+      "text": "Sowable fibre crop yielding Cloth; no phototropic motion or tracking code in this def.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_PaddleVine.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_PaddleVine.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "giant_fibre",
+      "text": "Large dark-grown TreeBase fibre stalk with own art and harvest fields; parent inheritance needs resolved-def read for final harvest yield/product.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantFibreStalk.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantFibreStalk.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "tree_mushroom",
+      "text": "Large glowing timber fungus, dark-grown, blight immune, TreeSowing, own random variants. HugeThings is the neighbour for solid trunk mechanics.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_TreeMushroom.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_TreeMushroom.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "sickly_mushroom",
+      "text": "PollutionTreeBase darklight glower with overlight and fungus harvest after economy tuning; polluted-ground restriction comes from parent.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_SicklyGlowMushroom.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_SicklyGlowMushroom.xml",
+        "ITEM:ABYSS_SHEET_DONOR_PORT_1"
+      ],
+      "proof_note": "Historical port load evidence; art quality, parent resolution and long-term crop ecology not re-proved.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "gust_soundscape",
+      "text": "Silent Dark bed punctuated by gust impacts, delayed gill rustle, grain ticks and lamp clatter; only onscreen map plays scheduler events. Startup-off restores vanilla fog wind.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssSoundscape.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssSoundscape.cs",
+        "src/RimMandrake/Abyss/Defs/SoundDefs/RM_AbyssSoundscape.xml",
+        "ITEM:ABYSS_SOUNDSCAPE_BUILD_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "sound_muffle",
+      "text": "Own sound mappings and Harmony Sample.Update filter muffle map sounds by listener's local Dark, leaving UI/other biomes alone. Muffle ships on under owner's later card.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssSoundHook.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssSoundHook.cs",
+        "src/RimMandrake/Abyss/Source/RM_AbyssSoundscape.cs",
+        "ITEM:ABYSS_DARK_MUFFLE_ALL_SOUNDS_1"
+      ],
+      "proof_note": "OWNER:1793468468383798501 authorises ship-on; OWNER:1793734741105713828 applies that card to the listening clause. This is authority, not measured listening quality."
+    },
+    {
+      "id": "ship_cover_state",
+      "text": "Saved temporary ship-cover meter: home Abyss map with GravEngine and few lit building lamps builds cover, noise erodes it, expiry/probe report causes cooldown. Engine absence resets it; no direct engine-start hook here. Older design rules call ship touch campaign-only even though implementation lives in RM; this dry run does not extend free-tier scope.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs",
+        "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs",
+        "ITEM:ABYSS_HIDDEN_SHIP_PROBES_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "probe_search",
+      "text": "Scheduled probe visits under cover: faction/kind extension, vanilla militor fallback, moving-colonist/lamplight accumulation, report/collapse, departure and kill message. Detection is distance-based without LOS or a heat read.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs:96",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs:96",
+        "src/RimUtinni/UtinniPatches/Patches/Abyss_ProbeDroids.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "cover_external_effects",
+      "text": "End-to-end orbital trade suppression and raid/pursuit response to dynamic cover are not verified. No CoverLevel/IsCovered consumer beyond Abyss was found in the source search; the component exposes a state API.",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs:48",
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "approved",
+      "uncertainty": "End-to-end orbital trade suppression and raid/pursuit response to dynamic cover are not verified. No CoverLevel/IsCovered consumer beyond Abyss was found in the source search; the component exposes a state API.",
+      "proof_note": "Impl unknown at integration boundary: absence of a local consumer is not a runtime proof of all external behaviour."
+    },
+    {
+      "id": "pursuit_shadow",
+      "text": "EmpirePursuit separately delays raid/warning timers by configured multiplier for RM_Abyss. Its source reads biome membership, not dynamic Abyss cover.",
+      "source": "src/RimUtinni/EmpirePursuit/Source/RuthlessPursuingMechanoids.cs:704",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimUtinni/EmpirePursuit/Source/RuthlessPursuingMechanoids.cs:704",
+        "src/RimUtinni/EmpirePursuit/Defs/Scenarios/ScenParts_EmpirePursuit.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "cryptid_sites",
+      "text": "0–2 extra runs of sorter placement; identical material signs, no certain Nhaleth structure/pawn/faction. Toggle does not remove already placed ordinary sites.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:55",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:55",
+        "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "cryptid_exchange",
+      "text": "Occasional unwatched unforbidden item exchange inside a shard circle, returned goods and letter; awake colonists' LOS prevents it. Reward capped to one stack of each return material; forced proof hook bypasses random timing.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:173",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:173",
+        "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs"
+      ],
+      "proof_note": "Oct 7 suite historically exercised one watched OR unwatched branch, not both required controls.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "cryptid_phantom",
+      "text": "Rare temporary clear pocket on apparently empty ground away from buildings/colonists; no creature appears. Active pocket list is not saved; expiry pruning is hourly.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:220",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:220"
+      ],
+      "proof_note": "Historical forced centre-clearance read, not naturally occurring mystery or restored save continuity.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "cryptid_lore",
+      "text": "Single RulePack cryptid name/whisper, rare social interaction, tale usable in art; Utinni adds Sith whisper only. No certainty/reveal is owed.",
+      "source": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml",
+        "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs",
+        "src/RimUtinni/UtinniPatches/Patches/Abyss_CryptidSithWhisper.xml"
+      ],
+      "proof_note": "Historical name resolution; authored tales/interaction reception not an accepted human experience.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "cryptid_dream",
+      "text": "Sleeping colonists can receive long-stay dream memory after map AgeInDays threshold; actual individual tenure is not tracked.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:251",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs:251",
+        "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "brood_site",
+      "text": "Marker-gated local-map brood site places sleeping mother, clutch, great bones, stuff heaps and optional wreck. Global MapCommonBase step checks tile mutator/landmark extension. Local map generation is distinct from alternative planet generation.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodLair.cs:191",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodLair.cs:191",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml",
+        "src/RimMandrake/Abyss/Patches/RM_BroodLair_MapGen.xml",
+        "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1"
+      ],
+      "proof_note": "L1 def read verified Oct 7 at 6f4ca76604ae; lair placement in actual Lightfall/chasm and descent not demonstrated.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "brood_pressure",
+      "text": "One saved hidden pressure/peak/threshold joins light, salvage and theft; stir/rumble warnings, partial refund/decay and re-arming. Concurrent additions can wake after warning without a guaranteed elapsed grace period.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs",
+        "src/RimMandrake/Abyss/Source/RM_BroodLair.cs"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "brood_wake",
+      "text": "Sleeping 7x7 impassable mother drawn 15 across becomes a permanently manhunting Summ pawn with 3% incoming damage and no pain; warning/letter/shake say flee. Full physical scale/navigation remains unproved.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodLair.cs:104",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodLair.cs:104",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "bone_resources",
+      "text": "Field supplies light woody SummBone stuff and minifiable great bone restricted by place worker to ship substructure; the latter gates imprint.",
+      "source": "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml",
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:127"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "egg_theft_return",
+      "text": "Egg stores lair identity/theft, adds wake pressure when taken, partially refunds if placed near mother on original map. Current return is near coils, while item also mentions return at lip.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:67",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:67",
+        "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "egg_storm",
+      "text": "Stolen egg on another home map periodically starts Witchfire and later spawns a searching manhunter Summ; timers saved per egg. Moving/removing egg affects whether pending calls run.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:98",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:98"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "egg_hatch_imprint",
+      "text": "Timed hatch produces summing; player-held/claimed egg bonds only if a player great bone stands on substructure on that map, otherwise wild with inspect reason. Same-map foundation is used as ship membership proxy.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:127",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:127",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "summ_bane",
+      "text": "Player Summ gets hunger hediff and semi-random autonomous killing of reachable wild/tame animals, with warning for tame victims. Drafting/mental/current attack states suppress new hunt; applies to any player-owned Summ, not recorded imprint only.",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:198",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs:198",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "wreck_salvage",
+      "text": "Finite rescue-wreck inventory with seven bill products; each completion spends stock and adds greed, last-stock bills deleted; saleable/smeltable foreign fittings remain loot. No second usable gravship.",
+      "source": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs:28",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs:28",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_RescueShipWreck.xml"
+      ],
+      "proof_note": "Historical L1 verifies defs only; no bill completion/stock accounting/wake integration accepted.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "ship_restore",
+      "text": "Four accepted fitting classes repair damaged colony buildings on substructure with budget; three refused types explain refusal and are not consumed. No redesign; no engine/connectivity check of what constitutes the player's ship.",
+      "source": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs:119",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs:119",
+        "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs:180",
+        "src/RimMandrake/Abyss/Defs/BroodLair/RM_RescueShipWreck.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "wreck_field",
+      "text": "Moderate ordinary salvage field of storm-torn turbine housings and wind vanes, Wreckage family loot/weathering and generation setting. Separate from Ship in the Wall; no working gust turbine is inferred.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_AbyssWrecks.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_AbyssWrecks.xml",
+        "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssWreckField.xml",
+        "ITEM:SALVAGE_WRECKAGE_EVERYWHERE_1"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "acoustic_payload",
+      "text": "Guarded Acoustic Scanner extension supplies banded readings for heavy creatures, sorter workings, turbine wrecks and hidden caves. Scanner engine owns pulses/precision; no clean target solution is promised.",
+      "source": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "taozin_campaign",
+      "text": "Campaign adds rare canon Taozin wild row and Taozin-nest map step to RM_Abyss; separate SWBestiary system, not a second Abyss creature implementation.",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Abyss.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Abyss.xml",
+        "src/RimStarWars/SWBestiary/Patches/RSW_TaozinNest_Abyss.xml"
+      ],
+      "proof_note": "Source linkage present; nest behaviour/scale outside this biome's bounded code read."
+    },
+    {
+      "id": "world_face",
+      "text": "Owned Abyss world face plus TerminalBiomes continuous swirl layer. The owner's near-black/eerie swirl instruction is on OWNER:1792559134552404364; world rendering belongs to TerminalBiomes.",
+      "source": "src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png",
+        "src/RimMandrake/TerminalBiomes/Textures/World/RM_Swirls/Abyss.png",
+        "ITEM:WORLD_FACES_REDRAW_ABYSS_ROT_RUST"
+      ],
+      "proof_note": "Oct 21 layer/toggle/performance verification historical; not today's look or biome-map visibility acceptance.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "compat_labels",
+      "text": "Guarded GR_Nighthrumbo donor label/description/PawnKind patch remains; not a live Abyss roster member. Old comments describe removed blocks.",
+      "source": "src/RimMandrake/Abyss/Patches/Abyss_Rename.xml",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Patches/Abyss_Rename.xml"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "settings",
+      "text": "Saved feature toggles/sliders, sections/search/reset/scope labels, renamed-key migration and PatchApplier notice. Settings header says no mechanics yet but implementation is substantial.",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssMod.cs",
+      "impl": "present",
+      "proof": "missing",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/Source/RM_AbyssMod.cs",
+        "src/RimMandrake/Abyss/Source/RM_Abyss.csproj"
+      ],
+      "proof_note": "Source present; no adequate functional acceptance located in the bounded reading. Historical def-load checks do not establish this behaviour."
+    },
+    {
+      "id": "proof_tools",
+      "text": "validation.py static checks/live def chains and intrusive proof hooks; plain-net8 fuzz drives production kernels, separate brood selftest, mutation/static planted-break wrappers. These are proof infrastructure, not accepted gameplay.",
+      "source": "src/RimMandrake/Abyss/validation.py",
+      "impl": "present",
+      "proof": "stale",
+      "scope": "not_opened",
+      "impl_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "src/RimMandrake/Abyss/Source/AbyssFuzz/AbyssFuzz.cs",
+        "src/RimMandrake/Abyss/Source/BroodSelfTest/Program.cs",
+        "src/RimMandrake/Utils/selftest_abyss_fuzz.py",
+        "src/RimMandrake/Utils/mutate_abyss_fuzz.py"
+      ],
+      "proof_note": "Oct 7 historical minimal suite pass at e44b4d2e63ef; no current run, no current runtime/art/settings fingerprint.",
+      "proof_evidence": [
+        "src/RimMandrake/Abyss/validation.py",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "ported_behaviour_gaps",
+      "text": "Port headers explicitly omit lirrith corpse-decay/disease bite, moravatha low-rest, ysvaltha tail/blade attack, sesserith thrown-spine ability and ossumatha hungry digging. Source presence of the animals does not imply these mechanics.",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Sesserith.xml:11",
+      "impl": "absent",
+      "search_scope": [
+        "src/RimMandrake/Abyss/Defs/ThingDefs_Races",
+        "src/RimMandrake/Abyss/Source"
+      ],
+      "proof": "missing",
+      "scope": "open_question",
+      "proof_note": "Named port omissions, not permission to demand restoration of every donor behaviour. Existing descriptions, authored sheet and standing rulings must be reconciled first."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "u_cover_consumers",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs:48",
+      "status": "unresolved",
+      "text": "Dynamic cover is built as a saved meter/API. Bounded src C#/XML/Python search found no consuming suppression hook outside Abyss; direct EmpirePursuit source uses static biome shadow. Orbital trade and dynamic raid suppression remain unverified. Do not equate IsCovered=true with actual hiding.",
+      "searched": [
+        "src (C#/XML/Python IsCovered/CoverLevel and surveyShadowBiomes searches)",
+        "src/RimUtinni/EmpirePursuit"
+      ],
+      "about": [
+        "ship_cover_state",
+        "cover_external_effects",
+        "pursuit_shadow"
+      ]
+    },
+    {
+      "id": "u_ecology_neighbours",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml:8",
+      "status": "partly_resolved",
+      "text": "The Dark halo and several donor abilities are explicitly absent from ports; CreatureBehaviors supplies sorter cleaning, not those omitted abilities in the evidence read. Current dark-grown plant fields fix many old glow problems, but some need light and grass has no glower. No current resolved ecological census.",
+      "about": [
+        "nevarithia_halo",
+        "ported_behaviour_gaps",
+        "sorter_tidy",
+        "glow_globe",
+        "glowing_grass"
+      ]
+    },
+    {
+      "id": "u_belt_proof",
+      "source": "src/RimMandrake/Abyss/validation.py:802",
+      "status": "unresolved",
+      "text": "Local suite's scenes audited below. Historical Oct 7 report, Oct 9 deepfire/belt failure and erased Transient references are not available current acceptance logs. No external complete scene runner recovered in bounded read.",
+      "about": [
+        "proof_tools"
+      ]
+    },
+    {
+      "id": "growth_plateaus",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml:142",
+      "status": "unresolved",
+      "text": "Finite elder/ancient stages conflict with continuous troublesome growth requirement. No continuous growth comp or HugeThings Summ-specific growth opt-in located.",
+      "about": [
+        "summ_growth",
+        "continuous_growth"
+      ]
+    },
+    {
+      "id": "halo_authority",
+      "source": "design/Jawa/worldbuilding/biomes/abyss_cast_bible_2026-10-01.md",
+      "status": "unresolved",
+      "text": "Frozen sheet calls darkbeast halo an owner ruling; current port description promises it, but cast bible says halo slate never admitted. Owner's later sheet/source notes must settle build scope without inventing an approval.",
+      "about": [
+        "nevarithia_halo"
+      ]
+    },
+    {
+      "id": "lightfall_physics",
+      "source": "design/Jawa/worldbuilding/biomes/abyss.md",
+      "status": "unresolved",
+      "text": "Original Lightfall is the place the Dark always clears; later brood biology draft says deepest Dark never lifts there. Current marker places the lair but does not resolve physical contradiction or guarantee a playable descent.",
+      "about": [
+        "brood_site",
+        "dark_field"
+      ]
+    },
+    {
+      "id": "return_place",
+      "source": "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1",
+      "status": "unresolved",
+      "text": "Item says egg may be returned at lip; code refunds within nine cells of original mother's cell, while announcing return to coils. Recover the original option/card scope before asking owner to repeat it.",
+      "about": [
+        "egg_theft_return"
+      ]
+    },
+    {
+      "id": "stale_docs",
+      "source": "src/RimMandrake/Abyss/About/About.xml",
+      "status": "resolved_from_source",
+      "text": "About/settings header still describe a stub and donor terrain dependence; actual owned defs and mechanics contradict them. Old RUT_Abyss twin references are historical; current campaign patches target RM_Abyss. No mirror edit made.",
+      "about": [
+        "biome_body",
+        "owned_terrain",
+        "settings"
+      ]
+    },
+    {
+      "id": "map_field_vs_picture",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+      "status": "unresolved",
+      "text": "Local numerical darkness changes Murk and lamp reach; weather sets global sky colours. No spatial air-mask renderer found in this mod. Whether pockets/nearby terrors read as material Dark is a human experience gap, not established by the field arithmetic.",
+      "about": [
+        "dark_field",
+        "unveiling"
+      ]
+    },
+    {
+      "id": "sensor_boundary",
+      "source": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "status": "unresolved",
+      "text": "Acoustic banded echoes must harmonise with no clean sensing. Source opts into scanner; precise output and interaction need the scanner's own proof, not a newly invented Abyss targeting system.",
+      "about": [
+        "acoustic_payload"
+      ]
+    }
+  ],
+  "failure_modes": [
+    "F1 — The Dark is a numerical penalty and palette rather than a protective, readable material presence: warm pockets do not feel usable, nearby terrors remain ordinary open-map combat, or hiding changes only an internal meter. Sources: design/RimMandrake/biome_experiences_2026-10-20.md:7; src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs; src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs.",
+    "F2 — Beauty and terror never turn into each other in play: the Unveiling is merely brighter weather, ecology is disconnected chores, and the lair is a loot checklist or a fightable boss rather than temptation followed by flight. Sources: design/RimMandrake/biome_experiences_2026-10-20.md:7; ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1; src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs.",
+    "F3 — A long stay becomes arbitrary attrition or repetitive work instead of mounting personal dread: invisible probe detection, fragile lighting, misleading habitat/growth claims or unfair wake timing punish a forty-colonist colony while cryptid certainty destroys the mystery. Sources: design/RimMandrake/biome_experiences_2026-10-20.md:7; src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs; src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs."
+  ],
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:7"
+    },
+    {
+      "id": "F2",
+      "source": "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1"
+    },
+    {
+      "id": "F3",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs"
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:7",
+      "text": "Which turn in that little story carries the Abyss for you, and where does the proposed root give the wrong impression?",
+      "decision": "F1/F2. Your experience sentence joins protection, beauty, terror and the fear of staying. A catalogue of hazards would miss that relationship.",
+      "about": [
+        "dark_field",
+        "ship_cover_state",
+        "unveiling",
+        "cryptid_dream"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": true,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Protection draws the crew in; repeated beauty makes staying tempting; familiar things turning threatening make departure difficult. I would make that cycle the root's test.",
+      "tree_changes": "If the protection-to-dread turn leads, organise the root and its main interaction check around refuge becoming exposure. If beauty-to-nightmare leads, make the Unveiling and its aftermath the central interaction. If long familiarity leads, make the existing signs and dreams carry that through-line. All built capabilities remain covered. A different account rewrites the root; silence approves nothing."
+    },
+    {
+      "id": "q02",
+      "source": "src/RimMandrake/Abyss/validation.py:802",
+      "text": "Which would you watch first to decide whether we understood the Abyss, and what failure there would make the demonstration stop?",
+      "decision": "F1/F2/F3. There is no owner flagship pick in the evidence read. The most dramatic set piece could hide a weak everyday biome.",
+      "about": [
+        "dark_field",
+        "unveiling",
+        "wickwood",
+        "ship_cover_state",
+        "brood_site",
+        "wreck_salvage"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": true,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "A first: prove that the Dark is both refuge and danger. B and C then show different reasons to stay and to venture deeper.",
+      "tree_changes": "The chosen scene becomes showcase 1 only after a recorded owner pick. The other scenes retain their own acceptance and interaction checks. A rejection case becomes a core bar if it is decisive; an aesthetic rejection needs a labelled visual exploration before its appearance is bound. Root approval alone is not a flagship choice."
+    },
+    {
+      "id": "q03",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:112",
+      "text": "What would make you send people out during that opening, and what change would make you call them back?",
+      "decision": "F1/F2. The built weather can be a brighter interval without creating the tempting, frightening reversal in your sentence. The decision to use it is still undefined.",
+      "about": [
+        "unveiling",
+        "dark_field",
+        "etchfall",
+        "storm_call"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Use the opening to read the nearby country or retrieve something previously too risky; retreat when the returning Dark threatens to strand the party. I would let existing dangers change the calculation rather than invent a compulsory attack at every opening.",
+      "tree_changes": "A useful reconnaissance window needs an outing with an ordinary-sight control and a readable return transition. A resource window needs a worthwhile retrieval and a measured way home. If the opening should itself expose the colony to danger, add that specific existing-threat interaction. No answer authorises global secret revelation or a new attack schedule."
+    },
+    {
+      "id": "q04",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs:67",
+      "text": "While lying low, what ordinary work should the colony still manage, and what activity should force a deliberate risk of being found?",
+      "decision": "F1/F3. The existing cover needs a believable cost. A map-wide lamp count can make a small outlying workshop decide the fate of the whole ship.",
+      "about": [
+        "ship_cover_state",
+        "probe_search",
+        "pursuit_shadow"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Food, repairs and careful hauling remain possible around living light; conspicuous activity near the ship or a passing scout forces a choice. I would judge a complete day's work rather than approve four lamps as a magic number.",
+      "tree_changes": "If concealment is about the ship's immediate surroundings, the leaf needs a bounded ship area and a distant-work control. If it is the whole settlement's signature, keep a map-wide case and require the player to understand why distant activity matters. If particular work is the tell, specify that work and its warning. Existing probes, temporary cover, trade isolation and launch exposure remain obligations."
+    },
+    {
+      "id": "q05",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs:29",
+      "text": "What should a well-run colony do when that happens, and how much of its working day should that response consume?",
+      "decision": "F2/F3. The built interactions might create an interesting husbandry problem or repeated busywork. The current feed and recovery numbers alone cannot distinguish them.",
+      "about": [
+        "krizzak_dimming",
+        "wickwood",
+        "giant_glow_globe",
+        "fold_lamp",
+        "light_aversion"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Notice one local failure, drive the thieves off or use heat, then resume work; a neglected swarm can threaten the perimeter, but every lamp should not demand constant manual attention.",
+      "tree_changes": "A quick local intervention needs a readable cause and a recovery scene before the next work cycle. A recurring husbandry task needs sustainable labour at forty-colonist scale. An expedition-level threat needs a distinct exposed-field scene with a meaningful way back. This sets response time and workload acceptance without asking whether the light-thief stays."
+    },
+    {
+      "id": "q06",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs:109",
+      "text": "At that rumble, what can a careful expedition reasonably finish before escape becomes a desperate gamble?",
+      "decision": "F2. A warning can exist in code yet leave no useful action between hearing it and being attacked. Several workers can add pressure nearly together.",
+      "about": [
+        "brood_pressure",
+        "brood_wake",
+        "wreck_salvage",
+        "egg_theft_return"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Stop taking new things, finish securing what is already in hand, and make a dangerous retreat; insisting on the egg as well risks waking her. I would test simultaneous workers and a slow bone hauler.",
+      "tree_changes": "An immediate-retreat answer needs a warning-to-exit opportunity with a loaded party. Finishing one current task needs that task's duration and concurrent-pressure control. A warning that can already be too late needs a clearly distinct earlier actionable sign. None reveals the numerical threshold, weakens her ruled strength, or asks again whether save/load is acceptable."
+    },
+    {
+      "id": "q07",
+      "source": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs:119",
+      "text": "After a successful haul, what change aboard your own ship would make you say that some of its lost glory has returned?",
+      "decision": "F2/F3. The repair machinery exists, but restoring generic hit points may be less than the payoff your earlier description intended.",
+      "about": [
+        "ship_restore",
+        "wreck_salvage"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "Recognisably worn fittings become sound again, with enough restored to justify that expedition. I would first demonstrate that using an accepted part restores the ship itself.",
+      "tree_changes": "If condition repair is the payoff, bind visible damage/condition and actual repair on the correct ship, plus an undamaged control. If named damaged systems must return to service, add those specific restoration effects and tests while preserving the repair-only boundary. If the presentation supplies the missing feeling, explore it with a labelled mock before adding an appearance requirement. Refused loot remains useful in each case."
+    },
+    {
+      "id": "q08",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md:7",
+      "text": "What should become different for a colony that stays a season, compared with travellers who leave after a few nights?",
+      "decision": "F2/F3. Your last sentence can mean accumulated dread or a changing pattern of consequences. Neither a literal reveal nor an automatic punishment follows from it.",
+      "about": [
+        "cryptid_exchange",
+        "cryptid_phantom",
+        "cryptid_dream",
+        "cryptid_lore"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "The signs become harder to dismiss as they attach to familiar places and people; the fear deepens without confirming the Nhaleth or transforming a colonist into one.",
+      "tree_changes": "If familiarity alone carries it, give the existing signs a long-stay scene and add no escalation clock. If time changes the pattern, specify that change and whether time follows the person or the settlement; use new-arrival and revisit controls. If a costly consequence is needed, define its readable sign and limit before adding it. The no-sighting/no-certain-proof boundary holds throughout."
+    },
+    {
+      "id": "q09",
+      "source": "infrastructure/state/items/ABYSS_LIGHTFALL_BROOD_WRECK_1.md",
+      "text": "What should make this beast worth taking with you, and what change in the colony's daily life would show that its growing cost is real?",
+      "decision": "F2/F3. Large health numbers and a hunger modifier can coexist without producing the bane-and-boon story already ruled.",
+      "about": [
+        "egg_hatch_imprint",
+        "summ_growth",
+        "summ_bane",
+        "summ_hide"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "Codex Abyss dry run",
+      "status": "draft",
+      "ask_first": false,
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "why": "Local evidence/wording check only; fresh author-independent review not run. No pass or token charge fabricated."
+      },
+      "picture_kind": "written thought experiment",
+      "guess": "It saves the crew in a fight they could not otherwise survive, then forces real changes to feeding, animal safety and ship space. I would judge the same bonded animal at successive ages.",
+      "tree_changes": "A combat payoff needs an encounter where its strength changes the outcome, alongside an ordinary-animal control. A transport or work payoff needs that particular useful job instead. Food pressure binds a supply budget; animal safety binds hunting and readable losses; space pressure binds physical accommodation. These choose demonstrations and consequences, never reopen the bone requirement, aggression or continuous growth."
+    }
+  ],
+  "scene_audit": [
+    {
+      "id": "audit_etchcap_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:802",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::etchcap_defs_resolve",
+      "about": [
+        "etchcap"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Checks three definitions and takes screenshot; no plant grown/harvested or hollow-versus-normal-ground control."
+    },
+    {
+      "id": "audit_gharrek_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:812",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::gharrek_defs_resolve",
+      "about": [
+        "gharrek"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Definition reads only; no still/gust, nutrition, movement or animation scene."
+    },
+    {
+      "id": "audit_durrgak_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:822",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::durrgak_defs_resolve",
+      "about": [
+        "sorter_sites"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Missing: no snapshot and restoration of spawned/placed things, letters, phantom or other changed state.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Reads defs then ProofSigns changes current map. Requires den=1 only, not all rings/cache/new-map settings; pre-existing UsedRects/site not asserted."
+    },
+    {
+      "id": "audit_etchfall_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:842",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::etchfall_defs_resolve",
+      "about": [
+        "etchfall"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Definitions/recipes only; no timed roofed/unroofed rock/steel erosion or actual refining."
+    },
+    {
+      "id": "audit_dark_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:852",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::dark_defs_resolve",
+      "about": [
+        "dark_field"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Definition reads only; cold/heated Murk, lamp reach, sight through the air and Unveiling transitions are not staged."
+    },
+    {
+      "id": "audit_krizzak_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:862",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::krizzak_defs_resolve",
+      "about": [
+        "krizzak_flight"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Missing: no snapshot and restoration of spawned/placed things, letters, phantom or other changed state.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Spawns at hard-coded (15,15), reads canEverFly. No asserted clear cell, real flight transition, landing, control or cleanup. Does not itself require owner presence; never executed in this dry run."
+    },
+    {
+      "id": "audit_freed_beasts",
+      "source": "src/RimMandrake/Abyss/validation.py:880",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::freed_beasts",
+      "about": [
+        "summ_growth"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Docstring says spawned summing/young gate, but body only reads definitions. No age/growth/regeneration/UV/hackle action."
+    },
+    {
+      "id": "audit_predators_defs_resolve",
+      "source": "src/RimMandrake/Abyss/validation.py:891",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::predators_defs_resolve",
+      "about": [
+        "light_aversion"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Definition reads only; no lit/heat barrier, attack, cold-drain wound or aversion behaviour."
+    },
+    {
+      "id": "audit_lamp_crops_fold_lamp",
+      "source": "src/RimMandrake/Abyss/validation.py:902",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::lamp_crops_fold_lamp",
+      "about": [
+        "wickwood"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Loads defs and checks overlight=4.5. Docstring mentions fold-lane read but chain never calls ProofLane or stages/transplants a living lamp/crop."
+    },
+    {
+      "id": "audit_gust_soundscape",
+      "source": "src/RimMandrake/Abyss/validation.py:920",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::gust_soundscape",
+      "about": [
+        "gust_soundscape"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Read-only chain body; no changed persistent site to restore, but this is not a functional acceptance scene.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "SoundDef reads only. Docstring suggests ProofGust but chain never calls it; no heard sound or clear/Dark comparative listening."
+    },
+    {
+      "id": "audit_cryptid",
+      "source": "src/RimMandrake/Abyss/validation.py:930",
+      "entry_point": "src/RimMandrake/Abyss/validation.py::cryptid",
+      "about": [
+        "cryptid_exchange"
+      ],
+      "kind": "existing_chain_audit",
+      "start": "Current game/map/loaded defs assumed; no scene-specific asserted fixture.",
+      "control": "No paired discriminating control staged by this chain.",
+      "restore": "Missing: no snapshot and restoration of spawned/placed things, letters, phantom or other changed state.",
+      "hold": "No explicit immediate/owner_review contract or scene journal.",
+      "text": "Calls name resolution, forced exchange and forced phantom opening. Exchange accepts watched OR unwatched branch; cannot prove both or a no-op defect on the unwatched branch. ProofExchange scans all circles, so unrelated eligible items can affect swapped count."
+    },
+    {
+      "id": "audit_proof_hooks",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:207",
+      "entry_point": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs::RM_AbyssLightProof",
+      "about": [
+        "fold_lamp",
+        "heat_observation",
+        "wickwood"
+      ],
+      "kind": "helper_audit",
+      "start": "ProofLane requires a pre-existing lamp; uses first matching lamp, not a named asserted fixture.",
+      "control": "Returns near/far/behind values but no off, wall-blocked or rotated paired cases.",
+      "restore": "Read-only lane rebuild; any fixture/research staging is external and unspecified.",
+      "hold": "Unspecified.",
+      "text": "Existence of helper is not evidence that chain executes it or that a player can use the lane."
+    },
+    {
+      "id": "audit_brood_missing_scene",
+      "source": "src/RimMandrake/Abyss/validation.py:661",
+      "about": [
+        "brood_site",
+        "brood_pressure",
+        "brood_wake",
+        "egg_theft_return",
+        "egg_storm",
+        "egg_hatch_imprint",
+        "summ_bane",
+        "wreck_salvage",
+        "ship_restore"
+      ],
+      "kind": "missing_functional_scene",
+      "start": "brood_check is static only; no live brood chain declared.",
+      "control": "Pure BroodSelfTest exercises threshold, refund, imprint, repair and victim-choice kernels with planted break; does not test engine callbacks or playable lair.",
+      "restore": "No live scene runner to audit or recovery journal exercised.",
+      "hold": "No live hold contract.",
+      "text": "Needs future script-built generation, salvage bill, simultaneous workers, loaded retreat, with/without bone, hatch, storm-at-home and actual fitting scenes. No build item filed at stages 0–1."
+    },
+    {
+      "id": "audit_cover_missing_scene",
+      "source": "src/RimMandrake/Abyss/validation.py:389",
+      "about": [
+        "ship_cover_state",
+        "probe_search",
+        "cover_external_effects",
+        "pursuit_shadow"
+      ],
+      "kind": "missing_functional_scene",
+      "start": "cover_check static only; no live cover chain in this script.",
+      "control": "Fuzz covers state arithmetic, not actual raid/trade timing, engine start or occluded detection.",
+      "restore": "No runtime mutations made here; future scene requires recorded restoration for timers/probes/weather/settings.",
+      "hold": "No scene hold contract.",
+      "text": "A cover scalar cannot accept actual protection. Need positive and exposed/control outcomes from the consuming systems."
+    },
+    {
+      "id": "audit_offline",
+      "source": "src/RimMandrake/Abyss/Source/AbyssFuzz/AbyssFuzz.cs",
+      "about": [
+        "proof_tools"
+      ],
+      "kind": "offline_harness_audit",
+      "start": "Seeded synthetic worlds compile actual production pure kernels. BroodSelfTest compiles production wake rules separately.",
+      "control": "Independent lane/reference checks, invariants and planted-break/mutation wrappers exist. Not rerun.",
+      "restore": "Process-local state; no saved game modified. Wrapper stage_build paths lie outside this authorised write folder, so not invoked.",
+      "hold": "Offline process ends; no owner scene.",
+      "text": "Arithmetic coverage cannot accept material darkness, creature art/motion, sound, playable navigation or actual vanilla job completion."
+    }
+  ],
+  "built_reviewed": [
+    {
+      "id": "file_0",
+      "ref": "src/RimMandrake/Abyss/validation.py",
+      "source": "src/RimMandrake/Abyss/validation.py",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_1",
+      "ref": "src/RimMandrake/Abyss/About/About.xml",
+      "source": "src/RimMandrake/Abyss/About/About.xml",
+      "covered_by": "biome_body",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_2",
+      "ref": "src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll",
+      "source": "src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll",
+      "covered_by": "biome_body",
+      "text": "Built binary/stamp present; no deployed-source or runtime fingerprint matched."
+    },
+    {
+      "id": "file_3",
+      "ref": "src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll.srchash",
+      "source": "src/RimMandrake/Abyss/Assemblies/RimMandrake.Abyss.dll.srchash",
+      "covered_by": "biome_body",
+      "text": "Built binary/stamp present; no deployed-source or runtime fingerprint matched."
+    },
+    {
+      "id": "file_4",
+      "ref": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts.xml",
+      "source": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts.xml",
+      "covered_by": "owned_terrain",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_5",
+      "ref": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts_Weathers.xml",
+      "source": "src/RimMandrake/Abyss/Defs/RM_Abyss_DonorPorts_Weathers.xml",
+      "covered_by": "legacy_weather_ports",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_6",
+      "ref": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
+      "source": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
+      "covered_by": "biome_body",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_7",
+      "ref": "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml",
+      "source": "src/RimMandrake/Abyss/Defs/BroodLair/RM_BroodLair.xml",
+      "covered_by": "brood_site",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_8",
+      "ref": "src/RimMandrake/Abyss/Defs/BroodLair/RM_RescueShipWreck.xml",
+      "source": "src/RimMandrake/Abyss/Defs/BroodLair/RM_RescueShipWreck.xml",
+      "covered_by": "wreck_salvage",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_9",
+      "ref": "src/RimMandrake/Abyss/Defs/HediffDefs/RM_Hediffs_Dark.xml",
+      "source": "src/RimMandrake/Abyss/Defs/HediffDefs/RM_Hediffs_Dark.xml",
+      "covered_by": "murk",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_10",
+      "ref": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml",
+      "source": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssCryptid.xml",
+      "covered_by": "cryptid_lore",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_11",
+      "ref": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssWreckField.xml",
+      "source": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_AbyssWreckField.xml",
+      "covered_by": "wreck_field",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_12",
+      "ref": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_DurrgakSigns_GenStep.xml",
+      "source": "src/RimMandrake/Abyss/Defs/MapGeneration/RM_DurrgakSigns_GenStep.xml",
+      "covered_by": "sorter_sites",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_13",
+      "ref": "src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml",
+      "source": "src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml",
+      "covered_by": "tholin_fuel",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_14",
+      "ref": "src/RimMandrake/Abyss/Defs/SoundDefs/RM_AbyssSoundscape.xml",
+      "source": "src/RimMandrake/Abyss/Defs/SoundDefs/RM_AbyssSoundscape.xml",
+      "covered_by": "gust_soundscape",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_15",
+      "ref": "src/RimMandrake/Abyss/Defs/TerrainDefs/RM_EtchHollow.xml",
+      "source": "src/RimMandrake/Abyss/Defs/TerrainDefs/RM_EtchHollow.xml",
+      "covered_by": "etchcap",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_16",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_AbyssWrecks.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_AbyssWrecks.xml",
+      "covered_by": "wreck_field",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_17",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_FoldLamp.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_FoldLamp.xml",
+      "covered_by": "fold_lamp",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_18",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_EtchcapCap.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_EtchcapCap.xml",
+      "covered_by": "etchcap",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_19",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_GillAsh.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_GillAsh.xml",
+      "covered_by": "gill_ash",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_20",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_Tholin.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Items/RM_Tholin.xml",
+      "covered_by": "tholin_fuel",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_21",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Etchcap.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Etchcap.xml",
+      "covered_by": "etchcap",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_22",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantFibreStalk.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantFibreStalk.xml",
+      "covered_by": "giant_fibre",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_23",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantGlowGlobe.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GiantGlowGlobe.xml",
+      "covered_by": "giant_glow_globe",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_24",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml",
+      "covered_by": "glowberry",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_25",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowGlobe.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowGlobe.xml",
+      "covered_by": "glow_globe",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_26",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowingGrass.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowingGrass.xml",
+      "covered_by": "glowing_grass",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_27",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_PaddleVine.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_PaddleVine.xml",
+      "covered_by": "paddle_vine",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_28",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_SicklyGlowMushroom.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_SicklyGlowMushroom.xml",
+      "covered_by": "sickly_mushroom",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_29",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_TreeMushroom.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_TreeMushroom.xml",
+      "covered_by": "tree_mushroom",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_30",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Wickwood.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_Wickwood.xml",
+      "covered_by": "wickwood",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_31",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Aveluthia.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Aveluthia.xml",
+      "covered_by": "aveluthia",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_32",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Cindermare.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Cindermare.xml",
+      "covered_by": "cold_drain",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_33",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Drokattak.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Drokattak.xml",
+      "covered_by": "quill_warning",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_34",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Durrgak.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Durrgak.xml",
+      "covered_by": "sorter_rings",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_35",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Gharrek.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Gharrek.xml",
+      "covered_by": "gharrek",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_36",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Krizzak.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Krizzak.xml",
+      "covered_by": "krizzak_flight",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_37",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Lirrith.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Lirrith.xml",
+      "covered_by": "lirrith",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_38",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Moravatha.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Moravatha.xml",
+      "covered_by": "moravatha",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_39",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml",
+      "covered_by": "nevarithia",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_40",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Olumetha.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Olumetha.xml",
+      "covered_by": "olumetha",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_41",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ossumatha.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ossumatha.xml",
+      "covered_by": "ossumatha",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_42",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Sesserith.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Sesserith.xml",
+      "covered_by": "sesserith",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_43",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Skarnix.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Skarnix.xml",
+      "covered_by": "light_aversion",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_44",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+      "covered_by": "summ_hide",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_45",
+      "ref": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ysvaltha.xml",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Ysvaltha.xml",
+      "covered_by": "ysvaltha",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_46",
+      "ref": "src/RimMandrake/Abyss/Defs/WeatherDefs/RM_Weathers_Abyss.xml",
+      "source": "src/RimMandrake/Abyss/Defs/WeatherDefs/RM_Weathers_Abyss.xml",
+      "covered_by": "unveiling",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_47",
+      "ref": "src/RimMandrake/Abyss/Patches/Abyss_Rename.xml",
+      "source": "src/RimMandrake/Abyss/Patches/Abyss_Rename.xml",
+      "covered_by": "compat_labels",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_48",
+      "ref": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "source": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "covered_by": "acoustic_payload",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_49",
+      "ref": "src/RimMandrake/Abyss/Patches/RM_BroodLair_MapGen.xml",
+      "source": "src/RimMandrake/Abyss/Patches/RM_BroodLair_MapGen.xml",
+      "covered_by": "brood_site",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_50",
+      "ref": "src/RimMandrake/Abyss/Source/RM_Abyss.csproj",
+      "source": "src/RimMandrake/Abyss/Source/RM_Abyss.csproj",
+      "covered_by": "settings",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_51",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssBiome.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssBiome.cs",
+      "covered_by": "placement_worker",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_52",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssCryptid.cs",
+      "covered_by": "cryptid_exchange",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_53",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_54",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs",
+      "covered_by": "fold_lamp",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_55",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssMod.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssMod.cs",
+      "covered_by": "settings",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_56",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssSoundHook.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssSoundHook.cs",
+      "covered_by": "sound_muffle",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_57",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssSoundscape.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssSoundscape.cs",
+      "covered_by": "gust_soundscape",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_58",
+      "ref": "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_59",
+      "ref": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodEgg.cs",
+      "covered_by": "egg_hatch_imprint",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_60",
+      "ref": "src/RimMandrake/Abyss/Source/RM_BroodLair.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodLair.cs",
+      "covered_by": "brood_site",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_61",
+      "ref": "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_BroodWakeLogic.cs",
+      "covered_by": "brood_pressure",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_62",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompDurrgak.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompDurrgak.cs",
+      "covered_by": "sorter_rings",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_63",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompGharrek.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompGharrek.cs",
+      "covered_by": "gharrek",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_64",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompKrizzak.cs",
+      "covered_by": "krizzak_dimming",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_65",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompLightAversion.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompLightAversion.cs",
+      "covered_by": "light_aversion",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_66",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompQuillHackle.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompQuillHackle.cs",
+      "covered_by": "quill_warning",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_67",
+      "ref": "src/RimMandrake/Abyss/Source/RM_CompSummHide.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_CompSummHide.cs",
+      "covered_by": "summ_hide",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_68",
+      "ref": "src/RimMandrake/Abyss/Source/RM_GenStep_DurrgakSigns.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_GenStep_DurrgakSigns.cs",
+      "covered_by": "sorter_sites",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_69",
+      "ref": "src/RimMandrake/Abyss/Source/RM_GustController.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_GustController.cs",
+      "covered_by": "gust_signal",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_70",
+      "ref": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs",
+      "covered_by": "dark_field",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_71",
+      "ref": "src/RimMandrake/Abyss/Source/RM_MapComponentEtchfall.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentEtchfall.cs",
+      "covered_by": "etchfall",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_72",
+      "ref": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_MapComponentShipCover.cs",
+      "covered_by": "ship_cover_state",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_73",
+      "ref": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs",
+      "source": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs",
+      "covered_by": "biome_body",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_74",
+      "ref": "src/RimMandrake/Abyss/Source/AbyssFuzz/AbyssFuzz.cs",
+      "source": "src/RimMandrake/Abyss/Source/AbyssFuzz/AbyssFuzz.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_75",
+      "ref": "src/RimMandrake/Abyss/Source/AbyssFuzz/Program.cs",
+      "source": "src/RimMandrake/Abyss/Source/AbyssFuzz/Program.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_76",
+      "ref": "src/RimMandrake/Abyss/Source/AbyssFuzz/RimMandrakeAbyss.Fuzz.csproj",
+      "source": "src/RimMandrake/Abyss/Source/AbyssFuzz/RimMandrakeAbyss.Fuzz.csproj",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_77",
+      "ref": "src/RimMandrake/Abyss/Source/BroodSelfTest/Program.cs",
+      "source": "src/RimMandrake/Abyss/Source/BroodSelfTest/Program.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_78",
+      "ref": "src/RimMandrake/Abyss/Source/BroodSelfTest/RimMandrakeAbyss.Brood.SelfTest.csproj",
+      "source": "src/RimMandrake/Abyss/Source/BroodSelfTest/RimMandrakeAbyss.Brood.SelfTest.csproj",
+      "covered_by": "proof_tools",
+      "text": "Capability/source accounting, not full-file CLEAN certification."
+    },
+    {
+      "id": "file_79",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Terrains/EtchHollow.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Terrains/EtchHollow.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_80",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakCairn.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakCairn.png",
+      "covered_by": "sorter_rings",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_81",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakDen.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakDen.png",
+      "covered_by": "sorter_sites",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_82",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakSalvageCache.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/DurrgakSalvageCache.png",
+      "covered_by": "sorter_sites",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_83",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_east.png",
+      "covered_by": "fold_lamp",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_84",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_north.png",
+      "covered_by": "fold_lamp",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_85",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/FoldLamp_south.png",
+      "covered_by": "fold_lamp",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_86",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/SummGreatBone.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Building/SummGreatBone.png",
+      "covered_by": "bone_resources",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_87",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/EtchcapCap.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/EtchcapCap.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_88",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/GillAsh.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/GillAsh.png",
+      "covered_by": "gill_ash",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_89",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/SummBone.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/SummBone.png",
+      "covered_by": "bone_resources",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_90",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/Tholin.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Item/Tholin.png",
+      "covered_by": "tholin_fuel",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_91",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_east.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_92",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_north.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_93",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaPack_south.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_94",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_east.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_95",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_north.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_96",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_south.png",
+      "covered_by": "aveluthia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_97",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare.png",
+      "covered_by": "cold_drain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_98",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_east.png",
+      "covered_by": "cold_drain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_99",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_north.png",
+      "covered_by": "cold_drain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_100",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare_south.png",
+      "covered_by": "cold_drain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_101",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_east.png",
+      "covered_by": "quill_warning",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_102",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_north.png",
+      "covered_by": "quill_warning",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_103",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak_south.png",
+      "covered_by": "quill_warning",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_104",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_east.png",
+      "covered_by": "sorter_rings",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_105",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_north.png",
+      "covered_by": "sorter_rings",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_106",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak_south.png",
+      "covered_by": "sorter_rings",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_107",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_east.png",
+      "covered_by": "gharrek",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_108",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_north.png",
+      "covered_by": "gharrek",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_109",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek_south.png",
+      "covered_by": "gharrek",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_110",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_111",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_112",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_113",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_1_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_114",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_115",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_116",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_2_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_117",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_118",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_119",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_3_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_120",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_121",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_122",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_4_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_123",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_east.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_124",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_125",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_5_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_126",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_north.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_127",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_south.png",
+      "covered_by": "krizzak_flight",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_128",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_east.png",
+      "covered_by": "lirrith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_129",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_north.png",
+      "covered_by": "lirrith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_130",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_south.png",
+      "covered_by": "lirrith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_131",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_east.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_132",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_north.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_133",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaPack_south.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_134",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_east.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_135",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_north.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_136",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_south.png",
+      "covered_by": "moravatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_137",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_east.png",
+      "covered_by": "nevarithia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_138",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_north.png",
+      "covered_by": "nevarithia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_139",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_south.png",
+      "covered_by": "nevarithia",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_140",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_east.png",
+      "covered_by": "olumetha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_141",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_north.png",
+      "covered_by": "olumetha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_142",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_south.png",
+      "covered_by": "olumetha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_143",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_east.png",
+      "covered_by": "ossumatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_144",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_north.png",
+      "covered_by": "ossumatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_145",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_south.png",
+      "covered_by": "ossumatha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_146",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_east.png",
+      "covered_by": "sesserith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_147",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_north.png",
+      "covered_by": "sesserith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_148",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_south.png",
+      "covered_by": "sesserith",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_149",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix.png",
+      "covered_by": "light_aversion",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_150",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_east.png",
+      "covered_by": "light_aversion",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_151",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_north.png",
+      "covered_by": "light_aversion",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_152",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix_south.png",
+      "covered_by": "light_aversion",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_153",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_east.png",
+      "covered_by": "summ_hide",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_154",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_north.png",
+      "covered_by": "summ_hide",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_155",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ_south.png",
+      "covered_by": "summ_hide",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_156",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_east.png",
+      "covered_by": "summ_growth",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_157",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_north.png",
+      "covered_by": "summ_growth",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_158",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing_south.png",
+      "covered_by": "summ_growth",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_159",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_east.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_east.png",
+      "covered_by": "ysvaltha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_160",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_north.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_north.png",
+      "covered_by": "ysvaltha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_161",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_south.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_south.png",
+      "covered_by": "ysvaltha",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_162",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_163",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantFibreStalk.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantFibreStalk.png",
+      "covered_by": "giant_fibre",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_164",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_PaddleVine.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_PaddleVine.png",
+      "covered_by": "paddle_vine",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_165",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_SicklyGlowMushroom.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_SicklyGlowMushroom.png",
+      "covered_by": "sickly_mushroom",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_166",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood.png",
+      "covered_by": "wickwood",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_167",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_a.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_168",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_b.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_169",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/Etchcap/Etchcap_c.png",
+      "covered_by": "etchcap",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_170",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_a.png",
+      "covered_by": "giant_glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_171",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_b.png",
+      "covered_by": "giant_glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_172",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_c.png",
+      "covered_by": "giant_glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_173",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_a.png",
+      "covered_by": "glowberry",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_174",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_b.png",
+      "covered_by": "glowberry",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_175",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_c.png",
+      "covered_by": "glowberry",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_176",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_a.png",
+      "covered_by": "glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_177",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_b.png",
+      "covered_by": "glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_178",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_c.png",
+      "covered_by": "glow_globe",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_179",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_a.png",
+      "covered_by": "glowing_grass",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_180",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_b.png",
+      "covered_by": "glowing_grass",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_181",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_GlowingGrass/RM_GlowingGrass_c.png",
+      "covered_by": "glowing_grass",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_182",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_a.png",
+      "covered_by": "tree_mushroom",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_183",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_b.png",
+      "covered_by": "tree_mushroom",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_184",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_c.png",
+      "covered_by": "tree_mushroom",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_185",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_a.png",
+      "covered_by": "wickwood",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_186",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_b.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_b.png",
+      "covered_by": "wickwood",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_187",
+      "ref": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_c.png",
+      "source": "src/RimMandrake/Abyss/Textures/RM_Abyss/Things/Plant/RM_Wickwood/RM_Wickwood_c.png",
+      "covered_by": "wickwood",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_188",
+      "ref": "src/RimMandrake/Abyss/Textures/StandIn/Terrain/Surfaces/AB_FineForsakenSands_Polluted.png",
+      "source": "src/RimMandrake/Abyss/Textures/StandIn/Terrain/Surfaces/AB_FineForsakenSands_Polluted.png",
+      "covered_by": "owned_terrain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_189",
+      "ref": "src/RimMandrake/Abyss/Textures/StandIn/Terrain/Surfaces/AB_ForsakenSands_Polluted.png",
+      "source": "src/RimMandrake/Abyss/Textures/StandIn/Terrain/Surfaces/AB_ForsakenSands_Polluted.png",
+      "covered_by": "owned_terrain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_190",
+      "ref": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_FineForsakenSands.png",
+      "source": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_FineForsakenSands.png",
+      "covered_by": "owned_terrain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_191",
+      "ref": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_ForsakenSands.png",
+      "source": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_ForsakenSands.png",
+      "covered_by": "owned_terrain",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_192",
+      "ref": "src/RimMandrake/Abyss/Textures/Things/Building/Exotic/RM_RescueShipWreck/RM_RescueShipWreck_a.png",
+      "source": "src/RimMandrake/Abyss/Textures/Things/Building/Exotic/RM_RescueShipWreck/RM_RescueShipWreck_a.png",
+      "covered_by": "wreck_salvage",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_193",
+      "ref": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindPylon/RM_AbyssWindPylon_A.png",
+      "source": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindPylon/RM_AbyssWindPylon_A.png",
+      "covered_by": "wreck_field",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_194",
+      "ref": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindPylon/RM_AbyssWindPylon_B.png",
+      "source": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindPylon/RM_AbyssWindPylon_B.png",
+      "covered_by": "wreck_field",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_195",
+      "ref": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindVane/RM_AbyssWindVane_A.png",
+      "source": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindVane/RM_AbyssWindVane_A.png",
+      "covered_by": "wreck_field",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_196",
+      "ref": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindVane/RM_AbyssWindVane_B.png",
+      "source": "src/RimMandrake/Abyss/Textures/Things/Building/Wrecks/RM_AbyssWindVane/RM_AbyssWindVane_B.png",
+      "covered_by": "wreck_field",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "file_197",
+      "ref": "src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png",
+      "source": "src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png",
+      "covered_by": "world_face",
+      "text": "Asset path/wiring accounted for; image not visually reviewed."
+    },
+    {
+      "id": "item_ABYSS_CRAGS_ART_ON_PORTED_DEFS_1",
+      "ref": "ITEM:ABYSS_CRAGS_ART_ON_PORTED_DEFS_1",
+      "source": "infrastructure/state/items/ABYSS_CRAGS_ART_ON_PORTED_DEFS_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_ABYSS_FIRST_SCRIPT_1",
+      "ref": "ITEM:ABYSS_FIRST_SCRIPT_1",
+      "source": "infrastructure/state/items/ABYSS_FIRST_SCRIPT_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "proof_tools"
+    },
+    {
+      "id": "item_ABYSS_HIDDEN_SHIP_PROBES_1",
+      "ref": "ITEM:ABYSS_HIDDEN_SHIP_PROBES_1",
+      "source": "infrastructure/state/items/ABYSS_HIDDEN_SHIP_PROBES_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "ship_cover_state"
+    },
+    {
+      "id": "item_ABYSS_LIGHTFALL_BROOD_WRECK_1",
+      "ref": "ITEM:ABYSS_LIGHTFALL_BROOD_WRECK_1",
+      "source": "infrastructure/state/items/ABYSS_LIGHTFALL_BROOD_WRECK_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "brood_site"
+    },
+    {
+      "id": "item_ABYSS_SHEET_DONOR_PORT_1",
+      "ref": "ITEM:ABYSS_SHEET_DONOR_PORT_1",
+      "source": "infrastructure/state/items/ABYSS_SHEET_DONOR_PORT_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_ANCIENT_WAR_LAB_1",
+      "ref": "ITEM:ANCIENT_WAR_LAB_1",
+      "source": "infrastructure/state/items/ANCIENT_WAR_LAB_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_BIOME_WORLD_SWITCH_WAVE_1",
+      "ref": "ITEM:BIOME_WORLD_SWITCH_WAVE_1",
+      "source": "infrastructure/state/items/BIOME_WORLD_SWITCH_WAVE_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_CONTAGION_PEAKS_REDRAW_AS_RAIN_MAKERS",
+      "ref": "ITEM:CONTAGION_PEAKS_REDRAW_AS_RAIN_MAKERS",
+      "source": "infrastructure/state/items/CONTAGION_PEAKS_REDRAW_AS_RAIN_MAKERS.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_DONOR_DEFS_PORT_TO_OURS_1",
+      "ref": "ITEM:DONOR_DEFS_PORT_TO_OURS_1",
+      "source": "infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_HELIX_TELLUROX_BUILD_1",
+      "ref": "ITEM:HELIX_TELLUROX_BUILD_1",
+      "source": "infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_RIMMASTER_TRIAGE_ORPHAN_POINTERS_FROM_CULLED_HANDOFFS",
+      "ref": "ITEM:RIMMASTER_TRIAGE_ORPHAN_POINTERS_FROM_CULLED_HANDOFFS",
+      "source": "infrastructure/state/items/RIMMASTER_TRIAGE_ORPHAN_POINTERS_FROM_CULLED_HANDOFFS.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_SALVAGE_WRECKAGE_EVERYWHERE_1",
+      "ref": "ITEM:SALVAGE_WRECKAGE_EVERYWHERE_1",
+      "source": "infrastructure/state/items/SALVAGE_WRECKAGE_EVERYWHERE_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "wreck_field"
+    },
+    {
+      "id": "item_SALVATION_RITES_UNIFICATION_1",
+      "ref": "ITEM:SALVATION_RITES_UNIFICATION_1",
+      "source": "infrastructure/state/items/SALVATION_RITES_UNIFICATION_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT",
+      "ref": "ITEM:SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT",
+      "source": "infrastructure/state/items/SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_WARSCAR_SHEET_DONOR_PORT_1",
+      "ref": "ITEM:WARSCAR_SHEET_DONOR_PORT_1",
+      "source": "infrastructure/state/items/WARSCAR_SHEET_DONOR_PORT_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+      "ref": "ITEM:WATER_DEPTH_RESKIN_HE_LOOKS_FIRST",
+      "source": "infrastructure/state/items/WATER_DEPTH_RESKIN_HE_LOOKS_FIRST.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_WORLD_FACES_REDRAW_ABYSS_ROT_RUST",
+      "ref": "ITEM:WORLD_FACES_REDRAW_ABYSS_ROT_RUST",
+      "source": "infrastructure/state/items/WORLD_FACES_REDRAW_ABYSS_ROT_RUST.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "world_face"
+    },
+    {
+      "id": "item_WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB",
+      "ref": "ITEM:WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB",
+      "source": "infrastructure/state/items/WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "world_face"
+    },
+    {
+      "id": "item_ABYSS_DARK_BUILD_1",
+      "ref": "ITEM:ABYSS_DARK_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_DARK_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "dark_field"
+    },
+    {
+      "id": "item_ABYSS_DARK_MUFFLE_ALL_SOUNDS_1",
+      "ref": "ITEM:ABYSS_DARK_MUFFLE_ALL_SOUNDS_1",
+      "source": "infrastructure/state/items/closed/ABYSS_DARK_MUFFLE_ALL_SOUNDS_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "sound_muffle"
+    },
+    {
+      "id": "item_ABYSS_DONOR_BEASTS_FREED_1",
+      "ref": "ITEM:ABYSS_DONOR_BEASTS_FREED_1",
+      "source": "infrastructure/state/items/closed/ABYSS_DONOR_BEASTS_FREED_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "summ_hide"
+    },
+    {
+      "id": "item_ABYSS_DURRGAK_BUILD_1",
+      "ref": "ITEM:ABYSS_DURRGAK_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_DURRGAK_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "sorter_sites"
+    },
+    {
+      "id": "item_ABYSS_ETCHCAP_BUILD_1",
+      "ref": "ITEM:ABYSS_ETCHCAP_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_ETCHCAP_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "etchcap"
+    },
+    {
+      "id": "item_ABYSS_ETCHFALL_BUILD_1",
+      "ref": "ITEM:ABYSS_ETCHFALL_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_ETCHFALL_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "etchfall"
+    },
+    {
+      "id": "item_ABYSS_FOLD_LAMP_BUILD_1",
+      "ref": "ITEM:ABYSS_FOLD_LAMP_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_FOLD_LAMP_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "fold_lamp"
+    },
+    {
+      "id": "item_ABYSS_FREE_CRYPTID_1",
+      "ref": "ITEM:ABYSS_FREE_CRYPTID_1",
+      "source": "infrastructure/state/items/closed/ABYSS_FREE_CRYPTID_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "cryptid_lore"
+    },
+    {
+      "id": "item_ABYSS_FREE_TIER_BODY_1",
+      "ref": "ITEM:ABYSS_FREE_TIER_BODY_1",
+      "source": "infrastructure/state/items/closed/ABYSS_FREE_TIER_BODY_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_ABYSS_FULL_RENAME_1",
+      "ref": "ITEM:ABYSS_FULL_RENAME_1",
+      "source": "infrastructure/state/items/closed/ABYSS_FULL_RENAME_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_ABYSS_GHARREK_BUILD_1",
+      "ref": "ITEM:ABYSS_GHARREK_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_GHARREK_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "gharrek"
+    },
+    {
+      "id": "item_ABYSS_INVENTED_CREATURES_TO_RM_1",
+      "ref": "ITEM:ABYSS_INVENTED_CREATURES_TO_RM_1",
+      "source": "infrastructure/state/items/closed/ABYSS_INVENTED_CREATURES_TO_RM_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "cold_drain"
+    },
+    {
+      "id": "item_ABYSS_KRIZZAK_BUILD_1",
+      "ref": "ITEM:ABYSS_KRIZZAK_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_KRIZZAK_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "krizzak_flight"
+    },
+    {
+      "id": "item_ABYSS_LAMP_CROPS_BUILD_1",
+      "ref": "ITEM:ABYSS_LAMP_CROPS_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_LAMP_CROPS_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "wickwood"
+    },
+    {
+      "id": "item_ABYSS_SOUNDSCAPE_BUILD_1",
+      "ref": "ITEM:ABYSS_SOUNDSCAPE_BUILD_1",
+      "source": "infrastructure/state/items/closed/ABYSS_SOUNDSCAPE_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "gust_soundscape"
+    },
+    {
+      "id": "item_ASSAILANT_DUNGEON_BUILD_1",
+      "ref": "ITEM:ASSAILANT_DUNGEON_BUILD_1",
+      "source": "infrastructure/state/items/closed/ASSAILANT_DUNGEON_BUILD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_BAROQUE_BEDAZZLE_PROGRAM_1",
+      "ref": "ITEM:BAROQUE_BEDAZZLE_PROGRAM_1",
+      "source": "infrastructure/state/items/closed/BAROQUE_BEDAZZLE_PROGRAM_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_BIOME_MOD_SPLIT_EXECUTION_1",
+      "ref": "ITEM:BIOME_MOD_SPLIT_EXECUTION_1",
+      "source": "infrastructure/state/items/closed/BIOME_MOD_SPLIT_EXECUTION_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_BLACKCRAGS_BEDAZZLE_SITTING_1",
+      "ref": "ITEM:BLACKCRAGS_BEDAZZLE_SITTING_1",
+      "source": "infrastructure/state/items/closed/BLACKCRAGS_BEDAZZLE_SITTING_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_CONDITION_GATED_RITUALS_MOD_1",
+      "ref": "ITEM:CONDITION_GATED_RITUALS_MOD_1",
+      "source": "infrastructure/state/items/closed/CONDITION_GATED_RITUALS_MOD_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+      "ref": "ITEM:DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+      "source": "infrastructure/state/items/closed/DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "wickwood"
+    },
+    {
+      "id": "item_DARK_FLORA_VERIFY_EIGHT_NIGHTS_NO_WILT",
+      "ref": "ITEM:DARK_FLORA_VERIFY_EIGHT_NIGHTS_NO_WILT",
+      "source": "infrastructure/state/items/closed/DARK_FLORA_VERIFY_EIGHT_NIGHTS_NO_WILT.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "wickwood"
+    },
+    {
+      "id": "item_ECOSYSTEM_PYRAMID_LAW_1",
+      "ref": "ITEM:ECOSYSTEM_PYRAMID_LAW_1",
+      "source": "infrastructure/state/items/closed/ECOSYSTEM_PYRAMID_LAW_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "biome_body"
+    },
+    {
+      "id": "item_HARMONY_PATCH_RESILIENCE_1",
+      "ref": "ITEM:HARMONY_PATCH_RESILIENCE_1",
+      "source": "infrastructure/state/items/closed/HARMONY_PATCH_RESILIENCE_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "covered_by": "settings"
+    },
+    {
+      "id": "item_SHEET_DONOR_COLUMN_FALSE_PASS_1",
+      "ref": "ITEM:SHEET_DONOR_COLUMN_FALSE_PASS_1",
+      "source": "infrastructure/state/items/closed/SHEET_DONOR_COLUMN_FALSE_PASS_1.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "item_WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES",
+      "ref": "ITEM:WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES",
+      "source": "infrastructure/state/items/closed/WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES.md",
+      "text": "Relevant live/closed prose or reference excerpt read; prose location is not terminal ledger state.",
+      "not_a_capability": "Cross-reference/history or neighbour-owned work; no additional shipped Abyss capability inferred from this mention."
+    },
+    {
+      "id": "legacy_FORSAKENCRAGS_RM_MOD_BUILD_1",
+      "ref": "ITEM:FORSAKENCRAGS_RM_MOD_BUILD_1",
+      "source": "infrastructure/state/ledger/events.jsonl",
+      "covered_by": "biome_body",
+      "text": "Frozen ledger terminal history read; current RM source supersedes old donor/RSW identities."
+    },
+    {
+      "id": "legacy_FORSAKEN_CRAGS_PREDATORS_BUILD_1",
+      "ref": "ITEM:FORSAKEN_CRAGS_PREDATORS_BUILD_1",
+      "source": "infrastructure/state/ledger/events.jsonl",
+      "covered_by": "cold_drain",
+      "text": "Frozen ledger terminal history read; current RM source supersedes old donor/RSW identities."
+    },
+    {
+      "id": "legacy_FORSAKEN_CRAGS_FAUNA_1",
+      "ref": "ITEM:FORSAKEN_CRAGS_FAUNA_1",
+      "source": "infrastructure/state/ledger/events.jsonl",
+      "covered_by": "cold_drain",
+      "text": "Frozen ledger terminal history read; current RM source supersedes old donor/RSW identities."
+    },
+    {
+      "id": "legacy_lightfall",
+      "ref": "ITEM:LIGHTFALL_CHASM_AUTHORING_1",
+      "source": "infrastructure/state/items/closed/LIGHTFALL_CHASM_AUTHORING_1.md",
+      "covered_by": "brood_site",
+      "text": "Historical authored landmark name read; no present save/tile claim."
+    }
+  ],
+  "reading_limits": {
+    "id": "bounded_reading",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "text": "Requested role/core/packets/examples and HugeThings reference, Abyss's implementation/defs, first script, relevant design/roster/history and item excerpts read. Direct neighbours inspected only for named uncertainties. File accounting is coverage, not full-file code-review certification. No game/build/deploy/art review or current fingerprint. OWNER shard and frozen ledger/shard topic events read, not official model replay. See NOTES.md for limits."
+  },
+  "snapshot": {
+    "id": "mirror_snapshot",
+    "source": "MIRROR_HEAD",
+    "text": "d38f30beddc230a019fa1f7185823d90e814fea8 2026-11-09T23:45:52-08:00",
+    "note": "Mirror refreshes externally; this identifies recorded head during reading, not an atomic snapshot of every source."
+  },
+  "neighbours": [
+    {
+      "id": "n_shared_light",
+      "source": "src/RimMandrake/_Shared/LightLedger/LightLedger.cs",
+      "owner": "Shared LightLedger",
+      "text": "Owns composition of changing glower radii; Abyss writes named shares. Deepfire comes from Luminous Pigment; no new competing light engine."
+    },
+    {
+      "id": "n_creature",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_ThinkNode_EatCleanable.cs",
+      "owner": "CreatureBehaviors",
+      "text": "Sorter filth-eating/cleaning and global think-tree opt-in; ordinary haul training stays vanilla."
+    },
+    {
+      "id": "n_pursuit",
+      "source": "src/RimUtinni/EmpirePursuit/Source/RuthlessPursuingMechanoids.cs:704",
+      "owner": "EmpirePursuit",
+      "text": "Owns scenario raid/warning timers and static Abyss multiplier. Does not read dynamic ship cover at this site."
+    },
+    {
+      "id": "n_probes",
+      "source": "src/RimUtinni/UtinniPatches/Patches/Abyss_ProbeDroids.xml",
+      "owner": "UtinniPatches + Droidworks",
+      "text": "Supplies campaign KX-12 scout kind/faction; Abyss owns search bookkeeping and free fallback. No new probe creature or unattended flight testing."
+    },
+    {
+      "id": "n_lightfall",
+      "source": "src/RimUtinni/UtinniPatches/Patches/RUT_Lightfall_BroodLair.xml",
+      "owner": "Utinni landmark placement",
+      "text": "Marks existing Lightfall landmark for Abyss's local lair step; not an alternate planet generator."
+    },
+    {
+      "id": "n_rites",
+      "source": "ITEM:SALVATION_RITES_UNIFICATION_1",
+      "owner": "Rites/Ninefold",
+      "text": "Four darkness rites are external campaign work; no new Abyss-only god system inferred. Their source integration not independently audited here."
+    },
+    {
+      "id": "n_wreckage",
+      "source": "src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_AbyssWrecks.xml",
+      "owner": "Wreckage",
+      "text": "Shared wreck families, weathering, loot and field settings; separate from Abyss's finite rescue-wreck bills."
+    },
+    {
+      "id": "n_scanner",
+      "source": "src/RimMandrake/Abyss/Patches/RM_AcousticPayload_Abyss.xml",
+      "owner": "Acoustic Scanner",
+      "text": "Owns bounded acoustic readings; Abyss supplies targets/text, owes harmony with no clean sensing."
+    },
+    {
+      "id": "n_taozin",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Abyss.xml",
+      "owner": "SWBestiary + UtinniPatches",
+      "text": "Campaign wild row and nest on RM_Abyss; absent from base BiomeDef by design, not missing content."
+    },
+    {
+      "id": "n_world",
+      "source": "ITEM:WORLD_FACES_REDRAW_ABYSS_ROT_RUST",
+      "owner": "TerminalBiomes WorldLook",
+      "text": "Continuous world swirls and world-face performance; not local-map fog or pockets."
+    },
+    {
+      "id": "n_vanilla",
+      "source": "src/RimMandrake/Abyss/Source/RM_ShipWreck.cs",
+      "owner": "Vanilla RimWorld",
+      "text": "Existing bills, CompUseEffect, CompGlower/HeatPusher, plant transplanting, haul training and refineries supply familiar actions; acceptance must use those actions, not merely force field values."
+    },
+    {
+      "id": "n_huge",
+      "source": "src/RimMandrake/HugeThings/Source",
+      "owner": "HugeThings",
+      "text": "Shared large-body/plant consequences, not continuous Summ ageing; no Summ-specific grow hook found. Actual occupied body and click alignment need live integration proof."
+    }
+  ]
+}

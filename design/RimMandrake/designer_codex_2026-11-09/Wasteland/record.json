@@ -1,0 +1,2968 @@
+{
+  "dry_run": true,
+  "mod": "Wasteland",
+  "source_folder": "src/RimMandrake/Wastes",
+  "author": "Codex Designer rehearsal, 2026-11-10. All proposed prose, interpretations and guesses are agent text.",
+  "repo": "D:/Luke/dev/RimMandrake",
+  "stage_status": "Stage 0/1 reading and question-bank rehearsal; no launched run, official stage completion, root approval, sent ask or ledger write.",
+  "root": null,
+  "root_draft": {
+    "id": "proposed_root",
+    "speaker": "agent",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+    "basis": [
+      "design/Jawa/worldbuilding/biomes/wastes.md",
+      "src/RimMandrake/Wastes/About/About.xml",
+      "ITEM:WASTELAND_MECHANICS_BUILD_1",
+      "ITEM:WASTELAND_GPT_ENRICHMENT_1"
+    ],
+    "text": "The Wastes makes a colony live at the receiving end of a ruined world: rivers end in brine, ash settles, and old poison stays. The ground, air and water set the terms of work; the strange animals are the life that has endured those terms. Staying here means choosing where to shelter, where to work and how much exposure a prize is worth. Storms leave fresh fall and shift what the ash hides, so yesterday's prospecting route cannot simply be trusted tomorrow. Useful survivors offer uneasy bargains: herds concentrate waste into goods, and a living furnace warms the same room it doses. Accepting paid waste deliveries gives the colony physical casks to contain, process or illegally bury, with visible leaks and consequences for unsafe handling. A twenty-cell Middenshell brings the landscape's danger into motion: its warned crossing can flatten a settlement, waste can draw it aside, its trail remains, and its dead shell becomes a quarry paid for in dose. Brine beds and irradiated wrecks offer other reasons to venture out. These promises belong to one dry, contaminated place; shared engines supply drifting ash, salvage and ordinary toxic buildup, while the campaign supplies its own people and history."
+  },
+  "experience_reference": {
+    "id": "experience_source",
+    "speaker": "agent",
+    "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+    "text": "The Wasteland row records Mandrake's card-selected experience sentence. That existing choice grounds the root; it is not approval of this new root draft or experience bars.",
+    "quotation": "Where rivers come to die and nothing ever leaves: salt, ash and fallout pile up forever. The land is the monster, and the creatures are its victims."
+  },
+  "scope": [
+    {
+      "id": "s_identity",
+      "speaker": "agent",
+      "source": "OWNER:1792637163737194094",
+      "text": "Current internal names are Wastes / RM_Wastes / RimMandrake.Wastes / mandrake.rm.wastes, composed inside mandrake.rm.biomes. Old Wasteland path has obj leftovers, not mod source."
+    },
+    {
+      "id": "s_experience",
+      "speaker": "agent",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "text": "Root grounded in the chosen no-outlet/environmental-danger sentence. Earlier survivor register remains: do not turn victims in the later broad sentence into a new instruction for pitiable or aggressive animals."
+    },
+    {
+      "id": "s_existing",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+      "text": "Built capabilities remain in inventory regardless of unproven status. not_opened records no owner reopening; it is not a verdict that the feature was never approved."
+    },
+    {
+      "id": "s_boundaries",
+      "speaker": "agent",
+      "source": "design/RimMandrake/fluff_cuts_2026-10-23.md:172",
+      "text": "WasteRun and Stenchlands/Throat Cask are separate campaign content; no removal or merger proposed. War-lab crater and world placement are external too."
+    },
+    {
+      "id": "s_dry",
+      "speaker": "agent",
+      "source": "CLAUDE.md",
+      "text": "Read-only mirror; writes only local working folder. No code/art/build/game/bridge/save/deployment/ledger. No worldgen or alternate planets, all DLC assumed, final painting remains final."
+    },
+    {
+      "id": "s_precipitation",
+      "speaker": "agent",
+      "source": "OWNER:1792208116047391807",
+      "text": "Existing ruling forbids snow and rain here. Ash fall is not a new request to add watery precipitation."
+    },
+    {
+      "id": "s_vanilla_rows",
+      "speaker": "agent",
+      "source": "OWNER:1792459403917821894",
+      "text": "Vanilla grass/toxipotato/polux roster rows were explicitly removed; their old presence in cast bible/roster is not an unresolved keep question."
+    },
+    {
+      "id": "s_width",
+      "speaker": "agent",
+      "source": "ITEM:WASTELAND_MECHANICS_BUILD_1",
+      "text": "Twenty-cell non-hostile giant, processor economy, pollution-first dose and MovingDunes exhumation were already specified. Width, existence and shared engine ownership are not keep/remove questions."
+    },
+    {
+      "id": "s_discharge",
+      "speaker": "agent",
+      "source": "ITEM:WASTELAND_BRINE_BATTERY_DISCHARGE_1",
+      "text": "Campaign living pool owner and RM mined/ingested brine items are separate built capabilities. Do not call discharge unbuilt based on closed interim prose."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "d_provenance",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer.md",
+      "text": "Only OWNER tsns found verbatim in infrastructure/state/ledger/events/OWNER.jsonl are cited as OWNER. Earlier BENCH/FOUNDRY relays use their real file paths/ITEM ids, never fabricated OWNER events. No new owner decision recorded."
+    },
+    {
+      "id": "d_bank",
+      "speaker": "agent",
+      "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "text": "Eight drafts, ask first root/day and flagship. Solicit promise, reject case and scene; no questions about settled width, no-rain, donor replacement, poison mechanism, actor naming or keep/remove scope."
+    },
+    {
+      "id": "d_proof",
+      "speaker": "agent",
+      "source": "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+      "text": "No proof current: no running-build/settings/data fingerprints matched. Preserve Nov 6 narrow A1/A2 toggle PASS and flora A2 PASS; processor A1 and combined gripper/brine A3 FAIL are not whole-mod acceptance or a proven mod diagnosis. Raw live logs are external paths."
+    },
+    {
+      "id": "d_names",
+      "speaker": "agent",
+      "source": "OWNER:1791623049847994784",
+      "text": "Existing event carries isi isi name and accompanying hessekh note; a later keep-four-working-labels event OWNER:1791819099177005055 exists too. Current defs still label RM_Smolderback and RUT_Radiothermal hessekh. Naming chronology ambiguity recorded; no new renaming ask."
+    },
+    {
+      "id": "d_reuse",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Source/RM_Wastes.csproj",
+      "text": "Use ordinary vanilla ToxicBuildup, milking/shearing, harvesting, quest signals, storage and gravship rules where already wired; no competing radiation meter or waste engine proposed."
+    }
+  ],
+  "inventory": [
+    {
+      "id": "biome",
+      "text": "Hand-placed RM_Wastes biome, own worker and climate score, explicit densities, dry weather list, own ash/asphalt terrain and brine substitutions. No natural-worldgen feature is offered.",
+      "source": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+        "src/RimMandrake/Wastes/Source/RM_BiomeWorker_Wastes.cs",
+        "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_Wastes_GroundTerrains.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical load/roster reads; score is inert with generatesNaturally=false.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "WASTELAND_RM_MOD_BUILD_1 load notes 2026-09-25; later names migrated."
+    },
+    {
+      "id": "fauna",
+      "text": "Owned RM fauna roster: scumslider, gripper, gristleswarm and soot variant, boilhide, slagmole, scabspinner, sloghog, sootgrazer, gravelgut, grimewing, RM_Smolderback (label hessekh), frethik, kroffa, excretor; lifecycles, diets, bodies and art paths.",
+      "source": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races"
+      ],
+      "proof": "stale",
+      "proof_note": "Roster existence is not an ecological or art acceptance. Earlier donor roster JSON is historical.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "Later RM_Frethik/RM_Kroffa and RM_Excretor additions postdate old script prose."
+    },
+    {
+      "id": "flora",
+      "text": "Radmoss (RM_DosimeterLawn), vault-root, scorched stars, scumgrass/tall, pusberry, boilbulb, wartshrub, cinderfelt; low-light growth and cover drawing. Definitions and art paths exist.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+        "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "No current visual pass; flora existence does not prove pollution sensing or sequestration.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "Vanilla grass/toxipotato/polux rows were removed by the 2026-10-19 card."
+    },
+    {
+      "id": "flora_harvest",
+      "text": "Vault-root yields wood, pusberry ordinary berries, boilbulb potatoes, wartshrub chemfuel through vanilla plant harvesting.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "2026-11-06 A2 PASS at 72d15cb85a85; runtime/source fingerprints and raw log not recovered.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.criteria"
+      ]
+    },
+    {
+      "id": "cover_layer",
+      "text": "Owned ground cover uses FloorEmplacement; retained conditional patch also lowers vanilla Plant_GrayGrass globally, even though it is no longer on this biome's base roster.",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No adequate acceptance evidence located in this read.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "kroffa_milk",
+      "text": "Kroffa produces its own milk with raw-ingestion mood benefit; ordinary milk rot comp is present.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Kroffa.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Kroffa.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Not exercised by Wastes' processor_animals chain; distinct milk/product/thought promise.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "excretor",
+      "text": "Moved RM_Excretor produces contaminant bezoars by vanilla shearing, every 22 days in its def; distinct from the pollution-gated milkable sloghog and bay processors.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Excretor.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Excretor.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical build and art/migration events; no current full gather cycle proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/OWNER.jsonl",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "basis": [
+        "OWNER:1792862283215254116",
+        "ITEM:WASTELAND_EXCRETOR_BEZOAR_1"
+      ]
+    },
+    {
+      "id": "grimewing_flight",
+      "text": "Grimewing's MaxFlightTime/FlightCooldown and race flags enable real flight; no flying flip-book field in this def. Circling new exhumations is description, not a specialised AI shown here.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Grimewing.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Grimewing.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical CanEverFly/ground-control state read; no live flight or animation acceptance performed.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "State-only proof is different from launching or observing a flight."
+    },
+    {
+      "id": "gripper_carry",
+      "text": "Wild gripper spawns with junk, inspect identifies its inventory, and damaging hits can release it; ordinary death inventory release is delegated to vanilla.",
+      "source": "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs:128",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gripper.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Older gripper chain successes; 2026-11-06 combined A3 failed, raw attribution unavailable.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl"
+      ]
+    },
+    {
+      "id": "gripper_theft",
+      "text": "MTB-gated wild theft seeks a reachable, unforbidden, valuable light item, swaps inventory, scurries away; factioned/tamed grippers are excluded.",
+      "source": "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs:198",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_DoseKernel.cs",
+        "src/RimMandrake/Wastes/Defs/ThinkTreeDefs/RM_GripperTheft.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Forced-job checks do not accept spontaneous target choice and scurry. Theft retained in fluff review.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:168"
+      ]
+    },
+    {
+      "id": "brine_water",
+      "text": "Deep, chest-deep moving and shallow/still-moving toxic brine terrains; biome water substitutions. FlowWorks supplies drinking identity as brine for both RM and retained RUT names.",
+      "source": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_WastesBrine_Terrains.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_WastesBrine_Terrains.xml",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Closed RUT brine-drinking fix is historical, not proof of a current played crossing.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ],
+      "basis": [
+        "ITEM:WASTES_BRINE_FIX_RUT_TERRAINS_DRUNK_FRESH"
+      ]
+    },
+    {
+      "id": "brine_deposits",
+      "text": "Biome-bound scatter GenSteps place sparkcrab, brineleech and spent-electrode beds on shallows; mineable products RM_Tekk/RM_Drazz/RM_BrinePlate exist.",
+      "source": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesBrine_Scatter.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesBrine_Scatter.xml",
+        "src/RimMandrake/Wastes/Patches/RM_WastesBrine_ScatterRegister.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesBrine_Deposits.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesBrine_Items.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "scatter_at bypasses placement logic; mined-product field read is not an actual mining job. Latest combined A3 FAIL.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1464",
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl"
+      ]
+    },
+    {
+      "id": "raw_brine_shock",
+      "text": "Eating raw RM_Drazz applies RM_BrineShock with temporary consciousness/movement penalties; it is distinct from the campaign's living isi isi defensive discharge.",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesBrine_Items.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesBrine_Items.xml",
+        "src/RimMandrake/Wastes/Defs/HediffDefs/RM_BrineShock.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "2026-11-06 A3 included a drowning site stop, then later combined FAIL; no individual current shock acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "src/RimMandrake/Wastes/validation.py:1506"
+      ]
+    },
+    {
+      "id": "salt_recipe",
+      "text": "Crafting spot or stonecutter cracks brine plate into RM_RawSalt.",
+      "source": "src/RimMandrake/Wastes/Defs/RecipeDefs/RM_CrackBrinePlate.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/RecipeDefs/RM_CrackBrinePlate.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Recipe exists; no completed recipe check in this suite.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "ash_dose",
+      "text": "Opted-in map storm layer applies vanilla airborne toxic damage, skips immune game-condition kinds, scales dose and observes named-storm hold.",
+      "source": "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs:106",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs",
+        "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical short-wait failures were diagnosed as interval/site problems; broad present-day storm acceptance unverified.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "src/RimMandrake/Wastes/validation.py:550",
+        "src/RimMandrake/Wastes/validation.py:962"
+      ]
+    },
+    {
+      "id": "ash_fall",
+      "text": "Ash and forced Cinderwire weather add Biotech pollution on random exposed pollutable cells; fresh-fall memory is bounded and saved.",
+      "source": "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs:131",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical pollution check; this adds contamination, not evidence that old contamination is transported with dunes.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "storm_ash_on/off compare pollution, with a whole-map destructive cleaning read."
+    },
+    {
+      "id": "cinderfelt",
+      "text": "Weather-end germination samples remembered fresh fall; cinderfelt has short lifespan and a retained token wildPlants fallback.",
+      "source": "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs:164",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+        "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical germination check; fallback means cinderfelt is not an exclusive fresh-fall signal.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "No verification of an eight-day lifecycle or reliable density-to-dose reading."
+    },
+    {
+      "id": "halo_warning",
+      "text": "Deadlight Halo has sky/overlay, accelerating clicks and pawn glow, warning/unleash messages and saved phase timing.",
+      "source": "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs:121",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs",
+        "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml",
+        "src/RimMandrake/Wastes/Defs/SoundDefs/RM_WastesSounds.xml",
+        "src/RimMandrake/Wastes/Defs/FleckDefs/RM_WastesFlecks.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Messages and dose state do not accept the sound/light experience; shortened warning negative arm can miss the dose cadence.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1050",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "cinderwire_effects",
+      "text": "Built Cinderwire weather warning, static/scrap flecks, whine, EMP pulses, lightning events, sand fall and dose; absent from ordinary Wastes weather list.",
+      "source": "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs:400",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs",
+        "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml",
+        "src/RimMandrake/Wastes/Defs/SoundDefs/RM_WastesSounds.xml",
+        "src/RimMandrake/Wastes/Defs/FleckDefs/RM_WastesFlecks.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Forced-weather warning/dose history only; random EMP/strikes, burial during warning, protection and natural occurrence are not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1102",
+        "design/validation_walks/RimMandrake/Wastes.md"
+      ]
+    },
+    {
+      "id": "drifting_ash",
+      "text": "MovingDunes binding supplies grey ash, field transport/influx, burial/reveal, choking and ash/cinderwire weather multipliers. Existing engine owns the movement of drift and buried gear.",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+        "src/RimMandrake/MovingDunes"
+      ],
+      "proof": "stale",
+      "proof_note": "FindMod includes composed package name in current source; walk's claim it still names only Moving Dunes is stale. Presence read is not full burial/exhumation proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:872",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "ambient_dose",
+      "text": "Shared room or body-edge radius ToxicBuildup for living RM hessekh and building Middenshell; includes falloff, resistance via vanilla and settings.",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs:88",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_DoseKernel.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Smolderback.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_Middenshell.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical room/radius checks with interval fixes; source debug DoDose does not itself apply all tick gates.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1139",
+        "src/RimMandrake/Wastes/validation.py:1846",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "hessekh_heat",
+      "text": "RM_Smolderback (hessekh) pushes room heat through a gated vanilla heat comp, avoids double rare push on pawn, dead-source guard; solitary spawn group, no custom RM spacing AI.",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs:149",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Smolderback.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Two-room heat comparison history; no sustained winter shelter, save reload or 40-colonist proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1139",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "processor_gather",
+      "text": "Sloghog milkable-subclass bezoars and sootgrazer soot bricks: full growth on polluted/toxic ground, sootgrazer also reads ash depth, slower off-feed, ordinary milking collection.",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs:77",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_DoseKernel.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sloghog.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sootgrazer.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesItems.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Latest A1 FAIL 2026-11-06 at 72d15cb85a85; ledger identifies random AnimalGatherYield in fixture, not established broken output comp.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "src/RimMandrake/Wastes/validation.py:1225"
+      ]
+    },
+    {
+      "id": "processor_consumption",
+      "text": "Standing live/non-downed processor can probabilistically unpollute its cell independently of gather fullness; separate toggle.",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs:144",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sloghog.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sootgrazer.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No live consumption scene. Later sitting permits consumption; do not re-ask old plants-only doctrine as an unresolved owner fork.",
+      "scope": "not_opened",
+      "basis": [
+        "ITEM:WASTELAND_MECHANICS_BUILD_1"
+      ]
+    },
+    {
+      "id": "middenshell_body",
+      "text": "Non-hostile selectable 20x20 Building with tubeworm art, smoothed DrawPos and saved movement state; one live body incident limit; not a HugeThings/Large Pawns pawn.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:77",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_Middenshell.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical body/crawl proof; no current click/turn/actual occupied-body visual acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "design/RimMandrake/special_mechanics_review_2026-10-22.md"
+      ],
+      "historical_observation": "WASTELAND_MIDDENSHELL_FOOTPRINT_1 built as Building daef5a8f6 and live motion recorded 2026-09-30."
+    },
+    {
+      "id": "middenshell_crush",
+      "text": "Custom cardinal crawl destroys new-edge items/plants/buildings, tears floors/thin roof, damages pawns; avoids natural/resource rock, thick roof, impassable terrain, gravship parts/substructure and indestructibles.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:508",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:185",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:522",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:574"
+      ],
+      "proof": "stale",
+      "proof_note": "Accelerated bait-count proof omits discriminating ship/rock/roof/body-edge and surviving-pawn cases.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1756",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "middenshell_grab",
+      "text": "Timed tentacle selection prefers waste, eats eligible nearby item/building with dust pull and player-owned-target message; excludes gravship objects.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:625",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:625",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:675"
+      ],
+      "proof": "missing",
+      "proof_note": "Random timing is not a waiver; no scheduled positive/protected-target control located.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "procession",
+      "text": "Scheduled edge omen: letter, tremor, dust and loose-metal creep; delayed arrival, saved state, selected route overlay and map crossing; disabled procession gives immediate free wander.",
+      "source": "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs:45",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:841",
+        "src/RimMandrake/Wastes/Defs/IncidentDefs/RM_MiddenshellArrives.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "2026-11-06 A1 PASS at 55447a92b0d3 proves disabled-incident component only. Omen/arrival have older partial evidence.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+        "src/RimMandrake/Wastes/validation.py:1898"
+      ]
+    },
+    {
+      "id": "waste_lure",
+      "text": "Custom local route responds to nearby waste stockpiles, clears stale lure and reports acquisition; it does not precompute a guaranteed complete route.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:310",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:254",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:310",
+        "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs:18"
+      ],
+      "proof": "missing",
+      "proof_note": "No stocked/unstocked/blocked lure scene found.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "trail_scar",
+      "text": "Trailing terrain, hot filth, flakes, small bezoars, heat/grind sound, exit scar and exit notification; permanent terrain survives departure.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:382",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:382",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:453",
+        "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_MiddenshellTrail_Terrains.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_MiddenshellTrail_Filth.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Filth-count history accepts neither permanent terrain nor full exit scar and resource shedding.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1818",
+        "src/RimMandrake/Wastes/validation.py:1968",
+        "design/validation_walks/RimMandrake/Wastes.md"
+      ]
+    },
+    {
+      "id": "quarry",
+      "text": "Killed Middenshell becomes elliptical common/vitrified mineable seams; saved carcass bounds track remaining seams and dose adjacent workers; record removed after last seam.",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:932",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:735",
+        "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:905",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_Middenshell.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Historical seam census only. Actual mining yield, adjacent-worker dose and worked-out/save-load states lack adequate acceptance.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1871",
+        "design/validation_walks/RimMandrake/Wastes.md"
+      ]
+    },
+    {
+      "id": "casks",
+      "text": "Physical dose-bearing cask: HP breach, timed tox gas/pollution, depletion, burst-on-kill, inspect, saved dose/timing, alert and messages; no leak at intact HP.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:55",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:55",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:261",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_WasteCaskKernel.cs",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WasteCask.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Intact/breached/off history exists; registry save-owner reset and truthful no-bay inspect are already fixed in current source.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1544",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "bay_containment",
+      "text": "Powered storage rack with charge/HP seal integrity, heat/dose/capacity inspect, cooling and visible seal-failure leak; residual charge permits a temporary unpowered grace.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:413",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:413",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WasteCaskBay.xml",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_WasteCaskKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Fixture reads a short-lived unpowered bay as contained; does not accept power-loss duration, prolonged leakage or fully loaded heat.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1634",
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "bay_processing",
+      "text": "Local processing command and progress turn a stored cask into nearby tamed milkable processor's product; sloghog/sootgrazer, not shearable excretor.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:534",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:534",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:558",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:643"
+      ],
+      "proof": "missing",
+      "proof_note": "No actual toggle-plus-conversion scene in suite; global processing-off enforcement has a concrete code risk.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "launch_safety",
+      "text": "Harmony postfix preserves other vanilla refusals and rejects aboard unsafe bays or loose spawned deck casks; bay verdict tests power, seal and internal heat.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:719",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:582",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:684",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_WasteCaskKernel.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Only patch-installed historical check; real gravship launch refusal/permission and carried-cask edge not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:1705",
+        "design/validation_walks/RimMandrake/Wastes.md"
+      ]
+    },
+    {
+      "id": "reburial",
+      "text": "Diggable-ground cask command, hauling work giver and dig job remove cask, pollute ground and notify active tipping contracts.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:184",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:211",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:225",
+        "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:784",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WasteCask.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No actual designation-to-work completion/control or reload consequence scene.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "tipping_contract",
+      "text": "Licensed-pad quest offers repeated physical casks, silver and goodwill; delivery timer, missing-pad penalties/cancellation, hostile/missing convoy failure, completion signals and saved contract state.",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:172",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs",
+        "src/RimMandrake/Wastes/Defs/Quests/RM_RiteOfTipping.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "2026-11-06 A2 PASS at 55447a92b0d3 is offer toggle only; deliveries/rewards/failure/end-to-end ongoing contract not accepted.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "src/RimMandrake/Wastes/validation.py:2006"
+      ]
+    },
+    {
+      "id": "tipping_evidence",
+      "text": "Distinct-faction sample request after a delivery, choice letter, physical cask removal, goodwill tradeoff/refusal and timeout.",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:382",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:382",
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:490",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "Quest acceptance alone does not exercise the evidence letter or its later answer.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "tipping_finance",
+      "text": "Third faction hints and awards a one-time silver/goodwill containment grant when a bay stands at delivery; campaign patch assigns Junkers/Wildsteam/Deepwater roles.",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:429",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:429",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs",
+        "src/RimUtinni/UtinniPatches/Patches/RiteOfTipping_Factions.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "No runtime grant or repeat-prevention scene; standing bay need not be powered/functional in current check.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "tipping_discovery",
+      "text": "Active contract's evidence/finance factions independently roll to discover illegal reburial, affect goodwill and tell player.",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:452",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:113",
+        "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:452",
+        "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs"
+      ],
+      "proof": "missing",
+      "proof_note": "No post-burial branch proof; only ongoing enabled contracts receive the notification.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "salvage",
+      "text": "Biome wreck field selects irradiated hull/tank and warcasket-sarcophagus wrecks using Wreckage families/weathering; careful salvage owns loot and ToxicBuildup cost.",
+      "source": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesWreckField.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesWreckField.xml",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml",
+        "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Wastes suite resolves/scatter-registers defs but does not perform a wreck salvage job or validate loot/dose.",
+      "scope": "not_opened",
+      "basis": [
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:196"
+      ]
+    },
+    {
+      "id": "acoustic_payload",
+      "text": "Optional Acoustic Scanner reports banded Middenshell, brine beds, irradiated wreck and hidden-cave targets; quiet text supplied. Scanner owns pulse/measurement.",
+      "source": "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml"
+      ],
+      "proof": "missing",
+      "proof_note": "Patch data is present; no Wastes-specific pulse scene. Does not map contamination or claim a safe path.",
+      "scope": "not_opened"
+    },
+    {
+      "id": "settings",
+      "text": "Master and major-feature toggles, dose/rate/capacity/warning/route tuning, scribing, search, collapsible sections and per-section resets via shared SettingsKit.",
+      "source": "src/RimMandrake/Wastes/Source/RM_WastesMod.cs",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/Source/RM_WastesMod.cs",
+        "src/RimMandrake/Wastes/Source/RM_Wastes.csproj",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Static field roundtrip does not prove settings-file reload or every feature's OFF effect. Deleted dead brine toggle is not a missing feature.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "src/RimMandrake/Wastes/validation.py:702",
+        "src/RimMandrake/Wastes/validation.py:722",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:123"
+      ]
+    },
+    {
+      "id": "proof_tools",
+      "text": "Functional suite, composed deployment/site preflight, scratch-map recipe, mock mutations, four production math kernels and C# fuzz entry/support runner.",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Wastes/validation.py",
+        "src/RimMandrake/Wastes/northstar_plan.py",
+        "src/RimMandrake/Wastes/northstar_site.py",
+        "src/RimMandrake/Wastes/selftest_wastes.py",
+        "src/RimMandrake/Wastes/Source/Kernel",
+        "src/RimMandrake/Wastes/Source/SelfTest",
+        "src/RimMandrake/Utils/selftest_wastes_fuzz.py"
+      ],
+      "proof": "stale",
+      "proof_note": "Read, not run. Mock mutants prove scripted observations can fail, not runtime adapter correctness. Scene contract gaps recorded below.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RELENTLESS.jsonl",
+        "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.txt"
+      ]
+    },
+    {
+      "id": "campaign_battery",
+      "text": "Campaign RUT_BrineBattery (isi isi) is patch-added onto RM_Wastes; CreatureBehaviors defensive discharge retaliates at nearby instigator, with cooldown and recursion guard.",
+      "source": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_BrineBattery.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_BrineBattery.xml",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Wastes.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompDefensiveDischarge.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Closed build item text calling it interim is stale; defensive comp is present. No current pool dwelling/organic-attacker stun proof.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "owner": "UtinniPatches + CreatureBehaviors"
+    },
+    {
+      "id": "campaign_radiothermal",
+      "text": "Legacy RUT_Radiothermal also labelled hessekh has separate heat, avoid-own-kind and heat-cook mechanics in CreatureBehaviors. Its def exists but current WildAnimals_Wastes patch does not add it.",
+      "source": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Radiothermal.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Radiothermal.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_AvoidOwnKind.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompHeatCook.cs"
+      ],
+      "proof": "stale",
+      "proof_note": "Do not transfer its spacing/cook proof to RM_Smolderback; distinct nonresident legacy content.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ],
+      "owner": "UtinniPatches + CreatureBehaviors",
+      "residency": "No current Wastes roster row located."
+    },
+    {
+      "id": "campaign_roster",
+      "text": "Utinni patch adds isi isi and thuffor, plus conditional campaign sacapillar, bloodletter petrel, screecher and borcatu; RM base cast remains intact.",
+      "source": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Wastes.xml",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Wastes.xml"
+      ],
+      "proof": "stale",
+      "proof_note": "Base XML suite cannot alone establish composed campaign ecology; no evictions or tier migration proposed.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+      ]
+    },
+    {
+      "id": "paint_plan",
+      "text": "Existing-mutator enrichment planner, checked plan and paint-list handoff for the final planet painting; not an already painted world or new worldgen feature.",
+      "source": "infrastructure/state/items/closed/BIOME_ENRICHMENT_DESERT_WASTELAND_1.md",
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/Utils/desert_wasteland_enrichment_plan.py",
+        "world/ASHKARR_DESERT_WASTELAND_ENRICHMENT_plan.json"
+      ],
+      "proof": "stale",
+      "proof_note": "2026-11-03 blind PASS b9cfe1853d66 recorded for plan; did not apply painting.",
+      "scope": "not_opened",
+      "proof_evidence": [
+        "infrastructure/state/ledger/events/RUNNER.jsonl",
+        "infrastructure/state/ledger/events/BENCH.jsonl"
+      ]
+    },
+    {
+      "id": "flora_dosimeter_mechanics",
+      "text": "Real growth/density/colour relation to contamination, sequestration into deep vaults and harmful reopening, beyond flora descriptions.",
+      "source": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "impl": "absent",
+      "search_scope": [
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+        "src/**/*.cs and src/**/*.xml exact-name searches for RM_DosimeterLawn, RM_VaultRoot, RM_Wartshrub; hits only defs/roster and aliases"
+      ],
+      "impl_note": "No per-plant comps or exact-name runtime consumer located. This is bounded source evidence, not a runtime claim or deletion of an agreed promise.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_basis": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "proof_note": "Vegetation is the dosimeter and plants sequester in the existing sheet; not a fresh feature approval."
+    },
+    {
+      "id": "cinderwire_occurrence",
+      "text": "Natural Cinderwire occurrence restricted to terminator families.",
+      "source": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+      "impl": "absent",
+      "search_scope": [
+        "src/**/*.cs and src/**/*.xml exact-name search RM_WastesPlasmaStorm",
+        "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+        "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml"
+      ],
+      "impl_note": "Only weather/phase/binding references located, no eligible-family occurrence path. Base-list exclusion prevents global selection but supplies no positive eligible case.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_basis": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "proof_note": "No new scope question: terminator-only rule is settled; missing signal/placement is implementation authoring work."
+    },
+    {
+      "id": "preservation",
+      "text": "Biome-wide near-zero rot, dangerous plant-vault mining, and storm redistribution of existing contamination beyond new random pollution.",
+      "source": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "impl": "unknown",
+      "search_scope": [
+        "src/RimMandrake/Wastes/",
+        "src/RimMandrake/MovingDunes",
+        "src/RimMandrake/EnvironmentalHazards"
+      ],
+      "impl_note": "No Wastes-local preservation or vault mechanic found. No claim that all global patches/engine climate effects were excluded; MovingDunes integration depth not fully reviewed.",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_basis": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "proof_note": "Global rot may follow temperature; neither folklore nor cold family climate proves near-zero rot in every family."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "identity",
+      "speaker": "agent",
+      "source": "OWNER:1792637163737194094",
+      "status": "resolved_by_reading",
+      "text": "Source and walk are Wastes; orphaned Wasteland script note is stale naming, not proof content vanished. No git history available in writer-free mirror."
+    },
+    {
+      "id": "plants_processors",
+      "speaker": "agent",
+      "source": "ITEM:WASTELAND_MECHANICS_BUILD_1",
+      "status": "resolved_scope_with_implementation_gap",
+      "text": "Later consumption permission admits processor unpolluting, so do not reopen earlier plants-only wording. Real plant sequestration/dosimeter mechanics remain absent in bounded exact-name source search."
+    },
+    {
+      "id": "middenshell_engine",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:15",
+      "status": "resolved_implementation_mismatch",
+      "text": "Actual twenty-cell creature is Building_Middenshell, custom crawl/wake/quarry, not HugeThings pawn engine. Old items and October mechanics review incorrectly name dependency. Preserve experience and report mechanism accurately."
+    },
+    {
+      "id": "proof",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "status": "proof_gaps_remain",
+      "text": "Suite exists and contains useful controls but no complete proof-scene recovery/hold. See scene_audit; no stage done claimed."
+    },
+    {
+      "id": "old_roster",
+      "speaker": "agent",
+      "source": "design/Jawa/worldbuilding/biomes/rosters/wastes.json",
+      "status": "stale_design_snapshot",
+      "text": "Historical donor/admission roster is not current cast. Current owned XML plus campaign patch govern inventory; do not evict old admissions by this rehearsal."
+    },
+    {
+      "id": "dunes_text",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "status": "stale_walk_diagnosis",
+      "text": "Current FindMod names both Moving Dunes and Baroque Biomes. Walk's dead-guard diagnosis is stale; runtime binding and full movement still need proof."
+    },
+    {
+      "id": "flora_claims",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+      "status": "source_gap",
+      "text": "Radmoss/vault-root/wartshrub have no pollution-sensing or sequestration comp; Pusberry yields ordinary berries despite raw-is-a-lesson text; cinderfelt has ordinary wild fallback. Do not accept ecological descriptions as mechanisms."
+    },
+    {
+      "id": "warning_toggle",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs:101",
+      "status": "code_risk",
+      "text": "namedStormPhasesEnabled=false returns Disabled before TickStorm, suppressing EMP/lightning as well as cues, despite menu promising immediate storm effects. Separate from master OFF."
+    },
+    {
+      "id": "processing_toggle",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:514",
+      "status": "code_risk",
+      "text": "caskProcessingEnabled gates command visibility only; already-enabled processing continues through CompTickRare/TickProcessing."
+    },
+    {
+      "id": "warning_entry",
+      "speaker": "agent",
+      "source": "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs:193",
+      "status": "open_experience_boundary",
+      "text": "Revalidation may pick another random edge immediately at arrival; existing warning is no guarantee of prepared edge or clear full route. q07 clarifies honest warning/reliability."
+    },
+    {
+      "id": "generic_passage",
+      "speaker": "agent",
+      "source": "OWNER:1792619032338824487",
+      "status": "implementation_boundary",
+      "text": "Existing owner-side item asks for a matching native T2+ pawn/passers pool. Building Middenshell cannot satisfy a pawn pool merely by name. No new giant design drafted without recovering full sitting context; current dedicated procession remains built."
+    },
+    {
+      "id": "legacy_hessekh",
+      "speaker": "agent",
+      "source": "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Radiothermal.xml",
+      "status": "distinct_existing_defs",
+      "text": "Legacy RUT heat/cook/spacing creature and resident RM heat/dose creature share a label, not mechanics or roster. No consolidation/renaming is inferred."
+    }
+  ],
+  "failure_modes": [
+    "F1 — The land is only scenery between spectacles: quiet travel and post-storm return are safe-looking ordinary work, while only the giant and letters supply danger. Sources: design/RimMandrake/biome_experiences_2026-10-20.md; design/Jawa/worldbuilding/biomes/wastes.md; src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml.",
+    "F2 — The bargains have no playable middle: shelter is useless or silently dosing, refineries are free multipliers or futile, and salvage/quarry/casks offer riches or injury without a legible work-and-return decision. Sources: src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs; src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs; src/RimMandrake/Wastes/Source/RM_Middenshell.cs.",
+    "F3 — A reassuring sign or passing check lies: plant density does not track danger, an edge warning changes too late, an OFF switch still processes or accidentally suppresses storm effects, and a short negative test never reaches a hazard tick. Sources: src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs:193; src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:514; src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs:101; src/RimMandrake/Wastes/validation.py:1070."
+  ],
+  "failure_mode_sources": [
+    {
+      "id": "F1",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md"
+    },
+    {
+      "id": "F2",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs"
+    },
+    {
+      "id": "F3",
+      "source": "src/RimMandrake/Wastes/validation.py:1070"
+    }
+  ],
+  "scene_audit": [
+    {
+      "id": "audit_reads",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "log_clean",
+        "defs_resolve",
+        "settings_defaults",
+        "biome_roster",
+        "patches_landed",
+        "launch_check_patch"
+      ],
+      "start": "Parses source, pins floors, reads runtime and absent-def controls; log scans names.",
+      "control": "Useful not-found/donor/clear-weather controls. Base roster only requires expected rows and rejects selected tier prefixes; patch attachment is not launch use.",
+      "restore": "Primarily reads; no persistent-site snapshot.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Read-only observations can stay ordinary checks. Names/data presence cannot accept ecology, terrain gate, no precipitation, salvage or launch behaviour; snow weights are not checked by no_rain_of_any_kind."
+    },
+    {
+      "id": "audit_roundtrip",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "settings_roundtrip"
+      ],
+      "start": "Reads each original public static field; changes it.",
+      "control": "Reads changed value and restores/read-checks original.",
+      "restore": "Original field restored in finally, unlike most scene helpers that reset to defaults.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "No settings-file save/reload, menu reset/search, capacity refresh or runtime feature-effect acceptance."
+    },
+    {
+      "id": "audit_flight",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "flyer_state"
+      ],
+      "start": "Clears pad and spawns flyer/walker.",
+      "control": "CanEverFly true/false; does not order flight.",
+      "restore": "_teardown destroys things, not pawns, and does not restore original ground/roof/pollution.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "May stage a spontaneously flying wild bird while time runs elsewhere; future staging must prevent unintended live flight unless owner present. State report is not animation acceptance."
+    },
+    {
+      "id": "audit_ash",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "storm_ash_on",
+        "storm_ash_off"
+      ],
+      "start": "Checks biome and initial no-dose; clears whole-map pollution and pad. Weather set read back.",
+      "control": "On/off exists, but all three flags switch together, conflating fall and germination. Roof/protection/immune/dose-source controls missing; pollution itself can contribute buildup.",
+      "restore": "Clear weather locked, toggles to defaults, pad cleared; original terrain/pollution/weather/colonists and whole map not restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need source-isolated dose, fall and seed controls plus asserted receiver location/resistance. Cinderfelt counts can include ordinary wild germination; deterministic weather-end case cheaper."
+    },
+    {
+      "id": "audit_named",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "named_storm_halo",
+        "named_storm_cinderwire",
+        "named_storm_phases_off"
+      ],
+      "start": "As ash site; warning shortened to 625 ticks; new message counts recorded.",
+      "control": "Warning no-dose arm waits ~460 ticks versus documented 3451 dose cadence: no opportunity-to-dose guaranteed. OFF only tests Halo, missing Cinderwire EMP/lightning regression.",
+      "restore": "Finally resets warning/toggle to defaults and locks Clear; no old weather/site restoration.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need align warning across an eligible dose tick or extend it, include explicit no-hold broken control and actual EMP/lightning/cue checks; native sand/weather effects may run during warning."
+    },
+    {
+      "id": "audit_furnace",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "smolderback_room"
+      ],
+      "start": "Sealed natural-soil rooms, source/receiver/control, control temp below heating cap; waits full dose interval.",
+      "control": "Other room, dose OFF, heat OFF and master OFF. Warm-room plateau may mask a stuck heat switch; no sustained protection/cost trade.",
+      "restore": "Defaults and pad clearing only; source/pawns and original map not restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Add position/room/resistance assertion, source-free room matched baseline, heat-on-again away from cap, relevant reload and week-of-use scene."
+    },
+    {
+      "id": "audit_processors",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "processor_animals"
+      ],
+      "start": "Pollutable sealed feed/clean rooms, tamed animals, worker; 700 ticks updates feed cache.",
+      "control": "Inspect slow/full states; forces fullness and gather; output could merge stacks; worker AnimalGatherYield not pinned. OFF tests pane disappearance, not completed collection/growth.",
+      "restore": "Default gather toggle restored, pad clearing only; animals remain.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need actual rate over time, successful and rejected normal milk job, qualified worker or controlled yield, ash-depth feed case, unpollute on/off, multiple bays and finite output accounting."
+    },
+    {
+      "id": "audit_gripper",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "gripper"
+      ],
+      "start": "Junk-bearing wild gripper and gold bait; later clears wild animals before tame control.",
+      "control": "Forced theft job and tamed rejection; harm is probabilistic ten hits. Does not prove autonomous MTB choice, lower-value/too-heavy/protected rejection, accurate scurry or full-stack swap conservation.",
+      "restore": "Restores toggles to defaults; no pawn/site restoration; global wildlife deletion.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Retain instrument fixes already built. Add discriminating legal target choices and observed swap/scurry; no new keep/remove ask."
+    },
+    {
+      "id": "audit_flora",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "flora_harvest"
+      ],
+      "start": "Mature named plants, no product beforehand, Plants-20 worker with hauling off, non-colonists removed globally.",
+      "control": "Actual forced harvest/yield; good fresh-output check, but no failed/unripe control or pollution-linked growth/sequestration.",
+      "restore": "Pad clear only; global pawn removal not reversible without original scratch save.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Production harvest proof is useful and latest A2 PASS is preserved; separate life/danger-reading experience from output."
+    },
+    {
+      "id": "audit_brine",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "brine_deposits"
+      ],
+      "start": "Paints/reads brine patch; spawns eater with food nearby.",
+      "control": "scatter_at bypasses validator; mineableThing read is not mining. Raw shock has no cooked/other-food control, and receiver may wander/drown.",
+      "restore": "Pad clear only; original terrain, source objects and pawn health not restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need genuine map scatter dry/brine rejection, actual mine/recipe/ingest controls, safe bounded receiver and pool ecology separately."
+    },
+    {
+      "id": "audit_casks",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "cask_leaks"
+      ],
+      "start": "Intact and damaged casks on cleaned pollutable pads; initial stored dose read.",
+      "control": "Intact/breached/off pollution, inspect/alert and dose-decrease controls useful. Gas, eventual empty state, kill burst and moved/held cask edge absent.",
+      "restore": "Defaults and pad clear only; pollution/gas outside pad and old environment not restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need hazard conservation/depletion, burst, save/load alert identity and no invented bay text. Source already fixes old false bay-claim bug."
+    },
+    {
+      "id": "audit_bay",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "cask_bay"
+      ],
+      "start": "Spawns rack/cask; assumes full charge, no initial powered containment assertion.",
+      "control": "Short unpowered grace, damage leak and forced power clears text; no seal-drain/recovery trajectory, full cargo heat, working processor toggle or real launch.",
+      "restore": "Pad clear only, leaked surroundings not restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Need powered safe/cooling and sufficiently long no-power control, processing on/off after progress began, full ship membership and unsafe-to-safe launch."
+    },
+    {
+      "id": "audit_body",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "middenshell_body"
+      ],
+      "start": "Wipes whole scratch map of non-pawns; direct spawn disabled, shortened crawl, four-sided bait.",
+      "control": "Size from own inspect; step/eaten/remaining bait; on/off/on useful. No protected ship/rock control, actual occupied-body measurement, turning/click/roof/pawn path, quarry mining or dose control.",
+      "restore": "Defaults reset and whole-map wipe; destroys rather than restores; pawns/terrain/quest state survive.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Scene must isolate walk, destruction, aura and quarry with interactions later. Accelerated/random motion and seam count cannot accept giant's full experience."
+    },
+    {
+      "id": "audit_procession",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "middenshell_procession"
+      ],
+      "start": "Wipes things, short omen/step rate, loose steel; biome read.",
+      "control": "Incident ON/OFF with tick separation; metal motion, letter presence, arrival inspect and filth. No direction correlation, natural stockpile bend, route blockage, single-body persistence or exit terrain.",
+      "restore": "Defaults reset, map wiped; pending arrival/weather/terrain not explicitly restored.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Latest A1 toggle PASS is narrow. Need accurate warning-edge sequence, full crossing, bait/no-bait and blocked approach, real trail terrain and scar."
+    },
+    {
+      "id": "audit_tipping",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "scenes": [
+        "rite_of_tipping"
+      ],
+      "start": "Biome, pad and quest availability; checks Ongoing and licensed 0-of-N.",
+      "control": "Forced incident dry-run ON then OFF with distinct ticks avoids memo/cache and fire_quest bypass. Does not deliver casks/payments or evidence/grant/refusal/discovery.",
+      "restore": "Default toggle/pad clear only; accepted quest remains and later may deliver to changed/deleted pad.",
+      "hold": "No scene-begin/end/hold journal or owner-review hold implemented.",
+      "gap": "Latest A2 toggle PASS is narrow. Need whole finite lifecycle, missing/blocked pad, real delivered position within promised marked area, reward conservation, evidence/grant branches, reload and completion."
+    }
+  ],
+  "asks": [
+    {
+      "id": "q01",
+      "title": "ASK FIRST — A place to live in, between the events",
+      "ask_first": true,
+      "picture": "The colony has survived a week. No storm is running and the Middenshell has gone. A worker walks from a roofed workshop toward a promising wreck across a flat that looked harmless yesterday.",
+      "text": "What should that ordinary working day make you weigh, and which sentence in the proposed root gets that wrong?",
+      "decision": "Root ordinary-use promise and emphasis; no automatic approval.",
+      "about": [
+        "biome",
+        "ash_dose",
+        "salvage",
+        "casks"
+      ],
+      "owner_cites": [],
+      "basis": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "source": "design/RimMandrake/biome_experiences_2026-10-20.md",
+      "why": "F1. The old sheet makes the land dangerous even when nothing attacks. Most explicit dose code is attached to weather, creatures, salvage and waste. An exciting incident list could leave the quiet hours feeling like an ordinary dry map.",
+      "guess": "The attraction is choosing a profitable outing against the exposure it costs, with a place to recover and prepare. I would lead with that daily bargain.",
+      "tree_change": "If outings carry the experience, make one complete prepare/work/return scene the root's ordinary-use case. If maintaining a home is the central struggle, require a sustained occupied-base scene as well. If another moment matters more, rewrite the root around it while retaining coverage of every built feature. An answer can correct the root; it is not recorded as approval unless he actually approves its text.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q02",
+      "title": "ASK FIRST — The first demonstration",
+      "ask_first": true,
+      "picture": "A, a scout returns after an ash storm, finds something newly exposed and brings salvage home at a dose cost. B, a paid waste delivery becomes a containment and animal-processing problem, followed by a leak. C, a warned Middenshell crossing is diverted, leaves its mark, and later a dead shell is worked as a quarry. These are proposed scenes, not completed demonstrations.",
+      "text": "Which would you put first when deciding whether this is your Wasteland, and what failure in it would make you stop the demonstration?",
+      "decision": "Owner flagship and finite rejection case.",
+      "about": [
+        "drifting_ash",
+        "salvage",
+        "tipping_contract",
+        "bay_containment",
+        "procession",
+        "quarry"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "source": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "why": "F1/F2. The biggest spectacle may be the wrong first test of “the land is the monster.” No flagship choice was found.",
+      "guess": "A first, because ordinary work under the land's terms should carry the biome before its giant arrives. B and C deserve separate demonstrations.",
+      "tree_change": "His chosen scene becomes showcase 1 only after a recorded pick. The other features retain their own acceptance scenes; later showcases must add substantially different play. His reject case becomes a candidate core requirement. Root approval alone does not pick a flagship.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q03",
+      "title": "Reading a changed route",
+      "ask_first": false,
+      "picture": "A storm has passed. Cinderfelt now marks fresh fall beside yesterday's route to a wreck; radmoss is thick farther along. The optional ship scanner can report a wreck or brine beds, but its present payload does not measure a safe walking route. The current flora definitions do not establish the dosimeter behaviour described in the old sheet.",
+      "text": "What should a scout be able to observe that makes “cross here, go around there” a reasoned choice?",
+      "decision": "Useful observed information for route choice under existing dosimeter promise.",
+      "about": [
+        "flora",
+        "flora_dosimeter_mechanics",
+        "cinderfelt",
+        "acoustic_payload"
+      ],
+      "owner_cites": [],
+      "basis": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "source": "design/Jawa/worldbuilding/biomes/wastes.md",
+      "why": "F1/F3. The requirement that plants reveal dangerous ground is already in the sheet. The unresolved part is what useful information the player can actually read, especially after the ground changes.",
+      "guess": "An honest rough distinction between safer crust and hotter growth, enough to choose a route without an exact radiation overlay. I recommend proving that distinction with two otherwise similar routes.",
+      "tree_change": "Visible bands require a demonstrated correlation between what grows and what harms, with a misleading-looking control. A close inspection requirement needs an actionable local reading. If the answer needs a dedicated instrument, establish its owner's boundary before adding a new one. No answer turns a decorative plant's name into proof that it measures dose.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q04",
+      "title": "A refinery that can serve a settlement",
+      "ask_first": false,
+      "picture": "Forty colonists have accepted a waste contract. Several bays hold casks; a small herd stands nearby. The current bay converts a cask when a nearby processor qualifies, without giving the animal a processing job. The excretor is a different, slower shearable producer; it is not a bay processor.",
+      "text": "What would a successful day's work look like here, and what would tell you that the herd has taken on more waste than it can handle?",
+      "decision": "Sustained refinery capacity, support work and backlog readability.",
+      "about": [
+        "processor_gather",
+        "excretor",
+        "bay_processing",
+        "tipping_contract"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:534",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs:534",
+      "why": "F2/F3. “A kept herd is a slow refinery” can pass a one-cask test while one animal serves many bays for free, or while incoming waste outpaces it with no useful sign.",
+      "guess": "A modest, visible flow of goods with a backlog the colony can understand and plan around. I would judge useful capacity and the cost of tending the herd together.",
+      "tree_change": "A limit per animal requires a shared-capacity case across several bays. A limit per bay instead requires that rule to be legible and a sustained throughput check. If supporting feed and hauling are the labour, demonstrate those jobs rather than inventing a new processing job. His scene sets tuning targets and the required backlog information; it does not reopen the built refinery's existence.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q05",
+      "title": "The winter furnace's price",
+      "ask_first": false,
+      "picture": "A hessekh warms a shelter. The present RM creature doses everyone sharing its enclosed room, including someone far from the animal; a separate room is outside that room-wide dose. Heat and dose have separate switches.",
+      "text": "Over a cold week, what routine should make keeping this animal a tempting bargain, and what result would make it feel like a trap with no useful choice?",
+      "decision": "Useful heat/exposure trade through a week of ordinary shelter use.",
+      "about": [
+        "hessekh_heat",
+        "ambient_dose"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs:108",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs:108",
+      "why": "F2. Heat plus a rising health number is a mechanism. The promised experience is choosing to keep a useful animal while managing the consequence.",
+      "guess": "It makes otherwise difficult cold work possible, but time sharing its shelter has a cost people must manage. I would compare a useful shelter with and without the animal, and read the week's exposure as well as temperature.",
+      "tree_change": "A short-stay warming shelter needs a full use-and-leave scene. A continuously occupied shelter needs a sustainable protection or exposure-management case using the actual protection system. The answer tunes the bargain and its explanation; ambient dose stays an existing promise under either answer.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q06",
+      "title": "When the last paid delivery is over",
+      "ask_first": false,
+      "picture": "The third waste load arrives and the contract ends. Casks remain on the ground. Later, the colony buries one, or loads contained casks aboard its ship. Today the reburial discovery check only reaches active tipping contracts; WasteRun's disposal destinations belong to a separate campaign mod.",
+      "text": "What responsibility should still follow the colony after the last payment, especially if it leaves the site?",
+      "decision": "Duration of social responsibility beyond finite tipping contract.",
+      "about": [
+        "tipping_contract",
+        "tipping_discovery",
+        "reburial",
+        "launch_safety"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:452",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs:452",
+      "why": "F2/F3. The root's enduring waste and the built finite contract meet here. Physical pollution persists, but the length of the social obligation is not specified by the chosen enrichment.",
+      "guess": "The waste remains the colony's problem, and completion should not silently erase the people who care about its handling. I would make any continuing obligation explicit before acceptance.",
+      "tree_change": "If obligations end with the contract, state that boundary and prove physical consequences continue independently. Continuing inspections require durable responsibility and a post-completion discovery case. A departure condition requires a concrete site-handoff rule and a ship-return case. No answer folds WasteRun or the Stenchlands into this biome.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q07",
+      "title": "Trusting a diversion",
+      "ask_first": false,
+      "picture": "Tremors warn of a Middenshell from the east. You put waste away from the houses to draw it aside. A rock outcrop or ship deck blocks that approach; its current route is a sequence of local choices, not a guaranteed clear path. At arrival it can even choose a different edge if the warned entrance is obstructed.",
+      "text": "What should the colony be able to count on after committing that bait, and what sign should tell it that the plan is failing?",
+      "decision": "Reliability and readable failure of committed bait/changed entry.",
+      "about": [
+        "procession",
+        "waste_lure",
+        "middenshell_crush"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:254",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:254",
+      "why": "F1/F3. Luring is built and promised. Its reliability and the warning needed when the situation changes decide whether it is a costly tactic or a misleading line on the ground.",
+      "guess": "It follows reachable waste under its existing body rules, and a changed approach is communicated while there is still time to react. I would keep uncertainty about a perfect route, but make a failed lure readable.",
+      "tree_change": "A dependable diversion requires a reachable-bait route and consumption/continuation case. A probabilistic or easily blocked diversion needs honest cues and a failed-plan scene. A different arrival edge needs its own preparation window; persistence at the same edge needs a blocked-entry case. The twenty-cell width and ship protections remain fixed.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    },
+    {
+      "id": "q08",
+      "title": "Coming home from the dead giant",
+      "ask_first": false,
+      "picture": "A dead Middenshell has become a field of bezoar seams. Miners work its edge, haulers collect the product, and exposure limits the visit. The current carcass code doses pawns beside remaining seams and forgets the carcass when the last seam is gone.",
+      "text": "What would the first expedition bring home, and what should make the colony decide “enough for today” while there is still treasure there?",
+      "decision": "Useful quarry expedition, retreat trigger and retained work.",
+      "about": [
+        "quarry",
+        "ambient_dose"
+      ],
+      "owner_cites": [],
+      "basis": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:932",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:932",
+      "why": "F2. The quarry already exists. Its reward, labour and dose must produce the expedition the root promises, rather than instant riches or an unusable death zone.",
+      "guess": "A worthwhile partial haul, an understandable exposure cost and a reason to return better prepared. I recommend observing the miner and hauler separately.",
+      "tree_change": "If exposure sets the trip length, require useful yield before an understood retreat threshold, with protected and unprotected controls. If slow excavation sets the length, require a meaningful day's progress and persistent remaining seams. If hauling is the commitment, demonstrate the whole return path. Each case retains the permanent mineable landmark until worked out; none asks whether to keep it.",
+      "offers_removal": false,
+      "author": "Codex Designer dry run, 2026-11-10",
+      "speaker": "agent",
+      "status": "draft",
+      "review_status": "pending fresh-agent evidence/wording review"
+    }
+  ],
+  "built_reviewed": [
+    {
+      "id": "file_001",
+      "ref": "src/RimMandrake/Wastes/northstar_plan.py",
+      "source": "src/RimMandrake/Wastes/northstar_plan.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_002",
+      "ref": "src/RimMandrake/Wastes/northstar_site.py",
+      "source": "src/RimMandrake/Wastes/northstar_site.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_003",
+      "ref": "src/RimMandrake/Wastes/selftest_wastes.py",
+      "source": "src/RimMandrake/Wastes/selftest_wastes.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_004",
+      "ref": "src/RimMandrake/Wastes/validation.py",
+      "source": "src/RimMandrake/Wastes/validation.py",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_005",
+      "ref": "src/RimMandrake/Wastes/About/About.xml",
+      "source": "src/RimMandrake/Wastes/About/About.xml",
+      "covered_by": "biome",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_006",
+      "ref": "src/RimMandrake/Wastes/Assemblies/RimMandrake.Wastes.dll",
+      "source": "src/RimMandrake/Wastes/Assemblies/RimMandrake.Wastes.dll",
+      "covered_by": "proof_tools",
+      "text": "DLL/stamp presence, no build or deployment fingerprint checked."
+    },
+    {
+      "id": "file_007",
+      "ref": "src/RimMandrake/Wastes/Assemblies/RimMandrake.Wastes.dll.srchash",
+      "source": "src/RimMandrake/Wastes/Assemblies/RimMandrake.Wastes.dll.srchash",
+      "covered_by": "proof_tools",
+      "text": "DLL/stamp presence, no build or deployment fingerprint checked."
+    },
+    {
+      "id": "file_008",
+      "ref": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+      "source": "src/RimMandrake/Wastes/Defs/BiomeDefs/RM_Wastes_Biome.xml",
+      "covered_by": "biome",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_009",
+      "ref": "src/RimMandrake/Wastes/Defs/FleckDefs/RM_WastesFlecks.xml",
+      "source": "src/RimMandrake/Wastes/Defs/FleckDefs/RM_WastesFlecks.xml",
+      "covered_by": "halo_warning",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_010",
+      "ref": "src/RimMandrake/Wastes/Defs/HediffDefs/RM_BrineShock.xml",
+      "source": "src/RimMandrake/Wastes/Defs/HediffDefs/RM_BrineShock.xml",
+      "covered_by": "raw_brine_shock",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_011",
+      "ref": "src/RimMandrake/Wastes/Defs/IncidentDefs/RM_MiddenshellArrives.xml",
+      "source": "src/RimMandrake/Wastes/Defs/IncidentDefs/RM_MiddenshellArrives.xml",
+      "covered_by": "middenshell_body",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_012",
+      "ref": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesBrine_Scatter.xml",
+      "source": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesBrine_Scatter.xml",
+      "covered_by": "brine_deposits",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_013",
+      "ref": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesWreckField.xml",
+      "source": "src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesWreckField.xml",
+      "covered_by": "salvage",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_014",
+      "ref": "src/RimMandrake/Wastes/Defs/Quests/RM_RiteOfTipping.xml",
+      "source": "src/RimMandrake/Wastes/Defs/Quests/RM_RiteOfTipping.xml",
+      "covered_by": "tipping_contract",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_015",
+      "ref": "src/RimMandrake/Wastes/Defs/RecipeDefs/RM_CrackBrinePlate.xml",
+      "source": "src/RimMandrake/Wastes/Defs/RecipeDefs/RM_CrackBrinePlate.xml",
+      "covered_by": "salt_recipe",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_016",
+      "ref": "src/RimMandrake/Wastes/Defs/SoundDefs/RM_WastesSounds.xml",
+      "source": "src/RimMandrake/Wastes/Defs/SoundDefs/RM_WastesSounds.xml",
+      "covered_by": "halo_warning",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_017",
+      "ref": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_MiddenshellTrail_Terrains.xml",
+      "source": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_MiddenshellTrail_Terrains.xml",
+      "covered_by": "trail_scar",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_018",
+      "ref": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_WastesBrine_Terrains.xml",
+      "source": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_WastesBrine_Terrains.xml",
+      "covered_by": "brine_deposits",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_019",
+      "ref": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_Wastes_GroundTerrains.xml",
+      "source": "src/RimMandrake/Wastes/Defs/TerrainDefs/RM_Wastes_GroundTerrains.xml",
+      "covered_by": "biome",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_020",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_Middenshell.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_Middenshell.xml",
+      "covered_by": "middenshell_body",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_021",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WasteCaskBay.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WasteCaskBay.xml",
+      "covered_by": "bay_containment",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_022",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesBrine_Deposits.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesBrine_Deposits.xml",
+      "covered_by": "brine_deposits",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_023",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml",
+      "covered_by": "salvage",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_024",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_MiddenshellTrail_Filth.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_MiddenshellTrail_Filth.xml",
+      "covered_by": "trail_scar",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_025",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WasteCask.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WasteCask.xml",
+      "covered_by": "casks",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_026",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesBrine_Items.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesBrine_Items.xml",
+      "covered_by": "brine_deposits",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_027",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesItems.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Items/RM_WastesItems.xml",
+      "covered_by": "processor_gather",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_028",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml",
+      "covered_by": "flora",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_029",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Boilhide.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Boilhide.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_030",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Excretor.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Excretor.xml",
+      "covered_by": "excretor",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_031",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Frethik.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Frethik.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_032",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gravelgut.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gravelgut.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_033",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Grimewing.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Grimewing.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_034",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gripper.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gripper.xml",
+      "covered_by": "gripper_theft",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_035",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gristleswarm.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Gristleswarm.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_036",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Kroffa.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Kroffa.xml",
+      "covered_by": "kroffa_milk",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_037",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Scabspinner.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Scabspinner.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_038",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Scumslider.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Scumslider.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_039",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Slagmole.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Slagmole.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_040",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sloghog.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sloghog.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_041",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Smolderback.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Smolderback.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_042",
+      "ref": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sootgrazer.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Races/RM_Sootgrazer.xml",
+      "covered_by": "fauna",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_043",
+      "ref": "src/RimMandrake/Wastes/Defs/ThinkTreeDefs/RM_GripperTheft.xml",
+      "source": "src/RimMandrake/Wastes/Defs/ThinkTreeDefs/RM_GripperTheft.xml",
+      "covered_by": "gripper_theft",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_044",
+      "ref": "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml",
+      "source": "src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml",
+      "covered_by": "ash_dose",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_045",
+      "ref": "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml",
+      "source": "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml",
+      "covered_by": "acoustic_payload",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_046",
+      "ref": "src/RimMandrake/Wastes/Patches/RM_WastesBrine_ScatterRegister.xml",
+      "source": "src/RimMandrake/Wastes/Patches/RM_WastesBrine_ScatterRegister.xml",
+      "covered_by": "brine_deposits",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_047",
+      "ref": "src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml",
+      "covered_by": "flora",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_048",
+      "ref": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "covered_by": "drifting_ash",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_049",
+      "ref": "src/RimMandrake/Wastes/Source/RM_BiomeWorker_Wastes.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_BiomeWorker_Wastes.cs",
+      "covered_by": "biome",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_050",
+      "ref": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompAmbientDose.cs",
+      "covered_by": "ambient_dose",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_051",
+      "ref": "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs",
+      "covered_by": "processor_gather",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_052",
+      "ref": "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_GripperTheft.cs",
+      "covered_by": "gripper_theft",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_053",
+      "ref": "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_MapComponent_WastesStorms.cs",
+      "covered_by": "ash_dose",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_054",
+      "ref": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs",
+      "covered_by": "middenshell_body",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_055",
+      "ref": "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_MiddenshellProcession.cs",
+      "covered_by": "procession",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_056",
+      "ref": "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_NamedStorms.cs",
+      "covered_by": "halo_warning",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_057",
+      "ref": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_RiteOfTipping.cs",
+      "covered_by": "tipping_contract",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_058",
+      "ref": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_WasteCaskBay.cs",
+      "covered_by": "bay_containment",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_059",
+      "ref": "src/RimMandrake/Wastes/Source/RM_Wastes.csproj",
+      "source": "src/RimMandrake/Wastes/Source/RM_Wastes.csproj",
+      "covered_by": "settings",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_060",
+      "ref": "src/RimMandrake/Wastes/Source/RM_WastesMechanicsExtensions.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_WastesMechanicsExtensions.cs",
+      "covered_by": "ash_dose",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_061",
+      "ref": "src/RimMandrake/Wastes/Source/RM_WastesMod.cs",
+      "source": "src/RimMandrake/Wastes/Source/RM_WastesMod.cs",
+      "covered_by": "settings",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_062",
+      "ref": "src/RimMandrake/Wastes/Source/Kernel/RM_DoseKernel.cs",
+      "source": "src/RimMandrake/Wastes/Source/Kernel/RM_DoseKernel.cs",
+      "covered_by": "ambient_dose",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_063",
+      "ref": "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs",
+      "source": "src/RimMandrake/Wastes/Source/Kernel/RM_StormKernel.cs",
+      "covered_by": "halo_warning",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_064",
+      "ref": "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs",
+      "source": "src/RimMandrake/Wastes/Source/Kernel/RM_TippingKernel.cs",
+      "covered_by": "tipping_contract",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_065",
+      "ref": "src/RimMandrake/Wastes/Source/Kernel/RM_WasteCaskKernel.cs",
+      "source": "src/RimMandrake/Wastes/Source/Kernel/RM_WasteCaskKernel.cs",
+      "covered_by": "bay_containment",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_066",
+      "ref": "src/RimMandrake/Wastes/Source/SelfTest/Program.cs",
+      "source": "src/RimMandrake/Wastes/Source/SelfTest/Program.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_067",
+      "ref": "src/RimMandrake/Wastes/Source/SelfTest/RimMandrakeWastes.SelfTest.csproj",
+      "source": "src/RimMandrake/Wastes/Source/SelfTest/RimMandrakeWastes.SelfTest.csproj",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_068",
+      "ref": "src/RimMandrake/Wastes/Source/SelfTest/WastesFuzz.cs",
+      "source": "src/RimMandrake/Wastes/Source/SelfTest/WastesFuzz.cs",
+      "covered_by": "proof_tools",
+      "text": "Capability accounting; not a full-file code-review certificate."
+    },
+    {
+      "id": "file_069",
+      "ref": "src/RimMandrake/Wastes/Textures/Terrain/VolcanoSoil.png",
+      "source": "src/RimMandrake/Wastes/Textures/Terrain/VolcanoSoil.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_070",
+      "ref": "src/RimMandrake/Wastes/Textures/Terrain/WastelandAsphalt.png",
+      "source": "src/RimMandrake/Wastes/Textures/Terrain/WastelandAsphalt.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_071",
+      "ref": "src/RimMandrake/Wastes/Textures/Terrain/Surfaces/RM_MiddenshellEdgeScar.png",
+      "source": "src/RimMandrake/Wastes/Textures/Terrain/Surfaces/RM_MiddenshellEdgeScar.png",
+      "covered_by": "trail_scar",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_072",
+      "ref": "src/RimMandrake/Wastes/Textures/Terrain/Surfaces/RM_MiddenshellTrack.png",
+      "source": "src/RimMandrake/Wastes/Textures/Terrain/Surfaces/RM_MiddenshellTrack.png",
+      "covered_by": "trail_scar",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_073",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/RM_WasteTippingPad.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/RM_WasteTippingPad.png",
+      "covered_by": "tipping_contract",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_074",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_east.png",
+      "covered_by": "middenshell_body",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_075",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_north.png",
+      "covered_by": "middenshell_body",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_076",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/RM_Middenshell/RM_Middenshell_south.png",
+      "covered_by": "middenshell_body",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_077",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWarcasketSarcophagus/RM_WastesWarcasketSarcophagus_A.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWarcasketSarcophagus/RM_WastesWarcasketSarcophagus_A.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_078",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWarcasketSarcophagus/RM_WastesWarcasketSarcophagus_B.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWarcasketSarcophagus/RM_WastesWarcasketSarcophagus_B.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_079",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckHull/RM_WastesWreckHull_A.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckHull/RM_WastesWreckHull_A.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_080",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckHull/RM_WastesWreckHull_B.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckHull/RM_WastesWreckHull_B.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_081",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckTank/RM_WastesWreckTank_A.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckTank/RM_WastesWreckTank_A.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_082",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckTank/RM_WastesWreckTank_B.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Building/Wrecks/RM_WastesWreckTank/RM_WastesWreckTank_B.png",
+      "covered_by": "salvage",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_083",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Filth/RM_MiddenshellFlakes/RM_MiddenshellFlakes.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Filth/RM_MiddenshellFlakes/RM_MiddenshellFlakes.png",
+      "covered_by": "trail_scar",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_084",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Filth/RM_MiddenshellFootprint/RM_MiddenshellFootprint.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Filth/RM_MiddenshellFootprint/RM_MiddenshellFootprint.png",
+      "covered_by": "trail_scar",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_085",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_BrinePlate.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_BrinePlate.png",
+      "covered_by": "brine_deposits",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_086",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_Drazz.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_Drazz.png",
+      "covered_by": "brine_deposits",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_087",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_SootBrick.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_SootBrick.png",
+      "covered_by": "processor_gather",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_088",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_Tekk.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_Tekk.png",
+      "covered_by": "brine_deposits",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_089",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_ContaminantBezoar/RM_ContaminantBezoar_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_ContaminantBezoar/RM_ContaminantBezoar_a.png",
+      "covered_by": "processor_gather",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_090",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_ContaminantBezoar/RM_ContaminantBezoar_b.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_ContaminantBezoar/RM_ContaminantBezoar_b.png",
+      "covered_by": "processor_gather",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_091",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_VitrifiedBezoar/RM_VitrifiedBezoar_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_VitrifiedBezoar/RM_VitrifiedBezoar_a.png",
+      "covered_by": "processor_gather",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_092",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_VitrifiedBezoar/RM_VitrifiedBezoar_b.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_VitrifiedBezoar/RM_VitrifiedBezoar_b.png",
+      "covered_by": "processor_gather",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_093",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_WasteCask/RM_WasteCask.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/Resource/RM_WasteCask/RM_WasteCask.png",
+      "covered_by": "casks",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_094",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/RM_FrethikEgg/RM_FrethikEgg_A.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/RM_FrethikEgg/RM_FrethikEgg_A.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_095",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/RM_FrethikEgg/RM_FrethikEgg_B.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/RM_FrethikEgg/RM_FrethikEgg_B.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_096",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/RM_KroffaMilk/RM_KroffaMilk_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/RM_KroffaMilk/RM_KroffaMilk_a.png",
+      "covered_by": "kroffa_milk",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_097",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Item/RM_KroffaMilk/RM_KroffaMilk_b.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Item/RM_KroffaMilk/RM_KroffaMilk_b.png",
+      "covered_by": "kroffa_milk",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_098",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_099",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_100",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Boilhide/RM_Boilhide_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_101",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_Dessicated.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_Dessicated.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_102",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_103",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_104",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Excretor/RM_Excretor_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_105",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_106",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_107",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Frethik/RM_Frethik_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_108",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_109",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_110",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_111",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_112",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_113",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Grimewing/RM_Grimewing_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_114",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_115",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_116",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gripper/RM_Gripper_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_117",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_118",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_119",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_120",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_KroffaFemale_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_KroffaFemale_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_121",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_Kroffa_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_Kroffa_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_122",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_123",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_124",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_125",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_126",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_127",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Kroffa/RM_Kroffa_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_128",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_129",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_130",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_131",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_132",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_133",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Scumslider/RM_Scumslider_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_134",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_135",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_136",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Slagmole/RM_Slagmole_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_137",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_138",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_139",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sloghog/RM_Sloghog_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_140",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_141",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_142",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Smolderback/RM_Smolderback_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_143",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_144",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_145",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_146",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_east.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_east.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_147",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_north.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_north.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_148",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_south.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm_south.png",
+      "covered_by": "fauna",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_149",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/DosimeterLawn.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/DosimeterLawn.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_150",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Boilbulb.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Boilbulb.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_151",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Cinderfelt.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Cinderfelt.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_152",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Pusberry.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Pusberry.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_153",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Scumgrass.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Scumgrass.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_154",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_TallScumgrass.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_TallScumgrass.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_155",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Wartshrub.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_Wartshrub.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_156",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_WastesScorchedStars/RM_WastesScorchedStars_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/RM_WastesScorchedStars/RM_WastesScorchedStars_a.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_157",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/ScorchedStars/ScorchedStars_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/ScorchedStars/ScorchedStars_a.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_158",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/ScorchedStars/ScorchedStars_b.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/ScorchedStars/ScorchedStars_b.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_159",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_a.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_a.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_160",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_b.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_b.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_161",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_c.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_c.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_162",
+      "ref": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_d.png",
+      "source": "src/RimMandrake/Wastes/Textures/Things/Plant/VaultRoot/VaultRoot_d.png",
+      "covered_by": "flora",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "file_163",
+      "ref": "src/RimMandrake/Wastes/Textures/World/Biomes/RM_Wastes.png",
+      "source": "src/RimMandrake/Wastes/Textures/World/Biomes/RM_Wastes.png",
+      "covered_by": "biome",
+      "text": "Asset path accounted for; not visual acceptance."
+    },
+    {
+      "id": "item_file_1",
+      "ref": "infrastructure/state/items/WASTELAND_FIRST_SCRIPT_1.md",
+      "source": "infrastructure/state/items/WASTELAND_FIRST_SCRIPT_1.md",
+      "covered_by": "proof_tools",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_2",
+      "ref": "infrastructure/state/items/WASTELAND_GPT_ENRICHMENT_1.md",
+      "source": "infrastructure/state/items/WASTELAND_GPT_ENRICHMENT_1.md",
+      "covered_by": "tipping_contract",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_3",
+      "ref": "infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md",
+      "source": "infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md",
+      "covered_by": "processor_gather",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_4",
+      "ref": "infrastructure/state/items/closed/WASTELAND_BRINE_BATTERY_CREATURE_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_BRINE_BATTERY_CREATURE_1.md",
+      "covered_by": "campaign_battery",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_5",
+      "ref": "infrastructure/state/items/closed/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_BRINE_BATTERY_DISCHARGE_1.md",
+      "covered_by": "campaign_battery",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_6",
+      "ref": "infrastructure/state/items/closed/WASTELAND_EXCRETOR_BEZOAR_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_EXCRETOR_BEZOAR_1.md",
+      "covered_by": "excretor",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_7",
+      "ref": "infrastructure/state/items/closed/WASTELAND_RADIOTHERMAL_SOLITARY_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_RADIOTHERMAL_SOLITARY_1.md",
+      "covered_by": "campaign_radiothermal",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_8",
+      "ref": "infrastructure/state/items/closed/WASTELAND_RM_MOD_BUILD_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_RM_MOD_BUILD_1.md",
+      "covered_by": "biome",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_9",
+      "ref": "infrastructure/state/items/closed/WASTELAND_RULED_CONTENT_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_RULED_CONTENT_1.md",
+      "covered_by": "fauna",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_10",
+      "ref": "infrastructure/state/items/closed/WASTELAND_SHIPPING_NAMES_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_SHIPPING_NAMES_1.md",
+      "covered_by": "fauna",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "item_file_11",
+      "ref": "infrastructure/state/items/closed/WASTELAND_STORM_WEATHER_DEFS_1.md",
+      "source": "infrastructure/state/items/closed/WASTELAND_STORM_WEATHER_DEFS_1.md",
+      "covered_by": "ash_dose",
+      "text": "Item prose read as historical scope; implementation status comes from current source, not old NEXT/OWED wording."
+    },
+    {
+      "id": "ledger_item_1",
+      "ref": "ITEM:WASTELAND_BEDAZZLE_SITTING_1",
+      "source": "ITEM:WASTELAND_BEDAZZLE_SITTING_1",
+      "covered_by": "fauna",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_2",
+      "ref": "ITEM:WASTELAND_BRINE_BATTERY_CREATURE_1",
+      "source": "ITEM:WASTELAND_BRINE_BATTERY_CREATURE_1",
+      "covered_by": "campaign_battery",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_3",
+      "ref": "ITEM:WASTELAND_BRINE_BATTERY_DISCHARGE_1",
+      "source": "ITEM:WASTELAND_BRINE_BATTERY_DISCHARGE_1",
+      "covered_by": "campaign_battery",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_4",
+      "ref": "ITEM:WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS",
+      "source": "ITEM:WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS",
+      "covered_by": "proof_tools",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_5",
+      "ref": "ITEM:WASTELAND_EXCRETOR_BEZOAR_1",
+      "source": "ITEM:WASTELAND_EXCRETOR_BEZOAR_1",
+      "covered_by": "excretor",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_6",
+      "ref": "ITEM:WASTELAND_FIRST_SCRIPT_1",
+      "source": "ITEM:WASTELAND_FIRST_SCRIPT_1",
+      "covered_by": "proof_tools",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_7",
+      "ref": "ITEM:WASTELAND_GPT_ENRICHMENT_1",
+      "source": "ITEM:WASTELAND_GPT_ENRICHMENT_1",
+      "covered_by": "tipping_contract",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_8",
+      "ref": "ITEM:WASTELAND_GRIPPER_STEAL_BEHAVIOR_1",
+      "source": "ITEM:WASTELAND_GRIPPER_STEAL_BEHAVIOR_1",
+      "covered_by": "gripper_theft",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_9",
+      "ref": "ITEM:WASTELAND_LIVE_FIXTURE_FIXES_1",
+      "source": "ITEM:WASTELAND_LIVE_FIXTURE_FIXES_1",
+      "covered_by": "proof_tools",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_10",
+      "ref": "ITEM:WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+      "source": "ITEM:WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+      "covered_by": "proof_tools",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_11",
+      "ref": "ITEM:WASTELAND_MECHANICS_BUILD_1",
+      "source": "ITEM:WASTELAND_MECHANICS_BUILD_1",
+      "covered_by": "processor_gather",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_12",
+      "ref": "ITEM:WASTELAND_MIDDENSHELL_FOOTPRINT_1",
+      "source": "ITEM:WASTELAND_MIDDENSHELL_FOOTPRINT_1",
+      "covered_by": "middenshell_body",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_13",
+      "ref": "ITEM:WASTELAND_RADIOTHERMAL_SOLITARY_1",
+      "source": "ITEM:WASTELAND_RADIOTHERMAL_SOLITARY_1",
+      "covered_by": "campaign_radiothermal",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_14",
+      "ref": "ITEM:WASTELAND_RM_MOD_BUILD_1",
+      "source": "ITEM:WASTELAND_RM_MOD_BUILD_1",
+      "covered_by": "biome",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_15",
+      "ref": "ITEM:WASTELAND_RULED_CONTENT_1",
+      "source": "ITEM:WASTELAND_RULED_CONTENT_1",
+      "covered_by": "fauna",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_16",
+      "ref": "ITEM:WASTELAND_SHIPPING_NAMES_1",
+      "source": "ITEM:WASTELAND_SHIPPING_NAMES_1",
+      "covered_by": "fauna",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_17",
+      "ref": "ITEM:WASTELAND_STORM_WEATHER_DEFS_1",
+      "source": "ITEM:WASTELAND_STORM_WEATHER_DEFS_1",
+      "covered_by": "ash_dose",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_18",
+      "ref": "ITEM:WASTELAND_TITAN_POPULATE_EMPTY_HORIZON",
+      "source": "ITEM:WASTELAND_TITAN_POPULATE_EMPTY_HORIZON",
+      "covered_by": "procession",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_19",
+      "ref": "ITEM:WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1",
+      "source": "ITEM:WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1",
+      "covered_by": "ash_dose",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "ledger_item_20",
+      "ref": "ITEM:WASTES_BRINE_FIX_RUT_TERRAINS_DRUNK_FRESH",
+      "source": "ITEM:WASTES_BRINE_FIX_RUT_TERRAINS_DRUNK_FRESH",
+      "covered_by": "brine_water",
+      "text": "Matching frozen/shard events read; no official launcher fold or terminal status inferred merely from prose."
+    },
+    {
+      "id": "proof_WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS_criteria",
+      "ref": "infrastructure/state/live_proofs/WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS.criteria",
+      "source": "infrastructure/state/live_proofs/WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS.criteria",
+      "covered_by": "proof_tools",
+      "text": "Criteria/command pointer, not a result or current runtime fingerprint."
+    },
+    {
+      "id": "proof_WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS_txt",
+      "ref": "infrastructure/state/live_proofs/WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS.txt",
+      "source": "infrastructure/state/live_proofs/WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS.txt",
+      "covered_by": "proof_tools",
+      "text": "Criteria/command pointer, not a result or current runtime fingerprint."
+    },
+    {
+      "id": "proof_WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1_criteria",
+      "ref": "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.criteria",
+      "source": "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.criteria",
+      "covered_by": "proof_tools",
+      "text": "Criteria/command pointer, not a result or current runtime fingerprint."
+    },
+    {
+      "id": "proof_WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1_txt",
+      "ref": "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.txt",
+      "source": "infrastructure/state/live_proofs/WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1.txt",
+      "covered_by": "proof_tools",
+      "text": "Criteria/command pointer, not a result or current runtime fingerprint."
+    }
+  ],
+  "neighbours": [
+    {
+      "id": "n_compose",
+      "source": "src/RimMandrake/Biomes.compose.json",
+      "owner": "Baroque Biomes compose + shell",
+      "text": "Wastes remains separate source member but deploys as composed package; modcheck old Wasteland name and standalone package expectations can mislead."
+    },
+    {
+      "id": "n_dunes",
+      "source": "src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml",
+      "owner": "MovingDunes",
+      "text": "Existing ash transport/buried-cache engine; binding is Wastes data, not permission to generate or repaint planets. Pollution redistribution not established by binding alone."
+    },
+    {
+      "id": "n_vanilla",
+      "source": "src/RimMandrake/Wastes/Source/RM_CompProcessorGatherable.cs",
+      "owner": "Vanilla RimWorld + all DLC",
+      "text": "ToxicBuildup/resistance/airborne shelter, milk/shear jobs, plants, quest parts/storage/gravships supply existing machinery; distinct receivers/causes need discriminating scenes."
+    },
+    {
+      "id": "n_wreck",
+      "source": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml",
+      "owner": "Wreckage",
+      "text": "Shared irradiated salvage outcomes, not Wastes-specific second loot engine. Sarcophagus is a wreck family, not a proven real corpse/suit system."
+    },
+    {
+      "id": "n_creature",
+      "source": "src/RimMandrake/CreatureBehaviors/Source/RM_CompDefensiveDischarge.cs",
+      "owner": "CreatureBehaviors + UtinniPatches",
+      "text": "Campaign battery discharge and legacy radiothermal spacing/cook; resident RM hessekh is independently implemented."
+    },
+    {
+      "id": "n_water",
+      "source": "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml",
+      "owner": "FlowWorks",
+      "text": "Both RM/RUT brine drinking mappings already exist; no fresh-water fix proposed from stale item text."
+    },
+    {
+      "id": "n_scanner",
+      "source": "src/RimMandrake/Wastes/Patches/RM_AcousticPayload_Wastes.xml",
+      "owner": "AcousticScanner",
+      "text": "Wastes supplies targets and reading text. Scanner does not currently measure contamination route safety."
+    },
+    {
+      "id": "n_huge",
+      "source": "src/RimMandrake/Wastes/Source/RM_Middenshell.cs:15",
+      "owner": "Wastes for Middenshell; HugeThings for generic titan pawn passage",
+      "text": "Dedicated building procession does not populate a HugeThings pawn pool. No width shrink or new titan replacement proposed."
+    },
+    {
+      "id": "n_wasterun",
+      "source": "design/RimMandrake/fluff_cuts_2026-10-23.md:172",
+      "owner": "RimUtinni/WasteRun",
+      "text": "Separate campaign waste destinations/Throat Cask, no Wasteland inventory deletion implied by scope boundary."
+    }
+  ],
+  "ledger_reading": {
+    "id": "ledger_scope",
+    "source": "infrastructure/state/ledger/events.jsonl",
+    "text": "Read frozen ledger plus all matching WASTELAND/WASTES shard events. Related title-only items located by design/item search. No rimflow replay, official alias initialization or complete launcher built_evidence packet was supplied; regenerate it before real Stage 0 acceptance.",
+    "item_ids": [
+      "WASTELAND_BEDAZZLE_SITTING_1",
+      "WASTELAND_BRINE_BATTERY_CREATURE_1",
+      "WASTELAND_BRINE_BATTERY_DISCHARGE_1",
+      "WASTELAND_CONTAGION_PROBE_FIVE_LOOSE_ENDS",
+      "WASTELAND_EXCRETOR_BEZOAR_1",
+      "WASTELAND_FIRST_SCRIPT_1",
+      "WASTELAND_GPT_ENRICHMENT_1",
+      "WASTELAND_GRIPPER_STEAL_BEHAVIOR_1",
+      "WASTELAND_LIVE_FIXTURE_FIXES_1",
+      "WASTELAND_LIVE_SUITE_FAILS_ACC_BIOMES_1",
+      "WASTELAND_MECHANICS_BUILD_1",
+      "WASTELAND_MIDDENSHELL_FOOTPRINT_1",
+      "WASTELAND_RADIOTHERMAL_SOLITARY_1",
+      "WASTELAND_RM_MOD_BUILD_1",
+      "WASTELAND_RULED_CONTENT_1",
+      "WASTELAND_SHIPPING_NAMES_1",
+      "WASTELAND_STORM_WEATHER_DEFS_1",
+      "WASTELAND_TITAN_POPULATE_EMPTY_HORIZON",
+      "WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1",
+      "WASTES_BRINE_FIX_RUT_TERRAINS_DRUNK_FRESH"
+    ]
+  },
+  "snapshot": {
+    "id": "mirror_snapshot",
+    "source": "MIRROR_HEAD",
+    "text": "bc9b4bbb74d7dce9c020658c8f7e6dd6b2308b66 2026-11-10T01:33:38-08:00",
+    "note": "Externally refreshed mirror, not an atomic full-tree snapshot."
+  },
+  "reading_limits": {
+    "id": "limits",
+    "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+    "text": "Requested role/packets, HugeThings example, biome source/definitions/main C#, walk/spec/roster, direct items and matching ledger evidence read. Named-neighbour source interfaces searched/read as needed; not an audit of every campaign reference, texture, engine or test body. No build/live/selftest/game-art acceptance claimed."
+  }
+}
