@@ -1089,16 +1089,42 @@ class Run(object):
         fallen = sum(len(a.get("fallen") or []) for a in mine)
         got = {"spans_up": up, "spans_cut": cut_, "fallen_cords": fallen, "pole_live": [a["netLive"] for a in mine],
                "net_repairs": c.get("netRepairs"), "anchors": len(mine)}
+        anchor_cells = next((o["cells"] for o in sc["build"] if o["op"] == "anchor"), [])
+        by_pos = {(a["x"], a["z"]): a for a in mine}
+        for field, cut in (("downed_ends", True), ("fallen_ends", False)):
+            got[field] = []
+            for pole, cell in enumerate(anchor_cells):
+                a = by_pos.get((x + cell[0], z + cell[1]), {})
+                live = a.get("fallenLive") if isinstance(a.get("fallenLive"), bool) else None
+                got[field] += [{"pole": pole, "live": live} for f in a.get("fallen") or []
+                               if (f.get("cutPartner", -1) != -1) == cut]
+        consumer = next((o for o in sc["build"] if o.get("id") == "h_air"), None)
+        got["far_consumer_live"] = None
+        if consumer and consumer.get("cells"):
+            cx, cz = consumer["cells"][0]
+            net = self.B.ap("net:%d,%d" % (x + cx, z + cz))
+            things = [t for t in net.get("things") or [] if t.get("def") == consumer["def"]]
+            if net.get("success") is True and len(things) == 1 and isinstance(things[0].get("powerOn"), bool):
+                got["far_consumer_live"] = things[0]["powerOn"]
         rec["aerial_got"] = got
         rec["aerial_staging"] = aer
         out = []
+        if c.get("success") is not True:
+            out.append({"field": "aerial.census", "expected": "successful census", "got": c})
+        for field in ("downed_ends", "fallen_ends"):
+            order = lambda row: (row["pole"], str(row.get("live")))
+            want = sorted(exp.get(field) or [], key=order)
+            actual = sorted(got[field], key=order)
+            if actual != want:
+                out.append({"field": "aerial." + field, "expected": want, "got": actual})
         killed = len([o for o in sc["build"] if o["op"] == "kill"])
         exp_live = [v for i, v in enumerate(exp.get("pole_live") or []) if v is not None]
         for k, want in (("spans_up", exp.get("spans_up")), ("spans_cut", exp.get("spans_cut")),
                         # a cut span is stored as two FallenCord entries (design 2.6: two downed wires), so the
                         # census counts downed ends AND fallen ends (pass 1: every cut scene read 2 against 0)
                         ("fallen_cords", len(exp.get("fallen_ends") or []) + len(exp.get("downed_ends") or [])), ("net_repairs", exp.get("net_repairs")),
-                        ("pole_live", exp_live), ("anchors", len(exp.get("pole_live") or []) - killed)):
+                        ("pole_live", exp_live), ("anchors", len(exp.get("pole_live") or []) - killed),
+                        ("far_consumer_live", exp.get("far_consumer_live"))):
             if want is not None and got.get(k) != want:
                 out.append({"field": "aerial." + k, "expected": want, "got": got.get(k)})
         return out

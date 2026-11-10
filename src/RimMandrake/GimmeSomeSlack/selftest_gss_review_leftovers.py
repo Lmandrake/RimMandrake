@@ -10,9 +10,35 @@ from types import SimpleNamespace
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE / 'northstar'), str(HERE / 'northstar_matrix'), str(HERE), str(HERE.parent / 'Utils')]
 import scene_rows as S
+import run_live as R
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_aerial_liveness_is_compared_without_count_changes(self):
+        sc = {'build': [{'op': 'anchor', 'cells': [[1, 1], [5, 1]]},
+                        {'op': 'build', 'id': 'h_air', 'def': 'Heater', 'cells': [[7, 1]]}]}
+        census = {'success': True, 'netRepairs': 0, 'anchors': [
+            {'x': 1, 'z': 1, 'netLive': True, 'fallenLive': True,
+             'links': [{'state': 'Cut'}], 'fallen': [{'cutPartner': 2}]},
+            {'x': 5, 'z': 1, 'netLive': False, 'fallenLive': False,
+             'links': [{'state': 'Cut'}], 'fallen': [{'cutPartner': 1}]}]}
+        exp = {'spans_up': 0, 'spans_cut': 1, 'pole_live': [True, False], 'net_repairs': 0,
+               'downed_ends': [{'pole': 0, 'live': True}, {'pole': 1, 'live': False}],
+               'fallen_ends': [], 'far_consumer_live': False}
+        net = {'success': True, 'things': [{'def': 'Heater', 'powerOn': False}]}
+
+        def compare(c, n):
+            b = SimpleNamespace(ap=lambda cmd: c if cmd == 'census' else n)
+            return R.Run.aerial_compare(SimpleNamespace(mock=False, B=b), sc, {}, exp, {}, [0, 0, 10, 5])
+
+        self.assertEqual(compare(census, net), [])
+        bad = copy.deepcopy(census)
+        bad['anchors'][0]['fallenLive'] = False
+        self.assertIn('aerial.downed_ends', [m['field'] for m in compare(bad, net)])
+        for bad in ({'success': False}, {'success': True, 'things': []},
+                    {'success': True, 'things': [{'def': 'Heater', 'powerOn': True}]}):
+            self.assertIn('aerial.far_consumer_live', [m['field'] for m in compare(census, bad)])
+
     def test_ignition_requires_fuel_and_every_query(self):
         class Bridge:
             def __init__(self, fuel=True, fire=None):
