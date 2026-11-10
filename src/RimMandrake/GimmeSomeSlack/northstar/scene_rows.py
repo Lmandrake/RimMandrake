@@ -207,26 +207,29 @@ def restring(B, V, rows):
         sk = (B.call("jawa/pawn_get", pawn=i).get("pawns") or [{}])[0].get("skills") or []
         return any(q.get("skill") == "Construction" and not q.get("disabled") for q in sk)
     free = [i for i in home if builds(i)]
-    B.hold_off = True
-    for i in free:
-        B.probe("pawn:%d=tp:%d,%d" % (i, x + 8, z + 12))
-        B.probe("pawn:%d=undraft" % i)
-        B.call("jawa/pawn_need", pawn=i, action="need", need="Rest", level=1.0)
-        B.call("jawa/pawn_need", pawn=i, action="need", need="Food", level=1.0)
-    played, st1 = 0, st
-    while free and played < 3000 and st1.get("cut", 0) >= 1:
-        B.ticks(250)
-        played += 250
-        st1 = B.ap("restringstate:%d" % ia)
-    ok = st1.get("cut") == 0 and st1.get("jobsDone", 0) > st.get("jobsDone", 0)
-    why = None if ok else B.ap("restringwhy:%d" % ia)
-    V.row(rows, "SC_restring_work_scheduler_takes_it", "UNMEASURED" if not free else ("PASS" if ok else "FAIL"), "MOD",
-          {"freed": free, "played": played, "before": st, "after": st1, "why": why})
-    B.hold_off = False
-    for p, pos in home.items():
-        if pos:
-            B.probe("pawn:%d=tp:%d,%d" % (p, pos[0], pos[1]))
-        B.probe("pawn:%d=draft" % p)
+    previous_hold_off = B.hold_off
+    try:
+        B.hold_off = True
+        for i in free:
+            B.probe("pawn:%d=tp:%d,%d" % (i, x + 8, z + 12))
+            B.probe("pawn:%d=undraft" % i)
+            B.call("jawa/pawn_need", pawn=i, action="need", need="Rest", level=1.0)
+            B.call("jawa/pawn_need", pawn=i, action="need", need="Food", level=1.0)
+        played, st1 = 0, st
+        while free and played < 3000 and st1.get("cut", 0) >= 1:
+            B.ticks(250)
+            played += 250
+            st1 = B.ap("restringstate:%d" % ia)
+        ok = st1.get("cut") == 0 and st1.get("jobsDone", 0) > st.get("jobsDone", 0)
+        why = None if ok else B.ap("restringwhy:%d" % ia)
+        V.row(rows, "SC_restring_work_scheduler_takes_it", "UNMEASURED" if not free else ("PASS" if ok else "FAIL"), "MOD",
+              {"freed": free, "played": played, "before": st, "after": st1, "why": why})
+    finally:
+        B.hold_off = previous_hold_off
+        for p, pos in home.items():
+            if pos:
+                B.probe("pawn:%d=tp:%d,%d" % (p, pos[0], pos[1]))
+            B.probe("pawn:%d=draft" % p)
 
     B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x + 2, z + 5, x + 2, z + 7)), faction="player", wipeExisting=False)
     B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x + 2, z + 8), faction="player", wipeExisting=False)
