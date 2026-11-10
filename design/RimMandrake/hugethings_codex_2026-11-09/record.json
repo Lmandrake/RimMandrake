@@ -1,0 +1,1941 @@
+{
+    "dry_run":  true,
+    "mod":  "HugeThings",
+    "author":  "Codex Designer rehearsal, 2026-11-09. All descriptions, proposed requirements and guesses are agent text.",
+    "repo":  "D:/Luke/dev/RimMandrake",
+    "stage_status":  "Stages 0 and 1 rehearsal only; no completion, sent ask, approval, waiver or ledger write.",
+    "root":  null,
+    "root_draft":  {
+                       "id":  "proposed_root",
+                       "speaker":  "agent",
+                       "source":  "src/RimMandrake/HugeThings/About/About.xml",
+                       "basis":  [
+                                     "ITEM:HUGE_THINGS_FOOTPRINT_1",
+                                     "ITEM:TITANIC_CREATURES_MOD_1",
+                                     "OWNER:1792339262392625593",
+                                     "OWNER:1793738532289727072",
+                                     "OWNER:1793738707492209767"
+                                 ],
+                       "text":  "HugeThings makes huge plants and animals behave like the size you see: mass has consequences. A giant fungus has a solid stem and roots, open space beneath its cap, and a picture you can actually click; growing trunks respect the colony already around them. A huge animal has a body you can select, and a titan meets gaps, walls, roofs and trenches as a creature of its breadth: squeezing where it fits, breaking what it can, and being held by what really stops it. Its passage can wreck the colony simply because something that large walked through. A biome\u0027s own giants announce their approach with tremors. The largest dead titan becomes a landmark worked over days, with ordinary meat\u0027s rules for rot, while scavengers and visiting people compete for what remains. These are several connected promises, each owed its own demonstration. HugeThings supplies the common machinery; the biomes supply the living things, Large Pawns supplies their larger occupied bodies when loaded, and the plant and animal settings let the player tune their consequences."
+                   },
+    "scope":  [
+                  {
+                      "id":  "s_engine",
+                      "speaker":  "agent",
+                      "source":  "src/RimMandrake/HugeThings/About/About.xml",
+                      "text":  "Common engine, not creature roster. TitanicCreatures is merged. Present capabilities are retained for coverage; not_opened means no owner reopening, not lack of approval."
+                  },
+                  {
+                      "id":  "s_density",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1791669946190894057",
+                      "text":  "Density accepted on ROT_GIANTS_DENSITY_JUDGE_TWELVE_PCT_BLOCKED; context in huge_footprints_perf.md says handle cost in code, not thinner forest."
+                  },
+                  {
+                      "id":  "s_walls",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792380320471436411",
+                      "text":  "Card: break-through first, walk-over later; B2 breaking on; half-width squeeze x2; roof x1.5 HP and two-thirds damage; trench width strictly below B/4. Settled, not questions."
+                  },
+                  {
+                      "id":  "s_passage",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1792618983088247673",
+                      "text":  "Biome\u0027s own hints, roster or passers list, land/sea match, calves allowed, ecological exceptions. Replaces foreign-only pool."
+                  },
+                  {
+                      "id":  "s_scenes",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1793738532289727072",
+                      "text":  "Two valid scenes: destructive crossing then force-kill and corpse competition; arrival at an older occupied carcass. Neither is a recorded flagship pick or approval for automatic carcass generation."
+                  },
+                  {
+                      "id":  "s_rot",
+                      "speaker":  "agent",
+                      "source":  "OWNER:1793738707492209767",
+                      "text":  "Resources must not rot faster than ordinary meat. No re-asking this ruling."
+                  },
+                  {
+                      "id":  "s_bounds",
+                      "speaker":  "agent",
+                      "source":  "CLAUDE.md",
+                      "text":  "All DLC assumed. No worldgen or alternative planet. This rehearsal changes no code, art, bridge, deployment, ledger or source mirror."
+                  }
+              ],
+    "decisions":  [
+                      {
+                          "id":  "d_provenance",
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer.md",
+                          "text":  "root stays null; root_draft is agent proposal. OWNER references checked against exact tsn in OWNER.jsonl. Historical rulings without such an event use ITEM/path sources. No new owner quotations stored."
+                      },
+                      {
+                          "id":  "d_proof",
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+                          "text":  "No proof marked current: runtime and content fingerprints were not matched. stale preserves historical evidence; missing means no adequate acceptance located, not never exercised. A2 accepts classified MOD failures, so verification pass is not all rows PASS."
+                      },
+                      {
+                          "id":  "d_bank",
+                          "speaker":  "agent",
+                          "source":  "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+                          "text":  "Eight drafts, not ten questions sent in a turn. Serve at most three after independent review. Excluded keep/remove questions and questions about settled rot, permanent slime growth, squeeze, B2 breaking and native/sea passage rules. The no-clear-4x4 recovery ask was excluded because original earlier corpse-policy card answers must be recovered first."
+                      }
+                  ],
+    "inventory":  [
+                      {
+                          "id":  "engine_opt_in",
+                          "text":  "Common opt-in API, safe renderer fallback, startup injection, merged package and patch-once assertion.",
+                          "source":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Cctor fix verified 2026-10-08 at 51c2171d0075; no current patch fingerprint.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_masks",
+                          "text":  "Art-derived variant contact and visible bounds; deterministic jitter/flip/growth, union fallback, shared DrawnExtent.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+                                                "src/RimMandrake/HugeThings/measure_huge_plant_masks.py",
+                                                "src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Oyster/Pale Tree pins and deployment recorded Oct 10/11; DrawnExtent accepted Nov 2; not remeasured.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_solid_trunk",
+                          "text":  "Impassable contact cells block paths/builds/sowing; open canopy, growth threshold and scale; root-only species made impassable at startup, cut by Touch.",
+                          "source":  "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "trunk_live A2 pass Nov 3 at 9fd86b73d5eb proves one prepared Nogtyl count, not all species or alignment.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "infrastructure/state/live_proofs/HUGETHINGS_TRUNK_ZERO_BLOCKERS_1.txt"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_selection",
+                          "text":  "Drawn-picture selection, widened union with existing rectangles and duplicate-free click cycling.",
+                          "source":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs"
+                                            ],
+                          "proof":  "exercised_unrecorded",
+                          "proof_note":  "Owner reached overlapping tree by cycling Nov 3, but below visible picture: exercise is not acceptance.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "OWNER:1793742208842585478"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_claim_safety",
+                          "text":  "One blocker per shared claim, protected pawns/buildings/blueprints/frames/interactions/doors/trees, local reach and root access, pending refusals.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Local trap test historically accepted; chain-of-giants enclosing a large area is known limitation, not a global safety promise.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_item_push",
+                          "text":  "Items assigned to safe free cells outside claims; never destroyed; pawns never displaced; unsafe cell waits; own toggle.",
+                          "source":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Offline item/planner families exist; no adequate live conservation acceptance located.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "plant_cover_damage",
+                          "text":  "Partial cover; direct hit forwarding, area dedup and explosion damaged-list/ignored-things handling; damage switch leaves cover.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Kernel/static checks are not live projectile/beam/blast discrimination.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "plant_lifecycle",
+                          "text":  "Growth/harvest/settings refresh; cut/death free claims; load relink removes duplicate/orphan blockers, rare ghost guard.",
+                          "source":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Main suite drives young/full/off/cut; load/relink still undriven.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "plant_zone_gravship",
+                          "text":  "Zones survive blockers. Gravship clear at root/blocker clears owner, except NaturalRockOnly and generator no-clear guard.",
+                          "source":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE closed Oct 19 at 601e7482f3; no live zone/ship acceptance inferred.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "plant_cost",
+                          "text":  "Dirty-owner limit, phase-staggered retries and cached roots; retains dense forest; DebugCounts/DebugPlantState present.",
+                          "source":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT close Oct 10: same map 62.6 to 0.98 ms/tick, Normal 57.8 TPS. Historical, not current measurement or new bar.",
+                          "scope":  "approved",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "ITEM:HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT",
+                                                 "design/RimMandrake/huge_footprints_perf.md"
+                                             ],
+                          "scope_source":  "OWNER:1791669946190894057"
+                      },
+                      {
+                          "id":  "pawn_selection",
+                          "text":  "Current life-stage drawn body, alternate/female graphics, occupied-footprint union. Selection rect is not collision body.",
+                          "source":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Main suite explicitly not_driven; offline hitbox fuzz not click experience.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "titan_tiering",
+                          "text":  "Single 4/8/20 ladder, runtime/adult/max-stage qualification, per-def force-in/out/tier, custom rising ladder fallback and harness exclusion.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Nov 6 A2 verify at 7de03978ea8b accepts classified results, not all-PASS rows; raw log unavailable.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "large_pawns_bridge",
+                          "text":  "Optional reflection projects ladder/overrides; disables uncurated LP clearing; atomic resolve/snapshot/apply/rollback; absent mod one-cell degradation.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "R6 compares ladder and adult 3/4-square subjects with forced-out 1-square control. Recorded A2 pass is classified-results contract; absent-mod case not exercised.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "crush_table",
+                          "text":  "Data rules exact-over-category, unmatched protected, chunks and giant trunks explicitly protected; giant owner damage separate.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Def read-back exists; real protected quest/ruin examples need live discrimination.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "titan_wake",
+                          "text":  "Real same-map movement only, unique targets once per step, no airborne ground wake or pawn damage; T1 flora/rubble, higher-tier damage/building destruction. Walls/doors delegated to active walls/slots.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "T1 historical wake/cctor passes; Rat/off/multiplier controls exist. High-tier wall probe bypasses owning path mechanic.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "thin_roofs",
+                          "text":  "T2+ wake holes non-thick roofs over occupied footprint; thick rock untouched.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Nov 3 probe read thin roof removed, wall intact; Position setter probe not a natural crossing.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "thick_roof_avoidance",
+                          "text":  "Route cost excludes footprint overlapping thick roof; already-under-rock finite escape cost and step crawl.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Current ThickRoofCostProbe proves step cost only, not path choice, footprint edge clipping or escape.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "giant_plant_smash",
+                          "text":  "Default T3 damages owners at footprint/ring once per step including solid roots; smaller titans treat trunks as walls; proxy never the kill target.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "smash/smashstep fuzz exists; live seam still not_driven.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "obstacle_clearing",
+                          "text":  "StartPath intercept for sealed/long-detour routes, eligible wall/plant timed strikes, resume job, protected and short-detour exclusions, bounded failure retries.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Built in historical ledger; forced Position cannot prove sealed/protected/short-detour paths.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "squeeze_scrape",
+                          "text":  "Passage width uses breadth and occupied footprint; at least half-width straight squeeze with entry/exit room, slowdown, flank scraping and interrupted-job handling.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Old lanes leaked/inspect falsely detected squeeze; pass-3 corrected script exists, full accepted result not located; mid-job reload owed.",
+                          "scope":  "approved",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ],
+                          "scope_source":  "OWNER:1792380320471436411"
+                      },
+                      {
+                          "id":  "walls_breadth_roof",
+                          "text":  "Whole crossing physical thickness hold line, HP budget, roof resistance, B2 breaking and rock/protected rules; walls removed from wake while active.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Thickness/material/roof/sandwich/plug scenes exist; mocks and classified rows not current acceptance.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792380320471436411"
+                      },
+                      {
+                          "id":  "temperament",
+                          "text":  "Calm/hunting/fleeing/hostile/restless decisions, visible saved confinement/hunger meter and breakout; guards useful work.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Default pen proof measures rate and extrapolates full meter; actual long breakout not accepted here.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "wall_memos_inspect",
+                          "text":  "Held crossings close to own path requests, retry cooldown/pruning, wall-despawn invalidation, creature/wall inspect and messages.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER closed ca7e9515e2; later invalidation regression recorded; readable/concurrent live experience not proven.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "trench_stride",
+                          "text":  "AppDomain delegate gives FlowWorks maximum trench stepped over, strict width \u003c breadth/4; feature gates and independent loading.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Built and fuzzed predicate/registration; real cliff/path/fall interaction still needs acceptance.",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1792382004146459394"
+                      },
+                      {
+                          "id":  "butcher_curve",
+                          "text":  "T1/T2 sublinear meat/leather with configurable floor; T3 site separate.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Current mass-12 yield pair discriminates unlike floor-8 subject factor=1. A2 verify alone supplies no raw yield PASS.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "corpse_conversion",
+                          "text":  "T3 conversion deferred after Kill; real defs/yields, clear in-bounds 4x4, corpse retained on failure, no retry, pending conversion saved.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Historical site creation; blocked fit, pending reload and ordinary-corpse escape from harvest promise not accepted.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "corpse_harvest",
+                          "text":  "Mining/Touch access, one reserving worker, timed batches, placed-output-only debit, saved job/pools, absent resource defs cleared, empty site removed. Landmark is selectable 4x4 remains art, pass-through-only with path cost/cover, nonflammable and not ordinarily claimable or deconstructible.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+                                                "src/RimMandrake/HugeThings/Defs/ThingDefs/RM_TitanicCorpseSite.xml"
+                                            ],
+                          "proof":  "missing",
+                          "proof_note":  "Site creation does not prove repeated actual jobs, interruption/failed placement conservation or colony-scale pace.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "corpse_flat_spoilage",
+                          "text":  "Existing daily fractional meat/leather loss; implemented but conflicts with later normal-meat ruling.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Oct forced eat row: visitors 20, total meat loss 481. Later owner rejects accelerated rot.",
+                          "scope":  "opened_by_owner",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ],
+                          "scope_source":  "OWNER:1793738707492209767"
+                      },
+                      {
+                          "id":  "corpse_scavengers",
+                          "text":  "Daily biome-native survivable untiered predator draw, meat-bounded count, edge approach, near-site pool consumption.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Oct forced draw/eat passed; Nov 3 sitting not accepted and arrival failures recorded. Debug step not spontaneous competition.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0950_run1.json",
+                                                 "OWNER:1793738363046057436"
+                                             ]
+                      },
+                      {
+                          "id":  "corpse_camps",
+                          "text":  "Non-hostile humanlike faction VisitColony camp, edge approach, near-site meat consumption, arrival letter/inspect, timed exit and saved refs.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Forced camp/departure historical reads; later combined demonstration not accepted. No custom ownership/denial hostility.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0950_run1.json",
+                                                 "OWNER:1793738363046057436"
+                                             ]
+                      },
+                      {
+                          "id":  "passage_warning",
+                          "text":  "Saved kind/route/arrival time; tremor letter, rising camera shake and repeated messages; off/invalid arrival fades.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Oct A4/A5 records; debug arrival skips duration and cannot prove useful warning or saved timer/reroute information.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0250.json"
+                                             ]
+                      },
+                      {
+                          "id":  "passage_pool_route",
+                          "text":  "Map biome roster or passers list, opt-out, matching sea/land/season; adult T2+ allows calves, no harness; no arriving T3 with live T3; ExitMapNear, arrival recheck.",
+                          "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Old runner/output predates native-pool rule. One-T3 law here is event selection, not universal spawn/growth cap.",
+                          "scope":  "approved",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl",
+                                                 "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0250.json"
+                                             ],
+                          "scope_source":  "OWNER:1792618983088247673"
+                      },
+                      {
+                          "id":  "settings",
+                          "text":  "Two masters, individual effects/tuning, persisted finite/ranged numerics, keyed honest labels and refresh. Startup-only ladder/LP/root settings require restart.",
+                          "source":  "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Hardening is present despite old NEXT prose. Field roundtrip is not every toggle\u0027s effect or all-off/restart acceptance.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "proof_apparatus",
+                          "text":  "Static and fuzz/mutation/measurement checks, live trunk/titan/walls/events runners and hooks; reject zero-scale/optimized-Python false PASS; restore prior values.",
+                          "source":  "src/RimMandrake/HugeThings/Source/SelfTest/Program.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Source/SelfTest/Program.cs"
+                                            ],
+                          "proof":  "stale",
+                          "proof_note":  "Test honesty fixes exist; script existence is not mechanic acceptance. Scene-contract debt separately recorded.",
+                          "scope":  "not_opened",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl",
+                                                 "infrastructure/state/ledger/events/FOUNDRY.jsonl"
+                                             ]
+                      },
+                      {
+                          "id":  "corpse_normal_rot",
+                          "text":  "Site storage follows ordinary meat\u0027s temperature-dependent rot.",
+                          "source":  "OWNER:1793738707492209767",
+                          "impl":  "absent",
+                          "search_scope":  "Read current Building_TitanicCorpseSite.cs and TitanicCorpseSiteUtility.cs; searched corpse-site source for CompRottable, RotProgress, temperature and rot handling. Only flat SpoilLoss route; vanilla output-stack rot is separate.",
+                          "proof":  "missing",
+                          "scope":  "approved",
+                          "scope_source":  "OWNER:1793738707492209767"
+                      },
+                      {
+                          "id":  "corpse_contest",
+                          "text":  "Older occupied carcass and unhappy locals; exact ownership/denial/escalation remains to argue. Event agent summary is not owner-authored hostility contract.",
+                          "source":  "OWNER:1793738532289727072",
+                          "impl":  "absent",
+                          "search_scope":  "Read CorpseSiteVisitors.cs and Building_TitanicCorpseSite.cs; searched corpse-site source for claim/ownership/denial/goodwill/hostility. Generic non-hostile VisitColony and proximity debit, no carcass contest state machine; ordinary vanilla attack reactions remain.",
+                          "proof":  "missing",
+                          "scope":  "open_question"
+                      },
+                      {
+                          "id":  "passage_dark_side",
+                          "text":  "Sleeping Ice explicit no-passage patch; Chill and Umbra feasibility judged, native T2+ roster content still belongs to their sittings.",
+                          "source":  "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                                                "design/RimMandrake/titan_passage_dark_side_calls_2026-11-05.md"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl"
+                                             ],
+                          "proof_note":  "NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK closed Nov 6 on static selftest/patch check, not live new giants.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "test_races",
+                          "text":  "Harness-only tinted elephant races/kinds: size 8 T2, 20 T3, forced-out 8 control and mass-12 yield pair. Never player roster/manhunter/passage fauna.",
+                          "source":  "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Races/RM_TestTitans.xml",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Races/RM_TestTitans.xml",
+                                                "src/RimMandrake/HugeThingsTestRaces/Defs/PawnKindDefs/RM_TestTitanKinds.xml",
+                                                "src/RimMandrake/HugeThingsTestRaces/About/About.xml"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "ITEM:TITANIC_BODYSIZE_TEST_RACE_1",
+                                                 "infrastructure/state/live_proofs/TITANIC_BODYSIZE_TEST_RACE_1.txt"
+                                             ],
+                          "proof_note":  "Offline harness acceptance and latest A2 classified-result pass; About still describes original trio. No content art acceptance implied.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "crown_data",
+                          "text":  "Art mask tool also produces variant tree-crown factors/metadata for shade; not shade simulation.",
+                          "source":  "src/RimMandrake/HugeThings/measure_huge_plant_masks.py",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/HugeThings/measure_huge_plant_masks.py",
+                                                "src/RimMandrake/HugeThings/tree_crowns_measured.json"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl"
+                                             ],
+                          "proof_note":  "TREE_CROWN_MEASURE_FROM_THE_ART closed Nov 3 with --crowns --check. Current art hashes/shade experience not checked.",
+                          "scope":  "not_opened"
+                      },
+                      {
+                          "id":  "slime_neighbour",
+                          "text":  "GelatinousSlime owns devour/hold/rescue/digestion, growth/shedding, permanent-growth default, size re-registration and chunk weapon. HugeThings consumes BodySize for tier/wake/site.",
+                          "source":  "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+                          "impl":  "present",
+                          "impl_evidence":  [
+                                                "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+                                                "src/RimMandrake/GelatinousSlime/Source/TitanoslimeVerb.cs",
+                                                "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
+                                            ],
+                          "proof":  "stale",
+                          "proof_evidence":  [
+                                                 "ITEM:TITANOSLIME_PERMANENT_GROWTH_LIVE_1",
+                                                 "ITEM:TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID",
+                                                 "infrastructure/state/ledger/events/BENCH.jsonl"
+                                             ],
+                          "proof_note":  "Sept permanence, Oct g1-g6/g8 and prey slider proofs; art look owed. Spec reversible prose/header obsolete. Neighbour coverage, not redesign.",
+                          "scope":  "not_opened",
+                          "owner_mod":  "GelatinousSlime"
+                      }
+                  ],
+    "contradictions":  [
+                           {
+                               "id":  "c_rot",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+                               "status":  "confirmed_gap",
+                               "other_source":  "OWNER:1793738707492209767",
+                               "text":  "TickRare/ApplyDailySpoilage still uses flat SpoilLoss. Existing authority already requires ordinary-meat rot; no new approval needed."
+                           },
+                           {
+                               "id":  "c_roof",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+                               "status":  "proof_gap",
+                               "text":  "ThickRoofCostProbe calls CostToMoveIntoCell, not route search. Named route-excluded row cannot prove footprint-wide avoidance or escape."
+                           },
+                           {
+                               "id":  "c_wall",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                               "status":  "bounded_offline_diagnosis",
+                               "other_source":  "ITEM:TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS",
+                               "text":  "WallsSlotsActive deliberately skips walls/doors in wake. RoofWallProbe assigns Position without StartPath, bypassing the owning clearing mechanic. Plausible probe mismatch, not a live-proven fix or a weakened wall promise."
+                           },
+                           {
+                               "id":  "c_native",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/northstar/titan_events_live.py",
+                               "status":  "stale_oracle",
+                               "other_source":  "OWNER:1792618983088247673",
+                               "text":  "Old not-homed-here wording/expectations conflict with biome-local pool. Correct oracle from later ruling, not code back to foreign-only."
+                           },
+                           {
+                               "id":  "c_contest",
+                               "speaker":  "agent",
+                               "source":  "OWNER:1793738532289727072",
+                               "status":  "open_details",
+                               "text":  "Exact owner words name unhappy locals and two scenes. Event text extrapolates competition and possible violence; it is not an owner-authored ownership/hostility contract. q05-q07 resolve that gap."
+                           },
+                           {
+                               "id":  "c_fit",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+                               "status":  "open_boundary",
+                               "text":  "No clear 4x4 leaves ordinary corpse and conversion is not retried. Potential worked-over-days boundary; recover the previously ruled corpse-policy answers before proposing a new ask or requirement. No decision inferred here."
+                           },
+                           {
+                               "id":  "c_neighbours",
+                               "speaker":  "agent",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+                               "status":  "resolved_ownership",
+                               "text":  "Large Pawns owns occupied square; FlowWorks owns trench ground/path/fall logic, HugeThings supplies stride. Shade owns crown use; GelatinousSlime owns growth and registration. Integration proofs owed, duplicate engines not proposed."
+                           }
+                       ],
+    "failure_modes":  [
+                          "F1: Size is a lie: a pawn crosses a drawn stem, the visible body cannot be clicked, or a titan meets walls and roofs as if one cell wide. Sources: src/RimMandrake/HugeThings/About/About.xml; OWNER:1792339262392625593; OWNER:1793742208842585478.",
+                          "F2: Consequences feel arbitrary or empty: warnings offer no useful action, passage and corpse visitors look unrelated, or artificial rot replaces the understandable race for resources. Sources: OWNER:1793738363046057436; OWNER:1793738532289727072; OWNER:1793738707492209767.",
+                          "F3: Real mass makes the colony painful: dense forest stalls, growth eats possessions or access, path decisions churn, or reload/settings leave ghosts or silently change behaviour. Sources: design/RimMandrake/huge_footprints_perf.md; src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs; ITEM:HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER."
+                      ],
+    "failure_mode_sources":  [
+                                 {
+                                     "id":  "F1",
+                                     "source":  "OWNER:1792339262392625593",
+                                     "text":  "Physical/visual honesty"
+                                 },
+                                 {
+                                     "id":  "F2",
+                                     "source":  "OWNER:1793738532289727072",
+                                     "text":  "Legible consequential play"
+                                 },
+                                 {
+                                     "id":  "F3",
+                                     "source":  "design/RimMandrake/huge_footprints_perf.md",
+                                     "text":  "Playable density and safe state"
+                                 }
+                             ],
+    "scene_audit":  [
+                        {
+                            "id":  "audit_reads",
+                            "source":  "src/RimMandrake/HugeThings/validation.py",
+                            "scenes":  [
+                                           "defs_resolve",
+                                           "settings_roundtrip",
+                                           "harmony",
+                                           "harmony_titans",
+                                           "tier_ladder",
+                                           "crush_rules"
+                                       ],
+                            "start":  "Live values/defs; absent-def control.",
+                            "control":  "Roundtrip proves field write, not effect; patch attachment/def equality not mechanism proof.",
+                            "restore":  "Settings restore read values in finally, not uniformly asserted; startup-only effects need restart.",
+                            "hold":  "No scene-contract recovery/hold; cheap state checks only."
+                        },
+                        {
+                            "id":  "audit_trunk",
+                            "source":  "src/RimMandrake/HugeThings/validation.py",
+                            "scenes":  [
+                                           "trunk"
+                                       ],
+                            "start":  "Cleared arena, growth staging and measured allowed counts; incomplete occupancy/terrain/route assertions.",
+                            "control":  "Young/off/cut and south-row negatives present. Equal-count wrong mask still passes; no click/build/walk control.",
+                            "restore":  "Setting snapshot restored; destructive arena clear not restored.",
+                            "hold":  "No scene-begin/end/hold."
+                        },
+                        {
+                            "id":  "audit_trunk_runner",
+                            "source":  "src/RimMandrake/HugeThings/northstar/trunk_live.py",
+                            "scenes":  [
+                                           "full_grown_giant_gets_its_measured_footprint"
+                                       ],
+                            "start":  "Expected settings, empty blocker count, growth read-back and DebugPlantState.",
+                            "control":  "South rows only; no young/off case or location-by-location mask in this runner.",
+                            "restore":  "Normal-exit plant tidy only, no finally scene recovery or original site snapshot.",
+                            "hold":  "Throwaway-map instruction only."
+                        },
+                        {
+                            "id":  "audit_wake",
+                            "source":  "src/RimMandrake/HugeThings/validation.py",
+                            "scenes":  [
+                                           "wake"
+                                       ],
+                            "start":  "Separate lanes, grass HP, clean rubble, Goto confirmed; unreadable BodySize currently proceeds.",
+                            "control":  "Rat/off/multiplier controls discriminate; full traversed path not independently asserted.",
+                            "restore":  "Settings finally restore; actors/arena not snapshot-restored.",
+                            "hold":  "No durable hold/recovery."
+                        },
+                        {
+                            "id":  "audit_titans",
+                            "source":  "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py",
+                            "scenes":  [
+                                           "tiers",
+                                           "corpse_conversion",
+                                           "yield",
+                                           "thin_roof_wall",
+                                           "thick_roof_cost"
+                                       ],
+                            "start":  "Adults, default ladder gate and cleared kill zones.",
+                            "control":  "Equal-mass forced-out controls and T2/T3 contrast; mass-12 yield pair good. Wall bypasses path owner; roof cost not route control.",
+                            "restore":  "Some hook cleanup/settings finally; map/roofs not restored wholesale. RoofWallProbe clears original roof rather than snapshot restoration.",
+                            "hold":  "None. Exit 0 permits classified MOD FAIL."
+                        },
+                        {
+                            "id":  "audit_lp",
+                            "source":  "src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+                            "scenes":  [
+                                           "large_pawns_footprint_bridge"
+                                       ],
+                            "start":  "Own startup settings, LP fields, adult stage and occupied-square parsing asserted.",
+                            "control":  "Forced-out equal-size control distinguishes override; no LP-absent degradation case.",
+                            "restore":  "Pawns left alive; child timeout can kill settings finally; no map restore.",
+                            "hold":  "Throwaway only, no journal."
+                        },
+                        {
+                            "id":  "audit_walls",
+                            "source":  "src/RimMandrake/HugeThings/northstar/walls_slots_live.py",
+                            "scenes":  [
+                                           "B0 preflight",
+                                           "B1 A8 settings/inspect",
+                                           "B2 A2 canyon",
+                                           "B3 A3 thickness",
+                                           "B4 A4 sandwich/plug",
+                                           "B5 A6 scrape/roof",
+                                           "B6 A7 door/concurrency/despawn/save",
+                                           "B7 A5 pen"
+                                       ],
+                            "start":  "Actual breadth/passage, settings, rock placement; sealed water moat and leak checks.",
+                            "control":  "Gap/thickness/material/roof, plug, calm/hungry/shot, doors; mock fault checks harness only. Default pen extrapolates full restlessness; mid-job reload owed.",
+                            "restore":  "Persistent UNRESTORED_SETTINGS and finally restore exist; arena destroyed/reused, not restored to original.",
+                            "hold":  "No concept recovery/owner hold. Real long-restless, saves and interactive look still owed."
+                        },
+                        {
+                            "id":  "audit_events",
+                            "source":  "src/RimMandrake/HugeThings/northstar/titan_events_live.py",
+                            "scenes":  [
+                                           "T0 off",
+                                           "T1 camp arrive/leave",
+                                           "T2 scavengers draw/eat",
+                                           "P passage/T3 gate"
+                                       ],
+                            "start":  "Fresh force-killed site, forced chance=1, accelerated duration, count/pool/at-site reads.",
+                            "control":  "Toggle absences and existing-T3 test; DebugDailyStep/ArriveNow bypass natural arrival/warning pace. Foreign-only oracle stale; no hostility/old-carcass scenario.",
+                            "restore":  "Settings finally; tells driver to reload without saving but does not execute/journal map restore.",
+                            "hold":  "None. Separate site/passage acceptance plus crossing-death-site interaction needed."
+                        },
+                        {
+                            "id":  "audit_undriven",
+                            "source":  "src/RimMandrake/HugeThings/validation.py",
+                            "scenes":  [
+                                           "not_driven"
+                                       ],
+                            "start":  "Missing experience scenes, not acceptance by offline families.",
+                            "control":  "Selection alignment, hit forwarding, item conservation, root-only plants, growth reach, zone/gravship, relink/reload, masters, giant smash, native/sea passage, repeated harvest need live controls.",
+                            "restore":  "Not staged.",
+                            "hold":  "No HugeThings owner flagship pick located. Two known valid scenarios stay; q02 asks only ordering."
+                        }
+                    ],
+    "asks":  [
+                 {
+                     "id":  "q01",
+                     "title":  "What the paragraph has to get right",
+                     "picture":  "A colony lives among fungi whose trunks really take up ground. Later a titan crosses its outskirts, leaves damage, and eventually leaves remains worth going out to work.",
+                     "text":  "Which moment in that picture makes this HugeThings to you, and which sentence in the proposed root misstates what you expect?",
+                     "decision":  "Root emphasis and reject-level promise; approval still requires his real reply.",
+                     "about":  [
+                                   "plant_solid_trunk",
+                                   "pawn_selection",
+                                   "titan_wake",
+                                   "corpse_harvest"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792339262392625593",
+                                         "OWNER:1793738532289727072"
+                                     ],
+                     "why":  "F1/F2. \u0027Mass has consequences\u0027 could mean physical truth throughout play or mainly a dramatic titan story. The root must say the right thing without erasing either built half.",
+                     "guess":  "Physical truth is the foundation; titan damage and the harvest race are the story it produces. I would lead with that.",
+                     "tree_change":  "If physical truth leads, the root and first explanatory examples centre on visible size matching interaction. If the story leads, reorder the root around passage and aftermath while retaining plant, selection and other built coverage. A correction changes dependent claims; no answer means no approved root.",
+                     "source":  "src/RimMandrake/HugeThings/About/About.xml",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q02",
+                     "title":  "The first demonstration",
+                     "picture":  "Three labelled scene drafts: A, a working forest colony with solid trunks, open caps, clicks and growth; B, your destructive crossing followed by a force-kill and the rush to the remains; C, your older carcass already occupied by locals. These are descriptions, not staged or accepted scenes.",
+                     "text":  "Which scene would you put first when deciding whether HugeThings has understood you, and what single failure there would make you stop the demonstration?",
+                     "decision":  "Owner flagship pick and its first rejection case, not whether to include the other capabilities/scenarios.",
+                     "about":  [
+                                   "plant_solid_trunk",
+                                   "plant_selection",
+                                   "plant_claim_safety",
+                                   "titan_wake",
+                                   "corpse_scavengers",
+                                   "corpse_camps"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1793738532289727072"
+                                     ],
+                     "why":  "F1/F2. Your two titan scenes are already valid; their order and the mod\u0027s flagship have not been picked in the evidence I found.",
+                     "guess":  "B: the crossing makes the death and gathering crowds an understandable consequence. I recommend it first, with the forest as a separate demonstration.",
+                     "tree_change":  "The chosen scene becomes showcase 1 only after his recorded pick. The others remain candidates or ordinary scenes, with separate feature acceptance and an interaction scene. Root approval alone will not be stored as a flagship pick.",
+                     "source":  "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q03",
+                     "title":  "A root that must leave a doorway open",
+                     "picture":  "A fungus grows beside a workshop. Its picture now puts a root across the doorway, but the safety rules leave that cell open rather than seal the workshop. Nothing is destroyed and nobody is moved.",
+                     "text":  "When you notice a colonist walking through that drawn root, what explanation or visible clue would make this exception make sense to you?",
+                     "decision":  "Player-facing treatment of a refused trunk cell; existing safety and open-canopy rules stay.",
+                     "about":  [
+                                   "plant_claim_safety",
+                                   "plant_solid_trunk",
+                                   "plant_selection"
+                               ],
+                     "owner_cites":  [
+
+                                     ],
+                     "why":  "F1/F3. \u0027Solid where it touches ground\u0027 meets the already-built protection of doors and access. The mechanism is readable from code; the acceptable player explanation is not settled there.",
+                     "guess":  "Safety wins, but clicking the fungus should explain that its trunk cannot fill the doorway. I would start with that small explanation rather than another warning letter.",
+                     "tree_change":  "If the explanation is essential, add an inspect/readability requirement tied to an actually refused cell and an obstruction/free-space control. If the exception needs no explanation, add no cue requirement and state the bounded solidity promise clearly. If the art itself must change, return to a labelled exploration before binding a visual leaf.",
+                     "source":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q04",
+                     "title":  "What the warning lets you do",
+                     "picture":  "You get tremors from the east while colonists are working outside. The titan has not arrived. The current warning lasts six in-game hours; that number is a provisional setting.",
+                     "text":  "When it appears, which preparations should be finished, and which dangers should still surprise you?",
+                     "decision":  "Warning\u0027s actionable information and usable time, rather than re-asking whether warnings exist.",
+                     "about":  [
+                                   "passage_warning",
+                                   "passage_pool_route",
+                                   "titan_wake"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792618983088247673"
+                                     ],
+                     "why":  "F2. A delay and screen shake can satisfy \u0027warning\u0027 while giving the player no useful choice. Direction, identity, route certainty and available preparation time change that promise.",
+                     "guess":  "Recall exposed workers and livestock and decide whether to get out of its way; no promise that a thin wall protects the base. I would preserve uncertainty about its exact route.",
+                     "tree_change":  "A recall window gives a scene with dispersed workers and a measured chance to shelter. A construction window requires a longer preparation case. Exact route knowledge would require honest route information and rewarning when it changes. His answer sets the experience bar, not an invented fixed number today.",
+                     "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q05",
+                     "title":  "The moment competitors become enemies",
+                     "picture":  "People have arrived to feed from the remains. Your colonists build a fence that denies them access. Nobody has attacked anybody. In the current build they are ordinary non-hostile visitors; there is no carcass-specific dispute rule.",
+                     "text":  "What should those people do first, and what act by the colony would make a fight over the carcass deserved?",
+                     "decision":  "Denial trigger, response and fair warning for carcass-specific conflict.",
+                     "about":  [
+                                   "corpse_camps",
+                                   "corpse_contest"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1793738532289727072"
+                                     ],
+                     "why":  "F2. \u0027The locals aren\u0027t too happy\u0027 does not yet say whether a fence means protest, trespass, negotiation or violence. The event\u0027s agent summary cannot decide that as your words.",
+                     "guess":  "They object, then try to reach the food; the colony gets a readable chance to relent before deliberate exclusion becomes conflict. I would not make a first fence an instant silent war.",
+                     "tree_change":  "Protest/ultimatum needs a visible dispute state and a control where access is restored. Forced access needs behaviour around the fence. Negotiation needs a defined bargain. Violence needs an exact trigger, scope and stop condition. If ordinary visitor behaviour is enough, no new custom-hostility leaf is inferred.",
+                     "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q06",
+                     "title":  "What a prior claim means",
+                     "picture":  "Your arriving clan finds the older carcass you described, with people already working beside it. A colonist walks up to work at the opposite side without attacking anyone.",
+                     "text":  "What do the people already there regard as theirs, and what could your clan do to earn a share?",
+                     "decision":  "Prior claim and peaceful access in the older-carcass scene, distinct from q05\u0027s response to active exclusion.",
+                     "about":  [
+                                   "corpse_contest",
+                                   "corpse_harvest",
+                                   "corpse_camps"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1793738532289727072"
+                                     ],
+                     "why":  "F2. Prior presence can mean territorial ownership, a claimed portion, or simply rivals who resent sharing. Each gives the newcomer a different first decision.",
+                     "guess":  "A prior group has a recognisable claim the newcomer must respect, buy into or challenge. I would make the claim visible before the first harvest order can offend them.",
+                     "tree_change":  "A whole-site claim needs ownership and permission; a portion needs separate accounted shares; open competition needs no title system, only rivalry. A bargain adds only the specific exchange he describes. The old carcass remains a hand-staged exploration/acceptance fixture until separate authority exists for spawning it in play.",
+                     "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q07",
+                     "title":  "A carcass worth rearranging the day for",
+                     "picture":  "A large corpse lies outside a forty-colonist settlement. The current site permits one worker at a time, with a default hour of Mining work for a small batch. Rot must obey your ordinary-meat ruling; we cannot create urgency by making it rot faster.",
+                     "text":  "You decide to make a serious effort to recover it: what does that day\u0027s work look like, and what is left when the colony goes home?",
+                     "decision":  "Harvest labour, throughput and visitor competition at colony scale.",
+                     "about":  [
+                                   "corpse_harvest",
+                                   "corpse_scavengers",
+                                   "corpse_camps",
+                                   "corpse_normal_rot"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1793738532289727072",
+                                         "OWNER:1793738707492209767"
+                                     ],
+                     "why":  "F2/F3. \u0027Worked over days\u0027 can hide an idle queue behind one worker; an army harvesting instantly can erase the race. The intended commitment is not specified by the current batch sizes.",
+                     "guess":  "A meaningful expedition with several useful jobs, enough recovery to reward choosing it, and plenty left for tomorrow and the competitors. I would test both a modest colony and a strong mobilisation.",
+                     "tree_change":  "Parallel work requires reservations/concurrency and pool-conservation acceptance. One specialist with supporting hauling instead needs useful throughput and support jobs demonstrated. The amount recovered and arrival pressure are tuned from his picture, with ordinary-temperature and frozen controls; no new artificial spoilage clock.",
+                     "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 },
+                 {
+                     "id":  "q08",
+                     "title":  "You change the way in after the tremors",
+                     "picture":  "You hear tremors from the east, then finish a barrier across the warned entry. The current event checks the route again and may find a different entry or let the tremors fade. The new entry can be on another side of the colony.",
+                     "text":  "What should happen in the story when that approach becomes blocked, and what must the colony be told before danger comes from somewhere else?",
+                     "decision":  "Warning honesty and arrival timing after route invalidation.",
+                     "about":  [
+                                   "passage_warning",
+                                   "passage_pool_route",
+                                   "obstacle_clearing",
+                                   "thick_roof_avoidance"
+                               ],
+                     "owner_cites":  [
+                                         "OWNER:1792339262392625593",
+                                         "OWNER:1792618983088247673"
+                                     ],
+                     "why":  "F1/F2. An east warning followed by a west arrival can make preparation pointless; making every barrier cancel a titan can make mass meaningless. Built revalidation has not settled the desired play.",
+                     "guess":  "It obeys its existing wall/rock rules, and a changed approach gives me a fresh honest warning. I would not silently swap edges at arrival time.",
+                     "tree_change":  "Same-edge persistence needs a real blocked-route clearing test. Another edge needs changed-direction communication and a defined preparation window. A justified retreat needs a reason the player can read. Thick rock and curated protections stay intact under every answer.",
+                     "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                     "offers_removal":  false,
+                     "author":  "Codex Designer rehearsal",
+                     "speaker":  "agent",
+                     "status":  "draft",
+                     "review_status":  "pending independent review; not sent"
+                 }
+             ],
+    "built_reviewed":  [
+                           {
+                               "id":  "folder_HugeThings",
+                               "ref":  "src/RimMandrake/HugeThings",
+                               "source":  "src/RimMandrake/HugeThings",
+                               "covered_by":  "engine_opt_in",
+                               "text":  "Folder capability coverage; per-file mapping follows."
+                           },
+                           {
+                               "id":  "file_1",
+                               "ref":  "src/RimMandrake/HugeThings/measure_huge_plant_masks.py",
+                               "source":  "src/RimMandrake/HugeThings/measure_huge_plant_masks.py",
+                               "covered_by":  "crown_data"
+                           },
+                           {
+                               "id":  "file_2",
+                               "ref":  "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+                               "source":  "src/RimMandrake/HugeThings/selftest_hugethings_footprint.py",
+                               "covered_by":  "plant_masks"
+                           },
+                           {
+                               "id":  "file_3",
+                               "ref":  "src/RimMandrake/HugeThings/tree_crowns_measured.json",
+                               "source":  "src/RimMandrake/HugeThings/tree_crowns_measured.json",
+                               "covered_by":  "crown_data"
+                           },
+                           {
+                               "id":  "file_4",
+                               "ref":  "src/RimMandrake/HugeThings/validation.py",
+                               "source":  "src/RimMandrake/HugeThings/validation.py",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_5",
+                               "ref":  "src/RimMandrake/HugeThings/About/About.xml",
+                               "source":  "src/RimMandrake/HugeThings/About/About.xml",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_6",
+                               "ref":  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll",
+                               "source":  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_7",
+                               "ref":  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+                               "source":  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_8",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/CrushRuleDefs/RM_CrushRules.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/CrushRuleDefs/RM_CrushRules.xml",
+                               "covered_by":  "crush_table"
+                           },
+                           {
+                               "id":  "file_9",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+                               "covered_by":  "passage_pool_route"
+                           },
+                           {
+                               "id":  "file_10",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/JobDefs/RM_JobDefs.xml",
+                               "covered_by":  "corpse_harvest"
+                           },
+                           {
+                               "id":  "file_11",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/ThingDefs/RM_HugeTrunkBlocker.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/ThingDefs/RM_HugeTrunkBlocker.xml",
+                               "covered_by":  "plant_solid_trunk"
+                           },
+                           {
+                               "id":  "file_12",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/ThingDefs/RM_TitanicCorpseSite.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/ThingDefs/RM_TitanicCorpseSite.xml",
+                               "covered_by":  "corpse_conversion"
+                           },
+                           {
+                               "id":  "file_13",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml",
+                               "covered_by":  "titan_tiering"
+                           },
+                           {
+                               "id":  "file_14",
+                               "ref":  "src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+                               "source":  "src/RimMandrake/HugeThings/Defs/WorkGiverDefs/RM_WorkGivers.xml",
+                               "covered_by":  "corpse_harvest"
+                           },
+                           {
+                               "id":  "file_15",
+                               "ref":  "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml",
+                               "source":  "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml",
+                               "covered_by":  "settings"
+                           },
+                           {
+                               "id":  "file_16",
+                               "ref":  "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml",
+                               "source":  "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_TitanicCreatures.xml",
+                               "covered_by":  "settings"
+                           },
+                           {
+                               "id":  "file_17",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/selftest_walls_slots_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/selftest_walls_slots_live.py",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_18",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/test_titan_footprint_live.py",
+                               "covered_by":  "test_races"
+                           },
+                           {
+                               "id":  "file_19",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/titan_events_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/titan_events_live.py",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_20",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0250.json",
+                               "source":  "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0250.json",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_21",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0950_run1.json",
+                               "source":  "src/RimMandrake/HugeThings/northstar/titan_events_live_20261021T0950_run1.json",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_22",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py",
+                               "covered_by":  "test_races"
+                           },
+                           {
+                               "id":  "file_23",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/trunk_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/trunk_live.py",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_24",
+                               "ref":  "src/RimMandrake/HugeThings/northstar/walls_slots_live.py",
+                               "source":  "src/RimMandrake/HugeThings/northstar/walls_slots_live.py",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_25",
+                               "ref":  "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                               "source":  "src/RimMandrake/HugeThings/Patches/RM_TitanPassage_DarkSide.xml",
+                               "covered_by":  "passage_dark_side"
+                           },
+                           {
+                               "id":  "file_26",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+                               "covered_by":  "plant_solid_trunk"
+                           },
+                           {
+                               "id":  "file_27",
+                               "ref":  "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+                               "covered_by":  "plant_solid_trunk"
+                           },
+                           {
+                               "id":  "file_28",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Extensions.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Extensions.cs",
+                               "covered_by":  "plant_masks"
+                           },
+                           {
+                               "id":  "file_29",
+                               "ref":  "src/RimMandrake/HugeThings/Source/FootprintMath.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/FootprintMath.cs",
+                               "covered_by":  "plant_masks"
+                           },
+                           {
+                               "id":  "file_30",
+                               "ref":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_31",
+                               "ref":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+                               "covered_by":  "plant_claim_safety"
+                           },
+                           {
+                               "id":  "file_32",
+                               "ref":  "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+                               "source":  "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_33",
+                               "ref":  "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+                               "covered_by":  "settings"
+                           },
+                           {
+                               "id":  "file_34",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+                               "covered_by":  "plant_claim_safety"
+                           },
+                           {
+                               "id":  "file_35",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+                               "covered_by":  "plant_masks"
+                           },
+                           {
+                               "id":  "file_36",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+                               "covered_by":  "titan_wake"
+                           },
+                           {
+                               "id":  "file_37",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanClearingKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanClearingKernel.cs",
+                               "covered_by":  "obstacle_clearing"
+                           },
+                           {
+                               "id":  "file_38",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_39",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsKernel.cs",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_40",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsMemoKernel.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsMemoKernel.cs",
+                               "covered_by":  "wall_memos_inspect"
+                           },
+                           {
+                               "id":  "file_41",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/ClearingFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/ClearingFuzz.cs",
+                               "covered_by":  "obstacle_clearing"
+                           },
+                           {
+                               "id":  "file_42",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/HugeThingsFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/HugeThingsFuzz.cs",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_43",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/HugeTitanFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/HugeTitanFuzz.cs",
+                               "covered_by":  "giant_plant_smash"
+                           },
+                           {
+                               "id":  "file_44",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/Program.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/Program.cs",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_45",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/RimMandrakeHugeThings.SelfTest.csproj",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/RimMandrakeHugeThings.SelfTest.csproj",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_46",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/TitanicFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/TitanicFuzz.cs",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_47",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/WallsSlotsFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/WallsSlotsFuzz.cs",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_48",
+                               "ref":  "src/RimMandrake/HugeThings/Source/SelfTest/WallsSlotsMemoFuzz.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/SelfTest/WallsSlotsMemoFuzz.cs",
+                               "covered_by":  "wall_memos_inspect"
+                           },
+                           {
+                               "id":  "file_49",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesDefOf.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesDefOf.cs",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_50",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+                               "covered_by":  "engine_opt_in"
+                           },
+                           {
+                               "id":  "file_51",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/JobDriver_TitanClearObstacle.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/JobDriver_TitanClearObstacle.cs",
+                               "covered_by":  "obstacle_clearing"
+                           },
+                           {
+                               "id":  "file_52",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/Patch_StartPath_TitanClearing.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/Patch_StartPath_TitanClearing.cs",
+                               "covered_by":  "obstacle_clearing"
+                           },
+                           {
+                               "id":  "file_53",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+                               "covered_by":  "obstacle_clearing"
+                           },
+                           {
+                               "id":  "file_54",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+                               "covered_by":  "corpse_harvest"
+                           },
+                           {
+                               "id":  "file_55",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                               "covered_by":  "corpse_camps"
+                           },
+                           {
+                               "id":  "file_56",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+                               "covered_by":  "corpse_harvest"
+                           },
+                           {
+                               "id":  "file_57",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+                               "covered_by":  "corpse_conversion"
+                           },
+                           {
+                               "id":  "file_58",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+                               "covered_by":  "corpse_conversion"
+                           },
+                           {
+                               "id":  "file_59",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs",
+                               "covered_by":  "corpse_harvest"
+                           },
+                           {
+                               "id":  "file_60",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+                               "covered_by":  "passage_pool_route"
+                           },
+                           {
+                               "id":  "file_61",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+                               "covered_by":  "passage_pool_route"
+                           },
+                           {
+                               "id":  "file_62",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+                               "covered_by":  "proof_apparatus"
+                           },
+                           {
+                               "id":  "file_63",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+                               "covered_by":  "large_pawns_bridge"
+                           },
+                           {
+                               "id":  "file_64",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+                               "covered_by":  "thick_roof_avoidance"
+                           },
+                           {
+                               "id":  "file_65",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicExtension.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicExtension.cs",
+                               "covered_by":  "titan_tiering"
+                           },
+                           {
+                               "id":  "file_66",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicTierDef.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicTierDef.cs",
+                               "covered_by":  "titan_tiering"
+                           },
+                           {
+                               "id":  "file_67",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTier.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTier.cs",
+                               "covered_by":  "titan_tiering"
+                           },
+                           {
+                               "id":  "file_68",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+                               "covered_by":  "titan_tiering"
+                           },
+                           {
+                               "id":  "file_69",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompProperties_TitanicWake.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompProperties_TitanicWake.cs",
+                               "covered_by":  "titan_wake"
+                           },
+                           {
+                               "id":  "file_70",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+                               "covered_by":  "titan_wake"
+                           },
+                           {
+                               "id":  "file_71",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+                               "covered_by":  "crush_table"
+                           },
+                           {
+                               "id":  "file_72",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+                               "covered_by":  "butcher_curve"
+                           },
+                           {
+                               "id":  "file_73",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_Thing_Position_Wake.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_Thing_Position_Wake.cs",
+                               "covered_by":  "titan_wake"
+                           },
+                           {
+                               "id":  "file_74",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/RM_CrushRuleDef.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/RM_CrushRuleDef.cs",
+                               "covered_by":  "crush_table"
+                           },
+                           {
+                               "id":  "file_75",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+                               "covered_by":  "titan_wake"
+                           },
+                           {
+                               "id":  "file_76",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/YieldCurveUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/Wake/YieldCurveUtility.cs",
+                               "covered_by":  "butcher_curve"
+                           },
+                           {
+                               "id":  "file_77",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+                               "covered_by":  "squeeze_scrape"
+                           },
+                           {
+                               "id":  "file_78",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/Patch_WallsSlots.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/Patch_WallsSlots.cs",
+                               "covered_by":  "wall_memos_inspect"
+                           },
+                           {
+                               "id":  "file_79",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+                               "covered_by":  "trench_stride"
+                           },
+                           {
+                               "id":  "file_80",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_81",
+                               "ref":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsUtility.cs",
+                               "source":  "src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsUtility.cs",
+                               "covered_by":  "walls_breadth_roof"
+                           },
+                           {
+                               "id":  "file_82",
+                               "ref":  "src/RimMandrake/HugeThings/Textures/Things/Building/RM_TitanicCorpseSite/RM_TitanicCorpseSite_a.png",
+                               "source":  "src/RimMandrake/HugeThings/Textures/Things/Building/RM_TitanicCorpseSite/RM_TitanicCorpseSite_a.png",
+                               "covered_by":  "corpse_conversion"
+                           },
+                           {
+                               "id":  "folder_HugeThingsTestRaces",
+                               "ref":  "src/RimMandrake/HugeThingsTestRaces",
+                               "source":  "src/RimMandrake/HugeThingsTestRaces",
+                               "covered_by":  "test_races",
+                               "text":  "Folder capability coverage; per-file mapping follows."
+                           },
+                           {
+                               "id":  "file_83",
+                               "ref":  "src/RimMandrake/HugeThingsTestRaces/About/About.xml",
+                               "source":  "src/RimMandrake/HugeThingsTestRaces/About/About.xml",
+                               "covered_by":  "test_races"
+                           },
+                           {
+                               "id":  "file_84",
+                               "ref":  "src/RimMandrake/HugeThingsTestRaces/Defs/PawnKindDefs/RM_TestTitanKinds.xml",
+                               "source":  "src/RimMandrake/HugeThingsTestRaces/Defs/PawnKindDefs/RM_TestTitanKinds.xml",
+                               "covered_by":  "test_races"
+                           },
+                           {
+                               "id":  "file_85",
+                               "ref":  "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Races/RM_TestTitans.xml",
+                               "source":  "src/RimMandrake/HugeThingsTestRaces/Defs/ThingDefs_Races/RM_TestTitans.xml",
+                               "covered_by":  "test_races"
+                           },
+                           {
+                               "id":  "item_CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL",
+                               "ref":  "ITEM:CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL",
+                               "source":  "infrastructure/state/items/CHILL_TITAN_POPULATE_WAX_GIANT_TOO_SMALL.md",
+                               "covered_by":  "passage_dark_side",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_CORPSE_SITE_SAFETY_1",
+                               "ref":  "ITEM:CORPSE_SITE_SAFETY_1",
+                               "source":  "infrastructure/state/items/CORPSE_SITE_SAFETY_1.md",
+                               "covered_by":  "corpse_conversion",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+                               "ref":  "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+                               "source":  "infrastructure/state/items/GELATINOUSSLIME_TITAN_CHUNK_BOMB_1.md",
+                               "covered_by":  "slime_neighbour",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_HUGETHINGS_SETTINGS_HARDENING_1",
+                               "ref":  "ITEM:HUGETHINGS_SETTINGS_HARDENING_1",
+                               "source":  "infrastructure/state/items/HUGETHINGS_SETTINGS_HARDENING_1.md",
+                               "covered_by":  "settings",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_LARGEPAWNS_BRIDGE_HARDENING_1",
+                               "ref":  "ITEM:LARGEPAWNS_BRIDGE_HARDENING_1",
+                               "source":  "infrastructure/state/items/LARGEPAWNS_BRIDGE_HARDENING_1.md",
+                               "covered_by":  "large_pawns_bridge",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_PLANT_FOOTPRINT_HARDENING_1",
+                               "ref":  "ITEM:PLANT_FOOTPRINT_HARDENING_1",
+                               "source":  "infrastructure/state/items/PLANT_FOOTPRINT_HARDENING_1.md",
+                               "covered_by":  "plant_claim_safety",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_PLANT_INTERACTION_GUARDS_1",
+                               "ref":  "ITEM:PLANT_INTERACTION_GUARDS_1",
+                               "source":  "infrastructure/state/items/PLANT_INTERACTION_GUARDS_1.md",
+                               "covered_by":  "plant_claim_safety",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANIC_CREATURES_FIRST_SCRIPT_1",
+                               "ref":  "ITEM:TITANIC_CREATURES_FIRST_SCRIPT_1",
+                               "source":  "infrastructure/state/items/TITANIC_CREATURES_FIRST_SCRIPT_1.md",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANOSLIME_SLIME_BIOME_1",
+                               "ref":  "ITEM:TITANOSLIME_SLIME_BIOME_1",
+                               "source":  "infrastructure/state/items/TITANOSLIME_SLIME_BIOME_1.md",
+                               "covered_by":  "slime_neighbour",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITAN_BREAKTHROUGH_CLEARING_1",
+                               "ref":  "ITEM:TITAN_BREAKTHROUGH_CLEARING_1",
+                               "source":  "infrastructure/state/items/TITAN_BREAKTHROUGH_CLEARING_1.md",
+                               "covered_by":  "obstacle_clearing",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+                               "ref":  "ITEM:TITAN_CAMPS_SCAVENGERS_EVENTS_1",
+                               "source":  "infrastructure/state/items/TITAN_CAMPS_SCAVENGERS_EVENTS_1.md",
+                               "covered_by":  "corpse_camps",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITAN_ROOF_AVOIDANCE_1",
+                               "ref":  "ITEM:TITAN_ROOF_AVOIDANCE_1",
+                               "source":  "infrastructure/state/items/TITAN_ROOF_AVOIDANCE_1.md",
+                               "covered_by":  "thick_roof_avoidance",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITAN_WAKE_FIXES_1",
+                               "ref":  "ITEM:TITAN_WAKE_FIXES_1",
+                               "source":  "infrastructure/state/items/TITAN_WAKE_FIXES_1.md",
+                               "covered_by":  "titan_wake",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS",
+                               "ref":  "ITEM:TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS",
+                               "source":  "infrastructure/state/items/TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS.md",
+                               "covered_by":  "titan_wake",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_UMBRA_TITAN_POPULATE_BURNS_TO_WALK",
+                               "ref":  "ITEM:UMBRA_TITAN_POPULATE_BURNS_TO_WALK",
+                               "source":  "infrastructure/state/items/UMBRA_TITAN_POPULATE_BURNS_TO_WALK.md",
+                               "covered_by":  "passage_dark_side",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_HUGETHINGS_TEST_HONESTY_1",
+                               "ref":  "ITEM:HUGETHINGS_TEST_HONESTY_1",
+                               "source":  "infrastructure/state/items/closed/HUGETHINGS_TEST_HONESTY_1.md",
+                               "covered_by":  "proof_apparatus",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_HUGE_THINGS_FOOTPRINT_1",
+                               "ref":  "ITEM:HUGE_THINGS_FOOTPRINT_1",
+                               "source":  "infrastructure/state/items/closed/HUGE_THINGS_FOOTPRINT_1.md",
+                               "covered_by":  "plant_solid_trunk",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_HUGE_THINGS_GPT_REVIEW_1",
+                               "ref":  "ITEM:HUGE_THINGS_GPT_REVIEW_1",
+                               "source":  "infrastructure/state/items/closed/HUGE_THINGS_GPT_REVIEW_1.md",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate.",
+                               "not_a_capability":  "Review and triage process, not a shipping feature; resulting implemented mechanics are separately inventoried."
+                           },
+                           {
+                               "id":  "item_HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER",
+                               "ref":  "ITEM:HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER",
+                               "source":  "infrastructure/state/items/closed/HUGE_WALLS_FIX_DECIDER_RETRIES_FOREVER.md",
+                               "covered_by":  "wall_memos_inspect",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANIC_BODYSIZE_TEST_RACE_1",
+                               "ref":  "ITEM:TITANIC_BODYSIZE_TEST_RACE_1",
+                               "source":  "infrastructure/state/items/closed/TITANIC_BODYSIZE_TEST_RACE_1.md",
+                               "covered_by":  "test_races",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANIC_CREATURES_MOD_1",
+                               "ref":  "ITEM:TITANIC_CREATURES_MOD_1",
+                               "source":  "infrastructure/state/items/closed/TITANIC_CREATURES_MOD_1.md",
+                               "covered_by":  "titan_tiering",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANOSLIME_PERMANENT_GROWTH_LIVE_1",
+                               "ref":  "ITEM:TITANOSLIME_PERMANENT_GROWTH_LIVE_1",
+                               "source":  "infrastructure/state/items/closed/TITANOSLIME_PERMANENT_GROWTH_LIVE_1.md",
+                               "covered_by":  "slime_neighbour",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID",
+                               "ref":  "ITEM:TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID",
+                               "source":  "infrastructure/state/items/closed/TITANOSLIME_VANISH_DIAGNOSE_GHOST_IN_GRID.md",
+                               "covered_by":  "slime_neighbour",
+                               "text":  "Item prose read, including closed archive; implementation and proof status remain separate."
+                           },
+                           {
+                               "id":  "item_HUGETHINGS_TITANIC_CCTOR_THROWS_1",
+                               "ref":  "ITEM:HUGETHINGS_TITANIC_CCTOR_THROWS_1",
+                               "source":  "ITEM:HUGETHINGS_TITANIC_CCTOR_THROWS_1",
+                               "covered_by":  "engine_opt_in",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_HUGETHINGS_TRUNK_ZERO_BLOCKERS_1",
+                               "ref":  "ITEM:HUGETHINGS_TRUNK_ZERO_BLOCKERS_1",
+                               "source":  "ITEM:HUGETHINGS_TRUNK_ZERO_BLOCKERS_1",
+                               "covered_by":  "plant_solid_trunk",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS",
+                               "ref":  "ITEM:HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS",
+                               "source":  "ITEM:HUGETHINGS_KEYS_FIX_ORPHAN_HEADERS",
+                               "covered_by":  "settings",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT",
+                               "ref":  "ITEM:HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT",
+                               "source":  "ITEM:HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT",
+                               "covered_by":  "plant_cost",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_BIG_CREATURES_DESIGN_WALLS_AND_SLOTS",
+                               "ref":  "ITEM:BIG_CREATURES_DESIGN_WALLS_AND_SLOTS",
+                               "source":  "ITEM:BIG_CREATURES_DESIGN_WALLS_AND_SLOTS",
+                               "covered_by":  "walls_breadth_roof",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_TITAN_TRENCHES_WIRE_MIND_THE_GAP",
+                               "ref":  "ITEM:TITAN_TRENCHES_WIRE_MIND_THE_GAP",
+                               "source":  "ITEM:TITAN_TRENCHES_WIRE_MIND_THE_GAP",
+                               "covered_by":  "trench_stride",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+                               "ref":  "ITEM:TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+                               "source":  "ITEM:TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+                               "covered_by":  "passage_pool_route",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK",
+                               "ref":  "ITEM:NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK",
+                               "source":  "ITEM:NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK",
+                               "covered_by":  "passage_dark_side",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_DRAWN_EXTENT_UNIFY_ONE_RULER_TWO_MODS",
+                               "ref":  "ITEM:DRAWN_EXTENT_UNIFY_ONE_RULER_TWO_MODS",
+                               "source":  "ITEM:DRAWN_EXTENT_UNIFY_ONE_RULER_TWO_MODS",
+                               "covered_by":  "plant_masks",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_TREE_CROWN_MEASURE_FROM_THE_ART",
+                               "ref":  "ITEM:TREE_CROWN_MEASURE_FROM_THE_ART",
+                               "source":  "ITEM:TREE_CROWN_MEASURE_FROM_THE_ART",
+                               "covered_by":  "crown_data",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE",
+                               "ref":  "ITEM:GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE",
+                               "source":  "ITEM:GIANT_CLEARAREA_FIX_WIPES_EVERY_MODE",
+                               "covered_by":  "plant_zone_gravship",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+                               "ref":  "ITEM:WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+                               "source":  "ITEM:WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+                               "covered_by":  "plant_masks",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "item_ROT_FOOTPRINT_PATCH_DEPLOY_NEW_OYSTER_CELLS",
+                               "ref":  "ITEM:ROT_FOOTPRINT_PATCH_DEPLOY_NEW_OYSTER_CELLS",
+                               "source":  "ITEM:ROT_FOOTPRINT_PATCH_DEPLOY_NEW_OYSTER_CELLS",
+                               "covered_by":  "plant_masks",
+                               "text":  "Ledger evidence read; no present-day pass inferred from historical terminal/verify event."
+                           },
+                           {
+                               "id":  "proof_HUGETHINGS_TRUNK_ZERO_BLOCKERS_1_criteria",
+                               "ref":  "infrastructure/state/live_proofs/HUGETHINGS_TRUNK_ZERO_BLOCKERS_1.criteria",
+                               "source":  "infrastructure/state/live_proofs/HUGETHINGS_TRUNK_ZERO_BLOCKERS_1.criteria",
+                               "covered_by":  "plant_solid_trunk",
+                               "text":  "Proof command/configuration pointer, not result or runtime fingerprint."
+                           },
+                           {
+                               "id":  "proof_HUGETHINGS_TRUNK_ZERO_BLOCKERS_1_txt",
+                               "ref":  "infrastructure/state/live_proofs/HUGETHINGS_TRUNK_ZERO_BLOCKERS_1.txt",
+                               "source":  "infrastructure/state/live_proofs/HUGETHINGS_TRUNK_ZERO_BLOCKERS_1.txt",
+                               "covered_by":  "plant_solid_trunk",
+                               "text":  "Proof command/configuration pointer, not result or runtime fingerprint."
+                           },
+                           {
+                               "id":  "proof_TITANIC_BODYSIZE_TEST_RACE_1_criteria",
+                               "ref":  "infrastructure/state/live_proofs/TITANIC_BODYSIZE_TEST_RACE_1.criteria",
+                               "source":  "infrastructure/state/live_proofs/TITANIC_BODYSIZE_TEST_RACE_1.criteria",
+                               "covered_by":  "test_races",
+                               "text":  "Proof command/configuration pointer, not result or runtime fingerprint."
+                           },
+                           {
+                               "id":  "proof_TITANIC_BODYSIZE_TEST_RACE_1_txt",
+                               "ref":  "infrastructure/state/live_proofs/TITANIC_BODYSIZE_TEST_RACE_1.txt",
+                               "source":  "infrastructure/state/live_proofs/TITANIC_BODYSIZE_TEST_RACE_1.txt",
+                               "covered_by":  "test_races",
+                               "text":  "Proof command/configuration pointer, not result or runtime fingerprint."
+                           }
+                       ],
+    "reading_limits":  {
+                           "source":  "src/RimMandrake/rimflow/roles/designer_grounding.md",
+                           "text":  "Requested role/packets/example concept, specified docs/items, definitions, principal implementation and proof runners read; frozen ledger and shards searched by topic/item. No launcher fold, current fingerprints, game, erased Transient evidence or full-file code review claimed. File accounting is capability coverage. No stage marked done."
+                       },
+    "snapshot":  {
+                     "id":  "mirror_snapshot",
+                     "source":  "MIRROR_HEAD",
+                     "text":  "4f11caba405e22e1953cef062483b09ec183e38a 2026-11-09T21:43:15-08:00",
+                     "note":  "Mirror is refreshed externally; source path evidence is the read snapshot, no claim of atomic full-tree snapshot."
+                 },
+    "neighbours":  [
+                       {
+                           "id":  "n_largepawns",
+                           "source":  "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+                           "owner":  "Large Pawns",
+                           "text":  "Occupied squares, projected ladder; optional external dependency. Vanilla one-cell fallback retained."
+                       },
+                       {
+                           "id":  "n_flowworks",
+                           "source":  "src/RimMandrake/FlowWorks/Source/Superdeep/RM_TrenchStride.cs",
+                           "owner":  "FlowWorks",
+                           "text":  "Cliff masks, floor/deck views, pocket reachability and fall/step handling consume stride. Shared pawnless terrain path cost can still favour short detours; relative-rule branch only."
+                       },
+                       {
+                           "id":  "n_rot",
+                           "source":  "src/RimMandrake/TheRot/Patches/RotGiants_HugeFootprint.xml",
+                           "owner":  "TheRot/biome compose",
+                           "text":  "Actual opted-in plants and art-derived contact data, not built-in HugeThings species."
+                       },
+                       {
+                           "id":  "n_shared",
+                           "source":  "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+                           "owner":  "Shared DrawnExtent and SettingsKit",
+                           "text":  "Existing common draw arithmetic and settings renderer compiled by explicit project links; do not duplicate."
+                       },
+                       {
+                           "id":  "n_shade",
+                           "source":  "design/RimMandrake/tree_shade_model_2026-10-19.md",
+                           "owner":  "Sun and Shade",
+                           "text":  "Crown data consumer owns actual shade/heat. HugeThings measures tree crowns only."
+                       },
+                       {
+                           "id":  "n_vanilla",
+                           "source":  "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+                           "owner":  "Vanilla RimWorld",
+                           "text":  "VisitColony and ExitMapNear already supply generic visitors/migration; current custom carcass claim/dispute behaviour is absent. No second generic visitor system proposed."
+                       }
+                   ]
+}
