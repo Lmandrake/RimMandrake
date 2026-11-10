@@ -249,6 +249,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (VId v in adj.Keys)
                 if (v.T == 'm' || v.T == 's' || v.T == 't' || adj[v].Count != 2) keep.Add(v);
             WalkChains();
+            foreach (CordEdge e in Edges) CountDegree(e, 1);
             PruneSpurs();
             foreach (VId v in keep) Nodes[v] = Classify(v);
             WallTerminals();
@@ -530,12 +531,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
         }
 
-        public int Deg(VId v)
+        private readonly Dictionary<VId, int> degrees = new Dictionary<VId, int>();
+
+        // Endpoint incidences, not distinct neighbours: a closed chain counts twice.
+        private void CountDegree(CordEdge e, int delta)
         {
-            int d = 0;
-            foreach (CordEdge e in Edges) d += (e.A == v ? 1 : 0) + (e.B == v ? 1 : 0);
-            return d;
+            degrees[e.A] = Deg(e.A) + delta;
+            degrees[e.B] = Deg(e.B) + delta;
         }
+
+        public int Deg(VId v) => degrees.TryGetValue(v, out int d) ? d : 0;
 
         private int NetDeg(Cell c) => nb.TryGetValue(c, out List<Cell> l) ? l.Count : 0;
 
@@ -578,6 +583,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         if (e.Via.Count + 1 > spurMax || !(other.T == 'c' || other.T == 'k' || other.T == 't') || Deg(other) < 3)
                             continue;
                         Edges.Remove(e);
+                        CountDegree(e, -1);
                         keep.Remove(end);
                         var spur = new List<Cell> { end.A };
                         spur.AddRange(e.Via.Where(v => v.T == 'c').Select(v => v.A));
@@ -596,6 +602,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                 else { s2.AddRange(Enumerable.Reverse(e2.Via)); s2.Add(e2.A); }
                                 Edges.Remove(e1);
                                 Edges.Remove(e2);
+                                CountDegree(e1, -1);
+                                CountDegree(e2, -1);
                                 var merged = new CordEdge { A = s1[0], B = s2[s2.Count - 1], Hidden = false };
                                 merged.Via.AddRange(s1.Skip(1));
                                 merged.Via.Add(other);
@@ -604,6 +612,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                 merged.LoopAt.Add(other);
                                 merged.LoopAt.AddRange(e2.LoopAt);
                                 Edges.Add(merged);
+                                CountDegree(merged, 1);
                                 keep.Remove(other);
                             }
                         }
