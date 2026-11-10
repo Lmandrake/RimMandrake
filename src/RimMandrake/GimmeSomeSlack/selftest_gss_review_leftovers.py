@@ -25,6 +25,25 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_matrix_negative_guards_require_observations(self):
+        self.assertEqual(R.pawn_site_status({'success': True, 'pawns': []})[0], 'PASS')
+        self.assertEqual(R.pawn_site_status({'success': True, 'pawns': [{'id': 1}]})[0], 'FAIL')
+        for bad in ({}, {'success': False, 'pawns': []}, {'success': True}):
+            self.assertEqual(R.pawn_site_status(bad)[0], 'UNMEASURED')
+        with tempfile.TemporaryDirectory() as td:
+            template = Path(td) / 'template.html'
+            template.write_text('<script id="CONFIG" type="application/json"></script><script id="ITEMS" type="application/json"></script>')
+            out = Path(td) / 'review.html'
+            rec = {'group': 'aerial', 'status': 'PASS', 'shot': {'file': 'capture.png'}}
+            with patch.object(R, 'TEMPLATE', str(template)), patch.object(R, '_native', side_effect=lambda p: p):
+                R.write_review({'started': 'test'}, {'a': rec}, str(out))
+                items = json.loads(R.re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', out.read_text(), R.re.S)[1])
+                self.assertEqual(items[0]['prefill'], 'flag')
+                rec['sanity'] = {'non_blank': True, 'no_magenta': True, 'brightness_ok': True, 'frame_ok': True}
+                R.write_review({'started': 'test'}, {'a': rec}, str(out))
+                items = json.loads(R.re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', out.read_text(), R.re.S)[1])
+                self.assertEqual(items[0]['prefill'], 'keep')
+
     def test_compare_runs_requires_complete_compatible_measurements(self):
         good = {'spec_hash': 'same-spec', 'catalog': 'test', 'mode': 'live', 'scenes': {
             str(i): {'status': 'PASS', 'geometryHash': 'h%d' % i, 'got': {'strands': 1}, 'settings': {}}

@@ -244,6 +244,13 @@ def scene_status(group, mock, mism, site_fail, unstaged=()):
     return "PASS", ""
 
 
+def pawn_site_status(reply):
+    if reply.get("success") is not True or not isinstance(reply.get("pawns"), list):
+        return "UNMEASURED", None
+    inside = [p.get("id") or p.get("label") for p in reply["pawns"]]
+    return ("FAIL" if inside else "PASS"), inside
+
+
 def board_overlap_check(boards):
     """Every pair of plots on a board is >= GAP apart (no cord can reach a neighbour: reach R each side)."""
     bad = []
@@ -700,8 +707,9 @@ class Run(object):
         rx, rz, rw, rh = REGION
         rr = "%d,%d,%d,%d" % (rx - 2, rz - 2, rw + 4, rh + 4)
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
-        inside = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
-        self.row("L6_no_pawn_in_region", "PASS" if not inside else "FAIL", "SITE", inside or "region %s empty of pawns" % rr)
+        status, inside = pawn_site_status(pw)
+        self.row("L6_no_pawn_in_region", status, "SITE",
+                 pw if inside is None else inside or "region %s empty of pawns" % rr)
         self.region_rect = rr
 
     def clear(self, rect):
@@ -1628,7 +1636,7 @@ def write_review(res, recs, out):
         if (r.get("shot_off") or {}).get("file"):
             eff += " | mod-OFF pair: shots/" + r["shot_off"]["file"]
         grp = r["group"] if r["group"] != "floor" else "floor: " + str((r.get("factors") or {}).get("T"))
-        good = r.get("status") == "PASS" and not warn and f
+        good = r.get("status") == "PASS" and bool(san) and not warn and f
         it = {"id": sid, "label": sid, "group": grp, "effect": eff, "prefill": "keep" if good else ("flag" if f else None),
               "contested": bool(r.get("status") == "FAIL")}
         if f:
