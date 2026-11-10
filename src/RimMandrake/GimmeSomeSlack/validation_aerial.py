@@ -29,6 +29,7 @@ import re
 import shutil
 import sys
 import time
+import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -85,17 +86,10 @@ class A(V.Bridge):
         self.call("jawa/clear_ui", all=True)
         self.call("rimworld/frame_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=1)
         time.sleep(2.0)
-        t_call = time.time()
-        r = self.call("jawa/take_screenshot", fileName=name)
+        r = self.call("jawa/take_screenshot", fileName=name + "_" + uuid.uuid4().hex)
         src = r.get("filePath")
-        # wait for a FRESH file: the game writes at end of frame, and a same-named shot from an earlier run already
-        # "exists", so an exists-only wait copied the stale picture (live 2026-10-21, PT_A3 charge shot showed the
-        # previous attempt's message)
-        for _ in range(20):
-            if src and os.path.exists(src) and os.path.getmtime(src) >= t_call - 1.0:
-                time.sleep(0.5)
-                break
-            time.sleep(0.5)
+        if r.get("success") is not True or not src or not matrix_support().wait_png(src):
+            return "copy failed: screenshot incomplete (%s)" % src
         try:
             os.makedirs(SHOTS, exist_ok=True)
             dst = os.path.join(SHOTS, name + ".png")
@@ -172,8 +166,28 @@ def build_mast(B, cell, faction="player", d="RM_AerialMast"):
     return B.call("jawa/build_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]), faction=faction, wipeExisting=False)
 
 
-def run_live(args):
+def matrix_support():
+    from northstar_matrix import run_live
+    return run_live
+
+
+def with_journal(args, runner, shared=False):
     B = A()
+    if shared:
+        return runner(args, B, None)
+    previous = list(V.VC.TAP)
+    tap = V.VC.tap_start(matrix_support().JournalReader(B))
+    try:
+        return runner(args, B, tap)
+    finally:
+        V.VC.TAP[:] = previous
+
+
+def run_live(args):
+    return with_journal(args, _run_live, shared=V.SHARED)
+
+
+def _run_live(args, B, tap):
     rows, log = [], []
     res = {"mod": V.MOD, "mode": "live", "script": "validation_aerial.py", "tier": V.TIER,
            "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
@@ -191,8 +205,6 @@ def run_live(args):
     except Exception as ex:  # noqa: BLE001
         res["mod_hash"] = None
         log.append("mod_hash unavailable: %s" % ex)
-    lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
-    log_base = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
     d = B.ap("defaults")
     if not d.get("success"):
         V.row(rows, "A_probe_channel", "FAIL", "HARNESS", d)
@@ -602,16 +614,16 @@ def run_live(args):
     four_switches_block(B, rows, res)
 
     # ---------------------------------------------------------------- log budget
-    lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
-    new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
-    errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
-    # LEARNED 2026-10-04: the site clear's destroy_batch over a map geyser/monolith logs "Tried to destroy
-    # non-destroyable thing ..." -- the harness's own clear, not the mod (same exclusion validation_hose.py has).
-    site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
-    errs = [e for e in errs if e not in site]
     if not V.SHARED:                 # SHARED: proof_all's one run-end Z over the whole session (doc section 2 "Log budget")
-        V.row(rows, "AZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
-              {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrorsExcluded": len(site)})
+        new, coverage = matrix_support().streamed_logs(tap, tap.base)
+        alive = V.VC.log_alive(B, "aerial AZ")
+        errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+        site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
+        errs = [e for e in errs if e not in site]
+        complete = coverage["complete"] and alive.get("alive") is True
+        V.row(rows, "AZ_log_budget", ("PASS" if not errs else "FAIL") if complete else "UNMEASURED", "MOD" if complete else "HARNESS",
+              {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new),
+               "siteClearErrorsExcluded": len(site), "coverage": coverage, "sentinel": alive})
     B.ap("defaults")
     res["log"] = log
     res["sceneIds"] = {"m1": i1, "m3": i3, "hostileMast": ih, "battery": bat_id, "hostileBattery": hb_id}
@@ -1475,7 +1487,10 @@ def run_save_load(args):
 def run_removal_check(args):
     """M9b: a save holding anchors, loaded on a tier WITHOUT the mod. Expected (design 2.4): vanilla's missing-def
     errors name ONLY our defs and the game loads; nothing may name one of our C# classes."""
-    B = A()
+    return with_journal(args, _run_removal_check)
+
+
+def _run_removal_check(args, B, tap):
     rows = []
     res = {"mod": V.MOD, "mode": "removal-check", "script": "validation_aerial.py", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
     rm = B.call("jawa/running_mods", details=False)
@@ -1483,8 +1498,6 @@ def run_removal_check(args):
     if not running or V.PKG in running:
         V.row(rows, "M9b_remove_mod_with_anchors", "UNMEASURED", "SITE", "mod list unreadable or the mod still running")
         return res
-    lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
-    base = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
     B.call("rimworld/load_game", saveName=args.removal_check, ignoreModCompatibility=True)
     ok, waited = V._wait_playing(B)
     if not ok:
@@ -1492,16 +1505,17 @@ def run_removal_check(args):
         return res
     B.ticks(60)
     time.sleep(1.0)
-    lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
-    new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > base]
+    new, coverage = matrix_support().streamed_logs(tap, tap.base)
+    alive = V.VC.log_alive(B, "aerial removal")
     errs = [str(e.get("Message", "")) + " " + str(e.get("StackTrace", "")) for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
     our_defs = ("RM_AerialMast", "RM_AerialLampMast", "RM_AerialWallBracket", "RM_PowerTapClamp", "RM_AerialLines")
     class_hits = [e[:240] for e in errs if "RimMandrake.GimmeSomeSlack" in e]
     def_hits = [e[:200] for e in errs if any(d in e for d in our_defs)]
-    other = [e[:160] for e in errs if e not in class_hits and not any(d in e for d in our_defs)]
-    V.row(rows, "M9b_remove_mod_with_anchors", "PASS" if not class_hits else "FAIL", "MOD",
+    other = [e[:160] for e in errs if "RimMandrake.GimmeSomeSlack" not in e and not any(d in e for d in our_defs)]
+    complete = coverage["complete"] and alive.get("alive") is True
+    V.row(rows, "M9b_remove_mod_with_anchors", ("PASS" if not class_hits else "FAIL") if complete else "UNMEASURED", "MOD" if complete else "HARNESS",
           {"loadSeconds": waited, "errorsNamingOurClasses": class_hits[:6], "errorsNamingOurDefs(expected)": len(def_hits),
-           "firstDefErrors": def_hits[:3], "otherErrors": other[:6]})
+           "firstDefErrors": def_hits[:3], "otherErrors": other[:6], "coverage": coverage, "sentinel": alive})
     return res
 
 

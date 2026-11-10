@@ -27,6 +27,50 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_aerial_removal_budget_refuses_incomplete_journal(self):
+        bridge = SimpleNamespace(call=lambda tool, **kw: {'success': True, 'packageIds': ['base']}, ticks=lambda n: None)
+        for complete, entries, expected in ((False, [], 'UNMEASURED'), (True, [], 'PASS'),
+                (True, [{'Level': 'Error', 'Message': 'RimMandrake.GimmeSomeSlack fault'}], 'FAIL')):
+            with patch.object(A.V, '_wait_playing', return_value=(True, 1)), patch.object(A.time, 'sleep'), \
+                 patch.object(A.matrix_support(), 'streamed_logs', return_value=(entries, {'complete': complete})), \
+                 patch.object(A.V.VC, 'log_alive', return_value={'alive': True}):
+                result = A._run_removal_check(SimpleNamespace(removal_check='fake'), bridge, SimpleNamespace(base=0))
+            self.assertEqual(result['rows'][-1]['status'], expected)
+
+    def test_aerial_journal_restores_parent_and_shared_run_keeps_it(self):
+        parent = object()
+        bridge = SimpleNamespace(call=lambda tool, **kw: {'success': True, 'logs': []})
+        with patch.object(A.V.VC, 'TAP', [parent]), patch.object(A, 'A', return_value=bridge):
+            def fail(args, B, tap):
+                self.assertIs(B, bridge)
+                self.assertIs(A.V.VC.TAP[0], tap)
+                raise RuntimeError('stopped')
+            with self.assertRaisesRegex(RuntimeError, 'stopped'):
+                A.with_journal(None, fail)
+            self.assertEqual(A.V.VC.TAP, [parent])
+            self.assertIsNone(A.with_journal(None, lambda args, B, tap: tap, shared=True))
+            self.assertEqual(A.V.VC.TAP, [parent])
+
+    def test_aerial_shot_uses_unique_complete_source(self):
+        with tempfile.TemporaryDirectory() as td:
+            requested = []
+            def call(tool, **kw):
+                if tool != 'jawa/take_screenshot':
+                    return {'success': True}
+                requested.append(kw['fileName'])
+                source = Path(td) / (kw['fileName'] + '.png')
+                source.write_bytes(png_bytes())
+                return {'success': True, 'filePath': str(source)}
+            bridge = SimpleNamespace(call=call)
+            with patch.object(A, 'SHOTS', str(Path(td) / 'archive')), patch.object(A.time, 'sleep'):
+                for _ in range(2):
+                    dest = A.A.shot(bridge, 'same', (1, 2, 3, 4))
+                    self.assertEqual(Path(dest).read_bytes(), png_bytes())
+                with patch.object(A.matrix_support(), 'wait_png', return_value=False):
+                    self.assertTrue(A.A.shot(bridge, 'broken', (1, 2, 3, 4)).startswith('copy failed'))
+                    self.assertFalse((Path(A.SHOTS) / 'broken.png').exists())
+            self.assertEqual(len(set(requested)), 3)
+
     def test_aerial_negative_controls_require_actual_observations(self):
         before = {'success': True, 'storedWd': 10}
         after = {'success': True, 'storedWd': 9.95}
