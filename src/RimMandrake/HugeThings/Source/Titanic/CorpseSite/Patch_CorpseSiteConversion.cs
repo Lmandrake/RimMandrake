@@ -12,13 +12,7 @@ namespace RimMandrake.TitanicCreatures
     /// corpse to appear (death, quest cleanup, debug spawn, ...) - anywhere a
     /// T3 Corpse ends up on a map, it becomes a site instead.
     ///
-    /// OPEN QUESTION (flagged, not resolved here): respawningAfterLoad is
-    /// skipped so a save/reload never re-triggers conversion on an
-    /// already-loaded Corpse. If a T3 corpse is ever saved and reloaded
-    /// UNCONVERTED (e.g. this mod is added to an existing save with a titan
-    /// already dead), it will sit there as an ordinary Corpse rather than
-    /// becoming a site - untested, since no live game access was available
-    /// for this build.
+    /// Loaded unconverted corpses are queued too; the map component also reconciles legacy saves in FinalizeInit.
     /// </summary>
     [HarmonyPatch(typeof(Corpse), nameof(Corpse.SpawnSetup))]
     internal static class Patch_Corpse_SpawnSetup_TitanicSite
@@ -28,10 +22,6 @@ namespace RimMandrake.TitanicCreatures
             // MOD_OPTIONS_RETROFIT_1: master switch. Off: a T3 corpse is left
             // as an ordinary Corpse and butchers normally.
             if (!RM_HugeThingsSettings.CorpseSiteActive) return;
-            if (respawningAfterLoad)
-            {
-                return;
-            }
             Pawn inner = __instance.InnerPawn;
             if (inner == null || TitanicTierUtility.GetTier(inner) != TitanicTier.T3)
             {

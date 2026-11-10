@@ -1,4 +1,6 @@
 using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using Verse;
 using RimMandrake.HugeThings;
 
@@ -15,15 +17,22 @@ namespace RimMandrake.TitanicCreatures
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.ButcherProducts))]
     internal static class Patch_ButcherYieldCurve
     {
-        private static void Prefix(Pawn __instance, ref float efficiency)
+        internal static bool Prefix(Pawn __instance, ref float efficiency, ref IEnumerable<Thing> __result)
         {
-            if (!RM_HugeThingsSettings.YieldCurveActive) return;
             TitanicTier tier = TitanicTierUtility.GetTier(__instance);
+            // Site placement, load order and the T1/T2 yield toggle must never reopen ordinary full-yield T3 butchering.
+            if (RM_HugeThingsSettings.CorpseSiteActive && tier == TitanicTier.T3)
+            {
+                __result = Array.Empty<Thing>();
+                return false;
+            }
+            if (!RM_HugeThingsSettings.YieldCurveActive) return true;
             if (tier != TitanicTier.T1 && tier != TitanicTier.T2)
             {
-                return;
+                return true;
             }
             efficiency *= YieldCurveUtility.SubLinearFactor(__instance, tier);
+            return true;
         }
     }
 }
