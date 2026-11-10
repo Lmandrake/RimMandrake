@@ -379,8 +379,8 @@ class FakeB:
         if tool == "jawa/list_things":
             if kw.get("defName") == "Fire":
                 on = (self.s["fallenWireIgnites"] == "True") if self.faithful else True
-                return {"things": [{"id": 1}] if on and self.sweeps >= 2 else []}
-            return {"things": [{"id": 5}]}
+                return {"success": True, "things": [{"id": 1}] if on and self.sweeps >= 2 else []}
+            return {"success": True, "things": [{"id": 5}]}
         return {"success": True}
 
 

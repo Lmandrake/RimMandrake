@@ -150,6 +150,24 @@ def net_at(B, cell):
     return B.ap("net:%d,%d" % cell)
 
 
+def observed_power(reply, def_name):
+    if reply.get("success") is not True or not isinstance(reply.get("things"), list):
+        return None
+    values = [t.get("powerOn") for t in reply["things"] if t.get("def") == def_name]
+    return values[0] if len(values) == 1 and isinstance(values[0], bool) else None
+
+
+def taps_off_control(before, after, lamp):
+    power = observed_power(lamp, "StandingLamp")
+    values = [r.get("storedWd") for r in (before, after)]
+    measured = all(r.get("success") is True for r in (before, after)) and all(
+        isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in values)
+    drop = values[0] - values[1] if measured else None
+    status = "UNMEASURED" if not measured or power is None else "PASS" if power is False and drop < 0.5 else "FAIL"
+    return status, {"ourLampDark": None if power is None else not power, "victimDrop600": drop,
+                    "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"}
+
+
 def build_mast(B, cell, faction="player", d="RM_AerialMast"):
     return B.call("jawa/build_batch", ops="%s:%d,%d" % (d, cell[0], cell[1]), faction=faction, wipeExisting=False)
 
@@ -247,12 +265,14 @@ def run_live(args):
     c1 = B.ap("census")
     n1 = nets(c1)
     lamp2 = net_at(B, LAMP)
-    off = not any(t.get("powerOn") for t in lamp2.get("things") or [])
+    lamp_power = observed_power(lamp2, "StandingLamp")
+    off = lamp_power is False
     B.ap("link:%d,%d" % (i2, i3))
     B.ticks(3)
     n1b = nets(B.ap("census"))
     V.row(rows, "M13c_unlink_two_nets_relink_one", "PASS" if (one_net(n1, "m1", "m2") and real(n1["m3"]) and n1["m3"] != n1["m1"] and off and
-                                                           one_net(n1b, "m1", "m3")) else "FAIL", "MOD",
+                                                           one_net(n1b, "m1", "m3")) else "FAIL" if lamp_power is not None else "UNMEASURED",
+          "MOD" if lamp_power is not None else "HARNESS",
           {"afterUnlink": n1, "lampOffAfterUnlink": off, "afterRelink": n1b})
     v_far = B.ap("link:%d,%d" % (i1, i3))
     v_hm = B.ap("link:%d,%d" % (i3, ih))
@@ -521,11 +541,9 @@ def run_live(args):
     B.ticks(600)
     w1 = net_at(B, HBAT)
     ol2 = net_at(B, OLAMP)
-    dark = not any(t.get("powerOn") for t in ol2.get("things") or [])
-    drop_off = (w0.get("storedWd") or 0) - (w1.get("storedWd") or 0)
+    off_status, off_detail = taps_off_control(w0, w1, ol2)
     B.ap("set:tapsEnabled=True")
-    V.row(rows, "M19n_taps_off_control", "PASS" if dark and drop_off < 0.5 else "FAIL", "MOD",
-          {"ourLampDark": dark, "victimDrop600": round(drop_off, 3), "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"})
+    V.row(rows, "M19n_taps_off_control", off_status, "HARNESS" if off_status == "UNMEASURED" else "MOD", off_detail)
 
     # ---------------------------------------------------------------- M19m: a tap beside a MIXED-faction net
     # POWER_TAP_MIXED_NET_CONNECT_1: the clamp's nearest transmitter is foreign, but that net also holds one of OUR
@@ -754,30 +772,19 @@ def flips_block(B, rows, res):
     B.ap("set:fallenWireShock=False")                 # no pawn is there, but a shock-free contact map isolates the ignite switch
     B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tip, categories="All")
 
-    def fire_at():
-        r = B.call("jawa/list_things", defName="Fire", rect="%d,%d,3,3" % (tip[0] - 1, tip[1] - 1), limit=5)
-        return len(r.get("things") or [])
-
-    def lay_fuel():
-        # Filth_Fuel puddles decay on their own within a few hundred ticks (MEASURED live 2026-10-12: 4 of 4 control
-        # puddles gone by 500 ticks, no fire), so a puddle laid once is not on the tip at the sweep. Re-lay before EVERY sweep.
-        B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
+    if os.path.join(HERE, "northstar") not in sys.path:
+        sys.path.append(os.path.join(HERE, "northstar"))
+    from scene_rows import ignition_control
     B.ap("set:fallenWireIgnites=False")
-    fire_off = 0
-    for _ in range(12):
-        lay_fuel()
-        B.ticks(250)
-        fire_off = max(fire_off, fire_at())
+    off_status, off_detail = ignition_control(B, tip)
     B.ap("set:fallenWireIgnites=True")
-    fire_on, sweeps = 0, 0
-    while not fire_on and sweeps < 12:
-        lay_fuel()
-        B.ticks(250)
-        sweeps += 1
-        fire_on = fire_at()
+    on_status, on_detail = ignition_control(B, tip, stop_on_fire=True)
     B.ap("set:fallenWireShock=True")
-    V.row(rows, "M20c_fallen_wire_ignites_flip", "PASS" if fire_off == 0 and fire_on >= 1 else "FAIL", "MOD",
-          {"fireWhenOff_12sweeps": fire_off, "fireWhenOn": fire_on, "sweepsToIgnite": sweeps,
+    measured = "UNMEASURED" not in (off_status, on_status)
+    V.row(rows, "M20c_fallen_wire_ignites_flip", ("PASS" if off_status == "PASS" and on_status == "FAIL" else "FAIL") if measured else "UNMEASURED",
+          "MOD" if measured else "HARNESS",
+          {"fireWhenOff_12sweeps": off_detail["fires"], "fireWhenOn": on_detail["fires"], "sweepsToIgnite": on_detail["sweeps"],
+           "offObservations": off_detail["observations"], "onObservations": on_detail["observations"],
            "note": "ignite is a 35% roll per 250-tick sweep; P(miss in 12) = 0.6%"})
 
     # M20e GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE: a shock cell dies with its wire. F1's live half lies across the site; the

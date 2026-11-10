@@ -272,7 +272,7 @@ def restring(B, V, rows):
             B.probe("pawn:%d=draft" % p)
 
 
-def ignition_control(B, tip, sweeps=12):
+def ignition_control(B, tip, sweeps=12, stop_on_fire=False):
     """A missing fuel placement or fire observation measures no ignition control."""
     fires, observations = 0, []
     for _ in range(sweeps):
@@ -284,8 +284,10 @@ def ignition_control(B, tip, sweeps=12):
         observations.append({"fuel": fuel.get("success") is True, "fires": count})
         if seen:
             fires = max(fires, count)
+            if fires and stop_on_fire:
+                break
     measured = bool(observations) and all(o["fuel"] and o["fires"] is not None for o in observations)
-    return ("PASS" if fires == 0 else "FAIL") if measured else "UNMEASURED", {"fires": fires, "sweeps": sweeps, "observations": observations}
+    return ("PASS" if fires == 0 else "FAIL") if measured else "UNMEASURED", {"fires": fires, "sweeps": len(observations), "observations": observations}
 
 
 def dead_wire(B, V, rows):

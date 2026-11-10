@@ -27,6 +27,28 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_aerial_negative_controls_require_actual_observations(self):
+        before = {'success': True, 'storedWd': 10}
+        after = {'success': True, 'storedWd': 9.95}
+        lamp = {'success': True, 'things': [{'def': 'StandingLamp', 'powerOn': False}]}
+        self.assertEqual(A.taps_off_control(before, after, lamp)[0], 'PASS')
+        for bad in ({}, {'success': False, 'storedWd': 10}, {'success': True, 'storedWd': '10'},
+                    {'success': True, 'storedWd': float('nan')}):
+            self.assertEqual(A.taps_off_control(bad, after, lamp)[0], 'UNMEASURED')
+        for bad in ({}, {'success': True, 'things': []}, {'success': True, 'things': [{'def': 'StandingLamp'}]}):
+            self.assertIsNone(A.observed_power(bad, 'StandingLamp'))
+            self.assertEqual(A.taps_off_control(before, after, bad)[0], 'UNMEASURED')
+        self.assertEqual(A.taps_off_control(before, {'success': True, 'storedWd': 8}, lamp)[0], 'FAIL')
+        lit = {'success': True, 'things': [{'def': 'StandingLamp', 'powerOn': True}]}
+        self.assertEqual(A.taps_off_control(before, after, lit)[0], 'FAIL')
+        calls = []
+        def call(tool, **kw):
+            calls.append(tool)
+            return {'success': True, 'things': [{'id': 1}]} if tool == 'jawa/list_things' else {'success': True}
+        status, detail = S.ignition_control(SimpleNamespace(call=call, ticks=lambda n: None), (3, 4), stop_on_fire=True)
+        self.assertEqual((status, detail['sweeps']), ('FAIL', 1))
+        self.assertEqual(len(calls), 2)
+
     def test_theft_retry_drops_old_passes_and_downstream_state(self):
         prior = {'rows': [{'id': rid, 'status': 'PASS'} for rid in A.THEFT_PHASE_ROW.values()],
                  'catch': {'tick': 1}, 'day': {'done': True}, 'stop': {'done': True}, 'stopFrom': {'tick': 9}}
