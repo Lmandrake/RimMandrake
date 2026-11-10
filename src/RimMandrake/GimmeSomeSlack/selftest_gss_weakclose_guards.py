@@ -54,7 +54,21 @@ def check_fresh(probe, prod):
 
 
 def run(probe, anchor, cprobe, prod):
-    return check_plan(cprobe) + check_anchor(anchor) + check_fresh(probe, prod)
+    return check_plan(cprobe) + check_anchor(anchor) + check_fresh(probe, prod) + check_cord_prints(prod)
+
+
+def check_cord_prints(prod):
+    """C#4: new extents can be visible while both the owner and old extent are off screen."""
+    dirty = body(prod, "private void DirtySection(IntVec2 s)")
+    flush = body(prod, "private void FlushCordPrints()")
+    update = body(prod, "public override void MapComponentUpdate()")
+    ok = ("pendingPrints.Add(s)" in dirty
+          and "pendingPrints.Clear()" in flush
+          and "RegenerateSingleLayer(layer)" in flush
+          and "SectionLayer_RM_MessyCords" in flush
+          and "view" not in flush.lower()
+          and update.index("Rebuild(false)") < update.index("FlushCordPrints()") < update.index("DrawMotion()"))
+    return [] if ok else ["changed cord owners are not independently printed after publication"]
 
 
 def main():
@@ -72,6 +86,8 @@ def main():
         fails.append("instrument blind: pipe-pole mutation not caught")
     if m4 == probe or not check_fresh(m4, prod):
         fails.append("instrument blind: tap-clamp mutation not caught")
+    if not check_cord_prints(prod.replace("pendingPrints.Add(s);", "")):
+        fails.append("instrument blind: omitted offscreen print queue not caught")
     for f in fails:
         print("FAIL", f)
     print("selftest_gss_weakclose_guards:", "FAIL" if fails else "PASS")

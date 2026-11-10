@@ -464,6 +464,8 @@ namespace RimMandrake.GimmeSomeSlack
         /// null and MapMeshDirty -> SectionAt(..).dirtyFlags throws (live 2026-10-02: every loaded save drew no
         /// cords). A section not created yet regenerates in that same loop anyway, so skipping it is correct.
         /// </summary>
+        private readonly HashSet<IntVec2> pendingPrints = new HashSet<IntVec2>();
+
         private void DirtySection(IntVec2 s)
         {
             var loc = new IntVec3(s.x * Section.Size, 0, s.z * Section.Size);
@@ -472,9 +474,27 @@ namespace RimMandrake.GimmeSomeSlack
             try { sec = map.mapDrawer.SectionAt(loc); }
             catch (NullReferenceException) { return; }       // the drawer's section array itself not built yet
             if (sec == null) return;
+            pendingPrints.Add(s);
             OwnDirty = true;
             try { map.mapDrawer.MapMeshDirty(loc, GimmeSomeSlackDefOf.RM_MessyCords); }
             finally { OwnDirty = false; }
+        }
+
+        // Section.TryUpdate gates on the owner's cell rectangle. A changed cord can
+        // reach the view from an owner outside it, even when its old extent did not.
+        // Print only our layer, after publication, without that camera gate.
+        private void FlushCordPrints()
+        {
+            if (!GimmeSomeSlackSettings.enabled || pendingPrints.Count == 0) return;
+            IntVec2[] todo = pendingPrints.ToArray();
+            pendingPrints.Clear();
+            foreach (IntVec2 s in todo)
+            {
+                var loc = new IntVec3(s.x * Section.Size, 0, s.z * Section.Size);
+                Section sec = map.mapDrawer.SectionAt(loc);
+                SectionLayer layer = sec?.GetLayer(typeof(SectionLayer_RM_MessyCords));
+                if (layer != null) sec.RegenerateSingleLayer(layer);
+            }
         }
 
         // GSS_STRIP_LED_FIX_MISSED_REPAINT: include the published decals' live/dark kinds.
@@ -729,6 +749,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             base.MapRemoved();
             SectionLayer_RM_MessyCords.ForgetMap(map);          // GPT pre-release B16: the static printed-strand read
+            pendingPrints.Clear();
             void Kill(ref Mesh m) { if (m != null) { UnityEngine.Object.Destroy(m); m = null; } }
             Kill(ref hiMesh);
             for (int i = 0; i < floorMeshes.Length; i++) { Kill(ref floorMeshes[i]); Kill(ref faceMeshes[i]); Kill(ref rippleMeshes[i]); }
@@ -1105,6 +1126,7 @@ namespace RimMandrake.GimmeSomeSlack
                 Rebuild(false);
                 OffscreenRebuilds++;
             }
+            FlushCordPrints();
             GimmeSomeSlackProbe.Service(map, this);
             try { DrawMotion(); }
             catch (Exception ex)
