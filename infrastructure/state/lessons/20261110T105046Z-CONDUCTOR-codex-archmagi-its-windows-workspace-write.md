@@ -1,0 +1,2 @@
+Codex on Archmagi: its Windows workspace-write sandbox cannot reach WSL (Wsl/Service/E_ACCESSDENIED), so Codex work on ext4 clones needs danger-full-access; owner granted it to all agents 2026-11-09 (CODEX_SANDBOX in environment.d, .zshenv, .profile). Codex Computer Use stops itself when it cannot confirm Chrome's URL; for bot-checked downloads use the Machinist extension route (in-page fetch, read base64 in 30 KB slices).
+home: skills/chatgpt-consult
