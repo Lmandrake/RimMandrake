@@ -1,0 +1,7 @@
+# LongShade: owner answers (by question card, Tue 2026-11-10 ~10:20 AM PST)
+
+1. **How much supervision does ordinary work need?** Not answered as asked; his write-in, verbatim, changes the frame and asks for a deeper design discussion:
+   "We need a deeper design discussion here. This mechanic should be true everywhere in the biomes. It's just about what happens if you get too hot. Colonists don't necessarily have to predict that. They aren't evolved beings from that biome. They just seek shade when they start to overheat in every biome and this biome has particular heat and shade availability that makes that driving and important. It's the beasts that should act specially since they're evolved to do so, if feasible in the game engine of course."
+   So: no LongShade-specific colonist route planning. Colonists use one cross-biome rule (seek shade when they start to overheat, under the one Direct Sun model); LongShade differs only in its heat and shade availability. The biome's native animals get evolved shade behaviour (rest, dash, rest) if the engine allows it. OWED: a deeper Designer discussion with him on this.
+2. **What makes a false shadow a fair trap?** Look, then inspect: watching the area raises suspicion; inspecting it or a cautious approach confirms before full commitment. The visual clue still needs its own labelled comparison.
+3. **When a relied-on shadow leaves:** Negotiate to keep it: the returning clan can be paid, traded with or argued with to leave the hulk; otherwise it is towed away.
