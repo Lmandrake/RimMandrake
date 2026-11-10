@@ -1322,7 +1322,46 @@ def install_profiler(B):
     return prof
 
 
+class JournalReader:
+    """LogTap's transport, recording failed reads even when tap_after keeps the run moving."""
+    def __init__(self, B):
+        self.B, self.failures = B, []
+
+    def call(self, tool, **kw):
+        try:
+            r = self.B.call(tool, **kw)
+            if (r.get("success") is True and isinstance(r.get("logs"), list)
+                    and all(isinstance(e, dict) and isinstance(e.get("Sequence"), int)
+                            and isinstance(e.get("Level"), str)
+                            and (e.get("RepeatCount") is None or isinstance(e["RepeatCount"], int)) for e in r["logs"])):
+                return r
+            error = "journal reply missing success/logs"
+        except Exception as ex:
+            error = repr(ex)
+        if len(self.failures) < 20:
+            self.failures.append(error)
+        return {"success": False, "logs": []}
+
+
+def streamed_logs(tap, base):
+    entries = tap.since(base)
+    coverage = {"lost": tap.lost, "polls": tap.polls, "failedReads": tap.B.failures, "gaps": tap.gaps}
+    coverage["complete"] = not (tap.lost or tap.B.failures)
+    return entries, coverage
+
+
 def run(args, B, mock=False):
+    if mock:
+        return _run(args, B, mock=True)
+    previous = list(V.TAP)
+    tap = V.tap_start(JournalReader(B))
+    try:
+        return _run(args, B, mock=False, tap=tap)
+    finally:
+        V.TAP[:] = previous
+
+
+def _run(args, B, mock=False, tap=None):
     spec = load_catalog(args.catalog)
     if getattr(args, "scenes", "full") == "reduced":
         import reduced as RD                       # numpy-free: owner 2026-10-05 densification, 109 -> 30 scenes (hose H00-H08 run in FlowWorks)
@@ -1405,8 +1444,8 @@ def run(args, B, mock=False):
         R.row("D2_fresh_builder_same", "PASS" if not bad else "FAIL", "MOD",
               bad or "%d boards: a fresh CordBuilder on the same map reproduces every laid edge" % len(fr))
     if not mock and not sweep_src:
-        lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
-        new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > getattr(R, "log_base", 0)]
+        new, coverage = streamed_logs(tap, getattr(R, "log_base", tap.base))
+        alive = V.log_alive(B, "matrix Z")
         errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
         # LEARNED pass 1: destroy_batch categories=All over the region names geysers/monoliths it may not destroy
         # ("Tried to destroy non-destroyable thing SteamGeyser...") -- the runner's own clear, not the mod
@@ -1416,9 +1455,10 @@ def run(args, B, mock=False):
         # quicktest map) is the SITE's noise, not ours -- excluded only when no GimmeSomeSlack frame is in the message.
         donor = [e for e in errs if "Map_FinalizeInit" in str(e.get("Message", "")) and "GimmeSomeSlack" not in str(e.get("Message", ""))]
         errs = [e for e in errs if e not in donor]
-        R.row("Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
+        complete = coverage["complete"] and alive.get("alive") is True
+        R.row("Z_log_budget", ("PASS" if not errs else "FAIL") if complete else "UNMEASURED", "MOD" if complete else "HARNESS",
               {"errors": [str(e.get("Message", ""))[:200] for e in errs[:8]], "newWarnings": len(new),
-               "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor)})
+               "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor), "coverage": coverage, "sentinel": alive})
     t_end = R.eng_ticks() if not aborted else None
     res["env"] = getattr(R, "env", {})
     res["map"] = getattr(R, "map_info", None)

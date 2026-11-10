@@ -24,6 +24,43 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_streamed_log_budget_retains_errors_and_rejects_gaps(self):
+        class Bridge:
+            def __init__(self):
+                self.logs, self.success = [], True
+
+            def call(self, tool, **kw):
+                logs = [e for e in self.logs if e['Sequence'] > kw.get('afterSequence', -1)]
+                return {'success': self.success, 'logs': logs[-kw['limit']:]}
+
+        b = Bridge()
+        reader = R.JournalReader(b)
+        tap = R.V.LogTap(reader)
+        b.logs = [{'Sequence': 1, 'Level': 'error', 'Message': 'first error'}]
+        tap.poll()
+        b.logs += [{'Sequence': i, 'Level': 'warning', 'Message': 'later warning'} for i in range(2, 603)]
+        entries, coverage = R.streamed_logs(tap, 0)
+        self.assertTrue(coverage['complete'])
+        self.assertTrue(any(e['Level'] == 'error' for e in entries))
+        self.assertFalse(any(e['Level'] == 'error' for e in b.logs[-500:]))  # original false-pass window
+        b.logs = [{'Sequence': 2000, 'Level': 'warning', 'Message': 'ring overflow'}]
+        self.assertFalse(R.streamed_logs(tap, 0)[1]['complete'])
+        b.success = False
+        self.assertTrue(R.streamed_logs(tap, 0)[1]['failedReads'])
+
+    def test_matrix_restores_previous_journal_tap_on_exception(self):
+        previous = list(R.V.TAP)
+        marker = object()
+        R.V.TAP[:] = [marker]
+        bridge = SimpleNamespace(call=lambda *a, **k: {'success': True, 'logs': []})
+        try:
+            with patch.object(R, '_run', side_effect=RuntimeError('stopped')):
+                with self.assertRaisesRegex(RuntimeError, 'stopped'):
+                    R.run(None, bridge)
+            self.assertEqual(R.V.TAP, [marker])
+        finally:
+            R.V.TAP[:] = previous
+
     def test_capture_waits_for_complete_png_and_uses_unique_names(self):
         with tempfile.TemporaryDirectory() as td:
             p = Path(td) / 'capture.png'
