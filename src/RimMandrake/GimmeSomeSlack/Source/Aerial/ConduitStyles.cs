@@ -265,6 +265,41 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return groups;
             }
 
+            public List<Group> Resolve(IList<T> seeds, Func<T, IEnumerable<T>> neighbours,
+                Func<T, bool> excluded, Func<T, bool> isBridge, Func<T, Run> describe, Action visit)
+            {
+                foreach (T seed in seeds)
+                {
+                    if (known.ContainsKey(seed)) continue;
+                    var seen = new HashSet<T> { seed };
+                    var stack = new Stack<T>();
+                    var members = new List<T>();
+                    var groups = new List<Group>();
+                    stack.Push(seed);
+                    while (stack.Count > 0)
+                    {
+                        T at = stack.Pop();
+                        if (known.TryGetValue(at, out Group cached))
+                        {
+                            if (!groups.Contains(cached)) groups.Add(cached);
+                            continue; // all its older exits were discovered when cached
+                        }
+                        if (isBridge(at)) { Clear(); return null; }
+                        visit?.Invoke();
+                        members.Add(at);
+                        foreach (T next in neighbours(at))
+                            if (!excluded(next) && seen.Add(next)) stack.Push(next);
+                    }
+                    if (members.Count > 0)
+                    {
+                        Remember(members, describe);
+                        groups.Add(known[members[0]]);
+                    }
+                    Unite(groups);
+                }
+                return Groups(seeds);
+            }
+
             public void Extend(T member, Run info, Group group)
             {
                 group.Add(info);
@@ -285,6 +320,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
 
             public void Merge(T member, Run info, List<Group> groups)
+                => Extend(member, info, Unite(groups));
+
+            private Group Unite(List<Group> groups)
             {
                 // Update only the smaller membership tables; long runs never get
                 // copied again for each one-cell island joining their growing end.
@@ -295,7 +333,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     keep.AddGroup(other);
                     foreach (T old in other.Members) { keep.Members.Add(old); known[old] = keep; }
                 }
-                Extend(member, info, keep);
+                return keep;
             }
 
             public void Remember(IEnumerable<T> members, Func<T, Run> describe)

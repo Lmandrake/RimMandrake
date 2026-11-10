@@ -248,7 +248,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             // A bridge seed is included in RunOf's result, but other bridge cells are not.
             // Preserve that existing rule by resolving bridge neighbours through the original flood.
             bool bridgeNeighbour = nbrs.Any(n => IsBridgeConduit(n.def));
-            var groups = bridgeNeighbour ? null : batch.Groups(nbrs);
+            var groups = bridgeNeighbour ? null : batch.Resolve(nbrs, Neighbours,
+                exclude.Contains, t => IsBridgeConduit(t.def), MemberInfo, () => runOfVisits++);
             if (groups != null && groups.Count > 0)
             {
                 var cachedInfos = groups.Select(gr => gr.Info).ToList();

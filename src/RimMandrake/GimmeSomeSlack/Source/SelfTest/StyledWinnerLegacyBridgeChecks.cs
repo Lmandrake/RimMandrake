@@ -124,6 +124,33 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Check(batch.Groups(new[] { new Node(-1) }) == null, "batch: unknown neighbours require discovery");
                 batch.Clear();
                 Check(batch.Groups(new[] { members[0] }) == null, "batch: no run state survives the batch");
+
+                // Each queued connector also touches a previously unknown old island.
+                // Discovery must stop at the cached growing run instead of flooding it again.
+                reads = 0;
+                int visits = 0;
+                var previous = new Node(count * 4 + 1, "Modern");
+                members = new List<Node> { previous };
+                batch.Remember(members, DescribeOne);
+                for (int i = 0; i < count; i++)
+                {
+                    var old = new Node(i * 2 + 1, "Industrial");
+                    var placed = new Node(i * 2 + 2, "Modern");
+                    Join(previous, placed); Join(placed, old);
+                    var groups = batch.Resolve(placed.Adjacent, n => n.Adjacent,
+                        n => n == placed, n => n.Bridge, DescribeOne, () => visits++);
+                    batch.Merge(placed, DescribeOne(placed), groups);
+                    members.Add(old); members.Add(placed);
+                    previous = placed;
+                }
+                Equal(batch.Groups(new[] { previous })[0].Info, Reference(members),
+                    "batch: unknown islands preserve the full sorted run summary");
+                Check(visits == count && reads == 2 * count + 1,
+                    "batch: unknown islands visit only " + count + " old members, not the growing run");
+                var external = new Node(-2, bridge: true);
+                Check(batch.Resolve(new[] { external }, n => n.Adjacent, n => false, n => n.Bridge,
+                    DescribeOne, null) == null && batch.Groups(new[] { previous }) == null,
+                    "batch: external bridges clear the cache and retain the original flood rule");
             }
         }
 
