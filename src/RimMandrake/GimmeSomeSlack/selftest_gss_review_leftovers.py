@@ -28,6 +28,34 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_style_controls_reject_missing_members_and_counters(self):
+        B = SimpleNamespace(call=lambda *a, **kw: {'success': True}, ticks=lambda n: None,
+                            ap=lambda cmd: {'success': True}, probe=lambda cmd: None)
+        after = {'members': [{'x': x, 'z': z} for x, z in VS.LEGACY],
+                 'pieces': [{'owner': VS.LEGACY[0], 'legacy': True, 'legacySameMaterials': True,
+                             'strands': 1, 'strandTex': 'strand'}],
+                 'defaultLook': 'Industrial', 'lookStrands': {'Industrial': ['strand']}}
+        for counters, expected in (({}, 'FAIL'), ({'materialised': 3}, 'PASS')):
+            rows = []
+            with patch.object(VS, '_cst', side_effect=[{'counters': counters}, dict(after, counters=counters)]):
+                VS.s10_legacy(B, rows, {})
+            self.assertEqual(rows[-1]['status'], expected)
+        on = {'x': VS.LAMP_ON[0], 'z': VS.LAMP_ON[1], 'rawStyle': 'StandingLamp_Modern', 'drawnPath': 'GimmeSomeSlack/lamp'}
+        off = dict(on, drawnPath='vanilla/lamp')
+        placed = {'x': VS.LAMP_OFF[0], 'z': VS.LAMP_OFF[1], 'rawStyle': None, 'drawnPath': 'vanilla/lamp'}
+        for observed, expected in ((False, 'FAIL'), (True, 'PASS')):
+            rows = []
+            middle = {'lamps': [off] + ([placed] if observed else [])}
+            with patch.object(VS, '_cst', side_effect=[{'lamps': [on]}, middle, {'lamps': [on]}]):
+                VS.s11_lamp_master_off(B, rows)
+            self.assertEqual(rows[-1]['status'], expected)
+        for ctrl_cells, expected in ((3, 'FAIL'), (4, 'PASS')):
+            rd = {'ctrl': ['Industrial'], 'staged': ['Industrial'], 'ctrlCells': ctrl_cells, 'stagedCells': 4}
+            rows = []
+            with patch.object(VS, '_D4_SAVE', {'saved': True, 'pendingAtSave': 1}), patch.object(VS, '_d4_read', return_value=rd):
+                VS.s12d_after_load(B, rows, True)
+            self.assertEqual(rows[-1]['status'], expected)
+
     def test_style_after_load_requires_explicit_successful_load(self):
         self.assertEqual(VS.s9_before_state({'st': {'old': 1}}, {'st': {'old': 2}}, {}), {})
         for saved in ({}, {'load_completed': False}, {'load_completed': True}):

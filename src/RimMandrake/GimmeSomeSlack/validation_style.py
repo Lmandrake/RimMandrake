@@ -573,7 +573,7 @@ def s12d_stage(B):
 def _d4_read(B):
     st = B.ap("cstyles:%d,%d,%d,%d" % D4_RECT)          # a READ: cstyles no longer processes the queue (GS-6b)
     mem, dl = _members(st), st.get("defaultLook")
-    return {"ctrl": _looks_of_run(mem, D4_CTRL, dl), "staged": _looks_of_run(mem, D4_STAGED, dl),
+    return {"ctrl": _looks_of_run(mem, D4_CTRL, dl), "ctrlCells": len([c for c in D4_CTRL if c in mem]), "staged": _looks_of_run(mem, D4_STAGED, dl),
             "stagedCells": len([c for c in D4_STAGED if c in mem]), "pending": (st.get("counters") or {}).get("pending")}
 
 
@@ -601,7 +601,7 @@ def s11_lamp_master_off(B, rows):
     on2 = _lamp(_cst(B), LAMP_ON)
     ours = lambda l: "GimmeSomeSlack" in (l.get("drawnPath") or "")
     ok = a.get("success") and ours(on1) and off.get("rawStyle") == on1.get("rawStyle") and off.get("drawnPath") and not ours(off) and \
-        ours(on2) and b.get("success") and not (placed_off.get("rawStyle") or "").startswith("StandingLamp_")
+        ours(on2) and b.get("success") and bool(placed_off) and not (placed_off.get("rawStyle") or "").startswith("StandingLamp_")
     V.row(rows, "S11_lamp_master_off_vanilla", "PASS" if ok else "FAIL", "MOD",
           {"on": on1, "off": off, "onAgain": on2, "placedOff": placed_off, "place": [a.get("success"), b.get("success")],
            "meaning": "PASS = master off: the styled lamp draws vanilla art at once (style kept), master on: its look again; a lamp built while off gets no GSS style"})
@@ -741,7 +741,7 @@ def s10_legacy(B, rows, res):
     same = [p for p in leg if p.get("legacy") and p.get("legacySameMaterials")]
     dl = st.get("defaultLook")
     in_default = all(p.get("strandTex") in ((st.get("lookStrands") or {}).get(dl) or []) for p in leg if p.get("strands"))
-    V.row(rows, "S10_legacy_default_materials", "PASS" if len(mem.keys() & set(LEGACY)) == len(LEGACY) and all(r is None for r in raw) and leg and len(same) == len(leg)
+    V.row(rows, "S10_legacy_default_materials", "PASS" if bb.get("success") and isinstance(mat0, int) and len(mem.keys() & set(LEGACY)) == len(LEGACY) and all(r is None for r in raw) and leg and len(same) == len(leg)
           and in_default and (st.get("counters") or {}).get("materialised") == mat0 else "FAIL", "MOD",
           {"build": bb.get("success"), "rawStyles": raw, "pieces": len(leg), "sameMaterials": len(same), "defaultLook": dl, "defaultKey": st.get("defaultKey"),
            "materialisedBefore": mat0, "materialisedAfter": (st.get("counters") or {}).get("materialised"),
@@ -858,7 +858,7 @@ def s12d_after_load(B, rows, built):
         V.row(rows, "S12d_D4_pending_queue_save", "FAIL", "HARNESS", ev)
     elif not sv.get("pendingAtSave"):
         V.row(rows, "S12d_D4_pending_queue_save", "UNMEASURED", "HARNESS", dict(ev, why="nothing was pending when the save was written"))
-    elif rd.get("stagedCells") != 4 or not rd.get("ctrl"):
+    elif rd.get("stagedCells") != 4 or rd.get("ctrlCells") != 4 or not rd.get("ctrl"):
         V.row(rows, "S12d_D4_pending_queue_save", "FAIL", "HARNESS", dict(ev, why="the D4 cells did not all read back after the load"))
     else:
         V.row(rows, "S12d_D4_pending_queue_save", "PASS" if len(rd["staged"]) == 1 and rd["staged"] == rd["ctrl"] else "FAIL", "MOD", ev)
