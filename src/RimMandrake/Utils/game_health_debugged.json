@@ -24,6 +24,18 @@
    ],
    "session": "ee0fbaa8d85c426f8777aafe95cedc9f",
    "why": "debugged offline 2026-11-06 from the archived log (explain --session ee0fbaa8), causes filed. log.errors 3282 and the cap: 3408 chunk non-compressible errors (CHUNKS_FIX_SAVE_ERRORS_NOT_DEAD_NAMES) and 3200 Beer non-drug errors (BEER_DIAGNOSE_NON_DRUG_3200_LOG_ERRORS), with 1190 dead references and real exceptions (MIRRELBOLE_FIX_TICK_NRE_THIRTY_FIVE_TIMES, GNAWTREE_FIX_JOBDRIVER_NRE_SEEN_TWICE, PAWNTWEENER_DIAGNOSE_ROOT_NRE_ON_HOSE_SAVE); heap 6263 on 250x250 maps is NOT scale: a ratchet across 17 games (heap_ratchet.py), HEAP_DIAGNOSE_RELOAD_RATCHET_NOT_MAP_SCALE"
+  },
+  {
+   "at": "2026-11-10T03:03:45Z",
+   "item": "LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY",
+   "keys": [
+    "log.cap_reached",
+    "log.errors",
+    "log.errors_lower_bound",
+    "mem.managed_peak_mb"
+   ],
+   "session": "ee0fbaa8d85c426f8777aafe95cedc9f",
+   "why": "log.errors_lower_bound is no longer a limit (owner by card 2026-11-09 'Two limits: load and play', ce04ffdae346): the sticky flag rises on every cold load. Under the new limits this session reads LOAD 3239 (limit 4500, passes) and PLAY 11 in-play evictions (breach), whose cause is LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS"
   }
  ]
 }

@@ -1,0 +1,2 @@
+Factual correction to LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY's prose. Session e50b27df's 3958-message rise came at t+435 s, after the first game load, so it was in play and not inside the cold load. Its cold load was 3301 messages, under LOAD 4500, and the new reader scores it as PLAY with 1 eviction. ee0fbaa8 reads the same way: LOAD 3239 and PLAY 11. Cold loads in recent sessions run about 3200-3300 messages, not ~4000. Evidence: D:\ClaudeWork\rimmandrake\logbound\newread2.txt
+home: infrastructure/state/items/LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY.md
