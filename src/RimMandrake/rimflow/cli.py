@@ -1712,15 +1712,15 @@ def _replaces(args, seat, w):
 
 
 def _mint_or_die(iid, w):
-    """New items are named SUBJECT_INTENT_TWIST (design/RimMandrake/ticket_naming_2026-10-10.md).
+    """New items are named PROJECT_VERB_INTENTION_TWIST (design/RimMandrake/ticket_naming_2026-10-10.md).
 
     Mint-time only: every id already in the ledger, `_1` included, stays valid forever."""
     probs = model.mint_problems(iid, set(w.items))
     if probs:
         die("%s is not a new-style item name:\n  - %s\n\n"
-            "New items are PROJECT_VERB_INTENTION_TWIST (owner 2026-11-05): slot 1 the registry Id "
-            "(this project: RIMMASTER), slot 2 any verb, 4-9 words, <= 64 chars, then a TRUE aside.\n"
-            "  e.g. RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY\n"
+            "New items are PROJECT_VERB_INTENTION_TWIST (owner 2026-11-05): slot 1 a registry Id or Name "
+            "(this project: RIMMANDRAKE), slot 2 any verb, 4-9 words, <= 64 chars, then a TRUE aside.\n"
+            "  e.g. RIMMANDRAKE_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY\n"
             "Check a name first:  rimflow namecheck <NAME>   (no word bank any more)"
             % (iid, "\n  - ".join(probs)))
 
@@ -1729,7 +1729,7 @@ def cmd_namecheck(args, seat):
     """Show how a proposed item name parses and whether it may be minted."""
     if args.bank or not args.name:
         print("the intent-word bank is RETIRED (owner 2026-11-05): slot 2 takes any verb. A new name is "
-              "PROJECT_VERB_INTENTION_TWIST, slot 1 a registry Id (this project: RIMMASTER), 4-9 words, "
+              "PROJECT_VERB_INTENTION_TWIST, slot 1 a registry Id or Name (this project: RIMMANDRAKE), 4-9 words, "
               "<= %d chars. Older names stay valid forever." % model.NAME_MAX_LEN)
         if not args.name:
             return 0

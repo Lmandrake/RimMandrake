@@ -1,10 +1,12 @@
 # Ticket naming: SUBJECT_INTENT_TWIST (2026-10-10)
 
 > **SUPERSEDED for new names, 2026-11-05 (owner; applied in rimflow 2026-11-07).** A new item is
-> `PROJECT_VERB_INTENTION_TWIST`: slot 1 the registry Id (`RIMMASTER` here), slot 2 any verb, 4-9 words, at most
+> `PROJECT_VERB_INTENTION_TWIST`: slot 1 a registry Id or Name (`RIMMANDRAKE` here for new names;
+> the stable Id remains `rimmaster`), slot 2 any verb, 4-9 words, at most
 > 64 chars, `A-Z 0-9 _`, no trailing bare digits. **There is no intent-word bank any more**; `rimflow namecheck
 > --bank` says so. Names minted under the grammar below stay valid forever and are still parsed (first bank word =
-> hinge); only minting changed. Everything below is the history of the old rule, not what `file`/`spawn` enforce.
+> hinge); existing `RIMMASTER_*` names also stay valid forever and are never renamed. Only minting changed.
+> Everything below is the history of the old rule, not what `file`/`spawn` enforce.
 
 Owner's request, 2026-10-10: replace `THREE_UPPER_SNAKE_WORDS_#` (whose number is stuck at
 `_1` forever) with a naming convention that is comic and entertaining but still accurate:

@@ -216,7 +216,8 @@ capture images of flight. It doesn't work."* Verify flight by a deterministic ST
 
 ## Queue items are NAMED, not numbered
 
-The grammar is `~/.claude/CLAUDE.md`'s `PROJECT_VERB_INTENTION_TWIST`; this project's slot 1 is `RIMMASTER`. `rimflow namecheck <NAME>`
+The grammar is `~/.claude/CLAUDE.md`'s `PROJECT_VERB_INTENTION_TWIST`; this project's slot 1 for new names is `RIMMANDRAKE`.
+The registry Id stays `rimmaster`; existing `RIMMASTER_*` names stay valid forever and are never renamed. `rimflow namecheck <NAME>`
 shows the parse and `file`/`spawn` refuse the rest. The registry is read from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`);
 if unreadable the refusal names that path. Older names (`SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stay valid forever, never
 renamed. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.

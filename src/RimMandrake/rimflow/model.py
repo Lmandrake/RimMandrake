@@ -677,7 +677,7 @@ BANNED_NAME_WORDS = frozenset("""
     STUPID DUMB IDIOT MORON LAZY INCOMPETENT PATHETIC
 """.split())
 # Owner 2026-11-05 (~/.claude/CLAUDE.md "EVERY ITEM IS NAMED"): a NEW name is PROJECT_VERB_INTENTION_TWIST.
-# Slot 1 is a registry Id (Lodestar sync/registry.md), slot 2 any verb (no bank), 4-9 words, <= 64 chars.
+# Slot 1 is a registry Id or Name (Lodestar sync/registry.md), slot 2 any verb (no bank), 4-9 words, <= 64 chars.
 # Rules mirror ~/dev/Lodestar/bin/lib/ticketname.py. The OLD bank above (INTENT_WORDS) is retired for
 # minting and survives only so parse_name/is_new_name still read the names filed under it.
 NAME_MAX_LEN = 64
@@ -694,7 +694,7 @@ def registry_path():
 
 
 def project_slots():
-    """-> (slots frozenset, error or None). Slot-1 values: the registry Id column squashed to A-Z0-9, upper,
+    """-> (slots frozenset, error or None). Slot-1 values: registry Id and Name squashed to A-Z0-9, upper,
     plus the throwaway slots. An unreadable registry is an ERROR the caller must show, never a silent pass."""
     path = registry_path()
     try:
@@ -703,18 +703,20 @@ def project_slots():
     except OSError as e:
         return frozenset(THROWAWAY_SLOTS), "cannot read %s (%s); set LODESTAR_ROOT" % (path, e.strerror)
     if _SLOT_CACHE.get("key") != key:
-        ids, col = set(), None
+        ids, cols = set(), None
         with open(path, encoding="utf-8") as fh:
             for line in fh:
                 if not line.startswith("|"):
                     continue
                 cells = [c.strip() for c in line.strip().strip("|").split("|")]
-                if col is None:
+                if cols is None:
                     if "Id" in cells and "Name" in cells:
-                        col = cells.index("Id")
+                        cols = (cells.index("Id"), cells.index("Name"))
                     continue
-                if col < len(cells) and cells[col] and not set(cells[col]) <= set("-: "):
-                    ids.add(re.sub(r"[^A-Z0-9]", "", cells[col].upper()))
+                if cols[0] < len(cells) and cells[cols[0]] and not set(cells[cols[0]]) <= set("-: "):
+                    for col in cols:
+                        if col < len(cells):
+                            ids.add(re.sub(r"[^A-Z0-9]", "", cells[col].upper()))
         _SLOT_CACHE["key"], _SLOT_CACHE["slots"] = key, frozenset(ids - {""})
     return _SLOT_CACHE["slots"] | frozenset(THROWAWAY_SLOTS), (
         None if _SLOT_CACHE["slots"] else "no Id column rows found in %s" % path)
@@ -723,7 +725,7 @@ def project_slots():
 def parse_name(iid):
     """-> (subject_words, intent, twist_words), or None.
 
-    New form (slot 1 a registry Id): ([PROJECT], VERB, rest). Old form: the first INTENT_WORDS word at
+    New form (slot 1 a registry Id or Name): ([PROJECT], VERB, rest). Old form: the first INTENT_WORDS word at
     position >= 1 with at least one word after it is the hinge."""
     words = str(iid or "").split("_")
     if len(words) >= NAME_MIN_WORDS and words[0] in project_slots()[0] and words[0] not in THROWAWAY_SLOTS:
@@ -745,11 +747,11 @@ def is_named_id(iid):
     return bool(NAMED_ID.match(str(iid or ""))) or is_new_name(iid)
 
 
-PROJECT_SLOT = "RIMMASTER"      # this project's registry Id, slot 1 of every name the machines mint
+PROJECT_SLOT = "RIMMANDRAKE"    # current project Name; the stable registry Id remains rimmaster
 
 
 def with_project_slot(name):
-    """A machine-minted name gets slot 1 if it lacks one: OPS_FIX_X -> RIMMASTER_OPS_FIX_X. Idempotent."""
+    """A machine-minted name gets slot 1 if it lacks one: OPS_FIX_X -> RIMMANDRAKE_OPS_FIX_X. Idempotent."""
     return name if str(name).split("_")[0] in project_slots()[0] else PROJECT_SLOT + "_" + name
 
 
@@ -804,7 +806,7 @@ def mint_problems(iid, known_ids, strict=None):
         probs.append("cannot check slot 1: " + err)
     elif words[0] not in slots:
         near = sorted(p for p in slots if p.startswith(words[0][:4]) and p not in THROWAWAY_SLOTS)
-        probs.append("slot 1 %r is not a project: it must be a registry Id%s (this project is RIMMASTER), "
+        probs.append("slot 1 %r is not a project: it must be a registry Id or Name%s (this project is RIMMANDRAKE), "
                      "or %s for something that belongs to no project"
                      % (words[0], " (did you mean %s?)" % ", ".join(near[:3]) if near else "",
                         " / ".join(THROWAWAY_SLOTS)))

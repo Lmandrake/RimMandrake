@@ -7,6 +7,8 @@ at mint time with a message that says why.
 """
 import os
 import sys
+import tempfile
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -17,10 +19,10 @@ PASS, FAIL = [], []
 # Every example the design doc prints must actually pass the grammar — a doc whose
 # examples the checker refuses teaches the wrong thing.
 DOC_EXAMPLES = [
-    "RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY",
-    "RIMMASTER_AUDIT_TIMERS_WATCHING_THE_WATCH",
-    "RIMMASTER_PRUNE_ARTPIPE_QUEUE_182_AND_COUNTING",
-    "RIMMASTER_FROBNICATE_ANYTHING_THE_VERB_IS_FREE",   # no word bank: any verb
+    "RIMMANDRAKE_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY",
+    "RIMMANDRAKE_AUDIT_TIMERS_WATCHING_THE_WATCH",
+    "RIMMANDRAKE_PRUNE_ARTPIPE_QUEUE_182_AND_COUNTING",
+    "RIMMANDRAKE_FROBNICATE_ANYTHING_THE_VERB_IS_FREE",   # no word bank: any verb
     "PROJNOW_TIDY_SCRATCH_SHELF_ONCE_MORE",
 ]
 OLD_FORMS = ["GREATBOLE_CORE_RESKIN_NOT_A_DRILL", "TPS_TIMERS_AUDIT_WATCHING_THE_WATCH",
@@ -49,6 +51,42 @@ def t_new_style_accepted():
 def t_parse_new_form_by_position():
     assert model.parse_name("RIMMASTER_UNSTICK_BRIDGE_HANG_THIRD_TIME_LUCKY") == (
         ["RIMMASTER"], "UNSTICK", ["BRIDGE", "HANG", "THIRD", "TIME", "LUCKY"])
+
+
+def t_project_name_and_stable_id_both_work():
+    old = os.environ.get("LODESTAR_ROOT")
+    try:
+        with tempfile.TemporaryDirectory() as root:
+            registry = Path(root) / "sync" / "registry.md"
+            registry.parent.mkdir()
+            registry.write_text("| Name | Id |\n|---|---|\n| RimMandrake | rimmaster |\n",
+                                encoding="utf-8")
+            os.environ["LODESTAR_ROOT"] = root
+            slots, err = model.project_slots()
+            assert err is None, err
+            assert slots == frozenset(("RIMMANDRAKE", "RIMMASTER") + model.THROWAWAY_SLOTS), slots
+            for slot in ("RIMMANDRAKE", "RIMMASTER"):
+                iid = slot + "_FROBNICATE_BRIDGE_THIRD_TIME_LUCKY"
+                assert model.mint_problems(iid, set(), strict=True) == [], iid
+                assert model.parse_name(iid) == ([slot], "FROBNICATE", ["BRIDGE", "THIRD", "TIME", "LUCKY"])
+                assert model.is_named_id(iid), iid
+                assert gitindex.ids_in(iid) == [iid], iid
+                assert model.with_project_slot(iid) == iid, iid  # never rename an existing id
+            minted = model.with_project_slot("FROBNICATE_BRIDGE_THIRD_TIME_LUCKY")
+            assert minted == "RIMMANDRAKE_FROBNICATE_BRIDGE_THIRD_TIME_LUCKY", minted
+            assert model.with_project_slot(minted) == minted
+            assert model.mint_problems("UNREGISTERED_FROBNICATE_BRIDGE_THIRD_TIME", set(), strict=True)
+            # Name changes invalidate the cache without changing the stable Id.
+            registry.write_text("| Name | Id |\n|---|---|\n| New Project | rimmaster |\n",
+                                encoding="utf-8")
+            slots, err = model.project_slots()
+            assert err is None, err
+            assert "NEWPROJECT" in slots and "RIMMASTER" in slots and "RIMMANDRAKE" not in slots, slots
+    finally:
+        if old is None:
+            os.environ.pop("LODESTAR_ROOT")
+        else:
+            os.environ["LODESTAR_ROOT"] = old
 
 
 def t_parse_old_form_still_reads():
