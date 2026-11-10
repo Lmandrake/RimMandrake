@@ -1,0 +1,16 @@
+preflight OFFLINE tier=full purpose=test seat=BENCH 2026-11-10T16:35:06Z
+PASS       O02  bridge_lease             req    0.0s  FREE    since 2026-11-10T16:34:43Z -- take it before launching: rimflow bridge take --for "<what>"
+PASS       O07  known_wedgers            req   15.5s  no known wedger for purpose test
+PASS       O03  disk_space               req    0.0s  free GB {'C': 2103.2, 'D': 1643.6}
+FAIL       O06  ship_coverage            opt    9.6s  99 mods we build are absent from the intended list ['mandrake.rm.acousticscanner', 'mandrake.rm.aftermath', 'mandrake.rm.atmosphericbase', 'mandrake.rm.bazaar', 'mandrake.rm.coldstorage', 'mandrake.rm.deepdrill', 'mandrake.rm.explosiveknockback', 'mandrake.rm.flamestatues']; 0 folded members listed []
+FAIL       O04  modsconfig_intent        req    9.7s  same 12 mods, DIFFERENT ORDER (first at #10: want mandrake.rm.flowworks, have mandrake.rm.patches)
+SKIPPED    O08  player_log_archive       req    0.0s  fail-fast after O04
+SKIPPED    O09  companion_match          req    0.0s  fail-fast after O04
+SKIPPED    O11  bridge_lint_fresh        opt    0.0s  fail-fast after O04
+SKIPPED    O12  src_load_killers         req    0.0s  fail-fast after O04
+SKIPPED    O05  list_sane                req    0.0s  fail-fast after O04
+SKIPPED    O01  game_down                req    0.0s  fail-fast after O04
+SKIPPED    O10  dependency_fp            opt    0.0s  fail-fast after O04
+SKIPPED    O14  effective_def_lint       req    0.0s  fail-fast after O04
+SKIPPED    O13  deploy_match             req    0.0s  fail-fast after O04
+VERDICT NO-GO O06,O04,O08,O09,O12,O05,O01,O14,O13

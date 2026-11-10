@@ -1,0 +1,7 @@
+PASS        biomeworker_rivers      0 findings (0 crash) -- repo C# source, text match on the class body
+PASS        alert_leaf              0 findings (0 crash) -- repo C# source; inheritance only within our files
+PASS        compile_include         3 findings (0 crash) -- every csproj with EnableDefaultCompileItems=false
+     warn  src/RimUtinni/EmpirePursuit/Source src/RimUtinni/EmpirePursuit/Source/S not in any <Compile Include>: compiles into nothing, no build error
+     warn  src/RimMandrake/RaidRedesigner/Sou src/RimMandrake/RaidRedesigner/Sourc not in any <Compile Include>: compiles into nothing, no build error
+     warn  src/RimMandrake/FlowWorks/Source/S src/RimMandrake/FlowWorks/Source/Sel not in any <Compile Include>: compiles into nothing, no build error
+VERDICT PASS

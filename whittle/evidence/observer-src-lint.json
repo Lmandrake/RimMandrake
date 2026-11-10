@@ -1,0 +1,42 @@
+{
+ "checks": {
+  "biomeworker_rivers": {
+   "status": "PASS",
+   "findings": [],
+   "note": "repo C# source, text match on the class body",
+   "counted": 0
+  },
+  "alert_leaf": {
+   "status": "PASS",
+   "findings": [],
+   "note": "repo C# source; inheritance only within our files",
+   "counted": 0
+  },
+  "compile_include": {
+   "status": "PASS",
+   "findings": [
+    {
+     "sev": "warn",
+     "mod": "src/RimUtinni/EmpirePursuit/Source/SelfTest/EmpireLadder.SelfTest.csproj",
+     "def": "src/RimUtinni/EmpirePursuit/Source/SelfTest/VV/EpRatesProbe.cs",
+     "detail": "not in any <Compile Include>: compiles into nothing, no build error"
+    },
+    {
+     "sev": "warn",
+     "mod": "src/RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.csproj",
+     "def": "src/RimMandrake/RaidRedesigner/Source/Spike_ThreatPointReplace.cs",
+     "detail": "not in any <Compile Include>: compiles into nothing, no build error"
+    },
+    {
+     "sev": "warn",
+     "mod": "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+     "def": "src/RimMandrake/FlowWorks/Source/SelfTest/VV/ShippedMatrixProbe.cs",
+     "detail": "not in any <Compile Include>: compiles into nothing, no build error"
+    }
+   ],
+   "note": "every csproj with EnableDefaultCompileItems=false",
+   "counted": 0
+  }
+ },
+ "meta": {}
+}

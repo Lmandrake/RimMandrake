@@ -1,0 +1,1 @@
+I'm stopping: this session has no tool that can write either file. The proposed `BLOCKED.md` text is in my earlier reply. Someone with file tools needs to write it to `/home/mandrake/rm/scratch/BENCH/whittle-trial/whittle/BLOCKED.md`.

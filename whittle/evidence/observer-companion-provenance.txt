@@ -1,0 +1,4 @@
+source hash embedded: 48258bf21f617ff5 (companion_identity.py checks it on every lane)
+installed d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083 /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+local comparison artifact d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083 /home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+Copied the verified installed companion into this clone ignored comparison artifact. No companion deploy performed.

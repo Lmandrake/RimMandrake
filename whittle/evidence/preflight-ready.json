@@ -1,0 +1,171 @@
+{
+ "when": "2026-11-10T16:41:00Z",
+ "mode": "offline",
+ "tier": "quicktest",
+ "modset": "flowworks",
+ "purpose": "test",
+ "verdict": "NO-GO",
+ "rows": [
+  {
+   "id": "O02",
+   "name": "bridge_lease",
+   "required": true,
+   "status": "PASS",
+   "reason": "FREE    since 2026-11-10T16:38:02Z    (released by BENCH) -- take it before launching: rimflow bridge take --for \"<what>\"",
+   "cost_est_s": 0.1,
+   "took_s": 0.0,
+   "prevents": "#22 #50 two drivers",
+   "evidence": {}
+  },
+  {
+   "id": "O07",
+   "name": "known_wedgers",
+   "required": true,
+   "status": "PASS",
+   "reason": "no known wedger for purpose test",
+   "cost_est_s": 0.1,
+   "took_s": 8.62,
+   "prevents": "#61 RealFoW",
+   "evidence": {}
+  },
+  {
+   "id": "O03",
+   "name": "disk_space",
+   "required": true,
+   "status": "PASS",
+   "reason": "free GB {'C': 2103.2, 'D': 1643.5}",
+   "cost_est_s": 0.2,
+   "took_s": 0.0,
+   "prevents": "O05",
+   "evidence": {
+    "free_gb": {
+     "C": 2103.2,
+     "D": 1643.5
+    }
+   }
+  },
+  {
+   "id": "O06",
+   "name": "ship_coverage",
+   "required": false,
+   "status": "PASS",
+   "reason": "not the full tier: a test list is deliberately partial",
+   "cost_est_s": 0.3,
+   "took_s": 0.0,
+   "prevents": "P-a 14 missing",
+   "evidence": {}
+  },
+  {
+   "id": "O04",
+   "name": "modsconfig_intent",
+   "required": true,
+   "status": "PASS",
+   "reason": "ModsConfig == modset_builder tier flowworks (12 mods, ordered)",
+   "cost_est_s": 0.5,
+   "took_s": 8.54,
+   "prevents": "#19 #47 #54 wrong list",
+   "evidence": {}
+  },
+  {
+   "id": "O08",
+   "name": "player_log_archive",
+   "required": true,
+   "status": "PASS",
+   "reason": "archived /mnt/d/ClaudeWork/rimmandrake/scratch/preflight/playerlogs/Player_20261110T161020_d5d39090d1c8.log",
+   "cost_est_s": 1,
+   "took_s": 0.03,
+   "prevents": "#26 stale log generation",
+   "evidence": {
+    "archive": "/mnt/d/ClaudeWork/rimmandrake/scratch/preflight/playerlogs/Player_20261110T161020_d5d39090d1c8.log"
+   }
+  },
+  {
+   "id": "O09",
+   "name": "companion_match",
+   "required": true,
+   "status": "UNMEASURED",
+   "reason": "no repo companion artifact /home/mandrake/rm/scratch/BENCH/whittle-trial/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+   "cost_est_s": 1,
+   "took_s": 0.0,
+   "prevents": "#51 #57 stale DLL, P-c",
+   "evidence": {}
+  },
+  {
+   "id": "O11",
+   "name": "bridge_lint_fresh",
+   "required": false,
+   "status": "PASS",
+   "reason": "lint snapshot covers all 431 declared tools (0.0 d old)",
+   "cost_est_s": 1,
+   "took_s": 0.01,
+   "prevents": "P-d",
+   "evidence": {}
+  },
+  {
+   "id": "O12",
+   "name": "src_load_killers",
+   "required": true,
+   "status": "FAIL",
+   "reason": "repo load killers: {'compile_include': ['src/RimMandrake/WreckedMachines/Source/tests/salvage_exec/FakeEngine.cs', 'src/RimMandrake/WreckedMachines/Source/tests/salvage_exec/Oracle.cs', 'src/RimMandrake/FlowWorks/Source/Replay/ReplayTick.cs', 'src/RimMandrake/FlowWorks/Source/Replay/Compat.cs', 'src/RimMandrake/FlowWorks/Source/Replay/Trace.cs']}",
+   "cost_est_s": 1,
+   "took_s": 0.63,
+   "prevents": "#33 alert leaf, BiomeWorker rivers",
+   "evidence": {}
+  },
+  {
+   "id": "O05",
+   "name": "list_sane",
+   "required": true,
+   "status": "SKIPPED",
+   "reason": "fail-fast after O12",
+   "cost_est_s": 1.5,
+   "took_s": 0.0,
+   "prevents": "#58 #80 member ids",
+   "evidence": {}
+  },
+  {
+   "id": "O01",
+   "name": "game_down",
+   "required": true,
+   "status": "SKIPPED",
+   "reason": "fail-fast after O12",
+   "cost_est_s": 2,
+   "took_s": 0.0,
+   "prevents": "#21 two processes, #39 old log",
+   "evidence": {}
+  },
+  {
+   "id": "O10",
+   "name": "dependency_fp",
+   "required": false,
+   "status": "SKIPPED",
+   "reason": "fail-fast after O12",
+   "cost_est_s": 2,
+   "took_s": 0.0,
+   "prevents": "prediction 14/18",
+   "evidence": {}
+  },
+  {
+   "id": "O14",
+   "name": "effective_def_lint",
+   "required": true,
+   "status": "SKIPPED",
+   "reason": "fail-fast after O12",
+   "cost_est_s": 30,
+   "took_s": 0.0,
+   "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+   "evidence": {}
+  },
+  {
+   "id": "O13",
+   "name": "deploy_match",
+   "required": true,
+   "status": "SKIPPED",
+   "reason": "fail-fast after O12",
+   "cost_est_s": 60,
+   "took_s": 0.0,
+   "prevents": "#31 #46 #52 #57 deploy drift",
+   "evidence": {}
+  }
+ ]
+}

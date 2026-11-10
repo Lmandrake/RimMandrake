@@ -1,0 +1,16 @@
+preflight OFFLINE tier=quicktest purpose=test seat=BENCH 2026-11-10T16:45:25Z
+PASS       O02  bridge_lease             req    0.0s  held by this seat: HELD    BENCH    since 2026-11-10T16:44:54Z
+PASS       O07  known_wedgers            req    6.4s  no known wedger for purpose test
+PASS       O03  disk_space               req    0.0s  free GB {'C': 2103.2, 'D': 1643.5}
+PASS       O06  ship_coverage            opt    0.0s  not the full tier: a test list is deliberately partial
+PASS       O04  modsconfig_intent        req    6.3s  ModsConfig == modset_builder tier flowworks (12 mods, ordered)
+PASS       O08  player_log_archive       req    0.0s  already archived: /mnt/d/ClaudeWork/rimmandrake/scratch/preflight/playerlogs/Player_20261110T161020_d5d39090d1c8.log
+PASS       O09  companion_match          req    0.1s  deployed == repo d76ec2b1e189 (build 446ec4d7dbb5) (no .srchash beside the repo artifact: source provenance unproven)
+PASS       O11  bridge_lint_fresh        opt    0.0s  lint snapshot covers all 431 declared tools (0.0 d old)
+PASS       O12  src_load_killers         req    0.6s  BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include: clean
+PASS       O05  list_sane                req    3.7s  12 ids, none composed/duplicate/uninstalled
+PASS       O01  game_down                req    0.4s  no RimWorldWin64 process
+FAIL       O10  dependency_fp            opt    0.5s  changed since the baseline: ['0Harmony.dll'] (Steam auto-update? runs are not comparable)
+PASS       O14  effective_def_lint       req   38.7s  clean | /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['donor_types']
+FAIL       O13  deploy_match             req    1.2s  1 of 3 mods (1192 files) differ from the deployed copy: ["GimmeSomeSlack(2: ['Assemblies/RimMandrakeGimmeSomeSlack.dll', 'Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash'])"]
+VERDICT NO-GO O10,O13

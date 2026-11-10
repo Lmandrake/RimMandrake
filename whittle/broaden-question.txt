@@ -1,0 +1,12 @@
+You are a test broadener for a RimWorld mod, text-only. Suggest the one or two most revealing overlooked player cases; prioritize within this one small feature. No implementation edits. Frozen statement:
+# Bedless pit prison — delegated FlowWorks trial, 2026-11-10
+
+A drained hole should be a usable prison, without furnishing a hidden bedroom.
+
+- The player can capture a downed raider from the rim of a drained D4 moat or pit with no prisoner bed in the hole; the raider becomes a prisoner and stays in that hole.
+- The prisoner can be fed and kept through ordinary prisoner care without adding a bed; a prisoner bed elsewhere does not cause capture to move the prisoner out of the hole.
+- With pit prisons disabled, the same bedless capture is refused, and ordinary bed-based prisons continue working.
+- A repeatable acceptance scene asserts its starting conditions, distinguishes the enabled behavior from its disabled control, and restores terrain, liquid, things and changed settings after the test; relevant offline checks and a real game run support the claim.
+
+Implemented: enclosed proper pit rooms report prison status without beds under existing superdeepRoomsEnabled; capture-down reuses vanilla CapturedBy in place; downed pit prisoners qualify for vanilla WardenFeed without InBed; lip reachability/path redirection; vanilla DeliverFood targetC set to prisoner cell; suppress ordinary TakeToBed for secure held pit prisoners. Existing geometry/depth/height bars unchanged.
+Tested so far: C# build zero warnings/errors; 3 targeted real-production math cases pass: same-side rooms, capture eligibility controls (setting off, own side, nonperson, not held, nonprison), 3m height-scaled threshold. Acceptance authored (not yet live): two downed raiders in a narrow drained hole; OFF attempted capture fails, ON first capture with no scene beds, second with a remote ordinary prison bed; actual registered vanilla WardenFeed/DeliverFood called and job run, nutrition increase read; 60000 actual ticks ordinary work with survival/food/location samples; OFF ordinary bed capture; whole-save snapshot reload compared by terrain/liquid/things hash and all changed settings restored. Both historical absolute D4 (2m) and shipped relative 3m geometry planned. Main question: what real user actions could invalidate this experience despite that test, and what concrete additional probes should I run?
