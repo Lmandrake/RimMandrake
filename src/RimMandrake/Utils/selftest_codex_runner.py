@@ -38,7 +38,7 @@ class CodexRunnerTests(unittest.TestCase):
         self.assertEqual(AR.quota_gate(meter(90)), meter(90))
 
     def test_codex_argv(self):
-        with patch.object(AR.CX, "wsl_to_win", side_effect=lambda p: "WIN:" + str(p)), patch.dict(os.environ, {}, clear=True):
+        with patch.object(AR.CX, "wsl_to_win", side_effect=lambda p: "WIN:" + str(p)), patch.dict(os.environ, {"RM_CODEX_SIDE": "win"}, clear=True):
             a = AR.launch_argv(Path("/work"), Path("/out"), exe="codex.exe")
             self.assertEqual(a, ["codex.exe", "exec", "--sandbox", "workspace-write", "--skip-git-repo-check",
                                  "-C", "WIN:/work", "-o", "WIN:/out", "--json", "-c",

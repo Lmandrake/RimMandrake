@@ -377,7 +377,8 @@ def _default_codex_home_root() -> Path:
     this PUBLIC repo, and seeding a worker home copies `auth.json` into it —
     a credential leak, not a config choice. The owner has gitignored that
     path as a backstop; this function is the actual fix: never point there
-    in the first place. Prefers the Windows user profile (codex.exe is a
+    in the first place. Linux uses ~/.codex_workers/artpipe; Windows prefers
+    the Windows user profile (codex.exe is a
     Windows binary, and a genuinely NEW home needs a one-time UAC-gated
     sandbox setup — see codex_image.py's own SANDBOX_SEED_* — so this must
     be a real persistent directory, never tmpfs/`/tmp`, or every restart
@@ -386,6 +387,8 @@ def _default_codex_home_root() -> Path:
     dev box with no Windows filesystem to use.
     """
     codex_image = _import_codex_image()
+    if codex_image.codex_side() == "wsl":
+        return Path.home() / ".codex_workers/artpipe"
     wh = codex_image.windows_home()
     if wh is not None:
         return wh / ".codex_workers" / "artpipe"
@@ -430,6 +433,8 @@ def codex_sandbox_preflight(base: Path | None = None) -> tuple[bool, str]:
     checks, which only gate the codex channel on this.
     """
     codex_image = _import_codex_image()
+    if codex_image.codex_side() == "wsl":
+        return True, "Linux sandbox: no Windows setup required"
     try:
         resolved_base = base if base is not None else codex_image.base_codex_home()
     except codex_image.EnvError as exc:

@@ -306,7 +306,7 @@ One map, a grid key, saves kept until he says delete or nothing reads them (then
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>   dry run; --apply writes
 python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>           C# build, staged on D:\ClaudeWork\rimmandrake\build
 ./mirror sync | status                              D:\…\RimMandrake as a writer-free origin/main export
-python3 src/RimMandrake/Utils/gpt_consult.py "q" -f <file>...  ask GPT via codex.exe; files inlined
+python3 src/RimMandrake/Utils/gpt_consult.py "q" -f <file>...  ask GPT via Codex (Archmagi/WSL: Linux default; --codex win); files inlined
 python3 src/RimMandrake/Utils/refresh.py            rebuild the offline def dump
 measure count <DefType>                             one line; never a bare number
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...

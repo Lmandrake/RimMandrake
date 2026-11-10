@@ -29,8 +29,8 @@ read on the sheet / in chat; it never blocks, never files a job failed, and neve
 Evidence: Transient/art_review_2026-10-15/pipeline_review.md §3 (FAIL predicted 0 of 64 owner rejections).
 
 ROUTE
-  codex.exe exec, read-only sandbox, `--output-schema` JSON, images via `-i`, prompt on stdin, cwd + image copies in
-  D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\canoncheck-*\\ (codex.exe fails from an ext4 cwd and hangs on \\\\wsl.localhost
+  Codex exec, read-only sandbox, `--output-schema` JSON, images via `-i`, prompt on stdin. Linux uses native
+  paths and scratch; RM_CODEX_SIDE=win retains drive-local staging (codex.exe fails from an ext4 cwd and hangs on \\\\wsl.localhost
   reads — same staging gpt_consult.py uses). Model: $ARTPIPE_CANON_MODEL, else gpt_consult's consult default
   (gpt-6.1-sol); effort high. In the daemon it runs on the job's leased codex home (artpiped's slot pool).
 
@@ -291,7 +291,7 @@ def build_prompt(spec: dict) -> str:
 
 def codex_vision(prompt: str, images: list[Path], *, model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT,
                  timeout: int = DEFAULT_TIMEOUT_S, home: Path | None = None, schema: dict | None = None) -> str:
-    """One codex.exe exec turn with images; returns the -o last-message text. Raises CanonCheckError."""
+    """One selected Codex exec turn with images; returns the -o last-message text. Raises CanonCheckError."""
     import codex_image  # noqa: E402 — imported lazily so selftests never need codex.exe
     job = codex_image.CODEX_SCRATCH / f"canoncheck-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
     job.mkdir(parents=True, exist_ok=True)
@@ -305,15 +305,15 @@ def codex_vision(prompt: str, images: list[Path], *, model: str = DEFAULT_MODEL,
         (job / "prompt.md").write_text(prompt)
         answer = job / "answer.json"
         cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only", "--skip-git-repo-check",
-               "-o", codex_image.wsl_to_win(answer),
-               "--output-schema", codex_image.wsl_to_win(job / "schema.json"),
+               "-o", codex_image.codex_path(answer),
+               "--output-schema", codex_image.codex_path(job / "schema.json"),
                "-c", f'model_reasoning_effort="{effort}"']
         if model and model != "inherit":
             cmd += ["-m", model]
         for s in staged:
-            cmd += ["-i", codex_image.wsl_to_win(s)]
+            cmd += ["-i", codex_image.codex_path(s)]
         cmd += ["--", "-"]  # `-i` is variadic: terminate it, then read the prompt from stdin
-        env = codex_image.child_env(home) if home is not None else None
+        env = codex_image.child_env(home or codex_image.base_codex_home())
         try:
             with open(job / "prompt.md", "rb") as fin, open(job / "codex.log", "wb") as log:
                 rc = subprocess.run(cmd, cwd=str(job), stdin=fin, stdout=log, stderr=subprocess.STDOUT,

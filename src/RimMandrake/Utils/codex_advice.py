@@ -13,6 +13,8 @@ moved to Claude. So, with the advice read the same way the allocator reads it (s
   EXHAUSTED        runway 0 (the weekly quota is spent): every call is refused, loudly, naming the ops alarm the
                    owner sees (OPS_RUNWAY_RESCUE), and the refusal is appended to <ops watch dir>/codex_refusals.jsonl
 
+The advice uses ops_watch's newest account reading across Linux and Windows session histories; RM_CODEX_SIDE does not split quota.
+
 There is no Claude fallback: a refused caller fails, it does not reroute.
 
     python3 src/RimMandrake/Utils/codex_advice.py            # print the advice line

@@ -5,21 +5,27 @@
 - How the CLI is located (and why the path must never be hardcoded)
 - Auth mode decides which capabilities exist
 - The two imagegen paths
-- Transparency: why chroma-key is mandatory here
+- Transparency: request real alpha
 - Size limits (they bite on RimWorld sprites)
 - Where output actually lands
 - What was checked and found clean
 
-Everything below was established on 2026-08-12 against **codex-cli
-0.147.0-alpha.6.6** by reading the installed skill and running the binary. It
-is not repeated from documentation.
+The Windows baseline was established on 2026-08-12 against codex-cli 0.147.0-alpha.6.6.
+Runtime selection and Linux image generation were reverified on 2026-11-10 against 0.167.0.
 
 ---
 
 ## How the CLI is located
 
-`codex` is **not on `PATH`**. It ships inside the Codex desktop app at a
-content-hash directory:
+On Archmagi/WSL2, `codex_image.py` defaults to the Linux npm CLI at `~/.local/bin/codex`
+(0.167.0 measured 2026-11-10), with `CODEX_HOME=~/.codex`. The shared selector lives in
+`src/RimMandrake/Utils/codex_side.py`: `RM_CODEX_SIDE=wsl|win`; wrappers also expose `--codex`.
+Other hosts retain the previous discovery behavior. Linux exec paths are Linux paths; no drive staging
+or Windows sandbox setup is used. Scratch defaults to `~/.local/state/rimmandrake/scratch/codex`.
+`CODEX_HOME`, `CODEX_SCRATCH` and isolated `--codex-home` remain supported.
+A real low-effort Linux `$imagegen` call produced a 1254×1254 RGB PNG on 2026-11-10.
+
+For `win`, the desktop app installs `codex.exe` at:
 
 ```
 C:\Users\<user>\AppData\Local\OpenAI\Codex\bin\<hash>\codex.exe
@@ -35,7 +41,7 @@ CODEX_CLI_PATH = 'C:\Users\Mandrake\AppData\Local\OpenAI\Codex\bin\8e8bf206e63ac
 `codex_image.py` resolves it in this order: `config.toml` → `PATH` →
 newest `bin/*/codex.exe`. If all three miss it says so rather than guessing.
 
-**It is a Windows binary invoked from WSL.** Any path handed to it must be a
+**On the Windows side**, any path handed to `codex.exe` must be a
 Windows path — `codex_image.py` converts via `wslpath -w`, falling back to the
 `/mnt/<drive>/` convention. Paths under `/tmp` or `~` in WSL are **not visible
 to Windows**, and `codex.exe` fails from an ext4 cwd. `codex_image.py` and
@@ -54,7 +60,7 @@ that staging dir.
 
 | auth mode | built-in `image_gen` | CLI fallback `image_gen.py` | native transparency |
 |---|---|---|---|
-| `chatgpt` (this one) | ✅ | ❌ needs `OPENAI_API_KEY` | ❌ |
+| `chatgpt` (this one) | ✅ | ❌ needs `OPENAI_API_KEY` | ✅ via built-in tool |
 | `apikey` | ✅ | ✅ | ✅ via `gpt-image-1.5` |
 
 **This is the single most consequential fact in this file.** A ChatGPT login
@@ -117,20 +123,11 @@ follows it, and the failure is silent rather than an error. When a CLI accepts
 `<FILE>...`, terminate it explicitly rather than relying on the next token
 looking un-filename-like.
 
-## Transparency: why chroma-key is mandatory here
+## Transparency: request real alpha
 
-The built-in tool exposes **no transparency control**. Codex's own skill
-documents the workaround: generate on a flat chroma-key background, then remove
-the key locally.
-
-Codex ships `scripts/remove_chroma_key.py` for this — **but it imports Pillow,
-which is not installed in this WSL environment.** Hence
-`scripts/chroma_key.py`, which does the same job on `pnglib` and the standard
-library alone.
-
-Key colour guidance from the Codex skill, confirmed sensible in testing:
-default `#00ff00`; `#ff00ff` when the subject is green; avoid `#0000ff` for
-blue subjects.
+The built-in tool can produce a genuine alpha channel when asked for a transparent background.
+Preserve and measure the returned alpha. Do not generate on chroma-key backgrounds or remove
+backgrounds as a substitute; `scripts/chroma_key.py` remains for old keyed artifacts only.
 
 ## Size limits — these bite on RimWorld sprites
 

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
+from codex_side import codex_side
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import hashlib
@@ -35,7 +36,7 @@ import flier_guard as FG  # noqa: E402
 DEFAULT_ROWS = REPO / "Transient/facing_rescale_2026-10-16/after2.json"
 CODEX = REPO / "skills/generating-images/scripts/codex_image.py"
 MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")      # what rm-artpiped runs; codex_image's gpt-5.5 default 400s on ChatGPT auth
-CODEX_HOME = os.environ.get("FACING_REGEN_CODEX_HOME", rm_str("scratch", "codex_home_facing_regen"))   # own home (one per parallel worker): never harvest the daemon's renders
+CODEX_HOME = os.environ.get("FACING_REGEN_CODEX_HOME", str(Path.home() / ".codex_workers/facing_regen") if codex_side() == "wsl" else rm_str("scratch", "codex_home_facing_regen"))   # own home (one per parallel worker): never harvest the daemon's renders
 
 SURFACE = {
     "north": ("REAR view", "seen from directly behind: its back, hindquarters, tail base and the backs of its legs "

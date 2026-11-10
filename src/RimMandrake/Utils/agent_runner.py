@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Codex transport for role workers. Task acceptance belongs to the caller.
 
-Ext4 work uses the existing drive-local Codex scratch and wsl.exe commands against
-the original clone (GIT_WORKFLOW.md); no second working tree or UNC file reads.
+Linux Codex works directly in the clone. Windows Codex uses drive-local scratch
+and wsl.exe commands against the original clone (GIT_WORKFLOW.md).
 """
 import argparse
 import json
@@ -48,8 +48,8 @@ def quota_gate(points=None):
 def launch_argv(cwd, result, model=None, effort=None, sandbox=None, exe=None):
     argv = [str(exe or CX.find_codex_cli()), "exec", "--sandbox",
             sandbox or os.environ.get("CODEX_SANDBOX", "workspace-write"),
-            "--skip-git-repo-check", "-C", CX.wsl_to_win(Path(cwd)),
-            "-o", CX.wsl_to_win(Path(result)), "--json",
+            "--skip-git-repo-check", "-C", CX.codex_path(Path(cwd)),
+            "-o", CX.codex_path(Path(result)), "--json",
             "-c", 'model_reasoning_effort="%s"' % (effort or os.environ.get("CODEX_EFFORT", "high"))]
     model = model or os.environ.get("CODEX_MODEL")
     if model:
@@ -98,7 +98,7 @@ def event_error(stream):
 
 
 def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
-        sandbox=None, timeout=7200, invoke=subprocess.run, meter=None, agent=None):
+        sandbox=None, timeout=7200, invoke=subprocess.run, meter=None, agent=None, codex_home=None):
     """Always persist a runner-specific spend/result envelope, including refused runs.
 
     stdout is retained verbatim as events; -o is only the final message. The
@@ -116,12 +116,12 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
             prompt = p.read_text(encoding="utf-8") + "\n\n" + prompt
         work = cwd
         target = result
-        if not CX.on_windows_drive(cwd):
+        if CX.codex_side() == "win" and not CX.on_windows_drive(cwd):
             work = CX.CODEX_SCRATCH / ("agent-" + uuid.uuid4().hex)
             work.mkdir(parents=True, exist_ok=False)
             target = work / "last-message.txt"
             rec["staging_cwd"] = str(work)
-        if CX.in_wsl():
+        if CX.codex_side() == "win" and CX.in_wsl():
             # Windows shell tools enter WSL explicitly: every read/write/test/git
             # operates on the leased clone, never on a mirror or copied snapshot.
             prefix = ("Runtime adapter: your shell is Windows. The repository is in WSL Ubuntu at %s. "
@@ -139,10 +139,13 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
         rec["sandbox"] = sandbox or os.environ.get("CODEX_SANDBOX", "workspace-write")
         rec["model"] = model or os.environ.get("CODEX_MODEL") or "config"
         rec["effort"] = effort or os.environ.get("CODEX_EFFORT", "high")
+        rec["codex_side"] = CX.codex_side()
+        home = CX.codex_home(codex_home)
+        rec["codex_home"] = str(home)
         target.unlink(missing_ok=True)
         argv = launch_argv(work, target, model, effort, sandbox)
         proc = invoke(argv, input=prompt, cwd=str(work), capture_output=True,
-                      text=True, errors="replace", timeout=timeout)
+                      text=True, errors="replace", timeout=timeout, env=CX.child_env(home))
         stream, rc = proc.stdout or "", proc.returncode
         error = event_error(stream)
         if rc:
@@ -176,14 +179,17 @@ def main(argv=None):
     ap.add_argument("--result", required=True)
     ap.add_argument("--events", required=True)
     ap.add_argument("--spend", required=True)
+    ap.add_argument("--codex", choices=("wsl", "win"), help="override RM_CODEX_SIDE (Archmagi/WSL default: wsl)")
+    ap.add_argument("--codex-home", help="isolated home, seeded from the selected runtime if new")
     ap.add_argument("--model")
     ap.add_argument("--effort")
     ap.add_argument("--sandbox", choices=("read-only", "workspace-write", "danger-full-access"))
     ap.add_argument("--timeout", type=int, default=7200)
     a = ap.parse_args(argv)
+    CX.select_codex(a.codex)
     prompt = a.prompt if a.prompt is not None else sys.stdin.read()
     res = run(a.cwd, prompt, a.result, a.events, a.spend,
-              model=a.model, effort=a.effort, sandbox=a.sandbox, timeout=a.timeout, agent=a.agent)
+              model=a.model, effort=a.effort, sandbox=a.sandbox, timeout=a.timeout, agent=a.agent, codex_home=a.codex_home)
     print(json.dumps(res))
     return 1 if res["is_error"] else 0
 

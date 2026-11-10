@@ -8,6 +8,8 @@ Conform + install: round5_art_install.py (same folder).
 """
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from codex_side import codex_side
+from pathlib import Path
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, subprocess, sys, threading, queue, time
 
@@ -151,7 +153,8 @@ if __name__ == "__main__":
         q.put(j)
     log = open(R + "/" + wave + ".log", "a")
     def worker(i):
-        home = R + "/homes/w%d" % (i + int(os.environ.get("R5_HOME_OFFSET", "0")))
+        home_root = str(Path.home() / ".codex_workers/mc_r5") if codex_side() == "wsl" else R + "/homes"
+        home = home_root + "/w%d" % (i + int(os.environ.get("R5_HOME_OFFSET", "0")))
         while True:
             try:
                 j = q.get_nowait()

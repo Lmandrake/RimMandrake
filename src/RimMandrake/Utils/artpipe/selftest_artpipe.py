@@ -40,6 +40,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+os.environ["RM_CODEX_SIDE"] = "win"  # Windows sandbox/template fixtures; Linux routing has its own suite.
 import common  # noqa: E402
 import artpiped  # noqa: E402
 import fill_queue  # noqa: E402 — row_to_jobs() unit tests (ARTPIPE_FACING_COHERENCE_1 §2)

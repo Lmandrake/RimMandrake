@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Ask GPT (codex.exe exec) a question about some files, from any clone.
+"""Ask GPT (codex exec) a question about some files, from any clone.
 
     python3 src/RimMandrake/Utils/gpt_consult.py "Review this plan for holes" -f design/x.md -f src/y.py
     python3 src/RimMandrake/Utils/gpt_consult.py --prompt-file ask.md -f a.py --out review.md
 
-The named files are INLINED into the prompt (codex's sandboxed file reads are flaky, and it hangs
-reading \\\\wsl.localhost paths), and codex runs with its cwd in
-D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-<ts>\\ (it fails from an ext4 cwd) — git_workflow_plan_2026-10-01.md
-§2.3. The prompt goes in on stdin (no Windows command-line length limit). The answer is printed,
-and written to --out when given. Default model: gpt-6.1-sol at high effort (owner,
-2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.
+The named files are inlined into the prompt. On Archmagi/WSL the Linux CLI is the default;
+--codex win (or RM_CODEX_SIDE=win) selects Windows with drive-local staging and Windows paths.
+The prompt goes on stdin. CODEX_HOME defaults to the selected runtime's login; --codex-home
+uses an existing isolated login. Default model: gpt-6.1-sol, high effort (CODEX_CONSULT_MODEL overrides).
 
 Every call is metered in gpt_call_log (job, model, rc, real tokens, seconds, files inlined, and its review ROUND:
 `--round NAME` or $RM_CONSULT_ROUND). One round = one review pass over one subject; give every call of that pass the
@@ -142,6 +140,7 @@ def main(argv=None):
     ap.add_argument("--effort", default="high", help="model_reasoning_effort (default high)")
     ap.add_argument("--timeout", type=int, default=1500)
     ap.add_argument("--keep", action="store_true", help="keep the scratch job dir")
+    ap.add_argument("--codex", choices=("wsl", "win"), help="override RM_CODEX_SIDE (Archmagi/WSL default: wsl)")
     ap.add_argument("--codex-home", help="run codex with this CODEX_HOME (must already hold a login; never seeded here)")
     ap.add_argument("--lockdown", action="store_true",
                     help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
@@ -150,14 +149,15 @@ def main(argv=None):
     ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
                                        "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
+    codex_image.select_codex(a.codex)
     if a.round is not None and not ROUND_RE.match(a.round):
         ap.error("--round %r: 1-80 chars of A-Z a-z 0-9 _ . : - (starting alphanumeric)" % a.round)
     refused = codex_advice.gate("gpt_consult", a.required)
     if refused:
         return refused
-    env = None
+    env = codex_image.child_env(codex_image.base_codex_home())
     if a.codex_home:
-        home = Path(a.codex_home)
+        home = Path(a.codex_home).expanduser().resolve()
         if not (home / "auth.json").is_file():
             sys.exit("--codex-home %s has no auth.json (set it up first; gpt_consult never seeds a home)" % home)
         env = codex_image.child_env(home)
@@ -176,12 +176,12 @@ def main(argv=None):
     (job / "prompt.md").write_text(prompt, encoding="utf-8")
     answer = job / "answer.md"
     cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only",
-           "--skip-git-repo-check", "-o", codex_image.wsl_to_win(answer),
+           "--skip-git-repo-check", "-o", codex_image.codex_path(answer),
            "-c", 'model_reasoning_effort="%s"' % a.effort]
     if a.model and a.model != "inherit":
         cmd += ["-m", a.model]
     if a.lockdown:
-        cmd += LOCKDOWN_ARGS + ["-C", codex_image.wsl_to_win(job)]
+        cmd += LOCKDOWN_ARGS + ["-C", codex_image.codex_path(job)]
     if a.events:
         cmd.append("--json")
     for i, img in enumerate(a.image):                       # codex reads Windows paths; stage beside the prompt
@@ -190,12 +190,12 @@ def main(argv=None):
             sys.exit("cannot read image %s" % img)
         dst = job / ("img%02d_%s" % (i, src.name))
         shutil.copyfile(src, dst)
-        cmd += ["-i", codex_image.wsl_to_win(dst)]
+        cmd += ["-i", codex_image.codex_path(dst)]
     if a.image:
         cmd.append("--")                                    # -i is VARIADIC: without this it eats the "-" below
     cmd.append("-")                                         # prompt from stdin
     print("[consult] %d chars, %d file(s), %d image(s), model %s, round %s, job %s" % (
-        len(prompt), len(a.file), len(a.image), a.model, a.round or "-", codex_image.wsl_to_win(job)), file=sys.stderr)
+        len(prompt), len(a.file), len(a.image), a.model, a.round or "-", codex_image.codex_path(job)), file=sys.stderr)
     started = time.time()
     events = Path(a.events) if a.events else None
     if events:
@@ -216,8 +216,9 @@ def main(argv=None):
     etok = None
     if events:
         etok = events_tokens(events.read_text(encoding="utf-8", errors="replace") if events.is_file() else "")
-        meta = {"job_win": codex_image.wsl_to_win(job), "job": str(job), "rc": rc, "lockdown": bool(a.lockdown),
-                "codex_home_win": env["CODEX_HOME"] if env else None,
+        meta = {"job_win": codex_image.codex_path(job), "job": str(job), "rc": rc, "lockdown": bool(a.lockdown),
+                "codex_home_win": env["CODEX_HOME"] if codex_image.codex_side() == "win" else None,
+                "codex_home": env["CODEX_HOME"], "codex_side": codex_image.codex_side(),
                 "refused_tool_calls": len(REFUSED_TOOL_RE.findall(clog or ""))}
         Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
     _log_call(job.name, a.model, prompt, answer.read_text(encoding="utf-8", errors="replace") if answered else "", rc, clog, etok,

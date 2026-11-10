@@ -9,11 +9,17 @@ Claude cannot synthesise raster images. Codex can. This skill makes Codex the
 image worker and keeps Claude as the controller — which matters, because the
 controller is the half that can *look at the result and iterate*.
 
-**Everything here was verified on 2026-08-12** against codex-cli
-0.147.0-alpha.6.6. Facts that came from reading the installed Codex skill or
-running the binary are in `references/codex-contract.md`. Do not re-derive them.
+The Windows baseline dates to 2026-08-12; runtime selection and Linux image generation
+were reverified on 2026-11-10 with codex-cli 0.167.0. Measured facts live in
+`references/codex-contract.md`.
 
 ## Check the toolchain first
+
+On Archmagi/WSL2 the default is Linux `~/.local/bin/codex`, with login and image cache in `~/.codex`.
+`RM_CODEX_SIDE=win` selects the Windows installation; `generate`, `edit` and `probe` also accept
+`--codex wsl|win`. Linux paths stay native, including ext4 `--codex-home` directories. Linux worker
+homes skip Windows sandbox templates/UAC; the Windows precautions below apply only to `win`.
+Other hosts retain their previous default. Both installations share account quota.
 
 ```bash
 python skills/generating-images/scripts/codex_image.py probe

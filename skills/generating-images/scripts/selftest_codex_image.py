@@ -25,6 +25,7 @@ import zlib
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+os.environ["RM_CODEX_SIDE"] = "win"  # This suite exercises the Windows sandbox/staging contract.
 import codex_image as ci  # noqa: E402
 
 # Temp dirs here are on ext4, which would route every do_image through the D:-drive staging path.

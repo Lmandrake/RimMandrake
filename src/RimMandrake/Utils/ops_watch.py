@@ -539,6 +539,7 @@ def c_accounts(now, rules, ctx):
 
 
 def codex_dirs():
+    # Both installs share one account: always merge both histories, irrespective of RM_CODEX_SIDE.
     import csuite_codex_limits as CX
     env = os.environ.get("RM_CODEX_SESSIONS")
     return env.split(os.pathsep) if env else list(CX.DIRS)

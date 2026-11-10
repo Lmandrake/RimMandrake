@@ -38,7 +38,9 @@ WORKERS = 3
 # codex.exe processes on one thread-writer lock, and - worse - makes the
 # wrapper's before/after diff of generated_images/ able to harvest a SIBLING's
 # image. Must live under /mnt/<drive>/: codex.exe is a Windows binary.
-WORKER_HOMES = "/mnt/c/Users/Mandrake/.codex_workers"
+sys.path.insert(0, str(_RM_ROOT / "src/RimMandrake/Utils"))
+from codex_side import codex_side
+WORKER_HOMES = str(Path.home() / ".codex_workers") if codex_side() == "wsl" else "/mnt/c/Users/Mandrake/.codex_workers"
 _slot = threading.local()
 _slots = iter(range(WORKERS))
 _slot_lock = threading.Lock()

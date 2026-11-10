@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """codex_image.py — drive Codex's built-in $imagegen and harvest the result.
 
-Codex runs as a Windows binary; this script is usually invoked from WSL. It
-handles locating the CLI, translating paths across the WSL/Windows boundary,
+Codex defaults to the Linux CLI on Archmagi/WSL; RM_CODEX_SIDE=win selects
+the Windows CLI. It handles locating the CLI and translating Windows paths,
 and — the part that actually matters — recovering the generated file even when
 the Codex agent does not copy it where it was told to.
 
@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+from codex_side import codex_side, in_wsl
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
 import base64
@@ -80,7 +81,26 @@ DEFAULT_MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")
 # git_workflow_plan_2026-10-01.md §2.3). When a caller's output/input paths are not on a Windows
 # drive (a repo clone on ext4), the call is staged: cwd + inputs copied into
 # D:\ClaudeWork\rimmandrake\scratch\codex\<job>\, run there, outputs copied back. Untracked, outside any repo.
-CODEX_SCRATCH = Path(os.environ.get("CODEX_SCRATCH", rm_str("scratch", "codex")))
+def scratch_root() -> Path:
+    default = (str(Path.home() / ".local/state/rimmandrake/scratch/codex")
+               if codex_side() == "wsl" else rm_str("scratch", "codex"))
+    return Path(os.environ.get("CODEX_SCRATCH", default)).expanduser()
+
+
+CODEX_SCRATCH = scratch_root()
+
+
+def select_codex(side: str | None):
+    """Apply a CLI override before resolving any homes, paths or executable."""
+    if side is not None:
+        os.environ["RM_CODEX_SIDE"] = codex_side(side)
+        global CODEX_SCRATCH, FOREIGN_THUMB_DIR
+        CODEX_SCRATCH = scratch_root()
+        FOREIGN_THUMB_DIR = CODEX_SCRATCH / "foreign_guard_thumbs"
+
+
+def codex_path(p: Path) -> str:
+    return str(Path(p).resolve()) if codex_side() == "wsl" else wsl_to_win(Path(p))
 REASONING_EFFORTS = ("low", "medium", "high", "xhigh", "max", "inherit")
 
 # Files copied when seeding an isolated CODEX_HOME. MEASURED 2026-09-06: with
@@ -361,6 +381,8 @@ def ensure_home_sandbox(home: Path, base: Path | None = None) -> tuple[bool, str
     machine, when its runner build is unknown, or when, after syncing, the
     home's state still differs from the base's. On False the caller must NOT
     launch codex."""
+    if codex_side() == "wsl":
+        return True, "Linux sandbox: no Windows setup required"
     base = base if base is not None else base_codex_home()
     cur, why = sandbox_state_current(base)
     if cur is not True:
@@ -582,6 +604,8 @@ def base_codex_home() -> Path:
         p = Path(env)
         if p.is_dir():
             return p
+    if codex_side() == "wsl":
+        return Path.home() / ".codex"
     for base in (windows_home(), Path.home()):
         if base and (base / ".codex").is_dir():
             return base / ".codex"
@@ -603,7 +627,7 @@ def codex_home(override: str | Path | None = None) -> Path:
         return base_codex_home()
 
     home = Path(override).expanduser()
-    if in_wsl() and not str(home.resolve() if home.exists() else home).startswith("/mnt/"):
+    if codex_side() == "win" and in_wsl() and not str(home.resolve() if home.exists() else home).startswith("/mnt/"):
         raise EnvError(
             f"--codex-home {home} is not visible to Windows. codex.exe is a "
             f"Windows binary, so a worker home must live under /mnt/<drive>/, "
@@ -641,6 +665,8 @@ def seed_codex_home(base: Path, home: Path) -> Path:
     print(f"note: seeded worker CODEX_HOME {home} from {base} "
           f"({', '.join(copied) or 'nothing new'})", file=sys.stderr)
 
+    if codex_side() == "wsl":
+        return home
     if seed_sandbox_from_template(home, base):
         print(f"note: seeded {home}'s sandbox setup from "
               f"{sandbox_seed_template()} - no UAC prompt expected", file=sys.stderr)
@@ -770,8 +796,8 @@ def child_env(home: Path) -> dict[str, str]:
     harvest one directory while codex wrote to another, silently.
     """
     env = dict(os.environ)
-    env["CODEX_HOME"] = wsl_to_win(home) if in_wsl() else str(home)
-    if in_wsl():
+    env["CODEX_HOME"] = codex_path(home)
+    if in_wsl() and codex_side() == "win":
         names = [n for n in env.get("WSLENV", "").split(":") if n]
         if not any(n.split("/")[0] == "CODEX_HOME" for n in names):
             names.append("CODEX_HOME")
@@ -786,6 +812,14 @@ def find_codex_cli() -> Path:
     every update, so the hash is never hardcoded. Order: config.toml (which the
     app itself keeps current) -> PATH -> glob of the install root.
     """
+    if codex_side() == "wsl":
+        local = Path.home() / ".local/bin/codex"
+        if local.is_file():
+            return local
+        on_path = shutil.which("codex")
+        if on_path and not on_path.lower().endswith(".exe"):
+            return Path(on_path)
+        raise EnvError("Cannot find Linux codex. Checked ~/.local/bin/codex and $PATH.")
     home = base_codex_home()
 
     cfg = home / "config.toml"
@@ -799,7 +833,11 @@ def find_codex_cli() -> Path:
             if p.is_file():
                 return p
 
-    on_path = shutil.which("codex") or shutil.which("codex.exe")
+    on_path = shutil.which("codex")
+    # On WSL, selecting Windows must never fall through to the Linux npm CLI.
+    if in_wsl() and on_path and not on_path.lower().endswith(".exe"):
+        on_path = None
+    on_path = on_path or shutil.which("codex.exe")
     if on_path:
         return Path(on_path)
 
@@ -841,10 +879,6 @@ def auth_mode(home: Path | None = None) -> str:
 # --------------------------------------------------------------------------
 # path translation
 # --------------------------------------------------------------------------
-
-def in_wsl() -> bool:
-    return "microsoft" in os.uname().release.lower()
-
 
 def wsl_to_win(p: Path) -> str:
     """WSL path -> Windows path, for handing to codex.exe."""
@@ -1350,13 +1384,13 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
     if reasoning_effort and reasoning_effort != "inherit":
         cmd += ["-c", f'model_reasoning_effort="{reasoning_effort}"']
     if output_schema is not None:
-        cmd += ["--output-schema", wsl_to_win(output_schema)]
+        cmd += ["--output-schema", codex_path(output_schema)]
     if output_last_message is not None:
-        cmd += ["-o", wsl_to_win(output_last_message)]
+        cmd += ["-o", codex_path(output_last_message)]
     for img in images:
         if not img.is_file():
             raise EnvError(f"Input image does not exist: {img}")
-        cmd += ["-i", wsl_to_win(img)]
+        cmd += ["-i", codex_path(img)]
     # `-i/--image <FILE>...` is VARIADIC. Without a `--` terminator it keeps
     # consuming positionals, swallows the prompt as another filename, and codex
     # then falls back to reading the prompt from stdin - which is empty, so it
@@ -1365,7 +1399,7 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
         cmd.append("--")
     cmd.append(prompt)
 
-    env = child_env(home) if home is not None else None
+    env = child_env(home or base_codex_home())
 
     if verbose:
         print(f"[codex] {cli}", file=sys.stderr)
@@ -1430,6 +1464,8 @@ def kill_orphaned_sandbox_helpers(home: Path) -> int:
     never against the shared default home, where a concurrent unrelated
     call could legitimately be running.
     """
+    if codex_side() == "wsl":
+        return 0
     if not in_wsl():
         return 0
     try:
@@ -1477,6 +1513,8 @@ def on_windows_drive(p: Path) -> bool:
 
 
 def needs_staging(args) -> bool:
+    if codex_side() == "wsl":
+        return False
     paths = [Path(args.out).resolve().parent] + [Path(i) for i in (args.image or [])]
     for attr in ("output_schema", "output_last_message"):
         if getattr(args, attr, None):
@@ -1577,7 +1615,7 @@ def _do_image(args, finalize=None) -> int:
     # SANDBOX_UAC_ONE_STATE: never launch codex.exe against a home whose sandbox state would make it run
     # the elevated setup (a UAC dialog on the owner's screen). Exit 2 = environment not usable, launch
     # never attempted. A human deliberately re-running setup sets CODEX_ALLOW_SANDBOX_SETUP=1.
-    if os.environ.get("CODEX_ALLOW_SANDBOX_SETUP") != "1":
+    if codex_side() == "win" and os.environ.get("CODEX_ALLOW_SANDBOX_SETUP") != "1":
         ok, why = ensure_home_sandbox(home)
         if not ok:
             print(f"ERROR sandbox-not-ready: refusing to launch codex (would raise the UAC sandbox "
@@ -1720,13 +1758,13 @@ def main() -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def home_flag(p):
+        p.add_argument("--codex", choices=("wsl", "win"), help="override RM_CODEX_SIDE (Archmagi/WSL default: wsl)")
         p.add_argument("--codex-home", metavar="DIR", default=None,
                        help="run this call against its own CODEX_HOME, so "
                             "concurrent workers cannot collide over one "
                             "thread-writer lock or harvest each other's "
-                            "images. Seeded from the shared home if new. Must "
-                            "live under /mnt/<drive>/ - codex.exe is a Windows "
-                            "binary. Default: the shared home.")
+                            "images. Seeded from the selected shared home if new. "
+                            "Windows homes must live under /mnt/<drive>/. Default: the shared home.")
 
     def common(p):
         p.add_argument("--out", required=True, help="destination PNG path")
@@ -1773,6 +1811,7 @@ def main() -> int:
 
     args = ap.parse_args()
     try:
+        select_codex(args.codex)
         return args.func(args)
     except EnvError as exc:
         print(f"ERROR {exc}", file=sys.stderr)

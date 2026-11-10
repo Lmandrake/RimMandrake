@@ -10,12 +10,14 @@ procedural (round6_art_install.py), not generated. Report: Transient/mc_art_roun
 """
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[5] / "src" / "RimMandrake" / "Utils"))
+from codex_side import codex_side
+from pathlib import Path
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import os, subprocess, sys, threading, queue, time
 from PIL import Image
 
 R = rm_str("scratch", "mc_r6")
-HOMES = rm_str("scratch", "mc_r5", "homes")
+HOMES = str(Path.home() / ".codex_workers/mc_r5") if codex_side() == "wsl" else rm_str("scratch", "mc_r5", "homes")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
 CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
 HOSE = os.path.join(REPO, "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose")  # moved at the hose port
