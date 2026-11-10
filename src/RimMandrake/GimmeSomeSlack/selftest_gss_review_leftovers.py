@@ -28,6 +28,19 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_style_restores_floor_ripple_after_aborted_restyle(self):
+        probes = []
+        def ap(cmd):
+            if cmd.startswith('crestyle:'):
+                raise RuntimeError('governor stopped')
+            return {'success': True}
+        B = SimpleNamespace(call=lambda *a, **kw: {'success': True}, ticks=lambda n: None, ap=ap, probe=probes.append)
+        with patch.object(VS, '_cst', return_value={}), patch.object(VS.V, 'reveal'), \
+             patch.object(VS.V, 'frame_fit'), patch.object(VS.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'governor stopped'):
+                VS.s9_runs(B, [], {})
+        self.assertEqual(probes[-2:], ['set:floorRipple=False', 'set:floorRipple=True'])
+
     def test_style_controls_reject_missing_members_and_counters(self):
         B = SimpleNamespace(call=lambda *a, **kw: {'success': True}, ticks=lambda n: None,
                             ap=lambda cmd: {'success': True}, probe=lambda cmd: None)

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Source-shape guards for two GSS findings whose code is Verse-bound (no offline C# harness can run it):
+"""Source-shape guards for GSS findings whose code is Verse-bound (no offline C# harness can run it):
 
   GSS_MULTILINK_FIX_PIPE_POLE_RANGE   the cmultilink :plan probe must plan with CompAerialAnchor.AutoLinkPairs (per-kind
       grouping, AerialLineProfiles.RangeFor) -- the same helper the real "Auto-link selected" gizmo uses -- never the power
       AerialSettings.Range for every kind.
   GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS   FreshPieces (the fresh/sameframe oracle) must set opt.StraightPlugIds from
       CordWorldAdapter.TapIds(map) before Build, exactly as production Rebuild does.
+  C#4 owner-section invalidation queues a GSS layer regeneration after piece publication, even offscreen.
+  D#2 retired fallen lays release their WhipCursors and native tail meshes.
 
 --mutate proves each guard can fail by running it on text with the original defect restored. Exit 0 PASS, 1 FAIL."""
 import os
