@@ -27,6 +27,39 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_theft_retry_drops_old_passes_and_downstream_state(self):
+        prior = {'rows': [{'id': rid, 'status': 'PASS'} for rid in A.THEFT_PHASE_ROW.values()],
+                 'catch': {'tick': 1}, 'day': {'done': True}, 'stop': {'done': True}, 'stopFrom': {'tick': 9}}
+        restarted = copy.deepcopy(prior)
+        A.restart_theft_phase(restarted, 'catch')
+        self.assertFalse(restarted['rows'])
+        self.assertFalse(any(k in restarted for k in ('catch', 'day', 'stop', 'stopFrom')))
+        resumed = copy.deepcopy(prior)
+        resumed['day'] = {'played': 123, 'done': False}
+        A.restart_theft_phase(resumed, 'day')
+        self.assertEqual(resumed['day']['played'], 123)
+        self.assertNotIn('stopFrom', resumed)
+        self.assertEqual(A.theft_phase_gap('day', resumed['rows']), A.THEFT_PHASE_ROW['day'])
+        stopped = copy.deepcopy(prior)
+        A.restart_theft_phase(stopped, 'stop')
+        self.assertIn('stopFrom', stopped)  # an unfinished stop still resumes its own progress
+
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td) / 'result.json'
+            out.write_text(json.dumps(prior))
+            args = SimpleNamespace(out=str(out), origin=None, theft='catch')
+            def catch(B, rows, res):
+                res['catch'] = {'tick': 100}
+                rows.append({'id': A.THEFT_PHASE_ROW['catch'], 'status': 'PASS'})
+            with patch.object(A, 'A', return_value=object()), patch.object(A, 'theft_catch', side_effect=catch):
+                fresh = A.run_theft(args)
+            out.write_text(json.dumps(fresh))
+            args.theft = 'day'
+            with patch.object(A, 'A', return_value=object()), patch.object(A, 'theft_day'):
+                result = A.run_theft(args)  # phase wall budget ended without writing a row
+            self.assertTrue(result['aborted'])
+            self.assertEqual(result['rows'][-1]['status'], 'UNMEASURED')
+
     def test_wire_trial_rejects_missing_health_and_positions(self):
         valid = {'id': 7, 'pos': [3, 4], 'dead': False, 'health': {'hediffs': []}}
 

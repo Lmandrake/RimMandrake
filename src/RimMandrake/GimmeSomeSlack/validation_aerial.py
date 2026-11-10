@@ -1347,6 +1347,23 @@ def m19m_status(mixed_net, connects):
     return ("PASS" if connects else "FAIL"), "MOD"
 
 
+def restart_theft_phase(res, phase):
+    rows = res.setdefault("rows", [])
+    if phase == "catch":
+        rows[:] = [r for r in rows if not str(r.get("id", "")).startswith(("PT_A2_", "PT_A3_"))]
+        for key in ("catch", "day", "stop", "stopFrom"):
+            res.pop(key, None)
+    else:
+        obsolete = {THEFT_PHASE_ROW[phase]}
+        if phase == "day":
+            obsolete.add(THEFT_PHASE_ROW["stop"])
+            res.pop("stop", None)
+            res.pop("stopFrom", None)
+        rows[:] = [r for r in rows if r.get("id") not in obsolete]
+    rows[:] = [r for r in rows if not str(r.get("detail", "")).startswith(UNFINISHED)]
+    return rows
+
+
 def run_theft(args):
     global SHOTS
     SHOTS = os.path.join(V.REPO, "Transient", "power_theft_live_" + time.strftime("%Y%m%d"))
@@ -1361,7 +1378,7 @@ def run_theft(args):
     if args.origin and not res.get("origin"):
         res["origin"] = [int(v) for v in args.origin.split(",")]
     phase = args.theft
-    rows[:] = [r for r in rows if not str(r.get("detail", "")).startswith(UNFINISHED)]   # a resumed phase re-measures
+    restart_theft_phase(res, phase)
     {"catch": theft_catch, "day": theft_day, "stop": theft_stop}[phase](B, rows, res)
     res.setdefault("phases", []).append({"phase": phase, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
     gap = theft_phase_gap(phase, rows)
