@@ -114,9 +114,39 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             AStarHeapChecks.Run();         // CORDPLANNER_ASTAR_SHRINK_TO_ZERO_ALLOC: stamped arrays + indexed heap, identical routes: AStarHeapChecks.cs
             GptPreReleaseChecks.Run();     // GSS pre-release GPT consult 2026-10-15: GptPreReleaseChecks.cs
+            FuzzArgumentChecks();
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
+        }
+
+        private static void FuzzArgumentChecks()
+        {
+            foreach (string family in new[] { "cord", "hose", "", null, "cords", "aerial" })
+            {
+                var args = new List<string> { "--fuzz-scale", "0", "--fuzz-only" };
+                if (family != null) args.Add(family);
+                int beforeChecks = checks, beforeFails = fails;
+                int expected = family == "cords" || family == "aerial" ? 0 : 1;
+                TextWriter saved = Console.Out;
+                using var output = new StringWriter();
+                bool correct;
+                try
+                {
+                    Console.SetOut(output);
+                    GssFuzz.Run(args.ToArray());
+                    correct = checks == beforeChecks + expected && fails == beforeFails + expected
+                        && (expected == 0 || output.ToString().Contains("names no fuzz family"));
+                }
+                finally
+                {
+                    Console.SetOut(saved);
+                    checks = beforeChecks;
+                    fails = beforeFails;
+                }
+                Check(correct, "fuzz arguments: --fuzz-only [" + (family ?? "<missing>")
+                    + "] validates the family even when --fuzz-scale is zero");
+            }
         }
 
         private static void CurvatureRepairCheck()

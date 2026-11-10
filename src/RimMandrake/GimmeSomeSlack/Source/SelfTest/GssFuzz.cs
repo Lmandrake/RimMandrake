@@ -625,14 +625,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         public static void Run(string[] args)
         {
-            double scale = double.Parse(Arg(args, "--fuzz-scale") ?? "1", System.Globalization.CultureInfo.InvariantCulture);
-            if (scale <= 0) return;
+            // Regression: python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py
             string only = Arg(args, "--fuzz-only");
-            if (only != null && only != "cords" && only != "aerial")
+            if (Array.IndexOf(args, "--fuzz-only") >= 0 && only != "cords" && only != "aerial")
             {
-                Program.Check(false, "--fuzz-only " + only + " names no fuzz family (cords, aerial): an empty run proves nothing");
+                Program.Check(false, "--fuzz-only " + (only ?? "<missing>") + " names no fuzz family (cords, aerial): an empty run proves nothing");
                 return;
             }
+            double scale = double.Parse(Arg(args, "--fuzz-scale") ?? "1", System.Globalization.CultureInfo.InvariantCulture);
+            if (scale <= 0) return;
             string one = Arg(args, "--fuzz-seed");
             int Cases(int n) => Math.Max(1, (int)Math.Round(n * scale));
             var all = Stopwatch.StartNew();
