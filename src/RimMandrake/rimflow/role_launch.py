@@ -298,6 +298,8 @@ BAND_SLOTS = ("all", "none", "first", "last", "weekly", "quick", "quick_one")   
 def validate_role(role):
     """Raises ValueError naming the first schedule value decide_roles cannot use (review round U, N5): a role with a
     bad value is skipped with an alarm, never allowed to raise through the whole tick."""
+    if role.get("runner", "claude") not in ("claude", "codex"):
+        raise ValueError("runner must be claude or codex")
     bands = role.get("throttle_bands") or {}
     if not isinstance(bands, dict):
         raise ValueError("throttle_bands is not a mapping")
@@ -350,6 +352,20 @@ def validate_role(role):
             raise ValueError("slot %r + slot_late_s %r crosses local midnight" % (t, role["slot_late_s"]))
     if not isinstance(role.get("event_runs") or [], list):
         raise ValueError("event_runs is not a list")
+
+
+def codex_reading():
+    """Use the Codex meter, never a Claude account's headroom, for an opted-in run."""
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Utils"))
+    import agent_runner
+    try:
+        p = agent_runner.quota_gate()
+    except agent_runner.Refused as e:
+        return {"state": "UNMEASURED", "why": str(e)}
+    return {"state": "MEASURED", "account": None, "at": iso(time.time()),
+            "runway": p.get("codex.runway", {}).get("v"),
+            "week_left": 100 - p["codex.week_used_pct"]["v"],
+            "runway_m": p.get("codex.runway", {}).get("m", "UNMEASURED"), "week_left_m": "MEASURED"}
 
 
 def slot_blocked(allowed, job, role, now=None):
@@ -699,6 +715,8 @@ def spent_today(rs, now):
     day = day_of(now)
     tot = 0
     for r in rs.get("runs") or []:
+        if r.get("runner") == "codex":
+            continue
         if r.get("day") != day:
             continue
         tot += r["tokens"] if r.get("tokens") is not None else r.get("budget", 0)
@@ -897,9 +915,13 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                         % (name, run["unit"], ustate, tries))
             continue
         res = obs["result"](run)
+        is_codex = run.get("runner") == "codex" or (isinstance(res, dict) and res.get("runner") == "codex")
+        if is_codex:
+            run["runner"] = "codex"
+            run["codex_usage"] = res.get("codex_usage", "UNMEASURED") if isinstance(res, dict) else "UNMEASURED"
         tok = run_tokens(res)
         raw = raw_tokens(res)
-        if tok is None and obs.get("transcript"):
+        if tok is None and not is_codex and obs.get("transcript"):
             tu = obs["transcript"](run)          # no usable result: measure what it spent, never charge the budget
             if tu is not None:
                 tok, raw = run_tokens({"usage": tu}), raw_tokens({"usage": tu})
@@ -907,7 +929,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
         run["tokens"] = tok                     # input-equivalent (TOKEN_WEIGHTS): what caps and spend read
         run["raw_tokens"] = raw                 # the unweighted sum, for the record only
         run["token_unit"] = TOKEN_UNIT          # a run without it predates the weighting (its tokens are raw)
-        run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or run_tokens(res) is None) else "done"
+        run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or
+                                    (not is_codex and run_tokens(res) is None)) else "done"
         res = res if isinstance(res, dict) else {}
         models = sorted(res.get("modelUsage") or {})
         act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
@@ -954,7 +977,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     why="%s ran over budget %d times in 7 days (of %d measured runs): its budget or its scope is "
                     "wrong" % (name, len(over), finished_in_window(rs, now)),
                     raise_first="%s keeps overrunning: re-set its budget or narrow its scope." % name)
-        acct = account_death(res) if run["state"] == "failed" else None
+        acct = account_death(res) if run["state"] == "failed" and not is_codex else None
         if acct:
             # the account ended it, not the role: no role:<name>:failed (ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS)
             rec, why = resume_record(run, res, acct, now, cfg, resume_account(obs))
@@ -978,7 +1001,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                         rec["session"], iso(rec["due"]), rec["n"], RESUME_MAX)) if rec else "not resumed, " + why))
         elif run["state"] == "failed":
             text = res.get("result") or run.get("err_tail") or ""
-            back = auth_failed_back(rs, run, text, now)
+            back = auth_failed_back(rs, run, text, now) if not is_codex else False
             act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True, conductor_log=True,
                 raise_first="%s run failed%s." % (name, ": its slot is given back, it reruns once the login works"
                                                   if back else ""),
@@ -1325,6 +1348,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 % (name, ", ".join(missing)))
             return
         cfg = dict(ROLE_DEFAULTS, **role)
+        if (req or {}).get("runner"):
+            cfg["runner"] = req["runner"]
+        if cfg.get("runner") == "codex":
+            cfg.update(daily_token_cap=None, throttle_bands={}, token_aware=False)
         if role.get("enabled") and cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
                 blind=blind(name, "after_disabled"),
@@ -1515,7 +1542,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["waiting"] = [job["key"], wait]
             return
         rs.pop("waiting", None)
-        r = reading()
+        r = codex_reading() if cfg.get("runner") == "codex" else reading()
         if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
             # the role that reports the problem must not be refused by it (owner-authority brief 2026-11-01, Operations
             # slot 07:30 REFUSED 'accounts.system.runway is absent'): launch on the most cautious reading, say so
@@ -1615,7 +1642,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget" % (
                     name, job["trigger"], daily, spent, budget))
             return
-        go, pk = gate("role_launch") if gate else (True, {})
+        go, pk = gate("role_launch") if gate and cfg.get("runner", "claude") == "claude" else (True, {})
         if not go:
             if rs.get("account_hold") != job["key"]:     # journal the hold once per job, not every tick
                 act(do="role_hold", role=name, why="%s %s held for the account switch: %s" % (
@@ -1857,7 +1884,11 @@ def run_now_request(sch, a, now):
         concept = concept_dir(cfg, concept)
     elif concept:
         raise ValueError("--concept is for a stage-machine role, not %s" % role["name"])
-    return dict({"at": now, "by": by, "why": why, "mode": mode}, **({"concept": concept} if concept else {}))
+    selected = a.get("runner")
+    if selected is not None and selected not in ("claude", "codex"):
+        raise ValueError("runner must be claude or codex")
+    return dict({"at": now, "by": by, "why": why, "mode": mode},
+                **({"runner": selected} if selected else {}), **({"concept": concept} if concept else {}))
 
 
 def run_now_job(cfg, req, now):
@@ -1945,6 +1976,16 @@ def stage_open(concept, unit, budget, commit=False, sync=True):
         raise
 
 
+def stage_runner(concept, unit, selected):
+    """Persist the runner before a process can start, including interrupted runs."""
+    import designer_stage as DS
+    st = DS.load_state(concept)
+    if (st.get("running") or {}).get("run") != unit:
+        raise DS.Refused("stage runner does not name the open run")
+    st["runner"] = st["running"]["runner"] = selected
+    DS.write_json(DS.state_path(concept), st)
+
+
 def coverage_pre(concept):
     """The pre-launch step of a Designer run on a concept at stage 5: the coverage judge (coverage_judge.py), so the lock
     run starts signed or with the judge's verdict on file (CONCEPT_LOCK_UNBLOCK_SIGNER_NEVER_CALLED: nothing used to start
@@ -1969,9 +2010,18 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
     being abandoned behind the run's done/failed state (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK); a raise after the
     close returned is only said, since a second close would refuse the already-closed run."""
     owed = run.get("close_owed") if isinstance(run.get("close_owed"), dict) else {"since": now, "tries": 0}
+    if run.get("runner"):
+        cfg = dict(cfg, runner=run["runner"])
     run["close_owed"] = owed
     try:
-        ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
+        if (run.get("runner") == "codex" or res.get("runner") == "codex") and not obs.get("stage_close"):
+            import designer_stage as DS
+            ok, errs = DS.close_run(run["concept"], run["unit"], repo=DS.REPO,
+                                   runner="codex", usage=res.get("codex_usage", "UNMEASURED"),
+                                   transport_error=(res.get("result") or "no Codex transport result")
+                                   if res.get("is_error") or not res or run.get("state") == "failed" else None)
+        else:
+            ok, errs = (obs.get("stage_close") or stage_close)(run["concept"], run["unit"], tok)
     except Exception as e:  # noqa: BLE001 - said, and owed: the next tick closes it again
         owed["tries"] = int(owed.get("tries") or 0) + 1
         owed["why"] = "%s: %s" % (type(e).__name__, str(e)[:200])
@@ -2063,6 +2113,7 @@ def chain_next(name, rs, cfg, run, now, act, status):
         return None
     if not isinstance(st, dict) or st.get("status") != "ready":
         return None
+    cfg = dict(cfg, runner=run.get("runner", cfg.get("runner", "claude")))
     return chain_ask(name, rs, cfg, concept, st.get("stage"), now, act, run["unit"], run.get("item"),
                      run.get("mode") or "run", "%s run %s closed" % (name, run["unit"]),
                      "after run %s" % run["unit"])
@@ -2097,6 +2148,8 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     counts[key] = counts.get(key, 0) + 1
     req = {"at": now, "by": "Dispatcher", "mode": mode, "concept": concept, "chained_from": chained_from,
            "why": "chain: %s, stage %s ready" % (cause, stage)}
+    if cfg.get("runner"):
+        req["runner"] = cfg["runner"]
     if reasons:
         req["reasons"] = [str(r) for r in reasons]
     if isinstance(pending, dict):
@@ -2190,7 +2243,8 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
                 continue
             reasons = [str(w) for w in res[-1].get("why") or []]
         mins = int((now - since) // 60)
-        req = chain_ask(name, rs, cfg, concept, st.get("stage"), now, act, "orphan-sweep", cfg.get("ledger_item"),
+        selected = dict(cfg, runner=st["runner"]) if st.get("runner") else cfg
+        req = chain_ask(name, rs, selected, concept, st.get("stage"), now, act, "orphan-sweep", cfg.get("ledger_item"),
                         "run", "orphan sweep, %s %d min with nothing chained%s" % (
                             st.get("status"), mins, ", its rejection's cause gone" if reasons is not None else ""),
                         "for %d min with no run chained (orphan sweep)" % mins, reasons=reasons)
@@ -2508,6 +2562,9 @@ def launch_role(role, a):
     """The schedule entry execute launches for action `a`: the entry itself, or a copy carrying the model for this
     run's mode (mode_model); for a run-now, a copy that is enabled for this one launch and runs the request's
     pre-steps (a Designer run at stage 5: coverage_pre)."""
+    selected = (a.get("run_now") or {}).get("runner")
+    if selected:
+        role = dict(role, runner=selected)
     model = mode_model(role, a.get("mode"))
     if model != role["model"]:
         role = dict(role, model=model)
@@ -2673,6 +2730,20 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
+    selected = role.get("runner", "claude")
+    if selected not in ("claude", "codex"):
+        raise ValueError("runner must be claude or codex")
+    if selected == "codex":
+        if role.get("resume_session"):
+            raise ValueError("Codex cannot resume a Claude session")
+        cmd = ["python3", os.path.join(role["clone"], "src/RimMandrake/Utils/agent_runner.py"),
+               "--cwd", role["clone"], "--prompt", msg, "--result", out + ".last.txt",
+               "--events", out + ".events.jsonl", "--spend", out + ".spend.json",
+               "--timeout", str(scope_bound_s(role))]
+        for key, flag in (("codex_model", "--model"), ("codex_effort", "--effort"), ("codex_sandbox", "--sandbox")):
+            value = role.get(key) or os.environ.get(key.upper())
+            if value:
+                cmd += [flag, value]
     pre = None if role.get("resume_session") else role.get("pre_launch")    # a resume re-screens nothing
     if pre:
         # one argv, or a list of argvs run in order, each only if the one before exited 0
@@ -2741,6 +2812,13 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
     The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
+    if role.get("runner", "claude") == "codex":
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Utils"))
+        import agent_runner
+        try:
+            agent_runner.quota_gate()
+        except agent_runner.Refused as e:
+            return False, str(e), {}
     session = role.get("resume_session") or str(uuid.uuid4())     # claude -p --resume keeps the session id
     # a real launch owns a TMPDIR (run_tmp.py; TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP); a test's fake runner makes no dir
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
@@ -2751,7 +2829,10 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
     scope = role_scope(role["seat"], unit)
     return True, "unit %s started (scope %s)" % (unit, scope), {
-        "out": out, "err": err, "scope": scope, "marker": unit, "model_id": model_id(role["model"]), "session": session}
+        "out": out, "err": err, "scope": scope, "marker": unit,
+        "runner": role.get("runner", "claude"),
+        "model_id": (role.get("codex_model") or os.environ.get("CODEX_MODEL") or "config")
+        if role.get("runner") == "codex" else model_id(role["model"]), "session": session}
 
 
 def scope_of(unit, seat, runner=subprocess.run):
@@ -2946,6 +3027,7 @@ def main(argv=None):
     r.add_argument("--schedule", help="the dispatcher schedule (default dispatcher_schedule.json)")
     r.add_argument("--root", help="the dispatcher state dir (default the live one)")
     r.add_argument("--role", required=True)
+    r.add_argument("--runner", choices=("claude", "codex"), help="override the schedule runner for this run only")
     r.add_argument("--by")
     r.add_argument("--why")
     r.add_argument("--mode", help="/".join(RUN_NOW_MODES) + " (default the role's own scheduled mode)")
@@ -2974,7 +3056,7 @@ def main(argv=None):
         try:
             sch = D.load_schedule(a.schedule)
             req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
-                                        "concept": a.concept}, now)
+                                        "concept": a.concept, "runner": a.runner}, now)
             if a.covers_slot:
                 req["covers_slot"] = True
         except (OSError, ValueError) as e:

@@ -1101,8 +1101,12 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
     if st.get("running"):
         # the last run never closed: it is a retry now, and what it reserved is charged (conservative)
         prev = st["running"]
-        charge_state(st, prev.get("reserved", 0), "unmeasured", "run %s never closed" % prev.get("run"))
-        hist(st, "retry", "run %s never closed; its reservation %d is charged" % (prev.get("run"), prev.get("reserved", 0)))
+        if prev.get("runner") == "codex":
+            st.setdefault("runner_spend", []).append({"runner":"codex", "run":prev.get("run"), "usage":"UNMEASURED"})
+            hist(st, "retry", "Codex run %s never closed; usage UNMEASURED" % prev.get("run"))
+        else:
+            charge_state(st, prev.get("reserved", 0), "unmeasured", "run %s never closed" % prev.get("run"))
+            hist(st, "retry", "run %s never closed; its reservation %d is charged" % (prev.get("run"), prev.get("reserved", 0)))
         st["running"] = None
     why = reopen_if_stale(d, st, repo)
     try:
@@ -1244,17 +1248,26 @@ def charge(d, tokens, kind, ref):
     return st
 
 
-def close_run(d, run, tokens=None, repo=REPO):
+def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, transport_error=None):
     """The launcher, after the run ends: charge it (UNMEASURED = its whole reservation), then validate result.json
     and advance only on a valid result. -> (accepted?, reasons)."""
     st = load_state(d)
     r = st.get("running")
     if not r or r.get("run") != run:
         raise Refused("run %s is not the open run (%s)" % (run, (r or {}).get("run")))
-    charge_state(st, tokens if tokens is not None else r.get("reserved", 0),
-                 "stage" if tokens is not None else "unmeasured", "run %s" % run)
+    st["runner"] = runner
+    if runner == "codex":
+        st.setdefault("runner_spend", []).append({"runner": "codex", "run": run,
+                                                 "usage": usage if usage is not None else "UNMEASURED"})
+    elif runner == "claude":
+        charge_state(st, tokens if tokens is not None else r.get("reserved", 0),
+                     "stage" if tokens is not None else "unmeasured", "run %s" % run)
+    else:
+        raise Refused("runner must be claude or codex")
     res = read_json(os.path.join(d, "result.json"))
     errs = result_errors(res, d, st, repo)
+    if transport_error:
+        errs.append("Codex transport failed: %s" % str(transport_error)[:300])
     # an input changed while the run worked (a late owner reply, an edited artifact it did not make): the result is
     # judged against what the run was given, so a done result whose dependencies moved underneath is refused
     if not errs and res.get("outcome") == "done":

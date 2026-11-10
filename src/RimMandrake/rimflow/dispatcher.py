@@ -1663,6 +1663,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 # and the budget reservation are written before the run exists, so a refusal here is
                                 # a launch that never happened (the except below gives the slot back)
                                 fx.get("stage_open", RL.stage_open)(a["concept"], a["unit"], a["budget"], commit=True)
+                                if role.get("runner") == "codex":
+                                    RL.stage_runner(a["concept"], a["unit"], "codex")
                             out_p, err_p = RL.run_paths(root, a["unit"])
                             runs = st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", [])
                             # the scope and the marker are known before systemd-run and persisted with the run:
@@ -1671,7 +1673,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             run = dict(out=out_p, err=err_p, scope=RL.role_scope(seat, a["unit"]), marker=a["unit"],
                                        unit=a["unit"], at=now, day=RL.day_of(now),
                                        mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
-                                       item=a["ticket"], seat=seat,
+                                       item=a["ticket"], seat=seat, runner=role.get("runner", "claude"),
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None,
                                        **({"concept": a["concept"]} if a.get("concept") else {}),
                                        # a resume (role_launch.resume_due): its chain, so a resumed death counts on

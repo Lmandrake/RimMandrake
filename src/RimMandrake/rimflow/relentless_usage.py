@@ -132,6 +132,12 @@ def measure(RL, run):
     API 429 weekly-limit run never reached the API, duration_api_ms 0, and 48 such runs were charged 57.6M of phantom
     reserve on 2026-11-04): it is charged what it spent, its session's transcript if that reads dearer, else 0."""
     res = RL.read_result({"out": run.get("out"), "err": run.get("err")})
+    if run.get("runner") == "codex" or (isinstance(res, dict) and res.get("runner") == "codex"):
+        # Codex usage is recorded separately in <out>.spend.json. This
+        # sentinel prevents the caller from charging a Claude reserve.
+        run["runner"] = "codex"
+        run["codex_usage"] = res.get("codex_usage", "UNMEASURED") if isinstance(res, dict) else "UNMEASURED"
+        return 0, "codex"
     tok = RL.run_tokens(res) if res else None
     if tok is not None and int(tok) == 0:
         sid = res.get("session_id") if isinstance(res, dict) else None

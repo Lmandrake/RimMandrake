@@ -285,7 +285,10 @@ def root():
 
 def rules(path=None):
     with open(path or os.environ.get("RELENTLESS_RULES") or RULES, encoding="utf-8") as f:
-        return json.load(f)
+        r = json.load(f)
+    if r.get("runner", "claude") not in ("claude", "codex"):
+        raise ValueError("runner must be claude or codex")
+    return r
 
 
 def iso(t):
@@ -790,6 +793,10 @@ def charge(store, st, tokens, now, r, unit, basis=None, since=None):
     """Under the lock. A run with no measured usage (no tokens, basis absent or "estimated") is charged the reserve,
     never less; a measured zero (basis "result", RELENTLESS_SPEND_FIX_ZERO_USAGE_RESERVE) is charged 0. The day file
     is keyed by run, so a crash before the item's own marker is saved cannot count a run twice."""
+    if basis == "codex":
+        # The transport writes real in/out tokens (or UNMEASURED) in the
+        # run's .spend.json. Never apply Claude weights or reserve to Codex.
+        return 0
     measured = basis != "estimated" and (bool(tokens) or (tokens is not None and basis is not None))
     # an "estimated" basis is never a measurement, whatever number rides with it (Codex, ..._TEN_MORE #1)
     n = int(tokens) if measured else r["run_reserve"]
@@ -4214,6 +4221,20 @@ class Effects(relentless_game.GameFx):
         rl = self.RL
         role = {"name": "relentless", "seat": self.r["seat"], "clone": clone, "model": self.r["model"],
                 "run_max_s": max_s}
+        for k in ("runner", "codex_model", "codex_effort", "codex_sandbox"):
+            if k in self.r:
+                role[k] = self.r[k]
+        codex = role.get("runner", "claude") == "codex"
+        if codex and run.get("resume"):
+            return "Codex cannot resume a Claude session"
+        run["runner"] = role.get("runner", "claude")
+        if codex:
+            sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+            import agent_runner
+            try:
+                agent_runner.quota_gate()
+            except agent_runner.Refused as e:
+                return str(e)
         claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
         os.makedirs(os.path.dirname(run["out"]), exist_ok=True)
         relentless_usage.note_clone(run, clone)        # where its transcripts will be, should the run never print a result
@@ -4231,7 +4252,7 @@ class Effects(relentless_game.GameFx):
         at = argv.index("--")
         if agent == relentless_game.STAGE_AGENT:    # STAGING_REWIRE_PYTHON_NOT_AN_LLM: the python stager, same unit shape
             fb = argv[at + 1:]
-            o = fb.index("--output-format")
+            o = fb.index("--cwd") if codex else fb.index("--output-format")
             fb[o:o] = ["--agent", self.r["pilot_agent"]]       # its one LLM road: exec'd on an unhandled exception only
             plan = dict(st.get("_stage_plan") or {}, clone=clone, fallback=fb)
             pf = os.path.splitext(run["out"])[0] + ".stage.json"
@@ -4255,7 +4276,7 @@ class Effects(relentless_game.GameFx):
         for k, v in extra_env.items():
             env += ["--setenv", "%s=%s" % (k, v)]
         argv = argv[:at] + list(wall) + env + argv[at:]
-        o = argv.index("--output-format")
+        o = argv.index("--cwd") if codex else argv.index("--output-format")
         argv[o:o] = ["--agent", agent] + (["--resume", run["resume"]] if run.get("resume") else [])
         r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr)[-200:])) if r.returncode else None
@@ -4269,6 +4290,8 @@ class Effects(relentless_game.GameFx):
 
     def account_loss(self, run, clone, since, box=None):
         """-> {"kind", "why"} when the account, not the item, ended this dead run; else None."""
+        if (run or {}).get("runner") == "codex":
+            return None
         return relentless_account.loss(run, clone, since, box=box)
 
     def death_note(self, run):
@@ -4897,7 +4920,8 @@ def short(item):
 def run_desc(store, r, unit, now):
     """A run's whole identity, known and persisted before the unit exists (role_launch.role_scope's name)."""
     d = os.path.join(store.dir, "runs", "roles")
-    return {"unit": unit, "marker": unit, "at": now, "charged": None, "out": os.path.join(d, unit + ".json"),
+    return {"unit": unit, "marker": unit, "at": now, "charged": None,
+            "runner": r.get("runner", "claude"), "out": os.path.join(d, unit + ".json"),
             "err": os.path.join(d, unit + ".err"), "scope": "claude-seat-%s-%s.scope" % (r["seat"], unit)}
 
 

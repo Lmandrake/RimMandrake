@@ -138,3 +138,7 @@ A rehearsal with someone standing in for him. It lives under `design/concepts/_d
 `--dry-walk` (`dry_walk: true`), its sheet's first line says DRY WALK, every stand-in answer is labelled, its waivers carry
 `stand_in: true`, and only his real words go in `## his words`. Nothing from it goes on the ledger as his. `gate` and `sign`
 refuse it always; `lint` accepts its `## root` section (a dry walk has no walk to cite).
+# Runner option
+
+Launch with `role_launch.py run-now --role Designer --runner codex` (default Claude); the injected stage packet and `result.json` validation are unchanged.
+See [runner options](runner_options.md) for config/environment, quota refusal and Windows/WSL staging.
