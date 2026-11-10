@@ -578,7 +578,7 @@ def _run_live(args, B, tap):
     mn_a, mn_b = net_at(B, MHCOND[0]).get("net"), net_at(B, MOCOND).get("net")
     mixed_net = real(mn_a) and mn_a == mn_b                 # two failed reads (None == None) are not one net
     ours = ap0[M1].get("faction")
-    m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and r1 == r0
+    m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and counter_status(r0, r1) == "PASS"
     st19, cl19 = m19m_status(mixed_net, m19m)
     V.row(rows, "M19m_tap_mixed_net_connects_own_conduit", st19, cl19,
           {"built": [b.get("survived") for b in mb], "mixedNet": mixed_net, "tap": mtap, "ourFaction": ours,
@@ -598,7 +598,7 @@ def _run_live(args, B, tap):
     o1, o2 = oc[O1]["id"], oc[O2]["id"]
     B.ap("link:%d,%d" % (o1, o2))
     n1, n2 = net_at(B, O1).get("net"), net_at(B, O2).get("net")
-    linked0 = n1 is not None and n1 == n2
+    linked0 = real(n1) and n1 == n2
     B.ap("set:cutWiresOnOwnerChange=False")
     B.ap("owner:%d,hostile" % o2)
     off = B.ap("ownersweep").get("cut", -1)
@@ -1079,11 +1079,13 @@ def _pt_scene(sx, sz):
 
 
 def _pt_stat(B, f):
-    return B.call("jawa/mod_settings_field", typeName=THEFT, action="get", field=f).get("value")
+    reply = B.call("jawa/mod_settings_field", typeName=THEFT, action="get", field=f)
+    return counter_value(reply.get("value")) if reply.get("success") is True else None
 
 
 def _pt_faction(B, dn):
-    return next((f for f in B.call("jawa/list_factions").get("factions") or [] if f.get("defName") == dn), None)
+    reply = B.call("jawa/list_factions")
+    return next((f for f in reply.get("factions") or [] if f.get("defName") == dn), None) if reply.get("success") is True else None
 
 
 def _pt_tick(B):
@@ -1099,7 +1101,32 @@ def _pt_victim(facs):
 
 def _pt_ids(B, defn, rect):
     lt = B.call("jawa/list_things", defName=defn, rect="%d,%d,%d,%d" % tuple(rect), limit=20)
+    if lt.get("success") is not True or not isinstance(lt.get("things"), list):
+        return None
     return [t.get("id") or t.get("thingId") for t in lt.get("things") or []]
+
+
+def counter_value(value):
+    if isinstance(value, bool) or not isinstance(value, (str, int)):
+        return None
+    try:
+        return int(value)  # the reflection tool serializes field values as strings
+    except ValueError:
+        return None
+
+
+def counter_status(before, after, delta=0):
+    before, after = counter_value(before), counter_value(after)
+    if before is None or after is None:
+        return "UNMEASURED"
+    return "PASS" if after == before + delta else "FAIL"
+
+
+def theft_stopped_status(before, goodwill, charged):
+    values = tuple(counter_value(v) for v in (before.get("goodwill"), before.get("goodwillCharged"), goodwill, charged))
+    if not isinstance(before.get("clampLeft"), list) or any(v is None for v in values):
+        return "UNMEASURED"
+    return "PASS" if not before["clampLeft"] and values[2] == values[0] and values[3] == values[1] else "FAIL"
 
 
 def theft_catch(B, rows, res):
@@ -1141,7 +1168,7 @@ def theft_catch(B, rows, res):
          B.call("jawa/build_batch", ops="StandingLamp:%d,%d" % S["lamp"], faction="player", wipeExisting=False)]
     B.call("jawa/map_commit")
     bats = _pt_ids(B, "Battery", S["rect"])
-    for bid in bats:
+    for bid in bats or []:
         B.call("jawa/battery_set", thing=bid, mode="setPct", value=1.0)
     clamp = _pt_ids(B, "RM_PowerTapClamp", S["rect"])
     gw0 = vic.get("goodwill")
@@ -1165,8 +1192,9 @@ def theft_catch(B, rows, res):
     taps = B.ap("census").get("taps") or []
     # list_things says "RM_PowerTapClamp767378", the probe's census says 767378 (live 2026-10-21: a bare == never matched)
     tap = next((t for t in taps if clamp and str(clamp[0]).endswith(str(t.get("id")))), None)
-    V.row(rows, "PT_A2_drain_no_witness_no_letter",
-          "PASS" if tap and (tap.get("lastStolenW") or 0) > 0 and cc_ctrl == cc0 else ("UNMEASURED" if not tap else "FAIL"), "MOD",
+    ctrl_status = counter_status(cc0, cc_ctrl)
+    ctrl_status = "UNMEASURED" if not tap or ctrl_status == "UNMEASURED" else "PASS" if (tap.get("lastStolenW") or 0) > 0 and ctrl_status == "PASS" else "FAIL"
+    V.row(rows, "PT_A2_drain_no_witness_no_letter", ctrl_status, "HARNESS" if ctrl_status == "UNMEASURED" else "MOD",
           {"tap": tap, "caughtCount": [cc0, cc_ctrl], "built": [x.get("survived") for x in b], "batteries": bats})
     wit = B.call("jawa/spawn_pawn", kindDef="Villager", x=S["witness"][0], z=S["witness"][1], faction=nf, count=2)
     wids = [p.get("id") or p.get("thingId") for p in wit.get("pawns") or []]
@@ -1185,15 +1213,19 @@ def theft_catch(B, rows, res):
                     "caughtCount": [cc0, cc_ctrl, cc1], "witness": wids, "clamp": clamp}
     shot = B.shot("PT_A2_letter_and_clamp", (S["clamp"][0] - 6, S["clamp"][1] - 6, 13, 13))
     res.setdefault("screenshots", []).append(shot)
-    V.row(rows, "PT_A2_letter", "PASS" if letters and int(cc1 or 0) == int(cc_ctrl or 0) + 1 else "FAIL", "MOD",
+    letter_status = counter_status(cc_ctrl, cc1, 1)
+    letter_status = letter_status if letters or letter_status == "UNMEASURED" else "FAIL"
+    V.row(rows, "PT_A2_letter", letter_status, "HARNESS" if letter_status == "UNMEASURED" else "MOD",
           {"letter": lt, "caughtCount": [cc_ctrl, cc1], "witness": wids, "victim": nf, "shot": shot})
     V.row(rows, "PT_A2_letter_targets", "PASS" if clamp and ends(clamp[0]) and any(ends(w) for w in wids) else
           ("UNMEASURED" if not letters else "FAIL"), "MOD",
           {"lookTargetIds": ids, "clamp": clamp, "witness": wids, "bar": "the letter jumps to the clamp AND the witness"})
     # a second witness of the SAME faction later does not re-catch (once per clamp per faction, C8)
     B.ticks(500)
-    V.row(rows, "PT_A2_caught_once", "PASS" if _pt_stat(B, "caughtCount") == cc1 else "FAIL", "MOD",
-          {"caughtCount": [cc1, _pt_stat(B, "caughtCount")], "letters": len([l for l in B.call("jawa/letter_list").get("letters") or []
+    cc2 = _pt_stat(B, "caughtCount")
+    once_status = counter_status(cc1, cc2)
+    V.row(rows, "PT_A2_caught_once", once_status, "HARNESS" if once_status == "UNMEASURED" else "MOD",
+          {"caughtCount": [cc1, cc2], "letters": len([l for l in B.call("jawa/letter_list").get("letters") or []
                                                                             if "Power theft" in json.dumps(l)])})
 
 
@@ -1323,8 +1355,9 @@ def theft_day(B, rows, res):
     taps = B.ap("census").get("taps") or []
     res["day"].update({"goodwill1": gw1, "goodwillCharged1": gc1, "taps": taps})
     dc = int(gc1 or 0) - int(gc0 or 0)
-    V.row(rows, "PT_A3_goodwill_day", "PASS" if gw0 is not None and gw1 is not None and dc == -per and gw0 - gw1 == per else "FAIL",
-          "MOD", {"setting": "theftGoodwill", "goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
+    day_status = "UNMEASURED" if any(v is None for v in (gw0, gw1, gc0, gc1)) or per <= 0 else "PASS" if dc == -per and gw0 - gw1 == per else "FAIL"
+    V.row(rows, "PT_A3_goodwill_day", day_status,
+          "HARNESS" if day_status == "UNMEASURED" else "MOD", {"setting": "theftGoodwill", "goodwill": [gw0, gw1], "goodwillCharged": [gc0, gc1], "perDay": per, "played": st["played"],
                   "chargeAtPlayed": st.get("chargeAtPlayed"), "chargeShot": st.get("chargeShot"), "taps": taps})
 
 
@@ -1343,8 +1376,9 @@ def theft_stop(B, rows, res):
         return
     a = res["stopFrom"]
     gw2, gc2 = (_pt_faction(B, res["victim"]["defName"]) or {}).get("goodwill"), _pt_stat(B, "goodwillCharged")
-    V.row(rows, "PT_A3_removed_stops", "PASS" if not a["clampLeft"] and gw2 == a["goodwill"] and gc2 == a["goodwillCharged"] else "FAIL",
-          "MOD", {"goodwill": [a["goodwill"], gw2], "goodwillCharged": [a["goodwillCharged"], gc2], "clampLeft": a["clampLeft"],
+    stop_status = theft_stopped_status(a, gw2, gc2)
+    V.row(rows, "PT_A3_removed_stops", stop_status,
+          "HARNESS" if stop_status == "UNMEASURED" else "MOD", {"goodwill": [a["goodwill"], gw2], "goodwillCharged": [a["goodwillCharged"], gc2], "clampLeft": a["clampLeft"],
                   "played": st["played"], "stop": "clamp removed (it has no switch)"})
 
 

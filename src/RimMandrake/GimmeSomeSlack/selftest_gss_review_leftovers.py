@@ -27,6 +27,26 @@ def png_bytes():
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_theft_controls_require_observed_counters_and_removed_clamp(self):
+        self.assertEqual(A.counter_status(None, None), 'UNMEASURED')
+        self.assertEqual(A.counter_status('1', 1), 'PASS')
+        self.assertEqual(A.counter_status('1', '2', 1), 'PASS')
+        self.assertEqual(A.counter_status(1, 2), 'FAIL')
+        for reply, expected in (({'success': True, 'value': '12'}, 12),
+                ({'success': False, 'value': '12'}, None), ({'success': True}, None),
+                ({'success': True, 'value': 'nan'}, None)):
+            B = SimpleNamespace(call=lambda *a, **kw: reply)
+            self.assertEqual(A._pt_stat(B, 'caughtCount'), expected)
+        before = {'goodwill': 25, 'goodwillCharged': '-3', 'clampLeft': []}
+        self.assertEqual(A.theft_stopped_status(before, 25, -3), 'PASS')
+        self.assertEqual(A.theft_stopped_status(before, 24, -4), 'FAIL')
+        self.assertEqual(A.theft_stopped_status(before, None, None), 'UNMEASURED')
+        self.assertEqual(A.theft_stopped_status(dict(before, clampLeft=None), 25, -3), 'UNMEASURED')
+        self.assertEqual(A.theft_stopped_status(dict(before, clampLeft=['clamp']), 25, -3), 'FAIL')
+        for reply, expected in (({'success': False}, None), ({'success': True}, None),
+                ({'success': True, 'things': []}, [])):
+            self.assertEqual(A._pt_ids(SimpleNamespace(call=lambda *a, **kw: reply), 'RM_PowerTapClamp', (1, 2, 3, 4)), expected)
+
     def test_aerial_removal_budget_refuses_incomplete_journal(self):
         bridge = SimpleNamespace(call=lambda tool, **kw: {'success': True, 'packageIds': ['base']}, ticks=lambda n: None)
         for complete, entries, expected in ((False, [], 'UNMEASURED'), (True, [], 'PASS'),
