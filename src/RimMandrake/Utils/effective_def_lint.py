@@ -112,6 +112,34 @@ CLASS_RE = re.compile(r'\b(?P<mods>(?:public|internal|private|protected|abstract
                       r'(?P<name>\w+)(?:<[^>{]*>)?\s*:\s*(?P<base>[\w.]+)')
 
 
+def compile_inputs(project, seen=None):
+    """Read literal local imports, resolving their MSBuildThisFileDirectory paths.
+
+    Shared .props files are part of the compile list; test project templates
+    describe separately staged executables rather than shipping mod sources.
+    Unknown MSBuild expressions remain unresolved and never exempt a file.
+    """
+    seen = set() if seen is None else seen
+    project = os.path.abspath(project)
+    if project in seen:
+        return set()
+    seen.add(project)
+    try:
+        text = open(project, encoding='utf-8-sig', errors='replace').read()
+    except OSError:
+        return set()
+    directory = os.path.dirname(project)
+    expand = lambda value: os.path.join(directory, value.replace(
+        '$(MSBuildThisFileDirectory)', directory + '/').replace('\\', '/'))
+    listed = set()
+    for value in re.findall(r'<Compile\s+Include="([^"]+)"', text):
+        listed.update(os.path.normcase(os.path.abspath(p)) for p in glob.glob(expand(value), recursive=True))
+    for value in re.findall(r'<Import\s+Project="([^"]+)"', text):
+        for imported in glob.glob(expand(value)):
+            listed.update(compile_inputs(imported, seen))
+    return listed
+
+
 def check_src(report, texts=None):
     """BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include. texts: {path: source} for selftests."""
     if texts is None:
@@ -156,13 +184,10 @@ def check_src(report, texts=None):
         if not re.search(r'<EnableDefaultCompileItems>\s*false', x, re.I):
             continue
         pd = os.path.dirname(proj)
-        listed = set()
-        for inc in re.findall(r'<Compile\s+Include="([^"]+)"', x):
-            inc = inc.replace('\\', '/')
-            for g in glob.glob(os.path.join(pd, inc), recursive=True):
-                listed.add(os.path.normcase(os.path.abspath(g)))
+        listed = compile_inputs(proj)
         for root, dirs, files in os.walk(pd):
-            if root != pd and glob.glob(os.path.join(root, '*.csproj')):
+            if root != pd and (glob.glob(os.path.join(root, '*.csproj'))
+                               or glob.glob(os.path.join(root, '*.csproj.template'))):
                 dirs[:] = []
                 continue
             dirs[:] = [d for d in dirs if d not in ('obj', 'bin')]

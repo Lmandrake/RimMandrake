@@ -206,6 +206,32 @@ def main():
     check('alert_leaf: abstract leaf flagged, abstract parent with a concrete child not',
           defs_of(rep, 'alert_leaf') == {'Alert_Leaf'})
 
+    with tempfile.TemporaryDirectory() as td:
+        original_repo = edl.REPO
+        try:
+            edl.REPO = td
+            pd = os.path.join(td, 'src', 'Mod')
+            write(os.path.join(pd, 'Mod.csproj'), '<Project><EnableDefaultCompileItems>false</EnableDefaultCompileItems>'
+                  '<Import Project="Lists/Shared.props"/></Project>')
+            write(os.path.join(pd, 'Lists', 'Shared.props'), '<Project><Import Project="Again.props"/>'
+                  '<Compile Include="$(MSBuildThisFileDirectory)../Included.cs"/></Project>')
+            write(os.path.join(pd, 'Lists', 'Again.props'), '<Project><Import Project="Shared.props"/></Project>')
+            write(os.path.join(pd, 'Included.cs'), 'class Included {}')
+            write(os.path.join(pd, 'Forgotten.cs'), 'class Forgotten {}')
+            write(os.path.join(pd, 'tests', 'Fixture.csproj.template'), '<Project/>')
+            write(os.path.join(pd, 'tests', 'FakeEngine.cs'), 'class FakeEngine {}')
+            imported = edl.Report()
+            edl.check_src(imported, texts={})
+            omissions = defs_of(imported, 'compile_include')
+            check('imported props resolve MSBuildThisFileDirectory and tolerate import cycles',
+                  'src/Mod/Included.cs' not in omissions, omissions)
+            check('a genuinely omitted shipping source remains an error',
+                  'src/Mod/Forgotten.cs' in defs_of(imported, 'compile_include', 'error'), omissions)
+            check('separately staged project-template fixtures are not shipping omissions',
+                  'src/Mod/tests/FakeEngine.cs' not in omissions, omissions)
+        finally:
+            edl.REPO = original_repo
+
     print('%d/%d passed' % (sum(RESULTS), len(RESULTS)))
     return 0 if all(RESULTS) else 1
 
