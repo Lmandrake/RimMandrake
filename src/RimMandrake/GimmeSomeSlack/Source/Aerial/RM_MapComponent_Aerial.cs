@@ -113,6 +113,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             drops.Clear();
             foreach (var kv in dropMeshes.Values) if (kv.Value != null) foreach (Mesh m in kv.Value) if (m != null) UnityEngine.Object.Destroy(m);
             dropMeshes.Clear();
+            foreach (Mesh m in tailMeshes.Values) if (m != null) UnityEngine.Object.Destroy(m);
+            tailMeshes.Clear();
+            tailCursors.Clear();
+            lays.Clear();
+            laySig.Clear();
         }
 
         public void Notify_SettingsChanged()
@@ -137,10 +142,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             // was never re-printed, and the 250-tick ground check then saw no change: the fray stayed at the old place.
             foreach (var kv in laySig.Where(kv => kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)).ToList())
             {
-                lays.Remove(kv.Key);
-                laySig.Remove(kv.Key);
+                RetireFallenLay(kv.Key);
             }
-            foreach (FallenCord f in lays.Keys.Where(f => !laySig.ContainsKey(f)).ToList()) lays.Remove(f);
+            foreach (FallenCord f in lays.Keys.Where(f => !laySig.ContainsKey(f)).ToList()) RetireFallenLay(f);
             foreach (var kv in drops.Values) if (kv.Value != null) UnityEngine.Object.Destroy(kv.Value);
             drops.Clear();
             try { if (map.mapDrawer.SectionAt(c) == null) return; }
@@ -431,6 +435,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return l;
         }
 
+        // Cursors retain their lay's points, and meshes own native Unity storage.
+        // Both have exactly the lifetime of the cached fallen lay they animate.
+        private void RetireFallenLay(FallenCord f)
+        {
+            if (lays.TryGetValue(f, out List<FallenLay> old))
+                foreach (FallenLay l in old) tailCursors.Remove(l);
+            lays.Remove(f);
+            laySig.Remove(f);
+            if (tailMeshes.TryGetValue(f, out Mesh mesh) && mesh != null) UnityEngine.Object.Destroy(mesh);
+            tailMeshes.Remove(f);
+        }
+
         // GPT source read 2026-10-06 A8: a fallen wire's lay was cached until DirtyCell, which nothing walkability-related calls,
         // so a wall built across a fallen wire left it drawn through the wall. Each cached lay keeps a walkability signature of
         // the ground it can reach; the 250-tick sweep re-prints when one changes.
@@ -455,7 +471,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             var changed = new List<IntVec3>();
             foreach (var kv in laySig.ToList())
             {
-                if (!lays.ContainsKey(kv.Key) || !kv.Value.a.Spawned) { laySig.Remove(kv.Key); continue; }
+                if (!lays.ContainsKey(kv.Key) || !kv.Value.a.Spawned) { RetireFallenLay(kv.Key); continue; }
                 if (WalkSig(kv.Value.a.Position, kv.Key.length) != kv.Value.sig) changed.Add(kv.Value.a.Position);
             }
             if (changed.Count == 0) return;

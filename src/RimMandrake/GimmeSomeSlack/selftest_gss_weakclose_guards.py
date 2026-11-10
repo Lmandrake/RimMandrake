@@ -71,12 +71,25 @@ def check_cord_prints(prod):
     return [] if ok else ["changed cord owners are not independently printed after publication"]
 
 
+def check_fallen_retirement(aerial):
+    retire = body(aerial, "private void RetireFallenLay(FallenCord f)")
+    removed = body(aerial, "public override void MapRemoved()")
+    dirty = body(aerial, "private void DirtyCell(IntVec3 c)")
+    ok = ("tailCursors.Remove(l)" in retire and "Destroy(mesh)" in retire
+          and "tailMeshes.Remove(f)" in retire and "RetireFallenLay(kv.Key)" in dirty
+          and "Destroy(m)" in removed and "tailMeshes.Clear()" in removed
+          and "tailCursors.Clear()" in removed and "lays.Clear()" in removed)
+    return [] if ok else ["fallen lay/cursor/native mesh lifetimes are not retired together"]
+
+
 def main():
     probe = read("GimmeSomeSlackProbe.cs")
     anchor = read("Aerial", "CompAerialAnchor.cs")
     cprobe = read("Aerial", "ConduitStyleProbe.cs")
     prod = read("RM_MapComponent_CordGraph.cs")
     fails = run(probe, anchor, cprobe, prod)
+    aerial = read("Aerial", "RM_MapComponent_Aerial.cs")
+    fails += check_fallen_retirement(aerial)
     # can-fail: the original defects restored in memory must each be caught
     m1 = cprobe.replace("CompAerialAnchor.AutoLinkPairs(mine)",
                         "AerialMath.MinimumSpanningLinks(mine.Select(s => s.Info()).ToList(), AerialSettings.Range)")
@@ -88,6 +101,8 @@ def main():
         fails.append("instrument blind: tap-clamp mutation not caught")
     if not check_cord_prints(prod.replace("pendingPrints.Add(s);", "")):
         fails.append("instrument blind: omitted offscreen print queue not caught")
+    if not check_fallen_retirement(aerial.replace("tailCursors.Remove(l)", "tailCursors.ContainsKey(l)")):
+        fails.append("instrument blind: retained fallen-lay cursor not caught")
     for f in fails:
         print("FAIL", f)
     print("selftest_gss_weakclose_guards:", "FAIL" if fails else "PASS")
