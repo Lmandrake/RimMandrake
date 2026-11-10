@@ -272,6 +272,22 @@ def restring(B, V, rows):
             B.probe("pawn:%d=draft" % p)
 
 
+def ignition_control(B, tip, sweeps=12):
+    """A missing fuel placement or fire observation measures no ignition control."""
+    fires, observations = 0, []
+    for _ in range(sweeps):
+        fuel = B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
+        B.ticks(250)
+        query = B.call("jawa/list_things", defName="Fire", rect="%d,%d,3,3" % (tip[0] - 1, tip[1] - 1), limit=5)
+        seen = query.get("success") is True and isinstance(query.get("things"), list)
+        count = len(query["things"]) if seen else None
+        observations.append({"fuel": fuel.get("success") is True, "fires": count})
+        if seen:
+            fires = max(fires, count)
+    measured = bool(observations) and all(o["fuel"] and o["fires"] is not None for o in observations)
+    return ("PASS" if fires == 0 else "FAIL") if measured else "UNMEASURED", {"fires": fires, "sweeps": sweeps, "observations": observations}
+
+
 def dead_wire(B, V, rows):
     """sc_shock and sc_fuel_ignition's control: the same wire, its source empty. The switches stay on: only the power differs."""
     x, z = SC0
@@ -297,12 +313,9 @@ def dead_wire(B, V, rows):
     status = "UNMEASURED" if hot.get("error") or cold.get("error") else ("PASS" if hot.get("shocked") and cold.get("shocked") is False else "FAIL")
     V.row(rows, "SC_dead_wire_shocks_nobody", status, "MOD", {"live": hot, "dead": cold})
     B.call("jawa/destroy_batch", rects="%d,%d,1,1" % tip, categories="All")
-    fires = 0
-    for _ in range(12):
-        B.call("rimworld/spawn_thing", defName="Filth_Fuel", stackCount=1, x=tip[0], z=tip[1])
-        B.ticks(250)
-        fires = max(fires, len(B.call("jawa/list_things", defName="Fire", rect="%d,%d,3,3" % (tip[0] - 1, tip[1] - 1), limit=5).get("things") or []))
-    V.row(rows, "SC_dead_wire_lights_no_fuel", "PASS" if fires == 0 else "FAIL", "MOD", {"fires": fires, "sweeps": 12, "note": "live, M20c lights it; P(miss in 12) = 0.6%"})
+    status, observed = ignition_control(B, tip)
+    V.row(rows, "SC_dead_wire_lights_no_fuel", status, "HARNESS" if status == "UNMEASURED" else "MOD",
+          dict(observed, note="live, M20c lights it; P(miss in 12) = 0.6%"))
     B.ap("set:fallenWireKnockback=2")
 
 

@@ -13,6 +13,28 @@ import scene_rows as S
 
 
 class ReviewLeftovers(unittest.TestCase):
+    def test_ignition_requires_fuel_and_every_query(self):
+        class Bridge:
+            def __init__(self, fuel=True, fire=None):
+                self.fuel, self.fire, self.queries = fuel, fire, 0
+
+            def call(self, tool, **kw):
+                if tool == 'rimworld/spawn_thing':
+                    return {'success': self.fuel}
+                self.queries += 1
+                return self.fire if self.fire is not None else {'success': False}
+
+            def ticks(self, n):
+                pass
+
+        empty = {'success': True, 'things': []}
+        for b, expected in ((Bridge(), 'UNMEASURED'), (Bridge(False, empty), 'UNMEASURED'),
+                            (Bridge(True, {'success': True}), 'UNMEASURED'), (Bridge(True, empty), 'PASS'),
+                            (Bridge(True, {'success': True, 'things': [{'id': 1}]}), 'FAIL')):
+            status, detail = S.ignition_control(b, (3, 4))
+            self.assertEqual(status, expected)
+            self.assertEqual(b.queries, 12)
+
     def test_scheduler_abort_restores_trial_state(self):
         class Bridge:
             def __init__(self, previous):
