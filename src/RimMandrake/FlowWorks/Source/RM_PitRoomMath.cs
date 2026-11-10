@@ -38,6 +38,7 @@ namespace RimMandrake.FlowWorks
 			switch (jobDefName)
 			{
 				case "TendPatient":
+				case "FeedPatient":
 				case "RM_CaptureDown":
 					return LipKind.Touch;
 				case "PrisonerAttemptRecruit":
@@ -75,15 +76,15 @@ namespace RimMandrake.FlowWorks
 			OwnSide,
 			AlreadyPrisoner,
 			NotHeld,
-			NoPrisonBed,
+			NotPrison,
 		}
 
 		/// <summary>
 		/// "Capture down" (owner, 2026-09-17: <i>"easy prisoner capture once they're in the pit, and no
 		/// you don't have to go down and enter the room to capture them"</i>). Only a person the pit
 		/// actually HOLDS (owner Q4 width rule — a creature too wide for its pit is not trapped, so it is
-		/// not offered), and only into a pit that is a prison room (a prisoner bed in it: "it's just a
-		/// room until you put a prisoner bed in it").
+		/// not offered), and only into an enclosed pit room. The drained hole itself is the prison
+		/// (owner card 2026-11-05, drained_hole_is_a_prison); no bed is required.
 		/// </summary>
 		public static CaptureDownVerdict CaptureDown(bool settingOn, bool humanlike, bool ownSide,
 			bool alreadyPrisoner, bool held, bool roomIsPrison)
@@ -93,7 +94,7 @@ namespace RimMandrake.FlowWorks
 			if (ownSide) return CaptureDownVerdict.OwnSide;
 			if (alreadyPrisoner) return CaptureDownVerdict.AlreadyPrisoner;
 			if (!held) return CaptureDownVerdict.NotHeld;
-			if (!roomIsPrison) return CaptureDownVerdict.NoPrisonBed;
+			if (!roomIsPrison) return CaptureDownVerdict.NotPrison;
 			return CaptureDownVerdict.Allowed;
 		}
 

@@ -15,7 +15,7 @@ namespace RimMandrake.FlowWorks
 	/// SUPERDEEP_PRISON_ROOM_1 — an enclosed superdeep area is a ROOM.
 	///
 	/// Owner, 2026-09-17: <i>"This defines a "room" if it's enclosed that you can use for prisoner
-	/// storage."</i> … <i>"It's just a room until you put a prisoner bed in it."</i>
+	/// storage."</i> Bedless prison requirement: owner card 2026-11-05, drained_hole_is_a_prison.
 	///
 	/// MEASURED (SUPERDEEP_SEAM_MEASURE_1 item 3, decompiled 1.6): regions split only on
 	/// RegionTypeUtility.GetExpectedRegionType, which reads terrain only through walkability, so a
@@ -363,7 +363,7 @@ namespace RimMandrake.FlowWorks
 			bool humanlike = target?.RaceProps != null && target.RaceProps.Humanlike && target.guest != null;
 			bool ownSide = target != null && (target.Faction == Faction.OfPlayer || target.HostFaction == Faction.OfPlayer && !target.IsPrisonerOfColony);
 			Room room = target != null && target.Spawned ? target.GetRoom() : null;
-			bool prison = room != null && room.IsPrisonCell && IsPitRoom(room);
+			bool prison = room != null && room.ProperRoom && IsPitRoom(room);
 			return RM_PitRoomMath.CaptureDown(RimMandrakeFlowWorksSettings.captureDownEnabled && RoomsOn,
 				humanlike, ownSide, target != null && target.IsPrisonerOfColony,
 				target != null && RM_SuperdeepTrap.IsHeld(target) && HoldsBySize(target), prison);
@@ -391,7 +391,7 @@ namespace RimMandrake.FlowWorks
 			switch (v)
 			{
 				case RM_PitRoomMath.CaptureDownVerdict.NotHeld: return "RMFlow_CaptureDownNotHeld".Translate();
-				case RM_PitRoomMath.CaptureDownVerdict.NoPrisonBed: return "RMFlow_CaptureDownNoPrisonBed".Translate();
+				case RM_PitRoomMath.CaptureDownVerdict.NotPrison: return "RMFlow_CaptureDownNotPrison".Translate();
 				default: return null;
 			}
 		}

@@ -1695,8 +1695,7 @@ namespace RimMandrake.FlowWorks
             {
             list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
                 "A dug pocket a person cannot climb out of counts as a room of its own, separate "
-              + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
-              + "trapped enemies; put a prisoner bed in it and it is a prison cell. A gentle slope a person can walk "
+              + "from the ground above, so it has its own temperature and can hold prisoners. The hole itself is a prison cell; no prisoner bed is needed. A gentle slope a person can walk "
               + "out of never makes a room. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
             using (Dependent(list, "pitRoomMinDepthMetres"))
             {
@@ -1712,7 +1711,7 @@ namespace RimMandrake.FlowWorks
             using (Dependent(list, "captureDownEnabled"))
             {
                 list.CheckboxLabeled("Capture down from the lip", ref captureDownEnabled,
-                    "Right-click a trapped person in a pit that has a prisoner bed: a colonist walks to the edge "
+                    "Right-click a trapped person in an enclosed pit: a colonist walks to the edge "
                   + "and takes them prisoner from above, without climbing in. Only someone the pit actually holds "
                   + "(a creature too wide for it is not trapped). Off: no capture-down order.");
             }

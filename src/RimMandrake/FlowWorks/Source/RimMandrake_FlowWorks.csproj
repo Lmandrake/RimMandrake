@@ -142,6 +142,7 @@
     <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="RM_LegacyFillProof.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
+    <Compile Include="Superdeep\RM_PitPrisonCare.cs" />
     <Compile Include="Superdeep\RM_PitStuckAlert.cs" />
     <Compile Include="RM_FireMath.cs" />
     <Compile Include="RM_FuelFireMath.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="RM_FluidIdentity.cs" />
     <Compile Include="RM_PromotionProofs.cs" />
     <Compile Include="RM_NorthstarProofs.cs" />
+    <Compile Include="RM_PitPrisonProof.cs" />
     <Compile Include="RM_WaterLookProofs.cs" />
     <Compile Include="RM_LiquidStock.cs" />
     <Compile Include="Designator_DigCanal.cs" />

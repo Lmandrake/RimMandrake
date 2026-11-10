@@ -63,7 +63,7 @@
   <!-- SUPERDEEP_PRISON_ROOM_1: capture down from the lip. -->
   <RMFlow_CaptureDown>Capture {0} from the edge of the pit</RMFlow_CaptureDown>
   <RMFlow_CaptureDownNotHeld>the pit is not holding them</RMFlow_CaptureDownNotHeld>
-  <RMFlow_CaptureDownNoPrisonBed>needs a prisoner bed in the pit</RMFlow_CaptureDownNoPrisonBed>
+  <RMFlow_CaptureDownNotPrison>needs an enclosed pit room</RMFlow_CaptureDownNotPrison>
   <RMFlow_CaptureDownNoLip>no reachable edge cell next to them</RMFlow_CaptureDownNoLip>
   <RMFlow_CapturedDown>{0} took {1} prisoner from the edge of the pit.</RMFlow_CapturedDown>
 

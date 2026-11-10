@@ -3259,7 +3259,7 @@ def fuel_moat_propane(t):
 @suite.chain("pit_prison_room")
 def pit_prison_room(t):
     """SUPERDEEP_PRISON_ROOM_1 (73408b80e). A 3x3 D=4 pit ringed by open ground is its OWN room (split from the lip),
-    a prisoner bed in it makes it a prison cell, a held hostile there can be captured DOWN by a colonist who never
+    the hole itself is a prison cell (beds are optional), and a held hostile can be captured DOWN by a colonist who never
     stands in the pit, and a warden job on a pit cell is served from a lip cell (the PathFollower patch's own gate).
     Each setting's OFF side is read through the same predicate. Not proven here: a full recruit/convert session
     from the lip, food dropped down (live walk owed), the width rule (C# selftest)."""

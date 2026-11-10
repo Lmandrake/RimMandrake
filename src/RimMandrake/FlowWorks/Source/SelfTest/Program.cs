@@ -1400,15 +1400,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitRoomMath.KindOf("PrisonerConvert") == RM_PitRoomMath.LipKind.Interact, "convert down is an interaction");
                 Assert(RM_PitRoomMath.KindOf("PrisonerAttemptRecruit") == RM_PitRoomMath.LipKind.Interact, "recruit is an interaction");
                 Assert(RM_PitRoomMath.KindOf("DeliverFood") == RM_PitRoomMath.LipKind.Drop, "food is dropped down");
+                Assert(RM_PitRoomMath.KindOf("FeedPatient") == RM_PitRoomMath.LipKind.Touch, "feeding a downed prisoner touches from the rim");
                 Assert(RM_PitRoomMath.KindOf("TendPatient") == RM_PitRoomMath.LipKind.Touch, "tending touches");
                 Assert(RM_PitRoomMath.KindOf("Mine") == RM_PitRoomMath.LipKind.None, "other jobs untouched");
                 AssertClose(RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact), 6f, "vanilla interaction range");
             });
-            Case("PitRoom_capture_down_needs_a_held_person_and_a_prison_bed", () =>
+            Case("PitRoom_capture_down_needs_a_held_person_and_enclosed_pit", () =>
             {
                 Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.Allowed, "held + prison = capture");
                 Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, false, true) == RM_PitRoomMath.CaptureDownVerdict.NotHeld, "too wide for the pit: not offered (Q4)");
-                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, false) == RM_PitRoomMath.CaptureDownVerdict.NoPrisonBed, "a bare pit holds trapped enemies, not prisoners");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, false) == RM_PitRoomMath.CaptureDownVerdict.NotPrison, "an unenclosed hole is not a prison");
                 Assert(RM_PitRoomMath.CaptureDown(true, false, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.NotAPerson, "animals are not captured");
                 Assert(RM_PitRoomMath.CaptureDown(false, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.SettingOff, "setting off");
                 Assert(RM_PitRoomMath.CaptureDown(true, true, true, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.OwnSide, "own people are not captured");
