@@ -7,7 +7,7 @@ Whittle: `python3 "$WORKFLOWS_ROOT/whittle/run.py" --runner codex --cwd <project
 Set `RIMMANDRAKE_ROOT` to this clone and `WORKFLOWS_ROOT` to MandrakeWorkflows; see its `tools/RUNNERS.md` for setup.
 
 Model comes from `codex_model` or `CODEX_MODEL`, then the CLI config; effort from `codex_effort` or `CODEX_EFFORT` (default high).
-`codex_sandbox` / `CODEX_SANDBOX` defaults to workspace-write. The existing Windows Codex helpers provide binary discovery and path conversion.
+`codex_sandbox` / `CODEX_SANDBOX` defaults to workspace-write in code, but on Archmagi every agent gets `CODEX_SANDBOX=danger-full-access` from the environment (owner, 2026-11-09: *"Please grant that authority to all agents immediately."*; set in `~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv` and `~/.profile`). The existing Windows Codex helpers provide binary discovery and path conversion.
 
 The weekly `ops_watch.c_codex` meter must report MEASURED usage and reset; unreadable or >90% used refuses.
 Each Codex run writes `<out>.events.jsonl` and `<out>.spend.json` (runner named; missing usage is UNMEASURED), separate from Claude budgets.

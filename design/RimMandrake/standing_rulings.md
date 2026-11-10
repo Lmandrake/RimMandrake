@@ -585,3 +585,12 @@ strike. A false close is still worse than a wait. Design input: GPT consult at
 ## Relentless: subtract, no new machinery until the 3-day check — owner, 2026-11-06 (card)
 
 No new rules, layers or judging machinery in Relentless until the 3-day check (`RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`, due 2026-11-09) is read. Settings entries in `src/RimMandrake/rimflow/relentless_rules.json` do not grow (a fix may change a value). Fixes for real failures continue.
+
+## Codex agents run with full machine access — owner, 2026-11-09
+
+*"Please grant that authority to all agents immediately."* This answered the finding that on Archmagi, Codex's Windows
+workspace-write sandbox cannot reach WSL (`Wsl/Service/E_ACCESSDENIED`), so a Codex-run Designer, Relentless, Whittle or
+Artisan can work on the ext4 clones only with `danger-full-access`. Every agent environment now carries
+`CODEX_SANDBOX=danger-full-access` (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the
+runner is `src/RimMandrake/Utils/agent_runner.py`). It changes nothing else: Claude stays the default runner, results are
+still validated by the existing checks, and the quota gate and the rule against falling back to Claude still hold.
