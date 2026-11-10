@@ -55,6 +55,9 @@ class RuntimeTests(unittest.TestCase):
                 self.assertNotIn("WSLENV", cx.child_env(home))
                 self.assertTrue(cx.ensure_home_sandbox(home)[0])
                 self.assertTrue(common.codex_sandbox_preflight()[0])
+                with patch.object(cx, "machine_sandbox_password_set", side_effect=AssertionError("Windows provisioning probe on Linux")), patch.object(cx, "adopt_current_sandbox_state", side_effect=AssertionError("Windows provisioning write on Linux")):
+                    self.assertTrue(common.sandbox_check_report(root / "workers", 1)[0])
+                    self.assertTrue(common.sync_shared_sandbox(root / "workers")[0])
                 self.assertEqual(common._default_codex_home_root(), root / ".codex_workers/artpipe")
                 self.assertFalse(cx.needs_staging(type("Args", (), {"out": str(root / "a.png"), "image": []})()))
                 self.assertEqual(cx.scratch_root(), root / ".local/state/rimmandrake/scratch/codex")

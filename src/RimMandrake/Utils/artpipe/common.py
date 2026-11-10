@@ -462,6 +462,8 @@ def sandbox_check_report(codex_home_root: Path, workers: int,
     UAC sandbox-setup dialog? Read-only (net.exe + file reads); never
     launches codex, never writes. Returns (safe, lines)."""
     ci = _import_codex_image()
+    if ci.codex_side() == "wsl":
+        return True, ["SAFE: Linux sandbox needs no Windows provisioning or seed template"]
     lines: list[str] = []
     try:
         base = base if base is not None else ci.base_codex_home()
@@ -490,6 +492,8 @@ def sync_shared_sandbox(codex_home_root: Path, base: Path | None = None) -> tupl
     holds (found in any known codex home) into the shared home and the seed
     template, with a backup. Never launches codex."""
     ci = _import_codex_image()
+    if ci.codex_side() == "wsl":
+        return True, "Linux sandbox: no Windows provisioning to sync"
     try:
         base = base if base is not None else ci.base_codex_home()
     except ci.EnvError as exc:
