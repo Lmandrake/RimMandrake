@@ -1,0 +1,26 @@
+{
+  "read_at": "2026-11-11T12:09:04.273008+00:00",
+  "actual_last_project_change_epoch": 1794398799.6476996,
+  "evidence": {
+    "whittle/ht-settings/evidence/final_audit.json": {
+      "mtime": 1794398867.246316,
+      "fresh": true
+    },
+    "whittle/ht-settings/evidence/attempt4/adversarial_live.json": {
+      "mtime": 1794398379.823988,
+      "fresh": false
+    },
+    "whittle/ht-settings/evidence/attempt4/valid_live.json": {
+      "mtime": 1794398514.083989,
+      "fresh": false
+    },
+    "whittle/ht-settings/evidence/attempt4/upgrade_live.json": {
+      "mtime": 1794398647.8839884,
+      "fresh": false
+    },
+    "whittle/ht-settings/evidence/attempt4/restore_live.json": {
+      "mtime": 1794398776.452406,
+      "fresh": false
+    }
+  }
+}

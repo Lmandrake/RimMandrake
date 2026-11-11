@@ -1,0 +1,54 @@
+{
+  "Assemblies/RM_HugeThings.dll": {
+    "source": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "deployed": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0"
+  },
+  "Assemblies/RM_HugeThings.dll.srchash": {
+    "source": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d",
+    "deployed": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d"
+  },
+  "Languages/English/Keyed/RM_HugeThings.xml": {
+    "source": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228",
+    "deployed": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228"
+  },
+  "Languages/English/Keyed/RM_TitanicCreatures.xml": {
+    "source": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf",
+    "deployed": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf"
+  },
+  "About/About.xml": {
+    "source": "37da30f17057cb511e85a36e299ca685d11405031e74b4e6bf4e55265bedba93",
+    "deployed": "37da30f17057cb511e85a36e299ca685d11405031e74b4e6bf4e55265bedba93"
+  },
+  "Defs/TitanicTierDefs/RM_TitanicTierDef.xml": {
+    "source": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf",
+    "deployed": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf"
+  },
+  "Defs/CrushRuleDefs/RM_CrushRules.xml": {
+    "source": "56c4bc54eca44d720854f0aa9aaa5b69fd9d361b34240a321b0acc3de671ae42",
+    "deployed": "56c4bc54eca44d720854f0aa9aaa5b69fd9d361b34240a321b0acc3de671ae42"
+  },
+  "Defs/ThingDefs/RM_TitanicCorpseSite.xml": {
+    "source": "4803d86bd3c9a9a499a617b84e0e2b9c259e8531ba80c2fff849866743eb9101",
+    "deployed": "4803d86bd3c9a9a499a617b84e0e2b9c259e8531ba80c2fff849866743eb9101"
+  },
+  "Defs/ThingDefs/RM_HugeTrunkBlocker.xml": {
+    "source": "42ffbc7cd50b4af476d42ad5d0ad950ff3ea82a8ca943f4160eee5e899329227",
+    "deployed": "42ffbc7cd50b4af476d42ad5d0ad950ff3ea82a8ca943f4160eee5e899329227"
+  },
+  "Defs/WorkGiverDefs/RM_WorkGivers.xml": {
+    "source": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa",
+    "deployed": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa"
+  },
+  "Defs/JobDefs/RM_JobDefs.xml": {
+    "source": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4",
+    "deployed": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4"
+  },
+  "Defs/IncidentDefs/RM_TitanPassage.xml": {
+    "source": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+    "deployed": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2"
+  },
+  "Patches/RM_TitanPassage_DarkSide.xml": {
+    "source": "edb79caaee7a47e1cb109dfe3c6fe021e6e3faa948d907cd0d68d34421f7ebc4",
+    "deployed": "edb79caaee7a47e1cb109dfe3c6fe021e6e3faa948d907cd0d68d34421f7ebc4"
+  }
+}

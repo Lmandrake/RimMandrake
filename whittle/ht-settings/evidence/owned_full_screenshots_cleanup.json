@@ -1,0 +1,281 @@
+{
+  "folder": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots",
+  "files": [
+    {
+      "name": "baseline_native_settings.png",
+      "owned_request": "baseline_native_settings",
+      "existed": false,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_0.png",
+      "owned_request": "ht_settings_adversarial_0",
+      "existed": true,
+      "sha256": "7cf6a131c2396d632784be8f79e8bab14fc5cc2215cba3e9ee662a5bcfcb9b74",
+      "bytes": 1938469,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_1.png",
+      "owned_request": "ht_settings_adversarial_1",
+      "existed": true,
+      "sha256": "c3a0331aa326a692981f814ef180e93c709779bea6b81a1ea95b8715c1b6c142",
+      "bytes": 1933742,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_2.png",
+      "owned_request": "ht_settings_adversarial_2",
+      "existed": true,
+      "sha256": "11600ecd9a3e982e3d8d13687cfe856f0f9f5ea60277a198f1d6dc139b4cfd61",
+      "bytes": 1937933,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_3.png",
+      "owned_request": "ht_settings_adversarial_3",
+      "existed": true,
+      "sha256": "12a42923c335de79427b1be542d8ad7067f5af969c6b4f8fda887aa04a8434bc",
+      "bytes": 1937144,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_4.png",
+      "owned_request": "ht_settings_adversarial_4",
+      "existed": true,
+      "sha256": "6da9e79e12f7490d303795ce1d25e460f08fd48459a2109233a83e85fe1fc4b2",
+      "bytes": 1921704,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_5.png",
+      "owned_request": "ht_settings_adversarial_5",
+      "existed": true,
+      "sha256": "e93398bb5271b3cb09988be916e01658efd462ec87ef20a9a15b10972cf50a5a",
+      "bytes": 1928780,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_6.png",
+      "owned_request": "ht_settings_adversarial_6",
+      "existed": true,
+      "sha256": "fdf0f20ed714e2544c7afce1d0eb3ae5a9765ab1c0ff2640fbc5cdfda3e37fca",
+      "bytes": 1929452,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_tooltip_0.png",
+      "owned_request": "ht_settings_adversarial_tooltip_0",
+      "existed": true,
+      "sha256": "9e2e8bb703257840cc2979944ee23f0529ed30ba0160846c773a90d654659f34",
+      "bytes": 1951208,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_adversarial_tooltip_1.png",
+      "owned_request": "ht_settings_adversarial_tooltip_1",
+      "existed": true,
+      "sha256": "65521fd48f90c8d83b22f74621e698866253b891c5a710d84e88e800d63c3f1b",
+      "bytes": 1948146,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_0.png",
+      "owned_request": "ht_settings_baseline_0",
+      "existed": true,
+      "sha256": "ea1f9893ef063b65709aaa508ddd6b30b8f35d19f00ce752954f2aa6bb7d78da",
+      "bytes": 1938556,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_1.png",
+      "owned_request": "ht_settings_baseline_1",
+      "existed": true,
+      "sha256": "237ea05810170fe7d07bf2ec14fb0227e20c5e8d41f85b8aa59f5a1bb2826ba1",
+      "bytes": 1937866,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_2.png",
+      "owned_request": "ht_settings_baseline_2",
+      "existed": true,
+      "sha256": "2fd1466a9a253cc225d7902d490ea8bbeac2f6136a981d74027dc3e0dec279a4",
+      "bytes": 1936597,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_3.png",
+      "owned_request": "ht_settings_baseline_3",
+      "existed": true,
+      "sha256": "a666e597d73f2f67350ce1cce1596fa89f18347dd5222e9d49b34bda8f7a2bba",
+      "bytes": 1933178,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_4.png",
+      "owned_request": "ht_settings_baseline_4",
+      "existed": true,
+      "sha256": "de3f1ce964cd50bec5c8fd1713d6157a3ae27624471e9752c4e57ccf2dbee432",
+      "bytes": 1927191,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_5.png",
+      "owned_request": "ht_settings_baseline_5",
+      "existed": true,
+      "sha256": "ac3027eb17ff48cefaa105d1d1fae47f0622d2cacf2c6bd80422807e295e1ce0",
+      "bytes": 1930610,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_tooltip_0.png",
+      "owned_request": "ht_settings_baseline_tooltip_0",
+      "existed": true,
+      "sha256": "c03ba31acb825202765cba900111b209dc05f076f8cfc64037f3bf66d447fbcc",
+      "bytes": 1951286,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_tooltip_1.png",
+      "owned_request": "ht_settings_baseline_tooltip_1",
+      "existed": true,
+      "sha256": "8e5bc8502829d346076c794a66e35f8627d5472769f9fd8b94afa805e7fa0950",
+      "bytes": 1952191,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_baseline_top.png",
+      "owned_request": "ht_settings_baseline_top",
+      "existed": false,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_0.png",
+      "owned_request": "ht_settings_upgrade_0",
+      "existed": true,
+      "sha256": "71479f61080ce6b2cb10ccae704552607f5c50952d2aea8f561bb503b4db83b8",
+      "bytes": 1939291,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_1.png",
+      "owned_request": "ht_settings_upgrade_1",
+      "existed": true,
+      "sha256": "d7fa6d0a9f467e7de3a67599e770467f352301210119b47ac910cef79584b2f0",
+      "bytes": 1931878,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_2.png",
+      "owned_request": "ht_settings_upgrade_2",
+      "existed": true,
+      "sha256": "1c81b2cd95a2b07e8dacbcf6ffbaca31838ff289b1698af8816a7a585a6fe979",
+      "bytes": 1935815,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_3.png",
+      "owned_request": "ht_settings_upgrade_3",
+      "existed": true,
+      "sha256": "79a278fd4e6359a790395a39b1bb43fb67f90a19635176b9382dca443bc8fafa",
+      "bytes": 1935087,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_4.png",
+      "owned_request": "ht_settings_upgrade_4",
+      "existed": true,
+      "sha256": "738a6f22ca6a97285762f073b0982e1fe47cacd927b2f2968836e0a23ccdf089",
+      "bytes": 1926611,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_5.png",
+      "owned_request": "ht_settings_upgrade_5",
+      "existed": true,
+      "sha256": "bd88469ffa989d5ffdd34d5a33ffcd636926305475a83796425be53767132ca4",
+      "bytes": 1930467,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_tooltip_0.png",
+      "owned_request": "ht_settings_upgrade_tooltip_0",
+      "existed": true,
+      "sha256": "709121590476058208ef582e99ac846e15fe58940489a8491cb078c9ef4a14e1",
+      "bytes": 1952014,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_upgrade_tooltip_1.png",
+      "owned_request": "ht_settings_upgrade_tooltip_1",
+      "existed": true,
+      "sha256": "d4827b8108afbf8f814d5b3b50be736085b4e51116780c640b4fee1fe5663176",
+      "bytes": 1946180,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_0.png",
+      "owned_request": "ht_settings_valid_0",
+      "existed": true,
+      "sha256": "0eabe5f234d2421ddb2a14fe39ad20f1c184e166755e3fe15267b431beddd464",
+      "bytes": 1938916,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_1.png",
+      "owned_request": "ht_settings_valid_1",
+      "existed": true,
+      "sha256": "ee59659bb9d91782842409418ab54892d0684c56b6be95c7834b0846c0713dca",
+      "bytes": 1931503,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_2.png",
+      "owned_request": "ht_settings_valid_2",
+      "existed": true,
+      "sha256": "457764bad93c68755e834b6c03cea7c30d85a014112325c12236fa28ac088b4a",
+      "bytes": 1935494,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_3.png",
+      "owned_request": "ht_settings_valid_3",
+      "existed": true,
+      "sha256": "5085e863114a671254f02c882ea1046a22273a0b2783bbc31283ab06e95d83b0",
+      "bytes": 1934712,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_4.png",
+      "owned_request": "ht_settings_valid_4",
+      "existed": true,
+      "sha256": "f149276e50da18f33550e2ed851e61704c16a7ad0a49fd2593c0a429fb313773",
+      "bytes": 1926693,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_5.png",
+      "owned_request": "ht_settings_valid_5",
+      "existed": true,
+      "sha256": "69f4417c285e7b9a73c610a794c623adfd52f86f78201ecc9234efb09f0ad123",
+      "bytes": 1930109,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_tooltip_0.png",
+      "owned_request": "ht_settings_valid_tooltip_0",
+      "existed": true,
+      "sha256": "83dad8dd62b69cb5484106edc54d2657062789a2829ea1a5bff7c52971b5d817",
+      "bytes": 1951601,
+      "absent_after": true
+    },
+    {
+      "name": "ht_settings_valid_tooltip_1.png",
+      "owned_request": "ht_settings_valid_tooltip_1",
+      "existed": true,
+      "sha256": "d17e3604e269a832785275761a2ed510c3d412ecf38bb8b55ea794431cad58c8",
+      "bytes": 1945828,
+      "absent_after": true
+    }
+  ]
+}

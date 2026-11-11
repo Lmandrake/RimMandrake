@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/codex-ht/whittle/ht-settings/evidence/start_attempt2.py", line 28, in <module>
+    assert p.returncode==0,'attempt2 failed; preserved raw evidence'
+           ^^^^^^^^^^^^^^^
+AssertionError: attempt2 failed; preserved raw evidence

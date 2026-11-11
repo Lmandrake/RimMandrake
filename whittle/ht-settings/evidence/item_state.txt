@@ -1,0 +1,42 @@
+HUGETHINGS_SETTINGS_HARDENING_1   built  row -  needs bridge  target v1
+Huge Things settings: validate every numeric on load, honest labels, translation keys (B3.19/C3.6/D3.3, A2.7/D1.5, B4.6)
+owner BENCH   kind task   filed 2026-10-08T05:34:32Z
+built:    88c73d3ebe58 on origin/main at 2026-10-09T22:49:09Z, level reached L0
+owes:     A1 L2
+  A1     L2         in game, Mod Settings opens with every label translated (no raw RM_HugeThings_ keys) and a hand-edited NaN/inf
+
+--- items/HUGETHINGS_SETTINGS_HARDENING_1.md ---
+## spec
+Verified fix-now findings from `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW.md` (gone from disk; last copy in git at e2e47abef7) (triage `Transient/huge_things_bounds_2026-10-07/GPT_FULL_REVIEW_TRIAGE.md` (gone from disk; last copy in git at c6b6033633)).
+
+- **B3.19 / C3.6 / D3.3**: `RM_HugeThingsSettings.ExposeData` sanitises only `plantTrunkScale`, `pawnHitboxScale` and `giantPlantSmashMinTier` (`:96-102`). Scribe-loaded values bypass the slider ranges. `RM_TitanicKernel.ThresholdsValid` accepts an infinite T3. Fix: clamp every numeric on load and on edit (finite, ranges as the sliders state, positive work times and batch sizes). Keep the shipped-ladder fallback.
+- **A2.7 / D1.5**: the checkbox at `:137` reads "Trunks give cover, and shots into them hurt the plant", but it controls damage only, and cover stays on. Relabel it "Trunk hits damage the plant". The "Destruction wake off" text should say "no wake damage". Move all settings strings into `Languages/English/Keyed`.
+- **B4.6**: rubble chance is rolled per footprint cell, about 5.6 attempts per 4×4 step at 35%. Label it "chance per footprint cell" (whether to roll once per step is a later idea).
+
+## verify
+A settings-load fixture with NaN, ∞, negative and zero values ends at sane values. Every settings label uses Translate.
+
+## criteria
+A1: every numeric field is validated. A2: labels are accurate and keyed.
+
+NEXT: claim it and fix the bullets in order, citing the review IDs in the commit.
+
+--- history (3 events) ---
+  2026-10-08T05:34:32Z  BENCH  file      for=FOUNDRY kind=task needs=offline target=v1 title=Huge Things settings: validate every numeric on load, honest labels, translation keys (B3.19/C3.6/D3.3, A2.7/D1.5, B4.6) tsn=1791437672284128975
+  2026-10-09T22:49:09Z  FOUNDRY implemented criteria=[{'id': 'A1', 'level': 'L2', 'text': 'in game, Mod Settings opens with every label translated (no raw RM_HugeThings_ keys) and a hand-edited NaN/inf config loads at sane values'}] needs=bridge ref=origin/main sha=88c73d3ebe58 tsn=1791586149785801776
+  2026-11-03T05:03:57Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign HUGETHINGS_SETTINGS_HARDENING_1 … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+✅ If the CONDUCTOR told you to, it carries his authority: same command with
+    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor's text>"
+
+⛔ If neither did, the rule stands. Route it to BENCH or DECIDE instead. ranBy=BENCH reason=FOUNDRY retired 2026-11-02: re-homed to BENCH (bucket relentless) to=BENCH tsn=1793682237599744714  | decided by card: What should happen to FOUNDRY? → Retire it (Recommended)
+--- causal chain ---
+  (none — this item stands on its own)

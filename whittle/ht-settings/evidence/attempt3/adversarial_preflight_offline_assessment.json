@@ -1,0 +1,18 @@
+{
+  "other_required_nonpasses": [],
+  "O02": [
+    {
+      "id": "O02",
+      "name": "bridge_lease",
+      "required": true,
+      "status": "PASS",
+      "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+      "cost_est_s": 0.1,
+      "took_s": 0.0,
+      "prevents": "#22 #50 two drivers",
+      "evidence": {}
+    }
+  ],
+  "authorized_exception": "O02 other-host lease only; actual host independently guarded",
+  "ok": true
+}

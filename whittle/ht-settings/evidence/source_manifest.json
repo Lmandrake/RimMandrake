@@ -1,0 +1,34 @@
+{
+  "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": {
+    "snapshot": "source_snapshot/RM_HugeThingsSettings.cs",
+    "sha256": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83"
+  },
+  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs": {
+    "snapshot": "source_snapshot/RM_TitanicKernel.cs",
+    "sha256": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18"
+  },
+  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs": {
+    "snapshot": "source_snapshot/TitanicTierUtility.cs",
+    "sha256": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de"
+  },
+  "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml": {
+    "snapshot": "source_snapshot/RM_TitanicTierDef.xml",
+    "sha256": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf"
+  },
+  "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": {
+    "snapshot": "source_snapshot/RM_HugeThings.xml",
+    "sha256": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228"
+  },
+  "src/RimMandrake/HugeThings/northstar/settings_hardening_live.py": {
+    "snapshot": "source_snapshot/settings_hardening_live.py",
+    "sha256": "21c0a509d5bce636b008af2914c6bf17e3a0878a6cb019ec3758b5e0a1adb962"
+  },
+  "src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py": {
+    "snapshot": "source_snapshot/selftest_settings_hardening.py",
+    "sha256": "b713467f94468c7ed9c823cd849a42457ad014d52a12d8665702a6f6cc78eff6"
+  },
+  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": {
+    "snapshot": "source_snapshot/RM_HugeThings.dll.srchash",
+    "sha256": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d"
+  }
+}

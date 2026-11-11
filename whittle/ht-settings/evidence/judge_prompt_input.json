@@ -1,0 +1,9 @@
+{
+  "path": "whittle/ht-settings/JUDGE_PROMPT.md",
+  "bytes": 1559,
+  "sha256": "dbab12992fdebe45386be5680ea627c1cc1c19ff92495c83013855b17e75165a",
+  "stdin": "exact file bytes, no prefix/suffix",
+  "fork": false,
+  "resume": false,
+  "model_override": false
+}

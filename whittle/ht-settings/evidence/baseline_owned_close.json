@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "action": "close",
+  "closedCount": 1,
+  "closed": [
+    {
+      "type": "RimWorld.Dialog_ModSettings"
+    }
+  ],
+  "refusedCount": 0,
+  "refused": [],
+  "stillOpenCount": 2,
+  "ticksGame": -1,
+  "operation": {
+    "OperationId": "op_501fa1ba554d44d29c86e6372c961aef",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 36
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

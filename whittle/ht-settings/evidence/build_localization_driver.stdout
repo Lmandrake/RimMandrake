@@ -1,0 +1,6 @@
+attempt4_guard_free rc 0
+attempt4_take rc 0
+attempt4_guard_taken rc 0
+build_game_status rc 3
+localization_winbuild rc 0
+localization_deploy_plan rc 1

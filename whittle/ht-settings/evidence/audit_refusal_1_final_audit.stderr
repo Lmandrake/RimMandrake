@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/codex-ht/whittle/ht-settings/evidence/audit_final.py", line 16, in <module>
+    for name,want in base['frozen'].items():assert sha(E.parent/name)==want
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,104 @@
+{
+  "success": true,
+  "path": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-settings\\evidence\\baseline_native_settings__clip.png",
+  "sourcePath": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\baseline_native_settings.png",
+  "fileName": "baseline_native_settings__clip",
+  "requestedFileName": "baseline_native_settings",
+  "saveDataFolder": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios",
+  "screenshotFolder": "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots",
+  "sizeBytes": 125111,
+  "capturedAtUtc": "2026-11-11T11:13:01.1997885Z",
+  "suppressMessage": true,
+  "clipped": true,
+  "clipTargetId": "window:1:RimWorld.Dialog_ModSettings",
+  "clipTargetKind": "window",
+  "clipTargetLabel": "RimWorld.Dialog_ModSettings",
+  "clipPadding": 8,
+  "clipRect": {
+    "x": 863,
+    "y": 99,
+    "width": 916,
+    "height": 716
+  },
+  "screenTargets": {
+    "capturedAtUtc": "2026-11-11T11:13:00.9007749Z",
+    "uiState": {
+      "programState": "Entry",
+      "inEntryScene": true,
+      "hasCurrentGame": false,
+      "windowCount": 3,
+      "floatMenuOpen": false,
+      "nonImmediateDialogWindowOpen": true,
+      "mainTabOpen": false,
+      "focusedWindowType": "RimWorld.Dialog_ModSettings",
+      "topWindowType": "RimWorld.Dialog_ModSettings"
+    },
+    "selectedPawns": [],
+    "windows": [
+      {
+        "kind": "window",
+        "index": 0,
+        "id": -1593759361,
+        "type": "Verse.ImmediateWindow",
+        "layer": "GameUI",
+        "isTopWindow": false,
+        "isFocusedWindow": false,
+        "getsInput": false,
+        "windowTargetId": "window:-1593759361:Verse.ImmediateWindow",
+        "rect": {
+          "x": 1249.0,
+          "y": 3.0,
+          "width": 144.0,
+          "height": 25.0
+        }
+      },
+      {
+        "kind": "window",
+        "index": 1,
+        "id": 0,
+        "type": "LudeonTK.EditWindow_Log",
+        "title": "Debug log",
+        "layer": "Dialog",
+        "isTopWindow": false,
+        "isFocusedWindow": false,
+        "getsInput": false,
+        "windowTargetId": "window:0:LudeonTK.EditWindow_Log",
+        "dismissTargetId": "window-dismiss:0:LudeonTK.EditWindow_Log",
+        "rect": {
+          "x": 660.0,
+          "y": 228.0,
+          "width": 1321.0,
+          "height": 457.0
+        }
+      },
+      {
+        "kind": "window",
+        "index": 2,
+        "id": 1,
+        "type": "RimWorld.Dialog_ModSettings",
+        "layer": "Dialog",
+        "isTopWindow": true,
+        "isFocusedWindow": true,
+        "getsInput": true,
+        "windowTargetId": "window:1:RimWorld.Dialog_ModSettings",
+        "dismissTargetId": "window-dismiss:1:RimWorld.Dialog_ModSettings",
+        "rect": {
+          "x": 871.0,
+          "y": 107.0,
+          "width": 900.0,
+          "height": 700.0
+        }
+      }
+    ]
+  },
+  "operation": {
+    "OperationId": "op_9b319504995f400eba494e2182c6f279",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 321
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

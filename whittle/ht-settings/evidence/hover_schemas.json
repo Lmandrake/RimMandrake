@@ -1,0 +1,177 @@
+[
+  {
+    "name": "rimworld/set_hover_target",
+    "title": "Rimworld Set Hover Target",
+    "description": "Set a bounded virtual cursor/hover target for UI review and screenshots, using a ui-element or screen target id, explicit screen coordinates, or a current-map cell, pawn, or thing",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "description": "Optional ui-element target id returned by rimworld/get_ui_layout, or a screen target id from rimworld/get_screen_targets"
+        },
+        "x": {
+          "type": "integer",
+          "description": "Current-map cell x coordinate when hovering a map cell"
+        },
+        "z": {
+          "type": "integer",
+          "description": "Current-map cell z coordinate when hovering a map cell"
+        },
+        "thingId": {
+          "type": "string",
+          "description": "Stable current-map thing id when hovering a spawned thing"
+        },
+        "pawnName": {
+          "type": "string",
+          "description": "Optional current-map pawn name when hovering a pawn"
+        },
+        "pawnId": {
+          "type": "string",
+          "description": "Optional stable current-map pawn id when hovering a pawn"
+        },
+        "anchor": {
+          "type": "string",
+          "description": "Anchor inside target rectangles for targetId: center, top, bottom, left, right, topLeft, topRight, bottomLeft, or bottomRight",
+          "default": "center"
+        },
+        "offsetX": {
+          "type": "number",
+          "description": "Logical-pixel horizontal offset added after resolving the target point or map point",
+          "default": 0.0
+        },
+        "offsetY": {
+          "type": "number",
+          "description": "Logical-pixel vertical offset added after resolving the target point or map point",
+          "default": 0.0
+        },
+        "screenX": {
+          "type": "number",
+          "description": "Explicit screen-space x coordinate, in RimWorld UI logical pixels, when no targetId or map target is supplied"
+        },
+        "screenY": {
+          "type": "number",
+          "description": "Explicit screen-space y coordinate, in RimWorld UI logical pixels from the top edge, when no targetId or map target is supplied"
+        },
+        "durationMs": {
+          "type": "integer",
+          "description": "Optional lifetime for the virtual cursor in milliseconds. Values are clamped to a safe bounded range and real mouse input clears it immediately."
+        },
+        "settleMs": {
+          "type": "integer",
+          "description": "Optional post-hover wait in milliseconds so repaint-driven hover effects and RimWorld's normal tooltip delay can become visible before follow-up screenshots. Values are clamped to a safe bounded range.",
+          "default": 600
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "targetId",
+        "type": "String",
+        "description": "Optional ui-element target id returned by rimworld/get_ui_layout, or a screen target id from rimworld/get_screen_targets",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "x",
+        "type": "Nullable`1",
+        "description": "Current-map cell x coordinate when hovering a map cell",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "z",
+        "type": "Nullable`1",
+        "description": "Current-map cell z coordinate when hovering a map cell",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "thingId",
+        "type": "String",
+        "description": "Stable current-map thing id when hovering a spawned thing",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "pawnName",
+        "type": "String",
+        "description": "Optional current-map pawn name when hovering a pawn",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "pawnId",
+        "type": "String",
+        "description": "Optional stable current-map pawn id when hovering a pawn",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "anchor",
+        "type": "String",
+        "description": "Anchor inside target rectangles for targetId: center, top, bottom, left, right, topLeft, topRight, bottomLeft, or bottomRight",
+        "required": false,
+        "defaultValue": "center"
+      },
+      {
+        "name": "offsetX",
+        "type": "Single",
+        "description": "Logical-pixel horizontal offset added after resolving the target point or map point",
+        "required": false,
+        "defaultValue": 0.0
+      },
+      {
+        "name": "offsetY",
+        "type": "Single",
+        "description": "Logical-pixel vertical offset added after resolving the target point or map point",
+        "required": false,
+        "defaultValue": 0.0
+      },
+      {
+        "name": "screenX",
+        "type": "Nullable`1",
+        "description": "Explicit screen-space x coordinate, in RimWorld UI logical pixels, when no targetId or map target is supplied",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "screenY",
+        "type": "Nullable`1",
+        "description": "Explicit screen-space y coordinate, in RimWorld UI logical pixels from the top edge, when no targetId or map target is supplied",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "durationMs",
+        "type": "Nullable`1",
+        "description": "Optional lifetime for the virtual cursor in milliseconds. Values are clamped to a safe bounded range and real mouse input clears it immediately.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "settleMs",
+        "type": "Int32",
+        "description": "Optional post-hover wait in milliseconds so repaint-driven hover effects and RimWorld's normal tooltip delay can become visible before follow-up screenshots. Values are clamped to a safe bounded range.",
+        "required": false,
+        "defaultValue": 600
+      }
+    ],
+    "outputSchema": {},
+    "requiresAuth": true
+  },
+  {
+    "name": "rimworld/clear_hover_target",
+    "title": "Rimworld Clear Hover Target",
+    "description": "Clear the current virtual cursor/hover target so screenshots, mouseover-driven UI, and map clicks return to the real cursor state",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "parameters": [],
+    "outputSchema": {},
+    "requiresAuth": true
+  }
+]

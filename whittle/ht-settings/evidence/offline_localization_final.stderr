@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/1] PASS          4.3s  src/RimMandrake/Utils/selftest_settings_screens.py

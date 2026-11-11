@@ -1,0 +1,10 @@
+{
+  "base_sha": "9f3413846e3e38346f386b28844f5a910dc60990",
+  "inherited_generation": "1396",
+  "parent_pid": 2805067,
+  "frozen": {
+    "STATEMENT.md": "f1f6952845b50fbc6468d5be6c96f705fedf3106d4564864f9016771c902d76a",
+    "NOTES.md": "3187250df8ce92fbcc0b80f65d21e4525eb62716103323482abcc9211247fb97",
+    "JUDGE_PROMPT.md": "27d962d57e5562aeba0aaa5481b2deaa5e9cada1e94a39a227fa9d117d72b12e"
+  }
+}

@@ -1,0 +1,82 @@
+Mono path[0] = 'D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'D:/SteamLibrary/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 18 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2080 Ti (ID=0x1e07)
+    Vendor:   NVIDIA
+    VRAM:     11027 MB
+    Driver:   32.0.15.6094
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.319 seconds
+- Finished resetting the current domain, in  0.002 seconds
+<RI> Initializing input.
+
+<RI> Input initialized.
+
+<RI> Initialized touch support.
+
+[PhysX] Initialized MultithreadedTaskDispatcher with 18 workers.
+UnloadTime: 0.825300 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Fallback handler could not load library D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001A121A3EB80.dll
+Fallback handler could not load library D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001A121D5B160.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=285 elapsedMs=286
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=286
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=287 elapsedMs=287
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 30, missing 0
+[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, RM_PowerCord; invisible=True
+[RimMandrake.FlowWorks] Harmony: patched 171, missing 0
+[FlowWorks] thirst provider: Own (FlowWorks' own thirst; Dubs Bad Hygiene thirst is not supported)
+[RimMandrake.HugeThings] ready: 1 huge plants, 0 huge pawn races.
+[RimMandrake.TitanicCreatures] ready: 8 patches, 28 races auto-tiered.
+[RimMandrake Patches] metal/stone non-flammable: 14 stuff def(s) changed (Metallic 7, Stony 7), 0 already 0.
+[RimMandrake Patches] south draws front: Pawns ordered; buildings and plants ordered.
+Type SectionLayer_RMSheetWater probably needs a StaticConstructorOnStartup attribute, because it has a field film of type Material. All assets must be loaded in the main thread.
+Type RM_Building_FerryPost probably needs a StaticConstructorOnStartup attribute, because it has a field ropeMat of type Material. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Type RM_PitLipOcclusion probably needs a StaticConstructorOnStartup attribute, because it has a field edgeShadeMat of type Material. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+[RimMandrake.HugeThings] all 15 patch classes applied exactly once.
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 28847.
+Total: 238.516700 ms (FindLiveObjects: 1.387700 ms CreateObjectMapping: 2.178600 ms MarkObjects: 234.581200 ms  DeleteObjects: 0.369100 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=25 elapsedMs=23334
+[JawaBench] ready: 431 tools, build 54acba048eda
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] null-texture probe installed on UnityEngine.GUI.DrawTexture(Rect, Texture, ScaleMode, bool, float, Color x4, Vector4, Vector4, bool), armed=True. Read it with jawa/nulltex_probe.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 14/839e8976, toolSet ddc7308e, defDump no, engine 1.6.4871 rev591
+[JawaBench] TPS marker start: session e96f3755a38142cb9fb2409014b0f5f3 seq 2 utc 2026-11-11T11:16:57.486Z
+[JawaBench] TPS sampler installed (bridge-registration): session e96f3755a38142cb9fb2409014b0f5f3 pid 32312 -> C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\tps\tps_20261111T111657Z_e96f3755a38142cb9fb2409014b0f5f3_32312_000.jsonl; attribution 8 stages
+[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok); switches ok
+[JawaBench] profile gate complete (430 tools gated, 0 unguarded, by bridge-registration, 2211 ms); compile gm, runtime profile test (profile file says test until 2026-12-11T08:59:23.0000000Z)
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=6393 elapsedMs=29728
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=29729
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=29730
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=29731
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=29731
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=29731
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=29733
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=5 elapsedMs=29738
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=29739
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=29739
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=29743
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=33 elapsedMs=29777
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=6443 elapsedMs=29778
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=34 elapsedMs=29778
+[RimBridge] GABP server running standalone on port 5174
+[credential line redacted]

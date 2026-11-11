@@ -1,0 +1,3 @@
+Whittle: not done yet.
+- No judge's verdict newer than DONE.md and the evidence. Spawn a fresh subagent (not a fork) with whittle/ht-settings/JUDGE_PROMPT.md as its whole brief. It writes whittle/ht-settings/JUDGE.md.
+If you truly can't go on, or need the owner, write whittle/ht-settings/BLOCKED.md saying why, then stop.

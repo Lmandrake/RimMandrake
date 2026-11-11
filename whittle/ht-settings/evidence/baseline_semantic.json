@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "requestedModId": "RimMandrake.HugeThings.RM_HugeThingsMod",
+  "mod": {
+    "modId": "mod-settings:mandrake.rm.hugethings:26ffdeee1aa23647",
+    "packageId": "mandrake.rm.hugethings",
+    "packageIdPlayerFacing": "mandrake.rm.hugethings",
+    "name": "RimMandrake: Huge Things",
+    "folderName": "HugeThings",
+    "authors": "mandrake",
+    "rootDir": "D:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\HugeThings",
+    "handleType": "RimMandrake.HugeThings.RM_HugeThingsMod",
+    "handleTypeName": "RM_HugeThingsMod",
+    "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "settingsCategory": "Huge Things",
+    "hasSettingsWindow": true,
+    "hasPersistentState": true,
+    "supportsRead": true
+  },
+  "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+  "root": {
+    "valueKind": "object",
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "count": 0,
+    "truncated": false,
+    "children": []
+  },
+  "topLevelSettingCount": 0,
+  "operation": {
+    "OperationId": "op_863f3ccc604e495fa72cf62412239bce",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 12
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

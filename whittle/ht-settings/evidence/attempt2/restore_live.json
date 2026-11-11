@@ -1,0 +1,825 @@
+{
+  "started_utc": "2026-11-11T11:31:09.893196+00:00",
+  "arm": "restore",
+  "calls": [
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "list"
+      },
+      "result": {
+        "success": true,
+        "action": "list",
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "count": 54,
+        "fields": [
+          {
+            "name": "MaxTrunkScale",
+            "type": "Single",
+            "kind": "static",
+            "value": "1.5"
+          },
+          {
+            "name": "giantPlantsEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "plantTrunkEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "plantSelectionEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "plantTrunkScale",
+            "type": "Single",
+            "kind": "static",
+            "value": "1"
+          },
+          {
+            "name": "plantTrunkDamageEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "plantItemPushEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "giantAnimalsEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "pawnHitboxEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "pawnHitboxScale",
+            "type": "Single",
+            "kind": "static",
+            "value": "1"
+          },
+          {
+            "name": "largePawnsFootprintEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "largePawnsClearingOff",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "tierThresholdsCustom",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "False"
+          },
+          {
+            "name": "tierT1MinBodySize",
+            "type": "Single",
+            "kind": "static",
+            "value": "4"
+          },
+          {
+            "name": "tierT2MinBodySize",
+            "type": "Single",
+            "kind": "static",
+            "value": "8"
+          },
+          {
+            "name": "tierT3MinBodySize",
+            "type": "Single",
+            "kind": "static",
+            "value": "20"
+          },
+          {
+            "name": "wakeEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "wakeCrushDamageMultiplier",
+            "type": "Single",
+            "kind": "static",
+            "value": "1"
+          },
+          {
+            "name": "wakeFilthTrailChance",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.35"
+          },
+          {
+            "name": "wakeRoofHolingEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "giantPlantSmashEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "giantPlantSmashMinTier",
+            "type": "Int32",
+            "kind": "static",
+            "value": "3"
+          },
+          {
+            "name": "titanClearingEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "titanClearingDetourFactor",
+            "type": "Single",
+            "kind": "static",
+            "value": "2.5"
+          },
+          {
+            "name": "wallsSlotsEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "squeezeEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "squeezeSlowdownAtHalf",
+            "type": "Single",
+            "kind": "static",
+            "value": "2"
+          },
+          {
+            "name": "trampleBudgetPerBreadth",
+            "type": "Single",
+            "kind": "static",
+            "value": "100"
+          },
+          {
+            "name": "blowDamagePerBreadth",
+            "type": "Single",
+            "kind": "static",
+            "value": "20"
+          },
+          {
+            "name": "holdLineFactor",
+            "type": "Single",
+            "kind": "static",
+            "value": "1"
+          },
+          {
+            "name": "roofWallHpFactor",
+            "type": "Single",
+            "kind": "static",
+            "value": "1.5"
+          },
+          {
+            "name": "roofWallDamageFactor",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.6667"
+          },
+          {
+            "name": "scrapeEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "temperamentEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "breadth2BreakingEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "trenchStepEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "roofAvoidanceEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "yieldCurveEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "yieldCurveMinFactor",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.15"
+          },
+          {
+            "name": "corpseSiteEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "corpseSiteHarvestMeatPerSession",
+            "type": "Int32",
+            "kind": "static",
+            "value": "25"
+          },
+          {
+            "name": "corpseSiteHarvestLeatherPerSession",
+            "type": "Int32",
+            "kind": "static",
+            "value": "10"
+          },
+          {
+            "name": "corpseSiteMeatSpoilagePerDay",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.15"
+          },
+          {
+            "name": "corpseSiteLeatherSpoilagePerDay",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.08"
+          },
+          {
+            "name": "corpseSiteWorkHoursPerSession",
+            "type": "Single",
+            "kind": "static",
+            "value": "1"
+          },
+          {
+            "name": "corpseSiteScavengersEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "corpseSiteScavengerDailyChance",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.35"
+          },
+          {
+            "name": "corpseSiteScavengerMax",
+            "type": "Int32",
+            "kind": "static",
+            "value": "3"
+          },
+          {
+            "name": "corpseSiteVisitorMeatPerDay",
+            "type": "Int32",
+            "kind": "static",
+            "value": "20"
+          },
+          {
+            "name": "corpseSiteCampsEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "corpseSiteCampDailyChance",
+            "type": "Single",
+            "kind": "static",
+            "value": "0.1"
+          },
+          {
+            "name": "corpseSiteCampHours",
+            "type": "Single",
+            "kind": "static",
+            "value": "36"
+          },
+          {
+            "name": "titanEventsEnabled",
+            "type": "Boolean",
+            "kind": "static",
+            "value": "True"
+          },
+          {
+            "name": "titanEventWarningHours",
+            "type": "Single",
+            "kind": "static",
+            "value": "2"
+          }
+        ],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_7b2be431b25b477a9cbc1f4f0573a2a9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "rimworld/get_mod_settings",
+      "params": {
+        "modId": "RimMandrake.HugeThings.RM_HugeThingsMod"
+      },
+      "result": {
+        "success": true,
+        "requestedModId": "RimMandrake.HugeThings.RM_HugeThingsMod",
+        "mod": {
+          "modId": "mod-settings:mandrake.rm.hugethings:26ffdeee1aa23647",
+          "packageId": "mandrake.rm.hugethings",
+          "packageIdPlayerFacing": "mandrake.rm.hugethings",
+          "name": "RimMandrake: Huge Things",
+          "folderName": "HugeThings",
+          "authors": "mandrake",
+          "rootDir": "D:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\HugeThings",
+          "handleType": "RimMandrake.HugeThings.RM_HugeThingsMod",
+          "handleTypeName": "RM_HugeThingsMod",
+          "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+          "settingsCategory": "Huge Things",
+          "hasSettingsWindow": true,
+          "hasPersistentState": true,
+          "supportsRead": true
+        },
+        "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "root": {
+          "valueKind": "object",
+          "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+          "count": 0,
+          "truncated": false,
+          "children": []
+        },
+        "topLevelSettingCount": 0,
+        "operation": {
+          "OperationId": "op_a1f5ea11d0a24e20a36af4405d969ff5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 26
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/window_list_close",
+      "params": {
+        "action": "list"
+      },
+      "result": {
+        "success": true,
+        "action": "list",
+        "count": 2,
+        "windows": [
+          {
+            "index": 0,
+            "type": "Verse.ImmediateWindow",
+            "layer": "GameUI",
+            "id": -1593759361,
+            "isDebug": false,
+            "forcePause": false
+          },
+          {
+            "index": 1,
+            "type": "LudeonTK.EditWindow_Log",
+            "optionalTitle": "Debug log",
+            "layer": "Dialog",
+            "id": 0,
+            "isDebug": true,
+            "forcePause": false
+          }
+        ],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_7932ed527d944d7a9fc8b922a2694e07",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "rimworld/get_ui_state",
+      "params": {},
+      "result": {
+        "success": true,
+        "programState": "Entry",
+        "inEntryScene": true,
+        "hasCurrentGame": false,
+        "nonImmediateDialogWindowOpen": true,
+        "currentWindowGetsInput": true,
+        "mouseObscuredNow": false,
+        "windowsForcePause": false,
+        "windowsPreventCameraMotion": false,
+        "windowsPreventSave": false,
+        "anyWindowAbsorbingAllInput": false,
+        "anySearchWidgetFocused": false,
+        "floatMenuOpen": false,
+        "windowCount": 2,
+        "focusedWindowType": "LudeonTK.EditWindow_Log",
+        "focusedWindowTitle": "Debug log",
+        "topWindowType": "LudeonTK.EditWindow_Log",
+        "topWindowTitle": "Debug log",
+        "mainTabOpen": false,
+        "windows": [
+          {
+            "index": 0,
+            "id": -1593759361,
+            "type": "Verse.ImmediateWindow",
+            "layer": "GameUI",
+            "isOpen": true,
+            "getsInput": true,
+            "closeOnAccept": false,
+            "closeOnCancel": false,
+            "forcePause": false,
+            "preventCameraMotion": false,
+            "absorbInputAroundWindow": false,
+            "drawInScreenshotMode": true,
+            "rect": {
+              "x": 1249.0,
+              "y": 3.0,
+              "width": 144.0,
+              "height": 25.0
+            }
+          },
+          {
+            "index": 1,
+            "id": 0,
+            "type": "LudeonTK.EditWindow_Log",
+            "title": "Debug log",
+            "layer": "Dialog",
+            "isOpen": true,
+            "getsInput": true,
+            "closeOnAccept": false,
+            "closeOnCancel": true,
+            "forcePause": false,
+            "preventCameraMotion": false,
+            "absorbInputAroundWindow": false,
+            "drawInScreenshotMode": true,
+            "rect": {
+              "x": 660.0,
+              "y": 228.0,
+              "width": 1321.0,
+              "height": 457.0
+            }
+          }
+        ],
+        "operation": {
+          "OperationId": "op_5400c3bbeb5a4cf48e896b59527c5432",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "RimMandrake.TitanicCreatures.RM_TitanicKernel",
+        "method": "WarningTicks",
+        "args": "2"
+      },
+      "result": {
+        "success": true,
+        "method": "Int32 WarningTicks(Single)",
+        "result": "5000",
+        "thingArgs": [],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_515d9b9a83ea4f608a71c55e1fa9b2c3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "RimMandrake.TitanicCreatures.TitanicTierUtility",
+        "method": "get_Thresholds"
+      },
+      "result": {
+        "success": true,
+        "method": "RimMandrake.TitanicCreatures.RM_TitanicTierDef get_Thresholds()",
+        "result": "RM_TitanicTierDef:RM_TitanicTiers_Default",
+        "thingArgs": [],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_508262bec6ea4ccc97a490e2a87a4e65",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "script_sha256": "5c6e4a6253fb0eb5796faf9d89a3f809da408511e1ce1f1a39401ae86fedc226",
+  "tested_numeric_writes": 0,
+  "jawa_tool_count": 423,
+  "first_loaded_fields": {
+    "MaxTrunkScale": "1.5",
+    "giantPlantsEnabled": "True",
+    "plantTrunkEnabled": "True",
+    "plantSelectionEnabled": "True",
+    "plantTrunkScale": "1",
+    "plantTrunkDamageEnabled": "True",
+    "plantItemPushEnabled": "True",
+    "giantAnimalsEnabled": "True",
+    "pawnHitboxEnabled": "True",
+    "pawnHitboxScale": "1",
+    "largePawnsFootprintEnabled": "True",
+    "largePawnsClearingOff": "True",
+    "tierThresholdsCustom": "False",
+    "tierT1MinBodySize": "4",
+    "tierT2MinBodySize": "8",
+    "tierT3MinBodySize": "20",
+    "wakeEnabled": "True",
+    "wakeCrushDamageMultiplier": "1",
+    "wakeFilthTrailChance": "0.35",
+    "wakeRoofHolingEnabled": "True",
+    "giantPlantSmashEnabled": "True",
+    "giantPlantSmashMinTier": "3",
+    "titanClearingEnabled": "True",
+    "titanClearingDetourFactor": "2.5",
+    "wallsSlotsEnabled": "True",
+    "squeezeEnabled": "True",
+    "squeezeSlowdownAtHalf": "2",
+    "trampleBudgetPerBreadth": "100",
+    "blowDamagePerBreadth": "20",
+    "holdLineFactor": "1",
+    "roofWallHpFactor": "1.5",
+    "roofWallDamageFactor": "0.6667",
+    "scrapeEnabled": "True",
+    "temperamentEnabled": "True",
+    "breadth2BreakingEnabled": "True",
+    "trenchStepEnabled": "True",
+    "roofAvoidanceEnabled": "True",
+    "yieldCurveEnabled": "True",
+    "yieldCurveMinFactor": "0.15",
+    "corpseSiteEnabled": "True",
+    "corpseSiteHarvestMeatPerSession": "25",
+    "corpseSiteHarvestLeatherPerSession": "10",
+    "corpseSiteMeatSpoilagePerDay": "0.15",
+    "corpseSiteLeatherSpoilagePerDay": "0.08",
+    "corpseSiteWorkHoursPerSession": "1",
+    "corpseSiteScavengersEnabled": "True",
+    "corpseSiteScavengerDailyChance": "0.35",
+    "corpseSiteScavengerMax": "3",
+    "corpseSiteVisitorMeatPerDay": "20",
+    "corpseSiteCampsEnabled": "True",
+    "corpseSiteCampDailyChance": "0.1",
+    "corpseSiteCampHours": "36",
+    "titanEventsEnabled": "True",
+    "titanEventWarningHours": "2"
+  },
+  "semantic_settings": {
+    "success": true,
+    "requestedModId": "RimMandrake.HugeThings.RM_HugeThingsMod",
+    "mod": {
+      "modId": "mod-settings:mandrake.rm.hugethings:26ffdeee1aa23647",
+      "packageId": "mandrake.rm.hugethings",
+      "packageIdPlayerFacing": "mandrake.rm.hugethings",
+      "name": "RimMandrake: Huge Things",
+      "folderName": "HugeThings",
+      "authors": "mandrake",
+      "rootDir": "D:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\HugeThings",
+      "handleType": "RimMandrake.HugeThings.RM_HugeThingsMod",
+      "handleTypeName": "RM_HugeThingsMod",
+      "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+      "settingsCategory": "Huge Things",
+      "hasSettingsWindow": true,
+      "hasPersistentState": true,
+      "supportsRead": true
+    },
+    "settingsType": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "root": {
+      "valueKind": "object",
+      "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+      "count": 0,
+      "truncated": false,
+      "children": []
+    },
+    "topLevelSettingCount": 0,
+    "operation": {
+      "OperationId": "op_a1f5ea11d0a24e20a36af4405d969ff5",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 26
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "windows_before": {
+    "success": true,
+    "action": "list",
+    "count": 2,
+    "windows": [
+      {
+        "index": 0,
+        "type": "Verse.ImmediateWindow",
+        "layer": "GameUI",
+        "id": -1593759361,
+        "isDebug": false,
+        "forcePause": false
+      },
+      {
+        "index": 1,
+        "type": "LudeonTK.EditWindow_Log",
+        "optionalTitle": "Debug log",
+        "layer": "Dialog",
+        "id": 0,
+        "isDebug": true,
+        "forcePause": false
+      }
+    ],
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_7932ed527d944d7a9fc8b922a2694e07",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "ui_before": {
+    "success": true,
+    "programState": "Entry",
+    "inEntryScene": true,
+    "hasCurrentGame": false,
+    "nonImmediateDialogWindowOpen": true,
+    "currentWindowGetsInput": true,
+    "mouseObscuredNow": false,
+    "windowsForcePause": false,
+    "windowsPreventCameraMotion": false,
+    "windowsPreventSave": false,
+    "anyWindowAbsorbingAllInput": false,
+    "anySearchWidgetFocused": false,
+    "floatMenuOpen": false,
+    "windowCount": 2,
+    "focusedWindowType": "LudeonTK.EditWindow_Log",
+    "focusedWindowTitle": "Debug log",
+    "topWindowType": "LudeonTK.EditWindow_Log",
+    "topWindowTitle": "Debug log",
+    "mainTabOpen": false,
+    "windows": [
+      {
+        "index": 0,
+        "id": -1593759361,
+        "type": "Verse.ImmediateWindow",
+        "layer": "GameUI",
+        "isOpen": true,
+        "getsInput": true,
+        "closeOnAccept": false,
+        "closeOnCancel": false,
+        "forcePause": false,
+        "preventCameraMotion": false,
+        "absorbInputAroundWindow": false,
+        "drawInScreenshotMode": true,
+        "rect": {
+          "x": 1249.0,
+          "y": 3.0,
+          "width": 144.0,
+          "height": 25.0
+        }
+      },
+      {
+        "index": 1,
+        "id": 0,
+        "type": "LudeonTK.EditWindow_Log",
+        "title": "Debug log",
+        "layer": "Dialog",
+        "isOpen": true,
+        "getsInput": true,
+        "closeOnAccept": false,
+        "closeOnCancel": true,
+        "forcePause": false,
+        "preventCameraMotion": false,
+        "absorbInputAroundWindow": false,
+        "drawInScreenshotMode": true,
+        "rect": {
+          "x": 660.0,
+          "y": 228.0,
+          "width": 1321.0,
+          "height": 457.0
+        }
+      }
+    ],
+    "operation": {
+      "OperationId": "op_5400c3bbeb5a4cf48e896b59527c5432",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 7
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "warning_ticks": {
+    "success": true,
+    "method": "Int32 WarningTicks(Single)",
+    "result": "5000",
+    "thingArgs": [],
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_515d9b9a83ea4f608a71c55e1fa9b2c3",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 36
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "thresholds": {
+    "success": true,
+    "method": "RimMandrake.TitanicCreatures.RM_TitanicTierDef get_Thresholds()",
+    "result": "RM_TitanicTierDef:RM_TitanicTiers_Default",
+    "thingArgs": [],
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_508262bec6ea4ccc97a490e2a87a4e65",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 44
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "startup_log": {
+    "sanitized_path": "restore_live.startup.sanitized.txt",
+    "sha256": "8e51067b998876fdc8bbeb5abdfaef18eefee88ec812e205dd6159441705f9f0",
+    "first_exception": null,
+    "config_errors": [],
+    "scribe_parse_errors": []
+  },
+  "finished_utc": "2026-11-11T11:31:10.566754+00:00",
+  "ok": true
+}

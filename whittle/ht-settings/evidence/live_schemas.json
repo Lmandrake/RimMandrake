@@ -1,0 +1,535 @@
+[
+  {
+    "name": "rimworld/open_mod_settings",
+    "title": "Rimworld Open Mod Settings",
+    "description": "Open RimWorld's native Dialog_ModSettings window for one loaded mod without foreground-dependent input",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "modId": {
+          "type": "string",
+          "description": "Stable modId from rimworld/list_mod_settings_surfaces, or an exact package id / settings category / handle type match"
+        },
+        "replaceExisting": {
+          "type": "boolean",
+          "description": "Close any currently open mod-settings dialogs before opening the requested one",
+          "default": true
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "modId"
+      ]
+    },
+    "parameters": [
+      {
+        "name": "modId",
+        "type": "String",
+        "description": "Stable modId from rimworld/list_mod_settings_surfaces, or an exact package id / settings category / handle type match",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "replaceExisting",
+        "type": "Boolean",
+        "description": "Close any currently open mod-settings dialogs before opening the requested one",
+        "required": false,
+        "defaultValue": true
+      }
+    ],
+    "outputSchema": {},
+    "requiresAuth": true
+  },
+  {
+    "name": "rimworld/get_ui_state",
+    "title": "Rimworld Get Ui State",
+    "description": "Get the current RimWorld window stack and input state for background-safe UI automation",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "parameters": [],
+    "outputSchema": {},
+    "requiresAuth": true
+  },
+  {
+    "name": "rimworld/get_ui_layout",
+    "title": "Rimworld Get Ui Layout",
+    "description": "Capture a generic structured layout snapshot of the current dialogs, windows, main tabs, dynamic inspect tab strip, or selected gizmo grid, including actionable controls, crop-ready screen rects, and scroll-view metadata",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "surfaceId": {
+          "type": "string",
+          "description": "Optional surface target id such as a window target from rimworld/get_screen_targets, a main-tab target from rimworld/list_main_tabs, or selection-gizmos for the selected-pawn gizmo grid"
+        },
+        "timeoutMs": {
+          "type": "integer",
+          "description": "Maximum time to wait for the requested UI surface to draw on screen",
+          "default": 2000
+        },
+        "includeOffscreen": {
+          "type": "boolean",
+          "description": "Include elements scrolled outside their scroll view's visible viewport; by default they are counted but omitted",
+          "default": false
+        },
+        "offset": {
+          "type": "integer",
+          "description": "Zero-based element offset for paging; large layouts return page.nextOffset when the response size budget is reached",
+          "default": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "surfaceId",
+        "type": "String",
+        "description": "Optional surface target id such as a window target from rimworld/get_screen_targets, a main-tab target from rimworld/list_main_tabs, or selection-gizmos for the selected-pawn gizmo grid",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "timeoutMs",
+        "type": "Int32",
+        "description": "Maximum time to wait for the requested UI surface to draw on screen",
+        "required": false,
+        "defaultValue": 2000
+      },
+      {
+        "name": "includeOffscreen",
+        "type": "Boolean",
+        "description": "Include elements scrolled outside their scroll view's visible viewport; by default they are counted but omitted",
+        "required": false,
+        "defaultValue": false
+      },
+      {
+        "name": "offset",
+        "type": "Int32",
+        "description": "Zero-based element offset for paging; large layouts return page.nextOffset when the response size budget is reached",
+        "required": false,
+        "defaultValue": 0
+      }
+    ],
+    "outputSchema": {
+      "description": "A structured layout snapshot for the requested surface, including ui-surface and ui-element target ids that can be passed to rimworld/take_screenshot, rimworld/click_ui_target, rimworld/scroll_ui_target, or rimworld/set_hover_target."
+    },
+    "requiresAuth": true
+  },
+  {
+    "name": "jawa/window_list_close",
+    "title": "Jawa Window List Close",
+    "description": "List every open Window on the stack, or close one - Find.WindowStack.Windows for the list; Window.Close(doCloseSound) to close (the same virtual method the window's own close button calls). 'list' is read-only. 'close' targets EITHER 'index' (from a prior 'list' call - precise, use this when you already know which one) OR 'typeName' (a substring match against the window's own type name, case-insensitive - REFUSES rather than guessing if it matches more than one window unless closeAll=true). This is the answer to a stuck modal silently blocking every later call - a failure this project has hit before.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "'list' (default) or 'close'.",
+          "default": "list"
+        },
+        "index": {
+          "type": "integer",
+          "description": "close: index from a prior 'list' call.",
+          "default": -1
+        },
+        "typeName": {
+          "type": "string",
+          "description": "close: substring of the window's type name, case-insensitive."
+        },
+        "closeAll": {
+          "type": "boolean",
+          "description": "close: if typeName matches more than one window, close all of them rather than refusing. Default false.",
+          "default": false
+        },
+        "doCloseSound": {
+          "type": "boolean",
+          "description": "close: play the window's own close sound. Default true.",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "action",
+        "type": "String",
+        "description": "'list' (default) or 'close'.",
+        "required": false,
+        "defaultValue": "list"
+      },
+      {
+        "name": "index",
+        "type": "Int32",
+        "description": "close: index from a prior 'list' call.",
+        "required": false,
+        "defaultValue": -1
+      },
+      {
+        "name": "typeName",
+        "type": "String",
+        "description": "close: substring of the window's type name, case-insensitive.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "closeAll",
+        "type": "Boolean",
+        "description": "close: if typeName matches more than one window, close all of them rather than refusing. Default false.",
+        "required": false,
+        "defaultValue": false
+      },
+      {
+        "name": "doCloseSound",
+        "type": "Boolean",
+        "description": "close: play the window's own close sound. Default true.",
+        "required": false,
+        "defaultValue": true
+      }
+    ],
+    "outputSchema": {
+      "description": "list: success, count, windows[] (index, type, optionalTitle, layer, ID, isDebug, forcePause). close: success (false if ANY target survived), closedCount, closed[] (type, optionalTitle), refusedCount, refused[] - a window whose own OnCloseRequest() vetoed the close, verified against the stack AFTER the call rather than assumed from Close() returning - plus refusedNote and stillOpenCount."
+    },
+    "requiresAuth": false
+  },
+  {
+    "name": "jawa/static_call",
+    "title": "Jawa Static Call",
+    "description": "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod script needs to exercise (e.g. RM_ZennaqLightning.Redirect). args = '|'-separated, coerced by the parameter type: int/float/double/bool/string, IntVec3 as 'x,y,z' (or 'x,z'), Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every map - refused with candidates when absent or not of the parameter's type. Instance methods and overload ambiguity are REFUSED with the candidate signatures. The return value is rendered as text. Runs on the main thread. GM-gated: it can call anything public.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type.FullName, exact."
+        },
+        "method": {
+          "type": "string",
+          "description": "Method name."
+        },
+        "args": {
+          "type": "string",
+          "description": "'|'-separated arguments.",
+          "default": ""
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "type",
+        "type": "String",
+        "description": "Type.FullName, exact.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "method",
+        "type": "String",
+        "description": "Method name.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "args",
+        "type": "String",
+        "description": "'|'-separated arguments.",
+        "required": false,
+        "defaultValue": ""
+      }
+    ],
+    "outputSchema": {
+      "description": "success, method (signature), result, ticksGame."
+    },
+    "requiresAuth": false
+  },
+  {
+    "name": "rimworld/get_mod_settings",
+    "title": "Rimworld Get Mod Settings",
+    "description": "Read one loaded mod's semantic ModSettings object by stable mod id, package id, settings category, or handle type name",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "modId": {
+          "type": "string",
+          "description": "Stable modId from rimworld/list_mod_settings_surfaces, or an exact package id / settings category / handle type match"
+        },
+        "maxDepth": {
+          "type": "integer",
+          "description": "Maximum object depth to traverse when describing nested settings",
+          "default": 4
+        },
+        "maxCollectionEntries": {
+          "type": "integer",
+          "description": "Maximum number of children to return for any one list or dictionary node",
+          "default": 32
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "modId"
+      ]
+    },
+    "parameters": [
+      {
+        "name": "modId",
+        "type": "String",
+        "description": "Stable modId from rimworld/list_mod_settings_surfaces, or an exact package id / settings category / handle type match",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "maxDepth",
+        "type": "Int32",
+        "description": "Maximum object depth to traverse when describing nested settings",
+        "required": false,
+        "defaultValue": 4
+      },
+      {
+        "name": "maxCollectionEntries",
+        "type": "Int32",
+        "description": "Maximum number of children to return for any one list or dictionary node",
+        "required": false,
+        "defaultValue": 32
+      }
+    ],
+    "outputSchema": {},
+    "requiresAuth": true
+  },
+  {
+    "name": "rimworld/scroll_ui_target",
+    "title": "Rimworld Scroll Ui Target",
+    "description": "Scroll a scroll_view ui-element target returned by rimworld/get_ui_layout on the next real draw frame",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "description": "Scroll-view ui-element target id returned by rimworld/get_ui_layout"
+        },
+        "deltaY": {
+          "type": "number",
+          "description": "Vertical logical-pixel delta to add to the current scroll offset; positive values scroll down",
+          "default": 0.0
+        },
+        "deltaX": {
+          "type": "number",
+          "description": "Horizontal logical-pixel delta to add to the current scroll offset; positive values scroll right",
+          "default": 0.0
+        },
+        "targetY": {
+          "type": "number",
+          "description": "Optional absolute vertical scroll offset; when provided it overrides deltaY"
+        },
+        "targetX": {
+          "type": "number",
+          "description": "Optional absolute horizontal scroll offset; when provided it overrides deltaX"
+        },
+        "timeoutMs": {
+          "type": "integer",
+          "description": "Maximum time to wait for the target scroll view to be redrawn so the scroll can be applied",
+          "default": 2000
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "targetId"
+      ]
+    },
+    "parameters": [
+      {
+        "name": "targetId",
+        "type": "String",
+        "description": "Scroll-view ui-element target id returned by rimworld/get_ui_layout",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "deltaY",
+        "type": "Single",
+        "description": "Vertical logical-pixel delta to add to the current scroll offset; positive values scroll down",
+        "required": false,
+        "defaultValue": 0.0
+      },
+      {
+        "name": "deltaX",
+        "type": "Single",
+        "description": "Horizontal logical-pixel delta to add to the current scroll offset; positive values scroll right",
+        "required": false,
+        "defaultValue": 0.0
+      },
+      {
+        "name": "targetY",
+        "type": "Nullable`1",
+        "description": "Optional absolute vertical scroll offset; when provided it overrides deltaY",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "targetX",
+        "type": "Nullable`1",
+        "description": "Optional absolute horizontal scroll offset; when provided it overrides deltaX",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "timeoutMs",
+        "type": "Int32",
+        "description": "Maximum time to wait for the target scroll view to be redrawn so the scroll can be applied",
+        "required": false,
+        "defaultValue": 2000
+      }
+    ],
+    "outputSchema": {},
+    "requiresAuth": true
+  },
+  {
+    "name": "rimworld/take_screenshot",
+    "title": "Rimworld Take Screenshot",
+    "description": "Take an in-game screenshot and optionally crop it to a screen target, UI surface, UI element, or scroll-view region",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "description": "Optional screenshot file name without extension"
+        },
+        "includeTargets": {
+          "type": "boolean",
+          "description": "Include current screen target metadata such as windows and context menus",
+          "default": true
+        },
+        "suppressMessage": {
+          "type": "boolean",
+          "description": "Suppress RimWorld's screenshot-taken message during this automated capture",
+          "default": true
+        },
+        "clipTargetId": {
+          "type": "string",
+          "description": "Optional target id from rimworld/get_screen_targets or rimworld/get_ui_layout to crop around, including windows, ui-surface ids, ui-element ids, and scroll_view elements"
+        },
+        "clipPadding": {
+          "type": "integer",
+          "description": "Logical screen-pixel padding to include around the clip target",
+          "default": 8
+        },
+        "outputDirectory": {
+          "type": "string",
+          "description": "Optional absolute directory (~/ is expanded) that receives the final PNG instead of RimWorld's screenshot folder, for example the caller's working directory; it is created if missing and an existing file of the same name is replaced"
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "fileName",
+        "type": "String",
+        "description": "Optional screenshot file name without extension",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "includeTargets",
+        "type": "Boolean",
+        "description": "Include current screen target metadata such as windows and context menus",
+        "required": false,
+        "defaultValue": true
+      },
+      {
+        "name": "suppressMessage",
+        "type": "Boolean",
+        "description": "Suppress RimWorld's screenshot-taken message during this automated capture",
+        "required": false,
+        "defaultValue": true
+      },
+      {
+        "name": "clipTargetId",
+        "type": "String",
+        "description": "Optional target id from rimworld/get_screen_targets or rimworld/get_ui_layout to crop around, including windows, ui-surface ids, ui-element ids, and scroll_view elements",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "clipPadding",
+        "type": "Int32",
+        "description": "Logical screen-pixel padding to include around the clip target",
+        "required": false,
+        "defaultValue": 8
+      },
+      {
+        "name": "outputDirectory",
+        "type": "String",
+        "description": "Optional absolute directory (~/ is expanded) that receives the final PNG instead of RimWorld's screenshot folder, for example the caller's working directory; it is created if missing and an existing file of the same name is replaced",
+        "required": false,
+        "defaultValue": null
+      }
+    ],
+    "outputSchema": {
+      "description": "The saved screenshot path and, when requested, current target metadata describing visible windows, menus, and other screen targets."
+    },
+    "requiresAuth": true
+  },
+  {
+    "name": "jawa/mod_settings_field",
+    "title": "Jawa Mod Settings Field",
+    "description": "Read or write ANY public field (static OR instance) on a mod's ModSettings-derived class by TYPE NAME and field name. BRIDGE_STATIC_SETTINGS_FIELDS_1: rimworld/update_mod_settings only resolves INSTANCE fields and refuses public static ones - most of our own mods' settings classes declare static fields, which that tool cannot touch at all. This tool tries the field as STATIC first; if not found there, falls back to INSTANCE by locating a loaded Mod (assembly-matched to the settings type) whose Mod.GetSettings<T>() resolves it. Values are read/written as their string form and coerced to the field's real type (bool/int/float/double/string/enum only - refuses other types by name rather than guessing a conversion). action='list' (default, typeName only) reports every public field's name/type/kind/current value so a caller can discover names without reading source first.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "typeName": {
+          "type": "string",
+          "description": "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace."
+        },
+        "action": {
+          "type": "string",
+          "description": "'list' (default), 'get', or 'set'.",
+          "default": "list"
+        },
+        "field": {
+          "type": "string",
+          "description": "get/set: the field name."
+        },
+        "value": {
+          "type": "string",
+          "description": "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameters": [
+      {
+        "name": "typeName",
+        "type": "String",
+        "description": "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "action",
+        "type": "String",
+        "description": "'list' (default), 'get', or 'set'.",
+        "required": false,
+        "defaultValue": "list"
+      },
+      {
+        "name": "field",
+        "type": "String",
+        "description": "get/set: the field name.",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "value",
+        "type": "String",
+        "description": "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum).",
+        "required": false,
+        "defaultValue": null
+      }
+    ],
+    "outputSchema": {
+      "description": "list: success, fields[] (name, type, kind, value). get: success, field, fieldKind, value. set: success, field, fieldKind, valueBefore, valueAfter."
+    },
+    "requiresAuth": false
+  }
+]

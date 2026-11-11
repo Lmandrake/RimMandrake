@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "action": "list",
+  "count": 2,
+  "windows": [
+    {
+      "index": 0,
+      "type": "Verse.ImmediateWindow",
+      "layer": "GameUI",
+      "id": -1593759361,
+      "isDebug": false,
+      "forcePause": false
+    },
+    {
+      "index": 1,
+      "type": "LudeonTK.EditWindow_Log",
+      "optionalTitle": "Debug log",
+      "layer": "Dialog",
+      "id": 0,
+      "isDebug": true,
+      "forcePause": false
+    }
+  ],
+  "ticksGame": -1,
+  "operation": {
+    "OperationId": "op_3b64c52f21ba42c2be9ac37e61eb5465",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 38
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

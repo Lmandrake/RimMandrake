@@ -1,0 +1,35 @@
+{
+  "HEAD": "bcde532856eb2c8e1d779c71d55342a5b871c3de",
+  "files": {
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": {
+      "committed_sha256": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "working_sha256": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "requested_sha256": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "committed": true
+    },
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": {
+      "committed_sha256": "4afd8be54aea759c06c4adfd483690d991c182df2980218f1425c3570c66c1ef",
+      "working_sha256": "4afd8be54aea759c06c4adfd483690d991c182df2980218f1425c3570c66c1ef",
+      "requested_sha256": "4afd8be54aea759c06c4adfd483690d991c182df2980218f1425c3570c66c1ef",
+      "committed": true
+    },
+    "src/RimMandrake/Utils/selftest_settings_screens.py": {
+      "committed_sha256": "e5f4abe1d8df12a0fb2cd7d8b9c1f9b37a755fb8794866e0df8a6712aa9ec7e3",
+      "working_sha256": "e5f4abe1d8df12a0fb2cd7d8b9c1f9b37a755fb8794866e0df8a6712aa9ec7e3",
+      "requested_sha256": "e5f4abe1d8df12a0fb2cd7d8b9c1f9b37a755fb8794866e0df8a6712aa9ec7e3",
+      "committed": true
+    },
+    "src/RimMandrake/HugeThings/northstar/settings_hardening_live.py": {
+      "committed_sha256": null,
+      "working_sha256": "4970d4b16fafbc41f74b2de2062b643fddf496762d53a8639b946bd7153cc3d7",
+      "requested_sha256": "4970d4b16fafbc41f74b2de2062b643fddf496762d53a8639b946bd7153cc3d7",
+      "committed": false
+    },
+    "src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py": {
+      "committed_sha256": null,
+      "working_sha256": "3ebc51616d37ce3a165d0cf795c954349171a2c543a684a73482c1a434017446",
+      "requested_sha256": "3ebc51616d37ce3a165d0cf795c954349171a2c543a684a73482c1a434017446",
+      "committed": false
+    }
+  }
+}

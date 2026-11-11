@@ -1,0 +1,13 @@
+{
+  "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Prefs.xml",
+  "sha256": "2deffd6ffc2cdf9d7f42c982850fd3ea73e10234111fe0bca2a70fea1fcfce5c",
+  "display_background_fields": {
+    "screenWidth": "2643",
+    "screenHeight": "915",
+    "fullscreen": "False",
+    "uiScale": "1",
+    "backgroundExpansionId": null,
+    "randomBackground": "False",
+    "runInBackground": "True"
+  }
+}

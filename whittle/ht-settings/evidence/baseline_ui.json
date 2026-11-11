@@ -1,0 +1,74 @@
+{
+  "success": true,
+  "programState": "Entry",
+  "inEntryScene": true,
+  "hasCurrentGame": false,
+  "nonImmediateDialogWindowOpen": true,
+  "currentWindowGetsInput": true,
+  "mouseObscuredNow": false,
+  "windowsForcePause": false,
+  "windowsPreventCameraMotion": false,
+  "windowsPreventSave": false,
+  "anyWindowAbsorbingAllInput": false,
+  "anySearchWidgetFocused": false,
+  "floatMenuOpen": false,
+  "windowCount": 2,
+  "focusedWindowType": "LudeonTK.EditWindow_Log",
+  "focusedWindowTitle": "Debug log",
+  "topWindowType": "LudeonTK.EditWindow_Log",
+  "topWindowTitle": "Debug log",
+  "mainTabOpen": false,
+  "windows": [
+    {
+      "index": 0,
+      "id": -1593759361,
+      "type": "Verse.ImmediateWindow",
+      "layer": "GameUI",
+      "isOpen": true,
+      "getsInput": true,
+      "closeOnAccept": false,
+      "closeOnCancel": false,
+      "forcePause": false,
+      "preventCameraMotion": false,
+      "absorbInputAroundWindow": false,
+      "drawInScreenshotMode": true,
+      "rect": {
+        "x": 1249.0,
+        "y": 3.0,
+        "width": 144.0,
+        "height": 25.0
+      }
+    },
+    {
+      "index": 1,
+      "id": 0,
+      "type": "LudeonTK.EditWindow_Log",
+      "title": "Debug log",
+      "layer": "Dialog",
+      "isOpen": true,
+      "getsInput": true,
+      "closeOnAccept": false,
+      "closeOnCancel": true,
+      "forcePause": false,
+      "preventCameraMotion": false,
+      "absorbInputAroundWindow": false,
+      "drawInScreenshotMode": true,
+      "rect": {
+        "x": 660.0,
+        "y": 228.0,
+        "width": 1321.0,
+        "height": 457.0
+      }
+    }
+  ],
+  "operation": {
+    "OperationId": "op_1cb8a5ed7d82421eb5aebfa1f99a44b3",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 23
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

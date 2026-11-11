@@ -1,0 +1,173 @@
+{
+ "when": "2026-11-11T11:24:28Z",
+ "mode": "live",
+ "tier": "quicktest",
+ "modset": "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "O02",
+   "name": "bridge_lease",
+   "required": true,
+   "status": "PASS",
+   "reason": "FREE    since 2026-11-11T07:29:21Z",
+   "cost_est_s": 0.1,
+   "took_s": 0.0,
+   "prevents": "#22 #50 two drivers",
+   "evidence": {}
+  },
+  {
+   "id": "L05",
+   "name": "live_companion",
+   "required": true,
+   "status": "PASS",
+   "reason": "live companion 431 tools, build 54acba048eda",
+   "cost_est_s": 0.3,
+   "took_s": 0.05,
+   "prevents": "prediction 9",
+   "evidence": {}
+  },
+  {
+   "id": "L06",
+   "name": "live_tps_autostart",
+   "required": false,
+   "status": "PASS",
+   "reason": "TPS record autostarted (bridge-registration)",
+   "cost_est_s": 0.3,
+   "took_s": 0.01,
+   "prevents": "prediction 33",
+   "evidence": {}
+  },
+  {
+   "id": "L07",
+   "name": "live_awareness_init",
+   "required": false,
+   "status": "PASS",
+   "reason": "[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok;",
+   "cost_est_s": 0.3,
+   "took_s": 0.01,
+   "prevents": "prediction 6",
+   "evidence": {}
+  },
+  {
+   "id": "L02",
+   "name": "live_core_reset",
+   "required": true,
+   "status": "PASS",
+   "reason": "no reset marker; ModsConfig 14 mods",
+   "cost_est_s": 0.5,
+   "took_s": 0.01,
+   "prevents": "#30 #32 #36 #37",
+   "evidence": {}
+  },
+  {
+   "id": "O04",
+   "name": "modsconfig_intent",
+   "required": false,
+   "status": "PASS",
+   "reason": "ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches (14 mods, ordered)",
+   "cost_est_s": 0.5,
+   "took_s": 0.74,
+   "prevents": "#19 #47 #54 wrong list",
+   "evidence": {}
+  },
+  {
+   "id": "L03",
+   "name": "live_first_exception",
+   "required": true,
+   "status": "PASS",
+   "reason": "no missing types; 0 Config errors; first exception: None",
+   "cost_est_s": 1,
+   "took_s": 0.01,
+   "prevents": "#57 missing types",
+   "evidence": {
+    "first_exception": null,
+    "config_errors": 0,
+    "missing_types": []
+   }
+  },
+  {
+   "id": "L04",
+   "name": "live_mods_ordered",
+   "required": true,
+   "status": "PASS",
+   "reason": "running list == intended, ordered (14 mods); direct live read",
+   "cost_est_s": 1,
+   "took_s": 1.92,
+   "prevents": "#19 #54",
+   "evidence": {
+    "reading": {
+     "procs": [
+      [
+       16208,
+       1794396182
+      ]
+     ],
+     "ids": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.hugethings",
+      "mandrake.rm.hugethingstestraces",
+      "mandrake.rm.patches"
+     ],
+     "source": "jawa/running_mods"
+    }
+   }
+  },
+  {
+   "id": "O09",
+   "name": "companion_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)",
+   "cost_est_s": 1,
+   "took_s": 0.16,
+   "prevents": "#51 #57 stale DLL, P-c",
+   "evidence": {
+    "repo_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "game_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "repo_build": "54acba048eda",
+    "game_build": "54acba048eda"
+   }
+  },
+  {
+   "id": "O01",
+   "name": "game_down",
+   "required": true,
+   "status": "PASS",
+   "reason": "1 process (attach)",
+   "cost_est_s": 2,
+   "took_s": 0.42,
+   "prevents": "#21 two processes, #39 old log",
+   "evidence": {
+    "procs": [
+     [
+      16208,
+      1794396182
+     ]
+    ]
+   }
+  },
+  {
+   "id": "L01",
+   "name": "live_identity",
+   "required": true,
+   "status": "PASS",
+   "reason": "pid 16208 started 11:23:02Z, token in its log, listening on 5174",
+   "cost_est_s": 3,
+   "took_s": 0.83,
+   "prevents": "#39 previous log",
+   "evidence": {}
+  }
+ ]
+}

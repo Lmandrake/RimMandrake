@@ -1,0 +1,10 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 2 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): an input changed: src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py <- src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py
+  ran (1): no record
+PASS          0.2s  src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py
+PASS          4.5s  src/RimMandrake/Utils/selftest_settings_screens.py
+
+PASS 2/2  FAIL 0/2  UNMEASURED 0/2  CRASH 0/2  SKIPPED 0/2  (wall 5.0s) — contained in rm-harness.slice (max 12G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

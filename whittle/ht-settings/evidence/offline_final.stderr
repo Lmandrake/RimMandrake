@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/1] PASS          0.1s  src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py

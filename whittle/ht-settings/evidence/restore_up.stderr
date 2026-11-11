@@ -1,0 +1,2 @@
+host_guard: RUNNER holds stevedesktop gen 1396 (inherited)
+BLIND: the process list did not answer: TimeoutExpired: Command '['/home/mandrake/rm/codex-ht/whittle/ht-settings/evidence/steam_adapter/powershell.exe', '-NoProfile', '-NonInteractive', '-Command', "$ErrorActionPreference='Stop'; $ProgressPreference='SilentlyContinue'; Get-CimInstance Win32_Process -Filter 'Name=''RimWorldWin64.exe''' | ForEach-Object { '{0}|{1}|{2}' -f $_.ProcessId, ([DateTimeOffset]$_.CreationDate).ToUnixTimeMilliseconds(), $_.CommandLine }; 'GAME-LIST-OK'"]' timed out after 60 seconds

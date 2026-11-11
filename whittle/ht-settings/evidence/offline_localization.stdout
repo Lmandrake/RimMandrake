@@ -1,0 +1,53 @@
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 2 recorded, 0 checked against a stored PASS, 0 known red
+  ran (2): no record
+PASS          0.2s  src/RimMandrake/HugeThings/northstar/selftest_settings_hardening.py
+FAIL          2.7s  src/RimMandrake/Utils/selftest_settings_screens.py
+             rc 1
+             ok   SWBestiary#Livestock: snapshot removed
+             ok   SWBestiary#Livestock: a scope tag flipped to a dishonest one
+             ok   SWBestiary#Ikee: real screen, every setting grouped, resettable, scopes as audited
+             ok   SWBestiary#Ikee: a name dropped from its group array
+             ok   SWBestiary#Ikee: a setting in two groups
+             ok   SWBestiary#Ikee: group names a non-setting
+             ok   SWBestiary#Ikee: a Group's closing brace lost
+             ok   SWBestiary#Ikee: kit dropped from the csproj
+             ok   SWBestiary#Ikee: snapshot removed
+             ok   SWBestiary#BeastMechanics: real screen, every setting grouped, resettable, scopes as audited
+             ok   SWBestiary#BeastMechanics: a name dropped from its group array
+             ok   SWBestiary#BeastMechanics: a setting in two groups
+             ok   SWBestiary#BeastMechanics: group names a non-setting
+             ok   SWBestiary#BeastMechanics: a Group's closing brace lost
+             ok   SWBestiary#BeastMechanics: kit dropped from the csproj
+             ok   SWBestiary#BeastMechanics: snapshot removed
+             ok   SWBestiary#BeastMechanics: a scope tag flipped to a dishonest one
+             ok   SWBestiary#BeastMechanics: a next-game-start tag overridden to [now]
+             ok   FlowWorks#Main: real screen, every setting in exactly one resettable section
+             ok   FlowWorks#Main: a name dropped from its section array
+             ok   FlowWorks#Main: a setting in two sections
+             ok   FlowWorks#Main: a section names a non-setting
+             ok   FlowWorks#Main: a Section's closing brace lost
+             ok   FlowWorks#Main: Reset-all removed
+             ok   FlowWorks#Main: kit dropped from the csproj
+             ok   FlowWorks#Main: the draw guard removed
+             ok   FlowWorks#Main: the draw guard narrowed to one exception type
+             ok   FlowWorks#Main: list.End moved inside the try
+             ok   BiomesShell: kit screen (search, grouped reset, worldgen label)
+             ok   BiomesShell: kit dropped from csproj
+             ok   BiomesShell: search box removed
+             ok   BiomesShell: reset removed
+             ok   BiomesShell: worldgen label dropped
+             ok   ScrollListing: model: without maxOneColumn the measured height collapses below the content
+             ok   ScrollListing: model: with maxOneColumn every row stays in column one and the height holds
+             ok   ScrollListing: 2947 .cs files, every scrolling listing is one column
+             ok   ScrollListing: plant (FlowWorks maxOneColumn removed) is caught
+             ok   ScrollListing: plant (a second, unflagged listing in a flagged file) is caught
+             ok   ScrollListing: scroll screens found in tiers ['RimMandrake', 'RimStarWars', 'RimUtinni']
+             settings screens selftest: 851/853 ok
+             FAIL HugeThings: real screen, every setting grouped, resettable, scopes as audited | 7 groups found, expected 8; group 'Large Pawns footprint and custom size tiers' missing; setting tierThresholdsCustom is in no group (no reset, not searchable); setting largePawnsClearingOff is in no group (no reset, not searchable)
+             FAIL HugeThings: a next-game-start tag overridden to [now]: pattern not found
+
+PASS 1/2  FAIL 1/2  UNMEASURED 0/2  CRASH 0/2  SKIPPED 0/2  (wall 3.2s) — contained in rm-harness.slice (max 12G), 1 workers
+FAIL (1/2): src/RimMandrake/Utils/selftest_settings_screens.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

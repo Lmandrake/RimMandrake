@@ -1,0 +1,5 @@
+attempt2_guard_free rc 0
+attempt2_parent rc 0
+attempt2_take rc 0
+attempt2_guard_taken rc 0
+attempt2_driver rc 1

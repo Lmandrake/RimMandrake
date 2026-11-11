@@ -1,0 +1,180 @@
+commit bcde532856eb2c8e1d779c71d55342a5b871c3de
+Author:     Lukas Mandrake <313496996+Lmandrake@users.noreply.github.com>
+AuthorDate: Wed Nov 11 03:51:11 2026 -0800
+Commit:     Lukas Mandrake <313496996+Lmandrake@users.noreply.github.com>
+CommitDate: Wed Nov 11 03:51:11 2026 -0800
+
+    Key remaining HugeThings settings text
+    
+    Co-Authored-By: Codex (GPT) via SteveDesktop WSL codex-cli
+
+diff --git a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
+index ce16792b6d..e754ac8837 100644
+--- a/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
++++ b/src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml
+@@ -102,4 +102,19 @@
+   <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
+   <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
+   <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours</RM_HugeThings_TitanWarning>
++
++  <!-- SettingsKit controls and section/scope text stay local to HugeThings. -->
++  <RM_HugeThings_LargePawnsGroup>Large Pawns footprint and custom size tiers</RM_HugeThings_LargePawnsGroup>
++  <RM_HugeThings_WakeGroup>Wake and plant smashing</RM_HugeThings_WakeGroup>
++  <RM_HugeThings_WallsSlotsGroup>Big creatures: walls, slots and roofs</RM_HugeThings_WallsSlotsGroup>
++  <RM_HugeThings_YieldGroup>Yield curve</RM_HugeThings_YieldGroup>
++  <RM_HugeThings_CorpseGroup>Titanic corpse sites</RM_HugeThings_CorpseGroup>
++  <RM_HugeThings_EventsGroup>Titan events</RM_HugeThings_EventsGroup>
++  <RM_HugeThings_SearchSettings>Search settings</RM_HugeThings_SearchSettings>
++  <RM_HugeThings_ResetSection>Reset this section to defaults</RM_HugeThings_ResetSection>
++  <RM_HugeThings_NeedsAnimals>Turn on giant animals to change these.</RM_HugeThings_NeedsAnimals>
++  <RM_HugeThings_ScopeNextStart>[next game start] changes take effect the next time the game starts or loads</RM_HugeThings_ScopeNextStart>
++  <RM_HugeThings_ScopeNow>[now] changes apply to what is on the map now</RM_HugeThings_ScopeNow>
++  <RM_HugeThings_ScopeNextPulse>[next pulse] changes apply the next time it is rolled or offered</RM_HugeThings_ScopeNextPulse>
++  <RM_HugeThings_ScopeNewMaps>[new maps only] changes only affect maps (or planets) generated afterwards</RM_HugeThings_ScopeNewMaps>
+ </LanguageData>
+diff --git a/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs b/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs
+index 27148d0dba..f2e74fcd68 100644
+--- a/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs
++++ b/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs
+@@ -212,7 +212,7 @@ namespace RimMandrake.HugeThings
+             Widgets.BeginScrollView(inRect, ref settingsScroll, view);
+             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+             list.Begin(view);
+-            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
++            searchQuery = list.TextEntryLabeled("RM_HugeThings_SearchSettings".Translate(), searchQuery ?? "");
+ 
+             // HUGETHINGS_SETTINGS_HARDENING_1 (A2.7 / D1.5): every string is keyed in Languages/English/Keyed/RM_HugeThings.xml.
+             if (Group(list, "RM_HugeThings_GiantPlants".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "giantPlantsEnabled", "plantTrunkEnabled", "plantSelectionEnabled", "plantTrunkScale", "plantTrunkDamageEnabled", "plantItemPushEnabled" }))
+@@ -249,7 +249,7 @@ namespace RimMandrake.HugeThings
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Large Pawns footprint and custom size tiers", RimMandrake.Shared.SettingScope.Now, new[] { "largePawnsFootprintEnabled", "largePawnsClearingOff", "tierThresholdsCustom", "tierT1MinBodySize", "tierT2MinBodySize", "tierT3MinBodySize" }, "[next game start]"))
++            if (Group(list, "RM_HugeThings_LargePawnsGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "largePawnsFootprintEnabled", "largePawnsClearingOff", "tierThresholdsCustom", "tierT1MinBodySize", "tierT2MinBodySize", "tierT3MinBodySize" }, "[next game start]"))
+             {
+                 if (giantAnimalsEnabled)
+                 {
+@@ -269,11 +269,11 @@ namespace RimMandrake.HugeThings
+                             list.Label("RM_HugeThings_TierInvalid".Translate());
+                     }
+                 }
+-                else list.Label("Turn on giant animals to change these.");
++                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Wake and plant smashing", RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier", "titanClearingEnabled", "titanClearingDetourFactor" }))
++            if (Group(list, "RM_HugeThings_WakeGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier", "titanClearingEnabled", "titanClearingDetourFactor" }))
+             {
+                 if (giantAnimalsEnabled)
+                 {
+@@ -300,11 +300,11 @@ namespace RimMandrake.HugeThings
+                         }
+                     }
+                 }
+-                else list.Label("Turn on giant animals to change these.");
++                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Big creatures: walls, slots and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled", "trenchStepEnabled" }))
++            if (Group(list, "RM_HugeThings_WallsSlotsGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled", "trenchStepEnabled" }))
+             {
+                 if (giantAnimalsEnabled && wakeEnabled && titanClearingEnabled)
+                 {
+@@ -337,7 +337,7 @@ namespace RimMandrake.HugeThings
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Yield curve", RimMandrake.Shared.SettingScope.Now, new[] { "yieldCurveEnabled", "yieldCurveMinFactor" }))
++            if (Group(list, "RM_HugeThings_YieldGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "yieldCurveEnabled", "yieldCurveMinFactor" }))
+             {
+                 if (giantAnimalsEnabled)
+                 {
+@@ -348,11 +348,11 @@ namespace RimMandrake.HugeThings
+                         yieldCurveMinFactor = list.Slider(yieldCurveMinFactor, 0.05f, 1f);
+                     }
+                 }
+-                else list.Label("Turn on giant animals to change these.");
++                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Titanic corpse sites", RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
++            if (Group(list, "RM_HugeThings_CorpseGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
+             {
+                 if (giantAnimalsEnabled)
+                 {
+@@ -389,11 +389,11 @@ namespace RimMandrake.HugeThings
+                         }
+                     }
+                 }
+-                else list.Label("Turn on giant animals to change these.");
++                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Titan events", RimMandrake.Shared.SettingScope.NextPulse, new[] { "titanEventsEnabled", "titanEventWarningHours" }))
++            if (Group(list, "RM_HugeThings_EventsGroup".Translate(), RimMandrake.Shared.SettingScope.NextPulse, new[] { "titanEventsEnabled", "titanEventWarningHours" }))
+             {
+                 if (giantAnimalsEnabled)
+                 {
+@@ -404,7 +404,7 @@ namespace RimMandrake.HugeThings
+                         titanEventWarningHours = list.Slider(titanEventWarningHours, 0.5f, 24f);
+                     }
+                 }
+-                else list.Label("Turn on giant animals to change these.");
++                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
+                 list.GapLine();
+             }
+             Sanitize();
+@@ -461,12 +461,14 @@ namespace RimMandrake.HugeThings
+             }
+             Text.Font = GameFont.Small;
+             if (!open) return false;
+-            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+-                ? " changes take effect the next time the game starts or loads"
+-                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+-                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+-                : " changes apply to what is on the map now"));
+-            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
++            // tagOverride is the existing internal scope identifier, never display text.
++            list.Label(tagOverride == "[next game start]" ? "RM_HugeThings_ScopeNextStart".Translate()
++                : tagOverride == "[now]" ? "RM_HugeThings_ScopeNow".Translate()
++                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly
++                ? "RM_HugeThings_ScopeNewMaps".Translate()
++                : scope == RimMandrake.Shared.SettingScope.NextPulse ? "RM_HugeThings_ScopeNextPulse".Translate()
++                : "RM_HugeThings_ScopeNow".Translate());
++            if (list.ButtonText("RM_HugeThings_ResetSection".Translate())) ResetFields(names);
+             return true;
+         }
+     }
+diff --git a/src/RimMandrake/Utils/selftest_settings_screens.py b/src/RimMandrake/Utils/selftest_settings_screens.py
+index 7c2d34a57a..afbc05d4d4 100644
+--- a/src/RimMandrake/Utils/selftest_settings_screens.py
++++ b/src/RimMandrake/Utils/selftest_settings_screens.py
+@@ -937,7 +937,10 @@ def check(cs, csproj, expected, extra=(), keyed=None):
+             errs.append(f"csproj lacks the {kit} Compile Include")
+     if "private static readonly Dictionary<string, object> shippedDefaults" not in cs:
+         errs.append("no shippedDefaults snapshot for per-group reset")
+-    if "SettingsKitDrawer.SearchBox" not in cs:
++    # A translated caption can use the helper's exact underlying widget call
++    # locally, without inheriting the shared drawer's hard-coded English.
++    local_search = re.search(r'(\w+)\s*=\s*list\.TextEntryLabeled\(\s*"(\w+)"\.Translate\(\),\s*\1\s*\?\?\s*""\s*\)', cs)
++    if "SettingsKitDrawer.SearchBox" not in cs and not (local_search and keyed.get(local_search.group(2))):
+         errs.append("no search box")
+     errs += masters_check(cs, csproj, body, scribed, seen)
+     return errs, groups
+@@ -1027,6 +1030,12 @@ def run_mod(name, cs_name, pj_name, expected, extra):
+         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
+         ("snapshot removed", lambda c, p: (c.replace("shippedDefaults = SnapshotDefaults()", "shippedDefaultz = SnapshotDefaults()"), p), "shippedDefaults"),
+     ]
++    local_search = re.search(r'(\w+)\s*=\s*list\.TextEntryLabeled\(\s*"(\w+)"\.Translate\(\),\s*\1\s*\?\?\s*""\s*\)', cs)
++    if local_search:
++        call = local_search.group(0)
++        key = local_search.group(2)
++        plants.append(("localized search widget removed", lambda c, p: (c.replace(call, "", 1), p), "search box"))
++        plants.append(("localized search caption key absent", lambda c, p: (c.replace(call, call.replace(key, key + "Zz"), 1), p), "search box"))
+     if scope_swap:
+         t, s = scope_swap
+         plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.{s}', f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))

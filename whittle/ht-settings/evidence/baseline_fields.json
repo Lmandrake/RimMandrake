@@ -1,0 +1,348 @@
+{
+  "success": true,
+  "action": "list",
+  "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+  "typeIdentity": {
+    "resolvedVia": "GenTypes",
+    "copiesInAppDomain": 1,
+    "assembly": "RM_HugeThings"
+  },
+  "count": 54,
+  "fields": [
+    {
+      "name": "MaxTrunkScale",
+      "type": "Single",
+      "kind": "static",
+      "value": "1.5"
+    },
+    {
+      "name": "giantPlantsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "plantTrunkEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "plantSelectionEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "plantTrunkScale",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "plantTrunkDamageEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "plantItemPushEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "giantAnimalsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pawnHitboxEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "pawnHitboxScale",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "largePawnsFootprintEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "largePawnsClearingOff",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "tierThresholdsCustom",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "False"
+    },
+    {
+      "name": "tierT1MinBodySize",
+      "type": "Single",
+      "kind": "static",
+      "value": "4"
+    },
+    {
+      "name": "tierT2MinBodySize",
+      "type": "Single",
+      "kind": "static",
+      "value": "8"
+    },
+    {
+      "name": "tierT3MinBodySize",
+      "type": "Single",
+      "kind": "static",
+      "value": "20"
+    },
+    {
+      "name": "wakeEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "wakeCrushDamageMultiplier",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "wakeFilthTrailChance",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.35"
+    },
+    {
+      "name": "wakeRoofHolingEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "giantPlantSmashEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "giantPlantSmashMinTier",
+      "type": "Int32",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "titanClearingEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "titanClearingDetourFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "2.5"
+    },
+    {
+      "name": "wallsSlotsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "squeezeEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "squeezeSlowdownAtHalf",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    },
+    {
+      "name": "trampleBudgetPerBreadth",
+      "type": "Single",
+      "kind": "static",
+      "value": "100"
+    },
+    {
+      "name": "blowDamagePerBreadth",
+      "type": "Single",
+      "kind": "static",
+      "value": "20"
+    },
+    {
+      "name": "holdLineFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "roofWallHpFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "1.5"
+    },
+    {
+      "name": "roofWallDamageFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.6667"
+    },
+    {
+      "name": "scrapeEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "temperamentEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "breadth2BreakingEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "trenchStepEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "roofAvoidanceEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "yieldCurveEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "yieldCurveMinFactor",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.15"
+    },
+    {
+      "name": "corpseSiteEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "corpseSiteHarvestMeatPerSession",
+      "type": "Int32",
+      "kind": "static",
+      "value": "25"
+    },
+    {
+      "name": "corpseSiteHarvestLeatherPerSession",
+      "type": "Int32",
+      "kind": "static",
+      "value": "10"
+    },
+    {
+      "name": "corpseSiteMeatSpoilagePerDay",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.15"
+    },
+    {
+      "name": "corpseSiteLeatherSpoilagePerDay",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.08"
+    },
+    {
+      "name": "corpseSiteWorkHoursPerSession",
+      "type": "Single",
+      "kind": "static",
+      "value": "1"
+    },
+    {
+      "name": "corpseSiteScavengersEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "corpseSiteScavengerDailyChance",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.35"
+    },
+    {
+      "name": "corpseSiteScavengerMax",
+      "type": "Int32",
+      "kind": "static",
+      "value": "3"
+    },
+    {
+      "name": "corpseSiteVisitorMeatPerDay",
+      "type": "Int32",
+      "kind": "static",
+      "value": "20"
+    },
+    {
+      "name": "corpseSiteCampsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "corpseSiteCampDailyChance",
+      "type": "Single",
+      "kind": "static",
+      "value": "0.1"
+    },
+    {
+      "name": "corpseSiteCampHours",
+      "type": "Single",
+      "kind": "static",
+      "value": "36"
+    },
+    {
+      "name": "titanEventsEnabled",
+      "type": "Boolean",
+      "kind": "static",
+      "value": "True"
+    },
+    {
+      "name": "titanEventWarningHours",
+      "type": "Single",
+      "kind": "static",
+      "value": "2"
+    }
+  ],
+  "ticksGame": -1,
+  "operation": {
+    "OperationId": "op_9e94192dc01949e295f979c56b308152",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}

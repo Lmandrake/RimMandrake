@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Mod Settings (HUGETHINGS_SETTINGS_HARDENING_1). {0} is the slider's current value. -->
+  <RM_HugeThings_SettingsCategory>Huge Things</RM_HugeThings_SettingsCategory>
+  <RM_HugeThings_GiantPlants>Giant plants</RM_HugeThings_GiantPlants>
+  <RM_HugeThings_GiantPlantsEnabled>Giant plants behave like their size</RM_HugeThings_GiantPlantsEnabled>
+  <RM_HugeThings_GiantPlantsEnabled_Desc>Master switch for everything below in this section. Off: every huge plant is an ordinary one-cell plant, as in vanilla (a giant that is solid on its own cell stays so until a restart).</RM_HugeThings_GiantPlantsEnabled_Desc>
+  <RM_HugeThings_PlantTrunk>Solid where they touch the ground</RM_HugeThings_PlantTrunk>
+  <RM_HugeThings_PlantTrunk_Desc>A huge plant blocks the cells where its stem, roots or body meet the ground (measured from its art), so pawns walk around it and nothing can be built inside it; its overhanging cap stays walkable. A giant whose art touches the ground only in its own cell becomes solid on that cell (restart). Off: every plant is one walk-through cell, as in vanilla.</RM_HugeThings_PlantTrunk_Desc>
+  <RM_HugeThings_PlantTrunkScale>  Ground footprint size: {0}x</RM_HugeThings_PlantTrunkScale>
+  <RM_HugeThings_PlantTrunkDamage>  Trunk hits damage the plant</RM_HugeThings_PlantTrunkDamage>
+  <RM_HugeThings_PlantTrunkDamage_Desc>A shot or blast that hits a trunk cell damages the giant once per projectile, beam or blast. Trunks give partial cover either way. Off: the trunk soaks the hit and the plant is unharmed.</RM_HugeThings_PlantTrunkDamage_Desc>
+  <RM_HugeThings_PlantItemPush>  Push items out of a growing trunk</RM_HugeThings_PlantItemPush>
+  <RM_HugeThings_PlantItemPush_Desc>When a trunk grows over a cell holding only items, the items are moved gently to the nearest free cell (their own stockpile first). Off: that cell simply stays open until it is clear.</RM_HugeThings_PlantItemPush_Desc>
+  <RM_HugeThings_PlantSelection>Click anywhere on a huge plant's picture to select it</RM_HugeThings_PlantSelection>
+  <RM_HugeThings_PlantSelection_Desc>Off: a huge plant can only be selected on the one cell it grows from.</RM_HugeThings_PlantSelection_Desc>
+  <RM_HugeThings_GiantAnimals>Giant animals</RM_HugeThings_GiantAnimals>
+  <RM_HugeThings_GiantAnimalsEnabled>Giant animals behave like their size</RM_HugeThings_GiantAnimalsEnabled>
+  <RM_HugeThings_GiantAnimalsEnabled_Desc>Master switch for everything below in this section: click hitboxes, size tiers, the destruction wake, roofs, giant-plant smashing, butcher yield and the corpse site. Off: every creature behaves as in vanilla.</RM_HugeThings_GiantAnimalsEnabled_Desc>
+  <RM_HugeThings_PawnHitbox>Click anywhere on a huge animal to select it</RM_HugeThings_PawnHitbox>
+  <RM_HugeThings_PawnHitbox_Desc>A huge creature can be selected by clicking anywhere on its drawn body. Off: only near its middle.</RM_HugeThings_PawnHitbox_Desc>
+  <RM_HugeThings_PawnHitboxScale>  Hitbox size: {0}x</RM_HugeThings_PawnHitboxScale>
+  <RM_HugeThings_LargePawnsFootprint>Multi-cell footprint from Large Pawns (restart)</RM_HugeThings_LargePawnsFootprint>
+  <RM_HugeThings_LargePawnsFootprint_Desc>When Large Pawns is loaded, its size ladder is set to the tiers below so a titan occupies 2x2, 3x3 or 4x4 cells. Off: Large Pawns keeps its own settings. Without Large Pawns every titan is one cell either way.</RM_HugeThings_LargePawnsFootprint_Desc>
+  <RM_HugeThings_LargePawnsClearingOff>  Turn off Large Pawns' own wall-breaking (restart)</RM_HugeThings_LargePawnsClearingOff>
+  <RM_HugeThings_LargePawnsClearingOff_Desc>Large Pawns lets a big manhunter, berserker or fighting pawn take a job to break walls in its path. With this on, those three switches are turned off so only this mod's curated crush table decides what a titan destroys. Off: Large Pawns keeps its own setting.</RM_HugeThings_LargePawnsClearingOff_Desc>
+  <RM_HugeThings_TierCustom>Custom size tiers (restart)</RM_HugeThings_TierCustom>
+  <RM_HugeThings_TierCustom_Desc>A creature is a titan by its body size: T1 heavy, T2 colossal, T3 titanic. Off: the shipped tiers (4 / 8 / 20). Which races carry the wake is decided at startup, so a race newly crossing T1 needs a restart.</RM_HugeThings_TierCustom_Desc>
+  <RM_HugeThings_TierT1>  T1 from body size {0}</RM_HugeThings_TierT1>
+  <RM_HugeThings_TierT2>  T2 from body size {0}</RM_HugeThings_TierT2>
+  <RM_HugeThings_TierT3>  T3 from body size {0}</RM_HugeThings_TierT3>
+  <RM_HugeThings_TierInvalid>  These must rise T1 &lt; T2 &lt; T3; until they do, the shipped tiers are used.</RM_HugeThings_TierInvalid>
+  <RM_HugeThings_Wake>Destruction wake</RM_HugeThings_Wake>
+  <RM_HugeThings_Wake_Desc>A titan crushes crates and plants, breaches walls and leaves rubble as it walks. Off: no wake damage; it walks through everything harmlessly, and none of the wake options below apply.</RM_HugeThings_Wake_Desc>
+  <RM_HugeThings_WakeDamage>  Crush damage: {0}x</RM_HugeThings_WakeDamage>
+  <RM_HugeThings_WakeRubble>  Rubble chance per footprint cell: {0}%</RM_HugeThings_WakeRubble>
+  <RM_HugeThings_WakeRoof>  Colossal titans hole thin roofs</RM_HugeThings_WakeRoof>
+  <RM_HugeThings_WakeRoof_Desc>T2 and larger tear out constructed and thin rock roofs as they pass. Overhead mountain is never removed.</RM_HugeThings_WakeRoof_Desc>
+  <RM_HugeThings_Smash>  The biggest titans smash giant plants</RM_HugeThings_Smash>
+  <RM_HugeThings_Smash_Desc>A titan at or above the smash tier damages every giant plant whose trunk it brushes, once per step, until the plant falls and the way opens. Smaller titans treat giant trunks as walls and go around. Off: every titan goes around.</RM_HugeThings_Smash_Desc>
+  <RM_HugeThings_SmashTier>    Smash tier: T{0} and larger</RM_HugeThings_SmashTier>
+  <RM_HugeThings_Clearing>  Titans smash through what seals their way</RM_HugeThings_Clearing>
+  <RM_HugeThings_Clearing_Desc>A titan whose way is sealed, or far longer round than through, walks up to the first obstacle and strikes it about once a second until it falls, then carries on. Only what the wake may crush at its tier: walls and buildings from T2 (destroyed outright at T3), giant plants from the smash tier. Never natural rock, chunks, quest objects, or its own faction's buildings. Off: titans go around, or give up, as vanilla animals do.</RM_HugeThings_Clearing_Desc>
+  <RM_HugeThings_ClearingDetour>    Smash instead of walking round when the detour is {0}x the way through or more</RM_HugeThings_ClearingDetour>
+  <RM_HugeThings_RoofAvoid>Titans never path under overhead mountain</RM_HugeThings_RoofAvoid>
+  <RM_HugeThings_RoofAvoid_Desc>A titan never chooses a route that would put any part of its body under overhead mountain (thick rock roof); a destination only reachable that way is out of its reach. One already under rock walks out by the least-roofed way, slowly. Off: it paths like any other pawn.</RM_HugeThings_RoofAvoid_Desc>
+  <RM_HugeThings_Yield>Reduced butcher yield on titans</RM_HugeThings_Yield>
+  <RM_HugeThings_Yield_Desc>A T1 or T2 titan butchers for somewhat less meat and leather per body size than a same-mass ordinary animal would. Off: full vanilla yield.</RM_HugeThings_Yield_Desc>
+  <RM_HugeThings_YieldFloor>  Minimum yield floor: {0}% of normal</RM_HugeThings_YieldFloor>
+  <RM_HugeThings_CorpseSite>T3 corpse becomes a harvest site</RM_HugeThings_CorpseSite>
+  <RM_HugeThings_CorpseSite_Desc>The largest tier's corpse becomes a standing landmark, harvested over several work sessions with the yield slowly spoiling, instead of being butchered at once. Off: it butchers like any ordinary corpse.</RM_HugeThings_CorpseSite_Desc>
+  <RM_HugeThings_CorpseMeat>  Meat per harvest session: {0}</RM_HugeThings_CorpseMeat>
+  <RM_HugeThings_CorpseLeather>  Leather per harvest session: {0}</RM_HugeThings_CorpseLeather>
+  <RM_HugeThings_CorpseHours>  Work hours per session: {0}</RM_HugeThings_CorpseHours>
+  <RM_HugeThings_CorpseMeatSpoil>  Meat spoilage per day: {0}%</RM_HugeThings_CorpseMeatSpoil>
+  <RM_HugeThings_CorpseLeatherSpoil>  Leather spoilage per day: {0}%</RM_HugeThings_CorpseLeatherSpoil>
+  <!-- BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: settings, text motes and inspect lines -->
+  <RM_HugeThings_WallsSlots>  Big creatures judge walls and gaps by their breadth</RM_HugeThings_WallsSlots>
+  <RM_HugeThings_WallsSlots_Desc>A creature's breadth is the square root of its body size, rounded (a krayt is 3). It walks gaps at least as wide as its body, squeezes through gaps at least half that wide (slowed, straight through) and ignores narrower ones. A built wall as thick as the creature is broad stops it; a thin wall whose hit points fit its trample budget it breaks through without stopping; anything in between it smashes, one body-wide blow a second. Natural rock is never damaged. This replaces the size-tier wall rules (colossal crush, titanic destroy outright). Off: the tier rules above.</RM_HugeThings_WallsSlots_Desc>
+  <RM_HugeThings_Squeeze>    Squeeze through gaps at least half its width</RM_HugeThings_Squeeze>
+  <RM_HugeThings_Squeeze_Desc>Through a gap narrower than its body but at least half as wide, a big creature squeezes: straight through, slowed, never stopped. A door is a gap only to a creature that can open it; to a wild one it is a wall. Off: such gaps block it.</RM_HugeThings_Squeeze_Desc>
+  <RM_HugeThings_SqueezeSlow>      Slowdown at half width: x{0}</RM_HugeThings_SqueezeSlow>
+  <RM_HugeThings_Scrape>      Squeezing scrapes the sides of built gaps</RM_HugeThings_Scrape>
+  <RM_HugeThings_Scrape_Desc>Each step through a built gap deals 20 damage to each built wall flanking it, at most once a second per wall, so gaps widen over visits. Rock gaps never widen.</RM_HugeThings_Scrape_Desc>
+  <RM_HugeThings_HoldLine>    A wall holds a creature when it is {0} x its breadth thick</RM_HugeThings_HoldLine>
+  <RM_HugeThings_TrampleBudget>    Breaks through without stopping up to {0} wall hit points per breadth</RM_HugeThings_TrampleBudget>
+  <RM_HugeThings_BlowDamage>    Smash blow: {0} damage per breadth, once a second</RM_HugeThings_BlowDamage>
+  <RM_HugeThings_RoofHp>    A wall holding up a roof counts its hit points x{0}</RM_HugeThings_RoofHp>
+  <RM_HugeThings_RoofDamage>    and takes {0}% of each smash blow</RM_HugeThings_RoofDamage>
+  <RM_HugeThings_Temperament>    Temperament: calm creatures do not break walls</RM_HugeThings_Temperament>
+  <RM_HugeThings_Temperament_Desc>A calm, fed creature goes round or squeezes rather than break anything, and never breaks out of a pen. Restlessness rises while it is shut in a small space (under 6 x its width squared cells) or hungry, and shows on its inspect panel; at 100%, or while fleeing, enraged or hunting, it breaks whatever the rules let it. Off: every big creature breaks walls whenever the detour slider says so.</RM_HugeThings_Temperament_Desc>
+  <RM_HugeThings_Breadth2>    Breadth 2 creatures (thrumbo class) break thin walls too</RM_HugeThings_Breadth2>
+  <RM_HugeThings_Breadth2_Desc>On by default (owner ruling, 2026-10-18). Off: breadth 2 creatures only squeeze; every built wall stops them.</RM_HugeThings_Breadth2_Desc>
+  <RM_HugeThings_TrenchStep>    Titans step over narrow trenches</RM_HugeThings_TrenchStep>
+  <RM_HugeThings_TrenchStep_Desc>A big creature steps straight over a dug trench narrower than a quarter of its breadth, as if it were ground: it never falls in or climbs down (owner ruling, 2026-10-18). A wider trench holds it as before. Needs RimMandrake FlowWorks for trenches to exist. Off: every trench is judged as for any other creature.</RM_HugeThings_TrenchStep_Desc>
+  <RM_HugeThings_WallsSlotsNeeds>Turn on giant animals, the wake and "titans smash through what seals their way" to change these.</RM_HugeThings_WallsSlotsNeeds>
+  <RM_WallsSlots_Squeezes>squeezes through</RM_WallsSlots_Squeezes>
+  <RM_WallsSlots_BacksOut>backs out of the gap</RM_WallsSlots_BacksOut>
+  <RM_WallsSlots_BreaksThrough>breaks through</RM_WallsSlots_BreaksThrough>
+  <RM_WallsSlots_Smashes>smashes at the wall</RM_WallsSlots_Smashes>
+  <RM_WallsSlots_Held>held by the wall ({0} thick)</RM_WallsSlots_Held>
+  <RM_WallsSlots_GivesUp>gives up on the wall</RM_WallsSlots_GivesUp>
+  <RM_WallsSlots_Restless>grows restless</RM_WallsSlots_Restless>
+  <RM_WallsSlots_PartBreadth>Breadth {0} (needs {1}-wide gaps)</RM_WallsSlots_PartBreadth>
+  <RM_WallsSlots_PartSqueeze>squeezes gaps of {0}+</RM_WallsSlots_PartSqueeze>
+  <RM_WallsSlots_PartBreaks>breaks walls up to {0} HP</RM_WallsSlots_PartBreaks>
+  <RM_WallsSlots_PartSmashes>smashes up to {0} thick</RM_WallsSlots_PartSmashes>
+  <RM_WallsSlots_PartStopped>stopped by {0} thick</RM_WallsSlots_PartStopped>
+  <RM_WallsSlots_PartStoppedAny>stopped by any built wall</RM_WallsSlots_PartStoppedAny>
+  <RM_WallsSlots_Restlessness>Restless {0}%</RM_WallsSlots_Restlessness>
+  <RM_WallsSlots_WallStops>Holds big creatures up to breadth {0} ({1} thick here)</RM_WallsSlots_WallStops>
+  <RM_WallsSlots_WallStopsNone>Too thin to hold a big creature ({0} thick here)</RM_WallsSlots_WallStopsNone>
+  <RM_HugeThings_CorpseVisitorMeat>  Meat each scavenger or camper takes per day: {0} (provisional)</RM_HugeThings_CorpseVisitorMeat>
+  <RM_HugeThings_CorpseScavengers>  Scavengers are drawn to the remains</RM_HugeThings_CorpseScavengers>
+  <RM_HugeThings_CorpseScavengers_Desc>Once a day the remains may draw wild predators of this map's own biomes (never a titan). They eat from the meat pool while they stay near it, and they are dangerous to anyone harvesting. Off: nothing comes.</RM_HugeThings_CorpseScavengers_Desc>
+  <RM_HugeThings_CorpseScavengerChance>    Daily chance of a scavenger draw: {0}% (provisional)</RM_HugeThings_CorpseScavengerChance>
+  <RM_HugeThings_CorpseScavengerMax>    Most scavengers in one draw: {0} (provisional)</RM_HugeThings_CorpseScavengerMax>
+  <RM_HugeThings_CorpseCamps>  Other people camp at the remains</RM_HugeThings_CorpseCamps>
+  <RM_HugeThings_CorpseCamps_Desc>Rarely, a small party of a faction that is not hostile to you walks in, camps beside the remains for a while and cuts their share of the meat, then leaves. Off: no camps.</RM_HugeThings_CorpseCamps_Desc>
+  <RM_HugeThings_CorpseCampChance>    Daily chance of a camp: {0}% (provisional)</RM_HugeThings_CorpseCampChance>
+  <RM_HugeThings_CorpseCampHours>    How long a camp stays: {0} hours (provisional)</RM_HugeThings_CorpseCampHours>
+  <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
+  <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
+  <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours</RM_HugeThings_TitanWarning>
+</LanguageData>

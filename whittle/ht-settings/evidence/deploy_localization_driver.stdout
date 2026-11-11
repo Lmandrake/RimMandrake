@@ -1,0 +1,3 @@
+localization_deploy_guard rc 0
+localization_deploy_down rc 3
+localization_deploy_apply rc 0

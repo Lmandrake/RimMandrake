@@ -1,0 +1,7 @@
+{
+  "compared": "all fields, properties, ExposeData and Sanitize before UI state declarations",
+  "old_snapshot": "final_source_snapshot/compiled/16_RM_HugeThingsSettings.cs",
+  "old_sha256": "39e101f11ec6e3decc0125c9c931603a2c419812465e4fe9008fb0c7a67e949b",
+  "new_sha256": "39e101f11ec6e3decc0125c9c931603a2c419812465e4fe9008fb0c7a67e949b",
+  "equal": true
+}

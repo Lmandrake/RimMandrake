@@ -1,0 +1,13 @@
+{
+  "HEAD": "d4da6624ea7f29d022dbe6b9ba5319e0a5590d2c",
+  "files": {
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": {
+      "expected_sha256": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+      "committed": true
+    },
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": {
+      "expected_sha256": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+      "committed": true
+    }
+  }
+}
