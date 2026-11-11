@@ -300,6 +300,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
 		private string TryDraw()
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(this);
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
 			if (ex == null)
 			{
@@ -485,6 +486,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
 		private string TryPour()
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(this);
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
 			int units = RM_PumpMath.TankUnitsPerLevel;
 			// rev 2 §3.3 (Q3: "Keep it as faster draining"): pour drains DUMP tanks only, so a pump never pours out a tank the

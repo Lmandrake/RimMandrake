@@ -125,6 +125,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public override void CompTickRare()
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(parent);
 			base.CompTickRare();
 			if (parent.Map == null || Props.liquid == null)
 			{

@@ -240,6 +240,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			Toil finish = ToilMaker.MakeToil("RM_DrinkFromTank");
 			finish.initAction = delegate
 			{
+				using var theftActor = Machinery.RM_LiquidTheft.As(pawn);
 				Building_LiquidTank tank = Tank;
 				LiquidDef liquid = tank?.storedLiquid;
 				if (liquid == null || !RM_ThirstUtility.MayDrinkFromTankNow(pawn, liquid)

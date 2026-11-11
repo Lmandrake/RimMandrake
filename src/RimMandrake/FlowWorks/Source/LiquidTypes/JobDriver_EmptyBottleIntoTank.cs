@@ -45,6 +45,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             Toil finish = ToilMaker.MakeToil("MakeNewToils");
             finish.initAction = delegate
             {
+                using var theftActor = Machinery.RM_LiquidTheft.As(pawn);
                 Building_LiquidTank tank = Tank;
                 Thing carried = pawn.carryTracker.CarriedThing;
                 if (tank == null || carried == null)

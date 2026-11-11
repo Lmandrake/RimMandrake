@@ -142,16 +142,19 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
     internal class Building_LiquidTank
     {
         public int room, stored;
+        public object mutationActor;
         public bool CanAccept(LiquidDef liquid, int amount) => room >= amount;
         public bool TryAddLiquid(LiquidDef liquid, int amount)
         {
             if (!CanAccept(liquid, amount)) return false;
+            mutationActor = RM_LiquidTheft.Current;
             room -= amount;
             stored += amount;
             return true;
         }
         public bool TryRemoveLiquid(int amount)
         {
+            mutationActor = RM_LiquidTheft.Current;
             stored -= amount;
             room += amount;
             return true;
@@ -287,6 +290,23 @@ namespace RimMandrake.FlowWorks.SelfTest.PumpHarness
         }
         public static void Run(Action<string, Action> Case)
         {
+            Case("TankTheft_actual_pump_entry_supplies_and_restores_actor", () =>
+            {
+                var p = Site(20000, 20000);
+                p.outflows.Clear(); p.tank.room = 10000;
+                var previous = new object();
+                using (RM_LiquidTheft.As(previous))
+                {
+                    Building_LiquidPump.ProofDrawCycle("0,0;step");
+                    Assert(p.Moved == 1 && p.tank.stored == 10000 && p.tank.mutationActor == p, "actual draw did not carry pump actor to tank mutation");
+                    Assert(RM_LiquidTheft.Current == previous, "draw scope did not restore caller actor");
+                }
+                Assert(RM_LiquidTheft.Current == null, "outer scope leaked actor");
+                p = Site(); RM_LiquidSpill.throwOnRoom = true;
+                try { Building_LiquidPump.ProofDrawCycle("0,0;step"); } catch (InvalidOperationException) {}
+                finally { RM_LiquidSpill.throwOnRoom = false; }
+                Assert(RM_LiquidTheft.Current == null, "actual failing draw leaked actor");
+            });
             Case("PumpOutflow_proof_arguments_and_state_restore", () =>
             {
                 var p = Site();

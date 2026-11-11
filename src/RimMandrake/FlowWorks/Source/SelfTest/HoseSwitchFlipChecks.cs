@@ -92,7 +92,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 RiverSwitchFlipChecks.Has(net, @"&& !RM_MachinerySettings\.liquidTheftEnabled && IsForeign\(t\)\) \{ return RM_NetRole\.None; \}", "off: a foreign tank is no member");
                 string th = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidTheft.cs"));
-                RiverSwitchFlipChecks.Has(th, @"if \(map == null \|\| !RM_MachinerySettings\.liquidTheftEnabled\) \{ return; \}", "off: no theft accounting");
+                RiverSwitchFlipChecks.Has(th, @"t\.theftPlayerChanges\.Clear\(\); t\.theftPendingVictim = null; if \(!RM_MachinerySettings\.liquidTheftEnabled", "off: consume pending changes before skipping theft accounting");
                 int acc = 0;
                 Assert(RM_LiquidTheftMath.TheftGoodwillAccrue(ref acc, 60000, true, 2, 60000) == -2, "on: a caught day of taking costs 2");
                 string set = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_MachinerySettings.cs"));

@@ -354,4 +354,6 @@
     <Compile Include="PumpOutflowHarness.cs"/>
   </ItemGroup>
   <Import Project="PumpOutflowHarness.targets"/>
+  <ItemGroup><Compile Include="TankTheftHarness.cs"/><Compile Include="TankTheftCallerChecks.cs"/></ItemGroup>
+  <Import Project="TankTheftHarness.targets"/>
 </Project>

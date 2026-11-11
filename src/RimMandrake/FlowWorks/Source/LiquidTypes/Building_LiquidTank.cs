@@ -40,11 +40,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public Machinery.RM_TankMode mode = Machinery.RM_TankMode.Store;
 
         /// <summary>Liquid networks L9 (rev 2 §3.4): on another faction's tank, the faction that caught the player at it (saved
-        /// rmTheftCaughtBy) and the theft ticks not yet charged (rmTheftTicks); the stock last seen (runtime).</summary>
+        /// rmTheftCaughtBy) and the theft ticks not yet charged (rmTheftTicks); pending actor-attributed changes are saved too.</summary>
         public RimWorld.Faction theftCaughtBy;
         public int theftTicks;
-        public int theftSeenUnits = -1;
-        public LiquidDef theftSeenLiquid;
+        // Signed player mutations since the last theft pass, keyed by liquid so an
+        // equal-volume identity swap remains visible. Symmetric put-backs cancel.
+        public System.Collections.Generic.Dictionary<LiquidDef, int> theftPlayerChanges = new System.Collections.Generic.Dictionary<LiquidDef, int>();
+        public RimWorld.Faction theftPendingVictim;
 
         /// <summary>The job in force: Store whenever tank jobs are off in Mod Settings, or the tank is not the player's.</summary>
         public Machinery.RM_TankMode EffectiveMode => Hose.RM_HoseSettings.tankModesEnabled && Faction == RimWorld.Faction.OfPlayer ? mode : Machinery.RM_TankMode.Store;
@@ -113,6 +115,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return false;
             }
+            Machinery.RM_LiquidTheft.Record(this, liquid, units);
             storedLiquid = liquid;
             storedUnits += units;
             return true;
@@ -127,6 +130,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return false;
             }
+            Machinery.RM_LiquidTheft.Record(this, storedLiquid, -units);
             storedUnits -= units;
             if (storedUnits <= 0)
             {
@@ -214,6 +218,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             Scribe_Values.Look(ref mode, "rmTankMode", Machinery.RM_TankMode.Store);
             Scribe_References.Look(ref theftCaughtBy, "rmTheftCaughtBy");
             Scribe_Values.Look(ref theftTicks, "rmTheftTicks", 0);
+            Scribe_References.Look(ref theftPendingVictim, "rmTheftPendingVictim");
+            Scribe_Collections.Look(ref theftPlayerChanges, "rmTheftPlayerChanges", LookMode.Def, LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && theftPlayerChanges == null)
+            {
+                theftPlayerChanges = new System.Collections.Generic.Dictionary<LiquidDef, int>();
+            }
             if (Scribe.mode == LoadSaveMode.PostLoadInit && storedLiquid == null && storedUnits > 0)
             {
                 // The saved liquid's def no longer exists (mod removed): the units cannot keep an identity, and

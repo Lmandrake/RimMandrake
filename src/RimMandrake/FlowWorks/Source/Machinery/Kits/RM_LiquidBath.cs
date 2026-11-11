@@ -177,6 +177,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 	{
 		public static void Postfix(Bill_Production __instance)
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(__instance.billStack?.billGiver as Thing);
 			RM_RecipeLiquidExtension ext = RM_LiquidBath.ExtOf(__instance);
 			if (ext == null || !RM_KitSettings.liquidBathRecipesEnabled || ext.UnitsPerCraft <= 0)
 			{

@@ -37,7 +37,7 @@
                 Log.LogError("Unbalanced pump method: " + signature);
                 return false;
             }
-            text.Append(source.Substring(start, end + 1 - start)).Append("\n");
+            text.Append(source.Substring(start, end + 1 - start).Replace("RimMandrake.FlowWorks.Machinery.RM_LiquidTheft", "RM_LiquidTheft")).Append("\n");
         }
         text.Append("} }\n");
         Directory.CreateDirectory(Path.GetDirectoryName(Output));

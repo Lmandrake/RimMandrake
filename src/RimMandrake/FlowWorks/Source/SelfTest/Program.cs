@@ -2187,6 +2187,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             CliffMaskChecks.Run(Case);         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: per-band connectivity masks (CliffMaskChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)
             HoseHoldChecks.Run(Case);          // liquid networks L8: held hose volume and the spill (HoseHoldChecks.cs)
+            TheftHarness.TankTheftChecks.Run(Case);
             LiquidTheftChecks.Run(Case);       // liquid networks L9: liquid theft, priced like power theft (LiquidTheftChecks.cs)
             AdapterChecks.Run(Case);           // liquid networks L10: adapter modes and the boundary (AdapterChecks.cs)
             TakenIdentityChecks.Run(Case);     // RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS (TakenIdentityChecks.cs)

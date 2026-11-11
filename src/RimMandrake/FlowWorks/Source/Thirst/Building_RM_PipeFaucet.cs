@@ -60,6 +60,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		/// (a split leg puts a short draw back). True when it all came out.</summary>
 		public static bool TryPour(Thing faucet, LiquidDef liquid, int units)
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(faucet);
 			if (!CanPour(faucet, liquid, units))
 			{
 				return false;

@@ -780,8 +780,24 @@ namespace RimMandrake.FlowWorks.Machinery
             return perDay > 0 ? -days * perDay : 0;
         }
 
-        /// <summary>Was liquid taken from or put into the tank since the last look (its stock or its liquid changed)?</summary>
-        public static bool Touched(int unitsBefore, object liquidBefore, int unitsNow, object liquidNow) => unitsBefore != unitsNow || !Equals(liquidBefore, liquidNow);
+        /// <summary>Signed player-only changes: a refused/restored transfer cancels,
+        /// while changing identity at equal volume leaves two nonzero entries.</summary>
+        public static void RecordChange<T>(Dictionary<T, int> changes, T liquid, int delta) where T : class
+        {
+            if (liquid == null || delta == 0) return;
+            int net = (changes.TryGetValue(liquid, out int old) ? old : 0) + delta;
+            if (net == 0) changes.Remove(liquid);
+            else changes[liquid] = net;
+        }
+
+        public static bool HasChanges<T>(Dictionary<T, int> changes)
+        {
+            if (changes == null) return false;
+            foreach (int delta in changes.Values) if (delta != 0) return true;
+            return false;
+        }
+
+
     }
 
     /// <summary>A pipe adapter's mode (rev 2 §3.10, build step L10): Send into the VE net, Take from it, or Shut.</summary>

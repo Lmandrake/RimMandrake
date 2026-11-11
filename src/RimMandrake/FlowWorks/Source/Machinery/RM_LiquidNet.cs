@@ -901,6 +901,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					foreach ((int si, int di, int n) in RM_LiquidNetKernel.SettlePlan(view, per, cycle, sentById, recvById))
 					{
 						Building_LiquidTank src = tanks[si], dst = tanks[di];
+						using var theftActor = RM_LiquidTheft.As(src.EffectiveMode == RM_TankMode.Empty ? src : dst);
 						LiquidDef liquid = src.storedLiquid;
 						List<RM_NetLink> route = comps.RouteIn(c, src, dst);
 						if (RouteDeadBump(map, route))
@@ -944,6 +945,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			int level = RM_PumpMath.TankUnitsPerLevel;
 			foreach (Building_LiquidTank tank in dumps.OrderBy(t => t.thingIDNumber))
 			{
+				using var theftActor = RM_LiquidTheft.As(tank);
 				int left = System.Math.Max(0, RM_HoseSettings.DumpUnitsPerCycle);
 				foreach (RM_NetComponent c in comps.ComponentsOf(tank))
 				{

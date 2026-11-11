@@ -1,7 +1,7 @@
 // Liquid networks build step L9 (design/RimMandrake/liquid_network_semantics_design_2026-10-11.md rev 2 §3.4, §6 L9; owner card
 // Q4: a hose into another faction's tank is allowed, as theft, priced like power theft; ruling #7: 2 goodwill a day, 12-cell
 // notice). The PRODUCTION rule (RM_LiquidTheftMath, a copy of Gimme Some Slack's AerialMath theft rule) with GSS's own cases
-// (src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs), the touched test, then the production tick read from source.
+// (src/RimMandrake/GimmeSomeSlack/Source/SelfTest/TheftChecks.cs), actor-attributed changes (TankTheftHarness), then the production tick read from source.
 using System;
 using System.IO;
 using RimMandrake.FlowWorks.Machinery;
@@ -60,8 +60,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 acc = 0;
                 Assert(RM_LiquidTheftMath.TheftGoodwillAccrue(ref acc, day * 2, true, 0, day) == 0, "a 0/day setting charges nothing");
                 Assert(RM_LiquidTheftMath.TheftGoodwillAccrue(ref acc, day, true, 5, day) == -5, "the per-day setting is the charge");
-                Assert(RM_LiquidTheftMath.Touched(40, "water", 35, "water") && RM_LiquidTheftMath.Touched(0, null, 5, "tar") && !RM_LiquidTheftMath.Touched(40, "water", 40, "water"),
-                    "touched = its stock or liquid changed since the last look; a put-back nets to untouched");
+
             });
 
             Case("Theft_witness_sees_a_2x2_tank_from_every_side", () =>
@@ -83,8 +82,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("Theft_production_tick_join_and_switch", () =>
             {
                 string th = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidTheft.cs"));
-                RiverSwitchFlipChecks.Has(th, @"public static void TheftTick\(Map map\) \{ if \(map == null \|\| !RM_MachinerySettings\.liquidTheftEnabled\) \{ return; \}", "off: no theft tick");
-                RiverSwitchFlipChecks.Has(th, @"bool touched = t\.theftSeenUnits >= 0 && RM_LiquidTheftMath\.Touched\(t\.theftSeenUnits, t\.theftSeenLiquid, t\.storedUnits, t\.storedLiquid\);", "touched = the stock changed");
+                RiverSwitchFlipChecks.Has(th, @"public static void TheftTick\(Map map\) \{ if \(map == null\) \{ return; \}", "null map: no theft pass");
+                RiverSwitchFlipChecks.Has(th, @"bool touched = t\.theftPendingVictim == victim && RM_LiquidTheftMath\.HasChanges\(t\.theftPlayerChanges\);", "touched = retained player changes on this victim tank");
                 RiverSwitchFlipChecks.Has(th, @"int change = RM_LiquidTheftMath\.TheftGoodwillAccrue\(ref t\.theftTicks, RM_PumpMath\.CycleTicks, true, RM_MachinerySettings\.liquidTheftGoodwillPerDay, GenDate\.TicksPerDay\);",
                     "a caught tank accrues only in cycles it is touched");
                 RiverSwitchFlipChecks.Has(th, @"if \(change >= 0 \|\| victim\.PlayerGoodwill <= -100 \|\| victim\.def\.permanentEnemy\) \{ continue; \}", "a faction at -100 or permanently hostile is skipped");

@@ -92,6 +92,7 @@ namespace RimMandrake.FlowWorks
 	{
 		public static void Postfix(Bill_Production __instance)
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(__instance.billStack?.billGiver as Thing);
 			RM_MeltRecipeExtension ext = RM_IceMelter.ExtOf(__instance);
 			if (ext?.liquid == null || ext.unitsPerCraft <= 0 || !(__instance.billStack?.billGiver is Thing bench) || bench.MapHeld == null)
 			{

@@ -1,0 +1,34 @@
+<Project>
+  <!-- Whole shipping bodies; only namespace bindings change to explicit engine doubles. -->
+  <UsingTask TaskName="ExtractTankTheft" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup><Source ParameterType="System.String" Required="true"/><Output ParameterType="System.String" Required="true"/></ParameterGroup>
+    <Task><Using Namespace="System.IO"/><Using Namespace="System.Text"/><Code Type="Fragment" Language="cs"><![CDATA[
+      string Extract(string path, params string[] signatures)
+      {
+        string s = File.ReadAllText(Path.Combine(Source, path));
+        var body = new StringBuilder();
+        foreach (string sig in signatures)
+        {
+          int start = s.IndexOf(sig, StringComparison.Ordinal), open = start < 0 ? -1 : s.IndexOf('{', start + sig.Length), end = -1, depth = 0;
+          if (open < 0) throw new Exception("Missing production body: " + path + " " + sig);
+          for (int i = open; i < s.Length; i++) { if (s[i] == '{') depth++; else if (s[i] == '}' && --depth == 0) { end = i; break; } }
+          if (end < 0) throw new Exception("Unbalanced production body: " + sig);
+          body.AppendLine(s.Substring(start, end + 1 - start));
+        }
+        return body.ToString();
+      }
+      string actor = Extract("Machinery/RM_LiquidTheft.cs", "public struct ActorScope", "public static ActorScope As(");
+      string theft = Extract("Machinery/RM_LiquidTheft.cs", "public static void Record(", "public static void TheftTick(");
+      string tank = Extract("LiquidTypes/Building_LiquidTank.cs", "public bool CanAccept(", "public bool CanProvide(", "public bool TryAddLiquid(", "public bool TryRemoveLiquid(", "public override void ExposeData(");
+      var text = "using RimMandrake.FlowWorks.Machinery; namespace RimMandrake.FlowWorks.SelfTest.TheftHarness { internal static partial class RM_LiquidTheft { [System.ThreadStatic] private static Thing actor; " + actor + theft + " } internal sealed partial class Building_LiquidTank { " + tank.Replace("Machinery.RM_LiquidTheft", "RM_LiquidTheft") + " } }";
+      // Existing extracted pump bodies also execute the exact scope implementation. Thing is an engine-boundary alias.
+      text += " namespace RimMandrake.FlowWorks.SelfTest.PumpHarness { using Thing = System.Object; internal static class RM_LiquidTheft { [System.ThreadStatic] private static Thing actor; internal static object Current => actor; " + actor + " } }";
+      Directory.CreateDirectory(Path.GetDirectoryName(Output));
+      File.WriteAllText(Output, text);
+    ]]></Code></Task>
+  </UsingTask>
+  <Target Name="ExtractTankTheft" BeforeTargets="CoreCompile">
+    <ExtractTankTheft Source="$(MSBuildProjectDirectory)\.." Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)TankTheft.g.cs"/>
+    <ItemGroup><Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)TankTheft.g.cs"/></ItemGroup>
+  </Target>
+</Project>

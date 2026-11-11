@@ -86,6 +86,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 
 		public static Result Pulse(ThingWithComps head, List<IntVec3> cells, bool enabled, bool switchOn)
 		{
+			using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(head);
 			var r = new Result { cells = cells?.Count ?? 0 };
 			bool pressure = enabled && switchOn && HasPressure(head);
 			LiquidDef liquid = pressure ? MostHeld(head, out r.available) : null;
