@@ -1,0 +1,2 @@
+rimflow file --for accepts only the readers in src/RimMandrake/rimflow/alarm_routes.json's `readers` key — measured 2026-11-10: BENCH, OWNER, Operations, Conductor. The ledger's own history is NOT a menu: 522 past file events name `RELENTLESS` and 2569 name `FOUNDRY`, and neither is fileable now (FOUNDRY redirects to BENCH, RELENTLESS is in incident.NOT_READERS). Read the json for the live list instead of copying a reader out of git history or an old item.
+home: skills/using-rimflow
