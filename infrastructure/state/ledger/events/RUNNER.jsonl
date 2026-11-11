@@ -6253,3 +6253,11 @@
 {"seat":"RUNNER","event":"note","id":"UNFINISHED_LINE_SITE_CHOICE_1","text":"testq J20261111T075532Z-f4ea0c.a1 quarantined: ran inside Steve SIMD fault window F20261107T174953Z (last clean 2026-11-08T00:52:39Z, first bad 2026-11-08T00:57:39Z); no verdict recorded","ts":"2026-11-11T08:12:02Z","tsn":1794384722474440755}
 {"seat":"RUNNER","event":"note","id":"UNFINISHED_LINE_TITHE_BEAT_1","text":"testq J20261111T075532Z-f4ea0c.a1 quarantined: ran inside Steve SIMD fault window F20261107T174953Z (last clean 2026-11-08T00:52:39Z, first bad 2026-11-08T00:57:39Z); no verdict recorded","ts":"2026-11-11T08:12:06Z","tsn":1794384726960319079}
 {"seat":"RUNNER","event":"note","id":"UNFINISHED_LINE_WORLD_FOUNDRY_1","text":"testq J20261111T075532Z-f4ea0c.a1 quarantined: ran inside Steve SIMD fault window F20261107T174953Z (last clean 2026-11-08T00:52:39Z, first bad 2026-11-08T00:57:39Z); no verdict recorded","ts":"2026-11-11T08:12:11Z","tsn":1794384731539886313}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_DEPLOY_UPDATE","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:06Z","tsn":1794385086809142123}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_MEMWATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:11Z","tsn":1794385091407672029}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_MIRROR","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:15Z","tsn":1794385095814571900}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_OBJSTORE","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:20Z","tsn":1794385100362926833}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_TELEMETRY_EXPORT","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:24Z","tsn":1794385104903895068}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_TELEMETRY_HEALTH","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:29Z","tsn":1794385109386447569}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_PULSE_UPDATE","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:33Z","tsn":1794385113730021758}
+{"seat":"RUNNER","event":"live","id":"STEWARD_FIX_LEAVES_THE_LIGHTS_ON","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:38Z","tsn":1794385118081781888}
