@@ -9,8 +9,8 @@ using Verse;
 
 namespace RimMandrake.HugeThings
 {
-    /// <summary>Fixture work-tab preparation and read-only job observations. Creates no jobs and advances no ticks, growth,
-    /// work, damage or destruction. The normal think tree picks up designated cuts.</summary>
+    /// <summary>Owned disposable fixture preparation/observations and bounded ground-clear integration control.
+    /// The normal think tree picks up designated cuts; no helper creates cutting jobs or advances ticks/growth/work.</summary>
     public static class TrunkDoorValidationHooks
     {
         public static string CutState(string pawnId)
@@ -40,10 +40,9 @@ namespace RimMandrake.HugeThings
         }
         /// <summary>Ground-only ClearArea integration control on a declared disposable
         /// fixture contact. Refuses unrelated objects and does not advance time.</summary>
-        public static string ClearFixtureContact(string args)
+        public static string ClearFixtureContact(string plantId, string contact, string clearMode)
         {
-            string[] parts = (args ?? "").Split('|');
-            if (parts.Length != 3) return "FAIL expected plantID|x,z|mode";
+            string[] parts = { plantId, contact, clearMode };
             string[] xy = parts[1].Split(',');
             int x, z;
             GravshipPlacementUtility.ClearMode mode;

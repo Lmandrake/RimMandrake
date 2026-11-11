@@ -5,7 +5,7 @@ site. No clock jumps, debug blocker insertion, direct growth hooks or debug kill
 A root enclosed by its growing contact and existing walls must be unreachable by
 vanilla root-touch, while the inside cutter can reach the owned trunk. Preserve
 exact door/item/pawn identities, settings and the guarded scene-begin snapshot.
-The same script must fail on the old access-preserving implementation.
+The old/current production planner comparison supplies the matched offline RED.
 """
 import argparse
 import hashlib
@@ -100,18 +100,12 @@ class Run:
         return result['things']
 
     def claimed_cells(self, cells):
-        # The existing old/new bridge can read actual pending keys and realized
-        # keys. A required key must be present, even if the bounded reader truncates
-        # a larger collection; absence never licenses a placement-safety PASS.
-        result = self.call('jawa/map_comp_read', comp='MapComponent_HugeFootprints', members='pending,realized')
-        require(result.get('missing') == [] and set(result.get('values', {})) == {'pending', 'realized'}, 'claim census fields missing')
         sources = {}
         for x, z in cells:
-            key = (x << 32) | (z & 0xffffffff)
-            pattern = r'(?<!\d)'+str(key)+r'(?!\d)'
-            found = [name for name, value in result['values'].items() if re.search(pattern, value)]
-            require(found, 'HARNESS: required contact not read back as actually claimed at %d,%d' % (x, z))
-            sources['%d,%d' % (x, z)] = found
+            state = self.sc('DebugCellState', 'current|%d,%d' % (x,z))
+            require(kv(state).get('claimed') == 'True',
+                    'HARNESS: required contact not actually claimed at %d,%d' % (x,z))
+            sources['%d,%d' % (x,z)] = state
         return sources
 
     def pawns(self, rect=RECT):
