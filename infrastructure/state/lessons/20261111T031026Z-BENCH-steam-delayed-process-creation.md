@@ -1,0 +1,2 @@
+Steam URI launch can return more than 20 seconds before RimWorld exists. live_session.launch_and_wait slept 20 seconds, then treated initial process absence as game exit; Steam started the healthy game afterward. Wait for creation using load_policy launch_to_process_s before applying process-exit aborts to the bridge wait, and check the launch command return code. A failed early probe reads an old Player.log; verify PID/log freshness before attributing it to the new load.
+home: src/RimMandrake/Utils/northstar_driver/live_session.py

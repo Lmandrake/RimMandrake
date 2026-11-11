@@ -72,11 +72,22 @@ def stop_game():
     say("1 stop", "game exited")
 
 
+def wait_for_process(timeout_s, clock=time.monotonic, sleep=time.sleep):
+    """Steam may return long before its game exists; absence is not an exit yet."""
+    deadline = clock() + timeout_s
+    while not running():
+        remaining = deadline - clock()
+        if remaining <= 0:
+            return False
+        sleep(min(3, remaining))
+    return True
+
+
 def launch_and_wait(budget=None):
-    if budget is None:          # the ONE declared deadline policy (Utils/load_policy.json)
-        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        import load_policy
-        budget = load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"]
+    import load_policy       # the ONE declared deadline policy (Utils/load_policy.json)
+    profile = load_policy.profile_for(load_policy.active_count_from_modsconfig())
+    if budget is None:
+        budget = profile["process_to_bridge_deadline_s"]
     import logwait
     cursor = logwait.LogCursor(PLAYER_LOG)     # before the launch, so the last session's token cannot answer
     if game_instance.current() != game_instance.DEFAULT:        # Steam's launch can only ever start game a
@@ -87,11 +98,16 @@ def launch_and_wait(budget=None):
         if rc != 0:
             sys.exit("[4 launch] %s" % out)
     else:
-        sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
-    time.sleep(20)
-    r = cursor.wait("Bridge token:", budget - 20, abort=lambda: None if running() else "game process gone")
+        rc, out = sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
+        if rc:
+            sys.exit("[4 launch] Steam launch failed: %s" % out)
+    if not wait_for_process(profile["launch_to_process_s"]):
+        sys.exit("[4 launch] " + load_policy.deadline_exceeded(
+            "waiting for Steam to create the game process", profile["launch_to_process_s"],
+            profile["launch_to_process_s"]))
+    r = cursor.wait("Bridge token:", budget, abort=lambda: None if running() else "game process gone")
     if r["ok"]:
-        return say("4 launch", "bridge up after %d s" % (r["waited_s"] + 20))
+        return say("4 launch", "bridge up after %d s" % r["waited_s"])
     sys.exit("[4 launch] %s" % r["why"])
 
 
