@@ -1,0 +1,10 @@
+{
+  "time": 1794405383.049792,
+  "id": "TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+  "state": "done",
+  "level_reached": "L2",
+  "closed_sha": "21944c5d4dc08d50f47632305369fcf948bdb524",
+  "outstanding": [],
+  "criteria_unchanged": true,
+  "prose": "infrastructure/state/items/closed/TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT.md"
+}

@@ -1,0 +1,17 @@
+{
+  "time": 1794405265.3099232,
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "close",
+    "TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+    "--sha",
+    "21944c5d4dc08d50f47632305369fcf948bdb524",
+    "--reason",
+    "L2: original A2/A3 discharged by published bounded native pool/real forced arrival proof and valid fresh independent Codex judgment; no crossing/showcase claim."
+  ],
+  "rc": 2,
+  "stdout": "",
+  "stderr": "TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT is already `done`, and this would be a SECOND one. The first record stands \u2014 a repeat cannot be told apart from the original in any view, but it would silently replace the sha, the reason or the successor the projection reports. If something more happened, file a NEW item and link it with caused_by.\n",
+  "context": "Last owed criterion verification can automatically end the item. Preserve actual subsequent explicit close outcome, never fabricate a second terminal event."
+}

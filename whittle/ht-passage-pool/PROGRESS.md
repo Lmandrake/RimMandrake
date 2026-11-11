@@ -13,3 +13,7 @@ Synthetic tile-biome fixture only; original terrain retained. No generation/rege
 All seven setups retained:1 other-host bridge-file refusal;2 interrupted missing adapter path;3 missing VEF type gate;4 typed Def/restore mismatches;5 TaggedString decoder (restore passed);6 full live PASS then credential-audit refusal;7 corrected pre-persistence filtering, full live PASS and final audit PASS. Fresh independent tool-disabled Opus Test Pilot ran before setup4. Privacy redactions and a preservation/idempotence control are recorded without credential values. Final accepted trial contains no saved credentials.
 
 Frozen three bullets and original A2 L1/A3 L2 unchanged. Inherited parser/kernel2/2 GREEN unchanged; no unnecessary rerun. Judge alone writes JUDGE.md, followed by actual validate(cwd). No commits/publication performed.
+
+
+## Parent terminal metadata
+Source/proof PUBLISHED21944c5d4dc08d50f47632305369fcf948bdb524. Original manifest re-registered at that bundle, with exact deployed DLL9d897e2f provenance from prior d4da6624ea7f build; all50 inputs/final driver verified unchanged after publication. A2 passed L1; A3 passed L2 and automatically ended the item. Subsequent explicit close rc2 correctly refused a duplicate. Final independent allowlist judge2 and full Codex Whittle run3/actual validator rc0 stand; first tainted judgment stays invalid. No acceptance remains for this bounded item. Archived prose is infrastructure/state/items/closed/TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT.md.
