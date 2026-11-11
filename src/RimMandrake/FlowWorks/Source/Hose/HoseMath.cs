@@ -2893,8 +2893,10 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>Any reel footprint (round 3: 2x2). contact = the neighbour cell (outside the reel) across the shared
         /// edge; the reel cell it touches is contact - side. Ties: kind, then side (E, N, W, S), then the lowest cell along
-        /// that side -- never candidate order.</summary>
-        internal static int Pick(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact)
+        /// that side -- never candidate order. When supplied, reachableContacts limits the choice to actual reachable
+        /// neighbour cells, before ranking (a later contact of the same footprint may still be valid).</summary>
+        internal static int Pick(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact,
+            ISet<Cell> reachableContacts = null)
         {
             side = new Cell(0, 0);
             contact = new Cell(0, 0);
@@ -2913,7 +2915,7 @@ namespace RimMandrake.FlowWorks.Hose
                     for (int k = 0; k < len; k++)
                     {
                         Cell n = (sd.X != 0 ? new Cell(ex, reel.Z0 + k) : new Cell(reel.X0 + k, ez)) + sd;
-                        if (!c.Contains(n)) continue;
+                        if (!c.Contains(n) || (reachableContacts != null && !reachableContacts.Contains(n))) continue;
                         int rank = ((int)c.Kind * 8 + s) * 64 + k;
                         if (rank < bestRank) { bestRank = rank; best = i; side = SideOrder[s]; contact = n; }
                     }

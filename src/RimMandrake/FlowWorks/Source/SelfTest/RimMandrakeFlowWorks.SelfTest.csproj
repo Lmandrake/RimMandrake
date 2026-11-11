@@ -219,6 +219,7 @@
     <Compile Include="..\RM_Prejit.cs" />
     <Compile Include="LevelPrejitChecks.cs" />
     <Compile Include="HoseCacheChecks.cs" />
+    <Compile Include="HoseBodyInletChecks.cs" />
     <Compile Include="HoseBandsApplyChecks.cs" />
     <Compile Include="HoseTickAllocChecks.cs" />
     <Compile Include="HoseWorldPatchChecks.cs" />

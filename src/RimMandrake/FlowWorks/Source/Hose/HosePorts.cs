@@ -119,12 +119,20 @@ namespace RimMandrake.FlowWorks.Hose
             List<Thing> things = rawThings; things.Clear();
             List<HosePortCandidate> cands = rawCands; cands.Clear();
             List<Cell> perim = rawPerim;
+            HashSet<Cell> reachable = rawReachable; reachable.Clear();
             rect.PerimeterInto(perim);
             for (int pi = 0; pi < perim.Count; pi++)
             {
                 Cell pc = perim[pi];
                 var c = new IntVec3(pc.X, 0, pc.Z);
                 if (!c.InBounds(map)) continue;
+                // REEL_BODY_INLET_FIX_SKIPS_DEPTH_RULES: clamp the OUTSIDE contact to its adjacent body edge cell.
+                // A multi-cell reel's origin/centre is not that cell. Route links (ramps/ladders) do not grant endpoint
+                // reach across bands. Filter in Pick too: another cell of this same neighbour may be reachable.
+                var body = new IntVec3(Math.Max(rect.X0, Math.Min(pc.X, rect.X0 + rect.W - 1)), 0,
+                    Math.Max(rect.Z0, Math.Min(pc.Z, rect.Z0 + rect.H - 1)));
+                if (!HoseBandMath.EndReaches(RM_HoseBands.BandAt(map, body), RM_HoseBands.BandAt(map, c))) continue;
+                reachable.Add(pc);
                 List<Thing> l = c.GetThingList(map);
                 for (int i = 0; i < l.Count; i++)
                 {
@@ -133,12 +141,26 @@ namespace RimMandrake.FlowWorks.Hose
                     HosePortKind k = Classify(t);
                     if (k == HosePortKind.None) continue;
                     CellRect rc = t.OccupiedRect();
+                    var candidate = new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k);
+                    if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump)
+                    {
+                        // A pump has one fixed hose port per side. A different lane of its footprint cannot supply
+                        // a same-band substitute for that port (notably a multi-cell station straddling a depth edge).
+                        if (rect.Overlaps(candidate)) continue;
+                        int ps = ReelSideOn(t, r);
+                        if (ps < 0) continue;
+                        RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.PortCell(rc.minX, rc.minZ, rc.Width, rc.Height,
+                            t.Position.x, t.Position.z, ps, out int px, out int pz);
+                        int dx = ps == 1 ? 1 : ps == 3 ? -1 : 0, dz = ps == 0 ? 1 : ps == 2 ? -1 : 0;
+                        if (pc.X != px - dx || pc.Z != pz - dz) continue;
+                        candidate = new HosePortCandidate(pc.X, pc.Z, 1, 1, k);
+                    }
                     things.Add(t);
-                    cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
+                    cands.Add(candidate);
                 }
             }
             ById(things, cands);
-            int pick = HosePortRule.Pick(rect, cands, out side, out contact);
+            int pick = HosePortRule.Pick(rect, cands, out side, out contact, reachable);
             if (pick < 0) return null;
             kind = cands[pick].Kind;
             return things[pick];
@@ -263,9 +285,36 @@ namespace RimMandrake.FlowWorks.Hose
         }
         // end RawFindAt
 
+        /// <summary>Read-only disposable-site acceptance (static_call, arg = map index,x,z inside a reel). Reads the real
+        /// Find and forced hydraulic Port cache, plus both cells at the selected contact. Does not stage terrain or things.</summary>
+        public static string ProofBodyInlet(string arg)
+        {
+            string[] p = arg.Split(',');
+            int mi = int.Parse(p[0]), x = int.Parse(p[1]), z = int.Parse(p[2]);
+            Map map = Verse.Find.Maps[mi];
+            var at = new IntVec3(x, 0, z);
+            CompHoseReel r = null;
+            foreach (Thing t in at.GetThingList(map))
+            {
+                r = t.TryGetComp<CompHoseReel>();
+                if (r != null) break;
+            }
+            if (r == null) return "{\"success\":false,\"error\":\"no reel\"}";
+            Thing port = Find(r, out Cell side, out Cell contact, out HosePortKind kind);
+            Thing hydraulic = r.Port(true);
+            HoseReelRect rc = r.Rect;
+            var body = new IntVec3(contact.X - side.X, 0, contact.Z - side.Z);
+            return "{\"success\":true,\"reel\":" + r.parent.thingIDNumber + ",\"rect\":[" + rc.X0 + "," + rc.Z0 + "," + rc.W + "," + rc.H
+                + "],\"portId\":" + (port?.thingIDNumber ?? -1) + ",\"hydraulicPortId\":" + (hydraulic?.thingIDNumber ?? -1)
+                + ",\"kind\":" + (int)kind + ",\"side\":[" + side.X + "," + side.Z + "],\"contact\":[" + contact.X + "," + contact.Z
+                + "],\"bodyBand\":" + (port == null ? -1 : RM_HoseBands.BandAt(map, body))
+                + ",\"contactBand\":" + (port == null ? -1 : RM_HoseBands.BandAt(map, new IntVec3(contact.X, 0, contact.Z))) + "}";
+        }
+
         private static readonly List<Thing> rawThings = new List<Thing>(), atThings = new List<Thing>();
         private static readonly List<HosePortCandidate> rawCands = new List<HosePortCandidate>(), atCands = new List<HosePortCandidate>();
         private static readonly List<Cell> rawPerim = new List<Cell>(), atPerim = new List<Cell>();
         private static readonly List<int> sideIds = new List<int>();
+        private static readonly HashSet<Cell> rawReachable = new HashSet<Cell>();
     }
 }
