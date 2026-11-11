@@ -44,12 +44,13 @@ namespace RimMandrake.FlowWorks
         {
             string[] a = arg.Split(';');
             Pawn w = Pawn(a[0]), p = Pawn(a[1]);
-            Type kind = a[2] == "feed" ? typeof(WorkGiver_Warden_Feed) : a[2] == "deliver"
-                ? typeof(WorkGiver_Warden_DeliverFood) : a[2] == "tend" ? typeof(WorkGiver_Tend) : typeof(WorkGiver_Warden_TakeToBed);
-            WorkGiver_Scanner giver = DefDatabase<WorkGiverDef>.AllDefsListForReading.Select(d => d.Worker)
-                .OfType<WorkGiver_Scanner>().First(g => g.GetType() == kind);
+            // WorkGiver_Tend is a base class, not a registered worker. Select the
+            // actual vanilla WorkGiverDef (Core/Defs/WorkGiverDefs/WorkGivers.xml).
+            string giverName = a[2] == "feed" ? "FeedPrisoner" : a[2] == "deliver"
+                ? "DeliverFoodToPrisoner" : a[2] == "tend" ? "DoctorTendToHumanlikes" : "TakePrisonerToBed";
+            var giver = (WorkGiver_Scanner)DefDatabase<WorkGiverDef>.GetNamed(giverName).Worker;
             Job job = giver.HasJobOnThing(w, p, false) ? giver.JobOnThing(w, p, false) : null;
-            string result = "CARE kind=" + a[2] + " job=" + (job?.def.defName ?? "none");
+            string result = "CARE kind=" + a[2] + " giver=" + giverName + " job=" + (job?.def.defName ?? "none");
             if (job != null && a[3] == "start") result += " ordered=" + w.jobs.TryTakeOrderedJob(job, JobTag.Misc);
             return result;
         }
