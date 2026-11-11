@@ -17,4 +17,7 @@ The titan fuzz family has new cases (multi-cell dedup, life-stage qualification)
 ## criteria
 A1: the five bullets are fixed. A2: the regression cases exist.
 
-NEXT: claim it and fix the bullets in order, citing the review IDs in the commit.
+## current state — 2026-11-11
+All five fixes are present in current source; the implementation is already recorded at 88c73d3ebe58. The original findings above describe the pre-fix defects. The authoritative remaining ledger criterion is A1 L2: live, a T3 titan stepping over a 2x2 crushable deals one blow per step; a flying titan leaves no wake; a stationary Position re-set fires no wake. Offline source/fuzz checks alone do not discharge that criterion.
+
+NEXT: run the ground-only one-blow/reset checks on a disposable site; park the live flight portion for an owner-present test. Exact reserved question and evidence pointers: /home/mandrake/codex-steve/ht-loop/OWNER_QUESTIONS.md. No fresh acceptance or flight was run by this drain round; no criterion was removed.
