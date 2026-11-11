@@ -1,0 +1,1 @@
+{"error": "KeyError tests_final2 in parent audit metadata dict after both successful trace decodes", "cause": "Parent omitted dictionary initialization for second trace entry", "verdict": "No completed audit or source fault claimed"}
