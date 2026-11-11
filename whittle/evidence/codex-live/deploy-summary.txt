@@ -1,0 +1,42 @@
+AcousticScanner  mandrake.rm.acousticscanner not enabled in ModsConfig -> VERIFIED in sync
+AshkarrLandmarkArt mandrake.rut.ashkarrlandmarkart not enabled in ModsConfig -> VERIFIED in sync
+AssailantSalvage mandrake.rut.assailantsalvage not enabled in ModsConfig -> VERIFIED in sync
+BeskarArmorer    mandrake.rut.beskararmorer not enabled in ModsConfig -> VERIFIED in sync
+CathedralPass    mandrake.rut.cathedralpass not enabled in ModsConfig -> VERIFIED in sync
+ColdStorage      mandrake.rm.coldstorage    not enabled in ModsConfig -> VERIFIED in sync
+DeepDrill        mandrake.rm.deepdrill      not enabled in ModsConfig -> VERIFIED in sync
+Doctrine         mandrake.rut.doctrine      not enabled in ModsConfig -> VERIFIED in sync
+EggReckoning     mandrake.rut.eggreckoning  not enabled in ModsConfig -> VERIFIED in sync
+EmpirePursuit    mandrake.rut.empirepursuit not enabled in ModsConfig -> VERIFIED in sync
+ExplosiveKnockback mandrake.rm.explosiveknockback not enabled in ModsConfig -> VERIFIED in sync
+FallLineArrivals mandrake.rut.falllinearrivals not enabled in ModsConfig -> VERIFIED in sync
+FlowWorks        mandrake.rm.flowworks      292 file(s) HELD -> VERIFIED in sync
+FungalSoilTrade  mandrake.rut.fungalsoiltrade not enabled in ModsConfig -> VERIFIED in sync
+GimmeSomeSlack   mandrake.rm.gimmesomeslack 161 file(s) HELD -> VERIFIED in sync
+HugeThings       mandrake.rm.hugethings     not enabled in ModsConfig · 2 file(s) HELD -> VERIFIED in sync
+KineticArms      mandrake.rm.kineticarms    not enabled in ModsConfig -> VERIFIED in sync
+LuminousPigment  mandrake.rm.luminouspigment not enabled in ModsConfig -> VERIFIED in sync
+Minerals         mandrake.rm.minerals       not enabled in ModsConfig -> VERIFIED in sync
+PropaneLakeMechanics mandrake.rut.propanelakemechanics not enabled in ModsConfig -> VERIFIED in sync
+Pyrinth          mandrake.rm.pyrinth        not enabled in ModsConfig -> VERIFIED in sync
+ResearchRetag    mandrake.rut.researchretag not enabled in ModsConfig -> VERIFIED in sync
+RimProperty      mandrake.rm.property       not enabled in ModsConfig -> VERIFIED in sync
+Rites            mandrake.rut.rites         not enabled in ModsConfig -> VERIFIED in sync
+SWBestiary       mandrake.rsw.swbestiary    not enabled in ModsConfig · 111 file(s) HELD -> VERIFIED in sync
+Sarlacc          mandrake.rsw.sarlacc       not enabled in ModsConfig -> VERIFIED in sync
+ScarlandsLadder  mandrake.rut.scarlandsladder not enabled in ModsConfig -> VERIFIED in sync
+ShipShields      mandrake.rut.shipshields   not enabled in ModsConfig -> VERIFIED in sync
+ShipVermin       mandrake.rm.shipvermin     not enabled in ModsConfig -> VERIFIED in sync
+SithLine         mandrake.rsw.sithline      not enabled in ModsConfig -> VERIFIED in sync
+StarWarsPatches  mandrake.rsw.patches       not enabled in ModsConfig -> VERIFIED in sync
+StructureInjections mandrake.rm.injections     not enabled in ModsConfig -> VERIFIED in sync
+StructureInjectionsRUT mandrake.rut.injections    not enabled in ModsConfig -> VERIFIED in sync
+StructureInjectionsSW mandrake.rsw.injections    not enabled in ModsConfig -> VERIFIED in sync
+TheBazaar        mandrake.rm.bazaar         not enabled in ModsConfig -> VERIFIED in sync
+TileFeatures     mandrake.rm.tilefeatures   NOT DEPLOYED · not enabled in ModsConfig -> VERIFIED in sync
+UtinniPatches    mandrake.rut.patches       not enabled in ModsConfig · 10 file(s) HELD -> VERIFIED in sync
+UtinniStatues    mandrake.rut.utinnistatues not enabled in ModsConfig -> VERIFIED in sync
+Warcasket        mandrake.rm.warcasket      not enabled in ModsConfig -> VERIFIED in sync
+WasteRun         mandrake.rut.wasterun      not enabled in ModsConfig -> VERIFIED in sync
+WreckedMachines  mandrake.rm.wreckedmachines not enabled in ModsConfig -> VERIFIED in sync
+Deployed 286 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.

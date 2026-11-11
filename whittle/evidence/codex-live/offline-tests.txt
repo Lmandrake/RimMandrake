@@ -1,0 +1,8 @@
+Codex native WSL runner, 2026-11-10 owner order.
+python3 src/RimMandrake/Utils/run_selftests.py --only selftest_preflight_bridge.py
+PASS 1/1 (dependency resolver and changed/missing Harmony controls).
+python3 src/RimMandrake/Utils/run_selftests.py --only selftest_driver_lock.py --workers 1
+PASS 1/1, 2.3s (Codex/Claude ancestry and existing lock exclusivity cases).
+python3 src/RimMandrake/Utils/run_selftests.py --only selftest_hole_prison.py,selftest_fixture_pit_prison_cleanup.py
+PASS 2/2, wall 200.3s (fixture cleanup 0.2s; acceptance fault injection plus PitRoom_* C# 199.9s).
+These are summarized observed wrapper results, not a fabricated raw transcript.

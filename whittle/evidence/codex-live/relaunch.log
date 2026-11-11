@@ -1,0 +1,10 @@
+[1;31m  ⚠ MODLIST IS NOT THE OWNER'S FULL LIST — this launch will not be his campaign.
+[0m    
+    live currently matches: UNRECOGNISED (neither FULL nor MINIMAL - the MOD LIST differs, not just the bytes)
+    ⚠️ The live list is neither stored list. If that change was deliberate:
+       modlist_swap.py --capture-full --apply
+    restore before he plays:  python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply
+  game -> LOADING      recorded in the ledger
+  (agent relay: stamped only — no window messages; owner ruling 2026-09-29)
+[4 launch] bridge up after 35 s
+READY

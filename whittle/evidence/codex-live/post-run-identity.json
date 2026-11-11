@@ -1,0 +1,32 @@
+{
+ "when": "2026-11-11T04:30:04Z",
+ "mode": "offline",
+ "tier": "quicktest",
+ "modset": "flowworks",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "O10",
+   "name": "dependency_fp",
+   "required": false,
+   "status": "PASS",
+   "reason": "RBS 2.3.0, Harmony, game assemblies unchanged since baseline",
+   "cost_est_s": 2,
+   "took_s": 0.9,
+   "prevents": "prediction 14/18",
+   "evidence": {}
+  },
+  {
+   "id": "O13",
+   "name": "deploy_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "3 mods, 1192 files: deployed == repo byte for byte",
+   "cost_est_s": 60,
+   "took_s": 13.7,
+   "prevents": "#31 #46 #52 #57 deploy drift",
+   "evidence": {}
+  }
+ ]
+}

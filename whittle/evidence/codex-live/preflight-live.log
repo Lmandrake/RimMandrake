@@ -1,0 +1,13 @@
+preflight LIVE tier=quicktest purpose=test seat=BENCH 2026-11-11T03:09:04Z
+PASS       O02  bridge_lease             req    0.0s  held by this seat: HELD    BENCH    since 2026-11-11T03:02:15Z
+UNMEASURED L05  live_companion           req    0.0s  no "[JawaBench] ready:" line in the current log
+UNMEASURED L06  live_tps_autostart       opt    0.0s  no TPS sampler line yet
+UNMEASURED L07  live_awareness_init      opt    0.0s  no "[JawaBench] map awareness:" line (companion without awareness, or not initialised)
+PASS       L02  live_core_reset          req    0.0s  no reset marker; ModsConfig 12 mods
+PASS       O04  modsconfig_intent        opt   11.7s  ModsConfig == modset_builder tier flowworks (12 mods, ordered)
+UNMEASURED L03  live_first_exception     req    0.0s  launch_gate probe line absent: ["UNMEASURED: log has no 'Bridge token:' line (wrong, empty or old log)"]
+UNMEASURED L04  live_mods_ordered        req    0.7s  DefDump manifest predates this process: it describes a previous load
+PASS       O09  companion_match          req    0.1s  deployed == repo d76ec2b1e189 (build 446ec4d7dbb5) (no .srchash beside the repo artifact: source provenance unproven)
+PASS       O01  game_down                req    0.7s  1 process (attach)
+UNMEASURED L01  live_identity            req    0.0s  no "Bridge token:" in the current Player.log yet (still loading?)
+VERDICT NOT-GREEN L05,L03,L04,L01

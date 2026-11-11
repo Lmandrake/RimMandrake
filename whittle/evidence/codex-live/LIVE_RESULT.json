@@ -1,0 +1,126 @@
+{
+  "runner": "codex",
+  "runtime": "native WSL Codex -> Windows python.exe bridge",
+  "scenes": {
+    "relative-10": {
+      "status": "PASS",
+      "relative": true,
+      "depth": 6,
+      "day_ticks": 60000,
+      "behavior": "PASS",
+      "restore": {
+        "settings": {
+          "superdeepRoomsEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "captureDownEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "wardenFromLipEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "superdeepCaptureEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "pitRelativeClimbEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "maxDigDepth": {
+            "before": "4",
+            "after": "4"
+          },
+          "rainFillsExcavationsEnabled": {
+            "before": "True",
+            "after": "True"
+          }
+        },
+        "errors": [],
+        "rect": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+        "debug": {
+          "enableStoryteller": {
+            "before": true,
+            "after": true
+          },
+          "enableRandomMentalStates": {
+            "before": true,
+            "after": true
+          },
+          "enableRandomDiseases": {
+            "before": true,
+            "after": true
+          }
+        },
+        "status": "PASS"
+      },
+      "expected_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+      "identity": "IDENTITY mvid=0a684a01-6aa4-454d-a7e0-db09c2db1f6e sha256=1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+      "artifact_sha256": "9c02358fe33c88c0a2ca62b1b2be54668ffa5902904fecec4491d4b170b87d61"
+    },
+    "absolute-2": {
+      "status": "PASS",
+      "relative": false,
+      "depth": 4,
+      "day_ticks": 60000,
+      "behavior": "PASS",
+      "restore": {
+        "settings": {
+          "superdeepRoomsEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "captureDownEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "wardenFromLipEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "superdeepCaptureEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "pitRelativeClimbEnabled": {
+            "before": "True",
+            "after": "True"
+          },
+          "maxDigDepth": {
+            "before": "4",
+            "after": "4"
+          },
+          "rainFillsExcavationsEnabled": {
+            "before": "True",
+            "after": "True"
+          }
+        },
+        "errors": [],
+        "rect": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+        "debug": {
+          "enableStoryteller": {
+            "before": true,
+            "after": true
+          },
+          "enableRandomMentalStates": {
+            "before": true,
+            "after": true
+          },
+          "enableRandomDiseases": {
+            "before": true,
+            "after": true
+          }
+        },
+        "status": "PASS"
+      },
+      "expected_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+      "identity": "IDENTITY mvid=0a684a01-6aa4-454d-a7e0-db09c2db1f6e sha256=1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+      "artifact_sha256": "2bcb969bf301c23c28440db10efb460bc14fc56739b54d2fa82b7be6135e6f8f"
+    }
+  },
+  "scope": "isolated FlowWorks tier; all five DLC; no full-list integration claim",
+  "status": "PASS"
+}

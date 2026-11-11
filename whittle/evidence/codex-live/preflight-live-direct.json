@@ -1,0 +1,171 @@
+{
+ "when": "2026-11-11T03:12:20Z",
+ "mode": "live",
+ "tier": "quicktest",
+ "modset": "flowworks",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "O02",
+   "name": "bridge_lease",
+   "required": true,
+   "status": "PASS",
+   "reason": "held by this seat: HELD    BENCH    since 2026-11-11T03:02:15Z",
+   "cost_est_s": 0.1,
+   "took_s": 0.0,
+   "prevents": "#22 #50 two drivers",
+   "evidence": {}
+  },
+  {
+   "id": "L05",
+   "name": "live_companion",
+   "required": true,
+   "status": "PASS",
+   "reason": "live companion 431 tools, build 446ec4d7dbb5",
+   "cost_est_s": 0.3,
+   "took_s": 0.03,
+   "prevents": "prediction 9",
+   "evidence": {}
+  },
+  {
+   "id": "L06",
+   "name": "live_tps_autostart",
+   "required": false,
+   "status": "PASS",
+   "reason": "TPS record autostarted (bridge-registration)",
+   "cost_est_s": 0.3,
+   "took_s": 0.0,
+   "prevents": "prediction 33",
+   "evidence": {}
+  },
+  {
+   "id": "L07",
+   "name": "live_awareness_init",
+   "required": false,
+   "status": "PASS",
+   "reason": "[JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; PawnGenerator.GeneratePawn: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpaw",
+   "cost_est_s": 0.3,
+   "took_s": 0.0,
+   "prevents": "prediction 6",
+   "evidence": {}
+  },
+  {
+   "id": "L02",
+   "name": "live_core_reset",
+   "required": true,
+   "status": "PASS",
+   "reason": "no reset marker; ModsConfig 12 mods",
+   "cost_est_s": 0.5,
+   "took_s": 0.01,
+   "prevents": "#30 #32 #36 #37",
+   "evidence": {}
+  },
+  {
+   "id": "O04",
+   "name": "modsconfig_intent",
+   "required": false,
+   "status": "PASS",
+   "reason": "ModsConfig == modset_builder tier flowworks (12 mods, ordered)",
+   "cost_est_s": 0.5,
+   "took_s": 10.54,
+   "prevents": "#19 #47 #54 wrong list",
+   "evidence": {}
+  },
+  {
+   "id": "L03",
+   "name": "live_first_exception",
+   "required": true,
+   "status": "PASS",
+   "reason": "no missing types; 0 Config errors; first exception: None",
+   "cost_est_s": 1,
+   "took_s": 0.0,
+   "prevents": "#57 missing types",
+   "evidence": {
+    "first_exception": null,
+    "config_errors": 0,
+    "missing_types": []
+   }
+  },
+  {
+   "id": "L04",
+   "name": "live_mods_ordered",
+   "required": true,
+   "status": "PASS",
+   "reason": "running list == intended, ordered (12 mods); direct live read",
+   "cost_est_s": 1,
+   "took_s": 2.06,
+   "prevents": "#19 #54",
+   "evidence": {
+    "reading": {
+     "procs": [
+      [
+       28632,
+       1794366526
+      ]
+     ],
+     "ids": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.patches"
+     ],
+     "source": "jawa/running_mods"
+    }
+   }
+  },
+  {
+   "id": "O09",
+   "name": "companion_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "deployed == repo d76ec2b1e189 (build 446ec4d7dbb5) (no .srchash beside the repo artifact: source provenance unproven)",
+   "cost_est_s": 1,
+   "took_s": 0.11,
+   "prevents": "#51 #57 stale DLL, P-c",
+   "evidence": {
+    "repo_sha": "d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083",
+    "game_sha": "d76ec2b1e18929ea8ba81fe360690811774befe9f5a30f81839df8f478c5e083",
+    "repo_build": "446ec4d7dbb5",
+    "game_build": "446ec4d7dbb5"
+   }
+  },
+  {
+   "id": "O01",
+   "name": "game_down",
+   "required": true,
+   "status": "PASS",
+   "reason": "1 process (attach)",
+   "cost_est_s": 2,
+   "took_s": 0.47,
+   "prevents": "#21 two processes, #39 old log",
+   "evidence": {
+    "procs": [
+     [
+      28632,
+      1794366526
+     ]
+    ]
+   }
+  },
+  {
+   "id": "L01",
+   "name": "live_identity",
+   "required": true,
+   "status": "PASS",
+   "reason": "pid 28632 started 03:08:46Z, token in its log, listening on 5174",
+   "cost_est_s": 3,
+   "took_s": 0.94,
+   "prevents": "#39 previous log",
+   "evidence": {}
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+preflight OFFLINE tier=quicktest purpose=test seat=BENCH 2026-11-11T04:29:49Z
+PASS       O10  dependency_fp            opt    0.9s  RBS 2.3.0, Harmony, game assemblies unchanged since baseline
+PASS       O13  deploy_match             req   13.7s  3 mods, 1192 files: deployed == repo byte for byte
+VERDICT GREEN

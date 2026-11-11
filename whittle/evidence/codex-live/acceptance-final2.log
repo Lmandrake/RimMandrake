@@ -1,0 +1,3 @@
+START relative-7
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\BENCH\codex-live\whittle\evidence\codex-live\relative-7.json AssertionError('awake prisoner failed to eat delivered meal')
+EXIT relative-7 1

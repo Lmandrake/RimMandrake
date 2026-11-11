@@ -1,0 +1,6 @@
+START relative-9
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\BENCH\codex-live\whittle\evidence\codex-live\relative-9.json 
+EXIT relative-9 0
+START absolute-1
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\BENCH\codex-live\whittle\evidence\codex-live\absolute-1.json AssertionError('awake prisoner failed to eat delivered meal')
+EXIT absolute-1 1

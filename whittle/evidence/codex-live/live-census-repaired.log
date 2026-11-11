@@ -1,0 +1,226 @@
+{
+  "runner": "codex",
+  "jawa_count": 423,
+  "tools": 559,
+  "status": {
+    "success": true,
+    "state": {
+      "programState": "Entry",
+      "inEntryScene": true,
+      "hasCurrentGame": false,
+      "longEventPending": false,
+      "paused": false,
+      "playable": false,
+      "visualReady": false,
+      "automationReady": false
+    },
+    "version": {
+      "bridgeVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+      "bridgeAssemblyVersion": "2.3.0.0",
+      "sdkVersion": "2.3.0.0",
+      "sdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197"
+    },
+    "sdk": {
+      "sdkAssembly": "RimBridgeServer.Sdk",
+      "sdkVersion": "2.3.0.0",
+      "sdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+      "companionCount": 1,
+      "companionWarningCount": 0,
+      "companionErrorCount": 0
+    },
+    "companions": {
+      "totalCount": 1,
+      "registeredToolCount": 431,
+      "diagnostics": [
+        {
+          "AssemblyPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll",
+          "AssemblyName": "JawaBench.BridgeTools",
+          "AssemblyVersion": "0.1.0.0",
+          "BridgeToolsRoot": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools",
+          "BundleDirectory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench",
+          "OwnerId": "global",
+          "RootKind": "Global",
+          "IsBundled": true,
+          "ProviderId": "extension.global/global/jawa-bench.-bridge-tools",
+          "Status": "registered",
+          "Success": true,
+          "HostSdkVersion": "2.3.0.0",
+          "HostSdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+          "ReferencedSdkVersion": "2.3.0.0",
+          "ToolClassCount": 2,
+          "ToolCount": 431,
+          "LocalSdkPaths": [],
+          "Warnings": [],
+          "Errors": [],
+          "UpdatedAtUtc": "2026-11-11T03:34:03.9836253+00:00"
+        }
+      ]
+    },
+    "patches": {
+      "applied": true,
+      "essentialApplied": true,
+      "optionalPatchAttemptCount": 58,
+      "optionalPatchSuccessCount": 58,
+      "optionalPatchFailureCount": 0,
+      "optionalPatchFailures": [],
+      "lateInputPatches": {
+        "applied": true,
+        "attemptCount": 6,
+        "successCount": 6,
+        "failureCount": 0,
+        "failures": []
+      }
+    },
+    "recentOperationCount": 1,
+    "trackedOperationCount": 1,
+    "operationJournalCapacity": 1000,
+    "retainedResultCount": 0,
+    "retainedResultCapacity": 50,
+    "recentEventCount": 1,
+    "eventJournalCapacity": 5000,
+    "recentLogCount": 15,
+    "logJournalCapacity": 2000,
+    "latestOperationEventSequence": 1,
+    "latestLogSequence": 15,
+    "operation": {
+      "OperationId": "op_d10319cbd9d0407997f59f76f08cb436",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 10
+    }
+  },
+  "game": {
+    "status": "no_game",
+    "message": "No game is currently loaded",
+    "operation": {
+      "OperationId": "op_38f186060fcd4401a8cf3354a2beaef7",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 1
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "running": {
+    "success": true,
+    "count": 12,
+    "packageIds": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.patches"
+    ],
+    "mods": [
+      {
+        "loadOrder": 0,
+        "packageId": "brrainz.harmony",
+        "name": "Harmony",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2009463077"
+      },
+      {
+        "loadOrder": 1,
+        "packageId": "ludeon.rimworld",
+        "name": "Core",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Core"
+      },
+      {
+        "loadOrder": 2,
+        "packageId": "ludeon.rimworld.royalty",
+        "name": "Royalty",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Royalty"
+      },
+      {
+        "loadOrder": 3,
+        "packageId": "ludeon.rimworld.ideology",
+        "name": "Ideology",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Ideology"
+      },
+      {
+        "loadOrder": 4,
+        "packageId": "ludeon.rimworld.biotech",
+        "name": "Biotech",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Biotech"
+      },
+      {
+        "loadOrder": 5,
+        "packageId": "ludeon.rimworld.anomaly",
+        "name": "Anomaly",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly"
+      },
+      {
+        "loadOrder": 6,
+        "packageId": "ludeon.rimworld.odyssey",
+        "name": "Odyssey",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Odyssey"
+      },
+      {
+        "loadOrder": 7,
+        "packageId": "brrainz.rimbridgeserver",
+        "name": "RimBridgeServer",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3727949765"
+      },
+      {
+        "loadOrder": 8,
+        "packageId": "ray1203.simplecamerasetting",
+        "name": "SimpleCameraSetting",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3232415388"
+      },
+      {
+        "loadOrder": 9,
+        "packageId": "mandrake.rm.gimmesomeslack",
+        "name": "RimMandrake: Gimme Some Slack",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GimmeSomeSlack"
+      },
+      {
+        "loadOrder": 10,
+        "packageId": "mandrake.rm.flowworks",
+        "name": "RimMandrake: FlowWorks",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks"
+      },
+      {
+        "loadOrder": 11,
+        "packageId": "mandrake.rm.patches",
+        "name": "RimMandrake Patches",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\MandrakePatches"
+      }
+    ],
+    "assembly": {
+      "name": "RimMandrakeFlowWorks",
+      "matchCount": 1,
+      "matches": [
+        {
+          "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+          "mvid": "0a684a01-6aa4-454d-a7e0-db09c2db1f6e",
+          "version": "1.0.0.0",
+          "sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+          "fileBytes": 2273280,
+          "fileExists": true,
+          "claimedBy": [
+            "mandrake.rm.flowworks"
+          ]
+        }
+      ]
+    },
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_ee9488844e9b405bb01bd0a6b0689114",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 30
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  }
+}

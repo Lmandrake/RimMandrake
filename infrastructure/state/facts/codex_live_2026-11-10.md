@@ -43,3 +43,12 @@ therefore record a dead process, or fail release across shells. It now recognize
 the nearest Codex or Claude process, preserving explicit RM_DRIVER_PID priority
 and the parent fallback. Separate-shell regression controls for both runners,
 override and fallback, plus existing exclusivity/CLI cases: wrapper PASS 1/1.
+
+## Live result
+
+The new baseline cold-loaded cleanly. Native WSL Codex drove both complete
+Whittle acceptance arms, with 60,000 actual retention ticks each, occupied
+reload and upright ingestion. Both raw receipts PASS and the fresh independent
+judge finds every frozen bullet true: would show yes. See
+`whittle/CODEX_LIVE_2026-11-10.md` for receipts, repairs and scope limits.
+This establishes isolated 12-mod/all-DLC operation, not full-list integration.

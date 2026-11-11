@@ -1,0 +1,6 @@
+START relative-10
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\BENCH\codex-live\whittle\evidence\codex-live\relative-10.json 
+EXIT relative-10 0
+START absolute-2
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\scratch\BENCH\codex-live\whittle\evidence\codex-live\absolute-2.json 
+EXIT absolute-2 0

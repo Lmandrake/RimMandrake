@@ -1,0 +1,247 @@
+{
+  "runner": "codex",
+  "jawa_count": 423,
+  "tools": 559,
+  "status": {
+    "success": true,
+    "state": {
+      "programState": "Entry",
+      "inEntryScene": true,
+      "hasCurrentGame": false,
+      "longEventPending": false,
+      "paused": false,
+      "playable": false,
+      "visualReady": false,
+      "automationReady": false
+    },
+    "version": {
+      "bridgeVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+      "bridgeAssemblyVersion": "2.3.0.0",
+      "sdkVersion": "2.3.0.0",
+      "sdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197"
+    },
+    "sdk": {
+      "sdkAssembly": "RimBridgeServer.Sdk",
+      "sdkVersion": "2.3.0.0",
+      "sdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+      "companionCount": 1,
+      "companionWarningCount": 0,
+      "companionErrorCount": 0
+    },
+    "companions": {
+      "totalCount": 1,
+      "registeredToolCount": 431,
+      "diagnostics": [
+        {
+          "AssemblyPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll",
+          "AssemblyName": "JawaBench.BridgeTools",
+          "AssemblyVersion": "0.1.0.0",
+          "BridgeToolsRoot": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools",
+          "BundleDirectory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench",
+          "OwnerId": "global",
+          "RootKind": "Global",
+          "IsBundled": true,
+          "ProviderId": "extension.global/global/jawa-bench.-bridge-tools",
+          "Status": "registered",
+          "Success": true,
+          "HostSdkVersion": "2.3.0.0",
+          "HostSdkInformationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197",
+          "ReferencedSdkVersion": "2.3.0.0",
+          "ToolClassCount": 2,
+          "ToolCount": 431,
+          "LocalSdkPaths": [],
+          "Warnings": [],
+          "Errors": [],
+          "UpdatedAtUtc": "2026-11-11T03:09:24.2403696+00:00"
+        }
+      ]
+    },
+    "patches": {
+      "applied": true,
+      "essentialApplied": true,
+      "optionalPatchAttemptCount": 58,
+      "optionalPatchSuccessCount": 58,
+      "optionalPatchFailureCount": 0,
+      "optionalPatchFailures": [],
+      "lateInputPatches": {
+        "applied": true,
+        "attemptCount": 6,
+        "successCount": 6,
+        "failureCount": 0,
+        "failures": []
+      }
+    },
+    "recentOperationCount": 3,
+    "trackedOperationCount": 3,
+    "operationJournalCapacity": 1000,
+    "retainedResultCount": 2,
+    "retainedResultCapacity": 50,
+    "recentEventCount": 5,
+    "eventJournalCapacity": 5000,
+    "recentLogCount": 15,
+    "logJournalCapacity": 2000,
+    "latestOperationEventSequence": 5,
+    "latestLogSequence": 15,
+    "operation": {
+      "OperationId": "op_8d7882cd10934d5db61843c3e17e8f43",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 9
+    }
+  },
+  "game": {
+    "status": "no_game",
+    "message": "No game is currently loaded",
+    "operation": {
+      "OperationId": "op_3cf14c75010b4ae48c3a7e25b32a4b2e",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 14
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "running": {
+    "success": true,
+    "count": 12,
+    "packageIds": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.patches"
+    ],
+    "mods": [
+      {
+        "loadOrder": 0,
+        "packageId": "brrainz.harmony",
+        "name": "Harmony",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2009463077"
+      },
+      {
+        "loadOrder": 1,
+        "packageId": "ludeon.rimworld",
+        "name": "Core",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Core"
+      },
+      {
+        "loadOrder": 2,
+        "packageId": "ludeon.rimworld.royalty",
+        "name": "Royalty",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Royalty"
+      },
+      {
+        "loadOrder": 3,
+        "packageId": "ludeon.rimworld.ideology",
+        "name": "Ideology",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Ideology"
+      },
+      {
+        "loadOrder": 4,
+        "packageId": "ludeon.rimworld.biotech",
+        "name": "Biotech",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Biotech"
+      },
+      {
+        "loadOrder": 5,
+        "packageId": "ludeon.rimworld.anomaly",
+        "name": "Anomaly",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly"
+      },
+      {
+        "loadOrder": 6,
+        "packageId": "ludeon.rimworld.odyssey",
+        "name": "Odyssey",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Odyssey"
+      },
+      {
+        "loadOrder": 7,
+        "packageId": "brrainz.rimbridgeserver",
+        "name": "RimBridgeServer",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3727949765"
+      },
+      {
+        "loadOrder": 8,
+        "packageId": "ray1203.simplecamerasetting",
+        "name": "SimpleCameraSetting",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3232415388"
+      },
+      {
+        "loadOrder": 9,
+        "packageId": "mandrake.rm.gimmesomeslack",
+        "name": "RimMandrake: Gimme Some Slack",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GimmeSomeSlack"
+      },
+      {
+        "loadOrder": 10,
+        "packageId": "mandrake.rm.flowworks",
+        "name": "RimMandrake: FlowWorks",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks"
+      },
+      {
+        "loadOrder": 11,
+        "packageId": "mandrake.rm.patches",
+        "name": "RimMandrake Patches",
+        "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\MandrakePatches"
+      }
+    ],
+    "assembly": {
+      "name": "RimMandrakeFlowWorks",
+      "matchCount": 1,
+      "matches": [
+        {
+          "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+          "mvid": "a4a1921f-a430-47c8-a1a0-715952943e24",
+          "version": "1.0.0.0",
+          "sha256": "70f13d4f55ef6753b2e15b66f66989138c1a58e64a0691bec05661436056fe82",
+          "fileBytes": 2273792,
+          "fileExists": true,
+          "claimedBy": [
+            "mandrake.rm.flowworks"
+          ]
+        }
+      ]
+    },
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_fa5d730b3c364e5c8065a2793b60fba4",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 50
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "capture": {
+    "success": false,
+    "message": "A companion tool was built against a different RimBridgeServer.Sdk API than the running RimBridgeServer host provides. Rebuild/redeploy RimBridgeServer and the companion mod, then restart RimWorld so both load the same SDK version.",
+    "exception": "System.TypeLoadException: Could not resolve type with token 01000397 from typeref (expected class 'RimMandrake.RimDefDump.DefDumper' in assembly 'RimDefDump, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null')\r\n[Ref B0C72581] Duplicate stacktrace, see ref for original",
+    "operation": {
+      "OperationId": "op_de85153e3ecc4645886b5ca818c3a7c7",
+      "Status": "Failed",
+      "Success": false,
+      "DurationMs": 43,
+      "Error": {
+        "Code": "capability.sdk_mismatch",
+        "Message": "A companion tool was built against a different RimBridgeServer.Sdk API than the running RimBridgeServer host provides. Rebuild/redeploy RimBridgeServer and the companion mod, then restart RimWorld so both load the same SDK version.",
+        "ExceptionType": "System.TypeLoadException",
+        "Details": "System.TypeLoadException: Could not resolve type with token 01000397 from typeref (expected class 'RimMandrake.RimDefDump.DefDumper' in assembly 'RimDefDump, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null')\r\n[Ref B0C72581] Duplicate stacktrace, see ref for original"
+      }
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  }
+}

@@ -1,0 +1,4975 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\codex-live\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1794368542.562657,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "Identity",
+        "args": "probe"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String Identity(System.String)",
+        "result": "IDENTITY mvid=0a684a01-6aa4-454d-a7e0-db09c2db1f6e sha256=1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_95c13ac91a3247c194397ee8ff844917",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "Rect",
+        "args": "30,30,24,18"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String Rect(System.String)",
+        "result": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_4787516981fc435c890a124320e22944",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_24175e822f014c9c903877dd677ef7ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_8fd540c3cab643ff8e1dd809ecd9862d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_69623b131ed54adc9d7923094f7d6176",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "captureDownEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "captureDownEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_47e959928c5f46e7b25b9665c21c1cc7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "captureDownEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "captureDownEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ad15081cbc2742a687a9e8e57226cbb4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "captureDownEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "captureDownEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_40c5e8855c5843c193c1391ca75da331",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "wardenFromLipEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "wardenFromLipEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_6ecab88209bf495fbeacdcec84adb274",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "wardenFromLipEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "wardenFromLipEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_f267340cb8734dfc83e35d8ad10cd21e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "wardenFromLipEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "wardenFromLipEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_1c1ea52b22b244b29d346f21eca7ff8f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepCaptureEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepCaptureEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_1a9903bea4f84ca6a5f72120b27ee95d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepCaptureEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "superdeepCaptureEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b0ccd6ffdfd64c7d97577f7b9382d44c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepCaptureEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepCaptureEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_29b4527026034a759548d8eafb3f5bc2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "pitRelativeClimbEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "pitRelativeClimbEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_7a4f0fb681a4408da098d23fc2eb22e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "pitRelativeClimbEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "pitRelativeClimbEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_79e071e24d224b3ca9545472ae5c1384",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "pitRelativeClimbEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "pitRelativeClimbEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_9587ad04b16e478e900dfd6322d7eea7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "maxDigDepth",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "maxDigDepth",
+        "fieldKind": "static",
+        "value": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b2de6df590c64995a44bf5883f289245",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "maxDigDepth",
+        "action": "set",
+        "value": "8"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "maxDigDepth",
+        "fieldKind": "static",
+        "valueBefore": "4",
+        "valueAfter": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_e375dbf7ff414f0e8ad9deb6d15be045",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "maxDigDepth",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "maxDigDepth",
+        "fieldKind": "static",
+        "value": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_64140debbea141f585d9eac00f1a6286",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "rainFillsExcavationsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "rainFillsExcavationsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_016de9842cc54265aaa8febf78394c4e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "rainFillsExcavationsEnabled",
+        "action": "set",
+        "value": "False"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "rainFillsExcavationsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_4bf4999eb4e8440e810e097514a2ab3d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "rainFillsExcavationsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "rainFillsExcavationsEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_a3ba062e41ea4628aca745683906ddee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/destroy_batch",
+      "args": {
+        "rects": "30,30,24,18",
+        "categories": "All"
+      },
+      "result": {
+        "success": true,
+        "message": "Destroyed 120 thing(s) across 432 cell(s).",
+        "cellsExamined": 432,
+        "outOfBounds": 0,
+        "destroyed": 120,
+        "pawnsSkipped": 0,
+        "undestroyableSkipped": 0,
+        "perCategory": {
+          "Filth": 32,
+          "Plant": 76,
+          "Item": 12
+        },
+        "samples": [
+          {
+            "x": 30,
+            "z": 37,
+            "def": "Filth_RubbleRock",
+            "category": "Filth"
+          },
+          {
+            "x": 30,
+            "z": 39,
+            "def": "Filth_RubbleRock",
+            "category": "Filth"
+          },
+          {
+            "x": 30,
+            "z": 40,
+            "def": "Filth_RubbleRock",
+            "category": "Filth"
+          },
+          {
+            "x": 30,
+            "z": 41,
+            "def": "Filth_RubbleRock",
+            "category": "Filth"
+          },
+          {
+            "x": 30,
+            "z": 42,
+            "def": "Filth_RubbleRock",
+            "category": "Filth"
+          },
+          {
+            "x": 31,
+            "z": 31,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 33,
+            "z": 40,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 33,
+            "z": 42,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_a537d2c18ab94a94aec463818a8a6665",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 20
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "method": "ProofResetRect",
+        "args": "30;30;24;18"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String ProofResetRect(System.String)",
+        "result": "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 left=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_55fd15dd27f94dbeb2426ca43b7f3a19",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "Soil:30,30,24,18"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 74 cell(s) changed, 358 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 432,
+        "cellsChanged": 74,
+        "cellsAlreadyCorrect": 358,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 74,
+        "errors": [],
+        "samples": [
+          {
+            "x": 30,
+            "z": 30,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 31,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 32,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 33,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 34,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 35,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 36,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 30,
+            "z": 37,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_3b3f72aa8f07495b809a9aa8068f6bdb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 35,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 35
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_dccf8f0fdc62441699ad78bcbcddcc47",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 36,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 36
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_f037039784bf4fdbba411ee8ffe8dcf9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 37,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 37
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_3378db55398d4e879e7f3b34b3eb882a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 38,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 38
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_d63fb5cbfe5441d8af22395e01c1b0b3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 39,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 39
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_26efba1f7e634476a521ea0beac3774c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 38,
+        "z": 40,
+        "deepenLevels": 6,
+        "setFill": 0
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 40
+        },
+        "depth": 6,
+        "fillSet": true,
+        "fill": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ab5b19d9efdc474d88ff96945c35a71f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitRooms",
+        "method": "RebuildAllMaps",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_2756ca284ec94d1d9f93c714fa666d62",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 70
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/map_commit",
+      "args": {},
+      "result": {
+        "success": true,
+        "failedSteps": 0,
+        "map": 0,
+        "mapSize": {
+          "x": 250,
+          "z": 250,
+          "area": 62500
+        },
+        "note": "Thing.SpawnSetup already handles listers, thingGrid, edificeGrid, coverGrid, linkGrid, glowGrid, fertility, snow/sand, temperature, gas, zones and per-cell mesh dirtying. This covers the rest.",
+        "steps": [
+          {
+            "step": "regionAndRoomUpdater.Enabled = true",
+            "status": "ok"
+          },
+          {
+            "step": "RebuildAllRegionsAndRooms",
+            "status": "ok"
+          },
+          {
+            "step": "pathing.RecalculateAllPerceivedPathCosts",
+            "status": "ok"
+          },
+          {
+            "step": "reachability.ClearCache",
+            "status": "ok"
+          },
+          {
+            "step": "powerNetManager.UpdatePowerNetsAndConnections_First",
+            "status": "ok"
+          },
+          {
+            "step": "mapDrawer.WholeMapChanged",
+            "status": "ok"
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_6b72991dcce14e26a721d7676a1eec13",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 170
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "Rect",
+        "args": "30,30,24,18"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String Rect(System.String)",
+        "result": "RECT sha256=685488879039ff87cb312cbb27ca6cf8464dcc24a601d9cd79af8617053c4a6a beds=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_28c1d4a3ec7e4fafa0f148bea8cfe5c1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 35
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 35
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_2f92814df3044acf9c16d21ae7e1c31a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 36
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 36
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_19cbfe8d04a547ecbce14fb17f4c1f7f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 37
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 37
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_67189577d3514d0f8b37f6aa5dba4027",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 38
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 38
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b6a152d1a0cd4e44b29e5e5a4f1614dc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 39
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 39
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b5ff06b3c5704b5f968a4a579c0e38f2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_report",
+      "args": {
+        "x": 38,
+        "z": 40
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 38,
+          "z": 40
+        },
+        "depth": 6,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 6,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_dd8df933ff804cad85889916fe717f2f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "limit": 1000
+      },
+      "result": {
+        "success": true,
+        "message": "3 pawn(s).",
+        "pawns": [
+          {
+            "id": "Human475",
+            "name": "Rowan",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "x": 124,
+            "z": 119,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human478",
+            "name": "Ellison",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "x": 119,
+            "z": 111,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human483",
+            "name": "Shiki",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "x": 119,
+            "z": 110,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 3,
+        "truncated": 0,
+        "totalOnMap": 3,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_fbe2ff132d814bddaed554d8c9b7a789",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Pirate",
+        "x": 38,
+        "z": 36,
+        "faction": "hostile",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24588",
+            "name": "Breiro",
+            "kindRequested": "Pirate",
+            "kindActual": "Pirate",
+            "kindSubstituted": false,
+            "faction": "TribeRoughNeanderthal",
+            "hostile": true,
+            "x": 38,
+            "z": 36,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ae84e40d56c244e49dd482ab914e3a2f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Pirate",
+        "x": 38,
+        "z": 39,
+        "faction": "hostile",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24594",
+            "name": "Trave",
+            "kindRequested": "Pirate",
+            "kindActual": "Pirate",
+            "kindSubstituted": false,
+            "faction": "TribeRoughNeanderthal",
+            "hostile": true,
+            "x": 38,
+            "z": 39,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_5ecf2037e52a44cba6ace5dbb97f9dce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 35,
+        "z": 36,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24603",
+            "name": "Crim",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 35,
+            "z": 36,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_f89547716e98466c89d88313e977c5cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_draft",
+      "args": {
+        "pawnId": "Human24603",
+        "drafted": true
+      },
+      "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "wasDrafted": false,
+        "changed": true,
+        "operation": {
+          "OperationId": "op_da1a2f19c4514afeb08aca462e3bd5bc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Warden",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_2192e17e831f4156854418031c07e12a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Doctor",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_e40ec9370b8e470cb3c36f7d26119a64",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Patient",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_cb58d0c42d234ccd8d843ac1bfeb9b11",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "PatientBedRest",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_0fe62026a998482fbe20a6e1b604bbe7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 35,
+        "z": 39,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human24606",
+            "name": "Sean",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 35,
+            "z": 39,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_bb89bb59a9fc4ca19901faa9b6091494",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_draft",
+      "args": {
+        "pawnId": "Human24606",
+        "drafted": true
+      },
+      "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "wasDrafted": false,
+        "changed": true,
+        "operation": {
+          "OperationId": "op_a8a70050362d4a0285f3c9fb97f410d3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Warden",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_fd7fcd9eb39540889d5b2d1e0ba8aa29",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Doctor",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_2075725f88e24eb4b1fd9338a6018506",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Patient",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_1515634997f74a29b0f9cc58ac5eba1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "PatientBedRest",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_bc2f9a2b87e44075ae7574c9c0bfeacc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human475",
+        "action": "vanish"
+      },
+      "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_a11eedb177d7494a836028ef71a11436",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human478",
+        "action": "vanish"
+      },
+      "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_5678776c74e94a51a7b5f25965a5436f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human483",
+        "action": "vanish"
+      },
+      "result": {
+        "success": true,
+        "action": "vanish",
+        "downedBefore": false,
+        "deadBefore": false,
+        "destroyedAfter": true,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b63595dfe70d420285f001a480a3d57d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_draft",
+      "args": {
+        "pawnId": "Human24603",
+        "drafted": true
+      },
+      "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "wasDrafted": true,
+        "changed": false,
+        "operation": {
+          "OperationId": "op_ab854b9ff0fe4ad19489212562228c17",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Warden",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_03c6a2767db64928848019c8cdbf9750",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Doctor",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_4e460fb8d9004ef8a45ef342d3df087b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "Patient",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_87777e9762c74c2e946abde388bc18fd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24603",
+        "workType": "PatientBedRest",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_415a957bf1a246a0b4152766840363ba",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_draft",
+      "args": {
+        "pawnId": "Human24606",
+        "drafted": true
+      },
+      "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "wasDrafted": true,
+        "changed": false,
+        "operation": {
+          "OperationId": "op_5c2743a6939d414e8b326c6f5e694d18",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Warden",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_a6bcd971463643b0bf42dd6daefe01e2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Doctor",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_b9625b6f5b0d4d209c82cec4656f394f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "Patient",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_2ee0e19ebff84620b0960b436ad1275c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_work_priority",
+      "args": {
+        "pawnId": "Human24606",
+        "workType": "PatientBedRest",
+        "priority": 1
+      },
+      "result": {
+        "success": true,
+        "requested": 1,
+        "readBack": 3,
+        "manualPrioritiesOn": false,
+        "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+        "operation": {
+          "OperationId": "op_49d39da0e7214fff923f730a3e09e28f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_gear",
+      "args": {
+        "pawn": "Human24588",
+        "action": "clear"
+      },
+      "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+          "equipment destroyed",
+          "apparel destroyed",
+          "inventory destroyed"
+        ],
+        "pawn": {
+          "thingId": "Human24588",
+          "thingIdNumber": 24588,
+          "name": "Breiro Quail",
+          "nameShort": "Breiro",
+          "title": "hunter",
+          "kindDef": "Pirate",
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Bookoulbah Union",
+          "gender": "Female",
+          "ageBiologicalYears": 51,
+          "ageChronologicalYears": 51,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Ilwaban Sect",
+          "childhood": "ReclusiveChild81",
+          "adulthood": "Hunter74",
+          "headType": "Female_NarrowWide",
+          "bodyType": "Female",
+          "hair": "Sticky",
+          "beard": "NoBeard",
+          "position": {
+            "x": 38,
+            "z": 36
+          },
+          "traits": [
+            {
+              "def": "QuickSleeper",
+              "degree": 0,
+              "label": "Quick sleeper",
+              "forced": false
+            },
+            {
+              "def": "DrugDesire",
+              "degree": 1,
+              "label": "Chemical interest",
+              "forced": false
+            }
+          ],
+          "skills": [
+            {
+              "skill": "Shooting",
+              "levelRaw": 8,
+              "levelEffective": 8,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Melee",
+              "levelRaw": 12,
+              "levelEffective": 12,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Construction",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Mining",
+              "levelRaw": 5,
+              "levelEffective": 5,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Cooking",
+              "levelRaw": 5,
+              "levelEffective": 5,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Plants",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Animals",
+              "levelRaw": 7,
+              "levelEffective": 7,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Crafting",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Artistic",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Medicine",
+              "levelRaw": 5,
+              "levelEffective": 5,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Social",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": true
+            },
+            {
+              "skill": "Intellectual",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+            {
+              "need": "Mood",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Food",
+              "level": 0.8,
+              "pct": 0.8
+            },
+            {
+              "need": "Rest",
+              "level": 0.9621222,
+              "pct": 0.9621222
+            },
+            {
+              "need": "RM_Thirst",
+              "level": 0.8,
+              "pct": 0.8
+            }
+          ]
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_6c247d4b29d84d69b9a7d39e4a0426cd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human24588",
+        "action": "downed",
+        "allowBleedingWounds": false
+      },
+      "result": {
+        "success": true,
+        "action": "downed",
+        "allowBleedingWoundsHonoured": false,
+        "downedBefore": false,
+        "deadBefore": false,
+        "downedAfter": true,
+        "deadAfter": false,
+        "changed": true,
+        "hediffCount": 3,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ebe788eef979413c882cd960482ba4c5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24588"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=False downed=True dead=False held=True kept=False x=38 z=36 food=0.8 rest=0.9621222 job=none inBed=False tendable=3 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_94dabc0e675548788db5a61016beca18",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_need",
+      "args": {
+        "pawn": "Human24588",
+        "action": "need",
+        "need": "Food",
+        "level": 0.1
+      },
+      "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+          "set Food to 0.1"
+        ],
+        "needs": [
+          {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "Food",
+            "level": 0.1,
+            "pct": 0.1
+          },
+          {
+            "need": "Rest",
+            "level": 0.9621222,
+            "pct": 0.9621222
+          },
+          {
+            "need": "RM_Thirst",
+            "level": 0.8,
+            "pct": 0.8
+          }
+        ],
+        "memories": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_e0841ad198024fc0bd02f40bbb8339d8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_gear",
+      "args": {
+        "pawn": "Human24594",
+        "action": "clear"
+      },
+      "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+          "equipment destroyed",
+          "apparel destroyed",
+          "inventory destroyed"
+        ],
+        "pawn": {
+          "thingId": "Human24594",
+          "thingIdNumber": 24594,
+          "name": "Raven Trave",
+          "nameShort": "Trave",
+          "title": "framer",
+          "kindDef": "Pirate",
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Bookoulbah Union",
+          "gender": "Female",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 23,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Ilwaban Sect",
+          "childhood": "CrashBaby32",
+          "adulthood": "Framer37",
+          "headType": "Female_NarrowWide",
+          "bodyType": "Female",
+          "hair": "BraidedKnot",
+          "beard": "NoBeard",
+          "position": {
+            "x": 38,
+            "z": 39
+          },
+          "traits": [
+            {
+              "def": "Beauty",
+              "degree": -2,
+              "label": "Staggeringly ugly",
+              "forced": false
+            },
+            {
+              "def": "Jealous",
+              "degree": 0,
+              "label": "Jealous",
+              "forced": false
+            },
+            {
+              "def": "Kind",
+              "degree": 0,
+              "label": "Kind",
+              "forced": false
+            }
+          ],
+          "skills": [
+            {
+              "skill": "Shooting",
+              "levelRaw": 0,
+              "levelEffective": 0,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Melee",
+              "levelRaw": 4,
+              "levelEffective": 4,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Construction",
+              "levelRaw": 10,
+              "levelEffective": 10,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Mining",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Cooking",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Plants",
+              "levelRaw": 6,
+              "levelEffective": 6,
+              "passion": "Major",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Animals",
+              "levelRaw": 6,
+              "levelEffective": 6,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Crafting",
+              "levelRaw": 1,
+              "levelEffective": 1,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Artistic",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Medicine",
+              "levelRaw": 2,
+              "levelEffective": 2,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Social",
+              "levelRaw": 6,
+              "levelEffective": 6,
+              "passion": "Minor",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            },
+            {
+              "skill": "Intellectual",
+              "levelRaw": 3,
+              "levelEffective": 3,
+              "passion": "None",
+              "xpSinceLastLevel": 0.0,
+              "disabled": false
+            }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+            {
+              "need": "Mood",
+              "level": 0.5,
+              "pct": 0.5
+            },
+            {
+              "need": "Food",
+              "level": 0.8,
+              "pct": 0.8
+            },
+            {
+              "need": "Rest",
+              "level": 0.9527407,
+              "pct": 0.9527407
+            },
+            {
+              "need": "RM_Thirst",
+              "level": 0.8,
+              "pct": 0.8
+            }
+          ]
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_28fa80e0e2e34513bd8c985f2a3b0493",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_force_incapacitate",
+      "args": {
+        "pawn": "Human24594",
+        "action": "downed",
+        "allowBleedingWounds": false
+      },
+      "result": {
+        "success": true,
+        "action": "downed",
+        "allowBleedingWoundsHonoured": false,
+        "downedBefore": false,
+        "deadBefore": false,
+        "downedAfter": true,
+        "deadAfter": false,
+        "changed": true,
+        "hediffCount": 4,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_cf72159830f24bbdb050252e28dc4585",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24594"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24594 prisoner=False downed=True dead=False held=True kept=False x=38 z=39 food=0.8 rest=0.9527407 job=none inBed=False tendable=4 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_1d4473c3c7d842aea90b1c7996e03d68",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_need",
+      "args": {
+        "pawn": "Human24594",
+        "action": "need",
+        "need": "Food",
+        "level": 0.1
+      },
+      "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+          "set Food to 0.1"
+        ],
+        "needs": [
+          {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "Food",
+            "level": 0.1,
+            "pct": 0.1
+          },
+          {
+            "need": "Rest",
+            "level": 0.9527407,
+            "pct": 0.9527407
+          },
+          {
+            "need": "RM_Thirst",
+            "level": 0.8,
+            "pct": 0.8
+          }
+        ],
+        "memories": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_d2888561ed8f414c841fc9180b329946",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_batch",
+      "args": {
+        "ops": "MealSurvivalPack:34,34,10;MealSurvivalPack:34,35,10;MealSurvivalPack:34,36,10"
+      },
+      "result": {
+        "success": true,
+        "message": "Placed 30 thing(s) of 30 requested across 3 of 3 op(s).",
+        "opsRequested": 3,
+        "spawned": 3,
+        "failed": 0,
+        "thingsRequested": 30,
+        "thingsPlaced": 30,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+          "MealSurvivalPack": 30
+        },
+        "errors": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ec38a59b97e94a4b95692b52c9c4484a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "MealSurvivalPack",
+        "rect": "30,30,24,18",
+        "limit": 1000
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "MealSurvivalPack24611",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 34,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24612",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 35,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24613",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 36,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          }
+        ],
+        "scanned": 14991,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {
+          "MealSurvivalPack": 3
+        },
+        "ticksGame": 3,
+        "message": "3 of 3 matching thing(s) returned, 14991 examined.",
+        "operation": {
+          "OperationId": "op_93b2b0a2cb1a44d1a930cc274b1eda2b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24588"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=False downed=True dead=False held=True kept=False x=38 z=36 food=0.1 rest=0.9621222 job=none inBed=False tendable=3 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_d3b6aead02b949c4acca2a4a902ba5b2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24594"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24594 prisoner=False downed=True dead=False held=True kept=False x=38 z=39 food=0.1 rest=0.9527407 job=none inBed=False tendable=4 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ee0689936f6749669af42a13d80b5be0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "set",
+        "value": "False"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_c15eef885ebc43099882ed5225b711b3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_348b044bb59d43599871fd002e66ca81",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitRooms",
+        "method": "RebuildAllMaps",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_2766af10442d4be9ae571aec6dc2b8e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 87
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "method": "ProofCaptureDown",
+        "args": "Human24588"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT SettingOff held=True prisoner=False cell=38,36",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_2523bc4c4aa84e71a24eb5e43918b377",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24588"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=False downed=True dead=False held=True kept=False x=38 z=36 food=0.1 rest=0.9621222 job=none inBed=False tendable=3 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_4b3c0650347f4527b155f40cee230244",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human24603",
+        "jobDef": "RM_CaptureDown",
+        "targetAId": "Human24588",
+        "targetBX": 37,
+        "targetBZ": 36
+      },
+      "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_CaptureDown",
+        "afterJobDef": "Wait_Combat",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is 'Wait_Combat', not 'RM_CaptureDown' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+          "OperationId": "op_f0180404504647b5acda79f2fdb4becc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15160
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "method": "ProofCaptureDown",
+        "args": "Human24594"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT SettingOff held=True prisoner=False cell=38,39",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_02ad9ae7c3ae41148a2a10a33f454d19",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24594"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24594 prisoner=False downed=True dead=False held=True kept=False x=38 z=39 food=0.1 rest=0.9527407 job=none inBed=False tendable=4 tended=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_7448b60f396c463e987022746fdc76e5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/ordered_job",
+      "args": {
+        "pawnId": "Human24606",
+        "jobDef": "RM_CaptureDown",
+        "targetAId": "Human24594",
+        "targetBX": 37,
+        "targetBZ": 39
+      },
+      "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "requestedJobDef": "RM_CaptureDown",
+        "afterJobDef": "Wait_Combat",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is 'Wait_Combat', not 'RM_CaptureDown' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+          "OperationId": "op_4d855561397e4cb98010316beef70eb1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15140
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": 0
+            },
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.0,
+          "rainRate": 0.0,
+          "age": 0
+        },
+        "season": "Spring",
+        "hour": 6.0012,
+        "pawnCount": 4,
+        "pawns": [
+          {
+            "id": "Human24588",
+            "label": "Breiro",
+            "faction": "TribeRoughNeanderthal",
+            "x": 38,
+            "z": 36,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24594",
+            "label": "Trave",
+            "faction": "TribeRoughNeanderthal",
+            "x": 38,
+            "z": 39,
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24603",
+            "label": "Crim",
+            "faction": "PlayerColony",
+            "x": 35,
+            "z": 36,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 35,
+              "z": 36
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24606",
+            "label": "Sean",
+            "faction": "PlayerColony",
+            "x": 35,
+            "z": 39,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 35,
+              "z": 39
+            },
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_a38d313ea9114f5086a601c85a523070",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/site_state",
+      "args": {},
+      "result": {
+        "success": true,
+        "mapId": 0,
+        "autoHome": {
+          "before": true,
+          "after": true
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "enabledBefore": true,
+          "enabledAfter": true
+        },
+        "incidentQueue": {
+          "countBefore": 0,
+          "countAfter": 0
+        },
+        "conditions": {
+          "map": [
+            {
+              "def": "WeatherController",
+              "ticksLeft": -1
+            }
+          ],
+          "world": []
+        },
+        "weather": {
+          "cur": "Clear",
+          "last": "Clear",
+          "transition": 0.075,
+          "rainRate": 0.0,
+          "age": 300
+        },
+        "season": "Spring",
+        "hour": 6.1212,
+        "pawnCount": 2,
+        "pawns": [
+          {
+            "id": "Human24603",
+            "label": "Crim",
+            "faction": "PlayerColony",
+            "x": 35,
+            "z": 36,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 35,
+              "z": 36
+            },
+            "queued": [],
+            "inRect": false
+          },
+          {
+            "id": "Human24606",
+            "label": "Sean",
+            "faction": "PlayerColony",
+            "x": 35,
+            "z": 39,
+            "job": "Wait_Combat",
+            "targetA": {
+              "x": 35,
+              "z": 39
+            },
+            "queued": [],
+            "inRect": false
+          }
+        ],
+        "reservations": 0,
+        "ticksGame": 303,
+        "operation": {
+          "OperationId": "op_f711992a62204f8888b0dc5efbfae310",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 303
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "State",
+        "args": "Human24588"
+      },
+      "result": {
+        "success": false,
+        "message": "Invoke threw InvalidOperationException: Sequence contains no matching element | at [Ref FFB0EADB] Duplicate stacktrace, see ref for original",
+        "operation": {
+          "OperationId": "op_e742f6397c124a899b9fac7ea65b0cdc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 303
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitPrisonProof",
+        "method": "Rect",
+        "args": "30,30,24,18"
+      },
+      "result": {
+        "success": true,
+        "method": "System.String Rect(System.String)",
+        "result": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_754338b5c33248eda3c1137f59c9dadd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_0f6e4926bb8647d4af6e10ae95a83187",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepRoomsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepRoomsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_271272de7bea450599bc5a160c10bb44",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "captureDownEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "captureDownEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_50b47f85841c455aa2b51d1d1af1450e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "captureDownEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "captureDownEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_9934a0e3e01f4b6a8fa34e4b0f100c5a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "wardenFromLipEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "wardenFromLipEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_b2df2f425c9b4a6f93b426aa35e0ed16",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "wardenFromLipEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "wardenFromLipEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_43235c880da148b482a70c7dc5e28428",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepCaptureEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "superdeepCaptureEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_65b1535368264117bd81bd8c2b9850fe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "superdeepCaptureEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "superdeepCaptureEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_9d3a27305d704664b804d9015205e13f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "pitRelativeClimbEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "pitRelativeClimbEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_174720bd72b842c1b5f0f585b3436d9b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "pitRelativeClimbEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "pitRelativeClimbEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_1779ae53edbd4efe80776a9852df114c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "maxDigDepth",
+        "action": "set",
+        "value": "4"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "maxDigDepth",
+        "fieldKind": "static",
+        "valueBefore": "8",
+        "valueAfter": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_c81797c673864416b62f592fd3f445eb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "maxDigDepth",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "maxDigDepth",
+        "fieldKind": "static",
+        "value": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_f5315db3f251481fbb355726a307fa79",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "rainFillsExcavationsEnabled",
+        "action": "set",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "rainFillsExcavationsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_98ff6e36309348bf8e2237a2f70c9e9a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "args": {
+        "typeName": "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings",
+        "field": "rainFillsExcavationsEnabled",
+        "action": "get"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "rainFillsExcavationsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RimMandrakeFlowWorks"
+        },
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_ff53347b9d58471abb8900ce01453df6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": {
+        "type": "RimMandrake.FlowWorks.RM_PitRooms",
+        "method": "RebuildAllMaps",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": 3,
+        "operation": {
+          "OperationId": "op_fff4c7c219a540c08b231cc9116b09dc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 71
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-11T03:42:22Z",
+    "problems": [],
+    "load_s": 4.0,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-11T03:42:27Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 4.9,
+    "verified": true
+  },
+  "relative": true,
+  "identity": "IDENTITY mvid=0a684a01-6aa4-454d-a7e0-db09c2db1f6e sha256=1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+  "expected_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+  "snapshot": {
+    "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\WHITTLE_HolePrison_Begin_20261110T194222.rws",
+    "bytes": 8064852,
+    "expanded": {
+      "cells": {
+        "ChunkMarble": 589,
+        "ChunkSlate": 549,
+        "Slate": 419,
+        "ChunkLimestone": 566,
+        "Limestone": 584,
+        "MineableComponentsIndustrial": 34,
+        "Marble": 223,
+        "MineableSteel": 421,
+        "MineableUranium": 34
+      },
+      "stackCountsAdded": 9,
+      "bytes": 8064852
+    }
+  },
+  "before": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+  "start_rect": "RECT sha256=685488879039ff87cb312cbb27ca6cf8464dcc24a601d9cd79af8617053c4a6a beds=0",
+  "depth": 6,
+  "cells": [
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 35
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_2f92814df3044acf9c16d21ae7e1c31a",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 3
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    },
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 36
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_19cbfe8d04a547ecbce14fb17f4c1f7f",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 4
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    },
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 37
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_67189577d3514d0f8b37f6aa5dba4027",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 3
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    },
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 38
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_b6a152d1a0cd4e44b29e5e5a4f1614dc",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 2
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    },
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 39
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_b5ff06b3c5704b5f968a4a579c0e38f2",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 3
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    },
+    {
+      "success": true,
+      "cell": {
+        "x": 38,
+        "z": 40
+      },
+      "depth": 6,
+      "fill": 0,
+      "isExcavated": true,
+      "isSourceCell": false,
+      "isSinkCell": false,
+      "sinkTransferredTotal": 0.0,
+      "overflowDestroyedTotal": 0.0,
+      "excavatedCellCount": 6,
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_dd8df933ff804cad85889916fe717f2f",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 3
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    }
+  ],
+  "worker_candidates": [
+    {
+      "pawn": "Human24603",
+      "checks": [
+        {
+          "workType": "Warden",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_2192e17e831f4156854418031c07e12a",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 2
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "Doctor",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_e40ec9370b8e470cb3c36f7d26119a64",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 3
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "Patient",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_cb58d0c42d234ccd8d843ac1bfeb9b11",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 2
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "PatientBedRest",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_0fe62026a998482fbe20a6e1b604bbe7",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 4
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "pawn": "Human24606",
+      "checks": [
+        {
+          "workType": "Warden",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_fd7fcd9eb39540889d5b2d1e0ba8aa29",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 3
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "Doctor",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_2075725f88e24eb4b1fd9338a6018506",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 4
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "Patient",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_1515634997f74a29b0f9cc58ac5eba1a",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 3
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        },
+        {
+          "workType": "PatientBedRest",
+          "result": {
+            "success": true,
+            "requested": 1,
+            "readBack": 3,
+            "manualPrioritiesOn": false,
+            "note": "useWorkPriorities is OFF: GetPriority returns 3 for any active work type regardless of the value written. readBack does not prove the requested number stuck; it proves only active vs off.",
+            "operation": {
+              "OperationId": "op_bc2f9a2b87e44075ae7574c9c0bfeacc",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 2
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "food_supply": {
+    "success": true,
+    "things": [
+      {
+        "id": "MealSurvivalPack24611",
+        "def": "MealSurvivalPack",
+        "label": "Packaged survival meal x10",
+        "x": 34,
+        "z": 34,
+        "spawned": true,
+        "rot": 0,
+        "stackCount": 10,
+        "hitPoints": 50,
+        "maxHitPoints": 50
+      },
+      {
+        "id": "MealSurvivalPack24612",
+        "def": "MealSurvivalPack",
+        "label": "Packaged survival meal x10",
+        "x": 34,
+        "z": 35,
+        "spawned": true,
+        "rot": 0,
+        "stackCount": 10,
+        "hitPoints": 50,
+        "maxHitPoints": 50
+      },
+      {
+        "id": "MealSurvivalPack24613",
+        "def": "MealSurvivalPack",
+        "label": "Packaged survival meal x10",
+        "x": 34,
+        "z": 36,
+        "spawned": true,
+        "rot": 0,
+        "stackCount": 10,
+        "hitPoints": 50,
+        "maxHitPoints": 50
+      }
+    ],
+    "scanned": 14991,
+    "countReturned": 3,
+    "countMatched": 3,
+    "isCompleteList": true,
+    "truncated": 0,
+    "pawnsSkipped": 4,
+    "perDef": {
+      "MealSurvivalPack": 3
+    },
+    "ticksGame": 3,
+    "message": "3 of 3 matching thing(s) returned, 14991 examined.",
+    "operation": {
+      "OperationId": "op_93b2b0a2cb1a44d1a930cc274b1eda2b",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 9
+    },
+    "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 3
+    }
+  },
+  "starting": [
+    {
+      "id": "Human24588",
+      "prisoner": "False",
+      "downed": "True",
+      "dead": "False",
+      "held": "True",
+      "kept": "False",
+      "x": "38",
+      "z": "36",
+      "food": "0.1",
+      "rest": "0.9621222",
+      "job": "none",
+      "inBed": "False",
+      "tendable": "3",
+      "tended": "0"
+    },
+    {
+      "id": "Human24594",
+      "prisoner": "False",
+      "downed": "True",
+      "dead": "False",
+      "held": "True",
+      "kept": "False",
+      "x": "38",
+      "z": "39",
+      "food": "0.1",
+      "rest": "0.9527407",
+      "job": "none",
+      "inBed": "False",
+      "tendable": "4",
+      "tended": "0"
+    }
+  ],
+  "disabled": [],
+  "restore": {
+    "settings": {
+      "superdeepRoomsEnabled": {
+        "before": "True",
+        "after": "True"
+      },
+      "captureDownEnabled": {
+        "before": "True",
+        "after": "True"
+      },
+      "wardenFromLipEnabled": {
+        "before": "True",
+        "after": "True"
+      },
+      "superdeepCaptureEnabled": {
+        "before": "True",
+        "after": "True"
+      },
+      "pitRelativeClimbEnabled": {
+        "before": "True",
+        "after": "True"
+      },
+      "maxDigDepth": {
+        "before": "4",
+        "after": "4"
+      },
+      "rainFillsExcavationsEnabled": {
+        "before": "True",
+        "after": "True"
+      }
+    },
+    "errors": [],
+    "rect": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+    "status": "PASS"
+  },
+  "status": "FAIL",
+  "error": "AssertionError(\"jawa/static_call refused: {'success': False, 'message': 'Invoke threw InvalidOperationException: Sequence contains no matching element | at [Ref FFB0EADB] Duplicate stacktrace, see ref for original', 'operation': {'OperationId': 'op_e742f6397c124a899b9fac7ea65b0cdc', 'Status': 'Completed', 'Success': True, 'DurationMs': 7}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 303}}\")",
+  "finished": 1794368593.488148
+}

@@ -1,0 +1,7 @@
+{
+  "runner": "codex",
+  "acceptance": "FlowWorks/northstar/concept_scenes.py",
+  "start": 1794366761.6615577,
+  "player_log_offset": 9423,
+  "bound": "at most three non-pass live attempts before a fresh pilot or explicit blocked verdict"
+}

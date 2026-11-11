@@ -1,0 +1,1 @@
+No Player.log exception in the three acceptance attempts. All stopped on explicit bridge refusals; attempts 2 and 3 restored snapshot and settings PASS.
