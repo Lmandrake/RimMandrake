@@ -74,6 +74,7 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 for _p in (HERE, os.path.dirname(HERE), UTILS):
     if _p not in sys.path:
         sys.path.insert(0, _p)
+from account_stop_notice import hard_stop_reason
 import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
 import reset_mode as RM  # noqa: E402
@@ -117,7 +118,9 @@ CONDUCTOR_PROMPT = ("[RimFlow seat restart] You are a FRESH Conductor window (se
                     "turn in infrastructure/agents/CONDUCTOR.md, and run `python3 src/RimMandrake/rimflow/seat_restart.py "
                     "wake --seat {seat}{gen}`: answer FIRST any owner message it lists as sent to the old window after the "
                     "close-out. Then report in a few lines what is open and what needs him, and wait for him.")
-PROMPTS = {"doorbell": PROMPT, "conductor": CONDUCTOR_PROMPT}
+CONDUCTOR_STOP_PROMPT = CONDUCTOR_PROMPT.replace(
+    "last one closed out ({why}) and the Dispatcher restarted it", "prior window was stopped ({why})")
+PROMPTS = {"doorbell": PROMPT, "conductor": CONDUCTOR_PROMPT, "conductor_stop": CONDUCTOR_STOP_PROMPT}
 # The whole text of a first prompt, built from the templates so it cannot drift; a person quoting one among his own words
 # does not match. Claude Code stamps an argv prompt exactly as it stamps typing, so structure cannot tell them apart.
 RESTART_PROMPT_RE = re.compile("|".join(
@@ -1109,9 +1112,13 @@ def relaunch_argv(seat, cfg, why="ticket ended", gen=None):
     fresh window ends one turn and its Stop hook arms the doorbell. gen: the restart's generation token, passed to the
     wake so it reads only the killed record of THIS restart (blind review 2 P1-5)."""
     label = cfg["session_name"]
+    stop_reason = hard_stop_reason()
+    kind = cfg.get("kind") or "doorbell"
+    if kind == "conductor" and stop_reason:
+        kind, why = "conductor_stop", stop_reason
     return [BOUNDED.format(clone=cfg["clone"]), "--dangerously-skip-permissions", "--name", label,
             "--model", cfg.get("model") or "sonnet", "--remote-control", label,
-            PROMPTS[cfg.get("kind") or "doorbell"].format(seat=seat, why=why, gen=" --gen %s" % gen if gen else "")]
+            PROMPTS[kind].format(seat=seat, why=why, gen=" --gen %s" % gen if gen else "")]
 
 
 def fallback_argv(seat, machine=None):
@@ -3111,6 +3118,7 @@ def _wake_last_reply(rec, cfg=None, me=None):
     to me when you reset!"). The fresh window's screen is empty, so it must put the text back in front of him itself. With
     cfg it looks for the window that actually died, so a record left by an older restart cannot show a stale reply."""
     rec = rec or {}
+    stop_reason = hard_stop_reason()
     path, text, problem = None, "", None
     if cfg:
         try:
@@ -3120,11 +3128,13 @@ def _wake_last_reply(rec, cfg=None, me=None):
     if rec and not rec.get("aborted") and (not path or _mtime(rec.get("tx_path")) >= _mtime(path)):
         path = rec.get("tx_path")
         text = last_assistant_text(path, tail_bytes=8 << 20, skip=REPLY_SKIP) if path else ""
-        print("\n== the old window's LAST REPLY (window %s, restarted at %s). He may have been reading it when it died:" % (
-            rec.get("session_id"), _iso(rec.get("killed_at") or 0)))
+        cause = stop_reason or "restarted at " + _iso(rec.get("killed_at") or 0)
+        print("\n== the old window's LAST REPLY (window %s, %s). He may have been reading it when it died:" % (
+            rec.get("session_id"), cause))
     elif path:
-        print("\n== the old window's LAST REPLY (window %s, last written %s; no restart recorded it: a boot, crash or account "
-              "switch). He may have been reading it when it died:" % (os.path.basename(path)[:-6], _iso(_mtime(path))))
+        cause = stop_reason or "no restart recorded it: a boot, crash or account switch"
+        print("\n== the old window's LAST REPLY (window %s, last written %s; %s). "
+              "He may have been reading it when it died:" % (os.path.basename(path)[:-6], _iso(_mtime(path)), cause))
     elif rec.get("aborted") and not problem:
         return                       # that restart was called off and no dead window is in sight: the old screen still stands
     else:
@@ -3375,6 +3385,9 @@ def _wake_designer_turns():
 
 
 def cmd_wake(args):
+    reason = hard_stop_reason()
+    if reason:
+        print("Account status: " + reason)
     seat = (args.seat or doorbell.seat_name() or "").upper()
     seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}

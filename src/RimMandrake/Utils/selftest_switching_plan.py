@@ -18,6 +18,11 @@ os.environ["RM_SWITCH_PLAN_DIR"] = str(TMP / "out")
 os.environ["RM_ACCOUNTS_DIR"] = str(TMP / "accounts")  # never the machine's real switcher log
 sys.path.insert(0, str(HERE))
 import switching_plan as SP  # noqa: E402
+from pulse import phone_push as PP
+os.environ["RM_PHONE_PUSH_STATE"] = str(TMP / "phone.json")
+PP.STATE = TMP / "phone.json"
+PHONE = []
+PP.todoist_transport = lambda title, body: PHONE.append((title, body))  # never the owner's phone
 
 FAILS = []
 NOW = 1_800_000_000.0
@@ -414,10 +419,18 @@ def main():
     check(seq[-3:] == ["arm", "fleet-stop", "disarm"], f"hard stop pass: arm, fleet-stop, disarm (got {seq})")
     n = json.loads((TMP / "out" / "notice.json").read_text())
     check(n.get("state") == "stop", "the notice says stop")
+    check(n.get("reset_at") == SP.next_refill(meter2, PLAN, NOW).get("reset_at"),
+          "the notice names the engine's next refill")
+    check(len(PHONE) == 1 and "usage is out on every account" in PHONE[0][1]
+          and n["reset_at"] in PHONE[0][1] and "restart" in PHONE[0][1],
+          "one phone notice says why the windows stopped and when they restart")
     calls.write_text("")
     SP.check(dry=False, now=NOW + 60, meter_fn=lambda: meter2, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
     check("fleet-stop" not in seq, "the hard stop happens once per account-week")
+    check(len(PHONE) == 1, "a later stopped poll sends no second phone notice")
+    check(SP.read_json(TMP / "out" / "notice.json")["since"] == n["since"],
+          "polls preserve the actual stop time")
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
     for k in list(SP.read_markers()):

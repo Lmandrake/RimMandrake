@@ -48,7 +48,7 @@ def send(row: dict, transport=None, label: str = "") -> bool:
     st = _load()
     if key in st:
         return False
-    title = f"{label}RimMandrake: {row.get('label') or key} is red"
+    title = row.get("title") or f"{label}RimMandrake: {row.get('label') or key} is red"
     body = f"{row.get('detail') or row.get('text') or ''}".strip() or f"pulse row {key} turned red"
     (transport or todoist_transport)(title, body)
     st[key] = _dt.datetime.now().isoformat(timespec="seconds")

@@ -521,6 +521,10 @@ def wake():
     with each pointer's CURRENT ledger state. Consumption audit 2026-09-17:
     46 of 76 pointers were never consumed — a handoff nobody is obliged to
     read is write-only by construction. Run on the first turn after a reboot."""
+    from account_stop_notice import hard_stop_reason
+    reason = hard_stop_reason()
+    if reason:
+        print("Account status: " + reason)
     show_last_reply()
     prev_name, _ = previous_handoff()
     if not prev_name:

@@ -598,15 +598,61 @@ def meter_poll() -> None:
     log({"do": "meter_poll", "rc": rc, "out": out[-300:]})
 
 
+def next_refill(meter: dict, plan: dict, now: float) -> dict:
+    """First metered reset that can give an account headroom under this engine's rules."""
+    candidates = sorted(((rs, n) for n in plan["order"]
+                         if (rs := next_reset(meter.get(n), now)) is not None),
+                        key=lambda pair: (pair[0], plan["order"].index(pair[1])))
+    for rs, name in candidates:
+        rec = {"source": "MEASURED", "stale": False, "age_min": 0,
+               "week_pct_left": 100, "week_resets_at": iso(rs + WEEK)}
+        _, eligible = lines({name: rec}, plan, rs)
+        if eligible.get(name):
+            return {"reset_at": iso(rs), "reset_account": name}
+    return {}
+
+
+def notify_stop(state: dict) -> None:
+    """Existing phone route, once per successful stop; failed deliveries retry on the next pass."""
+    stopped = state.get("stopped") or {}
+    if not stopped or stopped.get("phone_notified"):
+        return
+    from pulse import phone_push
+    until = stopped.get("reset_at")
+    resume = (f"The next account refills at {until}; the fleet will restart after the switcher confirms headroom "
+              "(checked every five minutes)." if until else
+              "The next account's reset time is unmeasured; the fleet will restart once headroom is confirmed.")
+    try:
+        phone_push.send({"key": "account-plan-hard-stop:" + stopped["at"], "kind": "red",
+                         "title": "Claude stopped: all accounts are out",
+                         "detail": "Claude usage is out on every account. The Claude windows were stopped. " + resume})
+    except Exception as e:
+        log({"do": "phone_notice_failed", "error": str(e)})
+        return
+    stopped["phone_notified"] = True
+    save_state(state)
+
+
+def record_stop(state: dict, d: dict, now: float) -> None:
+    state["stopped"] = {"account": d.get("account"), "key": d.get("key"), "at": iso(now),
+                        **{k: d[k] for k in ("reset_at", "reset_account") if k in d}}
+    save_state(state)  # crash recovery never repeats fleet-stop just to deliver the notice
+    write_notice({**d, "do": "stop", "stopped_at": iso(now)}, now)
+    notify_stop(state)
+
+
 def write_notice(d: dict, now: float) -> None:
     state = {"soft": "soft", "stop": "stop", "stopped": "stop"}.get(d["do"], "none")
     prev = read_json(OUT / "notice.json", {}) or {}
-    since = prev.get("since") if prev.get("state") == state and prev.get("since") else iso(now)
+    since = (d.get("stopped_at") if state == "stop" else None) or (
+        prev.get("since") if prev.get("state") == state and prev.get("since") else iso(now))
     msg = {"soft": "switch pending: publish and finish; no new helpers",
            "stop": "hard stop: the fleet is stopped until a reset", "none": ""}[state]
     write_atomic(OUT / "notice.json", {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
                                        "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
-                                       "why": d.get("why")})
+                                       "why": d.get("why"),
+                                       **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")}
+                                          if state == "stop" else {})})
 
 
 def armed_call(st: dict, argv: list, still=None) -> dict:
@@ -691,6 +737,9 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                     return 0
         if d is not pre:
             d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now())
+    d.update(next_refill(meter, plan, now))
+    if state.get("stopped"):
+        d["stopped_at"] = state["stopped"].get("at")
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
     if dry or d["do"] in ("passive", "skip", "hold"):
@@ -714,6 +763,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             return False
         m2, n2 = meter_fn(), now + clock() - t2
         d2 = decide(m2, live, n2, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
+        d2.update(next_refill(m2, plan, n2))
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
             d["under"] = True
@@ -721,6 +771,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         # account whose switch target changed, stops the fleet now (the next pass switches from the stopped fleet)
         due = d2["do"] == "stop" or (d2["do"] == "switch" and d2.get("under"))
         if d["do"] == "stop" and due:
+            d.update(next_refill(m2, plan, n2))
             return True  # live is still spent: the stop holds even if a switch target appeared meanwhile
         if not same and due and d["do"] != "stop" and (state.get("stopped") or {}).get("account") != live:
             brake.update({**d2, "do": "stop", "key": d2["key"] if d2["do"] == "stop" else stop_key(live, m2.get(live) or {}, n2)})
@@ -751,16 +802,14 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             braked = (res.get("fleet-stop") or (1,))[0] == 0
             write_notice(brake, now)
             if braked:
-                state["stopped"] = {"account": live, "key": brake.get("key"), "at": iso(now)}
-                save_state(state)
+                record_stop(state, brake, now + clock() - t2)
             rc = 0 if braked else 1
     elif d["do"] == "stop":
         write_notice(d, now)
         res = armed_call(st, ["fleet-stop"], still)
         rec["result"], rc = res, 0 if (res.get("fleet-stop") or (1,))[0] == 0 else 1
         if not rc:  # recorded only once the fleet is stopped: a pass that died mid-call retries the stop
-            state["stopped"] = {"account": live, "key": d["key"], "at": iso(now)}
-            save_state(state)
+            record_stop(state, d, now + clock() - t2)
     elif d["do"] == "start":
         res = armed_call(st, ["fleet-start"], still)
         if (res.get("fleet-start") or (1,))[0] == 0:
@@ -771,6 +820,11 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             rc = 1
         rec["result"] = res
     else:
+        if d["do"] == "stopped":
+            stopped = state.get("stopped") or {}
+            stopped.update({k: d[k] for k in ("reset_at", "reset_account") if k in d})
+            save_state(state)
+            notify_stop(state)
         write_notice(d, now)
     log({**rec, "acted": d["do"] in ("switch", "stop", "start")})
     return rc
