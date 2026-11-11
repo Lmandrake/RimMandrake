@@ -6267,3 +6267,5 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 18 min ago (limit 15 min)","ts":"2026-11-11T12:03:07Z","tsn":1794398587732046090}
 {"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-11T12:03:11Z","tsn":1794398591899072062}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"kept","detail":"sweep: running again","ts":"2026-11-11T14:03:07Z","tsn":1794405787260810598}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_DISPATCHER","result":"broken","detail":"dispatcher last ran 22 min ago (limit 15 min)","ts":"2026-11-11T14:48:06Z","tsn":1794408486923730584}
+{"seat":"RUNNER","event":"raise","id":"LIVE_RESTORE_DISPATCHER","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-11T14:48:11Z","tsn":1794408491816292293}
