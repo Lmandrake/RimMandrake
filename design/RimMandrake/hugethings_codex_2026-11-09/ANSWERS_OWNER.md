@@ -15,3 +15,10 @@ Drafts 03, 05 and 08 were asked on the second card below.
 6. **Warned approach walled off (08):** Same side, it breaks through. The titan keeps its warned edge and tests the barrier under its normal wall/rock rules; thick rock may still hold.
 
 Drafts 06–07 are not yet asked. Draft "Promise" above has changed draft 05's assumption that a single dispute rule exists: faction behaviour is the design.
+
+## Third card (Wed 2026-11-11 12:35 AM PST): drafts 06, 07
+
+7. **Prior claim on an older carcass (06):** Faction decides, visibly. As with the fence, the claim depends on the faction (a whole site, a sold share, or a fight), and it is visible before the colony's first harvest order.
+8. **A serious harvest day (07):** Expedition, plenty left. Several colonists work the carcass at once with useful jobs (cutting, hauling), recovering enough to reward the trip, with plenty left for the next day and for competitors; tested with a small and a large colony.
+
+All eight drafts are answered.
