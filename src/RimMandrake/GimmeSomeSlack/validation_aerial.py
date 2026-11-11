@@ -66,17 +66,30 @@ FBLAST = (AX0 + 8, AZ0 - 45)
 
 class A(V.Bridge):
     def ap(self, cmd, wait_s=20.0):
-        before = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial").get("value")
+        def serial():
+            reply = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial")
+            value = reply.get("value")
+            if reply.get("success") is not True or not (type(value) is int or
+                    isinstance(value, str) and re.fullmatch(r"[0-9]+", value)) or int(value) < 0:
+                raise ValueError("unreadable aerial probe serial: %r" % reply)
+            return int(value)
+
+        before = serial()
         s = self.call("jawa/mod_settings_field", typeName=APROBE, action="set", field="request", value=cmd)
         if not s.get("success"):
             return {"success": False, "error": "aerial probe set failed", "raw": s}
         t0 = time.time()
         while time.time() - t0 < wait_s:
-            now = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="serial").get("value")
-            if now != before:
-                res = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="result").get("value")
+            now = serial()
+            if now > before:
+                reply = self.call("jawa/mod_settings_field", typeName=APROBE, action="get", field="result")
+                res = reply.get("value")
                 try:
-                    return json.loads(res)
+                    parsed = json.loads(res)
+                    if reply.get("success") is not True or serial() != now or not isinstance(parsed, dict) or parsed.get("cmd") != cmd:
+                        raise ValueError("failed, changed or mismatched probe result")
+                    parsed["_probeSerial"] = now
+                    return parsed
                 except Exception:  # noqa: BLE001
                     return {"success": False, "raw": res}
             time.sleep(0.3)
@@ -1045,6 +1058,91 @@ def _aerial_setting(B, key):
     return (B.ap("census").get("settings") or {}).get(key)
 
 
+KINETIC_DAMAGE = "RM_Repulse_Palm"  # KineticArms/Defs/DamageDefs/RM_KineticArms_Damages.xml, RM_RepulseBase child
+KINETIC_ROWS = ("M22a_kinetic_sway_on_swings_never_cuts", "M22b_kinetic_sway_off_does_nothing")
+
+
+def kinetic_sway_rows(B, rows):
+    """Real registered KineticArms blast; each arm measures its own cumulative-census delta."""
+    mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
+    for rid, enabled in zip(KINETIC_ROWS, (True, False)):
+        evidence = {"schema": 1, "setting": "kineticSway", "enabled": enabled,
+                    "damageDef": KINETIC_DAMAGE, "readings": []}
+        last_serial = -1
+
+        def require(ok, reason):
+            if not ok:
+                raise ValueError(reason)
+
+        def integer(value):
+            return type(value) is int and value >= 0
+
+        def read(cmd):
+            nonlocal last_serial
+            reply = B.ap(cmd)
+            evidence["readings"].append({"cmd": cmd, "reply": reply})
+            require(isinstance(reply, dict) and reply.get("success") is True and reply.get("cmd") == cmd,
+                    "failed or mismatched " + cmd)
+            current = reply.get("_probeSerial")
+            require(integer(current) and current > max(0, last_serial), "missing or stale probe serial")
+            last_serial = current
+            return reply
+
+        def census(left, right):
+            value = read("census")
+            settings = value.get("settings")
+            require(isinstance(settings, dict) and settings.get("kineticSway") == str(enabled), "kineticSway readback failed")
+            require(all(integer(value.get(k)) for k in ("kineticSways", "explosionCuts")), "missing or malformed census counters")
+            anchors = value.get("anchors")
+            require(isinstance(anchors, list) and all(isinstance(a, dict) for a in anchors), "malformed anchors")
+            nets = []
+            health = []
+            for pid, pos, other in ((left, F1, right), (right, F2, left)):
+                matches = [a for a in anchors if a.get("id") == pid and (a.get("x"), a.get("z")) == pos]
+                require(len(matches) == 1, "missing or duplicate anchor")
+                a = matches[0]
+                require(all(type(a.get(k)) is int for k in ("id", "x", "z")) and integer(a.get("net")), "malformed anchor/net identity")
+                links = a.get("links")
+                require(isinstance(links, list) and all(isinstance(l, dict) and integer(l.get("other")) for l in links), "malformed links")
+                require([l.get("state") for l in links if l.get("other") == other] == ["Up"], "span not reciprocally Up")
+                hp = [l.get("hp") for l in links if l.get("other") == other][0]
+                require(type(hp) in (int, float) and math.isfinite(hp) and hp > 0, "missing span health")
+                health.append(hp)
+                nets.append(a["net"])
+            require(nets[0] == nets[1], "span nets disconnected")
+            require(health[0] == health[1], "reciprocal span health differs")
+            return value, health
+
+        try:
+            left, right, up = _scene_pair(B)  # fresh span per arm; no prior arm's swinging span survives
+            evidence["anchors"] = [left, right]
+            require(integer(left) and integer(right) and left != right and up is True, "scene pair not linked")
+            setting = read("set:kineticSway=%s" % enabled)
+            require(setting.get("value") == str(enabled), "kineticSway set echo failed")
+            before, health_before = census(left, right)  # independent setting read, immediately before this arm's explosion
+            blast = read("explode:%d,%d,2.5,50,%s" % (*mid, KINETIC_DAMAGE))
+            require(blast.get("damageDef") == KINETIC_DAMAGE and blast.get("synthetic") is False, "wrong or synthetic damage definition")
+            require(blast.get("kinetic") is True and blast.get("harmsHealth") is True and
+                    integer(blast.get("spansReached")) and blast["spansReached"] > 0, "blast not kinetic, harmful or in reach")
+            require(all(integer(blast.get(k)) for k in ("cuts", "sways")), "missing or malformed explosion counters")
+            B.ticks(3)
+            after, health_after = census(left, right)
+            delta = after["kineticSways"] - before["kineticSways"]
+            cuts = after["explosionCuts"] - before["explosionCuts"]
+            evidence.update(censusSwayDelta=delta, censusCutDelta=cuts, spanStillUp=True,
+                            synthetic=blast["synthetic"], kinetic=blast["kinetic"], harmsHealth=blast["harmsHealth"],
+                            spansReached=blast["spansReached"], settingBefore=before["settings"]["kineticSway"],
+                            settingAfter=after["settings"]["kineticSway"], hpBefore=health_before, hpAfter=health_after)
+            require(health_before == health_after, "blast wounded span")
+            require(cuts == blast["cuts"] == 0, "blast cut a span")
+            require(delta == blast["sways"] and (delta > 0 if enabled else delta == 0), "wrong kineticSways delta")
+            status = "PASS"
+        except Exception as ex:
+            status = "FAIL"
+            evidence["error"] = "%s: %s" % (type(ex).__name__, ex)
+        V.row(rows, rid, status, "MOD", evidence)
+
+
 def four_switches_block(B, rows, res):
     """M21a-f on the flips site (FSITE, cleared). Two player masts F1, F2 linked; then per switch OFF and ON."""
     keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship", "kineticSway")
@@ -1148,22 +1246,7 @@ def _four_switches(B, rows, res):
         V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
                                   "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
 
-    # ------------------------------------------------ M22a/b kineticSway (GSS_SWAY_PROVE_KINETIC_LIVE_ROW)
-    # PROVE  a real GenExplosion with a blast marked kinetic (the marker Kinetic Arms sets, matched by name), mid-span.
-    # EXPECT on: the span swings and stays up; off: nothing. A bomb's own cut is M15; a blast here never wounds.
-    mid = ((F1[0] + F2[0]) // 2, (F1[1] + F2[1]) // 2)
-    for rid, val, want in (("M22a_kinetic_sway_on_swings_never_cuts", True, True), ("M22b_kinetic_sway_off_does_nothing", False, False)):
-        i1, i2, up = _scene_pair(B)
-        s = B.ap("set:kineticSway=%s" % val)
-        if not (i1 and up and s.get("success")):
-            V.row(rows, rid, "UNMEASURED", "SITE", {"linked": up, "set": s})
-            continue
-        ex = B.ap("explode:%d,%d,2.5,50,kinetic" % mid)
-        B.ticks(3)
-        ap_ = anchors_by_pos(B.ap("census"))
-        still = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2))
-        ok = ex.get("success") and still and ex.get("cuts") == 0 and (ex.get("sways", 0) > 0) == want
-        V.row(rows, rid, "PASS" if ok else "FAIL", "MOD", {"explode": ex, "spanStillUp": still, "wantSway": want})
+    kinetic_sway_rows(B, rows)
     # ------------------------------------------------ M21e/f keepWiresOnGravship
     # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
     #        verb's echo).

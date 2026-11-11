@@ -16,7 +16,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <see cref="serial"/> is bumped.
     ///
     /// census | net:x,z | skipreseed:true|false | reseed:id | link:a,b | unlink:a,b | cut:a,b | restring:a,b (instant, harness) |
-    /// restringorder:id | restringjob:id | restringstate:id | kill:id | dismantle:id | explode:x,z,r,dmg
+    /// restringorder:id | restringjob:id | restringstate:id | kill:id | dismantle:id | explode:x,z,r,dmg[,damageDefName|kinetic]
     /// | watchdog | poll | set:field=value | defaults           (ids are thingIDNumber)
     /// per-build style (stage 1, validation_style.py): styles | place:def:Look:x,z[:rot]:god|build | finishbuild
     /// | reinstall:id:x,z | copy:id:x,z | clearpicks
@@ -147,12 +147,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (cmd.StartsWith("explode:"))
             {
                 string[] p = cmd.Substring(8).Split(',');
+                string damageName = AerialMath.ExplodeDamageName(p);
+                bool synthetic = AerialMath.ExplodeWantsKinetic(p);
+                DamageDef damage = synthetic ? KineticDamage() : DefDatabase<DamageDef>.GetNamedSilentFail(damageName);
+                if (damage == null) return Fail(cmd, "unknown damage defName " + damageName);
                 var c = new IntVec3(int.Parse(p[0], CultureInfo.InvariantCulture), 0, int.Parse(p[1], CultureInfo.InvariantCulture));
                 float r = float.Parse(p[2], CultureInfo.InvariantCulture);
                 int dmg = int.Parse(p[3], CultureInfo.InvariantCulture);
+                int reached = comp.Anchors.Sum(a => a.links.Count(l => l.state == SpanState.Up && l.other != null &&
+                    AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber) && AerialMath.SpanHit(
+                        new P2(a.BasePoint.x, a.BasePoint.z), new P2(l.other.BasePoint.x, l.other.BasePoint.z),
+                        new P2(c.x + 0.5, c.z + 0.5), r)));
                 int before = comp.explosionCuts, swaysBefore = comp.kineticSways;
-                GenExplosion.DoExplosion(c, map, r, AerialMath.ExplodeWantsKinetic(p) ? KineticDamage() : DamageDefOf.Bomb, null, dmg);
-                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before) + ",\"sways\":" + (comp.kineticSways - swaysBefore));
+                GenExplosion.DoExplosion(c, map, r, damage, null, dmg);
+                return Ok(cmd, "\"cuts\":" + (comp.explosionCuts - before) + ",\"sways\":" + (comp.kineticSways - swaysBefore) +
+                    ",\"damageDef\":" + S(damage.defName) + ",\"synthetic\":" + B(synthetic) +
+                    ",\"kinetic\":" + B(Patch_GenExplosion_CutSpans.IsKineticBlast(damage)) +
+                    ",\"harmsHealth\":" + B(damage.harmsHealth) + ",\"spansReached\":" + reached);
             }
             if (cmd.StartsWith("set:"))
             {

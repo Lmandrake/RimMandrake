@@ -26,6 +26,18 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // the explode probe's optional fifth part
             Check(AerialMath.ExplodeWantsKinetic("1,2,2.5,50,kinetic".Split(',')) && !AerialMath.ExplodeWantsKinetic("1,2,2.5,50".Split(',')) && !AerialMath.ExplodeWantsKinetic("1,2,2.5,50,bomb".Split(',')),
                   "explode: only the word kinetic asks for the kinetic blast");
+            Check(AerialMath.ExplodeDamageName("1,2,2.5,50".Split(',')) == "Bomb" &&
+                  AerialMath.ExplodeDamageName("1,2,2.5,50,kinetic".Split(',')) == "kinetic" &&
+                  AerialMath.ExplodeDamageName("1,2,2.5,50,RM_Repulse_Palm".Split(',')) == "RM_Repulse_Palm",
+                  "explode: Bomb default, synthetic token and registered selector survive parsing");
+            foreach (string bad in new[] { "1,2,3", "1,2,3,4,", "1,2,3,4, Bomb", "1,2,3,4,Bomb,kinetic",
+                                          "1,2,3,4,RM-Bad", "1,2,3,4,1Bad", "1,2,3,4,éBad" })
+            {
+                bool refused = false;
+                try { AerialMath.ExplodeDamageName(bad.Split(',')); }
+                catch (ArgumentException) { refused = true; }
+                Check(refused, "explode: refuses malformed selector " + bad);
+            }
             // explosionsCut / kineticSway
             Check(AerialMath.BlastKindFor(true, false, 10, true, true) == AerialMath.BlastKind.Cut
                   && AerialMath.BlastKindFor(true, false, 10, false, true) == AerialMath.BlastKind.None, "explosionsCut on cuts, off spares");

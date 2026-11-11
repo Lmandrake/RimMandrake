@@ -1009,6 +1009,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// </summary>
         public static bool ExplodeWantsKinetic(string[] parts) => parts.Length > 4 && parts[4] == "kinetic";
 
+        /// <summary>The probe's optional damage selector. Registered names are resolved by AerialProbe, never guessed.</summary>
+        public static string ExplodeDamageName(string[] parts)
+        {
+            if (parts == null || (parts.Length != 4 && parts.Length != 5))
+                throw new ArgumentException("explode expects x,z,r,dmg[,damageDefName|kinetic]");
+            if (parts.Length == 4) return "Bomb";
+            string name = parts[4];
+            if (string.IsNullOrEmpty(name) || !((name[0] >= 'A' && name[0] <= 'Z') ||
+                (name[0] >= 'a' && name[0] <= 'z') || name[0] == '_'))
+                throw new ArgumentException("malformed damage defName");
+            foreach (char ch in name)
+                if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') ||
+                      (ch >= '0' && ch <= '9') || ch == '_'))
+                    throw new ArgumentException("malformed damage defName");
+            return name;
+        }
+
         public static BlastKind BlastKindFor(bool harmsHealth, bool kinetic, double damage, bool explosionsCut, bool kineticSway)
         {
             if (!harmsHealth) return BlastKind.None;

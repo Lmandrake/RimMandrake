@@ -10,7 +10,7 @@ import time
 ROW = "M15f_restring_joined_run_one_look"
 
 
-def check_result(path, started, finished):
+def read_result(path, started, finished, mode):
     """Unique output plus a creation-window check prevents a previous run from satisfying A1."""
     path = Path(path)
     if not path.is_file() or not started <= path.stat().st_mtime <= finished:
@@ -18,11 +18,16 @@ def check_result(path, started, finished):
     result = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(result, dict):
         raise ValueError("malformed aerial result")
-    if result.get("script") != "validation_aerial.py" or result.get("mode") != "live" or result.get("aborted"):
+    if result.get("script") != "validation_aerial.py" or result.get("mode") != mode or result.get("aborted"):
         raise ValueError("wrong or aborted aerial driver")
     rows = result.get("rows")
     if not isinstance(rows, list) or not all(isinstance(r, dict) for r in rows):
         raise ValueError("malformed rows")
+    return rows
+
+
+def check_result(path, started, finished):
+    rows = read_result(path, started, finished, "live")
     exact = [r for r in rows if r.get("id") == ROW]
     if len(exact) != 1 or exact[0].get("status") != "PASS" or exact[0].get("class") != "MOD":
         raise ValueError("requires exactly one %s MOD PASS" % ROW)
@@ -33,7 +38,7 @@ def check_result(path, started, finished):
     return exact[0]
 
 
-def main(argv=None):
+def run_proof(argv, *, mode, prefix, check):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-dir", required=True)
     parser.add_argument("--max-seconds", type=int, default=900)
@@ -41,9 +46,9 @@ def main(argv=None):
     if args.max_seconds <= 0:
         parser.error("--max-seconds must be positive")
     Path(args.out_dir).mkdir(parents=True, exist_ok=True)
-    attempt = Path(tempfile.mkdtemp(prefix="a1-", dir=args.out_dir)).resolve()
+    attempt = Path(tempfile.mkdtemp(prefix=prefix, dir=args.out_dir)).resolve()
     output = attempt / "aerial.json"
-    command = [sys.executable, str(Path(__file__).with_name("validation_aerial.py")), "--live", "--out", str(output)]
+    command = [sys.executable, str(Path(__file__).with_name("validation_aerial.py")), "--" + mode, "--out", str(output)]
     receipt = {"command": command, "started": time.time(), "timeout": args.max_seconds}
     code = 1
     try:
@@ -52,7 +57,7 @@ def main(argv=None):
                                    timeout=args.max_seconds, check=False)
         receipt["driverReturncode"] = child.returncode
         receipt["finished"] = time.time()
-        row = check_result(output, receipt["started"], receipt["finished"])
+        row = check(output, receipt["started"], receipt["finished"])
         receipt["row"] = row
         if child.returncode != 0:
             raise ValueError("aerial driver returned %s" % child.returncode)
@@ -64,6 +69,10 @@ def main(argv=None):
     (attempt / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"attempt": str(attempt), **receipt}, indent=2))
     return code
+
+
+def main(argv=None):
+    return run_proof(argv, mode="live", prefix="a1-", check=check_result)
 
 
 if __name__ == "__main__":
