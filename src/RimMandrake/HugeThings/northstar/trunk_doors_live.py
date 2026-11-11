@@ -31,6 +31,10 @@ MC = 'RimMandrake.HugeThings.MapComponent_HugeFootprints'
 SETTINGS = 'RimMandrake.HugeThings.RM_HugeThingsSettings'
 PROOF = 'RimMandrake.FlowWorks.RM_PitPrisonProof'
 RECT = '90,90,96,30'
+# Keep the measured workshop/contact geometry. The registered calm site's
+# original colonists stand in the unused gaps, so clear only owned fixture areas.
+CLEAR_RECTS = ('94,95,13,18', '121,94,61,13', '170,106,12,9')
+MAP_RECT = '0,0,250,250'
 PLANT = 'RM_Nogtyl'
 BLOCKER = 'RM_HugeTrunkBlocker'
 CUT = 'RM_CutHugePlantFromTrunk'
@@ -56,6 +60,7 @@ class Run:
         self.rec = dict(script=str(Path(__file__).resolve()), script_sha256=sha(__file__), calls=[],
                         started=time.time(), ok=False, level='L2', fixture_ids=[])
         self.prior = {}
+        self.originals = {}
 
     def persist(self):
         self.out.write_text(json.dumps(self.rec, indent=2, default=str, allow_nan=False)+'\n', encoding='utf-8')
@@ -113,6 +118,55 @@ class Run:
         require(result.get('truncated') == 0 and result.get('returned') == len(result.get('pawns', [])), 'incomplete pawn census')
         return result['pawns']
 
+    @staticmethod
+    def near_fixture(pawn, margin=0):
+        for rect in CLEAR_RECTS:
+            x, z, w, h = map(int, rect.split(','))
+            if x-margin <= pawn['x'] < x+w+margin and z-margin <= pawn['z'] < z+h+margin:
+                return True
+        return False
+
+    def pin_originals(self):
+        rows = self.pawns(MAP_RECT)
+        require(rows == self.rec['baseline']['map_pawns'], 'SITE: original census changed before isolation')
+        self.originals = {p['id']: p for p in rows}
+        require(all(p.get('isPlayer') and p.get('intelligence') == 'Humanlike' and p.get('def') == 'Human'
+                    and p.get('spawned') and not p.get('dead') and not p.get('downed') for p in rows),
+                'SITE: original map pawns are not the supported draftable human colonists')
+        require(not any(self.near_fixture(p, margin=1) for p in rows),
+                'SITE: original pawn has less than two-cell distance from a fixture rectangle')
+        self.rec['originals_pinned'] = []
+        for pawn in rows:
+            draft = self.call('jawa/set_draft', pawnId=pawn['id'], drafted=True)
+            require(draft.get('drafted') is True and type(draft.get('wasDrafted')) is bool,
+                    'SITE: original draft state unreadable')
+            self.rec['originals_pinned'].append(dict(pawn=pawn, draft=draft))
+        self.check_originals('isolated')
+
+    def check_originals(self, phase):
+        rows = self.pawns(MAP_RECT)
+        by_id = {p['id']: p for p in rows}
+        state = self.call('jawa/site_state', rect=RECT)
+        checks = []
+        for pid, original in self.originals.items():
+            pawn = by_id.get(pid)
+            require(pawn and pawn.get('spawned') and not pawn.get('dead') and not pawn.get('downed')
+                    and (pawn['x'], pawn['z']) == (original['x'], original['z']),
+                    'SITE_interference: original pawn moved or became unavailable at '+phase)
+            # This instrument reports the actual PRE-WRITE draft state. A false
+            # wasDrafted fails even though the call then redrafts for safe cleanup.
+            draft = self.call('jawa/set_draft', pawnId=pid, drafted=True)
+            require(draft.get('wasDrafted') is True and draft.get('drafted') is True,
+                    'SITE_interference: original undrafted at '+phase)
+            checks.append(dict(pawn=pawn, draft=draft))
+        require(not any(p['id'] not in self.rec['fixture_ids'] and self.near_fixture(p) for p in rows),
+                'SITE_interference: non-fixture pawn entered scene at '+phase)
+        require(not any(p['id'] in self.originals and (p.get('job') == CUT or p.get('queued')) for p in state['pawns'])
+                and not any(p['claimant'] in self.originals for p in state['reservationsInRect']),
+                'SITE_interference: original job/reservation at '+phase)
+        self.rec.setdefault('original_invariants', []).append(dict(phase=phase, pawns=checks, site_state=state))
+        self.persist()
+
     def reach(self, pawn, x, z):
         result = self.call('jawa/order_pawn', allow=True, pawnId=pawn, x=x, z=z, pathEndMode='oncell',
                            waitTicks=0, unpause=False, draft=True)
@@ -166,11 +220,14 @@ class Run:
 
 
     def scenario(self, tx):
-        require(not self.pawns(), 'SITE: target rectangle already contains pawns; refuse clearing')
-        self.call('jawa/set_roof_batch', ops='None:'+RECT)
-        self.call('jawa/destroy_batch', categories='All', rects=RECT)
-        require(not self.things(), 'SITE: bounded clear left objects')
-        self.call('jawa/set_terrain_batch', ops='Soil:'+RECT)
+        self.pin_originals()
+        for rect in CLEAR_RECTS:
+            require(not self.pawns(rect), 'SITE: fixture rectangle contains pawns; refuse clearing')
+            self.call('jawa/set_roof_batch', ops='None:'+rect)
+            self.call('jawa/destroy_batch', categories='All', rects=rect)
+            require(not self.things(None, rect), 'SITE: bounded fixture clear left objects')
+            self.call('jawa/set_terrain_batch', ops='Soil:'+rect)
+        self.check_originals('cleared')
         for field, value in dict(giantPlantsEnabled=True, plantTrunkEnabled=True, plantTrunkScale=1, plantItemPushEnabled=False).items():
             self.setting(field, value)
         self.sc('RefreshAllMaps')
@@ -225,6 +282,7 @@ class Run:
             if kv(state).get('oldEnough') == 'True' and int(kv(state).get('claimed', 0)) > 0:
                 break
         self.rec['growth_samples'] = samples
+        self.check_originals('grown')
         require(samples and kv(samples[-1]['state']).get('oldEnough') == 'True' and int(kv(samples[-1]['state']).get('desired', 0)) > 0 and int(kv(samples[-1]['state']).get('claimed', 0)) > 0, 'SITE: plant did not naturally grow claimed contacts')
         require(float(kv(samples[-1]['state'])['growth']) > 0.2499, 'no measured natural growth')
         self.ticks(500)
@@ -232,6 +290,7 @@ class Run:
         sealed = not self.reach(cutter, 100, 97)
         self.rec['sealed'] = dict(blockers=blockers, access=not sealed, state=self.sc('DebugPlantState', 'current|100,100'))
         self.rec['doorway_claims'] = self.claimed_cells([(99, 101), (100, 101)])
+        self.check_originals('sealed')
         self.rec['failure_stage'] = 'MOD_seal'
         require(sealed and len(blockers) == 1, 'MOD: growth did not seal workshop doorway (old access-preserving behavior)')
         require(len(self.things(BLOCKER, '99,101,1,1')) == 1, 'MOD: second open root-touch cell did not fill')
@@ -282,6 +341,7 @@ class Run:
         require(kv(state).get('current') == CUT and kv(state).get('forced') == 'False' and kv(state).get('plant') == plant
                 and kv(state).get('contact') == blockers[0]['id'], 'unforced natural worker pickup did not start correct trunk job')
         self.rec['cut_order'] = state
+        self.check_originals('natural_pickup')
         # A second capable, undrafted cutter can reach the trunk but the plant is
         # reserved. Probe both the scan target and the actual reservation target.
         self.call('jawa/set_draft', pawnId=second, drafted=False)
@@ -307,6 +367,7 @@ class Run:
         self.rec['cut_reload'] = T.load_site(self.call, 'calm', name=occupied, check=False, map_controls=('modal_broker',))
         require(self.rec['cut_reload']['verified'], 'cutting snapshot did not reload')
         H.quiet_world(T.call_session(self.call), tx, wild_spawner=False, log_raids=False)
+        self.check_originals('occupied_reload')
         self.rec['cut_job_after_reload'] = self.sc('CutState', cutter, 'RimMandrake.HugeThings.TrunkDoorValidationHooks')
         restored_work = kv(self.rec['cut_job_after_reload'])
         require(restored_work.get('current') == CUT and restored_work.get('plant') == plant and
@@ -317,6 +378,7 @@ class Run:
             if not any(t['id'] == plant for t in self.things(PLANT)):
                 break
         require(not any(t['id'] == plant for t in self.things(PLANT)), 'actual cutting job never removed enclosed plant')
+        self.check_originals('cut_completed')
         self.call('jawa/set_draft', pawnId=cutter, drafted=True)
         self.ticks(500)
         require(not self.things(BLOCKER, '96,96,9,6'), 'plant blockers survived cutting/cleanup')
@@ -355,6 +417,7 @@ class Run:
                 break
         require(all(kv(state).get('oldEnough') == 'True' and int(kv(state).get('claimed', 0)) > 0 for state in states),
                 'HARNESS: controls did not naturally grow claimed contacts')
+        self.check_originals('controls_grown')
         self.ticks(500)
         self.rec['guarded_cell_claims'] = self.claimed_cells([(125, 101), (140, 101), (155, 101), (165, 101)])
         for x in (125, 140, 155, 165):
@@ -370,11 +433,19 @@ class Run:
         moved = self.identity(item[0]['id'])
         require(moved['stackCount'] == item[0]['stackCount'] and (moved['x'], moved['z']) != (140, 101), 'item push lost its stack or did not move')
         require(kv(self.sc('DebugCellState', 'current|%d,%d' % (moved['x'], moved['z']))).get('claimed') == 'False', 'item pushed into another footprint')
+        require(121 <= moved['x'] < 182 and 94 <= moved['z'] < 107, 'SITE: pushed item left cleared fixture area')
         require(self.things(BLOCKER, '140,101,1,1'), 'cleared item cell never realized')
-        self.call('jawa/order_pawn', pawnId=guard, x=125, z=105, waitTicks=0, unpause=False, draft=True)
+        move = self.call('jawa/order_pawn', allow=True, pawnId=guard, x=125, z=105, waitTicks=0, unpause=False, draft=True)
+        require(len(move.get('pawns', [])) == 1 and move['ticksElapsed'] == 0
+                and move['pawns'][0].get('orderAccepted') is True and move['pawns'][0].get('canReach') is True,
+                'HARNESS: guard move was not accepted/reachable')
         self.ticks(100)
+        guard_after = [p for p in self.pawns() if p['id'] == guard]
+        require(len(guard_after) == 1 and (guard_after[0]['x'], guard_after[0]['z']) == (125, 105),
+                'SITE: guard did not actually arrive after governed movement')
         self.ticks(500)
         require(self.things(BLOCKER, '125,101,1,1'), 'vacated pawn contact never retried')
+        self.check_originals('controls_item_pawn')
         clear_plant = self.things(PLANT, '175,110,1,1')
         require(len(clear_plant) == 1 and self.things(BLOCKER, '175,111,1,1'), 'ground ClearArea fixture absent')
         clear_id = clear_plant[0]['id']
@@ -386,6 +457,7 @@ class Run:
         self.ticks(500)
         require(not self.things(PLANT, '175,110,1,1') and not self.things(BLOCKER, '172,107,7,7'),
                 'ground ClearArea left owner or owned blockers')
+        self.check_originals('controls_ground_clear')
         free_before = self.things(BLOCKER, '172,98,7,6')
         require(free_before, 'free-space positive has no blockers')
         self.setting('plantTrunkEnabled', False)
@@ -396,6 +468,7 @@ class Run:
         self.sc('RefreshAllMaps')
         self.ticks(500)
         require(self.things(BLOCKER, '172,98,7,6'), 'reenabled free-space feature did not resume')
+        self.check_originals('controls_reenabled')
         self.rec['controls'] = dict(pawn=guard, item=item[0], building=door[0], indestructible=geyser[0], free_before=free_before,
                                     item_after_push=moved, vacated_pawn_retried=True, disabled=True, reenabled=True)
 
@@ -433,7 +506,7 @@ def main():
         require(r.rec['baseline_load']['verified'], 'scene-begin reload failed')
         baseline = r.sc('Rect', RECT, PROOF)
         baseline_pawns = r.pawns()
-        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns, supplement=r.supplement())
+        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns, map_pawns=r.pawns(MAP_RECT), supplement=r.supplement())
         tx = H.SettingsTransaction(T.call_session(r.call)); tx.__enter__()
         quiet = H.quiet_world(T.call_session(r.call), tx, wild_spawner=False, log_raids=False)
         require(quiet.verified, 'quiet controls unreadable')
@@ -470,6 +543,16 @@ def main():
                 r.rec['restored'] = dict(rectangle=restored, pawns=restored_pawns, supplement=restored_extra)
                 require(restored == baseline and restored_pawns == baseline_pawns
                         and restored_extra == r.rec['baseline']['supplement'], 'restored rectangle/fixtures differ from exact baseline')
+                r.rec['restored']['map_pawns'] = r.pawns(MAP_RECT)
+                require(r.rec['restored']['map_pawns'] == r.rec['baseline']['map_pawns'],
+                        'restored map-wide pawn census differs from exact baseline')
+                r.rec['restored_original_drafts'] = []
+                for original in r.rec.get('originals_pinned', []):
+                    expected = original['draft']['wasDrafted']
+                    draft = r.call('jawa/set_draft', pawnId=original['pawn']['id'], drafted=expected)
+                    r.rec['restored_original_drafts'].append(draft)
+                    require(draft.get('wasDrafted') is expected and draft.get('drafted') is expected,
+                            'original draft state differs before restoration comparison')
                 for field, value in r.prior.items():
                     require(r.field(field) == value, 'post-load setting mismatch '+field)
             except Exception as exc:
