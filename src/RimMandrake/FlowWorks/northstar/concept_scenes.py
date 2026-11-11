@@ -48,11 +48,11 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
     prior = {}
     calls = receipt.setdefault('calls', [])
 
-    def call(tool, **kw):
+    def call(tool, allow_refusal=False, **kw):
         r = B.call(tool, **kw)
         calls.append({'tool': tool, 'args': kw, 'result': r})
         if isinstance(r, dict):
-            require(r.get('success') is not False, '%s refused: %s' % (tool, r))
+            require(allow_refusal or r.get('success') is not False, '%s refused: %s' % (tool, r))
         return r
 
     def sc(method, arg='', typ=PROOF):
@@ -84,16 +84,21 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         return int(r['ticksGame'])
 
     def spawn(kind, at, faction):
-        r = call('jawa/spawn_pawn', kindDef=kind, x=at[0], z=at[1], faction=faction, count=1)
+        r = call('jawa/spawn_pawn', kindDef=kind, x=at[0], z=at[1], faction=faction, count=1,
+                 xenotype='Baseliner')
         ids = [p['id'] for p in r.get('pawns', [])]
         require(len(ids) == 1, 'spawn failed: %s' % r)
         return ids[0]
 
     def care(worker, pid, mode, start=False):
-        return kv(sc('Care', ';'.join((worker, pid, mode, 'start' if start else 'ask'))))
+        r = kv(sc('Care', ';'.join((worker, pid, mode, 'start' if start else 'ask'))))
+        if start and r.get('job') != 'none':
+            require(r.get('ordered') == 'True', 'care job was not accepted: '+str(r))
+        return r
 
     receipt['relative'] = relative
-    receipt['identity'] = sc('Identity')
+    # static_call treats an empty args string as ZERO parameters, not one empty string.
+    receipt['identity'] = sc('Identity', 'probe')
     if expected_sha256 is not None:
         require(kv(receipt['identity']).get('sha256') == expected_sha256, 'loaded DLL differs from this clone')
         receipt['expected_sha256'] = expected_sha256
@@ -126,12 +131,35 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
                     for c in receipt['cells']), 'pit is not dug and drained at the asserted depth')
         original_pawns = [p['id'] for p in call('jawa/list_pawns', limit=1000)['pawns']]
         raiders = [spawn('Pirate', PIT[i], 'hostile') for i in (1, 4)]
-        wardens = [spawn('Colonist', (35, z), 'player') for z in (36, 39)]
+        # SITE: generated backstories can disable Warden/Doctor. Prove capability
+        # before accepting a fixture, without rewriting a pawn's life history.
+        receipt['worker_candidates'] = []
+        wardens = []
+        for z in (36, 39):
+            for _ in range(6):
+                w = spawn('Colonist', (35, z), 'player')
+                call('jawa/set_draft', pawnId=w, drafted=True)
+                checks = []
+                for wt in ('Warden', 'Doctor', 'Patient', 'PatientBedRest'):
+                    r = call('jawa/set_work_priority', allow_refusal=True,
+                             pawnId=w, workType=wt, priority=1)
+                    require(r.get('success') is True or
+                            'disabledWorkTypes' in (r.get('details') or {}),
+                            'work capability probe failed: '+str(r))
+                    checks.append({'workType': wt, 'result': r})
+                receipt['worker_candidates'].append({'pawn': w, 'checks': checks})
+                if all(c['result'].get('success') is True and
+                       int(c['result'].get('readBack', 0)) > 0 for c in checks):
+                    wardens.append(w)
+                    break
+                call('jawa/pawn_force_incapacitate', pawn=w, action='vanish')
+            else:
+                raise AssertionError('UNMEASURED SITE: no capable warden/doctor in six generated candidates')
         for p in original_pawns:
             call('jawa/pawn_force_incapacitate', pawn=p, action='vanish')
         for w in wardens:
             call('jawa/set_draft', pawnId=w, drafted=True)
-            for wt in ('Warden', 'Doctor', 'Patient', 'BedRest'):
+            for wt in ('Warden', 'Doctor', 'Patient', 'PatientBedRest'):
                 call('jawa/set_work_priority', pawnId=w, workType=wt, priority=1)
         for p in raiders:
             call('jawa/pawn_gear', pawn=p, action='clear')
@@ -139,7 +167,10 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
             require(state(p)['downed'] == 'True', 'raider not downed')
             call('jawa/pawn_need', pawn=p, action='need', need='Food', level=0.1)
         # Ready-to-eat food outside the hole, selected by ordinary work givers.
-        call('rimworld/spawn_thing', defName='MealSurvivalPack', x=34, z=34, stackCount=100)
+        call('jawa/spawn_batch', ops=';'.join('MealSurvivalPack:34,%d,10' % z for z in (34, 35, 36)))
+        receipt['food_supply'] = call('jawa/list_things', defName='MealSurvivalPack', rect=RECT, limit=1000)
+        require(sum(int(t.get('stackCount', 0)) for t in receipt['food_supply'].get('things', [])) >= 24,
+                'UNMEASURED SITE: insufficient read-back meal supply')
         receipt['starting'] = [state(p) for p in raiders]
         receipt['disabled'] = []
         setting('superdeepRoomsEnabled', False)
@@ -147,8 +178,10 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         for w, p in zip(wardens, raiders):
             v = sc('ProofCaptureDown', p, 'RimMandrake.FlowWorks.RM_NorthstarProofs')
             require(v.startswith('VERDICT SettingOff'), 'bedless OFF accepted: '+v)
-            call('jawa/ordered_job', pawnId=w, jobDef='RM_CaptureDown', targetAId=p,
-                 targetBX=37, targetBZ=int(state(p)['z']))
+            order = call('jawa/ordered_job', allow_refusal=True, pawnId=w, jobDef='RM_CaptureDown', targetAId=p,
+                         targetBX=37, targetBZ=int(state(p)['z']))
+            require(order.get('accepted') is True and order.get('requestedJobDef') == 'RM_CaptureDown',
+                    'OFF control never attempted the requested capture: '+str(order))
         step(300)
         receipt['disabled'] = [state(p) for p in raiders]
         require(all(s['prisoner'] == 'False' for s in receipt['disabled']), 'OFF job captured a raider')

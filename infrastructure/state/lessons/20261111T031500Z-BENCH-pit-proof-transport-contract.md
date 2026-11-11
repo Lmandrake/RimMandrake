@@ -1,0 +1,2 @@
+The bedless-prison fake bridge accepted calls that the live bridge correctly refused: static Identity(string) needs a nonempty sentinel because empty static_call args means zero parameters; the vanilla bed-rest WorkTypeDef is PatientBedRest, not BedRest. Add strict fake transport assertions and retain the live refusals. Snapshot restoration passed after the work-type refusal; neither failure was evidence of a broken gameplay mechanic.
+home: src/RimMandrake/FlowWorks/northstar/concept_scenes.py

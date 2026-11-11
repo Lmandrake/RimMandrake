@@ -1,0 +1,2 @@
+Generated Colonist fixtures may disable Warden or Doctor through backstories, and random xenotypes confound body/food/recovery. Use bounded spawn/reject with Baseliner and real set_work_priority readBack>0, record refusals and vanish rejects. OFF ordered_job success:false is valid only if accepted=true and requestedJobDef names the intended job; otherwise the control was never attempted. Assert Care ordered=True and read back enough meal stacks. These are SITE/HARNESS checks, not gameplay verdicts.
+home: src/RimMandrake/FlowWorks/northstar/concept_scenes.py
