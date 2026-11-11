@@ -6261,3 +6261,5 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_TELEMETRY_HEALTH","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:29Z","tsn":1794385109386447569}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_PULSE_UPDATE","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:33Z","tsn":1794385113730021758}
 {"seat":"RUNNER","event":"live","id":"STEWARD_FIX_LEAVES_THE_LIGHTS_ON","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:18:38Z","tsn":1794385118081781888}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_ARTEVAL_AUTOJUDGE","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:33:05Z","tsn":1794385985984825991}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_ARTPIPE_IDLE_FILL","result":"kept","detail":"sweep: running again","ts":"2026-11-11T08:33:10Z","tsn":1794385990523309589}
