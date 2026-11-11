@@ -49,6 +49,7 @@ def run(out):
     settings, debug, baseline, name, dev_mode = [], {}, None, None, None
     tap = None
     control_error_messages = set()
+    refresh_ticks = 0
     saves = Path(SAVES)
     saves_before = T.saves_stat(SAVES)
     protected = [p for p in saves.glob('*.rws') if p.name.startswith('CANONICAL_') or p.name in
@@ -107,6 +108,19 @@ def run(out):
     def pump(cell, action='step'):
         text = sc(PUMP, 'ProofDrawCycle', '%d,%d;%s' % (*cell, action))
         return dict(text=text, **fields(text))
+
+    def refresh_hose_index():
+        nonlocal refresh_ticks
+        before = theft()
+        setting(FW, 'liquidPumpEnabled', False)
+        tick_before = call('jawa/map_info')['ticksGame']
+        advance = B.ticks(1)
+        tick_after = call('jawa/map_info')['ticksGame']
+        setting(FW, 'liquidPumpEnabled', True)
+        after = theft()
+        require(tick_after-tick_before == 1 and after['units'] == before['units'] and after['pending'] == before['pending'], 'hose-index setup tick moved foreign stock or attribution')
+        refresh_ticks += tick_after-tick_before
+        result.setdefault('hose_refreshes',[]).append(dict(before_tick=tick_before,after_tick=tick_after,before=before,after=after,advance=advance))
 
     def things(defname):
         response = call('jawa/list_things', defName=defname, rect=RECT, limit=50)
@@ -200,6 +214,8 @@ def run(out):
         # Activate a reachable player mover that sends world water to an outflow, never through this tank.
         route = hp('check:41,41,51,40'); require(route.get('reason') is None, 'outflow fixture route refused')
         hp('lay:41,41,51,40'); sc(LINE,'ProofHoseRole','41,41;Outflow')
+        refresh_hose_index()
+        require('outflows=[51,40]' in pump((40,40),'read')['text'], 'active mover lacks its actual outflow port')
         fill((40,41),2)
         src = water((40,41)); dest = water((52,40)); unrelated_step = pump((40,40)); after_active = theft()
         require(unrelated_step['units'] == '10000' and src-water((40,41)) == 10000 and water((52,40))-dest == 10000, 'unrelated active production move did not occur')
@@ -210,6 +226,8 @@ def run(out):
 
         # Cap the outflow: the same player pump now successfully puts water into the foreign tank.
         sc(LINE,'ProofHoseRole','41,41;Capped')
+        refresh_hose_index()
+        require('outflows=[]' in pump((40,40),'read')['text'], 'capped outflow remained active')
         fill((40,41),2)
         before = theft(); src = water((40,41)); player_step = pump((40,40)); pending = theft()
         require(player_step['units'] == '10000' and int(pending['units'])-int(before['units']) == 10000 and src-water((40,41)) == 10000 and pending['pending'] != '[]', 'player transfer/attribution missing')
@@ -241,8 +259,8 @@ def run(out):
         require(idle['charges'] == charged['charges'] and idle['ticks'] == charged['ticks'], 'idle caught tank accrues')
         result['arms'].append(dict(name='actual_player_transfer_caught_and_goodwill', before=before, step=player_step, pending=pending, caught=caught, compressed_remainder=prime, second=player_second, charged=charged, idle=idle))
         end_tick = call('jawa/map_info')['ticksGame']
-        require(start_tick == end_tick, 'paused mechanism proof unexpectedly advanced time')
-        result['timing'] = dict(before=start_tick, after=end_tick, boundary='real production entries; scheduling bypassed; one-day remainder seeded after genuine catch')
+        require(end_tick-start_tick == refresh_ticks, 'time advanced outside the declared hose-index setup ticks')
+        result['timing'] = dict(before=start_tick, after=end_tick, hose_refresh_ticks=refresh_ticks, boundary='real production entries; two pump-disabled setup ticks refresh hose indexes; one-day remainder seeded after genuine catch')
         result['status'] = 'PASS'
     except BaseException as exc:
         result['error'] = repr(exc)
