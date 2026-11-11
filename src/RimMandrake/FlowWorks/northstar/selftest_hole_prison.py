@@ -16,6 +16,8 @@ class Bridge:
         self.fault = fault
         self.settings = {'superdeepRoomsEnabled': True, 'pitRelativeClimbEnabled': True}
         self.original = dict(self.settings)
+        self.debug = {f:True for f in ('enableStoryteller', 'enableRandomMentalStates', 'enableRandomDiseases')}
+        self.original_debug = dict(self.debug)
         self.pawns = {}
         self.hostile_ids = set()
         self.tick = 100
@@ -39,6 +41,7 @@ class Bridge:
             self.baseline = False
 
     def ticks(self, n):
+        assert all(v is False for v in self.debug.values()), 'isolated controls missing before tick advance'
         assert all(C.CG._thing_number(pid) in C.CG.FIXTURE_IDS for pid in self.hostile_ids), 'undeclared hostile fixture'
         self.tick += n
         for p in self.pawns.values():
@@ -48,6 +51,10 @@ class Bridge:
                 p['kept'] = 'False'
 
     def call(self, tool, **kw):
+        if tool == 'jawa/debug_settings':
+            if kw['action'] == 'list': return {'success':True,'fields':[{'name':k,'value':v} for k,v in self.debug.items()]}
+            self.debug[kw['field']] = kw['value']
+            return {'success':True,'valueAfter':self.debug[kw['field']]}
         if tool == 'jawa/static_call':
             m, a = kw['method'], kw.get('args', '')
             r = 'OK'
@@ -141,6 +148,7 @@ def check(fault=None, abort=False, occupied=False):
     assert all(B.settings[k] == v for k,v in B.original.items()), (fault, B.settings)
     assert not B.pawns, (fault, B.pawns)
     assert C.CG.FIXTURE_IDS == fixture_baseline, 'fixture declaration leaked across runs'
+    assert B.debug == B.original_debug, 'debug settings leaked across runs'
     assert rec['restore']['status'] == ('FAIL' if fault == 'bad_snapshot' else 'PASS')
     print('ok', fault or ('injected_abort' if abort else 'complete_scene'))
 

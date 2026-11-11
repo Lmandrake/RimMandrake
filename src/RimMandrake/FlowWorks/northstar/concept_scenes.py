@@ -48,6 +48,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
     The day uses real ticks, never time_set_ticks. Finally runs even on an assertion.
     """
     prior = {}
+    prior_debug = {}
     fixtures = []
     fixture_baseline = set(CG.FIXTURE_IDS)
     stops_begin = len(CG.BENIGN_STOPS)
@@ -74,6 +75,19 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         call('jawa/mod_settings_field', typeName=SETTINGS, field=name, action='set', value=str(value))
         got = call('jawa/mod_settings_field', typeName=SETTINGS, field=name, action='get')['value']
         require(str(got).lower() == str(value).lower(), 'setting did not stick: '+name)
+
+    def quiet_controls():
+        # The existing isolated-mechanism profile's debug flags; preserve their
+        # pre-run values across reloads. No needs, damage or governor stop is bypassed.
+        fields = ('enableStoryteller', 'enableRandomMentalStates', 'enableRandomDiseases')
+        receipt['isolation_controls'] = list(fields)
+        for name in fields:
+            if name not in prior_debug:
+                values = {x['name']: x['value'] for x in call('jawa/debug_settings', action='list').get('fields', [])}
+                require(name in values, 'unreadable prior debug field '+name)
+                prior_debug[name] = values[name]
+            r = call('jawa/debug_settings', action='set', field=name, value=False)
+            require(r.get('valueAfter') is False, 'quiet debug field did not stick: '+name)
 
     def state(pid):
         return kv(sc('State', pid))
@@ -120,6 +134,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         saved = True
         reload_snapshot()
         receipt['before'] = sc('Rect', RECT)
+        quiet_controls()
         # Every map/setting change follows the snapshot. A failure anywhere restores it.
         for name, value in [('superdeepRoomsEnabled', True), ('captureDownEnabled', True),
                             ('wardenFromLipEnabled', True), ('superdeepCaptureEnabled', True),
@@ -250,6 +265,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         if save_occupied is not None:
             receipt['occupied_save'] = save_occupied()
             receipt['occupied_load'] = load_occupied()
+            quiet_controls()
             step(2500)
             receipt['occupied_reload'] = [state(p) for p in raiders]
             require(all(s['kept'] == 'True' for s in receipt['occupied_reload']),
@@ -328,6 +344,14 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
                 got = call('jawa/mod_settings_field', typeName=SETTINGS, field=name, action='get')['value']
                 receipt['restore']['settings'][name] = {'before': value, 'after': got}
                 require(str(got).lower() == str(value).lower(), 'setting not restored: '+name)
+            except Exception as e:
+                errors.append(repr(e))
+        receipt['restore']['debug'] = {}
+        for name, value in prior_debug.items():
+            try:
+                r = call('jawa/debug_settings', action='set', field=name, value=value)
+                receipt['restore']['debug'][name] = {'before': value, 'after': r.get('valueAfter')}
+                require(r.get('valueAfter') is value, 'debug field not restored: '+name)
             except Exception as e:
                 errors.append(repr(e))
         try:
