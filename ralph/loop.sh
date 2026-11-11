@@ -11,7 +11,9 @@ REVIEW_AT=${REVIEW_AT:-10000000}
 OFFLINE_AT=${OFFLINE_AT:-3000000}
 say() { echo "$(date '+%H:%M:%S PST') $*" >> "$EVENTS"; }
 tally() { python3 ralph/tally.py "$LOGS"; }
-game_busy() { systemctl --user is-active --quiet rm-ralph-graffiti || systemctl --user is-active --quiet rm-ralph-gss; }
+# The Archmagi driver lock (driver_lock.py, the one host_guard/testq/Codex rounds take) held by a live process also means busy.
+driver_busy() { python3 -c "import sys; sys.path.insert(0,'$PWD/src/RimMandrake/rimflow'); import driver_lock as D; sys.exit(0 if D.status(D.lock_path()).get('state')=='HELD' else 1)" 2>/dev/null; }
+game_busy() { systemctl --user is-active --quiet rm-ralph-graffiti || systemctl --user is-active --quiet rm-ralph-gss || driver_busy; }
 
 n=$(ls "$LOGS"/pass_*.jsonl 2>/dev/null | wc -l)
 say "LOOP start, $n passes on record, $(tally) tokens"
