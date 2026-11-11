@@ -415,10 +415,11 @@ def main():
         r.rec['assembly_sha256'] = sha(dll)
         r.rec['running'] = r.call('jawa/running_mods', assembly='RM_HugeThings', details=True)
         ids = [x.lower() for x in r.rec['running'].get('packageIds', [])]
-        require(len(ids) == len(set(ids)) == 16 and all(x in ids for x in
+        require(len(ids) == len(set(ids)) == 17 and all(x in ids for x in
                 ('ludeon.rimworld', 'ludeon.rimworld.royalty', 'ludeon.rimworld.ideology', 'ludeon.rimworld.biotech',
                  'ludeon.rimworld.anomaly', 'ludeon.rimworld.odyssey', 'mandrake.rm.biomes',
-                 'mandrake.rm.hugethings', 'mandrake.rm.hugethingstestraces', 'mandrake.rm.flowworks', 'mandrake.rm.patches')),
+                 'mandrake.rm.hugethings', 'mandrake.rm.hugethingstestraces', 'mandrake.rm.flowworks', 'mandrake.rm.patches',
+                 'oskarpotocki.vanillafactionsexpanded.core')),
                 'wrong loaded all-five-DLC tier')
         matches = r.rec['running'].get('assembly', {}).get('matches', [])
         require(len(matches) == 1 and matches[0].get('sha256') == sha(dll), 'loaded DLL differs from this clone')
