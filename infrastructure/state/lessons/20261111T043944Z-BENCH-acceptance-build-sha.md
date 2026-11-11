@@ -1,0 +1,2 @@
+A live acceptance receipt for a repaired artifact does not discharge criteria registered against the old build. rimflow verify correctly records but refuses to count a different SHA. Publish the tested source/evidence, update implemented with the unchanged owed criteria and the new published artifact SHA, then record each level-tagged pass. Do not relabel the receipt as the old artifact. Codex pit live run: old a189b9b03e8e, tested 55416620b46b; the first two immutable runs remain non-counting history.
+home: src/RimMandrake/rimflow/roles/runner_options.md

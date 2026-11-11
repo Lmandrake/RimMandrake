@@ -3,14 +3,14 @@ r"""preflight_bridge.py -- the ordered, fail-fast pre-flight before a cold load 
 
     python3 src/RimMandrake/Utils/preflight_bridge.py --tier full            # offline, before launch: GREEN / NO-GO
     python3 src/RimMandrake/Utils/preflight_bridge.py --tier minimal --purpose menu
-    python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch, read-only, files + OS only
+    python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch, read-only files/OS + running-mods bridge probe
     ... [--modset <modset_builder tier>] [--deep] [--all] [--json out.json] [--seat FOUNDRY]
 
 WHY. Every row of bridge_debugging_system.md section 4 that cost hours (MODLIST, STALE, CONTENT load killers, HANG
 wedgers) was knowable before the 15-minute cold load was spent. GPT's review (Transient/
 foundry_bridge_system_review_gpt_20261010.md section 3) gives the order; this is the one implementation of it.
 Reuse, not a parallel system: run_identity (deploy fingerprint), effective_def_lint (patched-tree load killers),
-check_load (running list from RimDefDump's manifest), launch_gate (missing types), belt_watchdog (wedgers).
+check_load/running_mods_snapshot (actual ordered running list), launch_gate (missing types), belt_watchdog (wedgers).
 
 CONTRACT
   * Every check prints PASS / FAIL / UNMEASURED / UNSUPPORTED, its cost, and a reason. "Could not ask" is
