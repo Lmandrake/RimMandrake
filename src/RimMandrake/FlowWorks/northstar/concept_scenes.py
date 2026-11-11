@@ -117,9 +117,12 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         return ids[0]
 
     def care(worker, pid, mode, start=False):
+        if start:
+            call('jawa/stop_job', pawnId=worker, mode='stopall')
         r = kv(sc('Care', ';'.join((worker, pid, mode, 'start' if start else 'ask'))))
         if start and r.get('job') != 'none':
             require(r.get('ordered') == 'True', 'care job was not accepted: '+str(r))
+            require(state(worker).get('job') == r['job'], 'care job was queued rather than started: '+str(r))
         return r
 
     receipt['relative'] = relative

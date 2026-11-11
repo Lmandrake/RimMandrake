@@ -20,6 +20,7 @@ class Bridge:
         self.original_debug = dict(self.debug)
         self.pawns = {}
         self.hostile_ids = set()
+        self.ready_workers = set()
         self.tick = 100
         self.beds = []
         self.depth = 0
@@ -36,6 +37,7 @@ class Bridge:
         self.baseline = True
         self.pawns.clear()
         self.hostile_ids.clear()
+        self.ready_workers.clear()
         self.beds.clear()
         if self.fault == 'bad_snapshot' and self.loads > 1:
             self.baseline = False
@@ -69,7 +71,13 @@ class Bridge:
                 w, p, mode, start = a.split(';')
                 job = {'bed':'none','feed':'FeedPatient','deliver':'DeliverFood','tend':'TendPatient'}[mode]
                 if self.fault == 'no_feed': job = 'none'
-                if start == 'start' and job != 'none': self.pawns[p]['food'] = '0.9'
+                if start == 'start' and job != 'none':
+                    if w in self.ready_workers:
+                        self.pawns[p]['food'] = '0.9'
+                        self.pawns[w]['job'] = job
+                        self.ready_workers.discard(w)
+                    else:
+                        self.pawns[w]['job'] = 'Wait'  # accepted does not mean started
                 r = 'CARE kind='+mode+' job='+job
                 if start == 'start': r += ' ordered='+('False' if self.fault == 'no_order' else 'True')
             return {'success':True, 'result':r}
@@ -79,6 +87,10 @@ class Bridge:
                 v = kw['value']
                 self.settings[f] = v.lower() == 'true' if v.lower() in ('true','false') else v
             return {'success':True,'value':self.settings.get(f, False)}
+        if tool == 'jawa/stop_job':
+            assert kw['mode'] == 'stopall', 'unknown stop_job mode'
+            self.ready_workers.add(kw['pawnId'])
+            self.pawns[kw['pawnId']]['job'] = 'none'
         if tool == 'jawa/set_work_priority':
             assert kw['workType'] in ('Warden', 'Doctor', 'Patient', 'PatientBedRest'), 'unknown work type'
             if self.fault == 'incapable_worker' or (self.fault == 'first_incapable' and kw['pawnId'] == 'Pawn2'):

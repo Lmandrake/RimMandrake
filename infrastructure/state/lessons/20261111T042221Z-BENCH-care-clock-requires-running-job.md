@@ -1,0 +1,2 @@
+TryTakeOrderedJob returning true proves acceptance, not immediate execution; care clocks must verify the actual current job. The D4 run ended at Ingest without nutrition at its cutoff, while a loaded isolated D4 probe ate within 1000 ticks. The driver now stops prior fixture work with the verified jawa/stop_job mode stopall and checks CurJobDef equals the work giver job before advancing. This rules out queued prior work as a timing confound; it does not claim an unmeasured cause for the earlier failure.
+home: src/RimMandrake/FlowWorks/northstar/concept_scenes.py
