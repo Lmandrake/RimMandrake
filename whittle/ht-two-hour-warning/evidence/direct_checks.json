@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "initializer": true,
+    "scribe": true,
+    "fallback": true,
+    "slider": true,
+    "validation_default": true,
+    "warning_label": true,
+    "other_provisional_labels": true,
+    "reset_uses_initializer_snapshot": true,
+    "py_compile": true
+  },
+  "ok": true
+}

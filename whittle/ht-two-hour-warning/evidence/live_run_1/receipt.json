@@ -1,0 +1,153 @@
+{
+  "started_utc": "2026-11-11T09:42:59.518782+00:00",
+  "commands": [
+    {
+      "name": "guard_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.05817842483520508
+    },
+    {
+      "name": "take",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "take",
+        "--host",
+        "stevedesktop",
+        "--idle-ok",
+        "--for",
+        "HT: RIMMANDRAKE_SET_HUGETHINGS_TREMORS_TWO_HOURS"
+      ],
+      "rc": 0,
+      "elapsed_s": 7.760267019271851
+    },
+    {
+      "name": "lease_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.261049747467041
+    },
+    {
+      "name": "down_before_deploy",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_s": 6.7567572593688965
+    },
+    {
+      "name": "deploy",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "HugeThings",
+        "--apply"
+      ],
+      "rc": 0,
+      "elapsed_s": 44.80918741226196
+    },
+    {
+      "name": "preflight_offline",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+        "--deep",
+        "--all",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-two-hour-warning/evidence/live_run_1/preflight_offline.json"
+      ],
+      "rc": 1,
+      "elapsed_s": 10.452211618423462
+    },
+    {
+      "name": "down_finally",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.7194912433624268
+    },
+    {
+      "name": "release",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 10.199713706970215
+    },
+    {
+      "name": "lease_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.700575828552246
+    },
+    {
+      "name": "guard_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.07387304306030273
+    }
+  ],
+  "ok": false,
+  "inherited_driver": {
+    "state": "HELD",
+    "seat": "BENCH",
+    "purpose": "Codex HugeThings drain loop (owner order 2026-11-11)",
+    "identity": {
+      "pid": 2765101,
+      "start": 79930.15,
+      "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+      "platform": "wsl",
+      "host": "SteveDesktop"
+    },
+    "generation": 1390,
+    "heartbeat": "2026-11-11T09:17:11Z",
+    "how": "holder process pid 2765101 alive",
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "error": "preflight_offline has required nonpasses: [('O14', 'UNMEASURED'), ('O13', 'FAIL')]",
+  "finished_utc": "2026-11-11T09:44:23.312475+00:00"
+}

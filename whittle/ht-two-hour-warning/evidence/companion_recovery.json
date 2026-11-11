@@ -1,0 +1,11 @@
+{
+  "installed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+  "installed_sha256": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+  "embedded_source_hash": "48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea",
+  "build_commit": "54acba048edad401d513a425f4d8d8abffd6a094",
+  "this_clone_worktree_source_hash": "48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea",
+  "build_commit_source_hash": "48258bf21f617ff5b51bfe3951b4b3f20132ba6353887b5a81a34e60e03ad6ea",
+  "repo_artifact_exists": false,
+  "recovered_path": "src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+  "recovered_sha256": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f"
+}

@@ -1,0 +1,10 @@
+{
+  "status": "NOT_RUN",
+  "level_sought": "L1",
+  "reason": "required offline O13 FAIL; no allowed exception for FlowWorks/GimmeSomeSlack drift",
+  "probe_command_present": false,
+  "live_json_exists": false,
+  "settings_mutation_by_probe": false,
+  "restoration": "not needed: field probe never ran",
+  "next_round_live_copy": "not written: no actual live.json to copy"
+}

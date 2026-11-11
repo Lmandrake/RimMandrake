@@ -1,0 +1,17 @@
+staging src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj -> D:\RimTest\data\build\HugeThings
+  src/RimMandrake/HugeThings/Source/
+  src/RimMandrake/_Shared/DrawnExtent/
+  src/RimMandrake/_Shared/SettingsKit/
++ dotnet.exe build D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj -c Release
+  Determining projects to restore...
+  Restored D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj (in 3.45 sec).
+D:\RimTest\data\build\HugeThings\src\Directory.Build.props(22,5): error : 0Harmony.dll not found: tried C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\1.6\Assemblies and \Current\Assemblies (HarmonyDll='C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll'). Fix src/Directory.Build.props or pass /p:HarmonyDll=... [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+
+Build FAILED.
+
+D:\RimTest\data\build\HugeThings\src\Directory.Build.props(22,5): error : 0Harmony.dll not found: tried C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\1.6\Assemblies and \Current\Assemblies (HarmonyDll='C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll'). Fix src/Directory.Build.props or pass /p:HarmonyDll=... [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:04.26
+BUILD FAILED (1) in D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj

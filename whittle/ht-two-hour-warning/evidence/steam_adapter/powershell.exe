@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh
+export RIMFLOW_SEAT=BENCH RM_CODEX_SIDE=wsl
+set -euo pipefail
+args=("$@")
+last=$((${#args[@]}-1))
+if [[ "${args[$last]}" == *"Start-Process -FilePath '*RimWorldWin64.exe'"* ]]; then
+    echo 'REFUSED: unexpected wildcard launch command' >&2
+    exit 64
+fi
+expected="\$ProgressPreference='SilentlyContinue'; Start-Process -FilePath 'D:\\SteamLibrary\\steamapps\\common\\RimWorld\\RimWorldWin64.exe' -WorkingDirectory 'D:\\SteamLibrary\\steamapps\\common\\RimWorld'"
+if [[ "${args[$last]}" == *Start-Process*RimWorldWin64.exe* ]]; then
+    if [[ "${args[$last]}" != "$expected" ]]; then
+        echo 'REFUSED: unknown game launch command; no bare executable launch allowed' >&2
+        exit 64
+    fi
+    echo 'STEAM_ADAPTER: mandated rw_game.sh launch routed to steam://rungameid/294100' >&2
+    args[$last]="\$ProgressPreference='SilentlyContinue'; Start-Process 'steam://rungameid/294100'"
+fi
+exec "${HT_POWERSHELL_REAL:?}" "${args[@]}"

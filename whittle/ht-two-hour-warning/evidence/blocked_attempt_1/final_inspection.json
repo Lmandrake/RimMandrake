@@ -1,0 +1,266 @@
+{
+  "inspection_utc": "2026-11-11T09:47:33.081984+00:00",
+  "published_test_sha": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "original_source_commit": "54498cc0e84cb828dc4cb47f51e7571137fbfa69",
+  "original_build_commit": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "published_ancestor_rc": 0,
+  "actual_scoped_bytes": {
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83",
+    "src/RimMandrake/HugeThings/validation.py": "ea764e957fd15ae64b8a473fb40ed948faf0472ce7b6034d1c18c9afcdc384b5",
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228",
+    "src/RimMandrake/HugeThings/northstar/warning_defaults_live.py": "6ed9b55f650b6b6acf90acfd52be0bb880eb08ade19ef9c153a21253dc0c3406",
+    "infrastructure/state/items/TITAN_CAMPS_SCAVENGERS_EVENTS_1.md": "0eb171bbca1ad71abaada9c73b5f4b7b5f338864accd42bd2d2b0c6673713426",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d"
+  },
+  "same_bytes_as_test_sha": true,
+  "warning_source_lines": [
+    "public static float titanEventWarningHours = 2f;",
+    "Scribe_Values.Look(ref titanEventWarningHours, \"titanEventWarningHours\", 2f);",
+    "titanEventWarningHours = RM_TitanicKernel.SaneSetting(titanEventWarningHours, 0.5f, 24f, 2f);",
+    "if (Group(list, \"Titan events\", RimMandrake.Shared.SettingScope.NextPulse, new[] { \"titanEventsEnabled\", \"titanEventWarningHours\" }))",
+    "list.Label(\"RM_HugeThings_TitanWarning\".Translate(titanEventWarningHours.ToString(\"0.0\")));",
+    "titanEventWarningHours = list.Slider(titanEventWarningHours, 0.5f, 24f);"
+  ],
+  "direct_checks": {
+    "checks": {
+      "initializer": true,
+      "scribe": true,
+      "fallback": true,
+      "slider": true,
+      "validation_default": true,
+      "warning_label": true,
+      "other_provisional_labels": true,
+      "reset_uses_initializer_snapshot": true,
+      "py_compile": true
+    },
+    "ok": true
+  },
+  "offline_exit_codes": {
+    "selftests_frozen.rc": "0",
+    "static.rc": "0",
+    "build_stevedesktop.rc": "0",
+    "preflight_dependency_retry.rc": "1"
+  },
+  "preflight_rows": [
+    {
+      "id": "O02",
+      "name": "bridge_lease",
+      "required": true,
+      "status": "PASS",
+      "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+      "cost_est_s": 0.1,
+      "took_s": 0.0,
+      "prevents": "#22 #50 two drivers",
+      "evidence": {}
+    },
+    {
+      "id": "O07",
+      "name": "known_wedgers",
+      "required": true,
+      "status": "PASS",
+      "reason": "no known wedger for purpose test",
+      "cost_est_s": 0.1,
+      "took_s": 0.69,
+      "prevents": "#61 RealFoW",
+      "evidence": {}
+    },
+    {
+      "id": "O03",
+      "name": "disk_space",
+      "required": true,
+      "status": "PASS",
+      "reason": "free GB {'C': 25.1, 'D': 10020.1}",
+      "cost_est_s": 0.2,
+      "took_s": 0.0,
+      "prevents": "O05",
+      "evidence": {
+        "free_gb": {
+          "C": 25.1,
+          "D": 10020.1
+        }
+      }
+    },
+    {
+      "id": "O06",
+      "name": "ship_coverage",
+      "required": false,
+      "status": "PASS",
+      "reason": "not the full tier: a test list is deliberately partial",
+      "cost_est_s": 0.3,
+      "took_s": 0.0,
+      "prevents": "P-a 14 missing",
+      "evidence": {}
+    },
+    {
+      "id": "O04",
+      "name": "modsconfig_intent",
+      "required": true,
+      "status": "PASS",
+      "reason": "ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches (14 mods, ordered)",
+      "cost_est_s": 0.5,
+      "took_s": 0.71,
+      "prevents": "#19 #47 #54 wrong list",
+      "evidence": {}
+    },
+    {
+      "id": "O08",
+      "name": "player_log_archive",
+      "required": true,
+      "status": "PASS",
+      "reason": "already archived: /mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T094310_f3be9f656bac.log",
+      "cost_est_s": 1,
+      "took_s": 0.01,
+      "prevents": "#26 stale log generation",
+      "evidence": {
+        "archive": "/mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T094310_f3be9f656bac.log"
+      }
+    },
+    {
+      "id": "O09",
+      "name": "companion_match",
+      "required": true,
+      "status": "PASS",
+      "reason": "deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)",
+      "cost_est_s": 1,
+      "took_s": 0.21,
+      "prevents": "#51 #57 stale DLL, P-c",
+      "evidence": {
+        "repo_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+        "game_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+        "repo_build": "54acba048eda",
+        "game_build": "54acba048eda"
+      }
+    },
+    {
+      "id": "O11",
+      "name": "bridge_lint_fresh",
+      "required": false,
+      "status": "PASS",
+      "reason": "lint snapshot covers all 431 declared tools (0.0 d old)",
+      "cost_est_s": 1,
+      "took_s": 0.01,
+      "prevents": "P-d",
+      "evidence": {}
+    },
+    {
+      "id": "O12",
+      "name": "src_load_killers",
+      "required": true,
+      "status": "PASS",
+      "reason": "BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include: clean",
+      "cost_est_s": 1,
+      "took_s": 1.43,
+      "prevents": "#33 alert leaf, BiomeWorker rivers",
+      "evidence": {}
+    },
+    {
+      "id": "O05",
+      "name": "list_sane",
+      "required": true,
+      "status": "PASS",
+      "reason": "14 ids, none composed/duplicate/uninstalled",
+      "cost_est_s": 1.5,
+      "took_s": 0.39,
+      "prevents": "#58 #80 member ids",
+      "evidence": {}
+    },
+    {
+      "id": "O01",
+      "name": "game_down",
+      "required": true,
+      "status": "PASS",
+      "reason": "no RimWorldWin64 process",
+      "cost_est_s": 2,
+      "took_s": 0.51,
+      "prevents": "#21 two processes, #39 old log",
+      "evidence": {}
+    },
+    {
+      "id": "O10",
+      "name": "dependency_fp",
+      "required": false,
+      "status": "UNMEASURED",
+      "reason": "found only ['0Harmony.dll', 'Assembly-CSharp.dll', 'HarmonyMod.dll'] -- RBS/Harmony/game assemblies not where expected",
+      "cost_est_s": 2,
+      "took_s": 0.17,
+      "prevents": "prediction 14/18",
+      "evidence": {}
+    },
+    {
+      "id": "O14",
+      "name": "effective_def_lint",
+      "required": true,
+      "status": "PASS",
+      "reason": "clean | /mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['donor_types']",
+      "cost_est_s": 30,
+      "took_s": 37.56,
+      "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+      "evidence": {}
+    },
+    {
+      "id": "O13",
+      "name": "deploy_match",
+      "required": true,
+      "status": "FAIL",
+      "reason": "2 of 5 mods (1221 files) differ from the deployed copy: [\"FlowWorks(10: ['Patches/Scenarios_StartingWaterBottles.xml', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png'])\", \"GimmeSomeSlack(46: ['Assemblies/RimMandrakeGimmeSomeSlack.dll', 'Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash', 'Defs/Aerial/RM_AerialRestring.xml'])\"]",
+      "cost_est_s": 60,
+      "took_s": 2.77,
+      "prevents": "#31 #46 #52 #57 deploy drift",
+      "evidence": {
+        "drift": [
+          "FlowWorks(10: ['Patches/Scenarios_StartingWaterBottles.xml', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png'])",
+          "GimmeSomeSlack(46: ['Assemblies/RimMandrakeGimmeSomeSlack.dll', 'Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash', 'Defs/Aerial/RM_AerialRestring.xml'])"
+        ]
+      }
+    }
+  ],
+  "live": {
+    "status": "NOT_RUN",
+    "level_sought": "L1",
+    "reason": "required offline O13 FAIL; no allowed exception for FlowWorks/GimmeSomeSlack drift",
+    "probe_command_present": false,
+    "live_json_exists": false,
+    "settings_mutation_by_probe": false,
+    "restoration": "not needed: field probe never ran",
+    "next_round_live_copy": "not written: no actual live.json to copy"
+  },
+  "cleanup": {
+    "lease_after": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger \u2014 take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n",
+    "guard_after": {
+      "state": "FREE",
+      "generation": 1390,
+      "host": "stevedesktop",
+      "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+    }
+  },
+  "raw_evidence_sha256": {
+    "whittle/ht-two-hour-warning/evidence/direct_checks.json": "bb89ac224c63a204af3ba3c7a2b9a4a427aef1ca09983b169007f8b95f4a1d4e",
+    "whittle/ht-two-hour-warning/evidence/selftests.stdout": "a1feef1f32076ae9c3067939e2c4ca4642827422faec57474a225bc6e404e5e1",
+    "whittle/ht-two-hour-warning/evidence/selftests.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-two-hour-warning/evidence/selftests_frozen.stdout": "c11c5761393b542f0580f40e58d9b3d01bd94926a55eea8ab96607a4733b4962",
+    "whittle/ht-two-hour-warning/evidence/selftests_frozen.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-two-hour-warning/evidence/static.stdout": "b5707dbe8327c7700b5cdb253f2ca2e2bd2cbbd49298e6c9f04f5fc238dc65a6",
+    "whittle/ht-two-hour-warning/evidence/static.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-two-hour-warning/evidence/build.stdout": "9754c4ab6ffe6ce720fbbebc09e762a6356b72498256df9053dd818fd8127e80",
+    "whittle/ht-two-hour-warning/evidence/build.rc": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "whittle/ht-two-hour-warning/evidence/build_retry.stdout": "2ff6c12ca84ead7881a312e2a910fe6bbdc5f4412c5b5d84a9d3923b6e75e1aa",
+    "whittle/ht-two-hour-warning/evidence/build_retry.rc": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "whittle/ht-two-hour-warning/evidence/build_stevedesktop.stdout": "ad55fb3948dd1a587898f7633e14e8bf8d1f664be5c99506ec63eaba3e7fd0e0",
+    "whittle/ht-two-hour-warning/evidence/build_stevedesktop.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-two-hour-warning/evidence/publish_build.stdout": "fba81b9b86ac541870f4f8d17ae3194569fd9ff598f4cc5769177030de18c374",
+    "whittle/ht-two-hour-warning/evidence/publish_build.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-two-hour-warning/evidence/tested_identity.json": "d509106dff7cc75b36ee03d1ea5ff17e7714c3204f2716bd3808650320d6311f",
+    "whittle/ht-two-hour-warning/evidence/companion_identity_before.json": "988129dbe3bb65ed5c468feaff0c04f56f0f950f119a31fd98626f0ddb6e2202",
+    "whittle/ht-two-hour-warning/evidence/companion_recovery.json": "932e99c43f916fa6ff4dadba89667e2a774316514817c5bf9f9d0d686147ac87",
+    "whittle/ht-two-hour-warning/evidence/live_run_1/receipt.json": "e6e7a7b9cf2102451ce068099eee73ae6e8c3a406caae21ca7f8d2317955b2a6",
+    "whittle/ht-two-hour-warning/evidence/live_run_1/deploy.stdout": "78791c5b31b636fcfb295b07258befe422fce61a492c8ac3c1b5c7a8ba7421cd",
+    "whittle/ht-two-hour-warning/evidence/live_run_1/preflight_offline.json": "8d9af6e3a178768b68242a8c0d546b56ebfeaa3d580233d710f68b3529e29211",
+    "whittle/ht-two-hour-warning/evidence/live_run_1/lease_after.stdout": "caecbc5c0233bf9dcd72550607f9db44f6817d9310dd67f6bb876afaa524efc0",
+    "whittle/ht-two-hour-warning/evidence/live_run_1/guard_after.stdout": "4b1e489d8a81636390db902ff33eedda1ebb43ff43a21aead93e5998862060d5",
+    "whittle/ht-two-hour-warning/evidence/preflight_dependency_retry.json": "6bf82ea92c14f622182faa11f0ffce88e2e44b7b6d32ffaf6dbdbfe092914bfe",
+    "whittle/ht-two-hour-warning/evidence/preflight_dependency_retry.rc": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "whittle/ht-two-hour-warning/evidence/live_not_run.json": "f1706714aeb083ce69ce70e13bb9daeb84b2555abd934f70fa7984afb7f763e1",
+    "whittle/ht-two-hour-warning/evidence/previous_player_log_inspection.json": "c48e9f9d98f1df8f9eed1b5b7850042c10012feadc9a389219ff5ecce5941716"
+  }
+}

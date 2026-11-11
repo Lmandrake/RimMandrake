@@ -1,0 +1,24 @@
+{
+  "tested_sha": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "source_commit": "54498cc0e84cb828dc4cb47f51e7571137fbfa69",
+  "build_commit": "f3c6f9346befdd2fd1bdbf14064a09f6291270f2",
+  "published_ancestor_rc": 0,
+  "bytes": {
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83",
+    "src/RimMandrake/HugeThings/validation.py": "ea764e957fd15ae64b8a473fb40ed948faf0472ce7b6034d1c18c9afcdc384b5",
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": "115ff972df622b6894ea56027e2efeef2c5392f0e3a858fe0d5ea3f44d4af228",
+    "src/RimMandrake/HugeThings/northstar/warning_defaults_live.py": "6ed9b55f650b6b6acf90acfd52be0bb880eb08ade19ef9c153a21253dc0c3406",
+    "infrastructure/state/items/TITAN_CAMPS_SCAVENGERS_EVENTS_1.md": "0eb171bbca1ad71abaada9c73b5f4b7b5f338864accd42bd2d2b0c6673713426",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d"
+  },
+  "git_blob_matches": {
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": true,
+    "src/RimMandrake/HugeThings/validation.py": true,
+    "src/RimMandrake/HugeThings/Languages/English/Keyed/RM_HugeThings.xml": true,
+    "src/RimMandrake/HugeThings/northstar/warning_defaults_live.py": true,
+    "infrastructure/state/items/TITAN_CAMPS_SCAVENGERS_EVENTS_1.md": true,
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": true,
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": true
+  }
+}

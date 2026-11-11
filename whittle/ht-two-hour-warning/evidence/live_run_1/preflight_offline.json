@@ -1,0 +1,181 @@
+{
+ "when": "2026-11-11T09:44:10Z",
+ "mode": "offline",
+ "tier": "quicktest",
+ "modset": "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+ "purpose": "test",
+ "verdict": "NO-GO",
+ "rows": [
+  {
+   "id": "O02",
+   "name": "bridge_lease",
+   "required": true,
+   "status": "PASS",
+   "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+   "cost_est_s": 0.1,
+   "took_s": 0.0,
+   "prevents": "#22 #50 two drivers",
+   "evidence": {}
+  },
+  {
+   "id": "O07",
+   "name": "known_wedgers",
+   "required": true,
+   "status": "PASS",
+   "reason": "no known wedger for purpose test",
+   "cost_est_s": 0.1,
+   "took_s": 1.0,
+   "prevents": "#61 RealFoW",
+   "evidence": {}
+  },
+  {
+   "id": "O03",
+   "name": "disk_space",
+   "required": true,
+   "status": "PASS",
+   "reason": "free GB {'C': 25.1, 'D': 10020.1}",
+   "cost_est_s": 0.2,
+   "took_s": 0.0,
+   "prevents": "O05",
+   "evidence": {
+    "free_gb": {
+     "C": 25.1,
+     "D": 10020.1
+    }
+   }
+  },
+  {
+   "id": "O06",
+   "name": "ship_coverage",
+   "required": false,
+   "status": "PASS",
+   "reason": "not the full tier: a test list is deliberately partial",
+   "cost_est_s": 0.3,
+   "took_s": 0.0,
+   "prevents": "P-a 14 missing",
+   "evidence": {}
+  },
+  {
+   "id": "O04",
+   "name": "modsconfig_intent",
+   "required": true,
+   "status": "PASS",
+   "reason": "ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches (14 mods, ordered)",
+   "cost_est_s": 0.5,
+   "took_s": 0.98,
+   "prevents": "#19 #47 #54 wrong list",
+   "evidence": {}
+  },
+  {
+   "id": "O08",
+   "name": "player_log_archive",
+   "required": true,
+   "status": "PASS",
+   "reason": "archived /mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T094310_f3be9f656bac.log",
+   "cost_est_s": 1,
+   "took_s": 0.07,
+   "prevents": "#26 stale log generation",
+   "evidence": {
+    "archive": "/mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T094310_f3be9f656bac.log"
+   }
+  },
+  {
+   "id": "O09",
+   "name": "companion_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)",
+   "cost_est_s": 1,
+   "took_s": 0.21,
+   "prevents": "#51 #57 stale DLL, P-c",
+   "evidence": {
+    "repo_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "game_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "repo_build": "54acba048eda",
+    "game_build": "54acba048eda"
+   }
+  },
+  {
+   "id": "O11",
+   "name": "bridge_lint_fresh",
+   "required": false,
+   "status": "PASS",
+   "reason": "lint snapshot covers all 431 declared tools (0.0 d old)",
+   "cost_est_s": 1,
+   "took_s": 0.01,
+   "prevents": "P-d",
+   "evidence": {}
+  },
+  {
+   "id": "O12",
+   "name": "src_load_killers",
+   "required": true,
+   "status": "PASS",
+   "reason": "BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include: clean",
+   "cost_est_s": 1,
+   "took_s": 1.7,
+   "prevents": "#33 alert leaf, BiomeWorker rivers",
+   "evidence": {}
+  },
+  {
+   "id": "O05",
+   "name": "list_sane",
+   "required": true,
+   "status": "PASS",
+   "reason": "14 ids, none composed/duplicate/uninstalled",
+   "cost_est_s": 1.5,
+   "took_s": 0.53,
+   "prevents": "#58 #80 member ids",
+   "evidence": {}
+  },
+  {
+   "id": "O01",
+   "name": "game_down",
+   "required": true,
+   "status": "PASS",
+   "reason": "no RimWorldWin64 process",
+   "cost_est_s": 2,
+   "took_s": 0.51,
+   "prevents": "#21 two processes, #39 old log",
+   "evidence": {}
+  },
+  {
+   "id": "O10",
+   "name": "dependency_fp",
+   "required": false,
+   "status": "UNMEASURED",
+   "reason": "found only ['0Harmony.dll', 'Assembly-CSharp.dll', 'HarmonyMod.dll'] -- RBS/Harmony/game assemblies not where expected",
+   "cost_est_s": 2,
+   "took_s": 0.27,
+   "prevents": "prediction 14/18",
+   "evidence": {}
+  },
+  {
+   "id": "O14",
+   "name": "effective_def_lint",
+   "required": true,
+   "status": "UNMEASURED",
+   "reason": "effective_def_lint wrote no report (exit 1): dex-ht/src/RimMandrake/Utils/effective_def_lint.py\", line 267, in build_and_check\n    import costlist_resolve_check as crc\n  File \"/home/mandrake/rm/codex-ht/src/RimMandrake/Utils/costlist_resolve_check.py\", line 22, in <module>\n    from lxml import etree\nModuleNotFoundError: No module named 'lxml'\n",
+   "cost_est_s": 30,
+   "took_s": 1.63,
+   "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+   "evidence": {}
+  },
+  {
+   "id": "O13",
+   "name": "deploy_match",
+   "required": true,
+   "status": "FAIL",
+   "reason": "2 of 5 mods (1221 files) differ from the deployed copy: [\"FlowWorks(10: ['Patches/Scenarios_StartingWaterBottles.xml', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png'])\", \"GimmeSomeSlack(46: ['Assemblies/RimMandrakeGimmeSomeSlack.dll', 'Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash', 'Defs/Aerial/RM_AerialRestring.xml'])\"]",
+   "cost_est_s": 60,
+   "took_s": 3.4,
+   "prevents": "#31 #46 #52 #57 deploy drift",
+   "evidence": {
+    "drift": [
+     "FlowWorks(10: ['Patches/Scenarios_StartingWaterBottles.xml', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Steel.png', 'Textures/Things/Building/FlowWorks/Canals/LadderRig/RM_LadderCap_Wood.png'])",
+     "GimmeSomeSlack(46: ['Assemblies/RimMandrakeGimmeSomeSlack.dll', 'Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash', 'Defs/Aerial/RM_AerialRestring.xml'])"
+    ]
+   }
+  }
+ ]
+}
