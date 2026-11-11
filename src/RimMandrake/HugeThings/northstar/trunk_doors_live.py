@@ -15,6 +15,7 @@ import re
 import sys
 import time
 import uuid
+import xml.etree.ElementTree as ET
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
@@ -82,7 +83,7 @@ class Run:
         if field not in self.prior:
             self.prior[field] = self.field(field)
         self.call('jawa/mod_settings_field', typeName=SETTINGS, field=field, action='set', value=str(value))
-        require(self.field(field).lower() == str(value).lower(), 'setting did not stick '+field)
+        require((float(self.field(field)) == float(value) if field == 'plantTrunkScale' else self.field(field).lower() == str(value).lower()), 'setting did not stick '+field)
 
     def ticks(self, count):
         start = self.call('jawa/site_state')['ticksGame']
@@ -150,6 +151,26 @@ class Run:
         require(len(rows) == 1, 'lost Thing '+tid)
         return rows[0]
 
+    def supplement(self):
+        query = self.call('jawa/designate_batch', action='query', limit=10000)
+        require(query.get('truncated') is False and query['total'] == query['returned'], 'incomplete designation census')
+        rows = [d for d in query['designations'] if 90 <= d['x'] < 186 and 90 <= d['z'] < 120]
+        observation = 'CODEX_TrunkDoors_Observe_'+uuid.uuid4().hex[:12]
+        saved = T.save_site(self.call, observation, G.SAVES)
+        self.rec.setdefault('supplement_saves', []).append(saved)
+        path = Path(G.SAVES)/(observation+'.rws')
+        growth = []
+        for thing in ET.parse(path).getroot().iter('thing'):
+            if thing.find('growth') is None:
+                continue
+            xyz = list(map(int, re.findall(r'-?\d+', thing.findtext('pos', ''))))
+            if len(xyz) == 3 and 90 <= xyz[0] < 186 and 90 <= xyz[2] < 120:
+                growth.append(dict(id=thing.findtext('id'), pos=thing.findtext('pos'),
+                                   growth=thing.findtext('growth'), age=thing.findtext('age')))
+        return dict(designations=sorted(rows, key=lambda d: json.dumps(d, sort_keys=True)),
+                    plant_growth=sorted(growth, key=lambda d: d['id']))
+
+
     def scenario(self, tx):
         require(not self.pawns(), 'SITE: target rectangle already contains pawns; refuse clearing')
         self.call('jawa/set_roof_batch', ops='None:'+RECT)
@@ -171,6 +192,7 @@ class Run:
         bench = self.things('TableStonecutter', '96,106,5,5')
         require(len(door) == len(bench) == 1, 'workshop door/bench not built')
         self.rec['door_before'], self.rec['bench_before'] = door[0], bench[0]
+        self.rec['walls_before'] = self.things('Wall')
         cutter = None
         self.rec['cutter_candidates'] = []
         for attempt in range(6):
@@ -194,6 +216,7 @@ class Run:
         self.call('jawa/destroy_batch', categories='Buildings', rects='99,101,2,1')
         require(not self.things(None, '99,101,2,1') and self.reach(cutter, 100, 97), 'HARNESS: removing control walls did not restore route')
         self.rec['geometry_control'] = dict(blocked=obstruction, restored_access=True)
+        self.rec['failure_stage'] = 'HARNESS_natural_growth'
         plant = self.stage_plant(100, 100)
         self.rec['plant_id'] = plant
         young = self.sc('DebugPlantState', 'current|100,100')
@@ -295,7 +318,7 @@ class Run:
         require(restored_work.get('current') == CUT and restored_work.get('plant') == plant and
                 restored_work.get('contact') == blockers[0]['id'] and restored_work.get('work') == kv(work_before_save).get('work'),
                 'cutting work/targets changed across occupied reload')
-        for _ in range(30):
+        for _ in range(80):
             self.ticks(100)
             if not any(t['id'] == plant for t in self.things(PLANT)):
                 break
@@ -305,6 +328,7 @@ class Run:
         require(not self.things(BLOCKER, '96,96,9,6'), 'plant blockers survived cutting/cleanup')
         require(self.reach(cutter, 100, 97), 'access not restored after real cutting')
         require(self.identity(door[0]['id']) == door[0] and self.identity(bench[0]['id']) == bench[0], 'cutting altered door/workshop')
+        require(self.things('Wall') == self.rec['walls_before'], 'growth/cutting changed existing walls')
         self.rec['cut_recovered'] = True
         self.rec['failure_stage'] = 'MOD_placement_controls'
         self.controls()
@@ -319,16 +343,32 @@ class Run:
         self.call('jawa/build_batch', ops='Door:155,101', stuff='WoodLog', faction='player')
         door = self.things('Door', '155,101,1,1')
         require(len(door) == 1, 'protected building control absent')
-        for x in (125, 140, 155, 175):
+        self.call('jawa/build_batch', ops='SteamGeyser:165,101', faction='none')
+        geyser = self.things('SteamGeyser', '165,101,2,2')
+        require(len(geyser) == 1, 'indestructible fixture absent')
+        self.rec['indestructible_def'] = self.call('jawa/get_defs', defs='ThingDef/SteamGeyser', fields='destroyable')
+        require(self.rec['indestructible_def']['defs'][0]['fields']['destroyable'] is False, 'indestructible definition differs')
+        for x in (125, 140, 155, 165, 175):
             self.stage_plant(x, 100)
-        self.ticks(2000)
+        self.stage_plant(175, 110)
+        self.rec['control_growth_samples'] = []
+        for _ in range(6):
+            self.ticks(2000)
+            states = [self.sc('DebugPlantState', 'current|%d,%d' % xy) for xy in
+                      ((125,100),(140,100),(155,100),(165,100),(175,100),(175,110))]
+            self.rec['control_growth_samples'].append(states)
+            if all(kv(state).get('oldEnough') == 'True' and int(kv(state).get('claimed', 0)) > 0 for state in states):
+                break
+        require(all(kv(state).get('oldEnough') == 'True' and int(kv(state).get('claimed', 0)) > 0 for state in states),
+                'HARNESS: controls did not naturally grow claimed contacts')
         self.ticks(500)
-        self.rec['guarded_cell_claims'] = self.claimed_cells([(125, 101), (140, 101), (155, 101)])
-        for x in (125, 140, 155):
+        self.rec['guarded_cell_claims'] = self.claimed_cells([(125, 101), (140, 101), (155, 101), (165, 101)])
+        for x in (125, 140, 155, 165):
             require(not self.things(BLOCKER, '%d,101,1,1' % x), 'placement control was overwritten')
             require(self.things(BLOCKER, '%d,98,7,6' % (x-3)), 'obstruction control has no positive free-space blocker')
         require(self.identity(item[0]['id']) == item[0], 'item moved/wiped with item push disabled')
         require(self.identity(door[0]['id']) == door[0], 'existing building wiped/changed')
+        require(self.identity(geyser[0]['id']) == geyser[0], 'indestructible fixture changed')
         pawn_rows = [p for p in self.pawns() if p['id'] == guard]
         require(len(pawn_rows) == 1 and pawn_rows[0]['x'] == 125 and pawn_rows[0]['z'] == 101 and not pawn_rows[0].get('dead') and not pawn_rows[0].get('downed'), 'pawn placement control moved/hurt')
         self.setting('plantItemPushEnabled', True)
@@ -341,6 +381,17 @@ class Run:
         self.ticks(100)
         self.ticks(500)
         require(self.things(BLOCKER, '125,101,1,1'), 'vacated pawn contact never retried')
+        clear_plant = self.things(PLANT, '175,110,1,1')
+        require(len(clear_plant) == 1 and self.things(BLOCKER, '175,111,1,1'), 'ground ClearArea fixture absent')
+        clear_id = clear_plant[0]['id']
+        self.rec['ground_clear_negative'] = self.sc('ClearFixtureContact', clear_id+'|175,111|NaturalRockOnly',
+                                                   'RimMandrake.HugeThings.TrunkDoorValidationHooks')
+        require(self.things(PLANT, '175,110,1,1') and self.things(BLOCKER, '175,111,1,1'), 'NaturalRockOnly cleared giant')
+        self.rec['ground_clear_positive'] = self.sc('ClearFixtureContact', clear_id+'|175,111|BlockingBuildingsOnly',
+                                                   'RimMandrake.HugeThings.TrunkDoorValidationHooks')
+        self.ticks(500)
+        require(not self.things(PLANT, '175,110,1,1') and not self.things(BLOCKER, '172,107,7,7'),
+                'ground ClearArea left owner or owned blockers')
         free_before = self.things(BLOCKER, '172,98,7,6')
         require(free_before, 'free-space positive has no blockers')
         self.setting('plantTrunkEnabled', False)
@@ -351,7 +402,7 @@ class Run:
         self.sc('RefreshAllMaps')
         self.ticks(500)
         require(self.things(BLOCKER, '172,98,7,6'), 'reenabled free-space feature did not resume')
-        self.rec['controls'] = dict(pawn=guard, item=item[0], building=door[0], free_before=free_before,
+        self.rec['controls'] = dict(pawn=guard, item=item[0], building=door[0], indestructible=geyser[0], free_before=free_before,
                                     item_after_push=moved, vacated_pawn_retried=True, disabled=True, reenabled=True)
 
 
@@ -368,7 +419,13 @@ def main():
     try:
         dll = HERE.parent/'Assemblies/RM_HugeThings.dll'
         r.rec['assembly_sha256'] = sha(dll)
-        r.rec['running'] = r.call('jawa/running_mods', assemblyName='RM_HugeThings')
+        r.rec['running'] = r.call('jawa/running_mods', assembly='RM_HugeThings', details=True)
+        ids = [x.lower() for x in r.rec['running'].get('packageIds', [])]
+        require(len(ids) == len(set(ids)) == 16 and all(x in ids for x in
+                ('ludeon.rimworld', 'ludeon.rimworld.royalty', 'ludeon.rimworld.ideology', 'ludeon.rimworld.biotech',
+                 'ludeon.rimworld.anomaly', 'ludeon.rimworld.odyssey', 'mandrake.rm.biomes',
+                 'mandrake.rm.hugethings', 'mandrake.rm.hugethingstestraces', 'mandrake.rm.flowworks', 'mandrake.rm.patches')),
+                'wrong loaded all-five-DLC tier')
         matches = r.rec['running'].get('assembly', {}).get('matches', [])
         require(len(matches) == 1 and matches[0].get('sha256') == sha(dll), 'loaded DLL differs from this clone')
         name = T.read_registry().get('calm', {}).get('save') or T.SITES['calm']['save']
@@ -381,7 +438,7 @@ def main():
         require(r.rec['baseline_load']['verified'], 'scene-begin reload failed')
         baseline = r.sc('Rect', RECT, PROOF)
         baseline_pawns = r.pawns()
-        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns)
+        r.rec['baseline'] = dict(rectangle=baseline, pawns=baseline_pawns, supplement=r.supplement())
         tx = H.SettingsTransaction(T.call_session(r.call)); tx.__enter__()
         quiet = H.quiet_world(T.call_session(r.call), tx, wild_spawner=False, log_raids=False)
         require(quiet.verified, 'quiet controls unreadable')
@@ -392,25 +449,34 @@ def main():
         r.rec['error'] = repr(exc)
     finally:
         errors = []
-        if saved:
-            try:
-                r.rec['restore_load'] = T.load_site(r.call, 'calm', name=snapshot, check=False, map_controls=('modal_broker',))
-                require(r.rec['restore_load']['verified'], 'scene-begin restoration load failed')
-                restored = r.sc('Rect', RECT, PROOF)
-                restored_pawns = r.pawns()
-                r.rec['restored'] = dict(rectangle=restored, pawns=restored_pawns)
-                require(restored == baseline and restored_pawns == baseline_pawns, 'restored rectangle/fixtures differ from exact baseline')
-            except Exception as exc:
-                errors.append(repr(exc))
         for field, value in r.prior.items():
             try:
                 r.setting(field, value)
                 require(r.field(field) == value, 'exact setting restoration mismatch '+field)
             except Exception as exc:
                 errors.append(repr(exc))
+        if r.prior:
+            try:
+                r.sc('RefreshAllMaps')
+            except Exception as exc:
+                errors.append(repr(exc))
         if tx:
             try:
                 tx.__exit__(None, None, None)
+            except Exception as exc:
+                errors.append(repr(exc))
+        if saved:
+            try:
+                r.rec['restore_load'] = T.load_site(r.call, 'calm', name=snapshot, check=False, map_controls=('modal_broker',))
+                require(r.rec['restore_load']['verified'], 'scene-begin restoration load failed')
+                restored = r.sc('Rect', RECT, PROOF)
+                restored_pawns = r.pawns()
+                restored_extra = r.supplement()
+                r.rec['restored'] = dict(rectangle=restored, pawns=restored_pawns, supplement=restored_extra)
+                require(restored == baseline and restored_pawns == baseline_pawns
+                        and restored_extra == r.rec['baseline']['supplement'], 'restored rectangle/fixtures differ from exact baseline')
+                for field, value in r.prior.items():
+                    require(r.field(field) == value, 'post-load setting mismatch '+field)
             except Exception as exc:
                 errors.append(repr(exc))
         for pid in r.rec['fixture_ids']:
