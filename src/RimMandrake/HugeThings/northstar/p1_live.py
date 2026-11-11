@@ -90,7 +90,7 @@ class Run:
 
     def stage(self, roots):
         r = self.call('jawa/artboard_stage', phase='subjects', pause=True, killHostiles=False,
-                      ops=';'.join(f'id=p{i}|kind=plant|x={x}|z={z}|def={PLANT}|growth=1' for i,(x,z) in enumerate(roots)))
+                      ops='\n'.join(f'id=p{i}|kind=plant|x={x}|z={z}|def={PLANT}|growth=1' for i,(x,z) in enumerate(roots)))
         require(len(r.get('ops', [])) == len(roots) and all(x.get('ok') for x in r['ops']), f'plant staging: {r}')
 
     def reachable(self, pawn):
