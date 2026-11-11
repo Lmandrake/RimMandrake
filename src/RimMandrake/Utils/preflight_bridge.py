@@ -361,8 +361,10 @@ def dependency_fingerprint():
     version = '.'.join(version.split('.')[:2])
     active = set(active_ids(gp.MODS_CONFIG))
     fp = {}
-    rbs = os.path.join(gp.WORKSHOP, RBS_WORKSHOP)
-    for mod in (rbs, os.path.join(gp.WORKSHOP, HARMONY_WORKSHOP)):
+    installed = installed_index()
+    rbs = installed.get('brrainz.rimbridgeserver', os.path.join(gp.WORKSHOP, RBS_WORKSHOP))
+    harmony = installed.get('brrainz.harmony', os.path.join(gp.WORKSHOP, HARMONY_WORKSHOP))
+    for mod in (rbs, harmony):
         for folder in resolve_load_folders(mod, version, active):
             for f in sorted(glob.glob(os.path.join(folder, 'Assemblies', '*.dll'))):
                 key = os.path.basename(f)

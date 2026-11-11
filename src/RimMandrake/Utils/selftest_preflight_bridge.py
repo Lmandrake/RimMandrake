@@ -331,7 +331,10 @@ def t_dependency_loadfolders():
         (root / 'RimWorldWin64_Data/Managed/Assembly-CSharp.dll').write_bytes(b'engine')
         cfg = root / 'ModsConfig.xml'
         cfg.write_text('<ModsConfigData><version>1.6.4633</version><activeMods/></ModsConfigData>')
-        with patch.multiple(pf.gp, WORKSHOP=td, GAME_DATA=str(data), MODS_CONFIG=str(cfg)):
+        local = root / 'Mods'
+        local.mkdir()
+        with patch.multiple(pf.gp, WORKSHOP=td, LOCAL_MODS=str(local), GAME_DATA=str(data), MODS_CONFIG=str(cfg)), \
+                patch.object(pf, '_IDX', {}):
             fp = pf.dependency_fingerprint()
             check('dependency hashes use selected version, never stale Current',
                   fp['0Harmony.dll'] == pf.sha256(root / pf.HARMONY_WORKSHOP / '1.6/Assemblies/0Harmony.dll', 16))
@@ -344,6 +347,20 @@ def t_dependency_loadfolders():
                 (root / pf.HARMONY_WORKSHOP / '1.6/Assemblies/0Harmony.dll').unlink()
                 check('missing Harmony cannot hide behind other dependency DLLs',
                       pf.c_deps({'accept_deps': False}).status == 'UNMEASURED')
+            # SteveDesktop installs the active bridge under Mods rather than Workshop.
+            # Its folder name is not an assembly or package identity.
+            moved = local / 'bridge-local-copy'
+            (root / pf.RBS_WORKSHOP).rename(moved)
+            (moved / 'About').mkdir()
+            (moved / 'About/About.xml').write_text(
+                '<ModMetaData><packageId>brrainz.rimbridgeserver</packageId></ModMetaData>')
+            pf._IDX.clear()
+            local_fp = pf.dependency_fingerprint()
+            check('local installed bridge is fingerprinted by package ID',
+                  local_fp.get('RimBridgeServer.dll') == pf.sha256(moved / '1.6/Assemblies/RimBridgeServer.dll', 16))
+            (moved / '1.6/Assemblies/RimBridgeServer.dll').write_bytes(b'local-update')
+            check('local bridge updates change the fingerprint',
+                  pf.dependency_fingerprint()['RimBridgeServer.dll'] != local_fp['RimBridgeServer.dll'])
 
 
 def t_live_mod_list():
