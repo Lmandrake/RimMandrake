@@ -11,7 +11,7 @@ R6 large_pawns_footprint_bridge, existing bridge tools only (no new C#):
   * jawa/mod_settings_field LargePawns.Settings size2Min/size3Min/size4Min -- LargePawnsBridge.TryReconcile must have pushed our
     RM_TitanicTierDef ladder 4/8/20 into it. Type not found = Large Pawns not on the list = UNMEASURED SITE (never a PASS).
   * our largePawnsFootprintEnabled + giantAnimalsEnabled are startup-read: either off = UNMEASURED SITE.
-  * jawa/spawn_pawn an adult (jawa/set_pawn_age) RM_TestTitanT2, RM_TestTitanT3 and RM_TestTitanT2Control, wild, then
+  * jawa/spawn_pawn an adult (jawa/set_pawn_age) RM_TestTitanT2Adult, RM_TestTitanT3Adult and RM_TestTitanT2Control, wild, then
     jawa/static_call Verse.GenAdj.OccupiedRect(<ThingID>) -- the read Large Pawns Prefix-patches and our wake iterates. The edge
     must be RM_TitanicKernel.FootprintSize: T2 3, T3 4; the forced-out control 1 (PushOverrideRows' size-1 row; Large Pawns' own
     default ladder 2.5/4.5/10 would give it 3, so the control is what tells a pushed override from an untouched mod).
@@ -108,7 +108,7 @@ def footprint(R, cells):
             return R.row(FOOT, "UNMEASURED", "HARNESS", "%s %s not adult (lifeStage %r): %s" % (kind, pid, stage, str(a)[:200]))
         R.ticks(1)
         # the bare thingIDNumber, never the ThingID: static_call's resolver splits trailing digits off a ThingID, so a defName
-        # ending in a digit (RM_TestTitanT2 + 53196) parses as #253196 and finds nothing (STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF)
+        # ending in a digit (RM_TestTitanT2Adult + 53196) parses as #253196 and finds nothing (STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF)
         num = pid[len(kind):] if pid.startswith(kind) else ""
         if not num.isdigit():
             return R.row(FOOT, "UNMEASURED", "HARNESS", "%s id %r is not <defName><thingIDNumber>" % (kind, pid))

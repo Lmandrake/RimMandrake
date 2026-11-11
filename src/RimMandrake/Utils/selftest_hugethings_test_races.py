@@ -3,7 +3,7 @@
     python3 src/RimMandrake/Utils/selftest_hugethings_test_races.py      -> "N/N PASS", exit 0
 
 No vanilla race reaches body size 8, so Huge Things' T2/T3 rows could not run on a minimal list. The harness-only mod
-src/RimMandrake/HugeThingsTestRaces carries RM_TestTitanT2 (8), RM_TestTitanT3 (20) and RM_TestTitanT2Control (8, forced
+src/RimMandrake/HugeThingsTestRaces carries RM_TestTitanT2Adult (8), RM_TestTitanT3Adult (20) and RM_TestTitanT2Control (8, forced
 out), plus the yield row's pair RM_TestTitanT2Heavy (12) and RM_TestTitanT2HeavyControl (12, forced out). This pins, from the
 XML alone:
   * each race's effective baseBodySize (inheritance resolved) and the tier the kernel gives it against the live
@@ -29,7 +29,7 @@ TIERS = os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "Defs", "TitanicT
 DOC = os.path.join(ROOT, "skills", "rimbridge-companion", "references", "extending-detail.md")
 PROBE = os.path.join(ROOT, "src", "RimMandrake", "TheRot", "Defs", "Fauna", "RM_Hwelgrue.xml")
 EXT = "RimMandrake.TitanicCreatures.RM_TitanicExtension"
-EXPECT = {"RM_TestTitanT2": (8.0, "T2", None), "RM_TestTitanT3": (20.0, "T3", None),
+EXPECT = {"RM_TestTitanT2Adult": (8.0, "T2", None), "RM_TestTitanT3Adult": (20.0, "T3", None),
           "RM_TestTitanT2Control": (8.0, "None", False), "RM_TestTitanT2Heavy": (12.0, "T2", None),
           "RM_TestTitanT2HeavyControl": (12.0, "None", False)}
 
@@ -90,7 +90,7 @@ def judges():
     bad reading each, so a judge that passes everything or nothing fails here, offline."""
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
     import titan_test_races_live as L
-    good = ("RM_TestTitanT2 tier=T2 adultTier=T2 bodySize=8.0 wakeComp=True | RM_TestTitanT3 tier=T3 adultTier=T3 bodySize=20.0 "
+    good = ("RM_TestTitanT2Adult tier=T2 adultTier=T2 bodySize=8.0 wakeComp=True | RM_TestTitanT3Adult tier=T3 adultTier=T3 bodySize=20.0 "
             "wakeComp=True | RM_TestTitanT2Control tier=None adultTier=None bodySize=8.0 wakeComp=False | RM_TestTitanT2Heavy "
             "tier=T2 adultTier=T2 bodySize=12.0 wakeComp=True | RM_TestTitanT2HeavyControl tier=None adultTier=None bodySize=12.0 "
             "wakeComp=False | Elephant tier=T1 adultTier=T1 bodySize=4.0 wakeComp=True")
@@ -119,15 +119,15 @@ def judges():
     with open(KERNEL) as fh:
         check("kernel SubLinearFactor is still sqrt(floor/b) clamped (drift guard)",
               "Clamp((float)Math.Sqrt(floor / b), minFactor, 1f)" in fh.read())
-    floor = "RM_TestTitanT2 tier=T2 n=6 meat=6720 leather=1920 factor=1.0000"     # live 2026-11-03: the T2 race ON the T2 floor
+    floor = "RM_TestTitanT2Adult tier=T2 n=6 meat=6720 leather=1920 factor=1.0000"     # live 2026-11-03: the T2 race ON the T2 floor
     check("judge_yield: a factor-1 subject (on its tier floor) has no verdict, never MOD FAIL or PASS",
           L.judge_yield(floor, c.replace("meat=600", "meat=6720"))[0] is None)
-    r2 = "RM_TestTitanT2 tier=T2 roofAfter=none wallHpBefore=%d wallHpAfter=%d wallDestroyed=%s"
+    r2 = "RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=%d wallHpAfter=%d wallDestroyed=%s"
     rc = "RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False"
     check("judge_roof: holed roof + broken wall passes", L.judge_roof(r2 % (195, 0, "True"), rc)[0] == "PASS")
     check("judge_roof: untouched wall fails", L.judge_roof(r2 % (195, 195, "False"), rc)[0] == "FAIL")
     check("judge_roof: a control that holes fails", L.judge_roof(r2 % (195, 0, "True"), rc.replace("RoofConstructed", "none"))[0] == "FAIL")
-    t2 = "RM_TestTitanT2 tier=T2 costOpen=%s costThick=%s"
+    t2 = "RM_TestTitanT2Adult tier=T2 costOpen=%s costThick=%s"
     tc = "RM_TestTitanT2Control tier=None costOpen=13.0 costThick=13.0"
     check("judge_thick: penalty on T2 only passes", L.judge_thick(t2 % ("13.0", "2000.0"), tc)[0] == "PASS")
     check("judge_thick: no penalty fails", L.judge_thick(t2 % ("13.0", "13.0"), tc)[0] == "FAIL")
@@ -362,6 +362,8 @@ def main():
     nodes = defs_in(os.path.join(MOD, "Defs"))
     races = {name: row for name, row in resolve(nodes, "ThingDef").items() if row[0] is not None}
     check("exactly the five test races", sorted(races) == sorted(EXPECT), "%r" % sorted(races))
+    check("race ThingDefs never end in a numeric digit (Verse config contract)",
+          all(not re.search(r"[0-9]$", name) for name in races), repr(sorted(races)))
     for d, (size, tier, force) in sorted(EXPECT.items()):
         got = races.get(d, (None, None, False))
         check("%s harnessOnly (never a titan-passage pick)" % d, got[2] is True)

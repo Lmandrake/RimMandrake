@@ -43,15 +43,15 @@
   </PawnKindDef>
 
   <PawnKindDef ParentName="RM_TestTitanKindBase">
-    <defName>RM_TestTitanT2</defName>
+    <defName>RM_TestTitanT2Adult</defName>
     <label>test titan (T2)</label>
-    <race>RM_TestTitanT2</race>
+    <race>RM_TestTitanT2Adult</race>
     <combatPower>400</combatPower>
   </PawnKindDef>
   <PawnKindDef ParentName="RM_TestTitanKindBase">
-    <defName>RM_TestTitanT3</defName>
+    <defName>RM_TestTitanT3Adult</defName>
     <label>test titan (T3)</label>
-    <race>RM_TestTitanT3</race>
+    <race>RM_TestTitanT3Adult</race>
     <combatPower>800</combatPower>
   </PawnKindDef>
   <PawnKindDef ParentName="RM_TestTitanKindBase">

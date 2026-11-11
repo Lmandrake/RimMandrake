@@ -10,8 +10,8 @@
 
 Three elephant-bodied test races so Huge Things' titan tiers can be measured on a
 minimal mod list (no vanilla race reaches body size 8):
-- RM_TestTitanT2: body size 8 (the T2 floor).
-- RM_TestTitanT3: body size 20 (the T3 floor).
+- RM_TestTitanT2Adult: body size 8 (the T2 floor).
+- RM_TestTitanT3Adult: body size 20 (the T3 floor).
 - RM_TestTitanT2Control: body size 8, forced out of tiering (RM_TitanicExtension
   forceEnabled=false): the same-mass untiered control for the butcher yield curve.
 

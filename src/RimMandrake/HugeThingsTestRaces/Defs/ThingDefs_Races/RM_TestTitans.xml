@@ -68,7 +68,7 @@
   </ThingDef>
 
   <ThingDef ParentName="RM_TestTitanBase">
-    <defName>RM_TestTitanT2</defName>
+    <defName>RM_TestTitanT2Adult</defName>
     <label>test titan (T2)</label>
     <description>Harness-only test race: an elephant of body size 8, the Huge Things T2 floor.</description>
     <race>
@@ -82,7 +82,7 @@
   </ThingDef>
 
   <ThingDef ParentName="RM_TestTitanBase">
-    <defName>RM_TestTitanT3</defName>
+    <defName>RM_TestTitanT3Adult</defName>
     <label>test titan (T3)</label>
     <description>Harness-only test race: an elephant of body size 20, the Huge Things T3 floor.</description>
     <race>
@@ -110,7 +110,7 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- The yield-curve pair: SubLinearFactor = sqrt(T2 floor / bodySize), so a race ON the floor (RM_TestTitanT2, 8) gets 1 and
+  <!-- The yield-curve pair: SubLinearFactor = sqrt(T2 floor / bodySize), so a race ON the floor (RM_TestTitanT2Adult, 8) gets 1 and
        proves nothing. Body size 12 sits inside T2 (8 <= 12 < 20) with factor sqrt(8/12) = 0.8165; its control has the same mass
        and is forced out of tiering, so butchering both isolates the curve. -->
   <ThingDef ParentName="RM_TestTitanBase">

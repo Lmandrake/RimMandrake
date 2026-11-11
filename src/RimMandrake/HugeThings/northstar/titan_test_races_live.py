@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 ITEM = "TITANIC_BODYSIZE_TEST_RACE_1"
 HOOKS = "RimMandrake.TitanicCreatures.TitanValidationHooks"
 SETTINGS = "RimMandrake.HugeThings.RM_HugeThingsSettings"
-T2, T3, CTL = "RM_TestTitanT2", "RM_TestTitanT3", "RM_TestTitanT2Control"
+T2, T3, CTL = "RM_TestTitanT2Adult", "RM_TestTitanT3Adult", "RM_TestTitanT2Control"
 # The yield row's pair: SubLinearFactor = sqrt(T2 floor / bodySize) is 1 ON the floor (T2 above is bodySize 8 = the floor), so
 # the curve is only visible on a T2 body above it (gen 7, live 2026-11-03: 6720 == 6720 at factor 1).
 T2Y, CTLY = "RM_TestTitanT2Heavy", "RM_TestTitanT2HeavyControl"
