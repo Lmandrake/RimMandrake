@@ -102,4 +102,19 @@
   <RM_HugeThings_TitanEvents>Titans from elsewhere pass through, with warning</RM_HugeThings_TitanEvents>
   <RM_HugeThings_TitanEvents_Desc>A titan (size tier 2 or 3) may walk in from beyond your map and cross it edge to edge. This map's biome decides which titans can come: those it lists for passage or, if it lists none, those from its own wild animal roster. Hours of footfall tremors (screen shake and messages) come first; then it walks across, and its wake smashes what is built in its path. Never two of the largest tier on one map. Off: the event never fires.</RM_HugeThings_TitanEvents_Desc>
   <RM_HugeThings_TitanWarning>  Tremor warning before it arrives: {0} hours</RM_HugeThings_TitanWarning>
+
+  <!-- SettingsKit controls and section/scope text stay local to HugeThings. -->
+  <RM_HugeThings_LargePawnsGroup>Large Pawns footprint and custom size tiers</RM_HugeThings_LargePawnsGroup>
+  <RM_HugeThings_WakeGroup>Wake and plant smashing</RM_HugeThings_WakeGroup>
+  <RM_HugeThings_WallsSlotsGroup>Big creatures: walls, slots and roofs</RM_HugeThings_WallsSlotsGroup>
+  <RM_HugeThings_YieldGroup>Yield curve</RM_HugeThings_YieldGroup>
+  <RM_HugeThings_CorpseGroup>Titanic corpse sites</RM_HugeThings_CorpseGroup>
+  <RM_HugeThings_EventsGroup>Titan events</RM_HugeThings_EventsGroup>
+  <RM_HugeThings_SearchSettings>Search settings</RM_HugeThings_SearchSettings>
+  <RM_HugeThings_ResetSection>Reset this section to defaults</RM_HugeThings_ResetSection>
+  <RM_HugeThings_NeedsAnimals>Turn on giant animals to change these.</RM_HugeThings_NeedsAnimals>
+  <RM_HugeThings_ScopeNextStart>[next game start] changes take effect the next time the game starts or loads</RM_HugeThings_ScopeNextStart>
+  <RM_HugeThings_ScopeNow>[now] changes apply to what is on the map now</RM_HugeThings_ScopeNow>
+  <RM_HugeThings_ScopeNextPulse>[next pulse] changes apply the next time it is rolled or offered</RM_HugeThings_ScopeNextPulse>
+  <RM_HugeThings_ScopeNewMaps>[new maps only] changes only affect maps (or planets) generated afterwards</RM_HugeThings_ScopeNewMaps>
 </LanguageData>

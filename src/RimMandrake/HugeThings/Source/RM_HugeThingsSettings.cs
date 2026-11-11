@@ -212,7 +212,7 @@ namespace RimMandrake.HugeThings
             Widgets.BeginScrollView(inRect, ref settingsScroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
-            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            searchQuery = list.TextEntryLabeled("RM_HugeThings_SearchSettings".Translate(), searchQuery ?? "");
 
             // HUGETHINGS_SETTINGS_HARDENING_1 (A2.7 / D1.5): every string is keyed in Languages/English/Keyed/RM_HugeThings.xml.
             if (Group(list, "RM_HugeThings_GiantPlants".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "giantPlantsEnabled", "plantTrunkEnabled", "plantSelectionEnabled", "plantTrunkScale", "plantTrunkDamageEnabled", "plantItemPushEnabled" }))
@@ -249,7 +249,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Large Pawns footprint and custom size tiers", RimMandrake.Shared.SettingScope.Now, new[] { "largePawnsFootprintEnabled", "largePawnsClearingOff", "tierThresholdsCustom", "tierT1MinBodySize", "tierT2MinBodySize", "tierT3MinBodySize" }, "[next game start]"))
+            if (Group(list, "RM_HugeThings_LargePawnsGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "largePawnsFootprintEnabled", "largePawnsClearingOff", "tierThresholdsCustom", "tierT1MinBodySize", "tierT2MinBodySize", "tierT3MinBodySize" }, "[next game start]"))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -269,11 +269,11 @@ namespace RimMandrake.HugeThings
                             list.Label("RM_HugeThings_TierInvalid".Translate());
                     }
                 }
-                else list.Label("Turn on giant animals to change these.");
+                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
                 list.GapLine();
             }
 
-            if (Group(list, "Wake and plant smashing", RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier", "titanClearingEnabled", "titanClearingDetourFactor" }))
+            if (Group(list, "RM_HugeThings_WakeGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier", "titanClearingEnabled", "titanClearingDetourFactor" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -300,11 +300,11 @@ namespace RimMandrake.HugeThings
                         }
                     }
                 }
-                else list.Label("Turn on giant animals to change these.");
+                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
                 list.GapLine();
             }
 
-            if (Group(list, "Big creatures: walls, slots and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled", "trenchStepEnabled" }))
+            if (Group(list, "RM_HugeThings_WallsSlotsGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "wallsSlotsEnabled", "squeezeEnabled", "squeezeSlowdownAtHalf", "trampleBudgetPerBreadth", "blowDamagePerBreadth", "holdLineFactor", "roofWallHpFactor", "roofWallDamageFactor", "scrapeEnabled", "temperamentEnabled", "breadth2BreakingEnabled", "trenchStepEnabled" }))
             {
                 if (giantAnimalsEnabled && wakeEnabled && titanClearingEnabled)
                 {
@@ -337,7 +337,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "Yield curve", RimMandrake.Shared.SettingScope.Now, new[] { "yieldCurveEnabled", "yieldCurveMinFactor" }))
+            if (Group(list, "RM_HugeThings_YieldGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "yieldCurveEnabled", "yieldCurveMinFactor" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -348,11 +348,11 @@ namespace RimMandrake.HugeThings
                         yieldCurveMinFactor = list.Slider(yieldCurveMinFactor, 0.05f, 1f);
                     }
                 }
-                else list.Label("Turn on giant animals to change these.");
+                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
                 list.GapLine();
             }
 
-            if (Group(list, "Titanic corpse sites", RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
+            if (Group(list, "RM_HugeThings_CorpseGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -389,11 +389,11 @@ namespace RimMandrake.HugeThings
                         }
                     }
                 }
-                else list.Label("Turn on giant animals to change these.");
+                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
                 list.GapLine();
             }
 
-            if (Group(list, "Titan events", RimMandrake.Shared.SettingScope.NextPulse, new[] { "titanEventsEnabled", "titanEventWarningHours" }))
+            if (Group(list, "RM_HugeThings_EventsGroup".Translate(), RimMandrake.Shared.SettingScope.NextPulse, new[] { "titanEventsEnabled", "titanEventWarningHours" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -404,7 +404,7 @@ namespace RimMandrake.HugeThings
                         titanEventWarningHours = list.Slider(titanEventWarningHours, 0.5f, 24f);
                     }
                 }
-                else list.Label("Turn on giant animals to change these.");
+                else list.Label("RM_HugeThings_NeedsAnimals".Translate());
                 list.GapLine();
             }
             Sanitize();
@@ -461,12 +461,14 @@ namespace RimMandrake.HugeThings
             }
             Text.Font = GameFont.Small;
             if (!open) return false;
-            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
-                ? " changes take effect the next time the game starts or loads"
-                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
-                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
-                : " changes apply to what is on the map now"));
-            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            // tagOverride is the existing internal scope identifier, never display text.
+            list.Label(tagOverride == "[next game start]" ? "RM_HugeThings_ScopeNextStart".Translate()
+                : tagOverride == "[now]" ? "RM_HugeThings_ScopeNow".Translate()
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly
+                ? "RM_HugeThings_ScopeNewMaps".Translate()
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? "RM_HugeThings_ScopeNextPulse".Translate()
+                : "RM_HugeThings_ScopeNow".Translate());
+            if (list.ButtonText("RM_HugeThings_ResetSection".Translate())) ResetFields(names);
             return true;
         }
     }

@@ -937,7 +937,10 @@ def check(cs, csproj, expected, extra=(), keyed=None):
             errs.append(f"csproj lacks the {kit} Compile Include")
     if "private static readonly Dictionary<string, object> shippedDefaults" not in cs:
         errs.append("no shippedDefaults snapshot for per-group reset")
-    if "SettingsKitDrawer.SearchBox" not in cs:
+    # A translated caption can use the helper's exact underlying widget call
+    # locally, without inheriting the shared drawer's hard-coded English.
+    local_search = re.search(r'(\w+)\s*=\s*list\.TextEntryLabeled\(\s*"(\w+)"\.Translate\(\),\s*\1\s*\?\?\s*""\s*\)', cs)
+    if "SettingsKitDrawer.SearchBox" not in cs and not (local_search and keyed.get(local_search.group(2))):
         errs.append("no search box")
     errs += masters_check(cs, csproj, body, scribed, seen)
     return errs, groups
@@ -1027,6 +1030,12 @@ def run_mod(name, cs_name, pj_name, expected, extra):
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
         ("snapshot removed", lambda c, p: (c.replace("shippedDefaults = SnapshotDefaults()", "shippedDefaultz = SnapshotDefaults()"), p), "shippedDefaults"),
     ]
+    local_search = re.search(r'(\w+)\s*=\s*list\.TextEntryLabeled\(\s*"(\w+)"\.Translate\(\),\s*\1\s*\?\?\s*""\s*\)', cs)
+    if local_search:
+        call = local_search.group(0)
+        key = local_search.group(2)
+        plants.append(("localized search widget removed", lambda c, p: (c.replace(call, "", 1), p), "search box"))
+        plants.append(("localized search caption key absent", lambda c, p: (c.replace(call, call.replace(key, key + "Zz"), 1), p), "search box"))
     if scope_swap:
         t, s = scope_swap
         plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.{s}', f'{raw_of.get(t, chr(34) + t + chr(34))}, RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))
