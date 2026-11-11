@@ -1,6 +1,6 @@
 {
-  "files": 287,
-  "bytes": 21966036,
+  "files": 291,
+  "bytes": 21971497,
   "sensitive_pattern_hits": [],
   "largest_bytes": 2495399,
   "manifest": [
@@ -1395,6 +1395,16 @@
       "sha256": "198e89550facd148813219bbab8f5ff5f408fc3ed883950063eea35c997266ea"
     },
     {
+      "file": "whittle/ht-reefback-combat/parent_admin/closure-state.json",
+      "bytes": 3186,
+      "sha256": "4237df5c15b7ea92c3446d8fd8b188cc02e5daff5f8f1966c206eacaca003ff5"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/explicit-close.json",
+      "bytes": 896,
+      "sha256": "e7878531936c2ce220f9a43faea9c64c698d4cf8271c0decc7866536ade093bf"
+    },
+    {
       "file": "whittle/ht-reefback-combat/parent_admin/judge-audit.json",
       "bytes": 828,
       "sha256": "5cc776676f41659a7c807e189160667a819ace50ac45b49a82807d2d7c090b89"
@@ -1408,6 +1418,16 @@
       "file": "whittle/ht-reefback-combat/parent_admin/publication-paths.json",
       "bytes": 26027,
       "sha256": "e18f6744bff19f89ccf76901ebfe369fa310a7e4f49394e41c6ab35bc1d1fc84"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/publication.json",
+      "bytes": 216,
+      "sha256": "ab38843850a59710a3642d977f5fe79f5e488502f6372b10705a276c3468dcf4"
+    },
+    {
+      "file": "whittle/ht-reefback-combat/parent_admin/verify.json",
+      "bytes": 1163,
+      "sha256": "54284c2479399fb214aa2bf22e2aa535bd2836e8d2a55b6652ef615edef043b5"
     },
     {
       "file": "whittle/ht-reefback-combat/run.jsonl",

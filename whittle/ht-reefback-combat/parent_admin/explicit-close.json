@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "close",
+    "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT",
+    "--sha",
+    "ce614548f81c2a4dab572a80a942a524b048e00b",
+    "--reason",
+    "Both unchanged L0 criteria accepted by fresh independent Codex; exact published source controls and full Whittle rc0; no live/deployment/combat acceptance.",
+    "--why",
+    "Conductor order 2026-11-11 HugeThings drain"
+  ],
+  "started": 1794411874.7116673,
+  "rc": 2,
+  "stdout": "",
+  "stderr": "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT is already `done`, and this would be a SECOND one. The first record stands \u2014 a repeat cannot be told apart from the original in any view, but it would silently replace the sha, the reason or the successor the projection reports. If something more happened, file a NEW item and link it with caused_by.\n"
+}

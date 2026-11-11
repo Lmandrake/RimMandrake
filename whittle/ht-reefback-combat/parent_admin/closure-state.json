@@ -1,0 +1,81 @@
+{
+  "observed": "2026-11-11T15:45:13.402Z",
+  "readings": [
+    {
+      "command": "python3 src/RimMandrake/rimflow/host_guard.py status",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "1f8a94",
+          "wall_time_seconds": 0.0000042,
+          "exit_code": 0,
+          "original_token_count": 5,
+          "output": "stevedesktop FREE\n"
+        }
+      }
+    },
+    {
+      "command": "python3 src/RimMandrake/rimflow/cli.py bridge who --host stevedesktop",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "c1508c",
+          "wall_time_seconds": 1.000348701,
+          "session_id": 64051,
+          "original_token_count": 0,
+          "output": ""
+        }
+      }
+    },
+    {
+      "command": "bash ~/rm/runner/infrastructure/stevedesktop/rw_game.sh status",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "5a8854",
+          "wall_time_seconds": 0.473478097,
+          "exit_code": 3,
+          "original_token_count": 2,
+          "output": "stopped\n"
+        }
+      }
+    },
+    {
+      "command": "cd src/RimMandrake/Utils && python3 -c \"import time,json,ops_watch as O;print(O.c_codex(time.time(),json.load(open('ops_watch_rules.json')),{})['codex.week_used_pct']['v'])\"",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "8fc8c3",
+          "wall_time_seconds": 0.0000046,
+          "exit_code": 0,
+          "original_token_count": 2,
+          "output": "25.0\n"
+        }
+      }
+    }
+  ],
+  "tails": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "f3e5ee",
+        "wall_time_seconds": 0.0000028,
+        "exit_code": 0,
+        "original_token_count": 227,
+        "output": "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT/run-1@offline-nursery-XML-stage-engine-float32-hunting-controls recorded, result pass at L0. The run is IMMUTABLE.\nℹ️  --level without --criterion is recorded on the run and drops nothing; name the criterion to advance the item.\nprose moved: infrastructure/state/items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md -> infrastructure/state/items/closed/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md — stage BOTH paths in your commit.\n\n\nExplicit close rc 2\n\nRIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT is already `done`, and this would be a SECOND one. The first record stands — a repeat cannot be told apart from the original in any view, but it would silently replace the sha, the reason or the successor the projection reports. If something more happened, file a NEW item and link it with caused_by.\n\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "e4ca89",
+        "wall_time_seconds": 0.0000013,
+        "exit_code": 0,
+        "original_token_count": 38,
+        "output": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger — take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n"
+      }
+    }
+  ],
+  "bridge_taken_this_round": false,
+  "game_operations_this_round": false
+}

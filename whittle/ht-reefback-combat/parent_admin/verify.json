@@ -1,0 +1,24 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "verify",
+    "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT",
+    "--sha",
+    "ce614548f81c2a4dab572a80a942a524b048e00b",
+    "--level",
+    "L0",
+    "--result",
+    "pass",
+    "--config",
+    "offline-nursery-XML-stage-engine-float32-hunting-controls",
+    "--evidence",
+    "whittle/ht-reefback-combat/JUDGE.md",
+    "--why",
+    "Conductor order 2026-11-11 HugeThings drain; fresh independent Codex and actual full Whittle rc0 at exact published source"
+  ],
+  "started": 1794411866.871301,
+  "rc": 0,
+  "stdout": "RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT/run-1@offline-nursery-XML-stage-engine-float32-hunting-controls recorded, result pass at L0. The run is IMMUTABLE.\n\u2139\ufe0f  --level without --criterion is recorded on the run and drops nothing; name the criterion to advance the item.\nprose moved: infrastructure/state/items/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md -> infrastructure/state/items/closed/RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT.md \u2014 stage BOTH paths in your commit.\n",
+  "stderr": ""
+}
