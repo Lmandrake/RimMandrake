@@ -1,0 +1,2 @@
+rested STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.9349998 rest=0.7524999 job=GotoWander inBed=False tendable=0 tended=0 [(34, 34, 10), (34, 35, 10), (34, 36, 7)]
+exhausted STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.07999996 rest=0.1214286 job=LayDown inBed=False tendable=0 tended=0 [(34, 34, 10), (34, 35, 10), (34, 36, 7), (38, 36, 1)]

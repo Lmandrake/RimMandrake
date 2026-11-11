@@ -42,6 +42,8 @@ class Bridge:
         assert all(C.CG._thing_number(pid) in C.CG.FIXTURE_IDS for pid in self.hostile_ids), 'undeclared hostile fixture'
         self.tick += n
         for p in self.pawns.values():
+            if self.fault == 'sleeps_after_day' and n == 2500:
+                p['rest'] = str(max(0.0, float(p['rest'])-0.04))
             if p['prisoner'] == 'True' and self.fault == 'escape' and n == 2500:
                 p['kept'] = 'False'
 
@@ -85,7 +87,7 @@ class Bridge:
             pid = 'Pawn'+str(len(self.pawns))
             if kw['faction'] == 'hostile': self.hostile_ids.add(pid)
             self.pawns[pid] = {'id':pid,'x':kw['x'],'z':kw['z'],'downed':'False','dead':'False',
-                              'prisoner':'False','kept':'False','food':'0.1','rest':'0.8','inBed':'False'}
+                              'prisoner':'False','kept':'False','food':'0.1','rest':('0.1' if self.fault == 'sleepy_fixture' else '0.8'),'inBed':'False'}
             return {'success':True,'pawns':[{'id':pid}]}
         if tool == 'jawa/pawn_force_incapacitate':
             if kw.get('action') == 'vanish':
@@ -134,7 +136,7 @@ def check(fault=None, abort=False, occupied=False):
                             load_occupied=load_occupied if occupied else None)
     except (AssertionError, RuntimeError):
         failed = True
-    assert failed == bool((fault and fault not in ('first_incapable', 'off_refuses')) or abort), (fault, failed, rec)
+    assert failed == bool((fault and fault not in ('first_incapable', 'off_refuses', 'sleeps_after_day')) or abort), (fault, failed, rec)
     assert B.snapshot_calls == 1 and B.loads == 2, (fault, B.loads)
     assert all(B.settings[k] == v for k,v in B.original.items()), (fault, B.settings)
     assert not B.pawns, (fault, B.pawns)
@@ -144,7 +146,7 @@ def check(fault=None, abort=False, occupied=False):
 
 def run_driver_checks():
     for f in (None, 'no_capture', 'off_captures', 'remote_warp', 'no_feed', 'escape', 'wet', 'bad_snapshot', 'incapable_worker', 'no_order', 'off_unattempted', 'no_supply',
-              'first_incapable', 'off_refuses'):
+              'first_incapable', 'off_refuses', 'sleeps_after_day', 'sleepy_fixture'):
         check(f)
     check(abort=True)
     check(occupied=True)

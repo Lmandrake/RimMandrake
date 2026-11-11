@@ -1,0 +1,1068 @@
+{
+  "arms": [
+    {
+      "label": "rested",
+      "rest_initial": 0.8,
+      "load": {
+        "site": "calm",
+        "save": "WHITTLE_HolePrison_Begin_20261110T194922_Occupied",
+        "utc": "2026-11-11T03:55:46Z",
+        "problems": [],
+        "load_s": 4.0,
+        "quietMap": {
+          "profile": "quiet_site",
+          "suite": "isolated",
+          "row": "test_site_saves_load_calm",
+          "topic": null,
+          "controls": [
+            {
+              "name": "modal_broker",
+              "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+              "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+              "readBack": {
+                "handled": [],
+                "unknown": []
+              }
+            }
+          ],
+          "notSuppressed": [
+            "active quests and their parts (never ended by default: ending a quest changes the world)",
+            "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+            "existing game conditions, map/world/game components and mod tickers",
+            "hives and other pawn-spawning structures, births, egg hatching, breeders",
+            "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+            "weather transitions, fires, existing hostile behaviour"
+          ],
+          "keepDefs": [],
+          "events": [],
+          "problems": [],
+          "verify": null,
+          "arrivals": [],
+          "note": "enableStoryteller is not saved with the game: re-apply after any load"
+        },
+        "sky": {
+          "weather": [
+            {
+              "after": "Clear",
+              "ok": true
+            },
+            {
+              "after": "Clear",
+              "ok": true
+            }
+          ],
+          "extinguished": 0,
+          "strayFires": 0,
+          "verified": true,
+          "error": null
+        },
+        "ready_s": 4.7,
+        "verified": true
+      },
+      "before": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.1 rest=0.8 job=Wait_Downed inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_6321faa3c58842d3b40863fa6200253a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "worker_before": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24600 prisoner=False downed=False dead=False held=False kept=False x=37 z=36 food=0.4559993 rest=0.69765985 job=Wait_Combat inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_7efc26faaf5445fb9bbecf844f6be216",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "order": {
+        "success": true,
+        "method": "System.String Care(System.String)",
+        "result": "CARE kind=deliver giver=DeliverFoodToPrisoner job=DeliverFood ordered=True",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_c5bf6a7944694a208568ab0539da692c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "after": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.9349998 rest=0.7524999 job=GotoWander inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_9a745f9485db41b48fb43c96a52e94d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "worker_after": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24600 prisoner=False downed=False dead=False held=False kept=False x=37 z=36 food=0.375999153 rest=0.6501597 job=Wait_Combat inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_12a509c074884e2d8f7f44acdfd06d6d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "food": {
+        "success": true,
+        "things": [
+          {
+            "id": "MealSurvivalPack24608",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 34,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24609",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 35,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 49,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24610",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x7",
+            "x": 34,
+            "z": 36,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 7,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          }
+        ],
+        "scanned": 15011,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+          "MealSurvivalPack": 3
+        },
+        "ticksGame": 15904,
+        "message": "3 of 3 matching thing(s) returned, 15011 examined.",
+        "operation": {
+          "OperationId": "op_e3feba0740cd4ae292f288545ddf35e0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "worker_deep": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+          {
+            "thingId": "Human24600",
+            "thingIdNumber": 24600,
+            "name": "Rachel Nunez",
+            "nameShort": "Rachel",
+            "title": "housewife",
+            "kindDef": "Colonist",
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "gender": "Female",
+            "ageBiologicalYears": 41,
+            "ageChronologicalYears": 74,
+            "developmentalStage": "Adult",
+            "xenotype": "Baseliner",
+            "ideo": "Cell of Faith",
+            "childhood": "Scout44",
+            "adulthood": "Housemate8",
+            "headType": "Female_AverageWide",
+            "bodyType": "Female",
+            "hair": "Frozen",
+            "beard": "NoBeard",
+            "position": {
+              "x": 37,
+              "z": 36
+            },
+            "traits": [
+              {
+                "def": "Psychopath",
+                "degree": 0,
+                "label": "Psychopath",
+                "forced": false
+              }
+            ],
+            "skills": [
+              {
+                "skill": "Shooting",
+                "levelRaw": 5,
+                "levelEffective": 5,
+                "passion": "Minor",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Melee",
+                "levelRaw": 3,
+                "levelEffective": 3,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Construction",
+                "levelRaw": 4,
+                "levelEffective": 4,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Mining",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Cooking",
+                "levelRaw": 8,
+                "levelEffective": 8,
+                "passion": "Major",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Plants",
+                "levelRaw": 3,
+                "levelEffective": 3,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Animals",
+                "levelRaw": 8,
+                "levelEffective": 8,
+                "passion": "Minor",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Crafting",
+                "levelRaw": 9,
+                "levelEffective": 9,
+                "passion": "Major",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Artistic",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": true
+              },
+              {
+                "skill": "Medicine",
+                "levelRaw": 4,
+                "levelEffective": 4,
+                "passion": "None",
+                "xpSinceLastLevel": 350.0,
+                "disabled": false
+              },
+              {
+                "skill": "Social",
+                "levelRaw": 2,
+                "levelEffective": 2,
+                "passion": "None",
+                "xpSinceLastLevel": 1.4,
+                "disabled": false
+              },
+              {
+                "skill": "Intellectual",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": true
+              }
+            ],
+            "apparel": [
+              {
+                "def": "Apparel_CollarShirt",
+                "defName": "Apparel_CollarShirt",
+                "stuff": "Synthread",
+                "hp": 130
+              },
+              {
+                "def": "Apparel_Pants",
+                "defName": "Apparel_Pants",
+                "stuff": "Synthread",
+                "hp": 130
+              }
+            ],
+            "equipment": [],
+            "hediffs": [
+              {
+                "def": "Scarification",
+                "part": "Nose",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Nose",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Arm",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Leg",
+                "severity": 0.5
+              }
+            ],
+            "needs": [
+              {
+                "need": "Mood",
+                "level": 0.61,
+                "pct": 0.61
+              },
+              {
+                "need": "Food",
+                "level": 0.375999153,
+                "pct": 0.375999153
+              },
+              {
+                "need": "Rest",
+                "level": 0.6501597,
+                "pct": 0.6501597
+              },
+              {
+                "need": "Joy",
+                "level": 0.3577823,
+                "pct": 0.3577823
+              },
+              {
+                "need": "Beauty",
+                "level": 0.362240672,
+                "pct": 0.362240672
+              },
+              {
+                "need": "Outdoors",
+                "level": 1.0,
+                "pct": 1.0
+              },
+              {
+                "need": "DrugDesire",
+                "level": 0.5,
+                "pct": 0.5
+              },
+              {
+                "need": "RoomSize",
+                "level": 1.0,
+                "pct": 1.0
+              },
+              {
+                "need": "RM_Thirst",
+                "level": 0.588002741,
+                "pct": 0.588002741
+              }
+            ]
+          }
+        ],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_6dac7c1704614d588790d09d2f787533",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      }
+    },
+    {
+      "label": "exhausted",
+      "rest_initial": 0.03,
+      "load": {
+        "site": "calm",
+        "save": "WHITTLE_HolePrison_Begin_20261110T194922_Occupied",
+        "utc": "2026-11-11T03:55:52Z",
+        "problems": [],
+        "load_s": 3.9,
+        "quietMap": {
+          "profile": "quiet_site",
+          "suite": "isolated",
+          "row": "test_site_saves_load_calm",
+          "topic": null,
+          "controls": [
+            {
+              "name": "modal_broker",
+              "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+              "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+              "readBack": {
+                "handled": [],
+                "unknown": []
+              }
+            }
+          ],
+          "notSuppressed": [
+            "active quests and their parts (never ended by default: ending a quest changes the world)",
+            "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+            "existing game conditions, map/world/game components and mod tickers",
+            "hives and other pawn-spawning structures, births, egg hatching, breeders",
+            "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+            "weather transitions, fires, existing hostile behaviour"
+          ],
+          "keepDefs": [],
+          "events": [],
+          "problems": [],
+          "verify": null,
+          "arrivals": [],
+          "note": "enableStoryteller is not saved with the game: re-apply after any load"
+        },
+        "sky": {
+          "weather": [
+            {
+              "after": "Clear",
+              "ok": true
+            },
+            {
+              "after": "Clear",
+              "ok": true
+            }
+          ],
+          "extinguished": 0,
+          "strayFires": 0,
+          "verified": true,
+          "error": null
+        },
+        "ready_s": 4.4,
+        "verified": true
+      },
+      "before": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.1 rest=0.03 job=Wait_Downed inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_9fac1bb5c457454d97802263350b2991",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "worker_before": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24600 prisoner=False downed=False dead=False held=False kept=False x=37 z=36 food=0.4559993 rest=0.69765985 job=Wait_Combat inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_2e52bff316a545148fbca9f41e3fe9e8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "order": {
+        "success": true,
+        "method": "System.String Care(System.String)",
+        "result": "CARE kind=deliver giver=DeliverFoodToPrisoner job=DeliverFood ordered=True",
+        "thingArgs": [],
+        "ticksGame": 12904,
+        "operation": {
+          "OperationId": "op_c447a3e4e7be4b9ca6a6b7afae23f967",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12904
+        }
+      },
+      "after": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24588 prisoner=True downed=False dead=False held=True kept=True x=38 z=36 food=0.07999996 rest=0.1214286 job=LayDown inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_7e05c5095dc14dac93e79d1e995eb612",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "worker_after": {
+        "success": true,
+        "method": "System.String State(System.String)",
+        "result": "STATE id=Human24600 prisoner=False downed=False dead=False held=False kept=False x=37 z=36 food=0.375999153 rest=0.6501597 job=Wait_Combat inBed=False tendable=0 tended=0",
+        "thingArgs": [],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_f3373b0b557c445c8335bf2bda9402fe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "food": {
+        "success": true,
+        "things": [
+          {
+            "id": "MealSurvivalPack24608",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 34,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24609",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x10",
+            "x": 34,
+            "z": 35,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 10,
+            "hitPoints": 49,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack24610",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal x7",
+            "x": 34,
+            "z": 36,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 7,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          },
+          {
+            "id": "MealSurvivalPack28038",
+            "def": "MealSurvivalPack",
+            "label": "Packaged survival meal",
+            "x": 38,
+            "z": 36,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 50,
+            "maxHitPoints": 50
+          }
+        ],
+        "scanned": 15011,
+        "countReturned": 4,
+        "countMatched": 4,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {
+          "MealSurvivalPack": 4
+        },
+        "ticksGame": 15904,
+        "message": "4 of 4 matching thing(s) returned, 15011 examined.",
+        "operation": {
+          "OperationId": "op_558e99ce86644cca9d4d6e1527193e59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      },
+      "worker_deep": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+          {
+            "thingId": "Human24600",
+            "thingIdNumber": 24600,
+            "name": "Rachel Nunez",
+            "nameShort": "Rachel",
+            "title": "housewife",
+            "kindDef": "Colonist",
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "gender": "Female",
+            "ageBiologicalYears": 41,
+            "ageChronologicalYears": 74,
+            "developmentalStage": "Adult",
+            "xenotype": "Baseliner",
+            "ideo": "Cell of Faith",
+            "childhood": "Scout44",
+            "adulthood": "Housemate8",
+            "headType": "Female_AverageWide",
+            "bodyType": "Female",
+            "hair": "Frozen",
+            "beard": "NoBeard",
+            "position": {
+              "x": 37,
+              "z": 36
+            },
+            "traits": [
+              {
+                "def": "Psychopath",
+                "degree": 0,
+                "label": "Psychopath",
+                "forced": false
+              }
+            ],
+            "skills": [
+              {
+                "skill": "Shooting",
+                "levelRaw": 5,
+                "levelEffective": 5,
+                "passion": "Minor",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Melee",
+                "levelRaw": 3,
+                "levelEffective": 3,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Construction",
+                "levelRaw": 4,
+                "levelEffective": 4,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Mining",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Cooking",
+                "levelRaw": 8,
+                "levelEffective": 8,
+                "passion": "Major",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Plants",
+                "levelRaw": 3,
+                "levelEffective": 3,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Animals",
+                "levelRaw": 8,
+                "levelEffective": 8,
+                "passion": "Minor",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Crafting",
+                "levelRaw": 9,
+                "levelEffective": 9,
+                "passion": "Major",
+                "xpSinceLastLevel": 0.0,
+                "disabled": false
+              },
+              {
+                "skill": "Artistic",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": true
+              },
+              {
+                "skill": "Medicine",
+                "levelRaw": 4,
+                "levelEffective": 4,
+                "passion": "None",
+                "xpSinceLastLevel": 350.0,
+                "disabled": false
+              },
+              {
+                "skill": "Social",
+                "levelRaw": 2,
+                "levelEffective": 2,
+                "passion": "None",
+                "xpSinceLastLevel": 1.4,
+                "disabled": false
+              },
+              {
+                "skill": "Intellectual",
+                "levelRaw": 0,
+                "levelEffective": 0,
+                "passion": "None",
+                "xpSinceLastLevel": 0.0,
+                "disabled": true
+              }
+            ],
+            "apparel": [
+              {
+                "def": "Apparel_CollarShirt",
+                "defName": "Apparel_CollarShirt",
+                "stuff": "Synthread",
+                "hp": 130
+              },
+              {
+                "def": "Apparel_Pants",
+                "defName": "Apparel_Pants",
+                "stuff": "Synthread",
+                "hp": 130
+              }
+            ],
+            "equipment": [],
+            "hediffs": [
+              {
+                "def": "Scarification",
+                "part": "Nose",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Nose",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Arm",
+                "severity": 0.5
+              },
+              {
+                "def": "Scarification",
+                "part": "Leg",
+                "severity": 0.5
+              }
+            ],
+            "needs": [
+              {
+                "need": "Mood",
+                "level": 0.61,
+                "pct": 0.61
+              },
+              {
+                "need": "Food",
+                "level": 0.375999153,
+                "pct": 0.375999153
+              },
+              {
+                "need": "Rest",
+                "level": 0.6501597,
+                "pct": 0.6501597
+              },
+              {
+                "need": "Joy",
+                "level": 0.3577823,
+                "pct": 0.3577823
+              },
+              {
+                "need": "Beauty",
+                "level": 0.362240672,
+                "pct": 0.362240672
+              },
+              {
+                "need": "Outdoors",
+                "level": 1.0,
+                "pct": 1.0
+              },
+              {
+                "need": "DrugDesire",
+                "level": 0.5,
+                "pct": 0.5
+              },
+              {
+                "need": "RoomSize",
+                "level": 1.0,
+                "pct": 1.0
+              },
+              {
+                "need": "RM_Thirst",
+                "level": 0.588002741,
+                "pct": 0.588002741
+              }
+            ]
+          }
+        ],
+        "ticksGame": 15904,
+        "operation": {
+          "OperationId": "op_ccb87bdbe1c34307a581fba2746b6915",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 3
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 15904
+        }
+      }
+    }
+  ],
+  "restore": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-11T03:55:57Z",
+    "problems": [],
+    "load_s": 3.9,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-11T03:56:02Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 4.6,
+    "verified": true
+  }
+}

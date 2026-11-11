@@ -256,21 +256,12 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
                     'occupied save reload lost the bedless prison')
             require(all(care(w, p, 'bed')['job'] == 'none' for w,p in zip(wardens,raiders)),
                     'reload offers a remote bed transfer')
-        # Real day of normal work. Observe at intervals, no need refills or healing.
-        start = clock()
-        receipt['day'] = []
-        for _ in range(24):
-            step(2500)
-            states = [state(p) for p in raiders]
-            for s in states:
-                require(s['kept'] == 'True' and s['dead'] == 'False', 'prisoner escaped or died: '+str(s))
-                require((int(s['x']), int(s['z'])) in PIT, 'prisoner moved out of hole')
-                require(float(s['food']) > 0, 'prisoner starved')
-            receipt['day'].append({'tick': clock(), 'prisoners': states})
-        receipt['day_ticks'] = clock()-start
         # BROADEN (Opus): a prison must also work once its inmate can stand. If the
         # captured injuries have not healed in a day, heal ONE fixture for this
         # separate transition probe; do not count that as natural recovery.
+        # RULED OUT: delivery path failure. The meal reached the pit in both
+        # diagnostic arms; a rested inmate ate, while an exhausted inmate slept
+        # beside it. Run this awake probe BEFORE the day, with no Rest refill.
         awake = raiders[0]
         receipt['awake_transition'] = {'before': state(awake), 'fixture_healed': False}
         if state(awake)['downed'] == 'True':
@@ -283,6 +274,7 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
             call('jawa/destroy_batch', rects='%d,%d,1,1' % (x,z), categories='Item')
         call('jawa/pawn_need', pawn=awake, action='need', need='Food', level=0.1)
         require(state(awake)['downed'] == 'False', 'awake probe never stood up')
+        require(float(state(awake)['rest']) > 0.3, 'UNMEASURED SITE: upright-feeding subject is exhausted')
         job = care(wardens[0], awake, 'deliver', True)
         require(job['job'] == 'DeliverFood', 'awake prisoner gets no ordinary meal delivery')
         step(3000)
@@ -292,6 +284,18 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         receipt['awake_transition'].update({'after': s, 'workgiver': job})
         for w in wardens:
             call('jawa/set_draft', pawnId=w, drafted=False)
+        # Real day of normal work. Observe at intervals, no need refills or healing.
+        start = clock()
+        receipt['day'] = []
+        for _ in range(24):
+            step(2500)
+            states = [state(p) for p in raiders]
+            for s in states:
+                require(s['kept'] == 'True' and s['dead'] == 'False', 'prisoner escaped or died: '+str(s))
+                require((int(s['x']), int(s['z'])) in PIT, 'prisoner moved out of hole')
+                require(float(s['food']) > 0, 'prisoner starved')
+            receipt['day'].append({'tick': clock(), 'prisoners': states})
+        receipt['day_ticks'] = clock()-start
         require(receipt['day_ticks'] >= 60000, 'less than one day simulated')
         # Ordinary bed prison still functions with pit rooms OFF (remote ground bed).
         setting('superdeepRoomsEnabled', False)
