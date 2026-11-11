@@ -1,0 +1,11 @@
+{
+  "time": 1794397056.0321784,
+  "published_sha": "7eeef266b2af999fbe459a0b5369c77f0caf4880",
+  "tested_base": "ade2af0bb3fc4b40f0b152df4605b999468758d5",
+  "broad_manifest_mismatches": [
+    "src/RimMandrake/Utils/selftest_hugethings_test_races.py"
+  ],
+  "relevant_flowworks_gss_shared_patch_matches_tested": true,
+  "qualification": "Peer HugeThings Python selftest update incorporated at publication; not imported by relevant wrapper, staging or build helpers. FlowWorks/GSS/shared diff is exactly tested HoseFuzz.cs patch. No fresh test or all-6009-input postpublication identity claim.",
+  "ledger_correction": "Appended via rimflow note before verification/closure; prior immutable event retained."
+}
