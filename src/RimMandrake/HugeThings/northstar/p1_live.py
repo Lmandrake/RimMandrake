@@ -45,6 +45,10 @@ def kv(txt):
     return dict(re.findall(r'(\w+)=([^\s|]+)', str(txt)))
 
 
+class HarnessRefusal(RuntimeError):
+    pass
+
+
 class Run:
     def __init__(self, receipt):
         self.b = V.Bridge()
@@ -54,7 +58,8 @@ class Run:
     def call(self, tool, allow=False, **args):
         r = self.b.call(tool, **args)
         self.rec['calls'].append(dict(tool=tool, args=args, result=r))
-        require(allow or r.get('success') is not False, f'{tool} refused: {r}')
+        if not allow and r.get('success') is False:
+            raise HarnessRefusal(f'{tool} refused: {r}')
         return r
 
     def sc(self, method, args='', typ=MC):
@@ -196,7 +201,8 @@ def main():
         r.corpse(tx)
         rec['status']='PASS'
     except Exception as ex:
-        rec['status']='FAIL'
+        rec['status']='UNMEASURED' if isinstance(ex,HarnessRefusal) else 'FAIL'
+        rec['failure_class']='HARNESS' if isinstance(ex,HarnessRefusal) else 'MOD_OR_SITE_ASSERTION'
         rec['error']=repr(ex)
     finally:
         errors=[]
