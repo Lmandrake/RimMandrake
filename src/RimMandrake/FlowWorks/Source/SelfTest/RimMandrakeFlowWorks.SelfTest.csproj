@@ -339,7 +339,12 @@
     </ItemGroup>
   </Target>
 
-  <PropertyGroup><RailingProductionSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_MapComponent_SuspensionBridges.cs</RailingProductionSource><RailingProofSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_SuspensionProofs.cs</RailingProofSource></PropertyGroup>
-  <ItemGroup><Compile Include="RailingToggleHarness.cs"/></ItemGroup>
+  <PropertyGroup>
+    <RailingProductionSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_MapComponent_SuspensionBridges.cs</RailingProductionSource>
+    <RailingProofSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_SuspensionProofs.cs</RailingProofSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="RailingToggleHarness.cs"/>
+  </ItemGroup>
   <Import Project="RailingToggleHarness.targets"/>
 </Project>
