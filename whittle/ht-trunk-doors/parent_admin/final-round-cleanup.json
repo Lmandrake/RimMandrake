@@ -1,0 +1,40 @@
+{
+  "utc": "2026-11-11T22:48:43.787665+00:00",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "stdout": "{\n \"state\": \"FREE\",\n \"generation\": 1433,\n \"host\": \"stevedesktop\",\n \"path\": \"/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "stdout": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger \u2014 take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "stdout": "stopped\n",
+      "stderr": ""
+    }
+  ],
+  "accepted_compact_proof_exists": false
+}
