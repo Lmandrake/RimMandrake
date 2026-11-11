@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Globalization;
 using Verse;
 using RimWorld;
 using RimMandrake.HugeThings;
@@ -84,9 +85,10 @@ class Program
         juvenile.race.lifeStageAges[1].def.bodySizeFactor=.5f; Row(juvenile,3,2,"stage restored in same process");
         // Shipped definition lookup is cached separately. Verify missing-def fallback is logged once; no live database mutation.
         var field=typeof(U).GetField("cachedThresholds",BindingFlags.NonPublic|BindingFlags.Static);
+        int initialErrors=Log.Errors;
         field.SetValue(null,null); DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.Clear();
-        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==1,"missing shipped fallback");
-        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==1,"fallback cache logs once");
+        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==initialErrors+1,"missing shipped fallback");
+        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==initialErrors+1,"fallback cache logs once");
     }
-    static int Main() { try { MainChecks(); Console.WriteLine("checks="+checks+" production adapter/kernel controls passed (engine stand-in L0)"); return 0; } catch(Exception e) { Console.WriteLine("FAIL "+e); return 1; } }
+    static int Main() { CultureInfo.CurrentCulture=CultureInfo.DefaultThreadCurrentCulture=CultureInfo.InvariantCulture; try { MainChecks(); Console.WriteLine("checks="+checks+" production adapter/kernel controls passed (engine stand-in L0)"); return 0; } catch(Exception e) { Console.WriteLine("FAIL "+e); return 1; } }
 }

@@ -27,7 +27,7 @@ namespace RimMandrake.TitanicCreatures
                 var pawn = new Pawn { def = race };
                 pawn.ageTracker = new Pawn_AgeTracker(pawn);
                 AccessTools.Field(typeof(Pawn_AgeTracker), "cachedLifeStageIndex").SetValue(pawn.ageTracker, stageIndex);
-                factor = F(pawn.CurLifeStage.bodySizeFactor);
+                factor = F(pawn.ageTracker.CurLifeStage.bodySizeFactor);
                 size = F(pawn.BodySize);
                 runtime = ((int)TitanicTierUtility.GetTier(pawn)).ToString();
             }

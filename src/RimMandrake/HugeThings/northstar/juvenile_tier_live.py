@@ -83,7 +83,7 @@ def main():
             args['value'] = value
         r = call('jawa/mod_settings_field', **args)
         assert r.get('fieldKind') == 'static'
-        return r['value']
+        return r['value'] if action=='get' else r['valueAfter']
 
     def invoke(method, args='', type_name=HOOK):
         return call('jawa/static_call', type=type_name, method=method, args=args)['result']
