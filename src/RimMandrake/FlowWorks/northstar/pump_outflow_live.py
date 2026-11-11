@@ -196,8 +196,10 @@ def live(out):
         require(result['identity'].get('mvidMatchesFile') is True and result['identity'].get('assemblyFileSha256') == expected, 'loaded DLL identity mismatch')
         debug = flags()
         for typ, field in [(FW, 'depthEngineEnabled'), (FW, 'depthEngineLiveForTests'), (FW, 'levelExactEnabled'), (FW, 'liquidPumpEnabled'),
-                           (HS, 'enabled'), (HS, 'freeEndRolesEnabled'), (HS, 'hoseHoldsLiquid'), (HS, 'gravityLevellingEnabled')]:
+                           (HS, 'enabled'), (HS, 'freeEndRolesEnabled'), (HS, 'hoseHoldsLiquid'), (HS, 'gravityLevellingEnabled'),
+                           ('RimMandrake.FlowWorks.Machinery.RM_MachinerySettings', 'lineCrossingRulesEnabled')]:
             settings.append((typ, field, setting(typ, field)))
+        require(str(setting('RimMandrake.FlowWorks.Machinery.RM_MachinerySettings', 'lineCrossingRulesEnabled')).lower() == 'true', 'line-crossing rules must stay enabled')
         result['settings_before'] = settings
         result['protected_before'] = protected_hashes
         result['site'] = T.load_site(call, 'calm')
@@ -226,7 +228,10 @@ def live(out):
         built = call('jawa/build_batch', ops='RM_LiquidPump:40,40;RM_HoseReel:41,41,1', faction='player', wipeExisting=False)
         require(built.get('survived') == 2, 'fixture buildings did not survive')
         call('jawa/map_commit')
-        hp('lay:41,41,52,40')
+        # Keep the hose mouth on ground; the real outlet pours into the adjacent D4 cell.
+        route = hp('check:41,41,51,40')
+        require(route.get('reason') is None, 'ground outlet route refused: ' + str(route))
+        hp('lay:41,41,51,40')
         sc(LINE, 'ProofHoseRole', '41,41;Outflow')
         # Toggle the real CompPowerTrader dev gizmo; no production power predicate is bypassed.
         dev_mode = hp('gizmos:41,41')['devMode']
@@ -242,7 +247,7 @@ def live(out):
             fill(cell, 2)
         read = sc(PUMP, 'ProofDrawCycle', '40,40;read')
         ordered = sources(read)
-        require(len(ordered) == 2 and 'outflows=[52,40]' in read and 'tankRoom=0' in read and 'hoseNeed=0' in read and 'running=True' in read, 'fixture candidates/port/power mismatch: ' + read)
+        require(len(ordered) == 2 and 'outflows=[51,40]' in read and 'tankRoom=0' in read and 'hoseNeed=0' in read and 'running=True' in read, 'fixture candidates/port/power mismatch: ' + read)
         first, second = [row[0] for row in ordered]
         result['actual_order'] = ordered
         result['arms'] = []
