@@ -1,0 +1,4 @@
+installed mods discovered: 116
+
+  REFUSING TO WRITE ModsConfig.xml: BENCH does not hold the bridge (holder: nobody). Take it first: rimflow bridge take --for "<what for>"
+  (override: --not-my-bridge "<reason>")

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    TITAN_CAMPS_SCAVENGERS_EVENTS_1, owner 2026-10-21: a titan is picked from this biome's passage hints, or its own roster,
+    with sea/land matching and calves allowed by adult race tier. The passage is warned by two in-game hours of tremors
+    by default (owner 2026-11-11). IncidentWorker_TitanPassage names no race here. PROVISIONAL: baseChance 0.3, minRefireDays 30.
+  -->
+  <IncidentDef>
+    <defName>RM_TitanPassage</defName>
+    <label>titan passage</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.TitanicCreatures.IncidentWorker_TitanPassage</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>30</minRefireDays>
+  </IncidentDef>
+</Defs>

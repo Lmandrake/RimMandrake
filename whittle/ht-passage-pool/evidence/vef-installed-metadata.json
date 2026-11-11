@@ -1,0 +1,40 @@
+[
+  {
+    "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/2023507013/About/About.xml",
+    "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
+    "name": "Vanilla Expanded Framework",
+    "dependencies": [
+      "brrainz.harmony"
+    ]
+  },
+  {
+    "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/3626210061/About/About.xml",
+    "packageId": "7f.alienworlds",
+    "name": "Alien Worlds Framework",
+    "dependencies": [
+      "brrainz.harmony"
+    ]
+  },
+  {
+    "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/Graffiti/About/About.xml",
+    "packageId": "mandrake.rm.graffiti",
+    "name": "RimMandrake: Graffiti Framework",
+    "dependencies": []
+  },
+  {
+    "path": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/2023507013/About/About.xml",
+    "packageId": "OskarPotocki.VanillaFactionsExpanded.Core",
+    "name": "Vanilla Expanded Framework",
+    "dependencies": [
+      "brrainz.harmony"
+    ]
+  },
+  {
+    "path": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/3033901359/About/About.xml",
+    "packageId": "adaptive.storage.framework",
+    "name": "Adaptive Storage Framework",
+    "dependencies": [
+      "brrainz.harmony"
+    ]
+  }
+]

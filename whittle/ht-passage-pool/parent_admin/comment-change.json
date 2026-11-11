@@ -1,0 +1,12 @@
+{
+  "time": 1794404340.247086,
+  "path": "src/RimMandrake/HugeThings/Defs/IncidentDefs/RM_TitanPassage.xml",
+  "before_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+  "after_sha256": "292d61b604df29756437bd2cfb0efc58b6b91c6404d686e3f55d5af963c4bb4a",
+  "installed_sha256": "292d61b604df29756437bd2cfb0efc58b6b91c6404d686e3f55d5af963c4bb4a",
+  "canonical_ignoring_comments_equal": true,
+  "deploy_changes": [
+    "Defs/IncidentDefs/RM_TitanPassage.xml"
+  ],
+  "runtime_claim": "No executable XML or C#/DLL change. Accepted trial7 ran before this comment correction; its raw hashes remain unchanged. New deployed bytes match current source."
+}

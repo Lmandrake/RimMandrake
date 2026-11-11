@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Stillsand                             RimMandrake — STILLSAND_RM_MOD_BUILD_1
+    Phase A row 1 of design/RimMandrake/biome_mod_architecture.md. Content copied from
+    the deleted ExtremeDesert twin's def (was frozen the same
+    pass), minus every RSW_-prefixed row and JOE_Cephalope — see below.
+
+    workerClass stays vanilla RimWorld.BiomeWorker_ExtremeDesert, unchanged: the donor
+    twin never named a third-party class, so no RM_BiomeWorker_Stillsand is owed
+    (item's own MEASURED STATE).
+
+    wildAnimals/wildPlants/allowedPackAnimals started all EMPTY here, on purpose. Q11a
+    (owner ruling 2026-09-22): a genuinely canon Star Wars name is IP and must route
+    through the Utinni campaign patch layer, never the franchise-free RimMandrake tier —
+    every row copied off the frozen twin (13 wildAnimals, 3 wildPlants, 5 pack animals,
+    all Star-Wars-named, plus JOE_Cephalope, whose own ThingDef lives in Utinni-tier
+    Absorbed_Cephaloids_Defs.xml) is patched in by
+    src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml instead. These nodes
+    stayed present-but-empty so that file's PatchOperationAdd had somewhere to land.
+
+    2026-09-24 (COMMISSION_LEDGER_CLEANUP_1): wildAnimals is no longer empty — it now
+    also carries RM_MirrorGiant (renamed RM_Oommok below), a brand-new invented (non-SW)
+    species authored directly in this mod. Not every future addition here needs the
+    patch route: only content that is genuinely Star Wars IP does (Q11a).
+
+    STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1 RATIFIED): eight more invented
+    rows (kudda and pikkut/truffle mole then CUT — their one home is the Long Shade,
+    LONGSHADE_RULED_CONTENT_1) leave the Utinni patch for native RM_-tier copies here:
+    drageye (ikee), vozzik, vekka, drazzik, light-pipe nub, ollim(+wood). The frozen twin
+    the deleted ExtremeDesert twin's def (R22, untouched here) kept its own original RSW_-named
+    copies of all of them — this is a native duplicate for the free tier, not a
+    delete-and-move, since the live world still runs on the frozen twin until Phase
+    B's repaint. Q11 also ratified names: RM_MirrorGiant -> RM_Oommok ("oommok"),
+    RM_DustHusk -> RM_Siidda ("siidda"). Q8 grew the roster's one unwired row
+    (AA_SpinedGow) to giant scale as RM_Aurrok, wired rare.
+
+    Q7 depth-arm ruling: five wired rows sit inside R22's banned 0.3-3.0 mid-band
+    (drageye (ikee) 0.15 now corrected out of it per Q8; vekka 2.0, drazzik 2.2 remain in it).
+    ALL are subsurface animals (strike predators or burrowers) — the ban's target was
+    the mid-sized SURFACE animal; a subsurface body is defended by depth instead of
+    size. Ratified: annotate in place (each def's own header/race comment), evict
+    nothing. wildPlants is no longer empty either (light-pipe nub, ollim).
+    allowedPackAnimals carries the native RM_Vaalok (STILLSAND_BEDAZZLE_CONTENT_1); the canon pack
+    animals are Utinni-patched.
+  -->
+
+  <BiomeDef>
+    <defName>RM_Stillsand</defName>
+    <label>the Stillsand</label>
+    <description>A corrugated ochre plain under a star that has not moved since the world began, running unbroken to every horizon. Nothing here tracks the sun because the sun does not go anywhere; everything owns a shadow instead, or is buried, or is a giant carrying its own moving shade across a thousand kilometres of nothing. It ends, without a gradient, at a hard green line of river or sea -- and until then, this is the ocean of nothing that line is drawn against.</description>
+    <workerClass>RimWorld.BiomeWorker_ExtremeDesert</workerClass>
+    <settleWarning>Searing heat and a near total lack of arable land make survival here a challenge. Nothing here pursues, but nothing here forgives a mistake either.</settleWarning>
+    <isExtremeBiome>true</isExtremeBiome>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <lakeBeachTerrain>Sand</lakeBeachTerrain>
+    <mudTerrain>Sand</mudTerrain>
+    <riverbankTerrain>Sand</riverbankTerrain>
+    <!-- allowRoads true: owner 2026-10-20, "For now just replicate where we had roads before."
+         SurfaceTile.Roads returns null when this is false, so the record's 196 road links across
+         the Stillsand were stored but never drawn. Replaces the ExtremeDesert deep-dune ban. -->
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <animalDensity>0.1</animalDensity>
+    <plantDensity>0.008</plantDensity>
+    <forageability>0.0</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>World/Biomes/RM_Stillsand</texture>
+    <!-- STILLSAND_SAND_SWIM_REMAINDER_1 §6: sand fishing. RM_DeepSand carries the Water tag and a
+         Freshwater waterBodyType, so vanilla fishing zones form on it; this is the catch. The crawler is
+         the common catch, the glass pearl the rare one (the stalker catch is Utinni-patched onto the RSW
+         twin). A session may draw a swimmer's wake: Source/RM_SandSwimRemainder.cs. -->
+    <maxFishPopulation>90</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RM_DuneCrawler>1</RM_DuneCrawler>
+      </freshwater_Common>
+      <rareCatchesSetMaker>RM_RareSandCatches</rareCatchesSetMaker>
+    </fishTypes>
+    <diseaseMtbDays>90</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>40</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_OrganDecay</diseaseInc>
+        <commonality>10</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Sand</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <!-- DEEP_SAND_WALKABLE_TERRAIN_1 — owner, 2026-09-27: "an entire terrain type,
+         not just small pools. Some in the Long Shade, Muchly in the Stillsand."
+         Same TerrainPatchMaker mechanism as RM_LongShade.xml's own comment (reused
+         from vanilla Desert/ExtremeDesert's SoftSand patch, Biomes_WarmArid.xml),
+         tuned for "Muchly" = dominant rather than scattered: the threshold min is
+         dropped from the Long Shade's 0.65 to 0.2, admitting a far larger share of
+         the perlin noise range (fractal/Perlin sums cluster near the middle of
+         their range, so lowering the floor this far turns "occasional patch" into
+         "most of the map") and perlinFrequency is lowered to 0.03 for broad,
+         sweeping regions rather than many small blobs — fitting "a corrugated
+         ochre plain running unbroken to every horizon." minSize matches the Long
+         Shade's own raised floor (60, vs. vanilla's 13) so this never reads as
+         pools. These two numbers (0.65/0.045 vs 0.2/0.03) are FOUNDRY's tuning,
+         not measured in a live game — verify coverage with an actual map render
+         before calling the weighting final. -->
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.03</perlinFrequency>
+        <minSize>60</minSize>
+        <thresholds>
+          <li>
+            <terrain>RM_DeepSand</terrain>
+            <min>0.2</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+    <baseWeatherCommonalities>
+      <Clear>95</Clear>
+      <DryThunderstorm>1</DryThunderstorm>
+      <Fog>0</Fog>
+      <Rain>0</Rain>
+      <RainyThunderstorm>0</RainyThunderstorm>
+      <FoggyRain>0</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+      <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <!-- The remaining canon Star-Wars-named cast (kreetle, war wyrm, krayt
+           dragon x2, granite slug, scurrier, gizka, qorrax/JOE_Cephalope — the
+           last explicitly deferred, owner art-review pending) stays out of this
+           node entirely; it is wired by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml.
+           Everything below is invented, franchise-free RM_-tier content wired
+           inline, needing no patch (Q11a). -->
+      <RM_Oommok>0.0005</RM_Oommok>
+      <RM_Siidda>0.15</RM_Siidda>
+      <!-- DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1: shade-follow commensal,
+           follows RM_Oommok via RM_ShadowFollowerExtension — see that def's
+           own header. Independently spawned like any other wild animal (the
+           follow behavior is what ties it to the giant once both are on the
+           same map), commonality set low but above the giant's own near-zero
+           rate so a spawned mite has host-adjacent odds without requiring one
+           on every map. -->
+      <RM_ShadeMite>0.06</RM_ShadeMite>
+      <!-- STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1): native RM_-tier
+           copies of the tier-moved cast (weights match the Utinni patch's
+           original RSW_ figures — a pure tier move, not a reweighting).
+           Vekka and drazzik sit in R22's banned 0.3-3.0 mid-band; both are
+           subsurface strike predators, legal by the Q7 depth-arm ruling
+           (annotated on each def, nothing evicted). -->
+      <RM_Vekka>0.5</RM_Vekka>
+      <RM_Drazzik>0.05</RM_Drazzik>
+      <!-- §7 Q8: the roster's one confirmed unwired row, grown to giant scale. -->
+      <RM_Aurrok>0.15</RM_Aurrok>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: qorrax moved inline (Q1); terrain-bound to deep sand. -->
+      <RM_Qorrax>0.5</RM_Qorrax>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: the nine-def roster fill-out, one def per gap the
+           sheets rule (stillsand_roster_fillout_2026-09-27.md), at the doc's commonalities.
+           RM_Zuurrik and RM_Vaalok are deliberately NOT here: the zuurrik is woken by blood
+           (RM_MapComponent_Zuurrik), and the vaalok is a trader's pack animal. -->
+      <RM_Soorrak>0.02</RM_Soorrak>
+      <RM_Gaanok>0.01</RM_Gaanok>
+      <RM_LikkaLikka>0.2</RM_LikkaLikka>
+      <RM_Duumma>0.08</RM_Duumma>
+      <RM_Veessa>0.1</RM_Veessa>
+      <RM_Loomma>0.05</RM_Loomma>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level." The ulgga, moved here from the Long Shade; def stays in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_Ulgga MayRequire="mandrake.rm.biomes">0.015</RM_Ulgga>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand". The vosska, moved here from the Long Shade; sand-swimmer fields added on its def. Weight carried over verbatim; PROVISIONAL. -->
+      <RM_Vosska MayRequire="mandrake.rm.biomes">0.05</RM_Vosska>
+      <!-- SWB_RM_FAUNA_DECIDE_HOME_LIKE_CHIKKA (owner 2026-10-24: "a lot of alpha animal ports got classified as Star Wars. We should move all of those."): the ikee, RSW_Ikee renamed RM_Ikee and moved here from SWBestiary; its row came off Utinni WildAnimals_Stillsand.xml at the same weight. -->
+      <RM_Ikee>0.15</RM_Ikee>
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <!-- STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1): native RM_-tier
+           copies of the biome's own signature flora, tier-moved out of the
+           Utinni patch (weights unchanged from the original RSW_ rows). -->
+      <RM_LightPipeNub>0.1</RM_LightPipeNub>
+      <RM_Ollim>0.01</RM_Ollim>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1 fill-out flora. The hourbloom is event output only. -->
+      <RM_KneelOllim>0.008</RM_KneelOllim>
+      <RM_Glasscrust>0.15</RM_Glasscrust>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): the ultriss pad (was the Long Shade's ultracactus) — "supposed to be in the most extreme desert". Def lives in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_UltrissPad MayRequire="mandrake.rm.biomes">0.8</RM_UltrissPad>
+      <RM_Murrowbulb>0.05</RM_Murrowbulb>  <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: franchise-free base of RSW_Plant_Bloddle; same weight as that canon row, which still injects on top when SW is loaded -->
+    </wildPlants>
+    <wildPlantRegrowDays>35</wildPlantRegrowDays>
+    <allowedPackAnimals>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: the vaalok, the free tier's own pack giant (Q11),
+           so the standalone mod generates traders. The canon pack animals are added by
+           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+      <li>RM_Vaalok</li>
+    </allowedPackAnimals>
+    <modExtensions>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "lowSun" - the Deep Desert (this def merges deep_desert.md + dune_sea.md): "a low sun in the deep desert, so a shield you stand behind works and overhead shade does not".
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <!-- STILLSAND_SUN_FROM_LATITUDE_1 (owner, typed: "The biome takes its sun angle from its latitude ok
+           the planet not a region description"). The sun's elevation on every Stillsand map comes from the
+           map TILE's arc to the substellar point (0,0), never from a region name. Effects:
+           heatKind lowSun is the base; overheadAboveElevationDegrees switches to overhead rules at a high
+           sun (ruled by card: the cover that counts follows the sun angle). heatOffsetC is the offset at the
+           substellar point, scaled by sin(elevation), floored at 35 in the far ring (owner card
+           2026-09-30 18:11 PDT: +55 / about 35). sandGlareExposureFloor 0.35 (owner card 2026-09-30).
+           All tuned in live play. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
+        <heatKind>lowSun</heatKind>
+        <heatOffsetC>55</heatOffsetC>
+        <heatScalesWithElevation>true</heatScalesWithElevation>
+        <minScaledHeatOffsetC>35</minScaledHeatOffsetC>
+        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
+        <sandGlareExposureFloor>0.35</sandGlareExposureFloor>
+        <maxElevationDegrees>85</maxElevationDegrees>
+        <!-- STILLSAND_GLARE_BLIND_GOGGLES_1: unprotected humanlike eyes in full glare go glare-blind. -->
+        <glareBlindHediff>RM_GlareBlind</glareBlindHediff>
+        <glareBlindExposureMin>0.6</glareBlindExposureMin>
+        <glareBlindSeverityPerDay>4</glareBlindSeverityPerDay>
+        <!-- STILLSAND_MIRAGE_CONDITION_1: under a sun at 45 deg or higher the far edge shows water. -->
+        <mirageCondition>RM_Mirage</mirageCondition>
+        <mirageMinElevationDegrees>45</mirageMinElevationDegrees>
+        <mirageMentalState>RM_ChasingWater</mirageMentalState>
+        <mirageHeatstrokeMin>0.2</mirageHeatstrokeMin>
+        <mirageBreakMtbDays>1.5</mirageBreakMtbDays>
+        <mirageFullSunExposureMin>0.6</mirageFullSunExposureMin>
+      </li>
+      <!-- STILLSAND_SUN_FROM_LATITUDE_1 §1-2: the pinned sky. Ends the day-night cycle. Elevation from the
+           tile (same geometry as above), clamp lifted to 85 so near the substellar point shadows shrink to
+           almost nothing. Bleached-white sky, black shadow. glow 1 = solar panels at full output. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_PinnedSunExtension" MayRequire="mandrake.rm.biomes">
+        <minElevationDegrees>2</minElevationDegrees>
+        <maxElevationDegrees>85</maxElevationDegrees>
+        <glow>1</glow>
+        <skyColor>(1, 0.98, 0.94)</skyColor>
+        <shadowColor>(0.08, 0.08, 0.10)</shadowColor>
+        <overlayColor>(1, 0.98, 0.95)</overlayColor>
+        <saturation>0.85</saturation>
+        <lightsourceShineSize>1.2</lightsourceShineSize>
+        <lightsourceShineIntensity>1</lightsourceShineIntensity>
+        <shadowStrength>1</shadowStrength>
+      </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Stillsand</letterLabel>
+        <letterText>The sun here never moves, so nothing tracks it: everything owns a shadow, is buried, or carries its own. Do not spill blood on the sand. Water poured out here makes things bloom. Where the sun sits low a roof does nothing: only a lee shadow helps, a rock or a sun shield to stand behind. Nearer the point under the sun, where it stands high, a roof works again. A parasol barely helps out on the low-sun sand.</letterText>
+      </li>
+    </modExtensions>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_Stillsand</li>
+    </extraGenSteps>
+  </BiomeDef>
+
+</Defs>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    TITAN_CAMPS_SCAVENGERS_EVENTS_1, card #5 (owner 2026-09-09): a titan some biome homes, but not this map's, crosses the
+    map edge to edge after hours of footfall tremors. The race is picked at fire time from the live biome commonalities
+    (IncidentWorker_TitanPassage); none is named here. PROVISIONAL (FOUNDRY 2026-10-21): baseChance 0.3, minRefireDays 30.
+  -->
+  <IncidentDef>
+    <defName>RM_TitanPassage</defName>
+    <label>titan passage</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.TitanicCreatures.IncidentWorker_TitanPassage</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>30</minRefireDays>
+  </IncidentDef>
+</Defs>

@@ -1,0 +1,467 @@
+{
+  "HugeThings": {
+    "dll": {
+      "repo": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll",
+      "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Assemblies/RM_HugeThings.dll",
+      "repo_sha256": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+      "deployed_sha256": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+      "equal": true
+    },
+    "stamp": {
+      "repo": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+      "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Assemblies/RM_HugeThings.dll.srchash",
+      "repo_sha256": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+      "deployed_sha256": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+      "equal": true
+    }
+  },
+  "FlowWorks": {
+    "dll": {
+      "repo": "/home/mandrake/rm/codex-ht/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "repo_sha256": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+      "deployed_sha256": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+      "equal": true
+    },
+    "stamp": {
+      "repo": "/home/mandrake/rm/codex-ht/src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "deployed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "repo_sha256": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f",
+      "deployed_sha256": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f",
+      "equal": true
+    }
+  },
+  "compiled_inputs": [
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+      "expected": "02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78",
+      "actual": "02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+      "expected": "0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee",
+      "actual": "0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+      "expected": "0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c",
+      "actual": "0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+      "expected": "0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999",
+      "actual": "0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_Thing_Position_Wake.cs",
+      "expected": "162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac",
+      "actual": "162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/JobDriver_TitanClearObstacle.cs",
+      "expected": "16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146",
+      "actual": "16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+      "expected": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc",
+      "actual": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+      "expected": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14",
+      "actual": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+      "expected": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a",
+      "actual": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+      "expected": "28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e",
+      "actual": "28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+      "expected": "3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2",
+      "actual": "3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+      "expected": "48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112",
+      "actual": "48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+      "expected": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+      "actual": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/Patch_WallsSlots.cs",
+      "expected": "4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568",
+      "actual": "4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsUtility.cs",
+      "expected": "5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783",
+      "actual": "5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+      "expected": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+      "actual": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CompProperties_TitanicWake.cs",
+      "expected": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8",
+      "actual": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+      "expected": "6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054",
+      "actual": "6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+      "expected": "633f27be662836d2ddef16833e82280df9a1c4dce8a246f5f1d7954dd4d52220",
+      "actual": "633f27be662836d2ddef16833e82280df9a1c4dce8a246f5f1d7954dd4d52220",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicTierDef.cs",
+      "expected": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be",
+      "actual": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Extensions.cs",
+      "expected": "64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6",
+      "actual": "64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+      "expected": "688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80",
+      "actual": "688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+      "expected": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+      "actual": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicExtension.cs",
+      "expected": "71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e",
+      "actual": "71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+      "expected": "76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a",
+      "actual": "76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+      "expected": "7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86",
+      "actual": "7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+      "expected": "7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc",
+      "actual": "7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesDefOf.cs",
+      "expected": "95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64",
+      "actual": "95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+      "expected": "95d49dae9ea87f1f2b013adfffc9efa4eb458666d4f3f03b644c02f323812018",
+      "actual": "95d49dae9ea87f1f2b013adfffc9efa4eb458666d4f3f03b644c02f323812018",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+      "expected": "98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae",
+      "actual": "98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/Patch_StartPath_TitanClearing.cs",
+      "expected": "9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5",
+      "actual": "9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+      "expected": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de",
+      "actual": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsKernel.cs",
+      "expected": "a191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5",
+      "actual": "a191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_TitanClearingKernel.cs",
+      "expected": "aaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e",
+      "actual": "aaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+      "expected": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+      "actual": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+      "expected": "b5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37",
+      "actual": "b5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
+      "expected": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2",
+      "actual": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/YieldCurveUtility.cs",
+      "expected": "cfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef",
+      "actual": "cfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+      "expected": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "actual": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/FootprintMath.cs",
+      "expected": "d623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e",
+      "actual": "d623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs",
+      "expected": "d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453",
+      "actual": "d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+      "expected": "e916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4",
+      "actual": "e916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+      "expected": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17",
+      "actual": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTier.cs",
+      "expected": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac",
+      "actual": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/RM_CrushRuleDef.cs",
+      "expected": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9",
+      "actual": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+      "expected": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+      "actual": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs",
+      "expected": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8",
+      "actual": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+      "expected": "f9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca",
+      "actual": "f9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+      "expected": "fce6569cb01e3c4a51d5bb518bf518f32d7ef2ff9fcc80cd37e017daa2cc82ac",
+      "actual": "fce6569cb01e3c4a51d5bb518bf518f32d7ef2ff9fcc80cd37e017daa2cc82ac",
+      "equal": true
+    },
+    {
+      "source": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsMemoKernel.cs",
+      "expected": "ff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e",
+      "actual": "ff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e",
+      "equal": true
+    }
+  ],
+  "stamp_declared_dll": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+  "stamp_declared_matches_dll": true,
+  "HugeThings_xml": [
+    {
+      "relative": "About/About.xml",
+      "repo_sha256": "37da30f17057cb511e85a36e299ca685d11405031e74b4e6bf4e55265bedba93",
+      "deployed_sha256": "37da30f17057cb511e85a36e299ca685d11405031e74b4e6bf4e55265bedba93",
+      "equal": true
+    },
+    {
+      "relative": "Defs/CrushRuleDefs/RM_CrushRules.xml",
+      "repo_sha256": "56c4bc54eca44d720854f0aa9aaa5b69fd9d361b34240a321b0acc3de671ae42",
+      "deployed_sha256": "56c4bc54eca44d720854f0aa9aaa5b69fd9d361b34240a321b0acc3de671ae42",
+      "equal": true
+    },
+    {
+      "relative": "Defs/IncidentDefs/RM_TitanPassage.xml",
+      "repo_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "deployed_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+      "equal": true
+    },
+    {
+      "relative": "Defs/JobDefs/RM_JobDefs.xml",
+      "repo_sha256": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4",
+      "deployed_sha256": "19ddea10001d809d0fa209120511e33b051cd92d9798dced61565a4052ae8ae4",
+      "equal": true
+    },
+    {
+      "relative": "Defs/ThingDefs/RM_HugeTrunkBlocker.xml",
+      "repo_sha256": "42ffbc7cd50b4af476d42ad5d0ad950ff3ea82a8ca943f4160eee5e899329227",
+      "deployed_sha256": "42ffbc7cd50b4af476d42ad5d0ad950ff3ea82a8ca943f4160eee5e899329227",
+      "equal": true
+    },
+    {
+      "relative": "Defs/ThingDefs/RM_TitanicCorpseSite.xml",
+      "repo_sha256": "4803d86bd3c9a9a499a617b84e0e2b9c259e8531ba80c2fff849866743eb9101",
+      "deployed_sha256": "4803d86bd3c9a9a499a617b84e0e2b9c259e8531ba80c2fff849866743eb9101",
+      "equal": true
+    },
+    {
+      "relative": "Defs/TitanicTierDefs/RM_TitanicTierDef.xml",
+      "repo_sha256": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf",
+      "deployed_sha256": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf",
+      "equal": true
+    },
+    {
+      "relative": "Defs/WorkGiverDefs/RM_WorkGivers.xml",
+      "repo_sha256": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa",
+      "deployed_sha256": "214ef0aa26bc8dd3866a024ad722f2d1c53b69cc34d116ace3587e6807cd04fa",
+      "equal": true
+    },
+    {
+      "relative": "Languages/English/Keyed/RM_HugeThings.xml",
+      "repo_sha256": "4afd8be54aea759c06c4adfd483690d991c182df2980218f1425c3570c66c1ef",
+      "deployed_sha256": "4afd8be54aea759c06c4adfd483690d991c182df2980218f1425c3570c66c1ef",
+      "equal": true
+    },
+    {
+      "relative": "Languages/English/Keyed/RM_TitanicCreatures.xml",
+      "repo_sha256": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf",
+      "deployed_sha256": "62d4ec75c1a6202466f04c26ed92a0810ddc2b22d1ea1770e569df5699df3fcf",
+      "equal": true
+    },
+    {
+      "relative": "Patches/RM_TitanPassage_DarkSide.xml",
+      "repo_sha256": "edb79caaee7a47e1cb109dfe3c6fe021e6e3faa948d907cd0d68d34421f7ebc4",
+      "deployed_sha256": "edb79caaee7a47e1cb109dfe3c6fe021e6e3faa948d907cd0d68d34421f7ebc4",
+      "equal": true
+    }
+  ],
+  "ModsConfig": {
+    "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml",
+    "sha256": "fa62dfd0b49c8da4a481250c2734564a3156aac84e819dc812bca71c8f2e86f7",
+    "ordered": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "oskarpotocki.vanillafactionsexpanded.core",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.hugethings",
+      "mandrake.rm.luminouspigment",
+      "mandrake.rm.biomes",
+      "mandrake.rm.patches"
+    ]
+  },
+  "five_dlc_present": true,
+  "Stillsand_source_only": {
+    "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+    "sha256": "45afe02442cb69efce026658c10d7a112bd8ee379a7a1122a82c65b526bf4515",
+    "defName": "RM_Stillsand",
+    "wildAnimals": {
+      "RM_Oommok": "0.0005",
+      "RM_Siidda": "0.15",
+      "RM_ShadeMite": "0.06",
+      "RM_Vekka": "0.5",
+      "RM_Drazzik": "0.05",
+      "RM_Aurrok": "0.15",
+      "RM_Qorrax": "0.5",
+      "RM_Soorrak": "0.02",
+      "RM_Gaanok": "0.01",
+      "RM_LikkaLikka": "0.2",
+      "RM_Duumma": "0.08",
+      "RM_Veessa": "0.1",
+      "RM_Loomma": "0.05",
+      "RM_Ulgga": "0.015",
+      "RM_Vosska": "0.05",
+      "RM_Ikee": "0.15"
+    },
+    "passage_extensions": [],
+    "warning": "source only; not a resolved live roster and not proof of saved biome"
+  },
+  "historical_named_kinds_in_intended_deployed_xml": {},
+  "historical_named_kinds_absent_from_intended_deployed_xml": [
+    "RM_Reefback",
+    "RM_ReefbackJuv",
+    "RM_Lanternwhale",
+    "RSW_Reefback",
+    "RSW_Lanternwhale",
+    "RSW_ShadeWhale",
+    "RSW_SandoAquaMonster",
+    "RM_GrippingTerror",
+    "RM_Titanoslime"
+  ],
+  "historical_kind_limit": "Static active custom Defs XML only. No loaded DefDatabase or live absence claim; patched/donor definitions not asserted absent."
+}

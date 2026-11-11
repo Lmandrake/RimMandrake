@@ -1,0 +1,14 @@
+{
+  "started": 1794402885.1826527,
+  "status": "PASS",
+  "driver_rc": 0,
+  "post_log": {
+    "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log",
+    "first_exception": null,
+    "exception_count": 0,
+    "config_errors": [],
+    "scribe_parse_errors": []
+  },
+  "cleanup_errors": [],
+  "finished": 1794403142.748145
+}

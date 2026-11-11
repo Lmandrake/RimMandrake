@@ -1,0 +1,8 @@
+{
+  "started": 1794401291.0833495,
+  "status": "FAIL",
+  "error": "RuntimeError('tier_apply failed')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/mandrake/rm/codex-ht/whittle/ht-passage-pool/evidence/live_session.py\", line 17, in <module>\n    S.run('tier_apply',['python3','src/RimMandrake/Utils/modset_builder.py','--tier',S.TIER,'--apply'])\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/mandrake/rm/codex-ht/whittle/ht-passage-pool/evidence/session_control.py\", line 18, in run\n    if require and p.returncode:raise RuntimeError(name+' failed')\n                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: tier_apply failed\n",
+  "cleanup_errors": [],
+  "finished": 1794401307.1453757
+}

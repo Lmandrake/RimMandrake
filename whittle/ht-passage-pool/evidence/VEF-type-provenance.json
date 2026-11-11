@@ -1,0 +1,27 @@
+{
+  "instrument": "existing ilprobe/meta_core.py with DLL parameter bound in memory; no binary strings guess",
+  "installed_dll": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/2023507013/1.6/Assemblies/VEF.dll",
+  "installed_sha256": "2f0c890c54dd0498aebcfa42b63a859f8acee894adddd08807a523d683e8dc6d",
+  "workshop_published_dll": "/mnt/d/SteamLibrary/steamapps/workshop/content/294100/2023507013/1.6/Assemblies/VEF.dll",
+  "workshop_sha256": "2f0c890c54dd0498aebcfa42b63a859f8acee894adddd08807a523d683e8dc6d",
+  "exact_type_rows": [
+    [
+      "DualCropExtension",
+      "VEF.Plants",
+      1026,
+      1551,
+      401,
+      1048577
+    ]
+  ],
+  "type_present": true,
+  "installed_matches_workshop": true,
+  "production_modlist": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+  "production_modlist_sha256": "37d235f26959e08cd11e55c8faa59d56f14ad8955877c3c25b258a82ca4fdd98",
+  "VEF_in_published_production_list": true,
+  "owning_composition": "mandrake.rm.biomes",
+  "source_xml": "src/RimMandrake/CrackedLands/Defs/RM_CrackedLands_DonorPorts.xml",
+  "source_xml_sha256": "2ddaabefb2e0a006fd01038f2a444cc5938d04828e32d4ef5ae6ee7dd8a10b5d",
+  "source_type_reference": "\n        <randomOutput>true</randomOutput>\n        <outPutAmount>1</outPutAmount>\n        <randomSecondaryOutput>\n          <li>ChunkSandstone",
+  "change": "Activation only of already installed unchanged third-party VEF. No deploy overwrite/source/build change. Full Biomes plan previously reviewed in sync."
+}

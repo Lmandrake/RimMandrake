@@ -1,0 +1,49 @@
+TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT   built  row -  needs bridge  target v1
+RM_TitanPassage's eligible pool (live, R3 Stillsand, 2026-10-21) holds sea and juvenile kinds that would walk across a desert: RM_Reefback, RM_ReefbackJuv (a JUVENILE kind, judged by adult tier), RM_Lanternwhale, RSW_Reefback, RSW_Lanternwhale, RSW_ShadeWhale, RSW_SandoAquaMonster, RM_GrippingTerror, RM_Titanoslime among 19. Eligible() checks animal/tier/homed-elsewhere/season only. NEXT: ask the owner by question card whether the pool excludes water-homed (sea-biome-only) and non-adult kinds, then add that filter to TitanPassageUtility.Eligible + the kernel fuzz.
+owner BENCH   kind task   filed 2026-10-21T09:54:01Z
+built:    1a104682f19a on origin/main at 2026-10-21T21:43:04Z, level reached L0
+owes:     A2 L1, A3 L2
+  A2     L1         deployed DLL on a land map (R3 Stillsand): PassageCanFire lists no :sea kind (titan_events_live.py A4_water_la
+  A3     L2         forced RM_TitanPassage on a land map arrives with seaMatch=True and a kind from the map biome's own roster (ti
+
+--- items/TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT.md ---
+(absent or has no ## sections)
+--- history (4 events) ---
+  2026-10-21T09:54:01Z  FOUNDRY file      caused_by=TITAN_CAMPS_SCAVENGERS_EVENTS_1 for=FOUNDRY kind=task needs=owner target=v1 title=RM_TitanPassage's eligible pool (live, R3 Stillsand, 2026-10-21) holds sea and juvenile kinds that would walk across a desert: RM_Reefback, RM_ReefbackJuv (a JUVENILE kind, judged by adult tier), RM_Lanternwhale, RSW_Reefback, RSW_Lanternwhale, RSW_ShadeWhale, RSW_SandoAquaMonster, RM_GrippingTerror, RM_Titanoslime among 19. Eligible() checks animal/tier/homed-elsewhere/season only. NEXT: ask the owner by question card whether the pool excludes water-homed (sea-biome-only) and non-adult kinds, then add that filter to TitanPassageUtility.Eligible + the kernel fuzz. tsn=1792576441024538615  | agent's reason: found by titan_events_live.py PassageCanFire listing
+  2026-10-21T21:43:03Z  OWNER  note      text=Ruled 2026-10-21. Implemented 1a104682f: juveniles stay (adult tier); sea creature (homed only in water/seabed biomes) only on sea maps and land giants only on land; pool = map biome's RM_TitanPassageExtension passers list when present, else the biome's own roster (replaces card #5's homed-elsewhere rule); extension 'none' opts a biome out. Rust Cathedral and the nightside biomes home no titan, so they host no passage without any opt-out; per-biome roster work filed as TITAN_PASSAGE_POPULATE_* items. tsn=1792618983088247673  | owner said “Calves are ok. Sea creatures are not on dry land. Opposite can happen in sea biomes. Only sea creatures not land creatures. Every biome should have something like this. It's Star Wars. A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist there. Should draw from the hints of their own biome always of course.” | decided by card: Titan passage pool: sea/juvenile kinds → his notes
+  2026-10-21T21:43:04Z  FOUNDRY implemented criteria=[{'id': 'A1', 'level': 'L0', 'text': 'HugeThings fuzz green with the rewritten TitanEventEligible + IsSeaCreature (selftest_hugethings_fuzz.py ALL PASS, titanic lint 23/23)'}, {'id': 'A2', 'level': 'L1', 'text': 'deployed DLL on a land map (R3 Stillsand): PassageCanFire lists no :sea kind (titan_events_live.py A4_water_law PASS); RM_Reefback, RM_Lanternwhale, RSW_Reefbac'}, {'id': 'A3', 'level': 'L2', 'text': "forced RM_TitanPassage on a land map arrives with seaMatch=True and a kind from the map biome's own roster (titan_events_live.py A4_arrives PASS)"}] needs=bridge ref=origin/main sha=1a104682f19a tsn=1792618984688149697  | agent's reason: filter + sea inverse + own-biome pool shipped; deploy and live read owed
+  2026-11-03T05:11:06Z  OWNER  reassign  override=only BENCH or DECIDE may `reassign` (seat is OWNER)
+
+✅ If the OWNER told you to do this, that is not a refusal — quote him and it lands,
+   with his words recorded on the event as the authorization:
+    python3 src/RimMandrake/rimflow/cli.py reassign TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT … --owner-said "<his words, verbatim>"
+
+⚠️  Pass what he ACTUALLY said. Bare assent ("yes", "ok", "go ahead") is refused on
+    purpose — that is him agreeing to something YOU said, and the ledger would record
+    your words as his. A short instruction is fine.
+
+✅ If the CONDUCTOR told you to, it carries his authority: same command with
+    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor's text>"
+
+⛔ If neither did, the rule stands. Route it to BENCH or DECIDE instead. ranBy=BENCH reason=FOUNDRY retired 2026-11-02: re-homed to BENCH (bucket relentless) to=BENCH tsn=1793682666109708113  | decided by card: What should happen to FOUNDRY? → Retire it (Recommended)
+--- causal chain ---
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  <- caused by TITAN_CAMPS_SCAVENGERS_EVENTS_1
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused ARIDSHRUBLAND_TITAN_POPULATE_FORTY_NO_GIANT
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused BLUEDESERT_TITAN_POPULATE_BLUE_AND_SMALL
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused CAULDRON_TITAN_POPULATE_POT_WITHOUT_A_LID
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused CONTAGION_TITAN_POPULATE_PLAGUE_OF_SMALLS
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused CRACKEDLANDS_TITAN_POPULATE_CRACKS_UNSHAKEN
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused FEVERWOOD_TITAN_POPULATE_NO_FEVERED_GIANT
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused FORGE_TITAN_POPULATE_UTINNI_TWIN_SHORT
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused GREENTIDE_TITAN_POPULATE_UTINNI_TWIN_SHORT
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused LANTERNDEEPS_TITAN_POPULATE_DIM_AND_SMALL
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused LEANINGSCRUB_TITAN_POPULATE_SCRUB_UNSTOMPED
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused PROPANELAKE_TITAN_POPULATE_LAKE_UNSWUM
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused PYRELANDS_TITAN_POPULATE_FIRE_NO_FOOTFALL
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused SCALD_TITAN_POPULATE_HOT_WATER_NO_WHALE
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused SCARLANDS_TITAN_POPULATE_SCARS_NO_STOMPER
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused SUMP_TITAN_POPULATE_DRAIN_WITHOUT_A_GIANT
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused WASTELAND_TITAN_POPULATE_EMPTY_HORIZON
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused WEBWORK_TITAN_POPULATE_NO_GIANT_IN_WEB
+  TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT  -> caused WEEPINGSTONES_TITAN_POPULATE_UTINNI_TWIN_DRY

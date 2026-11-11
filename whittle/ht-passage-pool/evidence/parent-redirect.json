@@ -1,0 +1,6 @@
+{
+  "time": 1794400735.9510326,
+  "pid": 2836062,
+  "signal": "SIGINT",
+  "reason": "Dependency deployment has been reconciled and a supported existing-map biome fixture is authorized in PARENT_ACTIONS.md. Redirect same item to live completion; no live session active, source/evidence retained."
+}

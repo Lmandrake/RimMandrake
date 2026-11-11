@@ -1,0 +1,35 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/2] CRASH         2.2s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+[2/2] PASS         85.0s  src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
+evidence: 2 eligible, 0 SKIPPED as unchanged, 1 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (2): no record
+  not recordable (1): changed during the run: src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
+CRASH         2.2s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+             uncaught FileNotFoundError (rc 1) - the test died before reaching a verdict
+                                       errors="replace").returncode
+                                       ^^^^^^^^^^^^^^^^^
+               File "/home/mandrake/rm/codex-ht/src/RimMandrake/Utils/winbuild.py", line 213, in _interop_tries
+                 r = subprocess.run(cmd, **kwargs)
+               File "/usr/lib/python3.14/subprocess.py", line 555, in run
+                 with Popen(*popenargs, **kwargs) as process:
+                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+               File "/usr/lib/python3.14/subprocess.py", line 1039, in __init__
+                 self._execute_child(args, executable, preexec_fn, close_fds,
+                 ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                     pass_fds, cwd, env,
+                                     ^^^^^^^^^^^^^^^^^^^
+                 ...<5 lines>...
+                                     gid, gids, uid, umask,
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+                                     start_new_session, process_group)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               File "/usr/lib/python3.14/subprocess.py", line 1990, in _execute_child
+                 raise child_exception_type(errno_num, err_msg, err_filename)
+             FileNotFoundError: [Errno 2] No such file or directory: '/mnt/d/Luke/dev'
+PASS         85.0s  src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
+
+PASS 1/2  FAIL 0/2  UNMEASURED 0/2  CRASH 1/2  SKIPPED 0/2  (wall 88.0s) — contained in rm-harness.slice (max 12G), 1 workers
+CRASH (1/2) — reached no verdict: src/RimMandrake/Utils/selftest_hugethings_fuzz.py [uncaught FileNotFoundError (rc 1) - the test died before reaching a verdict]
+RESULT: RED (green = FAIL 0 and CRASH 0)

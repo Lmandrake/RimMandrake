@@ -1,0 +1,16 @@
+{
+  "started": 1794402132.9577532,
+  "status": "FAIL",
+  "driver_rc": 1,
+  "post_log": {
+    "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log",
+    "first_exception": null,
+    "exception_count": 0,
+    "config_errors": [],
+    "scribe_parse_errors": []
+  },
+  "error": "AssertionError('live driver non-pass')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/mandrake/rm/codex-ht/whittle/ht-passage-pool/evidence/live_session.py\", line 31, in <module>\n    assert p.returncode==0,'live driver non-pass'\n           ^^^^^^^^^^^^^^^\nAssertionError: live driver non-pass\n",
+  "cleanup_errors": [],
+  "finished": 1794402423.9106686
+}

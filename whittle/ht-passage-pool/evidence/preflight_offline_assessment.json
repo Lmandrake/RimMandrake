@@ -1,0 +1,34 @@
+{
+  "other_required_nonpasses": [
+    {
+      "id": "O13",
+      "name": "deploy_match",
+      "required": true,
+      "status": "FAIL",
+      "reason": "1 of 5 mods (1211 files) differ from the deployed copy: [\"FlowWorks(2: ['Assemblies/RimMandrakeFlowWorks.dll', 'Assemblies/RimMandrakeFlowWorks.dll.srchash'])\"]",
+      "cost_est_s": 60,
+      "took_s": 3.24,
+      "prevents": "#31 #46 #52 #57 deploy drift",
+      "evidence": {
+        "drift": [
+          "FlowWorks(2: ['Assemblies/RimMandrakeFlowWorks.dll', 'Assemblies/RimMandrakeFlowWorks.dll.srchash'])"
+        ]
+      }
+    }
+  ],
+  "O02": [
+    {
+      "id": "O02",
+      "name": "bridge_lease",
+      "required": true,
+      "status": "PASS",
+      "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+      "cost_est_s": 0.1,
+      "took_s": 0.0,
+      "prevents": "#22 #50 two drivers",
+      "evidence": {}
+    }
+  ],
+  "authorized_exception": "O02 other-host lease only; actual host independently guarded",
+  "ok": false
+}

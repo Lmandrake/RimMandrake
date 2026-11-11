@@ -1,0 +1,8 @@
+{
+  "time": 1794404658.0599484,
+  "source": "whittle/ht-passage-pool/evidence/live-attempt7/live.json",
+  "destination": "/home/mandrake/codex-steve/ht-loop/evidence/passage-pool.json",
+  "sha256": "fd7dd4bb8d13ffcfad0d57ce02d8456f0dacd67b7687c0d9bb6c41dab2849b5a",
+  "accepted_trial": 7,
+  "scope": "Byte-identical final pre-persistence-filtered receipt; supersedes earlier trial6 copies and their checksums. No unsanitized backup retained."
+}

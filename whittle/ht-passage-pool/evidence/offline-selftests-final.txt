@@ -1,0 +1,13 @@
+contained in rm-harness.slice (max 12G), 1 workers
+KNOWN PASS src/RimMandrake/HugeThings/northstar/selftest_passage_pool.py inputs unchanged since 2026-11-11 04:35 (e7bc8acf9b), 0.2s not spent
+[1/1] PASS          2.2s  whittle/ht-passage-pool/evidence/selftest_passage_kernel.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 1/2 answered from the ledger (selftests.cache_hit_share 0.500), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): changed during the run: whittle/ht-passage-pool/evidence/selftest_passage_kernel.py
+PASS          0.0s  src/RimMandrake/HugeThings/northstar/selftest_passage_pool.py
+PASS          2.2s  whittle/ht-passage-pool/evidence/selftest_passage_kernel.py
+
+PASS 2/2  FAIL 0/2  UNMEASURED 0/2  CRASH 0/2  SKIPPED 0/2  (wall 2.3s) — contained in rm-harness.slice (max 12G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

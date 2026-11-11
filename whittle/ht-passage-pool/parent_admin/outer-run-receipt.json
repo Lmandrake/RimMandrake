@@ -1,0 +1,11 @@
+{
+  "command": "whittle/run.py --runner codex --cwd /home/mandrake/rm/codex-ht --log whittle/ht-passage-pool/evidence/run3.jsonl --sandbox danger-full-access",
+  "exec_session_id": 32710,
+  "observed_exit_code": 0,
+  "actual_validator_rc": 0,
+  "prior_interrupted_runs": [
+    "evidence/run.jsonl",
+    "evidence/run2.jsonl"
+  ],
+  "scope": "Observed parent tool completion, not a fabricated worker return code. Actual run3 transport completes after the independent judge and validator."
+}

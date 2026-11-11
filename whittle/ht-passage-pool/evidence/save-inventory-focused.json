@@ -1,0 +1,31 @@
+{
+  "directory": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves",
+  "glob": "RM_TestSite_*.rws",
+  "saves": [
+    {
+      "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/RM_TestSite_calm_v3.rws",
+      "bytes": 8022042,
+      "sha256": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8",
+      "modIds": [
+        "brrainz.harmony",
+        "ludeon.rimworld",
+        "ludeon.rimworld.royalty",
+        "ludeon.rimworld.ideology",
+        "ludeon.rimworld.biotech",
+        "ludeon.rimworld.anomaly",
+        "ludeon.rimworld.odyssey",
+        "brrainz.rimbridgeserver",
+        "mandrake.rm.flowworks",
+        "mandrake.rm.gimmesomeslack",
+        "ray1203.simplecamerasetting"
+      ],
+      "maps": [
+        {
+          "id": "0",
+          "mapInfo": "<mapInfo>\n\t\t\t\t\t<size>(250, 1, 250)</size>\n\t\t\t\t\t<parent>WorldObject_109</parent>\n\t\t\t\t</mapInfo>\n\t\t\t\t"
+        }
+      ]
+    }
+  ],
+  "biome_resolution": "UNMEASURED: needs exact saved-set shortHash table or guarded live read"
+}

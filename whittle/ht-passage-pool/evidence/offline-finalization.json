@@ -1,0 +1,692 @@
+{
+  "kind": "fresh offline evidence/source audit; no live action or timestamp adjustment",
+  "measured_at": 1794404570.9941354,
+  "trial7_files": {
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.stdout": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.stdout": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.stdout": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+    "whittle/ht-passage-pool/evidence/live-attempt7/artifact-inventory.json": "99febf7fb2fbcc4283e3a1956b6fe9975c40b012477e459e984e342ebf4eec27",
+    "whittle/ht-passage-pool/evidence/live-attempt7/artifact-inventory.stdout": "7732713dca5bddfab692550dfab77e398b32296e53c32f55e9873048ab998129",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.stdout": "9f89234a54efdfaf4e587a06a6de6c6bd283e19546cf5721380919318232c043",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.stdout": "caecbc5c0233bf9dcd72550607f9db44f6817d9310dd67f6bb876afaa524efc0",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.stderr": "6cbf5d8559d7cbc26bd0c4e6852f3e1e926a3392b5182323ce33c9e884b26084",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.stdout": "6edbe834e36c06526b8e7626c7f377af5a38fab612c8c26eefbc695519c9e79a",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.rc": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.stdout": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.stdout": "4aee30889e608880f391ace7d3f592acd5d2e27fc23d046d392fe0e62d00a344",
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.stdout": "c80a118a0c1dd7d1a302976792506afb2c99958d9e82a81b2f6967bc4f0287b4",
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.rc": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.stdout": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+    "whittle/ht-passage-pool/evidence/live-attempt7/live.calls.jsonl": "ff55000ccdbf6f500454fcc879d1d7d43aaeba3b327a01bea2baaecca32cc138",
+    "whittle/ht-passage-pool/evidence/live-attempt7/live.json": "fd7dd4bb8d13ffcfad0d57ce02d8456f0dacd67b7687c0d9bb6c41dab2849b5a",
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.stdout": "0240ca0eed364e8f3057d171f63feb158bbce4c389debcc9692599bef134fae7",
+    "whittle/ht-passage-pool/evidence/live-attempt7/post_live_log_gate.json": "8e8b0ccc3fe643007a93d2aecdc6965faa350a9eb6d9fba948be0cc2f6f8a717",
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.json": "3fd3cd40cb8153034be1ca9ef43dbc54c75ebdb530bc987b6e21e5d6dc6715bf",
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.stdout": "02e8e5fb0daa0f9384b89b506d5716e8069cb2672fdf44576c98d6859eb7c66d",
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline_assessment.json": "9b0518ce1c72acfd1b61873ce888059a0e534cd5d6284afcf3d3effe1639d1cb",
+    "whittle/ht-passage-pool/evidence/live-attempt7/session.json": "fac1b05f272f3aa4eb65ecd1e45141d226a2d31913503fd89c24fd79e0b39e1b",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/RM_HugeThings.dll.srchash": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/RM_Stillsand_Biome.xml": "45afe02442cb69efce026658c10d7a112bd8ee379a7a1122a82c65b526bf4515",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/RM_TitanPassage.xml": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/RM_TitanPassageExtension.cs": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/RM_TitanicKernel.cs": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/TitanPassage.cs": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/TitanValidationHooks.cs": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+    "whittle/ht-passage-pool/evidence/live-attempt7/source/TitanicFuzz.cs": "091c696fe5b025a080f60d4d378c00a187aeab31ca48c5dcac3bbe4a00f5ae42",
+    "whittle/ht-passage-pool/evidence/live-attempt7/startup_log_gate.json": "8e8b0ccc3fe643007a93d2aecdc6965faa350a9eb6d9fba948be0cc2f6f8a717",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.stdout": "2d69be1e660073ff003baf448d0c0f60400f606a0b620d1cda7698e75efb857b",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.stdout": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.stdout": "42b2dd311c80f0390b955b8bae245f7a4f583acd0f0a51843af7447492fa2b08",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.json": "9fcdef07d12791e4e2f832d15c574f4c853af5248e3f6021e5d2afd1ba020b27",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.stdout": "d74bbbb02620bae9431acb2e26a8d1fe090f1ab1b10d48bf851dfe73ffccdfaf",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live_assessment.json": "798cbad8f31f7a2d6bb0f45b3c525357d940eafe0225a45c6c4432bcc65b0f3b",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.stderr": "6cbf5d8559d7cbc26bd0c4e6852f3e1e926a3392b5182323ce33c9e884b26084",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.stdout": "5d0d22ed4116cda94b330c25dba6fa803646a6ba41bccdb96f389cc4e8af8e18",
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_route.jsonl": "16547cdae2a664e5f9e36fa12c4ac2a597e024a1bcd7efca7f30fbd3c24d7ae1",
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.stdout": "9f22cfc37b6a93f43520b6bc6f032e22d3aeadd6eed3884692b4683773591ddf"
+  },
+  "trial7_unchanged_since_judge2_input_capture": true,
+  "raw_call_count": 293,
+  "dll_and_stamp": {
+    "dll": {
+      "repo": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+      "deployed": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130"
+    },
+    "stamp": {
+      "repo": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+      "deployed": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b"
+    }
+  },
+  "compiled_source_inputs": [
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/TrenchStrideHook.cs",
+      "expected": "02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78",
+      "current": "02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Footprint/Patch_ThickRoofAvoidance.cs",
+      "expected": "0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee",
+      "current": "0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+      "expected": "0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c",
+      "current": "0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Building_TrunkBlocker.cs",
+      "expected": "0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999",
+      "current": "0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_Thing_Position_Wake.cs",
+      "expected": "162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac",
+      "current": "162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/JobDriver_TitanClearObstacle.cs",
+      "expected": "16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146",
+      "current": "16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+      "expected": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc",
+      "current": "1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+      "expected": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14",
+      "current": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+      "expected": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a",
+      "current": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs",
+      "expected": "28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e",
+      "current": "28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CompTitanicWake.cs",
+      "expected": "3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2",
+      "current": "3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Patch_CorpseSiteConversion.cs",
+      "expected": "48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112",
+      "current": "48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+      "expected": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+      "current": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/Patch_WallsSlots.cs",
+      "expected": "4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568",
+      "current": "4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsUtility.cs",
+      "expected": "5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783",
+      "current": "5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/RM_TitanPassageExtension.cs",
+      "expected": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+      "current": "5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CompProperties_TitanicWake.cs",
+      "expected": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8",
+      "current": "601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/CrushTableUtility.cs",
+      "expected": "6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054",
+      "current": "6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/MapComponent_HugeFootprints.cs",
+      "expected": "633f27be662836d2ddef16833e82280df9a1c4dce8a246f5f1d7954dd4d52220",
+      "current": "633f27be662836d2ddef16833e82280df9a1c4dce8a246f5f1d7954dd4d52220",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicTierDef.cs",
+      "expected": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be",
+      "current": "63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Extensions.cs",
+      "expected": "64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6",
+      "current": "64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/Patch_ButcherYieldCurve.cs",
+      "expected": "688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80",
+      "current": "688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs",
+      "expected": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+      "current": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/RM_TitanicExtension.cs",
+      "expected": "71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e",
+      "current": "71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/JobDriver_TitanSqueeze.cs",
+      "expected": "76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a",
+      "current": "76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/TitanClearingUtility.cs",
+      "expected": "7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86",
+      "current": "7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs",
+      "expected": "7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc",
+      "current": "7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesDefOf.cs",
+      "expected": "95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64",
+      "current": "95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/CompHugeFootprint.cs",
+      "expected": "95d49dae9ea87f1f2b013adfffc9efa4eb458666d4f3f03b644c02f323812018",
+      "current": "95d49dae9ea87f1f2b013adfffc9efa4eb458666d4f3f03b644c02f323812018",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/HugeThingsCore.cs",
+      "expected": "98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae",
+      "current": "98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Clearing/Patch_StartPath_TitanClearing.cs",
+      "expected": "9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5",
+      "current": "9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+      "expected": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de",
+      "current": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsKernel.cs",
+      "expected": "a191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5",
+      "current": "a191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_TitanClearingKernel.cs",
+      "expected": "aaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e",
+      "current": "aaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs",
+      "expected": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+      "current": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/WallsSlots/WallsSlotsDecider.cs",
+      "expected": "b5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37",
+      "current": "b5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/DrawnExtent/DrawnExtentKernel.cs",
+      "expected": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2",
+      "current": "cebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/YieldCurveUtility.cs",
+      "expected": "cfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef",
+      "current": "cfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs",
+      "expected": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "current": "d1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/FootprintMath.cs",
+      "expected": "d623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e",
+      "current": "d623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs",
+      "expected": "d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453",
+      "current": "d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/Building_TitanicCorpseSite.cs",
+      "expected": "e916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4",
+      "current": "e916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+      "expected": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17",
+      "current": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTier.cs",
+      "expected": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac",
+      "current": "ee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/Wake/RM_CrushRuleDef.cs",
+      "expected": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9",
+      "current": "f006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+      "expected": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+      "current": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs",
+      "expected": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8",
+      "current": "f8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+      "expected": "f9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca",
+      "current": "f9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+      "expected": "fce6569cb01e3c4a51d5bb518bf518f32d7ef2ff9fcc80cd37e017daa2cc82ac",
+      "current": "fce6569cb01e3c4a51d5bb518bf518f32d7ef2ff9fcc80cd37e017daa2cc82ac",
+      "equal": true
+    },
+    {
+      "path": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_WallsSlotsMemoKernel.cs",
+      "expected": "ff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e",
+      "current": "ff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e",
+      "equal": true
+    }
+  ],
+  "driver_sha256": "cfc00bb6ef6761392b2652e75fa25439b1ffbf7d8593ccb994e1fe518adc80fc",
+  "comment_proof": {
+    "before_sha256": "7c072157953fc87211a5afc887c98c6ed10e2db037e838e4286a18759a85bab2",
+    "after_sha256": "292d61b604df29756437bd2cfb0efc58b6b91c6404d686e3f55d5af963c4bb4a",
+    "canonical_without_comments_equal": true,
+    "before_matches_trial7": true,
+    "after_matches_current_source_and_deployed": true
+  },
+  "recorded_baseline_equals_restored": true,
+  "settings_readbacks": 54,
+  "disk_hashes": {
+    "C:\\Users\\sjlewis\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\RM_TestSite_calm_v3.rws": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8"
+  },
+  "settings_files_in_disk_hashes": 0,
+  "scope": "native loaded Stillsand data; original AridShrubland terrain; compressed arrival; no crossing/showcase/owner acceptance; idle target replay only, no toil/RNG identity",
+  "historical_host_receipts_only": {
+    "trial7": "FREE generation1408",
+    "later_comment_deployment": "FREE generation1409"
+  },
+  "no_new_game_bridge_or_test_calls": true,
+  "raw_observations": {
+    "pool_response": {
+      "success": true,
+      "method": "System.String PassageCanFire()",
+      "result": "canFire=True active=True t3OnMap=False biome=RM_Stillsand seaMap=False hints=roster eligible=1 [RM_Oommok:T3:land]",
+      "thingArgs": [],
+      "ticksGame": 5,
+      "operation": {
+        "OperationId": "op_5b6e110a5dd44baca560a55103f0fd48",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 46
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 5
+      }
+    },
+    "own_roster": [
+      "RM_Qorrax",
+      "RM_Vekka",
+      "RM_LikkaLikka",
+      "RM_Aurrok",
+      "RM_Ikee",
+      "RM_Siidda",
+      "RM_Veessa",
+      "RM_Duumma",
+      "RM_ShadeMite",
+      "RM_Drazzik",
+      "RM_Loomma",
+      "RM_Vosska",
+      "RM_Soorrak",
+      "RM_Ulgga",
+      "RM_Gaanok",
+      "RM_Oommok"
+    ],
+    "incident": {
+      "success": true,
+      "message": "RM_TitanPassage fired with 35 points.",
+      "incident": "RM_TitanPassage",
+      "category": "Misc",
+      "canFireNow": true,
+      "forced": true,
+      "fired": true,
+      "windowsOpened": [],
+      "blockedByDialog": false,
+      "points": 35.0,
+      "ticksGame": 5,
+      "operation": {
+        "OperationId": "op_7da46a92bbfe4d2c94bb827c1a06fe70",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 47
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 5
+      }
+    },
+    "scheduled": {
+      "success": true,
+      "compType": "RimMandrake.TitanicCreatures.MapComponent_TitanPassages",
+      "values": {
+        "kind": "PawnKindDef:RM_Oommok",
+        "start": "(238, 0, 0)",
+        "end": "(235, 0, 249)",
+        "arrivalTick": "5005",
+        "warnedTick": "5",
+        "warningTicks": "5000",
+        "arrived": "null",
+        "HasPending": "True",
+        "PendingKind": "PawnKindDef:RM_Oommok",
+        "ArrivalTick": "5005",
+        "LastArrived": "null"
+      },
+      "missing": [],
+      "ticksGame": 5,
+      "operation": {
+        "OperationId": "op_876218972ae04252aae210202e028d9f",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 47
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 5
+      }
+    },
+    "arrival_response": {
+      "success": true,
+      "method": "System.String PassageReport()",
+      "result": "pending=False kind=none arrivalIn=-1 arrived=RM_Oommok24588 kind=RM_Oommok tier=T3 spawned=True homedHere=True seaMatch=True lord=LordJob_ExitMapNear pos=238,3",
+      "thingArgs": [],
+      "ticksGame": 6,
+      "operation": {
+        "OperationId": "op_c452c6c309d349adb4f4249d411905e0",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 46
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 6
+      }
+    },
+    "arrived": {
+      "pawn": "RM_Oommok24588",
+      "kind": "RM_Oommok",
+      "tier": "T3",
+      "x": 238,
+      "z": 3
+    },
+    "rows": [
+      {
+        "id": "event_off_fresh_tick",
+        "status": "PASS",
+        "detail": {
+          "pool": {
+            "success": true,
+            "method": "System.String PassageCanFire()",
+            "result": "canFire=False active=False t3OnMap=False biome=RM_Stillsand seaMap=False hints=roster eligible=1 [RM_Oommok:T3:land]",
+            "thingArgs": [],
+            "ticksGame": 4,
+            "operation": {
+              "OperationId": "op_51eabaa7a1e34700b34c8199d24ece34",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 47
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 4
+            }
+          },
+          "incident_probe": {
+            "success": false,
+            "message": "RM_TitanPassage canFireNow=False (dry run, nothing fired).",
+            "incident": "RM_TitanPassage",
+            "category": "Misc",
+            "canFireNow": false,
+            "forced": true,
+            "fired": false,
+            "windowsOpened": [],
+            "blockedByDialog": false,
+            "points": 35.0,
+            "ticksGame": 4,
+            "operation": {
+              "OperationId": "op_d75a1792c9d045f2880710d3173cc1a7",
+              "Status": "Completed",
+              "Success": true,
+              "DurationMs": 47
+            },
+            "state": {
+              "programState": "Playing",
+              "hasCurrentGame": true,
+              "paused": true,
+              "timeSpeed": "Paused",
+              "tick": 4
+            }
+          },
+          "scope": "CanFireNow availability; dryRun does not invoke TryExecute"
+        }
+      },
+      {
+        "id": "A2_complete_land_pool",
+        "status": "PASS",
+        "detail": {
+          "canFire": true,
+          "active": true,
+          "t3OnMap": false,
+          "biome": "RM_Stillsand",
+          "seaMap": false,
+          "hints": "roster",
+          "kinds": [
+            {
+              "kind": "RM_Oommok",
+              "tier": "T3",
+              "habitat": "land"
+            }
+          ]
+        }
+      },
+      {
+        "id": "A3_real_forced_arrival",
+        "status": "PASS",
+        "detail": {
+          "arrived": {
+            "pawn": "RM_Oommok24588",
+            "kind": "RM_Oommok",
+            "tier": "T3",
+            "x": 238,
+            "z": 3
+          },
+          "trigger": "DebugArriveNow + 1 governed tick"
+        }
+      },
+      {
+        "id": "exact_scene_and_settings_restored",
+        "status": "PASS",
+        "detail": {
+          "compared": [
+            "map",
+            "tile",
+            "pawns",
+            "passage",
+            "letters",
+            "rect",
+            "settings",
+            "debug",
+            "difficulty",
+            "ticksGame",
+            "weather",
+            "conditions",
+            "jobs",
+            "autoHome",
+            "storyteller",
+            "incidentQueue",
+            "wildSpawner"
+          ]
+        }
+      }
+    ],
+    "restore_differences": {},
+    "restore_errors": [],
+    "recorded_fields_compared": [
+      "map",
+      "tile",
+      "pawns",
+      "passage",
+      "letters",
+      "rect",
+      "settings",
+      "debug",
+      "difficulty",
+      "ticksGame",
+      "weather",
+      "conditions",
+      "jobs",
+      "autoHome",
+      "storyteller",
+      "incidentQueue",
+      "wildSpawner"
+    ],
+    "recorded_fields_equal": {
+      "map": true,
+      "tile": true,
+      "pawns": true,
+      "passage": true,
+      "letters": true,
+      "rect": true,
+      "settings": true,
+      "debug": true,
+      "difficulty": true,
+      "ticksGame": true,
+      "weather": true,
+      "conditions": true,
+      "jobs": true,
+      "autoHome": true,
+      "storyteller": true,
+      "incidentQueue": true,
+      "wildSpawner": true
+    }
+  }
+}

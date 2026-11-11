@@ -1,0 +1,16 @@
+preflight OFFLINE tier=quicktest purpose=test seat=BENCH 2026-11-11T12:49:04Z
+PASS       O02  bridge_lease             req    0.0s  FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for "<what>"
+PASS       O07  known_wedgers            req    1.0s  no known wedger for purpose test
+PASS       O03  disk_space               req    0.0s  free GB {'C': 24.3, 'D': 10019.4}
+PASS       O06  ship_coverage            opt    0.0s  not the full tier: a test list is deliberately partial
+PASS       O04  modsconfig_intent        req    1.0s  ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes (15 mods, ordered)
+PASS       O08  player_log_archive       req    0.0s  already archived: /mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T120618_07f51eb8d2cd.log
+PASS       O09  companion_match          req    0.2s  deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)
+PASS       O11  bridge_lint_fresh        opt    0.0s  lint snapshot covers all 431 declared tools (0.2 d old)
+PASS       O12  src_load_killers         req    1.4s  BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include: clean
+PASS       O05  list_sane                req    0.5s  15 ids, none composed/duplicate/uninstalled
+PASS       O01  game_down                req    0.5s  no RimWorldWin64 process
+PASS       O10  dependency_fp            opt    0.3s  RBS 2.3.0, Harmony, game assemblies unchanged since baseline
+PASS       O14  effective_def_lint       req   82.3s  clean | /mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache MISS; unsupported scope: ['unsupported_patch_ops', 'donor_types']
+PASS       O13  deploy_match             req   11.5s  6 mods, 5972 files: deployed == repo byte for byte
+VERDICT GREEN

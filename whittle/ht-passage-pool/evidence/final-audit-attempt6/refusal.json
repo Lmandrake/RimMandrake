@@ -1,0 +1,7 @@
+{
+  "command": "final_verify.py evidence/live-attempt6",
+  "observed_exit_code": 1,
+  "reason": "credential pattern detected; no value printed",
+  "outcome": "game DOWN/guard FREE/bridge FREE already independently measured; raw credential values subsequently removed, source filtering fixed, actual trial rerun as live-attempt7",
+  "actual_receipt_source": "observed exec result; original tool transcript retained by session"
+}

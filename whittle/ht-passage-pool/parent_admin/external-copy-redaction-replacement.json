@@ -1,0 +1,9 @@
+{
+  "time": 1794403428.6550856,
+  "source": "whittle/ht-passage-pool/evidence/live-attempt6/live.json",
+  "destination": "/home/mandrake/codex-steve/ht-loop/evidence/passage-pool.json",
+  "before_copy_sha256": "686643c8782dbc1cafbb6b5feda3150d593b7a33b9749d455106375db1a65ea1",
+  "current_sha256": "2154a9d63f62d9b4fa9998c0916d61fa97e9068d9ea08f3d534e455d66603c9c",
+  "reason": "Worker detected a credential value in raw bridge results before publication and sanitized source receipts. The earlier local external copy predated that sanitation. Overwritten immediately with the sanitized receipt; no unsanitized backup retained; no credential value printed. Previous parent verification checksum is superseded by this receipt.",
+  "value_free_metadata_only": true
+}

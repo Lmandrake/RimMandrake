@@ -19489,3 +19489,23 @@
 {"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-11T04:18:53Z","tsn":1794370733203478306}
 {"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-11T08:07:16Z","tsn":1794384436312316796}
 {"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-11T13:22:58Z","tsn":1794403378926743553}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T12:26:15Z","tsn":1794399975125219894}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T12:31:42Z","tsn":1794400302798645771}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T12:34:46Z","tsn":1794400486761069803}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T12:36:41Z","tsn":1794400601547864994}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T12:39:32Z","tsn":1794400772073518758}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T12:48:22Z","tsn":1794401302315751242}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T12:48:51Z","tsn":1794401331797454220}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T12:51:53Z","tsn":1794401513215209146}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T12:52:20Z","tsn":1794401540555895930}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T12:55:46Z","tsn":1794401746159535774}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T13:01:56Z","tsn":1794402116803232642}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T13:06:58Z","tsn":1794402418538331950}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T13:08:41Z","tsn":1794402521957894256}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T13:13:34Z","tsn":1794402814999763515}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T13:14:06Z","tsn":1794402846833519574}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T13:18:57Z","tsn":1794403137759717175}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T13:22:30Z","tsn":1794403350446637702}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T13:27:25Z","tsn":1794403645644201425}
+{"seat":"CONDUCTOR","event":"bridge","state":"taken","host":"stevedesktop","why":"delegated: bridge idle (free)","purpose":"HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT","ts":"2026-11-11T13:37:10Z","tsn":1794404230788239259}
+{"seat":"CONDUCTOR","event":"bridge","state":"released","host":"stevedesktop","ts":"2026-11-11T13:38:13Z","tsn":1794404293647021560}

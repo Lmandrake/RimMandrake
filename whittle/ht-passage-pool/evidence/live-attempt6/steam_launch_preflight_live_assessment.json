@@ -1,0 +1,22 @@
+{
+  "other_required_nonpasses": [],
+  "O02": {
+    "status": "N/A",
+    "raw_rows": [
+      {
+        "id": "O02",
+        "name": "bridge_lease",
+        "required": true,
+        "status": "PASS",
+        "reason": "FREE    since 2026-11-11T07:29:21Z",
+        "cost_est_s": 0.1,
+        "took_s": 0.0,
+        "prevents": "#22 #50 two drivers",
+        "evidence": {}
+      }
+    ],
+    "reason": "other-host bridge file; actual SteveDesktop host separately guarded"
+  },
+  "authorized_exception": "O02 only; actual host independently guarded",
+  "ok": true
+}

@@ -34,7 +34,7 @@ def main(argv):
     for i, a in enumerate(argv):
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
-    return winbuild.run_interop(args, cwd="/mnt/d/Luke/dev", timeout=None)
+    return winbuild.run_interop(args, cwd=rec["stage"], timeout=None)
 
 
 if __name__ == "__main__":

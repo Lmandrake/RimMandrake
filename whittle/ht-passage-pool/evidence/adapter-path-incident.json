@@ -1,0 +1,7 @@
+{
+  "attempt": "live-attempt2",
+  "classification": "HARNESS setup refusal/correction; not an accepted live proof",
+  "finding": "session_control used the per-attempt receipt directory as its adapter directory. That directory had no steam_adapter. PATH therefore resolved genuine PowerShell for rw_game up; the runner's up branch launches RimWorldWin64.exe directly. This violated the required Steam route if that branch executed. The orchestrator was interrupted before live preflight/driver, and its finally shut the game down and released the lease. No save load, incident, pawn generation or game ticks were driven by the live script.",
+  "correction": "Resolve adapter against session_control.py's own directory, independently of receipt destination. Require the actual adapter file before launch. Subsequent accepted launch must retain STEAM_ADAPTER stderr receipt.",
+  "preservation": "Original setup evidence retained; no accepted launch/process evidence is inferred from this attempt."
+}

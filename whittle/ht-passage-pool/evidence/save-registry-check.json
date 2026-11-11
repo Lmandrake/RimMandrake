@@ -1,0 +1,29 @@
+{
+  "registry_path": "/home/mandrake/rm/codex-ht/src/RimMandrake/Utils/modcheck/test_site_saves.json",
+  "registry_sha256": "ae1b698ae1edd1c5a271e13df6926a73f925d534c48be1c036b4e354af6da78c",
+  "Stillsand_source_package": "mandrake.rm.stillsand",
+  "Stillsand_effective_owning_package": "mandrake.rm.biomes",
+  "existing_registered_sites": [
+    {
+      "save": "RM_TestSite_calm_v3",
+      "sha256": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8",
+      "bytes": 8022042,
+      "registry_entries": [
+        {
+          "site": "calm",
+          "biome": "AridShrubland",
+          "builtUtc": "2026-10-18T03:32:39Z",
+          "bytes": 8022042,
+          "head": null,
+          "mapId": 0,
+          "outdoorAtSave": 13.9573679,
+          "profile": "calm",
+          "save": "RM_TestSite_calm_v3",
+          "tile": 112579
+        }
+      ],
+      "owning_content_in_saved_header": false
+    }
+  ],
+  "limit": "Registry is a saved historical measurement, not a fresh live map read; no shortHash lookup used."
+}

@@ -1,0 +1,17 @@
+{
+ "state": "HELD",
+ "seat": "BENCH",
+ "purpose": "HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+ "identity": {
+  "pid": 2835258,
+  "start": 91177.0,
+  "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+  "platform": "wsl",
+  "host": "SteveDesktop"
+ },
+ "generation": 1405,
+ "heartbeat": "2026-11-11T13:01:54Z",
+ "how": "holder process pid 2835258 alive",
+ "host": "stevedesktop",
+ "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+}

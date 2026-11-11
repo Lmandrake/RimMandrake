@@ -1,0 +1,37 @@
+{
+  "head_published": "e7bc8acf9b5936b951abfc804ecc069b99bc2ece",
+  "source_inputs_verified_against_stamp_and_git": 349,
+  "old_vs_new_stamp_source_equal": false,
+  "stamp_lines_removed": [
+    "bb8a6a3d4adf1545cb7539dc6db13b389934ed3d9a94b6116f386c97466c1a3c Hose/HosePorts.cs",
+    "dd6e26b974060df4c987e374588038cc3c76b669583d88cf6bb8eea9fc69d18d Hose/HoseMath.cs"
+  ],
+  "stamp_lines_added": [
+    "75544c48d31c3c180692a3004aef5309dc9d653bba326a9fb7b880cb06744595 Hose/HosePorts.cs",
+    "ed597876b4e6214c9c8bacc435aaeee1682deb004ef4fa625f99c82ed74a2482 Hose/HoseMath.cs"
+  ],
+  "plan": "dependency-deploy-plan.txt",
+  "reviewed_plan_changes": [
+    "Assemblies/RimMandrakeFlowWorks.dll",
+    "Assemblies/RimMandrakeFlowWorks.dll.srchash"
+  ],
+  "files": [
+    {
+      "repo": "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "installed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "backup": "/mnt/d/RimTest/data/backups/ht-passage-dependency-20261111T1234/RimMandrakeFlowWorks.dll",
+      "repo_sha256": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+      "installed_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2",
+      "backup_sha256": "1c92c54ebdffb03aefa05c92512b37d2ce63a67ea18f5b8c3b903ef146bfd8a2"
+    },
+    {
+      "repo": "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "installed": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "backup": "/mnt/d/RimTest/data/backups/ht-passage-dependency-20261111T1234/RimMandrakeFlowWorks.dll.srchash",
+      "repo_sha256": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f",
+      "installed_sha256": "7bd1e82ad56a41422e469114bed1e1c5dc5f70c1fca1d135f199571dd73ea227",
+      "backup_sha256": "7bd1e82ad56a41422e469114bed1e1c5dc5f70c1fca1d135f199571dd73ea227"
+    }
+  ],
+  "scope": "Deployment only of unchanged committed published dependency; no FlowWorks source or item work; no unknown extra file deletion."
+}

@@ -1,0 +1,3 @@
+fuzz visitors: 1500 cases, 62762 steps, 0.04s, 0 failures
+titaniccreatures fuzz: 1500 cases, 62762 steps, 0.05s total -> OK
+HUGE THINGS FUZZ: ALL PASS

@@ -1,0 +1,17 @@
+{
+  "initial_command": "run_selftests.py --only selftest_hugethings_fuzz.py selftest_hugethings_titanic_lint.py --workers 1",
+  "initial_exit_code": 1,
+  "initial_report": "original-a1-selftests.txt",
+  "initial_fuzz": "CRASH FileNotFoundError /mnt/d/Luke/dev",
+  "initial_titanic_lint": "PASS 85.0s",
+  "repair": {
+    "path": "src/RimMandrake/Utils/selftest_hugethings_fuzz.py",
+    "before_sha256": "b611338fa05e90eac5aa1599d7a7d9d60dfefea715d71d762c4d06007414f97e",
+    "after_sha256": "ca897255fe0dda7fa5148cdbf3b5c22c2f4c1a2f56c21e28d3ccf6ae5ea713ce",
+    "diff": "diff --git a/src/RimMandrake/Utils/selftest_hugethings_fuzz.py b/src/RimMandrake/Utils/selftest_hugethings_fuzz.py\nindex fa97748828..0868e33a8b 100644\n--- a/src/RimMandrake/Utils/selftest_hugethings_fuzz.py\n+++ b/src/RimMandrake/Utils/selftest_hugethings_fuzz.py\n@@ -34,7 +34,7 @@ def main(argv):\n     for i, a in enumerate(argv):\n         if a.startswith(\"--fuzz\") and i + 1 < len(argv):\n             args += [a, argv[i + 1]]\n-    return winbuild.run_interop(args, cwd=\"/mnt/d/Luke/dev\", timeout=None)\n+    return winbuild.run_interop(args, cwd=rec[\"stage\"], timeout=None)\n \n \n if __name__ == \"__main__\":\n"
+  },
+  "rerun_command": "run_selftests.py --only selftest_hugethings_fuzz.py --workers 1",
+  "rerun_exit_code": 0,
+  "rerun_report": "original-a1-fuzz-fixed.txt",
+  "cache_boundary": "Actual PASS executions retained; generic runner reported external/freshness limits, not represented as reusable cached proof. Old failed aggregate retained unchanged."
+}

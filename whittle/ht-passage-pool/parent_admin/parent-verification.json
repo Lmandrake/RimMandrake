@@ -1,0 +1,48 @@
+{
+  "time": 1794403279.4932199,
+  "checks": {
+    "accepted_driver_status": "PASS",
+    "baseline_equals_restored": true,
+    "original_disk_hashes_equal": true,
+    "restore_errors": [],
+    "new_pawn_matches_scheduled_kind": true
+  },
+  "actual_host_guard": {
+    "command": [
+      "python3",
+      "src/RimMandrake/rimflow/host_guard.py",
+      "status",
+      "--json"
+    ],
+    "rc": 0,
+    "stdout": "{\n \"state\": \"FREE\",\n \"generation\": 1407,\n \"host\": \"stevedesktop\",\n \"path\": \"/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json\"\n}\n",
+    "stderr": ""
+  },
+  "host_specific_bridge": {
+    "command": [
+      "python3",
+      "src/RimMandrake/rimflow/cli.py",
+      "bridge",
+      "who",
+      "--host",
+      "stevedesktop"
+    ],
+    "rc": 0,
+    "stdout": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger \u2014 take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n",
+    "stderr": ""
+  },
+  "actual_game_status": {
+    "command": [
+      "bash",
+      "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+      "status"
+    ],
+    "rc": 3,
+    "stdout": "stopped\n",
+    "stderr": ""
+  },
+  "external_copy": "/home/mandrake/codex-steve/ht-loop/evidence/passage-pool.json",
+  "external_copy_sha256": "686643c8782dbc1cafbb6b5feda3150d593b7a33b9749d455106375db1a65ea1",
+  "artifact_commit": "d4da6624ea7f29d022dbe6b9ba5319e0a5590d2c",
+  "scope": "Parent independent local raw-data assertions and actual host cleanup probes. No second live driver; no owner acceptance."
+}

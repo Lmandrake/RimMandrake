@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!--
-    TITAN_CAMPS_SCAVENGERS_EVENTS_1, card #5 (owner 2026-09-09): a titan some biome homes, but not this map's, crosses the
-    map edge to edge after hours of footfall tremors. The race is picked at fire time from the live biome commonalities
-    (IncidentWorker_TitanPassage); none is named here. PROVISIONAL (FOUNDRY 2026-10-21): baseChance 0.3, minRefireDays 30.
+    TITAN_CAMPS_SCAVENGERS_EVENTS_1, owner 2026-10-21: a titan is picked from this biome's passage hints, or its own roster,
+    with sea/land matching and calves allowed by adult race tier. The passage is warned by two in-game hours of tremors
+    by default (owner 2026-11-11). IncidentWorker_TitanPassage names no race here. PROVISIONAL: baseChance 0.3, minRefireDays 30.
   -->
   <IncidentDef>
     <defName>RM_TitanPassage</defName>

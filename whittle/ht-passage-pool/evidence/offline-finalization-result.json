@@ -1,0 +1,25 @@
+{
+  "measured_at": 1794404914.2693136,
+  "scope": "offline Whittle finalization only",
+  "fresh_judge_valid": true,
+  "judge_process_rc": 0,
+  "workflow_validate_rc": 0,
+  "workflow_process_rc": 0,
+  "old_tainted_judge_accepted": false,
+  "hashes": {
+    "whittle/ht-passage-pool/DONE.md": "8114103d3b1f7c1df6abba490fdb31a88fe353eb8c71a09b2100c442ee3c0ca6",
+    "whittle/ht-passage-pool/JUDGE.md": "1fce9f56c70fce6e0e709a7b5b1ac67ea75343a424d5fdeb627ddc768c419548",
+    "whittle/ht-passage-pool/FINDINGS.md": "cff9d8da8678650415634dd67128f4288ca7d250b2f9a03d97f50d2994755744",
+    "whittle/ht-passage-pool/evidence/judge2.inputs.json": "ff6a4d2eff1e5b9fa0b793a03bec149b84d5e351f7926604c9844478adb3a4f9",
+    "whittle/ht-passage-pool/evidence/judge2.isolation-audit.json": "43dfaf5f24abfe310ebb12b170957bee7fae29d7024bd92071858f097c9bf472",
+    "whittle/ht-passage-pool/evidence/judge2.events.jsonl": "2936a38f11aab5c4d2ac742622ce995f96dd49618893f0f3661a7e601e97f18f",
+    "whittle/ht-passage-pool/evidence/judge2.spend.json": "e52065610b8fe3cedbb1f3bcfc270a34ad93d7de9dc4dcc603fe3e9adaf047cb",
+    "whittle/ht-passage-pool/evidence/judge2.process.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/evidence/offline-finalization.json": "fe3710c726784c219aa667914ce9ad42ef89e19bc5f0e22e62c3f852410b5748",
+    "whittle/ht-passage-pool/evidence/workflow.receipt.json": "475a147eb4c21178ae5430f4d313eef38048ef72d6474a673db18c0ce8675e41",
+    "whittle/ht-passage-pool/evidence/workflow.process.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "whittle/ht-passage-pool/history/JUDGE.tainted.md": "d5bf58126a770a24bbb1ae854fd928f6386b8ee574b66760ab1d6da45ee3420a"
+  },
+  "parent_publication_and_closure_pending": true,
+  "historical_failed_run_envelopes_unchanged": true
+}

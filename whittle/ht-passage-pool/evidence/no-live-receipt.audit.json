@@ -1,0 +1,17 @@
+{
+  "scope": "offline raw-content audit only",
+  "certifiable": false,
+  "rows": [
+    {
+      "id": "complete_land_pool",
+      "status": "UNMEASURED",
+      "reason": "'pool_response'"
+    },
+    {
+      "id": "arrival_membership",
+      "status": "UNMEASURED",
+      "reason": "'arrival_response'"
+    }
+  ],
+  "ok": false
+}

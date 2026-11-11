@@ -1,0 +1,3 @@
+A1 L0: HugeThings fuzz green with the rewritten TitanEventEligible + IsSeaCreature (selftest_hugethings_fuzz.py ALL PASS, titanic lint 23/23)
+A2 L1: deployed DLL on a land map (R3 Stillsand): PassageCanFire lists no :sea kind (titan_events_live.py A4_water_law PASS); RM_Reefback, RM_Lanternwhale, RSW_Reefbac
+A3 L2: forced RM_TitanPassage on a land map arrives with seaMatch=True and a kind from the map biome's own roster (titan_events_live.py A4_arrives PASS)

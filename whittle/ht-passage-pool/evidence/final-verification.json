@@ -1,0 +1,327 @@
+{
+  "checked_at": 1794403695.1340654,
+  "scope": "Fresh read-only post-cleanup verification of recorded live trial and unchanged current source; not a new live trial and not an mtime refresh of raw evidence.",
+  "candidate": "whittle/ht-passage-pool/evidence/live-attempt7",
+  "status": "PASS",
+  "live_status": "PASS",
+  "raw_content_audit": {
+    "scope": "offline raw-content audit only",
+    "certifiable": false,
+    "rows": [
+      {
+        "id": "complete_land_pool",
+        "status": "PASS"
+      },
+      {
+        "id": "arrival_membership",
+        "status": "PASS"
+      }
+    ],
+    "complete_land_pool": {
+      "canFire": true,
+      "active": true,
+      "t3OnMap": false,
+      "biome": "RM_Stillsand",
+      "seaMap": false,
+      "hints": "roster",
+      "kinds": [
+        {
+          "kind": "RM_Oommok",
+          "tier": "T3",
+          "habitat": "land"
+        }
+      ]
+    },
+    "arrival_membership": {
+      "pawn": "RM_Oommok24588",
+      "kind": "RM_Oommok",
+      "tier": "T3",
+      "x": 238,
+      "z": 3
+    },
+    "ok": true
+  },
+  "recorded_baseline_exactly_restored": true,
+  "actual_host_now": {
+    "state": "FREE",
+    "generation": 1408,
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "actual_game_now": "stopped",
+  "generation_during_trial": 1408,
+  "driver_source_sha256": "cfc00bb6ef6761392b2652e75fa25439b1ffbf7d8593ccb994e1fe518adc80fc",
+  "credential_pattern_matches": 0,
+  "inputs": {
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403393.5314653
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403393.5313563
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before.stdout": {
+      "sha256": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+      "mtime": 1794403393.5313563
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403585.6324143
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403585.6323295
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_drive.stdout": {
+      "sha256": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+      "mtime": 1794403585.6323295
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403457.13876
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403457.1386597
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/actual_guard_before_launch.stdout": {
+      "sha256": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+      "mtime": 1794403457.1386597
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/artifact-inventory.json": {
+      "sha256": "99febf7fb2fbcc4283e3a1956b6fe9975c40b012477e459e984e342ebf4eec27",
+      "mtime": 1794403457.352251
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/artifact-inventory.stdout": {
+      "sha256": "7732713dca5bddfab692550dfab77e398b32296e53c32f55e9873048ab998129",
+      "mtime": 1794403457.3533988
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403649.0119638
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403649.0118358
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_actual_guard.stdout": {
+      "sha256": "9f89234a54efdfaf4e587a06a6de6c6bd283e19546cf5721380919318232c043",
+      "mtime": 1794403649.0118358
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403650.6650078
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403650.6640694
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_bridge_free.stdout": {
+      "sha256": "caecbc5c0233bf9dcd72550607f9db44f6817d9310dd67f6bb876afaa524efc0",
+      "mtime": 1794403650.6640694
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403638.374813
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.stderr": {
+      "sha256": "6cbf5d8559d7cbc26bd0c4e6852f3e1e926a3392b5182323ce33c9e884b26084",
+      "mtime": 1794403638.3747373
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_down.stdout": {
+      "sha256": "6edbe834e36c06526b8e7626c7f377af5a38fab612c8c26eefbc695519c9e79a",
+      "mtime": 1794403638.3739595
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.rc": {
+      "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+      "mtime": 1794403638.966268
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403638.9661496
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_game_status.stdout": {
+      "sha256": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+      "mtime": 1794403638.9661496
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403648.9364414
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403648.936339
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/cleanup_release.stdout": {
+      "sha256": "4aee30889e608880f391ace7d3f592acd5d2e27fc23d046d392fe0e62d00a344",
+      "mtime": 1794403648.93631
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403585.6472673
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403585.6471777
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/clone_windows_path.stdout": {
+      "sha256": "c80a118a0c1dd7d1a302976792506afb2c99958d9e82a81b2f6967bc4f0287b4",
+      "mtime": 1794403585.6471777
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.rc": {
+      "sha256": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+      "mtime": 1794403394.1536734
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403394.1535673
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/game_before.stdout": {
+      "sha256": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+      "mtime": 1794403394.1535673
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/live.calls.jsonl": {
+      "sha256": "ff55000ccdbf6f500454fcc879d1d7d43aaeba3b327a01bea2baaecca32cc138",
+      "mtime": 1794403631.4679878
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/live.json": {
+      "sha256": "fd7dd4bb8d13ffcfad0d57ce02d8456f0dacd67b7687c0d9bb6c41dab2849b5a",
+      "mtime": 1794403631.551988
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403631.5734723
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403631.5734293
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/live_driver.stdout": {
+      "sha256": "0240ca0eed364e8f3057d171f63feb158bbce4c389debcc9692599bef134fae7",
+      "mtime": 1794403631.573385
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/post_live_log_gate.json": {
+      "sha256": "8e8b0ccc3fe643007a93d2aecdc6965faa350a9eb6d9fba948be0cc2f6f8a717",
+      "mtime": 1794403631.5806708
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.json": {
+      "sha256": "3fd3cd40cb8153034be1ca9ef43dbc54c75ebdb530bc987b6e21e5d6dc6715bf",
+      "mtime": 1794403457.0398989
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403457.0657082
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403457.0656033
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline.stdout": {
+      "sha256": "02e8e5fb0daa0f9384b89b506d5716e8069cb2672fdf44576c98d6859eb7c66d",
+      "mtime": 1794403457.0656033
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/preflight_offline_assessment.json": {
+      "sha256": "9b0518ce1c72acfd1b61873ce888059a0e534cd5d6284afcf3d3effe1639d1cb",
+      "mtime": 1794403457.0659916
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/session.json": {
+      "sha256": "fac1b05f272f3aa4eb65ecd1e45141d226a2d31913503fd89c24fd79e0b39e1b",
+      "mtime": 1794403650.6651638
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/startup_log_gate.json": {
+      "sha256": "8e8b0ccc3fe643007a93d2aecdc6965faa350a9eb6d9fba948be0cc2f6f8a717",
+      "mtime": 1794403585.5502374
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403457.2247324
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403457.2246392
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_adapter_resolved.stdout": {
+      "sha256": "2d69be1e660073ff003baf448d0c0f60400f606a0b620d1cda7698e75efb857b",
+      "mtime": 1794403457.2246392
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403457.2117288
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403457.21162
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_guard.stdout": {
+      "sha256": "fdcfd06e28616f2e5eba864dea90bc7cb523a47376994f6b76d0cef7d5b7ad26",
+      "mtime": 1794403457.21162
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403457.221919
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403457.2218022
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_powershell.stdout": {
+      "sha256": "42b2dd311c80f0390b955b8bae245f7a4f583acd0f0a51843af7447492fa2b08",
+      "mtime": 1794403457.2218022
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.json": {
+      "sha256": "9fcdef07d12791e4e2f832d15c574f4c853af5248e3f6021e5d2afd1ba020b27",
+      "mtime": 1794403585.495994
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403585.5132732
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403585.5131671
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live.stdout": {
+      "sha256": "d74bbbb02620bae9431acb2e26a8d1fe090f1ab1b10d48bf851dfe73ffccdfaf",
+      "mtime": 1794403585.5131671
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_preflight_live_assessment.json": {
+      "sha256": "798cbad8f31f7a2d6bb0f45b3c525357d940eafe0225a45c6c4432bcc65b0f3b",
+      "mtime": 1794403585.513476
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403536.0662246
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.stderr": {
+      "sha256": "6cbf5d8559d7cbc26bd0c4e6852f3e1e926a3392b5182323ce33c9e884b26084",
+      "mtime": 1794403536.0661879
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_launch_up.stdout": {
+      "sha256": "5d0d22ed4116cda94b330c25dba6fa803646a6ba41bccdb96f389cc4e8af8e18",
+      "mtime": 1794403536.0661228
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/steam_route.jsonl": {
+      "sha256": "16547cdae2a664e5f9e36fa12c4ac2a597e024a1bcd7efca7f30fbd3c24d7ae1",
+      "mtime": 1794403458.320097
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.rc": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "mtime": 1794403397.8059766
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime": 1794403397.8058743
+    },
+    "whittle/ht-passage-pool/evidence/live-attempt7/tier_apply.stdout": {
+      "sha256": "9f22cfc37b6a93f43520b6bc6f032e22d3aeadd6eed3884692b4683773591ddf",
+      "mtime": 1794403397.8058743
+    }
+  },
+  "limits": [
+    "Synthetic tile-biome fixture on existing calm_v3 map, not native Stillsand terrain generation",
+    "DebugArriveNow plus governed tick compresses warning timing",
+    "No completed crossing, showcase or flight claim",
+    "Recorded job fields replayed only for changed idle wander targets; internal toil/RNG state not certified"
+  ]
+}

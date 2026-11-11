@@ -1,0 +1,416 @@
+You are a fresh independent Opus Test Pilot, tool-disabled and read-only. Diagnose the fragility class before another live setup. Three orchestration setups have not reached the live trial: 1 legacy modset_builder checked other host BRIDGE and refused; resolved via actualhost verified override, 2 receipt directory moved Steam adapter path so interrupted and cleaned; fixed independent absolute adapter path plus which assertion, 3 genuine Steam launch passed deep offline preflight but first startup exception is missing VEF.Plants.DualCropExtension. All have automatic DOWN/release actual host cleanup; no live save/incident/tick trial has run. User demands at 3 failed live attempts consult fresh Opus before any fourth; conservatively doing so now before setup4.
+
+User authorizes activation/deployment of unchanged published production Stillsand dependencies only; no FlowWorks/GSS source/build edits, no mod source edits to satisfy test; existing calm_v3 map tile biome setter only, full restore, nonflying definitions inspected BEFORE generation, no worldgen or flight. VEF is installed, packageId OskarPotocki.VanillaFactionsExpanded.Core, dependency harmony. Candidate next tier adds that installed dependency through modset_builder; no source/deploy changes.
+
+Read the supplied raw setup error and functional driver. Identify concrete blockers/unsafe or false-pass assumptions in the WHOLE adapter/setup fragility class; give smallest corrections justified by source and exact live raw readbacks needed. In particular inspect receipt keys and scene restore baseline. Never propose relaxing gates, faking a roster, generating flyer pawns, bypassing preflight, or launching bare executable. Return bounded prioritized findings.
+
+FILE whittle/ht-passage-pool/evidence/live-attempt3/independent_startup_log_gate.json
+{
+  "path": "/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log",
+  "first_exception": [
+    45,
+    "Exception loading def from file RM_CrackedLands_DonorPorts.xml: System.ArgumentException: Could not find type named VEF.Plants.DualCropExtension from node <li Class=\"VEF.Plants.DualCropExtension\"><randomOutput>true</randomOutput><outPutAmount>1</outPutAmount><randomSecondaryOutput><li>ChunkSandstone</li><li>ChunkGranite</li><li>ChunkLimestone</li><li>ChunkSlate</li><li>ChunkMarble</li></randomSecondaryOutput></li>"
+  ],
+  "exception_count": 1,
+  "config_errors": [],
+  "scribe_parse_errors": []
+}
+
+
+FILE whittle/ht-passage-pool/evidence/session_control.py
+"""Passage-pool orchestration primitives, adapted from ht-two-hour-warning.
+Every shell sources SteveDesktop environment. No ledger/deploy/baseline writes.
+"""
+import hashlib,json,os,re,shlex,subprocess,time
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[3]
+E=Path(os.environ.get('HT_PASSAGE_EVIDENCE',str(Path(__file__).resolve().parent)))
+ADAPTER=Path(__file__).resolve().parent/'steam_adapter'
+ENV=dict(os.environ)
+TIER='mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes'
+GAME=['bash','/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh']
+BRIDGE=['python3','src/RimMandrake/rimflow/cli.py','bridge']
+def run(name,args,require=True,timeout=900):
+ command='source /home/mandrake/rm/runner/infrastructure/stevedesktop/testcentre_env.sh\nexport RIMFLOW_SEAT=BENCH RM_CODEX_SIDE=wsl\n'+shlex.join(args)
+ p=subprocess.run(['bash','-c',command],cwd=ROOT,env=ENV,capture_output=True,timeout=timeout)
+ def safe(b):return b'\n'.join(b'[credential line redacted]' if re.search(rb'bridge token:|authorization:|bearer ',l,re.I) else l for l in b.split(b'\n'))
+ for ext,data in [('stdout',safe(p.stdout)),('stderr',safe(p.stderr)),('rc',str(p.returncode).encode()+b'\n')]: (E/(name+'.'+ext)).write_bytes(data)
+ print(name,'rc',p.returncode,flush=True)
+ if require and p.returncode:raise RuntimeError(name+' failed')
+ return p
+def guard(name):
+ g=json.loads(run(name,['python3','src/RimMandrake/rimflow/host_guard.py','status','--json']).stdout)
+ assert g['state']=='HELD' and g['seat']=='BENCH' and g['purpose']=='HT: TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT'
+ assert g['generation']>=1402 and str(g['generation'])==ENV.get('RM_HOST_GUARD_GEN')
+ assert g['identity']['pid']==2835258
+ ENV['RM_DRIVER_PID']=str(g['identity']['pid'])
+ # actual host_guard status independently verifies pid/start/boot, not pid number alone
+ return g
+def preflight(name,live=False):
+ path=E/(name+'.json')
+ args=['/home/mandrake/.cache/ht-warning-venv/bin/python3','src/RimMandrake/Utils/preflight_bridge.py','--tier','quicktest','--modset',TIER,'--deep','--all','--seat','BENCH','--json',str(path)]
+ if live:args+=['--live']
+ run(name,args,require=False)
+ r=json.loads(path.read_text());bad=[x for x in r['rows'] if x['required'] and x['id']!='O02' and x['status']!='PASS']
+ (E/(name+'_assessment.json')).write_text(json.dumps({'other_required_nonpasses':bad,'O02': [x for x in r['rows'] if x['id']=='O02'],'authorized_exception':'O02 other-host lease only; actual host independently guarded','ok':not bad},indent=2)+'\n')
+ assert not bad,[(x['id'],x['status']) for x in bad]
+def launch(name):
+ guard(name+'_guard')
+ real=ENV.get('HT_POWERSHELL_REAL')
+ if not real or real==str(ADAPTER/'powershell.exe'):
+  real=run(name+'_powershell',['which','powershell.exe']).stdout.decode().strip()
+ assert real!=str(ADAPTER/'powershell.exe'),'genuine PowerShell required'
+ assert (ADAPTER/'powershell.exe').is_file(),'scoped Steam adapter missing'
+ ENV['HT_POWERSHELL_REAL']=real
+ ENV['PATH']=str(ADAPTER)+os.pathsep+ENV['PATH']
+ resolved=run(name+'_adapter_resolved',['which','powershell.exe']).stdout.decode().strip()
+ assert resolved==str(ADAPTER/'powershell.exe'),'Steam adapter must actually resolve before launch'
+ p=run(name+'_up',GAME+['up','--wait'],False)
+ if p.returncode:
+  for i in range(12):
+   time.sleep(5)
+   p=run(name+'_delayed_'+str(i),GAME+['status'],False)
+   if p.returncode==0 and b'bridge port in Player.log: 5174' in p.stdout:break
+  else:raise RuntimeError('Steam delayed process/bridge absent')
+ time.sleep(45)
+ preflight(name+'_preflight_live',True)
+def inspect_log(name):
+ import sys
+ sys.path.insert(0,str(ROOT/'src/RimMandrake/Utils'));import game_paths
+ p=Path(game_paths.PLAYER_LOG);lines=p.read_text(errors='replace').splitlines()
+ ex=[(i+1,s) for i,s in enumerate(lines) if re.search(r'Exception|Traceback',s)]
+ cfg=[(i+1,s) for i,s in enumerate(lines) if 'Config error' in s]
+ parse=[(i+1,s) for i,s in enumerate(lines) if re.search(r'Error while loading|could not parse|exception parsing|XML error',s,re.I)]
+ r={'path':str(p),'first_exception':ex[0] if ex else None,'exception_count':len(ex),'config_errors':cfg,'scribe_parse_errors':parse}
+ (E/(name+'.json')).write_text(json.dumps(r,indent=2)+'\n')
+ return r
+
+
+FILE whittle/ht-passage-pool/evidence/live_session.py
+"""One guarded live attempt; always shut down and release actual host."""
+import json
+import os
+from pathlib import Path
+import sys
+import time
+import traceback
+import session_control as S
+
+E=S.E
+E.mkdir(exist_ok=True)
+rec={'started':time.time(),'status':'IN_PROGRESS'}
+rc=1
+try:
+ S.guard('actual_guard_before')
+ S.run('game_before',S.GAME+['status'],False)
+ S.run('tier_apply',['python3','src/RimMandrake/Utils/modset_builder.py','--tier',S.TIER,'--apply','--not-my-bridge','Actual SteveDesktop host_guard independently HELD BENCH under the verified fresh generation and parent PID; the legacy bridge companion file is on the other host (authorized O02 boundary).'])
+ S.preflight('preflight_offline_15')
+ S.guard('actual_guard_before_launch')
+ S.launch('steam_launch')
+ logs=S.inspect_log('startup_log_gate')
+ assert not logs['first_exception'] and not logs['config_errors'] and not logs['scribe_parse_errors'],logs
+ S.guard('actual_guard_before_drive')
+ rootwin=S.run('clone_windows_path',['wslpath','-w',str(S.ROOT)]).stdout.decode().strip()
+ out=rootwin+'\\'+str(E.relative_to(S.ROOT)).replace('/','\\')+'\\live.json'
+ p=S.run('live_driver',['python.exe',rootwin+'\\src\\RimMandrake\\HugeThings\\northstar\\passage_pool_driver.py','--out',out],False,timeout=900)
+ rec['driver_rc']=p.returncode
+ rec['post_log']=S.inspect_log('post_live_log_gate')
+ assert not rec['post_log']['first_exception'] and not rec['post_log']['config_errors'] and not rec['post_log']['scribe_parse_errors'],rec['post_log']
+ assert p.returncode==0,'live driver non-pass'
+ rec['status']='PASS'
+ rc=0
+except Exception as ex:
+ rec.update(status='FAIL',error=repr(ex),traceback=traceback.format_exc())
+finally:
+ errors=[]
+ for name,args in [('cleanup_down',S.GAME+['down','--wait']),('cleanup_game_status',S.GAME+['status']),
+                   ('cleanup_release',S.BRIDGE+['release','--host','stevedesktop']),
+                   ('cleanup_actual_guard',['python3','src/RimMandrake/rimflow/host_guard.py','status','--json']),
+                   ('cleanup_bridge_free',S.BRIDGE+['who','--host','stevedesktop'])]:
+  try:
+   p=S.run(name,args,False)
+   if name=='cleanup_down': assert p.returncode==0
+   if name=='cleanup_game_status': assert p.stdout.strip()==b'stopped'
+   if name=='cleanup_actual_guard': assert json.loads(p.stdout)['state']=='FREE'
+   if name=='cleanup_bridge_free': assert b'FREE' in p.stdout
+   if name=='cleanup_release': assert p.returncode==0
+  except Exception as ex:errors.append(name+': '+repr(ex))
+ rec.update(cleanup_errors=errors,finished=time.time())
+ if errors:rec['status']='FAIL';rc=1
+ (E/'session.json').write_text(json.dumps(rec,indent=2)+'\n')
+ print(json.dumps(rec),flush=True)
+sys.exit(rc)
+
+
+FILE src/RimMandrake/HugeThings/northstar/passage_pool_driver.py
+#!/usr/bin/env python3
+"""Real bounded live adapter for TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT.
+
+Existing calm_v3 only. Stage ONLY current tile biome; no generation/roster edits.
+PROVE: complete production pool; EXPECT nonempty own-roster land kinds with zero
+abstract MaxFlightTime before any generated pawn. LIES: empty/capped/source roster.
+PROVE: event-off CanFireNow on a fresh tick, paired with enabled real incident;
+EXPECT pending + tremor, DebugArriveNow then one governed tick, new spawned ID,
+seaMatch and own-roster membership. LIES: cached LastArrived, direct pawn spawn.
+PROVE: finally reload guarded scene-begin; EXPECT exact tile, pawn identity/state,
+passage fields, letters, full-map rectangle hash, time/weather/settings/isolation.
+Synthetic biome fixture, NOT native Stillsand terrain-generation integration;
+NOT natural two-hour timing, completed crossing, flight, or showcase evidence.
+All raw bridge responses are journalled without slicing, including governed ticks.
+"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+import time
+import traceback
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[3]
+for p in (ROOT/'src/RimMandrake/Utils', ROOT/'src/RimMandrake/Utils/modcheck'):
+    sys.path.insert(0, str(p))
+import validation_core as V
+import test_site_saves as T
+import helpers as H
+from game_paths import SAVES
+import passage_pool_live as P
+
+SETTINGS = 'RimMandrake.HugeThings.RM_HugeThingsSettings'
+PROOF = 'RimMandrake.FlowWorks.RM_PitPrisonProof'
+PASSAGE_MEMBERS = 'kind,start,end,arrivalTick,warnedTick,warningTicks,arrived,HasPending,PendingKind,ArrivalTick,LastArrived'
+
+
+def need(ok, reason):
+    if not ok:
+        raise AssertionError(reason)
+
+
+class Run(V.Bridge):
+    def __init__(self, out):
+        self.out = out
+        self.rec = dict(script=__file__, started=time.time(), calls=[], rows=[],
+                        scope=__doc__, status='IN_PROGRESS')
+        self.journal = out.with_suffix('.calls.jsonl').open('x', encoding='utf-8')
+        super().__init__()
+        tools = self.S.list_tools()
+        self.rec['tool_inventory'] = tools
+        self.rec['jawa_tool_count'] = sum(x['name'].startswith('jawa/') for x in tools)
+        need(self.rec['jawa_tool_count'] > 0, 'companion tool census empty')
+
+    def _raw(self, tool, kw):
+        r = super()._raw(tool, kw)
+        event = dict(tool=tool, args=kw, raw_response=r, wall=time.time())
+        self.journal.write(json.dumps(event, default=str)+'\n')
+        self.journal.flush()
+        return r
+
+    def call(self, tool, allow=False, **kw):
+        r = super().call(tool, **kw)
+        self.rec['calls'].append(dict(tool=tool, args=kw, result=r))
+        if not allow:
+            need(r.get('success') is not False, f'{tool} refused: {r}')
+        return r
+
+    def hook(self, method):
+        return self.call('jawa/static_call', type=P.HOOKS, method=method, args='')
+
+    def row(self, name, detail):
+        self.rec['rows'].append(dict(id=name, status='PASS', detail=detail))
+        self.save()
+        print(name, 'PASS', flush=True)
+
+    def save(self):
+        self.out.write_text(json.dumps(self.rec, indent=2, default=str)+'\n', encoding='utf-8')
+
+    def setting(self, field, value):
+        self.call('jawa/mod_settings_field', typeName=SETTINGS, field=field, action='set', value=str(value))
+        got = self.call('jawa/mod_settings_field', typeName=SETTINGS, field=field, action='get')['value']
+        need(str(got).lower() == str(value).lower(), f'{field} readback disagrees')
+
+    def advance(self, n):
+        before = self.call('jawa/site_state')['ticksGame']
+        self.ticks(n)
+        after = self.call('jawa/site_state')['ticksGame']
+        need(after-before == n, f'governed tick delta {after-before} != {n}')
+
+    def pawns(self):
+        r = self.call('jawa/list_pawns', limit=10000, includeHealth=True)
+        need(r['truncated'] == 0 and r['returned'] == r['totalOnMap'] == len(r['pawns']), 'incomplete full-map pawn census')
+        return sorted(r['pawns'], key=lambda p:p['id'])
+
+    def settings(self):
+        r = self.call('jawa/mod_settings_field', typeName=SETTINGS, action='list')
+        need(r['count'] == len(r['fields']), 'incomplete settings list')
+        return {x['name']:x['value'] for x in r['fields']}
+
+    def snapshot(self):
+        mi = self.call('jawa/map_info')
+        ti = self.call('jawa/world_tile_get', tiles=str(mi['tile']))
+        need(ti['count'] == ti['requested'] == 1 and ti['truncated'] == 0 and not ti['errors'], 'incomplete tile snapshot')
+        pc = self.call('jawa/map_comp_read', comp='MapComponent_TitanPassages', members=PASSAGE_MEMBERS)
+        need(not pc['missing'] and set(pc['values']) == set(PASSAGE_MEMBERS.split(',')), 'incomplete passage snapshot')
+        rect = self.call('jawa/static_call', type=PROOF, method='Rect', args='0,0,250,250')
+        need(rect.get('result') and not str(rect['result']).startswith('FAIL'), 'full-map rectangle unreadable')
+        state = self.call('jawa/site_state', rect='0,0,250,250')
+        return dict(map={k:mi[k] for k in ('mapId','tile','mapBiome','sizeX','sizeZ')},
+                    tile=ti['tiles'][0], pawns=self.pawns(), passage=pc['values'],
+                    letters=self.call('jawa/letter_list')['letters'], rect=rect['result'],
+                    settings=self.settings(), debug=H.read_settings(T.call_session(self.call)),
+                    difficulty=self.call('jawa/difficulty_tune')['before'],
+                    ticksGame=state['ticksGame'], weather=state['weather'], conditions=state['conditions'],
+                    autoHome=state['autoHome'], storyteller=state['storyteller'],
+                    incidentQueue=state['incidentQueue'],
+                    wildSpawner=self.call('jawa/wild_spawner_block', action='get')['blocked'])
+
+    def run(self):
+        saved = False
+        baseline = None
+        tx = None
+        prior = None
+        snap = 'CODEX_HTPassage_Begin_'+time.strftime('%Y%m%dT%H%M%S')
+        try:
+            self.rec['artifact_sha256'] = hashlib.sha256((HERE.parent/'Assemblies/RM_HugeThings.dll').read_bytes()).hexdigest()
+            self.rec['load'] = T.load_site(self.call, 'calm', map_controls=('modal_broker',))
+            need(self.rec['load']['verified'], 'existing calm_v3 load failed')
+            self.call('jawa/set_game_speed', speed='Paused')
+            self.rec['scene_begin'] = T.save_site(self.call, snap, SAVES)
+            saved = True
+            self.rec['initial_reload'] = T.load_site(self.call, 'calm', name=snap, check=False, map_controls=('modal_broker',))
+            need(self.rec['initial_reload']['verified'], 'scene-begin initial reload failed')
+            self.call('jawa/set_game_speed', speed='Paused')
+            baseline = self.snapshot()
+            self.rec['baseline'] = baseline
+            prior = baseline['settings']
+            need(baseline['passage']['HasPending'] == 'False', 'baseline contains pending passage')
+            tx = H.SettingsTransaction(T.call_session(self.call))
+            tx.__enter__()
+            quiet = H.quiet_world(T.call_session(self.call), tx, wild_spawner=False, log_raids=False)
+            self.rec['quiet'] = quiet.evidence
+            need(quiet.verified, 'isolation not verified')
+            self.setting('giantAnimalsEnabled', True)
+            mi = baseline['map']
+            self.rec['biome_set'] = self.call('jawa/world_tile_set', tiles=str(mi['tile']), biome=P.BIOME)
+            now = self.call('jawa/map_info')
+            need(now['mapId'] == mi['mapId'] and now['tile'] == mi['tile'] and now['mapBiome'] == P.BIOME, 'biome fixture/map identity failed')
+            tile = self.call('jawa/world_tile_get', tiles=str(mi['tile']))['tiles'][0]
+            self.rec['staged_tile'] = tile
+            diff = {k:[baseline['tile'].get(k),tile.get(k)] for k in baseline['tile'] if baseline['tile'].get(k) != tile.get(k)}
+            self.rec['tile_changes'] = diff
+            need(set(diff) == {'biome'}, f'non-biome tile scalar changed: {diff}')
+            roster = self.call('jawa/biome_probe', biomes=P.BIOME, animals=True, plants=False, topN=10000)['biomes'][0]
+            need(roster['animalsListed'] == roster['wildAnimalCount'] == len(roster['animals']), 'capped resolved roster')
+            own = [x['defName'] for x in roster['animals'] if x['commonality'] > 0]
+            self.rec['resolved_roster'] = roster
+            self.rec['historical_kinds_loaded_probe'] = self.call('jawa/get_defs',
+                defs=';'.join('PawnKindDef/'+n for n in ('RM_Reefback','RM_Lanternwhale','RSW_Reefback','RSW_Lanternwhale','RSW_ShadeWhale','RSW_SandoAquaMonster')), fields='race')
+            self.setting('titanEventsEnabled', False)
+            self.advance(1)
+            off = self.hook('PassageCanFire')
+            off_pool = P.land_pool(off)
+            need(not off_pool['active'] and not off_pool['canFire'], 'event-off gate can fire')
+            # dryRun exercises CanFireNow without bypassing the worker gate via TryExecute.
+            dry = self.call('jawa/fire_incident', allow=True, incidentDef='RM_TitanPassage', forced=True, dryRun=True)
+            need(dry['canFireNow'] is False and dry['fired'] is False, 'event-off incident availability not false')
+            need(self.hook('PassageReport')['result'] == 'pending=False kind=none arrivalIn=-1', 'event-off changed passage state')
+            self.row('event_off_fresh_tick', dict(pool=off, incident_probe=dry, scope='CanFireNow availability; dryRun does not invoke TryExecute'))
+            self.setting('titanEventsEnabled', True)
+            self.advance(1)
+            pool_response = self.hook('PassageCanFire')
+            pool = P.land_pool(pool_response)
+            need(pool['canFire'] and pool['active'] and pool['hints'] == 'roster', 'production own-roster branch unavailable')
+            kinds = [k['kind'] for k in pool['kinds']]
+            need(all(k in own for k in kinds), 'pool outside resolved own roster')
+            races = []
+            self.rec['kind_defs'] = []
+            for k in kinds:
+                kd = self.call('jawa/get_def', defName=k, defType='PawnKindDef')
+                self.rec['kind_defs'].append(kd)
+                races.append(kd['extra']['race'])
+            self.rec['race_defs'] = self.call('jawa/get_defs', defs=';'.join('ThingDef/'+x for x in races), fields='race,statBases,modExtensions', deep=True)
+            stats = self.call('jawa/animal_stats', defs=','.join(races), extraStats='MaxFlightTime')
+            self.rec['pre_generation_flight_stats'] = stats
+            need(not stats['notFound'] and not stats['refused'] and stats['count'] == len(set(races)), 'flight stat unreadable')
+            need(all(x['stats']['MaxFlightTime']['value'] == 0 for x in stats['animals']), 'eligible pool contains a flyer; refusing generation')
+            self.rec['pool_response'] = pool_response
+            self.rec['own_roster'] = own
+            self.row('A2_complete_land_pool', pool)
+            pawns_before = self.pawns()
+            letters_before = self.call('jawa/letter_list')['letters']
+            fired = self.call('jawa/fire_incident', incidentDef='RM_TitanPassage', forced=True)
+            self.rec['incident'] = fired
+            need(fired['fired'] is True and not fired['blockedByDialog'], 'real incident did not execute')
+            pending = self.call('jawa/map_comp_read', comp='MapComponent_TitanPassages', members=PASSAGE_MEMBERS)
+            self.rec['scheduled'] = pending
+            need(pending['values']['HasPending'] == 'True' and pending['values']['kind'] in kinds, 'incident did not schedule eligible kind')
+            tremors = self.call('jawa/letter_list')['letters']
+            need(len(tremors) == len(letters_before)+1 and any('tremor' in x['label'].lower() for x in tremors), 'tremor letter missing')
+            self.rec['debug_arrive_now'] = self.hook('PassageArriveNow')
+            self.advance(1)
+            response = self.hook('PassageReport')
+            arrived = P.arrival(response, pool, own)
+            self.rec['arrival_response'] = response
+            self.rec['arrived'] = arrived
+            after = self.pawns()
+            new = [p for p in after if p['id'] not in {p['id'] for p in pawns_before}]
+            self.rec['new_pawns'] = new
+            need(len(new) == 1 and new[0]['id'] == arrived['pawn'] and new[0]['kindDef'] == arrived['kind'], 'arrival census mismatch')
+            need(arrived['kind'] == pending['values']['kind'], 'scheduled/arrived kind differs')
+            flight = self.call('jawa/pawn_flight', pawn=arrived['pawn'], action='report', unpause=False)
+            self.rec['arrived_flight_read_only'] = flight
+            need(flight['count'] == 1 and flight['pawns'][0]['pawn'] == arrived['pawn'] and
+                 flight['pawns'][0]['flying'] is False and flight['pawns'][0]['canEverFly'] is False and
+                 flight['pawns'][0]['maxFlightTimeStat'] == 0, 'arrived pawn not confirmed grounded/nonflying')
+            letters = self.call('jawa/letter_list')['letters']
+            need(len(letters) == len(tremors)+1 and any(arrived['pawn'] in (x['lookTargetIds'] or []) for x in letters), 'arrival letter does not target actual pawn')
+            self.row('A3_real_forced_arrival', dict(arrived=arrived, trigger='DebugArriveNow + 1 governed tick'))
+            self.rec['status'] = 'PASS'
+        except Exception as ex:
+            self.rec.update(status='FAIL', error=repr(ex), traceback=traceback.format_exc())
+        finally:
+            errors = []
+            if saved:
+                try:
+                    self.rec['restore_load'] = T.load_site(self.call, 'calm', name=snap, check=False, map_controls=('modal_broker',))
+                    need(self.rec['restore_load']['verified'], 'scene-begin restoration load failed')
+                    self.call('jawa/set_game_speed', speed='Paused')
+                except Exception as ex:
+                    errors.append(repr(ex))
+            if prior:
+                for f in ('giantAnimalsEnabled','titanEventsEnabled'):
+                    try:
+                        self.setting(f, prior[f])
+                    except Exception as ex:
+                        errors.append(repr(ex))
+            if tx:
+                try:
+                    tx.__exit__(None,None,None)
+                except Exception as ex:
+                    errors.append(repr(ex))
+            if baseline:
+                try:
+                    restored = self.snapshot()
+                    self.rec['restored'] = restored
+                    differences = {k:dict(before=baseline[k], after=restored[k]) for k in baseline if baseline[k] != restored[k]}
+                    self.rec['restore_differences'] = differences
+                    need(not differences, 'exact restoration differs: '+','.join(differences))
+                    self.row('exact_scene_and_settings_restored', dict(compared=list(baseline)))
+                except Exception as ex:
+                    errors.append(repr(ex))
+            self.rec['restore_errors'] = errors
+            if errors:
+                self.rec['status'] = 'FAIL'
+            self.rec['finished'] = time.time()
+            self.save()
+            self.journal.close()
+            print(self.rec['status'], self.rec.get('error',''), errors, flush=True)
+        return 0 if self.rec['status'] == 'PASS' else 1
+
+
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--out', type=Path, required=True)
+    args = ap.parse_args()
+    need(not args.out.exists(), 'refuse to overwrite existing live attempt')
+    sys.exit(Run(args.out).run())
+

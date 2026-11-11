@@ -1,0 +1,176 @@
+{
+ "when": "2026-11-11T12:37:38Z",
+ "mode": "offline",
+ "tier": "quicktest",
+ "modset": "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+ "purpose": "test",
+ "verdict": "GREEN",
+ "rows": [
+  {
+   "id": "O02",
+   "name": "bridge_lease",
+   "required": true,
+   "status": "PASS",
+   "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+   "cost_est_s": 0.1,
+   "took_s": 0.0,
+   "prevents": "#22 #50 two drivers",
+   "evidence": {}
+  },
+  {
+   "id": "O07",
+   "name": "known_wedgers",
+   "required": true,
+   "status": "PASS",
+   "reason": "no known wedger for purpose test",
+   "cost_est_s": 0.1,
+   "took_s": 0.99,
+   "prevents": "#61 RealFoW",
+   "evidence": {}
+  },
+  {
+   "id": "O03",
+   "name": "disk_space",
+   "required": true,
+   "status": "PASS",
+   "reason": "free GB {'C': 24.8, 'D': 10019.4}",
+   "cost_est_s": 0.2,
+   "took_s": 0.0,
+   "prevents": "O05",
+   "evidence": {
+    "free_gb": {
+     "C": 24.8,
+     "D": 10019.4
+    }
+   }
+  },
+  {
+   "id": "O06",
+   "name": "ship_coverage",
+   "required": false,
+   "status": "PASS",
+   "reason": "not the full tier: a test list is deliberately partial",
+   "cost_est_s": 0.3,
+   "took_s": 0.0,
+   "prevents": "P-a 14 missing",
+   "evidence": {}
+  },
+  {
+   "id": "O04",
+   "name": "modsconfig_intent",
+   "required": true,
+   "status": "PASS",
+   "reason": "ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches (14 mods, ordered)",
+   "cost_est_s": 0.5,
+   "took_s": 0.99,
+   "prevents": "#19 #47 #54 wrong list",
+   "evidence": {}
+  },
+  {
+   "id": "O08",
+   "name": "player_log_archive",
+   "required": true,
+   "status": "PASS",
+   "reason": "already archived: /mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T120618_07f51eb8d2cd.log",
+   "cost_est_s": 1,
+   "took_s": 0.02,
+   "prevents": "#26 stale log generation",
+   "evidence": {
+    "archive": "/mnt/d/RimTest/data/scratch/preflight/playerlogs/Player_20261111T120618_07f51eb8d2cd.log"
+   }
+  },
+  {
+   "id": "O09",
+   "name": "companion_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)",
+   "cost_est_s": 1,
+   "took_s": 0.21,
+   "prevents": "#51 #57 stale DLL, P-c",
+   "evidence": {
+    "repo_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "game_sha": "0837088d6a76fd2db76857d1421c1b7647068a0baac0dc43e31c907ef97e599f",
+    "repo_build": "54acba048eda",
+    "game_build": "54acba048eda"
+   }
+  },
+  {
+   "id": "O11",
+   "name": "bridge_lint_fresh",
+   "required": false,
+   "status": "PASS",
+   "reason": "lint snapshot covers all 431 declared tools (0.1 d old)",
+   "cost_est_s": 1,
+   "took_s": 0.01,
+   "prevents": "P-d",
+   "evidence": {}
+  },
+  {
+   "id": "O12",
+   "name": "src_load_killers",
+   "required": true,
+   "status": "PASS",
+   "reason": "BiomeWorker .Rivers, abstract Alert leaves, csproj Compile Include: clean",
+   "cost_est_s": 1,
+   "took_s": 1.39,
+   "prevents": "#33 alert leaf, BiomeWorker rivers",
+   "evidence": {}
+  },
+  {
+   "id": "O05",
+   "name": "list_sane",
+   "required": true,
+   "status": "PASS",
+   "reason": "14 ids, none composed/duplicate/uninstalled",
+   "cost_est_s": 1.5,
+   "took_s": 0.53,
+   "prevents": "#58 #80 member ids",
+   "evidence": {}
+  },
+  {
+   "id": "O01",
+   "name": "game_down",
+   "required": true,
+   "status": "PASS",
+   "reason": "no RimWorldWin64 process",
+   "cost_est_s": 2,
+   "took_s": 0.51,
+   "prevents": "#21 two processes, #39 old log",
+   "evidence": {}
+  },
+  {
+   "id": "O10",
+   "name": "dependency_fp",
+   "required": false,
+   "status": "PASS",
+   "reason": "RBS 2.3.0, Harmony, game assemblies unchanged since baseline",
+   "cost_est_s": 2,
+   "took_s": 0.26,
+   "prevents": "prediction 14/18",
+   "evidence": {}
+  },
+  {
+   "id": "O14",
+   "name": "effective_def_lint",
+   "required": true,
+   "status": "PASS",
+   "reason": "clean | /mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml; cache HIT ; unsupported scope: ['donor_types']",
+   "cost_est_s": 30,
+   "took_s": 21.66,
+   "prevents": "#24 #30 #36 #37 #41 #53 #66 load killers",
+   "evidence": {}
+  },
+  {
+   "id": "O13",
+   "name": "deploy_match",
+   "required": true,
+   "status": "PASS",
+   "reason": "5 mods, 1211 files: deployed == repo byte for byte",
+   "cost_est_s": 60,
+   "took_s": 2.73,
+   "prevents": "#31 #46 #52 #57 deploy drift",
+   "evidence": {}
+  }
+ ]
+}

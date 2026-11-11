@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/mnt/c/Program Files/dotnet/dotnet.exe",
+    "D:\\RimTest\\data\\build\\HugeThingsPassageSelfTest\\src\\RimMandrake\\HugeThings\\Source\\SelfTest\\bin\\Release\\net8.0\\RimMandrakeHugeThings.SelfTest.dll",
+    "--fuzz-only",
+    "visitors"
+  ],
+  "cwd": "/mnt/d/RimTest/data/build/HugeThingsPassageSelfTest",
+  "started": 1794400706.5227416,
+  "elapsed": 0.1514279842376709,
+  "returncode": 0,
+  "family": "visitors",
+  "bounded_cases": 1500,
+  "production_kernel": "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+  "scope": "offline production eligibility positive/negative controls only; not A2/A3 live proof"
+}
