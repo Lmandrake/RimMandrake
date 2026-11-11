@@ -50,6 +50,7 @@ def run(out):
     tap = None
     control_error_messages = set()
     refresh_ticks = 0
+    load_ticks = 0
     saves = Path(SAVES)
     saves_before = T.saves_stat(SAVES)
     protected = [p for p in saves.glob('*.rws') if p.name.startswith('CANONICAL_') or p.name in
@@ -232,14 +233,28 @@ def run(out):
         before = theft(); src = water((40,41)); player_step = pump((40,40)); pending = theft()
         require(player_step['units'] == '10000' and int(pending['units'])-int(before['units']) == 10000 and src-water((40,41)) == 10000 and pending['pending'] != '[]', 'player transfer/attribution missing')
         occupied = name.replace('_Begin_', '_Pending_')
+        setting(FW, 'liquidPumpEnabled', False)
+        roundtrip_cells = ((38,36),(40,41),(52,40))
+        water_before_load = [water(c) for c in roundtrip_cells]
+        tick_before_load = call('jawa/map_info')['ticksGame']
         result['pending_snapshot'] = T.save_site(call, occupied, SAVES)
+        require(call('jawa/map_info')['ticksGame'] == tick_before_load, 'paused save advanced time')
         result['pending_reload'] = T.load_site(call, 'calm', name=occupied, check=False, map_controls=('modal_broker',))
         require(result['pending_reload']['verified'], 'occupied pending reload failed')
         call('rimworld/pause_game', pause=True)
+        tick_after_load = call('jawa/map_info')['ticksGame']
+        load_ticks = tick_after_load-tick_before_load
+        require(0 <= load_ticks <= 1, 'occupied load advanced beyond its bounded initialization tick')
         reloaded = theft()
-        for key in ('tank','faction','units','liquid','pending','caughtBy','ticks','witness'):
+        for key in (k for k in pending if k != 'text'):
             require(reloaded[key] == pending[key], 'pending save/load changed ' + key)
-        result['pending_roundtrip'] = dict(before=pending, after=reloaded, file=occupied)
+        water_after_load = [water(c) for c in roundtrip_cells]
+        require(water_before_load == water_after_load, 'occupied load changed source/outlet water')
+        result['pending_roundtrip'] = dict(before=pending, after=reloaded, file=occupied, cells=roundtrip_cells,
+                                           water_before=water_before_load, water_after=water_after_load,
+                                           tick_before=tick_before_load, tick_after=tick_after_load, load_ticks=load_ticks,
+                                           pumps_disabled=True)
+        setting(FW, 'liquidPumpEnabled', True)
         caught = theft('tick')
         require(caught['caughtBy'] == caught['faction'] and int(caught['caught']) == int(initial['caught'])+1 and caught['witness'] != 'none', 'existing real witness/caught path failed')
         require(caught['ticks'] == '0' and caught['charges'] == initial['charges'], 'first catch accrued early')
@@ -259,8 +274,9 @@ def run(out):
         require(idle['charges'] == charged['charges'] and idle['ticks'] == charged['ticks'], 'idle caught tank accrues')
         result['arms'].append(dict(name='actual_player_transfer_caught_and_goodwill', before=before, step=player_step, pending=pending, caught=caught, compressed_remainder=prime, second=player_second, charged=charged, idle=idle))
         end_tick = call('jawa/map_info')['ticksGame']
-        require(end_tick-start_tick == refresh_ticks, 'time advanced outside the declared hose-index setup ticks')
-        result['timing'] = dict(before=start_tick, after=end_tick, hose_refresh_ticks=refresh_ticks, boundary='real production entries; two pump-disabled setup ticks refresh hose indexes; one-day remainder seeded after genuine catch')
+        require(end_tick-start_tick == refresh_ticks + load_ticks, 'time advanced outside declared setup and bounded load ticks')
+        result['timing'] = dict(before=start_tick, after=end_tick, hose_refresh_ticks=refresh_ticks, load_ticks=load_ticks,
+                               boundary='real production entries; pump-disabled hose setup and bounded load ticks; one-day remainder seeded after genuine catch')
         result['status'] = 'PASS'
     except BaseException as exc:
         result['error'] = repr(exc)
