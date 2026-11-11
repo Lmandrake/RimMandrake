@@ -1,0 +1,36 @@
+{
+  "base_sha": "cb8f09aaa200a7a81d19049ee90db6ae32a3f3cd",
+  "finished": 1794394858.9912128,
+  "source_hashes": {
+    "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py": "e65e9902b1698411dcd15d5d5ae9c22651c3c372a5464d6d97d545cc124d85f2",
+    "src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py": "da44636359faf6beadbafc8c72f1d680b734f75c6d9beca94bd029628e3da49a",
+    "src/RimMandrake/Utils/selftest_hugethings_test_races.py": "7ab00eaed2da1b385d00398b812f47b15ccb2d474f5ebd3e7e5000cefee501a4",
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+    "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d"
+  },
+  "judge": {
+    "verdict": "would show: yes",
+    "transport_rc": 0,
+    "usage": {
+      "input_tokens": 1821363,
+      "output_tokens": 11230
+    }
+  },
+  "workflow_rc": 0,
+  "game": "DOWN",
+  "host_guard": "FREE generation1395",
+  "level": "L1 loaded method integration only",
+  "publication": "parent responsibility; no commit/publish/item closure performed",
+  "evidence_hashes": {
+    "whittle/ht-wall-probe/JUDGE.md": "9e262a47c39ef444057351a22756a0f97cbb36595d67454e5fc65278bac73e90",
+    "whittle/ht-wall-probe/DONE.md": "c6b13bb41c3f31ee8f67c90e4910ea9ff272dc766bc262c49c2c961834173c48",
+    "whittle/ht-wall-probe/evidence/workflow.receipt.json": "0b4285f06824750763f34ed51ae7858d4d08fa1ebbac8a8da1c4c7236e8d973a",
+    "whittle/ht-wall-probe/evidence/judge.events.jsonl": "9afd302ac66242376beab33d337b72da81374fb58f69a7cbbbae8b79ac05e669",
+    "whittle/ht-wall-probe/evidence/judge.spend.json": "decfc97f5efeebbb133bd0deee04e646ad3dd869565e11a4e0329501e4bb5296",
+    "whittle/ht-wall-probe/evidence/evidence_manifest.json": "460d20f87e4256a346c698b907429dcccc0be23a18d17bafd4c392eec08f3501",
+    "whittle/ht-wall-probe/evidence/live_run_2/live.json": "79599e400e59e8d36c64e27796c51e3d7930a9b8f66acfccab580cdbb5a3538a"
+  }
+}

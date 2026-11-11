@@ -122,11 +122,49 @@ def judges():
     floor = "RM_TestTitanT2Adult tier=T2 n=6 meat=6720 leather=1920 factor=1.0000"     # live 2026-11-03: the T2 race ON the T2 floor
     check("judge_yield: a factor-1 subject (on its tier floor) has no verdict, never MOD FAIL or PASS",
           L.judge_yield(floor, c.replace("meat=600", "meat=6720"))[0] is None)
-    r2 = "RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=%d wallHpAfter=%d wallDestroyed=%s"
+    r2 = "RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=%d wallDestroyed=%s"
     rc = "RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False"
-    check("judge_roof: holed roof + broken wall passes", L.judge_roof(r2 % (195, 0, "True"), rc)[0] == "PASS")
-    check("judge_roof: untouched wall fails", L.judge_roof(r2 % (195, 195, "False"), rc)[0] == "FAIL")
-    check("judge_roof: a control that holes fails", L.judge_roof(r2 % (195, 0, "True"), rc.replace("RoofConstructed", "none"))[0] == "FAIL")
+    mode = dict(giantAnimalsEnabled="True", wakeEnabled="True", wakeRoofHolingEnabled="True",
+                titanClearingEnabled="True", wallsSlotsEnabled="True")
+    legacy = dict(mode, wallsSlotsEnabled="False")
+    intact, damaged, broken = r2 % (195, "False"), r2 % (180, "False"), r2 % (0, "True")
+
+    def roof(t, c, m):
+        try:
+            return L.judge_roof(t, c, m)[0]
+        except TypeError:  # pre-fix checker cannot accept measured mode
+            return "OLD_CHECKER_NO_MODE"
+
+    for m, good, bad in ((mode, intact, damaged), (legacy, damaged, intact)):
+        label = "default" if m is mode else "legacy"
+        check("judge_roof %s: correct opposite wall expectation passes" % label, roof(good, rc, m) == "PASS")
+        check("judge_roof %s: wrong wall expectation fails" % label, roof(bad, rc, m) == "FAIL")
+        check("judge_roof %s: missing control cannot pass" % label, roof(good, None, m) != "PASS")
+        for old,new in (("RoofConstructed", "none"), ("wallHpAfter=195", "wallHpAfter=190"),
+                        ("tier=None", "tier=T2"), ("RM_TestTitanT2Control", "Elephant")):
+            check("judge_roof %s: bad control %s fails" % (label, old), roof(good, rc.replace(old,new), m) == "FAIL")
+    check("judge_roof legacy: destroyed wall passes", roof(broken, rc, legacy) == "PASS")
+    check("judge_roof default: destroyed wall fails", roof(broken, rc, mode) == "FAIL")
+    check("judge_roof: absent measured mode cannot pass", roof(intact, rc, None) is None)
+    for f in mode:
+        for invalid in (None, "", "yes", "1", "False trailing"):
+            check("judge_roof: malformed mode %s=%r is unmeasured" % (f,invalid), roof(intact, rc, dict(mode, **{f:invalid})) is None)
+        missing = dict(mode); missing.pop(f)
+        check("judge_roof: missing mode field %s is unmeasured" % f, roof(intact, rc, missing) is None)
+    for f in ("giantAnimalsEnabled", "wakeEnabled", "wakeRoofHolingEnabled", "titanClearingEnabled"):
+        check("judge_roof: disabled prerequisite %s cannot pass" % f, roof(intact, rc, dict(mode, **{f:"False"})) != "PASS")
+    for old,new in (("tier=T2", "tier=None"), ("RM_TestTitanT2Adult", "Elephant"),
+                    ("roofAfter=none", "roofAfter=RoofConstructed"), ("roofAfter=none", "roofAfter=RoofRockThin")):
+        check("judge_roof: wrong subject/roof %s fails" % new, roof(intact.replace(old,new), rc, mode) == "FAIL")
+    for t,c in ((intact.replace("wallHpBefore=195", "wallHpBefore=0"),rc),
+                (intact,rc.replace("wallHpBefore=195 wallHpAfter=195", "wallHpBefore=0 wallHpAfter=0")),
+                (intact.replace("wallHpAfter=195", "wallHpAfter=-1"),rc),
+                (intact.replace("wallHpAfter=195", "wallHpAfter=196"),rc),
+                (broken.replace("wallDestroyed=True", "wallDestroyed=False"),rc),
+                (intact.replace("wallDestroyed=False", "wallDestroyed=garbage"),rc),
+                (intact.replace("roofAfter=none", ""),rc),
+                (intact+" tier=T2",rc), ("FAIL no map or kind",rc)):
+        check("judge_roof: malformed or vacuous data cannot pass: %s" % t, roof(t,c,mode) != "PASS")
     t2 = "RM_TestTitanT2Adult tier=T2 costOpen=%s costThick=%s"
     tc = "RM_TestTitanT2Control tier=None costOpen=13.0 costThick=13.0"
     check("judge_thick: penalty on T2 only passes", L.judge_thick(t2 % ("13.0", "2000.0"), tc)[0] == "PASS")
@@ -137,6 +175,64 @@ def judges():
     check("strict verdict: a MOD FAIL -> 1", L.verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="FAIL", cls="MOD")]) == 1)
     check("verdict: an UNMEASURED row -> 1", L.verdict(rows[:-1] + [dict(id=L.ROWS[-1], status="UNMEASURED", cls="SITE")]) == 1)
     check("verdict: a missing row -> 1", L.verdict(rows[:-1]) == 1)
+
+
+def roofwall_modes():
+    """All four calls, mode readbacks and restoration must contribute to R4."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
+    import titan_test_races_live as L
+    class Fake:
+        def __init__(self, fault=""):
+            self.settings = {f:"False" for f in L.ROOF_FIELDS}
+            self.initial = dict(self.settings)
+            self.rows, self.probes, self.fault = [], [], fault
+            self.first_refused = False
+        def get(self, f):
+            return self.settings[f]
+        def put(self, f, v):
+            self.settings[f] = str(v)
+            return True
+        def hook(self, method, args):
+            if self.fault == "initial cell refused" and not self.first_refused:
+                self.first_refused = True
+                return False, "FAIL cell not usable"
+            if self.fault == "later cell refused" and self.probes:
+                return False, "FAIL cell not usable"
+            self.probes.append((method,args,dict(self.settings)))
+            control = args.startswith(L.CTL + "|")
+            legacy = self.settings["wallsSlotsEnabled"] == "False"
+            if self.fault == "refused control" and control:
+                return False, "FAIL missing kind"
+            hp = 175 if legacy and not control and self.fault != "always intact" else 195
+            if self.fault == "mode drift":
+                self.settings["wallsSlotsEnabled"] = "False"
+            return True, ("%s tier=%s roofAfter=%s wallHpBefore=195 wallHpAfter=%d wallDestroyed=False" %
+                (L.CTL if control else L.T2, "None" if control else "T2", "RoofConstructed" if control else "none", hp))
+        def row(self, rid, status, cls, detail):
+            self.rows.append(dict(id=rid,status=status,cls=cls,detail=detail))
+    for fault in ("", "always intact", "refused control", "mode drift", "leaves wall", "initial cell refused", "later cell refused"):
+        r=Fake(fault)
+        L.roofwall_row(r, [(100,100),(112,100)], after_probe=lambda kind,cell: fault != "leaves wall")
+        check("R4 bounded both modes/control + strict aggregate: %s" % (fault or "good"),
+              len(r.rows)==1 and (r.rows[0]["status"]=="PASS") == (fault in ("", "initial cell refused")))
+        if fault in ("", "initial cell refused"):
+            check("R4 pins all successful calls to one cell", len(r.probes)==4 and len({args.split("|")[1] for _,args,_ in r.probes})==1)
+        check("R4 exact raw settings restored: %s" % (fault or "good"), r.settings==r.initial)
+        check("R4 alone cannot satisfy default full runner", L.verdict(r.rows)==1)
+
+
+def roofwall_residue():
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar"))
+    import roofwall_modes_live as F
+    import titan_test_races_live as L
+    filth = dict(def_="Filth_RubbleBuilding",x=104,z=104)
+    filth['def']=filth.pop('def_')
+    check("R4 live damage rubble is bounded and explicitly removed", F.probe_rubble_cells([filth],L.T2)==['104,104,1,1'])
+    check("R4 leftover wall cannot be cleaned into a pass", F.probe_rubble_cells([dict(filth,**{'def':'Wall'})],L.T2) is None)
+    check("R4 forced-out control residue cannot pass", F.probe_rubble_cells([filth],L.CTL) is None)
+    check("R4 unknown filth cannot pass", F.probe_rubble_cells([dict(filth,**{'def':'Filth_Blood'})],L.T2) is None)
+    check("R4 residue outside rectangle cannot be removed", F.probe_rubble_cells([dict(filth,x=91)],L.T2) is None)
+    check("R4 empty residue needs no cleanup", F.probe_rubble_cells([],L.T2)==[])
 
 
 SRC_LIVE = open(os.path.join(ROOT, "src", "RimMandrake", "HugeThings", "northstar", "titan_test_races_live.py")).read()
@@ -417,6 +513,8 @@ def main():
           all(d in doc for d in EXPECT) and "mandrake.rm.hugethingstestraces" in doc)
 
     judges()
+    roofwall_modes()
+    roofwall_residue()
     footprint_row()
     live_mods_row()
     corpse_site_clear()

@@ -1,0 +1,657 @@
+{
+ "script": "titan_test_races_live.py",
+ "item": "TITANIC_BODYSIZE_TEST_RACE_1",
+ "when": "2026-11-11T02:53:32",
+ "rows": [
+  {
+   "id": "t2_holes_thin_roofs_and_crushes_walls",
+   "item": "TITANIC_BODYSIZE_TEST_RACE_1",
+   "criterion": "A2",
+   "status": "PASS",
+   "cls": "MOD",
+   "detail": "Position-setter L1 only; {\"arms\": [{\"detail\": \"Position-setter teleport L1 (no path/job); WallsSlotsActive=True; T2 roof=none wall 195->195 destroyed=False; forced-out control roof=RoofConstructed wall 195->195 destroyed=False\", \"mode\": \"default Walls/Slots\", \"probes\": [{\"after\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"True\"}, \"before\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"True\"}, \"cell\": [103, 103], \"clean\": true, \"kind\": \"RM_TestTitanT2Adult\", \"ok\": true, \"raw\": \"RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False\", \"stable\": true}, {\"after\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"True\"}, \"before\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"True\"}, \"cell\": [103, 103], \"clean\": true, \"kind\": \"RM_TestTitanT2Control\", \"ok\": true, \"raw\": \"RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False\", \"stable\": true}], \"status\": \"PASS\"}, {\"detail\": \"Position-setter teleport L1 (no path/job); WallsSlotsActive=False; T2 roof=none wall 195->135 destroyed=False; forced-out control roof=RoofConstructed wall 195->195 destroyed=False\", \"mode\": \"legacy wake\", \"probes\": [{\"after\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"False\"}, \"before\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"False\"}, \"cell\": [103, 103], \"clean\": true, \"kind\": \"RM_TestTitanT2Adult\", \"ok\": true, \"raw\": \"RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=135 wallDestroyed=False\", \"stable\": true}, {\"after\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"False\"}, \"before\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"False\"}, \"cell\": [103, 103], \"clean\": true, \"kind\": \"RM_TestTitanT2Control\", \"ok\": true, \"raw\": \"RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False\", \"stable\": true}], \"status\": \"PASS\"}], \"errors\": [], \"prior\": {\"giantAnimalsEnabled\": \"True\", \"titanClearingEnabled\": \"True\", \"wakeEnabled\": \"True\", \"wakeRoofHolingEnabled\": \"True\", \"wallsSlotsEnabled\": \"True\"}, \"status\": \"PASS\"}"
+  }
+ ],
+ "calls": [
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_39c07775caed4d188c0eae73b975fd68', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_c9e825d170e8415c9177d1b192c53c86', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_7496c451a5f7456a927a860372f80d1c', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_60195d1e32a740ed9e0a98e3ec138d37', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_aae4234130434a15bc0ab0e1956579a9', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurre"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "giantAnimalsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_886f816043f54717b61d86064b4470bc', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'progr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_1ebbee3062f74e36b079b0e5013baac2', 'Status': 'Completed', 'Success': True, 'DurationMs': 44}, 'state': {'programState'"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeRoofHolingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_35aeb191660f4720ae051afac467c374', 'Status': 'Completed', 'Success': True, 'DurationMs': 35}, 'state': {'pro"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanClearingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_deb4cd3cc74a4c35992a4513fdfec02d', 'Status': 'Completed', 'Success': True, 'DurationMs': 36}, 'state': {'prog"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wallsSlotsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_c795ad3eea174e3987601bf2ca5acea2', 'Status': 'Completed', 'Success': True, 'DurationMs': 36}, 'state': {'program"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_fa43c5bbdaa4466ab87e1aef8e148df0', 'Status': 'Completed', 'Success': True, 'DurationMs': 35}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_4e3c16140a00466c9c9263f96433d0f6', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_d1ce2853be6d4e14af1979080fcaa87c', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_30ce3f38ac554ffba590240194076007', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_ab6f5a554e664b55920734be4f9132c5', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurre"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "RoofWallProbe",
+    "args": "RM_TestTitanT2Adult|103,103"
+   },
+   "{'success': True, 'method': 'System.String RoofWallProbe(System.String, Verse.IntVec3)', 'result': 'RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False', 'thingArgs': [], 'ticksGame': 3, 'operation': {'OperationId': 'op_6f94d57ad5244cc1a4eaaf12e43789ff', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_779567eb7db845fdae75e43c141a25b0', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_c24482c4ab614ff6aea8da3bfad11e9d', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_d5fa83230e3f40988cf7d69df6041d9a', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_bbf3616cc2374a2a812bfb8b933d8c9a', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_6316ac8b06bb46828ec8ead88dd03db1', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasCurre"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_2df6acc021ab47479960a4ceb5e39ef1', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_7635d38fe6dc47469df9871d65bbd6a3', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_11e0f2a7e1b945bfb4bdc9bd8618c567', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_7a7665e020854b02b457178515acccf1', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_5b09c7bb5f9045ad959abbcd76f6ed30', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurre"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "RoofWallProbe",
+    "args": "RM_TestTitanT2Control|103,103"
+   },
+   "{'success': True, 'method': 'System.String RoofWallProbe(System.String, Verse.IntVec3)', 'result': 'RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False', 'thingArgs': [], 'ticksGame': 3, 'operation': {'OperationId': 'op_48c4d6bc86bc46ffaa55024e46e5d904', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_0b770c3a706f4cd292133a3195e0c62f', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_dfdd65de6e1c412ca9cf08e713d6ab1b', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_856656c6f61346c5952bf24ccf8bb289', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_b038d081ee964ee6b458b8ec60b27831', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_8cd92d2593a54d0d8b248198ab6eb0bd', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurre"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "giantAnimalsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_f73f8086c8334cbc9dc57b25c78b91b2', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'progr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_723cca000fb84f71a57c12cd8dbd639b', 'Status': 'Completed', 'Success': True, 'DurationMs': 35}, 'state': {'programState'"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeRoofHolingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_8a9e46c63d594ccdaf94ab5b99d4727e', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'pro"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanClearingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_88154bbd0b5849d497a851d5063fc997', 'Status': 'Completed', 'Success': True, 'DurationMs': 34}, 'state': {'prog"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wallsSlotsEnabled",
+    "value": "False"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_2348735ccfdb47ecb86b658c792ed464', 'Status': 'Completed', 'Success': True, 'DurationMs': 34}, 'state': {'progra"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_d5a68df68a824acca7a0c60a41dd41ae', 'Status': 'Completed', 'Success': True, 'DurationMs': 34}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_d37f98a2239d448a97e0caf3ec1e9dba', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_bd68a0277c444339ae5546cc03eb68e0', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_692b96accf904d42bd8eae9dee72f57e', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_016ceb5e1ca84c8081b9a11a82f3f970', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState': 'Playing', 'hasCurr"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "RoofWallProbe",
+    "args": "RM_TestTitanT2Adult|103,103"
+   },
+   "{'success': True, 'method': 'System.String RoofWallProbe(System.String, Verse.IntVec3)', 'result': 'RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=135 wallDestroyed=False', 'thingArgs': [], 'ticksGame': 3, 'operation': {'OperationId': 'op_4854641313204c34855f17b22bb9099e', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_bf8df619f2154877ae946add29a3efc4', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_8d03fd80efc649b9bee65a0a4506cf01', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_a3015004db4c4fb99005b987516c16e9', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_0e9900aa1c9a4915b34b2f2c12a4eee5', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_4b824b012b32451f84251f189f972b32', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_29c3c4a67fc84dd298b0eb6b5d6f9b08', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_b97bb0862bf04feda0f251e021025f19', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_111dcd7985fd4711aeee2633cdad7016', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_44b093b830794173b87409c7f3743a85', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_69c512aa0719468caf55521193b2631d', 'Status': 'Completed', 'Success': True, 'DurationMs': 41}, 'state': {'programState': 'Playing', 'hasCurr"
+  ],
+  [
+   "jawa/static_call",
+   {
+    "type": "RimMandrake.TitanicCreatures.TitanValidationHooks",
+    "method": "RoofWallProbe",
+    "args": "RM_TestTitanT2Control|103,103"
+   },
+   "{'success': True, 'method': 'System.String RoofWallProbe(System.String, Verse.IntVec3)', 'result': 'RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False', 'thingArgs': [], 'ticksGame': 3, 'operation': {'OperationId': 'op_fb9077cd5b414141add8b8798ec2d849', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': '"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_0e8f4f424d8a467ea253a96def69c590', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_2099f1579ec74cd7a93a4d9f6a009668', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_acbc5bd75ac64a588c3175f4b2b9cb3f', 'Status': 'Completed', 'Success': True, 'DurationMs': 39}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_ee5432db1f154b1881c88190417d96d5', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'False', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_6d7e089d4d984458aa351ce915eb5784', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "giantAnimalsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_830f3229a4a4493b81351445206da49e', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'progr"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "giantAnimalsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'giantAnimalsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_ad9cc02527304a73b96eeded1f3879e6', 'Status': 'Completed', 'Success': True, 'DurationMs': 43}, 'state': {'programState': 'Playing', 'hasCur"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_5c271c8eec3145fd8ed0f5f75ca82a5a', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'programState'"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_31a9bc8904c54fc5b5a6c13ab853a1db', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wakeRoofHolingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_5943537d58b04075bfc7dd22b83890ba', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'pro"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wakeRoofHolingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wakeRoofHolingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_74db10ce3ce04450ad4c8fefaf07ec66', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasC"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "titanClearingEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_05e367eb34764fafa0c94c432a98fbae', 'Status': 'Completed', 'Success': True, 'DurationMs': 42}, 'state': {'prog"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "titanClearingEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'titanClearingEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_bad19a4ed6114a2887f3b2a636734652', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCu"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "set",
+    "field": "wallsSlotsEnabled",
+    "value": "True"
+   },
+   "{'success': True, 'action': 'set', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'valueBefore': 'False', 'valueAfter': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_d74170cb58c84e5891582baf1da797de', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'progra"
+  ],
+  [
+   "jawa/mod_settings_field",
+   {
+    "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+    "action": "get",
+    "field": "wallsSlotsEnabled"
+   },
+   "{'success': True, 'action': 'get', 'field': 'wallsSlotsEnabled', 'fieldKind': 'static', 'value': 'True', 'typeIdentity': {'resolvedVia': 'GenTypes(cached)', 'copiesInAppDomain': 1, 'assembly': 'RM_HugeThings'}, 'ticksGame': 3, 'operation': {'OperationId': 'op_36059007df2b4a09ad613bd70cbc9436', 'Status': 'Completed', 'Success': True, 'DurationMs': 47}, 'state': {'programState': 'Playing', 'hasCurre"
+  ]
+ ],
+ "summary": {
+  "all_rows_classified": true,
+  "gameplay_pass": true
+ }
+}

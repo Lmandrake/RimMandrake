@@ -1,0 +1,13 @@
+preflight LIVE tier=quicktest purpose=test seat=BENCH 2026-11-11T10:52:58Z
+PASS       O02  bridge_lease             req    0.0s  FREE    since 2026-11-11T07:29:21Z
+PASS       L05  live_companion           req    0.1s  live companion 431 tools, build 54acba048eda
+PASS       L06  live_tps_autostart       opt    0.0s  TPS record autostarted (bridge-registration)
+PASS       L07  live_awareness_init      opt    0.0s  [JawaBench] map awareness: complete by bridge-registration (IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok;
+PASS       L02  live_core_reset          req    0.0s  no reset marker; ModsConfig 14 mods
+PASS       O04  modsconfig_intent        opt    0.8s  ModsConfig == modset_builder tier mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches (14 mods, ordered)
+PASS       L03  live_first_exception     req    0.0s  no missing types; 0 Config errors; first exception: None
+PASS       L04  live_mods_ordered        req    1.9s  running list == intended, ordered (14 mods); direct live read
+PASS       O09  companion_match          req    0.2s  deployed == repo 0837088d6a76 (build 54acba048eda) (no .srchash beside the repo artifact: source provenance unproven)
+PASS       O01  game_down                req    0.4s  1 process (attach)
+PASS       L01  live_identity            req    0.8s  pid 37596 started 10:51:36Z, token in its log, listening on 5174
+VERDICT GREEN

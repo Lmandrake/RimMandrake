@@ -1,0 +1,6 @@
+    RoofWallProbe(RM_TestTitanT2Adult|103,103) -> RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+    RoofWallProbe(RM_TestTitanT2Control|103,103) -> RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+    RoofWallProbe(RM_TestTitanT2Adult|103,103) -> RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=135 wallDestroyed=False
+    RoofWallProbe(RM_TestTitanT2Control|103,103) -> RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+  t2_holes_thin_roofs_and_crushes_walls      PASS       MOD     Position-setter L1 only; {"arms": [{"detail": "Position-setter teleport L1 (no path/job); WallsSlotsActive=True; T2 roof=none wall 195->195 destroyed=False; forced-out control roof=RoofConstructed wall 195->195 destroyed=False", "mode": "default Walls/Slots", "probes": [{"after": {"giantAnimalsEnabl
+R4 L1 strict proof: True  {'attempted': True, 'ok': True, 'errors': []}

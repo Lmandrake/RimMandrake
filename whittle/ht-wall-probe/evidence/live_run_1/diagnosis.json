@@ -1,0 +1,44 @@
+{
+  "probe_outcomes": [
+    [
+      "default Walls/Slots",
+      "PASS",
+      [
+        [
+          "RM_TestTitanT2Adult",
+          "RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False",
+          true
+        ],
+        [
+          "RM_TestTitanT2Control",
+          "RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False",
+          true
+        ]
+      ]
+    ],
+    [
+      "legacy wake",
+      "UNMEASURED",
+      [
+        [
+          "RM_TestTitanT2Adult",
+          "RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=135 wallDestroyed=False",
+          false
+        ],
+        [
+          "RM_TestTitanT2Control",
+          "RM_TestTitanT2Control tier=None roofAfter=RoofConstructed wallHpBefore=195 wallHpAfter=195 wallDestroyed=False",
+          false
+        ]
+      ]
+    ]
+  ],
+  "cause": "HARNESS: strict residue gate found Filth_RubbleBuilding produced by legacy Crush damage. No wall, pawn, or roof residue; unchanged ticks.",
+  "restore": {
+    "attempted": true,
+    "ok": true,
+    "errors": []
+  },
+  "hash_equal": true,
+  "next": "Record and remove only measured T2 rubble filth, verify empty scene; preserve missing-call/wall/control residue failures."
+}

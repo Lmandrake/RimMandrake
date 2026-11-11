@@ -16,8 +16,9 @@ Rows {id, criterion, status PASS|FAIL|UNMEASURED, cls MOD|SITE|HARNESS, detail};
                                     same-mass forced-out control): T2 meat = control meat x the kernel factor (expected
                                     sqrt(8/12) = 0.8165), within per-pawn rounding; the control is unreduced. A kernel factor
                                     of exactly 1 (a subject on its tier floor) is UNMEASURED HARNESS, never a MOD verdict.
-  R4 t2_holes_thin_roofs_and_crushes_walls RoofWallProbe: a T2 stepping into a roofed wall cell holes RoofConstructed and damages
-                                    or breaks the wood wall; the control leaves both.
+  R4 t2_holes_thin_roofs_and_crushes_walls (compatibility ID): RoofWallProbe assigns Position (teleport), not a path/job.
+                                    T2 holes RoofConstructed in both modes; default Walls/Slots preserves wood wall, legacy
+                                    wake damages it. Forced-out control preserves roof/wall in both. L1 integration only.
   R5 thick_roof_route_excluded      ThickRoofCostProbe: a T2's step cost under RoofRockThick >= 2000 and above open ground;
                                     the control's two costs are equal.
 Refuses to judge (UNMEASURED SITE) when the custom tier ladder (tierThresholdsCustom, startup-read) is on.
@@ -45,6 +46,8 @@ T2Y, CTLY = "RM_TestTitanT2Heavy", "RM_TestTitanT2HeavyControl"
 YIELD_FACTOR = (8.0 / 12.0) ** 0.5   # the kernel factor the heavy T2 must report (yieldCurveMinFactor 0.15 does not clamp it)
 FIELDS = {"giantAnimalsEnabled": True, "wakeEnabled": True, "wakeRoofHolingEnabled": True, "yieldCurveEnabled": True,
           "roofAvoidanceEnabled": True, "corpseSiteEnabled": True}
+ROOF_ROW = "t2_holes_thin_roofs_and_crushes_walls"
+ROOF_FIELDS = ("giantAnimalsEnabled", "wakeEnabled", "wakeRoofHolingEnabled", "titanClearingEnabled", "wallsSlotsEnabled")
 THICK_ROOF_PENALTY = 2000.0          # Patch_ThickRoofAvoidance.ThickRoofPenalty
 ROWS = ("t2_t3_tiers", "t3_corpse_becomes_a_harvest_site", "butcher_yield_curve_reduces_t1_t2_yield",
         "t2_holes_thin_roofs_and_crushes_walls", "thick_roof_route_excluded")
@@ -98,7 +101,8 @@ class Run(object):
         return r.get("success") is True and not txt.startswith("FAIL"), txt
 
     def get(self, f):
-        return self.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f).get("value")
+        r = self.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f)
+        return r.get("value") if r.get("success") is True else None
 
     def put(self, f, v):
         # restore-check: ok -- main() snapshots FIELDS first and puts every one back in its finally
@@ -163,17 +167,104 @@ def judge_yield(t2, ctl):
     return ("PASS" if ok else "FAIL"), d
 
 
-def judge_roof(t2, ctl):
+def judge_roof(t2, ctl, mode=None):
+    """Judge measured Position-setter integration, never a walked path/clearing job.
+
+    Mode is raw setting readbacks, not a caller's label. Unknown/missing/malformed
+    measurements have no verdict. Wrong measured outcomes FAIL in either mode.
+    """
+    if not isinstance(mode, dict) or any(not isinstance(mode.get(f), str) or
+            mode[f].lower() not in ("true", "false") for f in ROOF_FIELDS):
+        return None, "unmeasured/malformed roof-wall mode: %r" % mode
+    if any(mode[f].lower() != "true" for f in ROOF_FIELDS if f != "wallsSlotsEnabled"):
+        return None, "roof/wake/clearing prerequisites disabled: %r" % mode
+    active = all(mode[f].lower() == "true" for f in
+                 ("giantAnimalsEnabled", "wakeEnabled", "titanClearingEnabled", "wallsSlotsEnabled"))
+
+    def parse(txt):
+        if not isinstance(txt, str):
+            return None
+        match = re.fullmatch(r"(\w+) tier=(\w+) roofAfter=(\w+) wallHpBefore=(\d+) "
+                             r"wallHpAfter=(\d+) wallDestroyed=(True|False)", txt)
+        if not match:
+            return None
+        name, tier, roof, before, after, destroyed = match.groups()
+        before, after = int(before), int(after)
+        gone = destroyed == "True"
+        if before <= 0 or not 0 <= after <= before or gone != (after == 0):
+            return None
+        return name, tier, roof, before, after, gone
+
+    t, c = parse(t2), parse(ctl)
+    if t is None or c is None:
+        return None, "invalid/non-positive/inconsistent probe data: %s || %s" % (t2, ctl)
+    d = ("Position-setter teleport L1 (no path/job); WallsSlotsActive=%s; T2 roof=%s wall %d->%d "
+         "destroyed=%s; forced-out control roof=%s wall %d->%d destroyed=%s" %
+         (active, t[2], t[3], t[4], t[5], c[2], c[3], c[4], c[5]))
+    identity = t[:2] == (T2, "T2") and c[:2] == (CTL, "None")
+    wall_ok = (t[4] == t[3] and not t[5]) if active else t[4] < t[3]
+    control_ok = c[2] == "RoofConstructed" and c[4] == c[3] and not c[5]
+    return ("PASS" if identity and t[2] == "none" and wall_ok and control_ok else "FAIL"), d
+
+
+def roofwall_row(R, cells, after_probe=None):
+    """Reusable bounded R4: both actual modes, a T2 + forced-out control per mode.
+
+    Snapshot raw settings before any write; read all mode fields before and after
+    each call. Each arm needs both successful probes and a stable measured mode.
+    Restoring settings is part of this row's pass condition.
+    """
+    prior = {f: R.get(f) for f in ROOF_FIELDS}
+    arms, errors = [], []
+    pinned = None
+    status = "UNMEASURED"
+    if any(not isinstance(v, str) or v.lower() not in ("true", "false") for v in prior.values()):
+        R.row(ROOF_ROW, status, "HARNESS", "cannot snapshot raw roof settings: %r" % prior)
+        return
     try:
-        hb, ha = int(kv(t2, "wallHpBefore")), int(kv(t2, "wallHpAfter"))
-        cb, ca = int(kv(ctl, "wallHpBefore")), int(kv(ctl, "wallHpAfter"))
-    except (TypeError, ValueError):
-        return None, "unparsable: %s || %s" % (t2, ctl)
-    holed = kv(t2, "roofAfter") == "none"
-    crushed = kv(t2, "wallDestroyed") == "True" or ha < hb
-    ctl_clean = kv(ctl, "roofAfter") == "RoofConstructed" and kv(ctl, "wallDestroyed") == "False" and ca == cb
-    d = "T2 roofAfter=%s wall %d->%d; control roofAfter=%s wall %d->%d" % (kv(t2, "roofAfter"), hb, ha, kv(ctl, "roofAfter"), cb, ca)
-    return ("PASS" if holed and crushed and ctl_clean else "FAIL"), d
+        for slots in (True, False):
+            expected = {f: str(slots if f == "wallsSlotsEnabled" else True) for f in ROOF_FIELDS}
+            if any(not R.put(f, v) for f, v in expected.items()):
+                raise RuntimeError("mode write refused")
+            probes = []
+            for kind in (T2, CTL):
+                before = {f: R.get(f) for f in ROOF_FIELDS}
+                ok, txt = False, None
+                used_cell = None
+                for x, z in ([pinned] if pinned is not None else cells):
+                    used_cell = (x, z)
+                    ok, txt = R.hook("RoofWallProbe", "%s|%d,%d" % (kind, x, z))
+                    if ok:
+                        pinned = used_cell
+                    if ok or "not usable" not in txt:
+                        break
+                clean = after_probe(kind, used_cell) if after_probe is not None else True
+                after = {f: R.get(f) for f in ROOF_FIELDS}
+                stable = before == after and all(isinstance(before.get(f), str) and
+                         before[f].lower() == expected[f].lower() for f in ROOF_FIELDS)
+                probes.append(dict(kind=kind, cell=used_cell, ok=ok, raw=txt, before=before, after=after, stable=stable, clean=clean))
+            if all(p["ok"] and p["stable"] and p["clean"] is True for p in probes):
+                st, detail = judge_roof(probes[0]["raw"], probes[1]["raw"], probes[0]["before"])
+            else:
+                st, detail = None, "probe failed, residue remains, or actual settings missing/changed"
+            arms.append(dict(mode="default Walls/Slots" if slots else "legacy wake", probes=probes,
+                             status=st or "UNMEASURED", detail=detail))
+        status = "FAIL" if any(a["status"] == "FAIL" for a in arms) else (
+                 "PASS" if len(arms) == 2 and all(a["status"] == "PASS" for a in arms) else "UNMEASURED")
+    except Exception as ex:
+        errors.append(str(ex))
+    finally:
+        for f, v in prior.items():
+            try:
+                if not R.put(f, v) or R.get(f) != v:
+                    errors.append("raw restore mismatch: " + f)
+            except Exception as ex:
+                errors.append("restore %s: %s" % (f, ex))
+        if errors:
+            status = "UNMEASURED"
+        R.roofwall_evidence = dict(prior=prior, arms=arms, errors=errors, status=status)
+        R.row(ROOF_ROW, status, "MOD" if status in ("PASS", "FAIL") else "HARNESS",
+              "Position-setter L1 only; " + json.dumps(R.roofwall_evidence, sort_keys=True))
 
 
 def judge_thick(t2, ctl):
@@ -206,9 +297,7 @@ def body(R, cells):
                 return None
         return None
 
-    rw2, rwc = probe("RoofWallProbe", T2), probe("RoofWallProbe", CTL)
-    st, d = judge_roof(rw2, rwc) if rw2 and rwc else (None, "no usable cell or probe failed: %s || %s" % (rw2, rwc))
-    R.row("t2_holes_thin_roofs_and_crushes_walls", st or "UNMEASURED", "MOD" if st else "SITE", d)
+    roofwall_row(R, cells)
 
     tr2, trc = probe("ThickRoofCostProbe", T2), probe("ThickRoofCostProbe", CTL)
     st, d = judge_thick(tr2, trc) if tr2 and trc else (None, "no usable cell or probe failed: %s || %s" % (tr2, trc))

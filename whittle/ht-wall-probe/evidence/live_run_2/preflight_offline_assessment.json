@@ -1,0 +1,18 @@
+{
+  "O02_actual": [
+    {
+      "id": "O02",
+      "name": "bridge_lease",
+      "required": true,
+      "status": "PASS",
+      "reason": "FREE    since 2026-11-11T07:29:21Z -- take it before launching: rimflow bridge take --for \"<what>\"",
+      "cost_est_s": 0.1,
+      "took_s": 0.0,
+      "prevents": "#22 #50 two drivers",
+      "evidence": {}
+    }
+  ],
+  "O02_applicability": "not applicable: reads other host Archmagi BRIDGE; owner exception",
+  "other_required_nonpasses": [],
+  "ok": true
+}

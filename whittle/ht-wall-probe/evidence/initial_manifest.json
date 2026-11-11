@@ -1,0 +1,10 @@
+{
+  "base_sha": "cb8f09aaa200a7a81d19049ee90db6ae32a3f3cd",
+  "frozen_hashes": {
+    "whittle/ht-wall-probe/STATEMENT.md": "9a94a0b1510ef7867784c44435071f2892adde7b70160a9b59df4b9800277187",
+    "whittle/ht-wall-probe/JUDGE_PROMPT.md": "2f4a5ffd976c04051faae29a71843ab3cf8ccee3e7c903a1cf022da5d86e5d60",
+    "whittle/ht-wall-probe/NOTES.md": "6ea5f459387a737776864f4ffde21a9706ad81c8f3297aded96cf248a044eeab",
+    "whittle/ht-wall-probe/PROMPT.md": "76420ddbf2d5fb112ca25fbb52561f9eb0f977b4e20bf71d33ab8c0754f0dd6d"
+  },
+  "inherited_generation": "1394"
+}

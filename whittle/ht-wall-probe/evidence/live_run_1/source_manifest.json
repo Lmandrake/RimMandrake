@@ -1,0 +1,45 @@
+{
+  "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py": {
+    "sha256": "e65e9902b1698411dcd15d5d5ae9c22651c3c372a5464d6d97d545cc124d85f2",
+    "bytes": 21341,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/northstar/titan_test_races_live.py"
+  },
+  "src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py": {
+    "sha256": "9c9e9959bbfa020e52449992a527575e8c5e26aec0c75cd0d6807f21b733e88b",
+    "bytes": 12010,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py"
+  },
+  "src/RimMandrake/Utils/selftest_hugethings_test_races.py": {
+    "sha256": "db9ba35a6f65cb188980032e408ad5cc81614ee8904f1ef7eebd09ed126f0a81",
+    "bytes": 33314,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/Utils/selftest_hugethings_test_races.py"
+  },
+  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": {
+    "sha256": "68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e",
+    "bytes": 14182,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs"
+  },
+  "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs": {
+    "sha256": "b1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f",
+    "bytes": 7801,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs"
+  },
+  "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": {
+    "sha256": "5f97d7281a58359b74c319900691f0c623ceaa35c02ba9606df8aebeeb91dd83",
+    "bytes": 36897,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs"
+  },
+  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": {
+    "sha256": "e1d1b0623922831d9b3ce52f8da24678b1585e66c6c97c29dca8a3edc50ee5d0",
+    "bytes": 178176
+  },
+  "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": {
+    "sha256": "f50d0d075358b4c8de39598f937933256ab9e0cdd4d7eab117f24ef1a450317d",
+    "bytes": 5283,
+    "snapshot": "whittle/ht-wall-probe/evidence/source_final/src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash"
+  },
+  "launch_adapter": {
+    "path": "whittle/ht-two-hour-warning/evidence/steam_adapter/powershell.exe",
+    "sha256": "e28b996130d2ae5752df613ddb458e9dcf02d766d231807c16097fc13844949f"
+  }
+}

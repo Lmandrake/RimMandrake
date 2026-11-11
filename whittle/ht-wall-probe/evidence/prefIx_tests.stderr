@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/1] FAIL          2.3s  src/RimMandrake/Utils/selftest_hugethings_test_races.py

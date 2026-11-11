@@ -1,0 +1,41 @@
+{
+  "base_sha": "cb8f09aaa200a7a81d19049ee90db6ae32a3f3cd",
+  "frozen_hashes_unchanged": {
+    "whittle/ht-wall-probe/STATEMENT.md": true,
+    "whittle/ht-wall-probe/JUDGE_PROMPT.md": true,
+    "whittle/ht-wall-probe/NOTES.md": true,
+    "whittle/ht-wall-probe/PROMPT.md": true
+  },
+  "final_source_hashes_match": {
+    "src/RimMandrake/HugeThings/northstar/titan_test_races_live.py": true,
+    "src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py": true,
+    "src/RimMandrake/Utils/selftest_hugethings_test_races.py": true,
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": true,
+    "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs": true,
+    "src/RimMandrake/HugeThings/Source/RM_HugeThingsSettings.cs": true,
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll": true,
+    "src/RimMandrake/HugeThings/Assemblies/RM_HugeThings.dll.srchash": true
+  },
+  "production_hook_wake_unchanged": {
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanValidationHooks.cs": true,
+    "src/RimMandrake/HugeThings/Source/Titanic/Wake/TitanicWakeProcessor.cs": true
+  },
+  "pre_fix_process_rc": 1,
+  "pre_fix_failed_checks": [
+    "             FAIL judge_roof default: correct opposite wall expectation passes",
+    "             FAIL judge_roof default: wrong wall expectation fails",
+    "             FAIL judge_roof default: bad control RoofConstructed fails",
+    "             FAIL judge_roof default: bad control wallHpAfter=195 fails",
+    "             FAIL judge_roof default: bad control tier=None fails",
+    "             FAIL judge_roof default: bad control RM_TestTitanT2Control fails",
+    "             FAIL judge_roof legacy: correct opposite wall expectation passes",
+    "             FAIL judge_roof legacy: wrong wall expectation fails",
+    "             FAIL judge_roof legacy: bad control RoofConstructed fails",
+    "             FAIL judge_roof legacy: bad control wallHpAfter=195 fails"
+  ],
+  "final_focused_process_rc": 0,
+  "detailed_count": "195/195 PASS",
+  "full_runner_rows_still_required": 5,
+  "scope": "R4 Python diagnostic only; no natural movement or clearing-job acceptance",
+  "status_before": " M infrastructure/state/ledger/events/BENCH.jsonl\n M src/RimMandrake/HugeThings/northstar/titan_test_races_live.py\n M src/RimMandrake/Utils/selftest_hugethings_test_races.py\n?? src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py\n?? whittle/ht-wall-probe/\n"
+}

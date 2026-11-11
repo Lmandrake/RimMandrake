@@ -1,0 +1,9 @@
+{
+  "validator": "/home/mandrake/dev/MandrakeWorkflows-dev/whittle/run.py",
+  "call": "validate(cwd)",
+  "cwd": "/home/mandrake/rm/codex-ht",
+  "WHITTLE_DIR": "whittle/ht-wall-probe",
+  "started": 1794394807.281494,
+  "elapsed_seconds": 2.541733503341675,
+  "workflow_rc": 0
+}

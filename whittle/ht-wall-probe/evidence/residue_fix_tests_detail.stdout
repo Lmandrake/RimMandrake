@@ -1,0 +1,203 @@
+PASS tier thresholds read 4/8/20
+PASS sanity probe: parser reads RM_Hwelgrue baseBodySize 8
+PASS exactly the five test races
+PASS race ThingDefs never end in a numeric digit (Verse config contract)
+PASS RM_TestTitanT2Adult harnessOnly (never a titan-passage pick)
+PASS RM_TestTitanT2Adult baseBodySize 8
+PASS RM_TestTitanT2Adult forceEnabled None
+PASS RM_TestTitanT2Adult is tier T2
+PASS RM_TestTitanT2Control harnessOnly (never a titan-passage pick)
+PASS RM_TestTitanT2Control baseBodySize 8
+PASS RM_TestTitanT2Control forceEnabled False
+PASS RM_TestTitanT2Control is tier None
+PASS RM_TestTitanT2Heavy harnessOnly (never a titan-passage pick)
+PASS RM_TestTitanT2Heavy baseBodySize 12
+PASS RM_TestTitanT2Heavy forceEnabled None
+PASS RM_TestTitanT2Heavy is tier T2
+PASS RM_TestTitanT2HeavyControl harnessOnly (never a titan-passage pick)
+PASS RM_TestTitanT2HeavyControl baseBodySize 12
+PASS RM_TestTitanT2HeavyControl forceEnabled False
+PASS RM_TestTitanT2HeavyControl is tier None
+PASS RM_TestTitanT3Adult harnessOnly (never a titan-passage pick)
+PASS RM_TestTitanT3Adult baseBodySize 20
+PASS RM_TestTitanT3Adult forceEnabled None
+PASS RM_TestTitanT3Adult is tier T3
+PASS one PawnKindDef per race, same defName
+PASS RM_TestTitanT2Adult canArriveManhunter false
+PASS RM_TestTitanT3Adult canArriveManhunter false
+PASS RM_TestTitanT2Control canArriveManhunter false
+PASS RM_TestTitanT2Heavy canArriveManhunter false
+PASS RM_TestTitanT2HeavyControl canArriveManhunter false
+PASS TitanPassageUtility.Eligible refuses a harnessOnly race (drift guard)
+PASS About depends on mandrake.rm.hugethings
+PASS About loads after mandrake.rm.hugethings
+PASS About packageId
+PASS no XML outside the test mod names a test race (nothing ships one)
+PASS rimbridge-companion tool list documents the test races
+PASS judge_tiers: a right ladder passes
+PASS judge_tiers: a control read as T2 fails
+PASS judge_tiers: the heavy T2 read as T3 fails
+PASS judge_tiers: a missing heavy pair fails
+PASS judge_yield: 490 of 600 at factor 0.8165 passes
+PASS judge_yield: an unreduced T2 fails
+PASS judge_yield: off by more than n fails
+PASS judge_yield: a factor other than sqrt(8/12) fails (curve shape drift)
+PASS R3 butchers the body-size 12 pair, not the floor races
+PASS YIELD_FACTOR is the kernel mirror for the heavy T2 and strictly below 1
+PASS kernel SubLinearFactor is still sqrt(floor/b) clamped (drift guard)
+PASS judge_yield: a factor-1 subject (on its tier floor) has no verdict, never MOD FAIL or PASS
+PASS judge_roof default: correct opposite wall expectation passes
+PASS judge_roof default: wrong wall expectation fails
+PASS judge_roof default: missing control cannot pass
+PASS judge_roof default: bad control RoofConstructed fails
+PASS judge_roof default: bad control wallHpAfter=195 fails
+PASS judge_roof default: bad control tier=None fails
+PASS judge_roof default: bad control RM_TestTitanT2Control fails
+PASS judge_roof legacy: correct opposite wall expectation passes
+PASS judge_roof legacy: wrong wall expectation fails
+PASS judge_roof legacy: missing control cannot pass
+PASS judge_roof legacy: bad control RoofConstructed fails
+PASS judge_roof legacy: bad control wallHpAfter=195 fails
+PASS judge_roof legacy: bad control tier=None fails
+PASS judge_roof legacy: bad control RM_TestTitanT2Control fails
+PASS judge_roof legacy: destroyed wall passes
+PASS judge_roof default: destroyed wall fails
+PASS judge_roof: absent measured mode cannot pass
+PASS judge_roof: malformed mode giantAnimalsEnabled=None is unmeasured
+PASS judge_roof: malformed mode giantAnimalsEnabled='' is unmeasured
+PASS judge_roof: malformed mode giantAnimalsEnabled='yes' is unmeasured
+PASS judge_roof: malformed mode giantAnimalsEnabled='1' is unmeasured
+PASS judge_roof: malformed mode giantAnimalsEnabled='False trailing' is unmeasured
+PASS judge_roof: missing mode field giantAnimalsEnabled is unmeasured
+PASS judge_roof: malformed mode wakeEnabled=None is unmeasured
+PASS judge_roof: malformed mode wakeEnabled='' is unmeasured
+PASS judge_roof: malformed mode wakeEnabled='yes' is unmeasured
+PASS judge_roof: malformed mode wakeEnabled='1' is unmeasured
+PASS judge_roof: malformed mode wakeEnabled='False trailing' is unmeasured
+PASS judge_roof: missing mode field wakeEnabled is unmeasured
+PASS judge_roof: malformed mode wakeRoofHolingEnabled=None is unmeasured
+PASS judge_roof: malformed mode wakeRoofHolingEnabled='' is unmeasured
+PASS judge_roof: malformed mode wakeRoofHolingEnabled='yes' is unmeasured
+PASS judge_roof: malformed mode wakeRoofHolingEnabled='1' is unmeasured
+PASS judge_roof: malformed mode wakeRoofHolingEnabled='False trailing' is unmeasured
+PASS judge_roof: missing mode field wakeRoofHolingEnabled is unmeasured
+PASS judge_roof: malformed mode titanClearingEnabled=None is unmeasured
+PASS judge_roof: malformed mode titanClearingEnabled='' is unmeasured
+PASS judge_roof: malformed mode titanClearingEnabled='yes' is unmeasured
+PASS judge_roof: malformed mode titanClearingEnabled='1' is unmeasured
+PASS judge_roof: malformed mode titanClearingEnabled='False trailing' is unmeasured
+PASS judge_roof: missing mode field titanClearingEnabled is unmeasured
+PASS judge_roof: malformed mode wallsSlotsEnabled=None is unmeasured
+PASS judge_roof: malformed mode wallsSlotsEnabled='' is unmeasured
+PASS judge_roof: malformed mode wallsSlotsEnabled='yes' is unmeasured
+PASS judge_roof: malformed mode wallsSlotsEnabled='1' is unmeasured
+PASS judge_roof: malformed mode wallsSlotsEnabled='False trailing' is unmeasured
+PASS judge_roof: missing mode field wallsSlotsEnabled is unmeasured
+PASS judge_roof: disabled prerequisite giantAnimalsEnabled cannot pass
+PASS judge_roof: disabled prerequisite wakeEnabled cannot pass
+PASS judge_roof: disabled prerequisite wakeRoofHolingEnabled cannot pass
+PASS judge_roof: disabled prerequisite titanClearingEnabled cannot pass
+PASS judge_roof: wrong subject/roof tier=None fails
+PASS judge_roof: wrong subject/roof Elephant fails
+PASS judge_roof: wrong subject/roof roofAfter=RoofConstructed fails
+PASS judge_roof: wrong subject/roof roofAfter=RoofRockThin fails
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=0 wallHpAfter=195 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=-1 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=196 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=0 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=garbage
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2  wallHpBefore=195 wallHpAfter=195 wallDestroyed=False
+PASS judge_roof: malformed or vacuous data cannot pass: RM_TestTitanT2Adult tier=T2 roofAfter=none wallHpBefore=195 wallHpAfter=195 wallDestroyed=False tier=T2
+PASS judge_roof: malformed or vacuous data cannot pass: FAIL no map or kind
+PASS judge_thick: penalty on T2 only passes
+PASS judge_thick: no penalty fails
+PASS verdict: five PASS rows -> 0
+PASS classification: a MOD FAIL still has a verdict -> 0
+PASS strict verdict: a MOD FAIL -> 1
+PASS verdict: an UNMEASURED row -> 1
+PASS verdict: a missing row -> 1
+PASS R4 bounded both modes/control + strict aggregate: good
+PASS R4 pins all successful calls to one cell
+PASS R4 exact raw settings restored: good
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: always intact
+PASS R4 exact raw settings restored: always intact
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: refused control
+PASS R4 exact raw settings restored: refused control
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: mode drift
+PASS R4 exact raw settings restored: mode drift
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: leaves wall
+PASS R4 exact raw settings restored: leaves wall
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: initial cell refused
+PASS R4 pins all successful calls to one cell
+PASS R4 exact raw settings restored: initial cell refused
+PASS R4 alone cannot satisfy default full runner
+PASS R4 bounded both modes/control + strict aggregate: later cell refused
+PASS R4 exact raw settings restored: later cell refused
+PASS R4 alone cannot satisfy default full runner
+PASS R4 live damage rubble is bounded and explicitly removed
+PASS R4 leftover wall cannot be cleaned into a pass
+PASS R4 forced-out control residue cannot pass
+PASS R4 unknown filth cannot pass
+PASS R4 residue outside rectangle cannot be removed
+PASS R4 empty residue needs no cleanup
+PASS live-proof A2 is one line running the six-row wrapper
+PASS wrapper rows = runner's five + large_pawns_footprint_bridge
+PASS every row the item spec names is driven by A2
+PASS wrapper edges match RM_TitanicKernel.FootprintSize (T3, T2) and force-out 1
+PASS wrapper ladder is the tier def's 4/8/20
+PASS rect_edge: 9 listed cells -> 3
+PASS rect_edge: 12 listed + (16 total) -> 4
+PASS rect_edge: one cell -> 1
+PASS rect_edge: 6 cells is no square -> None
+PASS rect_edge: nine cells in a row -> None
+PASS rect_edge: a duplicated cell -> None
+PASS rect_edge: '(16 total)' with no cells -> None
+PASS rect_edge: an error text -> None
+PASS judge_footprint: 3/4/1 on 4/8/20 passes
+PASS judge_footprint: control 3 (override row not pushed) fails
+PASS judge_footprint: T3 at 3 fails
+PASS judge_footprint: all 1x1 (Large Pawns inert) fails
+PASS judge_footprint: Large Pawns' own 2.5/4.5/10 ladder fails
+PASS judge_footprint: a NaN ladder fails
+PASS judge_footprint: an unread edge fails
+PASS wrapper verdict: six PASS -> 0
+PASS wrapper strict fails but all rows classified
+PASS events: all expected rows pass
+PASS events: missing work cannot pass
+PASS events: planted MOD failure cannot pass
+PASS wrapper verdict: the runner's five alone -> 1
+PASS wrapper verdict: footprint UNMEASURED SITE (no Large Pawns) -> 1
+PASS wrapper verdict: a runner row missing -> 1
+PASS live-mods names HugeThings and HugeThingsTestRaces
+PASS live-mods names neku.largepawns as a packageId (gen11: without it the footprint row read UNMEASURED SITE 3 builds running)
+PASS live-mods folder HugeThings has a packageId
+PASS live-mods folder HugeThingsTestRaces has a packageId
+PASS proofs file names neku.largepawns for the stager
+PASS A2 proof line still parses with the live-mods header
+PASS clear_rect centres a 9x9 on the cell
+PASS failed clear -> UNMEASURED SITE, no kill
+PASS both kill cells cleared before the first kill
+PASS cleared, 0->1->1 -> PASS
+PASS cleared, 0->0->0 -> FAIL MOD
+PASS NO_VERDICT is neither PASS 0 nor FAIL 1
+UNMEASURED: the bridge could not be reached, no verdict (exit 2): cannot reach the bridge from WSL (selftest probe)
+five-row runner exit 2: no verdict for A2
+UNMEASURED: the bridge could not be reached, no verdict (exit 2): cannot reach the bridge from WSL (selftest probe)
+PASS connect refused: runner and wrapper both return NO_VERDICT
+PASS connect refused: no result JSON written
+UNMEASURED: the bridge could not be reached, no verdict (exit 2): no log
+five-row runner exit 2: no verdict for A2
+UNMEASURED: the bridge could not be reached, no verdict (exit 2): no log
+PASS no bridge log: runner and wrapper both return NO_VERDICT
+PASS no bridge log: no result JSON written
+five-row runner exit 2: no verdict for A2
+PASS R6 ages with allowBackwards=True
+PASS R6 calls OccupiedRect by bare thingIDNumber
+PASS runner no-verdict: wrapper returns NO_VERDICT without connecting
+195/195 PASS

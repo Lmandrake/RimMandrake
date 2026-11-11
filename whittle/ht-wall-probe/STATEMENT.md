@@ -1,0 +1,5 @@
+# Honest roof/wall diagnostic — TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS
+
+- The roof/wall diagnostic explicitly tests both the default walls-and-slots mode and the legacy wake mode: a T2 holes a thin roof in both, preserves the wall under the default mode, and damages the wall with walls-and-slots disabled; the forced-out control preserves roof and wall in both modes.
+- The checker requires measured mode and valid non-vacuous probe data, rejects wrong wall or roof outcomes and missing controls, and keeps strict gameplay-success aggregation; it describes the Position-setter probe honestly without claiming natural movement or clearing-job acceptance.
+- On SteveDesktop's intended HugeThings tier with all five DLC, a guarded disposable-save probe demonstrates those mode-specific results, restores its scene and exact settings, retains raw process/probe/preflight evidence and passes the independent judge; all preflight requirements except the explicitly inapplicable other-host bridge row pass.

@@ -1,0 +1,255 @@
+{
+  "started_utc": "2026-11-11T10:46:08.801763+00:00",
+  "commands": [
+    {
+      "name": "readiness_python",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "-c",
+        "import sys,lxml; print(sys.executable); print(lxml.__version__)"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.014616966247558594
+    },
+    {
+      "name": "guard_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.0786740779876709
+    },
+    {
+      "name": "take",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "take",
+        "--host",
+        "stevedesktop",
+        "--idle-ok",
+        "--for",
+        "HT: TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS"
+      ],
+      "rc": 0,
+      "elapsed_s": 10.591697692871094
+    },
+    {
+      "name": "lease_before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.7647206783294678
+    },
+    {
+      "name": "game_before",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_s": 0.5996198654174805
+    },
+    {
+      "name": "preflight_offline",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+        "--deep",
+        "--all",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-wall-probe/evidence/live_run_1/preflight_offline.json"
+      ],
+      "rc": 0,
+      "elapsed_s": 29.84537148475647
+    },
+    {
+      "name": "powershell_path",
+      "args": [
+        "which",
+        "powershell.exe"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.011694908142089844
+    },
+    {
+      "name": "up",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "up",
+        "--wait"
+      ],
+      "rc": 0,
+      "elapsed_s": 40.73505687713623
+    },
+    {
+      "name": "preflight_live",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_hugethingstestraces__mandrake_rm_patches",
+        "--deep",
+        "--all",
+        "--seat",
+        "BENCH",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-wall-probe/evidence/live_run_1/preflight_live.json",
+        "--live"
+      ],
+      "rc": 0,
+      "elapsed_s": 4.330646991729736
+    },
+    {
+      "name": "running_identity",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--emit-running-mods"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.4219081401824951
+    },
+    {
+      "name": "lease_live",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.2498111724853516
+    },
+    {
+      "name": "script_winpath",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/roofwall_modes_live.py"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.004390716552734375
+    },
+    {
+      "name": "out_winpath",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-wall-probe/evidence/live_run_1/live.json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.004032611846923828
+    },
+    {
+      "name": "probe",
+      "args": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\src\\RimMandrake\\HugeThings\\northstar\\roofwall_modes_live.py",
+        "--out",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-wall-probe\\evidence\\live_run_1\\live.json"
+      ],
+      "rc": 1,
+      "elapsed_s": 36.35028052330017
+    },
+    {
+      "name": "down_finally",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_s": 6.725286483764648
+    },
+    {
+      "name": "game_after",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_s": 0.5892407894134521
+    },
+    {
+      "name": "release",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 9.790399074554443
+    },
+    {
+      "name": "lease_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_s": 1.6646366119384766
+    },
+    {
+      "name": "guard_after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_s": 0.07570242881774902
+    }
+  ],
+  "ok": false,
+  "inherited_driver": {
+    "state": "HELD",
+    "seat": "BENCH",
+    "purpose": "HT: TITAN_WALL_CRUSH_DIAGNOSE_WOOD_WALL_SHRUGS",
+    "identity": {
+      "pid": 2786427,
+      "start": 83570.41,
+      "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+      "platform": "wsl",
+      "host": "SteveDesktop"
+    },
+    "generation": 1394,
+    "heartbeat": "2026-11-11T10:37:57Z",
+    "how": "holder process pid 2786427 alive",
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "error": "probe failed; inspect raw receipts",
+  "finished_utc": "2026-11-11T10:49:19.715728+00:00"
+}
