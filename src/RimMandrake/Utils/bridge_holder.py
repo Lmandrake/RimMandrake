@@ -10,7 +10,8 @@ import re
 ENV = "RIMFLOW_BRIDGE_SEAT"
 IN_TEST_ENV = "RIMFLOW_BRIDGE_SEAT_IN_TEST"
 RELENTLESS = "RELENTLESS"
-HOLDERS = (RELENTLESS,)
+CODEX_SEATS = ("CODEX_ARCHMAGI_FWDRAIN", "CODEX_STEVEDESKTOP_HUGETHINGS")
+HOLDERS = (RELENTLESS,) + CODEX_SEATS
 
 
 def identity(seat, env=None):
@@ -57,4 +58,4 @@ def rimflow_env(seat, env=None):
     RELENTLESS is a holder, not a seat: its ledger seat stays BENCH and only the bridge name changes."""
     if identity(seat, env) == RELENTLESS:
         return ["AGENT_SEAT=BENCH", "%s=%s" % (ENV, RELENTLESS)]
-    return ["AGENT_SEAT=%s" % seat]
+    return ["AGENT_SEAT=%s" % identity(seat, env)]

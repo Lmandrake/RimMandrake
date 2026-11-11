@@ -154,13 +154,23 @@ def seat():
         "    ./src/RimMandrake/Utils/set_agent_window.sh MACBENCH   (then reopen the tab)")
 
 
+def require_worker_seat(s, env=None):
+    """Codex helpers never write the Conductor's handoff, even with --force."""
+    env = os.environ if env is None else env
+    codex = any(env.get(k) for k in ("CODEX_THREAD_ID", "CODEX_SESSION_ID", "CODEX_CI"))
+    codex = codex or (env.get("RIMFLOW_BRIDGE_SEAT") or "").startswith("CODEX_")
+    if codex and s in ("BENCH", "CONDUCTOR"):
+        raise SystemExit("REFUSED: a Codex worker cannot write a BENCH/CONDUCTOR handoff; "
+                         "export RIMFLOW_SEAT=CODEX_<MACHINE>_<LANE> using a registered seat.")
+
+
 def seat_from_ready(out):
     """-> the ledger seat KEY named by `rimflow seat ready`'s first line, or None.
 
     The Conductor prints by display name with its key in brackets ("CONDUCTOR is ready [seat BENCH]",
     CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE); other seats print "FOUNDRY is ready". The key is what goes into
     the handoff's filename and queries, so the bracket wins, and a bare display name maps back to its key."""
-    m = re.match(r"^([A-Z]+) is ready(?: \[seat ([A-Z]+)\])?", out or "")
+    m = re.match(r"^([A-Z0-9_]+) is ready(?: \[seat ([A-Z0-9_]+)\])?", out or "")
     if not m:
         return None
     return m.group(2) or {"CONDUCTOR": "BENCH"}.get(m.group(1), m.group(1))
@@ -812,6 +822,7 @@ def main():
         return wake()
 
     s = seat()
+    require_worker_seat(s)
     prev_name, prev_ts = previous_handoff()
     since_sha = a.since
     if not since_sha and prev_name:

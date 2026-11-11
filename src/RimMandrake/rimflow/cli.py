@@ -3223,8 +3223,8 @@ def _bridge_give(args, seat, w, holder):
         _driver_release(seat, force="the OWNER cleared the bridge")
         print("bridge FREE — the owner cleared it")
         return 0
-    if to not in ("BENCH", "FOUNDRY"):
-        die("give it to BENCH, FOUNDRY, or `free`. Got %r." % args.to)
+    if to not in ("BENCH", "FOUNDRY") + model.CODEX_SEATS:
+        die("give it to BENCH, FOUNDRY, a registered CODEX seat, or `free`. Got %r." % args.to)
     ev = {"seat": to, "event": "bridge", "state": "taken",
           "override": "the OWNER handed the bridge to %s%s"
                       % (to, " from %s" % holder if holder and holder != to else "")}

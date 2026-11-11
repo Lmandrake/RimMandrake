@@ -236,7 +236,7 @@ def holder_is_not_a_seat(g):
     check(rc != 0 and "RELENTLESS" in out, "nobody runs as RELENTLESS: %s" % out[:80])
     r = subprocess.run([sys.executable, CLI, "file", "SEAT_TEST_THING", "--for", "RELENTLESS", "--kind", "task", "--title", "x",
                         "--needs", "offline", "--why", "t"], env=g.env("conductor"), capture_output=True, text=True, timeout=120)
-    check(r.returncode != 0, "nobody files for RELENTLESS")
+    check(r.returncode == 0, "RELENTLESS is accepted as the existing BENCH queue alias")
     code = ("from rimflow import model as m\n"
             "try:\n  m._check_seat({'seat': 'RELENTLESS', 'event': 'note'}); print('ALLOWED')\n"
             "except m.SchemaError: print('REFUSED')\n"

@@ -195,7 +195,9 @@ def item_path(iid, for_write=False):
 # DISPATCHER (2026-10-26, RimFlow v3.0, design/RimMandrake/rimflow_v3_2026-10-26.md §2: "a program, not an AI
 # ... records") is no window either: `rimflow/dispatcher.py` notes on an item what it handed out, woke, verified
 # or gave up on. It may emit DISPATCHER_VERBS only — it never claims, closes or files.
-SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
+# Explicit seat registry, not the item-id/namecheck grammar. Future loops register CODEX_<MACHINE>_<LANE> here.
+CODEX_SEATS = bridge_holder.CODEX_SEATS
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER") + CODEX_SEATS
 # Who may hold the bridge without being a seat (RELENTLESS_SEAT_UNTANGLE_FROM_BENCH). Relentless owns its items as BENCH,
 # the key the Conductor's window also runs under, so a hold keyed on BENCH read as "ours" from both sides: Relentless saw
 # the owner's joint session as itself, and its own hold kept the Conductor's restart waiting 16 min (2026-11-03). Only
@@ -528,7 +530,7 @@ VERBS = {
     # `needs` is exactly the kind of thing a seat notices about ANOTHER seat's item, and
     # the item's owner may be the one seat that cannot see the problem.
     "needs":     {"who": ("BENCH", "DECIDE", "owner"), "req": ("to",), "opt": ("reason",)},
-    "reassign":  {"who": ("BENCH", "DECIDE"), "req": ("to",), "opt": ("reason",)},
+    "reassign":  {"who": ("BENCH", "DECIDE") + CODEX_SEATS, "req": ("to",), "opt": ("reason",)},
     # A seat un-sticks its OWN abandoned `doing` item back to `ready`. `next` offers
     # only `ready` and `doing` is invisible by design, but `reassign` — the other
     # doing->ready path — is BENCH/DECIDE-only, so before this a seat could not
@@ -608,7 +610,7 @@ VERBS = {
     # whether to wait or go offline. Optional — a take without one is still a take.
     # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
     # event written before the widening still reads as the Archmagi bridge it was.
-    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK", RELENTLESS_HOLDER), "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK", RELENTLESS_HOLDER) + CODEX_SEATS, "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
@@ -3054,7 +3056,7 @@ def ambient_window_seat():
     for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
         v = (os.environ.get(k) or "").strip().upper()
         if v:
-            return bridge_identity(v) if v in ("BENCH", "FOUNDRY") else None
+            return bridge_identity(v) if v in ("BENCH", "FOUNDRY") + CODEX_SEATS else None
     sid = os.environ.get("CLAUDE_SESSION_ID")
     if sid:
         try:
