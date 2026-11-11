@@ -1,0 +1,2 @@
+A registered vanilla tending work giver is WorkGiver_TendOther_Humanlike (DoctorTendToHumanlikes); WorkGiver_Tend is its base class. The pit-prison C# probe used exact GetType()==typeof(WorkGiver_Tend), so live feeding passed then Care(tend) threw Sequence contains no matching element. Select real registered WorkGiverDefs by their verified defNames and record the giver name; compile, deploy and rerun the live care path. A probe failure is HARNESS, not proof that tending gameplay failed.
+home: src/RimMandrake/FlowWorks/Source/RM_PitPrisonProof.cs
