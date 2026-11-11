@@ -45,6 +45,7 @@ def run(out):
     B = V.Bridge()
     result = dict(mode='live', started=time.time(), calls=[], status='FAIL', arms=[])
     settings, debug, baseline, name, dev_mode = [], {}, None, None, None
+    tap = None
     saves = Path(SAVES)
     saves_before = T.saves_stat(SAVES)
     protected = [p for p in saves.glob('*.rws') if p.name.startswith('CANONICAL_') or p.name in
@@ -110,6 +111,9 @@ def run(out):
         return response['things']
 
     try:
+        result['log_start'] = V.log_revive(B)
+        require(result['log_start']['alive'] and result['log_start']['cleared'], 'initial logging sentinel missing')
+        tap = V.tap_start(B)
         result['running'] = call('jawa/running_mods')
         result['identity'] = call('jawa/type_probe', typeName=PUMP)
         expected = hashlib.sha256((ROOT / 'src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll').read_bytes()).hexdigest()
@@ -249,6 +253,15 @@ def run(out):
         result['saves_added'] = sorted(set(after)-set(saves_before))
         if result['restore']['status'] != 'PASS' or result['changed_existing_saves'] or result['protected_after'] != protected_hashes:
             result['status'] = 'FAIL'
+        try:
+            alive = V.log_alive(B, 'tank-theft-final')
+            entries = tap.since() if tap is not None else []
+            errors = [e for e in entries if str(e.get('Level','')).lower() in ('error','exception')]
+            result['log_budget'] = dict(sentinel=alive, lost=tap.lost if tap is not None else None, entries=entries, errors=errors)
+            require(alive['alive'] and tap is not None and tap.lost == 0 and not errors, 'log budget unreadable or new error/exception')
+        except Exception as exc:
+            result['status'] = 'FAIL'
+            result['log_budget_error'] = repr(exc)
         result['finished'] = time.time(); persist()
     print(result['status'], result.get('error',''), 'restore=' + result['restore']['status'])
     return 0 if result['status'] == 'PASS' else 1
