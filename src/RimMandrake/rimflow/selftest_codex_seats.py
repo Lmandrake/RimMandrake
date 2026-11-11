@@ -45,6 +45,8 @@ for seat in model.CODEX_SEATS:
         rf('file', 'CODEX_SEAT_DISTINCT_IDENTITY', '--title', 'fixture', '--kind', 'task', '--for', 'BENCH')
         rf('reassign', 'CODEX_SEAT_DISTINCT_IDENTITY', '--to', seat)
         rf('note', 'CODEX_SEAT_DISTINCT_IDENTITY', '--text', 'fixture')
+        rf('queue', seat)
+        assert (Path(d)/'queue'/f'{seat}.md').exists()
         rf('bridge', 'take', '--host', 'stevedesktop', '--for', 'fixture')
         rf('bridge', 'release', '--host', 'stevedesktop')
         rows = [json.loads(line) for line in Path(d+'/events/'+seat+'.jsonl').read_text().splitlines()]
