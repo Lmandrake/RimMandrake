@@ -35,6 +35,8 @@ RECT = '90,90,96,30'
 # original colonists stand in the unused gaps, so clear only owned fixture areas.
 CLEAR_RECTS = ('94,95,13,18', '121,94,61,13', '170,106,12,9')
 MAP_RECT = '0,0,250,250'
+RETAINED_GEYSER = dict(id='SteamGeyser10411', **{'def': 'SteamGeyser'}, label='Steam geyser',
+                       x=162, z=97, spawned=True, rot=0, stackCount=1, hitPoints=-1, maxHitPoints=-1)
 PLANT = 'RM_Nogtyl'
 BLOCKER = 'RM_HugeTrunkBlocker'
 CUT = 'RM_CutHugePlantFromTrunk'
@@ -61,6 +63,8 @@ class Run:
                         started=time.time(), ok=False, level='L2', fixture_ids=[])
         self.prior = {}
         self.originals = {}
+        self.retained = []
+        self.retained_cells = set()
 
     def persist(self):
         self.out.write_text(json.dumps(self.rec, indent=2, default=str, allow_nan=False)+'\n', encoding='utf-8')
@@ -143,6 +147,48 @@ class Run:
             self.rec['originals_pinned'].append(dict(pawn=pawn, draft=draft))
         self.check_originals('isolated')
 
+    def prepare_clear(self):
+        # Census every plot before any drafting, roof, destroy or terrain write.
+        plots = {rect: self.things(None, rect) for rect in CLEAR_RECTS}
+        names = sorted({t['def'] for things in plots.values() for t in things})
+        defs = self.call('jawa/get_defs', defs=';'.join('ThingDef/'+n for n in names),
+                         fields='destroyable,size', deep=True, limit=200)
+        require(defs['foundCount'] == len(names) and not defs['notFound'] and not defs['malformed'],
+                'SITE: incomplete pre-clear destroyability census')
+        fields = {d['defName']: d['fields'] for d in defs['defs']}
+        require(all(type(fields[n].get('destroyable')) is bool for n in names),
+                'SITE: unreadable pre-clear destroyability')
+        retained_by_rect = {}
+        for rect, things in plots.items():
+            retained = [t for t in things if not fields[t['def']]['destroyable']]
+            expected = [RETAINED_GEYSER] if rect == CLEAR_RECTS[1] else []
+            require(retained == expected, 'SITE: unexpected non-destroyable baseline in '+rect)
+            retained_by_rect[rect] = retained
+        size = fields['SteamGeyser']['size']
+        require(size == dict(x=2, z=2), 'SITE: retained geyser occupied size changed')
+        self.retained = [dict(RETAINED_GEYSER)]
+        self.retained_cells = {(RETAINED_GEYSER['x']+dx, RETAINED_GEYSER['z']+dz)
+                               for dx in range(size['x']) for dz in range(size['z'])}
+        self.rec['pre_clear'] = dict(plots=plots, defs=defs, retained_by_rect=retained_by_rect,
+                                     retained_cells=sorted(self.retained_cells))
+        self.persist()
+        return retained_by_rect
+
+    def editable_rects(self, rect):
+        # Row runs exclude the retained object's complete occupied rectangle.
+        x, z, w, h = map(int, rect.split(','))
+        runs = []
+        for zz in range(z, z+h):
+            start = None
+            for xx in range(x, x+w+1):
+                editable = xx < x+w and (xx, zz) not in self.retained_cells
+                if editable and start is None:
+                    start = xx
+                elif not editable and start is not None:
+                    runs.append('%d,%d,%d,1' % (start, zz, xx-start))
+                    start = None
+        return runs
+
     def check_originals(self, phase):
         rows = self.pawns(MAP_RECT)
         by_id = {p['id']: p for p in rows}
@@ -164,7 +210,9 @@ class Run:
         require(not any(p['id'] in self.originals and (p.get('job') == CUT or p.get('queued')) for p in state['pawns'])
                 and not any(p['claimant'] in self.originals for p in state['reservationsInRect']),
                 'SITE_interference: original job/reservation at '+phase)
-        self.rec.setdefault('original_invariants', []).append(dict(phase=phase, pawns=checks, site_state=state))
+        retained = [self.identity(t['id']) for t in self.retained]
+        require(retained == self.retained, 'SITE_interference: retained baseline object changed at '+phase)
+        self.rec.setdefault('original_invariants', []).append(dict(phase=phase, pawns=checks, site_state=state, retained=retained))
         self.persist()
 
     def reach(self, pawn, x, z):
@@ -220,13 +268,19 @@ class Run:
 
 
     def scenario(self, tx):
+        retained_by_rect = self.prepare_clear()
         self.pin_originals()
         for rect in CLEAR_RECTS:
             require(not self.pawns(rect), 'SITE: fixture rectangle contains pawns; refuse clearing')
-            self.call('jawa/set_roof_batch', ops='None:'+rect)
-            self.call('jawa/destroy_batch', categories='All', rects=rect)
-            require(not self.things(None, rect), 'SITE: bounded fixture clear left objects')
-            self.call('jawa/set_terrain_batch', ops='Soil:'+rect)
+            runs = self.editable_rects(rect)
+            self.call('jawa/set_roof_batch', ops=';'.join('None:'+run for run in runs))
+            cleared = self.call('jawa/destroy_batch', categories='All', rects=rect)
+            x, z, w, h = map(int, rect.split(','))
+            skipped = sum(x <= xx < x+w and z <= zz < z+h for xx, zz in self.retained_cells)
+            require(cleared['pawnsSkipped'] == 0 and cleared['undestroyableSkipped'] == skipped,
+                    'SITE: unexpected protected objects in fixture clear')
+            require(self.things(None, rect) == retained_by_rect[rect], 'SITE: bounded clear changed retained set or left objects')
+            self.call('jawa/set_terrain_batch', ops=';'.join('Soil:'+run for run in runs))
         self.check_originals('cleared')
         for field, value in dict(giantPlantsEnabled=True, plantTrunkEnabled=True, plantTrunkScale=1, plantItemPushEnabled=False).items():
             self.setting(field, value)
@@ -264,7 +318,9 @@ class Run:
         obstruction = self.things('Wall', '99,101,2,1')
         self.rec['failure_stage'] = 'HARNESS_planted_obstruction'
         require(len(obstruction) == 2 and not self.reach(cutter, 100, 97), 'HARNESS: planted walls do not seal chokepoint')
-        self.call('jawa/destroy_batch', categories='Buildings', rects='99,101,2,1')
+        removed = self.call('jawa/destroy_batch', categories='Building', rects='99,101,2,1')
+        require(removed['destroyed'] == 2 and removed['perCategory'] == {'Building': 2}
+                and removed['undestroyableSkipped'] == 0, 'HARNESS: control-wall removal differs')
         require(not self.things(None, '99,101,2,1') and self.reach(cutter, 100, 97), 'HARNESS: removing control walls did not restore route')
         self.rec['geometry_control'] = dict(blocked=obstruction, restored_access=True)
         self.rec['failure_stage'] = 'HARNESS_natural_growth'
@@ -399,9 +455,9 @@ class Run:
         self.call('jawa/build_batch', ops='Door:155,101', stuff='WoodLog', faction='player')
         door = self.things('Door', '155,101,1,1')
         require(len(door) == 1, 'protected building control absent')
-        self.call('jawa/build_batch', ops='SteamGeyser:165,101', faction='none')
+        self.call('jawa/build_batch', ops='SteamGeyser:165,101', faction='none', wipeExisting=False)
         geyser = self.things('SteamGeyser', '165,101,2,2')
-        require(len(geyser) == 1, 'indestructible fixture absent')
+        require(len(geyser) == 1 and geyser[0]['id'] != RETAINED_GEYSER['id'], 'independent indestructible fixture absent')
         self.rec['indestructible_def'] = self.call('jawa/get_defs', defs='ThingDef/SteamGeyser', fields='destroyable')
         require(self.rec['indestructible_def']['defs'][0]['fields']['destroyable'] is False, 'indestructible definition differs')
         for x in (125, 140, 155, 165, 175):
@@ -420,9 +476,14 @@ class Run:
         self.check_originals('controls_grown')
         self.ticks(500)
         self.rec['guarded_cell_claims'] = self.claimed_cells([(125, 101), (140, 101), (155, 101), (165, 101)])
+        self.rec['baseline_geyser_claims'] = {'%d,%d' % cell: self.sc('DebugCellState', 'current|%d,%d' % cell)
+                                            for cell in sorted(self.retained_cells)}
+        geyser_cells = self.retained_cells | {(x, z) for x in (165, 166) for z in (101, 102)}
         for x in (125, 140, 155, 165):
             require(not self.things(BLOCKER, '%d,101,1,1' % x), 'placement control was overwritten')
-            require(self.things(BLOCKER, '%d,98,7,6' % (x-3)), 'obstruction control has no positive free-space blocker')
+            free = self.things(BLOCKER, '%d,98,7,6' % (x-3))
+            require(free and all((t['x'], t['z']) not in geyser_cells for t in free),
+                    'obstruction control lacks an independent free-space positive or overlaps a geyser')
         require(self.identity(item[0]['id']) == item[0], 'item moved/wiped with item push disabled')
         require(self.identity(door[0]['id']) == door[0], 'existing building wiped/changed')
         require(self.identity(geyser[0]['id']) == geyser[0], 'indestructible fixture changed')
@@ -434,6 +495,7 @@ class Run:
         require(moved['stackCount'] == item[0]['stackCount'] and (moved['x'], moved['z']) != (140, 101), 'item push lost its stack or did not move')
         require(kv(self.sc('DebugCellState', 'current|%d,%d' % (moved['x'], moved['z']))).get('claimed') == 'False', 'item pushed into another footprint')
         require(121 <= moved['x'] < 182 and 94 <= moved['z'] < 107, 'SITE: pushed item left cleared fixture area')
+        require((moved['x'], moved['z']) not in self.retained_cells, 'item pushed onto retained baseline object')
         require(self.things(BLOCKER, '140,101,1,1'), 'cleared item cell never realized')
         move = self.call('jawa/order_pawn', allow=True, pawnId=guard, x=125, z=105, waitTicks=0, unpause=False, draft=True)
         require(len(move.get('pawns', [])) == 1 and move['ticksElapsed'] == 0
@@ -546,6 +608,8 @@ def main():
                 r.rec['restored']['map_pawns'] = r.pawns(MAP_RECT)
                 require(r.rec['restored']['map_pawns'] == r.rec['baseline']['map_pawns'],
                         'restored map-wide pawn census differs from exact baseline')
+                r.rec['restored']['retained'] = [r.identity(t['id']) for t in r.retained]
+                require(r.rec['restored']['retained'] == r.retained, 'retained baseline object differs after snapshot reload')
                 r.rec['restored_original_drafts'] = []
                 for original in r.rec.get('originals_pinned', []):
                     expected = original['draft']['wasDrafted']
