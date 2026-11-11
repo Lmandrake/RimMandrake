@@ -50,8 +50,9 @@ class ExplodeProbeChecks
     static string B(bool b) => b ? "true" : "false";
     static string Ok(string cmd, string fields) => "{\"success\":true,\"cmd\":" + S(cmd) + "," + fields + "}";
     static string Fail(string cmd, string error) => "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":" + S(error) + "}";
-    static string Run(string cmd)
+    static string Run(string request)
     {
+        // PRODUCTION_REQUEST_NORMALIZATION
         object map = new object();
         var comp = new Component();
         try
@@ -85,7 +86,8 @@ class ExplodeProbeChecks
         Blast(",kinetic", Synthetic, true);
         Blast(",RM_Repulse_Palm", DefDatabase<DamageDef>.Named, false);
         foreach (string args in new[] { "1,2,2.5,50,UnknownDamage", "1,2,2.5,50,bomb", "1,2,2.5,50,",
-                 "1,2,2.5,50, RM_Repulse_Palm", "1,2,2.5,50,RM_Repulse_Palm ", "1,2,2.5,50,RM-Bad",
+                 "1,2,2.5,50, RM_Repulse_Palm", "1,2,2.5,50,RM_Repulse_Palm ", "1,2,2.5,50,kinetic ",
+                 "1,2,2.5,50,RM_Repulse_Palm\t", "1,2,2.5,50,RM-Bad",
                  "1,2,2.5,50,1Bad", "1,2,2.5,50,éBad", "1,2,2.5,50,Bomb,kinetic", "1,2,2.5" })
         {
             GenExplosion.Last = null;

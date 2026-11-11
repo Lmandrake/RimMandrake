@@ -46,7 +46,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static void Service(Map map, RM_MapComponent_Aerial comp)
         {
             if (string.IsNullOrEmpty(request) || Find.CurrentMap != map) return;
-            string cmd = request.Trim();
+            string cmd = request.TrimStart();
+            // Preserve the requested damage selector verbatim so malformed names cannot become valid by trimming.
+            if (!cmd.StartsWith("explode:")) cmd = cmd.TrimEnd();
             request = "";
             string res;
             try { res = Run(map, comp, cmd); }

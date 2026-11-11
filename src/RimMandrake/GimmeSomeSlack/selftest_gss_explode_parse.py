@@ -21,6 +21,9 @@ def run(source=HERE):
     start = probe.index('            if (cmd.StartsWith("explode:"))')
     end = probe.index('            if (cmd.StartsWith("set:"))', start)
     branch = probe[start:end]
+    start = probe.index('            string cmd = request.')
+    end = probe.index('            request = "";', start)
+    normalization = probe[start:end]
     harness = (HERE / "Source/SelfTest/ExplodeProbeChecks.cs").read_text()
     math = (source / "Source/Aerial/AerialMath.cs").read_bytes()
     base = Path(winbuild.BUILD_ROOT) / "gss-explode-checks"
@@ -28,7 +31,8 @@ def run(source=HERE):
     with tempfile.TemporaryDirectory(prefix="parse-", dir=base) as directory:
         work = Path(directory)
         (work / "AerialMath.cs").write_bytes(math)
-        (work / "Program.cs").write_text(harness.replace("// PRODUCTION_EXPLODE_BRANCH", branch))
+        (work / "Program.cs").write_text(harness.replace("// PRODUCTION_EXPLODE_BRANCH", branch).replace(
+            "// PRODUCTION_REQUEST_NORMALIZATION", normalization))
         project = work / "Parse.csproj"
         project.write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType>'
                            '<TargetFramework>net8.0</TargetFramework><ImplicitUsings>disable</ImplicitUsings>'
@@ -36,6 +40,7 @@ def run(source=HERE):
         print("source=" + str(source), flush=True)
         print("production_math_sha256=" + hashlib.sha256(math).hexdigest(), flush=True)
         print("production_branch_sha256=" + hashlib.sha256(branch.encode()).hexdigest(), flush=True)
+        print("production_normalization_sha256=" + hashlib.sha256(normalization.encode()).hexdigest(), flush=True)
         result = winbuild.run_interop_captured([winbuild.dotnet_exe(), "run", "--project", winbuild.win(str(project)),
                                                "-c", "Release"], cwd=str(work), timeout=180,
                                               capture_output=True, text=True)
