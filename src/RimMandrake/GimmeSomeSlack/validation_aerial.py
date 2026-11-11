@@ -38,11 +38,13 @@ import validation as V  # noqa: E402
 
 APROBE = "RimMandrake.GimmeSomeSlack.Aerial.AerialProbe"
 AX0, AZ0 = 90, 180
-SITE = (AX0 - 2, AZ0 - 2, 46, 20)
+SITE = (AX0 - 2, AZ0 - 10, 46, 32)
 BAT = (AX0 + 1, AZ0 + 5)                     # Battery 1x2 rot N: cells z..z+1; M1 is cardinally adjacent
 M1, M2, M3 = (AX0 + 2, AZ0 + 5), (AX0 + 14, AZ0 + 5), (AX0 + 26, AZ0 + 5)      # 12-cell spans, range 20
 LAMP = (AX0 + 27, AZ0 + 7)                   # hooks up to M3 (nearest transmitter)
 ROOM = (AX0 + 6, AZ0 + 2, AX0 + 10, AZ0 + 8)  # walled + roofed room under the M1-M2 span
+# LayFallen can route around a shed. A complete wall across the fixture keeps M14b's blocked control decisive.
+M14_BARRIER = [(ROOM[0], z) for z in range(SITE[1], SITE[1] + SITE[3])]
 HMAST = (AX0 + 20, AZ0 + 15)                 # a HOSTILE mast: never a link target
 HBAT = (AX0 + 30, AZ0 + 12)                  # victim grid: hostile battery + 2 conduit
 HCOND = [(AX0 + 31, AZ0 + 12), (AX0 + 32, AZ0 + 12)]
@@ -87,8 +89,15 @@ class A(V.Bridge):
                 res = reply.get("value")
                 try:
                     parsed = json.loads(res)
-                    if reply.get("success") is not True or serial() != now or not isinstance(parsed, dict) or parsed.get("cmd") != cmd:
+                    if reply.get("success") is not True or serial() != now or not isinstance(parsed, dict):
                         raise ValueError("failed, changed or mismatched probe result")
+                    matches = parsed.get("cmd") == cmd
+                    # AerialProbe.Net's established reply carries the verb and independent requested coordinates.
+                    if cmd.startswith("net:"):
+                        matches = parsed.get("cmd") in ("net", cmd) and all(type(parsed.get(k)) is int for k in ("x", "z")) and \
+                            cmd == "net:%d,%d" % (parsed["x"], parsed["z"])
+                    if not matches:
+                        raise ValueError("mismatched probe command or coordinates")
                     parsed["_probeSerial"] = now
                     return parsed
                 except Exception:  # noqa: BLE001
@@ -417,7 +426,7 @@ def _run_live(args, B, tap):
     B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE)
     B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
     B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE)
-    walls = V.perimeter(*ROOM)
+    walls = sorted(set(V.perimeter(*ROOM) + M14_BARRIER))
     b_w = B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player")
     rx0, rz0, rx1, rz1 = ROOM
     roof = B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % (rx0 + 1, rz0 + 1, rx1 - rx0 - 1, rz1 - rz0 - 1))
@@ -565,8 +574,8 @@ def _run_live(args, B, tap):
     ak = anchors_by_pos(ck)
     f1, f3 = ak[M1]["fallen"], ak[M3]["fallen"]
     nk = nets(ck)
-    # M1's cable falls toward M2 across the walled room: it must stop at the room's west wall ("the rest is over the
-    # wall"); M3's lies on open ground and must reach out its full length (12 cells x 1.05).
+    # The full-height west-wall barrier blocks every LayFallen aim, including routes around the room.
+    # M3's cable lies on open ground and must reach out its full length (12 cells x 1.05).
     m14b = len(f1) == 1 and len(f3) == 1 and ak[M1]["fallenLive"] is True and ak[M3]["fallenLive"] is False and \
         real(nk["m1"]) and real(nk["m3"]) and f1[0]["toward"] == list(M2) and f1[0]["blocked"] and f1[0]["tip"][0] < ROOM[0] and \
         not f3[0]["blocked"] and f3[0]["laidLen"] > 0.85 * 12.6
@@ -701,7 +710,7 @@ def _run_live(args, B, tap):
     hs = B.call("jawa/battery_set", thing=hb_id, mode="setPct", value=1.0) if hb_id else {}
     B.ticks(5)
     ct = B.ap("census")
-    tap = (ct.get("taps") or [{}])[0]
+    power_tap = (ct.get("taps") or [{}])[0]
     v0 = net_at(B, HBAT)
     B.ticks(210)
     ol = net_at(B, OLAMP)
@@ -712,7 +721,7 @@ def _run_live(args, B, tap):
     ct2 = B.ap("census")
     tap2 = (ct2.get("taps") or [{}])[0]
     drop = (v1.get("storedWd") or 0) - (v2.get("storedWd") or 0)
-    m19 = tap.get("connected") and tap.get("ourNet", -1) != -1 and tap.get("victimNet", -1) != -1 and tap["ourNet"] != tap["victimNet"] \
+    m19 = power_tap.get("connected") and power_tap.get("ourNet", -1) != -1 and power_tap.get("victimNet", -1) != -1 and power_tap["ourNet"] != power_tap["victimNet"] \
         and tap2.get("ourNet") != tap2.get("victimNet") and (tap2.get("outputW") or 0) > 400 and lamp_on and drop > 3.0
     V.row(rows, "M19_tap_drains_one_way", "PASS" if m19 else "FAIL", "MOD",
           {"built": [b.get("survived") for b in tb], "victimStoredSet": hs.get("storedEnergyAfter"), "tap": tap2,
@@ -749,7 +758,7 @@ def _run_live(args, B, tap):
     B.ticks(300)
     cm1 = B.ap("census")
     r1 = cm1.get("tapGuardRefused")
-    mtap = next((t for t in cm1.get("taps") or [] if t.get("id") not in (tap.get("id"),)), {})
+    mtap = next((t for t in cm1.get("taps") or [] if t.get("id") not in (power_tap.get("id"),)), {})
     mn_a, mn_b = net_at(B, MHCOND[0]).get("net"), net_at(B, MOCOND).get("net")
     mixed_net = real(mn_a) and mn_a == mn_b                 # two failed reads (None == None) are not one net
     ours = ap0[M1].get("faction")
@@ -1021,12 +1030,19 @@ def owner_change_verdict(cut_on, linked_before, a_after, b_after, id_a, id_b):
 
 
 def drip_expected_points(ax, az, bx, bz, drip, depth=0.12, reach=0.45, step=DRIP_STEP):
-    """The point count AerialMath builds for one strand A->B: SpanCurve n+1 with n = max(4, ceil(len/step));
+    """The point count AerialMath builds for one strand A->B. SpanCurve uses SpanTs, including end samples.
     SpanCurveDrip (depth, reach > 0, len >= 1e-6) 12 loop samples + (n'+1) + 12 with reach' = min(reach, len/4),
     n' = max(2, ceil((1 - 2 reach'/len) len / step))."""
     ln = math.hypot(bx - ax, bz - az)
     if not drip or not (depth > 0) or not (reach > 0) or ln < 1e-6:
-        return max(4, int(math.ceil(ln / max(0.05, step)))) + 1
+        n = max(4, int(math.ceil(ln / max(0.05, step))))
+        fractions = [i / n for i in range(n + 1)]
+        if ln > 1e-6:
+            for distance in (0.08, 0.16, 0.3):  # AerialMath.SpanEndSamples
+                if distance < ln / 4:
+                    fractions.extend((distance / ln, 1 - distance / ln))
+        fractions.sort()
+        return 1 + sum(b - a >= 1e-9 for a, b in zip(fractions, fractions[1:]))
     r = min(reach, ln / 4)
     n = max(2, int(math.ceil((1 - 2 * r / ln) * ln / max(0.05, step))))
     return n + 25

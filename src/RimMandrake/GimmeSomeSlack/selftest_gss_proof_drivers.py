@@ -95,7 +95,16 @@ def _ts_count(ln, drip, depth=0.12, reach=0.45, step=0.5):
     """An independent port of AerialMath.SpanCurve / SpanCurveDrip's sample loops (counts the t list they build)."""
     import math
     if not drip or ln < 1e-6:
-        return max(4, int(math.ceil(ln / step))) + 1
+        import re
+        source = open(os.path.join(HERE, 'Source/Aerial/AerialMath.cs'), encoding='utf-8').read()
+        raw = re.search(r'SpanEndSamples = \{([^}]+)\}', source).group(1)
+        ends = [float(v.strip()) for v in raw.split(',')]
+        check('M21 production endpoint sample constants remain explicit', ends == [0.08, 0.16, 0.3])
+        n = max(4, int(math.ceil(ln / max(0.05, step))))
+        fractions = {round(i / n, 9) for i in range(n + 1)}
+        if ln > 1e-6:
+            fractions.update(round(t, 9) for d in ends if d < ln / 4 for t in (d / ln, 1 - d / ln))
+        return len(fractions)
     reach = min(reach, ln / 4)
     tr = reach / ln
     ts = [tr * k / 12 for k in range(12)]
@@ -161,11 +170,17 @@ def t_m21():
             for drip in (False, True):
                 got, want = A.drip_expected_points(0, 0, ln, 0, drip), _ts_count(ln, drip)
                 check("M21c/d point count len %.2f drip %s matches the C# loop port" % (ln, drip), got == want, (got, want))
-        check("M21c 12-cell span OFF is 25 points", A.drip_expected_points(0, 0, 12, 0, False) == 25)
+        check("M21c 12-cell span OFF is 31 points including insulator end samples", A.drip_expected_points(0, 0, 12, 0, False) == 31)
+        check("M21c short span excludes end samples at the quarter-span boundary", A.drip_expected_points(0, 0, 0.32, 0, False) == 5)
+        check("M21c 1.2-cell span includes only the two closer end samples", A.drip_expected_points(0, 0, 1.2, 0, False) == 9)
+        for option in ({"depth": 0}, {"reach": 0}):
+            check("M21 drip fallback uses SpanTs " + str(option), A.drip_expected_points(0, 0, 12, 0, True, **option) == 31)
         check("M21d 12-cell span ON is 48 points (12 loop samples per end)", A.drip_expected_points(0, 0, 12, 0, True) == 48)
         ends = [[0.0, 0.0, 12.0, 0.0], [0.0, 0.3, 12.0, 0.3]]
         sp_on = [{"kind": "Power", "strandPts": [48, 48], "strandEnds": ends, "verts": 192}]
-        sp_off = [{"kind": "Power", "strandPts": [25, 25], "strandEnds": ends, "verts": 100}]
+        sp_off = [{"kind": "Power", "strandPts": [31, 31], "strandEnds": ends, "verts": 124}]
+        old_off = [{"kind": "Power", "strandPts": [25, 25], "strandEnds": ends, "verts": 100}]
+        check("M21c retired 25-point curve fails current OFF", A.drip_verdict(old_off, False)[:2] == ("FAIL", "MOD"))
         check("M21d ON counts pass ON", A.drip_verdict(sp_on, True)[:2] == ("PASS", "MOD"))
         check("M21c OFF counts pass OFF", A.drip_verdict(sp_off, False)[:2] == ("PASS", "MOD"))
         check("M21d OFF counts fail ON (the switch did nothing)", A.drip_verdict(sp_off, True)[:2] == ("FAIL", "MOD"))

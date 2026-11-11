@@ -1,0 +1,14 @@
+{
+  "GimmeSomeSlack": {
+    "historical_commit": "4f9e9a02298c0c0522f824cfc320acad672d1735",
+    "historical_stamp_sha256": "5863ad9eb7d803a884aa00a67da6532cbb35e51544f7ee9107f26245ccbc315b",
+    "saved_deployed_stamp_sha256": "5863ad9eb7d803a884aa00a67da6532cbb35e51544f7ee9107f26245ccbc315b",
+    "same": true
+  },
+  "HugeThings": {
+    "historical_commit": "d4da6624ea7f29d022dbe6b9ba5319e0a5590d2c",
+    "historical_stamp_sha256": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+    "saved_deployed_stamp_sha256": "4f7a5f28cf57c26ed570ed553dccb6e559e8354173ee5bd4eb60f4eaa31e653b",
+    "same": true
+  }
+}

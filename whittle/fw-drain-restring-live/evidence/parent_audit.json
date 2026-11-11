@@ -1,0 +1,40 @@
+{
+  "time": 1794429482.2986574,
+  "status": "PASS",
+  "input_count": 1047,
+  "input_mismatches": [],
+  "shipping": {
+    "GimmeSomeSlack": {
+      "inputs": 70,
+      "dll_sha256": "c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d"
+    },
+    "FlowWorks": {
+      "inputs": 349,
+      "dll_sha256": "ec29517d2e6d961485c0e6d10dc5b57310170a85b4f2fdffa1cda057f91c58c9"
+    },
+    "HugeThings": {
+      "inputs": 51,
+      "dll_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f"
+    }
+  },
+  "rows": 39,
+  "exact_scene": true,
+  "exact_config": true,
+  "exact_debug": true,
+  "existing_saves": 344,
+  "existing_saves_changed": [],
+  "judge_verbatim": true,
+  "workflow_result": {
+    "time": 1794429393.0391726,
+    "WHITTLE_DIR": "whittle/fw-drain-restring-live",
+    "need_judge": true,
+    "need_broaden": true,
+    "last_change": 1794428645.5663252,
+    "done_problems": [],
+    "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+    "full_validator_returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "limits": "Probe-assigned real job; explicit cprocess queue flush; partial all-DLC tier; generic synthetic kinetic; missing companion stamp; natural scheduling/full-list play unverified."
+}

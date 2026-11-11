@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-restring-live/evidence/final_readback.py", line 97, in <module>
+    main(sys.argv[1])
+    ~~~~^^^^^^^^^^^^^
+  File "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-restring-live/evidence/final_readback.py", line 78, in main
+    assert running is False and not host_lock.exists() and bridge.startswith('FREE'), bridge
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: # WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.
+# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.
+#   free?  ->  rimflow bridge take --for "<what for>"
+#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.
+#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)
+FREE    since 2026-11-11T20:23:02Z
+

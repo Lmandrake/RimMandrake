@@ -1,0 +1,1 @@
+PASS 1047 current inputs; 39 MOD/site rows; all shipping pairs; exact restoration; DOWN/FREE/FREE

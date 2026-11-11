@@ -1,0 +1,17 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/4] PASS          0.5s  src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py
+[2/4] PASS          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+[3/4] PASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py
+[4/4] PASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 1 declared test(s) ran
+known results: 0/4 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 4 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (4): no record
+  not recordable (4): changed during the run: src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py, src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py, src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py, src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+PASS          0.5s  src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py
+PASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py
+PASS          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py
+PASS          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+
+PASS 4/4  FAIL 0/4  UNMEASURED 0/4  CRASH 0/4  SKIPPED 0/4  (wall 1.3s) — contained in rm-harness.slice (max 24G), 1 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)

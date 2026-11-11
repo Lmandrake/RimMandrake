@@ -1,0 +1,12 @@
+{
+  "time": 1794429674.3941522,
+  "WHITTLE_DIR": "whittle/fw-drain-restring-live",
+  "need_judge": true,
+  "need_broaden": true,
+  "last_change": 1794428645.5663252,
+  "done_problems": [],
+  "full_validator": "MandrakeWorkflows/whittle/run.py validate(root)",
+  "full_validator_returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

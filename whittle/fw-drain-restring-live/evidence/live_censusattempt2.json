@@ -1,0 +1,66 @@
+{
+  "time": 1794427835.4323452,
+  "tool_count": 559,
+  "jawa_count": 423,
+  "running": {
+    "success": true,
+    "count": 13,
+    "packageIds": [
+      "brrainz.harmony",
+      "ludeon.rimworld",
+      "ludeon.rimworld.royalty",
+      "ludeon.rimworld.ideology",
+      "ludeon.rimworld.biotech",
+      "ludeon.rimworld.anomaly",
+      "ludeon.rimworld.odyssey",
+      "brrainz.rimbridgeserver",
+      "ray1203.simplecamerasetting",
+      "mandrake.rm.gimmesomeslack",
+      "mandrake.rm.flowworks",
+      "mandrake.rm.hugethings",
+      "mandrake.rm.patches"
+    ],
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_4a8a4b2b5ca34400b515a3c55f1a39dd",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 47
+    },
+    "state": {
+      "programState": "Entry",
+      "hasCurrentGame": false
+    }
+  },
+  "identity": {
+    "success": true,
+    "typeName": "RimMandrake.GimmeSomeSlack.Aerial.CompAerialAnchor",
+    "resolved": true,
+    "assembly": "RimMandrakeGimmeSomeSlack, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null",
+    "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GimmeSomeSlack\\Assemblies\\RimMandrakeGimmeSomeSlack.dll",
+    "assemblyLocationSource": "Assembly.Location",
+    "assemblyMvid": "fa8d0ec0-8d33-40a4-9153-c51054c3b407",
+    "assemblyFileSha256": "c16983bc5d9b43998aec695a26f8f097b181f738ed553fcbe2cdc46f47411e6d",
+    "assemblyFileMvid": "fa8d0ec0-8d33-40a4-9153-c51054c3b407",
+    "mvidMatchesFile": true,
+    "inAllTypesByIdentity": true,
+    "allTypesNameMatches": 1,
+    "allTypesCount": 22717,
+    "assemblyTypesInAllTypes": 469,
+    "carryingMods": [
+      "mandrake.rm.gimmesomeslack"
+    ],
+    "debugActions": [],
+    "state": {
+      "programState": "Entry"
+    },
+    "ticksGame": -1,
+    "operation": {
+      "OperationId": "op_433b067d16d041f8af05620545a1d2b8",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 85
+    }
+  },
+  "ordered_list_matches": true
+}

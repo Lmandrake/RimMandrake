@@ -1,0 +1,17 @@
+{
+  "path": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/restring-live-raw/attempt3_Player_loaded.log",
+  "sha256": "58513045f92d57cd9963952b67f2d4e815b89aec05cbb4dd8138d3429e58c266",
+  "bytes": 9326,
+  "needles": [
+    "Exception",
+    "Config error",
+    "Could not resolve",
+    "Error in ",
+    "Error while",
+    "Failed to",
+    "Recovered from incompatible",
+    "Resetting mods config",
+    "Reached max messages limit"
+  ],
+  "hits": []
+}

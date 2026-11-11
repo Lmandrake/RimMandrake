@@ -214,10 +214,24 @@ class Rows(unittest.TestCase):
 
 
 class Transport(unittest.TestCase):
-    def read(self, replies):
+    def read(self, replies, command="census"):
         bridge = object.__new__(A.A)
         bridge.call = mock.Mock(side_effect=replies)
-        return bridge.ap("census", wait_s=0.01)
+        return bridge.ap(command, wait_s=0.01)
+
+    def test_legacy_net_echo_requires_the_requested_integer_coordinates(self):
+        def sequence(reply):
+            return [{"success": True, "value": "9"}, {"success": True}, {"success": True, "value": "10"},
+                    {"success": True, "value": json.dumps(reply)}, {"success": True, "value": "10"}]
+        good = {"success": True, "cmd": "net", "x": 117, "z": 187, "things": []}
+        self.assertEqual(self.read(sequence(good), "net:117,187")["_probeSerial"], 10)
+        for edit in ({"x": 118}, {"z": 188}, {"x": "117"}, {"x": 117.0}, {"x": None}, {"z": True},
+                     {"cmd": "census"}, {"cmd": "net:117,187", "x": 118}):
+            with self.subTest(edit=edit):
+                self.assertIsNot(self.read(sequence(dict(good, **edit)), "net:117,187").get("success"), True)
+        stale = sequence(good)
+        stale[-1]["value"] = "11"
+        self.assertIsNot(self.read(stale, "net:117,187").get("success"), True)
 
     def test_real_transport_reports_serial_and_requires_stable_successful_matching_read(self):
         def sequence():

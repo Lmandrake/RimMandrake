@@ -1338,7 +1338,11 @@ class JournalReader:
     def call(self, tool, **kw):
         try:
             r = self.B.call(tool, **kw)
-            if (r.get("success") is True and isinstance(r.get("logs"), list)
+            operation = r.get("operation") or {}
+            # Stock rimbridge/list_logs uses its completed operation envelope, without a payload success field.
+            succeeded = r.get("success") is True or ("success" not in r and isinstance(operation, dict) and
+                        operation.get("Success") is True and operation.get("Status") == "Completed")
+            if (succeeded and isinstance(r.get("logs"), list)
                     and all(isinstance(e, dict) and isinstance(e.get("Sequence"), int)
                             and isinstance(e.get("Level"), str)
                             and (e.get("RepeatCount") is None or isinstance(e["RepeatCount"], int)) for e in r["logs"])):

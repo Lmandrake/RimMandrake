@@ -1,0 +1,12 @@
+{
+  "time": 1794429528.4736848,
+  "input_count": 1047,
+  "changed_inputs": [],
+  "game_running": false,
+  "host_lock_exists": false,
+  "bridge": "FREE    since 2026-11-11T20:23:02Z",
+  "whittle_done_problems": [],
+  "whittle_validate_returncode": 0,
+  "judge_verbatim_suffix": true,
+  "judge_frozen_input_identical": true
+}

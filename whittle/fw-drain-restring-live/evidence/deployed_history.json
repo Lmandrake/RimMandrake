@@ -1,0 +1,14 @@
+{
+  "GimmeSomeSlack": {
+    "deployed_sha256": "fb2995657a1670acceb45c6a9653cc8aeec070ac5355e7ab486bb061df722a26",
+    "known_commits": [
+      "4f9e9a02298c0c0522f824cfc320acad672d1735"
+    ]
+  },
+  "HugeThings": {
+    "deployed_sha256": "9d897e2fec87a92c20fb0e04b4d292f1477eadc4bb08079842883006c758a130",
+    "known_commits": [
+      "d4da6624ea7f29d022dbe6b9ba5319e0a5590d2c"
+    ]
+  }
+}

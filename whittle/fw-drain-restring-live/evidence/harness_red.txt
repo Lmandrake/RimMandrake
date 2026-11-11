@@ -1,0 +1,123 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/3] CRASH         0.4s  src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py
+[2/3] FAIL          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py
+[3/3] FAIL          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 1 declared test(s) ran
+known results: 0/3 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 3 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (3): no record
+  not recordable (2): changed during the run: src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py, src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+CRASH         0.4s  src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py
+             uncaught KeyError (rc 1) - the test died before reaching a verdict
+             test_same_input_stale_census_and_inverted_setting (__main__.Rows.test_same_input_stale_census_and_inverted_setting) ... ok
+             test_wrong_def_synthetic_fallback_and_cut (__main__.Rows.test_wrong_def_synthetic_fallback_and_cut) ... ok
+             test_xml_definition_and_inherited_marker (__main__.Rows.test_xml_definition_and_inherited_marker) ... ok
+             test_zero_on_and_positive_off_deltas_fail (__main__.Rows.test_zero_on_and_positive_off_deltas_fail) ... ok
+             test_legacy_net_echo_requires_the_requested_integer_coordinates (__main__.Transport.test_legacy_net_echo_requires_the_requested_integer_coordinates) ... ERROR
+             test_real_transport_reports_serial_and_requires_stable_successful_matching_read (__main__.Transport.test_real_transport_reports_serial_and_requires_stable_successful_matching_read) ... ok
+             
+             ======================================================================
+             ERROR: test_legacy_net_echo_requires_the_requested_integer_coordinates (__main__.Transport.test_legacy_net_echo_requires_the_requested_integer_coordinates)
+             ----------------------------------------------------------------------
+             Traceback (most recent call last):
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py", line 227, in test_legacy_net_echo_requires_the_requested_integer_coordinates
+                 self.assertEqual(self.read(sequence(good), "net:117,187")["_probeSerial"], 10)
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+             KeyError: '_probeSerial'
+             
+             ----------------------------------------------------------------------
+             Ran 17 tests in 0.260s
+             
+             FAILED (errors=1)
+FAIL          0.2s  src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py
+             rc 1
+             FAIL M21c/d point count len 7.25 drip False matches the C# loop port  (16, 22)
+             ok   M21c/d point count len 7.25 drip True matches the C# loop port
+             ok   M21 production endpoint sample constants remain explicit
+             FAIL M21c/d point count len 11.60 drip False matches the C# loop port  (25, 31)
+             ok   M21c/d point count len 11.60 drip True matches the C# loop port
+             ok   M21 production endpoint sample constants remain explicit
+             FAIL M21c/d point count len 12.00 drip False matches the C# loop port  (25, 31)
+             ok   M21c/d point count len 12.00 drip True matches the C# loop port
+             ok   M21 production endpoint sample constants remain explicit
+             FAIL M21c/d point count len 15.30 drip False matches the C# loop port  (32, 38)
+             ok   M21c/d point count len 15.30 drip True matches the C# loop port
+             FAIL M21c 12-cell span OFF is 31 points including insulator end samples  
+             ok   M21d 12-cell span ON is 48 points (12 loop samples per end)
+             FAIL M21c retired 25-point curve fails current OFF  
+             ok   M21d ON counts pass ON
+             FAIL M21c OFF counts pass OFF  
+             ok   M21d OFF counts fail ON (the switch did nothing)
+             ok   M21c ON counts fail OFF
+             ok   M21 verts not 2x points fails
+             ok   M21 an old build without strandPts is UNMEASURED HARNESS
+             ok   M21 no Power span is UNMEASURED HARNESS
+             ok   M21 only undecidable strands is UNMEASURED SITE
+             ok   M21 row id M21a_cut_wires_on_owner_change_off_keeps_link is in the aerial source
+             ok   M21 row id M21c_drip_loops_off_plain_curve is in the aerial source
+             ok   M21 row id M21e_keep_wires_on_gravship_off_setting_state is in the aerial source
+             ok   validation_aerial exposes live_fallen_wires
+             ok   validation_aerial exposes restring_plan
+             ok   validation_aerial exposes clear_live_fallen
+             ok   FW the old probe's read is blind (no top-level fallen key)
+             ok   FW the live cut half at (104,185) is seen
+             ok   FW a dead half (fallenLive false) is not live
+             ok   FW an unpolled anchor with a cord counts as maybe live
+             ok   FW the cut span is re-strung once
+             ok   FW a cut to an anchor no longer on the map is not planned
+             ok   FW clear re-strings, polls and reads after
+             ok   FW clear reports before/after
+             ok   FW theft_catch clears before it builds
+             ok   FW every play phase clears before it advances
+             ok   FW a downing records the live wires
+             FAIL: ['M21c/d point count len 0.90 drip False matches the C# loop port', 'M21c/d point count len 1.80 drip False matches the C# loop port', 'M21c/d point count len 3.00 drip False matches the C# loop port', 'M21c/d point count len 7.25 drip False matches the C# loop port', 'M21c/d point count len 11.60 drip False matches the C# loop port', 'M21c/d point count len 12.00 drip False matches the C# loop port', 'M21c/d point count len 15.30 drip False matches the C# loop port', 'M21c 12-cell span OFF is 31 points including insulator end samples', 'M21c retired 25-point curve fails current OFF', 'M21c OFF counts pass OFF']
+             FAIL M21c/d point count len 0.90 drip False matches the C# loop port  (5, 9)
+             FAIL M21c/d point count len 1.80 drip False matches the C# loop port  (5, 11)
+             FAIL M21c/d point count len 3.00 drip False matches the C# loop port  (7, 13)
+FAIL          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+             rc 1
+             S7_save_load_styles          FAIL      {'loadRefused': {'success': False}}
+             S7_save_load_styles          PASS      {'anchors': 1, 'differs': [], 'loadSeconds': 1}
+             S10_legacy_default_materials FAIL      {'build': True, 'rawStyles': [None, None, None, None, None, None, None, None], 'pieces': 1, 'sameMaterials': 1, 'defaultLook': 'Industrial', 'defaultK
+             S10_legacy_default_materials PASS      {'build': True, 'rawStyles': [None, None, None, None, None, None, None, None], 'pieces': 1, 'sameMaterials': 1, 'defaultLook': 'Industrial', 'defaultK
+             S11_lamp_master_off_vanilla  FAIL      {'on': {'x': 80, 'z': 155, 'rawStyle': 'StandingLamp_Modern', 'drawnPath': 'GimmeSomeSlack/lamp'}, 'off': {'x': 80, 'z': 155, 'rawStyle': 'StandingLam
+             S11_lamp_master_off_vanilla  PASS      {'on': {'x': 80, 'z': 155, 'rawStyle': 'StandingLamp_Modern', 'drawnPath': 'GimmeSomeSlack/lamp'}, 'off': {'x': 80, 'z': 155, 'rawStyle': 'StandingLam
+             S12d_D4_pending_queue_save   FAIL      {'built': True, 'csavenow': {'success': None, 'error': None, 'pendingAtSave': 1, 'saved': True}, 'liveAfterSave': None, 'afterLoad': {'ctrl': ['Indust
+             S12d_D4_pending_queue_save   PASS      {'built': True, 'csavenow': {'success': None, 'error': None, 'pendingAtSave': 1, 'saved': True}, 'liveAfterSave': None, 'afterLoad': {'ctrl': ['Indust
+             S9a_two_runs_two_styles      FAIL      {'runs': 1, 'piecesChecked': 0, 'pieceBad': [], 'switchDrawn': None, 'errors': [], 'meaning': 'PASS = each run stores its picked style on every cell (
+             S9b_bridge_largest_wins      FAIL      {'wrong': [((62, 149), None), ((63, 149), None), ((64, 149), None), ((65, 149), None), ((66, 149), None), ((67, 149), None), ((68, 149), None), ((69, 
+             S9c_split_keeps_styles       FAIL      {'deconstruct': {'success': True}, 'left': [None, None, None], 'right': [None, None, None, None, None, None, None], 'meaning': 'PASS = deconstructing 
+             PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out
+             /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:156: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs' mode='r' encoding='utf-8'>
+               src = open(os.path.join(os.path.dirname(MODDIR), "_Shared", "SlackGeometry", "CordLayer.cs"), encoding="utf-8").read()
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ......./home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1682: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_mlhgy552/tmp2yxn6_g3/a.json' mode='r' encoding='utf-8'>
+               a, b = json.load(open(pa, encoding="utf-8")), json.load(open(pb, encoding="utf-8"))
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1682: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_mlhgy552/tmp2yxn6_g3/b.json' mode='r' encoding='utf-8'>
+               a, b = json.load(open(pa, encoding="utf-8")), json.load(open(pb, encoding="utf-8"))
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ..F./home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1665: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_mlhgy552/tmp8d3v9fow/template.html' mode='r' encoding='utf-8'>
+               html = open(TEMPLATE, encoding="utf-8").read()
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ..........
+             ======================================================================
+             FAIL: test_full_aerial_driver_keeps_its_journal_and_uses_a_complete_blockage_fixture (__main__.ReviewLeftovers.test_full_aerial_driver_keeps_its_journal_and_uses_a_complete_blockage_fixture)
+             ----------------------------------------------------------------------
+             Traceback (most recent call last):
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py", line 134, in test_full_aerial_driver_keeps_its_journal_and_uses_a_complete_blockage_fixture
+                 self.assertFalse([n for n in ast.walk(driver) if isinstance(n, ast.Name) and
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                   n.id == 'tap' and isinstance(n.ctx, ast.Store)], 'power-tap dict overwrites LogTap')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             AssertionError: [Name(id='tap', ctx=Store())] is not false : power-tap dict overwrites LogTap
+             
+             ----------------------------------------------------------------------
+             Ran 21 tests in 0.040s
+             
+             FAILED (failures=1)
+
+PASS 0/3  FAIL 2/3  UNMEASURED 0/3  CRASH 1/3  SKIPPED 0/3  (wall 1.1s) — contained in rm-harness.slice (max 24G), 1 workers
+CRASH (1/3) — reached no verdict: src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py [uncaught KeyError (rc 1) - the test died before reaching a verdict]
+FAIL (2/3): src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py, src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

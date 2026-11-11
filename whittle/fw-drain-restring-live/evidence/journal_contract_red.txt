@@ -1,0 +1,53 @@
+contained in rm-harness.slice (max 24G), 1 workers
+[1/1] FAIL          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+  not recordable (1): changed during the run: src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+FAIL          0.3s  src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+             rc 1
+             S12d_D4_pending_queue_save   UNMEASURED save/load did not complete; current map is not an after-load observation
+             S7_save_load_styles          FAIL      exists.rws exists
+             S7_save_load_styles          FAIL      {'loadRefused': {'success': False}}
+             S7_save_load_styles          PASS      {'anchors': 1, 'differs': [], 'loadSeconds': 1}
+             S10_legacy_default_materials FAIL      {'build': True, 'rawStyles': [None, None, None, None, None, None, None, None], 'pieces': 1, 'sameMaterials': 1, 'defaultLook': 'Industrial', 'defaultK
+             S10_legacy_default_materials PASS      {'build': True, 'rawStyles': [None, None, None, None, None, None, None, None], 'pieces': 1, 'sameMaterials': 1, 'defaultLook': 'Industrial', 'defaultK
+             S11_lamp_master_off_vanilla  FAIL      {'on': {'x': 80, 'z': 155, 'rawStyle': 'StandingLamp_Modern', 'drawnPath': 'GimmeSomeSlack/lamp'}, 'off': {'x': 80, 'z': 155, 'rawStyle': 'StandingLam
+             S11_lamp_master_off_vanilla  PASS      {'on': {'x': 80, 'z': 155, 'rawStyle': 'StandingLamp_Modern', 'drawnPath': 'GimmeSomeSlack/lamp'}, 'off': {'x': 80, 'z': 155, 'rawStyle': 'StandingLam
+             S12d_D4_pending_queue_save   FAIL      {'built': True, 'csavenow': {'success': None, 'error': None, 'pendingAtSave': 1, 'saved': True}, 'liveAfterSave': None, 'afterLoad': {'ctrl': ['Indust
+             S12d_D4_pending_queue_save   PASS      {'built': True, 'csavenow': {'success': None, 'error': None, 'pendingAtSave': 1, 'saved': True}, 'liveAfterSave': None, 'afterLoad': {'ctrl': ['Indust
+             S9a_two_runs_two_styles      FAIL      {'runs': 1, 'piecesChecked': 0, 'pieceBad': [], 'switchDrawn': None, 'errors': [], 'meaning': 'PASS = each run stores its picked style on every cell (
+             S9b_bridge_largest_wins      FAIL      {'wrong': [((62, 149), None), ((63, 149), None), ((64, 149), None), ((65, 149), None), ((66, 149), None), ((67, 149), None), ((68, 149), None), ((69, 
+             S9c_split_keeps_styles       FAIL      {'deconstruct': {'success': True}, 'left': [None, None, None], 'right': [None, None, None, None, None, None, None], 'meaning': 'PASS = deconstructing 
+             PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out
+             /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:156: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/_Shared/SlackGeometry/CordLayer.cs' mode='r' encoding='utf-8'>
+               src = open(os.path.join(os.path.dirname(MODDIR), "_Shared", "SlackGeometry", "CordLayer.cs"), encoding="utf-8").read()
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ......./home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1682: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_sxhfmzmh/tmpep8jur19/a.json' mode='r' encoding='utf-8'>
+               a, b = json.load(open(pa, encoding="utf-8")), json.load(open(pb, encoding="utf-8"))
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             /home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1682: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_sxhfmzmh/tmpep8jur19/b.json' mode='r' encoding='utf-8'>
+               a, b = json.load(open(pa, encoding="utf-8")), json.load(open(pb, encoding="utf-8"))
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ....F/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/northstar_matrix/run_live.py:1665: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/mandrake/.seat-tmp/fw-restring-live/selftest_run_sxhfmzmh/tmpzrbec9es/template.html' mode='r' encoding='utf-8'>
+               html = open(TEMPLATE, encoding="utf-8").read()
+             ResourceWarning: Enable tracemalloc to get the object allocation traceback
+             ..........
+             ======================================================================
+             FAIL: test_journal_reader_accepts_stock_operation_envelope_and_rejects_failed_reads (__main__.ReviewLeftovers.test_journal_reader_accepts_stock_operation_envelope_and_rejects_failed_reads)
+             ----------------------------------------------------------------------
+             Traceback (most recent call last):
+               File "/home/mandrake/rm/scratch/BENCH/fw-drain/src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py", line 338, in test_journal_reader_accepts_stock_operation_envelope_and_rejects_failed_reads
+                 self.assertIs(reader.call('rimbridge/list_logs'), good)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             AssertionError: {'success': False, 'logs': []} is not {'logs': [{'Sequence': 1, 'Level': 'error', 'Message': 'real error'}], 'operation': {'Success': True, 'Status': 'Completed'}}
+             
+             ----------------------------------------------------------------------
+             Ran 22 tests in 0.040s
+             
+             FAILED (failures=1)
+
+PASS 0/1  FAIL 1/1  UNMEASURED 0/1  CRASH 0/1  SKIPPED 0/1  (wall 0.3s) — contained in rm-harness.slice (max 24G), 1 workers
+FAIL (1/1): src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py
+RESULT: RED (green = FAIL 0 and CRASH 0)

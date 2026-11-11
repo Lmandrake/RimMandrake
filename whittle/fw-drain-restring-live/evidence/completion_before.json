@@ -1,0 +1,577 @@
+[
+ {
+  "mod": "GimmeSomeSlack",
+  "asof": "2026-11-11",
+  "inventory": {
+   "entries": 30,
+   "raw_def_types": {
+    "MapMeshFlagDef": 2,
+    "ThingDef": 4,
+    "DesignationDef": 1,
+    "JobDef": 1,
+    "WorkGiverDef": 1,
+    "ThingStyleDef": 40,
+    "HediffDef": 1,
+    "HistoryEventDef": 1
+   },
+   "switches": 24,
+   "by_type": {
+    "ThingDef": 4,
+    "JobDef": 1,
+    "HediffDef": 1,
+    "Switch": 24
+   }
+  },
+  "works": {
+   "counts": {
+    "works": 25,
+    "unverified": 2,
+    "broken": 3
+   },
+   "by_type": {
+    "ThingDef": {
+     "works": 4
+    },
+    "JobDef": {
+     "unverified": 1
+    },
+    "HediffDef": {
+     "works": 1
+    },
+    "Switch": {
+     "works": 20,
+     "unverified": 1,
+     "broken": 3
+    }
+   },
+   "label_only_credit": 0,
+   "owner_walk_only_credit": 10,
+   "owner_walks": [
+    "UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS L4 2026-10-16 @fc932419a783: GimmeSomeSlack all looks great! Verified."
+   ],
+   "entries": [
+    {
+     "defName": "RM_AerialMast",
+     "type": "ThingDef",
+     "label": "scrap power mast",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "RM_AerialLampMast",
+     "type": "ThingDef",
+     "label": "scrap lamp mast",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "RM_AerialWallBracket",
+     "type": "ThingDef",
+     "label": "scrap wall bracket",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "RM_PowerTapClamp",
+     "type": "ThingDef",
+     "label": "power-tap clamp",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 4,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "RM_RestringSpan",
+     "type": "JobDef",
+     "label": "",
+     "members": 1,
+     "status": "unverified",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 0,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": ""
+    },
+    {
+     "defName": "RM_FallenWireShock",
+     "type": "HediffDef",
+     "label": "electric shock",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "autoLink",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "explosionsCut",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "kineticSway",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "tapsEnabled",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "tapEvents",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 4,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "theftGoodwill",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "unverified",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 0,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": ""
+    },
+    {
+     "defName": "keepWiresOnGravship",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "broken",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 1,
+     "fails": [
+      "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING:A2 (2026-10-29)"
+     ],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "fallenWireShock",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "fallenWireIgnites",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "wireDownAlert",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 4,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "cutWiresOnOwnerChange",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "broken",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 1,
+     "fails": [
+      "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING:A2 (2026-10-29)"
+     ],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "tangles",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 4,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "needlessLoops",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "diveThrough",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "slideUnder",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "broken",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 1,
+     "fails": [
+      "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING:A2 (2026-10-29)"
+     ],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "breakReadout",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "hideHookupWires",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "whip",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "downedWire",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 4,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "sparksOnlyOverlay",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "highlight",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "sway",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 2,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    },
+    {
+     "defName": "floorRipple",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": false,
+     "n_pass": 3,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-11-07"
+    },
+    {
+     "defName": "lod",
+     "type": "Switch",
+     "label": "",
+     "members": 1,
+     "status": "works",
+     "by_label_only": false,
+     "owner_walk_only": true,
+     "n_pass": 1,
+     "n_fail": 0,
+     "fails": [],
+     "last_pass": "2026-10-16"
+    }
+   ],
+   "proof_runs": 163,
+   "l2_runs": 163,
+   "verify_l2_events": 31,
+   "player_truths": 0
+  },
+  "art": {
+   "live_slots": 125,
+   "in_use": 114,
+   "accepted": 53,
+   "accepted_in_use": 50,
+   "walked_in_use": 64,
+   "walks": [
+    "UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS@fc932419a7"
+   ],
+   "sheet_rulings": 5,
+   "by_class": {
+    "owner-kept (not referenced by a def texPath or C# literal)": 3,
+    "owner-kept": 49,
+    "owner-kept-sheet": 1,
+    "owner-walked (not referenced by a def texPath or C# literal)": 8,
+    "owner-walked": 64
+   },
+   "rejected_sheet_still_live": [],
+   "rejected_still_live": [],
+   "donor": [],
+   "placeholder": [],
+   "regen_looping": {},
+   "texpaths_without_art": [],
+   "n_texpaths": 24
+  },
+  "waiting_on_owner": [],
+  "open_bug_items": [
+   "GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS",
+   "GSS_FRAME_GARBAGE_SHRINK_HALF_MEG_LEFT",
+   "GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET",
+   "GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS",
+   "GSS_WATER_STUB_FIX_PASSED_LAST_WEEK"
+  ],
+  "items": {
+   "attributed": 99,
+   "open": 35
+  },
+  "trends": {
+   "series": [
+    {
+     "week": "2026-09-28",
+     "live_runs": 126,
+     "live_mod_fail_rows": 55,
+     "live_mod_rows": 2280
+    },
+    {
+     "week": "2026-10-05",
+     "live_runs": 25,
+     "live_mod_fail_rows": 26,
+     "live_mod_rows": 1974,
+     "verify_l2": 5,
+     "code_reviews": 98
+    },
+    {
+     "week": "2026-10-12",
+     "bugs_filed": 2,
+     "live_found_bugs": 2,
+     "live_runs": 7,
+     "live_mod_fail_rows": 4,
+     "live_mod_rows": 234,
+     "verify_l2": 3,
+     "verify_l2_notpass": 1,
+     "code_reviews": 123
+    },
+    {
+     "week": "2026-10-19",
+     "bugs_filed": 3,
+     "live_found_bugs": 2,
+     "refiled": 1,
+     "live_runs": 3,
+     "live_mod_fail_rows": 3,
+     "live_mod_rows": 20,
+     "verify_l2": 5,
+     "code_reviews": 55
+    },
+    {
+     "week": "2026-10-26",
+     "bugs_filed": 4,
+     "live_found_bugs": 3,
+     "code_review_defects": 1,
+     "verify_l2": 7,
+     "verify_l2_notpass": 6,
+     "code_reviews": 49
+    },
+    {
+     "week": "2026-11-02",
+     "bugs_filed": 4,
+     "live_found_bugs": 3,
+     "refiled": 1,
+     "live_runs": 1,
+     "live_mod_fail_rows": 0,
+     "live_mod_rows": 145,
+     "verify_l2": 11,
+     "verify_l2_notpass": 8,
+     "code_reviews": 9
+    },
+    {
+     "week": "2026-11-09",
+     "live_runs": 1,
+     "live_mod_fail_rows": 0,
+     "live_mod_rows": 0,
+     "code_reviews": 75
+    }
+   ],
+   "signal": "slowing",
+   "recent_2wk_bugs": 4,
+   "prior_2wk_bugs": 9,
+   "refiled": [
+    "GSS_WATER_STUB_FIX_PASSED_LAST_WEEK",
+    "GSS_RECOLOR_CHECK_FIX_NECKED_JUNCTIONS"
+   ]
+  },
+  "headline": {
+   "pct_verified_working": 83.3,
+   "pct_broken": 10.0,
+   "pct_art_accepted_of_in_use": 43.9,
+   "pct_art_only_seen_in_owner_walk": 56.1,
+   "settledness": "slowing",
+   "open_bugs": 5,
+   "waiting_on_owner": 0
+  }
+ }
+]

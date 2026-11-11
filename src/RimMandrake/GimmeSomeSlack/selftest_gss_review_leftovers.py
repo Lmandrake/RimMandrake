@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Offline regression cases for the post-approval GSS proof-harness findings. No bridge or game."""
 import copy
+import ast
 import json
 from pathlib import Path
 import sys
@@ -126,6 +127,19 @@ class ReviewLeftovers(unittest.TestCase):
                  patch.object(A.V.VC, 'log_alive', return_value={'alive': True}):
                 result = A._run_removal_check(SimpleNamespace(removal_check='fake'), bridge, SimpleNamespace(base=0))
             self.assertEqual(result['rows'][-1]['status'], expected)
+
+    def test_full_aerial_driver_keeps_its_journal_and_uses_a_complete_blockage_fixture(self):
+        tree = ast.parse(Path(A.__file__).read_text())
+        driver, = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == '_run_live']
+        self.assertFalse([n for n in ast.walk(driver) if isinstance(n, ast.Name) and
+                          n.id == 'tap' and isinstance(n.ctx, ast.Store)], 'power-tap dict overwrites LogTap')
+        self.assertEqual(A.M14_BARRIER, [(A.ROOM[0], z) for z in range(A.SITE[1], A.SITE[1] + A.SITE[3])])
+        # Each approved aim is within 50 degrees and lateral slack is capped at 2.6 cells.
+        self.assertLess(A.ROOM[0] - A.M1[0], 5.7)
+        self.assertLess(min(z for x, z in A.M14_BARRIER), A.M1[1] - 12)
+        self.assertGreater(max(z for x, z in A.M14_BARRIER), A.M1[1] + 12)
+        calls = [n for n in ast.walk(driver) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == 'sorted']
+        self.assertTrue(any('M14_BARRIER' in ast.unparse(n) for n in calls), 'barrier must be built with the scene walls')
 
     def test_aerial_journal_restores_parent_and_shared_run_keeps_it(self):
         parent = object()
@@ -316,6 +330,20 @@ class ReviewLeftovers(unittest.TestCase):
             self.assertTrue(same(off))
             del off['scenes']['off']
             self.assertFalse(same(off))
+
+    def test_journal_reader_accepts_stock_operation_envelope_and_rejects_failed_reads(self):
+        entry = {'Sequence': 1, 'Level': 'error', 'Message': 'real error'}
+        good = {'logs': [entry], 'operation': {'Success': True, 'Status': 'Completed'}}
+        reader = R.JournalReader(SimpleNamespace(call=lambda *a, **kw: good))
+        self.assertIs(reader.call('rimbridge/list_logs'), good)
+        self.assertEqual(reader.failures, [])
+        for bad in ({'logs': [entry]}, {'logs': [entry], 'operation': {'Success': False, 'Status': 'Completed'}},
+                    {'logs': [entry], 'operation': {'Success': True, 'Status': 'Failed'}},
+                    dict(good, success=False), dict(good, logs=None)):
+            with self.subTest(bad=bad):
+                reader = R.JournalReader(SimpleNamespace(call=lambda *a, **kw: bad))
+                self.assertIs(reader.call('rimbridge/list_logs')['success'], False)
+                self.assertTrue(reader.failures)
 
     def test_streamed_log_budget_retains_errors_and_rejects_gaps(self):
         class Bridge:

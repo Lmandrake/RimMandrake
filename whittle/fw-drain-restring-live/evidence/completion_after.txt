@@ -1,0 +1,1 @@
+GimmeSomeSlack {"pct_verified_working": 90.0, "pct_broken": 10.0, "pct_art_accepted_of_in_use": 43.9, "pct_art_only_seen_in_owner_walk": 56.1, "settledness": "slowing", "open_bugs": 5, "waiting_on_owner": 0}

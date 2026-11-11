@@ -1,0 +1,134 @@
+{
+  "status": "PASS",
+  "rows": 39,
+  "split_nets": [
+    915393082,
+    140839248
+  ],
+  "joined_nets": [
+    1480521728,
+    1480521728
+  ],
+  "split_runs": [
+    24634,
+    24636
+  ],
+  "joined_runs": [
+    24634,
+    24634
+  ],
+  "before": [
+    [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+    ],
+    [
+      "Industrial",
+      null,
+      "RM_AerialMast_Industrial"
+    ]
+  ],
+  "after": [
+    [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+    ],
+    [
+      "Modern",
+      null,
+      "RM_AerialMast_Modern"
+    ]
+  ],
+  "job": {
+    "success": true,
+    "cmd": "restringjob:24645",
+    "designated": true,
+    "cut": 1,
+    "jobsDone": 1,
+    "spansRestrung": 1,
+    "by": "Human478",
+    "_probeSerial": 65
+  },
+  "completion": {
+    "success": true,
+    "cmd": "restringstate:24645",
+    "designated": false,
+    "cut": 0,
+    "jobsDone": 2,
+    "spansRestrung": 2,
+    "_probeSerial": 72
+  },
+  "all_joined_anchors": [
+    {
+      "id": 24634,
+      "def": "RM_AerialMast",
+      "x": 92,
+      "z": 185,
+      "faction": "New Arrivals",
+      "net": 1480521728,
+      "compNet": 1480521728,
+      "gridNet": 1480521728,
+      "netLive": true,
+      "fallenLive": true,
+      "links": [
+        {
+          "other": 24645,
+          "state": "Up",
+          "hp": 30
+        }
+      ],
+      "fallen": []
+    },
+    {
+      "id": 24636,
+      "def": "RM_AerialMast",
+      "x": 116,
+      "z": 185,
+      "faction": "New Arrivals",
+      "net": 1480521728,
+      "compNet": 1480521728,
+      "gridNet": 1480521728,
+      "netLive": true,
+      "fallenLive": false,
+      "links": [
+        {
+          "other": 24645,
+          "state": "Up",
+          "hp": 30
+        }
+      ],
+      "fallen": []
+    },
+    {
+      "id": 24645,
+      "def": "RM_AerialMast",
+      "x": 104,
+      "z": 185,
+      "faction": "New Arrivals",
+      "net": 1480521728,
+      "compNet": 1480521728,
+      "gridNet": 1480521728,
+      "netLive": true,
+      "fallenLive": true,
+      "links": [
+        {
+          "other": 24634,
+          "state": "Up",
+          "hp": 30
+        },
+        {
+          "other": 24636,
+          "state": "Up",
+          "hp": 30
+        }
+      ],
+      "fallen": []
+    }
+  ],
+  "link_bridges": [
+    0,
+    1
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "time": 1794428645.5688298,
+  "source": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/restring-live-raw/attempt3/a1-cf6t5111/aerial.json",
+  "copy": "src/RimMandrake/GimmeSomeSlack/northstar/fw-drain-restring-live/attempt3/aerial.json",
+  "sha256": "fd5c6d6707e53176c2dc330ed9f4bdf8b295e5ed0d4b3d6fdcc3a27b1bb412f3",
+  "byte_identical": true,
+  "driverReturncode": 0,
+  "launcherReturncode": 0,
+  "recording": "untouched actual production output copied into production proof_runs discovery tree; no ledger verification or provenance status written"
+}

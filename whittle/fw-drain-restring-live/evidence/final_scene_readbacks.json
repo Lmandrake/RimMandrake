@@ -1,0 +1,959 @@
+{
+  "raw_guard": "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/restring-live-raw/attempt3_guard.json",
+  "raw_guard_sha256": "496babced8558453fb274721d90596c60230ece23e6f0ea8282f6647c372a0c3",
+  "baseline": {
+    "rect": "RECT sha256=c87806579968043162fccfe0bebf0cc90e4dcd3de97b28158763e4dcfa4b5f39 beds=0",
+    "pawns": [
+      {
+        "id": "Human475",
+        "name": "Rowan",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 124,
+        "z": 119,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "Gunshot",
+              "label": "old gunshot (painful)",
+              "severity": 5.0,
+              "part": "Arm",
+              "partLabel": "left arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (aching)",
+              "severity": 0.5,
+              "part": "Eye",
+              "partLabel": "left eye"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Leg",
+              "partLabel": "left leg"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            }
+          ],
+          "capacities": {
+            "Consciousness": 0.86,
+            "Moving": 0.84,
+            "Manipulation": 0.77,
+            "Talking": 0.86,
+            "Eating": 0.86,
+            "Sight": 0.97,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+          },
+          "capacityErrors": [],
+          "painTotal": 0.4166667,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human478",
+        "name": "Ellison",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 119,
+        "z": 111,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "Stab",
+              "label": "stab scar (painful)",
+              "severity": 3.0,
+              "part": "Leg",
+              "partLabel": "right leg"
+            },
+            {
+              "def": "AlcoholAddiction",
+              "label": "alcohol addiction (10%)",
+              "severity": 0.897328556
+            },
+            {
+              "def": "AlcoholTolerance",
+              "label": "alcohol tolerance (small)",
+              "severity": 0.111622162
+            },
+            {
+              "def": "Cirrhosis",
+              "label": "cirrhosis",
+              "severity": 0.001,
+              "part": "Liver",
+              "partLabel": "liver"
+            },
+            {
+              "def": "PsychiteAddiction",
+              "label": "psychite addiction (40%)",
+              "severity": 0.602764
+            }
+          ],
+          "capacities": {
+            "Consciousness": 0.87,
+            "Moving": 0.72,
+            "Manipulation": 0.87,
+            "Talking": 0.87,
+            "Eating": 0.87,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 0.4,
+            "BloodPumping": 1.0,
+            "Metabolism": 0.7
+          },
+          "capacityErrors": [],
+          "painTotal": 0.262500018,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human483",
+        "name": "Shiki",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 119,
+        "z": 110,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "AlcoholAddiction",
+              "label": "alcohol addiction (36%)",
+              "severity": 0.6379383
+            },
+            {
+              "def": "AlcoholTolerance",
+              "label": "alcohol tolerance (large)",
+              "severity": 0.5992333
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "right arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            }
+          ],
+          "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.98,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+          },
+          "capacityErrors": [],
+          "painTotal": 0.112500004,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human17741",
+        "name": "Sergio",
+        "kind": "Drifter",
+        "kindDef": "Drifter",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "isPlayer": false,
+        "hostile": false,
+        "x": 180,
+        "z": 118,
+        "spawned": false,
+        "dead": true,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [],
+          "capacities": {},
+          "capacityErrors": [],
+          "painTotal": 0.0,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human17745",
+        "name": "Sneipen",
+        "kind": "Drifter",
+        "kindDef": "Drifter",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "isPlayer": false,
+        "hostile": false,
+        "x": 186,
+        "z": 125,
+        "spawned": false,
+        "dead": true,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [],
+          "capacities": {},
+          "capacityErrors": [],
+          "painTotal": 0.0,
+          "bleedRate": 0.0
+        }
+      }
+    ],
+    "jobs": [
+      {
+        "id": "Human475",
+        "label": "Rowan",
+        "faction": "PlayerColony",
+        "x": 124,
+        "z": 119,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 124,
+          "z": 119
+        },
+        "queued": [],
+        "inRect": false
+      },
+      {
+        "id": "Human478",
+        "label": "Ellison",
+        "faction": "PlayerColony",
+        "x": 119,
+        "z": 111,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 119,
+          "z": 111
+        },
+        "queued": [],
+        "inRect": false
+      },
+      {
+        "id": "Human483",
+        "label": "Shiki",
+        "faction": "PlayerColony",
+        "x": 119,
+        "z": 110,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 119,
+          "z": 110
+        },
+        "queued": [],
+        "inRect": false
+      }
+    ],
+    "colonists": {
+      "success": true,
+      "cmd": "colonists",
+      "pawns": [
+        {
+          "id": 475,
+          "name": "Rowan",
+          "pos": [
+            124,
+            119
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        },
+        {
+          "id": 478,
+          "name": "Ellison",
+          "pos": [
+            119,
+            111
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        },
+        {
+          "id": 483,
+          "name": "Shiki",
+          "pos": [
+            119,
+            110
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        }
+      ]
+    },
+    "autoHome": {
+      "before": true,
+      "after": true
+    },
+    "tick": 3
+  },
+  "restored_scene": {
+    "rect": "RECT sha256=c87806579968043162fccfe0bebf0cc90e4dcd3de97b28158763e4dcfa4b5f39 beds=0",
+    "pawns": [
+      {
+        "id": "Human475",
+        "name": "Rowan",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 124,
+        "z": 119,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "Gunshot",
+              "label": "old gunshot (painful)",
+              "severity": 5.0,
+              "part": "Arm",
+              "partLabel": "left arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (aching)",
+              "severity": 0.5,
+              "part": "Eye",
+              "partLabel": "left eye"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Leg",
+              "partLabel": "left leg"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            }
+          ],
+          "capacities": {
+            "Consciousness": 0.86,
+            "Moving": 0.84,
+            "Manipulation": 0.77,
+            "Talking": 0.86,
+            "Eating": 0.86,
+            "Sight": 0.97,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+          },
+          "capacityErrors": [],
+          "painTotal": 0.4166667,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human478",
+        "name": "Ellison",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 119,
+        "z": 111,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "Stab",
+              "label": "stab scar (painful)",
+              "severity": 3.0,
+              "part": "Leg",
+              "partLabel": "right leg"
+            },
+            {
+              "def": "AlcoholAddiction",
+              "label": "alcohol addiction (10%)",
+              "severity": 0.897328556
+            },
+            {
+              "def": "AlcoholTolerance",
+              "label": "alcohol tolerance (small)",
+              "severity": 0.111622162
+            },
+            {
+              "def": "Cirrhosis",
+              "label": "cirrhosis",
+              "severity": 0.001,
+              "part": "Liver",
+              "partLabel": "liver"
+            },
+            {
+              "def": "PsychiteAddiction",
+              "label": "psychite addiction (40%)",
+              "severity": 0.602764
+            }
+          ],
+          "capacities": {
+            "Consciousness": 0.87,
+            "Moving": 0.72,
+            "Manipulation": 0.87,
+            "Talking": 0.87,
+            "Eating": 0.87,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 0.4,
+            "BloodPumping": 1.0,
+            "Metabolism": 0.7
+          },
+          "capacityErrors": [],
+          "painTotal": 0.262500018,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human483",
+        "name": "Shiki",
+        "kind": "Colonist",
+        "kindDef": "Colonist",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals",
+        "isPlayer": true,
+        "hostile": false,
+        "x": 119,
+        "z": 110,
+        "spawned": true,
+        "dead": false,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [
+            {
+              "def": "AlcoholAddiction",
+              "label": "alcohol addiction (36%)",
+              "severity": 0.6379383
+            },
+            {
+              "def": "AlcoholTolerance",
+              "label": "alcohol tolerance (large)",
+              "severity": 0.5992333
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "right arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            },
+            {
+              "def": "Scarification",
+              "label": "scarification (itchy)",
+              "severity": 0.5,
+              "part": "Arm",
+              "partLabel": "left arm"
+            }
+          ],
+          "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.98,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+          },
+          "capacityErrors": [],
+          "painTotal": 0.112500004,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human17741",
+        "name": "Sergio",
+        "kind": "Drifter",
+        "kindDef": "Drifter",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "isPlayer": false,
+        "hostile": false,
+        "x": 180,
+        "z": 118,
+        "spawned": false,
+        "dead": true,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [],
+          "capacities": {},
+          "capacityErrors": [],
+          "painTotal": 0.0,
+          "bleedRate": 0.0
+        }
+      },
+      {
+        "id": "Human17745",
+        "name": "Sneipen",
+        "kind": "Drifter",
+        "kindDef": "Drifter",
+        "def": "Human",
+        "hasGenes": true,
+        "xenotype": "Baseliner",
+        "xenotypeLabel": "baseliner",
+        "uniqueXenotype": false,
+        "isPlayer": false,
+        "hostile": false,
+        "x": 186,
+        "z": 125,
+        "spawned": false,
+        "dead": true,
+        "downed": false,
+        "stunned": false,
+        "stunTicksLeft": 0,
+        "fleshType": "Normal",
+        "isMechanoid": false,
+        "isFlesh": true,
+        "intelligence": "Humanlike",
+        "bodySize": 1.0,
+        "health": {
+          "hediffs": [],
+          "capacities": {},
+          "capacityErrors": [],
+          "painTotal": 0.0,
+          "bleedRate": 0.0
+        }
+      }
+    ],
+    "jobs": [
+      {
+        "id": "Human475",
+        "label": "Rowan",
+        "faction": "PlayerColony",
+        "x": 124,
+        "z": 119,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 124,
+          "z": 119
+        },
+        "queued": [],
+        "inRect": false
+      },
+      {
+        "id": "Human478",
+        "label": "Ellison",
+        "faction": "PlayerColony",
+        "x": 119,
+        "z": 111,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 119,
+          "z": 111
+        },
+        "queued": [],
+        "inRect": false
+      },
+      {
+        "id": "Human483",
+        "label": "Shiki",
+        "faction": "PlayerColony",
+        "x": 119,
+        "z": 110,
+        "job": "Wait_Combat",
+        "targetA": {
+          "x": 119,
+          "z": 110
+        },
+        "queued": [],
+        "inRect": false
+      }
+    ],
+    "colonists": {
+      "success": true,
+      "cmd": "colonists",
+      "pawns": [
+        {
+          "id": 475,
+          "name": "Rowan",
+          "pos": [
+            124,
+            119
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        },
+        {
+          "id": 478,
+          "name": "Ellison",
+          "pos": [
+            119,
+            111
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        },
+        {
+          "id": 483,
+          "name": "Shiki",
+          "pos": [
+            119,
+            110
+          ],
+          "drafted": true,
+          "downed": false,
+          "job": "Wait_Combat"
+        }
+      ]
+    },
+    "autoHome": {
+      "before": true,
+      "after": true
+    },
+    "tick": 3
+  },
+  "settings_before": {
+    "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings": {
+      "enabled": "True",
+      "style": "ExtensionCord",
+      "slack": "1",
+      "loopBudget": "16",
+      "cordsPerConnection": "1",
+      "tangles": "True",
+      "needlessLoops": "True",
+      "diveThrough": "True",
+      "slideUnder": "True",
+      "breakReadout": "True",
+      "sparkIntensity": "1",
+      "hideHookupWires": "True",
+      "debugDraw": "False",
+      "tangleMin": "9",
+      "whip": "True",
+      "downedWire": "True",
+      "sparksOnlyOverlay": "False",
+      "maxSparkingEnds": "24",
+      "highlight": "True",
+      "sway": "True",
+      "swayAmplitude": "1",
+      "swayMode": "CPU",
+      "floorRipple": "True",
+      "lod": "True",
+      "extCordColorMode": "Mixed",
+      "extCordColor": "0",
+      "excludedConduits": "System.Collections.Generic.List`1[System.String]"
+    },
+    "RimMandrake.GimmeSomeSlack.Aerial.AerialSettings": {
+      "enabled": "True",
+      "maxSpan": "20",
+      "sag": "0.06",
+      "autoLink": "True",
+      "maxStrands": "3",
+      "sway": "Auto",
+      "swayStrength": "1",
+      "explosionsCut": "True",
+      "kineticSway": "True",
+      "tapsEnabled": "True",
+      "tapRate": "500",
+      "tapEvents": "True",
+      "theftGoodwill": "True",
+      "theftGoodwillPerDay": "2",
+      "theftSightRange": "12",
+      "keepWiresOnGravship": "True",
+      "fallenWireShock": "True",
+      "fallenWireIgnites": "True",
+      "fallenWireKnockback": "2",
+      "wireDownAlert": "True",
+      "cutWiresOnOwnerChange": "True",
+      "dripLoops": "False"
+    }
+  },
+  "settings_restored": [
+    "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings",
+    "RimMandrake.GimmeSomeSlack.Aerial.AerialSettings"
+  ],
+  "debug_before": {
+    "activateAllBuildingDemands": false,
+    "activateAllIdeoRoles": false,
+    "allowUndraftedMechOrders": false,
+    "alwaysDoLovin": false,
+    "alwaysNegativeCatches": false,
+    "alwaysRareCatches": false,
+    "alwaysSocialFight": false,
+    "anomalyDarkeningFX": true,
+    "DebugBuild": false,
+    "detectRegionListersBugs": false,
+    "devPalette": false,
+    "editableGlowerColors": false,
+    "enableDamage": true,
+    "enablePlayerDamage": true,
+    "enableRandomDiseases": true,
+    "enableRandomMentalStates": true,
+    "enableStoryteller": true,
+    "enableTranslationWindowInEnglish": false,
+    "fastCaravans": false,
+    "fastCrafting": false,
+    "fastEcology": false,
+    "fastEcologyRegrowRateOnly": false,
+    "fastLearning": false,
+    "fastMapUnpollution": false,
+    "fastMonolithRespawn": false,
+    "fastResearch": false,
+    "godMode": false,
+    "ignoreGravshipRange": false,
+    "instantRecruit": false,
+    "instantVisitorsGift": false,
+    "logMismatchedLayoutFactions": false,
+    "logPsychicRitualTransitions": false,
+    "logRaidInfo": false,
+    "logTranslationLookupErrors": false,
+    "loopGravshipCutscene": false,
+    "lowFPS": false,
+    "noAnimals": false,
+    "pathThroughWalls": false,
+    "pauseOnError": false,
+    "playRitualAmbience": true,
+    "searchIgnoresRestrictions": false,
+    "showHiddenInfo": false,
+    "showHiddenPawns": false,
+    "showLocomotionUrgency": false,
+    "simulateUsingSteamDeck": false,
+    "skipGravshipTileSelection": false,
+    "unlimitedPower": false
+  },
+  "debug_after": {
+    "activateAllBuildingDemands": false,
+    "activateAllIdeoRoles": false,
+    "allowUndraftedMechOrders": false,
+    "alwaysDoLovin": false,
+    "alwaysNegativeCatches": false,
+    "alwaysRareCatches": false,
+    "alwaysSocialFight": false,
+    "anomalyDarkeningFX": true,
+    "DebugBuild": false,
+    "detectRegionListersBugs": false,
+    "devPalette": false,
+    "editableGlowerColors": false,
+    "enableDamage": true,
+    "enablePlayerDamage": true,
+    "enableRandomDiseases": true,
+    "enableRandomMentalStates": true,
+    "enableStoryteller": true,
+    "enableTranslationWindowInEnglish": false,
+    "fastCaravans": false,
+    "fastCrafting": false,
+    "fastEcology": false,
+    "fastEcologyRegrowRateOnly": false,
+    "fastLearning": false,
+    "fastMapUnpollution": false,
+    "fastMonolithRespawn": false,
+    "fastResearch": false,
+    "godMode": false,
+    "ignoreGravshipRange": false,
+    "instantRecruit": false,
+    "instantVisitorsGift": false,
+    "logMismatchedLayoutFactions": false,
+    "logPsychicRitualTransitions": false,
+    "logRaidInfo": false,
+    "logTranslationLookupErrors": false,
+    "loopGravshipCutscene": false,
+    "lowFPS": false,
+    "noAnimals": false,
+    "pathThroughWalls": false,
+    "pauseOnError": false,
+    "playRitualAmbience": true,
+    "searchIgnoresRestrictions": false,
+    "showHiddenInfo": false,
+    "showHiddenPawns": false,
+    "showLocomotionUrgency": false,
+    "simulateUsingSteamDeck": false,
+    "skipGravshipTileSelection": false,
+    "unlimitedPower": false
+  },
+  "difficulty_before": {
+    "threatScale": 1.0,
+    "allowBigThreats": true,
+    "adaptationEffectFactor": 0.9,
+    "colonistMoodOffset": 0.0,
+    "tradePriceFactorLoss": 0.0
+  },
+  "begin_sha256": "eb867b62d0f5c832b75d00d3005714427d8d207ae10b4dc1a9f8ec345362d6f0",
+  "config_before": {
+    "Mod_GimmeSomeSlack_AerialLinesMod.xml": "b437000cdf89cf5aa1defbe874b2eafb9af176701c114b14c6122ed8e2e918fe",
+    "Mod_GimmeSomeSlack_FireHosesMod.xml": "c182a62238d1ed70e5e75be69dc7be7a2cb08191f338cb6886c29e2c236c0f5f",
+    "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "dae19d3c81e25b8553ab5a3684e5fef4c1b02c0c52a1890ace2abd547b919fdf"
+  },
+  "config_after": {
+    "Mod_GimmeSomeSlack_AerialLinesMod.xml": "b437000cdf89cf5aa1defbe874b2eafb9af176701c114b14c6122ed8e2e918fe",
+    "Mod_GimmeSomeSlack_FireHosesMod.xml": "c182a62238d1ed70e5e75be69dc7be7a2cb08191f338cb6886c29e2c236c0f5f",
+    "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "dae19d3c81e25b8553ab5a3684e5fef4c1b02c0c52a1890ace2abd547b919fdf"
+  },
+  "original_save_count": 344,
+  "changed_existing_saves": [],
+  "new_saves": [
+    "WHITTLE_Restring_Begin_attempt3_20261111T122037.rws"
+  ],
+  "cleanup_errors": [],
+  "production_returncode": 0,
+  "drivers_after_command": []
+}

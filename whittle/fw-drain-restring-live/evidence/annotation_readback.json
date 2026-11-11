@@ -1,0 +1,9 @@
+{
+  "time": 1794426726.2846043,
+  "source": "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/ExplodeProbeChecks.cs",
+  "sha256": "103041aa12b0f61dbc9257be21382cf7fd2e8f13cb5112cd0437ceb4fd516c34",
+  "change": "fixture annotation only; normal SelfTest omission intentional and independent production-extraction compile retained",
+  "test_result": "run_selftests PASS2/2; cache evidence refused as changed during run/clock; raw verdict preserved",
+  "shipping_stamp_inputs_current": true,
+  "input_differences": []
+}

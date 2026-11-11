@@ -1,4 +1,5 @@
-// Offline extraction harness: Python inserts the exact production explode branch here.
+// NOT-COMPILED by the normal SelfTest project. selftest_gss_explode_parse.py materializes
+// this extraction template with the exact production explode branch and compiles it separately.
 // Engine doubles exercise lookup/dispatch/identity, not actual engine explosion effects.
 using System;
 using System.Collections.Generic;

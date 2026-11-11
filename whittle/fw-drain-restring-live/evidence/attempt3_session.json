@@ -1,0 +1,150 @@
+{
+  "started": 1794428339.7896042,
+  "status": "PASS",
+  "commands": [
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain restring controlled Steam launch",
+        "loading"
+      ],
+      "name": "stamp_loading",
+      "returncode": 0,
+      "started": 1794428339.7896078,
+      "finished": 1794428343.714128
+    },
+    {
+      "command": [
+        "python3",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-restring-live/evidence/control_session.py",
+        "launch"
+      ],
+      "name": "launch",
+      "returncode": 0,
+      "started": 1794428343.7146604,
+      "finished": 1794428399.561256
+    },
+    {
+      "command": [
+        "./game"
+      ],
+      "name": "measured_state",
+      "returncode": 0,
+      "started": 1794428399.5617766,
+      "finished": 1794428404.136907
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-restring-live\\evidence\\live_census.py",
+        "attempt3"
+      ],
+      "name": "census",
+      "returncode": 0,
+      "started": 1794428404.1380668,
+      "finished": 1794428405.3159847
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches",
+        "--deep",
+        "--live",
+        "--seat",
+        "CODEX_ARCHMAGI_FWDRAIN",
+        "--json",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-restring-live/evidence/attempt3_preflight_live.json"
+      ],
+      "name": "preflight_live",
+      "returncode": 0,
+      "started": 1794428405.316709,
+      "finished": 1794428418.0114155
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain restring fresh live preflight GREEN",
+        "up"
+      ],
+      "name": "stamp_up",
+      "returncode": 0,
+      "started": 1794428418.030903,
+      "finished": 1794428422.106285
+    },
+    {
+      "command": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-restring-live\\evidence\\live_guard.py",
+        "attempt3"
+      ],
+      "name": "guard",
+      "returncode": 0,
+      "started": 1794428422.1075447,
+      "finished": 1794428565.520135
+    },
+    {
+      "command": [
+        "python3",
+        "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-restring-live/evidence/control_session.py",
+        "stop"
+      ],
+      "name": "stop",
+      "returncode": 0,
+      "started": 1794428565.5390244,
+      "finished": 1794428574.7770433
+    },
+    {
+      "command": [
+        "./game",
+        "--why",
+        "FW drain restring proof ended and saved scene restored",
+        "down"
+      ],
+      "name": "stamp_down",
+      "returncode": 0,
+      "started": 1794428574.777494,
+      "finished": 1794428578.751609
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release"
+      ],
+      "name": "release",
+      "returncode": 0,
+      "started": 1794428578.7520487,
+      "finished": 1794428585.1813967
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who"
+      ],
+      "name": "free",
+      "returncode": 0,
+      "started": 1794428585.1818712,
+      "finished": 1794428587.5027678
+    },
+    {
+      "command": [
+        "./game"
+      ],
+      "name": "measured_down",
+      "returncode": 0,
+      "started": 1794428587.5032623,
+      "finished": 1794428588.7716312
+    }
+  ],
+  "bridge_and_host_free": true,
+  "finished": 1794428588.773559
+}
