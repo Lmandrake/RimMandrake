@@ -42,10 +42,13 @@ def run(out):
     import validation_core as V
     import test_site_saves as T
     from game_paths import SAVES
-    B = V.Bridge()
+    class Bridge(V.Bridge):
+        probe_type = 'RimMandrake.FlowWorks.Hose.HoseProbe'
+    B = Bridge()
     result = dict(mode='live', started=time.time(), calls=[], status='FAIL', arms=[])
     settings, debug, baseline, name, dev_mode = [], {}, None, None, None
     tap = None
+    control_error_messages = set()
     saves = Path(SAVES)
     saves_before = T.saves_stat(SAVES)
     protected = [p for p in saves.glob('*.rws') if p.name.startswith('CANONICAL_') or p.name in
@@ -134,6 +137,13 @@ def run(out):
         require(reload(name)['verified'], 'guarded begin reload failed')
         baseline = rect()
         result['baseline_rect'] = baseline
+        # Preserve site-load noise before any test fixture exists. This exact error
+        # was observed on the unchanged registered site, not on a theft transfer.
+        control = tap.since()
+        control_errors = [e for e in control if str(e.get('Level','')).lower() in ('error','exception')]
+        result['site_control_errors'] = control_errors
+        control_error_messages = {str(e.get('Message','')) for e in control_errors}
+        require(control_error_messages.issubset({'Tried to get CurKindLifeStage from humanlike pawn Shiki'}), 'unexpected error in unchanged site control')
         call('rimworld/pause_game', pause=True)
         for typ, field, value in [(FW, 'depthEngineEnabled', True), (FW, 'depthEngineLiveForTests', True), (FW, 'levelExactEnabled', True),
                                   (FW, 'liquidPumpEnabled', True), (HS, 'enabled', True), (HS, 'freeEndRolesEnabled', True),
@@ -257,8 +267,9 @@ def run(out):
             alive = V.log_alive(B, 'tank-theft-final')
             entries = tap.since() if tap is not None else []
             errors = [e for e in entries if str(e.get('Level','')).lower() in ('error','exception')]
-            result['log_budget'] = dict(sentinel=alive, lost=tap.lost if tap is not None else None, entries=entries, errors=errors)
-            require(alive['alive'] and tap is not None and tap.lost == 0 and not errors, 'log budget unreadable or new error/exception')
+            new_errors = [e for e in errors if str(e.get('Message','')) not in control_error_messages]
+            result['log_budget'] = dict(sentinel=alive, lost=tap.lost if tap is not None else None, entries=entries, errors=errors, new_errors=new_errors, site_control_messages=sorted(control_error_messages))
+            require(alive['alive'] and tap is not None and tap.lost == 0 and not new_errors, 'log budget unreadable or new error/exception')
         except Exception as exc:
             result['status'] = 'FAIL'
             result['log_budget_error'] = repr(exc)
