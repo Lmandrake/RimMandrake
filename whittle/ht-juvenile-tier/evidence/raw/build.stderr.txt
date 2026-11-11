@@ -1,0 +1,1 @@
+BUILD FAILED (1) in D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj

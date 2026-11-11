@@ -1,0 +1,172 @@
+{
+  "mode": "offline selected source model; no running-game observation",
+  "tier_floors": [
+    4.0,
+    8.0,
+    20.0
+  ],
+  "species": {
+    "RM_ReefbackJuv": {
+      "baseBodySize": 32.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 6.4,
+          "body_size_float32": 6.400000095367432,
+          "default_GetTier": 1,
+          "kind_drawSize": "2.94"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.1,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 16.0,
+          "body_size_float32": 16.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "4.42"
+        }
+      ],
+      "lifeExpectancy": 500.0,
+      "ageGenerationCurve_xml": null,
+      "wildGroupSize": "2~3",
+      "ecoSystemWeight": "4.0",
+      "predator": "false",
+      "kind_stage_count": 2,
+      "AdultTier_classifier": 3,
+      "max_supported_GetTier": 2,
+      "inherited_tools": [
+        "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>16</power>\n        <cooldownTime>3.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>10</power>\n        <cooldownTime>2.5</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    },
+    "RM_Reefback": {
+      "baseBodySize": 32.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 6.4,
+          "body_size_float32": 6.400000095367432,
+          "default_GetTier": 1,
+          "kind_drawSize": "5.89"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.2,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 16.0,
+          "body_size_float32": 16.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "8.56"
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_years_xml": 0.6,
+          "factor": 1.0,
+          "factor_source": "LifeStageDef constructor IL default",
+          "body_size_decimal": 32.0,
+          "body_size_float32": 32.0,
+          "default_GetTier": 3,
+          "kind_drawSize": "10.7"
+        }
+      ],
+      "lifeExpectancy": 500.0,
+      "ageGenerationCurve_xml": null,
+      "wildGroupSize": "1",
+      "ecoSystemWeight": "4.0",
+      "predator": "false",
+      "kind_stage_count": 3,
+      "AdultTier_classifier": 3,
+      "max_supported_GetTier": 3,
+      "inherited_tools": [
+        "<li>\n        <label>tail sweep</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>480</power>\n        <cooldownTime>8.5</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>bulk</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>120</power>\n        <cooldownTime>6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.3</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    },
+    "RM_WardenMother": {
+      "baseBodySize": 8.0,
+      "stages": [
+        {
+          "stage": "AnimalBaby",
+          "minAge_years_xml": 0.0,
+          "factor": 0.2,
+          "factor_source": "Core XML",
+          "body_size_decimal": 1.6,
+          "body_size_float32": 1.600000023841858,
+          "default_GetTier": 0,
+          "kind_drawSize": "3.5"
+        },
+        {
+          "stage": "AnimalJuvenile",
+          "minAge_years_xml": 0.15,
+          "factor": 0.5,
+          "factor_source": "Core XML",
+          "body_size_decimal": 4.0,
+          "body_size_float32": 4.0,
+          "default_GetTier": 1,
+          "kind_drawSize": "5.5"
+        },
+        {
+          "stage": "AnimalAdult",
+          "minAge_years_xml": 0.4,
+          "factor": 1.0,
+          "factor_source": "LifeStageDef constructor IL default",
+          "body_size_decimal": 8.0,
+          "body_size_float32": 8.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "7.5"
+        },
+        {
+          "stage": "RM_WardenMotherElder",
+          "minAge_years_xml": 38.0,
+          "factor": 1.0,
+          "factor_source": "Miasma RM_WardenMother.xml",
+          "body_size_decimal": 8.0,
+          "body_size_float32": 8.0,
+          "default_GetTier": 2,
+          "kind_drawSize": "7.5"
+        }
+      ],
+      "lifeExpectancy": 45.0,
+      "ageGenerationCurve_xml": null,
+      "wildGroupSize": "1",
+      "ecoSystemWeight": "0",
+      "predator": "false",
+      "kind_stage_count": 4,
+      "AdultTier_classifier": 2,
+      "max_supported_GetTier": 2,
+      "inherited_tools": [
+        "<li>\n        <label>crushing bite</label>\n        <capacities>\n          <li>Bite</li>\n        </capacities>\n        <power>22</power>\n        <cooldownTime>2.0</cooldownTime>\n        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>\n      </li>\n      ",
+        "<li>\n        <label>flipper slam</label>\n        <capacities>\n          <li>Blunt</li>\n        </capacities>\n        <power>18</power>\n        <cooldownTime>2.6</cooldownTime>\n        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>\n        <chanceFactor>0.6</chanceFactor>\n      </li>\n    "
+      ],
+      "force_extensions": []
+    }
+  },
+  "biomes": {
+    "RM_Miasma": {
+      "animal": "RM_ReefbackJuv",
+      "commonality": 0.15,
+      "animalDensity": "6.5"
+    },
+    "RM_GreySea": {
+      "animal": "RM_Reefback",
+      "commonality": 0.005,
+      "animalDensity": "0.1"
+    }
+  },
+  "limits": [
+    "Default HugeThings thresholds, no force extension, no uninspected external mod or saved-setting override.",
+    "Stage minAge is XML provenance. Animal stage selection uses growth clamped to final minAge, plus 1e-6 comparison tolerance; no exact wall-clock transition claim.",
+    "Young race never gains an adult entry by aging. No automatic juvenile-to-adult species conversion demonstrated.",
+    "No art, combat balance, runtime pathing, lifecycle transport, deployment, DLL or first-touch acceptance."
+  ]
+}

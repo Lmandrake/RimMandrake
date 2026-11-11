@@ -1,0 +1,53 @@
+staging src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj -> D:\RimTest\data\build\HugeThingsJuvenileTierSelfTest
+  src/RimMandrake/HugeThings/Source/Kernel/
+  src/RimMandrake/HugeThings/Source/Titanic/Tiering/
+  src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/
++ dotnet.exe build D:\RimTest\data\build\HugeThingsJuvenileTierSelfTest\src\RimMandrake\HugeThings\Source\SelfTest\JuvenileTier\JuvenileTier.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JuvenileTier -> D:\RimTest\data\build\HugeThingsJuvenileTierSelfTest\src\RimMandrake\HugeThings\Source\SelfTest\JuvenileTier\bin\Release\net8.0\JuvenileTier.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.83
+juvenile-only AdultTier=3 SpacingTier=2
+ordinary AdultTier=3 SpacingTier=3
+growth above one AdultTier=2 SpacingTier=2
+missing list AdultTier=3 SpacingTier=3
+empty list AdultTier=3 SpacingTier=3
+null entry AdultTier=3 SpacingTier=3
+null stage def AdultTier=3 SpacingTier=3
+malformed factor 0 AdultTier=3 SpacingTier=3
+malformed factor -1 AdultTier=3 SpacingTier=3
+malformed factor NaN AdultTier=3 SpacingTier=3
+malformed factor Infinity AdultTier=3 SpacingTier=3
+malformed factor -Infinity AdultTier=3 SpacingTier=3
+force 0 size 32 AdultTier=3 SpacingTier=2
+force 0 size 1 AdultTier=0 SpacingTier=0
+force 0 size 3 AdultTier=2 SpacingTier=2
+force -1 size 32 AdultTier=0 SpacingTier=0
+force -1 size 1 AdultTier=0 SpacingTier=0
+force -1 size 3 AdultTier=0 SpacingTier=0
+force 1 size 32 AdultTier=3 SpacingTier=2
+force 1 size 1 AdultTier=1 SpacingTier=1
+force 1 size 3 AdultTier=2 SpacingTier=2
+custom 4,8,16 AdultTier=3 SpacingTier=3
+growth custom AdultTier=2 SpacingTier=2
+custom 4,18,30 AdultTier=3 SpacingTier=1
+growth custom AdultTier=1 SpacingTier=1
+custom 4,8,40 AdultTier=2 SpacingTier=2
+growth custom AdultTier=2 SpacingTier=2
+custom 4,8,12 AdultTier=3 SpacingTier=3
+growth custom AdultTier=3 SpacingTier=3
+invalid custom fallback AdultTier=3 SpacingTier=2
+invalid custom fallback AdultTier=3 SpacingTier=2
+invalid custom fallback AdultTier=3 SpacingTier=2
+invalid custom fallback AdultTier=3 SpacingTier=2
+invalid custom fallback AdultTier=3 SpacingTier=2
+animal toggle disables custom AdultTier=3 SpacingTier=2
+custom toggle disabled AdultTier=3 SpacingTier=2
+stage edited in same process AdultTier=3 SpacingTier=3
+stage restored in same process AdultTier=3 SpacingTier=2
+checks=14798 production adapter/kernel controls passed (engine stand-in L0)

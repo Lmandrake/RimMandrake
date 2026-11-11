@@ -1,0 +1,109 @@
+METHOD VEF.AestheticScaling.CachedPawnData::.ctor TOKEN 100667751
+IL_0000: ldarg.0 
+IL_0001: ldc.r4 1
+IL_0006: stfld VEF.AestheticScaling.CachedPawnData::Single totalSize
+IL_000B: ldarg.0 
+IL_000C: ldc.r4 1
+IL_0011: stfld VEF.AestheticScaling.CachedPawnData::Single headPositionMultiplier
+IL_0016: ldarg.0 
+IL_0017: ldc.r4 1
+IL_001C: stfld VEF.AestheticScaling.CachedPawnData::Single percentChange
+IL_0021: ldarg.0 
+IL_0022: ldc.r4 1
+IL_0027: stfld VEF.AestheticScaling.CachedPawnData::Single quadraticChange
+IL_002C: ldarg.0 
+IL_002D: ldc.r4 1
+IL_0032: stfld VEF.AestheticScaling.CachedPawnData::Single cubicChange
+IL_0037: ldarg.0 
+IL_0038: ldc.r4 1
+IL_003D: stfld VEF.AestheticScaling.CachedPawnData::Single bodyRenderSize
+IL_0042: ldarg.0 
+IL_0043: ldc.r4 1
+IL_0048: stfld VEF.AestheticScaling.CachedPawnData::Single headRenderSize
+IL_004D: ldarg.0 
+IL_004E: call UnityEngine.Vector3::UnityEngine.Vector3 get_one()
+IL_0053: stfld VEF.AestheticScaling.CachedPawnData::UnityEngine.Vector3 vCosmeticScale
+IL_0058: ldarg.0 
+IL_0059: ldc.r4 1
+IL_005E: stfld VEF.AestheticScaling.CachedPawnData::Single healthMultiplier
+IL_0063: ldarg.0 
+IL_0064: ldc.r4 1
+IL_0069: stfld VEF.AestheticScaling.CachedPawnData::Single foodCapacityMult
+IL_006E: ldarg.0 
+IL_006F: ldc.r4 1
+IL_0074: stfld VEF.AestheticScaling.CachedPawnData::Single growthPointMultiplier
+IL_0079: ldarg.0 
+IL_007A: call System.Object::Void .ctor()
+IL_007F: ret 
+METHOD VEF.AestheticScaling.CachedPawnData::.ctor TOKEN 100667752
+IL_0000: ldarg.0 
+IL_0001: ldc.r4 1
+IL_0006: stfld VEF.AestheticScaling.CachedPawnData::Single totalSize
+IL_000B: ldarg.0 
+IL_000C: ldc.r4 1
+IL_0011: stfld VEF.AestheticScaling.CachedPawnData::Single headPositionMultiplier
+IL_0016: ldarg.0 
+IL_0017: ldc.r4 1
+IL_001C: stfld VEF.AestheticScaling.CachedPawnData::Single percentChange
+IL_0021: ldarg.0 
+IL_0022: ldc.r4 1
+IL_0027: stfld VEF.AestheticScaling.CachedPawnData::Single quadraticChange
+IL_002C: ldarg.0 
+IL_002D: ldc.r4 1
+IL_0032: stfld VEF.AestheticScaling.CachedPawnData::Single cubicChange
+IL_0037: ldarg.0 
+IL_0038: ldc.r4 1
+IL_003D: stfld VEF.AestheticScaling.CachedPawnData::Single bodyRenderSize
+IL_0042: ldarg.0 
+IL_0043: ldc.r4 1
+IL_0048: stfld VEF.AestheticScaling.CachedPawnData::Single headRenderSize
+IL_004D: ldarg.0 
+IL_004E: call UnityEngine.Vector3::UnityEngine.Vector3 get_one()
+IL_0053: stfld VEF.AestheticScaling.CachedPawnData::UnityEngine.Vector3 vCosmeticScale
+IL_0058: ldarg.0 
+IL_0059: ldc.r4 1
+IL_005E: stfld VEF.AestheticScaling.CachedPawnData::Single healthMultiplier
+IL_0063: ldarg.0 
+IL_0064: ldc.r4 1
+IL_0069: stfld VEF.AestheticScaling.CachedPawnData::Single foodCapacityMult
+IL_006E: ldarg.0 
+IL_006F: ldc.r4 1
+IL_0074: stfld VEF.AestheticScaling.CachedPawnData::Single growthPointMultiplier
+IL_0079: ldarg.0 
+IL_007A: call System.Object::Void .ctor()
+IL_007F: ldarg.0 
+IL_0080: ldarg.1 
+IL_0081: stfld VEF.AestheticScaling.CachedPawnData::Verse.Pawn pawn
+IL_0086: ldarg.0 
+IL_0087: ldarg.1 
+IL_0088: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_008D: dup 
+IL_008E: brtrue.s IL_0094
+IL_0090: pop 
+IL_0091: ldc.i4.0 
+IL_0092: br.s IL_0099
+IL_0094: call Verse.RaceProperties::Boolean get_Humanlike()
+IL_0099: stfld VEF.AestheticScaling.CachedPawnData::Boolean isHumanlike
+IL_009E: leave.s IL_00B3
+IL_00A0: pop 
+IL_00A1: ldstr "[VEF] Error checking Humanlike when setting up {0}"
+IL_00A6: ldarg.1 
+IL_00A7: call System.String::System.String Format(System.String, System.Object)
+IL_00AC: call Verse.Log::Void Error(System.String)
+IL_00B1: leave.s IL_00B3
+IL_00B3: ret 
+METHOD VEF.AestheticScaling.CachedPawnData::.cctor TOKEN 100667761
+IL_0000: ldc.i4.1 
+IL_0001: stsfld VEF.AestheticScaling.CachedPawnData::Boolean cacheCanBeRecalculated
+IL_0006: newobj VEF.AestheticScaling.CachedPawnData::Void .ctor()
+IL_000B: stsfld VEF.AestheticScaling.CachedPawnData::VEF.AestheticScaling.CachedPawnData defaultCache
+IL_0010: newobj System.Collections.Generic.Dictionary`2[[Verse.Pawn, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null],[VEF.AestheticScaling.CachedPawnData, VEF, Version=1.1.7.0, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0015: stsfld VEF.AestheticScaling.CachedPawnData::System.Collections.Generic.Dictionary`2[Verse.Pawn,VEF.AestheticScaling.CachedPawnData] cache
+IL_001A: ret 
+METHOD VEF.AestheticScaling.CachedPawnDataExtensions::GetCachePrePatched TOKEN 100667734
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.0 
+IL_0002: call VEF.AestheticScaling.PawnDataCache::VEF.AestheticScaling.CachedPawnData GetCacheUltraSpeed(Verse.Pawn, Boolean)
+IL_0007: stsfld VEF.AestheticScaling.CachedPawnDataExtensions::VEF.AestheticScaling.CachedPawnData _placeholderCache
+IL_000C: ldsflda VEF.AestheticScaling.CachedPawnDataExtensions::VEF.AestheticScaling.CachedPawnData _placeholderCache
+IL_0011: ret 

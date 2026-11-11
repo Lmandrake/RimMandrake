@@ -1,0 +1,22 @@
+{
+  "differences": {
+    "rand": {
+      "before": "93857679655475",
+      "after": "94196982071859"
+    }
+  },
+  "completed_observation_count": 153,
+  "resolved_kind_count": 686,
+  "restoration": {
+    "attempted": true,
+    "ok": true,
+    "readbacks": {
+      "giantAnimalsEnabled": "True",
+      "tierThresholdsCustom": "False",
+      "tierT1MinBodySize": "4",
+      "tierT2MinBodySize": "8",
+      "tierT3MinBodySize": "20"
+    },
+    "failures": []
+  }
+}

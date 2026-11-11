@@ -1,0 +1,14 @@
+{
+  "sha": "3dc3d71063513604666282c839e05f8805ceedce",
+  "at": 1794415893.8453276,
+  "review": "Parent inspected exact source-ready hashes, production delta, full new hook, test driver/stubs and live script. No issue found preventing build. Not a final CLEAN certificate.",
+  "next": "Run focused tests and required winbuild; then reviewed deployments and fresh Entry-state proof. Retain an independent actual ProgramState/current-map/ticks observation in raw orchestration evidence before claiming Entry scope. Read PARENT_SCOPE and corrected JUDGE_PROMPT before eventual judge; no criteria changed. Parent will not publish or move tree during proof.",
+  "parent_review_required": "Read PARENT_REVIEW.md before final evidence/judge: stale current measure_reefback_calf.py plus inbound docs MUST be corrected; root is not editing them. Request parent commit of those Python/spec-only fixes without DLL rebuild when compiled hashes unchanged.",
+  "previous_sha": "94cd3b917d3c4a349b166030cb9b206b9bc6d469",
+  "source_update": "All four paths in SOURCE_READY_UPDATE committed after parent diff/full-wrapper review. Retry focused tests/build now after completed pilot.",
+  "host_modset_authorization": "Parent inspected model.ambient_bridge_host and modset_builder.bridge_ok: default game resolves None (other host), no default-host selector exists. The supported --not-my-bridge flag is authorized ONLY under a freshly verified own CODEX_STEVEDESKTOP_HUGETHINGS host_guard/bridge held on stevedesktop, game DOWN and selected RM_STEAMAPPS/ModsConfig path independently verified. Record exact reason naming actual seat/host, not BENCH. Never take or release other host. This is a tooling host-mismatch boundary, not permission to bypass any other preflight gate.",
+  "fixture_repair": "All three SOURCE_READY_FIXTURE paths committed after parent review of full delta. Required build then reviewed DLL/stamp-only deployment permitted under fresh own host lease. All original criteria unchanged.",
+  "judge_allowance": "Exact installed VEF Mods/2023507013 selected metadata is already allowed; parent recorded every pre-first-judge scope amendment in PARENT_SCOPE. Use latest exact frozen JUDGE_PROMPT.",
+  "transport": "Read appended PARENT_REVIEW: export RM_GUARD_SEAT=CODEX_STEVEDESKTOP_HUGETHINGS in driver ENV/shells for rw_game.sh host_guard calls; no RUNNER requested seat. Separate Steam process/bridge budgets, pending-launch drain before release.",
+  "identity_claim_bounds": "GetTier executable code is unchanged; its comments now explicitly record VEF. Do not call the final entire method body byte-identical to old source when comments changed. Retain historical before-model identity checks with their actual source-at-run scope."
+}

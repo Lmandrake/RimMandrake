@@ -1,0 +1,975 @@
+{
+  "started_utc": "2026-11-11T16:36:04.014823+00:00",
+  "scope": "L1 Entry-state loaded-method proof; no passage/crossing/flight/L4",
+  "calls": [
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "giantAnimalsEnabled"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "giantAnimalsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_551685d4b26440b5aa1fb794ebe751c2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierThresholdsCustom"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierThresholdsCustom",
+        "fieldKind": "static",
+        "value": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_0b164c060ce443639226a7ce84f677f6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT1MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT1MinBodySize",
+        "fieldKind": "static",
+        "value": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_706e59afb008442d89a6969d0aed633e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 55
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT2MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT2MinBodySize",
+        "fieldKind": "static",
+        "value": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_9a2a50f9085b440797d13398d0c8a0df",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT3MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT3MinBodySize",
+        "fieldKind": "static",
+        "value": "20",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_e3dc537d35814f3092b7e79c75d7c9cc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "giantAnimalsEnabled",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "giantAnimalsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_945d01e20a0e4a5e89780ab5815cac07",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 55
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "giantAnimalsEnabled"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "giantAnimalsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_80f74f3b44de4be0b857f575290a79d7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 31
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierThresholdsCustom",
+        "value": "False"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierThresholdsCustom",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_d5f30f1483234b45b48ccb17b7f265ed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 56
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierThresholdsCustom"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierThresholdsCustom",
+        "fieldKind": "static",
+        "value": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_1761b57eaa9c450a84471e1734e4a91b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT1MinBodySize",
+        "value": "4"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT1MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "4",
+        "valueAfter": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_3499c316bcdc440a9c20c0523f3646ec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT1MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT1MinBodySize",
+        "fieldKind": "static",
+        "value": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_37c0a0cfdb254cfc8bf27f1a42b548eb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT2MinBodySize",
+        "value": "8"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT2MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "8",
+        "valueAfter": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_cd1960109d254225a53a4123e13ce87e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT2MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT2MinBodySize",
+        "fieldKind": "static",
+        "value": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_433fc49b26374ecfbd7d114474cb946d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 31
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT3MinBodySize",
+        "value": "20"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT3MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "20",
+        "valueAfter": "20",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_1ef697f31f5b4f249cd5072ab1071746",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT3MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT3MinBodySize",
+        "fieldKind": "static",
+        "value": "20",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_b601523bf5b04e06b5c23f27dc7260fe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "RimMandrake.TitanicCreatures.JuvenileTierValidationHooks",
+        "method": "Observe",
+        "args": "RM_ReefbackJuv|0"
+      },
+      "result": {
+        "success": false,
+        "message": "Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8AED11CC] <- at VEF.AestheticScaling.PawnDataCache.GetPawnDataCache (Verse.Pawn pawn, System.Boolean forceRefresh, System.Boolean canRefresh) [0x0000e] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.AestheticScaling.PawnDataCache.GetCacheUltraSpeed (Verse.Pawn pawn, System.Boolean canRefresh) [0x00021] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.Genes.VanillaExpandedFramework_Pawn_BodySize.Postfix (System.Single& __result, Verse.Pawn __instance) [0x0001e] in <08cf6291920848ec82f75600b5af47da>:0 <- at Verse.Pawn.get_BodySize () [0x00023] in <61e4173561894da49d210260257b5097>:0 <- - POSTFIX OskarPotocki.VEF: Void VEF.Genes.VanillaExpandedFramework_Pawn_BodySize:Postfix(Single& __result, Pawn __instance)",
+        "operation": {
+          "OperationId": "op_3a9270f61ba64514ab74dabd0136cf3a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      },
+      "error": "refused/missing success: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8AED11CC] <- at VEF.AestheticScaling.PawnDataCache.GetPawnDataCache (Verse.Pawn pawn, System.Boolean forceRefresh, System.Boolean canRefresh) [0x0000e] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.AestheticScaling.PawnDataCache.GetCacheUltraSpeed (Verse.Pawn pawn, System.Boolean canRefresh) [0x00021] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.Genes.VanillaExpandedFramework_Pawn_BodySize.Postfix (System.Single& __result, Verse.Pawn __instance) [0x0001e] in <08cf6291920848ec82f75600b5af47da>:0 <- at Verse.Pawn.get_BodySize () [0x00023] in <61e4173561894da49d210260257b5097>:0 <- - POSTFIX OskarPotocki.VEF: Void VEF.Genes.VanillaExpandedFramework_Pawn_BodySize:Postfix(Single& __result, Pawn __instance)', 'operation': {'OperationId': 'op_3a9270f61ba64514ab74dabd0136cf3a', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "giantAnimalsEnabled",
+        "value": "True"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "giantAnimalsEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_9a5c4c7e86184484bd4bdfc971182a3b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "giantAnimalsEnabled"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "giantAnimalsEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_bf6228ffd4014105a89f0969de55e36e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierThresholdsCustom",
+        "value": "False"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierThresholdsCustom",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_86807a4754404052becb31027d58b3b7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierThresholdsCustom"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierThresholdsCustom",
+        "fieldKind": "static",
+        "value": "False",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_647a9e1c0be04413884435c8ffb4bf05",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 32
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT1MinBodySize",
+        "value": "4"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT1MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "4",
+        "valueAfter": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_54f4f7669af64f97816fb62a33b0220d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT1MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT1MinBodySize",
+        "fieldKind": "static",
+        "value": "4",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_2ff642536629403fa9be41a30c05175c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT2MinBodySize",
+        "value": "8"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT2MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "8",
+        "valueAfter": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_a7417ec3566a4b1dabe9404f76c03fc1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT2MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT2MinBodySize",
+        "fieldKind": "static",
+        "value": "8",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_d1d11868981449928c4026d444028c8e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 31
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "set",
+        "field": "tierT3MinBodySize",
+        "value": "20"
+      },
+      "result": {
+        "success": true,
+        "action": "set",
+        "field": "tierT3MinBodySize",
+        "fieldKind": "static",
+        "valueBefore": "20",
+        "valueAfter": "20",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_f97f4465a8c046e08c7f1d51c8d3ddef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 71
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/mod_settings_field",
+      "params": {
+        "typeName": "RimMandrake.HugeThings.RM_HugeThingsSettings",
+        "action": "get",
+        "field": "tierT3MinBodySize"
+      },
+      "result": {
+        "success": true,
+        "action": "get",
+        "field": "tierT3MinBodySize",
+        "fieldKind": "static",
+        "value": "20",
+        "typeIdentity": {
+          "resolvedVia": "GenTypes(cached)",
+          "copiesInAppDomain": 1,
+          "assembly": "RM_HugeThings"
+        },
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_6ad413ad08914ebba0eaae4ac879f76d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    }
+  ],
+  "observations": [],
+  "errors": [
+    "refused/missing success: {'success': False, 'message': 'Invoke threw NullReferenceException: Object reference not set to an instance of an object | at [Ref 8AED11CC] <- at VEF.AestheticScaling.PawnDataCache.GetPawnDataCache (Verse.Pawn pawn, System.Boolean forceRefresh, System.Boolean canRefresh) [0x0000e] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.AestheticScaling.PawnDataCache.GetCacheUltraSpeed (Verse.Pawn pawn, System.Boolean canRefresh) [0x00021] in <08cf6291920848ec82f75600b5af47da>:0 <- at VEF.Genes.VanillaExpandedFramework_Pawn_BodySize.Postfix (System.Single& __result, Verse.Pawn __instance) [0x0001e] in <08cf6291920848ec82f75600b5af47da>:0 <- at Verse.Pawn.get_BodySize () [0x00023] in <61e4173561894da49d210260257b5097>:0 <- - POSTFIX OskarPotocki.VEF: Void VEF.Genes.VanillaExpandedFramework_Pawn_BodySize:Postfix(Single& __result, Pawn __instance)', 'operation': {'OperationId': 'op_3a9270f61ba64514ab74dabd0136cf3a', 'Status': 'Completed', 'Success': True, 'DurationMs': 40}, 'state': {'programState': 'Entry', 'hasCurrentGame': False}}"
+  ],
+  "restoration": {
+    "attempted": true,
+    "ok": true,
+    "readbacks": {
+      "giantAnimalsEnabled": "True",
+      "tierThresholdsCustom": "False",
+      "tierT1MinBodySize": "4",
+      "tierT2MinBodySize": "8",
+      "tierT3MinBodySize": "20"
+    },
+    "failures": []
+  },
+  "artifact": {
+    "dll_sha256": "6e8f548d2e58b9b4c53a14d3ff6db1dedef1a9bc09531caaa0698730915c1430",
+    "stamp_sha256": "ba1b27add05994825011f0e4f51b7b058fcf179937a10e8294bdc0af07ea5e23",
+    "source_stamp": "# project: RimMandrake/HugeThings/Source/RM_HugeThings.csproj\n# dll: 6e8f548d2e58b9b4c53a14d3ff6db1dedef1a9bc09531caaa0698730915c1430\n02561741a243227c62355ac551651a979cc5f6246e86c7e92ded3c4f3dfeaf78 Titanic/WallsSlots/TrenchStrideHook.cs\n0a0f6e5b369308a6dc3e1066640b34b1cfca58a127fe47b2d67397e3956a11ee Titanic/Footprint/Patch_ThickRoofAvoidance.cs\n0b0bade7e9441acf83569023369ed4eff948b8616a97a7a26a5b51c3f413770c Kernel/RM_HugeTitanKernel.cs\n0b151098c9dc96479bbc243f53dc33b02657de71ec25acbeac36a2970cbd7999 Building_TrunkBlocker.cs\n162ded838f87bbaa42f0cc5deb9d7e67e94ce2489a1237d1dc19a05e9c779bac Titanic/Wake/Patch_Thing_Position_Wake.cs\n16d5b054cb3024ccc0152227283d7953b4a578398f78cd6ed9a9af5428354146 Titanic/Clearing/JobDriver_TitanClearObstacle.cs\n1b78346bf894cbc2264a76e315e56e37862eba66ff5237342268afc407e0eebc Kernel/RM_HugeFootprintKernel.cs\n1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14 Titanic/CorpseSite/CorpseSiteVisitors.cs\n28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a Titanic/RM_TitanicCreaturesMod.cs\n28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs\n3f018905c7cb8c475ff91967f77fe6f476b6dce194e79e52e93778bc4ed641d2 Titanic/Wake/CompTitanicWake.cs\n48852203bcaecc13bda211728a3b302c3d3b198c199f045e453ff1a639643112 Titanic/CorpseSite/Patch_CorpseSiteConversion.cs\n4fd604894bb5c0420ab35f442e7059700d0dc140ccaae8644e3923c3ed4e1568 Titanic/WallsSlots/Patch_WallsSlots.cs\n5c09fffd489dd5e9c37ab8777b008d2ee5d7365756fee9ab41383cf3205bd783 Titanic/WallsSlots/WallsSlotsUtility.cs\n5dd90419838c5da49353c74287c31e857e7156d1eeb7b30c917fb3169f3066b2 Titanic/Events/RM_TitanPassageExtension.cs\n601d79d83d57294ed17b5abbd44acf1ef3fb927b42666e2d97231e577fc69cc8 Titanic/Wake/CompProperties_TitanicWake.cs\n6242a06539a2ea59b3f68215ea0647c4a235209f888fb8481c8fc604a13e4054 Titanic/Wake/CrushTableUtility.cs\n633f27be662836d2ddef16833e82280df9a1c4dce8a246f5f1d7954dd4d52220 MapComponent_HugeFootprints.cs\n63ebec96b05dda8cbfa7e9d1d2a9024c4dcee8d34fd6d895f7431d28dc0e96be Titanic/Tiering/RM_TitanicTierDef.cs\n64b100daf6e4fed158a9f0aa4d365761db4f8be245f63dc7a39737f7780bf4b6 Extensions.cs\n688bbcab7c7171643b300ac372c01a4fe5c42496b088e24a17dc4f4b14d9fc80 Titanic/Wake/Patch_ButcherYieldCurve.cs\n68b67c31b11bda073091038233658e4e2f98727b1fa0b5590dc5392cbe33f11e Titanic/Events/TitanValidationHooks.cs\n71b2a0bdb6e86595427329a5029532a56c5f159157e59bcf4121a11e3a51551e Titanic/Tiering/RM_TitanicExtension.cs\n76fea4aa03255f31f63e9eadc850cc11f8c2544ae1c6fe141f5db3710fdf2e7a Titanic/WallsSlots/JobDriver_TitanSqueeze.cs\n7c4d96b3c6169f0b12e870a4196278a891596df54d4d4eee6a6b78d42baa2b86 Titanic/Clearing/TitanClearingUtility.cs\n7f933f96c63ac95282925edd868b4e416eedd2fc5279b3068f40f5f2328d7ecc Titanic/CorpseSite/JobDriver_HarvestTitanicCorpse.cs\n8a4904ff7d650f719425876a713d81c4395e986c02a0fa68e4521b2792b1270f Titanic/Events/TitanPassage.cs\n95bec2fd15ffa4e0f24aa78c37330e427a4f0d3552d206427b6a52c7601faa64 Titanic/RM_TitanicCreaturesDefOf.cs\n95d49dae9ea87f1f2b013adfffc9efa4eb458666d4f3f03b644c02f323812018 CompHugeFootprint.cs\n98febc02e782228c0ddbb6ffb4506f5ac41c1bb83e3c21db4087de97607d6fae HugeThingsCore.cs\n9afa87ca92ddbc9d98e385249dfd35b09e51726edc03e594d9c3ea07ca2d51c5 Titanic/Clearing/Patch_StartPath_TitanClearing.cs\na16ee4e19c518a12370f3c1e5c6142910ed0c284b829259daad9aa2196f571ac Titanic/Events/JuvenileTierValidationHooks.cs\na191025c47d567387ceeeeee4d5dd95d790c57c526c9afd1bc226419f6f9d7d5 Kernel/RM_WallsSlotsKernel.cs\naaaab177abffcad294b756ac0bee5a634643073d7acd701d00c8282f8575711e Kernel/RM_TitanClearingKernel.cs\nb1626fc0e0933cc47911358964a042f3ec3c187416975d18fd80570c5329ca6f Titanic/Wake/TitanicWakeProcessor.cs\nb48cf9b451f8e178294dd277cc7dfd28d5892dd5f8a45075b781fad734d30277 Kernel/RM_TitanicKernel.cs\nb5d2491731fbae0ac18da28016d91fffb3ae8911815003531ef7ad11ce26da37 Titanic/WallsSlots/WallsSlotsDecider.cs\ncaa7cd88b5bdfac9a3fb28624114d56e89affe7e83818aaf158afa5163f27e14 Titanic/Tiering/TitanicTierUtility.cs\ncebd383f2afd063b967275e3b42db98696978bf1c5652c86212530a7a63497e2 ../../_Shared/DrawnExtent/DrawnExtentKernel.cs\ncfa16bb26079ab775a41b77ca750d5680abfb0c918973355f034abbba9934aef Titanic/Wake/YieldCurveUtility.cs\nd1902dc7278c98c31305bbc5d003e4de83075e88b07ecf67548f0b91abba2570 RM_HugeThingsSettings.cs\nd623c99f1002f2091f708cd65d2319161844b12254ec93edde38ca03c7dae63e FootprintMath.cs\nd6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs\ne916461382937272e7a2876ac6614e6023b13153d29dc5f5a45252351adafff4 Titanic/CorpseSite/Building_TitanicCorpseSite.cs\nea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17 Titanic/Footprint/LargePawnsBridge.cs\nee3ef1fee3dcd820840ca85d76cb0c609f7bda902cca5b09eb8a66d64bec4cac Titanic/Tiering/TitanicTier.cs\nf006d80e3abf6227da2dfa55bb846d8c758f01f59134a7def7e5ea34f62703c9 Titanic/Wake/RM_CrushRuleDef.cs\nf8198c4bc9dd421c042e959456f15e50db078bc55c629e4ad7e428b8bf6967d8 Titanic/CorpseSite/WorkGiver_HarvestTitanicCorpse.cs\nf9ca96f257e5ce7361d34305340ccbc23d1a26a105cff55697f68827737915ca Titanic/CorpseSite/TitanicCorpseSiteUtility.cs\nfce6569cb01e3c4a51d5bb518bf518f32d7ef2ff9fcc80cd37e017daa2cc82ac Kernel/RM_HugeClaimsKernel.cs\nff0e6cfbc42b39a2704eadfed63bb30151879f5f5dbce2555f62d8f55b8ebc8e Kernel/RM_WallsSlotsMemoKernel.cs\n",
+    "deployed_dll_sha256": "6e8f548d2e58b9b4c53a14d3ff6db1dedef1a9bc09531caaa0698730915c1430",
+    "deployed_stamp_sha256": "ba1b27add05994825011f0e4f51b7b058fcf179937a10e8294bdc0af07ea5e23"
+  },
+  "schemas": {
+    "jawa/static_call": {
+      "name": "jawa/static_call",
+      "title": "Jawa Static Call",
+      "description": "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod script needs to exercise (e.g. RM_ZennaqLightning.Redirect). args = '|'-separated, coerced by the parameter type: int/float/double/bool/string, IntVec3 as 'x,y,z' (or 'x,z'), Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every map - refused with candidates when absent or not of the parameter's type. Instance methods and overload ambiguity are REFUSED with the candidate signatures. The return value is rendered as text. Runs on the main thread. GM-gated: it can call anything public.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type.FullName, exact."
+          },
+          "method": {
+            "type": "string",
+            "description": "Method name."
+          },
+          "args": {
+            "type": "string",
+            "description": "'|'-separated arguments.",
+            "default": ""
+          }
+        },
+        "additionalProperties": false
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "type": "String",
+          "description": "Type.FullName, exact.",
+          "required": false,
+          "defaultValue": null
+        },
+        {
+          "name": "method",
+          "type": "String",
+          "description": "Method name.",
+          "required": false,
+          "defaultValue": null
+        },
+        {
+          "name": "args",
+          "type": "String",
+          "description": "'|'-separated arguments.",
+          "required": false,
+          "defaultValue": ""
+        }
+      ],
+      "outputSchema": {
+        "description": "success, method (signature), result, ticksGame."
+      },
+      "requiresAuth": false
+    },
+    "jawa/mod_settings_field": {
+      "name": "jawa/mod_settings_field",
+      "title": "Jawa Mod Settings Field",
+      "description": "Read or write ANY public field (static OR instance) on a mod's ModSettings-derived class by TYPE NAME and field name. BRIDGE_STATIC_SETTINGS_FIELDS_1: rimworld/update_mod_settings only resolves INSTANCE fields and refuses public static ones - most of our own mods' settings classes declare static fields, which that tool cannot touch at all. This tool tries the field as STATIC first; if not found there, falls back to INSTANCE by locating a loaded Mod (assembly-matched to the settings type) whose Mod.GetSettings<T>() resolves it. Values are read/written as their string form and coerced to the field's real type (bool/int/float/double/string/enum only - refuses other types by name rather than guessing a conversion). action='list' (default, typeName only) reports every public field's name/type/kind/current value so a caller can discover names without reading source first.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "typeName": {
+            "type": "string",
+            "description": "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace."
+          },
+          "action": {
+            "type": "string",
+            "description": "'list' (default), 'get', or 'set'.",
+            "default": "list"
+          },
+          "field": {
+            "type": "string",
+            "description": "get/set: the field name."
+          },
+          "value": {
+            "type": "string",
+            "description": "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum)."
+          }
+        },
+        "additionalProperties": false
+      },
+      "parameters": [
+        {
+          "name": "typeName",
+          "type": "String",
+          "description": "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace.",
+          "required": false,
+          "defaultValue": null
+        },
+        {
+          "name": "action",
+          "type": "String",
+          "description": "'list' (default), 'get', or 'set'.",
+          "required": false,
+          "defaultValue": "list"
+        },
+        {
+          "name": "field",
+          "type": "String",
+          "description": "get/set: the field name.",
+          "required": false,
+          "defaultValue": null
+        },
+        {
+          "name": "value",
+          "type": "String",
+          "description": "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum).",
+          "required": false,
+          "defaultValue": null
+        }
+      ],
+      "outputSchema": {
+        "description": "list: success, fields[] (name, type, kind, value). get: success, field, fieldKind, value. set: success, field, fieldKind, valueBefore, valueAfter."
+      },
+      "requiresAuth": false
+    }
+  },
+  "jawa_tool_count": 423,
+  "script_sha256": "bc287f7bead39c25b1bcbef060e95b18711dfd489513dcf45d47b0938ed844f1",
+  "settings_files_before": {},
+  "original_settings": {
+    "giantAnimalsEnabled": "True",
+    "tierThresholdsCustom": "False",
+    "tierT1MinBodySize": "4",
+    "tierT2MinBodySize": "8",
+    "tierT3MinBodySize": "20"
+  },
+  "settings_files_after": {},
+  "finished_utc": "2026-11-11T16:36:07.184743+00:00",
+  "ok": false
+}

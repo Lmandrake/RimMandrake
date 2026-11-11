@@ -1,0 +1,8 @@
+Worker proof complete. Spacing uses maximum supported growth; lineage eligibility and conservative comp attachment remain intact.
+
+- 14,798 focused checks and 153 live observations passed.
+- Fresh judge: **would show: yes**; read audit clean.
+- Real Whittle validation: **rc 0**.
+- Game DOWN; bridge and guard FREE.
+
+[PROGRESS.md](/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/PROGRESS.md) records evidence and exact L1 limits. Parent publication, CLEAN review, ledger registration and final acceptance remain.

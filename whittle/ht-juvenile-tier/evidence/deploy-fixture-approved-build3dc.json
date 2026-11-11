@@ -1,0 +1,11 @@
+{
+  "delta": [
+    "Assemblies/RM_HugeThings.dll",
+    "Assemblies/RM_HugeThings.dll.srchash"
+  ],
+  "sha256": {
+    "Assemblies/RM_HugeThings.dll": "61b9fc813bc75002615c95d66c45987e5f7eb5f393b25f4f06d7908233a388d0",
+    "Assemblies/RM_HugeThings.dll.srchash": "92a9e3df7dcb252245206d17cdedca54091642e6df41137b2eeea94877e1ea0d"
+  },
+  "plan_sha256": "265551f21f9874135bc4c4357531818a678e83d6d13da0de1d0bf04cc72a7c7b"
+}

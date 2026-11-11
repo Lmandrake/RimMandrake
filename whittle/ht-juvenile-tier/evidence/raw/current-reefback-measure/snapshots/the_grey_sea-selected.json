@@ -1,0 +1,34 @@
+{
+  "confidence": [
+    {
+      "claim": "warden adult ↔ Miasma crèche route",
+      "status": "open",
+      "why": "R11's 'Owed: a stated route between the Miasma delta and the Grey Deep' is still owed; R24a measured the biomes touching at arc 70-75, so the route is physically possible"
+    }
+  ],
+  "defNames": [],
+  "evictions": [],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "endemic giant — single-spawn, the warden ADULT",
+      "commonality": 0.005,
+      "def": "RSW_Reefback",
+      "law": "terminator_sea §4 (endemic giant, one per sea, no sharing); the_grey_deep §4: the crusted giant — the endemic lineage, ill-tempered, mineral-armored; R11: warden adults spend their centuries in the Grey Deep as the brine adults; bs 32, spd 2.0, non-predator, manhunter-on-hurt 50% (MEASURED)",
+      "note": "This is the warden lifecycle's ADULT side only — they breed and die in the Miasma (R11); the crèche/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. BUILT: ships as RM_Reefback at 0.005 on RM_GreySea (MEASURED 2026-09-27)."
+    }
+  ],
+  "flora": [],
+  "flora_purged": [],
+  "law_sources": [],
+  "new_defs": [
+    {
+      "from_sheet": "the_grey_deep §4 + R11",
+      "kind": "creature",
+      "mechanic_load": "done",
+      "name": "the crusted giant ships as RM_Reefback (the old RSW_ rename-ledger row is executed); its lamp response is RULED DETERMINISTIC AND FORGIVING (Q12, 2026-09-27): worklight-class only, hours of burn, telegraphed, dowsing always resets"
+    }
+  ],
+  "stat_adjustments": [],
+  "notes": null
+}

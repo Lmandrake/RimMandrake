@@ -1,0 +1,14 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-Command",
+    "$a=[Reflection.Assembly]::ReflectionOnlyLoadFrom('D:/SteamLibrary/steamapps/common/RimWorld/Mods/2023507013/1.6/Assemblies/VEF.dll'); $a.ManifestModule.ModuleVersionId.ToString(); $a.GetName().Version.ToString()"
+  ],
+  "rc": 0,
+  "stdout": "08cf6291-9208-48ec-82f7-5600b5af47da\r\n1.1.7.0\r\n",
+  "stderr": "",
+  "path": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/2023507013/1.6/Assemblies/VEF.dll",
+  "sha256": "2f0c890c54dd0498aebcfa42b63a859f8acee894adddd08807a523d683e8dc6d"
+}

@@ -1,0 +1,7 @@
+{
+  "sha": "94cd3b917d3c4a349b166030cb9b206b9bc6d469",
+  "at": 1794413178.9465725,
+  "review": "Parent inspected exact source-ready hashes, production delta, full new hook, test driver/stubs and live script. No issue found preventing build. Not a final CLEAN certificate.",
+  "next": "Run focused tests and required winbuild; then reviewed deployments and fresh Entry-state proof. Retain an independent actual ProgramState/current-map/ticks observation in raw orchestration evidence before claiming Entry scope. Read PARENT_SCOPE and corrected JUDGE_PROMPT before eventual judge; no criteria changed. Parent will not publish or move tree during proof.",
+  "parent_review_required": "Read PARENT_REVIEW.md now: stale existing measure_reefback_calf.py passage model plus inbound current docs need coherent correction before final evidence/judge. Parent is not editing them; worker owns correction. No need to rebuild DLL for northstar Python/spec-only fixes."
+}

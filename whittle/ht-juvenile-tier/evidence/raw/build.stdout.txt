@@ -1,0 +1,16 @@
+staging src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj -> D:\RimTest\data\build\HugeThings
+  src/RimMandrake/HugeThings/Source/
+  src/RimMandrake/_Shared/DrawnExtent/
+  src/RimMandrake/_Shared/SettingsKit/
++ dotnet.exe build D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\Titanic\Events\JuvenileTierValidationHooks.cs(30,33): error CS1061: 'Pawn' does not contain a definition for 'CurLifeStage' and no accessible extension method 'CurLifeStage' accepting a first argument of type 'Pawn' could be found (are you missing a using directive or an assembly reference?) [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+
+Build FAILED.
+
+D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\Titanic\Events\JuvenileTierValidationHooks.cs(30,33): error CS1061: 'Pawn' does not contain a definition for 'CurLifeStage' and no accessible extension method 'CurLifeStage' accepting a first argument of type 'Pawn' could be found (are you missing a using directive or an assembly reference?) [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.68

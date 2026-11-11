@@ -1,0 +1,15 @@
+{
+  "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs": "b48cf9b451f8e178294dd277cc7dfd28d5892dd5f8a45075b781fad734d30277",
+  "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs": "caa7cd88b5bdfac9a3fb28624114d56e89affe7e83818aaf158afa5163f27e14",
+  "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs": "8a4904ff7d650f719425876a713d81c4395e986c02a0fa68e4521b2792b1270f",
+  "src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs": "0ce78b5a18a3a3a5e10b5501c9a96030353bd2dd2218bab405ba07237d705acf",
+  "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj": "508b459dfde6b2c4bf534fa87f93c53479f0f5dc46116202152b9afb82147a19",
+  "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj": "1521e1936357234f204e5dcb4b8297e5f0548dfd136beb7c8f645223f3716de9",
+  "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs": "70e60a93e03f809a490c4aa2fad0e4ed18eb8d3fe1b8570ad7e99a0cc00dfb6b",
+  "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs": "fe0facc05a3cadd9c24d9e7b0e807e8c7e25e2b0abd35cddbe0140549610fa8a",
+  "src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py": "cbfa2e8001efd8e1f8781f70c56d0049dbed2ac3656ef763791367a4ed44e6bb",
+  "src/RimMandrake/HugeThings/northstar/juvenile_tier_live.py": "d714c753395597aa20b717c3b3d6398917a1633baa8d30e25bc5c5869005406a",
+  "src/RimMandrake/HugeThings/TIERING.md": "18db928f3d4d8f41cf8fea85861d48a9b8f9889969b6d4d40435bda5cc69f32b",
+  "design/RimMandrake/hugethings_codex_2026-11-09/JUVENILE_PASSAGE_CLASSIFICATION.md": "2cc151bf3b08f280e22a76cddf3dbd8660cd367a773149d19c0f767db9e443e3",
+  "infrastructure/state/delegated/2026-11-11/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.json": "43a8ac0c255bda49be2e8595ccaed505bbaf3efcf9909b4b6fb3f2e8a94c423a"
+}

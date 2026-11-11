@@ -1,0 +1,1430 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SelectedSources scope="Selected baseline inheritance only; unrelated patches may alter other fields. No loaded-def or runtime snapshot.">
+  <Source input="/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml" sha256="9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc">
+    <LifeStageDef Name="AnimalBaby">
+      <defName>AnimalBaby</defName>
+      <label>baby</label>
+      <voxPitch>1.6</voxPitch>
+      <voxVolume>0.8</voxVolume>
+      <bodySizeFactor>0.2</bodySizeFactor>
+      <foodMaxFactor>3</foodMaxFactor>
+      <healthScaleFactor>0.25</healthScaleFactor>
+      <hungerRateFactor>0.4</hungerRateFactor>
+      <marketValueFactor>0.4</marketValueFactor>
+      <meleeDamageFactor>0.5</meleeDamageFactor>
+      <statFactors>
+        <MoveSpeed>0.5</MoveSpeed>
+      </statFactors>
+    </LifeStageDef>
+    <LifeStageDef>
+      <defName>AnimalJuvenile</defName>
+      <label>juvenile</label>
+      <voxPitch>1.2</voxPitch>
+      <bodySizeFactor>0.5</bodySizeFactor>
+      <foodMaxFactor>1.5</foodMaxFactor>
+      <healthScaleFactor>0.6</healthScaleFactor>
+      <hungerRateFactor>0.75</hungerRateFactor>
+      <marketValueFactor>0.75</marketValueFactor>
+      <meleeDamageFactor>0.75</meleeDamageFactor>
+      <statFactors>
+        <MoveSpeed>0.9</MoveSpeed>
+      </statFactors>
+    </LifeStageDef>
+    <LifeStageDef>
+      <defName>AnimalAdult</defName>
+      <label>adult</label>
+      <visible>false</visible>
+      <reproductive>true</reproductive>
+      <milkable>true</milkable>
+      <shearable>true</shearable>
+      <caravanRideable>true</caravanRideable>
+    </LifeStageDef>
+  </Source>
+  <Source input="/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml" sha256="922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4">
+    <ThingDef Name="BasePawn" Abstract="True">
+      <thingClass>Pawn</thingClass>
+      <category>Pawn</category>
+      <selectable>true</selectable>
+      <containedPawnsSelectable>true</containedPawnsSelectable>
+      <containedItemsSelectable>true</containedItemsSelectable>
+      <tickerType>Normal</tickerType>
+      <altitudeLayer>Pawn</altitudeLayer>
+      <useHitPoints>false</useHitPoints>
+      <hasTooltip>true</hasTooltip>
+      <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+      <drawHighlight>true</drawHighlight>
+      <defaultPlacingRot>South</defaultPlacingRot>
+      <statBases>
+        <Mass>60</Mass>
+        <Flammability>0.7</Flammability>
+      </statBases>
+      <race>
+        <renderTree>Misc</renderTree>
+      </race>
+      <inspectorTabs>
+        <li>ITab_Pawn_Health</li>
+        <li>ITab_Pawn_Needs</li>
+        <li>ITab_Pawn_Character</li>
+        <li>ITab_Pawn_Training</li>
+        <li>ITab_Pawn_Social</li>
+        <li>ITab_Pawn_Guest</li>
+        <li>ITab_Pawn_Prisoner</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+        <li>ITab_Pawn_FormingCaravan</li>
+        <li>ITab_Pawn_Gear</li>
+        <li>ITab_Pawn_Log</li>
+      </inspectorTabs>
+      <comps>
+        <li>
+          <compClass>CompAttachBase</compClass>
+        </li>
+      </comps>
+      <drawGUIOverlay>true</drawGUIOverlay>
+    </ThingDef>
+    <ThingDef ParentName="BasePawn" Name="AnimalThingBase" Abstract="True">
+      <statBases>
+        <LeatherAmount>40</LeatherAmount>
+        <ToxicResistance>0.5</ToxicResistance>
+      </statBases>
+      <race>
+        <thinkTreeMain>Animal</thinkTreeMain>
+        <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+        <hasGenders>true</hasGenders>
+        <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+        <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+        <trainability>None</trainability>
+        <bloodDef>Filth_Blood</bloodDef>
+        <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+        <canBecomeShambler>true</canBecomeShambler>
+        <renderTree>Animal</renderTree>
+        <hediffGiverSets>
+          <li>OrganicStandard</li>
+        </hediffGiverSets>
+      </race>
+      <thingCategories>
+        <li>Animals</li>
+      </thingCategories>
+      <recipes>
+        <li>ExciseCarcinoma</li>
+        <li>AdministerMechSerumHealer</li>
+        <li>RemoveBodyPart</li>
+        <li>Euthanize</li>
+        <li>Anesthetize</li>
+        <li>CureScaria</li>
+        <li>Sterilize</li>
+        <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+      </recipes>
+      <comps>
+        <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+          <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+          <getsColdContainmentBonus>true</getsColdContainmentBonus>
+        </li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+          <frequencyTicks>120000</frequencyTicks>
+          <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+          <anomalyKnowledge>1</anomalyKnowledge>
+          <requiresImprisonment>true</requiresImprisonment>
+          <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+        </li>
+      </comps>
+    </ThingDef>
+    <PawnKindDef Name="AnimalKindBase" Abstract="True">
+  </PawnKindDef>
+  </Source>
+  <Source input="src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml:selected nodes" sha256="a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9">
+    <ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+      <statBases>
+        <MoveSpeed>2.0</MoveSpeed>
+        <MarketValue>8000</MarketValue>
+        <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+        <ComfyTemperatureMax>50</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+        <ArmorRating_Heat>0.75</ArmorRating_Heat>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <tools>
+        <li>
+          <label>tail sweep</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>480</power>
+          <cooldownTime>8.5</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>bulk</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>120</power>
+          <cooldownTime>6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.3</chanceFactor>
+        </li>
+      </tools>
+      <race>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <disableMating>true</disableMating>
+        <baseBodySize>32</baseBodySize>
+        <baseHealthScale>20</baseHealthScale>
+        <foodType>None</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <gestationPeriodDays>120</gestationPeriodDays>
+        <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+        <lifeExpectancy>500</lifeExpectancy>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.2</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.6</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+    </ThingDef>
+    <PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <race>RM_Reefback</race>
+      <combatPower>2000</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>4.0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>2.0</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+    <ThingDef ParentName="RM_Reefback">
+      <defName>RM_ReefbackJuv</defName>
+      <label>young reefback</label>
+      <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>
+      <statBases>
+        <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+        <ArmorRating_Heat>0.30</ArmorRating_Heat>
+      </statBases>
+      <tools Inherit="False">
+        <li>
+          <label>tail sweep</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>16</power>
+          <cooldownTime>3.0</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>bulk</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>10</power>
+          <cooldownTime>2.5</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.3</chanceFactor>
+        </li>
+      </tools>
+      <race>
+        <baseHealthScale>8</baseHealthScale>
+        <lifeStageAges Inherit="False">
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.1</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+    </ThingDef>
+    <PawnKindDef ParentName="RM_Reefback_Kind">
+      <defName>RM_ReefbackJuv</defName>
+      <combatPower>150</combatPower>
+      <wildGroupSize>2~3</wildGroupSize>
+      <label>young reefback</label>
+      <race>RM_ReefbackJuv</race>
+      <lifeStages Inherit="False">
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  </Source>
+  <Source input="src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml:selected nodes" sha256="6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b">
+    <LifeStageDef>
+      <defName>RM_WardenMotherElder</defName>
+      <label>elder</label>
+      <visible>true</visible>
+      <bodySizeFactor>1</bodySizeFactor>
+    </LifeStageDef>
+    <ThingDef ParentName="AnimalThingBase">
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <description>Barnacled, scarred, and older than anything else that swims these shallows — you can see it in how slowly she moves now. She goes wherever the water goes, and nowhere else; the few metres of dry ground between her and anything on land might as well be another world. Lethal to anything she can reach. Not tame, not tameable, and not gentle — but she remembers who freed her young from a drying pool, and she will not touch you for it.</description>
+      <statBases>
+        <MoveSpeed>1.6</MoveSpeed>
+        <MarketValue>0</MarketValue>
+        <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+        <ComfyTemperatureMax>55</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.65</ArmorRating_Sharp>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <tools>
+        <li>
+          <label>crushing bite</label>
+          <capacities>
+            <li>Bite</li>
+          </capacities>
+          <power>22</power>
+          <cooldownTime>2.0</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>flipper slam</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>18</power>
+          <cooldownTime>2.6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.6</chanceFactor>
+        </li>
+      </tools>
+      <race>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <herdAnimal>false</herdAnimal>
+        <disableMating>true</disableMating>
+        <baseBodySize>8</baseBodySize>
+        <baseHealthScale>7</baseHealthScale>
+        <foodType>OmnivoreAnimal</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <manhunterOnDamageChance>0</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+        <lifeExpectancy>45</lifeExpectancy>
+        <trainability>None</trainability>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.15</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.4</minAge>
+          </li>
+          <li>
+            <def>RM_WardenMotherElder</def>
+            <minAge>38</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+      <comps>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+          <dutyDef>RM_AnchorGuard</dutyDef>
+          <anchorRadius>16</anchorRadius>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+          <checkIntervalTicks>60</checkIntervalTicks>
+        </li>
+      </comps>
+    </ThingDef>
+    <PawnKindDef ParentName="AnimalKindBase">
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <race>RM_WardenMother</race>
+      <combatPower>1400</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>1.8</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>3.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  </Source>
+  <Source input="src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml:selected node" sha256="d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf">
+    <RimMandrake.TitanicCreatures.RM_TitanicTierDef>
+      <defName>RM_TitanicTiers_Default</defName>
+      <t1MinBodySize>4</t1MinBodySize>
+      <t2MinBodySize>8</t2MinBodySize>
+      <t3MinBodySize>20</t3MinBodySize>
+    </RimMandrake.TitanicCreatures.RM_TitanicTierDef>
+  </Source>
+  <Resolved species="RM_ReefbackJuv">
+    <ThingDef ParentName="RM_Reefback">
+      <thingClass>Pawn</thingClass>
+      <category>Pawn</category>
+      <selectable>true</selectable>
+      <containedPawnsSelectable>true</containedPawnsSelectable>
+      <containedItemsSelectable>true</containedItemsSelectable>
+      <tickerType>Normal</tickerType>
+      <altitudeLayer>Pawn</altitudeLayer>
+      <useHitPoints>false</useHitPoints>
+      <hasTooltip>true</hasTooltip>
+      <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+      <drawHighlight>true</drawHighlight>
+      <defaultPlacingRot>South</defaultPlacingRot>
+      <statBases>
+        <Mass>60</Mass>
+        <Flammability>0.7</Flammability>
+        <LeatherAmount>40</LeatherAmount>
+        <ToxicResistance>0.5</ToxicResistance>
+        <MoveSpeed>2.0</MoveSpeed>
+        <MarketValue>8000</MarketValue>
+        <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+        <ComfyTemperatureMax>50</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+        <ArmorRating_Heat>0.30</ArmorRating_Heat>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <race>
+        <renderTree>Animal</renderTree>
+        <thinkTreeMain>Animal</thinkTreeMain>
+        <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+        <hasGenders>true</hasGenders>
+        <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+        <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+        <trainability>None</trainability>
+        <bloodDef>Filth_Blood</bloodDef>
+        <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+        <canBecomeShambler>true</canBecomeShambler>
+        <hediffGiverSets>
+          <li>OrganicStandard</li>
+        </hediffGiverSets>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <disableMating>true</disableMating>
+        <baseBodySize>32</baseBodySize>
+        <baseHealthScale>8</baseHealthScale>
+        <foodType>None</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <gestationPeriodDays>120</gestationPeriodDays>
+        <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+        <lifeExpectancy>500</lifeExpectancy>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.1</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+      <inspectorTabs>
+        <li>ITab_Pawn_Health</li>
+        <li>ITab_Pawn_Needs</li>
+        <li>ITab_Pawn_Character</li>
+        <li>ITab_Pawn_Training</li>
+        <li>ITab_Pawn_Social</li>
+        <li>ITab_Pawn_Guest</li>
+        <li>ITab_Pawn_Prisoner</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+        <li>ITab_Pawn_FormingCaravan</li>
+        <li>ITab_Pawn_Gear</li>
+        <li>ITab_Pawn_Log</li>
+      </inspectorTabs>
+      <comps>
+        <li>
+          <compClass>CompAttachBase</compClass>
+        </li>
+        <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+          <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+          <getsColdContainmentBonus>true</getsColdContainmentBonus>
+        </li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+          <frequencyTicks>120000</frequencyTicks>
+          <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+          <anomalyKnowledge>1</anomalyKnowledge>
+          <requiresImprisonment>true</requiresImprisonment>
+          <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+        </li>
+      </comps>
+      <drawGUIOverlay>true</drawGUIOverlay>
+      <thingCategories>
+        <li>Animals</li>
+      </thingCategories>
+      <recipes>
+        <li>ExciseCarcinoma</li>
+        <li>AdministerMechSerumHealer</li>
+        <li>RemoveBodyPart</li>
+        <li>Euthanize</li>
+        <li>Anesthetize</li>
+        <li>CureScaria</li>
+        <li>Sterilize</li>
+        <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+      </recipes>
+      <defName>RM_ReefbackJuv</defName>
+      <label>young reefback</label>
+      <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>
+      <tools>
+        <li>
+          <label>tail sweep</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>16</power>
+          <cooldownTime>3.0</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>bulk</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>10</power>
+          <cooldownTime>2.5</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.3</chanceFactor>
+        </li>
+      </tools>
+    </ThingDef>
+    <PawnKindDef ParentName="RM_Reefback_Kind">
+      <defName>RM_ReefbackJuv</defName>
+      <label>young reefback</label>
+      <race>RM_ReefbackJuv</race>
+      <combatPower>150</combatPower>
+      <wildGroupSize>2~3</wildGroupSize>
+      <ecoSystemWeight>4.0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>2.0</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>2.94</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>4.42</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  </Resolved>
+  <Resolved species="RM_Reefback">
+    <ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
+      <thingClass>Pawn</thingClass>
+      <category>Pawn</category>
+      <selectable>true</selectable>
+      <containedPawnsSelectable>true</containedPawnsSelectable>
+      <containedItemsSelectable>true</containedItemsSelectable>
+      <tickerType>Normal</tickerType>
+      <altitudeLayer>Pawn</altitudeLayer>
+      <useHitPoints>false</useHitPoints>
+      <hasTooltip>true</hasTooltip>
+      <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+      <drawHighlight>true</drawHighlight>
+      <defaultPlacingRot>South</defaultPlacingRot>
+      <statBases>
+        <Mass>60</Mass>
+        <Flammability>0.7</Flammability>
+        <LeatherAmount>40</LeatherAmount>
+        <ToxicResistance>0.5</ToxicResistance>
+        <MoveSpeed>2.0</MoveSpeed>
+        <MarketValue>8000</MarketValue>
+        <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+        <ComfyTemperatureMax>50</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+        <ArmorRating_Heat>0.75</ArmorRating_Heat>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <race>
+        <renderTree>Animal</renderTree>
+        <thinkTreeMain>Animal</thinkTreeMain>
+        <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+        <hasGenders>true</hasGenders>
+        <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+        <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+        <trainability>None</trainability>
+        <bloodDef>Filth_Blood</bloodDef>
+        <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+        <canBecomeShambler>true</canBecomeShambler>
+        <hediffGiverSets>
+          <li>OrganicStandard</li>
+        </hediffGiverSets>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <disableMating>true</disableMating>
+        <baseBodySize>32</baseBodySize>
+        <baseHealthScale>20</baseHealthScale>
+        <foodType>None</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <gestationPeriodDays>120</gestationPeriodDays>
+        <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+        <lifeExpectancy>500</lifeExpectancy>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.2</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.6</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+      <inspectorTabs>
+        <li>ITab_Pawn_Health</li>
+        <li>ITab_Pawn_Needs</li>
+        <li>ITab_Pawn_Character</li>
+        <li>ITab_Pawn_Training</li>
+        <li>ITab_Pawn_Social</li>
+        <li>ITab_Pawn_Guest</li>
+        <li>ITab_Pawn_Prisoner</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+        <li>ITab_Pawn_FormingCaravan</li>
+        <li>ITab_Pawn_Gear</li>
+        <li>ITab_Pawn_Log</li>
+      </inspectorTabs>
+      <comps>
+        <li>
+          <compClass>CompAttachBase</compClass>
+        </li>
+        <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+          <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+          <getsColdContainmentBonus>true</getsColdContainmentBonus>
+        </li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+          <frequencyTicks>120000</frequencyTicks>
+          <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+          <anomalyKnowledge>1</anomalyKnowledge>
+          <requiresImprisonment>true</requiresImprisonment>
+          <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+        </li>
+      </comps>
+      <drawGUIOverlay>true</drawGUIOverlay>
+      <thingCategories>
+        <li>Animals</li>
+      </thingCategories>
+      <recipes>
+        <li>ExciseCarcinoma</li>
+        <li>AdministerMechSerumHealer</li>
+        <li>RemoveBodyPart</li>
+        <li>Euthanize</li>
+        <li>Anesthetize</li>
+        <li>CureScaria</li>
+        <li>Sterilize</li>
+        <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+      </recipes>
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+      <tools>
+        <li>
+          <label>tail sweep</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>480</power>
+          <cooldownTime>8.5</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>bulk</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>120</power>
+          <cooldownTime>6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.3</chanceFactor>
+        </li>
+      </tools>
+    </ThingDef>
+    <PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
+      <defName>RM_Reefback</defName>
+      <label>reefback</label>
+      <race>RM_Reefback</race>
+      <combatPower>2000</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>4.0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>2.0</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.89</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>8.56</drawSize>
+          </swimmingGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </bodyGraphicData>
+          <swimmingGraphicData>
+            <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>10.7</drawSize>
+          </swimmingGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  </Resolved>
+  <Resolved species="RM_WardenMother">
+    <ThingDef ParentName="AnimalThingBase">
+      <thingClass>Pawn</thingClass>
+      <category>Pawn</category>
+      <selectable>true</selectable>
+      <containedPawnsSelectable>true</containedPawnsSelectable>
+      <containedItemsSelectable>true</containedItemsSelectable>
+      <tickerType>Normal</tickerType>
+      <altitudeLayer>Pawn</altitudeLayer>
+      <useHitPoints>false</useHitPoints>
+      <hasTooltip>true</hasTooltip>
+      <soundImpactDefault>BulletImpact_Flesh</soundImpactDefault>
+      <drawHighlight>true</drawHighlight>
+      <defaultPlacingRot>South</defaultPlacingRot>
+      <statBases>
+        <Mass>60</Mass>
+        <Flammability>0.7</Flammability>
+        <LeatherAmount>40</LeatherAmount>
+        <ToxicResistance>0.5</ToxicResistance>
+        <MoveSpeed>1.6</MoveSpeed>
+        <MarketValue>0</MarketValue>
+        <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+        <ComfyTemperatureMax>55</ComfyTemperatureMax>
+        <ArmorRating_Blunt>0.55</ArmorRating_Blunt>
+        <ArmorRating_Sharp>0.65</ArmorRating_Sharp>
+        <Wildness>1.0</Wildness>
+      </statBases>
+      <race>
+        <renderTree>Animal</renderTree>
+        <thinkTreeMain>Animal</thinkTreeMain>
+        <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+        <hasGenders>true</hasGenders>
+        <nameGenerator>NamerAnimalGenericMale</nameGenerator>
+        <nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale>
+        <trainability>None</trainability>
+        <bloodDef>Filth_Blood</bloodDef>
+        <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+        <canBecomeShambler>true</canBecomeShambler>
+        <hediffGiverSets>
+          <li>OrganicStandard</li>
+        </hediffGiverSets>
+        <leatherDef>Leather_Sealskin</leatherDef>
+        <body>Pinniped</body>
+        <predator>false</predator>
+        <canBePredatorPrey>false</canBePredatorPrey>
+        <herdAnimal>false</herdAnimal>
+        <disableMating>true</disableMating>
+        <baseBodySize>8</baseBodySize>
+        <baseHealthScale>7</baseHealthScale>
+        <foodType>OmnivoreAnimal</foodType>
+        <waterSeeker>true</waterSeeker>
+        <waterCellCost>1</waterCellCost>
+        <manhunterOnDamageChance>0</manhunterOnDamageChance>
+        <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+        <lifeExpectancy>45</lifeExpectancy>
+        <lifeStageAges>
+          <li>
+            <def>AnimalBaby</def>
+            <minAge>0</minAge>
+          </li>
+          <li>
+            <def>AnimalJuvenile</def>
+            <minAge>0.15</minAge>
+          </li>
+          <li>
+            <def>AnimalAdult</def>
+            <minAge>0.4</minAge>
+          </li>
+          <li>
+            <def>RM_WardenMotherElder</def>
+            <minAge>38</minAge>
+          </li>
+        </lifeStageAges>
+      </race>
+      <inspectorTabs>
+        <li>ITab_Pawn_Health</li>
+        <li>ITab_Pawn_Needs</li>
+        <li>ITab_Pawn_Character</li>
+        <li>ITab_Pawn_Training</li>
+        <li>ITab_Pawn_Social</li>
+        <li>ITab_Pawn_Guest</li>
+        <li>ITab_Pawn_Prisoner</li>
+        <li MayRequire="Ludeon.RimWorld.Ideology">ITab_Pawn_Slave</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Pawn_Feeding</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_Genes</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">ITab_GenesPregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">ITab_Entity</li>
+        <li>ITab_Pawn_FormingCaravan</li>
+        <li>ITab_Pawn_Gear</li>
+        <li>ITab_Pawn_Log</li>
+      </inspectorTabs>
+      <comps>
+        <li>
+          <compClass>CompAttachBase</compClass>
+        </li>
+        <li Class="CompProperties_HoldingPlatformTarget" MayRequire="Ludeon.RimWorld.Anomaly">
+          <baseEscapeIntervalMtbDays>120</baseEscapeIntervalMtbDays>
+          <getsColdContainmentBonus>true</getsColdContainmentBonus>
+        </li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly" Class="CompProperties_Studiable">
+          <frequencyTicks>120000</frequencyTicks>
+          <knowledgeCategory MayRequire="Ludeon.RimWorld.Anomaly">Basic</knowledgeCategory>
+          <anomalyKnowledge>1</anomalyKnowledge>
+          <requiresImprisonment>true</requiresImprisonment>
+          <minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+          <dutyDef>RM_AnchorGuard</dutyDef>
+          <anchorRadius>16</anchorRadius>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+          <checkIntervalTicks>60</checkIntervalTicks>
+        </li>
+      </comps>
+      <drawGUIOverlay>true</drawGUIOverlay>
+      <thingCategories>
+        <li>Animals</li>
+      </thingCategories>
+      <recipes>
+        <li>ExciseCarcinoma</li>
+        <li>AdministerMechSerumHealer</li>
+        <li>RemoveBodyPart</li>
+        <li>Euthanize</li>
+        <li>Anesthetize</li>
+        <li>CureScaria</li>
+        <li>Sterilize</li>
+        <li MayRequire="Ludeon.RimWorld.Royalty">CureBloodRot</li>
+        <li MayRequire="Ludeon.RimWorld.Biotech">TerminatePregnancy</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">SurgicalInspection</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RemovePorcupineQuill</li>
+      </recipes>
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <description>Barnacled, scarred, and older than anything else that swims these shallows — you can see it in how slowly she moves now. She goes wherever the water goes, and nowhere else; the few metres of dry ground between her and anything on land might as well be another world. Lethal to anything she can reach. Not tame, not tameable, and not gentle — but she remembers who freed her young from a drying pool, and she will not touch you for it.</description>
+      <tools>
+        <li>
+          <label>crushing bite</label>
+          <capacities>
+            <li>Bite</li>
+          </capacities>
+          <power>22</power>
+          <cooldownTime>2.0</cooldownTime>
+          <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        </li>
+        <li>
+          <label>flipper slam</label>
+          <capacities>
+            <li>Blunt</li>
+          </capacities>
+          <power>18</power>
+          <cooldownTime>2.6</cooldownTime>
+          <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+          <chanceFactor>0.6</chanceFactor>
+        </li>
+      </tools>
+    </ThingDef>
+    <PawnKindDef ParentName="AnimalKindBase">
+      <defName>RM_WardenMother</defName>
+      <label>warden mother</label>
+      <race>RM_WardenMother</race>
+      <combatPower>1400</combatPower>
+      <wildGroupSize>1</wildGroupSize>
+      <ecoSystemWeight>0</ecoSystemWeight>
+      <canArriveManhunter>false</canArriveManhunter>
+      <moveSpeedFactorByTerrainTag>
+        <li>
+          <key>Water</key>
+          <value>1.8</value>
+        </li>
+      </moveSpeedFactorByTerrainTag>
+      <lifeStages>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>3.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>5.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+        <li>
+          <bodyGraphicData>
+            <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>7.5</drawSize>
+          </bodyGraphicData>
+        </li>
+      </lifeStages>
+    </PawnKindDef>
+  </Resolved>
+  <Source input="src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml:selected biome" sha256="f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240">
+    <BiomeDef>
+      <defName>RM_Miasma</defName>
+      <label>the Miasma</label>
+      <description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath. Walking is hard, the air hangs thick, and the water crowds with life -- because everything ends up here: the water, the sins it carries, and the life running from the salt. Threaded through the stink, improbably, beauty: rainbow-hued plants, young animals everywhere, and the stubborn sense the place is on the verge of something.</description>
+      <workerClass>RimMandrake.Miasma.RM_BiomeWorker_Miasma</workerClass>
+      <foragedFood>RawBerries</foragedFood>
+      <allowRoads>true</allowRoads>
+      <allowRivers>true</allowRivers>
+      <allowFarmingCamps>true</allowFarmingCamps>
+      <animalDensity>6.5</animalDensity>
+      <plantDensity>0.7</plantDensity>
+      <forageability>1.0</forageability>
+      <movementDifficulty>4</movementDifficulty>
+      <texture>World/Biomes/RM_Miasma</texture>
+      <diseaseMtbDays>15</diseaseMtbDays>
+      <biomeMapConditions>
+        <li>RM_MiasmaWeatherLock</li>
+      </biomeMapConditions>
+      <modExtensions>
+        <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+          <glowMultiplier>0.85</glowMultiplier>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
+          <waterBands>
+            <li>
+              <max>0.34</max>
+            </li>
+            <li MayRequire="mandrake.rm.flowworks">
+              <max>0.66</max>
+              <terrainShallow>RM_WaterBrackishShallow</terrainShallow>
+              <terrainDeep>RM_WaterBrackishDeep</terrainDeep>
+            </li>
+            <li MayRequire="mandrake.rm.flowworks">
+              <max>1</max>
+              <terrainShallow>RM_WaterBrineShallow</terrainShallow>
+              <terrainDeep>RM_WaterBrineDeep</terrainDeep>
+            </li>
+          </waterBands>
+          <landRepaintMinSalinity>0.85</landRepaintMinSalinity>
+          <landRepaintSource>
+            <li>Mud</li>
+            <li>RM_FertileMud</li>
+          </landRepaintSource>
+          <landTerrain>RM_MiasmaSaltCrust</landTerrain>
+          <landRepaintKillPlant>RM_Ilbareen</landRepaintKillPlant>
+          <landRepaintDeadPlant>RM_IlbareenDead</landRepaintDeadPlant>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
+          <incidentDef>RM_Surge</incidentDef>
+          <baseMtbDays>5</baseMtbDays>
+          <stormMtbMultiplier>0.25</stormMtbMultiplier>
+          <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
+          <frontCellsRange>15~35</frontCellsRange>
+          <recedeDaysRange>2~4</recedeDaysRange>
+          <residualFraction>0.15</residualFraction>
+        </li>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+          <strandedSpawnList>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>
+            <li>RM_SiltLampreyJuv</li>
+            <li>RM_CrimsonOpeeJuv</li>
+            <li>RM_ThornbackColoJuv</li>
+            <li>RM_ShaleGorgerJuv</li>
+            <li>RM_ReefbackJuv</li>
+          </strandedSpawnList>
+          <emptyWeight>40</emptyWeight>
+          <smallWeight>50</smallWeight>
+          <bigWeight>10</bigWeight>
+          <strandedCountSmall>1~2</strandedCountSmall>
+          <strandedCountBig>3~5</strandedCountBig>
+          <decayDaysRange>3~8</decayDaysRange>
+          <poolSizeThreshold>4</poolSizeThreshold>
+          <searchRadius>60</searchRadius>
+          <dryTerrain>RM_MiasmaSaltCrust</dryTerrain>
+          <strandedDeformationHediff>RM_StrandedDeformation</strandedDeformationHediff>
+          <strandedDeformationChance>0.25</strandedDeformationChance>
+        </li>
+      </modExtensions>
+      <diseases>
+        <li>
+          <diseaseInc>RM_Disease_BacterialGangrene</diseaseInc>
+          <commonality>100</commonality>
+        </li>
+        <li>
+          <diseaseInc>RM_Disease_ViralAbasia</diseaseInc>
+          <commonality>100</commonality>
+        </li>
+        <li>
+          <diseaseInc>RM_Disease_RavagingIntestinalParasites</diseaseInc>
+          <commonality>100</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_Malaria</diseaseInc>
+          <commonality>160</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_SleepingSickness</diseaseInc>
+          <commonality>140</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_Flu</diseaseInc>
+          <commonality>100</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_Plague</diseaseInc>
+          <commonality>100</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_GutWorms</diseaseInc>
+          <commonality>80</commonality>
+        </li>
+        <li>
+          <diseaseInc>Disease_MuscleParasites</diseaseInc>
+          <commonality>80</commonality>
+        </li>
+      </diseases>
+      <terrainsByFertility>
+        <li>
+          <terrain>Mud</terrain>
+          <min>-999</min>
+          <max>0.65</max>
+        </li>
+        <li>
+          <terrain>RM_FertileMud</terrain>
+          <min>0.65</min>
+          <max>999</max>
+        </li>
+      </terrainsByFertility>
+      <baseWeatherCommonalities>
+        <Clear>8</Clear>
+        <Fog>5</Fog>
+        <DryThunderstorm>0.9</DryThunderstorm>
+        <SnowGentle>0</SnowGentle>
+        <SnowHard>0</SnowHard>
+      </baseWeatherCommonalities>
+      <wildAnimals>
+        <RM_Karrobel>0.6</RM_Karrobel>
+        <RM_FeverSwarm>0.9</RM_FeverSwarm>
+        <RM_RustNipperJuv>0.25</RM_RustNipperJuv>
+        <RM_SiltLampreyJuv>0.25</RM_SiltLampreyJuv>
+        <RM_CrimsonOpeeJuv>0.25</RM_CrimsonOpeeJuv>
+        <RM_ThornbackColoJuv>0.25</RM_ThornbackColoJuv>
+        <RM_ShaleGorgerJuv>0.25</RM_ShaleGorgerJuv>
+        <RM_ReefbackJuv>0.15</RM_ReefbackJuv>
+        <RM_Karravel>3.5</RM_Karravel>
+        <RM_Karrimeth>0.8</RM_Karrimeth>
+        <RM_Karrolun>1.2</RM_Karrolun>
+        <RM_Bozzuga>0.3</RM_Bozzuga>
+        <RM_Ommok MayRequire="mandrake.rm.biomes">0.025</RM_Ommok>
+        <RM_Saluksis MayRequire="mandrake.rm.greentide">0.7</RM_Saluksis>
+        <RM_Ondrukka>0.5</RM_Ondrukka>
+        <RM_Siezer>0.2</RM_Siezer>
+        <RM_Mantrap>0.2</RM_Mantrap>
+        <RM_Sharpshrimp>0.2</RM_Sharpshrimp>
+        <RM_DecayDrake>0.1</RM_DecayDrake>
+        <RM_Bileworm MayRequire="mandrake.rm.warscar">0.1</RM_Bileworm>
+        <RM_Thermadon>0.1</RM_Thermadon>
+        <RM_Liliana>0.3</RM_Liliana>
+      </wildAnimals>
+      <coastalWildAnimals />
+      <wildPlants>
+        <RM_Thessamor>9</RM_Thessamor>
+        <RM_Brelloch>6</RM_Brelloch>
+        <RM_Quennath>3</RM_Quennath>
+        <RM_Ilbareen>4</RM_Ilbareen>
+        <RM_Ollamane>6</RM_Ollamane>
+        <RM_Vellamine>2</RM_Vellamine>
+        <RM_Ismerrow>1</RM_Ismerrow>
+        <RM_Aphreen>2</RM_Aphreen>
+        <RM_Nyssolet>1</RM_Nyssolet>
+        <RM_Sarrash>2</RM_Sarrash>
+        <RM_Ullavess>2</RM_Ullavess>
+        <RM_Nemreth>1</RM_Nemreth>
+        <RM_Velluric>1</RM_Velluric>
+        <RM_Braskeen>1</RM_Braskeen>
+        <RM_Ommolyn>1</RM_Ommolyn>
+        <RM_Immarel>2</RM_Immarel>
+        <RM_Thrannock>4</RM_Thrannock>
+        <RM_Pallasheen>1</RM_Pallasheen>
+        <RM_Wessaline>1</RM_Wessaline>
+        <RM_Nogtyl MayRequire="mandrake.rm.biomes">0.4</RM_Nogtyl>
+      </wildPlants>
+      <wildPlantRegrowDays>13</wildPlantRegrowDays>
+      <extraGenSteps>
+        <li>RM_WreckField_Miasma</li>
+      </extraGenSteps>
+    </BiomeDef>
+  </Source>
+  <Source input="src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml:selected biome" sha256="5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634">
+    <BiomeDef>
+      <defName>RM_GreySea</defName>
+      <label>the Grey Sea</label>
+      <description>A hypersaline terminal sea on the terminator band, its own endemic mat holding it alone the way the Twilight Sea's holds that one. Salt-encrusted and shrinking faster than its sister sea — the planet's chemical works, and the retreating shoreline is free surveying for anyone who can read the terraces.</description>
+      <workerClass>BiomeWorker_Ocean</workerClass>
+      <isWaterBiome>true</isWaterBiome>
+      <canBuildBase>false</canBuildBase>
+      <allowRoads>true</allowRoads>
+      <allowRivers>false</allowRivers>
+      <hasVirtualPlants>false</hasVirtualPlants>
+      <texture>World/Biomes/RM_GreySea</texture>
+      <impassable>true</impassable>
+      <isBackgroundBiome>true</isBackgroundBiome>
+      <modExtensions>
+        <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension">
+          <deepTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineDeep</deepTerrain>
+          <shallowTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineShallow</shallowTerrain>
+          <beachTerrain>RM_SaltCrustShore</beachTerrain>
+        </li>
+      </modExtensions>
+      <wildAnimals>
+        <RM_Reefback>0.005</RM_Reefback>
+        <RM_Fessk>0.01</RM_Fessk>
+        <RM_Essarn>0.6</RM_Essarn>
+        <RM_Otheska>0.2</RM_Otheska>
+        <RM_Nissik>0.9</RM_Nissik>
+        <RM_Grusk>0.8</RM_Grusk>
+        <RM_Thollim>0.7</RM_Thollim>
+        <RM_Corrik>0.05</RM_Corrik>
+        <RM_Orruhmu>0.05</RM_Orruhmu>
+      </wildAnimals>
+      <animalDensity>0.1</animalDensity>
+      <coastalWildAnimals />
+      <plantDensity>0.22</plantDensity>
+      <wildPlants>
+        <RM_CubicSculpture>0.6</RM_CubicSculpture>
+        <RM_CruciblePod>0.5</RM_CruciblePod>
+        <RM_MosaicFanPalm>0.4</RM_MosaicFanPalm>
+        <RM_SpherePlant>0.35</RM_SpherePlant>
+        <RM_BrineCrown>0.15</RM_BrineCrown>
+        <RM_GlassVeilKelp>2.0</RM_GlassVeilKelp>
+        <RM_SaltChimneyVine>2.0</RM_SaltChimneyVine>
+        <RM_SaltBladeGrey>0.03</RM_SaltBladeGrey>
+        <RM_SaltBladeTwilight>0.03</RM_SaltBladeTwilight>
+        <RM_Masonmat>1.0</RM_Masonmat>
+        <RM_Mournweft>0.5</RM_Mournweft>
+        <RM_Saltswoon>0.35</RM_Saltswoon>
+        <RM_Hoarstock>0.3</RM_Hoarstock>
+        <RM_Milkwell>0.25</RM_Milkwell>
+        <RM_Murkblush>0.2</RM_Murkblush>
+        <RM_Neverset>0.15</RM_Neverset>
+        <RM_Brinecomb>1.5</RM_Brinecomb>
+      </wildPlants>
+      <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+      <baseWeatherCommonalities>
+        <Clear>12</Clear>
+        <Fog>7</Fog>
+        <RM_GreySaltSnow>6</RM_GreySaltSnow>
+      </baseWeatherCommonalities>
+      <terrainsByFertility>
+        <li>
+          <terrain>RM_WaterBrineDeep</terrain>
+          <min>-999</min>
+          <max>0.6</max>
+        </li>
+        <li>
+          <terrain>RM_WaterBrineShallow</terrain>
+          <min>0.6</min>
+          <max>999</max>
+        </li>
+      </terrainsByFertility>
+      <maxFishPopulation>60</maxFishPopulation>
+      <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+        <saltwater_Common>
+          <RM_EssarnCatch>0.8</RM_EssarnCatch>
+          <RM_NissikCatch>1.0</RM_NissikCatch>
+          <RM_ThollimCatch>0.9</RM_ThollimCatch>
+          <RM_GruskCatch>0.7</RM_GruskCatch>
+        </saltwater_Common>
+        <rareCatchesSetMaker>RM_RareGreyCatches</rareCatchesSetMaker>
+      </fishTypes>
+    </BiomeDef>
+  </Source>
+  <Source input="src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml:nodes" sha256="0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f">
+    <Operation Class="PatchOperationFindMod">
+      <mods>
+        <li>RimMandrake: Acoustic Scanner</li>
+      </mods>
+      <match Class="PatchOperationAddModExtension">
+        <xpath>/Defs/BiomeDef[defName="RM_Miasma"]</xpath>
+        <value>
+          <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+            <quietText>Brackish water and soft roots, deadened by the salt. Nothing in the channels is any bigger than it looks.</quietText>
+            <targets>
+              <li>
+                <label>nursery shallows</label>
+                <reading>Many small quick echoes in the brine shallows, and one larger, slower one keeping watch.</reading>
+                <color>(1, 0.6, 0.45)</color>
+                <weight>2</weight>
+                <thingDefs>
+                  <li>RM_CrecheMarker</li>
+                </thingDefs>
+              </li>
+              <li>
+                <label>young things in the channel mud</label>
+                <reading>Small hard shells and soft bodies in the channel mud, a lot of them.</reading>
+                <color>(0.9, 0.5, 0.4)</color>
+                <pawnRaces>
+                  <li>RM_SiltLampreyJuv</li>
+                  <li>RM_RustNipperJuv</li>
+                  <li>RM_CrimsonOpeeJuv</li>
+                  <li>RM_ThornbackColoJuv</li>
+                  <li>RM_ShaleGorgerJuv</li>
+                  <li>RM_ReefbackJuv</li>
+                </pawnRaces>
+              </li>
+              <li>
+                <label>brined flotsam</label>
+                <reading>Salt-crusted metal thrown up by a surge, hollow and ringing dull.</reading>
+                <color>(0.8, 0.8, 0.85)</color>
+                <thingDefs>
+                  <li>RM_MiasmaFlotsamFrame</li>
+                  <li>RM_MiasmaFlotsamTank</li>
+                </thingDefs>
+              </li>
+              <li>
+                <label>void under the roots</label>
+                <reading>The echo falls into a hollow under the stilt roots.</reading>
+                <color>(0.6, 0.6, 0.9)</color>
+                <hiddenCaves>true</hiddenCaves>
+                <cellSampleStride>4</cellSampleStride>
+              </li>
+            </targets>
+          </li>
+        </value>
+      </match>
+    </Operation>
+  </Source>
+  <Source input="src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml:nodes" sha256="78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16">
+    <GenStepDef>
+      <defName>RM_GenStep_CrecheScatterer</defName>
+      <order>235</order>
+      <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+        <countPer10kCellsRange>0.4~0.6</countPer10kCellsRange>
+        <spotMustBeStandable>true</spotMustBeStandable>
+        <warnOnFail>false</warnOnFail>
+        <validators>
+          <li Class="RimMandrake.EnvironmentalHazards.RM_ScattererValidator_BrineShallowWater">
+            <minSalinity>0.6</minSalinity>
+          </li>
+        </validators>
+        <elements>
+          <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+            <markerDef>RM_CrecheMarker</markerDef>
+          </li>
+          <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
+            <pawnKind>RM_WardenMother</pawnKind>
+            <anchorMarkerDef>RM_CrecheMarker</anchorMarkerDef>
+            <youngSpawnChance>0.35</youngSpawnChance>
+            <youngKinds>
+              <li>RM_SiltLampreyJuv</li>
+              <li>RM_RustNipperJuv</li>
+              <li>RM_CrimsonOpeeJuv</li>
+              <li>RM_ThornbackColoJuv</li>
+              <li>RM_ShaleGorgerJuv</li>
+              <li>RM_ReefbackJuv</li>
+            </youngKinds>
+            <youngDeformationHediff>RM_StrandedDeformation</youngDeformationHediff>
+            <youngSpawnRadius>1~3</youngSpawnRadius>
+          </li>
+        </elements>
+      </genStep>
+    </GenStepDef>
+  </Source>
+</SelectedSources>

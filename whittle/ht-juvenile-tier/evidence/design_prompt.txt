@@ -1,0 +1,1073 @@
+You are a FRESH independent delegated design judge. Tools are disabled; use only the exact inputs below. No builder verdict or proposal has been provided. Decide KEEP/REDO/UNSURE for the current event-classification and spacing policy with reasons grounded in the owner constraints. Should AdultTier use lineage/base-size floor1 or the maximum supported life-stage size of this race? How should that affect T3 passage spacing? Preserve the exact owner's calf allowance: normal calf kinds whose race grows to a titan must remain eligible by grown tier. Distinguish conservative comp-attachment from event classification and runtime tier. Specify missing/empty/null/malformed stage fallback, factors above1, force overrides, threshold fallbacks, caches and possible runtime-only size changes. Do not invent a natural passage or L4 bar. Then BROADEN: identify concrete missed real scenarios and useful bounded negative controls. This is delegated design, never owner approval. No roster evictions or combat changes authorized. Return a clear bounded policy and controls, including any remaining caveats.
+
+Neutral matrix to assess: ordinary race base32 factors0.2/0.5/1 with a calf pawn; juvenile-only race base32 factors0.2/0.5; race base3 factor4; null/empty list; null entries/defs; factor0/negative/NaN/infinity; explicit force-in/out; exact boundary size16 with custom T3=16; valid custom ladder and disabled/equal/descending/NaN/infinite ladder. Current GetTier uses actual Pawn.BodySize; current AdultTier and DefQualifies start maxFactor at1. Spacing predicates can be called with t3OnMap false/true and unchanged sea/pool/season gates. Do not assume this mismatch alone proves intended policy wrong.
+
+
+--- whittle/ht-juvenile-tier/STATEMENT.md sha256=7efb38c8bf7f3921ef2a449c3e1a9db4c7c9aedfec8b954e3bcdd0c81b7a250f ---
+# Juvenile passage classification — RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION
+
+- Resolve juvenile-only race classification and T3 passage spacing through an independent delegated design decision, preserving the owner's calf allowance, biome pools, land/sea matching and explicit force overrides.
+- Make the source and current specifications agree with that decision, retaining the separate conservative comp-attachment policy and focused adult, juvenile-only, growth-above-one, missing-stage, force and threshold controls.
+- On a fresh deployed SteveDesktop process, prove actual GetTier, AdultTier and T3-spacing predicate results for representative definitions under default and custom thresholds, restoring every changed setting and fixture exactly; retain raw proof and a fresh independent Codex judgment without claiming a completed passage, crossing, flight or L4 acceptance.
+
+
+--- whittle/ht-juvenile-tier/NOTES.md sha256=4badc7e6c3f6077421d4bd39738291f8ed0bb06b500003bbef2116e60565c9b9 ---
+# Owner rulings
+
+2026-10-21, OWNER tsn1792618983088247673: "Calves are ok".
+
+2026-11-11 Conductor order: "never show a flyer's flight live". No owner question is authorized in this drain.
+
+
+--- whittle/ht-juvenile-tier/evidence/item-before.txt sha256=016cbad641b29d72cb8b4b8c1b74af40d2ba42c30a380f14178c15abd305db2b ---
+RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION   doing  row -  needs bridge  target v1
+Resolve juvenile-only AdultTier T3 spacing versus supported T2; preserve the owner calf allowance.
+owner CODEX_STEVEDESKTOP_HUGETHINGS   kind task   filed 2026-11-11T14:44:30Z
+
+--- items/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md ---
+## spec
+Resolve the difference between a juvenile-only race's maximum supported pawn tier and HugeThings' lineage-based AdultTier classifier. RM_ReefbackJuv inherits base32 but supports only factors0.2/0.5: GetTier reaches T2, while AdultTier's maxFactor floor1 reports T3. Passage therefore rejects this candidate when a living T3 already exists, although the arrived calf cannot count as a living T3 itself. This is a concrete semantic difference, not proof that the intended lineage classification is wrong.
+
+Preserve the owner's 2026-10-21 "Calves are ok" ruling (OWNER tsn1792618983088247673), biome-owned pool/list rules, land/sea matching and explicit force overrides. Obtain an independent delegated design ruling on lineage versus maximum-supported classification and the T3 spacing rule. Apply the warranted bounded fix, or document why retaining the current classification is intended; do not quietly change calf eligibility. Keep DefQualifies' conservative comp-attachment purpose separate from event tier semantics.
+
+Evidence: whittle/ht-reefback-calf/JUDGE.md, section Consequences; evidence/raw/measure/broaden-followups.json; evidence/raw/owner-calf-ruling.json. Production source: HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs:78-105, Events/TitanPassage.cs:55-73 and118-120, Kernel/RM_TitanicKernel.cs:212-217. No existing live item covered this selected difference when filed.
+
+## verify
+The policy is explicit and independently judged. Focused kernel checks retain normal adult, juvenile-only, growth-above-one and force controls. Loaded minimal-tier C# reads and spacing-predicate calls agree with the chosen policy under default and custom thresholds; report loaded-method scope rather than a completed passage.
+
+## criteria
+- A1 L0: Source/specifications agree with an independent delegated classifier/spacing decision; focused positive and negative controls pass without changing the calf allowance or other passage gates.
+- A2 L1: On a fresh deployed minimal-tier process, representative juvenile-only and ordinary adult definitions plus growth/force/threshold controls produce the chosen actual GetTier/AdultTier and T3-spacing results.
+
+NEXT: inspect the exact owner calf ruling and raw gate matrix, freeze one whole Whittle statement, and obtain the delegated semantic decision before changing classification.
+
+New mechanism not yet observed: the chosen juvenile-only event classification/spacing contract has no loaded-method proof; no claim of a natural passage or crossing is made here.
+
+--- history (5 events) ---
+  2026-11-11T14:44:30Z  CODEX_STEVEDESKTOP_HUGETHINGS file      caused_by=REEFBACK_CALF_MEASURE_TITAN_ON_LAND for=BENCH kind=task needs=bridge spec=infrastructure/state/items/RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION.md target=v1 title=Resolve juvenile-only AdultTier T3 spacing versus supported T2; preserve the owner calf allowance. tsn=1794408270266385674  | agent's reason: delegated: scope; fresh independent HugeThings review found an untested semantic difference; worker seat lacks a filing-reader route, reassign next under Conductor identity order
+  2026-11-11T14:44:36Z  CODEX_STEVEDESKTOP_HUGETHINGS reassign  to=CODEX_STEVEDESKTOP_HUGETHINGS tsn=1794408276694490297  | agent's reason: Conductor order 2026-11-11 worker identity
+  2026-11-11T15:53:07Z  CODEX_STEVEDESKTOP_HUGETHINGS lease     action=take expires=2026-11-11T16:38:07Z token=CODEX_STEVEDESKTOP_HUGETHINGS.pid29029.26015292 tsn=1794412389533604454  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T15:53:11Z  CODEX_STEVEDESKTOP_HUGETHINGS claim     tsn=1794412391453734867  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+  2026-11-11T15:53:13Z  CODEX_STEVEDESKTOP_HUGETHINGS start     tsn=1794412393323380272  | agent's reason: Conductor order 2026-11-11 HugeThings drain
+--- causal chain ---
+  RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION  <- caused by REEFBACK_CALF_MEASURE_TITAN_ON_LAND
+
+
+--- whittle/ht-reefback-calf/evidence/raw/owner-calf-ruling.json sha256=d531e67e56a933d8c013f8ce4e65c695b723d80225af5de551998efccda97142 ---
+{
+  "source": "infrastructure/state/ledger/events/OWNER.jsonl",
+  "source_sha256": "eae6ff40f4db75f38071082ae3d339de0fab4dde346b03c29817d1d96c859274",
+  "event": {
+    "seat": "OWNER",
+    "event": "note",
+    "id": "TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT",
+    "text": "Ruled 2026-10-21. Implemented 1a104682f: juveniles stay (adult tier); sea creature (homed only in water/seabed biomes) only on sea maps and land giants only on land; pool = map biome's RM_TitanPassageExtension passers list when present, else the biome's own roster (replaces card #5's homed-elsewhere rule); extension 'none' opts a biome out. Rust Cathedral and the nightside biomes home no titan, so they host no passage without any opt-out; per-biome roster work filed as TITAN_PASSAGE_POPULATE_* items.",
+    "ownerSaid": "Calves are ok. Sea creatures are not on dry land. Opposite can happen in sea biomes. Only sea creatures not land creatures. Every biome should have something like this. It's Star Wars. A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist there. Should draw from the hints of their own biome always of course.",
+    "byCard": "Titan passage pool: sea/juvenile kinds → his notes",
+    "ts": "2026-10-21T21:43:03Z",
+    "tsn": 1792618983088247673
+  }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs sha256=9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de ---
+using System.Linq;
+using RimWorld;
+using Verse;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// The one place tier is computed. Everything else in the mod (comp
+    /// auto-attach, the wake processor, the yield curve, the corpse-site
+    /// conversion, LargePawnsBridge) calls through here rather than reading
+    /// bodySize or the modExtension itself, so the auto-attach rule and the
+    /// runtime tier can never drift apart.
+    /// </summary>
+    public static class TitanicTierUtility
+    {
+        private static RM_TitanicTierDef cachedThresholds;
+        private static readonly RM_TitanicTierDef customThresholds = new RM_TitanicTierDef { defName = "RM_TitanicTiers_ModSettings" };
+
+        /// <summary>
+        /// The ladder in force: the player's custom tiers (Mod Settings, giant animals on, custom tiers on, and strictly rising),
+        /// else the shipped RM_TitanicTierDef. Which races carry the wake comp and the Large Pawns rows are decided from this at
+        /// startup, so a change that moves a race across T1 needs a restart (the settings label says so); runtime tiers follow
+        /// it at once.
+        /// </summary>
+        public static RM_TitanicTierDef Thresholds
+        {
+            get
+            {
+                if (RM_HugeThingsSettings.TierThresholdsCustomActive
+                    && RM_TitanicKernel.ThresholdsValid(RM_HugeThingsSettings.tierT1MinBodySize, RM_HugeThingsSettings.tierT2MinBodySize,
+                                                        RM_HugeThingsSettings.tierT3MinBodySize))
+                {
+                    customThresholds.t1MinBodySize = RM_HugeThingsSettings.tierT1MinBodySize;
+                    customThresholds.t2MinBodySize = RM_HugeThingsSettings.tierT2MinBodySize;
+                    customThresholds.t3MinBodySize = RM_HugeThingsSettings.tierT3MinBodySize;
+                    return customThresholds;
+                }
+                return ShippedThresholds;
+            }
+        }
+
+        /// <summary>The shipped ladder, Defs/TitanicTierDefs/RM_TitanicTierDef.xml.</summary>
+        public static RM_TitanicTierDef ShippedThresholds
+        {
+            get
+            {
+                if (cachedThresholds == null)
+                {
+                    cachedThresholds = DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.FirstOrDefault();
+                    if (cachedThresholds == null)
+                    {
+                        Log.Error("[RimMandrake.TitanicCreatures] No RM_TitanicTierDef found - " +
+                                  "Defs/TitanicTierDefs/RM_TitanicTierDef.xml is missing or failed to " +
+                                  "load. Falling back to hardcoded defaults (4/8/20); fix the XML.");
+                        cachedThresholds = new RM_TitanicTierDef();
+                    }
+                }
+                return cachedThresholds;
+            }
+        }
+
+        /// <summary>RM_TitanicExtension.forceEnabled as the kernel's tri-state.</summary>
+        public static int ForceOf(RM_TitanicExtension ext)
+        {
+            if (ext == null || ext.forceEnabled == null) return RM_TitanicKernel.ForceAuto;
+            return ext.forceEnabled == true ? RM_TitanicKernel.ForceIn : RM_TitanicKernel.ForceOut;
+        }
+
+        /// <summary>
+        /// Def-level qualification check: could ANY pawn of this race ever be
+        /// tiered? Used only to decide whether to auto-attach CompTitanicWake
+        /// at def-load time (a lifestage/gene swelling a borderline race past
+        /// the floor at runtime must not require the comp to already be
+        /// present, so this checks the race's base bodySize, not any one
+        /// pawn's current BodySize).
+        /// </summary>
+        public static bool DefQualifies(ThingDef raceDef)
+        {
+            if (raceDef?.race == null)
+            {
+                return false;
+            }
+            // TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize = CurLifeStage.bodySizeFactor * baseBodySize, so qualify on the base times
+            // the largest life-stage factor; a race whose adult stage swells past T1 must carry the comp from the start.
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, maxFactor, Thresholds.t1MinBodySize,
+                ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: the tier a race's grown adult reaches (base size times its largest life-stage
+        /// factor) - what decides whether a race is a titan for the titan event and a non-titan for the scavenger draw.</summary>
+        public static TitanicTier AdultTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize, t.t2MinBodySize,
+                t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>
+        /// The runtime tier for one pawn right now - the authority every
+        /// other system in this mod reads.
+        /// </summary>
+        public static TitanicTier GetTier(Pawn pawn)
+        {
+            if (pawn?.RaceProps == null)
+            {
+                return TitanicTier.None;
+            }
+            // Pawn.BodySize = lifestage.bodySizeFactor * RaceProps.baseBodySize
+            // (Verse/Pawn.cs). OPEN QUESTION (flagged, not guessed): whether any
+            // gene StatDef offsets a separate "BodySize" stat outside this
+            // formula is unconfirmed - if a future gene needs to move a pawn
+            // between tiers independently of RaceProps/lifestage, that stat
+            // must be found and read here rather than assumed absent.
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(pawn.BodySize, t.t1MinBodySize, t.t2MinBodySize, t.t3MinBodySize,
+                ForceOf(pawn.def.GetModExtension<RM_TitanicExtension>()));
+        }
+    }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs sha256=f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18 ---
+// Verse-free kernel of Titanic Creatures: the size-tier ladder, the force-in/force-out override, the Large Pawns footprint size, the
+// sub-linear butcher yield, the crush decision and damage, the roof rule, and the T3 corpse-site pool arithmetic (daily spoilage and
+// per-session harvest). TitanicTierUtility, YieldCurveUtility, CrushTableUtility, TitanicWakeProcessor, LargePawnsBridge and
+// Building_TitanicCorpseSite call these with the same expressions; SelfTest/TitanicFuzz.cs compiles this file alone.
+// Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks the self-test build, which is the guard rail).
+// Tiers are ints (None 0, T1 1, T2 2, T3 3) so they order with the same comparisons the enum TitanicTier gives.
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.TitanicCreatures
+{
+    public static class RM_TitanicKernel
+    {
+        public const int None = 0, T1 = 1, T2 = 2, T3 = 3;
+        /// <summary>RM_TitanicExtension.forceEnabled: unset (auto), true (force in), false (force out).</summary>
+        public const int ForceAuto = 0, ForceIn = 1, ForceOut = -1;
+
+        // PROVISIONAL (BENCH draft, not owner-ruled): crush damage per pass, before the player's multiplier.
+        public const float CrushDamageLight = 20f;
+        public const float CrushDamageHeavy = 60f;
+        public const int TicksPerDay = 60000;
+
+        /// <summary>The player-facing tier ladder is only meaningful when 0 &lt; T1 &lt; T2 &lt; T3.</summary>
+        public static bool ThresholdsValid(float t1, float t2, float t3)
+        {
+            // B3.19 / C3.6 / D3.3: an infinite or NaN rung is never a ladder (NaN fails every comparison already; inf T3 did not).
+            return Finite(t1) && Finite(t2) && Finite(t3) && t1 > 0f && t1 < t2 && t2 < t3;
+        }
+
+        public static bool Finite(float v) => !float.IsNaN(v) && !float.IsInfinity(v);
+
+        /// <summary>HUGETHINGS_SETTINGS_HARDENING_1 (B3.19): a Scribe-loaded or edited float setting, forced finite and into its slider
+        /// range; a NaN/infinite value falls back to the shipped default (itself clamped, so a bad default cannot escape either).</summary>
+        public static float SaneSetting(float v, float min, float max, float fallback)
+        {
+            if (!Finite(v)) v = fallback;
+            if (!Finite(v)) v = min;
+            return Clamp(v, min, max);
+        }
+
+        /// <summary>Integer setting into its slider range.</summary>
+        public static int SaneSetting(int v, int min, int max)
+        {
+            return v < min ? min : (v > max ? max : v);
+        }
+
+        /// <summary>Def-level: could any pawn of this race ever be tiered (decides the comp auto-attach).</summary>
+        public static bool DefQualifies(float baseBodySize, float t1, int force)
+        {
+            if (force == ForceOut) return false;
+            if (force == ForceIn) return true;
+            return baseBodySize >= t1;
+        }
+
+        /// <summary>TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize is lifestage.bodySizeFactor x baseBodySize, so a race qualifies on its
+        /// base times the LARGEST factor any of its life stages reaches (a factor below 1 never shrinks the test below the base).</summary>
+        public static bool DefQualifies(float baseBodySize, float maxLifeStageFactor, float t1, int force)
+        {
+            float f = Finite(maxLifeStageFactor) && maxLifeStageFactor > 1f ? maxLifeStageFactor : 1f;
+            return DefQualifies(baseBodySize * f, t1, force);
+        }
+
+        /// <summary>TITAN_WAKE_FIXES_1 (B3.6): a multi-cell thing is registered in every cell it covers, so a footprint scan sees it once per
+        /// covered cell. Each thing comes back once, in first-seen order, so one titan step strikes it once.</summary>
+        public static List<T> UniqueInOrder<T>(IEnumerable<IEnumerable<T>> cells) where T : class
+        {
+            var seen = new HashSet<T>();
+            var outList = new List<T>();
+            foreach (IEnumerable<T> cell in cells)
+            {
+                if (cell == null) continue;
+                foreach (T t in cell)
+                    if (t != null && seen.Add(t)) outList.Add(t);
+            }
+            return outList;
+        }
+
+        /// <summary>Runtime tier of one pawn: bodySize ladder, force-out wins, force-in floors at T1.</summary>
+        public static int TierFor(float bodySize, float t1, float t2, float t3, int force)
+        {
+            if (force == ForceOut) return None;
+            int tier;
+            if (bodySize >= t3) tier = T3;
+            else if (bodySize >= t2) tier = T2;
+            else if (bodySize >= t1) tier = T1;
+            else tier = None;
+            if (tier == None && force == ForceIn) tier = T1;
+            return tier;
+        }
+
+        /// <summary>Tier a body size would reach if it qualified at all (never None): what the Large Pawns footprint is projected from.</summary>
+        public static int QualifiedTier(float bodySize, float t2, float t3)
+        {
+            if (bodySize >= t3) return T3;
+            if (bodySize >= t2) return T2;
+            return T1;
+        }
+
+        /// <summary>Large Pawns footprint edge for a tier (its hard ceiling is 4).</summary>
+        public static int FootprintSize(int tier)
+        {
+            switch (tier)
+            {
+                case T3: return 4;
+                case T2: return 3;
+                default: return 2;
+            }
+        }
+
+        /// <summary>The Large Pawns size-override row for a def that carries an RM_TitanicExtension with forceEnabled set (force-in always qualifies;
+        /// a force-in race below the T1 floor is T1).</summary>
+        public static int OverrideFootprint(float baseBodySize, float t1, float t2, float t3, int force)
+        {
+            if (force == ForceOut) return 1;
+            return FootprintSize(QualifiedTier(baseBodySize, t2, t3));
+        }
+
+        /// <summary>Unity Mathf.Clamp semantics (min wins when min &gt; max).</summary>
+        public static float Clamp(float v, float min, float max)
+        {
+            if (v < min) v = min;
+            else if (v > max) v = max;
+            return v;
+        }
+
+        /// <summary>Yield multiplier for a T1/T2 corpse: sqrt(floor / bodySize), kept in [minFactor, 1].</summary>
+        public static float SubLinearFactor(float bodySize, float floor, float minFactor)
+        {
+            float b = Math.Max(bodySize, floor);
+            return Clamp((float)Math.Sqrt(floor / b), minFactor, 1f);
+        }
+
+        /// <summary>The tier floor the yield curve measures against (T1 floor for T1, else T2's).</summary>
+        public static float YieldFloor(int tier, float t1, float t2)
+        {
+            return tier == T1 ? t1 : t2;
+        }
+
+        /// <summary>One crush-table row against a tier: unlisted things never reach here (they are protected by default).</summary>
+        public static bool CrushAllowed(int tier, bool crushable, int minTier)
+        {
+            return tier != None && crushable && tier >= minTier;
+        }
+
+        /// <summary>Crush damage per pass for a non-destroyed crushable. A bigger tier never hits softer than a smaller one.</summary>
+        public static float CrushDamage(int tier, float multiplier)
+        {
+            return (tier >= T2 ? CrushDamageHeavy : CrushDamageLight) * multiplier;
+        }
+
+        /// <summary>T3 destroys a crushable Building outright; everything else crushable takes damage.</summary>
+        public static bool DestroysOutright(int tier, bool isBuilding)
+        {
+            return tier == T3 && isBuilding;
+        }
+
+        /// <summary>Thin roofs are holed from T2; a thick roof (overhead mountain) is never removed.</summary>
+        public static bool HolesRoof(int tier, bool hasRoof, bool thick)
+        {
+            return tier >= T2 && hasRoof && !thick;
+        }
+
+        /// <summary>Rubble trail: every tiered pawn leaves a chance of filth per cell.</summary>
+        public static bool LeavesFilth(int tier, bool rolledUnderChance)
+        {
+            return tier >= T1 && rolledUnderChance;
+        }
+
+        /// <summary>Units lost to one day of spoilage: a fixed fraction of what is left, always at least one while anything is left.</summary>
+        public static int SpoilLoss(int remaining, float perDay)
+        {
+            if (remaining <= 0) return 0;
+            int loss = (int)Math.Ceiling(remaining * perDay);
+            return Math.Min(remaining, Math.Max(0, loss));
+        }
+
+        /// <summary>Units one work session pulls from the pool.</summary>
+        public static int HarvestTake(int remaining, int perSession)
+        {
+            return Math.Max(0, Math.Min(remaining, perSession));
+        }
+
+        // --- TITAN_CAMPS_SCAVENGERS_EVENTS_1 (cards #4 and #5, owner 2026-09-09) ------------------------------------------------
+
+        /// <summary>Units a site's visitors (drawn scavengers, a camp's people) eat or carry off in one day: each takes up to
+        /// perVisitorPerDay, never more than is left, never negative (long arithmetic, so a huge setting cannot overflow).</summary>
+        public static int VisitorTake(int remaining, int visitors, int perVisitorPerDay)
+        {
+            if (remaining <= 0 || visitors <= 0 || perVisitorPerDay <= 0) return 0;
+            long want = (long)visitors * perVisitorPerDay;
+            return (int)Math.Min(remaining, want);
+        }
+
+        /// <summary>How many scavengers one draw brings: at least one while meat is left, at most `max`, and never more than the
+        /// meat left can feed for a day (a nearly picked-clean site draws one, not a pack).</summary>
+        public static int ScavengerCount(int meatRemaining, int perVisitorPerDay, int max)
+        {
+            if (meatRemaining <= 0 || max <= 0) return 0;
+            int per = Math.Max(1, perVisitorPerDay);
+            long need = ((long)meatRemaining + per - 1) / per;
+            return (int)Math.Max(1, Math.Min(max, need));
+        }
+
+        /// <summary>TITAN_PASSAGE_PRUNE_WHALES_ON_FOOT (owner, by card 2026-10-21): "Calves are ok. Sea creatures are not on dry
+        /// land. Opposite can happen in sea biomes. Only sea creatures not land creatures. Every biome should have something like
+        /// this. ... A few exceptions such as rust cathedral and dark side biomes. Only if giants can exist there. Should draw
+        /// from the hints of their own biome always of course." A race may walk (or swim) in as a footfall-warned titan passage
+        /// only when: the map's biome has not opted out; it is a titan by its ADULT tier (T2 or T3, so a calf kind of a titan
+        /// race qualifies); its water-ness matches the map's (sea giants only on a sea map, land giants only on land); it comes
+        /// from the map biome's own hints, which are the biome's passage list when it has one and its own roster otherwise; the
+        /// season suits it; and (spacing law, one T3 per map) no T3 already stands on the map when it is itself T3.</summary>
+        public static bool TitanEventEligible(int adultTier, bool biomeOptedOut, bool seaCreature, bool seaMap,
+            bool biomeHasPassageList, bool onPassageList, bool homedHere, bool seasonOk, bool t3OnMap)
+        {
+            if (biomeOptedOut || adultTier < T2 || seaCreature != seaMap || !seasonOk) return false;
+            if (!(biomeHasPassageList ? onPassageList : homedHere)) return false;
+            return !(adultTier == T3 && t3OnMap);
+        }
+
+        /// <summary>A sea creature is a race homed in at least one biome, every one of them a sea biome. A race homed nowhere is
+        /// not a sea creature (and is never drawn: no biome hints it).</summary>
+        public static bool IsSeaCreature(int seaHomes, int landHomes) => seaHomes > 0 && landHomes == 0;
+
+        /// <summary>The footfall warning before a titan arrives, in ticks: the setting's hours (2500 ticks each), never below a
+        /// quarter hour, so the tremors always come first, never above three days. The hours are clamped BEFORE the cast: an
+        /// out-of-range double-to-long cast is unspecified (Mono gives long.MinValue, which read as the quarter-hour floor).</summary>
+        public static int WarningTicks(float hours)
+        {
+            double h = Finite(hours) ? Math.Max(0.0, Math.Min(hours, 72.0)) : 0.0;
+            long t = (long)Math.Round(h * 2500.0);
+            return (int)Math.Max(625L, Math.Min(t, 60000L * 3));
+        }
+
+        /// <summary>
+        /// TITAN_ROOF_AVOIDANCE_1 (B3.5 / D3.1 / D1.4): the anchor cells a titan's route must not use, because its footprint there
+        /// (anchor + [offMinX..offMaxX] x [offMinZ..offMaxZ]) would overlap a thick-roofed cell. thick[i] is cell i = z*w + x of a
+        /// w x h map. Every anchor within the footprint's reach of a thick cell is marked once in `outMark`.
+        /// </summary>
+        public static void MarkRoofExcluded(int w, int h, bool[] thick, int offMinX, int offMinZ, int offMaxX, int offMaxZ, bool[] outMark)
+        {
+            for (int i = 0; i < thick.Length; i++)
+            {
+                if (!thick[i]) continue;
+                int x = i % w, z = i / w;
+                // anchor a covers x when a.x + offMinX <= x <= a.x + offMaxX
+                int ax0 = Math.Max(0, x - offMaxX), ax1 = Math.Min(w - 1, x - offMinX);
+                int az0 = Math.Max(0, z - offMaxZ), az1 = Math.Min(h - 1, z - offMinZ);
+                for (int az = az0; az <= az1; az++)
+                    for (int ax = ax0; ax <= ax1; ax++)
+                        outMark[az * w + ax] = true;
+            }
+        }
+    }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs sha256=4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb ---
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.AI;
+using Verse.AI.Group;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// TITAN_CAMPS_SCAVENGERS_EVENTS_1, card #5 (owner 2026-09-09): "Titans roam only where the rosters home them; anywhere else
+    /// they arrive as scripted events/quests with warning (footfall tremors first). Wake damage applies to any structure including
+    /// the player's - that is the point."
+    ///
+    /// The incident only SCHEDULES: it picks a titan from this map biome's own hints (its RM_TitanPassageExtension passage list,
+    /// else its own roster; sea giants only on sea maps, land giants only on land; owner by card 2026-10-21), sends the tremor
+    /// letter, and hands the passage to MapComponent_TitanPassages, which shakes the camera with growing force through the
+    /// warning hours and then walks the titan across the map edge to edge (vanilla LordJob_ExitMapNear, the herd-migration
+    /// shape). The wake does the rest. No race or biome is named in code: the biome data decides who comes.
+    /// </summary>
+    public class IncidentWorker_TitanPassage : IncidentWorker
+    {
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            Map map = parms.target as Map;
+            if (map == null || !RM_HugeThingsSettings.TitanEventsActive) return false;
+            MapComponent_TitanPassages comp = map.GetComponent<MapComponent_TitanPassages>();
+            if (comp == null || comp.HasPending) return false;
+            return TitanPassageUtility.TryFindTitanKind(map, out _) && TitanPassageUtility.TryFindStartAndEnd(map, out _, out _);
+        }
+
+        protected override bool TryExecuteWorker(IncidentParms parms)
+        {
+            Map map = (Map)parms.target;
+            if (!TitanPassageUtility.TryFindTitanKind(map, out PawnKindDef kind)) return false;
+            if (!TitanPassageUtility.TryFindStartAndEnd(map, out IntVec3 start, out IntVec3 end)) return false;
+            MapComponent_TitanPassages comp = map.GetComponent<MapComponent_TitanPassages>();
+            if (comp == null) return false;
+            comp.Schedule(kind, start, end, RM_TitanicKernel.WarningTicks(RM_HugeThingsSettings.titanEventWarningHours));
+            SendStandardLetter("RM_TitanPassage_TremorLabel".Translate(), "RM_TitanPassage_TremorText".Translate(
+                    TitanPassageUtility.EdgeName(map, start)), LetterDefOf.ThreatSmall, parms, new TargetInfo(start, map));
+            return true;
+        }
+    }
+
+    public static class TitanPassageUtility
+    {
+        public const string SeabedLayerDefName = "RM_SeabedLayer";
+        public const string SeabedFloorExtensionName = "RM_SeabedFloorExtension";
+
+        /// <summary>The 2026-10-21 card's gate, per kind: RM_TitanicKernel.TitanEventEligible over the live biome commonalities.
+        /// A calf kind of a titan race is judged by its race's adult tier, so it qualifies ("Calves are ok").</summary>
+        public static bool Eligible(PawnKindDef k, Map map, bool t3OnMap)
+        {
+            if (k?.race?.race == null || map == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
+            if (k.race.GetModExtension<RM_TitanicExtension>()?.harnessOnly == true) return false;
+            int tier = (int)TitanicTierUtility.AdultTier(k.race);
+            if (tier < RM_TitanicKernel.T2) return false;
+            bool optedOut = map.Biomes.Any(b => b?.GetModExtension<RM_TitanPassageExtension>()?.none == true);
+            bool hasList = false, onList = false;
+            foreach (BiomeDef b in map.Biomes)
+            {
+                List<PawnKindDef> list = b?.GetModExtension<RM_TitanPassageExtension>()?.passers;
+                if (list == null || list.Count == 0) continue;
+                hasList = true;
+                if (list.Contains(k)) onList = true;
+            }
+            bool here = map.Biomes.Any(b => b.CommonalityOfAnimal(k) > 0f);
+            bool season = map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(k.race);
+            return RM_TitanicKernel.TitanEventEligible(tier, optedOut, IsSeaCreature(k), IsSeaMap(map), hasList, onList, here,
+                season, t3OnMap);
+        }
+
+        /// <summary>A sea biome: a water biome (Grey Sea, Twilight Sea, the Scald, the Chill...) or a seabed floor, whose cast is
+        /// its sea's (RM_SeabedFloorLife copies it at startup). The floor test is by extension type name on purpose: this
+        /// assembly must not depend on DivingInteraction.</summary>
+        public static bool IsSeaBiome(BiomeDef b)
+        {
+            if (b == null) return false;
+            if (b.isWaterBiome) return true;
+            if (b.modExtensions != null)
+                foreach (DefModExtension e in b.modExtensions)
+                    if (e != null && e.GetType().Name == SeabedFloorExtensionName) return true;
+            return false;
+        }
+
+        /// <summary>A sea map: its own biome is a sea biome, or it lies on the seabed planet layer (name test, as
+        /// RM_SurfaceHome.IsSeabedMap).</summary>
+        public static bool IsSeaMap(Map map)
+        {
+            if (map == null) return false;
+            if (map.Tile.Valid && map.Tile.Layer?.Def?.defName == SeabedLayerDefName) return true;
+            return IsSeaBiome(map.Biome);
+        }
+
+        private static Dictionary<PawnKindDef, bool> seaCache;
+
+        /// <summary>A sea creature: homed in at least one biome, and only ever in sea biomes. Cached per kind (rosters are fixed
+        /// after def load).</summary>
+        public static bool IsSeaCreature(PawnKindDef k)
+        {
+            if (k == null) return false;
+            if (seaCache == null) seaCache = new Dictionary<PawnKindDef, bool>();
+            if (seaCache.TryGetValue(k, out bool v)) return v;
+            int sea = 0, land = 0;
+            foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
+            {
+                if (b.CommonalityOfAnimal(k) <= 0f) continue;
+                if (IsSeaBiome(b)) sea++; else land++;
+            }
+            v = RM_TitanicKernel.IsSeaCreature(sea, land);
+            seaCache[k] = v;
+            return v;
+        }
+
+        public static bool T3OnMap(Map map)
+        {
+            return map.mapPawns.AllPawnsSpawned.Any(p => !p.Dead && TitanicTierUtility.GetTier(p) == TitanicTier.T3);
+        }
+
+        public static bool TryFindTitanKind(Map map, out PawnKindDef kind)
+        {
+            bool t3 = T3OnMap(map);
+            return DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => Eligible(k, map, t3)).TryRandomElement(out kind);
+        }
+
+        /// <summary>The herd-migration route: an entry cell and the reachable edge cell farthest from it.</summary>
+        public static bool TryFindStartAndEnd(Map map, out IntVec3 start, out IntVec3 end)
+        {
+            end = IntVec3.Invalid;
+            if (!RCellFinder.TryFindRandomPawnEntryCell(out start, map, CellFinder.EdgeRoadChance_Animal)) return false;
+            IntVec3 s = start;
+            for (int i = 0; i < 8; i++)
+            {
+                if (!CellFinder.TryFindRandomEdgeCellWith(x => map.reachability.CanReach(s, x, PathEndMode.OnCell,
+                        TraverseParms.For(TraverseMode.PassDoors)), map, CellFinder.EdgeRoadChance_Ignore, out IntVec3 r)) break;
+                if (!end.IsValid || r.DistanceToSquared(start) > end.DistanceToSquared(start)) end = r;
+            }
+            return end.IsValid;
+        }
+
+        public static string EdgeName(Map map, IntVec3 c)
+        {
+            int dx = Mathf.Min(c.x, map.Size.x - 1 - c.x), dz = Mathf.Min(c.z, map.Size.z - 1 - c.z);
+            if (dx < dz) return (c.x < map.Size.x / 2 ? "RM_TitanPassage_West" : "RM_TitanPassage_East").Translate();
+            return (c.z < map.Size.z / 2 ? "RM_TitanPassage_South" : "RM_TitanPassage_North").Translate();
+        }
+    }
+
+    /// <summary>The scheduled passages of one map: tremors through the warning, then the titan walks in.</summary>
+    public class MapComponent_TitanPassages : MapComponent
+    {
+        private const int ShakeInterval = 300;
+        private const int MessageInterval = 2 * GenDate.TicksPerHour;
+
+        private PawnKindDef kind;
+        private IntVec3 start = IntVec3.Invalid, end = IntVec3.Invalid;
+        private int arrivalTick = -1, warnedTick = -1, warningTicks;
+        private Pawn arrived;
+
+        public MapComponent_TitanPassages(Map map) : base(map) { }
+
+        public bool HasPending => kind != null && arrivalTick >= 0;
+        public PawnKindDef PendingKind => kind;
+        public int ArrivalTick => arrivalTick;
+        public Pawn LastArrived => arrived;
+
+        public void Schedule(PawnKindDef k, IntVec3 s, IntVec3 e, int warning)
+        {
+            kind = k; start = s; end = e; warningTicks = warning;
+            int now = Find.TickManager.TicksGame;
+            arrivalTick = now + warning; warnedTick = now;
+        }
+
+        /// <summary>Validation hook: bring the arrival forward to the next tick.</summary>
+        public void DebugArriveNow() { if (HasPending) arrivalTick = Find.TickManager.TicksGame; }
+
+        public override void MapComponentTick()
+        {
+            if (!HasPending) return;
+            int now = Find.TickManager.TicksGame;
+            if (now >= arrivalTick) { Arrive(); return; }
+            if (now % ShakeInterval == 0 && Find.CurrentMap == map)
+            {
+                // Footfall: stronger the nearer it comes (0.3 at the first tremor, 1.5 at arrival).
+                float progress = warningTicks > 0 ? 1f - (arrivalTick - now) / (float)warningTicks : 1f;
+                Find.CameraDriver.shaker.DoShake(Mathf.Lerp(0.3f, 1.5f, Mathf.Clamp01(progress)));
+            }
+            if (now - warnedTick >= MessageInterval)
+            {
+                warnedTick = now;
+                Messages.Message("RM_TitanPassage_TremorStronger".Translate(), new TargetInfo(start, map), MessageTypeDefOf.NeutralEvent);
+            }
+        }
+
+        private void Arrive()
+        {
+            PawnKindDef k = kind;
+            IntVec3 s = start, e = end;
+            Clear();
+            // the warned edge is kept while it is still standable and reaches the far edge; otherwise a fresh route is found
+            bool routeOk = s.IsValid && e.IsValid && s.InBounds(map) && s.Standable(map)
+                           && map.reachability.CanReach(s, e, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors));
+            if (!routeOk) routeOk = TitanPassageUtility.TryFindStartAndEnd(map, out s, out e);
+            if (!RM_HugeThingsSettings.TitanEventsActive || !TitanPassageUtility.Eligible(k, map, TitanPassageUtility.T3OnMap(map)) || !routeOk)
+            {
+                Messages.Message("RM_TitanPassage_Faded".Translate(), MessageTypeDefOf.NeutralEvent);
+                return;
+            }
+            Pawn titan = PawnGenerator.GeneratePawn(new PawnGenerationRequest(k, null, PawnGenerationContext.NonPlayer, map.Tile));
+            GenSpawn.Spawn(titan, CellFinder.RandomClosewalkCellNear(s, map, 8), map, Rot4.FromAngleFlat((map.Center - s).AngleFlat));
+            LordMaker.MakeNewLord(null, new LordJob_ExitMapNear(e, LocomotionUrgency.Walk), map, new List<Pawn> { titan });
+            arrived = titan;
+            Find.LetterStack.ReceiveLetter("RM_TitanPassage_ArriveLabel".Translate(titan.LabelShortCap),
+                "RM_TitanPassage_ArriveText".Translate(titan.LabelShort), LetterDefOf.ThreatSmall, titan);
+        }
+
+        private void Clear()
+        {
+            kind = null; arrivalTick = -1; warnedTick = -1; start = IntVec3.Invalid; end = IntVec3.Invalid;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Defs.Look(ref kind, "rmTitanKind");
+            Scribe_Values.Look(ref start, "rmTitanStart", IntVec3.Invalid);
+            Scribe_Values.Look(ref end, "rmTitanEnd", IntVec3.Invalid);
+            Scribe_Values.Look(ref arrivalTick, "rmTitanArrival", -1);
+            Scribe_Values.Look(ref warnedTick, "rmTitanWarned", -1);
+            Scribe_Values.Look(ref warningTicks, "rmTitanWarningTicks", 0);
+            Scribe_References.Look(ref arrived, "rmTitanArrived");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && kind == null) arrivalTick = -1;
+        }
+    }
+}
+
+
+--- src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml sha256=d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf ---
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The mod's single size-ladder authority (TitanicTierUtility.Thresholds
+    reads whichever RM_TitanicTierDef loads first - keep exactly one).
+
+    Boundaries below are the item's own BENCH-draft tier table
+    (infrastructure/state/items/TITANIC_CREATURES_MOD_1.md), not owner-ruled:
+    tune HERE against the real creature roster once one exists (the item
+    names bs 12 Krayt, bs 15 GreaterKrayt/WarWyrm/SummitCrab, bs 16
+    Paraceramuffalo, bs 20 ElderSando, bs 32 Reefback, bs 40 Lanternwhale as
+    the scale this exists for), never by editing RM_TitanicTierDef.cs.
+  -->
+  <RimMandrake.TitanicCreatures.RM_TitanicTierDef>
+    <defName>RM_TitanicTiers_Default</defName>
+    <t1MinBodySize>4</t1MinBodySize>
+    <t2MinBodySize>8</t2MinBodySize>
+    <t3MinBodySize>20</t3MinBodySize>
+  </RimMandrake.TitanicCreatures.RM_TitanicTierDef>
+
+</Defs>
+
+
+--- infrastructure/state/items/closed/TITANIC_CREATURES_MOD_1.md sha256=0b888163c9e83ae7809eea36f3b149360a17c37e1666f981fe3a8f1eedf8f4f2 ---
+# TITANIC_CREATURES_MOD_1 — make titan mass REAL
+
+Owner, 2026-09-09: our giants are TRULY giant — beyond what RimWorld allows or
+encourages (bs 12 Krayt, bs 15 GreaterKrayt/WarWyrm/SummitCrab, bs 16
+Paraceramuffalo, bs 20 ElderSando, bs 32 Reefback, bs 40 Lanternwhale). The engine
+gives every pawn ONE cell: a titan walks through a doorway, hides behind a sandbag,
+gets penned like a chicken. This mod makes mass have consequences.
+
+## Ruled by card (owner, 2026-09-09) — these are decisions, not options
+
+1. **Both mechanisms from day one.** True multi-cell footprints AND the destruction
+   wake. **Thin (constructed) roofs are DESTROYED as the titan passes; thick roofs
+   (overhead mountain) are AVOIDED** — a titan never paths under rock, and smashes
+   through anything built.
+2. **Tiers auto-attach by bodySize, with a curated developer override (yes/no per
+   def).** A dense small thing can opt in; a light big thing can opt out.
+3. **Crushables are CURATED, not assumed.** A data table says which thing
+   categories/defs crush under a titan and which don't — walls yes, but e.g. chunks,
+   ancient ruins pieces, specific quest items ruled individually. Never "everything
+   in radius".
+4. **T3 corpse-as-site.** The largest tier's corpse becomes a map landmark harvested
+   over days — camps, spoilage, scavenger draw — never an instant meat mountain.
+   T1–T2 get curved (sub-linear) yields.
+5. **Titan biomes + events.** Titans roam only where the rosters home them; anywhere
+   else they arrive as scripted events/quests with warning (footfall tremors first).
+   Wake damage applies to any structure including the player's — that is the point.
+
+## The multi-cell foundation: Large Pawns — RIDE-WITH-CONFIG (decompile verdict, 2026-09-09)
+
+`neku.largepawns`, workshop `3777700657`, **ACTIVE**. Full decompile findings:
+`design/Jawa/worldbuilding/research/large_pawns_decompile_2026-09-09.md` (`017af47c`).
+The verdict and its consequences, binding on the build:
+
+- **Ride it, configured** — it already implements card #2 exactly (bodySize tiers +
+  per-def override table in both directions: 1 = force 1x1, 2–4 = force size). The
+  alternative is reimplementing 68 Harmony patches; and it ships **no license**, so
+  "absorb" could only ever mean independent reimplementation, never copying.
+- 🔑 **Integration surface: `GenAdj.OccupiedRect(Thing)`** — Large Pawns
+  Prefix-patches vanilla's own method to return the true square, so our wake comp
+  reads the footprint with NO reference to LargePawns and degrades cleanly to 1x1
+  if the mod is absent. Build against vanilla's API only.
+- **One size ladder**: reflectively set `LargePawns.Main.settings` thresholds and
+  push our per-def override rows, then `NotifyEdited()` — its config table becomes a
+  projection of OUR tier table at startup. ⛔ Never two ladders.
+- ⚠️ **4x4 is its hard ceiling** (no size-5 branch): bs 20/32/40 all land 4x4. T3's
+  extra presence must come from OUR wake radius/footfall, not footprint.
+- ⚠️ **It has its own wall-break feature** (`PathClearingUtility`, three settings
+  bools) — turn it OFF and let our curated crush-table be the only destruction
+  authority (theirs is uncurated, which card #3 forbids).
+- ⚠️ **Doors: blocked, never squeezed** — a 1-tile gap stops a 2x2; it mass-opens
+  doors under the footprint. Its region/door connectivity is the author's least
+  settled area (his own test scripts chase a 2-wide-door bug). Quicktest exactly this.
+- ⚠️ **Predicted defects it does nothing about**: pens (a titan can be penned behind
+  a fence gate its square can't pass), caravan forming, and a per-tick O(all pawns)
+  cache scan (`UpdateLargePawnsCache`) — measure TPS on the full list before and
+  after activating our tiers; nothing is scribed so uninstall is clean.
+- Live behavior still UNPROVEN on our 590-mod list: first build step remains the
+  bridge quicktest (spawn bs 12, prove occupancy by getter, path a 1-tile gap).
+- Vehicle Framework is force-excluded by it (vehicles pinned to size 1) — no
+  interaction to design for.
+
+## Tier table (draft — the mod's single size authority; per-def override list beside it)
+
+| tier | bodySize | footprint | wake |
+|---|---|---|---|
+| T1 heavy | 4–8 | 2x2 | crushes curated flora/items, filth trail, footfall |
+| T2 colossal | 8–20 | 3x3 | + curated furniture/walls damaged, thin roofs holed |
+| T3 titanic | 20+ | 4x4+ | + curated structures destroyed outright, corpse-site |
+
+(Boundaries are BENCH draft, not ruled — tune at build against the actual roster
+census; the assignment pass's size-ladder figure is the instrument.)
+
+## Mechanics (design pass, BENCH 2026-09-09)
+
+- **Destruction wake**: comp on tier-qualified races; each cell entered, curated
+  crushables within girth radius take crush damage/destruction. Roof supports
+  crushed → thin-roof collapse emergent; explicit thin-roof removal where the
+  footprint passes. Event-driven per cell entered — no per-tick scans (perf rail).
+- **Thick-roof aversion**: pathing cost/exclusion on overhead-mountain cells for
+  tiered races. With the wake, the only way a titan is ever inside a base is that
+  the base is no longer there.
+- **Footfall presence**: screen shake, thud audio, dust puffs, flee trigger for
+  nearby animals, pawn stagger chance. Sells the mass before line of sight.
+- **Kill-box eater**: melee reach 2–3 cells at T2+; smashes cover being used
+  against it (curated — cover is in the crush table).
+- **Spacing law**: hard cap one T3 per map; T2 count capped low. Matches the
+  rosters' single-spawn near-zero commonalities; the mod enforces what the sheets
+  legislate.
+- **Yield normalization**: sub-linear meat/leather curve for T1–T2 (the fig4
+  linear-yield defect at scale); T3 yields only through the corpse-site.
+- **Corpse-site (T3)**: corpse becomes a harvestable landmark (days of work,
+  spoilage clock, scavenger waves, quest hook potential). Design kinship: the
+  gravship wreck fields — a titan corpse is terrain with a story.
+- v2 candidates (parked, not scoped): faction blame when a titan smashes an NPC
+  base; titan migration events between home biomes; mounted/ridden titans (no).
+
+## Naming
+RM tier (generic RimWorld capability): mod folder `RM_TitanicCreatures`, packageId
+`mandrake.rm.titaniccreatures`, defs/comps prefixed `RM_`. Campaign flavor (which
+creatures, which biomes) stays in the rosters, not in this mod.
+
+## verify
+- Quicktest: bs 12 spawn occupies >1 cell (getter-proven), cannot path a 1-tile
+  gap, thin roof destroyed on transit, thick roof never entered, curated
+  non-crushable survives adjacent transit, crushable does not.
+- One T3 kill → corpse-site spawns, instant butcher yields nothing beyond the site.
+- Tier auto-attach: census of tiered races matches the tier table against the
+  roster size ladder; override list honored both directions.
+- No second size ladder live (Large Pawns thresholds reconciled or absorbed).
+
+## Tier census (fig10, MEASURED 2026-09-09, rostered defs)
+T1 4–8: **18** · T2 8–20: **7** · T3 20+: **3** (RSW_ElderSando, RSW_Reefback,
+RSW_Lanternwhale). Large Pawns at its default thresholds would make **57** defs
+multi-cell (16 at 3x3, 9 at 4x4) — the measured size of the one-ladder reconciliation.
+
+
+--- design/RimMandrake/hugethings_codex_2026-11-09/ANSWERS_OWNER.md sha256=e67485694b1034921d0c3452c9bae17b52348674c465178b5f1922f8b9dd7293 ---
+# HugeThings: owner answers (by question card, Wed 2026-11-11 12:16 AM PST)
+
+Answers to QUESTIONS.md drafts 01, 02 and 04.
+
+1. **What the promise leads with (01):** Two promises. Giant plants and titans are two different experiences; split the root into two promises, each with its own demonstration.
+2. **First demonstration (02):** B, the titan's destructive crossing, then its death and the crowd that comes for the remains.
+3. **Tremor warning (04):** written in: *"Two hours."* The warning before a titan arrives is two in-game hours (replacing the provisional six).
+
+Drafts 03, 05 and 08 were asked on the second card below.
+
+## Second card (Wed 2026-11-11 12:2x AM PST): drafts 03, 05, 08
+
+4. **Root across a doorway (03):** written in: *"To be honest I don't really like the safety rule. I think they have to cut it down to get in or out after it grows."* The built door/access protection that keeps a cell open goes; a trunk that grows across a doorway seals it, and colonists cut the fungus down to get in or out.
+5. **Fenced-out carcass visitors (05):** written in: *"Any of these depending on the faction. Faction dominates. Attack, negotiate, threaten, complain or just hover nearby and wait and sneak."* The response is chosen by the visiting faction's nature, from attack, negotiate, threaten, complain, or loiter and sneak in.
+6. **Warned approach walled off (08):** Same side, it breaks through. The titan keeps its warned edge and tests the barrier under its normal wall/rock rules; thick rock may still hold.
+
+Drafts 06–07 are not yet asked. Draft "Promise" above has changed draft 05's assumption that a single dispute rule exists: faction behaviour is the design.
+
+## Third card (Wed 2026-11-11 12:35 AM PST): drafts 06, 07
+
+7. **Prior claim on an older carcass (06):** Faction decides, visibly. As with the fence, the claim depends on the faction (a whole site, a sold share, or a fight), and it is visible before the colony's first harvest order.
+8. **A serious harvest day (07):** Expedition, plenty left. Several colonists work the carcass at once with useful jobs (cutting, hauling), recovering enough to reward the trip, with plenty left for the next day and for competitors; tested with a small and a large colony.
+
+All eight drafts are answered.
+
+
+--- src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml exact relevant excerpts ---
+  <ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>8000</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.60</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.75</ArmorRating_Heat>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>480</power>
+        <cooldownTime>8.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>120</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
+      <body>Pinniped</body>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <disableMating>true</disableMating>
+      <baseBodySize>32</baseBodySize>
+      <baseHealthScale>20</baseHealthScale>
+      <foodType>None</foodType>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <lifeExpectancy>500</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
+    <defName>RM_Reefback</defName>
+    <label>reefback</label>
+    <race>RM_Reefback</race>
+    <combatPower>2000</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>2.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.89</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.56</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10.7</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  <!-- MIASMA_FREE_NURSERY_YOUNG_1: Miasma-nursery juvenile of an invented parent (same pattern as
+       RM_SiltLampreyJuv); the adult's art, drawSize scaled 0.5x / 0.75x of the adult's first stage. -->
+  <ThingDef ParentName="RM_Reefback">
+    <defName>RM_ReefbackJuv</defName>
+    <label>young reefback</label>
+    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, its crust is still thin enough to cut, and it drifts close to wherever the adults went.</description>
+    <!-- Delegated nursery combat profile: REEFBACK_NURSERY_COMBAT.md (2026-11-11).
+         Replace adult tools; ordinary animal melee and Core stage factors apply. -->
+    <statBases>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.30</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.30</ArmorRating_Heat>
+    </statBases>
+    <tools Inherit="False">
+      <li>
+        <label>tail sweep</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <baseHealthScale>8</baseHealthScale>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_Reefback_Kind">
+    <defName>RM_ReefbackJuv</defName>
+    <combatPower>150</combatPower>
+    <wildGroupSize>2~3</wildGroupSize>
+    <label>young reefback</label>
+    <race>RM_ReefbackJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>

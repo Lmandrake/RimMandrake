@@ -1,0 +1,5 @@
+# Juvenile passage classification — RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION
+
+- Resolve juvenile-only race classification and T3 passage spacing through an independent delegated design decision, preserving the owner's calf allowance, biome pools, land/sea matching and explicit force overrides.
+- Make the source and current specifications agree with that decision, retaining the separate conservative comp-attachment policy and focused adult, juvenile-only, growth-above-one, missing-stage, force and threshold controls.
+- On a fresh deployed SteveDesktop process, prove actual GetTier, AdultTier and T3-spacing predicate results for representative definitions under default and custom thresholds, restoring every changed setting and fixture exactly; retain raw proof and a fresh independent Codex judgment without claiming a completed passage, crossing, flight or L4 acceptance.

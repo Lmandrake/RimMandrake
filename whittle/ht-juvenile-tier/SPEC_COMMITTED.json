@@ -1,0 +1,6 @@
+{
+  "sha": "c9021bbba5c04918e36c1d8e94ad61bb050c01c1",
+  "at": 1794413932.678259,
+  "scope": "Exactly five SPEC_READY.md paths committed, criteria section of TITAN_CAMPS unchanged. Compiled source inputs and tested pair unchanged. Corrected final JUDGE_PROMPT also allows current REVIEW.md spacing row; read PARENT_SCOPE before judge.",
+  "note": "Generated srchash retains Windows CRLF; global git diff --check reports CRLF on stamp, not source/spec whitespace. No stamp byte manipulation authorized."
+}

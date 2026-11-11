@@ -1,0 +1,58 @@
+{
+  "mode": "offline selected source model; no running-game observation",
+  "species": {
+    "RM_ReefbackJuv": [
+      [
+        "AnimalBaby",
+        6.4,
+        1
+      ],
+      [
+        "AnimalJuvenile",
+        16.0,
+        2
+      ]
+    ],
+    "RM_Reefback": [
+      [
+        "AnimalBaby",
+        6.4,
+        1
+      ],
+      [
+        "AnimalJuvenile",
+        16.0,
+        2
+      ],
+      [
+        "AnimalAdult",
+        32.0,
+        3
+      ]
+    ],
+    "RM_WardenMother": [
+      [
+        "AnimalBaby",
+        1.6,
+        0
+      ],
+      [
+        "AnimalJuvenile",
+        4.0,
+        1
+      ],
+      [
+        "AnimalAdult",
+        8.0,
+        2
+      ],
+      [
+        "RM_WardenMotherElder",
+        8.0,
+        2
+      ]
+    ]
+  },
+  "patch_files": 474,
+  "candidate_operations": 48
+}

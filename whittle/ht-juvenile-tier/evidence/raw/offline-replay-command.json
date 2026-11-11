@@ -1,0 +1,8 @@
+{
+  "command": [
+    "/mnt/c/Program Files/dotnet/dotnet.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\raw\\offline-test-bin\\JuvenileTier.dll"
+  ],
+  "assembly_sha256": "e2c2d11ba0c91e6984cd4a9d14eb129d61f6d78cccc9ce4e7b075c180eb8df6f",
+  "mode": "execute preserved L0 adapter/kernel test assembly; no build or game"
+}

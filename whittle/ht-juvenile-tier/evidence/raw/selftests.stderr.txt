@@ -1,0 +1,3 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/2] CRASH         4.6s  src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py
+[2/2] PASS          0.2s  src/RimMandrake/HugeThings/northstar/selftest_passage_pool.py

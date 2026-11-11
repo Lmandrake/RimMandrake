@@ -1,0 +1,8 @@
+{
+  "fixture_ThingDef_constructor_count": 33,
+  "fixture_LifeStageDef_constructor_count": 46,
+  "Def_constructor_RangeInclusive_calls": 79,
+  "observed_Rand_iteration_delta": 79,
+  "seed_unchanged": true,
+  "constructor_source": "raw/all-fixture-ctors.il.txt Verse.Def::.ctor"
+}

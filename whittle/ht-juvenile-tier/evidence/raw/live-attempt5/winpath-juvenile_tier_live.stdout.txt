@@ -1,0 +1,1 @@
+\\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\src\RimMandrake\HugeThings\northstar\juvenile_tier_live.py

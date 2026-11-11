@@ -1,0 +1,8 @@
+{
+  "command": [
+    "/mnt/c/Program Files/dotnet/dotnet.exe",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\raw\\offline-test-bin-fixture\\JuvenileTier.dll"
+  ],
+  "assembly_sha256": "ae6cff3392e0cb211b79599d8a3eeb7a8c6e2e59b5a9919fc342c8d4c4c09c28",
+  "mode": "execute preserved current L0 controls; no build/game"
+}

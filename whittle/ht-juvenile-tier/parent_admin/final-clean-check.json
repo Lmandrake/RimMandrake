@@ -1,0 +1,78 @@
+{
+  "at": 1794419539.9839914,
+  "checks": [
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs  (clean at d0e0ed2d3f on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/northstar/juvenile_tier_live.py",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/northstar/juvenile_tier_live.py  (clean at d0e0ed2d3f on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    },
+    {
+      "path": "src/RimMandrake/HugeThings/northstar/selftest_juvenile_policy_model.py",
+      "rc": 0,
+      "stdout": "CLEAN  src/RimMandrake/HugeThings/northstar/selftest_juvenile_policy_model.py  (clean at 5194384936 on 2026-11-11)\n",
+      "stderr": ""
+    }
+  ],
+  "all_clean": true
+}

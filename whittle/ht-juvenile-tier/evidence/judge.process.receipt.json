@@ -1,0 +1,26 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/agent_runner.py",
+    "--codex",
+    "wsl",
+    "--cwd",
+    "/home/mandrake/rm/codex-ht",
+    "--result",
+    "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/judge.last.txt",
+    "--events",
+    "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/judge.events.jsonl",
+    "--spend",
+    "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/judge.spend.json",
+    "--sandbox",
+    "danger-full-access",
+    "--timeout",
+    "900"
+  ],
+  "stdin": "whittle/ht-juvenile-tier/JUDGE_PROMPT.md",
+  "stdin_sha256": "a6f17ba91fa96befa1550e29396fc69903b7fa5a5fb3f01385222a7397b4a621",
+  "rc": 0,
+  "elapsed_seconds": 548.9228670597076,
+  "stdout_sha256": "e6c75baea4804b02b0b1f3bfcde3c21f604013ed8f642f33b83fdbbd95a488db",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

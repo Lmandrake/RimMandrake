@@ -1,0 +1,20 @@
+{
+  "O02": "N/A other-host bridge row only; actual host lease proved separately",
+  "other_required_nonpasses": [
+    {
+      "id": "O13",
+      "name": "deploy_match",
+      "required": true,
+      "status": "FAIL",
+      "reason": "1 of 6 mods (5972 files) differ from the deployed copy: [\"FlowWorks(2: ['Assemblies/RimMandrakeFlowWorks.dll', 'Assemblies/RimMandrakeFlowWorks.dll.srchash'])\"]",
+      "cost_est_s": 60,
+      "took_s": 18.48,
+      "prevents": "#31 #46 #52 #57 deploy drift",
+      "evidence": {
+        "drift": [
+          "FlowWorks(2: ['Assemblies/RimMandrakeFlowWorks.dll', 'Assemblies/RimMandrakeFlowWorks.dll.srchash'])"
+        ]
+      }
+    }
+  ]
+}

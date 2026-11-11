@@ -1,0 +1,83 @@
+{
+  "confidence": [
+    {
+      "claim": "warden lifecycle stages",
+      "status": "UNMEASURED",
+      "why": "register carries no life stages; the whole R11 arc is def-authoring, not stat-verified"
+    }
+  ],
+  "defNames": [],
+  "evictions": [
+    {
+      "def": "AA_OvergrownColossus",
+      "disposition": "homeless-reserve",
+      "reason": "the giant lane here is owned by warden mothers (placed set-pieces, §4) — a random giant dilutes them"
+    }
+  ],
+  "fauna": [
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.4,
+      "def": "RSW_MeeJuv",
+      "law": "R11 + §4 the nursery — the Grey Sea's roster breeds here; juveniles swarm the shallows"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_FaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_LaaJuv",
+      "law": "R11 nursery ring"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.3,
+      "def": "RSW_YobshrimpJuv",
+      "law": "R11 nursery — the pale young of the brine line"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RSW_SiltLampreyJuv",
+      "law": "R11 nursery; silt-working juvenile"
+    },
+    {
+      "action": "import",
+      "band": "nursery",
+      "commonality": 0.25,
+      "def": "RM_RustNipperJuv",
+      "law": "R11 nursery; Miasma sheet 2026-10-08 (owner): \"not SW tier\" — the row names the RM_ def RM_RustNipperJuv (mandrake.rm.terminalbiomes, already cast in RM_Miasma.xml since SEA_BEASTS_TIER_RULING_1)"
+    },
+    {
+      "action": "import",
+      "band": "nursery-guard",
+      "commonality": 0.05,
+      "def": "RSW_OpeeSeaKillerJuv",
+      "law": "R11 — a sub-adult lingering at the crèche mouths; 'don't kill what's small here' (§4)"
+    }
+  ],
+  "flora": [],
+  "flora_purged": [],
+  "law_sources": [
+    "sea_beasts_roster.md (nursery pairing)"
+  ],
+  "new_defs": [
+    {
+      "from_sheet": "the_miasma §4 / R11",
+      "kind": "creature",
+      "mechanic_load": "C#: placed set-piece, never random spawn (§4); R11 lifecycle end-stage",
+      "name": "warden mother (brine-broken elder, crèche guard)"
+    }
+  ],
+  "stat_adjustments": [],
+  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.\nMiasma sheet 2026-10-08 (owner): RM_SiltLampreyJuv (cast inline in RM_Miasma.xml, def in mandrake.rm.terminalbiomes) renamed gillclamper, description rewritten: The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling."
+}

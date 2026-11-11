@@ -1,0 +1,427 @@
+Fresh independent tools-disabled Opus Test Pilot/design review of NEW primary metadata after the prior pilot. No retry has occurred. The prior pilot was given the exact NRE stack but not VEF/health IL, and explicitly required offline decompile before choosing construction. That decompile is now supplied verbatim. Decide whether an Entry-state fixture with its required engine trackers can honestly satisfy the frozen loaded-method scope without disabling/unpatching VEF, or whether Playing/generated fixtures remain required. Assess the exact null dereference, dependency on Current.Game, cache key/path and static references, whether a health/age-only Pawn is a valid neutral fixture for actual GetTier/BodySize calls, whether this would silently bypass an owed semantic check, and what must be recorded. Do not compute or substitute BodySize or remove any original assertion. Weigh user preference for Entry when every original A2 result can be met; don't invent natural passage/L2/L4 requirements. If Entry is valid, give the minimum owned-object construction and controls; if not, explain the exact unfulfilled original requirement. Treat runtime external body modifiers and generated-pawn behavior as distinct scope; no global state/patch manipulation allowed. Prior opinion may be revised only on new evidence, not builder preference.
+
+
+--- whittle/ht-juvenile-tier/STATEMENT.md sha256=7efb38c8bf7f3921ef2a449c3e1a9db4c7c9aedfec8b954e3bcdd0c81b7a250f ---
+# Juvenile passage classification — RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION
+
+- Resolve juvenile-only race classification and T3 passage spacing through an independent delegated design decision, preserving the owner's calf allowance, biome pools, land/sea matching and explicit force overrides.
+- Make the source and current specifications agree with that decision, retaining the separate conservative comp-attachment policy and focused adult, juvenile-only, growth-above-one, missing-stage, force and threshold controls.
+- On a fresh deployed SteveDesktop process, prove actual GetTier, AdultTier and T3-spacing predicate results for representative definitions under default and custom thresholds, restoring every changed setting and fixture exactly; retain raw proof and a fresh independent Codex judgment without claiming a completed passage, crossing, flight or L4 acceptance.
+
+
+--- whittle/ht-juvenile-tier/evidence/pilot2_raw.json sha256=33b0bf73784e69fb0f75c0933b621b9a27007d9ed3d14b04cc4bca8eed79a041 ---
+{"duration_api_ms":172248,"stop_reason":"end_turn","session_id":"7d545a69-7696-41d4-a973-e75b53080ec6","total_cost_usd":0.46261579999999997,"usage":{"input_tokens":2,"cache_creation_input_tokens":18081,"cache_read_input_tokens":2399,"output_tokens":15874,"output_tokens_details":{"thinking_tokens":12865},"server_tool_use":{"web_search_requests":0,"web_fetch_requests":0},"service_tier":"standard","cache_creation":{"ephemeral_1h_input_tokens":18081,"ephemeral_5m_input_tokens":0},"inference_geo":"global","iterations":[{"input_tokens":2,"output_tokens":15874,"cache_read_input_tokens":2399,"cache_creation_input_tokens":18081,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":18081},"type":"message"}],"speed":"standard","fallback_credit":null},"modelUsage":{"claude-opus-5-5":{"inputTokens":2,"outputTokens":15874,"cacheReadInputTokens":2399,"cacheCreationInputTokens":18081,"webSearchRequests":0,"costUSD":0.46261579999999997,"contextWindow":1000000,"maxOutputTokens":128000,"thinkingTokens":12865,"cacheCreationEphemeral5mInputTokens":0,"cacheCreationEphemeral1hInputTokens":18081,"canonicalModel":"claude-opus-5-5","provider":"firstParty","costBasis":"list"}},"permission_denials":[],"terminal_reason":"completed","fast_mode_state":"off","fast_mode_disabled_reason":"sdk_opt_in_required","subagent_stats":{"spawned":0,"requested":{"background":0,"foreground":0,"unset":0},"started_in_background":0,"max_depth":0,"spawned_by_subagents":0,"completed":0,"failed":0,"killed":{"parent":0,"user":0,"system":0},"refused":{"depth_limit":0,"concurrency_limit":0,"budget":0},"by_type":{}},"safety_stops":0,"is_error":false,"num_turns":1,"subtype":"success","api_error_status":null,"result":"# Juvenile-tier live proof: diagnosis and next route\n\n## Verdict\n\nEntry cannot honestly meet the requirement. Under this modlist the real `Pawn.BodySize` getter includes VEF's postfix, and that postfix throws for a hand-built pawn in Entry. Every workaround that stays in Entry would bypass VEF: catching the exception, reading the original getter through a reverse patch, or computing `factor*base`. All three are forbidden.\n\nThe next route is Playing state on an existing `RM_TestSite_*` save. Pick the pawn construction method only after one offline read-only check of the exact VEF build. Don't retry live until that check is done.\n\n## What the exception proves\n\n- **VEF's postfix is live.** `VEF.Genes.VanillaExpandedFramework_Pawn_BodySize.Postfix`, owned by `OskarPotocki.VEF`, wraps `Pawn.get_BodySize` in this process. The VEF assembly build is MVID `08cf6291920848ec82f75600b5af47da`.\n- **The original getter finished.** The postfix runs after the original body, at `get_BodySize +0x23`. So `ageTracker.CurLifeStage` resolved and the reflected `cachedLifeStageIndex` stage selection worked locally.\n- **The failure point is very early.** The NRE is at IL offset `0x0e` of `PawnDataCache.GetPawnDataCache`, reached through `GetCacheUltraSpeed`.\n- **The actual runtime tier depends on VEF.** The comment in `TitanicTierUtility.GetTier` that `BodySize = factor × base` is incomplete for this modlist. The script's `expected_body` assertion is the right test. If VEF scales a value, that is a finding to report. Don't loosen the assertion to make it pass.\n- **Restoration worked.** Settings readbacks were exact, and there was no \"settings file bytes changed\" error.\n- **The bridge state was as described:** Entry, `hasCurrentGame=False`, ticks -1.\n\n## What remains unknown\n\n- **Which reference is null.** A Game-scoped object (inlined `Current.Game`/`Find.TickManager`, or a cache built by a GameComponent) means Playing fixes it. A pawn tracker the minimal pawn lacks (health, genes, drawer) means Playing alone does not.\n- **How VEF keys its cache.** It could be keyed by Pawn object or by `thingIDNumber`. Hand-built pawns all share the default ID, so an ID-keyed cache would hand one fixture's data to the next and produce wrong results silently.\n- **What else VEF does on the BodySize path.** It may queue refreshes, dirty renderers, or write static state. It may also scale BodySize for these races (from hediffs or genes), so a scale other than 1 is possible.\n- **No live results exist yet.** The first `Observe` call aborted, so there are no AdultTier, SpacingTier, GateMatrix, Census or GetTier rows.\n\n## Required offline check (read-only, before any launch)\n\nDecompile `GetPawnDataCache`, `GetCacheUltraSpeed` and the postfix from the exact loaded VEF DLL, matched by that MVID. Record:\n\n1. What `+0x0e` dereferences.\n2. Every pawn or def field the postfix and cache path read.\n3. The cache key and whether entries are ever evicted.\n4. Any static writes, refresh queues or renderer calls.\n5. Any `ProgramState` guards.\n\n## Pawn construction: minimal vs generated\n\n**Minimal unspawned pawn under Playing** is acceptable only if the decompile shows all three:\n- The null is Game-scoped.\n- Every tracker the minimal pawn lacks is null-guarded on the same path a real animal takes.\n- The cache is keyed per object, or there is no cross-fixture reuse.\n\nIf any of these fails, don't use minimal pawns.\n\n**Real resolved races (juvenile and adult): use full generated unspawned pawns** from their actual PawnKindDefs. This is the representative proof either way.\n- Build the `PawnGenerationRequest` with: faction null, `ForceGenerateNewPawn=true`, `CanGeneratePawnRelations=false`, no tile, and a fixed biological age inside each target stage band.\n- Assert `CurLifeStageIndex == intended` from the real age, without reflection.\n- Wrap generation in `Rand.PushState(seed)`/`PopState`, and read `Rand.StateCompressed` before and after to show the RNG is unchanged.\n- Assert the pawn is not spawned and `!Find.WorldPawns.Contains(p)`.\n- Record its hediffs and genes, so any BodySize mismatch can be explained.\n- Record the `UniqueIDsManager` delta. It cannot be restored in memory, which is acceptable only because the Game is discarded unsaved.\n- Discard the pawn in a `finally` block.\n\n**Synthetic fixtures (force and threshold variants): do not generate them through cloned kinds.** Kind/stage count matching and graphics would add failure modes unrelated to the question. Instead, use cloned resolved races with fully owned objects:\n- Clone `RaceProperties`.\n- Give the clone a new `lifeStageAges` list with new `LifeStageAge` entries.\n- Clone the `LifeStageDef` objects before changing `bodySizeFactor`. Mutating a shared def like `AnimalAdult` would corrupt every animal and could not be restored.\n- Give it its own `modExtensions` list and a unique, unregistered defName.\n- Add a hook self-check that hashes the source def's base size, stage factors and extensions before and after.\n\nThe current fresh `new ThingDef` fixture is too unlike a resolved race to send through VEF.\n\nIf neither construction is clean for synthetic runtime rows, report runtime GetTier for those rows as **unproven**. Def-level rows remain proven. Don't fake the runtime rows.\n\n**Malformed stages: keep them def-level only** (stageIndex -1, no pawn). Add an explicit script assertion that `GetTier==\"unsupported\"` for these rows; at present, `expected_body None` only skips the check.\n\n## Bounded hook and script repairs (for the owner to implement)\n\n- **Hook:** add a Playing-only path that refuses unless `ProgramState==Playing`, the Game is not null, and ticks are unchanged across the call. Add `ObserveGenerated(kind, stage, seed)` as described above.\n- **Order-independence control:** run real-race stages forward, then reverse, with fresh pawns each time, and read BodySize twice per pawn. This detects VEF cache contamination.\n- **Script ordering:** run def-level, GateMatrix and Census rows before runtime rows, and record per-row errors while still failing overall. A runtime failure then can't erase def-level evidence. This does not weaken A1L0/A2L1, and every existing assertion stays.\n\n## Snapshot and restoration for the RM_TestSite save\n\n**Before launching:**\n- Hash the chosen save, the full Saves directory listing, the `Mod_*.xml` files, Prefs and ModsConfig.\n- Check that the save's mod list matches the active modset. If a mismatch dialog would appear, abort.\n\n**After the save loads:**\n- Require that the game is paused and ticks are constant across the probe window. Abort if not, so no autosave, incident or letter can fire.\n- Spawn nothing and send nothing to the world.\n\n**Exit:** shut down with `rw_game.sh down` without saving. Then require byte-identical saves, settings and Prefs. VEF's static cache entries die with the process.\n\n## Steam launch budget and cleanup race\n\nRound 2's `down-finally` ran before the late process appeared. That leaves a window where an orphan game process can exist after the lease is released.\n\n- **Before the launch URI:**\n  - Confirm steam.exe is running and idle. A ~100 s delay suggests Steam cold-start or cloud sync.\n  - Record T0 and confirm no RimWorld process exists.\n- **Find out why `up --wait` returned rc=1 after 7.4 s.** It looks like its internal wait is too short.\n- **Wait budgets:**\n  - Process creation: ≥240 s after T0 (more than twice the observed ~100 s).\n  - Bridge ready: a separate ≥600 s, counted from the process start time.\n- **Process identity:** accept only a process whose start time is after T0. Bind its pid and start time to the bridge identity so the run counts as a fresh process.\n- **Single launch only.** Never issue a second URI in a round.\n- **On failure, drain before releasing:**\n  - Keep the lease and guard, and write a launch-pending marker in scratch.\n  - Poll until T0+300 s, and kill any process that started after T0.\n  - Require two \"down\" statuses at least 30 s apart, both after that deadline.\n  - Only then release.","ttft_ms":144352,"type":"result","duration_ms":172533,"uuid":"20c5e66c-a648-4c83-ae0c-18e4d73ea788","ttft_stream_ms":3995,"time_to_request_ms":278,"first_content_frame_ms":3995,"queued_turn_count":0,"result_index":0,"credential_expires_at":"2026-11-23T10:37:49.922Z"}
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/vef-selected.il.txt sha256=df6a546c6d9588653ec5f7d301916f5111d82c2472e16e37b985c18a14b2ac96 ---
+METHOD VEF.AestheticScaling.PawnDataCache::GetCacheUltraSpeed TOKEN 100667736
+IL_0000: ldarg.0 
+IL_0001: brtrue.s IL_0009
+IL_0003: ldsfld VEF.AestheticScaling.CachedPawnData::VEF.AestheticScaling.CachedPawnData defaultCache
+IL_0008: ret 
+IL_0009: ldsflda VEF.AestheticScaling.PawnDataCache::PerThreadMiniCache threadStaticCache
+IL_000E: ldfld VEF.AestheticScaling.PawnDataCache+PerThreadMiniCache::Verse.Pawn pawn
+IL_0013: ldarg.0 
+IL_0014: bne.un.s IL_0021
+IL_0016: ldsflda VEF.AestheticScaling.PawnDataCache::PerThreadMiniCache threadStaticCache
+IL_001B: ldfld VEF.AestheticScaling.PawnDataCache+PerThreadMiniCache::VEF.AestheticScaling.CachedPawnData cache
+IL_0020: ret 
+IL_0021: ldsflda VEF.AestheticScaling.PawnDataCache::PerThreadMiniCache threadStaticCache
+IL_0026: ldarg.0 
+IL_0027: ldc.i4.0 
+IL_0028: ldarg.1 
+IL_0029: call VEF.AestheticScaling.PawnDataCache::VEF.AestheticScaling.CachedPawnData GetPawnDataCache(Verse.Pawn, Boolean, Boolean)
+IL_002E: stfld VEF.AestheticScaling.PawnDataCache+PerThreadMiniCache::VEF.AestheticScaling.CachedPawnData cache
+IL_0033: ldsflda VEF.AestheticScaling.PawnDataCache::PerThreadMiniCache threadStaticCache
+IL_0038: ldarg.0 
+IL_0039: stfld VEF.AestheticScaling.PawnDataCache+PerThreadMiniCache::Verse.Pawn pawn
+IL_003E: ldsflda VEF.AestheticScaling.PawnDataCache::PerThreadMiniCache threadStaticCache
+IL_0043: ldfld VEF.AestheticScaling.PawnDataCache+PerThreadMiniCache::VEF.AestheticScaling.CachedPawnData cache
+IL_0048: ret 
+METHOD VEF.AestheticScaling.PawnDataCache::GetPawnDataCache TOKEN 100667737
+IL_0000: ldarg.0 
+IL_0001: brtrue.s IL_0006
+IL_0003: ldnull 
+IL_0004: br.s IL_000C
+IL_0006: ldarg.0 
+IL_0007: ldfld Verse.Pawn::RimWorld.Pawn_NeedsTracker needs
+IL_000C: brtrue.s IL_0016
+IL_000E: ldarg.0 
+IL_000F: callvirt Verse.Pawn::Boolean get_Dead()
+IL_0014: brfalse.s IL_0039
+IL_0016: ldarg.0 
+IL_0017: ldloca.s 1
+IL_0019: ldarg.1 
+IL_001A: ldarg.2 
+IL_001B: call VEF.AestheticScaling.DictCache`2[[Verse.Pawn, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null],[VEF.AestheticScaling.CachedPawnData, VEF, Version=1.1.7.0, Culture=neutral, PublicKeyToken=null]]::VEF.AestheticScaling.CachedPawnData GetCache(Verse.Pawn, Boolean ByRef, Boolean, Boolean)
+IL_0020: stloc.0 
+IL_0021: ldloc.1 
+IL_0022: brfalse.s IL_0037
+IL_0024: ldloc.0 
+IL_0025: brfalse.s IL_0037
+IL_0027: ldloc.0 
+IL_0028: ldsfld VEF.AestheticScaling.CachedPawnData::VEF.AestheticScaling.CachedPawnData defaultCache
+IL_002D: beq.s IL_0037
+IL_002F: ldarg.0 
+IL_0030: call VEF.AestheticScaling.CachedPawnDataExtensions::VEF.AestheticScaling.CachedPawnData& GetCachePrePatched(Verse.Pawn)
+IL_0035: ldloc.0 
+IL_0036: stind.ref 
+IL_0037: ldloc.0 
+IL_0038: ret 
+IL_0039: ldsfld VEF.AestheticScaling.CachedPawnData::VEF.AestheticScaling.CachedPawnData defaultCache
+IL_003E: ret 
+METHOD VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::Postfix TOKEN 100665559
+IL_0000: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_0005: ldfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::Verse.Pawn pawn
+IL_000A: ldarg.1 
+IL_000B: bne.un.s IL_001E
+IL_000D: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_0012: ldfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::UInt32 tick
+IL_0017: ldsfld VEF.AestheticScaling.CachedPawnDataSlowUpdate::UInt32 Tick10
+IL_001C: beq.s IL_0056
+IL_001E: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_0023: ldarg.1 
+IL_0024: call VEF.AestheticScaling.CachedPawnDataExtensions::VEF.AestheticScaling.CachedPawnData& GetCachePrePatched(Verse.Pawn)
+IL_0029: ldind.ref 
+IL_002A: stfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::VEF.AestheticScaling.CachedPawnData cache
+IL_002F: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_0034: ldarg.1 
+IL_0035: stfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::Verse.Pawn pawn
+IL_003A: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_003F: ldsfld VEF.AestheticScaling.CachedPawnDataSlowUpdate::UInt32 Tick10
+IL_0044: stfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::UInt32 tick
+IL_0049: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_004E: ldfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::VEF.AestheticScaling.CachedPawnData cache
+IL_0053: stloc.0 
+IL_0054: br.s IL_0061
+IL_0056: ldsflda VEF.Genes.VanillaExpandedFramework_Pawn_BodySize::BodySizeCache sizeCache
+IL_005B: ldfld VEF.Genes.VanillaExpandedFramework_Pawn_BodySize+BodySizeCache::VEF.AestheticScaling.CachedPawnData cache
+IL_0060: stloc.0 
+IL_0061: ldloc.0 
+IL_0062: brfalse.s IL_007F
+IL_0064: ldarg.0 
+IL_0065: ldarg.0 
+IL_0066: ldind.r4 
+IL_0067: ldloc.0 
+IL_0068: ldfld VEF.AestheticScaling.CachedPawnData::Single bodySizeOffset
+IL_006D: add 
+IL_006E: stind.r4 
+IL_006F: ldarg.0 
+IL_0070: ldind.r4 
+IL_0071: ldc.r4 0.05
+IL_0076: bge.un.s IL_007F
+IL_0078: ldarg.0 
+IL_0079: ldc.r4 0.05
+IL_007E: stind.r4 
+IL_007F: ret 
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/fixture-engine.il.txt sha256=168f12078901709805046541a5de2750b4dfd0419c4995950feb636fff17cbae ---
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn::get_Dead TOKEN 100675634
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_HealthTracker health
+IL_0006: callvirt Verse.Pawn_HealthTracker::Boolean get_Dead()
+IL_000B: ret 
+METHOD Verse.Pawn_HealthTracker::get_Dead TOKEN 100676431
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_HealthTracker::Verse.PawnHealthState healthState
+IL_0006: ldc.i4.0 
+IL_0007: ceq 
+IL_0009: ret 
+METHOD Verse.Pawn_HealthTracker::.ctor TOKEN 100676437
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.2 
+IL_0002: stfld Verse.Pawn_HealthTracker::Verse.PawnHealthState healthState
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.m1 
+IL_0009: stfld Verse.Pawn_HealthTracker::Int32 lastReceivedNeuralSuperchargeTick
+IL_000E: ldarg.0 
+IL_000F: ldc.r4 -1
+IL_0014: stfld Verse.Pawn_HealthTracker::Single overrideDeathOnDownedChance
+IL_0019: ldarg.0 
+IL_001A: newobj System.Collections.Generic.List`1[[Verse.Hediff_Injury, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_001F: stfld Verse.Pawn_HealthTracker::System.Collections.Generic.List`1[Verse.Hediff_Injury] tmpMechInjuries
+IL_0024: ldarg.0 
+IL_0025: newobj System.Collections.Generic.List`1[[Verse.Hediff_Injury, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_002A: stfld Verse.Pawn_HealthTracker::System.Collections.Generic.List`1[Verse.Hediff_Injury] tmpHediffInjuries
+IL_002F: ldarg.0 
+IL_0030: newobj System.Collections.Generic.List`1[[Verse.Hediff_MissingPart, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0035: stfld Verse.Pawn_HealthTracker::System.Collections.Generic.List`1[Verse.Hediff_MissingPart] tmpHediffMissing
+IL_003A: ldarg.0 
+IL_003B: call System.Object::Void .ctor()
+IL_0040: ldarg.0 
+IL_0041: ldarg.1 
+IL_0042: stfld Verse.Pawn_HealthTracker::Verse.Pawn pawn
+IL_0047: ldarg.0 
+IL_0048: ldarg.1 
+IL_0049: newobj Verse.HediffSet::Void .ctor(Verse.Pawn)
+IL_004E: stfld Verse.Pawn_HealthTracker::Verse.HediffSet hediffSet
+IL_0053: ldarg.0 
+IL_0054: ldarg.1 
+IL_0055: newobj Verse.PawnCapacitiesHandler::Void .ctor(Verse.Pawn)
+IL_005A: stfld Verse.Pawn_HealthTracker::Verse.PawnCapacitiesHandler capacities
+IL_005F: ldarg.0 
+IL_0060: ldarg.1 
+IL_0061: newobj Verse.SummaryHealthHandler::Void .ctor(Verse.Pawn)
+IL_0066: stfld Verse.Pawn_HealthTracker::Verse.SummaryHealthHandler summaryHealth
+IL_006B: ldarg.0 
+IL_006C: ldarg.1 
+IL_006D: newobj RimWorld.BillStack::Void .ctor(RimWorld.IBillGiver)
+IL_0072: stfld Verse.Pawn_HealthTracker::RimWorld.BillStack surgeryBills
+IL_0077: ldarg.0 
+IL_0078: ldarg.1 
+IL_0079: newobj Verse.ImmunityHandler::Void .ctor(Verse.Pawn)
+IL_007E: stfld Verse.Pawn_HealthTracker::Verse.ImmunityHandler immunity
+IL_0083: ldarg.0 
+IL_0084: ldarg.1 
+IL_0085: callvirt Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_008A: callvirt Verse.RaceProperties::Boolean get_Humanlike()
+IL_008F: stfld Verse.Pawn_HealthTracker::Boolean beCarriedByCaravanIfSick
+IL_0094: ret 
+
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs sha256=a16ee4e19c518a12370f3c1e5c6142910ed0c284b829259daad9aa2196f571ac ---
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using HarmonyLib;
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>Entry-state loaded-method probes. Never register, spawn, generate or destroy pawns/defs; no map or game writes.
+    /// Fixtures own their race/stage/extension objects. Selecting a stage writes only the local pawn's age-tracker cache,
+    /// so actual Pawn.BodySize and GetTier execute without a Game, generation RNG, age progression or flight.</summary>
+    public static class JuvenileTierValidationHooks
+    {
+        private static string F(float value) => value.ToString("R", CultureInfo.InvariantCulture);
+
+        private static string ObserveRace(ThingDef race, int stageIndex)
+        {
+            int adult = (int)TitanicTierUtility.AdultTier(race), spacing = (int)TitanicTierUtility.SpacingTier(race);
+            RM_TitanicTierDef t = TitanicTierUtility.Thresholds;
+            string runtime = "unsupported", size = "unsupported", factor = "unsupported";
+            if (race?.race?.lifeStageAges != null && stageIndex >= 0 && stageIndex < race.race.lifeStageAges.Count
+                && race.race.lifeStageAges[stageIndex]?.def != null)
+            {
+                var pawn = new Pawn { def = race };
+                pawn.ageTracker = new Pawn_AgeTracker(pawn);
+                AccessTools.Field(typeof(Pawn_AgeTracker), "cachedLifeStageIndex").SetValue(pawn.ageTracker, stageIndex);
+                factor = F(pawn.ageTracker.CurLifeStage.bodySizeFactor);
+                size = F(pawn.BodySize);
+                runtime = ((int)TitanicTierUtility.GetTier(pawn)).ToString();
+            }
+            Func<bool, bool> eligible = present => RM_TitanicKernel.TitanEventEligible(adult, spacing,
+                false, false, false, false, false, true, true, present);
+            RM_TitanicExtension ext = race?.GetModExtension<RM_TitanicExtension>();
+            return "race=" + (race?.defName ?? "null") + ";base=" + (race?.race == null ? "null" : F(race.race.baseBodySize))
+                + ";stages=" + (race?.race?.lifeStageAges == null ? "null" : string.Join(",", race.race.lifeStageAges.Select(
+                    a => a == null ? "null-entry" : a.def == null ? "null-def" : a.def.defName + ":" + F(a.def.bodySizeFactor))))
+                + ";force=" + TitanicTierUtility.ForceOf(ext) + ";harness=" + (ext?.harnessOnly == true)
+                + ";stageIndex=" + stageIndex + ";factor=" + factor + ";body=" + size + ";GetTier=" + runtime
+                + ";AdultTier=" + adult + ";SpacingTier=" + spacing + ";DefQualifies=" + TitanicTierUtility.DefQualifies(race)
+                + ";eligibleNoT3=" + eligible(false) + ";eligibleWithT3=" + eligible(true)
+                + ";thresholds=" + F(t.t1MinBodySize) + "," + F(t.t2MinBodySize) + "," + F(t.t3MinBodySize);
+        }
+
+        public static string Observe(ThingDef race, int stageIndex) => ObserveRace(race, stageIndex);
+
+        public static string Fixture(float baseSize, string factors, int force, int stageIndex)
+        {
+            var race = new ThingDef { defName = "RM_JuvenileTierLocalFixture", race = new RaceProperties { baseBodySize = baseSize } };
+            race.modExtensions = new List<DefModExtension> { new RM_TitanicExtension {
+                forceEnabled = force < 0 ? (bool?)false : force > 0 ? (bool?)true : null } };
+            if (factors == "null-list") race.race.lifeStageAges = null;
+            else
+            {
+                race.race.lifeStageAges = new List<LifeStageAge>();
+                if (factors != "empty") foreach (string token in factors.Split(','))
+                {
+                    if (token == "null-entry") race.race.lifeStageAges.Add(null);
+                    else race.race.lifeStageAges.Add(new LifeStageAge { def = token == "null-def" ? null :
+                        new LifeStageDef { defName = "RM_LocalStage", bodySizeFactor = float.Parse(token, CultureInfo.InvariantCulture) } });
+                }
+            }
+            return ObserveRace(race, stageIndex);
+        }
+
+        /// <summary>All resolved kinds, no name-based eligibility filter. This is tier census, not map eligibility.</summary>
+        public static string Census()
+        {
+            return string.Join("\n", DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => k.race?.race != null)
+                .OrderBy(k => k.defName).Select(k => "kind=" + k.defName + ";" + ObserveRace(k.race, -1)));
+        }
+
+        /// <summary>Exhaustive unchanged habitat/pool/season gates with explicit occupied/unoccupied T3 input.</summary>
+        public static string GateMatrix(int adultTier, int spacingTier)
+        {
+            var sb = new StringBuilder();
+            for (int bits = 0; bits < 256; bits++)
+            {
+                Func<int, bool> b = i => (bits & (1 << i)) != 0;
+                bool result = RM_TitanicKernel.TitanEventEligible(adultTier, spacingTier, b(0), b(1), b(2), b(3), b(4), b(5), b(6), b(7));
+                sb.Append(result ? '1' : '0');
+            }
+            return sb.ToString();
+        }
+    }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs sha256=caa7cd88b5bdfac9a3fb28624114d56e89affe7e83818aaf158afa5163f27e14 ---
+using System.Linq;
+using RimWorld;
+using Verse;
+using RimMandrake.HugeThings;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>
+    /// The one place tier is computed. Everything else in the mod (comp
+    /// auto-attach, the wake processor, the yield curve, the corpse-site
+    /// conversion, LargePawnsBridge) calls through here rather than reading
+    /// bodySize or the modExtension itself. Comp attachment is conservative;
+    /// event eligibility uses lineage, spacing uses supported stages, and runtime uses actual size.
+    /// </summary>
+    public static class TitanicTierUtility
+    {
+        private static RM_TitanicTierDef cachedThresholds;
+        private static readonly RM_TitanicTierDef customThresholds = new RM_TitanicTierDef { defName = "RM_TitanicTiers_ModSettings" };
+
+        /// <summary>
+        /// The ladder in force: the player's custom tiers (Mod Settings, giant animals on, custom tiers on, and strictly rising),
+        /// else the shipped RM_TitanicTierDef. Which races carry the wake comp and the Large Pawns rows are decided from this at
+        /// startup, so a change that moves a race across T1 needs a restart (the settings label says so); runtime tiers follow
+        /// it at once.
+        /// </summary>
+        public static RM_TitanicTierDef Thresholds
+        {
+            get
+            {
+                if (RM_HugeThingsSettings.TierThresholdsCustomActive
+                    && RM_TitanicKernel.ThresholdsValid(RM_HugeThingsSettings.tierT1MinBodySize, RM_HugeThingsSettings.tierT2MinBodySize,
+                                                        RM_HugeThingsSettings.tierT3MinBodySize))
+                {
+                    customThresholds.t1MinBodySize = RM_HugeThingsSettings.tierT1MinBodySize;
+                    customThresholds.t2MinBodySize = RM_HugeThingsSettings.tierT2MinBodySize;
+                    customThresholds.t3MinBodySize = RM_HugeThingsSettings.tierT3MinBodySize;
+                    return customThresholds;
+                }
+                return ShippedThresholds;
+            }
+        }
+
+        /// <summary>The shipped ladder, Defs/TitanicTierDefs/RM_TitanicTierDef.xml.</summary>
+        public static RM_TitanicTierDef ShippedThresholds
+        {
+            get
+            {
+                if (cachedThresholds == null)
+                {
+                    cachedThresholds = DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.FirstOrDefault();
+                    if (cachedThresholds == null)
+                    {
+                        Log.Error("[RimMandrake.TitanicCreatures] No RM_TitanicTierDef found - " +
+                                  "Defs/TitanicTierDefs/RM_TitanicTierDef.xml is missing or failed to " +
+                                  "load. Falling back to hardcoded defaults (4/8/20); fix the XML.");
+                        cachedThresholds = new RM_TitanicTierDef();
+                    }
+                }
+                return cachedThresholds;
+            }
+        }
+
+        /// <summary>RM_TitanicExtension.forceEnabled as the kernel's tri-state.</summary>
+        public static int ForceOf(RM_TitanicExtension ext)
+        {
+            if (ext == null || ext.forceEnabled == null) return RM_TitanicKernel.ForceAuto;
+            return ext.forceEnabled == true ? RM_TitanicKernel.ForceIn : RM_TitanicKernel.ForceOut;
+        }
+
+        /// <summary>
+        /// Def-level qualification check: could ANY pawn of this race ever be
+        /// tiered? Used only to decide whether to auto-attach CompTitanicWake
+        /// at def-load time (a lifestage/gene swelling a borderline race past
+        /// the floor at runtime must not require the comp to already be
+        /// present, so this checks the race's base bodySize, not any one
+        /// pawn's current BodySize).
+        /// </summary>
+        public static bool DefQualifies(ThingDef raceDef)
+        {
+            if (raceDef?.race == null)
+            {
+                return false;
+            }
+            // TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize = CurLifeStage.bodySizeFactor * baseBodySize, so qualify on the base times
+            // the largest life-stage factor; a race whose adult stage swells past T1 must carry the comp from the start.
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, maxFactor, Thresholds.t1MinBodySize,
+                ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: the tier a race's grown adult reaches (base size times its largest life-stage
+        /// factor) - what decides whether a race is a titan for the titan event and a non-titan for the scavenger draw.</summary>
+        public static TitanicTier AdultTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize, t.t2MinBodySize,
+                t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>Passage spacing only: the largest supported stage of this race. Lineage eligibility stays on AdultTier
+        /// ("Calves are ok"). Incomplete/malformed stage data cannot justify relaxing spacing, so it falls back to AdultTier.
+        /// Read the current ladder every time; neither tiers nor stage factors are cached. Comp attachment stays separate.</summary>
+        public static TitanicTier SpacingTier(ThingDef raceDef)
+        {
+            if (raceDef?.race == null) return TitanicTier.None;
+            float maxFactor = RM_TitanicKernel.MaxSupportedLifeStageFactor(
+                raceDef.race.lifeStageAges?.Select(a => a?.def == null ? float.NaN : a.def.bodySizeFactor));
+            if (!RM_TitanicKernel.Finite(maxFactor)) return AdultTier(raceDef);
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(raceDef.race.baseBodySize * maxFactor, t.t1MinBodySize,
+                t.t2MinBodySize, t.t3MinBodySize, ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
+        }
+
+        /// <summary>
+        /// The runtime tier for one pawn right now - the authority every
+        /// other system in this mod reads.
+        /// </summary>
+        public static TitanicTier GetTier(Pawn pawn)
+        {
+            if (pawn?.RaceProps == null)
+            {
+                return TitanicTier.None;
+            }
+            // Pawn.BodySize = lifestage.bodySizeFactor * RaceProps.baseBodySize
+            // (Verse/Pawn.cs). OPEN QUESTION (flagged, not guessed): whether any
+            // gene StatDef offsets a separate "BodySize" stat outside this
+            // formula is unconfirmed - if a future gene needs to move a pawn
+            // between tiers independently of RaceProps/lifestage, that stat
+            // must be found and read here rather than assumed absent.
+            RM_TitanicTierDef t = Thresholds;
+            return (TitanicTier)RM_TitanicKernel.TierFor(pawn.BodySize, t.t1MinBodySize, t.t2MinBodySize, t.t3MinBodySize,
+                ForceOf(pawn.def.GetModExtension<RM_TitanicExtension>()));
+        }
+    }
+}

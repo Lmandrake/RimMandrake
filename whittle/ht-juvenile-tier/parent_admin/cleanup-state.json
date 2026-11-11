@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-11-11T17:36:46.432Z",
+  "readings": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "guard",
+        "chunk_id": "38f070",
+        "wall_time_seconds": 0.000006,
+        "exit_code": 0,
+        "original_token_count": 31,
+        "output": "{\n \"state\": \"FREE\",\n \"generation\": 1422,\n \"host\": \"stevedesktop\",\n \"path\": \"/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json\"\n}\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "bridge",
+        "chunk_id": "234af3",
+        "wall_time_seconds": 1.620887988,
+        "exit_code": 0,
+        "original_token_count": 38,
+        "output": "stevedesktop guard: stevedesktop FREE\nstevedesktop bridge FREE in the ledger — take it:  rimflow bridge take --host stevedesktop --for \"<what for>\"\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "game",
+        "chunk_id": "44882a",
+        "wall_time_seconds": 0.498253895,
+        "exit_code": 3,
+        "original_token_count": 2,
+        "output": "stopped\n"
+      }
+    }
+  ],
+  "scope": "Parent independently measured actual SteveDesktop after accepted attempt5. No other-host bridge query/take/release. Game status3 means stopped."
+}

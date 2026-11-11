@@ -1,0 +1,3848 @@
+{
+  "mode": "actual old/current Python source-model calls; not loaded C#",
+  "method": "event_eligible",
+  "lineage_tier": 3,
+  "juvenile_supported_tier": 2,
+  "rows": [
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": true,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": true
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": true,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    },
+    {
+      "boolean_inputs_in_signature_order": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "before_AdultTier3": false,
+      "after_AdultTier3_SpacingTier2": false,
+      "ordinary_AdultTier3_SpacingTier3": false
+    }
+  ]
+}

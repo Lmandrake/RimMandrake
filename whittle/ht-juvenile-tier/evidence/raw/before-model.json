@@ -1,0 +1,34 @@
+{
+  "mode": "preserved pre-fix source model; no compiled/live pre-fix claim",
+  "input_sha256": {
+    "RM_TitanicTierDef.xml": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf",
+    "TitanPassage.cs": "4e18d8ea282a5fe378b85f611cd472e737fca6eb209d5709cc9e7b69d69319eb",
+    "owner-calf-ruling.json": "d531e67e56a933d8c013f8ce4e65c695b723d80225af5de551998efccda97142",
+    "RM_TitanicKernel.cs": "f1b87ad1ffdccaf95b75a207f68f9b788fdd962ed18709901043a25d7fadcd18",
+    "RM_SeaBeasts_Invented.xml": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9",
+    "TitanicTierUtility.cs": "9d51b6d57730218f4ef523be88bd61f7d621b55b7b9544971fdf7f532e0563de"
+  },
+  "base": 32,
+  "supported_factors": [
+    0.2,
+    0.5
+  ],
+  "runtime_sizes": [
+    6.4,
+    16.0
+  ],
+  "runtime_tiers": [
+    1,
+    2
+  ],
+  "AdultTier": 3,
+  "pre_fix_spacing_tier": 3,
+  "pre_fix_eligible_no_T3_other_gates_true": true,
+  "pre_fix_eligible_with_T3_other_gates_true": false,
+  "unchanged_methods": [
+    "AdultTier",
+    "GetTier",
+    "DefQualifies",
+    "ForceOf"
+  ]
+}

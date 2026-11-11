@@ -1,0 +1,70 @@
+{
+  "scope": "read-only dependency artifact/source identity investigation; no FlowWorks source/item/artifact edit or deployment",
+  "pairs": {
+    "repo": {
+      "dll_sha256": "a4b1acd85657946b4e66ab6b134d7ee7d7bc4ab09eb88038cc95c9c97766d6cb",
+      "stamp_sha256": "d5a1ed0ed9c5072735c5f0a3936c5c396bb241da83878dafe7ddffa47d1e0aef",
+      "stamp_header": [
+        "# project: RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj",
+        "# dll: a4b1acd85657946b4e66ab6b134d7ee7d7bc4ab09eb88038cc95c9c97766d6cb"
+      ],
+      "input_count": 349,
+      "current_source_mismatches": [],
+      "dll_matches_stamp": true,
+      "informational_build": "8de445f9c2b2"
+    },
+    "installed": {
+      "dll_sha256": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+      "stamp_sha256": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f",
+      "stamp_header": [
+        "# project: RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj",
+        "# dll: bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1"
+      ],
+      "input_count": 349,
+      "current_source_mismatches": [
+        {
+          "path": "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_SuspensionProofs.cs",
+          "expected": "64e3ac465640e97464feae27b064ba3528dd8623b41ddb5ae2cc419e32056471",
+          "actual": "9c7830d6fc333be31c791e0d6dceb3b287d0703fb971c96fff5962ee973be680"
+        },
+        {
+          "path": "src/RimMandrake/FlowWorks/Source/LiquidTypes/Building_LiquidPump.cs",
+          "expected": "767932167ced0dd08c6278e264dff35be893ee4a778b51b7c2ffebfecf72f39f",
+          "actual": "3099a33681be3208aa20e80d5e5c03621b98b69b3f88da5b252f7609ad6fad20"
+        },
+        {
+          "path": "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs",
+          "expected": "e2c5e38a2ffa88a2aa6123fcbd7fa0f1c6ed9cb249a1515f4141f11015baac7f",
+          "actual": "494f92abecf0e66b25d53d3ee5bbe2d598289d3722fce1f46a15d9adaaa2e14b"
+        }
+      ],
+      "dll_matches_stamp": true,
+      "informational_build": "77e71c52f58a"
+    }
+  },
+  "compiled_row_differences": {
+    "Pits/Suspension/RM_MapComponent_SuspensionBridges.cs": {
+      "repo": "494f92abecf0e66b25d53d3ee5bbe2d598289d3722fce1f46a15d9adaaa2e14b",
+      "installed": "e2c5e38a2ffa88a2aa6123fcbd7fa0f1c6ed9cb249a1515f4141f11015baac7f"
+    },
+    "LiquidTypes/Building_LiquidPump.cs": {
+      "repo": "3099a33681be3208aa20e80d5e5c03621b98b69b3f88da5b252f7609ad6fad20",
+      "installed": "767932167ced0dd08c6278e264dff35be893ee4a778b51b7c2ffebfecf72f39f"
+    },
+    "Pits/Suspension/RM_SuspensionProofs.cs": {
+      "repo": "9c7830d6fc333be31c791e0d6dceb3b287d0703fb971c96fff5962ee973be680",
+      "installed": "64e3ac465640e97464feae27b064ba3528dd8623b41ddb5ae2cc419e32056471"
+    }
+  },
+  "repo_pair_last_commit": "d0d7cc2f1f23677c06fa9ee2f39c370ca7437a45",
+  "publication_probe": {
+    "command": [
+      "git",
+      "merge-base",
+      "--is-ancestor",
+      "d0d7cc2f1f23677c06fa9ee2f39c370ca7437a45",
+      "origin/main"
+    ],
+    "rc": 0
+  }
+}

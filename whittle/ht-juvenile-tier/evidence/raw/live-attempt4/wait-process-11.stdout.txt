@@ -1,0 +1,3 @@
+running pid=12328 session=1 started=2026-11-11 08:58:35 age_s=76
+  cmdline: D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe -disable-compute-shaders
+  bridge port in Player.log: 5174

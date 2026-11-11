@@ -1,0 +1,2 @@
+contained in rm-harness.slice (max 12G), 1 workers
+[1/1] PASS          4.1s  src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py

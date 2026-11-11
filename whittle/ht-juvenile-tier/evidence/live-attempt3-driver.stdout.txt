@@ -1,0 +1,21 @@
+guard-before rc 0
+take rc 0
+guard-taken rc 0
+lease-before rc 0
+attach-status rc 0
+dependency-after-check rc 0
+deploy-byte-check rc 0
+preflight-live rc 0
+guard-live rc 0
+winpath-observe_entry rc 0
+winpath-entry-before rc 0
+entry-before rc 0
+winpath-juvenile_tier_live rc 0
+winpath-loaded-methods rc 0
+loaded-method-probe rc 1
+FAILED loaded-method-probe failed; inspect raw streams
+down-finally rc 0
+release rc 0
+lease-after rc 0
+guard-after rc 0
+status-after rc 3

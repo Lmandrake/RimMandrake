@@ -1,0 +1,9 @@
+{
+  "commit": "94cd3b917d3c4a349b166030cb9b206b9bc6d469",
+  "paths": {
+    "src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs": "0ce78b5a18a3a3a5e10b5501c9a96030353bd2dd2218bab405ba07237d705acf",
+    "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs": "70e60a93e03f809a490c4aa2fad0e4ed18eb8d3fe1b8570ad7e99a0cc00dfb6b",
+    "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs": "fe0facc05a3cadd9c24d9e7b0e807e8c7e25e2b0abd35cddbe0140549610fa8a",
+    "src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py": "cbfa2e8001efd8e1f8781f70c56d0049dbed2ac3656ef763791367a4ed44e6bb"
+  }
+}

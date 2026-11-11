@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py",
+    "--game-dir",
+    "/mnt/d/SteamLibrary/steamapps/common/RimWorld",
+    "--engine-il",
+    "whittle/ht-juvenile-tier/evidence/raw/engine-full.stdout.txt",
+    "--out",
+    "whittle/ht-juvenile-tier/evidence/raw/current-reefback-measure"
+  ],
+  "rc": 0,
+  "elapsed": 1.4026880264282227,
+  "script_sha256": "029e546a5c0ac7fb9dc6aae76038a4c2cd14b8ebb5fdd0f38baff4e1570698c9",
+  "stdout_sha256": "9fbfbc0eebba5cdceef145d82aebbbe8742bea5c33ba6618e94aea69b1162f4f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

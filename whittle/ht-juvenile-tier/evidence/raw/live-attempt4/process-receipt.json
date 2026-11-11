@@ -1,0 +1,375 @@
+{
+  "started_utc": "2026-11-11T16:56:33.940744+00:00",
+  "commands": [
+    {
+      "name": "guard-before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.07555508613586426,
+      "error": null
+    },
+    {
+      "name": "take",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "take",
+        "--host",
+        "stevedesktop",
+        "--idle-ok",
+        "--for",
+        "HT: RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 11.150159358978271,
+      "error": null
+    },
+    {
+      "name": "guard-taken",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.07622981071472168,
+      "error": null
+    },
+    {
+      "name": "lease-before",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 2.0538620948791504,
+      "error": null
+    },
+    {
+      "name": "down-before-deploy",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.7538344860076904,
+      "error": null
+    },
+    {
+      "name": "dependency-after-check",
+      "args": [
+        "python3",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/verify_dependency.py",
+        "after",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/dependency-after.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.1412186622619629,
+      "error": null
+    },
+    {
+      "name": "hugethings-apply",
+      "args": [
+        "python3",
+        "src/RimMandrake/Utils/deploy_custom_mods.py",
+        "--mod",
+        "HugeThings",
+        "--apply"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 44.35735321044922,
+      "error": null
+    },
+    {
+      "name": "deploy-byte-check",
+      "args": [
+        "python3",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/verify_deploy.py",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/deployment-bytes.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.10323667526245117,
+      "error": null
+    },
+    {
+      "name": "preflight-offline",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+        "--deep",
+        "--all",
+        "--seat",
+        "CODEX_STEVEDESKTOP_HUGETHINGS",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/preflight-offline.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 59.29333734512329,
+      "error": null
+    },
+    {
+      "name": "powershell-path",
+      "args": [
+        "which",
+        "powershell.exe"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.011984825134277344,
+      "error": null
+    },
+    {
+      "name": "up",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "up",
+        "--wait"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 78.91525173187256,
+      "error": null
+    },
+    {
+      "name": "wait-process-11",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.3105626106262207,
+      "error": null
+    },
+    {
+      "name": "wait-bridge-12",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.2200374603271484,
+      "error": null
+    },
+    {
+      "name": "preflight-live",
+      "args": [
+        "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+        "src/RimMandrake/Utils/preflight_bridge.py",
+        "--tier",
+        "quicktest",
+        "--modset",
+        "mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core",
+        "--deep",
+        "--all",
+        "--seat",
+        "CODEX_STEVEDESKTOP_HUGETHINGS",
+        "--json",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/preflight-live.json",
+        "--live"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 4.358002662658691,
+      "error": null
+    },
+    {
+      "name": "guard-live",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.09987449645996094,
+      "error": null
+    },
+    {
+      "name": "winpath-observe_entry",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/observe_entry.py"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.004770040512084961,
+      "error": null
+    },
+    {
+      "name": "winpath-entry-before",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/entry-before.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.004415988922119141,
+      "error": null
+    },
+    {
+      "name": "entry-before",
+      "args": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\observe_entry.py",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\raw\\live-attempt4\\entry-before.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.6560232639312744,
+      "error": null
+    },
+    {
+      "name": "winpath-juvenile_tier_live",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/src/RimMandrake/HugeThings/northstar/juvenile_tier_live.py"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.005570650100708008,
+      "error": null
+    },
+    {
+      "name": "winpath-loaded-methods",
+      "args": [
+        "wslpath",
+        "-w",
+        "/home/mandrake/rm/codex-ht/whittle/ht-juvenile-tier/evidence/raw/live-attempt4/loaded-methods.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.004319906234741211,
+      "error": null
+    },
+    {
+      "name": "loaded-method-probe",
+      "args": [
+        "python.exe",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\src\\RimMandrake\\HugeThings\\northstar\\juvenile_tier_live.py",
+        "--out",
+        "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\raw\\live-attempt4\\loaded-methods.json",
+        "--juvenile-race",
+        "RM_ReefbackJuv",
+        "--adult-race",
+        "RM_Reefback"
+      ],
+      "rc": 1,
+      "elapsed_seconds": 28.106523752212524,
+      "error": null
+    },
+    {
+      "name": "down-finally",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "down"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 6.7976179122924805,
+      "error": null
+    },
+    {
+      "name": "status-before-release",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_seconds": 0.6155085563659668,
+      "error": null
+    },
+    {
+      "name": "release",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "release",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 11.26926064491272,
+      "error": null
+    },
+    {
+      "name": "lease-after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/cli.py",
+        "bridge",
+        "who",
+        "--host",
+        "stevedesktop"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 1.8001487255096436,
+      "error": null
+    },
+    {
+      "name": "guard-after",
+      "args": [
+        "python3",
+        "src/RimMandrake/rimflow/host_guard.py",
+        "status",
+        "--json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.07641100883483887,
+      "error": null
+    },
+    {
+      "name": "status-after",
+      "args": [
+        "bash",
+        "/home/mandrake/rm/runner/infrastructure/stevedesktop/rw_game.sh",
+        "status"
+      ],
+      "rc": 3,
+      "elapsed_seconds": 0.5946166515350342,
+      "error": null
+    }
+  ],
+  "ok": false,
+  "actual_fresh_driver": {
+    "state": "HELD",
+    "seat": "CODEX_STEVEDESKTOP_HUGETHINGS",
+    "purpose": "HT: RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+    "identity": {
+      "pid": 2903556,
+      "start": 103802.81,
+      "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+      "platform": "wsl",
+      "host": "SteveDesktop"
+    },
+    "generation": 1421,
+    "heartbeat": "2026-11-11T16:56:39Z",
+    "how": "holder process pid 2903556 alive",
+    "host": "stevedesktop",
+    "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+  },
+  "single_steam_request": {
+    "route": "steam://rungameid/294100",
+    "generation": "1421",
+    "driver": "2903556",
+    "time": 1794416313.058473
+  },
+  "process_seen_at": 1794416392.1885004,
+  "error": "loaded-method-probe failed; inspect raw streams",
+  "finished_utc": "2026-11-11T17:01:32.847632+00:00"
+}

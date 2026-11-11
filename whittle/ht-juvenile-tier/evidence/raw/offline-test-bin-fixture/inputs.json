@@ -1,0 +1,13 @@
+{
+  "files": {
+    "JuvenileTier.deps.json": "a7703912791755c80a6acda92b05f0ac4f7b18757cb446d9114fc8aac77394e4",
+    "JuvenileTier.dll": "ae6cff3392e0cb211b79599d8a3eeb7a8c6e2e59b5a9919fc342c8d4c4c09c28",
+    "JuvenileTier.runtimeconfig.json": "28329cf08f6505e73806b17558b187c02f0c1c516fe47ebfb7a013d082aaa306"
+  },
+  "compiled_test_inputs": {
+    "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs": "fe0facc05a3cadd9c24d9e7b0e807e8c7e25e2b0abd35cddbe0140549610fa8a",
+    "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs": "77cf62265089e2994cc8c7893952a1026785684eee2d4cff0754da93fd565e2c",
+    "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj": "1521e1936357234f204e5dcb4b8297e5f0548dfd136beb7c8f645223f3716de9"
+  },
+  "execution": "Windows dotnet.exe JuvenileTier.dll; no build/game; engine-stand-in L0 only"
+}

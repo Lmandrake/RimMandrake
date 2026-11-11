@@ -1,0 +1,127 @@
+METHOD Verse.Current::get_Game TOKEN 100668907
+IL_0000: ldsfld Verse.Current::Verse.Game gameInt
+IL_0005: ret 
+METHOD Verse.Current::get_ProgramState TOKEN 100668911
+IL_0000: ldsfld Verse.Current::Verse.ProgramState programStateInt
+IL_0005: ret 
+METHOD Verse.Find::get_CurrentMap TOKEN 100684810
+IL_0000: call Verse.Current::Verse.Game get_Game()
+IL_0005: dup 
+IL_0006: brtrue.s IL_000B
+IL_0008: pop 
+IL_0009: ldnull 
+IL_000A: ret 
+IL_000B: call Verse.Game::Verse.Map get_CurrentMap()
+IL_0010: ret 
+METHOD Verse.Find::get_TickManager TOKEN 100684827
+IL_0000: call Verse.Current::Verse.Game get_Game()
+IL_0005: ldfld Verse.Game::Verse.TickManager tickManager
+IL_000A: ret 
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn::.ctor TOKEN 100675856
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.m1 
+IL_0002: stfld Verse.Pawn::Int32 becameWorldPawnTickAbs
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.m1 
+IL_0009: stfld Verse.Pawn::Int32 showNamePromptOnTick
+IL_000E: ldarg.0 
+IL_000F: ldc.i4.m1 
+IL_0010: stfld Verse.Pawn::Int32 babyNamingDeadline
+IL_0015: ldarg.0 
+IL_0016: call Verse.ThingWithComps::Void .ctor()
+IL_001B: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStageIndex TOKEN 100676262
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0006: ldc.i4.0 
+IL_0007: bge.s IL_000F
+IL_0009: ldarg.0 
+IL_000A: call Verse.Pawn_AgeTracker::Void RecalculateLifeStageIndex()
+IL_000F: ldarg.0 
+IL_0010: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0015: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStage TOKEN 100676263
+IL_0000: ldarg.0 
+IL_0001: call Verse.Pawn_AgeTracker::Verse.LifeStageAge get_CurLifeStageRace()
+IL_0006: ldfld Verse.LifeStageAge::RimWorld.LifeStageDef def
+IL_000B: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStageRace TOKEN 100676264
+IL_0000: ldarg.0 
+IL_0001: ldarg.0 
+IL_0002: call Verse.Pawn_AgeTracker::Int32 get_CurLifeStageIndex()
+IL_0007: call Verse.Pawn_AgeTracker::Verse.LifeStageAge GetLifeStageAge(Int32)
+IL_000C: ret 
+METHOD Verse.Pawn_AgeTracker::GetLifeStageAge TOKEN 100676307
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_0006: ldfld Verse.Thing::Verse.ThingDef def
+IL_000B: ldfld Verse.ThingDef::Verse.RaceProperties race
+IL_0010: ldfld Verse.RaceProperties::System.Collections.Generic.List`1[Verse.LifeStageAge] lifeStageAges
+IL_0015: stloc.0 
+IL_0016: ldarg.1 
+IL_0017: ldc.i4.0 
+IL_0018: blt.s IL_0023
+IL_001A: ldarg.1 
+IL_001B: ldloc.0 
+IL_001C: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Int32 get_Count()
+IL_0021: blt.s IL_0025
+IL_0023: ldnull 
+IL_0024: ret 
+IL_0025: ldloc.0 
+IL_0026: ldarg.1 
+IL_0027: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.LifeStageAge get_Item(Int32)
+IL_002C: ret 
+METHOD Verse.Pawn_AgeTracker::.ctor TOKEN 100676282
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.m1 
+IL_0002: conv.i8 
+IL_0003: stfld Verse.Pawn_AgeTracker::Int64 ageBiologicalTicksInt
+IL_0008: ldarg.0 
+IL_0009: ldc.i4.m1 
+IL_000A: conv.i8 
+IL_000B: stfld Verse.Pawn_AgeTracker::Int64 birthAbsTicksInt
+IL_0010: ldarg.0 
+IL_0011: ldc.i4.m1 
+IL_0012: conv.i8 
+IL_0013: stfld Verse.Pawn_AgeTracker::Int64 nextGrowthCheckTick
+IL_0018: ldarg.0 
+IL_0019: ldc.r4 -1
+IL_001E: stfld Verse.Pawn_AgeTracker::Single growth
+IL_0023: ldarg.0 
+IL_0024: ldc.r4 -1
+IL_0029: stfld Verse.Pawn_AgeTracker::Single growthPoints
+IL_002E: ldarg.0 
+IL_002F: ldc.i4.1 
+IL_0030: stfld Verse.Pawn_AgeTracker::Boolean canGainGrowthPoints
+IL_0035: ldarg.0 
+IL_0036: ldc.i4.m1 
+IL_0037: stfld Verse.Pawn_AgeTracker::Int32 lockedLifeStageIndex
+IL_003C: ldarg.0 
+IL_003D: ldc.i4.m1 
+IL_003E: stfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0043: ldarg.0 
+IL_0044: ldc.i4.s 20
+IL_0046: ldc.i4.s 40
+IL_0048: newobj Verse.IntRange::Void .ctor(Int32, Int32)
+IL_004D: stfld Verse.Pawn_AgeTracker::Verse.IntRange NewPawnAgeReversalDemandInDays
+IL_0052: ldarg.0 
+IL_0053: ldc.i4.s 15
+IL_0055: ldc.i4.s 20
+IL_0057: newobj Verse.IntRange::Void .ctor(Int32, Int32)
+IL_005C: stfld Verse.Pawn_AgeTracker::Verse.IntRange RecruitedPawnAgeReversalDemandInDays
+IL_0061: ldarg.0 
+IL_0062: call System.Object::Void .ctor()
+IL_0067: ldarg.0 
+IL_0068: ldarg.1 
+IL_0069: stfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_006E: ret 

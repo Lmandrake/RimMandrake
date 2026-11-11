@@ -1,0 +1,17 @@
+{
+ "state": "HELD",
+ "seat": "CODEX_STEVEDESKTOP_HUGETHINGS",
+ "purpose": "HT: RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION",
+ "identity": {
+  "pid": 2903556,
+  "start": 103802.81,
+  "boot_id": "83c87369-52bb-43a4-9179-a6cd07ce769d",
+  "platform": "wsl",
+  "host": "SteveDesktop"
+ },
+ "generation": 1422,
+ "heartbeat": "2026-11-11T17:27:41Z",
+ "how": "holder process pid 2903556 alive",
+ "host": "stevedesktop",
+ "path": "/mnt/d/RimTest/data/scratch/DRIVER_LOCK.json"
+}

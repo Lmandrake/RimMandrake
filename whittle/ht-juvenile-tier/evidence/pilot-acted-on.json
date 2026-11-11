@@ -1,0 +1,11 @@
+{
+  "pilot_receipt": "pilot_call.json",
+  "repairs": [
+    "actual Pawn_AgeTracker.CurLifeStage API",
+    "invariant-culture deterministic ASCII C# test output",
+    "raw child streams retained, non-ASCII fails closed",
+    "missing-shipped-fallback log count compared relative to initial count"
+  ],
+  "additional_contract_check": "settings tool set returns valueAfter, get returns value",
+  "remaining_scope": "L0 adapter/kernel, L1 Entry-state loaded method controls only"
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\codex-ht\\whittle\\ht-juvenile-tier\\evidence\\read_full_engine.ps1",
+    "-GameDir",
+    "D:/SteamLibrary/steamapps/common/RimWorld"
+  ],
+  "rc": 0,
+  "elapsed": 1.3105535507202148,
+  "script_sha256": "78d34d16a673eaf2d83252280baa8ce4a255147295fd5c8d220749d3339129c5",
+  "stdout_sha256": "5ff66075c26e26281ea85553959e00d080b65ec1ed5b599928138c1032cd2de0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

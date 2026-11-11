@@ -1,0 +1,38 @@
+{
+  "audited_utc": "2026-11-11T17:47:09.891955+00:00",
+  "scope": "Manual inspection of every completed command/script and nested subprocess inputs against frozen judge allowlist; command inventory and sole write verified mechanically.",
+  "events_sha256": "23164a497df11f6458055f94f52750945bcae7693f9bc41a05f0eef948e486f7",
+  "judge_sha256": "6a021f861879150d5fadc2bec7b4c8a5901270fa449b7b5ca9c6162f8ac8d70a",
+  "prompt_sha256": "a6f17ba91fa96befa1550e29396fc69903b7fa5a5fb3f01385222a7397b4a621",
+  "process_rc": 0,
+  "event_rows": 88,
+  "completed_commands": 39,
+  "every_shell_seat_and_env_verified": true,
+  "all_started_commands_completed": true,
+  "read_scope": "Own frozen statement/notes/item-before; own allowed raw and independent design inputs; named instructions/specs/skills; src/tools; installed game Core/Managed, HugeThings/Biomes/FlowWorks pair identity, exact VEF identity and selected IL. Normal runtime tool imports only.",
+  "forbidden_reads": [],
+  "game_build_deploy_network_git_ledger_actions": [],
+  "writes": [
+    "whittle/ht-juvenile-tier/JUDGE.md"
+  ],
+  "retained_nonzero_commands": [
+    {
+      "index": 4,
+      "rc": 127,
+      "reason": "python alias absent; retried with python3"
+    },
+    {
+      "index": 25,
+      "rc": 1,
+      "reason": "exact installed VEF root LoadFolders.xml absent"
+    },
+    {
+      "index": 26,
+      "rc": 1,
+      "reason": "nonexistent csproj filename under allowed src; later used exact present project"
+    }
+  ],
+  "contamination": false,
+  "verdict": "would show: yes",
+  "new_judge_permitted": false
+}

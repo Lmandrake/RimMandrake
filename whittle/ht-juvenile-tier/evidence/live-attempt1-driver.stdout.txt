@@ -1,0 +1,18 @@
+guard-before rc 0
+take rc 0
+guard-taken rc 0
+lease-before rc 0
+down-before-deploy rc 0
+biomes-apply rc 0
+hugethings-apply rc 0
+deploy-byte-check rc 0
+guard-before-tier rc 0
+status-before-tier rc 3
+tier-apply rc 0
+preflight-offline rc 1
+FAILED [('O13', 'FAIL', '1 of 6 mods (5972 files) differ from the deployed copy: ["FlowWorks(2: [\'Assemblies/RimMandrakeFlowWorks.dll\', \'Assemblies/RimMandrakeFlowWorks.dll.srchash\'])"]')]
+down-finally rc 0
+release rc 0
+lease-after rc 0
+guard-after rc 0
+status-after rc 3

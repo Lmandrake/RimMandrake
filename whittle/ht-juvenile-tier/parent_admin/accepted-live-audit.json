@@ -1,0 +1,30 @@
+{
+  "at": 1794418566.8365827,
+  "ok": true,
+  "independently_derived_rows": 839,
+  "runtime_rows": 144,
+  "observations": 153,
+  "census": 686,
+  "restored_setting_fields": 5,
+  "settings_file_inventory_count": 0,
+  "preflights": {
+    "preflight-offline": {
+      "all_rows_pass": 14,
+      "required_except_O02": 10
+    },
+    "preflight-live": {
+      "all_rows_pass": 11,
+      "required_except_O02": 7
+    }
+  },
+  "exact_environment_and_rng": true,
+  "compiled_inputs": 51,
+  "artifact": {
+    "dll_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f",
+    "stamp_sha256": "a7d9acee04dba20deb2f38df6047d38596eb0567637e949180feb6940c97b5c4",
+    "deployed_dll_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f",
+    "deployed_stamp_sha256": "a7d9acee04dba20deb2f38df6047d38596eb0567637e949180feb6940c97b5c4"
+  },
+  "scope": "Parent numeric/float32/force/gate/artifact audit. L1 Entry, no generated-pawn modifiers, map/passage/flight/L4 claim.",
+  "audit_correction": "Initial parent one-off incorrectly expected O13 in live-only rows. O13 is an offline row; both complete returned row sets are PASS. No live result changed."
+}

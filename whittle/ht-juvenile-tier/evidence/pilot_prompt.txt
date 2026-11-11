@@ -1,0 +1,416 @@
+You are a FRESH independent Opus Test Pilot. Tools are disabled. Diagnose these three actual nonpass attempts before any retry. No game has been used or lease taken. First two focused run_selftests attempts crashed decoding dotnet output UTF8 (second explicitly DOTNET_CLI_UI_LANGUAGE=en-US/MSBUILDLOGCODEPAGE=65001); third required winbuild HugeThings failed with a compile error in the new probe. Give concrete bounded repairs and the next meaningful checks, distinguish HARNESS/build faults from production policy defects. No scope/bar weakening, no shared-workflow edit, no owner question. Can the selftest wrapper capture raw child streams before safely rendering them to the shared runner? Any test oracle faults you can identify? Fresh raw inputs follow.
+
+
+--- whittle/ht-juvenile-tier/STATEMENT.md sha256=7efb38c8bf7f3921ef2a449c3e1a9db4c7c9aedfec8b954e3bcdd0c81b7a250f ---
+# Juvenile passage classification — RIMMANDRAKE_REVIEW_HUGETHINGS_JUVENILE_PASSAGE_CLASSIFICATION
+
+- Resolve juvenile-only race classification and T3 passage spacing through an independent delegated design decision, preserving the owner's calf allowance, biome pools, land/sea matching and explicit force overrides.
+- Make the source and current specifications agree with that decision, retaining the separate conservative comp-attachment policy and focused adult, juvenile-only, growth-above-one, missing-stage, force and threshold controls.
+- On a fresh deployed SteveDesktop process, prove actual GetTier, AdultTier and T3-spacing predicate results for representative definitions under default and custom thresholds, restoring every changed setting and fixture exactly; retain raw proof and a fresh independent Codex judgment without claiming a completed passage, crossing, flight or L4 acceptance.
+
+
+--- src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py sha256=cbfa2e8001efd8e1f8781f70c56d0049dbed2ac3656ef763791367a4ed44e6bb ---
+#!/usr/bin/env python3
+# selftest-timeout: 600
+"""Compile the production tier adapter/kernel, then check independent policy and complete gate truth tables. L0 only."""
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import winbuild
+
+
+def main():
+    relative = "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier"
+    project = os.path.join(winbuild.ROOT, relative, "JuvenileTier.csproj")
+    rc, record = winbuild.stage_build(project, stage_name="HugeThingsJuvenileTierSelfTest")
+    if rc:
+        return rc
+    dll = winbuild.staged_win(record, os.path.dirname(project)) + "\\bin\\Release\\net8.0\\JuvenileTier.dll"
+    return winbuild.run_interop([winbuild.dotnet_exe(), dll], cwd=record['stage'], timeout=None)
+
+
+if __name__ == '__main__':
+    sys.exit(main())
+
+
+--- src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs sha256=70e60a93e03f809a490c4aa2fad0e4ed18eb8d3fe1b8570ad7e99a0cc00dfb6b ---
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Verse;
+using RimWorld;
+using RimMandrake.HugeThings;
+using RimMandrake.TitanicCreatures;
+using K = RimMandrake.TitanicCreatures.RM_TitanicKernel;
+using U = RimMandrake.TitanicCreatures.TitanicTierUtility;
+
+class Program
+{
+    static int checks;
+    static void Check(bool ok, string label) { checks++; if (!ok) throw new Exception(label); }
+    static ThingDef Race(float size, params float[] factors) => new ThingDef { defName="Local", race=new RaceProperties {
+        baseBodySize=size, lifeStageAges=factors?.Select(f=>new LifeStageAge { def=new LifeStageDef {bodySizeFactor=f} }).ToList() } };
+    static void Force(ThingDef race, bool? value) { race.modExtensions = new List<DefModExtension> { new RM_TitanicExtension {forceEnabled=value} }; }
+    static int Tier(float size, float[] ladder, int force) => force<0 ? 0 : Math.Max(force>0 ? 1 : 0, ladder.Count(t=>size>=t));
+    static bool Gate(int adult, int spacing, int bits) {
+        bool[] f=Enumerable.Range(0,8).Select(i=>(bits&(1<<i))!=0).ToArray();
+        // Independent rejection list: optout, nontitan lineage, water mismatch, season, hints, occupied supported T3.
+        if (f[0] || adult<2 || f[1]!=f[2] || !f[6]) return false;
+        if (f[3] && !f[4] || !f[3] && !f[5]) return false;
+        return spacing!=3 || !f[7];
+    }
+    static bool ProductionGate(int adult, int spacing, int bits) {
+        bool[] f=Enumerable.Range(0,8).Select(i=>(bits&(1<<i))!=0).ToArray();
+        return K.TitanEventEligible(adult,spacing,f[0],f[1],f[2],f[3],f[4],f[5],f[6],f[7]);
+    }
+    static void Row(ThingDef race, int adult, int spacing, string name) {
+        Check((int)U.AdultTier(race)==adult,name+" AdultTier");
+        Check((int)U.SpacingTier(race)==spacing,name+" SpacingTier");
+        for(int bits=0;bits<256;bits++) {
+            bool current=ProductionGate(adult,spacing,bits), old=ProductionGate(adult,adult,bits);
+            Check(current==Gate(adult,spacing,bits),name+" gates "+bits);
+            if ((bits&128)==0) Check(current==old,name+" unoccupied eligibility changed");
+            if (current!=old) Check(!old && adult==3 && spacing<3,name+" unexpected delta");
+        }
+        Console.WriteLine(name+" AdultTier="+adult+" SpacingTier="+spacing);
+    }
+    static void MainChecks() {
+        DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.Add(new RM_TitanicTierDef());
+        var juvenile=Race(32,.2f,.5f); var ordinary=Race(32,.2f,.5f,1); var growth=Race(3,4);
+        Row(juvenile,3,2,"juvenile-only"); Row(ordinary,3,3,"ordinary"); Row(growth,2,2,"growth above one");
+        Check(U.DefQualifies(Race(6,.2f,.5f)),"conservative comp attachment at base6 versus max3");
+        foreach(var race in new[]{juvenile,ordinary,growth}) foreach(var stage in race.race.lifeStageAges) {
+            var pawn=new Pawn {def=race,factor=stage.def.bodySizeFactor};
+            Check((int)U.GetTier(pawn)==Tier(pawn.BodySize,new float[]{4,8,20},0),"runtime actual size");
+        }
+        Check((int)U.GetTier(new Pawn {def=ordinary,factor=.2f})==1 && (int)U.AdultTier(ordinary)==3,"normal calf allowance");
+        Check(U.GetTier(null)==TitanicTier.None && U.AdultTier(null)==TitanicTier.None && U.SpacingTier(null)==TitanicTier.None && !U.DefQualifies(null),"null inputs");
+        Check(U.SpacingTier(new ThingDef())==TitanicTier.None,"not a race");
+        Row(Race(32,null),3,3,"missing list"); Row(Race(32),3,3,"empty list");
+        foreach(bool missingDef in new[]{false,true}) {
+            var malformed=Race(32,.2f,.5f); malformed.race.lifeStageAges.Add(missingDef ? new LifeStageAge() : null);
+            Row(malformed,3,3,missingDef?"null stage def":"null entry");
+        }
+        foreach(float bad in new[]{0f,-1f,float.NaN,float.PositiveInfinity,float.NegativeInfinity}) Row(Race(32,.2f,.5f,bad),3,3,"malformed factor "+bad);
+        foreach(bool? force in new bool?[]{null,false,true}) {
+            foreach(var race in new[]{Race(32,.2f,.5f),Race(1,.5f),Race(3,4)}) {
+                Force(race,force); int f=force==false?-1:force==true?1:0;
+                float max=race.race.lifeStageAges.Max(a=>a.def.bodySizeFactor);
+                Row(race,Tier(race.race.baseBodySize*Math.Max(1,max),new float[]{4,8,20},f),Tier(race.race.baseBodySize*max,new float[]{4,8,20},f),"force "+f+" size "+race.race.baseBodySize);
+                Check(U.DefQualifies(race)==(force==false?false:force==true || race.race.baseBodySize*Math.Max(1,max)>=4),"force comp");
+                Check((int)U.GetTier(new Pawn {def=race,factor=max})==Tier(race.race.baseBodySize*max,new float[]{4,8,20},f),"force runtime");
+            }
+        }
+        RM_HugeThingsSettings.tierThresholdsCustom=true;
+        foreach(var ladder in new[]{new float[]{4,8,16},new float[]{4,18,30},new float[]{4,8,40},new float[]{4,8,12}}) {
+            RM_HugeThingsSettings.tierT1MinBodySize=ladder[0]; RM_HugeThingsSettings.tierT2MinBodySize=ladder[1]; RM_HugeThingsSettings.tierT3MinBodySize=ladder[2];
+            Row(juvenile,Tier(32,ladder,0),Tier(16,ladder,0),"custom "+string.Join(",",ladder));
+            Row(growth,Tier(12,ladder,0),Tier(12,ladder,0),"growth custom");
+            Check((int)U.GetTier(new Pawn{def=juvenile,factor=.5f})==Tier(16,ladder,0),"custom GetTier");
+        }
+        foreach(var ladder in new[]{new float[]{4,8,8},new float[]{8,4,20},new float[]{0,8,20},new float[]{float.NaN,8,20},new float[]{4,8,float.PositiveInfinity}}) {
+            RM_HugeThingsSettings.tierT1MinBodySize=ladder[0]; RM_HugeThingsSettings.tierT2MinBodySize=ladder[1]; RM_HugeThingsSettings.tierT3MinBodySize=ladder[2]; Row(juvenile,3,2,"invalid custom fallback");
+        }
+        RM_HugeThingsSettings.tierT1MinBodySize=4; RM_HugeThingsSettings.tierT2MinBodySize=18; RM_HugeThingsSettings.tierT3MinBodySize=30;
+        RM_HugeThingsSettings.giantAnimalsEnabled=false; Row(juvenile,3,2,"animal toggle disables custom");
+        RM_HugeThingsSettings.giantAnimalsEnabled=true; RM_HugeThingsSettings.tierThresholdsCustom=false; Row(juvenile,3,2,"custom toggle disabled");
+        // No tier/stage cache: mutate only this local fixture then read again.
+        juvenile.race.lifeStageAges[1].def.bodySizeFactor=1; Row(juvenile,3,3,"stage edited in same process");
+        juvenile.race.lifeStageAges[1].def.bodySizeFactor=.5f; Row(juvenile,3,2,"stage restored in same process");
+        // Shipped definition lookup is cached separately. Verify missing-def fallback is logged once; no live database mutation.
+        var field=typeof(U).GetField("cachedThresholds",BindingFlags.NonPublic|BindingFlags.Static);
+        field.SetValue(null,null); DefDatabase<RM_TitanicTierDef>.AllDefsListForReading.Clear();
+        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==1,"missing shipped fallback");
+        Check(U.Thresholds.t3MinBodySize==20 && Log.Errors==1,"fallback cache logs once");
+    }
+    static int Main() { try { MainChecks(); Console.WriteLine("checks="+checks+" production adapter/kernel controls passed (engine stand-in L0)"); return 0; } catch(Exception e) { Console.WriteLine("FAIL "+e); return 1; } }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Stubs.cs sha256=fe0facc05a3cadd9c24d9e7b0e807e8c7e25e2b0abd35cddbe0140549610fa8a ---
+// Engine stand-in for L0 only. Production adapter/kernel files are compiled directly; L1 uses actual engine Pawn.BodySize.
+using System.Collections.Generic;
+using System.Linq;
+namespace Verse {
+ public class Def { public string defName; }
+ public class DefModExtension { }
+ public class ThingDef : Def { public RaceProperties race; public List<DefModExtension> modExtensions;
+  public T GetModExtension<T>() where T:DefModExtension => modExtensions?.OfType<T>().FirstOrDefault(); }
+ public class RaceProperties { public float baseBodySize; public List<LifeStageAge> lifeStageAges; }
+ public class LifeStageAge { public RimWorld.LifeStageDef def; }
+ public class Pawn { public ThingDef def; public float factor; public RaceProperties RaceProps => def?.race; public float BodySize => factor * RaceProps.baseBodySize; }
+ public static class DefDatabase<T> { public static List<T> AllDefsListForReading = new List<T>(); }
+ public static class Log { public static int Errors; public static void Error(string message) { Errors++; } }
+}
+namespace RimWorld { public class LifeStageDef : Verse.Def { public float bodySizeFactor = 1f; } }
+namespace RimMandrake.HugeThings {
+ public static class RM_HugeThingsSettings {
+  public static bool giantAnimalsEnabled=true, tierThresholdsCustom=false;
+  public static bool TierThresholdsCustomActive => giantAnimalsEnabled && tierThresholdsCustom;
+  public static float tierT1MinBodySize=4, tierT2MinBodySize=8, tierT3MinBodySize=20;
+ }
+}
+
+
+--- src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/JuvenileTier.csproj sha256=1521e1936357234f204e5dcb4b8297e5f0548dfd136beb7c8f645223f3716de9 ---
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs"/><Compile Include="Stubs.cs"/>
+    <Compile Include="..\..\Kernel\RM_TitanicKernel.cs" Link="RM_TitanicKernel.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\TitanicTierUtility.cs" Link="TitanicTierUtility.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\TitanicTier.cs" Link="TitanicTier.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\RM_TitanicTierDef.cs" Link="RM_TitanicTierDef.cs"/>
+    <Compile Include="..\..\Titanic\Tiering\RM_TitanicExtension.cs" Link="RM_TitanicExtension.cs"/>
+  </ItemGroup>
+</Project>
+
+
+--- src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs sha256=0ce78b5a18a3a3a5e10b5501c9a96030353bd2dd2218bab405ba07237d705acf ---
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using HarmonyLib;
+using RimWorld;
+using Verse;
+
+namespace RimMandrake.TitanicCreatures
+{
+    /// <summary>Entry-state loaded-method probes. Never register, spawn, generate or destroy pawns/defs; no map or game writes.
+    /// Fixtures own their race/stage/extension objects. Selecting a stage writes only the local pawn's age-tracker cache,
+    /// so actual Pawn.BodySize and GetTier execute without a Game, generation RNG, age progression or flight.</summary>
+    public static class JuvenileTierValidationHooks
+    {
+        private static string F(float value) => value.ToString("R", CultureInfo.InvariantCulture);
+
+        private static string ObserveRace(ThingDef race, int stageIndex)
+        {
+            int adult = (int)TitanicTierUtility.AdultTier(race), spacing = (int)TitanicTierUtility.SpacingTier(race);
+            RM_TitanicTierDef t = TitanicTierUtility.Thresholds;
+            string runtime = "unsupported", size = "unsupported", factor = "unsupported";
+            if (race?.race?.lifeStageAges != null && stageIndex >= 0 && stageIndex < race.race.lifeStageAges.Count
+                && race.race.lifeStageAges[stageIndex]?.def != null)
+            {
+                var pawn = new Pawn { def = race };
+                pawn.ageTracker = new Pawn_AgeTracker(pawn);
+                AccessTools.Field(typeof(Pawn_AgeTracker), "cachedLifeStageIndex").SetValue(pawn.ageTracker, stageIndex);
+                factor = F(pawn.CurLifeStage.bodySizeFactor);
+                size = F(pawn.BodySize);
+                runtime = ((int)TitanicTierUtility.GetTier(pawn)).ToString();
+            }
+            Func<bool, bool> eligible = present => RM_TitanicKernel.TitanEventEligible(adult, spacing,
+                false, false, false, false, false, true, true, present);
+            RM_TitanicExtension ext = race?.GetModExtension<RM_TitanicExtension>();
+            return "race=" + (race?.defName ?? "null") + ";base=" + (race?.race == null ? "null" : F(race.race.baseBodySize))
+                + ";stages=" + (race?.race?.lifeStageAges == null ? "null" : string.Join(",", race.race.lifeStageAges.Select(
+                    a => a == null ? "null-entry" : a.def == null ? "null-def" : a.def.defName + ":" + F(a.def.bodySizeFactor))))
+                + ";force=" + TitanicTierUtility.ForceOf(ext) + ";harness=" + (ext?.harnessOnly == true)
+                + ";stageIndex=" + stageIndex + ";factor=" + factor + ";body=" + size + ";GetTier=" + runtime
+                + ";AdultTier=" + adult + ";SpacingTier=" + spacing + ";DefQualifies=" + TitanicTierUtility.DefQualifies(race)
+                + ";eligibleNoT3=" + eligible(false) + ";eligibleWithT3=" + eligible(true)
+                + ";thresholds=" + F(t.t1MinBodySize) + "," + F(t.t2MinBodySize) + "," + F(t.t3MinBodySize);
+        }
+
+        public static string Observe(ThingDef race, int stageIndex) => ObserveRace(race, stageIndex);
+
+        public static string Fixture(float baseSize, string factors, int force, int stageIndex)
+        {
+            var race = new ThingDef { defName = "RM_JuvenileTierLocalFixture", race = new RaceProperties { baseBodySize = baseSize } };
+            race.modExtensions = new List<DefModExtension> { new RM_TitanicExtension {
+                forceEnabled = force < 0 ? (bool?)false : force > 0 ? (bool?)true : null } };
+            if (factors == "null-list") race.race.lifeStageAges = null;
+            else
+            {
+                race.race.lifeStageAges = new List<LifeStageAge>();
+                if (factors != "empty") foreach (string token in factors.Split(','))
+                {
+                    if (token == "null-entry") race.race.lifeStageAges.Add(null);
+                    else race.race.lifeStageAges.Add(new LifeStageAge { def = token == "null-def" ? null :
+                        new LifeStageDef { defName = "RM_LocalStage", bodySizeFactor = float.Parse(token, CultureInfo.InvariantCulture) } });
+                }
+            }
+            return ObserveRace(race, stageIndex);
+        }
+
+        /// <summary>All resolved kinds, no name-based eligibility filter. This is tier census, not map eligibility.</summary>
+        public static string Census()
+        {
+            return string.Join("\n", DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => k.race?.race != null)
+                .OrderBy(k => k.defName).Select(k => "kind=" + k.defName + ";" + ObserveRace(k.race, -1)));
+        }
+
+        /// <summary>Exhaustive unchanged habitat/pool/season gates with explicit occupied/unoccupied T3 input.</summary>
+        public static string GateMatrix(int adultTier, int spacingTier)
+        {
+            var sb = new StringBuilder();
+            for (int bits = 0; bits < 256; bits++)
+            {
+                Func<int, bool> b = i => (bits & (1 << i)) != 0;
+                bool result = RM_TitanicKernel.TitanEventEligible(adultTier, spacingTier, b(0), b(1), b(2), b(3), b(4), b(5), b(6), b(7));
+                sb.Append(result ? '1' : '0');
+            }
+            return sb.ToString();
+        }
+    }
+}
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/selftests.stdout.txt sha256=0d18a746aba9081f814eb45cca2ac543eca2b1f8d49be43e6f4f28f2ca837458 ---
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/2 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 2 ran, 1 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): an input changed: src/RimMandrake/HugeThings/northstar/selftest_passage_pool.py <- runner, tracer or package set
+  ran (1): no record
+PASS          0.2s  src/RimMandrake/HugeThings/northstar/selftest_passage_pool.py
+CRASH         4.6s  src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py
+             harness error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xec in position 1329: invalid continuation byte
+
+PASS 1/2  FAIL 0/2  UNMEASURED 0/2  CRASH 1/2  SKIPPED 0/2  (wall 4.8s) — contained in rm-harness.slice (max 12G), 1 workers
+CRASH (1/2) — reached no verdict: src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py [harness error]
+RESULT: RED (green = FAIL 0 and CRASH 0)
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/selftests-encoding-attempt2.stdout.txt sha256=07733453fc126fadc9ff1fa1afe9927ab0ca3db52f1868b5e41ba677461d75c6 ---
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 65716eff3278c68e
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/1 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 1 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (1): no record
+CRASH         2.2s  src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py
+             harness error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xec in position 1220: invalid continuation byte
+
+PASS 0/1  FAIL 0/1  UNMEASURED 0/1  CRASH 1/1  SKIPPED 0/1  (wall 2.2s) — contained in rm-harness.slice (max 12G), 1 workers
+CRASH (1/1) — reached no verdict: src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py [harness error]
+RESULT: RED (green = FAIL 0 and CRASH 0)
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/build.stdout.txt sha256=3a39b2703f769e92efa045721669a0d39bf69d62b057193be6db9fe2a36fae81 ---
+staging src/RimMandrake/HugeThings/Source/RM_HugeThings.csproj -> D:\RimTest\data\build\HugeThings
+  src/RimMandrake/HugeThings/Source/
+  src/RimMandrake/_Shared/DrawnExtent/
+  src/RimMandrake/_Shared/SettingsKit/
++ dotnet.exe build D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\Titanic\Events\JuvenileTierValidationHooks.cs(30,33): error CS1061: 'Pawn' does not contain a definition for 'CurLifeStage' and no accessible extension method 'CurLifeStage' accepting a first argument of type 'Pawn' could be found (are you missing a using directive or an assembly reference?) [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+
+Build FAILED.
+
+D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\Titanic\Events\JuvenileTierValidationHooks.cs(30,33): error CS1061: 'Pawn' does not contain a definition for 'CurLifeStage' and no accessible extension method 'CurLifeStage' accepting a first argument of type 'Pawn' could be found (are you missing a using directive or an assembly reference?) [D:\RimTest\data\build\HugeThings\src\RimMandrake\HugeThings\Source\RM_HugeThings.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.68
+
+
+--- whittle/ht-juvenile-tier/evidence/raw/engine.il.txt sha256=601fe8dacf580b31340212015ad8625e2b3f93bd3f16be36de00a35fc6c3da1a ---
+METHOD Verse.Pawn::get_BodySize TOKEN 100675828
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn::Verse.Pawn_AgeTracker ageTracker
+IL_0006: callvirt Verse.Pawn_AgeTracker::RimWorld.LifeStageDef get_CurLifeStage()
+IL_000B: ldfld RimWorld.LifeStageDef::Single bodySizeFactor
+IL_0010: ldarg.0 
+IL_0011: call Verse.Pawn::Verse.RaceProperties get_RaceProps()
+IL_0016: ldfld Verse.RaceProperties::Single baseBodySize
+IL_001B: mul 
+IL_001C: ret 
+METHOD Verse.Pawn::.ctor TOKEN 100675856
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.m1 
+IL_0002: stfld Verse.Pawn::Int32 becameWorldPawnTickAbs
+IL_0007: ldarg.0 
+IL_0008: ldc.i4.m1 
+IL_0009: stfld Verse.Pawn::Int32 showNamePromptOnTick
+IL_000E: ldarg.0 
+IL_000F: ldc.i4.m1 
+IL_0010: stfld Verse.Pawn::Int32 babyNamingDeadline
+IL_0015: ldarg.0 
+IL_0016: call Verse.ThingWithComps::Void .ctor()
+IL_001B: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStageIndex TOKEN 100676262
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0006: ldc.i4.0 
+IL_0007: bge.s IL_000F
+IL_0009: ldarg.0 
+IL_000A: call Verse.Pawn_AgeTracker::Void RecalculateLifeStageIndex()
+IL_000F: ldarg.0 
+IL_0010: ldfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0015: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStage TOKEN 100676263
+IL_0000: ldarg.0 
+IL_0001: call Verse.Pawn_AgeTracker::Verse.LifeStageAge get_CurLifeStageRace()
+IL_0006: ldfld Verse.LifeStageAge::RimWorld.LifeStageDef def
+IL_000B: ret 
+METHOD Verse.Pawn_AgeTracker::get_CurLifeStageRace TOKEN 100676264
+IL_0000: ldarg.0 
+IL_0001: ldarg.0 
+IL_0002: call Verse.Pawn_AgeTracker::Int32 get_CurLifeStageIndex()
+IL_0007: call Verse.Pawn_AgeTracker::Verse.LifeStageAge GetLifeStageAge(Int32)
+IL_000C: ret 
+METHOD Verse.Pawn_AgeTracker::GetLifeStageAge TOKEN 100676307
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_0006: ldfld Verse.Thing::Verse.ThingDef def
+IL_000B: ldfld Verse.ThingDef::Verse.RaceProperties race
+IL_0010: ldfld Verse.RaceProperties::System.Collections.Generic.List`1[Verse.LifeStageAge] lifeStageAges
+IL_0015: stloc.0 
+IL_0016: ldarg.1 
+IL_0017: ldc.i4.0 
+IL_0018: blt.s IL_0023
+IL_001A: ldarg.1 
+IL_001B: ldloc.0 
+IL_001C: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Int32 get_Count()
+IL_0021: blt.s IL_0025
+IL_0023: ldnull 
+IL_0024: ret 
+IL_0025: ldloc.0 
+IL_0026: ldarg.1 
+IL_0027: callvirt System.Collections.Generic.List`1[[Verse.LifeStageAge, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Verse.LifeStageAge get_Item(Int32)
+IL_002C: ret 
+METHOD Verse.Pawn_AgeTracker::.ctor TOKEN 100676282
+IL_0000: ldarg.0 
+IL_0001: ldc.i4.m1 
+IL_0002: conv.i8 
+IL_0003: stfld Verse.Pawn_AgeTracker::Int64 ageBiologicalTicksInt
+IL_0008: ldarg.0 
+IL_0009: ldc.i4.m1 
+IL_000A: conv.i8 
+IL_000B: stfld Verse.Pawn_AgeTracker::Int64 birthAbsTicksInt
+IL_0010: ldarg.0 
+IL_0011: ldc.i4.m1 
+IL_0012: conv.i8 
+IL_0013: stfld Verse.Pawn_AgeTracker::Int64 nextGrowthCheckTick
+IL_0018: ldarg.0 
+IL_0019: ldc.r4 -1
+IL_001E: stfld Verse.Pawn_AgeTracker::Single growth
+IL_0023: ldarg.0 
+IL_0024: ldc.r4 -1
+IL_0029: stfld Verse.Pawn_AgeTracker::Single growthPoints
+IL_002E: ldarg.0 
+IL_002F: ldc.i4.1 
+IL_0030: stfld Verse.Pawn_AgeTracker::Boolean canGainGrowthPoints
+IL_0035: ldarg.0 
+IL_0036: ldc.i4.m1 
+IL_0037: stfld Verse.Pawn_AgeTracker::Int32 lockedLifeStageIndex
+IL_003C: ldarg.0 
+IL_003D: ldc.i4.m1 
+IL_003E: stfld Verse.Pawn_AgeTracker::Int32 cachedLifeStageIndex
+IL_0043: ldarg.0 
+IL_0044: ldc.i4.s 20
+IL_0046: ldc.i4.s 40
+IL_0048: newobj Verse.IntRange::Void .ctor(Int32, Int32)
+IL_004D: stfld Verse.Pawn_AgeTracker::Verse.IntRange NewPawnAgeReversalDemandInDays
+IL_0052: ldarg.0 
+IL_0053: ldc.i4.s 15
+IL_0055: ldc.i4.s 20
+IL_0057: newobj Verse.IntRange::Void .ctor(Int32, Int32)
+IL_005C: stfld Verse.Pawn_AgeTracker::Verse.IntRange RecruitedPawnAgeReversalDemandInDays
+IL_0061: ldarg.0 
+IL_0062: call System.Object::Void .ctor()
+IL_0067: ldarg.0 
+IL_0068: ldarg.1 
+IL_0069: stfld Verse.Pawn_AgeTracker::Verse.Pawn pawn
+IL_006E: ret 

@@ -1,0 +1,11 @@
+{
+  "src/RimMandrake/HugeThings/Source/Titanic/Events/JuvenileTierValidationHooks.cs": "a16ee4e19c518a12370f3c1e5c6142910ed0c284b829259daad9aa2196f571ac",
+  "src/RimMandrake/HugeThings/Source/SelfTest/JuvenileTier/Program.cs": "77cf62265089e2994cc8c7893952a1026785684eee2d4cff0754da93fd565e2c",
+  "src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py": "6016f2dd652cadc117e86164f27ab5fb7d273cac3ed1b1d6d6dcf2c1f75de719",
+  "src/RimMandrake/HugeThings/northstar/juvenile_tier_live.py": "bc287f7bead39c25b1bcbef060e95b18711dfd489513dcf45d47b0938ed844f1",
+  "src/RimMandrake/HugeThings/northstar/measure_reefback_calf.py": "029e546a5c0ac7fb9dc6aae76038a4c2cd14b8ebb5fdd0f38baff4e1570698c9",
+  "src/RimMandrake/HugeThings/northstar/selftest_juvenile_policy_model.py": "ca3bfb022e364488d4d2ca2ddeca7a3642cbeda766330625d27f299c7a2bc5f1",
+  "design/RimMandrake/hugethings_codex_2026-11-09/REEFBACK_CALF_DECISION.md": "a5199d1b7d238e3b41ad9044a4e095caee70475fe8df438bc1455ec6957c1d1b",
+  "design/RimMandrake/hugethings_codex_2026-11-09/REVIEW.md": "d5496aeff3883cea96267f2999e1d2485c8ea27f96df4f3637b2e4ed9b02143d",
+  "infrastructure/state/items/TITAN_CAMPS_SCAVENGERS_EVENTS_1.md": "e0f8d2ac60d2a38aa74d05de99c1b15f6f5b47886901d5253db15fc7f3520aeb"
+}

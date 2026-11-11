@@ -1,0 +1,31 @@
+{
+  "authorized": true,
+  "at": 1794414542.5732,
+  "scope": "Deployment ONLY of unchanged published FlowWorks dependency pair. No source/item/other-clone edits or rebuilding. Only concrete reviewed two-file delta. Parent verified deployed old DLL has historical published blob and backed up both bytes with hashes.",
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/deploy_custom_mods.py",
+    "--mod",
+    "FlowWorks",
+    "--apply"
+  ],
+  "allowed_delta": [
+    [
+      "~",
+      "Assemblies/RimMandrakeFlowWorks.dll"
+    ],
+    [
+      "~",
+      "Assemblies/RimMandrakeFlowWorks.dll.srchash"
+    ]
+  ],
+  "expected_dll_sha256": "a4b1acd85657946b4e66ab6b134d7ee7d7bc4ab09eb88038cc95c9c97766d6cb",
+  "expected_stamp_sha256": "d5a1ed0ed9c5072735c5f0a3936c5c396bb241da83878dafe7ddffa47d1e0aef",
+  "historical_commits_ancestors_of_origin": {
+    "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b": true,
+    "2c1d3f3879f7224b2946626da8a361dc0a7f8338": true
+  },
+  "backup_record": "parent_admin/dependency-provenance.json",
+  "plan": "parent_admin/flowworks-dry-plan.txt",
+  "requirements": "Fresh --host stevedesktop lease, game DOWN, verify exact hashes before/after, require every other O13/current preflight row PASS, no bypass. Copy neutral plan, identities, backup/provenance into evidence/raw for fresh judge. Retain failed attempt1 unchanged. All JUDGE_PROMPT scope amendments precede first judge; exact policy paths and dependency identity now allowed."
+}

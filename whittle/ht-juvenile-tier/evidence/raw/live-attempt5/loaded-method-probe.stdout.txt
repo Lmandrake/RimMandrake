@@ -1,0 +1,1 @@
+{"ok": true, "errors": [], "restoration": {"attempted": true, "ok": true, "readbacks": {"giantAnimalsEnabled": "True", "tierThresholdsCustom": "False", "tierT1MinBodySize": "4", "tierT2MinBodySize": "8", "tierT3MinBodySize": "20"}, "failures": []}}

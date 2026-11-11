@@ -1,0 +1,14 @@
+{
+  "command": [
+    "powershell.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-Command",
+    "$a=[Reflection.Assembly]::ReflectionOnlyLoadFrom('D:/SteamLibrary/steamapps/common/RimWorld/Mods/HugeThings/Assemblies/RM_HugeThings.dll'); $a.ManifestModule.ModuleVersionId.ToString()"
+  ],
+  "rc": 0,
+  "stdout": "385de1c7-0e32-4880-892b-42afe31a9b93\r\n",
+  "stderr": "",
+  "loaded_mvid": "385de1c7-0e32-4880-892b-42afe31a9b93",
+  "deployed_dll_sha256": "4a4f0cbcbcc2ad3f81c75b1d85f7c3deaae7d6e1623750e90692ddc9a68e1b9f"
+}

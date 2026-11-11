@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-11T16:36:03.415242+00:00",
+  "calls": [
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "Verse.Current",
+        "method": "get_ProgramState",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Verse.ProgramState get_ProgramState()",
+        "result": "Entry",
+        "thingArgs": [],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_654f1fc2e99a4db4a2fc9b0ef1689b62",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "Verse.Current",
+        "method": "get_Game",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Verse.Game get_Game()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_458a625551f0480ab38da3591763a3b1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "params": {
+        "type": "Verse.Find",
+        "method": "get_CurrentMap",
+        "args": ""
+      },
+      "result": {
+        "success": true,
+        "method": "Verse.Map get_CurrentMap()",
+        "result": "null",
+        "thingArgs": [],
+        "ticksGame": -1,
+        "operation": {
+          "OperationId": "op_17d67996247d47bc93af66bcb59c6c2f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Entry",
+          "hasCurrentGame": false
+        }
+      }
+    }
+  ],
+  "ticksGame": [
+    -1,
+    -1,
+    -1
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "biomes_delta": [
+    "TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml"
+  ],
+  "source_sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9",
+  "published_xml_commit": "ce614548f81c2a4dab572a80a942a524b048e00b",
+  "plan_sha256": "17d143b83fec0bc831399accdfb8ba9a4d890fb7cf522193baffc4fe56aec30d",
+  "review": "Complete compose plan: one recognized published nursery combat XML delta, existing held harness evidence untouched; no dependency redeploy",
+  "hugethings_delta": [
+    "Assemblies/RM_HugeThings.dll",
+    "Assemblies/RM_HugeThings.dll.srchash"
+  ],
+  "hugethings_plan_sha256": "265551f21f9874135bc4c4357531818a678e83d6d13da0de1d0bf04cc72a7c7b"
+}

@@ -1,0 +1,27 @@
+installed mods discovered: 116
+  BRIDGE GATE OVERRIDDEN by CODEX_STEVEDESKTOP_HUGETHINGS: CODEX_STEVEDESKTOP_HUGETHINGS does not hold the bridge (holder: nobody). Take it first: rimflow bridge take --for "<what for>" -- reason given: Parent-authorized default-host gate mismatch only: fresh CODEX_STEVEDESKTOP_HUGETHINGS own stevedesktop host_guard generation 1418 and driver 2903556 verified HELD, actual game DOWN and SteveDesktop paths independently verified; other-host O02 is N/A.
+
+tier 'mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core': LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT: the mods a live-proof file needs (its build's mods and its live-mods), with the bridge, Gimme Some Slack and all five DLC: brrainz.rimbridgeserver, mandrake.rm.gimmesomeslack, mandrake.rm.flowworks, mandrake.rm.hugethings, mandrake.rm.patches, mandrake.rm.biomes, oskarpotocki.vanillafactionsexpanded.core
+
+    1  brrainz.harmony                              Harmony
+    2  ludeon.rimworld                              Ludeon.RimWorld
+    3  ludeon.rimworld.royalty                      Ludeon.RimWorld.Royalty
+    4  ludeon.rimworld.ideology                     Ludeon.RimWorld.Ideology
+    5  ludeon.rimworld.biotech                      Ludeon.RimWorld.Biotech
+    6  ludeon.rimworld.anomaly                      Ludeon.RimWorld.Anomaly
+    7  ludeon.rimworld.odyssey                      Ludeon.RimWorld.Odyssey
+    8  brrainz.rimbridgeserver                      RimBridgeServer
+    9  oskarpotocki.vanillafactionsexpanded.core    Vanilla Expanded Framework
+   10  ray1203.simplecamerasetting                  SimpleCameraSetting
+   11  mandrake.rm.gimmesomeslack                   RimMandrake: Gimme Some Slack
+   12  mandrake.rm.flowworks                        RimMandrake: FlowWorks
+   13  mandrake.rm.hugethings                       RimMandrake: Huge Things
+   14  mandrake.rm.luminouspigment                  RimMandrake: Luminous Pigment
+   15  mandrake.rm.biomes                           RimMandrake: Baroque Biomes
+   16  mandrake.rm.patches                          RimMandrake Patches
+
+  16 mods, down from 316.
+
+  backed up  -> /mnt/d/RimTest/data/modset_swaps/CODEX_STEVEDESKTOP_HUGETHINGS/ModsConfig.before-tier-mods__mandrake_rm_flowworks__mandrake_rm_hugethings__mandrake_rm_patches__mandrake_rm_biomes__oskarpotocki_vanillafactionsexpanded_core.xml
+  wrote      -> ModsConfig.xml (16 active)
+  restore with: python src/RimMandrake/Utils/modset_builder.py --restore-own CODEX_STEVEDESKTOP_HUGETHINGS

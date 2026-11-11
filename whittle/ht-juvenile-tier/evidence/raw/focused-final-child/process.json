@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/home/mandrake/.cache/ht-warning-venv/bin/python3",
+    "/home/mandrake/rm/codex-ht/src/RimMandrake/Utils/selftest_hugethings_juvenile_tier.py",
+    "--child"
+  ],
+  "rc": 0,
+  "streams": {
+    "stdout": {
+      "bytes": 2576,
+      "sha256": "d0f5c4a3018bda6988e1e7b2b64099541c2c2afe133e15693be4d25442d6c142"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

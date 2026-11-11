@@ -1,0 +1,94 @@
+METHOD RimWorld.BillStack::.ctor TOKEN 100690456
+IL_0000: ldarg.0 
+IL_0001: newobj System.Collections.Generic.List`1[[RimWorld.Bill, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0006: stfld RimWorld.BillStack::System.Collections.Generic.List`1[RimWorld.Bill] bills
+IL_000B: ldarg.0 
+IL_000C: call System.Object::Void .ctor()
+IL_0011: ldarg.0 
+IL_0012: ldarg.1 
+IL_0013: stfld RimWorld.BillStack::RimWorld.IBillGiver billGiver
+IL_0018: ret 
+METHOD Verse.HediffSet::.ctor TOKEN 100675381
+IL_0000: ldarg.0 
+IL_0001: newobj System.Collections.Generic.List`1[[Verse.Hediff, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0006: stfld Verse.HediffSet::System.Collections.Generic.List`1[Verse.Hediff] hediffs
+IL_000B: ldarg.0 
+IL_000C: newobj System.Collections.Generic.Dictionary`2[[Verse.DamageDef, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null],[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]::Void .ctor()
+IL_0011: stfld Verse.HediffSet::System.Collections.Generic.Dictionary`2[Verse.DamageDef,System.Single] cachedDamageFactors
+IL_0016: ldarg.0 
+IL_0017: ldc.r4 -1
+IL_001C: stfld Verse.HediffSet::Single cachedPain
+IL_0021: ldarg.0 
+IL_0022: ldc.r4 -1
+IL_0027: stfld Verse.HediffSet::Single cachedBleedRate
+IL_002C: ldarg.0 
+IL_002D: newobj System.Collections.Generic.List`1[[Verse.Verb, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0032: stfld Verse.HediffSet::System.Collections.Generic.List`1[Verse.Verb] tmpHediffVerbs
+IL_0037: ldarg.0 
+IL_0038: newobj TOKEN 167777379 RESOLUTION: Exception calling "ResolveMember" with "1" argument(s): "Could not load type 'System.Collections.Generic.Stack`1' from assembly 'System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'."
+IL_003D: stfld TOKEN 67118358 RESOLUTION: Exception calling "ToString" with "0" argument(s): "Could not load type 'System.Collections.Generic.Stack`1' from assembly 'System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'."
+IL_0042: ldarg.0 
+IL_0043: newobj TOKEN 167777380 RESOLUTION: Exception calling "ResolveMember" with "1" argument(s): "Method 'System.Collections.Generic.HashSet`1<T>.System.Collections.Generic.ICollection<T>.Add(!0)' is security transparent, but is a member of a security critical type."
+IL_0048: stfld TOKEN 67118359 RESOLUTION: Exception calling "ToString" with "0" argument(s): "Method 'System.Collections.Generic.HashSet`1<T>.System.Collections.Generic.ICollection<T>.Add(!0)' is security transparent, but is a member of a security critical type."
+IL_004D: ldarg.0 
+IL_004E: newobj TOKEN 167777381 RESOLUTION: Exception calling "ResolveMember" with "1" argument(s): "Could not load type 'System.Collections.Generic.Queue`1' from assembly 'System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'."
+IL_0053: stfld TOKEN 67118360 RESOLUTION: Exception calling "ToString" with "0" argument(s): "Could not load type 'System.Collections.Generic.Queue`1' from assembly 'System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'."
+IL_0058: ldarg.0 
+IL_0059: ldc.r4 -1
+IL_005E: stfld Verse.HediffSet::Single cachedMaxPctConditionalThoughtsNullified
+IL_0063: ldarg.0 
+IL_0064: ldc.r4 -1
+IL_0069: stfld Verse.HediffSet::Single cachedMaxPctAllThoughtsNullified
+IL_006E: ldarg.0 
+IL_006F: call System.Object::Void .ctor()
+IL_0074: ldarg.0 
+IL_0075: ldarg.1 
+IL_0076: stfld Verse.HediffSet::Verse.Pawn pawn
+IL_007B: ret 
+METHOD Verse.ImmunityHandler::.ctor TOKEN 100675511
+IL_0000: ldarg.0 
+IL_0001: newobj System.Collections.Generic.List`1[[Verse.ImmunityRecord, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null]]::Void .ctor()
+IL_0006: stfld Verse.ImmunityHandler::System.Collections.Generic.List`1[Verse.ImmunityRecord] immunityList
+IL_000B: ldarg.0 
+IL_000C: call System.Object::Void .ctor()
+IL_0011: ldarg.0 
+IL_0012: ldarg.1 
+IL_0013: stfld Verse.ImmunityHandler::Verse.Pawn pawn
+IL_0018: ret 
+METHOD Verse.PawnCapacitiesHandler::.ctor TOKEN 100675541
+IL_0000: ldarg.0 
+IL_0001: call System.Object::Void .ctor()
+IL_0006: ldarg.0 
+IL_0007: ldarg.1 
+IL_0008: stfld Verse.PawnCapacitiesHandler::Verse.Pawn pawn
+IL_000D: ret 
+METHOD Verse.RaceProperties::get_Humanlike TOKEN 100667171
+IL_0000: ldarg.0 
+IL_0001: ldfld Verse.RaceProperties::Verse.Intelligence intelligence
+IL_0006: ldc.i4.2 
+IL_0007: clt 
+IL_0009: ldc.i4.0 
+IL_000A: ceq 
+IL_000C: ret 
+METHOD Verse.Rand::get_StateCompressed TOKEN 100665935
+IL_0000: ldsfld Verse.Rand::UInt32 seed
+IL_0005: conv.u8 
+IL_0006: ldsfld Verse.Rand::UInt32 iterations
+IL_000B: conv.u8 
+IL_000C: ldc.i4.s 32
+IL_000E: shl 
+IL_000F: or 
+IL_0010: ret 
+METHOD Verse.SummaryHealthHandler::.ctor TOKEN 100675574
+IL_0000: ldarg.0 
+IL_0001: ldc.r4 1
+IL_0006: stfld Verse.SummaryHealthHandler::Single cachedSummaryHealthPercent
+IL_000B: ldarg.0 
+IL_000C: ldc.i4.1 
+IL_000D: stfld Verse.SummaryHealthHandler::Boolean dirty
+IL_0012: ldarg.0 
+IL_0013: call System.Object::Void .ctor()
+IL_0018: ldarg.0 
+IL_0019: ldarg.1 
+IL_001A: stfld Verse.SummaryHealthHandler::Verse.Pawn pawn
+IL_001F: ret 

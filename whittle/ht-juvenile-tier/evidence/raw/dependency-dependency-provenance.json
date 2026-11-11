@@ -1,0 +1,25 @@
+{
+  "backup": [
+    {
+      "source": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "backup": "/mnt/d/RimTest/data/backups/ht-juvenile-dependency-20261111T1630/RimMandrakeFlowWorks.dll",
+      "sha256": "bb48497102949cad14cf173b743baaebc5b2889a55d4bc0421671ca7351fa0e1",
+      "bytes": 2274816
+    },
+    {
+      "source": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "backup": "/mnt/d/RimTest/data/backups/ht-juvenile-dependency-20261111T1630/RimMandrakeFlowWorks.dll.srchash",
+      "sha256": "791186e2f5c9b02e2a833a797c9814b5605faf09ef7d3fd0c2751cfc71818f8f",
+      "bytes": 33111
+    }
+  ],
+  "repo_blob": "166b38bacd12b521f68013d83da1b77f10d2bd21",
+  "origin_blob": "166b38bacd12b521f68013d83da1b77f10d2bd21",
+  "installed_blob": "6d6179b12c57773439fa7b665c9ff88b3c288ea3",
+  "historical_blob_occurrences": [
+    "2c1d3f3879f7224b2946626da8a361dc0a7f8338 Cancel pending railing removal when re-enabled",
+    "88b81f3dd8f550b1efd6b2b827b4ffb84e74141b Fix reel inlet depth at real contacts"
+  ],
+  "log_rc": 0,
+  "time": 1794414502.1885195
+}

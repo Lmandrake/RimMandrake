@@ -1,0 +1,152 @@
+[
+  {
+    "input": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+    "bytes": 8572,
+    "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+  },
+  {
+    "input": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+    "bytes": 3904,
+    "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+    "bytes": 70708,
+    "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml:selected nodes",
+    "bytes": 70708,
+    "sha256": "a1fed3005d5e8f45e6cc882cf98d174dd37d6d68d1073e739b2e15be8026daf9"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml",
+    "bytes": 8891,
+    "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_WardenMother.xml:selected nodes",
+    "bytes": 8891,
+    "sha256": "6d225577f44de6a982de84ad815af9d830bdeabb3330a8b674741ae706ee551b"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Titanic/Tiering/TitanicTierUtility.cs",
+    "bytes": 7803,
+    "sha256": "caa7cd88b5bdfac9a3fb28624114d56e89affe7e83818aaf158afa5163f27e14"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs",
+    "bytes": 15078,
+    "sha256": "b48cf9b451f8e178294dd277cc7dfd28d5892dd5f8a45075b781fad734d30277"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Titanic/Events/TitanPassage.cs",
+    "bytes": 12539,
+    "sha256": "8a4904ff7d650f719425876a713d81c4395e986c02a0fa68e4521b2792b1270f"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/CorpseSiteVisitors.cs",
+    "bytes": 5720,
+    "sha256": "1ddcda5e9a3ce6833b3b2bc55309e57eaa629b04a598b88457b61af8cc66fc14"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Titanic/RM_TitanicCreaturesMod.cs",
+    "bytes": 3276,
+    "sha256": "28317d515fbe24f3edcff5fa2d5729242b7a1e9cb8a09fd8e7dbb4e9a0f91e5a"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Source/Titanic/Footprint/LargePawnsBridge.cs",
+    "bytes": 11375,
+    "sha256": "ea0b0a07a2647c5b0e8079a58b8b44a383201ac61dc1b84545493d4c45b3da17"
+  },
+  {
+    "input": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs",
+    "bytes": 20379,
+    "sha256": "c848cd3be1fb1598d30da9699df45d0a98c6744fbdc9a70b1f6a95d539f4a541"
+  },
+  {
+    "input": "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs",
+    "bytes": 6581,
+    "sha256": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6"
+  },
+  {
+    "input": "src/RimMandrake/TheForge/Source/RM_ForgeDhoggurSwell.cs",
+    "bytes": 19129,
+    "sha256": "825524351dcc02d8d8b63456a07918ff4fe8cedfdbf81b104390716428f34e2c"
+  },
+  {
+    "input": "whittle/ht-juvenile-tier/evidence/raw/engine-full.stdout.txt",
+    "bytes": 87526,
+    "sha256": "5ff66075c26e26281ea85553959e00d080b65ec1ed5b599928138c1032cd2de0"
+  },
+  {
+    "input": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/Version.txt",
+    "bytes": 17,
+    "sha256": "0ec56b267649faa48e8cd6bd767b14bafe3d1359af44434711105dbdc4597be3"
+  },
+  {
+    "input": "/mnt/d/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll",
+    "bytes": 15777280,
+    "sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml",
+    "bytes": 908,
+    "sha256": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf"
+  },
+  {
+    "input": "src/RimMandrake/HugeThings/Defs/TitanicTierDefs/RM_TitanicTierDef.xml:selected node",
+    "bytes": 908,
+    "sha256": "d5aa7e51fc5bc6af637a90c419eea2bfd927fbb1dec2dbb1a60991023f6c6ebf"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+    "bytes": 17701,
+    "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml:selected biome",
+    "bytes": 17701,
+    "sha256": "f6164f87009d6c632a5357d2f4043bc643b0647065621ba6fcd68ca4c5f58240"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml",
+    "bytes": 16486,
+    "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+  },
+  {
+    "input": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml:selected biome",
+    "bytes": 16486,
+    "sha256": "5fd0c53e811a3f626d7476e0cd4412e20b44dc2dfaba5c6ca0d706a03895a634"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml",
+    "bytes": 2815,
+    "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Patches/RM_AcousticPayload_Miasma.xml:nodes",
+    "bytes": 2815,
+    "sha256": "0e655ba48c8fb9788837754312804351ec2e78771a29937868bdb16a3084895f"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml",
+    "bytes": 5493,
+    "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+  },
+  {
+    "input": "src/RimMandrake/Miasma/Defs/MapGeneration/RM_Miasma_CrecheScatterer.xml:nodes",
+    "bytes": 5493,
+    "sha256": "78171bfe28fdb2453dfd97e811ba736553f640b712b81d5894ab8552ea884a16"
+  },
+  {
+    "input": "design/Jawa/worldbuilding/biomes/rosters/the_miasma.json",
+    "bytes": 26855,
+    "sha256": "4cd5b9f524f97367070999d58a212c10d13889406615d46deb9d81ca70bc3045"
+  },
+  {
+    "input": "design/Jawa/worldbuilding/biomes/rosters/the_grey_sea.json",
+    "bytes": 16894,
+    "sha256": "717cb4196e91ef3f1c7d604ee997cbce103a8fa5f4c0422f3eaebb753b64192d"
+  }
+]
