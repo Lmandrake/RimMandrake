@@ -1,0 +1,9 @@
+{
+  "time": 1794404342.013727,
+  "root": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "WHITTLE_DIR": "whittle/fw-drain-railing-toggle",
+  "require_judge": true,
+  "require_broaden": true,
+  "done_problems": [],
+  "actual_validate_result": 0
+}

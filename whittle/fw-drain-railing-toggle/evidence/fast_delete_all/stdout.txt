@@ -1,0 +1,9 @@
+PASS RailingToggle_proof_player_mode
+FAIL RailingToggle_player_off_on_identity: preserve unrelated designation and outside deconstruct
+PASS RailingToggle_multiple_railings_one_cell
+PASS RailingToggle_raised_leaf_existing_only
+PASS RailingToggle_blueprint_frame_controls
+PASS RailingToggle_new_build_material_style_god
+PASS RailingToggle_stuff_fallback_and_refusal
+PASS RailingToggle_missing_def_and_missing_deck
+7/8 PASS; 1 FAIL

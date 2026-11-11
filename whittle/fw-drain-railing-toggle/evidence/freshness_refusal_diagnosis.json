@@ -1,0 +1,66 @@
+{
+  "time": 1794403201.324462,
+  "cited_evidence_mtime": 1794402560.6460721,
+  "newest": [
+    {
+      "path": "infrastructure/state",
+      "mtime": 1794403033.3076386,
+      "type": "dir"
+    },
+    {
+      "path": "infrastructure/state/queue",
+      "mtime": 1794402503.5276961,
+      "type": "dir"
+    },
+    {
+      "path": "infrastructure/state/ledger/events/BENCH.jsonl",
+      "mtime": 1794402501.2476947,
+      "type": "file"
+    },
+    {
+      "path": "infrastructure/state/ledger/events/OWNER.jsonl",
+      "mtime": 1794402494.5396938,
+      "type": "file"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py",
+      "mtime": 1794402155.7586656,
+      "type": "file"
+    },
+    {
+      "path": "Transient",
+      "mtime": 1794401697.955775,
+      "type": "dir"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+      "mtime": 1794401651.2093318,
+      "type": "file"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/Assemblies",
+      "mtime": 1794401651.2093318,
+      "type": "dir"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+      "mtime": 1794401651.2037928,
+      "type": "file"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/northstar",
+      "mtime": 1794400998.7718356,
+      "type": "dir"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/Source/SelfTest/RailingToggleHarness.cs",
+      "mtime": 1794400870.7259886,
+      "type": "file"
+    },
+    {
+      "path": "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs",
+      "mtime": 1794400870.7258446,
+      "type": "file"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "delegated: railing toggle published DLL acceptance",
+    "loading"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794401869.195271,
+  "elapsed": 3.8937878608703613,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

@@ -1,0 +1,8 @@
+{
+  "time": 1794402230.8397691,
+  "PUBLISHED": "16caafc7efcec461334253f8a70c8681736f74cf",
+  "ancestry_verified": true,
+  "only_source_change": "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py",
+  "sha256": "5ade0b9056054b1690ebfc71586f24964401b1cd6d9bf292eee31881bb0eb27f",
+  "reason": "HARNESS repair for omitted null thing in cell designation rows; supporting off-state screenshot; C# source/tests/DLL unchanged"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "bridge",
+    "who"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794401235.1276538,
+  "elapsed": 2.1582748889923096,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

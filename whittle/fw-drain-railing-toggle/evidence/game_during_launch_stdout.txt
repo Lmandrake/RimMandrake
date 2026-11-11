@@ -1,0 +1,2 @@
+running   : RUNNING   (RimWorldWin64 running, bridge answers)
+recorded  : LOADING  → corrected to UP, measured now

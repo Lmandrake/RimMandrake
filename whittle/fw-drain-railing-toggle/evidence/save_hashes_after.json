@@ -1,0 +1,18 @@
+{
+  "time": 1794402549.6897967,
+  "saves": {
+    "CANONICAL_ASHKARR_START_2026-09-12.rws": {
+      "bytes": 17483421,
+      "sha256": "1ff329161abeaa8c66ebe2818de5428b8a1a9d95676f106dcd2b8d6f98a008c6"
+    },
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws": {
+      "bytes": 13531124,
+      "sha256": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6"
+    },
+    "RM_TestSite_calm_v3.rws": {
+      "bytes": 8022042,
+      "sha256": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8"
+    }
+  },
+  "match_before": true
+}

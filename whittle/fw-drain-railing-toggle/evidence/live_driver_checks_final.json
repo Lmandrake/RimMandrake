@@ -1,0 +1,30 @@
+[
+  {
+    "fault": false,
+    "error": null,
+    "restore": {
+      "load": {
+        "verified": true
+      },
+      "rect": "RECT unchanged",
+      "settings": {
+        "godMode": true
+      },
+      "status": "PASS"
+    }
+  },
+  {
+    "fault": true,
+    "error": "on retained Deconstruct",
+    "restore": {
+      "load": {
+        "verified": true
+      },
+      "rect": "RECT unchanged",
+      "settings": {
+        "godMode": true
+      },
+      "status": "PASS"
+    }
+  }
+]

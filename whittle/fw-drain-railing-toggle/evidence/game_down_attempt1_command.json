@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "delegated: restored railing proof attempt1; fix null-cell designation reader offline",
+    "down"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402135.7491372,
+  "elapsed": 3.82198429107666,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

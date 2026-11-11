@@ -1,0 +1,13 @@
+{
+  "time": 1794403996.8994675,
+  "root": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "WHITTLE_DIR": "whittle/fw-drain-railing-toggle",
+  "require_judge": true,
+  "require_broaden": true,
+  "done_problems": [
+    "The evidence 'whittle/fw-drain-railing-toggle/evidence/parent_acceptance.json' for 'switching a suspension bridge\u2019s railings off and back on before deconstruction cancels the existing railings\u2019 deconstruct designations, leaving those railings available while the switch is on.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-railing-toggle/evidence/parent_acceptance.json' for 'production-linked regression checks reproduce the defect and protect the repair while preserving unrelated designations and existing blueprint, frame, material and god-mode behavior. the relevant flowworks selftest and shipping build pass.' is older than your last change to the project. Look again and save fresh evidence.",
+    "The evidence 'whittle/fw-drain-railing-toggle/evidence/parent_acceptance.json' for 'a disposable live-game check exercises the repaired off/on toggle on the deployed dll and records identities, results, restoration and remaining limits.' is older than your last change to the project. Look again and save fresh evidence."
+  ],
+  "actual_validate_result": 1
+}

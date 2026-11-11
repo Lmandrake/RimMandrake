@@ -1,0 +1,11 @@
+{
+  "command": [
+    "./mirror",
+    "sync"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402230.8577797,
+  "elapsed": 15.428148031234741,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

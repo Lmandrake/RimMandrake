@@ -1,0 +1,4 @@
+Cancel pending railing removal when re-enabled
+
+Delegated: technical — retain existing rails and their other designations.
+Co-Authored-By: Codex (GPT) via WSL codex-cli

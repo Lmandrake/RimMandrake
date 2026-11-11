@@ -1,0 +1,23 @@
+{
+  "time": 1794402808.8129432,
+  "prefs": {
+    "fullscreen": "False",
+    "runInBackground": "True"
+  },
+  "mods": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "brrainz.rimbridgeserver",
+    "ray1203.simplecamerasetting",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.patches"
+  ],
+  "unchanged": true
+}

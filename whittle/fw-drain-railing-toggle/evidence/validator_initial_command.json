@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "whittle/fw-drain-railing-toggle/evidence/validate_unit.py",
+    "initial"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402385.0953465,
+  "elapsed": 0.5079233646392822,
+  "returncode": 1,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

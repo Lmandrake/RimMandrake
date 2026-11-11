@@ -1,0 +1,4 @@
+Handle omitted fields in railing live proof
+
+Delegated: technical — read cell marks safely and capture the off state.
+Co-Authored-By: Codex (GPT) via WSL codex-cli

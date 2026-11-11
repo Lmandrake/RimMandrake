@@ -1,0 +1,16 @@
+{
+  "time": 1794403032.979212,
+  "images": {
+    "live_off_scene.png": {
+      "bytes": 6198617,
+      "sha256": "0a7b36e6c9ab57bfb6c6f88c9ec4f36b5662fbcc05e9129654780c3111f18db3"
+    },
+    "live_scene.png": {
+      "bytes": 6198373,
+      "sha256": "03a2cd92b9b395a1e461892d77f859397f0a8d6915b35f2aa1907d9f5b6b251b"
+    }
+  },
+  "inspected": true,
+  "observation": "Files exist and were inspected. Framing is broad: do not use the images alone to prove designation marks. The raw designation queries establish queue/cancellation; screenshots support the ordinary bridge scene only.",
+  "correction": "Fresh independent judge qualified the maker\u2019s initial interpretation; original maker receipt preserved as a fault, no raw screenshot or live status changed."
+}

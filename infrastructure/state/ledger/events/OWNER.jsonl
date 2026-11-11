@@ -7376,3 +7376,9 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"FW reel inlet published proof: preflight GREEN, disposable calm acceptance","ts":"2026-11-11T12:13:14Z","tsn":1794399194658440039}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"FW reel inlet: fresh process and ordered running tier preflight GREEN","ts":"2026-11-11T12:15:30Z","tsn":1794399330257054581}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"FW reel inlet disposable acceptance restored; orderly shutdown","ts":"2026-11-11T12:17:18Z","tsn":1794399438753341892}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"delegated: railing toggle published DLL acceptance","ts":"2026-11-11T12:57:51Z","tsn":1794401871101193815}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"delegated: fresh railing toggle launch passed live preflight","ts":"2026-11-11T13:00:58Z","tsn":1794402058885435354}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"delegated: restored railing proof attempt1; fix null-cell designation reader offline","ts":"2026-11-11T13:02:17Z","tsn":1794402137647593845}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"delegated: fresh railing proof with corrected designation reader","ts":"2026-11-11T13:05:34Z","tsn":1794402334969307707}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"delegated: railing proof attempt2 live preflight GREEN","ts":"2026-11-11T13:07:22Z","tsn":1794402442425455244}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"delegated: railing toggle proof restored; shutdown complete","ts":"2026-11-11T13:08:14Z","tsn":1794402494542874328}

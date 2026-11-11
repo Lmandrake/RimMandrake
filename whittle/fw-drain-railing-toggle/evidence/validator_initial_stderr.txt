@@ -1,0 +1,3 @@
+Whittle: not done yet.
+- There is no whittle/fw-drain-railing-toggle/DONE.md yet. Keep working. When you would show this to the owner, write it: one line per statement bullet, '- true: <the bullet, copied> | evidence: `path` `path`', naming saved evidence files.
+If you truly can't go on, or need the owner, write whittle/fw-drain-railing-toggle/BLOCKED.md saying why, then stop.

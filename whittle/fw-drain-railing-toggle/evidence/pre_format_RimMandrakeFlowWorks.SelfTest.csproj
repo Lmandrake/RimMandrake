@@ -1,0 +1,345 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    FLUID_SOURCE_STOCK_MODEL_1: offline, no-game selftest harness for the
+    source stock model of flowworks_mod_definition.md §5. NOT the mod build
+    (RimMandrake_FlowWorks.csproj, one directory up, is unaffected: its
+    EnableDefaultCompileItems is false and its Compile list does not mention
+    this folder).
+
+    This project targets plain net8.0 with zero RimWorld/Unity references, on
+    purpose. It hand-extracts NOTHING: every ..\ source below (RM_StockMath.cs
+    first) is the production file, compiled in directly, so a
+    change to any §5 constant or clause fails this test immediately instead of
+    drifting away from a copy. That is only possible because RM_StockMath.cs
+    is kept free of Verse and UnityEngine types — if a `using Verse;` ever
+    lands in it, this build breaks, and that break is the guard rail working.
+
+    Run via the wrapper, which resolves the Windows native dotnet.exe and the
+    D drive path for you:
+      python3 src/RimMandrake/Utils/selftest_flowworks_stock.py
+
+    Never point dotnet.exe at D:\Luke\dev\RimMandrake: that is the read-only origin/main mirror, so it would test
+    origin/main, not this clone. The wrapper stages the clone on D:\ClaudeWork\rimmandrake\build and runs it from there.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeFlowWorks.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Keep every build artifact out of the tree the mod build/deploy scan
+         walks - this is a throwaway test binary, never deployed. -->
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source file. This is what makes the coverage
+         genuine rather than a reimplementation nobody keeps in sync. -->
+    <Compile Include="..\RM_StockMath.cs" />
+    <Compile Include="..\RM_EngineSwitch.cs" />
+    <Compile Include="..\RM_Volume.cs" />
+    <Compile Include="..\RM_BedMath.cs" />
+    <Compile Include="..\RM_LakeFloorMath.cs" />
+    <Compile Include="..\RM_PondDepthMath.cs" />
+    <Compile Include="..\RM_WaterLadder.cs" />
+    <Compile Include="PondDepthChecks.cs" />
+    <Compile Include="WaterLadderChecks.cs" />
+    <Compile Include="..\RM_WaterLookMath.cs" />
+    <Compile Include="WaterLookChecks.cs" />
+    <Compile Include="LakeFloorChecks.cs" />
+    <Compile Include="LevelSurfaceChecks.cs" />
+    <Compile Include="LevelExactChecks.cs" />
+    <Compile Include="LevelPourChecks.cs" />
+    <Compile Include="..\RM_PitTrapMath.cs" />
+    <Compile Include="..\Sprinklers\RM_SprinklerKernel.cs" />
+    <Compile Include="..\Sprinklers\RM_PipeSeatMath.cs" />
+    <Compile Include="..\Sprinklers\RM_SprayPlan.cs" />
+    <Compile Include="..\Sprinklers\RM_SprinklerProbeJson.cs" />
+    <Compile Include="SprinklerChecks.cs" />
+    <Compile Include="..\Superdeep\RM_FlowDoorFacingMath.cs" />
+    <Compile Include="..\Superdeep\RM_LadderWallMath.cs" />
+    <Compile Include="LadderWallChecks.cs" />
+    <Compile Include="PlayerTruthSweeps.cs" />
+    <Compile Include="..\Superdeep\RM_SpikeDrawMath.cs" />
+    <Compile Include="..\Superdeep\RM_SpikeStakes.cs" />
+    <Compile Include="SpikeDrawChecks.cs" />
+    <Compile Include="..\Superdeep\RM_PitAccessMath.cs" />
+    <Compile Include="PitAccessChecks.cs" />
+    <Compile Include="..\Superdeep\RM_WallClimbMath.cs" />
+    <Compile Include="WallClimbChecks.cs" />
+    <Compile Include="TrenchStrideChecks.cs" />
+    <Compile Include="PitDeckChecks.cs" />
+    <Compile Include="..\Superdeep\RM_RaiderTrenchMath.cs" />
+    <Compile Include="RaiderTrenchChecks.cs" />
+    <Compile Include="..\Superdeep\RM_LadderParityMath.cs" />
+    <Compile Include="LadderParityChecks.cs" />
+    <Compile Include="..\RM_ShovelMath.cs" />
+    <Compile Include="ShovelChecks.cs" />
+    <Compile Include="..\RM_SpanMath.cs" />
+    <Compile Include="..\RM_SuspensionMath.cs" />
+    <Compile Include="SuspensionBridgeChecks.cs" />
+    <Compile Include="GroundClassChecks.cs" />
+    <Compile Include="UnderpassReachChecks.cs" />
+    <Compile Include="SpanBaseChecks.cs" />
+    <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />
+    <Compile Include="..\Pits\RM_PitCoverLookMath.cs" />
+    <Compile Include="..\Pits\RM_PitDeckMath.cs" />
+    <Compile Include="..\Drilling\RM_DrillSurveyMath.cs" />
+    <Compile Include="PitCoverBeneathChecks.cs" />
+    <Compile Include="PitCoverLookChecks.cs" />
+    <Compile Include="PitDrawHoldChecks.cs" />
+    <Compile Include="CoverFloorSurveyChecks.cs" />
+    <Compile Include="..\RM_DrawbridgeMath.cs" />
+    <Compile Include="DrawbridgeChecks.cs" />
+    <Compile Include="..\Machinery\RM_LineCrossingMath.cs" />
+    <Compile Include="LineCrossingChecks.cs" />
+    <Compile Include="..\Machinery\RM_LineDigBreakMath.cs" />
+    <Compile Include="LineDigBreakChecks.cs" />
+    <Compile Include="..\Machinery\RM_PowerCordMath.cs" />
+    <Compile Include="..\Machinery\RM_LineReadoutMath.cs" />
+    <Compile Include="..\Machinery\PipeStraightVariants.cs" />
+    <Compile Include="PowerCordChecks.cs" />
+    <Compile Include="..\Machinery\RM_DeckCollapseLinesMath.cs" />
+    <Compile Include="..\Machinery\RM_PipePoleMath.cs" />
+    <Compile Include="..\Machinery\RM_PipeSpanNetMath.cs" />
+    <Compile Include="PipeSpanNetChecks.cs" />
+    <Compile Include="HoseBandChecks.cs" />
+    <Compile Include="HoseWallSeamChecks.cs" />
+    <Compile Include="HoseDrawGeometryChecks.cs" />
+    <Compile Include="WorldMapDrawGuardChecks.cs" />
+    <Compile Include="HoseCurveChecks.cs" />
+    <Compile Include="HoseLayoutChecks.cs" />
+    <Compile Include="HoseClothoidChecks.cs" />
+    <Compile Include="HoseSpliceChecks.cs" />
+    <Compile Include="HoseMateCacheChecks.cs" />
+    <Compile Include="HoseMateEndQueueChecks.cs" />
+    <Compile Include="HoseLayQueueChecks.cs" />
+    <Compile Include="HoseReplanChecks.cs" />
+    <Compile Include="HoseAllocChecks.cs" />
+    <Compile Include="HoseLayerChecks.cs" />
+    <Compile Include="HoseCrossShadowChecks.cs" />
+    <Compile Include="HoseFrameMemoChecks.cs" />
+    <Compile Include="PipePoleChecks.cs" />
+    <Compile Include="LineReadoutChecks.cs" />
+    <Compile Include="DeckCollapseLinesChecks.cs" />
+    <Compile Include="..\RM_PocketGridMath.cs" />
+    <Compile Include="..\RM_TrenchStrideMath.cs" />
+    <Compile Include="..\RM_CliffMaskMath.cs" />
+    <Compile Include="..\RM_WakeMath.cs" />
+    <Compile Include="..\RM_PitExposureMath.cs" />
+    <Compile Include="..\RM_PitDrawMath.cs" />
+    <Compile Include="..\RM_FireMath.cs" />
+    <Compile Include="..\RM_FuelFireMath.cs" />
+    <Compile Include="..\RM_ExcavationSanityMath.cs" />
+    <Compile Include="..\RM_DigDepthMath.cs" />
+    <Compile Include="..\RM_LiquidHeatMath.cs" />
+    <Compile Include="..\RM_FillEffectMath.cs" />
+    <Compile Include="..\RM_RelativeRulesMath.cs" />
+    <Compile Include="RelativeRulesChecks.cs" />
+    <Compile Include="..\RM_FallRailMath.cs" />
+    <Compile Include="FallRailChecks.cs" />
+    <Compile Include="..\RM_SwimMath.cs" />
+    <Compile Include="SwimChecks.cs" />
+    <Compile Include="..\RM_WetCostMath.cs" />
+    <Compile Include="WetCostChecks.cs" />
+    <Compile Include="..\RM_WaterBodyMath.cs" />
+    <Compile Include="WaterBodyMendChecks.cs" />
+    <Compile Include="..\RM_SlimeMath.cs" />
+    <Compile Include="..\RM_PitRoomMath.cs" />
+    <Compile Include="..\RM_DigDiscoveryMath.cs" />
+    <Compile Include="..\RM_GroundClassMath.cs" />
+    <Compile Include="..\Quarry\RM_PlacerMath.cs" />
+    <Compile Include="..\RM_PumpMath.cs" />
+    <Compile Include="..\Machinery\RM_ConversionMath.cs" />
+    <Compile Include="..\Machinery\Kits\RM_LiquidBathMath.cs" />
+    <Compile Include="..\RM_WallFaceMath.cs" />
+    <Compile Include="..\RM_FlowKernel.cs" />
+    <Compile Include="..\RM_TerrainWriteBudget.cs" />
+    <Compile Include="..\RM_LevelSolve.cs" />
+    <Compile Include="..\RM_LevellingMath.cs" />
+    <Compile Include="..\RM_LevelPour.cs" />
+    <Compile Include="..\MapControls\RM_MapControlMath.cs" />
+    <Compile Include="..\TakenByLand\RM_TakenByLandKernel.cs" />
+    <Compile Include="TakenIdentityChecks.cs" />
+    <Compile Include="..\LiquidTypes\RM_ContainerMaterialMath.cs" />
+    <Compile Include="..\LiquidTypes\RM_LiquidImmersionMath.cs" />
+    <Compile Include="..\LiquidTypes\RM_CanalLiquidIndex.cs" />
+    <Compile Include="..\LiquidTypes\RM_ContainerStyleMath.cs" />
+    <Compile Include="..\LiquidTypes\RM_TankDebugMath.cs" />
+    <!-- hose port (step 2): the cord geometry (_Shared/SlackGeometry, internal types), the Verse-free hose files, and the hose
+         suites moved from Gimme Some Slack's SelfTest, run through HoseChecks.cs's Program.Check shim -->
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
+    <Compile Include="..\Hose\HoseMath.cs" />
+    <Compile Include="..\Hose\HoseSpliceMath.cs" />
+    <Compile Include="..\Hose\HoseMateCache.cs" />
+    <Compile Include="..\Hose\HoseMateEndQueue.cs" />
+    <Compile Include="..\Hose\HoseLayQueue.cs" />
+    <Compile Include="..\Hose\HoseReplanQueue.cs" />
+    <Compile Include="..\Hose\HoseFrameMemo.cs" />
+    <Compile Include="..\Hose\HoseCurveMetrics.cs" />
+    <Compile Include="..\Hose\HoseClothoid.cs" />
+    <Compile Include="..\Hose\HoseBandMath.cs" />
+    <Compile Include="..\Hose\HoseWorldPatch.cs" />
+    <Compile Include="..\Hose\HoseRelay.cs" />
+    <Compile Include="..\Hose\HoseCrossShadows.cs" />
+    <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
+    <Compile Include="..\Hose\HoseStyles.cs" />
+    <Compile Include="..\Machinery\PipeStyles.cs" />
+    <Compile Include="..\Machinery\LiquidJoinRule.cs" />
+    <Compile Include="..\Machinery\TankArtEdges.cs" />
+    <Compile Include="..\Machinery\RM_PumpPortMath.cs" />
+    <Compile Include="..\Hose\HoseCarry.cs" />
+    <Compile Include="..\Hose\HoseLive.cs" />
+    <Compile Include="..\Hose\RM_HoseLegacyMath.cs" />
+    <Compile Include="PrePortFixChecks.cs" />
+    <Compile Include="PaletteExhaustionChecks.cs" />
+    <Compile Include="HeatBudgetChecks.cs" />
+    <Compile Include="FuelFireChecks.cs" />
+    <Compile Include="GateFirebreakChecks.cs" />
+    <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
+    <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
+    <Compile Include="TransferChecks.cs" />
+    <Compile Include="NetComponentChecks.cs" />
+    <Compile Include="NetIncrementalChecks.cs" />
+    <Compile Include="PlanChecks.cs" />
+    <Compile Include="SettleChecks.cs" />
+    <Compile Include="LevellingChecks.cs" />
+    <Compile Include="..\RM_LevelRunWalk.cs" />
+    <Compile Include="LevelRunWalkChecks.cs" />
+    <Compile Include="..\RM_Prejit.cs" />
+    <Compile Include="LevelPrejitChecks.cs" />
+    <Compile Include="HoseCacheChecks.cs" />
+    <Compile Include="HoseBodyInletChecks.cs" />
+    <Compile Include="HoseBandsApplyChecks.cs" />
+    <Compile Include="HoseTickAllocChecks.cs" />
+    <Compile Include="HoseWorldPatchChecks.cs" />
+    <Compile Include="PumpChecks.cs" />
+    <Compile Include="VolumeChecks.cs" />
+    <Compile Include="RewireChecks.cs" />
+    <Compile Include="DeepDigChecks.cs" />
+    <Compile Include="PondReturnChecks.cs" />
+    <Compile Include="DeepBedChecks.cs" />
+    <Compile Include="PocketGridChecks.cs" />
+    <Compile Include="..\RM_WallReachMath.cs" />
+    <Compile Include="WallReachChecks.cs" />
+    <Compile Include="WallReachSliceChecks.cs" />
+    <Compile Include="WallReachReadChecks.cs" />
+    <Compile Include="ExcavationTickChecks.cs" />
+    <Compile Include="CliffMaskChecks.cs" />
+    <Compile Include="OutflowChecks.cs" />
+    <Compile Include="HoseHoldChecks.cs" />
+    <Compile Include="LiquidTheftChecks.cs" />
+    <Compile Include="AdapterChecks.cs" />
+    <Compile Include="HoseNetChecks.cs" />
+    <Compile Include="HoseNetCacheChecks.cs" />
+    <Compile Include="HoseLinkCacheChecks.cs" />
+    <Compile Include="..\Machinery\RM_HoseLinkCache.cs" />
+    <Compile Include="HoseSwitchFlipChecks.cs" />
+    <Compile Include="PipeStraightVariantChecks.cs" />
+    <Compile Include="HoseChecks.cs" />
+    <Compile Include="HoseSelfTest.cs" />
+    <Compile Include="HoseReviewChecks.cs" />
+    <Compile Include="HoseCarryChecks.cs" />
+    <Compile Include="HoseLiveChecks.cs" />
+    <Compile Include="StyleStage3Checks.cs" />
+    <Compile Include="PipeStyleChecks.cs" />
+    <Compile Include="LiquidJoinChecks.cs" />
+    <Compile Include="ReelRiserShadowChecks.cs" />
+    <Compile Include="HoseEndLipChecks.cs" />
+    <Compile Include="ContainerStyleChecks.cs" />
+    <Compile Include="TankDebugChecks.cs" />
+    <Compile Include="..\Thirst\RM_ThirstMath.cs" />
+    <Compile Include="ThirstChecks.cs" />
+    <Compile Include="HoseRulingTextChecks.cs" />
+    <Compile Include="ReviewFixChecks.cs" />
+    <Compile Include="..\RM_SettingsReset.cs" />
+    <Compile Include="SettingsResetChecks.cs" />
+    <Compile Include="ReviewBatch56Checks.cs" />
+    <Compile Include="FwFix2Checks.cs" />
+    <Compile Include="PlotDBodyPruneChecks.cs" />
+    <Compile Include="ReviewFixBatch01Checks.cs" />
+    <Compile Include="LevelSetChecks.cs" />
+    <Compile Include="RulingsWetDoorWakeBottleChecks.cs" />
+    <Compile Include="DeepWaterBuildChecks.cs" />
+    <Compile Include="SpikePierceChecks.cs" />
+    <Compile Include="HoseLegacyChecks.cs" />
+    <Compile Include="HoseFuzz.cs" />
+    <Compile Include="GptEdge1016Checks.cs" />
+    <Compile Include="HoseNanShapeChecks.cs" />
+    <Compile Include="DirtyReview1022Checks.cs" />
+    <Compile Include="CsReview1028Checks.cs" />
+    <Compile Include="SequenceFuzz.cs" />
+    <Compile Include="FlowKernelFuzz.cs" />
+    <Compile Include="GptFixesAChecks.cs" />
+    <Compile Include="GptBatchA1024Checks.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="..\RM_SheetMath.cs" />
+    <Compile Include="SheetWaterChecks.cs" />
+    <Compile Include="..\RM_FloodReleaseMath.cs" />
+    <Compile Include="FloodReleaseChecks.cs" />
+    <Compile Include="..\Rivers\RM_RiverMath.cs" />
+    <Compile Include="RiverSwitchFlipChecks.cs" />
+    <Compile Include="RiverWashChecks.cs" />
+    <Compile Include="WeirPoolChecks.cs" />
+    <Compile Include="SlimeChecks.cs" />
+    <Compile Include="GateAcidChecks.cs" />
+    <Compile Include="ImmersionChecks.cs" />
+    <Compile Include="MapControlChecks.cs" />
+    <Compile Include="FlowDoorFacingChecks.cs" />
+    <Compile Include="ReleaseRectHarness.cs" />
+  </ItemGroup>
+
+  <!-- PLOT_D_BODY_PRUNE_STALE_SEA: compile the PRODUCTION RM_LiquidStock.ReleaseRect (a Verse file this project cannot
+       include whole) into ReleaseRectHarness.StockHarness, copied brace-matched at every build; stubs in ReleaseRectHarness.cs.
+       A missing or renamed method fails the build by name. -->
+  <UsingTask TaskName="ExtractReleaseRect" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Source ParameterType="System.String" Required="true" />
+      <Output ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        string s = File.ReadAllText(Source);
+        const string sig = "public int ReleaseRect(Map map, CellRect r, RM_MapComponent_Excavation owner, out int dropped)";
+        int i = s.IndexOf(sig, StringComparison.Ordinal);
+        int open = i < 0 ? -1 : s.IndexOf('{', i + sig.Length);
+        if (open < 0) { Log.LogError("PLOT_D_BODY_PRUNE: ReleaseRect signature not found in " + Source); return false; }
+        int depth = 0, end = -1;
+        for (int k = open; k < s.Length; k++)
+        {
+          if (s[k] == '{') depth++;
+          else if (s[k] == '}' && --depth == 0) { end = k; break; }
+        }
+        if (end < 0) { Log.LogError("PLOT_D_BODY_PRUNE: ReleaseRect body unbalanced in " + Source); return false; }
+        string text = "// GENERATED from RM_LiquidStock.cs by the ExtractReleaseRect target; never edit.\n"
+          + "namespace RimMandrake.FlowWorks.SelfTest.ReleaseRectHarness\n{\n    internal sealed partial class StockHarness\n    {\n        "
+          + s.Substring(i, end + 1 - i) + "\n    }\n}\n";
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        if (!File.Exists(Output) || File.ReadAllText(Output) != text) File.WriteAllText(Output, text);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractReleaseRect" BeforeTargets="CoreCompile">
+    <ExtractReleaseRect Source="$(MSBuildProjectDirectory)\..\RM_LiquidStock.cs"
+                        Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)ReleaseRect.g.cs" />
+    <ItemGroup>
+      <Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)ReleaseRect.g.cs" />
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup><RailingProductionSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_MapComponent_SuspensionBridges.cs</RailingProductionSource><RailingProofSource>$(MSBuildProjectDirectory)\..\Pits\Suspension\RM_SuspensionProofs.cs</RailingProofSource></PropertyGroup>
+  <ItemGroup><Compile Include="RailingToggleHarness.cs"/></ItemGroup>
+  <Import Project="RailingToggleHarness.targets"/>
+</Project>

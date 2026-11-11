@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python.exe",
+    "-c",
+    "import hashlib,json,pathlib;paths=[r'C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\RimWorldWin64_Data\\Managed\\Assembly-CSharp.dll',r'\\\\wsl.localhost\\Ubuntu'+r'\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-selftest-resume\\evidence\\reference\\RimWorld\\Pawn_NeedsTracker.cs'];print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}))"
+  ],
+  "returncode": 0
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python.exe",
+    "D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\FlowWorks\\northstar\\railing_toggle_live.py",
+    "--out",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\scratch\\BENCH\\fw-drain\\whittle\\fw-drain-railing-toggle\\evidence\\live_attempt1.json"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402063.124156,
+  "elapsed": 21.14167809486389,
+  "returncode": 1,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

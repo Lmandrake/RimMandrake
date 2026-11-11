@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><EnableDefaultCompileItems>false</EnableDefaultCompileItems><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup>
+  <ItemGroup><Compile Include="Compare.cs"/>
+    <Reference Include="Microsoft.CodeAnalysis"><HintPath>C:/Users/Mandrake/.dotnet/sdk/8.0.423/Roslyn/bincore/Microsoft.CodeAnalysis.dll</HintPath></Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp"><HintPath>C:/Users/Mandrake/.dotnet/sdk/8.0.423/Roslyn/bincore/Microsoft.CodeAnalysis.CSharp.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

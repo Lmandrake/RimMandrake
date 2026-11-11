@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "delegated: fresh railing toggle launch passed live preflight",
+    "up"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402057.0136008,
+  "elapsed": 3.829411268234253,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

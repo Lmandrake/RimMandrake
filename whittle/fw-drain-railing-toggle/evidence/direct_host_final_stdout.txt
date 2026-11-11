@@ -1,0 +1,1 @@
+MEASURED NOT RUNNING; shared host driver lock absent/FREE; bridge record FREE; prior DOWN stamp retained

@@ -1,0 +1,33 @@
+{
+  "generated_path": "/mnt/d/ClaudeWork/rimmandrake/build/selftest_RimMandrakeFlowWorks.SelfTest_79bb8021/src/RimMandrake/FlowWorks/Source/SelfTest/obj/Release/net8.0/RailingToggle.g.cs",
+  "generated_sha256": "f1ed6a5ba6c7cd1389c28c3060886c791fa66c61356d0f9dc10b2b0a4bcf8589",
+  "fast_final_generated_sha256": "f1ed6a5ba6c7cd1389c28c3060886c791fa66c61356d0f9dc10b2b0a4bcf8589",
+  "exact_match": true,
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0/RimMandrakeFlowWorks.SelfTest.deps.json": {
+      "sha256": "def3dcbb30c4459abd794d5b2499f41dd51d1c1985e3c3fb0a8680a31d9089df",
+      "bytes": 479,
+      "mtime": 1794401206.9833827
+    },
+    "src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0/RimMandrakeFlowWorks.SelfTest.dll": {
+      "sha256": "6b83e8d55c0c55591a0b505e0dc9b7d6060ebc1681557bb22dc485d0d8cb393f",
+      "bytes": 3011072,
+      "mtime": 1794401219.688763
+    },
+    "src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0/RimMandrakeFlowWorks.SelfTest.exe": {
+      "sha256": "2ff45ea70004bfed25eb35ab142867344c4a658524c92d21b4bcdc6a8249d9af",
+      "bytes": 152064,
+      "mtime": 1794401219.8151958
+    },
+    "src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0/RimMandrakeFlowWorks.SelfTest.pdb": {
+      "sha256": "49b2d4d8d61f9341488ab8b952f383daa9014dd0a74c19b9377049a05b57ae65",
+      "bytes": 672368,
+      "mtime": 1794401219.6605177
+    },
+    "src/RimMandrake/FlowWorks/Source/SelfTest/bin/Release/net8.0/RimMandrakeFlowWorks.SelfTest.runtimeconfig.json": {
+      "sha256": "28329cf08f6505e73806b17558b187c02f0c1c516fe47ebfb7a013d082aaa306",
+      "bytes": 340,
+      "mtime": 1794385495.3593132
+    }
+  }
+}

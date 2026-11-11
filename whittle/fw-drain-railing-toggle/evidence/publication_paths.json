@@ -1,0 +1,11 @@
+[
+  "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_MapComponent_SuspensionBridges.cs",
+  "src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_SuspensionProofs.cs",
+  "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs",
+  "src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
+  "src/RimMandrake/FlowWorks/Source/SelfTest/RailingToggleHarness.cs",
+  "src/RimMandrake/FlowWorks/Source/SelfTest/RailingToggleHarness.targets",
+  "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py",
+  "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+  "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash"
+]

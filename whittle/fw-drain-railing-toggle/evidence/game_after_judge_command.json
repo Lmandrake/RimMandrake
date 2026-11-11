@@ -1,0 +1,10 @@
+{
+  "command": [
+    "./game"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794403031.8182805,
+  "elapsed": 1.1647260189056396,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

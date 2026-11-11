@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "delegated: railing toggle proof restored; shutdown complete",
+    "down"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402492.7006443,
+  "elapsed": 3.817796468734741,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

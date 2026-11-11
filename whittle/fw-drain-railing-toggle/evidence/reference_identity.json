@@ -1,0 +1,11 @@
+{
+  "time": 1794400709.0408638,
+  "prior_provenance_path": "whittle/fw-drain-selftest-resume/evidence/reference_provenance.json",
+  "prior_provenance_sha256": "a30abe1cfe0abb2de38cfd95c189ce6e589e3d183ce07f11426729d392a3fdb8",
+  "assembly_path": "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll",
+  "assembly_sha256": "5cf1b5be399d5b1c9c56ca72c9d35b4ecf307feacf5859d04ac5a1aa5926356a",
+  "reference_path": "whittle/fw-drain-selftest-resume/evidence/reference/RimWorld/Pawn_NeedsTracker.cs",
+  "reference_sha256": "fa58868173d778dd1f0f596eb062c6c14af87f74293cf5f171aab08269a394d2",
+  "decompiler_sha256": "00ebd27735b5964946955503ab861f0a82c9c07ab2048c0067733d2319888245",
+  "matches_original_provenance": true
+}

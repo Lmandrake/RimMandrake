@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "whittle/fw-drain-railing-toggle/evidence/read_host_final.py"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794403442.5218792,
+  "elapsed": 0.21387934684753418,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

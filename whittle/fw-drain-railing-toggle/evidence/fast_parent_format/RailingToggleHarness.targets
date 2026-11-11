@@ -1,0 +1,96 @@
+<Project>
+  <!-- Compile complete production methods against engine doubles in a dedicated namespace. -->
+  <UsingTask TaskName="ExtractRailingToggle" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Source ParameterType="System.String" Required="true"/>
+      <ProofSource ParameterType="System.String" Required="true"/>
+      <Output ParameterType="System.String" Required="true"/>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Text"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        string s = File.ReadAllText(Source);
+        string[] sigs =
+        {
+            "public SuspensionBridgeRecord RecordAt(",
+            "public static Building_SuspensionDeck DeckAt(",
+            "public static Building_SuspensionDeck StructuralDeckAt(",
+            "public static T BuiltAt<T>(",
+            "public static bool RailedAt(",
+            "public static Gizmo RailingGizmo(",
+            "public void SetRailings(",
+            "private void PlaceRailing(",
+            "public static ThingDef RailingStuffFor(",
+            "private void RemoveRailing("
+        };
+        var text = new StringBuilder("// GENERATED: complete production methods.\nnamespace RimMandrake.FlowWorks.SelfTest.RailingHarness { internal sealed partial class RM_MapComponent_SuspensionBridges {\n");
+        foreach (string sig in sigs)
+        {
+            int i = s.IndexOf(sig, StringComparison.Ordinal), open = i < 0 ? -1 : s.IndexOf('{', i + sig.Length), end = -1, depth = 0;
+            if (open < 0)
+            {
+                Log.LogError("Railing method missing: " + sig);
+                return false;
+            }
+
+            for (int k = open; k < s.Length; k++)
+            {
+                if (s[k] == '{')
+                    depth++;
+                else if (s[k] == '}' && --depth == 0)
+                {
+                    end = k;
+                    break;
+                }
+            }
+
+            if (end < 0)
+            {
+                Log.LogError("Unbalanced railing method: " + sig);
+                return false;
+            }
+
+            text.Append(s.Substring(i, end + 1 - i)).Append("\n");
+        }
+
+        text.Append("} internal static partial class RM_SuspensionProofs {\n");
+        s = File.ReadAllText(ProofSource);
+        string proofSig = "public static string ProofRails(";
+        int pi = s.IndexOf(proofSig, StringComparison.Ordinal), po = pi < 0 ? -1 : s.IndexOf('{', pi + proofSig.Length), pe = -1, pd = 0;
+        if (po < 0)
+        {
+            Log.LogError("ProofRails missing");
+            return false;
+        }
+
+        for (int k = po; k < s.Length; k++)
+        {
+            if (s[k] == '{')
+                pd++;
+            else if (s[k] == '}' && --pd == 0)
+            {
+                pe = k;
+                break;
+            }
+        }
+
+        if (pe < 0)
+        {
+            Log.LogError("ProofRails unbalanced");
+            return false;
+        }
+
+        text.Append(s.Substring(pi, pe + 1 - pi)).Append("} }\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(Output));
+        File.WriteAllText(Output, text.ToString());
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ExtractRailingToggle" BeforeTargets="CoreCompile">
+    <ExtractRailingToggle Source="$(RailingProductionSource)" ProofSource="$(RailingProofSource)" Output="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)RailingToggle.g.cs"/>
+    <ItemGroup>
+      <Compile Include="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)RailingToggle.g.cs"/>
+    </ItemGroup>
+  </Target>
+</Project>

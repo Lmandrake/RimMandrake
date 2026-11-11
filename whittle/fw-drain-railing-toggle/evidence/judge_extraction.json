@@ -1,0 +1,13 @@
+{
+  "time": 1794402930.5426197,
+  "raw_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-railing-toggle/evidence/judge_raw.json",
+  "raw_sha256": "6d51f838bc0cfa1fb1c65c3a6772d310bd85652a7025df4332c0abd83063d1b5",
+  "extracted_path": "/home/mandrake/rm/scratch/BENCH/fw-drain/whittle/fw-drain-railing-toggle/JUDGE.md",
+  "result_utf8_sha256": "80be21076a52d9724cc457615af30cdbc71e6c68a4526cdbf15bb1532d85519b",
+  "extracted_sha256": "80be21076a52d9724cc457615af30cdbc71e6c68a4526cdbf15bb1532d85519b",
+  "exact_result_unchanged": true,
+  "subtype": "success",
+  "is_error": false,
+  "session_id": "1e7e679b-4c6c-42fb-89b3-0c83c879f7b1",
+  "last_line": "would show: yes"
+}

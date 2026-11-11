@@ -1,0 +1,9 @@
+FAIL RailingToggle_proof_player_mode: player proof cancels removal and restores mode
+FAIL RailingToggle_player_off_on_identity: on must retain original railing identities and cancel removal
+FAIL RailingToggle_multiple_railings_one_cell: cancel all matched built railings
+FAIL RailingToggle_raised_leaf_existing_only: raised on cancels existing rail
+PASS RailingToggle_blueprint_frame_controls
+PASS RailingToggle_new_build_material_style_god
+PASS RailingToggle_stuff_fallback_and_refusal
+FAIL RailingToggle_missing_def_and_missing_deck: existing rail cancels even without a walkable deck
+3/8 PASS; 5 FAIL

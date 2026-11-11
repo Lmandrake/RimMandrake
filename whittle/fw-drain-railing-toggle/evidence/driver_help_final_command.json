@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py",
+    "--help"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402320.2832277,
+  "elapsed": 0.03210020065307617,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

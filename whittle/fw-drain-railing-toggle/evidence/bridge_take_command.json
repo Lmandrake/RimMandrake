@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/rimflow/cli.py",
+    "bridge",
+    "take",
+    "--idle-ok",
+    "--for",
+    "FW drain: RAILING_TOGGLE_FIX_KEEPS_DECONSTRUCT"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794401690.9791634,
+  "elapsed": 5.511349678039551,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

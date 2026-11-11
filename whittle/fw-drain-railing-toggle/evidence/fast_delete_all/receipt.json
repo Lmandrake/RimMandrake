@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-railing-toggle\\delete_all\\Probe.csproj",
+    "-c",
+    "Release"
+  ],
+  "mode": "delete_all",
+  "started": 1794400912.2579858,
+  "elapsed": 1.5901641845703125,
+  "returncode": 1,
+  "inputs_sha256": {
+    "RailingToggleHarness.cs": "639fa8ea21a779ea5f236e5da68af21cd7bdd9bdd3d1a4df90005e55379a9c52",
+    "RailingToggleHarness.targets": "a7e3cdcaa1a2de845007a93174d5515c7337bd48687d0bfb0f3d79c620fbe0df",
+    "RM_MapComponent_SuspensionBridges.cs": "ba254b9b9cad61e3e45af8e0ee40eb2257bb1af8c4911d86c763af4155735b22",
+    "RM_SuspensionProofs.cs": "9c7830d6fc333be31c791e0d6dceb3b287d0703fb971c96fff5962ee973be680"
+  },
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-railing-toggle/delete_all"
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/preflight_bridge.py",
+    "--tier",
+    "quicktest",
+    "--modset",
+    "mods__mandrake_rm_flowworks__mandrake_rm_gimmesomeslack__mandrake_rm_hugethings__mandrake_rm_patches",
+    "--deep",
+    "--live",
+    "--seat",
+    "BENCH",
+    "--json",
+    "whittle/fw-drain-railing-toggle/evidence/preflight_live2.json"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402401.1697166,
+  "elapsed": 13.619786739349365,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

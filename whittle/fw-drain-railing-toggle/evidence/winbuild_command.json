@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "src/RimMandrake/Utils/winbuild.py",
+    "FlowWorks"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794401632.6535263,
+  "elapsed": 18.70190453529358,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

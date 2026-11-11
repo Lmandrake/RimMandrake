@@ -1,0 +1,14 @@
+{
+  "time": 1794401690.9575362,
+  "PUBLISHED": "2c1d3f3879f7224b2946626da8a361dc0a7f8338",
+  "ancestry_verified": true,
+  "HEAD": "2c1d3f3879f7224b2946626da8a361dc0a7f8338",
+  "changes_since_suite": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash"
+  ],
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "d70a84da372c6f6f97007c743cb074e9b9e9d43b985a0679ee8a8f2173c2877e",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "56e53116bbd18338475ffa58f25b31e94c6eeca0df7adc828ba8ea1d3233cc79"
+  }
+}

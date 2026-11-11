@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./publish",
+    "-F",
+    "whittle/fw-drain-railing-toggle/evidence/driver_commit_message.txt",
+    "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402181.2417727,
+  "elapsed": 7.922727346420288,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

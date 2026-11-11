@@ -1,0 +1,7 @@
+FAIL RailingToggle_player_off_on_identity: on must retain original railing identities and cancel removal
+FAIL RailingToggle_multiple_railings_one_cell: cancel all matched built railings
+PASS RailingToggle_blueprint_frame_controls
+PASS RailingToggle_new_build_material_style_god
+PASS RailingToggle_stuff_fallback_and_refusal
+PASS RailingToggle_missing_def_and_missing_deck
+4/6 PASS; 2 FAIL

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python.exe",
+    "D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\Utils\\deploy_custom_mods.py",
+    "--mod",
+    "FlowWorks"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794401720.00459,
+  "elapsed": 26.060030937194824,
+  "returncode": 1,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

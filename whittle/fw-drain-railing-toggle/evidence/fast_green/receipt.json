@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
+    "run",
+    "--project",
+    "D:\\ClaudeWork\\rimmandrake\\scratch\\fw-railing-toggle\\green\\Probe.csproj",
+    "-c",
+    "Release"
+  ],
+  "mode": "current",
+  "started": 1794400727.3224301,
+  "elapsed": 1.417933702468872,
+  "returncode": 0,
+  "inputs_sha256": {
+    "RailingToggleHarness.cs": "0e06f06b0c96683df7e671fdb73cf20ce07cc3180dfd12116a80f1337e046bc4",
+    "RailingToggleHarness.targets": "b3327755ec98dfec379756af2d38d53411654fecae6cc623f0e665d03aa2cbbf",
+    "RM_MapComponent_SuspensionBridges.cs": "144fc3fe5ab14bf0651b5e98abc627aa32e0d71272ce105189d89b693de5c244"
+  },
+  "stage": "/mnt/d/ClaudeWork/rimmandrake/scratch/fw-railing-toggle/green"
+}

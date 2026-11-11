@@ -1,0 +1,13 @@
+{
+  "command": [
+    "./game",
+    "--why",
+    "delegated: fresh railing proof with corrected designation reader",
+    "loading"
+  ],
+  "cwd": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "started": 1794402333.0480947,
+  "elapsed": 3.9173383712768555,
+  "returncode": 0,
+  "TMPDIR": "/home/mandrake/.seat-tmp/fw-railing-toggle"
+}

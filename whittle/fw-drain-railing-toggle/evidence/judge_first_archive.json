@@ -1,0 +1,8 @@
+{
+  "time": 1794403243.3418796,
+  "original": "JUDGE.md",
+  "preserved_as": "JUDGE_first.md",
+  "sha256": "80be21076a52d9724cc457615af30cdbc71e6c68a4526cdbf15bb1532d85519b",
+  "exact_raw_result": true,
+  "reason": "Preserve first fresh verdict unchanged before a new fresh call after the later metadata freshness refusal"
+}

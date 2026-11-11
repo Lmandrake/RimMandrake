@@ -1,0 +1,44 @@
+[
+  {
+    "tool": "jawa/designate_batch",
+    "args": {
+      "action": "query",
+      "limit": 1000
+    },
+    "result": {
+      "success": true,
+      "action": "query",
+      "total": 2,
+      "totalAllDesignations": 2,
+      "returned": 2,
+      "truncated": false,
+      "designations": [
+        {
+          "def": "Plan",
+          "x": 38,
+          "z": 36
+        },
+        {
+          "def": "Deconstruct",
+          "x": 48,
+          "z": 40,
+          "thing": "Wall"
+        }
+      ],
+      "ticksGame": 3,
+      "operation": {
+        "OperationId": "op_6059c57e584a4883ac1595b9924e52b2",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 47
+      },
+      "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 3
+      }
+    }
+  }
+]

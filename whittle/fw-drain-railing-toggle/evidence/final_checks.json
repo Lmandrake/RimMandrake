@@ -1,0 +1,283 @@
+{
+  "time": 1794402560.6455858,
+  "PUBLISHED": "2c1d3f3879f7224b2946626da8a361dc0a7f8338",
+  "driver_PUBLISHED": "16caafc7efcec461334253f8a70c8681736f74cf",
+  "post_suite_python_change": {
+    "time": 1794402230.8397691,
+    "PUBLISHED": "16caafc7efcec461334253f8a70c8681736f74cf",
+    "ancestry_verified": true,
+    "only_source_change": "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py",
+    "sha256": "5ade0b9056054b1690ebfc71586f24964401b1cd6d9bf292eee31881bb0eb27f",
+    "reason": "HARNESS repair for omitted null thing in cell designation rows; supporting off-state screenshot; C# source/tests/DLL unchanged"
+  },
+  "ancestry_verified": true,
+  "fast": "8/8; original initial 2 failures/6; expanded original 5 failures/8; each isolated mutant 1 failure/8",
+  "suite": "PASS 1/1; main 1252/1252; hose 188/188 checks, 457/457 assertions; 8 normal RailingToggle cases",
+  "suite_elapsed": 553.4626922607422,
+  "test_hashes_stable": 6014,
+  "stage_readback": 3973,
+  "shipping_compile_inputs": 349,
+  "changes_since_suite": [
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash",
+    "src/RimMandrake/FlowWorks/northstar/railing_toggle_live.py"
+  ],
+  "artifacts": {
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll": "d70a84da372c6f6f97007c743cb074e9b9e9d43b985a0679ee8a8f2173c2877e",
+    "src/RimMandrake/FlowWorks/Assemblies/RimMandrakeFlowWorks.dll.srchash": "56e53116bbd18338475ffa58f25b31e94c6eeca0df7adc828ba8ea1d3233cc79"
+  },
+  "live_identity": "IDENTITY mvid=8db4cf46-66eb-432f-8f65-ff2dd6d57c30 sha256=d70a84da372c6f6f97007c743cb074e9b9e9d43b985a0679ee8a8f2173c2877e",
+  "live_railings": [
+    {
+      "id": "RM_SuspensionRailing24594",
+      "def": "RM_SuspensionRailing",
+      "x": 37,
+      "z": 36,
+      "spawned": true,
+      "stuff": "WoodLog",
+      "hitPoints": 26
+    },
+    {
+      "id": "RM_SuspensionRailing24595",
+      "def": "RM_SuspensionRailing",
+      "x": 38,
+      "z": 36,
+      "spawned": true,
+      "stuff": "WoodLog",
+      "hitPoints": 26
+    },
+    {
+      "id": "RM_SuspensionRailing24596",
+      "def": "RM_SuspensionRailing",
+      "x": 39,
+      "z": 36,
+      "spawned": true,
+      "stuff": "WoodLog",
+      "hitPoints": 26
+    },
+    {
+      "id": "RM_SuspensionRailing24597",
+      "def": "RM_SuspensionRailing",
+      "x": 40,
+      "z": 36,
+      "spawned": true,
+      "stuff": "WoodLog",
+      "hitPoints": 26
+    }
+  ],
+  "restoration": {
+    "load": {
+      "site": "calm",
+      "save": "WHITTLE_RailingToggle_Begin_20261111T050732",
+      "utc": "2026-11-11T13:07:45Z",
+      "problems": [],
+      "load_s": 3.8,
+      "quietMap": {
+        "profile": "quiet_site",
+        "suite": "isolated",
+        "row": "test_site_saves_load_calm",
+        "topic": null,
+        "controls": [
+          {
+            "name": "threat_structures_cleared",
+            "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+            "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+            "readBack": {
+              "removed": [],
+              "threatsAfter": 0,
+              "kept": 0,
+              "errors": []
+            }
+          },
+          {
+            "name": "hostiles_removed",
+            "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+            "hides": "combat interactions with the mod's things",
+            "readBack": {
+              "acted": 0,
+              "residue": []
+            }
+          },
+          {
+            "name": "proximity_letters_sent",
+            "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+            "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+            "readBack": {
+              "letters": [
+                [
+                  "VoidMonolith",
+                  "Fallen monolith",
+                  true
+                ]
+              ],
+              "unsentAfter": 0
+            }
+          },
+          {
+            "name": "modal_broker",
+            "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+            "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+            "readBack": {
+              "handled": [],
+              "unknown": []
+            }
+          }
+        ],
+        "notSuppressed": [
+          "active quests and their parts (never ended by default: ending a quest changes the world)",
+          "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+          "existing game conditions, map/world/game components and mod tickers",
+          "hives and other pawn-spawning structures, births, egg hatching, breeders",
+          "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+          "weather transitions, fires, existing hostile behaviour"
+        ],
+        "keepDefs": [],
+        "events": [],
+        "problems": [],
+        "verify": null,
+        "arrivals": [],
+        "note": "enableStoryteller is not saved with the game: re-apply after any load"
+      },
+      "sky": {
+        "weather": [
+          {
+            "after": "Clear",
+            "ok": true
+          },
+          {
+            "after": "Clear",
+            "ok": true
+          }
+        ],
+        "extinguished": 0,
+        "strayFires": 0,
+        "verified": true,
+        "error": null
+      },
+      "ready_s": 5.0,
+      "verified": true
+    },
+    "rect": "RECT sha256=275a5b46c389792768220ad877ea953dc0dd078e5d2f35ec23e57349ea2f939c beds=0",
+    "settings": {
+      "activateAllBuildingDemands": false,
+      "activateAllIdeoRoles": false,
+      "allowUndraftedMechOrders": false,
+      "alwaysDoLovin": false,
+      "alwaysNegativeCatches": false,
+      "alwaysRareCatches": false,
+      "alwaysSocialFight": false,
+      "anomalyDarkeningFX": true,
+      "DebugBuild": false,
+      "detectRegionListersBugs": false,
+      "devPalette": true,
+      "editableGlowerColors": false,
+      "enableDamage": true,
+      "enablePlayerDamage": true,
+      "enableRandomDiseases": true,
+      "enableRandomMentalStates": true,
+      "enableStoryteller": true,
+      "enableTranslationWindowInEnglish": false,
+      "fastCaravans": false,
+      "fastCrafting": false,
+      "fastEcology": false,
+      "fastEcologyRegrowRateOnly": false,
+      "fastLearning": false,
+      "fastMapUnpollution": false,
+      "fastMonolithRespawn": false,
+      "fastResearch": false,
+      "godMode": false,
+      "ignoreGravshipRange": false,
+      "instantRecruit": false,
+      "instantVisitorsGift": false,
+      "logMismatchedLayoutFactions": false,
+      "logPsychicRitualTransitions": false,
+      "logRaidInfo": false,
+      "logTranslationLookupErrors": false,
+      "loopGravshipCutscene": false,
+      "lowFPS": false,
+      "noAnimals": false,
+      "pathThroughWalls": false,
+      "pauseOnError": false,
+      "playRitualAmbience": true,
+      "searchIgnoresRestrictions": false,
+      "showHiddenInfo": false,
+      "showHiddenPawns": false,
+      "showLocomotionUrgency": false,
+      "simulateUsingSteamDeck": false,
+      "skipGravshipTileSelection": false,
+      "unlimitedPower": false
+    },
+    "status": "PASS"
+  },
+  "canonical_and_site_unchanged": {
+    "CANONICAL_ASHKARR_START_2026-09-12.rws": {
+      "bytes": 17483421,
+      "sha256": "1ff329161abeaa8c66ebe2818de5428b8a1a9d95676f106dcd2b8d6f98a008c6"
+    },
+    "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws": {
+      "bytes": 13531124,
+      "sha256": "1d569ea8e7a871e98a27c0cc258f1d7e95cc13b2b2ca63753168700b668ba2b6"
+    },
+    "RM_TestSite_calm_v3.rws": {
+      "bytes": 8022042,
+      "sha256": "d432d1458ae5dd0b5c92c64546487fcaa3e8db863025e730f45c5e6b4c891ed8"
+    }
+  },
+  "gss_files_unchanged": 502,
+  "final_game": "DOWN; NOT RUNNING",
+  "bridge": "FREE; host driver FREE",
+  "raw_external": {
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/orchestrator.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/orchestrator.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.after_acceptance.log": {
+      "bytes": 28274,
+      "sha256": "35497de623512e13efdd8eb3a4c722d92c2c76c1092dde6af9847b25135de16b"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.after_attempt1.log": {
+      "bytes": 15829,
+      "sha256": "c62d8c26d08448731892cbc8ae257abb960f8a3cc85ac383cd3955714b6673f7"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.after_launch.log": {
+      "bytes": 9324,
+      "sha256": "b6db064e4dfdc8c191351662e637897e679255acca480db88846bb6d19e1a878"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.after_launch2.log": {
+      "bytes": 9326,
+      "sha256": "afd1afe8f6e1be413ea45a7ff13e7b3bd825b37b0b5e437b25d3e3fdb5e373af"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.after_shutdown.log": {
+      "bytes": 28274,
+      "sha256": "35497de623512e13efdd8eb3a4c722d92c2c76c1092dde6af9847b25135de16b"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/Player.before_launch.log": {
+      "bytes": 28264,
+      "sha256": "c3747c2c97591d6d77dd818a2127da91ee90807c04ec0b2425c30c40e8a37e31"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/selftest_stderr.txt": {
+      "bytes": 127,
+      "sha256": "0b50a644febddbe74c237e31b4ec1d126ac2057c25ac108af592651db56e1cdf"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/selftest_stdout.txt": {
+      "bytes": 675,
+      "sha256": "e20d3b671cf57107bd415cba942ae33ed0e9dada1cfb1183d5f082ec1f2b9a3e"
+    },
+    "/mnt/d/ClaudeWork/rimmandrake/codex_wsl/fw-drain/railing-toggle-raw/selftest_writes.strace": {
+      "bytes": 789136,
+      "sha256": "e6f0e97295df6aab933f1ba8392ed897b41c210b98ded777aeff974554dbc34c"
+    }
+  },
+  "limits": [
+    "Paused before-work cancellation, no pawn scheduler/completed deconstruction or in-progress-job claim",
+    "Raised leaf/multiple railings/same-thing unrelated designation/material/style and blueprint/frame variants are offline actual-method checks with explicit engine doubles",
+    "Live ordinary timber span; no mid-off occupied reload or stale-ON save automatic healing claim",
+    "Small ordered all-DLC tier, not full-list integration; no fresh GSS visual approval",
+    "Companion exact deployed artifact matches repository but lacks its own .srchash; FlowWorks shipping pair is stamped",
+    "Runner cache admission refused despite byte-stable recorded inputs"
+  ]
+}

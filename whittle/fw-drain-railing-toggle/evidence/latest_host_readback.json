@@ -1,0 +1,24 @@
+{
+  "time": 1794403442.7308109,
+  "command": [
+    "tasklist.exe",
+    "/FI",
+    "IMAGENAME eq RimWorldWin64.exe",
+    "/FO",
+    "CSV",
+    "/NH"
+  ],
+  "returncode": 0,
+  "process_rows": [
+    [
+      "INFO: No tasks are running which match the specified criteria."
+    ]
+  ],
+  "matching_game_processes": [],
+  "game": "NOT RUNNING",
+  "shared_driver_lock_path": "/mnt/d/ClaudeWork/rimmandrake/scratch/DRIVER_LOCK.json",
+  "shared_driver_lock_exists": false,
+  "bridge_mirror": "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.\n#   free?  ->  rimflow bridge take --for \"<what for>\"\n#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\nFREE    since 2026-11-11T13:08:21Z\n",
+  "recorded_down_receipt": "game_down_stdout.txt",
+  "purpose": "Fresh direct read only; no game/bridge mutation or project-state cache write"
+}

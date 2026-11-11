@@ -1,0 +1,11 @@
+{
+  "time": 1794402385.5999436,
+  "root": "/home/mandrake/rm/scratch/BENCH/fw-drain",
+  "WHITTLE_DIR": "whittle/fw-drain-railing-toggle",
+  "require_judge": true,
+  "require_broaden": true,
+  "done_problems": [
+    "There is no whittle/fw-drain-railing-toggle/DONE.md yet. Keep working. When you would show this to the owner, write it: one line per statement bullet, '- true: <the bullet, copied> | evidence: `path` `path`', naming saved evidence files."
+  ],
+  "actual_validate_result": 1
+}

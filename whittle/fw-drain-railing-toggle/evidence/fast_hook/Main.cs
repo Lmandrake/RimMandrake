@@ -1,0 +1,2 @@
+using System;using RimMandrake.FlowWorks.SelfTest.RailingHarness;
+class P {static int Main(){int n=0,f=0;RailingToggleChecks.Run((name,a)=>{n++;try{a();Console.WriteLine("PASS "+name);}catch(Exception e){f++;Console.WriteLine("FAIL "+name+": "+e.Message);}});Console.WriteLine($"{n-f}/{n} PASS; {f} FAIL");return f==0?0:1;}}
