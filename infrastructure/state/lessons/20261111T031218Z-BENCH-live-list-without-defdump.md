@@ -1,0 +1,2 @@
+Live preflight L04 depended on a fresh RimDefDump capture even on test tiers that omit RimDefDump, so a healthy menu remained NOT-GREEN. Calling the dump tool without its optional assembly misleadingly reported an SDK mismatch; the first exception named absent RimMandrake.RimDefDump.DefDumper. Read jawa/running_mods directly under Windows Python, verify ordered equality and stable game PID/start time, and treat unreadable, incomplete or changed-process evidence as UNMEASURED.
+home: src/RimMandrake/Utils/preflight_bridge.py

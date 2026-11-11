@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""preflight_bridge.py -- the ordered, fail-fast pre-flight before a cold load (offline) and for the first five live minutes.
+r"""preflight_bridge.py -- the ordered, fail-fast pre-flight before a cold load (offline) and for the first five live minutes (including a read-only running-mods bridge probe).
 
     python3 src/RimMandrake/Utils/preflight_bridge.py --tier full            # offline, before launch: GREEN / NO-GO
     python3 src/RimMandrake/Utils/preflight_bridge.py --tier minimal --purpose menu
@@ -548,21 +548,48 @@ def c_live_first_exception(ctx):
     return PASS('no missing types; %d Config errors; first exception: %s' % (ce, first), **ev)
 
 
+def running_mods_snapshot():
+    """Read the live process directly; a diagnostic dump mod need not be active."""
+    if sys.platform.startswith('linux'):
+        proc = subprocess.run(['python.exe', 'src/RimMandrake/Utils/preflight_bridge.py', '--emit-running-mods'],
+                              cwd=REPO, capture_output=True, text=True, timeout=120)
+        if proc.returncode:
+            raise RuntimeError('Windows live mod-list probe failed: %s' % (proc.stderr or proc.stdout)[-300:])
+        return json.loads(proc.stdout)
+    from rimbridge_client import RimBridge, resolve_endpoint
+    before = win_processes()
+    if not before or len(before) != 1 or not before[0][1]:
+        raise RuntimeError('cannot identify exactly one running game and its start time')
+    host, port, token = resolve_endpoint()
+    with RimBridge(host, port, token, timeout=60) as rb:
+        result = rb.call('jawa/running_mods', {'assembly': '', 'details': False})
+    after = win_processes()
+    if before != after:
+        raise RuntimeError('game process changed during live mod-list probe')
+    if result.get('success') is not True or not isinstance(result.get('packageIds'), list):
+        raise RuntimeError('running_mods did not return a successful ordered package list')
+    if result.get('count') != len(result['packageIds']):
+        raise RuntimeError('running_mods returned an incomplete list')
+    return {'procs': before, 'ids': [str(p).lower() for p in result['packageIds']], 'source': 'jawa/running_mods'}
+
+
 def c_live_mods(ctx):
-    import check_load
-    r = check_load.evaluate()
-    if r.get('absent'):
-        return UNM('no %s: RimDefDump did not write its manifest (yet)' % r['absent'])
-    procs = ctx.get('procs') or win_processes() or []   # --live never runs O01, so ctx may lack procs
-    if procs and procs[0][1] and os.path.getmtime(check_load.MANIFEST) < procs[0][1]:
-        return UNM('DefDump manifest predates this process: it describes a previous load')
+    try:
+        reading = running_mods_snapshot()
+    except Exception as e:
+        return UNM('cannot read running mod list: %s' % e)
+    procs = ctx.get('procs') or win_processes()
+    if not procs or [list(p) for p in procs] != [list(p) for p in reading['procs']]:
+        return UNM('live mod-list process identity differs from this preflight', reading=reading)
+    got = reading['ids']
     want = ctx.get('want') or intended(ctx)[0]
-    if r['got'] != want:
-        miss = [p for p in want if p not in set(r['got'])]
-        extra = [p for p in r['got'] if p not in set(want)]
+    if got != want:
+        miss = [p for p in want if p not in set(got)]
+        extra = [p for p in got if p not in set(want)]
         return FAIL('running list (%d) != intended (%d): missing %s extra %s%s' % (
-            len(r['got']), len(want), miss[:6], extra[:6], ' (same set, other ORDER)' if not miss and not extra else ''))
-    return PASS('running list == intended, ordered (%d mods)' % len(want))
+            len(got), len(want), miss[:6], extra[:6], ' (same set, other ORDER)' if not miss and not extra else ''),
+                    reading=reading)
+    return PASS('running list == intended, ordered (%d mods); direct live read' % len(want), reading=reading)
 
 
 def c_live_companion(ctx):
@@ -746,7 +773,11 @@ def main(argv=None):
     ap.add_argument('--only', help='comma list of check ids or names')
     ap.add_argument('--json')
     ap.add_argument('--emit-trees', help=argparse.SUPPRESS)
+    ap.add_argument('--emit-running-mods', action='store_true', help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
+    if a.emit_running_mods:
+        print(json.dumps(running_mods_snapshot()))
+        return 0
     if a.emit_trees:
         return emit_trees(a.emit_trees)
     if a.tier == 'quicktest' and not a.modset:  # was a silent swap to tier minimal: the verdict judged a list not asked for

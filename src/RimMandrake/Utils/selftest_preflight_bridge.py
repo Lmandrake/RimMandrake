@@ -346,10 +346,26 @@ def t_dependency_loadfolders():
                       pf.c_deps({'accept_deps': False}).status == 'UNMEASURED')
 
 
+def t_live_mod_list():
+    from unittest.mock import patch
+    ctx = {'want': ['core', 'test'], 'procs': [(42, 100)]}
+    reading = {'ids': ['core', 'test'], 'procs': [[42, 100]]}
+    with patch.object(pf, 'running_mods_snapshot', return_value=reading):
+        check('L04 direct live ordered list passes without a dump', pf.c_live_mods(ctx).status == 'PASS')
+        reading['ids'] = ['test', 'core']
+        check('L04 wrong running order still fails', pf.c_live_mods(ctx).status == 'FAIL')
+        reading['ids'] = ['core']
+        check('L04 missing running mod still fails', pf.c_live_mods(ctx).status == 'FAIL')
+        reading['procs'] = [[43, 100]]
+        check('L04 changed process identity is UNMEASURED', pf.c_live_mods(ctx).status == 'UNMEASURED')
+    with patch.object(pf, 'running_mods_snapshot', side_effect=RuntimeError('no bridge')):
+        check('L04 unreadable live list is UNMEASURED', pf.c_live_mods(ctx).status == 'UNMEASURED')
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11, t_dependency_loadfolders):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11, t_dependency_loadfolders, t_live_mod_list):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)
