@@ -18,3 +18,13 @@ Current source inspection (2026-11-11): production DrawAll drops cached meshes b
   ```
 - failure scenario: Pick up an older hose that crosses beneath a newer hose, then carry its end until that crossing disappears. Its old laid mesh remains in `meshes`; other hoses still use that route to generate crossing shadows because the lookup does not require the lower hose to remain laid or currently drawn there. Instant or automatic reel-in can leave the same phantom shadow. It clears when a subsequent lay drops the old cache.
 - confidence: high
+
+## Completed 2026-11-11 — CODEX_ARCHMAGI_FWDRAIN
+
+Existing production repairs are verified at artifact 0d1a449a52a6c71c6e65227824617c86982e5ad6, evidence `whittle/fw-drain-hose-shadow/`. Historical fixes 32ca2009d7, f3e8255a14, 32bb6a4c78 and 8ef7d5275a are published ancestors. No shipping source, DLL/stamp or art changed in this verification unit.
+
+The offline harness executes seven exact whole production methods with the real crossing index and explicit renderer/lay/clock/Verse doubles. Three transitions in both draw orders remove the old cached route; active lower crossings survive. Rank/re-lay, idempotent drop, budget draining and legacy comparison controls pass. Eight original-behavior/mutant controls compile and fail behaviorally, then the external stage restores byte-exact. Actual standard FlowWorks runner PASS1/1 with1287/1287 main cases,188/188 hose checks,457/457 hose assertions and HoseFuzz4/4; all nonpass categories zero.
+
+Fresh independent Opus broaden/judge and actual Codex Whittle/full validator accepted. Parent independently rehashed6034 inputs,349 shipping inputs,264 stage compile inputs and exact7 method bodies, then decoded111623 stdout/zero stderr bytes from the complete observer. Cache-admission refusal is preserved despite matching source hashes.
+
+L1 mechanism acceptance only: live pixels, Unity mesh lifecycle, real jobs/saves and empty carried trail remain unverified. Upper-first ordering and frame budgets can temporarily retain an old shadow until a later scan; retracting hoses cast no crossing shadow on their remaining visible strand. LegacyFrame deliberately preserves the original comparison behavior. These are recorded limits, not a new L2 claim.
