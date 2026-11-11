@@ -9,9 +9,11 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
     internal class Thing
     {
         public Faction Faction; public Map Map;
+        public bool Spawned => Map != null;
         public virtual void ExposeData() {}
     }
-    internal sealed class LiquidDef { public string Name; public override string ToString() => Name; }
+    internal class Def { public string defName; }
+    internal sealed class LiquidDef : Def { public string Name; public override string ToString() => Name; }
     internal sealed partial class Building_LiquidTank : Thing
     {
         public int storedUnits = 100, theftTicks, Capacity = 1000;
@@ -85,7 +87,7 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
     internal static class TankTheftChecks
     {
         private static void Assert(bool ok, string msg) { if (!ok) throw new Exception(msg); }
-        private sealed class Fixture
+        internal sealed class Fixture
         {
             public Map map = new(); public Faction owner = new();
             public LiquidDef water = new() { Name = "water" }, tar = new() { Name = "tar" };
@@ -231,6 +233,7 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
                 Assert(RM_LiquidTheft.caught == 1 && RM_LiquidTheft.charges == 0, "old-save owner stock invented theft");
             });
             TankTheftCallerChecks.Run(Case);
+            ExternalTankTheftChecks.Run(Case);
         }
     }
 }

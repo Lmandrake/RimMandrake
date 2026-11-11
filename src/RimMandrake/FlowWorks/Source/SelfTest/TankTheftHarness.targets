@@ -23,6 +23,18 @@
       var text = "using RimMandrake.FlowWorks.Machinery; namespace RimMandrake.FlowWorks.SelfTest.TheftHarness { internal static partial class RM_LiquidTheft { [System.ThreadStatic] private static Thing actor; " + actor + theft + " } internal sealed partial class Building_LiquidTank { " + tank.Replace("Machinery.RM_LiquidTheft", "RM_LiquidTheft") + " } }";
       // Existing extracted pump bodies also execute the exact scope implementation. Thing is an engine-boundary alias.
       text += " namespace RimMandrake.FlowWorks.SelfTest.PumpHarness { using Thing = System.Object; internal static class RM_LiquidTheft { [System.ThreadStatic] private static Thing actor; internal static object Current => actor; " + actor + " } }";
+      string bridge = File.ReadAllText(Path.Combine(Source, "../../LuminousPigment/Source/FlowWorksWaterBridge.cs"));
+      bridge = bridge.Replace("namespace RimMandrake.LuminousPigment", "namespace RimMandrake.FlowWorks.SelfTest.TheftHarness.External")
+        .Replace("using HarmonyLib;", "using AccessTools = RimMandrake.FlowWorks.SelfTest.TheftHarness.ExternalAccessTools;")
+        .Replace("using Verse;", "using Thing = RimMandrake.FlowWorks.SelfTest.TheftHarness.Thing; using Def = RimMandrake.FlowWorks.SelfTest.TheftHarness.Def; using Log = RimMandrake.FlowWorks.SelfTest.TheftHarness.Log; using RM_GlowTankWater = RimMandrake.LuminousPigment.RM_GlowTankWater;");
+      int bridgeNamespace = bridge.IndexOf("namespace ", StringComparison.Ordinal), bridgeOpen = bridge.IndexOf('{', bridgeNamespace);
+      bridge = bridge.Substring(bridgeNamespace, bridgeOpen + 1 - bridgeNamespace) + bridge.Substring(0, bridgeNamespace) + bridge.Substring(bridgeOpen + 1);
+      text += bridge;
+      string gasUnits = System.Text.RegularExpressions.Regex.Match(File.ReadAllText(Path.Combine(Source, "../../Cauldron/Source/RM_GasTap.cs")), @"public const float LitresPerBankUnit = [^;]+;").Value;
+      if (gasUnits.Length == 0) throw new Exception("Missing production bank volume constant");
+      string gas = Extract("../../Cauldron/Source/RM_GasTap.cs", "private void Deliver()");
+      gas = gas.Replace("RimMandrake.FlowWorks.Machinery.RM_LiquidTheft", "RimMandrake.FlowWorks.SelfTest.TheftHarness.RM_LiquidTheft");
+      text += " namespace RimMandrake.FlowWorks.SelfTest.TheftHarness.External { using RimMandrake.Cauldron; internal sealed partial class GasTapHarness { " + gasUnits + gas + " } }";
       Directory.CreateDirectory(Path.GetDirectoryName(Output));
       File.WriteAllText(Output, text);
     ]]></Code></Task>

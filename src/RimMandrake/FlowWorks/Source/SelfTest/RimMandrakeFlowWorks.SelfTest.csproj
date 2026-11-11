@@ -354,6 +354,8 @@
     <Compile Include="PumpOutflowHarness.cs"/>
   </ItemGroup>
   <Import Project="PumpOutflowHarness.targets"/>
-  <ItemGroup><Compile Include="TankTheftHarness.cs"/><Compile Include="TankTheftCallerChecks.cs"/></ItemGroup>
+  <ItemGroup><Compile Include="TankTheftHarness.cs"/><Compile Include="TankTheftCallerChecks.cs"/><Compile Include="ExternalTankTheftChecks.cs"/>
+    <Compile Include="..\..\..\LuminousPigment\Source\Kernel\RM_GlowTankWater.cs" Link="External\RM_GlowTankWater.cs"/>
+    <Compile Include="..\..\..\Cauldron\Source\Kernel\RM_VentGasKernel.cs" Link="External\RM_VentGasKernel.cs"/></ItemGroup>
   <Import Project="TankTheftHarness.targets"/>
 </Project>

@@ -73,6 +73,7 @@ namespace RimMandrake.Cauldron
         // Whole units into touching tanks, as many as they take.
         private void Deliver()
         {
+            using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(parent);
             int ready = RM_VentGasKernel.TapReady(bank);
             if (ready <= 0 || Props.condensate == null) return;
             int per = RimMandrake.FlowWorks.RM_Volume.Units(LitresPerBankUnit);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
@@ -21,7 +22,9 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
             ("LiquidTypes/JobDriver_EmptyBottleIntoTank.cs", "finish.initAction = delegate", "pawn"),
             ("Thirst/RM_ThirstJobs.cs", "ToilMaker.MakeToil(\"RM_DrinkFromTank\")", "pawn"),
             ("Machinery/RM_LiquidNet.cs", "Building_LiquidTank src = tanks[si], dst = tanks[di];", "src.EffectiveMode == RM_TankMode.Empty ? src : dst"),
-            ("Machinery/RM_LiquidNet.cs", "foreach (Building_LiquidTank tank in dumps.OrderBy(t => t.thingIDNumber))", "tank")
+            ("Machinery/RM_LiquidNet.cs", "foreach (Building_LiquidTank tank in dumps.OrderBy(t => t.thingIDNumber))", "tank"),
+            ("../../Cauldron/Source/RM_GasTap.cs", "private void Deliver()", "parent"),
+            ("../../LuminousPigment/Source/FlowWorksWaterBridge.cs", "public static string TryDrawOceanUnit(Thing origin)", "origin")
         };
         // Non-entry helpers execute synchronously under the enclosing entry's scope.
         private static readonly (string file, string signature)[] inherited = {
@@ -32,8 +35,10 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
         private static readonly (string file, string signature)[] setup = {
             ("RM_NorthstarProofs.cs", "public static string ProofTank("),
             ("Hose/HoseNetProbe.cs", "public static string TryRun("),
-            ("Machinery/RM_LiquidWorksRuins.cs", "public override void PostSpawnSetup(")
+            ("Machinery/RM_LiquidWorksRuins.cs", "public override void PostSpawnSetup("),
+            ("../../Cauldron/Source/RM_CauldronRuinKit.cs", "public override void PostSpawnSetup(")
         };
+        private const string Mutation = @"\.Try(?:Add|Remove)Liquid\(|\btryRemove\.Invoke\(";
         private static (int start, int end) Body(string source, string signature)
         {
             int a = source.IndexOf(signature, StringComparison.Ordinal);
@@ -61,7 +66,8 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
                 // Most entries use a full namespace to make their source dependency explicit.
                 string full = "using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(" + e.actor + ");";
                 int scope = Math.Max(b.IndexOf(expected, StringComparison.Ordinal), b.IndexOf(full, StringComparison.Ordinal));
-                var mutation = Regex.Match(b, @"\.Try(?:Add|Remove)Liquid\(");
+                if (e.file.EndsWith("FlowWorksWaterBridge.cs")) scope = b.IndexOf("using var theftActor = (IDisposable)enterActor.Invoke(null, new object[] { origin });",StringComparison.Ordinal);
+                var mutation = Regex.Match(b, Mutation);
                 if (scope < 0 || mutation.Success && scope > mutation.Index) bad.Add(e.file + " missing/late actor " + e.signature);
                 if (!allowed.ContainsKey(e.file)) allowed[e.file] = new(); allowed[e.file].Add(span);
             }
@@ -70,7 +76,7 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
                 if (!allowed.ContainsKey(e.file)) allowed[e.file] = new(); allowed[e.file].Add(Body(files[e.file],e.signature));
             }
             foreach (var f in files.Where(f => !f.Key.StartsWith("//tags:")))
-                foreach (Match m in Regex.Matches(f.Value, @"\.Try(?:Add|Remove)Liquid\("))
+                foreach (Match m in Regex.Matches(f.Value, Mutation))
                     if (!allowed.TryGetValue(f.Key,out var spans) || !spans.Any(s => s.start <= m.Index && m.Index < s.end)) bad.Add(f.Key + " unscoped mutation " + m.Index);
             return bad;
         }
@@ -79,12 +85,15 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
             Case("TankTheft_all_production_transfer_callers_have_actor_or_explicit_setup_boundary", () =>
             {
                 var files = TransferChecks.ProductionSources();
+                foreach (string path in entries.Select(e => e.file).Concat(setup.Select(e => e.file)).Where(p => p.StartsWith("../../")).Distinct())
+                    files[path] = TransferChecks.StripComments(File.ReadAllText(RiverSwitchFlipChecks.SrcPath(path)), out _);
                 var bad = Lint(files);
                 if (bad.Count != 0) throw new Exception(string.Join("; ",bad));
                 var planted = new Dictionary<string,string>(files);
                 planted["Machinery/NewMover.cs"] = "void Run() { tank.TryRemoveLiquid(10); }";
                 planted["Machinery/CompLiquidConverter.cs"] += " void Unscoped() { tank.TryAddLiquid(water,10); }";
-                if (Lint(planted).Count != 2) throw new Exception("caller guard missed new/existing-file unscoped mutations");
+                planted["../../Other/ReflectionMover.cs"] = "void Run() { tryRemove.Invoke(tank,args); }";
+                if (Lint(planted).Count != 3) throw new Exception("caller guard missed new/existing-file/reflection unscoped mutations");
                 planted = new Dictionary<string,string>(files);
                 planted[entries[0].file] = planted[entries[0].file].Replace("using var theftActor = RimMandrake.FlowWorks.Machinery.RM_LiquidTheft.As(this);", "");
                 if (Lint(planted).Count != 2) throw new Exception("caller guard missed removed draw/pour scopes");
@@ -98,6 +107,17 @@ namespace RimMandrake.FlowWorks.SelfTest.TheftHarness
                 if (!net.Contains("FillOne(r, map, liquid, fillFrom)") || !net.Contains("RM_HoseHold.Fill(ref hl, ref held, r.HeldCap, liquid, take,")) throw new Exception("hose fill boundary changed; trace synchronous credits again");
                 string level = files["Machinery/RM_Levelling.cs"];
                 if (level.Contains(".TryRemoveLiquid(") || level.Contains(".TryAddLiquid(")) throw new Exception("levelling gained tank path without an actor");
+                string bridge = files["../../LuminousPigment/Source/FlowWorksWaterBridge.cs"];
+                if (!bridge.Contains("AccessTools.Method(theft, \"As\", new[] { typeof(Thing) })") || !bridge.Contains("tryRemove != null && enterActor != null")) throw new Exception("soft binding must resolve and require the shipping actor API");
+                string ruin = files["../../Cauldron/Source/RM_CauldronRuinKit.cs"];
+                if (!ruin.Contains("if (parent.Faction == Faction.OfPlayer) return;")) throw new Exception("setup exemption gained a player path");
+                // Both external transfer bodies are compiled and reached by their normal production entry points.
+                string gas = files["../../Cauldron/Source/RM_GasTap.cs"]; var rare = Body(gas,"public override void CompTickRare()");
+                if (!File.ReadAllText(RiverSwitchFlipChecks.SrcPath("../../LuminousPigment/Source/RM_LuminousPigment.csproj")).Contains("Compile Include=\"FlowWorksWaterBridge.cs\"")
+                    || !File.ReadAllText(RiverSwitchFlipChecks.SrcPath("../../LuminousPigment/Source/Building_GlowTank.cs")).Contains("FlowWorksWaterBridge.TryDrawOceanUnit(this)")
+                    || !File.ReadAllText(RiverSwitchFlipChecks.SrcPath("../../Cauldron/Source/RM_Cauldron.csproj")).Contains("Compile Include=\"RM_GasTap.cs\"")
+                    || !File.ReadAllText(RiverSwitchFlipChecks.SrcPath("../../Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml")).Contains("RimMandrake.Cauldron.RM_CompProperties_GasTap")
+                    || !gas.Substring(rare.start,rare.end-rare.start).Contains("Deliver();")) throw new Exception("external caller registration changed; trace reachability again");
             });
         }
     }

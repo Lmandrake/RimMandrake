@@ -11,7 +11,8 @@ namespace RimMandrake.LuminousPigment
     // Verified against src/RimMandrake/FlowWorks/Source: `public static List<Building_LiquidTank>
     // RimMandrake.FlowWorks.Machinery.RM_LiquidNet.TanksFor(Thing origin)` (adjacent tanks plus every tank on a hose
     // run touching the origin), `Building_LiquidTank.storedLiquid` (public LiquidDef : Def) and
-    // `public bool TryRemoveLiquid(int units)`. FlowWorks absent = Present false, a silent no-op.
+    // `public bool TryRemoveLiquid(int units)` and `RM_LiquidTheft.As(Thing)`. FlowWorks absent = a silent no-op;
+    // a loaded legacy API without actor scopes uses the existing shape warning and disables this feed.
     internal static class FlowWorksWaterBridge
     {
         private const string NetTypeName = "RimMandrake.FlowWorks.Machinery.RM_LiquidNet";
@@ -22,6 +23,7 @@ namespace RimMandrake.LuminousPigment
         private static MethodInfo tanksFor;
         private static FieldInfo storedLiquid;
         private static MethodInfo tryRemove;
+        private static MethodInfo enterActor;
         // LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS: FlowWorks tanks count decilitres since 2026-10-16; one draw is still 200 L (the
         // old unit), converted by FlowWorks' own RM_Volume.Units(float litres). Absent (an older FlowWorks) = 1 old unit.
         private const string VolumeTypeName = "RimMandrake.FlowWorks.RM_Volume";
@@ -33,7 +35,7 @@ namespace RimMandrake.LuminousPigment
             get
             {
                 Resolve();
-                return tanksFor != null && storedLiquid != null && tryRemove != null;
+                return tanksFor != null && storedLiquid != null && tryRemove != null && enterActor != null;
             }
         }
 
@@ -47,9 +49,11 @@ namespace RimMandrake.LuminousPigment
             tanksFor = AccessTools.Method(net, "TanksFor", new[] { typeof(Thing) });
             storedLiquid = AccessTools.Field(tank, "storedLiquid");
             tryRemove = AccessTools.Method(tank, "TryRemoveLiquid", new[] { typeof(int) });
+            Type theft = AccessTools.TypeByName("RimMandrake.FlowWorks.Machinery.RM_LiquidTheft");
+            enterActor = theft == null ? null : AccessTools.Method(theft, "As", new[] { typeof(Thing) });
             MethodInfo toUnits = AccessTools.TypeByName(VolumeTypeName) is Type vol ? AccessTools.Method(vol, "Units", new[] { typeof(float) }) : null;
             if (toUnits != null && toUnits.Invoke(null, new object[] { LitresPerDraw }) is int u && u > 0) unitsPerDraw = u;
-            if ((tanksFor == null || storedLiquid == null || tryRemove == null) && !warned)
+            if ((tanksFor == null || storedLiquid == null || tryRemove == null || enterActor == null) && !warned)
             {
                 warned = true;
                 Log.Warning("[LuminousPigment] FlowWorks is loaded but its liquid-net shape changed; the GlowTank water feed is off.");
@@ -63,6 +67,8 @@ namespace RimMandrake.LuminousPigment
             if (!Present || origin == null || !origin.Spawned) return null;
             try
             {
+                // The soft-bound call must carry the actual GlowTank, including owner use and early returns.
+                using var theftActor = (IDisposable)enterActor.Invoke(null, new object[] { origin });
                 if (!(tanksFor.Invoke(null, new object[] { origin }) is IEnumerable tanks)) return null;
                 foreach (object t in tanks)
                 {
